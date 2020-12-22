@@ -26,14 +26,21 @@ register_matplotlib_converters()
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def print_help():
+def print_help(s_ta_ticker, s_ta_start):
     """ Print help
     """
     print("What do you want to do?")
-    print("view        view a specific stock tick")
     print("\n--- Screeners:")
+    print("view        view and load a specific stock ticker for technical analysis")
     print("gainers     show latest top gainers")
-    print("\n--- Technical Analysis:")
+    print("load        load a specific stock ticker for technical analysis")
+    print("clear       clear a specific stock ticker from technical analysis")
+    if s_ta_ticker and s_ta_start:
+        print(f"\n--- Technical Analysis on {s_ta_ticker} starting at {s_ta_start.strftime('%Y-%m-%d')}:")
+    elif s_ta_ticker:
+        print(f"\n--- Technical Analysis on {s_ta_ticker}:")
+    else:
+        print("\n--- Technical Analysis:")
     print("sma         simple moving average")
     print("ema         exponential moving average")
     print("\n--- Others:")
@@ -100,14 +107,17 @@ def main():
     #parser.add_argument('-b', action="store", dest="b", help='example of string')
     #parser.add_argument('-c', action="store", dest="c", type=int, help='example of int')
 
+    s_ta_ticker = ""
+    s_ta_start = ""
+
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
-    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'sma', 'ema'])
+    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
-    print_help()
+    print_help(s_ta_ticker, s_ta_start)
     print("\n")
 
     # Loop forever and ever
@@ -126,7 +136,7 @@ def main():
         if ns_known_args.cmd == 'gainers':
             parser = argparse.ArgumentParser(prog='gainers', 
                                              description='Show top ticker gainers from Yahoo Finance')
-            parser.add_argument('-n', action="store", dest="n_gainers", type=int, default=5, choices=range(1, 25),
+            parser.add_argument('-n', "--num", action="store", dest="n_gainers", type=int, default=5, choices=range(1, 25),
                                 help='Number of the top gainers stocks to retrieve (default 5)')
 
             try:
@@ -148,11 +158,11 @@ def main():
                                              description='Given a stock market ticker, allows to see historical data of \
                                                 the corresponding stock. Note that the alpha_vantage key is necessary \
                                                 for this to work!')
-            parser.add_argument('-t', action="store", dest="s_ticker", required=True, help='Stock ticker')
-            parser.add_argument('--type', action="store", dest="n_type", type=check_positive, default=4,
+            parser.add_argument('-t', "--ticker" ,action="store", dest="s_ticker", required=True, help='Stock ticker')
+            parser.add_argument("--type", action="store", dest="n_type", type=check_positive, default=4,
                                 help='1234 corresponds to types: 1. open; 2. high; 3.low; 4. close \
                                     while 14 corresponds to types: 1.open; 4. close')
-            parser.add_argument("-s", "--start", type=valid_date, dest="s_start_date",
+            parser.add_argument('-s', "--start", type=valid_date, dest="s_start_date",
                                 help="The starting date (format YYYY-MM-DD) of the stock")
 
             try:
@@ -173,6 +183,8 @@ def main():
                 print("Either the ticker or the API_KEY are invalids. Try again!")
                 continue   
 
+            s_ta_ticker = ns_parser.s_ticker
+
             # Add function to plot data
             ln_col_idx = [int(x)-1 for x in list(str(ns_parser.n_type))]
             # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
@@ -183,10 +195,70 @@ def main():
             # Slice dataframe from the starting date YYYY-MM-DD selected
             if ns_parser.s_start_date:
                 df_stock = df_stock[ns_parser.s_start_date:]
+                s_ta_start = ns_parser.s_start_date
 
             ln_col_idx.append(4) # Append last column of df to be filtered which corresponds to: 5. Volume
 
             plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
+
+
+        # ---------------------------------------------------- LOAD ----------------------------------------------------
+        elif ns_known_args.cmd == 'load':
+            parser = argparse.ArgumentParser(prog='load', 
+                                             description=""" Given a stock market ticker, and an optional starting time,
+                                             load a stock in order to perform technical analysis""")
+            parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", required=True, help='Stock ticker')
+            parser.add_argument("--type", action="store", dest="n_type", type=check_positive, default=4,
+                                help='1234 corresponds to types: 1. open; 2. high; 3.low; 4. close \
+                                    while 14 corresponds to types: 1.open; 4. close')
+            parser.add_argument('-s', "--start", type=valid_date, dest="s_start_date",
+                                help="The starting date (format YYYY-MM-DD) of the stock")
+
+            try:
+                (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+            except SystemExit:
+                print("")
+                continue
+            
+            if l_unknown_args:
+                print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+            # Currently only supports daily stocks
+            # TODO: Intra-daily perhaps
+            ts = TimeSeries(key=cfg.API_KEY, output_format='pandas')
+            try:
+                df_stock, d_stock_metadata = ts.get_daily(symbol=ns_parser.s_ticker, outputsize='full')     
+            except:
+                print("Either the ticker or the API_KEY are invalids. Try again!")
+                continue   
+
+            s_ta_ticker = ns_parser.s_ticker
+
+            # Add function to plot data
+            ln_col_idx = [int(x)-1 for x in list(str(ns_parser.n_type))]
+            # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
+            if len([i for i in ln_col_idx if i > 3]) > 0:
+                print("An index bigger than 3 was given, which is wrong. Try again")
+                continue
+
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            if ns_parser.s_start_date:
+                df_stock = df_stock[ns_parser.s_start_date:]
+                s_ta_start = ns_parser.s_start_date
+            else:
+                s_ta_start = ""
+
+            if s_ta_start:
+                print(f"Loading {s_ta_ticker} stock with starting period {s_ta_start.strftime('%Y-%m-%d')} for technical analysis.")
+            else:
+                print(f"Loading {s_ta_ticker} stock for technical analysis.")
+
+
+        # ---------------------------------------------------- CLEAR ----------------------------------------------------
+        elif ns_known_args.cmd == 'clear':
+            print("Clearing stock ticker to be used for technical analysis")
+            s_ta_ticker = ""
+            s_ta_start = ""
         
         # --------------------------------------------------------------------------------------------------------------
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
@@ -202,11 +274,15 @@ def main():
                                              equal weight, and values outside of the time period are not included in the average. 
                                              This makes it less responsive to recent changes in the data, which can be useful for 
                                              filtering out those changes. """)
-            parser.add_argument('-t', action="store", dest="s_ticker", required=True, help='Stock ticker')
-            parser.add_argument('--period', action="store", dest="n_time_period", type=check_positive, default=20,
+            parser.add_argument('-p', "--period", action="store", dest="n_time_period", type=check_positive, default=20,
                                 help='Number of data points used to calculate each moving average value.')
             parser.add_argument("-s", "--start", type=valid_date, dest="s_start_date",
                                 help="The starting date (format YYYY-MM-DD) of the stock")
+            if s_ta_ticker:
+                parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", default=s_ta_ticker, help='Stock ticker')
+            else:
+                parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", required=True, help='Stock ticker')
+            
             try:
                 (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
             except SystemExit:
@@ -226,8 +302,15 @@ def main():
                 print("            3. The API_KEY is (still) valid")
                 continue
 
-            # Slice dataframe from the starting date YYYY-MM-DD selected
+            # Update TA ticker
+            s_ta_ticker = ns_parser.s_ticker
+
+            # Update TA starting point if needed
             if ns_parser.s_start_date:
+                s_ta_start = ns_parser.s_start_date
+
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            if s_ta_start:
                 df_stock = df_stock[ns_parser.s_start_date:]
 
             df_ta = ta.sma(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
@@ -248,11 +331,15 @@ def main():
                                              a diminishing contribution to the average, while more recent values have a greater 
                                              contribution. This method allows the moving average to be more responsive to changes 
                                              in the data. """)
-            parser.add_argument('-t', action="store", dest="s_ticker", required=True, help='Stock ticker')
-            parser.add_argument('--period', action="store", dest="n_time_period", type=check_positive, default=20,
+            parser.add_argument('-p', "--period", action="store", dest="n_time_period", type=check_positive, default=20,
                                 help='Number of data points used to calculate each moving average value.')
             parser.add_argument("-s", "--start", type=valid_date, dest="s_start_date",
                                 help="The starting date (format YYYY-MM-DD) of the stock")
+            if s_ta_ticker:
+                parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", default=s_ta_ticker, help='Stock ticker')
+            else:
+                parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", required=True, help='Stock ticker')
+
             try:
                 (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
             except SystemExit:
@@ -272,8 +359,15 @@ def main():
                 print("            3. The API_KEY is (still) valid")
                 continue   
 
-            # Slice dataframe from the starting date YYYY-MM-DD selected
+            # Update TA ticker
+            s_ta_ticker = ns_parser.s_ticker
+
+            # Update TA starting point if needed
             if ns_parser.s_start_date:
+                s_ta_start = ns_parser.s_start_date
+
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            if s_ta_start:
                 df_stock = df_stock[ns_parser.s_start_date:]
 
             df_ta = ta.ema(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
@@ -285,7 +379,7 @@ def main():
 
         # ---------------------------------------------------- HELP ----------------------------------------------------
         elif ns_known_args.cmd == 'help':
-            print_help()
+            print_help(s_ta_ticker, s_ta_start)
 
         # ---------------------------------------------------- QUIT ----------------------------------------------------
         elif ns_known_args.cmd == 'quit':
