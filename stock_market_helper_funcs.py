@@ -41,7 +41,7 @@ def plot_view_stock(df, symbol):
 
 # -----------------------------------------------------------------------------------------------------------------------
 def plot_stock_ta(df_stock, s_stock, df_ta, s_ta):
-    plt.plot(df_stock.index, df_stock['4. close'].values)
+    plt.plot(df_stock.index, df_stock.values)
     plt.plot(df_ta.index, df_ta.values)
     plt.title(f"{s_ta} on {s_stock}")
     plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -52,6 +52,7 @@ def plot_stock_ta(df_stock, s_stock, df_ta, s_ta):
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
     plt.show()
+    print("")
 
 
 # -----------------------------------------------------------------------------------------------------------------------

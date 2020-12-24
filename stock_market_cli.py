@@ -24,8 +24,7 @@ register_matplotlib_converters()
 from stock_market_helper_funcs import *
 import stock_market_menu as smm
 import stock_market_technical_analysis as smta
-
-
+import stock_market_fundamental_analysis as smfa
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_help(s_ticker, s_start, b_is_market_open):
@@ -36,37 +35,38 @@ def print_help(s_ticker, s_start, b_is_market_open):
     print("\nMenu:")
     print("   gainers     show latest top gainers")
     print("   view        view and load a specific stock ticker for technical analysis")
-    print("   clear       clear a specific stock ticker from technical analysis")
-    print("   load        load a specific stock ticker for technical analysis")
+    print("   clear       clear a specific stock ticker from analysis")
+    print("   load        load a specific stock ticker for analysis")
     print("   help        help to see this menu again")
     print("   quit        to abandon the program")
 
     if s_ticker and s_start:
-        print(f"\n-----> {s_ticker} starting at {s_start.strftime('%Y-%m-%d')} <-----")
+        print(f"\nStock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
     elif s_ticker:
-        print(f"\n-----> {s_ticker} <-----")
+        print(f"\nStock: {s_ticker}")
     else:
-        print("\n-----> ? <-----")
+        print("\nStock: ?")
 
-    print("\nFundamental Analysis:")
-    print("   example         not yet covered")
+    if s_ticker:
+        print("\nFundamental Analysis:")
+        print("   ratings     company ratings from strong sell to strong buy")
 
-    print("\nTechnical Analysis:")
-    print("   sma         simple moving average")
-    print("   ema         exponential moving average")
+        print("\nTechnical Analysis:")
+        print("   sma         simple moving average")
+        print("   ema         exponential moving average")
 
-    print("\nPrediction:")
-    print("   ma")
-    print("   ema")
-    print("   lr")
-    print("   knn")
-    print("   arima")
-    print("   rnn")
-    print("   lstm")
-    print("   prophet")
+        print("\nPrediction:")
+        print("   ma")
+        print("   ema")
+        print("   lr")
+        print("   knn")
+        print("   arima")
+        print("   rnn")
+        print("   lstm")
+        print("   prophet")
 
-    print(f"\nMarket {('Closed', 'Open')[b_is_market_open]}. Play stocks:")
-    print("Stock name, and how much money to bet?")
+    print(f"\nMarket {('CLOSED', 'OPEN')[b_is_market_open]}.")
+    print("Stonks and things")
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ def main():
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
-    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema'])
+    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -143,26 +143,29 @@ def main():
         # ------------------------------------------- FUNDAMENTAL ANALYSIS ---------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
 
+        # --------------------------------------------------- RATINGS --------------------------------------------------
+        elif ns_known_args.cmd == 'ratings':
+            smfa.ratings(l_args, s_ticker)
+            continue
+
         # --------------------------------------------------------------------------------------------------------------
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
 
-        # --------------------------------------------------------------------------------------------------------------
-        # ------------------------------------------------ PREDICTION --------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
-
         # ---------------------------------------------------- SMA ----------------------------------------------------
         elif ns_known_args.cmd == 'sma':
-            [s_ticker, s_start] = smta.sma(l_args, s_ticker, s_start)
+            smta.sma(l_args, s_ticker, df_stock)
             continue
 
         # ---------------------------------------------------- EMA ----------------------------------------------------
         elif ns_known_args.cmd == 'ema':
-            [s_ticker, s_start] = smta.ema(l_args, s_ticker, s_start)
+            smta.ema(l_args, s_ticker, df_stock)
             continue
-        
-       
             
+        # --------------------------------------------------------------------------------------------------------------
+        # ------------------------------------------------ PREDICTION --------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         else:
             print('Shouldnt see this command!')
 
