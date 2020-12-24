@@ -22,19 +22,24 @@ from datetime import datetime
 import matplotlib
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+from pytz import timezone
+from holidays import US as holidaysUS
+from datetime import datetime, time as Time
 register_matplotlib_converters()
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def print_help(s_ta_ticker, s_ta_start):
+def print_help(s_ta_ticker, s_ta_start, b_is_market_open):
     """ Print help
     """
     print("What do you want to do?")
+
     print("\n--- Screeners:")
     print("view        view and load a specific stock ticker for technical analysis")
     print("gainers     show latest top gainers")
     print("load        load a specific stock ticker for technical analysis")
     print("clear       clear a specific stock ticker from technical analysis")
+
     if s_ta_ticker and s_ta_start:
         print(f"\n--- Technical Analysis on {s_ta_ticker} starting at {s_ta_start.strftime('%Y-%m-%d')}:")
     elif s_ta_ticker:
@@ -43,6 +48,16 @@ def print_help(s_ta_ticker, s_ta_start):
         print("\n--- Technical Analysis:")
     print("sma         simple moving average")
     print("ema         exponential moving average")
+
+    print("\n--- Prediction:")
+    print("RNN")
+    print("ARIMA")
+    print("LSTM")
+    print("Facebook prophet")
+
+    print(f"\n--- Market {('Closed', 'Open')[b_is_market_open]}. Play stocks:")
+    print("Stock name, and how much money to bet?")
+
     print("\n--- Others:")
     print("help        help to see this menu again")
     print("quit        to abandon the program")
@@ -98,6 +113,27 @@ def plot_stock_ta(df_stock, s_stock, df_ta, s_ta):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
+def b_is_stock_market_open():
+    ''' checks if the stock market is open '''
+    # Get current US time
+    now = datetime.now(timezone('US/Eastern'))
+    # Check if it is a weekend
+    if now.date().weekday() > 4:
+        return False
+    # Check if it is a holiday
+    if now.strftime('%Y-%m-%d') in holidaysUS():
+        return False
+    # Check if it hasn't open already
+    if now.time() < Time(hour=9, minute=30, second=0):
+        return False
+    # Check if it has already closed
+    if now.time() > Time(hour=16, minute=0, second=0):
+        return False
+    # Otherwise, Stock Market is open!
+    return True
+
+
+# -----------------------------------------------------------------------------------------------------------------------
 def main():
     """ Main function of the program
     """ 
@@ -109,7 +145,6 @@ def main():
 
     s_ta_ticker = ""
     s_ta_start = ""
-
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
@@ -117,7 +152,7 @@ def main():
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
-    print_help(s_ta_ticker, s_ta_start)
+    print_help(s_ta_ticker, s_ta_start, b_is_stock_market_open())
     print("\n")
 
     # Loop forever and ever
@@ -379,7 +414,7 @@ def main():
 
         # ---------------------------------------------------- HELP ----------------------------------------------------
         elif ns_known_args.cmd == 'help':
-            print_help(s_ta_ticker, s_ta_start)
+            print_help(s_ta_ticker, s_ta_start, b_is_stock_market_open())
 
         # ---------------------------------------------------- QUIT ----------------------------------------------------
         elif ns_known_args.cmd == 'quit':
