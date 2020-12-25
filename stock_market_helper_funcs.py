@@ -24,7 +24,7 @@ def valid_date(s):
 # -----------------------------------------------------------------------------------------------------------------------
 def plot_view_stock(df, symbol):
     pfig, axVolume = plt.subplots()
-    plt.bar(df.index, df['5. volume'].values, color='k', alpha=0.8)
+    plt.bar(df.index, df.iloc[:, -1], color='k', alpha=0.8, width=.3)
     plt.ylabel('Volume')
     axPrice = axVolume.twinx()
     plt.plot(df.index, df.iloc[:, :-1])

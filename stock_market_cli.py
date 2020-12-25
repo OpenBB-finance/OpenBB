@@ -88,7 +88,7 @@ def main():
     s_ticker = "TSLA"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-    df_stock, d_stock_metadata = ts.get_daily(symbol=s_ticker, outputsize='full')  
+    df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')  
     df_stock = df_stock[s_start:] 
     # Delete above in the future
 
@@ -136,7 +136,7 @@ def main():
 
         # ---------------------------------------------------- VIEW ----------------------------------------------------
         elif ns_known_args.cmd == 'view':
-            smm.view(l_args, s_ticker, s_start)
+            smm.view(l_args, s_ticker, s_start, df_stock)
             continue
 
          # ---------------------------------------------------- HELP ----------------------------------------------------

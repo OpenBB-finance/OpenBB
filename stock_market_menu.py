@@ -43,10 +43,10 @@ def load(l_args, s_ticker, s_start, df_stock):
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
-    # Currently only supports daily stocks
-    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     try:
-        df_stock, d_stock_metadata = ts.get_daily(symbol=ns_parser.s_ticker, outputsize='full')     
+        # Currently only supports daily stocks
+        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+        df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=ns_parser.s_ticker, outputsize='full')     
     except:
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return [s_ticker, s_start, df_stock]
@@ -69,20 +69,23 @@ def load(l_args, s_ticker, s_start, df_stock):
 
 
 # ----------------------------------------------------- VIEW -----------------------------------------------------
-def view(l_args, s_ticker, s_start):
+def view(l_args, s_ticker, s_start, df_stock):
     parser = argparse.ArgumentParser(prog='view', 
                                      description='Given a stock market ticker, allows to see historical data of \
                                      the corresponding stock. Note that the alpha_vantage key is necessary \
                                      for this to work!')
     if s_ticker:
-        parser.add_argument('-t', "--ticker" ,action="store", dest="s_ticker", default=s_ticker, help='Stock ticker')  
+        parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", default=s_ticker, help='Stock ticker')  
     else:
-        parser.add_argument('-t', "--ticker" ,action="store", dest="s_ticker", required=True, help='Stock ticker')
+        parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", required=True, help='Stock ticker')
         
+    parser.add_argument('-i', "--intraday", action="store_true", dest="b_intraday", default=False, help='Stock ticker')
+    parser.add_argument("--interval", action="store", dest="n_interval", type=int, default=15, choices=[1,5,15,30,60], help='Stock ticker')
+
     parser.add_argument('-s', "--start", type=valid_date, dest="s_start_date",
                         help="The starting date (format YYYY-MM-DD) of the stock")
-    parser.add_argument("--type", action="store", dest="n_type", type=check_positive, default=4,
-                        help='1234 corresponds to types: 1. open; 2. high; 3.low; 4. close \
+    parser.add_argument("--type", action="store", dest="n_type", type=check_positive, default=5, # in case it's daily
+                        help='12345 corresponds to types: 1. open; 2. high; 3.low; 4. close;  \
                             while 14 corresponds to types: 1.open; 4. close')
 
     try:
@@ -95,8 +98,15 @@ def view(l_args, s_ticker, s_start):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-        df_stock, d_stock_metadata = ts.get_daily(symbol=ns_parser.s_ticker, outputsize='full')     
+        # We want to view a different stock than the one we loaded
+        if ns_parser.s_ticker != s_ticker:
+            ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+            df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=ns_parser.s_ticker, outputsize='full')   
+        # We want to see intraday data about this stock  
+        elif ns_parser.b_intraday:
+            ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+            s_interval = str(ns_parser.n_interval)+'min'
+            df_stock, d_stock_metadata = ts.get_intraday(symbol=ns_parser.s_ticker, outputsize='full', interval=s_interval)    
     except:
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return
@@ -105,13 +115,31 @@ def view(l_args, s_ticker, s_start):
     if ns_parser.s_start_date:
         df_stock = df_stock[ns_parser.s_start_date:]
 
-    # Add function to plot data
-    ln_col_idx = [int(x)-1 for x in list(str(ns_parser.n_type))]
-    # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
-    if len([i for i in ln_col_idx if i > 3]) > 0:
-        print("An index bigger than 3 was given, which is wrong. Try again")
-        return
-
-    ln_col_idx.append(4) # Append last column of df to be filtered which corresponds to: 5. Volume
+    # Intraday data
+    if ns_parser.b_intraday:
+        # The default doesn't exist for intradaily data
+        if ns_parser.n_type == 5:
+            ln_col_idx = [3]
+        else:
+            ln_col_idx = [int(x)-1 for x in list(str(ns_parser.n_type))]
+        # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
+        if len([i for i in ln_col_idx if i > 3]) > 0:
+            print("An index bigger than 3 was given, which is wrong. Try again")
+            return
+        
+        # Append last column of df to be filtered which corresponds to: 5. Volume
+        ln_col_idx.append(4) 
+    # Daily data
+    else: 
+        # The default doesn't exist for intradaily data
+        ln_col_idx = [int(x)-1 for x in list(str(ns_parser.n_type))]
+        if 4 not in ln_col_idx:
+            ln_col_idx.append(4)
+        # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
+        if len([i for i in ln_col_idx if i > 4]) > 0:
+            print("An index bigger than 4 was given, which is wrong. Try again")
+            return
+        # Append last column of df to be filtered which corresponds to: 6. Volume
+        ln_col_idx.append(5) 
 
     plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
