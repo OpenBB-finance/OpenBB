@@ -54,6 +54,7 @@ def print_help(s_ticker, s_start, b_is_market_open):
         print("\nTechnical Analysis:")
         print("   sma         simple moving average")
         print("   ema         exponential moving average")
+        print("   macd        moving average convergence/divergence")
 
         print("\nPrediction:")
         print("   ma")
@@ -83,10 +84,18 @@ def main():
     s_start = ""
     df_stock = pd.DataFrame()
 
+    # Set stock by default to speed up testing
+    s_ticker = "TSLA"
+    s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
+    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+    df_stock, d_stock_metadata = ts.get_daily(symbol=s_ticker, outputsize='full')  
+    df_stock = df_stock[s_start:] 
+    # Delete above in the future
+
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
-    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema', 'ratings'])
+    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema', 'macd', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -160,6 +169,11 @@ def main():
         # ---------------------------------------------------- EMA ----------------------------------------------------
         elif ns_known_args.cmd == 'ema':
             smta.ema(l_args, s_ticker, df_stock)
+            continue
+
+        # ---------------------------------------------------- MACD ----------------------------------------------------
+        elif ns_known_args.cmd == 'macd':
+            smta.macd(l_args, s_ticker, df_stock)
             continue
             
         # --------------------------------------------------------------------------------------------------------------

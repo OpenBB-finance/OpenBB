@@ -41,14 +41,29 @@ def plot_view_stock(df, symbol):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def plot_stock_ta(df_stock, s_stock, df_ta, s_ta):
+def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
     plt.plot(df_stock.index, df_stock.values)
     plt.plot(df_ta.index, df_ta.values)
-    plt.title(f"{s_ta} on {s_stock}")
+    plt.title(f"{s_ta} on {s_ticker}")
     plt.xlim(df_stock.index[0], df_stock.index[-1])
     plt.xlabel('Time')
     plt.ylabel('Share Price ($)')
-    plt.legend([s_stock, s_ta])
+    plt.legend([s_ticker, s_ta])
+    plt.grid(b=True, which='major', color='#666666', linestyle='-')
+    plt.minorticks_on()
+    plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.show()
+    print("")
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def plot_ta(s_ticker, df_ta, s_ta):
+    plt.plot(df_ta.index, df_ta.values)
+    plt.title(f"{s_ta} on {s_ticker}")
+    plt.xlim(df_ta.index[0], df_ta.index[-1])
+    plt.xlabel('Time')
+    plt.ylabel('Share Price ($)')
+    plt.legend(df_ta.columns)
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)

@@ -63,3 +63,47 @@ def ema(l_args, s_ticker, df_stock):
     except:
         print("")
         return
+
+
+# ----------------------------------------------------- MACD -----------------------------------------------------
+def macd(l_args, s_ticker, df_stock):
+    parser = argparse.ArgumentParser(prog='macd', 
+                                     description=""" The Moving Average Convergence Divergence (MACD) is the difference 
+                                     between two Exponential Moving Averages. The Signal line is an Exponential Moving 
+                                     Average of the MACD. \n \n The MACD signals trend changes and indicates the start 
+                                     of new trend direction. High values indicate overbought conditions, low values 
+                                     indicate oversold conditions. Divergence with the price indicates an end to the 
+                                     current trend, especially if the MACD is at extreme high or low values. When the MACD 
+                                     line crosses above the signal line a buy signal is generated. When the MACD crosses 
+                                     below the signal line a sell signal is generated. To confirm the signal, the MACD 
+                                     should be above zero for a buy, and below zero for a sell. """)
+
+    parser.add_argument('-f', "--fast", action="store", dest="n_fast", type=check_positive, default=12,
+                        help='The short period.')
+    parser.add_argument('-s', "--slow", action="store", dest="n_slow", type=check_positive, default=26,
+                        help='The long period.')
+    parser.add_argument("--signal", action="store", dest="n_signal", type=check_positive, default=9,
+                        help='The signal period.')
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=9,
+                        help='How many periods to offset the result.')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        df_ta = ta.macd(df_stock['4. close'],
+                        fast=ns_parser.n_fast,
+                        slow=ns_parser.n_slow,
+                        signal=ns_parser.n_signal,
+                        offset=ns_parser.n_offset).dropna()
+
+        plot_ta(s_ticker, df_ta, f"{ns_parser.n_fast}-{ns_parser.n_slow}-{ns_parser.n_signal}-{ns_parser.n_offset} MACD")
+    except:
+        print("")
+        return
