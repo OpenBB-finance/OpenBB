@@ -1,5 +1,6 @@
 import argparse
 from alpha_vantage.timeseries import TimeSeries
+from alpha_vantage.techindicators import TechIndicators
 import pandas_ta as ta
 import config_bot as cfg
 from stock_market_helper_funcs import *
@@ -27,8 +28,8 @@ def sma(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.sma(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
-        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")
+        df_ta = ta.sma(df_stock['5. adjusted close'], timeperiod=ns_parser.n_time_period).dropna()
+        plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")
     except:
         print("")
         return
@@ -58,8 +59,8 @@ def ema(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.ema(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
-        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")
+        df_ta = ta.ema(df_stock['5. adjusted close'], timeperiod=ns_parser.n_time_period).dropna()
+        plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")
     except:
         print("")
         return
@@ -97,13 +98,51 @@ def macd(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.macd(df_stock['4. close'],
+        df_ta = ta.macd(df_stock['5. adjusted close'],
                         fast=ns_parser.n_fast,
                         slow=ns_parser.n_slow,
                         signal=ns_parser.n_signal,
                         offset=ns_parser.n_offset).dropna()
 
         plot_ta(s_ticker, df_ta, f"{ns_parser.n_fast}-{ns_parser.n_slow}-{ns_parser.n_signal}-{ns_parser.n_offset} MACD")
+    except:
+        print("")
+        return
+
+
+# ----------------------------------------------------- VWAP -----------------------------------------------------
+def vwap(l_args, s_ticker, s_start):
+    parser = argparse.ArgumentParser(prog='vwap', 
+                                     description=""" The Volume Weighted Average Price that measures the average typical price
+                                                  by volume.  It is typically used with intraday charts to identify general
+                                                  direction. """)
+
+    parser.add_argument('-i', "--interval", action="store", dest="n_interval", type=int, default=15, choices=[1,5,15,30,60], help='Stock ticker')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+        s_interval = str(ns_parser.n_interval)+'min'
+        df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)  
+
+        if s_start:
+            df_stock = df_stock[s_start:]
+
+        df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], volume=df_stock['5. volume'], interval=s_interval)
+        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{s_interval} VWAP")
+        
+        # ti = TechIndicators(cfg.API_KEY_FINANCIALMODELINGPREP, output_format='pandas')
+        # df_ta, d_ta_metadata = ti.get_vwap(symbol=s_ticker, interval=s_interval)
+        # plot_ta(s_ticker, df_ta, f"{s_interval} VWAP")
+
     except:
         print("")
         return

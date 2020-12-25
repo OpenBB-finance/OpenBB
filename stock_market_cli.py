@@ -55,6 +55,7 @@ def print_help(s_ticker, s_start, b_is_market_open):
         print("   sma         simple moving average")
         print("   ema         exponential moving average")
         print("   macd        moving average convergence/divergence")
+        print("   vwap        volume weighted average price")
 
         print("\nPrediction:")
         print("   ma")
@@ -95,7 +96,7 @@ def main():
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
-    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema', 'macd', 'ratings'])
+    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema', 'macd', 'vwap', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -174,6 +175,11 @@ def main():
         # ---------------------------------------------------- MACD ----------------------------------------------------
         elif ns_known_args.cmd == 'macd':
             smta.macd(l_args, s_ticker, df_stock)
+            continue
+
+        # ---------------------------------------------------- VWAP ----------------------------------------------------
+        elif ns_known_args.cmd == 'vwap':
+            smta.vwap(l_args, s_ticker, s_start)
             continue
             
         # --------------------------------------------------------------------------------------------------------------
