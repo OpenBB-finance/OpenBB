@@ -27,8 +27,8 @@ def sma(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.sma(df_stock, timeperiod=ns_parser.n_time_period).dropna()
-        plot_stock_ta(df_stock, s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")
+        df_ta = ta.sma(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
+        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")
     except:
         print("")
         return
@@ -58,8 +58,8 @@ def ema(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.ema(df_stock, timeperiod=ns_parser.n_time_period).dropna()
-        plot_stock_ta(df_stock, s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")
+        df_ta = ta.ema(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
+        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")
     except:
         print("")
         return

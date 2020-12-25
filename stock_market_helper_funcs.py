@@ -37,6 +37,7 @@ def plot_view_stock(df, symbol):
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
     plt.show()
+    print("")
 
 
 # -----------------------------------------------------------------------------------------------------------------------

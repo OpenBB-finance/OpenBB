@@ -60,9 +60,6 @@ def load(l_args, s_ticker, s_start, df_stock):
     if ns_parser.s_start_date:
         df_stock = df_stock[ns_parser.s_start_date:]
 
-    # Get stock close price
-    df_stock = df_stock.iloc[:, 3]
-
     if s_start:
         print(f"Loading {s_ticker} stock with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n")
     else:
@@ -97,9 +94,8 @@ def view(l_args, s_ticker, s_start):
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
-    # Currently only supports daily stocks
-    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     try:
+        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
         df_stock, d_stock_metadata = ts.get_daily(symbol=ns_parser.s_ticker, outputsize='full')     
     except:
         print("Either the ticker or the API_KEY are invalids. Try again!")
@@ -119,4 +115,3 @@ def view(l_args, s_ticker, s_start):
     ln_col_idx.append(4) # Append last column of df to be filtered which corresponds to: 5. Volume
 
     plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
-
