@@ -265,3 +265,38 @@ def adx(l_args, s_ticker, s_interval, df_stock):
         return
 
 
+# ----------------------------------------------------- CCI -----------------------------------------------------
+def cci(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='cci', 
+                                     description=""" The CCI is designed to detect beginning and ending market trends. 
+                                     The range of 100 to -100 is the normal trading range. CCI values outside of this 
+                                     range indicate overbought or oversold conditions. You can also look for price 
+                                     divergence in the CCI. If the price is making new highs, and the CCI is not, 
+                                     then a price correction is likely. """)
+
+    parser.add_argument('-p', "--timeperiod", action="store", dest="n_timeperiod", type=check_positive, default=60,
+                        help='Number of data points used to calculate each ADX value')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'],
+                           close=df_stock['5. adjusted close'], time_period=ns_parser.n_timeperiod).dropna()
+        # Intraday 
+        else:
+            df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'],
+                           close=df_stock['4. close'], time_period=ns_parser.n_timeperiod).dropna()
+
+        plot_ta(s_ticker, df_ta, f"{ns_parser.n_timeperiod} CCI")
+    except:
+        print("")
+        return

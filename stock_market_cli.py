@@ -65,11 +65,12 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   sma         simple moving average")
         print("   ema         exponential moving average")
         print("   macd        moving average convergence/divergence")
-        if s_interval != "1440min":
-            print("   vwap        volume weighted average price")
         print("   stoch       stochastic oscillator")
         print("   rsi         relative strength index")
         print("   adx         average directional movement index")
+        print("   cci         commodity channel index")
+        if s_interval != "1440min":
+            print("   vwap        volume weighted average price")
 
         print("\nPrediction:")
         print("   ma")
@@ -114,7 +115,7 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'ratings'])
+                                             'cci', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -215,6 +216,11 @@ def main():
         # ---------------------------------------------------- ADX ----------------------------------------------------
         elif ns_known_args.cmd == 'adx':
             smta.adx(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        # ---------------------------------------------------- CCI ----------------------------------------------------
+        elif ns_known_args.cmd == 'cci':
+            smta.cci(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
