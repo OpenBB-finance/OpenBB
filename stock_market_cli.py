@@ -11,6 +11,14 @@
 
     Finviz for data
 
+    Check AlphaVantage for TA as well.
+    Add s_ylabel and s_legend to plot_ta or plot_stock_ta
+
+     Daily Stock vs Intraday 5min Stock
+     Only show menu that allow daily TA or intraday TA,
+    i.e. if daily Stock don't show VWAP bc doesn't make sense!
+     Fix the 'help' params
+
 """
 
 from alpha_vantage.timeseries import TimeSeries
@@ -27,7 +35,7 @@ import stock_market_technical_analysis as smta
 import stock_market_fundamental_analysis as smfa
 
 # -----------------------------------------------------------------------------------------------------------------------
-def print_help(s_ticker, s_start, b_is_market_open):
+def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     """ Print help
     """
     print("What do you want to do?")
@@ -40,10 +48,12 @@ def print_help(s_ticker, s_start, b_is_market_open):
     print("   help        help to see this menu again")
     print("   quit        to abandon the program")
 
+    s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
+
     if s_ticker and s_start:
-        print(f"\nStock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
+        print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
     elif s_ticker:
-        print(f"\nStock: {s_ticker}")
+        print(f"\n{s_intraday} Stock: {s_ticker}")
     else:
         print("\nStock: ?")
 
@@ -55,7 +65,8 @@ def print_help(s_ticker, s_start, b_is_market_open):
         print("   sma         simple moving average [daily]")
         print("   ema         exponential moving average [daily]")
         print("   macd        moving average convergence/divergence [daily]")
-        print("   vwap        volume weighted average price [intraday]")
+        if s_interval != "1440min":
+            print("   vwap        volume weighted average price [intraday]")
         print("   stoch       stochastic oscillator [daily]")
         print("   rsi         relative strength index [daily]")
 
@@ -86,6 +97,8 @@ def main():
     s_ticker = ""
     s_start = ""
     df_stock = pd.DataFrame()
+    b_intraday = False
+    s_interval = "1440min"
 
     # Set stock by default to speed up testing
     s_ticker = "TSLA"
@@ -104,7 +117,7 @@ def main():
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
-    print_help(s_ticker, s_start, b_is_stock_market_open())
+    print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
     print("\n")
 
     # Loop forever and ever
@@ -136,17 +149,17 @@ def main():
 
         # ---------------------------------------------------- LOAD ----------------------------------------------------
         elif ns_known_args.cmd == 'load':
-            [s_ticker, s_start, df_stock] = smm.load(l_args, s_ticker, s_start, df_stock)
+            [s_ticker, s_start, s_interval, df_stock] = smm.load(l_args, s_ticker, s_start, s_interval, df_stock)
             continue
 
         # ---------------------------------------------------- VIEW ----------------------------------------------------
         elif ns_known_args.cmd == 'view':
-            smm.view(l_args, s_ticker, s_start, df_stock)
+            smm.view(l_args, s_ticker, s_start, s_interval, df_stock)
             continue
 
          # ---------------------------------------------------- HELP ----------------------------------------------------
         elif ns_known_args.cmd == 'help':
-            print_help(s_ticker, s_start, b_is_stock_market_open())
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # ----------------------------------------------------- QUIT ----------------------------------------------------
         elif ns_known_args.cmd == 'quit':
@@ -170,32 +183,32 @@ def main():
 
         # ---------------------------------------------------- SMA ----------------------------------------------------
         elif ns_known_args.cmd == 'sma':
-            smta.sma(l_args, s_ticker, df_stock)
+            smta.sma(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # ---------------------------------------------------- EMA ----------------------------------------------------
         elif ns_known_args.cmd == 'ema':
-            smta.ema(l_args, s_ticker, df_stock)
+            smta.ema(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # ---------------------------------------------------- MACD ----------------------------------------------------
         elif ns_known_args.cmd == 'macd':
-            smta.macd(l_args, s_ticker, df_stock)
+            smta.macd(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # ---------------------------------------------------- VWAP ----------------------------------------------------
         elif ns_known_args.cmd == 'vwap':
-            smta.vwap(l_args, s_ticker, s_start)
+            smta.vwap(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # ---------------------------------------------------- STOCH ----------------------------------------------------
         elif ns_known_args.cmd == 'stoch':
-            smta.stoch(l_args, s_ticker, df_stock)
+            smta.stoch(l_args, s_ticker, s_interval, df_stock)
             continue
             
         # ---------------------------------------------------- RSI ----------------------------------------------------
         elif ns_known_args.cmd == 'rsi':
-            smta.rsi(l_args, s_ticker, df_stock)
+            smta.rsi(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------

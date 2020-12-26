@@ -6,7 +6,7 @@ import config_bot as cfg
 from stock_market_helper_funcs import *
 
 # ----------------------------------------------------- SMA -----------------------------------------------------
-def sma(l_args, s_ticker, df_stock):
+def sma(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='sma',
                                      description=""" Moving Averages are used to smooth the data in an array to 
                                      help eliminate noise and identify trends. The Simple Moving Average is literally 
@@ -28,15 +28,21 @@ def sma(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.sma(df_stock['5. adjusted close'], timeperiod=ns_parser.n_time_period).dropna()
-        plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.sma(df_stock['5. adjusted close'], timeperiod=ns_parser.n_time_period).dropna()
+            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")
+        # Intraday 
+        else:
+            df_ta = ta.sma(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
+            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_time_period} SMA")          
     except:
         print("")
         return
 
 
 # ----------------------------------------------------- EMA -----------------------------------------------------
-def ema(l_args, s_ticker, df_stock):
+def ema(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='ema', 
                                      description=""" The Exponential Moving Average is a staple of technical 
                                      analysis and is used in countless technical indicators. In a Simple Moving 
@@ -59,15 +65,21 @@ def ema(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.ema(df_stock['5. adjusted close'], timeperiod=ns_parser.n_time_period).dropna()
-        plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.ema(df_stock['5. adjusted close'], timeperiod=ns_parser.n_time_period).dropna()
+            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")
+        # Intraday 
+        else:
+            df_ta = ta.ema(df_stock['4. close'], timeperiod=ns_parser.n_time_period).dropna()
+            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_time_period} EMA")   
     except:
         print("")
         return
 
 
 # ----------------------------------------------------- MACD -----------------------------------------------------
-def macd(l_args, s_ticker, df_stock):
+def macd(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='macd', 
                                      description=""" The Moving Average Convergence Divergence (MACD) is the difference 
                                      between two Exponential Moving Averages. The Signal line is an Exponential Moving 
@@ -98,12 +110,17 @@ def macd(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.macd(df_stock['5. adjusted close'],
-                        fast=ns_parser.n_fast,
-                        slow=ns_parser.n_slow,
-                        signal=ns_parser.n_signal,
-                        offset=ns_parser.n_offset).dropna()
-
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.macd(df_stock['5. adjusted close'],
+                        fast=ns_parser.n_fast, slow=ns_parser.n_slow,
+                        signal=ns_parser.n_signal, offset=ns_parser.n_offset).dropna()
+        # Intraday 
+        else:
+            df_ta = ta.macd(df_stock['4. close'],
+                        fast=ns_parser.n_fast, slow=ns_parser.n_slow,
+                        signal=ns_parser.n_signal, offset=ns_parser.n_offset).dropna()
+        
         plot_ta(s_ticker, df_ta, f"{ns_parser.n_fast}-{ns_parser.n_slow}-{ns_parser.n_signal}-{ns_parser.n_offset} MACD")
     except:
         print("")
@@ -111,7 +128,7 @@ def macd(l_args, s_ticker, df_stock):
 
 
 # ----------------------------------------------------- VWAP -----------------------------------------------------
-def vwap(l_args, s_ticker, s_start):
+def vwap(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='vwap', 
                                      description=""" The Volume Weighted Average Price that measures the average typical price
                                                   by volume.  It is typically used with intraday charts to identify general
@@ -129,27 +146,15 @@ def vwap(l_args, s_ticker, s_start):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-        s_interval = str(ns_parser.n_interval)+'min'
-        df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)
-
-        if s_start:
-            df_stock = df_stock[s_start:]
-
         df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], volume=df_stock['5. volume'], interval=s_interval)
         plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{s_interval} VWAP")
-        
-        # ti = TechIndicators(cfg.API_KEY_FINANCIALMODELINGPREP, output_format='pandas')
-        # df_ta, d_ta_metadata = ti.get_vwap(symbol=s_ticker, interval=s_interval)
-        # plot_ta(s_ticker, df_ta, f"{s_interval} VWAP")
-
     except:
         print("")
         return
 
 
 # ----------------------------------------------------- STOCH -----------------------------------------------------
-def stoch(l_args, s_ticker, df_stock):
+def stoch(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='stoch', 
                                      description=""" The Stochastic Oscillator measures where the close is in relation 
                                      to the recent trading range. The values range from zero to 100. %D values over 75 
@@ -193,7 +198,7 @@ def stoch(l_args, s_ticker, df_stock):
 
 
 # ----------------------------------------------------- RSI -----------------------------------------------------
-def rsi(l_args, s_ticker, df_stock):
+def rsi(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='rsi', 
                                      description=""" The Relative Strength Index (RSI) calculates a ratio of the 
                                      recent upward price movements to the absolute price movement. The RSI ranges 
@@ -214,8 +219,13 @@ def rsi(l_args, s_ticker, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.rsi(df_stock['5. adjusted close'], time_period=ns_parser.n_timeperiod).dropna()
-    
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.rsi(df_stock['5. adjusted close'], time_period=ns_parser.n_timeperiod).dropna()
+        # Intraday 
+        else:
+            df_ta = ta.rsi(df_stock['4. close'], time_period=ns_parser.n_timeperiod).dropna()
+
         plot_ta(s_ticker, df_ta, f"{ns_parser.n_timeperiod} RSI")
     except:
         print("")
