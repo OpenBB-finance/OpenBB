@@ -131,7 +131,7 @@ def vwap(l_args, s_ticker, s_start):
     try:
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
         s_interval = str(ns_parser.n_interval)+'min'
-        df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)  
+        df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)
 
         if s_start:
             df_stock = df_stock[s_start:]
@@ -143,6 +143,50 @@ def vwap(l_args, s_ticker, s_start):
         # df_ta, d_ta_metadata = ti.get_vwap(symbol=s_ticker, interval=s_interval)
         # plot_ta(s_ticker, df_ta, f"{s_interval} VWAP")
 
+    except:
+        print("")
+        return
+
+
+# ----------------------------------------------------- STOCH -----------------------------------------------------
+def stoch(l_args, s_ticker, df_stock):
+    parser = argparse.ArgumentParser(prog='stoch', 
+                                     description=""" The Stochastic Oscillator measures where the close is in relation 
+                                     to the recent trading range. The values range from zero to 100. %D values over 75 
+                                     indicate an overbought condition; values under 25 indicate an oversold condition. 
+                                     When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses 
+                                     below, it is a sell signal. The Raw %K is generally considered too erratic to use 
+                                     for crossover signals. """)
+
+    parser.add_argument('-k', "--fastkperiod", action="store", dest="n_fastkperiod", type=check_positive, default=5,
+                        help='The short period.')
+    parser.add_argument('-d', "--slowdperiod", action="store", dest="n_slowdperiod", type=check_positive, default=3,
+                        help='The short period.')
+    parser.add_argument("--slowkperiod", action="store", dest="n_slowkperiod", type=check_positive, default=3,
+                        help='The short period.')
+    parser.add_argument("--slowkmatype", action="store", dest="n_slowkmatype", type=check_positive, default=0,
+                        help='The short period.')
+    parser.add_argument("--slowdmatype", action="store", dest="n_slowdmatype", type=check_positive, default=0,
+                        help='The short period.')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        df_ta = ta.stoch(high=df_stock['2. high'], 
+                         low=df_stock['3. low'], 
+                         close=df_stock['4. close'], 
+                         k=ns_parser.n_fastkperiod, 
+                         d=ns_parser.n_slowdperiod, 
+                         smooth_k=ns_parser.n_slowkperiod).dropna()
+
+        plot_ta(s_ticker, df_ta, f"SlowK{ns_parser.n_slowkperiod}-SlowD{ns_parser.n_slowdperiod} STOCH")
     except:
         print("")
         return

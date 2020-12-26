@@ -52,10 +52,11 @@ def print_help(s_ticker, s_start, b_is_market_open):
         print("   ratings     company ratings from strong sell to strong buy")
 
         print("\nTechnical Analysis:")
-        print("   sma         simple moving average")
-        print("   ema         exponential moving average")
-        print("   macd        moving average convergence/divergence")
-        print("   vwap        volume weighted average price")
+        print("   sma         simple moving average [daily]")
+        print("   ema         exponential moving average [daily]")
+        print("   macd        moving average convergence/divergence [daily]")
+        print("   vwap        volume weighted average price [intradaily]")
+        print("   stoch       stochastic oscillator [daily]")
 
         print("\nPrediction:")
         print("   ma")
@@ -96,7 +97,9 @@ def main():
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
-    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 'sma', 'ema', 'macd', 'vwap', 'ratings'])
+    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
+                                             'sma', 'ema', 'macd', 'vwap', 'stoch',
+                                             'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -158,6 +161,8 @@ def main():
             smfa.ratings(l_args, s_ticker)
             continue
 
+        #from alpha_vantage.fundamentaldata import FundamentalData
+
         # --------------------------------------------------------------------------------------------------------------
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
@@ -180,6 +185,11 @@ def main():
         # ---------------------------------------------------- VWAP ----------------------------------------------------
         elif ns_known_args.cmd == 'vwap':
             smta.vwap(l_args, s_ticker, s_start)
+            continue
+
+        # ---------------------------------------------------- STOCH ----------------------------------------------------
+        elif ns_known_args.cmd == 'stoch':
+            smta.stoch(l_args, s_ticker, df_stock)
             continue
             
         # --------------------------------------------------------------------------------------------------------------
