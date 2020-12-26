@@ -69,6 +69,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             print("   vwap        volume weighted average price")
         print("   stoch       stochastic oscillator")
         print("   rsi         relative strength index")
+        print("   adx         average directional movement index")
 
         print("\nPrediction:")
         print("   ma")
@@ -112,7 +113,7 @@ def main():
 
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
-                                             'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi',
+                                             'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
                                              'ratings'])
 
     # Print first welcome message and help
@@ -209,6 +210,11 @@ def main():
         # ---------------------------------------------------- RSI ----------------------------------------------------
         elif ns_known_args.cmd == 'rsi':
             smta.rsi(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        # ---------------------------------------------------- ADX ----------------------------------------------------
+        elif ns_known_args.cmd == 'adx':
+            smta.adx(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------

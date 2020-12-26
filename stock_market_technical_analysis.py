@@ -227,3 +227,41 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
     except:
         print("")
         return
+
+
+# ----------------------------------------------------- ADX -----------------------------------------------------
+def adx(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='adx', 
+                                     description=""" The ADX is a Welles Wilder style moving average of the Directional 
+                                     Movement Index (DX). The values range from 0 to 100, but rarely get above 60. 
+                                     To interpret the ADX, consider a high number to be a strong trend, and a low number, 
+                                     a weak trend. """)
+
+    parser.add_argument('-p', "--timeperiod", action="store", dest="n_timeperiod", type=check_positive, default=60,
+                        help='Number of data points used to calculate each ADX value')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.adx(high=df_stock['2. high'], low=df_stock['3. low'],
+                           close=df_stock['5. adjusted close'], time_period=ns_parser.n_timeperiod).dropna()
+        # Intraday 
+        else:
+            df_ta = ta.adx(high=df_stock['2. high'], low=df_stock['3. low'],
+                           close=df_stock['4. close'], time_period=ns_parser.n_timeperiod).dropna()
+
+        plot_ta(s_ticker, df_ta, f"{ns_parser.n_timeperiod} ADX")
+    except:
+        print("")
+        return
+
+
