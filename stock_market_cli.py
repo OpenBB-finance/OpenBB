@@ -69,6 +69,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   rsi         relative strength index")
         print("   adx         average directional movement index")
         print("   cci         commodity channel index")
+        print("   aroon       aroon indicator")
         if s_interval != "1440min":
             print("   vwap        volume weighted average price")
 
@@ -115,7 +116,7 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'cci', 'ratings'])
+                                             'cci', 'aroon', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -221,6 +222,11 @@ def main():
         # ---------------------------------------------------- CCI ----------------------------------------------------
         elif ns_known_args.cmd == 'cci':
             smta.cci(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        # --------------------------------------------------- AROON ---------------------------------------------------
+        elif ns_known_args.cmd == 'aroon':
+            smta.aroon(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
