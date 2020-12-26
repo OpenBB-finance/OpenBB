@@ -70,9 +70,11 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   adx         average directional movement index")
         print("   cci         commodity channel index")
         print("   aroon       aroon indicator")
+        print("   bbands      bollinger bands")
         if s_interval != "1440min":
             print("   vwap        volume weighted average price")
 
+        '''
         print("\nPrediction:")
         print("   ma")
         print("   ema")
@@ -82,7 +84,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   rnn")
         print("   lstm")
         print("   prophet")
-
+        '''
     print(f"\nMarket {('CLOSED', 'OPEN')[b_is_market_open]}.")
     print("Stonks and things")
 
@@ -116,7 +118,7 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'cci', 'aroon', 'ratings'])
+                                             'cci', 'aroon', 'bbands', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -227,6 +229,11 @@ def main():
         # --------------------------------------------------- AROON ---------------------------------------------------
         elif ns_known_args.cmd == 'aroon':
             smta.aroon(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        # --------------------------------------------------- BBANDS ---------------------------------------------------
+        elif ns_known_args.cmd == 'bbands':
+            smta.bbands(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------

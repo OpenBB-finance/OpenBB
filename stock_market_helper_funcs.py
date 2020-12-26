@@ -42,13 +42,20 @@ def plot_view_stock(df, symbol):
 
 # -----------------------------------------------------------------------------------------------------------------------
 def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
-    plt.plot(df_stock.index, df_stock.values)
+    plt.plot(df_stock.index, df_stock.values, color='k')
     plt.plot(df_ta.index, df_ta.values)
     plt.title(f"{s_ta} on {s_ticker}")
     plt.xlim(df_stock.index[0], df_stock.index[-1])
     plt.xlabel('Time')
     plt.ylabel('Share Price ($)')
-    plt.legend([s_ticker, s_ta])
+    # Pandas series
+    if len(df_ta.shape) == 1:
+        l_legend = [s_ticker, s_ta]
+    # Pandas dataframe
+    else:
+        l_legend = df_ta.columns.tolist()
+        l_legend.insert(0, s_ticker)
+    plt.legend(l_legend)
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
