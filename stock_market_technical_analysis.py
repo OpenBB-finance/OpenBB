@@ -190,3 +190,33 @@ def stoch(l_args, s_ticker, df_stock):
     except:
         print("")
         return
+
+
+# ----------------------------------------------------- RSI -----------------------------------------------------
+def rsi(l_args, s_ticker, df_stock):
+    parser = argparse.ArgumentParser(prog='rsi', 
+                                     description=""" The Relative Strength Index (RSI) calculates a ratio of the 
+                                     recent upward price movements to the absolute price movement. The RSI ranges 
+                                     from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when 
+                                     the value is over 70/below 30. You can also look for divergence with price. If 
+                                     the price is making new highs/lows, and the RSI is not, it indicates a reversal. """)
+
+    parser.add_argument('-p', "--timeperiod", action="store", dest="n_timeperiod", type=check_positive, default=60,
+                        help='The short period.')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        df_ta = ta.rsi(df_stock['5. adjusted close'], time_period=ns_parser.n_timeperiod).dropna()
+    
+        plot_ta(s_ticker, df_ta, f"{ns_parser.n_timeperiod} RSI")
+    except:
+        print("")
+        return

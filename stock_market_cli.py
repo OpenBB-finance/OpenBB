@@ -55,8 +55,9 @@ def print_help(s_ticker, s_start, b_is_market_open):
         print("   sma         simple moving average [daily]")
         print("   ema         exponential moving average [daily]")
         print("   macd        moving average convergence/divergence [daily]")
-        print("   vwap        volume weighted average price [intradaily]")
+        print("   vwap        volume weighted average price [intraday]")
         print("   stoch       stochastic oscillator [daily]")
+        print("   rsi         relative strength index [daily]")
 
         print("\nPrediction:")
         print("   ma")
@@ -98,7 +99,7 @@ def main():
 
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
-                                             'sma', 'ema', 'macd', 'vwap', 'stoch',
+                                             'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi',
                                              'ratings'])
 
     # Print first welcome message and help
@@ -192,6 +193,11 @@ def main():
             smta.stoch(l_args, s_ticker, df_stock)
             continue
             
+        # ---------------------------------------------------- RSI ----------------------------------------------------
+        elif ns_known_args.cmd == 'rsi':
+            smta.rsi(l_args, s_ticker, df_stock)
+            continue
+
         # --------------------------------------------------------------------------------------------------------------
         # ------------------------------------------------ PREDICTION --------------------------------------------------
         # --------------------------------------------------------------------------------------------------------------

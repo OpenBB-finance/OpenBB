@@ -62,8 +62,9 @@ def plot_ta(s_ticker, df_ta, s_ta):
     plt.title(f"{s_ta} on {s_ticker}")
     plt.xlim(df_ta.index[0], df_ta.index[-1])
     plt.xlabel('Time')
-    plt.ylabel('Share Price ($)')
-    plt.legend(df_ta.columns)
+    #plt.ylabel('Share Price ($)')
+    #if isinstance(df_ta, pd.DataFrame):
+    #    plt.legend(df_ta.columns)
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
