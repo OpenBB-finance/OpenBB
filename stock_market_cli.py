@@ -62,13 +62,13 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   ratings     company ratings from strong sell to strong buy")
 
         print("\nTechnical Analysis:")
-        print("   sma         simple moving average [daily]")
-        print("   ema         exponential moving average [daily]")
-        print("   macd        moving average convergence/divergence [daily]")
+        print("   sma         simple moving average")
+        print("   ema         exponential moving average")
+        print("   macd        moving average convergence/divergence")
         if s_interval != "1440min":
-            print("   vwap        volume weighted average price [intraday]")
-        print("   stoch       stochastic oscillator [daily]")
-        print("   rsi         relative strength index [daily]")
+            print("   vwap        volume weighted average price")
+        print("   stoch       stochastic oscillator")
+        print("   rsi         relative strength index")
 
         print("\nPrediction:")
         print("   ma")

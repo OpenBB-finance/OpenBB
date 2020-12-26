@@ -52,7 +52,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
                                      a diminishing contribution to the average, while more recent values have a greater 
                                      contribution. This method allows the moving average to be more responsive to changes 
                                      in the data. """)
-    parser.add_argument('-p', "--period", action="store", dest="n_time_period", type=check_positive, default=20,
+    parser.add_argument('-p', "--period", action="store", dest="n_time_period", type=check_positive, default=20, 
                         help='Number of data points used to calculate each moving average value.')
 
     try:
@@ -131,10 +131,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 def vwap(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='vwap', 
                                      description=""" The Volume Weighted Average Price that measures the average typical price
-                                                  by volume.  It is typically used with intraday charts to identify general
-                                                  direction. """)
-
-    parser.add_argument('-i', "--interval", action="store", dest="n_interval", type=int, default=15, choices=[1,5,15,30,60], help='Stock ticker')
+                                     by volume.  It is typically used with intraday charts to identify general direction. """)
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -163,16 +160,16 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                                      below, it is a sell signal. The Raw %K is generally considered too erratic to use 
                                      for crossover signals. """)
 
-    parser.add_argument('-k', "--fastkperiod", action="store", dest="n_fastkperiod", type=check_positive, default=5,
-                        help='The short period.')
+    parser.add_argument('-k', "--fastkperiod", action="store", dest="n_fastkperiod", type=check_positive, default=5, 
+                        help='The time period of the fastk moving average')
     parser.add_argument('-d', "--slowdperiod", action="store", dest="n_slowdperiod", type=check_positive, default=3,
-                        help='The short period.')
+                        help='TThe time period of the slowd moving average')
     parser.add_argument("--slowkperiod", action="store", dest="n_slowkperiod", type=check_positive, default=3,
-                        help='The short period.')
+                        help='The time period of the slowk moving average')
     parser.add_argument("--slowkmatype", action="store", dest="n_slowkmatype", type=check_positive, default=0,
-                        help='The short period.')
+                        help='Moving average type for the slowk moving average')
     parser.add_argument("--slowdmatype", action="store", dest="n_slowdmatype", type=check_positive, default=0,
-                        help='The short period.')
+                        help='Moving average type for the slowd moving average')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -207,7 +204,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
                                      the price is making new highs/lows, and the RSI is not, it indicates a reversal. """)
 
     parser.add_argument('-p', "--timeperiod", action="store", dest="n_timeperiod", type=check_positive, default=60,
-                        help='The short period.')
+                        help='Number of data points used to calculate each RSI value')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
