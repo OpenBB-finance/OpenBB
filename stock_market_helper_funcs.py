@@ -135,6 +135,8 @@ def long_number_format(s_num):
         while abs(n_num) >= 1000:
             magnitude += 1
             n_num /= 1000.0
-        # add more suffixes if you need them
-        return '%.2f%s' % (n_num, ['', ' K', ' M', ' G', ' T', ' P'][magnitude])
+        if n_num.is_integer():
+            return '%d%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
+        else:
+            return '%.2f%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
     return s_num

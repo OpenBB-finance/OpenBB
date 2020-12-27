@@ -60,6 +60,8 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     if s_ticker:
         print("\nFundamental Analysis:")
         print("   ratings     company ratings from strong sell to strong buy")
+        print("   income      income statements of the company")
+        print("   cash        cash flow of the company")
 
         print("\nTechnical Analysis:")
         print("   sma         simple moving average")
@@ -115,7 +117,8 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings'])
+                                             'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings',
+                                             'income', 'cash'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -182,7 +185,15 @@ def main():
             smfa.ratings(l_args, s_ticker)
             continue
 
-        #from alpha_vantage.fundamentaldata import FundamentalData
+        # -------------------------------------------------- CASH_FLOW --------------------------------------------------
+        elif ns_known_args.cmd == 'cash':
+            smfa.cash_flow(l_args, s_ticker)
+            continue
+
+        # ----------------------------------------------- INCOME_STATEMENT -----------------------------------------------
+        elif ns_known_args.cmd == 'income':
+            smfa.income_statement(l_args, s_ticker)
+            continue
 
         # --------------------------------------------------------------------------------------------------------------
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
