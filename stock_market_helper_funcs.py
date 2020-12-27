@@ -128,18 +128,27 @@ def b_is_stock_market_open():
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def long_number_format(s_num):
-    if not isinstance(s_num, str):
-        s_num = str(s_num)
-    if s_num.lstrip("-").isdigit():
-        n_num = int(s_num)
-        n_num /= 1.0
+def long_number_format(num):
+    if isinstance(num, float):
         magnitude = 0
-        while abs(n_num) >= 1000:
+        while abs(num) >= 1000:
             magnitude += 1
-            n_num /= 1000.0
-        if n_num.is_integer():
-            return '%d%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
+            num /= 1000.0 
+        if num.is_integer():
+            return '%d%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
         else:
-            return '%.3f%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
-    return s_num
+            return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude]) 
+    if isinstance(num, int):
+        num = str(num)
+    if num.lstrip("-").isdigit():
+        num = int(num)
+        num /= 1.0
+        magnitude = 0
+        while abs(num) >= 1000:
+            magnitude += 1
+            num /= 1000.0 
+        if num.is_integer():
+            return '%d%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
+        else:
+            return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])            
+    return num

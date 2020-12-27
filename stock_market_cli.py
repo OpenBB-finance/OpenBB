@@ -59,13 +59,14 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     if s_ticker:
         print("\nFundamental Analysis:")
-        print("- details - ")
+        #print("- details - ")
         print("   ratings     company ratings from strong sell to strong buy")
-        print("- financial statement -")
+        # print("- financial statement -")
         print("   income      income statements of the company (default: AV)")
         print("   balance     balance sheet of the company (default: AV)")
         print("   cash        cash flow of the company (default: AV)")
-        print("- ratios -")
+        #print("- ratios -")
+        print("   metrics     key metrics of the company")
 
         print("\nTechnical Analysis:")
         print("   sma         simple moving average")
@@ -122,7 +123,7 @@ def main():
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings',
-                                             'income', 'balance', 'cash'])
+                                             'income', 'balance', 'cash', 'metrics'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -202,6 +203,11 @@ def main():
         # -------------------------------------------------- CASH_FLOW --------------------------------------------------
         elif ns_known_args.cmd == 'cash':
             smfa.cash_flow(l_args, s_ticker)
+            continue
+
+        # ------------------------------------------------- KEY_METRICS --------------------------------------------------
+        elif ns_known_args.cmd == 'metrics':
+            smfa.key_metrics(l_args, s_ticker)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
