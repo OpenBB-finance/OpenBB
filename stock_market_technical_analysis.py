@@ -5,6 +5,7 @@ import pandas_ta as ta
 import config_bot as cfg
 from stock_market_helper_funcs import *
 
+
 # ----------------------------------------------------- SMA -----------------------------------------------------
 def sma(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='sma',
@@ -37,7 +38,6 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         else:
             df_ta = ta.sma(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "SMA")     
-        
     except:
         print("")
         return
@@ -117,12 +117,12 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.macd(df_stock['5. adjusted close'], fast=ns_parser.n_fast, slow=ns_parser.n_slow,
                             signal=ns_parser.n_signal, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "MACD")
         # Intraday 
         else:
             df_ta = ta.macd(df_stock['4. close'], fast=ns_parser.n_fast, slow=ns_parser.n_slow,
                             signal=ns_parser.n_signal, offset=ns_parser.n_offset).dropna()
-        
-        plot_ta(s_ticker, df_ta, f"{ns_parser.n_fast}-{ns_parser.n_slow}-{ns_parser.n_signal}-{ns_parser.n_offset} MACD")
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "MACD")
     except:
         print("")
         return
@@ -183,10 +183,16 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.stoch(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], k=ns_parser.n_fastkperiod, 
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.stoch(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], k=ns_parser.n_fastkperiod, 
                          d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
-
-        plot_ta(s_ticker, df_ta, f"SlowK{ns_parser.n_slowkperiod}-SlowD{ns_parser.n_slowdperiod} STOCH")
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "STOCH")
+        # Intraday 
+        else:
+            df_ta = ta.stoch(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], k=ns_parser.n_fastkperiod, 
+                         d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "STOCH")
     except:
         print("")
         return
@@ -220,12 +226,12 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.rsi(df_stock['5. adjusted close'], length=ns_parser.n_length, scalar=ns_parser.n_scalar, 
                            drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "RSI")
         # Intraday 
         else:
             df_ta = ta.rsi(df_stock['4. close'], length=ns_parser.n_length, scalar=ns_parser.n_scalar, 
                            drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
-
-        plot_ta(s_ticker, df_ta, "RSI")
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "RSI")
     except:
         print("")
         return
@@ -258,12 +264,12 @@ def adx(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.adx(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], length=ns_parser.n_length, 
                            scalar=ns_parser.n_scalar, drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "ADX")
         # Intraday 
         else:
             df_ta = ta.adx(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], length=ns_parser.n_length, 
                            scalar=ns_parser.n_scalar, drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
-
-        plot_ta(s_ticker, df_ta, "ADX")
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "ADX")
     except:
         print("")
         return
@@ -296,12 +302,12 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
                            length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "CCI")
         # Intraday 
         else:
             df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
                            length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
-
-        plot_ta(s_ticker, df_ta, "CCI")
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "CCI")
     except:
         print("")
         return
@@ -337,7 +343,12 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
     try: 
         df_ta = ta.aroon(high=df_stock['2. high'], low=df_stock['3. low'], length=ns_parser.n_length,
                          scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
-        plot_ta(s_ticker, df_ta, "AROON")
+        # Daily
+        if s_interval == "1440min":
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta.iloc[:,-1], "AROON")
+        # Intraday
+        else:
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta.iloc[:,-1], "AROON")
     except:
         print("")
         return
@@ -382,6 +393,63 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             df_ta = ta.bbands(close=df_stock['4. close'], length=ns_parser.n_length, std=ns_parser.n_std, 
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
+        
+    except:
+        print("")
+        return
+
+
+# ------------------------------------------------------- AD -------------------------------------------------------
+def ad(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='ad', 
+                                     description=""" The Accumulation/Distribution Line is similar to the On Balance 
+                                     Volume (OBV), which sums the volume times +1/-1 based on whether the close is 
+                                     higher than the previous close. The Accumulation/Distribution indicator, however 
+                                     multiplies the volume by the close location value (CLV). The CLV is based on the 
+                                     movement of the issue within a single bar and can be +1, -1 or zero. \n \n 
+                                     The Accumulation/Distribution Line is interpreted by looking for a divergence in 
+                                     the direction of the indicator relative to price. If the Accumulation/Distribution 
+                                     Line is trending upward it indicates that the price may follow. Also, if the 
+                                     Accumulation/Distribution Line becomes flat while the price is still rising (or falling) 
+                                     then it signals an impending flattening of the price.""")
+
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
+    parser.add_argument('--open', action="store_true", default=False, dest="b_use_open", help='uses open value of stock')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Daily
+        if s_interval == "1440min":
+            # Use open stock values
+            if ns_parser.b_use_open:
+                df_ta = ta.ad(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
+                              volume=df_stock['6. volume'], offset=ns_parser.n_offset, open_=df_stock['1. open']).dropna()
+            # Do not use open stock values
+            else:
+                df_ta = ta.ad(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
+                              volume=df_stock['6. volume'], offset=ns_parser.n_offset).dropna()
+
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "AD")
+        # Intraday 
+        else:
+            # Use open stock values
+            if ns_parser.b_use_open:
+                df_ta = ta.ad(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
+                              volume=df_stock['5. volume'], offset=ns_parser.n_offset, open_=df_stock['1. open']).dropna()
+            # Do not use open stock values
+            else:
+                df_ta = ta.ad(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
+                              volume=df_stock['5. volume'], offset=ns_parser.n_offset).dropna()
+        
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "AD")
         
     except:
         print("")

@@ -64,6 +64,33 @@ def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
+def plot_stock_and_ta(df_stock, s_ticker, df_ta, s_ta):
+    pfig, axPrice = plt.subplots()
+    plt.title(f"{s_ta} on {s_ticker}")
+    plt.plot(df_stock.index, df_stock.values, 'k', lw=3)
+    plt.xlim(df_stock.index[0], df_stock.index[-1])
+    plt.xlabel('Time')
+    plt.ylabel(f'Share Price of {s_ticker} ($)')
+    axTa = axPrice.twinx()
+    plt.plot(df_ta.index, df_ta.values)
+    # Pandas series
+    if len(df_ta.shape) == 1:
+        l_legend = [s_ta]
+    # Pandas dataframe
+    else:
+        l_legend = df_ta.columns.tolist()
+    plt.legend(l_legend)
+    axTa.set_ylabel(s_ta, color="tab:blue")
+    axTa.spines['right'].set_color("tab:blue")
+    axTa.tick_params(axis='y', colors="tab:blue")
+    plt.grid(b=True, which='major', color='#666666', linestyle='-')
+    plt.minorticks_on()
+    plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.show()
+    print("")
+
+
+# -----------------------------------------------------------------------------------------------------------------------
 def plot_ta(s_ticker, df_ta, s_ta):
     plt.plot(df_ta.index, df_ta.values)
     plt.title(f"{s_ta} on {s_ticker}")

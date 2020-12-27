@@ -71,6 +71,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   cci         commodity channel index")
         print("   aroon       aroon indicator")
         print("   bbands      bollinger bands")
+        print("   ad          chaikin accumulation/distribution line values")
         if s_interval != "1440min":
             print("   vwap        volume weighted average price")
 
@@ -94,11 +95,6 @@ def main():
     """ Main function of the program
     """ 
 
-    # temporary
-    #parser.add_argument('-a', action="store_true", default=False, help='example of flag')
-    #parser.add_argument('-b', action="store", dest="b", help='example of string')
-    #parser.add_argument('-c', action="store", dest="c", type=int, help='example of int')
-
     s_ticker = ""
     s_start = ""
     df_stock = pd.DataFrame()
@@ -118,7 +114,7 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'cci', 'aroon', 'bbands', 'ratings'])
+                                             'cci', 'aroon', 'bbands', 'ad', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -234,6 +230,11 @@ def main():
         # --------------------------------------------------- BBANDS ---------------------------------------------------
         elif ns_known_args.cmd == 'bbands':
             smta.bbands(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        # --------------------------------------------------- BBANDS ---------------------------------------------------
+        elif ns_known_args.cmd == 'ad':
+            smta.ad(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
