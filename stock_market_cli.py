@@ -42,6 +42,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     print("\nMenu:")
     print("   gainers     show latest top gainers")
+    print("   sectors     show sectors performance")
     print("   view        view and load a specific stock ticker for technical analysis")
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
@@ -60,7 +61,8 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     if s_ticker:
         print("\nFundamental Analysis:")
         #print("- details - ")
-        print("   ratings     company ratings from strong sell to strong buy")
+        print("   profile     profile of the company")
+        print("   rating      rating of the company from strong sell to strong buy")
         # print("- financial statement -")
         print("   income      income statements of the company (default: AV)")
         print("   balance     balance sheet of the company (default: AV)")
@@ -124,7 +126,7 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings',
+                                             'cci', 'aroon', 'bbands', 'ad', 'obv', 'rating', 'profile',
                                              'income', 'balance', 'cash', 'metrics', 'ratios', 'growth'])
 
     # Print first welcome message and help
@@ -153,7 +155,7 @@ def main():
             smm.gainers(l_args)
             continue
 
-        # --------------------------------------------------- GAINERS --------------------------------------------------
+        # --------------------------------------------------- SECTORS --------------------------------------------------
         if ns_known_args.cmd == 'sectors':
             smm.sectors(l_args)
             continue
@@ -187,9 +189,14 @@ def main():
         # ------------------------------------------- FUNDAMENTAL ANALYSIS ---------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
 
-        # --------------------------------------------------- RATINGS --------------------------------------------------
-        elif ns_known_args.cmd == 'ratings':
-            smfa.ratings(l_args, s_ticker)
+        # -------------------------------------------------- PROFILE --------------------------------------------------
+        elif ns_known_args.cmd == 'profile':
+            smfa.profile(l_args, s_ticker)
+            continue
+
+        # --------------------------------------------------- RATING --------------------------------------------------
+        elif ns_known_args.cmd == 'rating':
+            smfa.rating(l_args, s_ticker)
             continue
 
         # ----------------------------------------------- INCOME_STATEMENT -----------------------------------------------

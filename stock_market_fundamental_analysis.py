@@ -5,9 +5,36 @@ import argparse
 from stock_market_helper_funcs import *
 import pandas as pd
 
-# ---------------------------------------------------- RATINGS ----------------------------------------------------
-def ratings(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='ratings', 
+
+# ---------------------------------------------------- PROFILE ----------------------------------------------------
+def profile(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='profile', 
+                                     description=""" """)
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    pd.options.display.max_colwidth = 100
+
+    try:
+        df_fa = fa.profile(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        print(df_fa.to_string(header=False))
+        print("")
+    except:
+        print("")
+
+
+# ---------------------------------------------------- RATING ----------------------------------------------------
+def rating(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='rating', 
                                      description=""" Gives information about the rating of a company which includes 
                                                  i.a. the company rating and recommendation as well as ratings based 
                                                  on a variety of ratios.""")
@@ -22,8 +49,8 @@ def ratings(l_args, s_ticker):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ratings = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        print(df_ratings)
+        df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        print(df_fa)
         print("")
     except:
         print("")
@@ -56,35 +83,35 @@ def income_statement(l_args, s_ticker):
         # Use Financial Modeling Prep API
         if ns_parser.b_fmp:
             if ns_parser.b_quarter:
-                df_fd = fa.income_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+                df_fa = fa.income_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
             else:
-                df_fd = fa.income_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+                df_fa = fa.income_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-            df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-            df_fd = df_fd.applymap(lambda x: long_number_format(x))
-            df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-            df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-            df_fd.columns.name = "Fiscal Date Ending"
+            df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa.columns.name = "Fiscal Date Ending"
         # Use Alpha Vantage API
         else:
             fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
             if ns_parser.b_quarter:
-                df_fd, d_fd_metadata = fd.get_income_statement_quarterly(symbol=s_ticker)
+                df_fa, d_fd_metadata = fd.get_income_statement_quarterly(symbol=s_ticker)
             else:
-                df_fd, d_fd_metadata = fd.get_income_statement_annual(symbol=s_ticker)
+                df_fa, d_fd_metadata = fd.get_income_statement_annual(symbol=s_ticker)
 
-            df_fd = df_fd.set_index('fiscalDateEnding')
-            df_fd = df_fd.head(n=ns_parser.n_num).T
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-            df_fd = df_fd.applymap(lambda x: long_number_format(x))
-            df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-            df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-            df_fd.columns.name = "Fiscal Date Ending"
+            df_fa = df_fa.set_index('fiscalDateEnding')
+            df_fa = df_fa.head(n=ns_parser.n_num).T
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa.columns.name = "Fiscal Date Ending"
         
-        print(df_fd)
+        print(df_fa)
         print("")
     except:
         print("")
@@ -112,36 +139,36 @@ def balance_sheet(l_args, s_ticker):
         # Use Financial Modeling Prep API
         if ns_parser.b_fmp:
             if ns_parser.b_quarter:
-                df_fd = fa.balance_sheet_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+                df_fa = fa.balance_sheet_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
             else:
-                df_fd = fa.balance_sheet_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+                df_fa = fa.balance_sheet_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
             
-            df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-            df_fd = df_fd.applymap(lambda x: long_number_format(x))
-            df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-            df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-            df_fd.columns.name = "Fiscal Date Ending"
+            df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa.columns.name = "Fiscal Date Ending"
 
         # Use Alpha Vantage API
         else:
             fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
             if ns_parser.b_quarter:
-                df_fd, d_fd_metadata = fd.get_balance_sheet_quarterly(symbol=s_ticker)
+                df_fa, d_fd_metadata = fd.get_balance_sheet_quarterly(symbol=s_ticker)
             else:
-                df_fd, d_fd_metadata = fd.get_balance_sheet_annual(symbol=s_ticker)
+                df_fa, d_fd_metadata = fd.get_balance_sheet_annual(symbol=s_ticker)
 
-            df_fd = df_fd.set_index('fiscalDateEnding')
-            df_fd = df_fd.head(n=ns_parser.n_num).T
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-            df_fd = df_fd.applymap(lambda x: long_number_format(x))
-            df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-            df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-            df_fd.columns.name = "Fiscal Date Ending"
+            df_fa = df_fa.set_index('fiscalDateEnding')
+            df_fa = df_fa.head(n=ns_parser.n_num).T
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa.columns.name = "Fiscal Date Ending"
 
-        print(df_fd)
+        print(df_fa)
         print("")
     except:
         print("")
@@ -175,35 +202,35 @@ def cash_flow(l_args, s_ticker):
         # Use Financial Modeling Prep API
         if ns_parser.b_fmp:
             if ns_parser.b_quarter:
-                df_fd = fa.cash_flow_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+                df_fa = fa.cash_flow_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
             else:
-                df_fd = fa.cash_flow_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+                df_fa = fa.cash_flow_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-            df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-            df_fd = df_fd.applymap(lambda x: long_number_format(x))
-            df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-            df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-            df_fd.columns.name = "Fiscal Date Ending"
+            df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa.columns.name = "Fiscal Date Ending"
         # Use Alpha Vantage API
         else:
             fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
             if ns_parser.b_quarter:
-                df_fd, d_fd_metadata = fd.get_cash_flow_quarterly(symbol=s_ticker)
+                df_fa, d_fd_metadata = fd.get_cash_flow_quarterly(symbol=s_ticker)
             else:
-                df_fd, d_fd_metadata = fd.get_cash_flow_annual(symbol=s_ticker)
+                df_fa, d_fd_metadata = fd.get_cash_flow_annual(symbol=s_ticker)
 
-            df_fd = df_fd.set_index('fiscalDateEnding')
-            df_fd = df_fd.head(n=ns_parser.n_num).T
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-            df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-            df_fd = df_fd.applymap(lambda x: long_number_format(x))
-            df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-            df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-            df_fd.columns.name = "Fiscal Date Ending"
+            df_fa = df_fa.set_index('fiscalDateEnding')
+            df_fa = df_fa.head(n=ns_parser.n_num).T
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+            df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa.columns.name = "Fiscal Date Ending"
 
-        print(df_fd)
+        print(df_fa)
         print("")
     except:
         print("")
@@ -234,19 +261,19 @@ def key_metrics(l_args, s_ticker):
             pd.options.display.max_colwidth = 40
 
         if ns_parser.b_quarter:
-            df_fd = fa.key_metrics(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+            df_fa = fa.key_metrics(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
         else:
-            df_fd = fa.key_metrics(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.key_metrics(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-        df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
-        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-        df_fd = df_fd.applymap(lambda x: long_number_format(x))
-        df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-        df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-        df_fd.columns.name = "Fiscal Date Ending"
+        df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa.columns.name = "Fiscal Date Ending"
 
-        print(df_fd)
+        print(df_fa)
         print("")
     except:
         print("")
@@ -277,19 +304,19 @@ def financial_ratios(l_args, s_ticker):
             pd.options.display.max_colwidth = 40
         
         if ns_parser.b_quarter:
-            df_fd = fa.financial_ratios(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+            df_fa = fa.financial_ratios(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
         else:
-            df_fd = fa.financial_ratios(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.financial_ratios(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-        df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
-        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-        df_fd = df_fd.applymap(lambda x: long_number_format(x))
-        df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-        df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-        df_fd.columns.name = "Fiscal Date Ending"
+        df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa.columns.name = "Fiscal Date Ending"
 
-        print(df_fd)
+        print(df_fa)
         print("")
     except:
         print("")
@@ -320,19 +347,19 @@ def financial_statement_growth(l_args, s_ticker):
             pd.options.display.max_colwidth = 40
         
         if ns_parser.b_quarter:
-            df_fd = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+            df_fa = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
         else:
-            df_fd = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-        df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
-        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-        df_fd = df_fd.applymap(lambda x: long_number_format(x))
-        df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
-        df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
-        df_fd.columns.name = "Fiscal Date Ending"
+        df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa.columns.name = "Fiscal Date Ending"
 
-        print(df_fd)
+        print(df_fa)
         print("")
     except:
         print("")
