@@ -294,3 +294,47 @@ def financial_ratios(l_args, s_ticker):
     except:
         print("")
         return
+
+
+# ---------------------------------------------------- FINANCIAL_STATEMENT_GROWTH ----------------------------------------------------
+def financial_statement_growth(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='growth', 
+                                     description=""" """)
+
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
+    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:        
+        if ns_parser.n_num == 1:
+            pd.set_option('display.max_colwidth', -1)
+        else:
+            pd.options.display.max_colwidth = 40
+        
+        if ns_parser.b_quarter:
+            df_fd = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+        else:
+            df_fd = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+
+        df_fd = df_fd.iloc[:, 0:ns_parser.n_num]
+        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+        df_fd = df_fd.mask(df_fd.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+        df_fd = df_fd.applymap(lambda x: long_number_format(x))
+        df_fd.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fd.index.tolist()]
+        df_fd.index = [s_val.capitalize() for s_val in df_fd.index]
+        df_fd.columns.name = "Fiscal Date Ending"
+
+        print(df_fd)
+        print("")
+    except:
+        print("")
+        return
+

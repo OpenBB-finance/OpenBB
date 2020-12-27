@@ -68,6 +68,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         #print("- ratios -")
         print("   metrics     key metrics of the company")
         print("   ratios      financial ratios of the company")
+        print("   growth      financial statement growth of the company")
 
         print("\nTechnical Analysis:")
         print("   sma         simple moving average")
@@ -124,7 +125,7 @@ def main():
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings',
-                                             'income', 'balance', 'cash', 'metrics', 'ratios'])
+                                             'income', 'balance', 'cash', 'metrics', 'ratios', 'growth'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -214,6 +215,11 @@ def main():
         # ----------------------------------------------- FINANCIAL_RATIOS -----------------------------------------------
         elif ns_known_args.cmd == 'ratios':
             smfa.financial_ratios(l_args, s_ticker)
+            continue
+
+        # ------------------------------------------ FINANCIAL_STATEMENT_GROWTH ------------------------------------------
+        elif ns_known_args.cmd == 'growth':
+            smfa.financial_statement_growth(l_args, s_ticker)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
