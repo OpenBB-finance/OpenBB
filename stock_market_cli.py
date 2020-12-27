@@ -63,6 +63,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         #print("- details - ")
         print("   profile     profile of the company")
         print("   rating      rating of the company from strong sell to strong buy")
+        print("   dcf         discounted cash flow of the company")
         # print("- financial statement -")
         print("   income      income statements of the company (default: AV)")
         print("   balance     balance sheet of the company (default: AV)")
@@ -128,7 +129,7 @@ def main():
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx', 'quote',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'rating', 'profile',
                                              'income', 'balance', 'cash', 'metrics', 'ratios', 'growth',
-                                             'enterprise'])
+                                             'enterprise', 'dcf'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -205,9 +206,14 @@ def main():
             smfa.enterprise(l_args, s_ticker)
             continue
 
-        # --------------------------------------------------- RATING --------------------------------------------------
+        # --------------------------------------------------- RATING ----------------------------------------------------
         elif ns_known_args.cmd == 'rating':
             smfa.rating(l_args, s_ticker)
+            continue
+
+        # --------------------------------------------- DISCOUNTED CASH FLOW -----------------------------------------------
+        elif ns_known_args.cmd == 'dcf':
+            smfa.discounted_cash_flow(l_args, s_ticker)
             continue
 
         # ----------------------------------------------- INCOME_STATEMENT -----------------------------------------------
