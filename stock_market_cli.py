@@ -113,7 +113,7 @@ def main():
     main_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
 
     # Add list of arguments that the main parser accepts
-    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
+    main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings'])
 
@@ -141,6 +141,11 @@ def main():
         # --------------------------------------------------- GAINERS --------------------------------------------------
         if ns_known_args.cmd == 'gainers':
             smm.gainers(l_args)
+            continue
+
+        # --------------------------------------------------- GAINERS --------------------------------------------------
+        if ns_known_args.cmd == 'sectors':
+            smm.sectors(l_args)
             continue
 
         # --------------------------------------------------- CLEAR ----------------------------------------------------

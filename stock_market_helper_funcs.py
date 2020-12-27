@@ -126,3 +126,15 @@ def b_is_stock_market_open():
     # Otherwise, Stock Market is open!
     return True
 
+
+# -----------------------------------------------------------------------------------------------------------------------
+def long_number_format(s_num):
+    if s_num.lstrip("-").isdigit():
+        n_num = int(s_num)
+        magnitude = 0
+        while abs(n_num) >= 1000:
+            magnitude += 1
+            n_num /= 1000.0
+        # add more suffixes if you need them
+        return '%.2f%s' % (n_num, ['', ' K', ' M', ' G', ' T', ' P'][magnitude])
+    return s_num
