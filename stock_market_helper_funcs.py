@@ -129,8 +129,11 @@ def b_is_stock_market_open():
 
 # -----------------------------------------------------------------------------------------------------------------------
 def long_number_format(s_num):
+    if not isinstance(s_num, str):
+        s_num = str(s_num)
     if s_num.lstrip("-").isdigit():
         n_num = int(s_num)
+        n_num /= 1.0
         magnitude = 0
         while abs(n_num) >= 1000:
             magnitude += 1
@@ -138,5 +141,5 @@ def long_number_format(s_num):
         if n_num.is_integer():
             return '%d%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
         else:
-            return '%.2f%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
+            return '%.3f%s' % (n_num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
     return s_num

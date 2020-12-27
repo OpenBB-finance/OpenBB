@@ -59,10 +59,13 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     if s_ticker:
         print("\nFundamental Analysis:")
+        print("- details - ")
         print("   ratings     company ratings from strong sell to strong buy")
-        print("   income      income statements of the company")
-        print("   balance     balance sheet of the company")
-        print("   cash        cash flow of the company")
+        print("- financial statement -")
+        print("   income      income statements of the company (default: AV)")
+        print("   balance     balance sheet of the company (default: AV)")
+        print("   cash        cash flow of the company (default: AV)")
+        print("- ratios -")
 
         print("\nTechnical Analysis:")
         print("   sma         simple moving average")
