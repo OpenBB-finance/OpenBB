@@ -61,6 +61,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("\nFundamental Analysis:")
         print("   ratings     company ratings from strong sell to strong buy")
         print("   income      income statements of the company")
+        print("   balance     balance sheet of the company")
         print("   cash        cash flow of the company")
 
         print("\nTechnical Analysis:")
@@ -118,7 +119,7 @@ def main():
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings',
-                                             'income', 'cash'])
+                                             'income', 'balance', 'cash'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -185,14 +186,19 @@ def main():
             smfa.ratings(l_args, s_ticker)
             continue
 
-        # -------------------------------------------------- CASH_FLOW --------------------------------------------------
-        elif ns_known_args.cmd == 'cash':
-            smfa.cash_flow(l_args, s_ticker)
-            continue
-
         # ----------------------------------------------- INCOME_STATEMENT -----------------------------------------------
         elif ns_known_args.cmd == 'income':
             smfa.income_statement(l_args, s_ticker)
+            continue
+
+        # ------------------------------------------------- BALANCE_SHEET -----------------------------------------------
+        elif ns_known_args.cmd == 'balance':
+            smfa.balance_sheet(l_args, s_ticker)
+            continue
+
+        # -------------------------------------------------- CASH_FLOW --------------------------------------------------
+        elif ns_known_args.cmd == 'cash':
+            smfa.cash_flow(l_args, s_ticker)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
