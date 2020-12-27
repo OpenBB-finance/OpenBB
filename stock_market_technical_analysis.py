@@ -100,7 +100,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
                         help='The long period.')
     parser.add_argument("--signal", action="store", dest="n_signal", type=check_positive, default=9,
                         help='The signal period.')
-    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=9,
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0,
                         help='How many periods to offset the result.')
 
     try:
@@ -209,7 +209,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
 
     parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=14, help='length')
     parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=100, help='scalar')
-    parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=0, help='drift')
+    parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=1, help='drift')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
     try:
@@ -247,7 +247,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
 
     parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=14, help='length')
     parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=100, help='scalar')
-    parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=0, help='drift')
+    parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=1, help='drift')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
     try:
@@ -451,6 +451,42 @@ def ad(l_args, s_ticker, s_interval, df_stock):
         
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "AD")
         
+    except:
+        print("")
+        return
+
+
+# ------------------------------------------------------- OBV -------------------------------------------------------
+def obv(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='obv', 
+                                     description=""" The On Balance Volume (OBV) is a cumulative total of the up and 
+                                     down volume. When the close is higher than the previous close, the volume is added 
+                                     to the running total, and when the close is lower than the previous close, the volume 
+                                     is subtracted from the running total. \n \n To interpret the OBV, look for the OBV 
+                                     to move with the price or precede price moves. If the price moves before the OBV, 
+                                     then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the 
+                                     OBV indicates a strong trend. If the OBV is flat, then the market is not trending. """)
+
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.obv(close=df_stock['5. adjusted close'], volume=df_stock['6. volume'], offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "OBV")
+        # Intraday 
+        else:
+            df_ta = ta.ad(close=df_stock['4. close'], volume=df_stock['5. volume'], offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "OBV")
     except:
         print("")
         return

@@ -72,6 +72,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   aroon       aroon indicator")
         print("   bbands      bollinger bands")
         print("   ad          chaikin accumulation/distribution line values")
+        print("   obv         on balance volume")
         if s_interval != "1440min":
             print("   vwap        volume weighted average price")
 
@@ -114,7 +115,7 @@ def main():
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers' ,'view', 'load', 'clear', 
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
-                                             'cci', 'aroon', 'bbands', 'ad', 'ratings'])
+                                             'cci', 'aroon', 'bbands', 'ad', 'obv', 'ratings'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -232,9 +233,14 @@ def main():
             smta.bbands(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # --------------------------------------------------- BBANDS ---------------------------------------------------
+        # ----------------------------------------------------- AD -----------------------------------------------------
         elif ns_known_args.cmd == 'ad':
             smta.ad(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        # ---------------------------------------------------- OBV -----------------------------------------------------
+        elif ns_known_args.cmd == 'obv':
+            smta.obv(l_args, s_ticker, s_interval, df_stock)
             continue
 
         # --------------------------------------------------------------------------------------------------------------
