@@ -32,6 +32,73 @@ def profile(l_args, s_ticker):
         print("")
 
 
+# ---------------------------------------------------- QUOTE ----------------------------------------------------
+def quote(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='quote', 
+                                     description=""" """)
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    if ns_parser.n_num == 1:
+        pd.set_option('display.max_colwidth', -1)
+    else:
+        pd.options.display.max_colwidth = 40
+
+    try:
+        df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        print(df_fa.to_string(header=False))
+        print("")
+    except:
+        print("")
+
+
+# ---------------------------------------------------- ENTERPRISE ----------------------------------------------------
+def enterprise(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='enterprise', 
+                                     description=""" """)
+
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
+    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    if ns_parser.n_num == 1:
+        pd.set_option('display.max_colwidth', -1)
+    else:
+        pd.options.display.max_colwidth = 40
+
+    try:
+        if ns_parser.b_quarter:
+            df_fa = fa.enterprise(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period='quarter')
+        else:
+            df_fa = fa.enterprise(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        
+        df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        print(df_fa)
+        print("")
+    except:
+        print("")
+
+
 # ---------------------------------------------------- RATING ----------------------------------------------------
 def rating(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='rating', 

@@ -125,9 +125,10 @@ def main():
 
     # Add list of arguments that the main parser accepts
     main_parser.add_argument('cmd', choices=['quit', 'help', 'gainers', 'sectors', 'view', 'load', 'clear', 
-                                             'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx',
+                                             'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx', 'quote',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'rating', 'profile',
-                                             'income', 'balance', 'cash', 'metrics', 'ratios', 'growth'])
+                                             'income', 'balance', 'cash', 'metrics', 'ratios', 'growth',
+                                             'enterprise'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -192,6 +193,16 @@ def main():
         # -------------------------------------------------- PROFILE --------------------------------------------------
         elif ns_known_args.cmd == 'profile':
             smfa.profile(l_args, s_ticker)
+            continue
+
+        # --------------------------------------------------- QUOTE --------------------------------------------------
+        elif ns_known_args.cmd == 'quote':
+            smfa.quote(l_args, s_ticker)
+            continue
+
+        # ------------------------------------------------- ENTERPRISE --------------------------------------------------
+        elif ns_known_args.cmd == 'enterprise':
+            smfa.enterprise(l_args, s_ticker)
             continue
 
         # --------------------------------------------------- RATING --------------------------------------------------
