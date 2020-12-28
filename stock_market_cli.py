@@ -10,14 +10,8 @@
     using an API request.
 
     Finviz for data
-
-    Check AlphaVantage for TA as well.
-    Add s_ylabel and s_legend to plot_ta or plot_stock_ta
-
-     Daily Stock vs Intraday 5min Stock
-     Only show menu that allow daily TA or intraday TA,
-    i.e. if daily Stock don't show VWAP bc doesn't make sense!
-     Fix the 'help' params
+    Parse overview stock with pip request
+    Multiple TA with kind stock
 
 """
 
@@ -59,37 +53,42 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("\nStock: ?")
 
     if s_ticker:
-        print("\nFundamental Analysis:")
-        print("- details - ")
+        print("\nFundamental Analysis:") # https://github.com/JerBouma/FundamentalAnalysis
+        print("details:")
         print("   profile     profile of the company [FMP]")
         print("   rating      rating of the company from strong sell to strong buy [FMP]")
         print("   quote       quote of the company [FMP]")
         print("   enterprise  enterprise value of the company over time [FMP]")
         print("   dcf         discounted cash flow of the company over time [FMP]")
-        print("- financial statement -")
+        print("financial statement:")
         print("   income      income statements of the company [default: AV, FMP]")
         print("   balance     balance sheet of the company [default: AV, FMP]")
         print("   cash        cash flow of the company [default: AV, FMP]")
-        print("- ratios -")
-        print("   metrics     key metrics of the company")
-        print("   ratios      financial ratios of the company")
-        print("   growth      financial statement growth of the company")
+        print("ratios:")
+        print("   metrics     key metrics of the company [FMP]")
+        print("   ratios      financial ratios of the company [FMP]")
+        print("   growth      financial statement growth of the company [FMP]")
 
-        print("\nTechnical Analysis:")
-        print("   sma         simple moving average")
+        print("\nTechnical Analysis:") # https://github.com/twopirllc/pandas-ta
+        print("overlap:")
         print("   ema         exponential moving average")
-        print("   macd        moving average convergence/divergence")
-        print("   stoch       stochastic oscillator")
-        print("   rsi         relative strength index")
-        print("   adx         average directional movement index")
-        print("   cci         commodity channel index")
-        print("   aroon       aroon indicator")
-        print("   bbands      bollinger bands")
-        print("   ad          chaikin accumulation/distribution line values")
-        print("   obv         on balance volume")
+        print("   sma         simple moving average")
         if s_interval != "1440min":
             print("   vwap        volume weighted average price")
-
+        print("momentum:")
+        print("   cci         commodity channel index")
+        print("   macd        moving average convergence/divergence")
+        print("   rsi         relative strength index")
+        print("   stoch       stochastic oscillator")
+        print("trend:")
+        print("   adx         average directional movement index")
+        print("   aroon       aroon indicator")
+        print("volatility:")
+        print("   bbands      bollinger bands")
+        print("volume:")
+        print("   ad          chaikin accumulation/distribution line values")
+        print("   obv         on balance volume")
+        
         '''
         print("\nPrediction:")
         print("   ma")
@@ -244,62 +243,55 @@ def main():
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
 
-        # ---------------------------------------------------- SMA ----------------------------------------------------
-        elif ns_known_args.cmd == 'sma':
-            smta.sma(l_args, s_ticker, s_interval, df_stock)
-            continue
-
-        # ---------------------------------------------------- EMA ----------------------------------------------------
+        # -------------------------------------------------- OVERLAP --------------------------------------------------
         elif ns_known_args.cmd == 'ema':
             smta.ema(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # ---------------------------------------------------- MACD ----------------------------------------------------
-        elif ns_known_args.cmd == 'macd':
-            smta.macd(l_args, s_ticker, s_interval, df_stock)
+        elif ns_known_args.cmd == 'sma':
+            smta.sma(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # ---------------------------------------------------- VWAP ----------------------------------------------------
         elif ns_known_args.cmd == 'vwap':
             smta.vwap(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # ---------------------------------------------------- STOCH ----------------------------------------------------
-        elif ns_known_args.cmd == 'stoch':
-            smta.stoch(l_args, s_ticker, s_interval, df_stock)
-            continue
-            
-        # ---------------------------------------------------- RSI ----------------------------------------------------
-        elif ns_known_args.cmd == 'rsi':
-            smta.rsi(l_args, s_ticker, s_interval, df_stock)
-            continue
-
-        # ---------------------------------------------------- ADX ----------------------------------------------------
-        elif ns_known_args.cmd == 'adx':
-            smta.adx(l_args, s_ticker, s_interval, df_stock)
-            continue
-
-        # ---------------------------------------------------- CCI ----------------------------------------------------
+        # --------------------------------------------------- MOMENTUM ---------------------------------------------------
         elif ns_known_args.cmd == 'cci':
             smta.cci(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # --------------------------------------------------- AROON ---------------------------------------------------
+        elif ns_known_args.cmd == 'macd':
+            smta.macd(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        elif ns_known_args.cmd == 'rsi':
+            smta.rsi(l_args, s_ticker, s_interval, df_stock)
+            continue
+
+        elif ns_known_args.cmd == 'stoch':
+            smta.stoch(l_args, s_ticker, s_interval, df_stock)
+            continue
+            
+        # ---------------------------------------------------- TREND ----------------------------------------------------
+        elif ns_known_args.cmd == 'adx':
+            smta.adx(l_args, s_ticker, s_interval, df_stock)
+            continue
+
         elif ns_known_args.cmd == 'aroon':
             smta.aroon(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # --------------------------------------------------- BBANDS ---------------------------------------------------
+        # -------------------------------------------------- VOLATILITY --------------------------------------------------
         elif ns_known_args.cmd == 'bbands':
             smta.bbands(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # ----------------------------------------------------- AD -----------------------------------------------------
+        # ---------------------------------------------------- VOLUME ----------------------------------------------------
         elif ns_known_args.cmd == 'ad':
             smta.ad(l_args, s_ticker, s_interval, df_stock)
             continue
 
-        # ---------------------------------------------------- OBV -----------------------------------------------------
         elif ns_known_args.cmd == 'obv':
             smta.obv(l_args, s_ticker, s_interval, df_stock)
             continue

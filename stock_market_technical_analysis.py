@@ -5,44 +5,6 @@ import pandas_ta as ta
 import config_bot as cfg
 from stock_market_helper_funcs import *
 
-
-# ----------------------------------------------------- SMA -----------------------------------------------------
-def sma(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='sma',
-                                     description=""" Moving Averages are used to smooth the data in an array to 
-                                     help eliminate noise and identify trends. The Simple Moving Average is literally 
-                                     the simplest form of a moving average. Each output value is the average of the 
-                                     previous n values. In a Simple Moving Average, each value in the time period carries 
-                                     equal weight, and values outside of the time period are not included in the average. 
-                                     This makes it less responsive to recent changes in the data, which can be useful for 
-                                     filtering out those changes. """)
-
-    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=10, help='length')
-    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
-
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    try:    
-        # Daily
-        if s_interval == "1440min":
-            df_ta = ta.sma(df_stock['5. adjusted close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
-            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "SMA")
-        # Intraday 
-        else:
-            df_ta = ta.sma(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
-            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "SMA")     
-    except:
-        print("")
-        return
-
-
 # ----------------------------------------------------- EMA -----------------------------------------------------
 def ema(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='ema', 
@@ -77,7 +39,109 @@ def ema(l_args, s_ticker, s_interval, df_stock):
             df_ta = ta.ema(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "EMA")   
     except:
+        print("ERROR!\n")
+        return
+
+
+# ----------------------------------------------------- SMA -----------------------------------------------------
+def sma(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='sma',
+                                     description=""" Moving Averages are used to smooth the data in an array to 
+                                     help eliminate noise and identify trends. The Simple Moving Average is literally 
+                                     the simplest form of a moving average. Each output value is the average of the 
+                                     previous n values. In a Simple Moving Average, each value in the time period carries 
+                                     equal weight, and values outside of the time period are not included in the average. 
+                                     This makes it less responsive to recent changes in the data, which can be useful for 
+                                     filtering out those changes. """)
+
+    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=10, help='length')
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
         print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:    
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.sma(df_stock['5. adjusted close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
+            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "SMA")
+        # Intraday 
+        else:
+            df_ta = ta.sma(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
+            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "SMA")     
+    except:
+        print("ERROR!\n")
+        return
+
+
+# ----------------------------------------------------- VWAP -----------------------------------------------------
+def vwap(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='vwap', 
+                                     description=""" The Volume Weighted Average Price that measures the average typical price
+                                     by volume.  It is typically used with intraday charts to identify general direction. """)
+
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['4. close'], 
+                        volume=df_stock['5. volume'], offset=ns_parser.n_offset)
+
+        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "VWAP")
+    except:
+        print("ERROR!\n")
+        return
+
+
+# ----------------------------------------------------- CCI -----------------------------------------------------
+def cci(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='cci', 
+                                     description=""" The CCI is designed to detect beginning and ending market trends. 
+                                     The range of 100 to -100 is the normal trading range. CCI values outside of this 
+                                     range indicate overbought or oversold conditions. You can also look for price 
+                                     divergence in the CCI. If the price is making new highs, and the CCI is not, 
+                                     then a price correction is likely. """)
+
+    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=14, help='length')
+    parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=0.015, help='scalar')
+    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
+                           length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "CCI")
+        # Intraday 
+        else:
+            df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
+                           length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "CCI")
+    except:
+        print("ERROR!\n")
         return
 
 
@@ -124,16 +188,22 @@ def macd(l_args, s_ticker, s_interval, df_stock):
                             signal=ns_parser.n_signal, offset=ns_parser.n_offset).dropna()
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "MACD")
     except:
-        print("")
+        print("ERROR!\n")
         return
 
 
-# ----------------------------------------------------- VWAP -----------------------------------------------------
-def vwap(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='vwap', 
-                                     description=""" The Volume Weighted Average Price that measures the average typical price
-                                     by volume.  It is typically used with intraday charts to identify general direction. """)
+# ----------------------------------------------------- RSI -----------------------------------------------------
+def rsi(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='rsi', 
+                                     description=""" The Relative Strength Index (RSI) calculates a ratio of the 
+                                     recent upward price movements to the absolute price movement. The RSI ranges 
+                                     from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when 
+                                     the value is over 70/below 30. You can also look for divergence with price. If 
+                                     the price is making new highs/lows, and the RSI is not, it indicates a reversal. """)
 
+    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=14, help='length')
+    parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=100, help='scalar')
+    parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=1, help='drift')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
     try:
@@ -146,12 +216,18 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['4. close'], 
-                        volume=df_stock['5. volume'], offset=ns_parser.n_offset)
-
-        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "VWAP")
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.rsi(df_stock['5. adjusted close'], length=ns_parser.n_length, scalar=ns_parser.n_scalar, 
+                           drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "RSI")
+        # Intraday 
+        else:
+            df_ta = ta.rsi(df_stock['4. close'], length=ns_parser.n_length, scalar=ns_parser.n_scalar, 
+                           drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
+            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "RSI")
     except:
-        print("")
+        print("ERROR!\n")
         return
 
 
@@ -194,46 +270,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                          d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "STOCH")
     except:
-        print("")
-        return
-
-
-# ----------------------------------------------------- RSI -----------------------------------------------------
-def rsi(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='rsi', 
-                                     description=""" The Relative Strength Index (RSI) calculates a ratio of the 
-                                     recent upward price movements to the absolute price movement. The RSI ranges 
-                                     from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when 
-                                     the value is over 70/below 30. You can also look for divergence with price. If 
-                                     the price is making new highs/lows, and the RSI is not, it indicates a reversal. """)
-
-    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=14, help='length')
-    parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=100, help='scalar')
-    parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=1, help='drift')
-    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
-
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    try:
-        # Daily
-        if s_interval == "1440min":
-            df_ta = ta.rsi(df_stock['5. adjusted close'], length=ns_parser.n_length, scalar=ns_parser.n_scalar, 
-                           drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "RSI")
-        # Intraday 
-        else:
-            df_ta = ta.rsi(df_stock['4. close'], length=ns_parser.n_length, scalar=ns_parser.n_scalar, 
-                           drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "RSI")
-    except:
-        print("")
+        print("ERROR!\n")
         return
 
 
@@ -271,45 +308,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
                            scalar=ns_parser.n_scalar, drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "ADX")
     except:
-        print("")
-        return
-
-
-# ----------------------------------------------------- CCI -----------------------------------------------------
-def cci(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='cci', 
-                                     description=""" The CCI is designed to detect beginning and ending market trends. 
-                                     The range of 100 to -100 is the normal trading range. CCI values outside of this 
-                                     range indicate overbought or oversold conditions. You can also look for price 
-                                     divergence in the CCI. If the price is making new highs, and the CCI is not, 
-                                     then a price correction is likely. """)
-
-    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=14, help='length')
-    parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=0.015, help='scalar')
-    parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
-
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    try:
-        # Daily
-        if s_interval == "1440min":
-            df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
-                           length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "CCI")
-        # Intraday 
-        else:
-            df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
-                           length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "CCI")
-    except:
-        print("")
+        print("ERROR!\n")
         return
 
 
@@ -350,7 +349,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         else:
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta.iloc[:,-1], "AROON")
     except:
-        print("")
+        print("ERROR!\n")
         return
 
 
@@ -395,7 +394,7 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
         
     except:
-        print("")
+        print("ERROR!\n")
         return
 
 
@@ -452,7 +451,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "AD")
         
     except:
-        print("")
+        print("ERROR!\n")
         return
 
 
@@ -488,5 +487,5 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             df_ta = ta.ad(close=df_stock['4. close'], volume=df_stock['5. volume'], offset=ns_parser.n_offset).dropna()
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "OBV")
     except:
-        print("")
+        print("ERROR!\n")
         return
