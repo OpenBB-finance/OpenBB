@@ -60,15 +60,17 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     if s_ticker:
         print("\nFundamental Analysis:")
-        #print("- details - ")
-        print("   profile     profile of the company")
-        print("   rating      rating of the company from strong sell to strong buy")
-        print("   dcf         discounted cash flow of the company")
-        # print("- financial statement -")
-        print("   income      income statements of the company (default: AV)")
-        print("   balance     balance sheet of the company (default: AV)")
-        print("   cash        cash flow of the company (default: AV)")
-        #print("- ratios -")
+        print("- details - ")
+        print("   profile     profile of the company [FMP]")
+        print("   rating      rating of the company from strong sell to strong buy [FMP]")
+        print("   quote       quote of the company [FMP]")
+        print("   enterprise  enterprise value of the company over time [FMP]")
+        print("   dcf         discounted cash flow of the company over time [FMP]")
+        print("- financial statement -")
+        print("   income      income statements of the company [default: AV, FMP]")
+        print("   balance     balance sheet of the company [default: AV, FMP]")
+        print("   cash        cash flow of the company [default: AV, FMP]")
+        print("- ratios -")
         print("   metrics     key metrics of the company")
         print("   ratios      financial ratios of the company")
         print("   growth      financial statement growth of the company")
@@ -191,57 +193,49 @@ def main():
         # ------------------------------------------- FUNDAMENTAL ANALYSIS ---------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
 
-        # -------------------------------------------------- PROFILE --------------------------------------------------
+        # -------------------------------------------------- DETAILS --------------------------------------------------
         elif ns_known_args.cmd == 'profile':
             smfa.profile(l_args, s_ticker)
             continue
 
-        # --------------------------------------------------- QUOTE --------------------------------------------------
-        elif ns_known_args.cmd == 'quote':
-            smfa.quote(l_args, s_ticker)
-            continue
-
-        # ------------------------------------------------- ENTERPRISE --------------------------------------------------
-        elif ns_known_args.cmd == 'enterprise':
-            smfa.enterprise(l_args, s_ticker)
-            continue
-
-        # --------------------------------------------------- RATING ----------------------------------------------------
         elif ns_known_args.cmd == 'rating':
             smfa.rating(l_args, s_ticker)
             continue
 
-        # --------------------------------------------- DISCOUNTED CASH FLOW -----------------------------------------------
+        elif ns_known_args.cmd == 'quote':
+            smfa.quote(l_args, s_ticker)
+            continue
+        
+        elif ns_known_args.cmd == 'enterprise':
+            smfa.enterprise(l_args, s_ticker)
+            continue
+
         elif ns_known_args.cmd == 'dcf':
             smfa.discounted_cash_flow(l_args, s_ticker)
             continue
 
-        # ----------------------------------------------- INCOME_STATEMENT -----------------------------------------------
+        # --------------------------------------------- FINANCIAL STATEMENT --------------------------------------------
         elif ns_known_args.cmd == 'income':
             smfa.income_statement(l_args, s_ticker)
             continue
 
-        # ------------------------------------------------- BALANCE_SHEET -----------------------------------------------
         elif ns_known_args.cmd == 'balance':
             smfa.balance_sheet(l_args, s_ticker)
             continue
 
-        # -------------------------------------------------- CASH_FLOW --------------------------------------------------
         elif ns_known_args.cmd == 'cash':
             smfa.cash_flow(l_args, s_ticker)
             continue
 
-        # ------------------------------------------------- KEY_METRICS --------------------------------------------------
+        # --------------------------------------------------- RATIOS -----------------------------------------------------
         elif ns_known_args.cmd == 'metrics':
             smfa.key_metrics(l_args, s_ticker)
             continue
 
-        # ----------------------------------------------- FINANCIAL_RATIOS -----------------------------------------------
         elif ns_known_args.cmd == 'ratios':
             smfa.financial_ratios(l_args, s_ticker)
             continue
 
-        # ------------------------------------------ FINANCIAL_STATEMENT_GROWTH ------------------------------------------
         elif ns_known_args.cmd == 'growth':
             smfa.financial_statement_growth(l_args, s_ticker)
             continue

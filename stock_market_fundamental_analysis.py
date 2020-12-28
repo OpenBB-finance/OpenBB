@@ -3,6 +3,7 @@ from alpha_vantage.fundamentaldata import FundamentalData
 import config_bot as cfg
 import argparse
 import datetime
+from datetime import datetime
 from stock_market_helper_funcs import *
 import pandas as pd
 
@@ -38,6 +39,30 @@ def profile(l_args, s_ticker):
         print("ERROR!\n")
 
 
+# ---------------------------------------------------- RATING ----------------------------------------------------
+def rating(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='rating', 
+                                     description="""Based on specific ratios, provides information whether the company 
+                                     is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
+                                     P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep API]""")
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        print(df_fa)
+        print("")
+    except:
+        print("ERROR!\n")
+
+
 # ---------------------------------------------------- QUOTE ----------------------------------------------------
 def quote(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='quote', 
@@ -58,13 +83,13 @@ def quote(l_args, s_ticker):
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     try:
-        df_fa = fa.quote(s_ticker, API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa.loc['Market cap'][0] = long_number_format(df_fa.loc['Market cap'][0])
         df_fa.loc['Shares outstanding'][0] = long_number_format(df_fa.loc['Shares outstanding'][0])
         df_fa.loc['Volume'][0] = long_number_format(df_fa.loc['Volume'][0])
-        earning_announcment = datetime.datetime.strptime(df_fa.loc['Earnings announcement'][0][0:19],"%Y-%m-%dT%H:%M:%S")
+        earning_announcment = datetime.strptime(df_fa.loc['Earnings announcement'][0][0:19],"%Y-%m-%dT%H:%M:%S")
         df_fa.loc['Earnings announcement'][0] = f"{earning_announcment.date()} {earning_announcment.time()}"
         print(df_fa.to_string(header=False))
         print("")
@@ -75,7 +100,10 @@ def quote(l_args, s_ticker):
 # ---------------------------------------------------- ENTERPRISE ----------------------------------------------------
 def enterprise(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='enterprise', 
-                                     description=""" """)
+                                     description="""Displays stock price, number of shares, market capitalization and 
+                                     enterprise value over time. The following fields are expected: Add total debt, 
+                                     Enterprise value, Market capitalization, Minus cash and cash equivalents, Number 
+                                     of shares, Stock price, and Symbol. [Source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
     parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
@@ -107,37 +135,15 @@ def enterprise(l_args, s_ticker):
         print(df_fa)
         print("")
     except:
-        print("")
-
-
-# ---------------------------------------------------- RATING ----------------------------------------------------
-def rating(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='rating', 
-                                     description=""" Gives information about the rating of a company which includes 
-                                                 i.a. the company rating and recommendation as well as ratings based 
-                                                 on a variety of ratios.""")
-        
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    try:
-        df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        print(df_fa)
-        print("")
-    except:
-        print("")
+        print("ERROR!\n")
 
 
 # ------------------------------------------ DISCOUNTED CASH FLOW ------------------------------------------------------
 def discounted_cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='dcf', 
-                                     description=""" """)
+                                     description="""Calculates the discounted cash flow of a company over time including 
+                                     the DCF of today. The following fields are expected: DCF, Stock price, and Date. 
+                                     [Source: Financial Modeling Prep API]""")
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
     parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
         
@@ -165,6 +171,7 @@ def discounted_cash_flow(l_args, s_ticker):
         df_fa = df_fa.applymap(lambda x: long_number_format(x))
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa = df_fa.rename(index={"D c f": "DCF"})
         print(df_fa)
         print("")
     except:
