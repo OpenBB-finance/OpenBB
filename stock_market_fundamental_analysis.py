@@ -2,6 +2,7 @@ import FundamentalAnalysis as fa
 from alpha_vantage.fundamentaldata import FundamentalData
 import config_bot as cfg
 import argparse
+import datetime
 from stock_market_helper_funcs import *
 import pandas as pd
 
@@ -9,7 +10,12 @@ import pandas as pd
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='profile', 
-                                     description=""" """)
+                                     description="""Gives information about, among other things, the industry, sector 
+                                     exchange and company description. The following fields are expected: Address, Beta, 
+                                     Ceo, Changes, Cik, City, Company name, Country, Currency, Cusip, Dcf, Dcf diff, 
+                                     Default image, Description, Exchange, Exchange short name, Full time employees, Image, 
+                                     Industry, Ipo date, Isin, Last div, Mkt cap, Phone, Price, Range, Sector, State, Symbol, 
+                                     Vol avg, Website, Zip. [Source: Financial Modeling Prep API]""")
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -19,23 +25,28 @@ def profile(l_args, s_ticker):
     
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    pd.options.display.max_colwidth = 100
 
     try:
         df_fa = fa.profile(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        print(df_fa.to_string(header=False))
+        print(df_fa.drop(index=['Description', 'Image']).to_string(header=False))
+        print(f"\nImage: {df_fa.loc['Image'][0]}")
+        print(f"\nDescription: {df_fa.loc['Description'][0]}")
         print("")
     except:
-        print("")
+        print("ERROR!\n")
 
 
 # ---------------------------------------------------- QUOTE ----------------------------------------------------
 def quote(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='quote', 
-                                     description=""" """)
+                                     description="""Provides actual information about the company which is, among 
+                                     other things, the day high, market cap, open and close price and price-to-equity 
+                                     ratio. The following fields are expected: Avg volume, Change, Changes percentage, 
+                                     Day high, Day low, Earnings announcement, Eps, Exchange, Market cap, Name, Open, 
+                                     Pe, Previous close, Price, Price avg200, Price avg50, Shares outstanding, Symbol, 
+                                     Timestamp, Volume, Year high, and Year low. [Source: Financial Modeling Prep API]""")
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -46,19 +57,19 @@ def quote(l_args, s_ticker):
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
-    if ns_parser.n_num == 1:
-        pd.set_option('display.max_colwidth', -1)
-    else:
-        pd.options.display.max_colwidth = 40
-
     try:
-        df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.quote(s_ticker, API_KEY_FINANCIALMODELINGPREP)
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa.loc['Market cap'][0] = long_number_format(df_fa.loc['Market cap'][0])
+        df_fa.loc['Shares outstanding'][0] = long_number_format(df_fa.loc['Shares outstanding'][0])
+        df_fa.loc['Volume'][0] = long_number_format(df_fa.loc['Volume'][0])
+        earning_announcment = datetime.datetime.strptime(df_fa.loc['Earnings announcement'][0][0:19],"%Y-%m-%dT%H:%M:%S")
+        df_fa.loc['Earnings announcement'][0] = f"{earning_announcment.date()} {earning_announcment.time()}"
         print(df_fa.to_string(header=False))
         print("")
     except:
-        print("")
+        print("ERROR!\n")
 
 
 # ---------------------------------------------------- ENTERPRISE ----------------------------------------------------
