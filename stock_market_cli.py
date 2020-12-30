@@ -55,6 +55,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     if s_ticker:
         print("\nFundamental Analysis:") # https://github.com/JerBouma/FundamentalAnalysis
         print("details:")
+        print("   overview    overview of the company [AV]")
         print("   profile     profile of the company [FMP]")
         print("   rating      rating of the company from strong sell to strong buy [FMP]")
         print("   quote       quote of the company [FMP]")
@@ -130,7 +131,7 @@ def main():
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx', 'quote',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'rating', 'profile',
                                              'income', 'balance', 'cash', 'metrics', 'ratios', 'growth',
-                                             'enterprise', 'dcf'])
+                                             'enterprise', 'dcf', 'overview'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -193,6 +194,10 @@ def main():
         # --------------------------------------------------------------------------------------------------------------
 
         # -------------------------------------------------- DETAILS --------------------------------------------------
+        elif ns_known_args.cmd == 'overview':
+            smfa.overview(l_args, s_ticker)
+            continue
+
         elif ns_known_args.cmd == 'profile':
             smfa.profile(l_args, s_ticker)
             continue

@@ -6,6 +6,80 @@ import datetime
 from datetime import datetime
 from stock_market_helper_funcs import *
 import pandas as pd
+import json
+import requests
+from pandas.io.json import json_normalize
+
+
+# ---------------------------------------------------- OVERVIEW ----------------------------------------------------
+def overview(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='overview', 
+                                     description="""Gives an overview about the company. The following fields are expected: 
+                                     Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry, 
+                                     Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization, 
+                                     EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS, 
+                                     Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM, 
+                                     Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, 
+                                     Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, 
+                                     Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 
+                                     52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, 
+                                     Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, 
+                                     Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, 
+                                     Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
+                                     [Source: Alpha Vantage API]""")
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Request OVERVIEW data from Alpha Vantage API
+        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"      
+        result = requests.get(s_req, stream=True)
+        
+        # If the returned data was successful
+        if result.status_code == 200:
+            # Parse json data to dataframe
+            df_fa = json_normalize(result.json())
+            # Keep json data sorting in dataframe
+            df_fa = df_fa[list(result.json().keys())].T
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
+                                        "P e ratio":"PE ratio",
+                                        "P e g ratio":"PEG ratio",
+                                        "E p s":"EPS",
+                                        "Revenue per share t t m":"Revenue per share TTM",
+                                        "Operating margin t t m":"Operating margin TTM",
+                                        "Return on assets t t m":"Return on assets TTM",
+                                        "Return on equity t t m":"Return on equity TTM",
+                                        "Revenue t t m":"Revenue TTM",
+                                        "Gross profit t t m":"Gross profit TTM",
+                                        "Diluted e p s t t m":"Diluted EPS TTM",
+                                        "Quarterly earnings growth y o y":"Quarterly earnings growth YOY",
+                                        "Quarterly revenue growth y o y":"Quarterly revenue growth YOY",
+                                        "Trailing p e":"Trailing PE",
+                                        "Forward p e":"Forward PE",
+                                        "Price to sales ratio t t m":"Price to sales ratio TTM",
+                                        "E v to revenue":"EV to revenue",
+                                        "E v to e b i t d a":"EV to EBITDA"})
+
+            pd.set_option('display.max_colwidth', -1)
+            
+            print(df_fa.drop(index=['Description']).to_string(header=False))
+            print(f"Description: {df_fa.loc['Description'][0]}")
+            print("")
+        else:
+            print(f"Error: {result.status_code}")
+        
+    except:
+        print("ERROR!\n")
 
 
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
