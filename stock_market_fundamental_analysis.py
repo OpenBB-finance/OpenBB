@@ -11,77 +11,6 @@ import requests
 from pandas.io.json import json_normalize
 
 
-# ---------------------------------------------------- OVERVIEW ----------------------------------------------------
-def overview(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='overview', 
-                                     description="""Gives an overview about the company. The following fields are expected: 
-                                     Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry, 
-                                     Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization, 
-                                     EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS, 
-                                     Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM, 
-                                     Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, 
-                                     Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, 
-                                     Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 
-                                     52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, 
-                                     Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, 
-                                     Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, 
-                                     Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
-                                     [Source: Alpha Vantage API]""")
-        
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    try:
-        # Request OVERVIEW data from Alpha Vantage API
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"      
-        result = requests.get(s_req, stream=True)
-        
-        # If the returned data was successful
-        if result.status_code == 200:
-            # Parse json data to dataframe
-            df_fa = json_normalize(result.json())
-            # Keep json data sorting in dataframe
-            df_fa = df_fa[list(result.json().keys())].T
-            df_fa = df_fa.applymap(lambda x: long_number_format(x))
-            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-            df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
-                                        "P e ratio":"PE ratio",
-                                        "P e g ratio":"PEG ratio",
-                                        "E p s":"EPS",
-                                        "Revenue per share t t m":"Revenue per share TTM",
-                                        "Operating margin t t m":"Operating margin TTM",
-                                        "Return on assets t t m":"Return on assets TTM",
-                                        "Return on equity t t m":"Return on equity TTM",
-                                        "Revenue t t m":"Revenue TTM",
-                                        "Gross profit t t m":"Gross profit TTM",
-                                        "Diluted e p s t t m":"Diluted EPS TTM",
-                                        "Quarterly earnings growth y o y":"Quarterly earnings growth YOY",
-                                        "Quarterly revenue growth y o y":"Quarterly revenue growth YOY",
-                                        "Trailing p e":"Trailing PE",
-                                        "Forward p e":"Forward PE",
-                                        "Price to sales ratio t t m":"Price to sales ratio TTM",
-                                        "E v to revenue":"EV to revenue",
-                                        "E v to e b i t d a":"EV to EBITDA"})
-
-            pd.set_option('display.max_colwidth', -1)
-            
-            print(df_fa.drop(index=['Description']).to_string(header=False))
-            print(f"Description: {df_fa.loc['Description'][0]}")
-            print("")
-        else:
-            print(f"Error: {result.status_code}")
-        
-    except:
-        print("ERROR!\n")
-
-
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='profile', 
@@ -180,7 +109,7 @@ def enterprise(l_args, s_ticker):
                                      of shares, Stock price, and Symbol. [Source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -219,7 +148,7 @@ def discounted_cash_flow(l_args, s_ticker):
                                      the DCF of today. The following fields are expected: DCF, Stock price, and Date. 
                                      [Source: Financial Modeling Prep API]""")
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -252,6 +181,127 @@ def discounted_cash_flow(l_args, s_ticker):
         print("ERROR!\n")
 
 
+# ---------------------------------------------------- OVERVIEW ----------------------------------------------------
+def overview(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='overview', 
+                                     description="""Gives an overview about the company. The following fields are expected: 
+                                     Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry, 
+                                     Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization, 
+                                     EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS, 
+                                     Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM, 
+                                     Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, 
+                                     Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, 
+                                     Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 
+                                     52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, 
+                                     Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, 
+                                     Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, 
+                                     Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
+                                     [Source: Alpha Vantage API]""")
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Request OVERVIEW data from Alpha Vantage API
+        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"      
+        result = requests.get(s_req, stream=True)
+        
+        # If the returned data was successful
+        if result.status_code == 200:
+            # Parse json data to dataframe
+            df_fa = json_normalize(result.json())
+            # Keep json data sorting in dataframe
+            df_fa = df_fa[list(result.json().keys())].T
+            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
+                                        "P e ratio":"PE ratio",
+                                        "P e g ratio":"PEG ratio",
+                                        "E p s":"EPS",
+                                        "Revenue per share t t m":"Revenue per share TTM",
+                                        "Operating margin t t m":"Operating margin TTM",
+                                        "Return on assets t t m":"Return on assets TTM",
+                                        "Return on equity t t m":"Return on equity TTM",
+                                        "Revenue t t m":"Revenue TTM",
+                                        "Gross profit t t m":"Gross profit TTM",
+                                        "Diluted e p s t t m":"Diluted EPS TTM",
+                                        "Quarterly earnings growth y o y":"Quarterly earnings growth YOY",
+                                        "Quarterly revenue growth y o y":"Quarterly revenue growth YOY",
+                                        "Trailing p e":"Trailing PE",
+                                        "Forward p e":"Forward PE",
+                                        "Price to sales ratio t t m":"Price to sales ratio TTM",
+                                        "E v to revenue":"EV to revenue",
+                                        "E v to e b i t d a":"EV to EBITDA"})
+
+            pd.set_option('display.max_colwidth', -1)
+            
+            print(df_fa.drop(index=['Description']).to_string(header=False))
+            print(f"Description: {df_fa.loc['Description'][0]}")
+            print("")
+        else:
+            print(f"Error: {result.status_code}")
+        
+    except:
+        print("ERROR!\n")
+
+
+# ---------------------------------------------------- EARNINGS ----------------------------------------------------
+def earnings(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='earnings', 
+                                     description="""Retrieves earnings dates and reported EPS of the company. 
+                                     The following fields are expected: Fiscal Date Ending and Reported EPS.
+                                     [Source: Alpha Vantage API]""")
+
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5, help='Number of latest info')
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        # Request EARNINGS data from Alpha Vantage API
+        s_req = f"https://www.alphavantage.co/query?function=EARNINGS&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"      
+        result = requests.get(s_req, stream=True)
+        
+        # If the returned data was successful
+        if result.status_code == 200:
+            df_fa = json_normalize(result.json())
+            if ns_parser.b_quarter:
+                df_fa = pd.DataFrame(df_fa['quarterlyEarnings'][0])
+                df_fa = df_fa[["fiscalDateEnding", "reportedDate", "reportedEPS", "estimatedEPS", "surprise", "surprisePercentage"]]
+                df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
+                                            "reportedEPS":"Reported EPS",
+                                            "estimatedEPS":"Estimated EPS",
+                                            "reportedDate":"Reported Date",
+                                            "surprise":"Surprise",
+                                            "surprisePercentage":"Suprise Percentage"})
+            else:
+                df_fa = pd.DataFrame(df_fa['annualEarnings'][0])
+                df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
+                                            "reportedEPS":"Reported EPS"})
+
+            print(df_fa.head(n=ns_parser.n_num).T.to_string(header=False))
+            print("")
+        else:
+            print(f"Error: {result.status_code}")
+        
+    except:
+        print("ERROR!\n")
+
+
 # ---------------------------------------------------- INCOME_STATEMENT ----------------------------------------------------
 def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='income', 
@@ -266,7 +316,7 @@ def income_statement(l_args, s_ticker):
                                      Alpha Vantage API; Other possible source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
     parser.add_argument('--fmp', action="store_true", default=False, dest="b_fmp", help='Use Financial Modeling Prep instead of Alpha Vantage')
 
     try:
@@ -347,7 +397,7 @@ def balance_sheet(l_args, s_ticker):
                                      [Default source: Alpha Vantage API; Other possible source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
     parser.add_argument('--fmp', action="store_true", default=False, dest="b_fmp", help='Use Financial Modeling Prep instead of Alpha Vantage')
 
     try:
@@ -423,7 +473,7 @@ def cash_flow(l_args, s_ticker):
                                      Other possible source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
     parser.add_argument('--fmp', action="store_true", default=False, dest="b_fmp", help='Use Financial Modeling Prep instead of Alpha Vantage')
 
     try:
@@ -507,7 +557,7 @@ def key_metrics(l_args, s_ticker):
                                      [Source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -567,7 +617,7 @@ def financial_ratios(l_args, s_ticker):
                                      [Source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -624,7 +674,7 @@ def financial_statement_growth(l_args, s_ticker):
                                      and Weighted average shares growth [Source: Financial Modeling Prep API]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
