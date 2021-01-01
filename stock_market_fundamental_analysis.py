@@ -11,6 +11,33 @@ import requests
 from pandas.io.json import json_normalize
 
 
+# ---------------------------------------------------- INFO ----------------------------------------------------
+def info(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='info', 
+                                     description="""Provides information about main key metrics. Namely: EBITDA,
+                                     EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.""")
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    except SystemExit:
+        print("")
+        return
+    
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    try:
+        filepath = 'fundamental_analysis_indicators_explained.txt'
+        with open(filepath) as fp:
+            line = fp.readline()
+            while line:
+                print("{}".format(line.strip()))
+                line = fp.readline()
+            print("")
+    except:
+        print("ERROR!\n")
+
+
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='profile', 

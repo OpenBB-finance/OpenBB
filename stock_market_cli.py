@@ -10,8 +10,14 @@
     using an API request.
 
     Finviz for data
-    Parse overview stock with pip request
     Multiple TA with kind stock
+
+    Do my own personal Fundamental Analysis Dataframe
+    Do option to explain important key metrics
+
+    Do own personal Technical Analysis with multiple indicators perhaps?
+
+    Split Menu into fa, ta and pred. Fundamental Analysis, Technical Analysis and Prediction, respectively.
 
 """
 
@@ -54,6 +60,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     if s_ticker:
         print("\nFundamental Analysis:") # https://github.com/JerBouma/FundamentalAnalysis
+        print("   info        provides information on main key metrics of company")
         print("details:")
         print("   profile     profile of the company [FMP]")
         print("   rating      rating of the company from strong sell to strong buy [FMP]")
@@ -118,7 +125,7 @@ def main():
     s_interval = "1440min"
 
     # Set stock by default to speed up testing
-    s_ticker = "TSLA"
+    s_ticker = "NIO"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')  
@@ -132,7 +139,7 @@ def main():
                                              'sma', 'ema', 'macd', 'vwap', 'stoch', 'rsi', 'adx', 'quote',
                                              'cci', 'aroon', 'bbands', 'ad', 'obv', 'rating', 'profile',
                                              'income', 'balance', 'cash', 'metrics', 'ratios', 'growth',
-                                             'enterprise', 'dcf', 'overview', 'earnings'])
+                                             'enterprise', 'dcf', 'overview', 'earnings', 'info'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -195,6 +202,10 @@ def main():
         # --------------------------------------------------------------------------------------------------------------
 
         # -------------------------------------------------- DETAILS --------------------------------------------------
+        elif ns_known_args.cmd == 'info':
+            smfa.info(l_args, s_ticker)
+            continue
+        
         elif ns_known_args.cmd == 'profile':
             smfa.profile(l_args, s_ticker)
             continue
