@@ -203,6 +203,18 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
         elif ns_known_args.fa == 'liabilities':
             mw_bs.liabilities(l_args, s_ticker)
 
+        elif ns_known_args.fa == 'operating':
+            mw_bs.operating(l_args, s_ticker)
+
+        elif ns_known_args.fa == 'investing':
+            mw_bs.investing(l_args, s_ticker)
+
+        elif ns_known_args.fa == 'financing':
+            mw_bs.financing(l_args, s_ticker)
+
+        elif ns_known_args.fa == 'sec':
+            mw_bs.sec_fillings(l_args, s_ticker)
+
         # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")
