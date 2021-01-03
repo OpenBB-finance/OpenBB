@@ -53,6 +53,8 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("\nFinviz API")
     print("   screener    screen info about the company")
     print("   insider     insider trading of the company")
+    print("   news        latest news of the company")
+    print("   analyst     analyst prices and ratings of the company")
     print("")
     
 
@@ -175,6 +177,12 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
 
         elif ns_known_args.fa == 'insider':
             f_api.insider(l_args, s_ticker)
+
+        elif ns_known_args.fa == 'news':
+            f_api.news(l_args, s_ticker)
+
+        elif ns_known_args.fa == 'analyst':
+            f_api.analyst(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------
         else:

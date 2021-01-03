@@ -59,3 +59,56 @@ def insider(l_args, s_ticker):
     except:
         print("ERROR!\n")
         return
+
+
+# ---------------------------------------------------- NEWS ----------------------------------------------------
+def news(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='news', 
+                                     description="""Gives latest news about company. The following fields are expected: 
+                                     Title, and http link. [Source: Finviz API]""")
+        
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5, help='Number of latest inside traders')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+        d_finviz_news = finviz.get_news(s_ticker)
+        i=0
+        for s_news_title, s_news_link in {*d_finviz_news}:
+            print(f"-> {s_news_title}")
+            print(f"{s_news_link}\n")
+            i+=1
+            
+            if i > (ns_parser.n_num-1):
+                break
+
+    except:
+        print("ERROR!\n")
+        return
+
+
+# ---------------------------------------------------- ANALYST ----------------------------------------------------
+def analyst(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='analyst', 
+                                     description="""Gives analyst prices and ratings of the company. The following fields 
+                                     are expected: date, analyst, category, price from, price to, and rating.
+                                     [Source: Finviz API]""")
+        
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+        d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
+        df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
+        df_fa.set_index("date", inplace=True) 
+        print(df_fa)
+        print("")
+
+    except:
+        print("ERROR!\n")
+        return
