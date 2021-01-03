@@ -21,7 +21,7 @@ def sectors(l_args):
 
     sp = SectorPerformances(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_sectors, d_meta_data = sp.get_sector()
-    df_sectorsf['Rank A: Real-Time Performance'].plot(kind='bar')
+    df_sectors['Rank A: Real-Time Performance'].plot(kind='bar')
     plt.title('Real Time Performance (%) per Sector')
     plt.tight_layout()
     plt.grid()
