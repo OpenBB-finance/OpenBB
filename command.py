@@ -1,10 +1,50 @@
 import argparse
 from alpha_vantage.sectorperformance import SectorPerformances
 from alpha_vantage.timeseries import TimeSeries
-import re
 import config_bot as cfg
 import pandas as pd
 from stock_market_helper_funcs import *
+
+
+# ----------------------------------------------- PRINT_HELP ----------------------------------------------------------
+def print_help(s_ticker, s_start, s_interval, b_is_market_open):
+    """ Print help
+    """
+    print("What do you want to do?")
+    print("   gainers     show latest top gainers")
+    print("   sectors     show sectors performance")
+    print("   view        view and load a specific stock ticker for technical analysis")
+    print("   clear       clear a specific stock ticker from analysis")
+    print("   load        load a specific stock ticker for analysis")
+    print("   help        help to see this menu again")
+    print("   quit        to abandon the program")
+
+    s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
+    if s_ticker and s_start:
+        print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
+    elif s_ticker:
+        print(f"\n{s_intraday} Stock: {s_ticker}")
+    else:
+        print("\nStock: ?")
+    print(f"Market {('CLOSED', 'OPEN')[b_is_market_open]}.")
+
+    if s_ticker:
+        print("\nMenus:")
+        print("   fa          fundamental analysis")
+        print("   ta          technical analysis")
+        print("   pred        prediction techniques")
+
+    '''
+        print("\nPrediction:")
+        print("   ma")
+        print("   ema")
+        print("   lr")
+        print("   knn")
+        print("   arima")
+        print("   rnn")
+        print("   lstm")
+        print("   prophet")
+    '''
 
 # ---------------------------------------------------- SECTORS ----------------------------------------------------
 def sectors(l_args):
