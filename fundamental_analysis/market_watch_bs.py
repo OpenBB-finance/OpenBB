@@ -64,7 +64,7 @@ def income(l_args, s_ticker):
 # ---------------------------------------------------- ASSETS ----------------------------------------------------
 def assets(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='assets', 
-                                     description="""Gives income statement the company. The following fields are expected: 
+                                     description="""Gives assets from balance sheet of the company. The following fields are expected: 
                                      Cash & Short Term Investments, Cash & Short Term Investments Growth, Cash Only, 
                                      Short-Term Investments, Cash & ST Investments / Total Assets, Total Accounts Receivable, 
                                      Total Accounts Receivable Growth, Accounts Receivables, Net, Accounts Receivables, Gross, 
@@ -112,6 +112,67 @@ def assets(l_args, s_ticker):
         df_financials = df_financials.set_index('Item')
 
         print(df_financials.iloc[:33].to_string())
+        print("")
+
+    except:
+        print("ERROR!\n")
+        return
+
+
+# ---------------------------------------------------- LIABILITIES ----------------------------------------------------
+def liabilities(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='liabilities', 
+                                     description="""Gives liablities and shareholders' equity from balance sheet of the company. 
+                                     The following fields are expected: ST Debt & Current Portion LT Debt, Short Term Debt, 
+                                     Current Portion of Long Term Debt, Accounts Payable, Accounts Payable Growth, Income Tax Payable, 
+                                     Other Current Liabilities, Dividends Payable, Accrued Payroll, Miscellaneous Current Liabilities, 
+                                     Long-Term Debt, Long-Term Debt excl. Capitalized Leases, Non-Convertible Debt, Convertible Debt, 
+                                     Capitalized Lease Obligations, Provision for Risks & Charges, Deferred Taxes, Deferred Taxes - Credits, 
+                                     Deferred Taxes - Debit, Other Liabilities, Other Liabilities (excl. Deferred Income), Deferred Income, 
+                                     Non-Equity Reserves, Total Liabilities / Total Assets, Preferred Stock (Carrying Value), 
+                                     Redeemable Preferred Stock, Non-Redeemable Preferred Stock, Common Equity (Total), Common Equity/Total Assets, 
+                                     Common Stock Par/Carry Value, Retained Earnings, ESOP Debt Guarantee, Cumulative Translation 
+                                     Adjustment/Unrealized For. Exch. Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, 
+                                     Treasury Stock, Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, 
+                                     Accumulated Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current Liabilities, 
+                                     Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market Watch BS]""")
+    
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+        if ns_parser.b_quarter:
+            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
+        else:
+            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
+            
+        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+
+        # Define financials columns
+        a_financials_header = list()
+        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
+            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
+        df_financials = pd.DataFrame(columns=a_financials_header[0:a_financials_header.index(s_header_end_trend)])
+
+        # Add financials values
+        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
+        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        for financials_info in soup_financials:
+            a_financials_info = financials_info.text.split('\n')
+            l_financials = [a_financials_info[2]] 
+            l_financials.extend(a_financials_info[5:-2])
+            # Append data values to financials
+            df_financials.loc[len(df_financials.index)] = l_financials
+
+        # Set item name as index
+        df_financials = df_financials.set_index('Item')
+
+        print(df_financials.iloc[34:].to_string())
         print("")
 
     except:

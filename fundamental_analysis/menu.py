@@ -200,6 +200,9 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
         elif ns_known_args.fa == 'assets':
             mw_bs.assets(l_args, s_ticker)
 
+        elif ns_known_args.fa == 'liabilities':
+            mw_bs.liabilities(l_args, s_ticker)
+
         # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")
