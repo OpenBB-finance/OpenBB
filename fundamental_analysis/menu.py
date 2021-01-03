@@ -12,6 +12,7 @@ from pandas.io.json import json_normalize
 
 from fundamental_analysis import alpha_vantage_api as av_api
 from fundamental_analysis import financial_modeling_prep_api as fmp_api
+from fundamental_analysis import finviz_api as f_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -43,12 +44,15 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   quote       quote of the company")
     print("   enterprise  enterprise value of the company over time")
     print("   dcf         discounted cash flow of the company over time")
-    print("   income      income statements of the company")
-    print("   balance     balance sheet of the company")
-    print("   cash        cash flow of the company")
+    print("   inc         income statements of the company")
+    print("   bal         balance sheet of the company")
+    print("   cashf       cash flow of the company")
     print("   metrics     key metrics of the company")
     print("   ratios      financial ratios of the company")
     print("   growth      financial statement growth of the company")
+    print("\nFinviz API")
+    print("   screener    screen info about the company")
+    print("   insider     insider trading of the company")
     print("")
     
 
@@ -146,13 +150,13 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
             fmp_api.discounted_cash_flow(l_args, s_ticker)
 
         # Financial statement:
-        elif ns_known_args.fa == 'income':
+        elif ns_known_args.fa == 'inc':
             fmp_api.income_statement(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'balance':
+        elif ns_known_args.fa == 'bal':
             fmp_api.balance_sheet(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'cash':
+        elif ns_known_args.fa == 'cashf':
             fmp_api.cash_flow(l_args, s_ticker)
 
         # Ratios:
@@ -164,6 +168,13 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
 
         elif ns_known_args.fa == 'growth':
             fmp_api.financial_statement_growth(l_args, s_ticker)
+
+        # -------------------------------------------------- FINVIZ -----------------------------------------------
+        elif ns_known_args.fa == 'screener':
+            f_api.screener(l_args, s_ticker)
+
+        elif ns_known_args.fa == 'insider':
+            f_api.insider(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------
         else:

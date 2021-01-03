@@ -62,9 +62,10 @@ def main():
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
     fa_parser.add_argument('fa', choices=['info', 'help', 'q', 'quit',
-                                          'overview', 'key', 'profile', 'rating', 'quote', 'enterprise', 'dcf', # details
-                                          'income', 'balance', 'cash', 'earnings', # financial statement
-                                          'metrics', 'ratios', 'growth']) # ratios
+                                          'overview', 'key', 'income', 'balance', 'cash', 'earnings', # AV
+                                          'profile', 'rating', 'quote', 'enterprise', 'dcf', # FMP
+                                          'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth', # FMP
+                                          'screener', 'insider']) # Finviz
                                              
     # Add list of arguments that the technical analysis parser accepts
     ta_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
@@ -133,7 +134,7 @@ def main():
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
                 return
             else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+                cmd.print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
         elif ns_known_args.opt == 'ta':
@@ -143,7 +144,7 @@ def main():
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
                 return
             else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+                cmd.print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # ------------------------------------------------ PREDICTION --------------------------------------------------
 
