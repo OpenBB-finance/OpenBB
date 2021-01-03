@@ -65,7 +65,8 @@ def main():
                                           'overview', 'key', 'income', 'balance', 'cash', 'earnings', # AV
                                           'profile', 'rating', 'quote', 'enterprise', 'dcf', # FMP
                                           'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth', # FMP
-                                          'screener', 'insider', 'news', 'analyst']) # Finviz
+                                          'screener', 'insider', 'news', 'analyst', # Finviz
+                                          'incom', 'assets']) # MW
                                              
     # Add list of arguments that the technical analysis parser accepts
     ta_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
