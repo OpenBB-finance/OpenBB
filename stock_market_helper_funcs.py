@@ -2,6 +2,7 @@
 from pytz import timezone
 from holidays import US as holidaysUS
 from datetime import datetime, time as Time
+import sys
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -152,3 +153,40 @@ def long_number_format(num):
         else:
             return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])            
     return num
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def clean_data_values_to_float(val):
+    # Remove parenthesis if they exist
+    if val.startswith('('):
+        val = val[1:]
+    if val.endswith(')'):
+        val = val[:-1]
+        
+    if val == '-':
+        val = '0'
+    
+    # Convert percentage to decimal
+    if val.endswith('%'):
+        val = float(val[:-1])/100.0
+    # Convert from billions
+    elif val.endswith('B'):
+        val = float(val[:-1])*1_000_000_000
+    # Convert from millions
+    elif val.endswith('M'):
+        val = float(val[:-1])*1_000_000
+    # Convert from thousands
+    elif val.endswith('K'):
+        val = float(val[:-1])*1_000
+    else:
+        val = float(val)
+
+    return val
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def int_or_round_float(x):
+    if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
+        return ' ' + str(round(x, 2))
+    else:
+        return ' ' + str(int(x))

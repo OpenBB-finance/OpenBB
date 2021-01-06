@@ -29,6 +29,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
 
     print("\nFundamental Analysis:") # https://github.com/JerBouma/FundamentalAnalysis
     print("   info          provides information on main key metrics of company")
+    print("   warnings      company warnings according to Sean Seah based on Market Watch data")
     print("   help          show this fundamental analysis menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
@@ -113,6 +114,9 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
         if ns_known_args.fa == 'info':
             info(l_args, s_ticker)
 
+        if ns_known_args.fa == 'warnings':
+            mw_bs.sean_seah_warnings(l_args, s_ticker)
+            
         elif ns_known_args.fa == 'help':
             print_fundamental_analysis(s_ticker, s_start, s_interval)
 

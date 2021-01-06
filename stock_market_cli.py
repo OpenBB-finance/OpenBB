@@ -61,7 +61,7 @@ def main():
 
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
-    fa_parser.add_argument('fa', choices=['info', 'help', 'q', 'quit',
+    fa_parser.add_argument('fa', choices=['info', 'warnings', 'help', 'q', 'quit',
                                           'overview', 'key', 'income', 'balance', 'cash', 'earnings', # AV
                                           'profile', 'rating', 'quote', 'enterprise', 'dcf', # FMP
                                           'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth', # FMP
