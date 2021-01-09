@@ -21,7 +21,8 @@ def profile(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         df_fa = fa.profile(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
@@ -29,10 +30,11 @@ def profile(l_args, s_ticker):
         print(df_fa.drop(index=['Description', 'Image']).to_string(header=False))
         print(f"\nImage: {df_fa.loc['Image'][0]}")
         print(f"\nDescription: {df_fa.loc['Description'][0]}")
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -47,14 +49,16 @@ def rating(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
         
@@ -72,7 +76,8 @@ def quote(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
@@ -83,10 +88,11 @@ def quote(l_args, s_ticker):
         earning_announcment = datetime.strptime(df_fa.loc['Earnings announcement'][0][0:19],"%Y-%m-%dT%H:%M:%S")
         df_fa.loc['Earnings announcement'][0] = f"{earning_announcment.date()} {earning_announcment.time()}"
         print(df_fa.to_string(header=False))
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -105,7 +111,8 @@ def enterprise(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -122,10 +129,11 @@ def enterprise(l_args, s_ticker):
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -142,7 +150,8 @@ def discounted_cash_flow(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -160,10 +169,11 @@ def discounted_cash_flow(l_args, s_ticker):
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa = df_fa.rename(index={"D c f": "DCF"})
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -187,7 +197,8 @@ def income_statement(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -213,10 +224,11 @@ def income_statement(l_args, s_ticker):
         print(df_fa.loc['Final link'].to_frame().to_string())
         print("")
         print(df_fa.loc['Link'].to_frame().to_string())
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -245,7 +257,8 @@ def balance_sheet(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -271,10 +284,11 @@ def balance_sheet(l_args, s_ticker):
         print(df_fa.loc['Final link'].to_frame().to_string())
         print("")
         print(df_fa.loc['Link'].to_frame().to_string())
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
   
@@ -300,7 +314,8 @@ def cash_flow(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -326,10 +341,11 @@ def cash_flow(l_args, s_ticker):
         print(df_fa.loc['Final link'].to_frame().to_string())
         print("")
         print(df_fa.loc['Link'].to_frame().to_string())
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -360,7 +376,8 @@ def key_metrics(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -382,10 +399,11 @@ def key_metrics(l_args, s_ticker):
         df_fa = df_fa.rename(index={"Enterprise value over e b i t d a": "Enterprise value over EBITDA"})
         df_fa = df_fa.rename(index={"Net debt to e b i t d a": "Net debt to EBITDA"})
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -417,7 +435,8 @@ def financial_ratios(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -438,10 +457,11 @@ def financial_ratios(l_args, s_ticker):
         df_fa.columns.name = "Fiscal Date Ending"
         df_fa = df_fa.rename(index={"Net income per e b t": "Net income per EBT"})
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -470,7 +490,8 @@ def financial_statement_growth(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -489,11 +510,11 @@ def financial_statement_growth(l_args, s_ticker):
         df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa.columns.name = "Fiscal Date Ending"
-
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     

@@ -30,7 +30,8 @@ def income(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income/quarter"
@@ -59,7 +60,7 @@ def income(l_args, s_ticker):
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -145,7 +146,8 @@ def liabilities(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
@@ -178,7 +180,7 @@ def liabilities(l_args, s_ticker):
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -198,7 +200,9 @@ def operating(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+            
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
@@ -235,7 +239,7 @@ def operating(l_args, s_ticker):
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -255,7 +259,8 @@ def investing(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
@@ -292,7 +297,7 @@ def investing(l_args, s_ticker):
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -315,7 +320,8 @@ def financing(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
@@ -352,7 +358,7 @@ def financing(l_args, s_ticker):
         print("")
         
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -369,7 +375,8 @@ def sec_fillings(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         pd.set_option('display.max_colwidth', -1)
 
@@ -405,9 +412,9 @@ def sec_fillings(l_args, s_ticker):
 
         print(df_financials.head(n=ns_parser.n_num))
         print("")
-        
+    
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -424,7 +431,8 @@ def sean_seah_warnings(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
        # From INCOME STATEMENT, get: 'EPS (Basic)', 'Net Income', 'Interest Expense', 'EBITDA' 
         url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
@@ -543,6 +551,7 @@ def sean_seah_warnings(l_args, s_ticker):
             print("None. Good stonk")
 
         print("")
+
     except:
-        print("ERROR!\n")
+        print("")
         return

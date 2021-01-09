@@ -29,7 +29,8 @@ def overview(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Request OVERVIEW data from Alpha Vantage API
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"      
@@ -70,9 +71,10 @@ def overview(l_args, s_ticker):
             print("")
         else:
             print(f"Error: {result.status_code}")
+        print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -89,7 +91,8 @@ def key(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Request OVERVIEW data
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -117,8 +120,10 @@ def key(l_args, s_ticker):
         else:
             print(f"Error: {result.status_code}")
 
+        print("")
+
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -141,7 +146,8 @@ def income_statement(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -163,10 +169,11 @@ def income_statement(l_args, s_ticker):
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa.columns.name = "Fiscal Date Ending"
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -195,7 +202,8 @@ def balance_sheet(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -217,10 +225,11 @@ def balance_sheet(l_args, s_ticker):
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa.columns.name = "Fiscal Date Ending"
         print(df_fa)
+
         print("")
 
     except:
-        print("ERROR!\n")
+        print("")
         return
     
 
@@ -246,7 +255,8 @@ def cash_flow(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -268,10 +278,11 @@ def cash_flow(l_args, s_ticker):
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa.columns.name = "Fiscal Date Ending"
         print(df_fa)
+
         print("")
         
     except:
-        print("ERROR!\n")
+        print("")
         return
 
 
@@ -289,7 +300,8 @@ def earnings(l_args, s_ticker):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option('display.max_colwidth', -1)
@@ -321,7 +333,9 @@ def earnings(l_args, s_ticker):
             print("")
         else:
             print(f"Error: {result.status_code}")
+
+        print("")
         
     except:
-        print("ERROR!\n")
+        print("")
         return
