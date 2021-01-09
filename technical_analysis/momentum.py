@@ -21,7 +21,8 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -35,7 +36,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "CCI")
 
     except:
-        print("ERROR!\n")
+        print("")
     
 
 # ----------------------------------------------------- MACD -----------------------------------------------------
@@ -64,7 +65,8 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -78,8 +80,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "MACD")
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
     
 
 # ----------------------------------------------------- RSI -----------------------------------------------------
@@ -100,7 +101,8 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -114,8 +116,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "RSI")
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
 
 
 # ----------------------------------------------------- STOCH -----------------------------------------------------
@@ -140,7 +141,8 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -154,6 +156,5 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "STOCH")
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
     

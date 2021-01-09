@@ -21,7 +21,8 @@ def adx(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -35,8 +36,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "ADX")
         
     except:
-        print("ERROR!\n")
-        return
+        print("")
     
 
 # ----------------------------------------------------- AROON -----------------------------------------------------
@@ -61,7 +61,8 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         df_ta = ta.aroon(high=df_stock['2. high'], low=df_stock['3. low'], length=ns_parser.n_length,
                          scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
@@ -73,6 +74,5 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
             plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta.iloc[:,-1], "AROON")
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
     

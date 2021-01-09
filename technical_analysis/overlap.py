@@ -23,7 +23,8 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -35,8 +36,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "EMA")   
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
     
 
 # ----------------------------------------------------- SMA -----------------------------------------------------
@@ -57,7 +57,8 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -69,8 +70,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "SMA")    
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
 
 
 # ----------------------------------------------------- VWAP -----------------------------------------------------
@@ -85,7 +85,8 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['4. close'], 
                         volume=df_stock['5. volume'], offset=ns_parser.n_offset)
@@ -93,6 +94,5 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "VWAP")
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
     

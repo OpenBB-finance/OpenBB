@@ -27,7 +27,8 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -41,6 +42,5 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
 
     except:
-        print("ERROR!\n")
-        return
+        print("")
     
