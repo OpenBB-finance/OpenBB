@@ -425,7 +425,8 @@ def sean_seah_warnings(l_args, s_ticker):
                                      Consistently high return on equity; Consistently high return on assets; 5x Net 
                                      Income > Long-Term Debt; and Interest coverage ratio more than 3.  [Source: Market Watch BS]""")
 
-    parser.add_argument('-d', "--debug", action="store_true", default=False, dest="b_debug", help='Show data used to calculate warnings')
+    parser.add_argument('-i', "--info", action="store_true", default=False, dest="b_info", help='Give Sean Seah books information')
+    parser.add_argument('-d', "--debug", action="store_true", default=False, dest="b_debug", help='Show data used to calculate warnings') 
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -433,6 +434,15 @@ def sean_seah_warnings(l_args, s_ticker):
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
+
+        if ns_parser.b_info:
+            filepath = 'fundamental_analysis/info_sean_seah.txt'
+            with open(filepath) as fp:
+                line = fp.readline()
+                while line:
+                    print("{}".format(line.strip()))
+                    line = fp.readline()
+                print("")
 
        # From INCOME STATEMENT, get: 'EPS (Basic)', 'Net Income', 'Interest Expense', 'EBITDA' 
         url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
