@@ -53,7 +53,16 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
 
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
-def ta_menu(ta_parser, df_stock, s_ticker, s_start, s_interval):
+def ta_menu(df_stock, s_ticker, s_start, s_interval):
+
+    # Add list of arguments that the technical analysis parser accepts
+    ta_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
+    ta_parser.add_argument('ta', choices=['help', 'q', 'quit',
+                                          'ema', 'sma', 'vwap', # overlap
+                                          'cci', 'macd', 'rsi', 'stoch', # momentum
+                                          'adx', 'aroon', # trend
+                                          'bbands', # volatility
+                                          'ad', 'obv']) # volume
 
     print_technical_analysis(s_ticker, s_start, s_interval)
 

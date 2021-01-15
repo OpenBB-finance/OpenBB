@@ -9,7 +9,6 @@
     This way we only need 1 call, and can apply TA to the result without
     using an API request.
 
-    Finviz for data
     Multiple TA with kind stock
 
     Do my own personal Fundamental Analysis Dataframe
@@ -19,14 +18,33 @@
 
     Split Menu into fa, ta and pred. Fundamental Analysis, Technical Analysis and Prediction, respectively.
 
+    Do Reddit popularity study! 
+    - By using defined ticker
+    - By looking for mentioned tickers
+    - By giving your own subreddit, using used ones.
+
+
+    At the end, provide save tool where we save all data into an excel with:
+
+    NIO_datetimesaved.xlsx
+    - Sheet1 - Profile/Overview (FMP or AV)
+    - Sheet2 - Finance (Market watch)
+    - Sheet3 - Earnings (Market watch)
+    - Sheet4 - SEC filings
+    - Sheet5 - Insiders
+    - Sheet6 - Analyst prices
+    - Sheet7 - News
+    - Sheet8 - Warnings & Key metrics
+    - Sheet9 - Reddit popularity
+
 """
 
 import argparse
 import pandas as pd
 from stock_market_helper_funcs import *
 import command as cmd
-from fundamental_analysis import menu as fam
-from technical_analysis import menu as tam
+from fundamental_analysis import fa_menu as fam
+from technical_analysis import ta_menu as tam
 
 # delete this important when automatic loading tesla
 #i.e. when program is done
@@ -53,30 +71,11 @@ def main():
     df_stock = df_stock[s_start:] 
     # Delete above in the future
 
-    
     # Add list of arguments that the main parser accepts
     menu_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
     menu_parser.add_argument('opt', choices=['gainers', 'sectors', 'view', 'clear', 'load', 
                                              'fa', 'ta', 'help', 'quit'])
-
-    # Add list of arguments that the fundamental analysis parser accepts
-    fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
-    fa_parser.add_argument('fa', choices=['info', 'warnings', 'help', 'q', 'quit',
-                                          'overview', 'key', 'income', 'balance', 'cash', 'earnings', # AV
-                                          'profile', 'rating', 'quote', 'enterprise', 'dcf', # FMP
-                                          'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth', # FMP
-                                          'screener', 'insider', 'news', 'analyst', # Finviz
-                                          'incom', 'assets', 'liabilities', 'operating', 'investing', 'financing', 'sec']) # MW
                                              
-    # Add list of arguments that the technical analysis parser accepts
-    ta_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
-    ta_parser.add_argument('ta', choices=['help', 'q', 'quit',
-                                          'ema', 'sma', 'vwap', # overlap
-                                          'cci', 'macd', 'rsi', 'stoch', # momentum
-                                          'adx', 'aroon', # trend
-                                          'bbands', # volatility
-                                          'ad', 'obv']) # volume
-
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Stock Market Bot\n")
@@ -129,7 +128,7 @@ def main():
         
         # ------------------------------------------- FUNDAMENTAL ANALYSIS ---------------------------------------------
         elif ns_known_args.opt == 'fa':
-            b_quit = fam.fa_menu(fa_parser, s_ticker, s_start, s_interval)
+            b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
@@ -139,7 +138,7 @@ def main():
 
         # -------------------------------------------- TECHNICAL ANALYSIS ----------------------------------------------
         elif ns_known_args.opt == 'ta':
-            b_quit = tam.ta_menu(ta_parser, df_stock, s_ticker, s_start, s_interval)
+            b_quit = tam.ta_menu(df_stock, s_ticker, s_start, s_interval)
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")

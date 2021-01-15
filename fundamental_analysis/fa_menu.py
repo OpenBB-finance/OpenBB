@@ -94,7 +94,16 @@ def info(l_args, s_ticker):
     
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
-def fa_menu(fa_parser, s_ticker, s_start, s_interval):
+def fa_menu(s_ticker, s_start, s_interval):
+
+    # Add list of arguments that the fundamental analysis parser accepts
+    fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
+    fa_parser.add_argument('fa', choices=['info', 'warnings', 'help', 'q', 'quit',
+                                          'overview', 'key', 'income', 'balance', 'cash', 'earnings', # AV
+                                          'profile', 'rating', 'quote', 'enterprise', 'dcf', # FMP
+                                          'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth', # FMP
+                                          'screener', 'insider', 'news', 'analyst', # Finviz
+                                          'incom', 'assets', 'liabilities', 'operating', 'investing', 'financing', 'sec']) # MW
 
     print_fundamental_analysis(s_ticker, s_start, s_interval)
 
@@ -131,9 +140,6 @@ def fa_menu(fa_parser, s_ticker, s_start, s_interval):
         # ----------------------------------------------- ALPHA VANTAGE ----------------------------------------------
         elif ns_known_args.fa == 'overview':
             av_api.overview(l_args, s_ticker)
-
-        elif ns_known_args.fa == 'key':
-            av_api.key(l_args, s_ticker)
 
         elif ns_known_args.fa == 'income':
             av_api.income_statement(l_args, s_ticker)
