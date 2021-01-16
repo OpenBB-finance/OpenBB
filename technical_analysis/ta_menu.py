@@ -57,12 +57,12 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the technical analysis parser accepts
     ta_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
-    ta_parser.add_argument('ta', choices=['help', 'q', 'quit',
-                                          'ema', 'sma', 'vwap', # overlap
-                                          'cci', 'macd', 'rsi', 'stoch', # momentum
-                                          'adx', 'aroon', # trend
-                                          'bbands', # volatility
-                                          'ad', 'obv']) # volume
+    ta_parser.add_argument('cmd', choices=['help', 'q', 'quit',
+                                           'ema', 'sma', 'vwap', # overlap
+                                           'cci', 'macd', 'rsi', 'stoch', # momentum
+                                           'adx', 'aroon', # trend
+                                           'bbands', # volatility
+                                           'ad', 'obv']) # volume
 
     print_technical_analysis(s_ticker, s_start, s_interval)
 
@@ -79,56 +79,56 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.ta == 'help':
+        if ns_known_args.cmd == 'help':
             print_technical_analysis(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.ta == 'q':
+        elif ns_known_args.cmd == 'q':
             # Just leave the FA menu
             return False
 
-        elif ns_known_args.ta == 'quit':
+        elif ns_known_args.cmd == 'quit':
             # Abandon the program
             return True
 
         # -------------------------------------------------- OVERLAP --------------------------------------------------
-        elif ns_known_args.ta == 'ema':
+        elif ns_known_args.cmd == 'ema':
             ta_overlap.ema(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'sma':
+        elif ns_known_args.cmd == 'sma':
             ta_overlap.sma(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'vwap':
+        elif ns_known_args.cmd == 'vwap':
             ta_overlap.vwap(l_args, s_ticker, s_interval, df_stock)
 
         # --------------------------------------------------- MOMENTUM ---------------------------------------------------
-        elif ns_known_args.ta == 'cci':
+        elif ns_known_args.cmd == 'cci':
             ta_momentum.cci(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'macd':
+        elif ns_known_args.cmd == 'macd':
             ta_momentum.macd(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'rsi':
+        elif ns_known_args.cmd == 'rsi':
             ta_momentum.rsi(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'stoch':
+        elif ns_known_args.cmd == 'stoch':
             ta_momentum.stoch(l_args, s_ticker, s_interval, df_stock)
             
         # ---------------------------------------------------- TREND ----------------------------------------------------
-        elif ns_known_args.ta == 'adx':
+        elif ns_known_args.cmd == 'adx':
             ta_trend.adx(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'aroon':
+        elif ns_known_args.cmd == 'aroon':
             ta_trend.aroon(l_args, s_ticker, s_interval, df_stock)
 
         # -------------------------------------------------- VOLATILITY --------------------------------------------------
-        elif ns_known_args.ta == 'bbands':
+        elif ns_known_args.cmd == 'bbands':
             ta_volatility.bbands(l_args, s_ticker, s_interval, df_stock)
 
         # ---------------------------------------------------- VOLUME ----------------------------------------------------
-        elif ns_known_args.ta == 'ad':
+        elif ns_known_args.cmd == 'ad':
             ta_volume.ad(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.ta == 'obv':
+        elif ns_known_args.cmd == 'obv':
             ta_volume.obv(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------

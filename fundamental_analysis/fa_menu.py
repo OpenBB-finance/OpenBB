@@ -39,7 +39,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   insider       insider trading of the company")
     print("   news          latest news of the company")
     print("   analyst       analyst prices and ratings of the company")
-    print("\nMarket Watch BS")
+    print("\nMarket Watch API")
     print("   incom         income statement of the company")
     print("   assets        assets of the company")
     print("   liabilities   liabilities and shareholders equity of the company")
@@ -80,6 +80,7 @@ def print_more_fundamental_analysis():
     print("   ratios        financial ratios of the company")
     print("   growth        financial statement growth of the company")
     print("")
+    return
 
 
 # ---------------------------------------------------- INFO ----------------------------------------------------
@@ -112,9 +113,9 @@ def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
-    fa_parser.add_argument('fa', choices=['info', 'warnings', 'help', 'q', 'quit', 'more',
-                                          'screener', 'insider', 'news', 'analyst', # Finviz
-                                          'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', 'sec']) # MW
+    fa_parser.add_argument('cmd', choices=['info', 'warnings', 'help', 'q', 'quit', 'more',
+                                           'screener', 'insider', 'news', 'analyst', # Finviz
+                                           'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', 'sec']) # MW
 
     print_fundamental_analysis(s_ticker, s_start, s_interval)
 
@@ -131,64 +132,64 @@ def fa_menu(s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.fa == 'info':
+        if ns_known_args.cmd == 'info':
             info(l_args, s_ticker)
             
-        elif ns_known_args.fa == 'help':
+        elif ns_known_args.cmd == 'help':
             print_fundamental_analysis(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.fa == 'q':
+        elif ns_known_args.cmd == 'q':
             # Just leave the FA menu
             return False
 
-        elif ns_known_args.fa == 'quit':
+        elif ns_known_args.cmd == 'quit':
             # Abandon the program
             return True
 
-        elif ns_known_args.fa == 'warnings':
+        elif ns_known_args.cmd == 'warnings':
             mw_api.sean_seah_warnings(l_args, s_ticker)
         
-        # -------------------------------------------------- FINVIZ -----------------------------------------------
-        elif ns_known_args.fa == 'screener':
+        # FINVIZ API
+        elif ns_known_args.cmd == 'screener':
             fvz_api.screener(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'insider':
+        elif ns_known_args.cmd == 'insider':
             fvz_api.insider(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'news':
+        elif ns_known_args.cmd == 'news':
             fvz_api.news(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'analyst':
+        elif ns_known_args.cmd == 'analyst':
             fvz_api.analyst(l_args, s_ticker)
 
-        # ------------------------------------------------ MARKET WATCH ---------------------------------------------
-        elif ns_known_args.fa == 'income':
+        # MARKET WATCH API
+        elif ns_known_args.cmd == 'income':
             mw_api.income(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'assets':
+        elif ns_known_args.cmd == 'assets':
             mw_api.assets(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'liabilities':
+        elif ns_known_args.cmd == 'liabilities':
             mw_api.liabilities(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'operating':
+        elif ns_known_args.cmd == 'operating':
             mw_api.operating(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'investing':
+        elif ns_known_args.cmd == 'investing':
             mw_api.investing(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'financing':
+        elif ns_known_args.cmd == 'financing':
             mw_api.financing(l_args, s_ticker)
 
-        elif ns_known_args.fa == 'sec':
+        elif ns_known_args.cmd == 'sec':
             mw_api.sec_fillings(l_args, s_ticker)
 
-        # --------------------------------------------- MORE FUNDAMENTAL ANALYSIS ---------------------------------------------
-        elif ns_known_args.fa == 'more':
+        # MORE FUNDAMENTAL ANALYSIS MENU
+        elif ns_known_args.cmd == 'more':
 
             # Add list of arguments that the more fundamental analysis parser accepts
             mfa_parser = argparse.ArgumentParser(prog='more_fundamental_analysis', add_help=False)
-            mfa_parser.add_argument('mfa', choices=['help', 'q', 'quit',
+            mfa_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                                     'overview', 'key', 'income', 'balance', 'cash', 'earnings', # AV
                                                     'profile', 'rating', 'quote', 'enterprise', 'dcf', # FMP
                                                     'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth']) # FMP
@@ -208,75 +209,73 @@ def fa_menu(s_ticker, s_start, s_interval):
                     print("The command selected doesn't exist\n")
                     continue
 
-                if ns_known_args.mfa == 'help':
+                if ns_known_args.cmd == 'help':
                     print_more_fundamental_analysis()
 
-                elif ns_known_args.mfa == 'q':
+                elif ns_known_args.cmd == 'q':
                     # Just leave the more FA menu
                     print_fundamental_analysis(s_ticker, s_start, s_interval)
                     break
 
-                elif ns_known_args.mfa == 'quit':
+                elif ns_known_args.cmd == 'quit':
                     # Abandon the program
                     return True
 
-                # ----------------------------------------------- ALPHA VANTAGE ----------------------------------------------
-                elif ns_known_args.mfa == 'overview':
+                # ALPHA VANTAGE API
+                elif ns_known_args.cmd == 'overview':
                     av_api.overview(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'income':
+                elif ns_known_args.cmd == 'income':
                     av_api.income_statement(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'balance':
+                elif ns_known_args.cmd == 'balance':
                     av_api.balance_sheet(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'cash':
+                elif ns_known_args.cmd == 'cash':
                     av_api.cash_flow(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'earnings':
+                elif ns_known_args.cmd == 'earnings':
                     av_api.earnings(l_args, s_ticker)
 
-                # -------------------------------------------- FINANCIAL MODELING PREP -----------------------------------------
+                # FINANCIAL MODELING PREP API
                 # Details:
-                elif ns_known_args.mfa == 'profile':
+                elif ns_known_args.cmd == 'profile':
                     fmp_api.profile(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'rating':
+                elif ns_known_args.cmd == 'rating':
                     fmp_api.rating(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'quote':
+                elif ns_known_args.cmd == 'quote':
                     fmp_api.quote(l_args, s_ticker)
                 
-                elif ns_known_args.mfa == 'enterprise':
+                elif ns_known_args.cmd == 'enterprise':
                     fmp_api.enterprise(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'dcf':
+                elif ns_known_args.cmd == 'dcf':
                     fmp_api.discounted_cash_flow(l_args, s_ticker)
 
                 # Financial statement:
-                elif ns_known_args.mfa == 'inc':
+                elif ns_known_args.cmd == 'inc':
                     fmp_api.income_statement(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'bal':
+                elif ns_known_args.cmd == 'bal':
                     fmp_api.balance_sheet(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'cashf':
+                elif ns_known_args.cmd == 'cashf':
                     fmp_api.cash_flow(l_args, s_ticker)
 
                 # Ratios:
-                elif ns_known_args.mfa == 'metrics':
+                elif ns_known_args.cmd == 'metrics':
                     fmp_api.key_metrics(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'ratios':
+                elif ns_known_args.cmd == 'ratios':
                     fmp_api.financial_ratios(l_args, s_ticker)
 
-                elif ns_known_args.mfa == 'growth':
+                elif ns_known_args.cmd == 'growth':
                     fmp_api.financial_statement_growth(l_args, s_ticker)
 
-                # ------------------------------------------------------------------------------------------------------------
                 else:
                     print("Command not recognized!")
 
-        # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")
