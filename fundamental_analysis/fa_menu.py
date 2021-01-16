@@ -14,6 +14,7 @@ from fundamental_analysis import alpha_vantage_api as av_api
 from fundamental_analysis import financial_modeling_prep_api as fmp_api
 from fundamental_analysis import finviz_api as fvz_api
 from fundamental_analysis import market_watch_api as mw_api
+from fundamental_analysis import reddit_api as r_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -33,6 +34,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print("")
+    print("   dd            gets due diligence from another user's post [Reddit]")
     print("   warnings      company warnings according to Sean Seah book [Market Watch]")
     print("\nFinviz API")
     print("   screener      screen info about the company")
@@ -113,7 +115,7 @@ def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
-    fa_parser.add_argument('cmd', choices=['info', 'warnings', 'help', 'q', 'quit', 'more',
+    fa_parser.add_argument('cmd', choices=['info', 'help', 'q', 'quit', 'more', 'warnings', 'dd',
                                            'screener', 'insider', 'news', 'analyst', # Finviz
                                            'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', 'sec']) # MW
 
@@ -145,6 +147,9 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'quit':
             # Abandon the program
             return True
+
+        elif ns_known_args.cmd == 'dd':
+            r_api.due_diligence(l_args, s_ticker)
 
         elif ns_known_args.cmd == 'warnings':
             mw_api.sean_seah_warnings(l_args, s_ticker)
