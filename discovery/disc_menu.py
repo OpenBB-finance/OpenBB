@@ -15,7 +15,8 @@ def print_discovery():
     print("")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
-    print("   spac          show other users spacs announcment [Reddit]")
+    print("   spac          show other users spacs announcements [Reddit]")
+    print("   spac_c        show other users spacs announcements from subreddit SPACs [Reddit]")
     print("   watchlist     show other users watchlist [Reddit]")
     print("   popular       show popular tickers [Reddit]")
     print("")
@@ -28,7 +29,7 @@ def disc_menu():
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'sectors', 'gainers', 'watchlist', 'spac', 'popular'])
+                                             'sectors', 'gainers', 'watchlist', 'spac', 'spac_c', 'popular'])
 
     print_discovery()
 
@@ -70,6 +71,9 @@ def disc_menu():
         
         elif ns_known_args.cmd == 'spac':
             reddit_api.spac(l_args)
+
+        elif ns_known_args.cmd == 'spac_c':
+            reddit_api.spac_community(l_args)
 
         elif ns_known_args.cmd == 'popular':
             reddit_api.popular_tickers(l_args)
