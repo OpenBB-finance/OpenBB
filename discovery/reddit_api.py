@@ -49,10 +49,10 @@ def watchlist(l_args):
         l_watchlist_author = list()
 
         praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
-                                client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                                username=cfg.API_REDDIT_USERNAME,
-                                user_agent=cfg.API_REDDIT_USER_AGENT,
-                                password=cfg.API_REDDIT_PASSWORD)
+                               client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                               username=cfg.API_REDDIT_USERNAME,
+                               user_agent=cfg.API_REDDIT_USER_AGENT,
+                               password=cfg.API_REDDIT_PASSWORD)
 
         dt_last_time_market_close = get_last_time_market_was_open(datetime.now()-timedelta(hours=24))
         n_ts_after = int(dt_last_time_market_close.timestamp())
@@ -184,19 +184,19 @@ def popular_tickers(l_args):
         l_watchlist_author = list()
 
         praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
-                                client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                                username=cfg.API_REDDIT_USERNAME,
-                                user_agent=cfg.API_REDDIT_USER_AGENT,
-                                password=cfg.API_REDDIT_PASSWORD)
+                               client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                               username=cfg.API_REDDIT_USERNAME,
+                               user_agent=cfg.API_REDDIT_USER_AGENT,
+                               password=cfg.API_REDDIT_PASSWORD)
 
         psaw_api = PushshiftAPI()
 
         for s_sub_reddit in l_sub_reddits:
             print(f"Search for latest tickers under {ns_parser.n_limit} '{s_sub_reddit}' posts")
             submissions = psaw_api.search_submissions(after=int(n_ts_after),
-                                                    subreddit=s_sub_reddit,
-                                                    limit=ns_parser.n_limit,
-                                                    filter=['id'])
+                                                      subreddit=s_sub_reddit,
+                                                      limit=ns_parser.n_limit,
+                                                      filter=['id'])
 
             n_tickers = 0
             while True:
@@ -276,10 +276,10 @@ def spac(l_args):
             return
 
         praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
-                                client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                                username=cfg.API_REDDIT_USERNAME,
-                                user_agent=cfg.API_REDDIT_USER_AGENT,
-                                password=cfg.API_REDDIT_PASSWORD)
+                               client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                               username=cfg.API_REDDIT_USERNAME,
+                               user_agent=cfg.API_REDDIT_USER_AGENT,
+                               password=cfg.API_REDDIT_PASSWORD)
 
         d_submission = {}
         d_watchlist_tickers = {}
@@ -292,9 +292,9 @@ def spac(l_args):
         warnings.filterwarnings("ignore") # To avoid printing the warning
         psaw_api = PushshiftAPI()
         submissions = psaw_api.search_submissions(after=n_ts_after,
-                                                subreddit=l_sub_reddits,
-                                                q='SPAC|Spac|spac|Spacs|spacs',
-                                                filter=['id'])
+                                                  subreddit=l_sub_reddits,
+                                                  q='SPAC|Spac|spac|Spacs|spacs',
+                                                  filter=['id'])
         n_flair_posts_found = 0
         while True:
             submission = next(submissions, None)
