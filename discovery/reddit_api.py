@@ -11,6 +11,7 @@ from stock_market_helper_funcs import *
 import re
 import finviz
 import config_bot as cfg
+import warnings
 
 # -------------------------------------------------------------------------------------------------------------------
 def get_last_time_market_was_open(dt):
@@ -258,3 +259,109 @@ def popular_tickers(l_args):
     except:
         print("")
         
+
+# -------------------------------------------------------------------------------------------------------------------
+def spac(l_args):
+    parser = argparse.ArgumentParser(prog='spac', 
+                                     description=""" Show other users SPACs announcment [Reddit] """)
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5, help='Limit of posts with SPACs retrieved')
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5,
+                        help="Look for the tickers from those n past days")
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
+                                client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                                username=cfg.API_REDDIT_USERNAME,
+                                user_agent=cfg.API_REDDIT_USER_AGENT,
+                                password=cfg.API_REDDIT_PASSWORD)
+
+        d_submission = {}
+        d_watchlist_tickers = {}
+        l_watchlist_links = list()
+        l_watchlist_author = list()
+
+        n_ts_after = int((datetime.today() - timedelta(days=ns_parser.n_days)).timestamp())
+        l_sub_reddits = ['pennystocks', 'RobinHoodPennyStocks', 'Daytrading', 'StockMarket', 'stocks', 'investing', 'wallstreetbets']
+        
+        warnings.filterwarnings("ignore") # To avoid printing the warning
+        psaw_api = PushshiftAPI()
+        submissions = psaw_api.search_submissions(after=n_ts_after,
+                                                subreddit=l_sub_reddits,
+                                                q='SPAC|Spac|spac|Spacs|spacs',
+                                                filter=['id'])
+        n_flair_posts_found = 0
+        while True:
+            submission = next(submissions, None)
+            if submission:
+                # Get more information about post using PRAW api
+                submission = praw_api.submission(id=submission.id)
+                
+                # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+                #that there is a description and it's not just an image, that the flair is
+                #meaningful, and that we aren't re-considering same author's watchlist
+                if not submission.removed_by_category and submission.selftext \
+                    and submission.link_flair_text not in ['Yolo', 'Meme'] \
+                    and submission.author.name not in l_watchlist_author:
+                        
+                        # Make sure there is at least 1 ticker found on the post text
+                        l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
+                        if l_tickers_found:
+
+                            # Add another author's name to the parsed watchlists
+                            l_watchlist_author.append(submission.author.name)
+
+                            # Lookup stock tickers within a watchlist
+                            for key in l_tickers_found:
+                                if key in d_watchlist_tickers:
+                                    # Increment stock ticker found
+                                    d_watchlist_tickers[key] += 1
+                                else:
+                                    # Initialize stock ticker found
+                                    d_watchlist_tickers[key] = 1
+
+                            l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
+                            # delte below, not necessary I reckon. Probably just link?
+
+                            # Refactor data
+                            s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
+                            s_link = f"https://www.reddit.com{submission.permalink}"
+                            s_all_awards = ""
+                            for award in submission.all_awardings:
+                                s_all_awards += f"{award['count']} {award['name']}\n"
+                            s_all_awards = s_all_awards[:-2]
+
+                            # Create dictionary with data to construct dataframe allows to save data
+                            d_submission[submission.id] = {
+                                                            'created_utc': s_datetime,
+                                                            'subreddit': submission.subreddit,
+                                                            'link_flair_text': submission.link_flair_text,
+                                                            'title':submission.title,
+                                                            'score': submission.score,
+                                                            'link': s_link,
+                                                            'num_comments': submission.num_comments,
+                                                            'upvote_ratio': submission.upvote_ratio,
+                                                            'awards': s_all_awards
+                                                        }
+
+                            # Print post data collected so far
+                            print(f"{s_datetime} - {submission.title}")
+                            print(f"{s_link}\n")
+
+                            # Increment count of valid posts found
+                            n_flair_posts_found += 1
+                    
+                # Check if number of wanted posts found has been reached
+                if n_flair_posts_found > ns_parser.n_limit-1:
+                    break
+                    
+            # Check if search_submissions didn't get anymore posts
+            else:
+                break
+    except:
+        print("")
