@@ -380,7 +380,7 @@ def sec_fillings(l_args, s_ticker):
 
         pd.set_option('display.max_colwidth', -1)
 
-        url_financials = "https://www.marketwatch.com/investing/stock/aapl/financials/secfilings"
+        url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/secfilings"
     
         text_soup_financials = BeautifulSoup(requests.get(url_financials).text,"lxml")
 
