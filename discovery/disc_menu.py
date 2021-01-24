@@ -3,6 +3,7 @@ import argparse
 from discovery import alpha_vantage_api
 from discovery import yahoo_finance_api
 from discovery import reddit_api
+from discovery import finviz_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -13,6 +14,7 @@ def print_discovery():
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print("")
+    print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   spac          show other users spacs announcements [Reddit]")
@@ -30,7 +32,8 @@ def disc_menu():
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'sectors', 'gainers', 'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
+                                             'map', 'sectors', 'gainers',
+                                             'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
 
     print_discovery()
 
@@ -57,6 +60,10 @@ def disc_menu():
         elif ns_known_args.cmd == 'quit':
             # Abandon the program
             return True
+
+        # --------------------------------------------------- FINVIZ ---------------------------------------------------
+        elif ns_known_args.cmd == 'map':
+            finviz_api.map_sp500(l_args)
         
         # ------------------------------------------------ ALPHA VANTAGE -----------------------------------------------
         elif ns_known_args.cmd == 'sectors':
