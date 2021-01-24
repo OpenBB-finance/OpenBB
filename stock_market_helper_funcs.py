@@ -190,3 +190,10 @@ def int_or_round_float(x):
         return ' ' + str(round(x, 2))
     else:
         return ' ' + str(int(x))
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def divide_chunks(l, n):   
+    # looping till length l 
+    for i in range(0, len(l), n):  
+        yield l[i:i + n] 

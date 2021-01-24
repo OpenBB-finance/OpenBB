@@ -4,6 +4,7 @@ from discovery import alpha_vantage_api
 from discovery import yahoo_finance_api
 from discovery import reddit_api
 from discovery import finviz_api
+from discovery import short_interest_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -17,6 +18,8 @@ def print_discovery():
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
+    print("   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]")
+    print("   low_float     show low float stocks under 10M shares float [www.lowfloat.com]")
     print("   spac          show other users spacs announcements [Reddit]")
     print("   spac_c        show other users spacs announcements from subreddit SPACs [Reddit]")
     print("   wsb           show what WSB gang is up to in subreddit wallstreetbets [Reddit]")
@@ -32,7 +35,7 @@ def disc_menu():
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'map', 'sectors', 'gainers',
+                                             'map', 'sectors', 'gainers', 'high_short', 'low_float',
                                              'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
 
     print_discovery()
@@ -72,6 +75,13 @@ def disc_menu():
         # ------------------------------------------------ YAHOO FINANCE ------------------------------------------------
         elif ns_known_args.cmd == 'gainers':
             yahoo_finance_api.gainers(l_args)
+
+        # ------------------------------------------------ SHORT_INTEREST ------------------------------------------------
+        elif ns_known_args.cmd == 'high_short':
+            short_interest_api.high_short_interest(l_args)
+        
+        elif ns_known_args.cmd == 'low_float':
+            short_interest_api.low_float(l_args)
 
         # ---------------------------------------------------- REDDIT ---------------------------------------------------
         elif ns_known_args.cmd == 'watchlist':
