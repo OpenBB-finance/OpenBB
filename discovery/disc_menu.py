@@ -11,6 +11,7 @@ from discovery import short_interest_api
 def print_discovery():
     """ Print help """
 
+    print("\nDiscovery Mode:") 
     print("   help          show this fundamental analysis menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
@@ -20,11 +21,13 @@ def print_discovery():
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]")
     print("   low_float     show low float stocks under 10M shares float [www.lowfloat.com]")
-    print("   spac          show other users spacs announcements [Reddit]")
-    print("   spac_c        show other users spacs announcements from subreddit SPACs [Reddit]")
-    print("   wsb           show what WSB gang is up to in subreddit wallstreetbets [Reddit]")
-    print("   watchlist     show other users watchlist [Reddit]")
-    print("   popular       show popular tickers [Reddit]")
+    print("")
+    print("Reddit:")
+    print("   wsb           show what WSB gang is up to in subreddit wallstreetbets")
+    print("   watchlist     show other users watchlist")
+    print("   popular       show popular tickers")
+    print("   spac          show other users spacs announcements")
+    print("   spac_c        show other users spacs announcements from subreddit SPACs")
     print("")
     return
 

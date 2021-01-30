@@ -23,7 +23,6 @@
     - By looking for mentioned tickers
     - By giving your own subreddit, using used ones.
 
-
     At the end, provide save tool where we save all data into an excel with:
 
     NIO_datetimesaved.xlsx
@@ -43,7 +42,8 @@ import pandas as pd
 from stock_market_helper_funcs import *
 from fundamental_analysis import fa_menu as fam
 from technical_analysis import ta_menu as tam
-from discovery import disc_menu as dam
+from due_diligence import dd_menu as ddm
+from discovery import disc_menu as dm
 
 # delete this important when automatic loading tesla
 #i.e. when program is done
@@ -89,9 +89,9 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     if s_start:
         # Slice dataframe from the starting date YYYY-MM-DD selected
         df_stock = df_stock[ns_parser.s_start_date:]
-        print(f"Loading {s_intraday} {s_ticker} stock with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n")
+        print(f"Loading {s_intraday} {s_ticker} stock with starting period {s_start.strftime('%Y-%m-%d')} for analysis.")
     else:
-        print(f"Loading {s_intraday} {s_ticker} stock for analysis.\n")
+        print(f"Loading {s_intraday} {s_ticker} stock for analysis.")
 
     return [s_ticker, s_start, s_interval, df_stock]
 
@@ -183,6 +183,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
     print("   view        view and load a specific stock ticker for technical analysis")
+    print("   disc        discovery menu to find trending stocks")
 
     s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
     if s_ticker and s_start:
@@ -195,10 +196,13 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     if s_ticker:
         print("\nMenus:")
-        print("   disc        discovery mode")
-        print("   fa          fundamental analysis")
-        print("   ta          technical analysis")
-        print("   pred        prediction techniques")
+        #print("   sen         sentiment of the market, \t from: reddit, stocktwits, twitter")
+        print("   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings")
+        print("   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv")
+        print("")
+        print("   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec")
+        #print("")
+        #print("   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet")
 
     '''
         print("\nPrediction:")
@@ -234,9 +238,9 @@ def main():
 
     # Add list of arguments that the main parser accepts
     menu_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
-    menu_parser.add_argument('opt', choices=['help', 'quit', 
+    menu_parser.add_argument('opt', choices=['help', 'quit', 'q',
                                              'clear', 'load', 'view',
-                                             'disc', 'fa', 'ta'])
+                                             'disc', 'fa', 'ta', 'dd'])
                                              
 
     # Print first welcome message and help
@@ -265,7 +269,7 @@ def main():
         if ns_known_args.opt == 'help':
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
-        elif ns_known_args.opt == 'quit':
+        elif (ns_known_args.opt == 'quit') or (ns_known_args.opt == 'q'):
             print("Hope you made money today. Good bye my lover, good bye my friend.\n")
             return
        
@@ -282,7 +286,7 @@ def main():
 
         # DISCOVERY MENU
         elif ns_known_args.opt == 'disc':
-            b_quit = dam.disc_menu()
+            b_quit = dm.disc_menu()
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
@@ -310,6 +314,15 @@ def main():
             else:
                 print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
+        # DUE DILIGENCE MENU
+        elif ns_known_args.opt == 'dd':
+            b_quit = ddm.dd_menu(s_ticker, s_start, s_interval)
+
+            if b_quit:
+                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
+                return
+            else:
+                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         else:
             print('Shouldnt see this command!')

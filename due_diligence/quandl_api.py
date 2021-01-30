@@ -41,7 +41,10 @@ def short_interest(l_args, s_ticker, s_start):
         ax.set_ylabel('Shares')
         ax.set_xlabel('Date')
 
-        ax.set_title(f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker} from {s_start.date()}")
+        if s_start:
+            ax.set_title(f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker} from {s_start.date()}")
+        else:
+            ax.set_title(f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker}")
         
         ax.legend(labels=['Short Volume', 'Total Volume'])
         ax.tick_params(axis='both', which='major')
