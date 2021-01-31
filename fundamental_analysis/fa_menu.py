@@ -15,6 +15,7 @@ from fundamental_analysis import financial_modeling_prep_api as fmp_api
 from fundamental_analysis import finviz_api as fvz_api
 from fundamental_analysis import market_watch_api as mw_api
 from fundamental_analysis import business_insider_api as bi_api
+from fundamental_analysis import yahoo_finance_api as yf_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -29,7 +30,6 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
         print(f"\n{s_intraday} Stock: {s_ticker}")
 
     print("\nFundamental Analysis:") # https://github.com/JerBouma/FundamentalAnalysis
-    print("   info          provides information on main key metrics of company")
     print("   help          show this fundamental analysis menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
@@ -44,6 +44,9 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   operating     cash flow operating activities of the company")
     print("   investing     cash flow investing activities of the company")
     print("   financing     cash flow financing activities of the company")
+    print("")
+    print("Yahoo Finance API")
+    print("   info          information scope of the company")
     print("")
     print("Alpha Vantage API")
     print("   overview      overview of the company")
@@ -97,9 +100,10 @@ def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
-    fa_parser.add_argument('cmd', choices=['info', 'help', 'q', 'quit', #
+    fa_parser.add_argument('cmd', choices=['help', 'q', 'quit', #
                                            'screener', # Finviz
                                            'management', # Business Insider
+                                           'info', # Yahoo Finance
                                            'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', # MW
                                            'overview', 'key', 'incom', 'balance', 'cash', 'earnings', # AV
                                            'profile', 'quote', 'enterprise', 'dcf', # FMP
@@ -120,10 +124,10 @@ def fa_menu(s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'info':
-            info(l_args, s_ticker)
+        #if ns_known_args.cmd == 'info':
+        #    info(l_args, s_ticker)
             
-        elif ns_known_args.cmd == 'help':
+        if ns_known_args.cmd == 'help':
             print_fundamental_analysis(s_ticker, s_start, s_interval)
 
         elif ns_known_args.cmd == 'q':
@@ -160,6 +164,10 @@ def fa_menu(s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'financing':
             mw_api.financing(l_args, s_ticker)
+
+        # YAHOO FINANCE API
+        elif ns_known_args.cmd == 'info':
+            yf_api.info(l_args, s_ticker)
 
          # ALPHA VANTAGE API
         elif ns_known_args.cmd == 'overview':
