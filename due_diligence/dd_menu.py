@@ -15,6 +15,7 @@ from due_diligence import market_watch_api as mw_api
 from due_diligence import reddit_api as r_api
 from due_diligence import quandl_api as q_api
 from due_diligence import financial_modeling_prep_api as fmp_api
+from due_diligence import business_insider_api as bi_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -37,6 +38,7 @@ def print_due_diligence(s_ticker, s_start, s_interval):
     print("   red           gets due diligence from another user's post [Reddit]")
     print("   analyst       analyst prices and ratings of the company [Finviz]")
     print("   rating        rating of the company from strong sell to strong buy [FMP]")
+    print("   pt            price targets over time [Business Insider]")
     print("   insider       insider trading of the company [Finviz]")
     print("   sec           SEC filings [Market Watch]")
     print("   short         short interest [Quandl]")
@@ -46,7 +48,7 @@ def print_due_diligence(s_ticker, s_start, s_interval):
 
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
-def dd_menu(s_ticker, s_start, s_interval):
+def dd_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the due diligence parser accepts
     dd_parser = argparse.ArgumentParser(prog='due_diligence', add_help=False)
@@ -54,6 +56,7 @@ def dd_menu(s_ticker, s_start, s_interval):
                                            'red', # Reddit
                                            'short', # Quandl
                                            'rating', # FMP
+                                           'pt', # BI
                                            'insider', 'news', 'analyst', # Finviz
                                            'warnings', 'sec']) # MW
 
@@ -96,6 +99,10 @@ def dd_menu(s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'analyst':
             fvz_api.analyst(l_args, s_ticker)
+
+        # BUSINESS INSIDER API
+        elif ns_known_args.cmd == 'pt':
+            bi_api.price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval)
 
         # FINANCIAL MODELING PREP API
         elif ns_known_args.cmd == 'rating':

@@ -316,7 +316,7 @@ def main():
 
         # DUE DILIGENCE MENU
         elif ns_known_args.opt == 'dd':
-            b_quit = ddm.dd_menu(s_ticker, s_start, s_interval)
+            b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
