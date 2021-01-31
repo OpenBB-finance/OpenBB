@@ -5,6 +5,10 @@ from datetime import datetime, time as Time
 import sys
 import matplotlib
 import matplotlib.pyplot as plt
+from datetime import timedelta
+from pytz import timezone
+from holidays import US as holidaysUS
+from datetime import datetime, timedelta, time as Time
 
 # -----------------------------------------------------------------------------------------------------------------------
 def check_positive(value):
@@ -196,4 +200,26 @@ def int_or_round_float(x):
 def divide_chunks(l, n):   
     # looping till length l 
     for i in range(0, len(l), n):  
-        yield l[i:i + n] 
+        yield l[i:i + n]
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def get_next_stock_market_days(last_stock_day, n_next_days):
+    n_days = 0
+    l_pred_days = list()
+    while n_days < n_next_days:
+
+        last_stock_day += timedelta(hours=24)
+
+        # Check if it is a weekend
+        if last_stock_day.date().weekday() > 4:
+            continue
+        # Check if it is a holiday
+        if last_stock_day.strftime('%Y-%m-%d') in holidaysUS():
+            continue
+        # Otherwise stock market is open
+        else:
+            n_days += 1
+            l_pred_days.append(last_stock_day)
+            
+    return l_pred_days
