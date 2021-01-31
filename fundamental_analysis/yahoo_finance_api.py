@@ -65,7 +65,6 @@ def info(l_args, s_ticker):
         return
 
 
-
 # ---------------------------------------------------- SHAREHOLDERS ----------------------------------------------------
 def shareholders(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='shareholders', 
@@ -107,6 +106,49 @@ def shareholders(l_args, s_ticker):
         df_mutualfund_shareholders['Stake'] = df_mutualfund_shareholders['Stake'].apply(lambda x: str("{:.2f}".format(100*x))+' %')
         print(df_mutualfund_shareholders.to_string(index=False))
 
+        print("")
+
+    except:
+        print("")
+        return
+
+
+# ---------------------------------------------------- SUSTAINABILITY ----------------------------------------------------
+def sustainability(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='sustainability', 
+                                     description="""Sustainability values of the company. The following fields are expected: 
+                                     Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo, 
+                                     Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting, 
+                                     Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides, Adult, Percentile, 
+                                     Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract [Source: Yahoo Finance API]""")
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        stock = yf.Ticker(s_ticker)
+        pd.set_option('display.max_colwidth', -1)
+        
+        df_sustainability = stock.sustainability
+
+        df_sustainability.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_sustainability.index.tolist()]
+        df_sustainability.index = [s_val.capitalize() for s_val in df_sustainability.index]
+
+        df_sustainability = df_sustainability.rename(index={"Controversialweapons": "Controversial Weapons",
+                                                            "Socialpercentile": "Social Percentile",
+                                                            "Peercount": "Peer Count",
+                                                            "Governancescore": "Governance Score",
+                                                            "Environmentpercentile": "Environment Percentile",
+                                                            "Animaltesting": "Animal Testing",
+                                                            "Highestcontroversy": "Highest Controversy",
+                                                            "Environmentscore": "Environment Score",
+                                                            "Governancepercentile": "Governance Percentile",
+                                                            "Militarycontract": "Military Contract"})
+
+        print(df_sustainability.to_string(header=False))
         print("")
 
     except:

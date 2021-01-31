@@ -48,6 +48,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("Yahoo Finance API")
     print("   info          information scope of the company")
     print("   shrs          hareholders of the company")
+    print("   sust          sustainability values of the company")
     print("")
     print("Alpha Vantage API")
     print("   overview      overview of the company")
@@ -104,7 +105,7 @@ def fa_menu(s_ticker, s_start, s_interval):
     fa_parser.add_argument('cmd', choices=['help', 'q', 'quit', #
                                            'screener', # Finviz
                                            'mgmt', # Business Insider
-                                           'info', 'shrs', # Yahoo Finance
+                                           'info', 'shrs', 'sust',# Yahoo Finance
                                            'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', # MW
                                            'overview', 'key', 'incom', 'balance', 'cash', 'earnings', # AV
                                            'profile', 'quote', 'enterprise', 'dcf', # FMP
@@ -172,6 +173,9 @@ def fa_menu(s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'shrs':
             yf_api.shareholders(l_args, s_ticker)
+
+        elif ns_known_args.cmd == 'sust':
+            yf_api.sustainability(l_args, s_ticker)
         
          # ALPHA VANTAGE API
         elif ns_known_args.cmd == 'overview':
