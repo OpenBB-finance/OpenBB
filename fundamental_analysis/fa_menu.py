@@ -14,6 +14,7 @@ from fundamental_analysis import alpha_vantage_api as av_api
 from fundamental_analysis import financial_modeling_prep_api as fmp_api
 from fundamental_analysis import finviz_api as fvz_api
 from fundamental_analysis import market_watch_api as mw_api
+from fundamental_analysis import business_insider_api as bi_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -34,6 +35,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   quit          quit to abandon program")
     print("")
     print("   screener      screen info about the company [Finviz]")
+    print("   management    management team of the company [Business Insider]")
     print("")
     print("Market Watch API")
     print("   income        income statement of the company")
@@ -97,6 +99,7 @@ def fa_menu(s_ticker, s_start, s_interval):
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
     fa_parser.add_argument('cmd', choices=['info', 'help', 'q', 'quit', #
                                            'screener', # Finviz
+                                           'management', # Business Insider
                                            'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', # MW
                                            'overview', 'key', 'incom', 'balance', 'cash', 'earnings', # AV
                                            'profile', 'quote', 'enterprise', 'dcf', # FMP
@@ -130,6 +133,10 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'quit':
             # Abandon the program
             return True
+
+        # BUSINESS INSIDER API
+        elif ns_known_args.cmd == 'management':
+            bi_api.management(l_args, s_ticker)
 
         # FINVIZ API
         elif ns_known_args.cmd == 'screener':

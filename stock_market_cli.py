@@ -229,7 +229,7 @@ def main():
     s_interval = "1440min"
 
     # Set stock by default to speed up testing
-    s_ticker = "NIO"
+    s_ticker = "AMZN"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')  
