@@ -86,3 +86,118 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     except:
         print("")
         return
+
+
+# ----------------------------------------------- ESTIMATES -----------------------------------------------
+def estimates(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='estimates', 
+                                     description="""Yearly and quarter earnings estimates [Source: Business Insider API]""")
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        url_market_business_insider = f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
+        text_soup_market_business_insider = BeautifulSoup(requests.get(url_market_business_insider).text, "lxml")
+
+        l_estimates_year_header = list()
+        l_estimates_quarter_header = list()
+        for estimates_header in text_soup_market_business_insider.findAll('th', {'class': 'table__th text-right'}):
+            s_estimates_header = estimates_header.text.strip()
+            if s_estimates_header.isdigit():
+                l_estimates_year_header.append(s_estimates_header)
+            elif ('in %' not in s_estimates_header) and ('Job' not in s_estimates_header):
+                l_estimates_quarter_header.append(s_estimates_header)
+
+        l_estimates_year_metric = list()
+        for estimates_year_metric in text_soup_market_business_insider.findAll('td', {'class': 'table__td black'}):
+            l_estimates_year_metric.append(estimates_year_metric.text)
+            
+        l_estimates_quarter_metric = list()
+        for estimates_quarter_metric in text_soup_market_business_insider.findAll('td', {'class': 'table__td font-color-dim-gray'}):
+            l_estimates_quarter_metric.append(estimates_quarter_metric.text)
+
+        d_metric_year = dict()
+        d_metric_quarter_earnings = dict()
+        d_metric_quarter_revenues = dict()
+        l_metrics = list()
+        n_metrics = 0
+        b_year = True
+        for idx, metric_value in enumerate(text_soup_market_business_insider.findAll('td', {'class': 'table__td text-right'})):
+            
+            if b_year:
+                # YEAR metrics
+                l_metrics.append(metric_value.text.strip())
+                
+                # Check if we have processed all year metrics
+                if n_metrics > len(l_estimates_year_metric)-1:
+                    b_year = False
+                    n_metrics = 0
+                    l_metrics = list()
+                    idx_y = idx
+                
+                # Add value to dictionary
+                if (idx+1)%len(l_estimates_year_header) == 0:
+                    d_metric_year[l_estimates_year_metric[n_metrics]] = l_metrics
+                    l_metrics = list()
+                    n_metrics += 1
+            
+            if not b_year:        
+                # QUARTER metrics
+                l_metrics.append(metric_value.text.strip())
+                
+                # Check if we have processed all quarter metrics
+                if n_metrics > len(l_estimates_quarter_metric)-1:
+                    break
+            
+                # Add value to dictionary
+                if (idx-idx_y+1)%len(l_estimates_quarter_header) == 0:
+                    if n_metrics < 4:
+                        d_metric_quarter_earnings[l_estimates_quarter_metric[n_metrics]] = l_metrics
+                    else:
+                        d_metric_quarter_revenues[l_estimates_quarter_metric[n_metrics-4]] = l_metrics
+                    l_metrics = list()
+                    n_metrics += 1
+
+        df_year_estimates = pd.DataFrame.from_dict(d_metric_year, orient='index', columns=l_estimates_year_header)
+        df_year_estimates.index.name = 'YEARLY ESTIMATES'
+        df_quarter_earnings = pd.DataFrame.from_dict(d_metric_quarter_earnings, orient='index', columns=l_estimates_quarter_header)
+        #df_quarter_earnings.index.name = 'Earnings'
+        df_quarter_revenues = pd.DataFrame.from_dict(d_metric_quarter_revenues, orient='index', columns=l_estimates_quarter_header)
+        #df_quarter_revenues.index.name = 'Revenues'
+
+        l_quarter = list()
+        l_date = list()
+        for quarter_title in df_quarter_earnings.columns:
+            l_quarter.append(re.split('  ending',quarter_title)[0])
+            if len(re.split('  ending',quarter_title)) == 2:
+                l_date.append('ending ' + re.split('  ending',quarter_title)[1].strip())
+            else:
+                l_date.append('-')
+                
+        df_quarter_earnings.columns = l_quarter
+        df_quarter_earnings.loc["Date"] = l_date
+        df_quarter_earnings = df_quarter_earnings.reindex(["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"])
+
+        df_quarter_revenues.columns = l_quarter
+        df_quarter_revenues.loc["Date"] = l_date
+        df_quarter_revenues = df_quarter_revenues.reindex(["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"])
+
+        print(df_year_estimates.to_string())
+        print("")
+        print("QUARTER ESTIMATES EARNINGS")
+        print(df_quarter_earnings.to_string())
+        print("")
+        print("QUARTER ESTIMATES REVENUES")
+        print(df_quarter_revenues.to_string())
+        print("")
+
+        print(text_soup_market_business_insider.find('div', {'class': "text_right instrument-description"}).text.strip())
+        print("")
+                
+    except:
+        print("")
+        return
