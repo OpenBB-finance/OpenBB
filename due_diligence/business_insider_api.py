@@ -277,9 +277,9 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
                 n_stock_price = df_stock['4. close'][ind_dt]
                 
             plt.vlines(x=ind_dt, 
-                    ymin= n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Sell'].groupby(by=['Date']).sum()['Trade'][ind]), 
-                    ymax= n_stock_price, 
-                    colors='red', ls='-', lw=5)
+                       ymin= n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Sell'].groupby(by=['Date']).sum()['Trade'][ind]), 
+                       ymax= n_stock_price, 
+                       colors='red', ls='-', lw=5)
             
         for ind in df_insider[df_insider['Type'] == 'Buy'].groupby(by=['Date']).sum().index:
             if ind in df_stock.index:
@@ -294,9 +294,9 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
                 n_stock_price = df_stock['4. close'][ind_dt]
                 
             plt.vlines(x=ind_dt, 
-                    ymin=n_stock_price, 
-                    ymax=n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Buy'].groupby(by=['Date']).sum()['Trade'][ind]), 
-                    colors='green', ls='-', lw=5)
+                       ymin=n_stock_price, 
+                       ymax=n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Buy'].groupby(by=['Date']).sum()['Trade'][ind]), 
+                       colors='green', ls='-', lw=5)
 
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.minorticks_on()
