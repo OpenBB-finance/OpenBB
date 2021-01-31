@@ -64,3 +64,52 @@ def info(l_args, s_ticker):
         print("")
         return
 
+
+
+# ---------------------------------------------------- SHAREHOLDERS ----------------------------------------------------
+def shareholders(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='shareholders', 
+                                     description="""Major, institutional and mutualfunds shareholders [Source: Yahoo Finance API]""")
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        stock = yf.Ticker(s_ticker)
+        pd.set_option('display.max_colwidth', -1)
+        
+        # Major holders
+        print("Major holders")
+        df_major_holders = stock.major_holders
+        df_major_holders[1] = df_major_holders[1].apply(lambda x: x.replace('%', 'Percentage'))
+        print(df_major_holders.to_string(index=False, header=False))
+        print("")
+
+        # Institutional holders
+        print("Institutional holders")
+        df_institutional_shareholders = stock.institutional_holders
+        df_institutional_shareholders.columns = df_institutional_shareholders.columns.str.replace('% Out','Stake')
+        df_institutional_shareholders['Shares'] = df_institutional_shareholders['Shares'].apply(lambda x: long_number_format(x))
+        df_institutional_shareholders['Value'] = df_institutional_shareholders['Value'].apply(lambda x: long_number_format(x))
+        df_institutional_shareholders['Stake'] = df_institutional_shareholders['Stake'].apply(lambda x: str("{:.2f}".format(100*x))+' %')
+        print(df_institutional_shareholders.to_string(index=False))
+        print("")
+
+        # Mutualfunds holders
+        print("Mutualfunds holders")
+        df_mutualfund_shareholders = stock.mutualfund_holders
+        df_mutualfund_shareholders.columns = df_mutualfund_shareholders.columns.str.replace('% Out','Stake')
+        df_mutualfund_shareholders['Shares'] = df_mutualfund_shareholders['Shares'].apply(lambda x: long_number_format(x))
+        df_mutualfund_shareholders['Value'] = df_mutualfund_shareholders['Value'].apply(lambda x: long_number_format(x))
+        df_mutualfund_shareholders['Stake'] = df_mutualfund_shareholders['Stake'].apply(lambda x: str("{:.2f}".format(100*x))+' %')
+        print(df_mutualfund_shareholders.to_string(index=False))
+
+        print("")
+
+    except:
+        print("")
+        return
+

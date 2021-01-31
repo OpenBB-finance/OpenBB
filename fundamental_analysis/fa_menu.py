@@ -35,7 +35,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   quit          quit to abandon program")
     print("")
     print("   screener      screen info about the company [Finviz]")
-    print("   management    management team of the company [Business Insider]")
+    print("   mgmt          management team of the company [Business Insider]")
     print("")
     print("Market Watch API")
     print("   income        income statement of the company")
@@ -47,6 +47,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("")
     print("Yahoo Finance API")
     print("   info          information scope of the company")
+    print("   shrs          hareholders of the company")
     print("")
     print("Alpha Vantage API")
     print("   overview      overview of the company")
@@ -102,8 +103,8 @@ def fa_menu(s_ticker, s_start, s_interval):
     fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
     fa_parser.add_argument('cmd', choices=['help', 'q', 'quit', #
                                            'screener', # Finviz
-                                           'management', # Business Insider
-                                           'info', # Yahoo Finance
+                                           'mgmt', # Business Insider
+                                           'info', 'shrs', # Yahoo Finance
                                            'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', # MW
                                            'overview', 'key', 'incom', 'balance', 'cash', 'earnings', # AV
                                            'profile', 'quote', 'enterprise', 'dcf', # FMP
@@ -139,7 +140,7 @@ def fa_menu(s_ticker, s_start, s_interval):
             return True
 
         # BUSINESS INSIDER API
-        elif ns_known_args.cmd == 'management':
+        elif ns_known_args.cmd == 'mgmt':
             bi_api.management(l_args, s_ticker)
 
         # FINVIZ API
@@ -169,6 +170,9 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'info':
             yf_api.info(l_args, s_ticker)
 
+        elif ns_known_args.cmd == 'shrs':
+            yf_api.shareholders(l_args, s_ticker)
+        
          # ALPHA VANTAGE API
         elif ns_known_args.cmd == 'overview':
             av_api.overview(l_args, s_ticker)
