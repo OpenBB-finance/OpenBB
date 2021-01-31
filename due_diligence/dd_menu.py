@@ -40,6 +40,7 @@ def print_due_diligence(s_ticker, s_start, s_interval):
     print("   rating        rating of the company from strong sell to strong buy [FMP]")
     print("   pt            price targets over time [Business Insider]")
     print("   est           quarter and year analysts earnings estimates [Business Insider]")
+    print("   ins           insider activity over time [Business Insider]")
     print("   insider       insider trading of the company [Finviz]")
     print("   sec           SEC filings [Market Watch]")
     print("   short         short interest [Quandl]")
@@ -57,7 +58,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
                                            'red', # Reddit
                                            'short', # Quandl
                                            'rating', # FMP
-                                           'pt', 'est', # BI
+                                           'pt', 'est', 'ins', # BI
                                            'insider', 'news', 'analyst', # Finviz
                                            'warnings', 'sec']) # MW
 
@@ -107,6 +108,9 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'est':
             bi_api.estimates(l_args, s_ticker)
+
+        elif ns_known_args.cmd == 'ins':
+            bi_api.insider_activity(l_args, df_stock, s_ticker, s_start, s_interval)
 
         # FINANCIAL MODELING PREP API
         elif ns_known_args.cmd == 'rating':
