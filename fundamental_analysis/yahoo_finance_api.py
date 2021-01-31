@@ -155,3 +155,31 @@ def sustainability(l_args, s_ticker):
         print("")
         return
 
+
+# ---------------------------------------------------- CALENDAR_EARNINGS ----------------------------------------------------
+def calendar_earnings(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='calendar_earnings', 
+                                     description="""Calendar earnings of the company. Including revenue and earnings estimates
+                                     [Source: Yahoo Finance API]""")
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        stock = yf.Ticker(s_ticker)
+        df_calendar = stock.calendar
+        df_calendar.iloc[0,0] = df_calendar.iloc[0,0].date().strftime("%d/%m/%Y")
+        df_calendar.iloc[:, 0] = df_calendar.iloc[:, 0].apply(lambda x: long_number_format(x))
+
+        print(f"Earnings Date: {df_calendar.iloc[:, 0]['Earnings Date']}")
+        print(f"Earnings Estimate Avg: {df_calendar.iloc[:, 0]['Earnings Average']} [{df_calendar.iloc[:, 0]['Earnings Low']}, {df_calendar.iloc[:, 0]['Earnings High']}]")
+        print(f"Revenue Estimate Avg:  {df_calendar.iloc[:, 0]['Revenue Average']} [{df_calendar.iloc[:, 0]['Revenue Low']}, {df_calendar.iloc[:, 0]['Revenue High']}]")      
+        print("")
+
+    except:
+        print("")
+        return
+
