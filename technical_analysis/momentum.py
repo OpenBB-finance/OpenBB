@@ -3,6 +3,7 @@ import pandas_ta as ta
 from stock_market_helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
+import matplotlib.pyplot as plt
 
 # ----------------------------------------------------- CCI -----------------------------------------------------
 def cci(l_args, s_ticker, s_interval, df_stock):
@@ -28,13 +29,63 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
                            length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "CCI")
+
+            plt.subplot(211)
+            plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=3)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.values, 'k', lw=2)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.axhspan(100, plt.gca().get_ylim()[1], facecolor='r', alpha=0.2)
+            plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor='g', alpha=0.2)
+            plt.axhline(100, linewidth=3, color='r', ls='--')
+            plt.axhline(-100, linewidth=3, color='g', ls='--')
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.gca().twinx()
+            plt.ylim(plt.gca().get_ylim())
+            plt.yticks([.2, .8], ('OVERSOLD', 'OVERBOUGHT'))
+            plt.show()
+
         # Intraday 
         else:
             df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
                            length=ns_parser.n_length, scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "CCI")
 
+            plt.subplot(211)
+            plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.values, 'k', lw=2)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.axhspan(100, plt.gca().get_ylim()[1], facecolor='r', alpha=0.2)
+            plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor='g', alpha=0.2)
+            plt.axhline(100, linewidth=3, color='r', ls='--')
+            plt.axhline(-100, linewidth=3, color='g', ls='--')
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.gca().twinx()
+            plt.ylim(plt.gca().get_ylim())
+            plt.yticks([.2, .8], ('OVERSOLD', 'OVERBOUGHT'))
+            plt.show()
+
+        print("")
     except:
         print("")
     
