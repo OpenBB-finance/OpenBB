@@ -34,12 +34,44 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.bbands(close=df_stock['5. adjusted close'], length=ns_parser.n_length, std=ns_parser.n_std, 
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
-            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "BBANDS")
+            #plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "BBANDS")
+
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, color='k', lw=3)
+            plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'r', lw=2)
+            plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'b', lw=1.5, ls='--')
+            plt.plot(df_ta.index, df_ta.iloc[:,2].values, 'g', lw=2)
+            plt.title(f"Bollinger Band (BBands) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.xlabel('Time')
+            plt.ylabel('Share Price ($)')
+            plt.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+            plt.gca().fill_between(df_ta.index, df_ta.iloc[:,0].values, df_ta.iloc[:,2].values, alpha=.1, color='b')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.show()
+            
         # Intraday 
         else:
             df_ta = ta.bbands(close=df_stock['4. close'], length=ns_parser.n_length, std=ns_parser.n_std, 
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
-            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
+            #plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
+
+            plt.plot(df_stock.index, df_stock['4. close'].values, color='k', lw=3)
+            plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'r', lw=2)
+            plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'b', lw=1.5, ls='--')
+            plt.plot(df_ta.index, df_ta.iloc[:,2].values, 'g', lw=2)
+            plt.title(f"Bollinger Band (BBands) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.xlabel('Time')
+            plt.ylabel('Share Price ($)')
+            plt.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+            plt.gca().fill_between(df_ta.index, df_ta.iloc[:,0].values, df_ta.iloc[:,2].values, alpha=.1, color='b')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.show()
+        print("")
 
     except:
         print("")
