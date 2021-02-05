@@ -28,13 +28,61 @@ def adx(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.adx(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], length=ns_parser.n_length, 
                            scalar=ns_parser.n_scalar, drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "ADX")
+            
+            plt.subplot(211)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
+            plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'b', lw=2)
+            plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'g', lw=1)
+            plt.plot(df_ta.index, df_ta.iloc[:,2].values, 'r', lw=1)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.axhline(25, linewidth=3, color='k', ls='--')
+            plt.legend([f'ADX ({df_ta.columns[0]})', 
+                        f'+DI ({df_ta.columns[1]})',
+                        f'- DI ({df_ta.columns[2]})'])
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.ylim([0, 100])
+            plt.show()
+
         # Intraday 
         else:
             df_ta = ta.adx(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], length=ns_parser.n_length, 
                            scalar=ns_parser.n_scalar, drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "ADX")
-        
+            
+            plt.subplot(211)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
+            plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'b', lw=2)
+            plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'g', lw=1)
+            plt.plot(df_ta.index, df_ta.iloc[:,2].values, 'r', lw=1)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.axhline(25, linewidth=3, color='k', ls='--')
+            plt.legend([f'ADX ({df_ta.columns[0]})', 
+                        f'+DI ({df_ta.columns[1]})',
+                        f'- DI ({df_ta.columns[2]})'])
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.ylim([0, 100])
+            plt.show()
+        print("")
+
     except:
         print("")
     
