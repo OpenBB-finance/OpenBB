@@ -4,6 +4,7 @@ from stock_market_helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
+
 # ----------------------------------------------------- EMA -----------------------------------------------------
 def ema(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='ema', 
@@ -30,11 +31,13 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.ema(df_stock['5. adjusted close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_length} EMA")
+
         # Intraday 
         else:
             df_ta = ta.ema(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_length} EMA")   
-
+        print("")
+        
     except:
         print("")
     
@@ -64,10 +67,12 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         if s_interval == "1440min":
             df_ta = ta.sma(df_stock['5. adjusted close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_length} SMA")
+
         # Intraday 
         else:
             df_ta = ta.sma(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_length} SMA")  
+        print("")
 
     except:
         print("")
@@ -88,10 +93,20 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
-        df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['4. close'], 
-                        volume=df_stock['5. volume'], offset=ns_parser.n_offset)
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['5. adjusted close'], 
+                            volume=df_stock['6. volume'], offset=ns_parser.n_offset)
 
-        plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "VWAP")
+            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "VWAP")
+
+        # Intraday 
+        else:
+            df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['4. close'], 
+                            volume=df_stock['5. volume'], offset=ns_parser.n_offset)
+
+            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "VWAP")  
+        print("")
 
     except:
         print("")

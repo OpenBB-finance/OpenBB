@@ -34,8 +34,7 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
     print("overlap:")
     print("   ema         exponential moving average")
     print("   sma         simple moving average")
-    if s_interval != "1440min":
-        print("   vwap        volume weighted average price")
+    print("   vwap        volume weighted average price")
     print("momentum:")
     print("   cci         commodity channel index")
     print("   macd        moving average convergence/divergence")
