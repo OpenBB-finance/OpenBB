@@ -14,13 +14,13 @@ def map_sp500(l_args):
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+        webbrowser.open(f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}")
+        print("")
+
     except SystemExit:
         print("")
         return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-    webbrowser.open(f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}")
-    
-    print("")
