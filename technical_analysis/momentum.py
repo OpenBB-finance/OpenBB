@@ -288,14 +288,70 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.stoch(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], k=ns_parser.n_fastkperiod, 
-                         d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "STOCH")
+                             d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
+            
+            plt.subplot(211)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=3)
+            plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'k', lw=2)
+            plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'b', lw=2, ls='--')
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.axhspan(80, 100, facecolor='r', alpha=0.2)
+            plt.axhspan(0, 20, facecolor='g', alpha=0.2)
+            plt.axhline(80, linewidth=3, color='r', ls='--')
+            plt.axhline(20, linewidth=3, color='g', ls='--')
+            plt.legend([f'%K {df_ta.columns[0]}', 
+                        f'%D {df_ta.columns[1]}'])
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.ylim([0, 100])
+            plt.gca().twinx()
+            plt.ylim(plt.gca().get_ylim())
+            plt.yticks([.1, .9], ('OVERSOLD', 'OVERBOUGHT'))
+            plt.show()
+
         # Intraday 
         else:
             df_ta = ta.stoch(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], k=ns_parser.n_fastkperiod, 
-                         d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "STOCH")
+                             d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
 
+            plt.subplot(211)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'k', lw=2)
+            plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'b', lw=2, ls='--')
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.axhspan(80, 100, facecolor='r', alpha=0.2)
+            plt.axhspan(0, 20, facecolor='g', alpha=0.2)
+            plt.axhline(80, linewidth=3, color='r', ls='--')
+            plt.axhline(20, linewidth=3, color='g', ls='--')
+            plt.legend([f'%K {df_ta.columns[0]}', 
+                        f'%D {df_ta.columns[1]}'])
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.ylim([0, 100])
+            plt.gca().twinx()
+            plt.ylim(plt.gca().get_ylim())
+            plt.yticks([.1, .9], ('OVERSOLD', 'OVERBOUGHT'))
+            plt.show()
+
+        print("")
     except:
         print("")
     
