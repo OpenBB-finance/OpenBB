@@ -83,6 +83,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.yticks([.2, .8], ('OVERSOLD', 'OVERBOUGHT'))
             plt.show()
         print("")
+        
     except:
         print("")
     
@@ -170,6 +171,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plt.xlabel('Time')
             plt.show()
         print("")
+
     except:
         print("")
     
@@ -253,9 +255,9 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.15, .85], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()
-            
+            plt.show()    
         print("")
+
     except:
         print("")
 
@@ -306,8 +308,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.axhspan(0, 20, facecolor='g', alpha=0.2)
             plt.axhline(80, linewidth=3, color='r', ls='--')
             plt.axhline(20, linewidth=3, color='g', ls='--')
-            plt.legend([f'%K {df_ta.columns[0]}', 
-                        f'%D {df_ta.columns[1]}'])
+            plt.legend([f'%K {df_ta.columns[0]}', f'%D {df_ta.columns[1]}'])
             plt.xlabel('Time')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
@@ -339,8 +340,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.axhspan(0, 20, facecolor='g', alpha=0.2)
             plt.axhline(80, linewidth=3, color='r', ls='--')
             plt.axhline(20, linewidth=3, color='g', ls='--')
-            plt.legend([f'%K {df_ta.columns[0]}', 
-                        f'%D {df_ta.columns[1]}'])
+            plt.legend([f'%K {df_ta.columns[0]}', f'%D {df_ta.columns[1]}'])
             plt.xlabel('Time')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
@@ -350,8 +350,8 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.1, .9], ('OVERSOLD', 'OVERBOUGHT'))
             plt.show()
-
         print("")
+
     except:
         print("")
     
