@@ -50,7 +50,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhline(25, linewidth=2, color='k', ls='--')
+            plt.axhline(0, linewidth=2, color='k', ls='--')
             plt.legend([f'Chaikin Oscillator'])
             plt.xlabel('Time')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
@@ -80,7 +80,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhline(25, linewidth=2, color='k', ls='--')
+            plt.axhline(0, linewidth=2, color='k', ls='--')
             plt.legend([f'Chaikin Oscillator'])
             plt.xlabel('Time')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
@@ -117,11 +117,51 @@ def obv(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.obv(close=df_stock['5. adjusted close'], volume=df_stock['6. volume'], offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "OBV")
+            #plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "OBV")
+
+            plt.subplot(211)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
+            plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.legend([f'OBV'])
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.show()
+           
+
         # Intraday 
         else:
             df_ta = ta.obv(close=df_stock['4. close'], volume=df_stock['5. volume'], offset=ns_parser.n_offset).dropna()
-            plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "OBV")
+            #plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "OBV")
+
+            plt.subplot(211)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
+            plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.ylabel(f'Share Price ($)')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.subplot(212)
+            plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.legend([f'OBV'])
+            plt.xlabel('Time')
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.show()
+
+        print("")
 
     except:
         print("")
