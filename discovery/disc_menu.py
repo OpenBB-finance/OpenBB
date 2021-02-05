@@ -6,6 +6,7 @@ from discovery import reddit_api
 from discovery import finviz_api
 from discovery import short_interest_api
 from discovery import seeking_alpha_api
+from discovery import fidelity_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ def print_discovery():
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
+    print("   orders        Orders by Fidelity Customers [Fidelity]")
     print("   earnings      next earnings release dates [Seeking Alpha]")
     print("   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]")
     print("   low_float     show low float stocks under 10M shares float [www.lowfloat.com]")
@@ -40,7 +42,7 @@ def disc_menu():
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'map', 'sectors', 'gainers', 'high_short', 'low_float', 'earnings',
+                                             'map', 'sectors', 'gainers', 'orders', 'high_short', 'low_float', 'earnings',
                                              'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
 
     print_discovery()
@@ -80,6 +82,10 @@ def disc_menu():
         # ------------------------------------------------ YAHOO FINANCE ------------------------------------------------
         elif ns_known_args.cmd == 'gainers':
             yahoo_finance_api.gainers(l_args)
+
+        # --------------------------------------------------- FIDELITY ---------------------------------------------------
+        elif ns_known_args.cmd == 'orders':
+            fidelity_api.orders(l_args)
 
         # ------------------------------------------------ SEEKING ALPHA ------------------------------------------------
         elif ns_known_args.cmd == 'earnings':
