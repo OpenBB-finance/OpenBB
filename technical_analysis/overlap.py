@@ -36,8 +36,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         else:
             df_ta = ta.ema(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_length} EMA")   
-        print("")
-        
+
     except:
         print("")
     
@@ -72,7 +71,6 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         else:
             df_ta = ta.sma(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_length} SMA")  
-        print("")
 
     except:
         print("")
@@ -106,7 +104,6 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
                             volume=df_stock['5. volume'], offset=ns_parser.n_offset)
 
             plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "VWAP")  
-        print("")
 
     except:
         print("")

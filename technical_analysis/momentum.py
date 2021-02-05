@@ -32,14 +32,14 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             
             plt.subplot(211)
             plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
-            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, 'k', lw=2)
+            plt.plot(df_ta.index, df_ta.values, 'b', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.axhspan(100, plt.gca().get_ylim()[1], facecolor='r', alpha=0.2)
             plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor='g', alpha=0.2)
@@ -61,14 +61,14 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             
             plt.subplot(211)
             plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
-            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, 'k', lw=2)
+            plt.plot(df_ta.index, df_ta.values, 'b', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.axhspan(100, plt.gca().get_ylim()[1], facecolor='r', alpha=0.2)
             plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor='g', alpha=0.2)
@@ -83,7 +83,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.yticks([.2, .8], ('OVERSOLD', 'OVERBOUGHT'))
             plt.show()
         print("")
-        
+
     except:
         print("")
     
@@ -124,7 +124,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 
             plt.subplot(211)
             plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
-            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
@@ -151,7 +151,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 
             plt.subplot(211)
             plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
-            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
@@ -203,7 +203,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
                            drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
 
             plt.subplot(211)
-            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
             plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
@@ -211,7 +211,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, 'k', lw=2)
+            plt.plot(df_ta.index, df_ta.values, 'b', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.axhspan(70, 100, facecolor='r', alpha=0.2)
             plt.axhspan(0, 30, facecolor='g', alpha=0.2)
@@ -233,7 +233,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
                            drift=ns_parser.n_drift, offset=ns_parser.n_offset).dropna()
 
             plt.subplot(211)
-            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
             plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
@@ -241,7 +241,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, 'k', lw=2)
+            plt.plot(df_ta.index, df_ta.values, 'b', lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.axhspan(70, 100, facecolor='r', alpha=0.2)
             plt.axhspan(0, 30, facecolor='g', alpha=0.2)
@@ -293,7 +293,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                              d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
             
             plt.subplot(211)
-            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
             plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
@@ -325,7 +325,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                              d=ns_parser.n_slowdperiod, smooth_k=ns_parser.n_slowkperiod, offset=ns_parser.n_offset).dropna()
 
             plt.subplot(211)
-            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=3)
+            plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
             plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.ylabel(f'Share Price ($)')
