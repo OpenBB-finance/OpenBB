@@ -7,6 +7,7 @@ from discovery import finviz_api
 from discovery import short_interest_api
 from discovery import seeking_alpha_api
 from discovery import fidelity_api
+from discovery import simply_wallst_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ def print_discovery():
     print("")
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
+    print("   sw            Simply Wall St. research data [Simply Wall St.]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   orders        Orders by Fidelity Customers [Fidelity]")
     print("   earnings      next earnings release dates [Seeking Alpha]")
@@ -43,7 +45,7 @@ def disc_menu():
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'map', 'sectors', 'gainers', 'orders', 'high_short', 'low_float', 'earnings',
-                                             'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
+                                             'sw', 'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
 
     print_discovery()
 
@@ -86,6 +88,10 @@ def disc_menu():
         # --------------------------------------------------- FIDELITY ---------------------------------------------------
         elif ns_known_args.cmd == 'orders':
             fidelity_api.orders(l_args)
+
+        # ------------------------------------------------ SIMPLY WALL ST ------------------------------------------------
+        elif ns_known_args.cmd == 'sw':
+            simply_wallst_api.simply_wallst(l_args)
 
         # ------------------------------------------------ SEEKING ALPHA ------------------------------------------------
         elif ns_known_args.cmd == 'earnings':
