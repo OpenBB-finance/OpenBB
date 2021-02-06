@@ -37,12 +37,12 @@ def print_research():
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def res_menu(s_ticker):
 
-    # Add list of arguments that the discovery parser accepts
+    # Add list of arguments that the research parser accepts
     res_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     res_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                             'macroaxis', 'yahoo', 'finviz', 'marketwatch', 'fool', 'businessinsider', 
                                             'fmp', 'fidelity', 'tradingview', 'marketchameleon', 'stockrow', 'barchart',
-                                            'grufity', 'fintel', 'zacks', 'macrotrends'])
+                                            'grufity', 'fintel', 'zacks', 'macrotrends', 'resources'])
 
     print_research()
 
