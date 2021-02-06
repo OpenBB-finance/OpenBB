@@ -44,6 +44,7 @@ from fundamental_analysis import fa_menu as fam
 from technical_analysis import ta_menu as tam
 from due_diligence import dd_menu as ddm
 from discovery import disc_menu as dm
+import res_menu as rm
 
 # delete this important when automatic loading tesla
 #i.e. when program is done
@@ -197,6 +198,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     if s_ticker:
         print("\nMenus:")
         #print("   sen         sentiment of the market, \t from: reddit, stocktwits, twitter")
+        print("   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool")
         print("   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings")
         print("   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv")
         print("")
@@ -240,7 +242,7 @@ def main():
     menu_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
     menu_parser.add_argument('opt', choices=['help', 'quit', 'q',
                                              'clear', 'load', 'view',
-                                             'disc', 'fa', 'ta', 'dd'])
+                                             'disc', 'res', 'fa', 'ta', 'dd'])
                                              
 
     # Print first welcome message and help
@@ -287,6 +289,16 @@ def main():
         # DISCOVERY MENU
         elif ns_known_args.opt == 'disc':
             b_quit = dm.disc_menu()
+
+            if b_quit:
+                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
+                return
+            else:
+                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+        # RESEARCH MENU
+        elif ns_known_args.opt == 'res':
+            b_quit = rm.res_menu(s_ticker)
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
