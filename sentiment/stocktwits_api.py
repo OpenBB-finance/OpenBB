@@ -44,7 +44,7 @@ def sentiment(l_args, s_ticker):
 # -------------------------------------------------------------------------------------------------------------------
 def messages(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='messages', 
-                                     description="""Gather last 30 messages on the board [stocktwits] """)
+                                     description="""Print up to 30 of the last messages on the board [stocktwits] """)
 
     parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker, help='Ticker to get board messages')
     parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30, help='Limit messages shown')
@@ -65,7 +65,6 @@ def messages(l_args, s_ticker):
                     break
         else:
             print("Invalid symbol")
-    
         print("")
 
     except:
@@ -101,3 +100,33 @@ def trending(l_args):
         print("")
 
 
+# -------------------------------------------------------------------------------------------------------------------
+def stalker(l_args):
+    parser = argparse.ArgumentParser(prog='stalker', 
+                                     description="""Print up to the last 30 messages of a user [stocktwits] """)
+
+    parser.add_argument('-u', "--user", action="store", dest="s_user", type=str, required=True, help='Username')
+    parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30, help='Limit messages shown')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        result = requests.get(f"https://api.stocktwits.com/api/2/streams/user/{ns_parser.s_user}.json")
+
+        if result.status_code == 200:
+            for idx, message in enumerate(result.json()['messages']):
+                print(message['created_at'].replace('T', ' ').replace('Z', ''))
+                print(message['body'])
+                print("")
+                if idx > ns_parser.n_lim-1:
+                    break
+        else:
+            print("Invalid user")
+        print("")
+
+    except:
+        print("")
