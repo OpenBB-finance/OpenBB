@@ -1,42 +1,7 @@
 """ Example or something
 
-    Is this not informative enough?
-
-    Load a specific stock
-    Then apply a specific TA on it
-
-    Do this because AlphaVantage only allows 5 API calls per minutes.
-    This way we only need 1 call, and can apply TA to the result without
-    using an API request.
-
-    Multiple TA with kind stock
-
-    Do my own personal Fundamental Analysis Dataframe
-    Do option to explain important key metrics
-
-    Do own personal Technical Analysis with multiple indicators perhaps?
-
-    Split Menu into fa, ta and pred. Fundamental Analysis, Technical Analysis and Prediction, respectively.
-
-    Do Reddit popularity study! 
-    - By using defined ticker
-    - By looking for mentioned tickers
-    - By giving your own subreddit, using used ones.
-
-    At the end, provide save tool where we save all data into an excel with:
-
-    NIO_datetimesaved.xlsx
-    - Sheet1 - Profile/Overview (FMP or AV)
-    - Sheet2 - Finance (Market watch)
-    - Sheet3 - Earnings (Market watch)
-    - Sheet4 - SEC filings
-    - Sheet5 - Insiders
-    - Sheet6 - Analyst prices
-    - Sheet7 - News
-    - Sheet8 - Warnings & Key metrics
-    - Sheet9 - Reddit popularity
-
 """
+
 import argparse
 import pandas as pd
 from stock_market_helper_funcs import *
@@ -45,6 +10,7 @@ from technical_analysis import ta_menu as tam
 from due_diligence import dd_menu as ddm
 from discovery import disc_menu as dm
 from sentiment import sen_menu as sm
+from prediction_techniques import pred_menu as pm
 import res_menu as rm
 
 # delete this important when automatic loading tesla
@@ -205,8 +171,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print("   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings")
         print("   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv")
         print("   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec")
-        #print("")
-        #print("   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet")
+        print("   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet")
 
     '''
         print("\nPrediction:")
@@ -244,7 +209,7 @@ def main():
     menu_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
     menu_parser.add_argument('opt', choices=['help', 'quit', 'q',
                                              'clear', 'load', 'view',
-                                             'disc', 'sen', 'res', 'fa', 'ta', 'dd'])
+                                             'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred'])
                                              
 
     # Print first welcome message and help
@@ -341,6 +306,16 @@ def main():
         # DUE DILIGENCE MENU
         elif ns_known_args.opt == 'dd':
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
+
+            if b_quit:
+                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
+                return
+            else:
+                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+        # PREDICTION TECHNIQUES
+        elif ns_known_args.opt == 'pred':
+            b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
