@@ -152,6 +152,7 @@ def watchlist(l_args):
             if n_tickers:
                 print("The following stock tickers have been mentioned across the previous watchlists:")
                 print(s_watchlist_tickers[:-2]+'\n')
+        print("")
 
     except:
         print("")
@@ -260,6 +261,7 @@ def popular_tickers(l_args):
                 n_top_stocks += 1
             except:
                 pass
+        print("")
 
     except:
         print("")
@@ -392,6 +394,7 @@ def spac(l_args):
             if n_tickers:
                 print("The following stock tickers have been mentioned across the previous SPACs:")
                 print(s_watchlist_tickers[:-2])
+        print("")
 
     except:
         print("")
@@ -512,7 +515,8 @@ def spac_community(l_args):
             if n_tickers:
                 print("The following stock tickers have been mentioned across the previous SPACs:")
                 print(s_watchlist_tickers[:-2])
-                print("")
+        print("")
+    
     except:
         print("")
 
@@ -632,6 +636,7 @@ def wsb_community(l_args):
             if n_tickers:
                 print("The following stock tickers have been mentioned across the previous SPACs:")
                 print(s_watchlist_tickers[:-2])
-                print("")
+        print("")
+    
     except:
         print("")
