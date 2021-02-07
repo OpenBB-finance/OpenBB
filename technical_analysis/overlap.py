@@ -52,7 +52,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
                                      This makes it less responsive to recent changes in the data, which can be useful for 
                                      filtering out those changes. """)
 
-    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=20, help='length')
+    parser.add_argument('-l', "--length", dest="l_length", type=lambda s: [int(item) for item in s.split(',')], default=[20, 50], help='length of MA window')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
     try:
@@ -64,13 +64,42 @@ def sma(l_args, s_ticker, s_interval, df_stock):
 
         # Daily
         if s_interval == "1440min":
-            df_ta = ta.sma(df_stock['5. adjusted close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
-            plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_length} SMA")
+            plt.plot(df_stock.index, df_stock['5. adjusted close'].values, color='k')
+            l_legend = list()
+            l_legend.append(s_ticker)
+            for length in ns_parser.l_length:
+                df_ta = ta.sma(df_stock['5. adjusted close'], length=length, offset=ns_parser.n_offset).dropna()
+                plt.plot(df_ta.index, df_ta.values)
+                l_legend.append(f"{length} SMA")
+            plt.title(f"SMA on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.xlabel('Time')
+            plt.ylabel('Share Price ($)')
+            plt.legend(l_legend)
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.show()
 
         # Intraday 
         else:
-            df_ta = ta.sma(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
-            plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, f"{ns_parser.n_length} SMA")  
+            plt.plot(df_stock.index, df_stock['4. close'].values, color='k')
+            l_legend = list()
+            l_legend.append(s_ticker)
+            for length in ns_parser.n_length:
+                df_ta = ta.sma(df_stock['4. close'], length=length, offset=ns_parser.n_offset).dropna()
+                plt.plot(df_ta.index, df_ta.values)
+                l_legend.append(f"{length} SMA")
+            plt.title(f"SMA on {s_ticker}")
+            plt.xlim(df_stock.index[0], df_stock.index[-1])
+            plt.xlabel('Time')
+            plt.ylabel('Share Price ($)')
+            plt.legend(l_legend)
+            plt.grid(b=True, which='major', color='#666666', linestyle='-')
+            plt.minorticks_on()
+            plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            plt.show()
+        print("")
 
     except:
         print("")
