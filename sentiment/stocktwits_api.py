@@ -105,7 +105,7 @@ def stalker(l_args):
     parser = argparse.ArgumentParser(prog='stalker', 
                                      description="""Print up to the last 30 messages of a user [stocktwits] """)
 
-    parser.add_argument('-u', "--user", action="store", dest="s_user", type=str, required=True, help='Username')
+    parser.add_argument('-u', "--user", action="store", dest="s_user", type=str, default='Newsfilter', help='Username')
     parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30, help='Limit messages shown')
 
     try:
@@ -119,6 +119,7 @@ def stalker(l_args):
 
         if result.status_code == 200:
             for idx, message in enumerate(result.json()['messages']):
+                print("------------------------------------------------------------------------------------------")
                 print(message['created_at'].replace('T', ' ').replace('Z', ''))
                 print(message['body'])
                 print("")
