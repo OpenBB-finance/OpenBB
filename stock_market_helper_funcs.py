@@ -11,6 +11,14 @@ from holidays import US as holidaysUS
 from datetime import datetime, timedelta, time as Time
 
 # -----------------------------------------------------------------------------------------------------------------------
+def check_non_negative(value):
+    ivalue = int(value)
+    if ivalue < 0:
+        raise argparse.ArgumentTypeError(f"{value} is negative")
+    return ivalue
+
+
+# -----------------------------------------------------------------------------------------------------------------------
 def check_positive(value):
     ivalue = int(value)
     if ivalue <= 0:

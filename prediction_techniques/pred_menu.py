@@ -10,6 +10,7 @@ from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
 from prediction_techniques import sma
+from prediction_techniques import knn
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
@@ -28,6 +29,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   quit        quit to abandon program")
     print("")
     print("   sma         simple moving average")
+    print("   knn         k-Nearest Neighbors")
     print("")
  
 
@@ -37,7 +39,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     # Add list of arguments that the prediction techniques parser accepts
     pred_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'sma'])
+                                             'sma', 'knn'])
 
     print_prediction(s_ticker, s_start, s_interval)
 
@@ -68,6 +70,10 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
         # ------------------------------------------ SIMPLE MOVING AVERAGE ------------------------------------------
         elif ns_known_args.cmd == 'sma':
             sma.simple_moving_average(l_args, s_ticker, s_interval, df_stock)
+
+        # ------------------------------------------ k NEAREST NEIGHBORS ------------------------------------------
+        elif ns_known_args.cmd == 'knn':
+            knn.k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
