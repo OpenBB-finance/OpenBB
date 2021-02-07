@@ -1,6 +1,7 @@
 import config_bot as cfg
 import argparse
 from sentiment import reddit_api
+from sentiment import stocktwits_api
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_sentiment():
@@ -18,16 +19,21 @@ def print_sentiment():
     print("   spac          show other users spacs announcements")
     print("   spac_c        show other users spacs announcements from subreddit SPACs")
     print("")
+    print("Stocktwits:")
+    print("   sentiment     estimate quick sentiment from last 30 messages on board")
+    print("")
+
     return
 
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
-def sen_menu():
+def sen_menu(s_ticker):
 
     # Add list of arguments that the discovery parser accepts
     sen_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                            'watchlist', 'spac', 'spac_c', 'wsb', 'popular'])
+                                            'watchlist', 'spac', 'spac_c', 'wsb', 'popular',
+                                            'sentiment'])
 
     print_sentiment()
 
@@ -70,6 +76,10 @@ def sen_menu():
 
         elif ns_known_args.cmd == 'popular':
             reddit_api.popular_tickers(l_args)
+
+        # ---------------------------------------------------- STOCKTWITS ---------------------------------------------------
+        elif ns_known_args.cmd == 'sentiment':
+            stocktwits_api.sentiment(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
