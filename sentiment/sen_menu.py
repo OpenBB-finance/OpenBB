@@ -21,6 +21,7 @@ def print_sentiment():
     print("")
     print("Stocktwits:")
     print("   sentiment     estimate quick sentiment from last 30 messages on board")
+    print("   messages      output up to the 30 last messages on the board")
     print("")
 
     return
@@ -33,7 +34,7 @@ def sen_menu(s_ticker):
     sen_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                             'watchlist', 'spac', 'spac_c', 'wsb', 'popular',
-                                            'sentiment'])
+                                            'sentiment', 'messages'])
 
     print_sentiment()
 
@@ -80,6 +81,9 @@ def sen_menu(s_ticker):
         # ---------------------------------------------------- STOCKTWITS ---------------------------------------------------
         elif ns_known_args.cmd == 'sentiment':
             stocktwits_api.sentiment(l_args, s_ticker)
+
+        elif ns_known_args.cmd == 'messages':
+            stocktwits_api.messages(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------
         else:

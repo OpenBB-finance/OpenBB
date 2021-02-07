@@ -300,7 +300,7 @@ def main():
 
         # SENTIMENT MARKET
         elif ns_known_args.opt == 'sen':
-            b_quit = sm.sen_menu()
+            b_quit = sm.sen_menu(s_ticker)
 
             if b_quit:
                 print("Hope you made money today. Good bye my lover, good bye my friend.\n")
