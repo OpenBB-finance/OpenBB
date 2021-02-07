@@ -29,14 +29,12 @@ def sentiment(l_args, s_ticker):
                     n_cases += 1
                     n_bull += (message['entities']['sentiment']['basic'] == 'Bullish')
                     n_bear += (message['entities']['sentiment']['basic'] == 'Bearish')
-
             if n_cases > 0:
                 print(f"\nOver {n_cases} sentiment messages:")
                 print(f"Bullish {round(100*n_bull/n_cases, 2)}%")
                 print(f"Bearish {round(100*n_bear/n_cases, 2)}%")
         else:
             print("Invalid symbol")
-    
         print("")
 
     except:
@@ -72,4 +70,34 @@ def messages(l_args, s_ticker):
 
     except:
         print("")
+
+
+# -------------------------------------------------------------------------------------------------------------------
+def trending(l_args):
+    parser = argparse.ArgumentParser(prog='trending', 
+                                     description="""Stocks trending [stocktwits] """)
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        result = requests.get(f"https://api.stocktwits.com/api/2/trending/symbols.json")
+        if result.status_code == 200:
+            l_symbols = list()
+            for symbol in result.json()['symbols']:
+                l_symbols.append([symbol['symbol'], symbol['watchlist_count'], symbol['title']])
+
+            pd.set_option('display.max_colwidth', -1)
+            df_trending = pd.DataFrame(l_symbols, columns=['Ticker', 'Watchlist Count', 'Name'])
+            print(df_trending.to_string(index=False))
+        else:
+            print("Error!") 
+        print("")
+
+    except:
+        print("")
+
 
