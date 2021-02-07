@@ -35,9 +35,13 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   quadratic   quadratic regression (polynomial 2)")
     print("   cubic       cubic regression (polynomial 3)")
     print("   regression  regression (other polynomial)")
+    #print("   arima")
+    #print("   rnn")
+    #print("   lstm")
+    #print("   prophet")
     print("")
- 
 
+ 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
 

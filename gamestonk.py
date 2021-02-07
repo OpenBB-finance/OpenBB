@@ -152,7 +152,6 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   load        load a specific stock ticker for analysis")
     print("   view        view and load a specific stock ticker for technical analysis")
     
-
     s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
     if s_ticker and s_start:
         print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
@@ -165,26 +164,13 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("\nMenus:")
     print("   disc        discover trending stocks, \t e.g. map, sectors, high short interest")
     print("   sen         sentiment of the market, \t from: reddit, stocktwits, twitter")
-
     if s_ticker:
         print("   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool")
         print("   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings")
         print("   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv")
         print("   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec")
         print("   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet")
-
-    '''
-        print("\nPrediction:")
-        print("   ma")
-        print("   ema")
-        print("   lr")
-        print("   knn")
-        print("   arima")
-        print("   rnn")
-        print("   lstm")
-        print("   prophet")
-    '''
-
+    print("")
 
 # -----------------------------------------------------------------------------------------------------------------------
 def main():
@@ -211,11 +197,9 @@ def main():
                                              'clear', 'load', 'view',
                                              'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred'])
                                              
-
     # Print first welcome message and help
-    print("\nWelcome to Didier's Stock Market Bot\n")
+    print("\nWelcome to Didier's Gamestonk\n")
     print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-    print("\n")
 
     # Loop forever and ever
     while True:
@@ -325,8 +309,6 @@ def main():
 
         else:
             print('Shouldnt see this command!')
-
-        print("")
 
 if __name__ == "__main__":
     main()
