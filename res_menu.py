@@ -28,6 +28,7 @@ def print_research():
     print("   fintel            www.fintel.com")
     print("   zacks             www.zacks.com")
     print("   macrotrends       www.macrotrends.net")
+    print("   newsfilter        www.newsfilter.io")
     print("")
     print("   resources         www.tradinganalysisresources.com")
     print("")
@@ -42,7 +43,7 @@ def res_menu(s_ticker):
     res_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                             'macroaxis', 'yahoo', 'finviz', 'marketwatch', 'fool', 'businessinsider', 
                                             'fmp', 'fidelity', 'tradingview', 'marketchameleon', 'stockrow', 'barchart',
-                                            'grufity', 'fintel', 'zacks', 'macrotrends', 'resources'])
+                                            'grufity', 'fintel', 'zacks', 'macrotrends', 'newsfilter', 'resources'])
 
     print_research()
 
@@ -209,6 +210,15 @@ def res_menu(s_ticker):
         elif ns_known_args.cmd == 'macrotrends':
             try:
                 webbrowser.open(f"https://www.macrotrends.net/stocks/charts/{s_ticker}/{s_ticker}/market-cap")
+                print("")
+            except SystemExit:
+                print("")
+                return
+
+        # ------------------------------------------------------------------------------------------------------------
+        elif ns_known_args.cmd == 'newsfilter':
+            try:
+                webbrowser.open(f"https://newsfilter.io/search?query={s_ticker}")
                 print("")
             except SystemExit:
                 print("")
