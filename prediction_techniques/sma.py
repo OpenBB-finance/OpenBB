@@ -38,7 +38,7 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['4. close'].index[-1], n_next_days=ns_parser.n_days)
         df_pred = pd.Series(l_predictions, index=l_pred_days, name='Price') 
 
-        plt.plot(df_stock.index, df_stock['4. close'], lw=3)
+        plt.plot(df_stock.index, df_stock['4. close'], lw=2)
         plt.title(f"{ns_parser.n_length} Moving Average on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 10)[-1])
         plt.xlabel('Time')
