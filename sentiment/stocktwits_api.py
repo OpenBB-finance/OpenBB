@@ -1,7 +1,7 @@
 import argparse
 import requests
 import pandas as pd
-from stock_market_helper_funcs import *
+from helper_funcs import *
 
 # -------------------------------------------------------------------------------------------------------------------
 def sentiment(l_args, s_ticker):

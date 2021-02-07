@@ -4,7 +4,7 @@
 
 import argparse
 import pandas as pd
-from stock_market_helper_funcs import *
+from helper_funcs import *
 from fundamental_analysis import fa_menu as fam
 from technical_analysis import ta_menu as tam
 from due_diligence import dd_menu as ddm

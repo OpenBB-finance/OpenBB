@@ -1,6 +1,6 @@
 import finviz
 import argparse
-from stock_market_helper_funcs import *
+from helper_funcs import *
 import pandas as pd
 
 

@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from alpha_vantage.timeseries import TimeSeries
-from stock_market_helper_funcs import *
+from helper_funcs import *
 import requests
 import pandas as pd
 import re

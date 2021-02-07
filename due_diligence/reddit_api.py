@@ -7,7 +7,7 @@ import praw
 from datetime import datetime
 from pytz import timezone
 from holidays import US as holidaysUS
-from stock_market_helper_funcs import *
+from helper_funcs import *
 import re
 import finviz
 import config_bot as cfg

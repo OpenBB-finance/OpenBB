@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-from stock_market_helper_funcs import *
+from helper_funcs import *
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters

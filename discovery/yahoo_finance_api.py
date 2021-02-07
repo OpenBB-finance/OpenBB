@@ -3,7 +3,7 @@ from alpha_vantage.sectorperformance import SectorPerformances
 from alpha_vantage.timeseries import TimeSeries
 import config_bot as cfg
 import pandas as pd
-#from stock_market_helper_funcs import *
+#from helper_funcs import *
 
 
 # ---------------------------------------------------- GAINERS ----------------------------------------------------

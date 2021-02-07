@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import re
-from stock_market_helper_funcs import *
+from helper_funcs import *
 
 # ---------------------------------------------------- ORDERS ----------------------------------------------------
 def orders(l_args):

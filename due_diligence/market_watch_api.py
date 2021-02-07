@@ -3,7 +3,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
-from stock_market_helper_funcs import *
+from helper_funcs import *
 
 
 # ---------------------------------------------------- SEC FILLINGS ----------------------------------------------------

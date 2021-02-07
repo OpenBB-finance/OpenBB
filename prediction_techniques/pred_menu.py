@@ -2,7 +2,7 @@ import config_bot as cfg
 import argparse
 import datetime
 from datetime import datetime
-from stock_market_helper_funcs import *
+from helper_funcs import *
 import config_bot as cfg
 import pandas as pd
 import matplotlib.pyplot as plt

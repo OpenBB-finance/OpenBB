@@ -1,6 +1,6 @@
 import argparse
 import pandas_ta as ta
-from stock_market_helper_funcs import *
+from helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 

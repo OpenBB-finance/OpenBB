@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import matplotlib.ticker as ticker
 import pandas as pd
-from stock_market_helper_funcs import *
+from helper_funcs import *
 
 # -------------------------------------------------------- SHORT_INTEREST --------------------------------------------------------
 def short_interest(l_args, s_ticker, s_start):

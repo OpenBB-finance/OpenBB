@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 import config_bot as cfg
 import argparse
-from stock_market_helper_funcs import *
+from helper_funcs import *
 
 
 # ---------------------------------------------------- INFO ----------------------------------------------------

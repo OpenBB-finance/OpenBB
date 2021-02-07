@@ -1,7 +1,7 @@
 from alpha_vantage.fundamentaldata import FundamentalData
 import config_bot as cfg
 import argparse
-from stock_market_helper_funcs import *
+from helper_funcs import *
 import pandas as pd
 import json
 import requests
