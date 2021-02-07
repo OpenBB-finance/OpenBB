@@ -50,7 +50,6 @@ def linear_regression(l_args, s_ticker, s_interval, df_stock):
         plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
         plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['4. close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
         plt.plot(df_pred.index, df_pred, lw=2, c='tab:green')
-        cmap = plt.get_cmap("tab10")
         plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
         plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle='--', color='k')

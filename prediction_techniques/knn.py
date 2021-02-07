@@ -27,34 +27,38 @@ def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
+        # Split training data
         stock_x, stock_y = splitTrain.split_train(df_stock['4. close'].values, ns_parser.n_inputs, ns_parser.n_days, ns_parser.n_jumps)
 
+        # Machine Learning model
         knn = neighbors.KNeighborsRegressor(n_neighbors=ns_parser.n_neighbors)
         knn.fit(stock_x, stock_y)
-        l_predictions = knn.predict(df_stock['4. close'].values[-ns_parser.n_inputs:].reshape(1, -1))[0]
 
+        # Prediction data
+        l_predictions = knn.predict(df_stock['4. close'].values[-ns_parser.n_inputs:].reshape(1, -1))[0]
         l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['4. close'].index[-1], n_next_days=ns_parser.n_days)
         df_pred = pd.Series(l_predictions, index=l_pred_days, name='Price') 
 
+        # Plotting
         plt.plot(df_stock.index, df_stock['4. close'], lw=2)
         plt.title(f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker} - {ns_parser.n_days} days prediction")
-        plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 10)[-1])
+        plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
         plt.xlabel('Time')
         plt.ylabel('Share Price ($)')
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.minorticks_on()
         plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.plot(df_pred.index, df_pred, lw=2)
-        cmap = plt.get_cmap("tab10")
-        plt.axvspan(df_pred.index[0], df_pred.index[-1], facecolor=cmap(1), alpha=0.2)
+        plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['4. close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
+        plt.plot(df_pred.index, df_pred, lw=2, c='tab:green')
+        plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
-        plt.vlines(df_stock.index[-1], ymin, ymax, colors=cmap(0), linewidth=1, linestyle='--', color='k')
+        plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle='--', color='k')
         plt.show()
 
+        # Print prediction data
         df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
         print(df_pred.to_string())
         print("")
 
     except:
         print("")
-
