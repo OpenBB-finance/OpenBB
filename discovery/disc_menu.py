@@ -7,6 +7,7 @@ from discovery import short_interest_api
 from discovery import seeking_alpha_api
 from discovery import fidelity_api
 from discovery import simply_wallst_api
+from discovery import spachero_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ def print_discovery():
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   sw            Simply Wall St. research data [Simply Wall St.]")
+    print("   spachero      Best website for SPACs research [SpacHero]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   orders        Orders by Fidelity Customers [Fidelity]")
     print("   earnings      next earnings release dates [Seeking Alpha]")
@@ -36,7 +38,8 @@ def disc_menu():
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'map', 'sectors', 'gainers', 'orders', 'high_short', 'low_float', 'earnings', 'sw'])
+                                             'map', 'sectors', 'gainers', 'spacs', 'orders', 'spachero',
+                                             'high_short', 'low_float', 'earnings', 'sw'])
 
     print_discovery()
 
@@ -75,6 +78,10 @@ def disc_menu():
         # ------------------------------------------------ YAHOO FINANCE ------------------------------------------------
         elif ns_known_args.cmd == 'gainers':
             yahoo_finance_api.gainers(l_args)
+
+        # -------------------------------------------------- SPACHERO --------------------------------------------------
+        elif ns_known_args.cmd == 'spachero':
+            spachero_api.spachero(l_args)
 
         # --------------------------------------------------- FIDELITY ---------------------------------------------------
         elif ns_known_args.cmd == 'orders':
