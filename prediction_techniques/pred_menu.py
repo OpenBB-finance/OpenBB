@@ -12,6 +12,7 @@ register_matplotlib_converters()
 from prediction_techniques import sma
 from prediction_techniques import knn
 from prediction_techniques import regression
+from prediction_techniques import arima
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
@@ -35,6 +36,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   quadratic   quadratic regression (polynomial 2)")
     print("   cubic       cubic regression (polynomial 3)")
     print("   regression  regression (other polynomial)")
+    print("   arima       autoregressive integrated moving average")
     #print("   arima")
     #print("   rnn")
     #print("   lstm")
@@ -49,7 +51,8 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     pred_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'sma', 'knn', 
-                                             'linear', 'quadratic', 'cubic', 'regression'])
+                                             'linear', 'quadratic', 'cubic', 'regression',
+                                             'arima'])
 
     print_prediction(s_ticker, s_start, s_interval)
 
@@ -81,11 +84,11 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'sma':
             sma.simple_moving_average(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------ k NEAREST NEIGHBORS ------------------------------------------
+        # ------------------------------------------- k NEAREST NEIGHBORS ------------------------------------------
         elif ns_known_args.cmd == 'knn':
             knn.k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------- REGRESSION -------------------------------------------------
+        # ----------------------------------------------- REGRESSION -------------------------------------------------
         elif ns_known_args.cmd == 'linear':
             regression.regression(l_args, s_ticker, s_interval, df_stock, regression.LINEAR)
 
@@ -97,6 +100,10 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'regression':
             regression.regression(l_args, s_ticker, s_interval, df_stock, regression.USER_INPUT)
+
+        # ------------------------------------------------- ARIMA -------------------------------------------------
+        elif ns_known_args.cmd == 'arima':
+            arima.arima(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
