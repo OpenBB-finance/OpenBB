@@ -13,6 +13,7 @@ from prediction_techniques import sma
 from prediction_techniques import knn
 from prediction_techniques import regression
 from prediction_techniques import arima
+from prediction_techniques import fbprophet
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
@@ -37,6 +38,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   cubic       cubic regression (polynomial 3)")
     print("   regression  regression (other polynomial)")
     print("   arima       autoregressive integrated moving average")
+    print("   prophet     Facebook's prophet prediction")
     #print("   arima")
     #print("   rnn")
     #print("   lstm")
@@ -52,7 +54,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'sma', 'knn', 
                                              'linear', 'quadratic', 'cubic', 'regression',
-                                             'arima'])
+                                             'arima', 'prophet'])
 
     print_prediction(s_ticker, s_start, s_interval)
 
@@ -104,6 +106,10 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
         # ------------------------------------------------- ARIMA -------------------------------------------------
         elif ns_known_args.cmd == 'arima':
             arima.arima(l_args, s_ticker, s_interval, df_stock)
+
+        # ------------------------------------------------ FBPROPHET ------------------------------------------------
+        elif ns_known_args.cmd == 'prophet':
+            fbprophet.fbprophet(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------
         else:

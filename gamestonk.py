@@ -1,7 +1,6 @@
 """ Example or something
 
 """
-
 import argparse
 import pandas as pd
 from helper_funcs import *
@@ -61,6 +60,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     else:
         print(f"Loading {s_intraday} {s_ticker} stock for analysis.")
 
+    print("")
     return [s_ticker, s_start, s_interval, df_stock]
 
 
@@ -184,10 +184,11 @@ def main():
     s_interval = "1440min"
 
     # Set stock by default to speed up testing
-    s_ticker = "AMZN"
+    s_ticker = "NIO"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-    df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')  
+    df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
+    df_stock = df_stock.sort_index(ascending=True)
     df_stock = df_stock[s_start:] 
     # Delete above in the future
 
