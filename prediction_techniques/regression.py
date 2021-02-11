@@ -25,7 +25,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
 
     parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, help='number of days to use for prediction')
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
-    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_non_negative, default=0, help='number of jumps in training data')
+    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_positive, default=1, help='number of jumps in training data')
 
     if polynomial == USER_INPUT:
         parser.add_argument('-p', "--polynomial", action="store", dest="n_polynomial", type=check_positive, required=True, help='polynomial associated with regression')
