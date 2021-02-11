@@ -11,6 +11,8 @@ from discovery import disc_menu as dm
 from sentiment import sen_menu as sm
 from prediction_techniques import pred_menu as pm
 import res_menu as rm
+#import warnings
+#warnings.simplefilter("always")
 
 # delete this important when automatic loading tesla
 #i.e. when program is done
@@ -184,7 +186,7 @@ def main():
     s_interval = "1440min"
 
     # Set stock by default to speed up testing
-    s_ticker = "NIO"
+    s_ticker = "AMD"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
@@ -199,7 +201,7 @@ def main():
                                              'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred'])
                                              
     # Print first welcome message and help
-    print("\nWelcome to Didier's Gamestonk\n")
+    print("\nWelcome to Didier's Gamestonk Terminal\n")
     print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
     # Loop forever and ever
@@ -303,7 +305,7 @@ def main():
             b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
 
             if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
+                print("Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n")
                 return
             else:
                 print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
