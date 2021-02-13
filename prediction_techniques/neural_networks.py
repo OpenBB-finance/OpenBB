@@ -164,3 +164,100 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
 
     except:
         print("")
+
+
+# -------------------------------------------------- RNN --------------------------------------------------
+def rnn(l_args, s_ticker, s_interval, df_stock):
+    parser = argparse.ArgumentParser(prog='rnn',
+                                     description="""Recurrent Neural Network. """)
+
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
+    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, help='number of days to use for prediction')
+    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, help='number of training epochs')
+    parser.add_argument('-f', "--freq", action="store", dest="n_jumps", type=check_positive, default=1, help='how')
+    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', choices=['normalization', 'standardization', 'none'], help='Pre Processing data')
+    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', help='Optimizer technique', 
+                        choices=['adam', 'adagrad', 'adadelta', 'adamax', 'ftrl', 'nadam', 'optimizer', 'rmsprop', 'sgd'])
+    parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
+                        choices=['mae', 'mape', 'mse', 'msle'], help='Loss function')
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+        if l_unknown_args:
+            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            return
+
+        # Pre-process data
+        if ns_parser.s_preprocessing == 'standardization':
+            scaler = StandardScaler()
+            stock_train_data = scaler.fit_transform(np.array(df_stock['5. adjusted close'].values.reshape(-1, 1)))
+        elif ns_parser.s_preprocessing == 'normalization':
+            scaler = MinMaxScaler()
+            stock_train_data = scaler.fit_transform(np.array(df_stock['5. adjusted close'].values.reshape(-1, 1)))
+        else: # No pre-processing
+            stock_train_data = np.array(df_stock['5. adjusted close'].values.reshape(-1, 1))
+
+        # Split training data for the neural network
+        stock_x, stock_y = splitTrain.split_train(stock_train_data, ns_parser.n_inputs, ns_parser.n_days, numJumps=ns_parser.n_jumps)
+        stock_x = np.array(stock_x)
+        stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
+        stock_y = np.array(stock_y)
+        stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
+
+        # Build Neural Network model
+        Recurrent_Neural_Network \
+            = [{'SimpleRNN': 
+                        {'units':100, 'activation':'linear', 'return_sequences':True} },
+                {'SimpleRNN': 
+                        {'units':50, 'activation':'linear', 'return_sequences':True} },
+                {'Dropout': 
+                        {'rate':0.2} },
+                {'SimpleRNN': 
+                        {'units':21, 'activation':'linear', 'return_sequences':False} },
+                {'Dense': 
+                        {'activation':'linear'} }]
+
+        model = build_neural_network_model(Recurrent_Neural_Network, ns_parser.n_inputs, ns_parser.n_days)
+        model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
+        print(model.summary())
+        print("")
+
+        # Train our model
+        model.fit(stock_x, stock_y, epochs=ns_parser.n_epochs, verbose=0);
+
+        # Prediction
+        yhat = model.predict(stock_train_data[-ns_parser.n_inputs:].reshape(1, ns_parser.n_inputs, 1), verbose=0)
+
+        # Re-scale the data back
+        if (ns_parser.s_preprocessing == 'standardization') or (ns_parser.s_preprocessing == 'normalization'): 
+            y_pred_test_t = scaler.inverse_transform(yhat.tolist())
+        else:
+            y_pred_test_t = yhat
+
+        l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['5. adjusted close'].index[-1], n_next_days=ns_parser.n_days)
+        df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name='Price') 
+
+        # Plotting
+        plt.plot(df_stock.index, df_stock['5. adjusted close'], lw=3)
+        plt.title(f"RNN on {s_ticker} - {ns_parser.n_days} days prediction")
+        plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
+        plt.xlabel('Time')
+        plt.ylabel('Share Price ($)')
+        plt.grid(b=True, which='major', color='#666666', linestyle='-')
+        plt.minorticks_on()
+        plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+        plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['5. adjusted close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
+        plt.plot(df_pred.index, df_pred, lw=2, c='tab:green')
+        plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
+        xmin, xmax, ymin, ymax = plt.axis()
+        plt.vlines(df_stock.index[-1], ymin, ymax, colors='k', linewidth=3, linestyle='--', color='k')
+        plt.show()
+
+        # Print prediction data
+        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
+        print(df_pred.to_string())
+        print("")
+
+    except:
+        print("")

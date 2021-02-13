@@ -41,6 +41,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   arima       autoregressive integrated moving average")
     print("   prophet     Facebook's prophet prediction")
     print("   mlp         MultiLayer Perceptron")
+    print("   rnn         Recurrent Neural Network")
     print("")
 
  
@@ -52,7 +53,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'sma', 'knn', 
                                              'linear', 'quadratic', 'cubic', 'regression',
-                                             'arima', 'prophet', 'mlp'])
+                                             'arima', 'prophet', 'mlp', 'rnn'])
 
     print_prediction(s_ticker, s_start, s_interval)
 
@@ -109,9 +110,12 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'prophet':
             fbprophet.fbprophet(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------ FBPROPHET ------------------------------------------------
+        # ---------------------------------------------- NEURAL NETWORK ----------------------------------------------
         elif ns_known_args.cmd == 'mlp':
             neural_networks.mlp(l_args, s_ticker, s_interval, df_stock)
+
+        elif ns_known_args.cmd == 'rnn':
+            neural_networks.rnn(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
