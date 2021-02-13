@@ -42,6 +42,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   prophet     Facebook's prophet prediction")
     print("   mlp         MultiLayer Perceptron")
     print("   rnn         Recurrent Neural Network")
+    print("   lstm        Long-Short Term Memory")
     print("")
 
  
@@ -53,7 +54,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'sma', 'knn', 
                                              'linear', 'quadratic', 'cubic', 'regression',
-                                             'arima', 'prophet', 'mlp', 'rnn'])
+                                             'arima', 'prophet', 'mlp', 'rnn', 'lstm'])
 
     print_prediction(s_ticker, s_start, s_interval)
 
@@ -116,6 +117,9 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'rnn':
             neural_networks.rnn(l_args, s_ticker, s_interval, df_stock)
+
+        elif ns_known_args.cmd == 'lstm':
+            neural_networks.lstm(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
