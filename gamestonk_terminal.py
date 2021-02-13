@@ -302,7 +302,15 @@ def main():
 
         # PREDICTION TECHNIQUES
         elif ns_known_args.opt == 'pred':
-            b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
+        
+            if s_interval == "1440min":
+                b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
+            # If stock data is intradaily, we need to get data again as prediction techniques work on daily adjusted data
+            else:
+                df_stock_pred, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
+                df_stock_pred = df_stock_pred.sort_index(ascending=True)
+                df_stock_pred = df_stock_pred[s_start:]
+                b_quit = pm.pred_menu(df_stock_pred, s_ticker, s_start, s_interval="1440min")
 
             if b_quit:
                 print("Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n")
