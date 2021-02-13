@@ -14,6 +14,7 @@ from prediction_techniques import knn
 from prediction_techniques import regression
 from prediction_techniques import arima
 from prediction_techniques import fbprophet
+from prediction_techniques import neural_networks
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
@@ -39,10 +40,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   regression  regression (other polynomial)")
     print("   arima       autoregressive integrated moving average")
     print("   prophet     Facebook's prophet prediction")
-    #print("   arima")
-    #print("   rnn")
-    #print("   lstm")
-    #print("   prophet")
+    print("   mlp         MultiLayer Perceptron")
     print("")
 
  
@@ -54,7 +52,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'sma', 'knn', 
                                              'linear', 'quadratic', 'cubic', 'regression',
-                                             'arima', 'prophet'])
+                                             'arima', 'prophet', 'mlp'])
 
     print_prediction(s_ticker, s_start, s_interval)
 
@@ -110,6 +108,10 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
         # ------------------------------------------------ FBPROPHET ------------------------------------------------
         elif ns_known_args.cmd == 'prophet':
             fbprophet.fbprophet(l_args, s_ticker, s_interval, df_stock)
+
+        # ------------------------------------------------ FBPROPHET ------------------------------------------------
+        elif ns_known_args.cmd == 'mlp':
+            neural_networks.mlp(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
