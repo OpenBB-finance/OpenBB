@@ -162,5 +162,5 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         print(df_pred.to_string())
         print("")
 
-    #except:
-    #    print("")
+    except:
+        print("")
