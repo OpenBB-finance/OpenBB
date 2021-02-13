@@ -160,6 +160,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
+        print("Predicted share price:")
         df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
         print(df_pred.to_string())
         print("")
@@ -259,6 +260,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
+        print("Predicted share price:")
         df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
         print(df_pred.to_string())
         print("")
@@ -360,6 +362,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
+        print("Predicted share price:")
         df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
         print(df_pred.to_string())
         print("")

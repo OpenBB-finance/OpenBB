@@ -45,16 +45,17 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
         model.plot(forecast, ax=ax, xlabel='Time', ylabel='Share Price ($)')
         xmin, xmax, ymin, ymax = ax.axis()
         ax.vlines(df_stock['ds'].values[-1], ymin, ymax, linewidth=2, linestyle='--', color='k')
-        plt.axvspan(l_pred_days[0], l_pred_days[-1], facecolor='tab:orange', alpha=0.2)
+        plt.axvspan(df_stock['ds'].values[-1], l_pred_days[-1], facecolor='tab:orange', alpha=0.2)
         plt.ylim(ymin, ymax)
-        plt.xlim(df_stock['ds'].values[0], get_next_stock_market_days(last_stock_day=l_pred_days[-1], n_next_days=1))
+        plt.xlim(df_stock['ds'].values[0], get_next_stock_market_days(l_pred_days[-1], 1)[-1])
         plt.title(f"Fb Prophet on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.show()
 
         print("")
-        print("Prediction prices:")
+        print("Predicted share price:")
         df_pred = forecast['yhat'][-ns_parser.n_days:].apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string(index=False))
+        df_pred.index = l_pred_days
+        print(df_pred.to_string())
         print("")
 
     except:

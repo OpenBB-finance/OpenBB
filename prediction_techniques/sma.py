@@ -31,16 +31,16 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         l_predictions = list()
         for pred_day in range(ns_parser.n_days):
             if pred_day < ns_parser.n_length:
-                l_ma_stock = df_stock['4. close'].values[-ns_parser.n_length+pred_day:]
+                l_ma_stock = df_stock['5. adjusted close'].values[-ns_parser.n_length+pred_day:]
             else:
                 l_ma_stock = list()
             l_predictions.append(np.mean(np.append(l_ma_stock, l_predictions)))
 
-        l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['4. close'].index[-1], n_next_days=ns_parser.n_days)
+        l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['5. adjusted close'].index[-1], n_next_days=ns_parser.n_days)
         df_pred = pd.Series(l_predictions, index=l_pred_days, name='Price') 
 
         # Plotting
-        plt.plot(df_stock.index, df_stock['4. close'], lw=2)
+        plt.plot(df_stock.index, df_stock['5. adjusted close'], lw=2)
         plt.title(f"{ns_parser.n_length} Moving Average on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
         plt.xlabel('Time')
@@ -48,15 +48,17 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.minorticks_on()
         plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        df_ma = df_stock['4. close'].rolling(window=ns_parser.n_length).mean()
+        df_ma = df_stock['5. adjusted close'].rolling(window=ns_parser.n_length).mean()
         plt.plot(df_ma.index, df_ma, lw=2, linestyle='--', c='tab:orange')
-        plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['4. close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
+        plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['5. adjusted close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
         plt.plot(df_pred.index, df_pred, lw=2, c='tab:green')
         plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
         plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle='--', color='k')
         plt.show()
 
+        # Print prediction data
+        print("Predicted share price:")
         df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
         print(df_pred.to_string())
         print("")
