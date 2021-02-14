@@ -9,10 +9,10 @@ register_matplotlib_converters()
 from TimeSeriesCrossValidation import splitTrain
 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from tensorflow.keras.layers import Dense, Activation, Dropout
-from tensorflow.keras.layers import LSTM, SimpleRNN
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import RepeatVector, TimeDistributed
+from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout, Activation, RepeatVector, TimeDistributed
+
+import config_neural_network_models as cfg_nn_models
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -109,19 +109,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1]))
 
         # Build Neural Network model
-        MultiLayer_Perceptron \
-            = [ {'Dense': 
-                        {'units':50, 'activation':'relu'} },
-                {'Dense': 
-                        {'units':100, 'activation':'relu'} },
-                {'Dense': 
-                        {'units':80, 'activation':'relu'} },
-                {'Dense': 
-                        {'units':30, 'activation':'relu'} },
-                {'Dense': 
-                        {'activation':'linear'} }]
-
-        model = build_neural_network_model(MultiLayer_Perceptron, ns_parser.n_inputs, ns_parser.n_days)
+        model = build_neural_network_model(cfg_nn_models.MultiLayer_Perceptron, ns_parser.n_inputs, ns_parser.n_days)
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
         # Train our model
@@ -209,19 +197,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
 
         # Build Neural Network model
-        Recurrent_Neural_Network \
-            = [{'SimpleRNN': 
-                        {'units':100, 'activation':'linear', 'return_sequences':True} },
-                {'SimpleRNN': 
-                        {'units':50, 'activation':'linear', 'return_sequences':True} },
-                {'Dropout': 
-                        {'rate':0.2} },
-                {'SimpleRNN': 
-                        {'units':21, 'activation':'linear', 'return_sequences':False} },
-                {'Dense': 
-                        {'activation':'linear'} }]
-
-        model = build_neural_network_model(Recurrent_Neural_Network, ns_parser.n_inputs, ns_parser.n_days)
+        model = build_neural_network_model(cfg_nn_models.Recurrent_Neural_Network, ns_parser.n_inputs, ns_parser.n_days)
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
         # Train our model
@@ -309,21 +285,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
         stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
 
         # Build Neural Network model
-        Long_Short_Term_Memory \
-            = [ {'LSTM': 
-                        {'units':25, 'activation':'tanh', 'return_sequences':True} },
-                {'LSTM': 
-                        {'units':50, 'activation':'tanh', 'return_sequences':True} },
-                {'LSTM': 
-                        {'units':30, 'activation':'tanh', 'return_sequences':True} },
-                {'LSTM': 
-                        {'units':20, 'activation':'tanh', 'return_sequences':True} },
-                {'LSTM': 
-                        {'units':15, 'activation':'tanh', 'return_sequences':False} },
-                {'Dense': 
-                        {'activation':'linear'} }]
-
-        model = build_neural_network_model(Long_Short_Term_Memory, ns_parser.n_inputs, ns_parser.n_days)
+        model = build_neural_network_model(cfg_nn_models.Long_Short_Term_Memory, ns_parser.n_inputs, ns_parser.n_days)
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
         # Train our model
