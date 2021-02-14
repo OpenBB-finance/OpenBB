@@ -8,6 +8,7 @@ from discovery import seeking_alpha_api
 from discovery import fidelity_api
 from discovery import simply_wallst_api
 from discovery import spachero_api
+from discovery import unusual_whales_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -21,13 +22,14 @@ def print_discovery():
     print("")
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
-    print("   sw            Simply Wall St. research data [Simply Wall St.]")
-    print("   spachero      Best website for SPACs research [SpacHero]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   orders        Orders by Fidelity Customers [Fidelity]")
     print("   earnings      next earnings release dates [Seeking Alpha]")
     print("   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]")
     print("   low_float     show low float stocks under 10M shares float [www.lowfloat.com]")
+    print("   sw            Simply Wall St. research data [Simply Wall St.]")
+    print("   spachero      Best website for SPACs research [SpacHero]")
+    print("   uwhales       Good website for SPACs research [UnusualWhales]")
     print("")
     return
 
@@ -39,7 +41,7 @@ def disc_menu():
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'map', 'sectors', 'gainers', 'spacs', 'orders', 'spachero',
-                                             'high_short', 'low_float', 'earnings', 'sw'])
+                                             'high_short', 'low_float', 'earnings', 'sw', 'uwhales'])
 
     print_discovery()
 
@@ -82,6 +84,10 @@ def disc_menu():
         # -------------------------------------------------- SPACHERO --------------------------------------------------
         elif ns_known_args.cmd == 'spachero':
             spachero_api.spachero(l_args)
+
+        # -------------------------------------------------- UNUSUAL WHALES --------------------------------------------------
+        elif ns_known_args.cmd == 'uwhales':
+            unusual_whales_api.unusual_whales(l_args)
 
         # --------------------------------------------------- FIDELITY ---------------------------------------------------
         elif ns_known_args.cmd == 'orders':
