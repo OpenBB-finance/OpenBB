@@ -1,6 +1,6 @@
 import quandl
 from datetime import datetime
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 from matplotlib import pyplot as plt
 import numpy as np

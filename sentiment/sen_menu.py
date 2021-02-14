@@ -1,4 +1,4 @@
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 from sentiment import reddit_api
 from sentiment import stocktwits_api

@@ -1,5 +1,5 @@
 from alpha_vantage.fundamentaldata import FundamentalData
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 from helper_funcs import *
 import pandas as pd

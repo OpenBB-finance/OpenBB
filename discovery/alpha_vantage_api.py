@@ -1,6 +1,6 @@
 import argparse
 from alpha_vantage.sectorperformance import SectorPerformances
-import config_bot as cfg
+import config_terminal as cfg
 import pandas as pd
 import matplotlib.pyplot as plt
 

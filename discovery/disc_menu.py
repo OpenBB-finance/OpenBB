@@ -1,4 +1,4 @@
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 from discovery import alpha_vantage_api
 from discovery import yahoo_finance_api

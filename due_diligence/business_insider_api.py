@@ -5,7 +5,7 @@ import requests
 import pandas as pd
 import re
 import json
-import config_bot as cfg
+import config_terminal as cfg
 from datetime import datetime
 import argparse
 from fuzzywuzzy import fuzz

@@ -1,6 +1,6 @@
 import yfinance as yf
 import pandas as pd
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 from helper_funcs import *
 

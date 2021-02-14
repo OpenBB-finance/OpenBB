@@ -16,7 +16,7 @@ import res_menu as rm
 
 # delete this important when automatic loading tesla
 #i.e. when program is done
-import config_bot as cfg
+import config_terminal as cfg
 from alpha_vantage.timeseries import TimeSeries
 
 # ----------------------------------------------------- LOAD -----------------------------------------------------

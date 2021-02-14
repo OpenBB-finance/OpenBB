@@ -1,4 +1,4 @@
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 import webbrowser
 

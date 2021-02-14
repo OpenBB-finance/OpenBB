@@ -1,5 +1,5 @@
 import FundamentalAnalysis as fa # Financial Modeling Prep
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 import datetime
 from datetime import datetime

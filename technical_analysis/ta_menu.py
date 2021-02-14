@@ -1,6 +1,6 @@
 import FundamentalAnalysis as fa
 from alpha_vantage.fundamentaldata import FundamentalData
-import config_bot as cfg
+import config_terminal as cfg
 import argparse
 import datetime
 from datetime import datetime

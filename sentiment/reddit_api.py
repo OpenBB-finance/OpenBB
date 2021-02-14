@@ -10,7 +10,7 @@ from holidays import US as holidaysUS
 from helper_funcs import *
 import re
 import finviz
-import config_bot as cfg
+import config_terminal as cfg
 import warnings
 
 # -------------------------------------------------------------------------------------------------------------------
