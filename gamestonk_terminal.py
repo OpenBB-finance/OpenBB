@@ -190,7 +190,7 @@ def main():
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
-    df_stock = df_stock.sort_index(ascending=True)
+    df_stock.sort_index(ascending=True, inplace=True)
     df_stock = df_stock[s_start:] 
     # Delete above in the future
 
