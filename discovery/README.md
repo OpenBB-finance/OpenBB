@@ -54,6 +54,14 @@ Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]
 <img width="888" alt="top_gainers" src="https://user-images.githubusercontent.com/25267873/108572677-b9dbf780-730a-11eb-9f6a-73c99e89a4e6.png">
 
 ## orders <a name="orders"></a>
+```
+usage: orders [-n N_NUM]
+```
+Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. [Source: Fidelity]
+  * -n : Number of top ordered stocks to be printed. Default 10.
+
+<img width="668" alt="orders" src="https://user-images.githubusercontent.com/25267873/108573094-bb59ef80-730b-11eb-8b13-f3912718e96d.png">
+
 
 ## earnings <a name="earnings"></a>
 
