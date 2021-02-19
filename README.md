@@ -186,8 +186,16 @@ Note: The libraries specified in the [requirements.txt](/requirements.txt) file 
 
 ## API Keys <a name="API_Keys"></a>
 
-Necessary API Keys, and how to get them!
+The project is build around several different API calls, whether it is to access historical data or finantials.
 
+These are the ones where a key is necessary:
+  * Alpha Vantage: https://www.alphavantage.co
+  * Financial Modeling Prep: https://financialmodelingprep.com/developer
+  * Quandl: https://www.quandl.com/tools/api
+  * Reddit: https://www.reddit.com/prefs/apps
+  * Twitter: https://developer.twitter.com
+
+When these are obtained, don't forget to update [config_terminal.txt](/config_terminal.py)
 
 ## Disclaimer <a name="Disclaimer"></a>
 
