@@ -45,6 +45,13 @@ Real-time and historical sector performances calculated from S&P500 incumbents. 
 
 
 ## gainers <a name="gainers"></a>
+```
+usage: gainers [-n {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24}]
+```
+Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]
+  * -n : Number of the top gainers stocks to retrieve. Default 5.
+
+<img width="888" alt="top_gainers" src="https://user-images.githubusercontent.com/25267873/108572677-b9dbf780-730a-11eb-9f6a-73c99e89a4e6.png">
 
 ## orders <a name="orders"></a>
 
