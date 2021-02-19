@@ -24,8 +24,21 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 
 ## Features <a name="Features"></a>
 
-The main menu allows to pre-select a ticker with commands load, clear it and view.
-Talk about the dates.
+The main menu allows the following commands:
+```
+load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
+clear
+view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
+```
+With their functions being:
+   * Load stock ticker to perform analysis on
+     * -s : The starting date (format YYYY-MM-DD) of the stock
+     * -i : Intraday stock minutes 
+   * Clear previously loaded stock ticker.
+   * Visualise historical data of a stock. An alpha_vantage key is necessary.
+     * -s : The starting date (format YYYY-MM-DD) of the stock
+     * -i : Intraday stock minutes
+     * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
 
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 ```
