@@ -23,20 +23,6 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * [uwhales](#uwhales)
     - good website for SPACs research [UnusualWhales]
 
-
-```
-map           S&P500 index stocks map [Finviz]
-sectors       show sectors performance [Alpha Vantage]
-gainers       show latest top gainers [Yahoo Finance]
-orders        orders by Fidelity Customers [Fidelity]
-earnings      next earnings release dates [Seeking Alpha]
-high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
-low_float     show low float stocks under 10M shares float [www.lowfloat.com]
-sw            Simply Wall St. research data [Simply Wall St.]
-spachero      best website for SPACs research [SpacHero]
-uwhales       good website for SPACs research [UnusualWhales]
-```
-
 ## map <a name="map"></a>
 
 ```
@@ -46,11 +32,17 @@ Performance index stocks map categorized by sectors and industries. Size represe
   * -p : Performance period. Default 1 day.
   * -t : Map filter type. Default S&P500.
 
-Example:
 ![map_filter](https://user-images.githubusercontent.com/25267873/108570986-032a4800-7307-11eb-8c8d-f62409c11e06.png)
 
 
 ## sectors <a name="sectors"></a>
+```
+usage: sectors
+```
+Real-time and historical sector performances calculated from S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
+
+![sectors](https://user-images.githubusercontent.com/25267873/108572267-d297dd80-7309-11eb-863b-20cfe3012c30.png)
+
 
 ## gainers <a name="gainers"></a>
 
