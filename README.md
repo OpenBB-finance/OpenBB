@@ -27,7 +27,7 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 The main menu allows to pre-select a ticker with commands load, clear it and view.
 Talk about the dates.
 
-### Discover Stocks <a name="Discover_Stocks"></a>
+### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 ```
 map           S&P500 index stocks map [Finviz]
 sectors       show sectors performance [Alpha Vantage]
@@ -41,7 +41,7 @@ spachero      Best website for SPACs research [SpacHero]
 uwhales       Good website for SPACs research [UnusualWhales]
 ```
 
-### Market Sentiment <a name="Market_Sentiment"></a>
+### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
 ```
 Reddit:
 wsb           show what WSB gang is up to in subreddit wallstreetbets
@@ -80,7 +80,7 @@ newsfilter        www.newsfilter.io
 resources         www.tradinganalysisresources.com
 ```
 
-### Fundamental Analysis <a name="Fundamental_Analysis"></a>
+### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
 ```
 Daily Stock: BB (from 2020-06-04)
 
@@ -121,7 +121,7 @@ ratios        financial ratios of the company
 growth        financial statement growth of the company
 ```
 
-### Technical Analysis <a name="Technical_Analysis"></a>
+### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
 ```
 overlap:
 ema         exponential moving average
@@ -142,7 +142,7 @@ ad          chaikin accumulation/distribution line values
 obv         on balance volume
 ```
 
-### Due Diligence <a name="Due_Diligence"></a>
+### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
 ```
 news          latest news of the company [Finviz]
 red           gets due diligence from another user's post [Reddit]
@@ -157,7 +157,7 @@ short         short interest [Quandl]
 warnings      company warnings according to Sean Seah book [Market Watch]
 ```
 
-### Prediction Techniques <a name="Prediction_Techniques"></a>
+### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
 ```
 sma         simple moving average
 knn         k-Nearest Neighbors
