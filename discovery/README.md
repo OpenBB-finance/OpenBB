@@ -16,7 +16,7 @@ This menu aims to discover new stocks, and the usage of the following commands a
     - show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
   * [low_float](#low_float)
     - show low float stocks under 10M shares float [www.lowfloat.com]
-  * [sw](#sw)            
+  * [simply_wallst](#simply_wallst)            
     - Simply Wall St. research data [Simply Wall St.]
   * [spachero](#spachero)
     - best website for SPACs research [SpacHero]
@@ -64,7 +64,7 @@ Orders by Fidelity customers. Information shown in the table below is based on t
 <img width="960" alt="orders" src="https://user-images.githubusercontent.com/25267873/108576069-20194800-7314-11eb-8265-2a2214183a9a.png">
 
 
-## up_earnings <a name="earnings"></a>
+## up_earnings <a name="up_earnings"></a>
 ```
 usage: up_earnings [-p N_PAGES] [-n N_NUM]
 ```
@@ -95,7 +95,15 @@ Print top stocks with lowest float. LowFloat.com provides a convenient sorted da
 <img width="982" alt="lowfloat" src="https://user-images.githubusercontent.com/25267873/108576262-d5e49680-7314-11eb-8385-a64069839a8b.png">
 
 
-## sw <a name="sw"></a>
+## simply_wallst <a name="simply_wallst"></a>
+```
+usage: simply_wallst [-i {any,automobiles,banks,capital-goods,commercial-services,consumer-durables,consumer-services,diversified-financials,energy,consumer-retailing,food-beverage-tobacco,healthcare,household,insurance,materials,media,pharmaceuticals-biotech,real-estate,retail,semiconductors,software,tech,telecom,transportation,utilities}]
+```
+Simply Wall Street Research. Opens web browser. Although this does not require an API key, it requires a subscription to the website by the user (there's a 14 days free trial).
+  * -i : Industry of interest
+
+<img width="1200" alt="sw" src="https://user-images.githubusercontent.com/25267873/108576534-dfbac980-7315-11eb-9350-254fb9b64773.png">
+
 
 ## spachero <a name="spachero"></a>
 
