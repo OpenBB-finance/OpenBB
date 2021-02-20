@@ -95,6 +95,7 @@ Prints insider activity over time [Source: Business Insider]
 ![ins](https://user-images.githubusercontent.com/25267873/108609248-a725f900-73c4-11eb-9442-1ba3a0bf45ba.png)
 <img width="935" alt="ins2" src="https://user-images.githubusercontent.com/25267873/108609249-a7be8f80-73c4-11eb-8685-1cddbed5421e.png">
 
+
 ## insider <a name="insider"></a>
 ```
 usage: insider [-n N_NUM]
@@ -103,6 +104,7 @@ Prints information about inside traders. The following fields are expected: Date
   * -n : number of latest inside traders. Default 5.
 
 <img width="937" alt="insider" src="https://user-images.githubusercontent.com/25267873/108609258-a9885300-73c4-11eb-971e-ce84ee9dd94b.png">
+
 
 ## sec <a name="sec"></a>
 ```
@@ -113,11 +115,25 @@ Prints SEC filings of the company. The following fields are expected: Filing Dat
 
 <img width="967" alt="sec" src="https://user-images.githubusercontent.com/25267873/108609256-a8efbc80-73c4-11eb-97cc-3c819aebc795.png">
 
-## short <a name="short"></a>
 
+## short <a name="short"></a>
+```
+usage: short [-n] [-d N_DAYS]
+```
+Plots the short interest of a stock. This corresponds to the number of shares that have been sold short but have not yet been covered or closed out. [Source: Quandl]
+  * -n : data from NYSE flag. Default False (i.e. NASDAQ).
+  * -d : number of latest days to print data. Default 10.
+                                     
 ![short](https://user-images.githubusercontent.com/25267873/108609247-a68d6280-73c4-11eb-80b3-b8effa6988f1.png)
 <img width="967" alt="short2" src="https://user-images.githubusercontent.com/25267873/108609259-a9885300-73c4-11eb-9f37-64b78746cec3.png">
 
+
 ## warnings <a name="warnings"></a>
+```
+usage: warnings [-i] [-d]
+```
+Sean Seah warnings. Check: Consistent historical earnings per share; Consistently high return on equity; Consistently high return on assets; 5x Net Income > Long-Term Debt; and Interest coverage ratio more than 3. See https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/. [Source: Market Watch]
+  * -i : provide more information about Sean Seah warning rules. Default False.
+  * -d : print insights into warnings calculation. Default False.                        
 
 <img width="927" alt="warnings" src="https://user-images.githubusercontent.com/25267873/108609497-2ec03780-73c6-11eb-8577-d5da80dae213.png">
