@@ -99,12 +99,22 @@ Print top stocks with lowest float. LowFloat.com provides a convenient sorted da
 ```
 usage: simply_wallst [-i {any,automobiles,banks,capital-goods,commercial-services,consumer-durables,consumer-services,diversified-financials,energy,consumer-retailing,food-beverage-tobacco,healthcare,household,insurance,materials,media,pharmaceuticals-biotech,real-estate,retail,semiconductors,software,tech,telecom,transportation,utilities}]
 ```
-Simply Wall Street Research. Opens web browser. Although this does not require an API key, it requires a subscription to the website by the user (there's a 14 days free trial).
+Simply Wall Street Research. Opens web browser. Although this does not require an API key, it requires a subscription to the website by the user (there's a 14 days free trial). [Source: Simply Wall St.]
   * -i : Industry of interest
 
 <img width="1200" alt="sw" src="https://user-images.githubusercontent.com/25267873/108576534-dfbac980-7315-11eb-9350-254fb9b64773.png">
 
 
 ## spachero <a name="spachero"></a>
+```
+usage: spachero
+```
+Great website for SPACs research. [Source: www.spachero.com]
+
+<img width="1265" alt="Captura de ecrã 2021-02-20, às 01 12 14" src="https://user-images.githubusercontent.com/25267873/108577430-f282cd80-7318-11eb-888b-82dcf90d4f32.png">
 
 ## uwhales <a name="uwhales"></a>
+
+Good website for SPACs research. [Source: www.spachero.com]
+
+<img width="1269" alt="Captura de ecrã 2021-02-20, às 01 12 49" src="https://user-images.githubusercontent.com/25267873/108577429-f1ea3700-7318-11eb-9d0a-54e77e2500d2.png">
