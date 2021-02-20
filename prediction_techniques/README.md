@@ -1,57 +1,50 @@
-# TECHNICAL ANALYSIS
+# PREDICTION TECHNIQUES
 
-This menu aims to perform a technical analysis on a pre-loaded ticker chart, and the usage of the following commands along with an example will be exploited below.
+This menu aims to predict the share price of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below.
 
-```
-overlap:
-ema         exponential moving average
-sma         simple moving average
-vwap        volume weighted average price
-momentum:
-cci         commodity channel index
-macd        moving average convergence/divergence
-rsi         relative strength index
-stoch       stochastic oscillator
-trend:
-adx         average directional movement index
-aroon       aroon indicator
-volatility:
-bbands      bollinger bands
-volume:
-ad          chaikin accumulation/distribution line values
-obv         on balance volume
-```
+  * [sma](#sma)
+    - simple moving average
+  * [knn](#knn)
+    - k-Nearest Neighbors
+  * [linear](#linear)
+    - linear regression (polynomial 1)
+  * [quadratic](#quadratic)
+    - quadratic regression (polynomial 2)
+  * [cubic](#cubic)
+    - cubic regression (polynomial 3)
+  * [regression](#regression)
+    - regression (other polynomial)
+  * [arima](#arima)
+    - autoregressive integrated moving average
+  * [prophet](#prophet)
+    - Facebook's prophet prediction
+  * [mlp](#mlp)
+    - MultiLayer Perceptron
+  * [rnn](#rnn)
+    - Recurrent Neural Network
+  * [lstm](#lstm)
+    - Long-Short Term Memory
 
-# overlap
+**Note:** _Use this at your own discretion. All of these prediciton techniques rely solely on the closing price of the stock. This means that there are several factors that the models aren't aware of at the time of prediction, and may - drastically - move the price up or down. Examples are: news, analyst price targets, reddit post, tweets from Elon Musk, and so on._
 
-## ema
+## sma <a name="sma"></a>
 
-## sma
+## knn <a name="knn"></a>
 
-## vwap
+## linear <a name="linear"></a>
 
-# momentum
+## quadratic <a name="quadratic"></a>
 
-## cci
+## cubic <a name="cubic"></a>
 
-## macd
+## regression <a name="regression"></a>
 
-## rsi
+## arima <a name="arima"></a>
 
-## stoch
+## prophet <a name="prophet"></a>
 
-# trend
+## mlp <a name="mlp"></a>
 
-## adx
+## rnn <a name="rnn"></a>
 
-##aroon
-
-# volatility
-
-## bbands
-
-# volume
-
-## ad
-
-## obv
+## lstm <a name="lstm"></a>
