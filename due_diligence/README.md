@@ -58,11 +58,11 @@ Print analyst prices and ratings of the company. The following fields are expect
 usage: rating
 ```
 Based on specific ratios, prints information whether the company is a (strong) buy, neutral or a (strong) sell. The following fields are expected: P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
-<img width="922" alt="rating" src="https://user-images.githubusercontent.com/25267873/108609444-d0935480-73c5-11eb-9f14-4fefa67f41ee.png">e
+<img width="922" alt="rating" src="https://user-images.githubusercontent.com/25267873/108609444-d0935480-73c5-11eb-9f14-4fefa67f41ee.png">
 
 ## pt <a name="pt"></a>
 
-<img width="934" alt="pt" src="https://user-images.githubusercontent.com/25267873/108609255-a8efbc80-73c4-11eb-89c9-ecef71c11b4e.png">
+![pt](https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png)
 
 ## est <a name="est"></a>
 
