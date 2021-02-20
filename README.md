@@ -21,6 +21,7 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 * [Install](#Install)
 * [API Keys](#API_Keys)
 * [Disclaimer](#Disclaimer)
+* [Support](#Support)
 
 ## Features <a name="Features"></a>
 
@@ -213,3 +214,10 @@ When these are obtained, don't forget to update [config_terminal.txt](/config_te
 ## Disclaimer <a name="Disclaimer"></a>
 
 "A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
+
+## Support <a name="Support"></a>
+
+If you like this project, and would like for me to keep adding features / maintaining the repository, feel free to buy me a coffee!
+
+<a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
