@@ -51,7 +51,8 @@ usage: gainers [-n {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,
 Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]
   * -n : Number of the top gainers stocks to retrieve. Default 5.
 
-<img width="888" alt="top_gainers" src="https://user-images.githubusercontent.com/25267873/108572677-b9dbf780-730a-11eb-9f6a-73c99e89a4e6.png">
+<img width="962" alt="gainers" src="https://user-images.githubusercontent.com/25267873/108576107-4343f780-7314-11eb-947f-7d6d9dc2499a.png">
+
 
 ## orders <a name="orders"></a>
 ```
@@ -60,7 +61,7 @@ usage: orders [-n N_NUM]
 Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. [Source: Fidelity]
   * -n : Number of top ordered stocks to be printed. Default 10.
 
-<img width="668" alt="orders" src="https://user-images.githubusercontent.com/25267873/108573094-bb59ef80-730b-11eb-8b13-f3912718e96d.png">
+<img width="960" alt="orders" src="https://user-images.githubusercontent.com/25267873/108576069-20194800-7314-11eb-8265-2a2214183a9a.png">
 
 
 ## up_earnings <a name="earnings"></a>
@@ -85,6 +86,14 @@ Print top stocks being more heavily shorted. HighShortInterest.com provides a co
 
 
 ## low_float <a name="low_float"></a>
+```
+usage: low_float [-n N_NUM]
+```
+Print top stocks with lowest float. LowFloat.com provides a convenient sorted database of stocks which have a float of under 10 million shares. Additional key data such as the number of outstanding shares, short interest, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
+  * -n : Number of top stocks to print
+
+<img width="982" alt="lowfloat" src="https://user-images.githubusercontent.com/25267873/108576262-d5e49680-7314-11eb-8385-a64069839a8b.png">
+
 
 ## sw <a name="sw"></a>
 
