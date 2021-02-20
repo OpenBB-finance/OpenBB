@@ -2,38 +2,47 @@
 
 This menu aims to help in due-diligence of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below.
 
-```
-news          latest news of the company [Finviz]
-red           gets due diligence from another user's post [Reddit]
-analyst       analyst prices and ratings of the company [Finviz]
-rating        rating of the company from strong sell to strong buy [FMP]
-pt            price targets over time [Business Insider]
-est           quarter and year analysts earnings estimates [Business Insider]
-ins           insider activity over time [Business Insider]
-insider       insider trading of the company [Finviz]
-sec           SEC filings [Market Watch]
-short         short interest [Quandl]
-warnings      company warnings according to Sean Seah book [Market Watch]
-```
+  * [news](#news)
+    - latest news of the company [Finviz]
+  * [red](#red)
+    - gets due diligence from another user's post [Reddit]
+  * [analyst](#analyst)
+    - analyst prices and ratings of the company [Finviz] 
+  * [rating](#rating)
+    - rating of the company from strong sell to strong buy [FMP]
+  * [pt](#pt)
+    - price targets over time [Business Insider] 
+  * [est](#est)
+    - quarter and year analysts earnings estimates [Business Insider]
+  * [ins](#ins)
+    - insider activity over time [Business Insider]
+  * [insider](#insider)
+    - insider trading of the company [Finviz]
+  * [sec](#sec)
+    - SEC filings [Market Watch]
+  * [short](#short)
+    - short interest [Quandl]
+  * [warnings](#warnings)
+    - company warnings according to Sean Seah book [Market Watch]
 
-## news
+## news <a name="news"></a>
 
-## red
+## red <a name="red"></a>
 
-## analyst
+## analyst <a name="analyst"></a>
 
-## rating
+## rating <a name="rating"></a>
 
-## pt
+## pt <a name="pt"></a>
 
-## est
+## est <a name="est"></a>
 
-## ins
+## ins <a name="ins"></a>
 
-## insider
+## insider <a name="insider"></a>
 
-## sec
+## sec <a name="sec"></a>
 
-## short
+## short <a name="short"></a>
 
-## warnings
+## warnings <a name="warnings"></a>
