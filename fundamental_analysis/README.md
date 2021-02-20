@@ -7,7 +7,7 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * [mgmt](#mgmt)
     - management team of the company [Business Insider]
 
-Market Watch API
+[MARKET WATCH](#MARKET_WATCH)
   * [income](#income)
     - income statement of the company
   * [assets](#assets)
@@ -80,7 +80,7 @@ usage: mgmt
 Print management team. Namely: Name, Title, Information from google and (potentially) Insider Activity page. [Source: Business Insider]
 
 
-# Market Watch
+# MARKET WATCH <a name="MARKET_WATCH"></a>
 
 ## income <a name="income"></a>
 ```
