@@ -34,6 +34,7 @@ Prints latest news about company, including title and web link. [Source: Finviz]
 
 <img width="939" alt="news" src="https://user-images.githubusercontent.com/25267873/108609254-a8572600-73c4-11eb-9497-75530c50e82c.png">
 
+
 ## red <a name="red"></a>
 ```
 usage: red [-l N_LIMIT] [-d N_DAYS] [-a]
@@ -45,6 +46,7 @@ Print top stock's due diligence from other users. [Source: Reddit]
 
 <img width="950" alt="red" src="https://user-images.githubusercontent.com/25267873/108609417-a2ae1000-73c5-11eb-8f3c-54c76b418e14.png">
 
+
 ## analyst <a name="analyst"></a>
 ```
 usage: analyst 
@@ -53,6 +55,7 @@ Print analyst prices and ratings of the company. The following fields are expect
 
 <img width="938" alt="analyst" src="https://user-images.githubusercontent.com/25267873/108609253-a8572600-73c4-11eb-9629-6c192fc2907c.png">
 
+
 ## rating <a name="rating"></a>
 ```
 usage: rating
@@ -60,13 +63,27 @@ usage: rating
 Based on specific ratios, prints information whether the company is a (strong) buy, neutral or a (strong) sell. The following fields are expected: P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
 <img width="922" alt="rating" src="https://user-images.githubusercontent.com/25267873/108609444-d0935480-73c5-11eb-9f14-4fefa67f41ee.png">
 
+
 ## pt <a name="pt"></a>
+```
+usage: pt [-n N_NUM]
+```
+Prints price target from analysts. [Source: Business Insider]
+  * number of latest price targets from analysts to print. Default 10.
 
 ![pt](https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png)
 
+<img width="940" alt="pt2" src="https://user-images.githubusercontent.com/25267873/108609914-3af9c400-73c9-11eb-8820-0abfa9e57119.png">
+
+
 ## est <a name="est"></a>
+```
+usage: est
+```
+Yearly estimates and quarter earnings/revenues [Source: Business Insider]
 
 <img width="933" alt="est" src="https://user-images.githubusercontent.com/25267873/108609498-3089fb00-73c6-11eb-991d-656d69beb685.png">
+
 
 ## ins <a name="ins"></a>
 
