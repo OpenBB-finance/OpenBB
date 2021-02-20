@@ -8,7 +8,7 @@ from helper_funcs import *
 # ---------------------------------------------------- INFO ----------------------------------------------------
 def info(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='info', 
-                                     description="""Information about the company. The following fields are expected: 
+                                     description="""Print information about the company. The following fields are expected: 
                                      Zip, Sector, Full time employees, Long business summary, City, Phone, State, Country, 
                                      Website, Max age, Address, Industry, Previous close, Regular market open, Two hundred 
                                      day average, Payout ratio, Regular market day high, Average daily volume 10 day, 
@@ -25,7 +25,7 @@ def info(l_args, s_ticker):
                                      Most recent quarter, Short ratio, Shares short previous month date, Float shares, 
                                      Enterprise value, Last split date, Last split factor, Earnings quarterly growth, 
                                      Date short interest, PEG ratio, Short percent of float, Shares short prior month, 
-                                     Regular market price, Logo_url. [Source: Yahoo Finance API]""")
+                                     Regular market price, Logo_url. [Source: Yahoo Finance]""")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -67,8 +67,8 @@ def info(l_args, s_ticker):
 
 # ---------------------------------------------------- SHAREHOLDERS ----------------------------------------------------
 def shareholders(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='shareholders', 
-                                     description="""Major, institutional and mutualfunds shareholders [Source: Yahoo Finance API]""")
+    parser = argparse.ArgumentParser(prog='shrs', 
+                                     description="""Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]""")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -115,12 +115,12 @@ def shareholders(l_args, s_ticker):
 
 # ---------------------------------------------------- SUSTAINABILITY ----------------------------------------------------
 def sustainability(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='sustainability', 
-                                     description="""Sustainability values of the company. The following fields are expected: 
+    parser = argparse.ArgumentParser(prog='sust', 
+                                     description="""Print sustainability values of the company. The following fields are expected: 
                                      Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo, 
                                      Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting, 
                                      Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides, Adult, Percentile, 
-                                     Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract [Source: Yahoo Finance API]""")
+                                     Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]""")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -159,8 +159,8 @@ def sustainability(l_args, s_ticker):
 # ---------------------------------------------------- CALENDAR_EARNINGS ----------------------------------------------------
 def calendar_earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='calendar_earnings', 
-                                     description="""Calendar earnings of the company. Including revenue and earnings estimates
-                                     [Source: Yahoo Finance API]""")
+                                     description="""Calendar earnings of the company. Including revenue and earnings estimates.
+                                     [Source: Yahoo Finance]""")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

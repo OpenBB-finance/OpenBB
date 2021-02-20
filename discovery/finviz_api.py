@@ -5,7 +5,7 @@ import webbrowser
 def map_sp500(l_args):
     parser = argparse.ArgumentParser(prog='map', 
                                      description='''Performance index stocks map categorized by sectors and industries.
-                                                    Size represents market cap. Opens web-browser. [Source: Finviz]''')
+                                     Size represents market cap. Opens web-browser. [Source: Finviz]''')
 
     parser.add_argument('-p', "--period", action="store", dest="s_period", type=str, default="1d", 
                         choices=['1d', '1w', '1m', '3m', '6m', '1y'], help="Performance period.")

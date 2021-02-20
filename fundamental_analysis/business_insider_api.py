@@ -11,9 +11,9 @@ from fuzzywuzzy import fuzz
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
 def management(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='management', 
-                                     description="""Management team. Namely: Name, Title, Info and Insider Activity
-                                                   [Source: Business Insider API]""")
+    parser = argparse.ArgumentParser(prog='mgmt', 
+                                     description="""Print management team. Namely: Name, Title, Information from google and 
+                                                    (potentially) Insider Activity page. [Source: Business Insider]""")
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

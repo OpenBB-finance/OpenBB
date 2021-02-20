@@ -10,6 +10,7 @@ import pandas as pd
 def gainers(l_args):
     parser = argparse.ArgumentParser(prog='gainers', 
                                      description='Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]')
+                                     
     parser.add_argument('-n', "--num", action="store", dest="n_gainers", type=int, default=5, choices=range(1, 25),
                         help='Number of the top gainers stocks to retrieve.')
 

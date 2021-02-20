@@ -48,6 +48,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         # Intraday
         else: 
             df_stock, d_stock_metadata = ts.get_intraday(symbol=ns_parser.s_ticker, outputsize='full', interval=s_interval)  
+
+        df_stock.sort_index(ascending=True, inplace=True)
             
     except:
         print("Either the ticker or the API_KEY are invalids. Try again!")
@@ -186,7 +188,7 @@ def main():
     s_interval = "1440min"
 
     # Set stock by default to speed up testing
-    s_ticker = "AMD"
+    s_ticker = "AAPL"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')

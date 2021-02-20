@@ -10,15 +10,19 @@ from TimeSeriesCrossValidation import splitTrain
 
 # ----------------------------------------------------- kNN -----------------------------------------------------
 def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='k_nearest_neighbors',
+    parser = argparse.ArgumentParser(prog='knn',
                                      description=""" K nearest neighbors is a simple algorithm that stores all 
                                      available cases and predict the numerical target based on a similarity measure 
-                                     (e.g., distance functions). """)
+                                     (e.g. distance functions). """)
 
-    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, help='number of days to use for prediction')
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
-    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_positive, default=1, help='number of jumps in training data')
-    parser.add_argument('-n', "--neighbors", action="store", dest="n_neighbors", type=check_positive, default=20, help='neighbors to use on algorithm')
+    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, 
+                        help='number of days to use for prediction.')
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
+                        help='prediction days.')
+    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_positive, default=1, 
+                        help='number of jumps in training data.')
+    parser.add_argument('-n', "--neighbors", action="store", dest="n_neighbors", type=check_positive, default=20, 
+                        help='number of neighbors to use on the algorithm.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

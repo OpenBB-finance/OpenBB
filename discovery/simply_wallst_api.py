@@ -5,8 +5,8 @@ import webbrowser
 def simply_wallst(l_args):
     parser = argparse.ArgumentParser(prog='simply_wallst', 
                                      description='''Simply Wall Street Research. Opens web browser. Although this does not require
-                                                    an API key, it requires a subscription to the website by the user (there's a 14 
-                                                    days free trial). [Source: Simply Wall St.]''')
+                                     an API key, it requires a subscription to the website by the user (there's a 14 days free trial). 
+                                     [Source: Simply Wall St.]''')
 
     parser.add_argument('-i', "--industry", action="store", dest="s_industry", type=str, default="any", help="Industry of interest.",
                         choices=['any', 'automobiles', 'banks', 'capital-goods', 'commercial-services', 'consumer-durables',

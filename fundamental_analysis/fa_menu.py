@@ -53,7 +53,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("")
     print("Alpha Vantage API")
     print("   overview      overview of the company")
-    print("   income        income statements of the company")
+    print("   incom         income statements of the company")
     print("   balance       balance sheet of the company")
     print("   cash          cash flow of the company")
     print("   earnings      earnings dates and reported EPS")

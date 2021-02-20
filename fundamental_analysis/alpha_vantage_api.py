@@ -11,7 +11,7 @@ from pandas.io.json import json_normalize
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='overview', 
-                                     description="""Gives an overview about the company. The following fields are expected: 
+                                     description="""Prints an overview about the company. The following fields are expected: 
                                      Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry, 
                                      Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization, 
                                      EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS, 
@@ -23,7 +23,7 @@ def overview(l_args, s_ticker):
                                      Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, 
                                      Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, 
                                      Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
-                                     [Source: Alpha Vantage API]""")
+                                     [Source: Alpha Vantage]""")
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -129,18 +129,20 @@ def key(l_args, s_ticker):
 
 # ---------------------------------------------------- INCOME_STATEMENT ----------------------------------------------------
 def income_statement(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='income', 
-                                     description="""Collects a complete income statement over time. This can be either quarterly 
+    parser = argparse.ArgumentParser(prog='incom', 
+                                     description="""Prints a complete income statement over time. This can be either quarterly 
                                      or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of 
                                      revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, 
                                      Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income 
                                      before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, 
                                      Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, 
                                      Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other 
-                                     income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage API]""")
+                                     income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -180,7 +182,7 @@ def income_statement(l_args, s_ticker):
 # ---------------------------------------------------- BALANCE_SHEET ----------------------------------------------------
 def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='balance', 
-                                     description="""Collects a complete balance sheet statement over time. This can be 
+                                     description="""Prints a complete balance sheet statement over time. This can be 
                                      either quarterly or annually. The following fields are expected: Accepted date, 
                                      Account payables, Accumulated other comprehensive income loss, Cash and cash 
                                      equivalents, Cash and short term investments, Common stock, Deferred revenue, 
@@ -193,10 +195,12 @@ def balance_sheet(l_args, s_ticker):
                                      Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, 
                                      Total investments, Total liabilities, Total liabilities and stockholders equity, Total 
                                      non current assets, Total non current liabilities, and Total stockholders equity. 
-                                     [Source: Alpha Vantage API]""")
+                                     [Source: Alpha Vantage]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -236,7 +240,7 @@ def balance_sheet(l_args, s_ticker):
 # ---------------------------------------------------- CASH_FLOW ----------------------------------------------------
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='cash', 
-                                     description="""Collects a complete cash flow statement over time. This can be either 
+                                     description="""Prints a complete cash flow statement over time. This can be either 
                                      quarterly or annually. The following fields are expected: Accepted date, Accounts payables, 
                                      Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, 
                                      Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, 
@@ -246,10 +250,12 @@ def cash_flow(l_args, s_ticker):
                                      Net cash used for investing activites, Net cash used provided by financing activities, Net 
                                      change in cash, Net income, Operating cash flow, Other financing activites, Other investing 
                                      activites, Other non cash items, Other working capital, Period, Purchases of investments, 
-                                     Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage API]""")
+                                     Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -289,11 +295,11 @@ def cash_flow(l_args, s_ticker):
 # ---------------------------------------------------- EARNINGS ----------------------------------------------------
 def earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='earnings', 
-                                     description="""Retrieves earnings dates and reported EPS of the company. 
+                                     description="""Print earnings dates and reported EPS of the company. 
                                      The following fields are expected: Fiscal Date Ending and Reported EPS.
-                                     [Source: Alpha Vantage API]""")
+                                     [Source: Alpha Vantage]""")
 
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5, help='Number of latest info')
         
     try:

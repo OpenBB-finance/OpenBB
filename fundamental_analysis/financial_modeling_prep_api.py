@@ -10,12 +10,12 @@ import pandas as pd
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='profile', 
-                                     description="""Gives information about, among other things, the industry, sector 
+                                     description="""Prints information about, among other things, the industry, sector 
                                      exchange and company description. The following fields are expected: Address, Beta, 
                                      Ceo, Changes, Cik, City, Company name, Country, Currency, Cusip, Dcf, Dcf diff, 
                                      Default image, Description, Exchange, Exchange short name, Full time employees, Image, 
                                      Industry, Ipo date, Isin, Last div, Mkt cap, Phone, Price, Range, Sector, State, Symbol, 
-                                     Vol avg, Website, Zip. [Source: Financial Modeling Prep API]""")
+                                     Vol avg, Website, Zip. [Source: Financial Modeling Prep]""")
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -41,12 +41,12 @@ def profile(l_args, s_ticker):
 # ---------------------------------------------------- QUOTE ----------------------------------------------------
 def quote(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='quote', 
-                                     description="""Provides actual information about the company which is, among 
+                                     description="""Prints actual information about the company which is, among 
                                      other things, the day high, market cap, open and close price and price-to-equity 
                                      ratio. The following fields are expected: Avg volume, Change, Changes percentage, 
                                      Day high, Day low, Earnings announcement, Eps, Exchange, Market cap, Name, Open, 
                                      Pe, Previous close, Price, Price avg200, Price avg50, Shares outstanding, Symbol, 
-                                     Timestamp, Volume, Year high, and Year low. [Source: Financial Modeling Prep API]""")
+                                     Timestamp, Volume, Year high, and Year low. [Source: Financial Modeling Prep]""")
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -75,13 +75,15 @@ def quote(l_args, s_ticker):
 # ---------------------------------------------------- ENTERPRISE ----------------------------------------------------
 def enterprise(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='enterprise', 
-                                     description="""Displays stock price, number of shares, market capitalization and 
+                                     description="""Prints stock price, number of shares, market capitalization and 
                                      enterprise value over time. The following fields are expected: Add total debt, 
                                      Enterprise value, Market capitalization, Minus cash and cash equivalents, Number 
-                                     of shares, Stock price, and Symbol. [Source: Financial Modeling Prep API]""")
+                                     of shares, Stock price, and Symbol. [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -116,11 +118,13 @@ def enterprise(l_args, s_ticker):
 # ------------------------------------------ DISCOUNTED CASH FLOW ------------------------------------------------------
 def discounted_cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='dcf', 
-                                     description="""Calculates the discounted cash flow of a company over time including 
+                                     description="""Prints the discounted cash flow of a company over time including 
                                      the DCF of today. The following fields are expected: DCF, Stock price, and Date. 
-                                     [Source: Financial Modeling Prep API]""")
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+                                     [Source: Financial Modeling Prep]""")
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
         
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -155,8 +159,8 @@ def discounted_cash_flow(l_args, s_ticker):
 
 # ---------------------------------------------------- INCOME_STATEMENT ----------------------------------------------------
 def income_statement(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='income', 
-                                     description="""Collects a complete income statement over time. This can be either quarterly 
+    parser = argparse.ArgumentParser(prog='inc', 
+                                     description="""Prints a complete income statement over time. This can be either quarterly 
                                      or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of 
                                      revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, 
                                      Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income 
@@ -164,10 +168,12 @@ def income_statement(l_args, s_ticker):
                                      Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, 
                                      Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other 
                                      income expenses net, Weighted average shs out, Weighted average shs out dil 
-                                     [Source: Financial Modeling Prep API]""")
+                                     [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of latest info')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -210,8 +216,8 @@ def income_statement(l_args, s_ticker):
 
 # ---------------------------------------------------- BALANCE_SHEET ----------------------------------------------------
 def balance_sheet(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='balance', 
-                                     description="""Collects a complete balance sheet statement over time. This can be 
+    parser = argparse.ArgumentParser(prog='bal', 
+                                     description="""Prints a complete balance sheet statement over time. This can be 
                                      either quarterly or annually. The following fields are expected: Accepted date, 
                                      Account payables, Accumulated other comprehensive income loss, Cash and cash 
                                      equivalents, Cash and short term investments, Common stock, Deferred revenue, 
@@ -224,10 +230,12 @@ def balance_sheet(l_args, s_ticker):
                                      Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, 
                                      Total investments, Total liabilities, Total liabilities and stockholders equity, Total 
                                      non current assets, Total non current liabilities, and Total stockholders equity. 
-                                     [Source: Financial Modeling Prep API]""")
+                                     [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -271,7 +279,7 @@ def balance_sheet(l_args, s_ticker):
 # ---------------------------------------------------- CASH_FLOW ----------------------------------------------------
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='cash', 
-                                     description="""Collects a complete cash flow statement over time. This can be either 
+                                     description="""Prints a complete cash flow statement over time. This can be either 
                                      quarterly or annually. The following fields are expected: Accepted date, Accounts payables, 
                                      Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, 
                                      Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, 
@@ -281,10 +289,12 @@ def cash_flow(l_args, s_ticker):
                                      Net cash used for investing activites, Net cash used provided by financing activities, Net 
                                      change in cash, Net income, Operating cash flow, Other financing activites, Other investing 
                                      activites, Other non cash items, Other working capital, Period, Purchases of investments, 
-                                     Sales maturities of investments, Stock based compensation. [Source: Financial Modeling Prep API]""")
+                                     Sales maturities of investments, Stock based compensation. [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -328,8 +338,8 @@ def cash_flow(l_args, s_ticker):
 # ---------------------------------------------------- KEY_METRICS ----------------------------------------------------
 def key_metrics(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='metrics', 
-                                     description="""Lists the key metrics (in total 57 metrics) of a company over time 
-                                     (annual and quarterly). This includes, among other things, Return on Equity (ROE), 
+                                     description="""Prints a list of the key metrics of a company over time. This can be either 
+                                     quarterly or annually. This includes, among other things, Return on Equity (ROE), 
                                      Working Capital, Current Ratio and Debt to Assets. The following fields are expected: 
                                      Average inventory, Average payables, Average receivables, Book value per share, Capex 
                                      per share, Capex to depreciation, Capex to operating cash flow, Capex to revenue, Cash 
@@ -343,10 +353,12 @@ def key_metrics(l_args, s_ticker):
                                      Ptb ratio, Receivables turnover, Research and ddevelopement to revenue, Return on tangible assets, 
                                      Revenue per share, Roe, Roic, Sales general and administrative to revenue, Shareholders equity per 
                                      share, Stock based compensation to revenue, Tangible book value per share, and Working capital.
-                                     [Source: Financial Modeling Prep API]""")
+                                     [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -386,8 +398,8 @@ def key_metrics(l_args, s_ticker):
 # ---------------------------------------------------- FINANCIAL_RATIOS ----------------------------------------------------
 def financial_ratios(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='ratios', 
-                                     description="""Includes in-depth ratios (in total 57 ratios) of a company over time 
-                                     (annual and quarterly). This contains, among other things, Price-to-Book Ratio, Payout 
+                                     description="""Prints in-depth ratios of a company over time. This can be either 
+                                     quarterly or annually. This contains, among other things, Price-to-Book Ratio, Payout 
                                      Ratio and Operating Cycle. The following fields are expected: Asset turnover, Capital 
                                      expenditure coverage ratio, Cash conversion cycle, Cash flow coverage ratios, Cash flow 
                                      to debt ratio, Cash per share, Cash ratio, Company equity multiplier, Current ratio, 
@@ -402,10 +414,12 @@ def financial_ratios(l_args, s_ticker):
                                      Price sales ratio, Price to book ratio, Price to free cash flows ratio, Price to operating cash flows 
                                      ratio, Price to sales ratio, Quick ratio, Receivables turnover, Return on assets, Return on capital 
                                      employed, Return on equity, Short term coverage ratios, and Total debt to capitalization. 
-                                     [Source: Financial Modeling Prep API]""")
+                                     [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -444,8 +458,8 @@ def financial_ratios(l_args, s_ticker):
 # ---------------------------------------------------- FINANCIAL_STATEMENT_GROWTH ----------------------------------------------------
 def financial_statement_growth(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='growth', 
-                                     description="""Measures the growth of several financial statement items and ratios over time 
-                                     (annual and quarterly). These are, among other things, Revenue Growth (3, 5 and 10 years), 
+                                     description="""Prints the growth of several financial statement items and ratios over time. This can be
+                                     either annually and quarterly. These are, among other things, Revenue Growth (3, 5 and 10 years), 
                                      inventory growth and operating cash flow growth (3, 5 and 10 years). The following fields 
                                      are expected: Asset growth, Book valueper share growth, Debt growth, Dividendsper share growth, 
                                      Ebitgrowth, Epsdiluted growth, Epsgrowth, Five y dividendper share growth per share, Five y net 
@@ -457,10 +471,12 @@ def financial_statement_growth(l_args, s_ticker):
                                      share, Ten y shareholders equity growth per share, Three y dividendper share growth per share, 
                                      Three y net income growth per share, Three y operating c f growth per share, Three y revenue growth 
                                      per share, Three y shareholders equity growth per share, Weighted average shares diluted growth, 
-                                     and Weighted average shares growth [Source: Financial Modeling Prep API]""")
+                                     and Weighted average shares growth [Source: Financial Modeling Prep]""")
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, help='Number of informations')
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=1, 
+                        help='Number of latest years/quarters.')
+    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
+                        help='Quarter fundamental data flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

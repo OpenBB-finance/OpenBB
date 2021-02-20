@@ -74,15 +74,20 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='mlp',
                                      description="""Multilayer Perceptron. """)
 
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
-    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, help='number of days to use for prediction')
-    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, help='number of training epochs')
-    parser.add_argument('-f', "--freq", action="store", dest="n_jumps", type=check_positive, default=1, help='how')
-    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', choices=['normalization', 'standardization', 'none'], help='Pre Processing data')
-    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', help='Optimizer technique', 
-                        choices=['adam', 'adagrad', 'adadelta', 'adamax', 'ftrl', 'nadam', 'optimizer', 'rmsprop', 'sgd'])
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
+                        help='prediction days.')
+    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, 
+                        help='number of days to use for prediction.')
+    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, 
+                        help='number of training epochs.')
+    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_positive, default=1, 
+                        help='number of jumps in training data.')
+    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', 
+                        choices=['normalization', 'standardization', 'none'], help='pre-processing data.')
+    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', 
+                        choices=['adam', 'adagrad', 'adadelta', 'adamax', 'ftrl', 'nadam', 'optimizer', 'rmsprop', 'sgd'], help='optimization technique.')
     parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
-                        choices=['mae', 'mape', 'mse', 'msle'], help='Loss function')
+                        choices=['mae', 'mape', 'mse', 'msle'], help='loss function.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -162,15 +167,20 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='rnn',
                                      description="""Recurrent Neural Network. """)
 
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
-    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, help='number of days to use for prediction')
-    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, help='number of training epochs')
-    parser.add_argument('-f', "--freq", action="store", dest="n_jumps", type=check_positive, default=1, help='how')
-    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', choices=['normalization', 'standardization', 'none'], help='Pre Processing data')
-    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', help='Optimizer technique', 
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
+                        help='prediction days.')
+    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, 
+                        help='number of days to use for prediction.')
+    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, 
+                        help='number of training epochs.')
+    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_positive, default=1, 
+                        help='number of jumps in training data.')
+    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', 
+                        choices=['normalization', 'standardization', 'none'], help='pre-processing data.')
+    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', help='optimizer technique', 
                         choices=['adam', 'adagrad', 'adadelta', 'adamax', 'ftrl', 'nadam', 'optimizer', 'rmsprop', 'sgd'])
     parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
-                        choices=['mae', 'mape', 'mse', 'msle'], help='Loss function')
+                        choices=['mae', 'mape', 'mse', 'msle'], help='loss function.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -250,15 +260,20 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='lstm',
                                      description="""Long-Short Term Memory. """)
 
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
-    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, help='number of days to use for prediction')
-    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, help='number of training epochs')
-    parser.add_argument('-f', "--freq", action="store", dest="n_jumps", type=check_positive, default=1, help='how')
-    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', choices=['normalization', 'standardization', 'none'], help='Pre Processing data')
-    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', help='Optimizer technique', 
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
+                        help='prediction days')
+    parser.add_argument('-i', "--input", action="store", dest="n_inputs", type=check_positive, default=40, 
+                        help='number of days to use for prediction.')
+    parser.add_argument('-e', "--epochs", action="store", dest="n_epochs", type=check_positive, default=200, 
+                        help='number of training epochs.')
+    parser.add_argument('-j', "--jumps", action="store", dest="n_jumps", type=check_positive, default=1, 
+                        help='number of jumps in training data.')
+    parser.add_argument('-p', "--pp", action="store", dest="s_preprocessing", default='normalization', 
+                        choices=['normalization', 'standardization', 'none'], help='pre-processing data.')
+    parser.add_argument('-o', "--optimizer", action="store", dest="s_optimizer", default='adam', help='optimization technique.', 
                         choices=['adam', 'adagrad', 'adadelta', 'adamax', 'ftrl', 'nadam', 'optimizer', 'rmsprop', 'sgd'])
     parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
-                        choices=['mae', 'mape', 'mse', 'msle'], help='Loss function')
+                        choices=['mae', 'mape', 'mse', 'msle'], help='loss function.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

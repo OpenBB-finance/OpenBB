@@ -8,7 +8,7 @@ register_matplotlib_converters()
 
 # ----------------------------------------------------- SMA -----------------------------------------------------
 def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='simple_moving_average',
+    parser = argparse.ArgumentParser(prog='sma',
                                      description=""" Moving Averages are used to smooth the data in an array to 
                                      help eliminate noise and identify trends. The Simple Moving Average is literally 
                                      the simplest form of a moving average. Each output value is the average of the 
@@ -17,8 +17,10 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
                                      This makes it less responsive to recent changes in the data, which can be useful for 
                                      filtering out those changes. """)
 
-    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=20, help='length of SMA window')
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
+    parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=20, 
+                        help='length of SMA window.')
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
+                        help='prediction days.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

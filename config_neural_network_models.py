@@ -46,12 +46,6 @@ Long_Short_Term_Memory \
     = [ {'LSTM': 
                 {'units':25, 'activation':'tanh', 'return_sequences':True} },
         {'LSTM': 
-                {'units':50, 'activation':'tanh', 'return_sequences':True} },
-        {'LSTM': 
-                {'units':30, 'activation':'tanh', 'return_sequences':True} },
-        {'LSTM': 
-                {'units':20, 'activation':'tanh', 'return_sequences':True} },
-        {'LSTM': 
                 {'units':15, 'activation':'tanh', 'return_sequences':False} },
         {'Dense': 
                 {'activation':'linear'} }]    

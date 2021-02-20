@@ -14,13 +14,22 @@ def arima(l_args, s_ticker, s_interval, df_stock):
                                      series analysis, an autoregressive integrated moving average (ARIMA) model 
                                      is a generalization of an autoregressive moving average (ARMA) model. Both 
                                      of these models are fitted to time series data either to better understand 
-                                     the data or to predict future points in the series (forecasting). """)
+                                     the data or to predict future points in the series (forecasting). 
+                                     ARIMA(p,d,q) where parameters p, d, and q are non-negative integers, p is 
+                                     the order (number of time lags) of the autoregressive model, d is the degree 
+                                     of differencing (the number of times the data have had past values subtracted), 
+                                     and q is the order of the moving-average model.""")
 
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, help='prediction days')
-    parser.add_argument('-i', "--ic", action="store", dest="s_ic", type=str, default='aic', choices=['aic', 'aicc', 'bic', 'hqic', 'oob'], help='information criteria')
-    parser.add_argument('-s', "--seasonal", action="store_true", default=False, dest="b_seasonal", help='Use the fact that the market data is weekly') 
-    parser.add_argument('-o', "--order", action="store", dest="s_order", type=str, help='arima model order')
-    parser.add_argument('-r', "--results", action="store_true", dest="b_results", default=False, help='results about ARIMA summary')
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
+                        help='prediction days.')
+    parser.add_argument('-i', "--ic", action="store", dest="s_ic", type=str, default='aic', 
+                        choices=['aic', 'aicc', 'bic', 'hqic', 'oob'], help='information criteria.')
+    parser.add_argument('-s', "--seasonal", action="store_true", default=False, dest="b_seasonal", 
+                        help='weekly seasonality flag.') 
+    parser.add_argument('-o', "--order", action="store", dest="s_order", type=str, 
+                        help='arima model order.')
+    parser.add_argument('-r', "--results", action="store_true", dest="b_results", default=False, 
+                        help='results about ARIMA summary flag.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

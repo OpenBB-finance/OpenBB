@@ -36,6 +36,7 @@ def valid_date(s):
 
 # -----------------------------------------------------------------------------------------------------------------------
 def plot_view_stock(df, symbol):
+    df.sort_index(ascending=True, inplace=True)
     pfig, axVolume = plt.subplots()
     plt.bar(df.index, df.iloc[:, -1], color='k', alpha=0.8, width=.3)
     plt.ylabel('Volume')

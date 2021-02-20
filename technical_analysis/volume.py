@@ -39,7 +39,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
                 df_ta = ta.ad(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
                               volume=df_stock['6. volume'], offset=ns_parser.n_offset).dropna()
 
-            plt.subplot(211)
+            axPrice = plt.subplot(211)
             plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
             plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -47,6 +47,8 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            axVolume = axPrice.twinx()
+            plt.bar(df_stock.index, df_stock['6. volume'].values, color='k', alpha=0.8, width=.3)
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -69,7 +71,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
                 df_ta = ta.ad(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['4. close'], 
                               volume=df_stock['5. volume'], offset=ns_parser.n_offset).dropna()
             
-            plt.subplot(211)
+            axPrice = plt.subplot(211)
             plt.plot(df_stock.index, df_stock['4. close'].values, 'k', lw=2)
             plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -77,6 +79,8 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            axVolume = axPrice.twinx()
+            plt.bar(df_stock.index, df_stock['5. volume'].values, color='k', alpha=0.8, width=.3)
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -117,9 +121,8 @@ def obv(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.obv(close=df_stock['5. adjusted close'], volume=df_stock['6. volume'], offset=ns_parser.n_offset).dropna()
-            #plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "OBV")
 
-            plt.subplot(211)
+            axPrice = plt.subplot(211)
             plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
             plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -127,6 +130,8 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            axVolume = axPrice.twinx()
+            plt.bar(df_stock.index, df_stock['6. volume'].values, color='k', alpha=0.8, width=.3)
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -141,9 +146,8 @@ def obv(l_args, s_ticker, s_interval, df_stock):
         # Intraday 
         else:
             df_ta = ta.obv(close=df_stock['4. close'], volume=df_stock['5. volume'], offset=ns_parser.n_offset).dropna()
-            #plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta, "OBV")
 
-            plt.subplot(211)
+            axPrice = plt.subplot(211)
             plt.plot(df_stock.index, df_stock['5. adjusted close'].values, 'k', lw=2)
             plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -151,6 +155,8 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+            axVolume = axPrice.twinx()
+            plt.bar(df_stock.index, df_stock['5. volume'].values, color='k', alpha=0.8, width=.3)
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, 'b', lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
