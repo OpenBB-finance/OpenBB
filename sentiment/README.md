@@ -2,39 +2,47 @@
 
 This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, and the usage of the following commands along with an example will be exploited below.
 
-```
-Reddit:
-wsb           show what WSB gang is up to in subreddit wallstreetbets
-watchlist     show other users watchlist
-popular       show popular tickers
-spac          show other users spacs announcements
-spac_c        show other users spacs announcements from subreddit SPACs
+[REDDIT](#REDDIT)
+  * [wsb](#wsb)
+    - show what WSB gang is up to in subreddit wallstreetbets
+  * [watchlist](#watchlist)
+    - show other users watchlist
+  * [popular](#popular)
+    - show popular tickers
+  * [spac](#spac)
+    - show other users spacs announcements
+  * [spac_c](#spac_c)
+    - show other users spacs announcements from subreddit SPACs
 
-Stocktwits:
-sentiment     estimate quick sentiment from last 30 messages on board
-messages      output up to the 30 last messages on the board
-trending      trending stocks
-stalker       stalk stocktwits user's last messages
-```
+[STOCKTWITS](#STOCKTWITS)
+  * [sentiment](#sentiment)
+    - estimate quick sentiment from last 30 messages on board 
+  * [messages](#messages)
+    - output up to the 30 last messages on the board
+  * [trending](#trending)
+    - trending stocks
+  * [stalker](#stalker)
+    - stalk stocktwits user's last messages
 
-# Reddit
 
-## wsb
+# REDDIT <a name="REDDIT"></a>
 
-## watchlist
+## wsb <a name="wsb"></a>
 
-## popular
+## watchlist <a name="watchlist"></a>
 
-## spac
+## popular <a name="popular"></a>
 
-## spac_c
+## spac <a name="spac"></a>
 
-# Stocktwits
+## spac_c <a name="spac_c"></a>
 
-## sentiment
+# STOCKTWITS <a name="STOCKTWITS"></a>
 
-## messages
+## sentiment <a name="sentiment"></a>
 
-## trending
+## messages <a name="messages"></a>
 
-## stalker
+## trending <a name="trending"></a>
+
+## stalker <a name="stalker"></a>
