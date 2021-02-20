@@ -64,7 +64,6 @@ Orders by Fidelity customers. Information shown in the table below is based on t
 
 
 ## up_earnings <a name="earnings"></a>
-
 ```
 usage: up_earnings [-p N_PAGES] [-n N_NUM]
 ```
@@ -76,6 +75,14 @@ Print upcoming earnings release dates. [Source: Seeking Alpha]
 
 
 ## high_short <a name="high_short"></a>
+```
+usage: high_short [-n N_NUM]
+```
+Print top stocks being more heavily shorted. HighShortInterest.com provides a convenient sorted database of stocks which have a short interest of over 20 percent. Additional key data such as the float, number of outstanding shares, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. Stocks with high short interest are often very volatile and are well known for making explosive upside moves (known as a short squeeze). [Source: www.highshortinterest.com]
+  * -n : Number of top stocks to print
+
+<img width="955" alt="highshort" src="https://user-images.githubusercontent.com/25267873/108575692-f4499280-7312-11eb-8f8b-776c5d69d7c8.png">
+
 
 ## low_float <a name="low_float"></a>
 
