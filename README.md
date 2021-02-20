@@ -45,13 +45,13 @@ With their functions being:
 map           S&P500 index stocks map [Finviz]
 sectors       show sectors performance [Alpha Vantage]
 gainers       show latest top gainers [Yahoo Finance]
-orders        Orders by Fidelity Customers [Fidelity]
-earnings      next earnings release dates [Seeking Alpha]
+orders        orders by Fidelity Customers [Fidelity]
+up_earnings   upcoming earnings release dates [Seeking Alpha]
 high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
 low_float     show low float stocks under 10M shares float [www.lowfloat.com]
 sw            Simply Wall St. research data [Simply Wall St.]
-spachero      Best website for SPACs research [SpacHero]
-uwhales       Good website for SPACs research [UnusualWhales]
+spachero      best website for SPACs research [SpacHero]
+uwhales       good website for SPACs research [UnusualWhales]
 ```
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
