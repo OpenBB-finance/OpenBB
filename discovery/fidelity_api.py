@@ -7,9 +7,14 @@ from helper_funcs import *
 
 # ---------------------------------------------------- ORDERS ----------------------------------------------------
 def orders(l_args):
-    parser = argparse.ArgumentParser(prog='orders', description='''Orders by Fidelity customers''')
+    parser = argparse.ArgumentParser(prog='orders', 
+                                     description='''Orders by Fidelity customers. Information shown in the table below 
+                                     is based on the volume of orders entered on the "as of" date shown. Securities 
+                                     identified are not recommended or endorsed by Fidelity and are displayed for 
+                                     informational purposes only. [Source: Fidelity]''')
 
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Top orders')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, 
+                        help='Number of top ordered stocks to be printed.')
     
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

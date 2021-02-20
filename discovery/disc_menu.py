@@ -23,13 +23,13 @@ def print_discovery():
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
-    print("   orders        Orders by Fidelity Customers [Fidelity]")
-    print("   earnings      next earnings release dates [Seeking Alpha]")
+    print("   orders        orders by Fidelity Customers [Fidelity]")
+    print("   up_earnings   upcoming earnings release dates [Seeking Alpha]")
     print("   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]")
     print("   low_float     show low float stocks under 10M shares float [www.lowfloat.com]")
-    print("   sw            Simply Wall St. research data [Simply Wall St.]")
-    print("   spachero      Best website for SPACs research [SpacHero]")
-    print("   uwhales       Good website for SPACs research [UnusualWhales]")
+    print("   simply_wallst Simply Wall St. research data [Simply Wall St.]")
+    print("   spachero      great website for SPACs research [SpacHero]")
+    print("   uwhales       good website for SPACs research [UnusualWhales]")
     print("")
     return
 
@@ -41,7 +41,8 @@ def disc_menu():
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     disc_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                              'map', 'sectors', 'gainers', 'spacs', 'orders', 'spachero',
-                                             'high_short', 'low_float', 'earnings', 'sw', 'uwhales'])
+                                             'high_short', 'low_float', 'up_earnings', 'simply_wallst', 
+                                             'uwhales'])
 
     print_discovery()
 
@@ -94,11 +95,11 @@ def disc_menu():
             fidelity_api.orders(l_args)
 
         # ------------------------------------------------ SIMPLY WALL ST ------------------------------------------------
-        elif ns_known_args.cmd == 'sw':
+        elif ns_known_args.cmd == 'simply_wallst':
             simply_wallst_api.simply_wallst(l_args)
 
         # ------------------------------------------------ SEEKING ALPHA ------------------------------------------------
-        elif ns_known_args.cmd == 'earnings':
+        elif ns_known_args.cmd == 'up_earnings':
             seeking_alpha_api.earnings_release_dates(l_args)
 
         # ------------------------------------------------ SHORT_INTEREST ------------------------------------------------

@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 
 # ---------------------------------------------------- SECTORS ----------------------------------------------------
 def sectors(l_args):
-    parser = argparse.ArgumentParser(prog='sectors', description='Plot sectors performance')
+    parser = argparse.ArgumentParser(prog='sectors', 
+                                     description='''Real-time and historical sector performances calculated from S&P500 incumbents.
+                                                    Pops plot in terminal. [Source: Alpha Vantage]''')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

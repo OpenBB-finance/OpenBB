@@ -10,17 +10,15 @@ from helper_funcs import *
 # ------------------------------------------------ HIGH_SHORT_INTEREST -------------------------------------------------
 def high_short_interest(l_args):
     parser = argparse.ArgumentParser(prog='high_short', 
-                                    description='''HighShortInterest.com provides a convenient sorted database of stocks 
-                                    which have a short interest of over 20 percent. Additional key data such as the float, 
-                                    number of outstanding shares, and company industry is displayed. Data is presented for 
-                                    the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. 
-                                    Stocks with high short interest are often very volatile and are well known for making 
-                                    explosive upside moves (known as a short squeeze). Stock traders will often flock to 
-                                    such stocks for no reason other than the fact that they have a high short interest and 
-                                    the price can potentially move up very quickly as traders with open short positions move 
-                                    to cover.''')
+                                    description='''Print top stocks being more heavily shorted. HighShortInterest.com provides 
+                                                   a convenient sorted database of stocks which have a short interest of over 
+                                                   20 percent. Additional key data such as the float, number of outstanding shares, 
+                                                   and company industry is displayed. Data is presented for the Nasdaq Stock Market, 
+                                                   the New York Stock Exchange, and the American Stock Exchange. 
+                                                   [Source: www.highshortinterest.com]''')
     
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Number of top stocks')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, 
+                        help='Number of top stocks to print.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -62,17 +60,14 @@ def high_short_interest(l_args):
 # ---------------------------------------------------- LOW_FLOAT -----------------------------------------------------
 def low_float(l_args):
     parser = argparse.ArgumentParser(prog='low_float', 
-                                    description='''LowFloat.com provides a convenient sorted database of stocks which 
-                                    have a float of under 10 million shares. Additional key data such as the number of 
-                                    outstanding shares, short interest, and company industry is displayed. Data is 
-                                    presented for the Nasdaq Stock Market, the New York Stock Exchange, the American 
-                                    Stock Exchange, and the Over the Counter Bulletin Board. You can view the data for 
-                                    all exchanges together or only view exchanges of interest by clicking on the appropriate tab.
-                                    Low float stocks are often very volatile and are well known for making explosive upside moves. 
-                                    Stock traders will often flock to such stocks for no reason other than the fact that they 
-                                    have a low float and the price can potentially move up very quickly.''')
+                                    description='''Print top stocks with lowest float. LowFloat.com provides a convenient 
+                                                   sorted database of stocks which have a float of under 10 million shares. 
+                                                   Additional key data such as the number of outstanding shares, short interest, 
+                                                   and company industry is displayed. Data is presented for the Nasdaq Stock Market, 
+                                                   the New York Stock Exchange, the American Stock Exchange, and the Over the Counter 
+                                                   Bulletin Board. [Source: www.lowfloat.com]''')
     
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Number of top stocks')
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Number of top stocks to print.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

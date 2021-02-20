@@ -3,7 +3,8 @@ import webbrowser
 
 # ---------------------------------------------------- UNUSUAL WHALES ----------------------------------------------------
 def unusual_whales(l_args):
-    parser = argparse.ArgumentParser(prog='unusual_whales', description='''Good website for SPACs research''')
+    parser = argparse.ArgumentParser(prog='uwhales', 
+                                     description='''Good website for SPACs research. [Source: www.unusualwhales.com]''')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

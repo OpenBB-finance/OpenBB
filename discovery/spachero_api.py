@@ -3,7 +3,8 @@ import webbrowser
 
 # ---------------------------------------------------- SPACHERO ----------------------------------------------------
 def spachero(l_args):
-    parser = argparse.ArgumentParser(prog='spachero', description='''Great website for SPACs research''')
+    parser = argparse.ArgumentParser(prog='spachero', 
+                                     description='''Great website for SPACs research. [Source: www.spachero.com]''')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
