@@ -46,6 +46,7 @@ usage: ema [-l N_LENGTH] [-o N_OFFSET]
 ```
 ![ema](https://user-images.githubusercontent.com/25267873/108602300-33bac200-7399-11eb-971a-f23f7097aba3.png)
 
+
 ## sma  <a name="sma"></a>
 ```
 usage: sma [-l L_LENGTH] [-o N_OFFSET]
@@ -59,6 +60,7 @@ usage: vwap [-o N_OFFSET]
 ```
 ![vwap](https://user-images.githubusercontent.com/25267873/108602302-361d1c00-7399-11eb-87de-6026a2987ae0.png)
 
+
 # momentum
 
 ## cci  <a name="cci"></a>
@@ -67,11 +69,13 @@ usage: cci [-l N_LENGTH] [-s N_SCALAR] [-o N_OFFSET]
 ```
 ![cci](https://user-images.githubusercontent.com/25267873/108602745-96ad5880-739b-11eb-9e86-a1706c3ecb1f.png)
 
+
 ## macd  <a name="macd"></a>
 ```
 usage: macd [-f N_FAST] [-s N_SLOW] [--signal N_SIGNAL] [-o N_OFFSET]
 ```
 ![macd](https://user-images.githubusercontent.com/25267873/108602739-92813b00-739b-11eb-8a4e-8fa7ed66b2b6.png)
+
 
 ## rsi  <a name="rsi"></a>
 ```
@@ -79,21 +83,38 @@ usage: rsi [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT] [-o N_OFFSET]
 ```
 ![rsi](https://user-images.githubusercontent.com/25267873/108602743-957c2b80-739b-11eb-9d0d-6f530b3abb91.png)
 
+
 ## stoch  <a name="stoch"></a>
 ```
 usage: stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD] [--slowkperiod N_SLOWKPERIOD] [-o N_OFFSET]
 ```
 ![stoch](https://user-images.githubusercontent.com/25267873/108602744-9614c200-739b-11eb-8e4d-2cdc9981cb67.png)
 
+
 # trend 
 
 ## adx  <a name="adx"></a>
+```
+usage: adx [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT] [-o N_OFFSET]
+```
+![adx](https://user-images.githubusercontent.com/25267873/108602991-2bfd1c80-739d-11eb-973f-b836c1b839e6.png)
+
 
 ## aroon  <a name="aroon"></a>
+```
+usage: aroon [-l N_LENGTH] [-s N_SCALAR] [-o N_OFFSET]
+```
+![aroon](https://user-images.githubusercontent.com/25267873/108602987-2b648600-739d-11eb-9a90-154145190595.png)
+
 
 # volatility
 
 ## bbands  <a name="bbands"></a>
+```
+usage: bbands [-h] [-l N_LENGTH] [-s N_STD] [-m S_MAMODE] [-o N_OFFSET]
+```
+![bbands](https://user-images.githubusercontent.com/25267873/108602984-28699580-739d-11eb-9b82-2683a9840145.png)
+
 
 # volume
 
