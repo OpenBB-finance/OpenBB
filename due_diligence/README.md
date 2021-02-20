@@ -69,7 +69,7 @@ Based on specific ratios, prints information whether the company is a (strong) b
 usage: pt [-n N_NUM]
 ```
 Prints price target from analysts. [Source: Business Insider]
-  * number of latest price targets from analysts to print. Default 10.
+  * -n : number of latest price targets from analysts to print. Default 10.
 
 ![pt](https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png)
 
@@ -86,11 +86,21 @@ Yearly estimates and quarter earnings/revenues [Source: Business Insider]
 
 
 ## ins <a name="ins"></a>
+```
+usage: ins [-n N_NUM]
+```
+Prints insider activity over time [Source: Business Insider]
+  * -n : number of latest insider activity.
 
 ![ins](https://user-images.githubusercontent.com/25267873/108609248-a725f900-73c4-11eb-9442-1ba3a0bf45ba.png)
 <img width="935" alt="ins2" src="https://user-images.githubusercontent.com/25267873/108609249-a7be8f80-73c4-11eb-8685-1cddbed5421e.png">
 
 ## insider <a name="insider"></a>
+```
+usage: insider [-n N_NUM]
+```
+Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
+  * -n : number of latest inside traders
 
 <img width="937" alt="insider" src="https://user-images.githubusercontent.com/25267873/108609258-a9885300-73c4-11eb-971e-ce84ee9dd94b.png">
 
