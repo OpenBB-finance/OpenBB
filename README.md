@@ -49,7 +49,7 @@ orders        orders by Fidelity Customers [Fidelity]
 up_earnings   upcoming earnings release dates [Seeking Alpha]
 high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
 low_float     show low float stocks under 10M shares float [www.lowfloat.com]
-sw            Simply Wall St. research data [Simply Wall St.]
+simply_wallst Simply Wall St. research data [Simply Wall St.]
 spachero      best website for SPACs research [SpacHero]
 uwhales       good website for SPACs research [UnusualWhales]
 ```
