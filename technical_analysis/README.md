@@ -41,10 +41,23 @@ volume
 # overlap
 
 ## ema  <a name="ema"></a>
+```
+usage: ema [-l N_LENGTH] [-o N_OFFSET]
+```
+![ema](https://user-images.githubusercontent.com/25267873/108602300-33bac200-7399-11eb-971a-f23f7097aba3.png)
 
 ## sma  <a name="sma"></a>
+```
+usage: sma [-h] [-l L_LENGTH] [-o N_OFFSET]
+```
+![sma](https://user-images.githubusercontent.com/25267873/108602304-36b5b280-7399-11eb-86fe-d490fb32aaff.png)
+
 
 ## vwap  <a name="vwap"></a>
+```
+usage: vwap [-h] [-o N_OFFSET]
+```
+![vwap](https://user-images.githubusercontent.com/25267873/108602302-361d1c00-7399-11eb-87de-6026a2987ae0.png)
 
 # momentum
 
