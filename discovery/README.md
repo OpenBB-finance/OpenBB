@@ -19,7 +19,7 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * [simply_wallst](#simply_wallst)            
     - Simply Wall St. research data [Simply Wall St.]
   * [spachero](#spachero)
-    - best website for SPACs research [SpacHero]
+    - great website for SPACs research [SpacHero]
   * [uwhales](#uwhales)
     - good website for SPACs research [UnusualWhales]
 
@@ -114,7 +114,9 @@ Great website for SPACs research. [Source: www.spachero.com]
 <img width="1265" alt="Captura de ecrã 2021-02-20, às 01 12 14" src="https://user-images.githubusercontent.com/25267873/108577430-f282cd80-7318-11eb-888b-82dcf90d4f32.png">
 
 ## uwhales <a name="uwhales"></a>
-
+```
+usage: uwhales
+```
 Good website for SPACs research. [Source: www.spachero.com]
 
 <img width="1269" alt="Captura de ecrã 2021-02-20, às 01 12 49" src="https://user-images.githubusercontent.com/25267873/108577429-f1ea3700-7318-11eb-9d0a-54e77e2500d2.png">
