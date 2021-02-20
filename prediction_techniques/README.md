@@ -94,7 +94,7 @@ usage: regression -p N_POLYNOMIAL [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
 
 ## arima <a name="arima"></a>
 ```
-usage: arima [-d N_DAYS] [-i {aic,aicc,bic,hqic,oob}] [-s] [-o S_ORDER] [-r]
+usage: arima [-d N_DAYS] [-i {aic,aicc,bic,hqic,oob}] [-s] [-r] [-o S_ORDER]
 ```
   * -d : prediciton days. Default 5.
   * -i : information criteria - used if auto_arima library is invoked. Default aic.
@@ -116,14 +116,47 @@ usage: fbprophet [-d N_DAYS]
 ![prophet](https://user-images.githubusercontent.com/25267873/108604938-cf9ffa00-73a8-11eb-973b-0affb343e2f6.png)
 
 ## mlp <a name="mlp"></a>
+```
+usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}] 
+[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
+```
+  * -d : prediciton days. Default 5.
+  * -i : number of days to use for prediction. Default 40.
+  * -j : number of jumps in training data. Default 1.
+  * -e : number of training epochs. Default 200.
+  * -p : pre-processing data. Default normalization.
+  * -o : optimization technique. Default adam.
+  * -l : loss function. Default mae.
 
 ![mlp](https://user-images.githubusercontent.com/25267873/108604944-d2025400-73a8-11eb-9ab6-52972160cd2a.png)
 
 ## rnn <a name="rnn"></a>
+```
+usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}] 
+[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
+```
+  * -d : prediciton days. Default 5.
+  * -i : number of days to use for prediction. Default 40.
+  * -j : number of jumps in training data. Default 1.
+  * -e : number of training epochs. Default 200.
+  * -p : pre-processing data. Default normalization.
+  * -o : optimization technique. Default adam.
+  * -l : loss function. Default mae.
 
 ![rnn](https://user-images.githubusercontent.com/25267873/108604940-d0d12700-73a8-11eb-837e-a5aa128942d9.png)
 
 ## lstm <a name="lstm"></a>
+```
+usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}] 
+[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
+```
+  * -d : prediciton days. Default 5.
+  * -i : number of days to use for prediction. Default 40.
+  * -j : number of jumps in training data. Default 1.
+  * -e : number of training epochs. Default 200.
+  * -p : pre-processing data. Default normalization.
+  * -o : optimization technique. Default adam.
+  * -l : loss function. Default mae.
 
 ![lstm](https://user-images.githubusercontent.com/25267873/108604943-d2025400-73a8-11eb-83c5-edb4a2121cba.png)
 
