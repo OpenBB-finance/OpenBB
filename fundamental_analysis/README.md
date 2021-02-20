@@ -21,7 +21,7 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * [financing](#financing)
     - cash flow financing activities of the company
 
-Yahoo Finance API
+[YAHOO FINANCE](#YAHOO_FINANCE)
   * [info](#info)
     - information scope of the company
   * [shrs](#shrs)
@@ -31,7 +31,7 @@ Yahoo Finance API
   * [cal](#cal)
     - calendar earnings and estimates of the company
 
-Alpha Vantage API
+[ALPHA VANTAGE](#ALPHA_VANTAGE)
   * [overview](#overview)
     - overview of the company
   * [incom](#incom)
@@ -43,7 +43,7 @@ Alpha Vantage API
   * [earnings](#earnings)
     - earnings dates and reported EPS
 
-Financial Modeling Prep API
+[FINANCIAL MODELING PREP](#FINANCIAL_MODELING_PREP)
   * [profile](#profile)       
     - profile of the company
   * [quote](#quote)
@@ -124,7 +124,7 @@ usage: financing [-q]
 Prints either yearly or quarterly cash flow financing activities of the company. The following fields are expected: Cash Dividends Paid - Total, Common Dividends, Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk., Sale of Common & Preferred Stock, Proceeds from Stock Options, Other Proceeds from Sale of Stock, Issuance/Reduction of Debt, Net, Change in Current Debt, Change in Long-Term Debt, Issuance of Long-Term Debt, Reduction in Long-Term Debt, Other Funds, Other Uses, Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net Financing Cash Flow [Source: Market Watch]
   * q : Quarter fundamental data flag. Default False.
 
-# Yahoo Finance
+# YAHOO FINANCE <a name="YAHOO_FINANCE"></a>
 
 ## info <a name="info"></a>
 ```
@@ -150,7 +150,7 @@ usage: cal
 ```
 Calendar earnings of the company. Including revenue and earnings estimates. [Source: Yahoo Finance]
 
-# Alpha Vantage
+# ALPHA VANTAGE <a name="ALPHA_VANTAGE"></a>
 
 ## overview <a name="overview"></a>
 ```
@@ -191,7 +191,7 @@ Print earnings dates and reported EPS of the company. The following fields are e
   * q : Quarter fundamental data flag. Default False.
 
 
-# Financial Modeling Prep
+# FINANCIAL MODELING PREP <a name="FINANCIAL_MODELING_PREP"></a>
 
 ## profile <a name="profile"></a>
 ```
