@@ -24,21 +24,34 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 
 ## Features <a name="Features"></a>
 
-The main menu allows to pre-select a ticker with commands load, clear it and view.
-Talk about the dates.
+The main menu allows the following commands:
+```
+load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
+clear
+view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
+```
+With their functions being:
+   * Load stock ticker to perform analysis on
+     * -s : The starting date (format YYYY-MM-DD) of the stock
+     * -i : Intraday stock minutes 
+   * Clear previously loaded stock ticker.
+   * Visualise historical data of a stock. An alpha_vantage key is necessary.
+     * -s : The starting date (format YYYY-MM-DD) of the stock
+     * -i : Intraday stock minutes
+     * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
 
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 ```
 map           S&P500 index stocks map [Finviz]
 sectors       show sectors performance [Alpha Vantage]
 gainers       show latest top gainers [Yahoo Finance]
-orders        Orders by Fidelity Customers [Fidelity]
-earnings      next earnings release dates [Seeking Alpha]
+orders        orders by Fidelity Customers [Fidelity]
+up_earnings   upcoming earnings release dates [Seeking Alpha]
 high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
 low_float     show low float stocks under 10M shares float [www.lowfloat.com]
-sw            Simply Wall St. research data [Simply Wall St.]
-spachero      Best website for SPACs research [SpacHero]
-uwhales       Good website for SPACs research [UnusualWhales]
+simply_wallst Simply Wall St. research data [Simply Wall St.]
+spachero      great website for SPACs research [SpacHero]
+uwhales       good website for SPACs research [UnusualWhales]
 ```
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
@@ -174,16 +187,28 @@ lstm        Long-Short Term Memory
 
 ## Install <a name="Install"></a>
 
-Which Python version does this support
-Explain how to run pip install -r requirements.txt...
-Add requirements.txt file
-Make sure it works
+This project was written and tested with Python 3.6.8.
+
+In order to install all libraries used by this repository, you must run
+```
+pip install -r requirements.txt
+```
+
+Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment previous to install these. This allows to keep dependencies required by different projects in separate places.
 
 
 ## API Keys <a name="API_Keys"></a>
 
-Necessary API Keys, and how to get them!
+The project is build around several different API calls, whether it is to access historical data or finantials.
 
+These are the ones where a key is necessary:
+  * Alpha Vantage: https://www.alphavantage.co
+  * Financial Modeling Prep: https://financialmodelingprep.com/developer
+  * Quandl: https://www.quandl.com/tools/api
+  * Reddit: https://www.reddit.com/prefs/apps
+  * Twitter: https://developer.twitter.com
+
+When these are obtained, don't forget to update [config_terminal.txt](/config_terminal.py)
 
 ## Disclaimer <a name="Disclaimer"></a>
 
