@@ -90,7 +90,7 @@ Yearly estimates and quarter earnings/revenues [Source: Business Insider]
 usage: ins [-n N_NUM]
 ```
 Prints insider activity over time [Source: Business Insider]
-  * -n : number of latest insider activity.
+  * -n : number of latest insider activity. Default 10.
 
 ![ins](https://user-images.githubusercontent.com/25267873/108609248-a725f900-73c4-11eb-9442-1ba3a0bf45ba.png)
 <img width="935" alt="ins2" src="https://user-images.githubusercontent.com/25267873/108609249-a7be8f80-73c4-11eb-8685-1cddbed5421e.png">
@@ -100,11 +100,16 @@ Prints insider activity over time [Source: Business Insider]
 usage: insider [-n N_NUM]
 ```
 Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
-  * -n : number of latest inside traders
+  * -n : number of latest inside traders. Default 5.
 
 <img width="937" alt="insider" src="https://user-images.githubusercontent.com/25267873/108609258-a9885300-73c4-11eb-971e-ce84ee9dd94b.png">
 
 ## sec <a name="sec"></a>
+```
+usage: sec [-n N_NUM]
+```
+Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market Watch]
+  * -n : number of latest SEC filings. Default 5.
 
 <img width="967" alt="sec" src="https://user-images.githubusercontent.com/25267873/108609256-a8efbc80-73c4-11eb-97cc-3c819aebc795.png">
 
