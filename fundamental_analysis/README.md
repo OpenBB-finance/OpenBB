@@ -66,8 +66,20 @@ Financial Modeling Prep API
     - financial statement growth of the company
     
 ## screener <a name="screener"></a>
+```
+usage: screener
+```
+Print several metrics about the company. The following fields are expected: Company, Sector, Industry, Country, Index, P/E, EPS (ttm), Insider Own, Shs Outstand, Perf Week, Market Cap, Forward P/E, EPS next Y, Insider Trans, Shs Float, Perf Month, Income, EPS next Q, Inst Own, Short Float, Perf Quarter, Sales, P/S, EPS this Y, Inst Trans, Short Ratio, Perf Half Y, Book/sh, P/B, ROA, Target Price, Perf Year, Cash/sh, P/C, ROE, 52W Range, Perf YTD, P/FCF, EPS past 5Y, ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR, Employees, Current Ratio, Sales Q/Q, Oper. Margin, RSI (14), Volatility, Optionable, Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq, Earnings, Payout, Avg Volume, Price, Recom, SMA20, SMA50, SMA200, Volume, Change.  [Source: Finviz API]
+
+<img width="930" alt="Captura de ecrã 2021-02-20, às 09 32 18" src="https://user-images.githubusercontent.com/25267873/108591073-a6f31280-735e-11eb-8dc1-a69291f8fa1d.png">
 
 ## mgmt <a name="mgmt"></a>
+```
+usage: mgmt
+```
+Print management team. Namely: Name, Title, Information from google and (potentially) Insider Activity page. [Source: Business Insider API]
+
+<img width="941" alt="Captura de ecrã 2021-02-20, às 09 32 44" src="https://user-images.githubusercontent.com/25267873/108591075-a8243f80-735e-11eb-8256-47f3d46edb19.png">
 
 # Market Watch
 
