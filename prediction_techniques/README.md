@@ -93,6 +93,17 @@ usage: regression -p N_POLYNOMIAL [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
 ![regression](https://user-images.githubusercontent.com/25267873/108604946-d3338100-73a8-11eb-9e99-fa526fb56672.png)
 
 ## arima <a name="arima"></a>
+```
+usage: arima [-d N_DAYS] [-i {aic,aicc,bic,hqic,oob}] [-s] [-o S_ORDER] [-r]
+```
+  * -d : prediciton days. Default 5.
+  * -i : information criteria - used if auto_arima library is invoked. Default aic.
+  * -s : weekly seasonality flag. Default False.
+  * -r : results about ARIMA summary flag. Default False.
+  * -o : arima model order. If the model order is defined, auto_arima is not invoked, deeming information criteria useless. Example: -o 514, where:
+    * p = 5 : order (number of time lags) of the autoregressive model.
+    * d = 1 : degree of differencing (the number of times the data have had past values subtracted).
+    * q = 4 : order of the moving-average model.
 
 ![arima](https://user-images.githubusercontent.com/25267873/108604947-d3cc1780-73a8-11eb-9dbb-53b959ae7947.png)
 
