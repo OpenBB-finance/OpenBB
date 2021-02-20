@@ -26,10 +26,22 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
     - company warnings according to Sean Seah book [Market Watch]
 
 ## news <a name="news"></a>
+```
+news [-n N_NUM]
+```
+Prints latest news about company, including title and web link. [Source: Finviz]
+  * -n : Number of latest news being printed. Default 5.
 
 <img width="939" alt="news" src="https://user-images.githubusercontent.com/25267873/108609254-a8572600-73c4-11eb-9497-75530c50e82c.png">
 
 ## red <a name="red"></a>
+```
+usage: red [-l N_LIMIT] [-d N_DAYS] [-a]
+```
+Print top stock's due diligence from other users. [Reddit]
+  * -l : limit of posts to retrieve
+  * -d : number of prior days to look for
+  * -a : "search through all flairs (apart from Yolo and Meme). Default False (i.e. use flairs: DD, technical analysis, Catalyst, News, Advice, Chart)
 
 <img width="950" alt="red" src="https://user-images.githubusercontent.com/25267873/108609417-a2ae1000-73c5-11eb-8f3c-54c76b418e14.png">
 
