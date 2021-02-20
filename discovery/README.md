@@ -10,8 +10,8 @@ This menu aims to discover new stocks, and the usage of the following commands a
     - show latest top gainers [Yahoo Finance]
   * [orders](#orders)
     - orders by Fidelity Customers [Fidelity]
-  * [earnings](#earnings)
-    - next earnings release dates [Seeking Alpha]
+  * [up_earnings](#up_earnings)
+    - upcoming earnings release dates [Seeking Alpha]
   * [high_short](#high_short)   
     - show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
   * [low_float](#low_float)
@@ -63,7 +63,17 @@ Orders by Fidelity customers. Information shown in the table below is based on t
 <img width="668" alt="orders" src="https://user-images.githubusercontent.com/25267873/108573094-bb59ef80-730b-11eb-8b13-f3912718e96d.png">
 
 
-## earnings <a name="earnings"></a>
+## up_earnings <a name="earnings"></a>
+
+```
+usage: up_earnings [-p N_PAGES] [-n N_NUM]
+```
+Print upcoming earnings release dates. [Source: Seeking Alpha]
+  * -p : Number of pages to read upcoming earnings from in Seeking Alpha website. Default 10.
+  * -n : Number of upcoming earnings release dates to print. Default 3.
+
+<img width="958" alt="earnings" src="https://user-images.githubusercontent.com/25267873/108575212-6d47ea80-7311-11eb-800b-3db0727caead.png">
+
 
 ## high_short <a name="high_short"></a>
 
