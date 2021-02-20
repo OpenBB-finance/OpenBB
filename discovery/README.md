@@ -51,7 +51,7 @@ usage: gainers [-n {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,
 Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]
   * -n : Number of the top gainers stocks to retrieve. Default 5.
 
-<img width="962" alt="gainers" src="https://user-images.githubusercontent.com/25267873/108576107-4343f780-7314-11eb-947f-7d6d9dc2499a.png">
+<img width="935" alt="Captura de ecrã 2021-02-20, às 11 46 09" src="https://user-images.githubusercontent.com/25267873/108594319-46b99c00-7371-11eb-877e-ef75d3ba472b.png">
 
 
 ## orders <a name="orders"></a>
@@ -61,7 +61,7 @@ usage: orders [-n N_NUM]
 Orders by Fidelity customers. Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. [Source: Fidelity]
   * -n : Number of top ordered stocks to be printed. Default 10.
 
-<img width="960" alt="orders" src="https://user-images.githubusercontent.com/25267873/108576069-20194800-7314-11eb-8265-2a2214183a9a.png">
+<img width="945" alt="Captura de ecrã 2021-02-20, às 11 45 43" src="https://user-images.githubusercontent.com/25267873/108594318-45886f00-7371-11eb-919f-fd1bce6d4001.png">
 
 
 ## up_earnings <a name="up_earnings"></a>
@@ -72,7 +72,7 @@ Print upcoming earnings release dates. [Source: Seeking Alpha]
   * -p : Number of pages to read upcoming earnings from in Seeking Alpha website. Default 10.
   * -n : Number of upcoming earnings release dates to print. Default 3.
 
-<img width="958" alt="earnings" src="https://user-images.githubusercontent.com/25267873/108575212-6d47ea80-7311-11eb-800b-3db0727caead.png">
+<img width="933" alt="Captura de ecrã 2021-02-20, às 11 45 24" src="https://user-images.githubusercontent.com/25267873/108594317-45886f00-7371-11eb-85e6-03d839d421b3.png">
 
 
 ## high_short <a name="high_short"></a>
@@ -82,7 +82,7 @@ usage: high_short [-n N_NUM]
 Print top stocks being more heavily shorted. HighShortInterest.com provides a convenient sorted database of stocks which have a short interest of over 20 percent. Additional key data such as the float, number of outstanding shares, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. Stocks with high short interest are often very volatile and are well known for making explosive upside moves (known as a short squeeze). [Source: www.highshortinterest.com]
   * -n : Number of top stocks to print
 
-<img width="955" alt="highshort" src="https://user-images.githubusercontent.com/25267873/108575692-f4499280-7312-11eb-8f8b-776c5d69d7c8.png">
+<img width="940" alt="Captura de ecrã 2021-02-20, às 11 45 02" src="https://user-images.githubusercontent.com/25267873/108594316-45886f00-7371-11eb-8ded-94fbe28ac84c.png">
 
 
 ## low_float <a name="low_float"></a>
@@ -92,7 +92,7 @@ usage: low_float [-n N_NUM]
 Print top stocks with lowest float. LowFloat.com provides a convenient sorted database of stocks which have a float of under 10 million shares. Additional key data such as the number of outstanding shares, short interest, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
   * -n : Number of top stocks to print
 
-<img width="982" alt="lowfloat" src="https://user-images.githubusercontent.com/25267873/108576262-d5e49680-7314-11eb-8385-a64069839a8b.png">
+<img width="942" alt="Captura de ecrã 2021-02-20, às 11 44 39" src="https://user-images.githubusercontent.com/25267873/108594315-44efd880-7371-11eb-9be7-7ae02999fd09.png">
 
 
 ## simply_wallst <a name="simply_wallst"></a>
@@ -113,10 +113,12 @@ Great website for SPACs research. [Source: www.spachero.com]
 
 <img width="1265" alt="Captura de ecrã 2021-02-20, às 01 12 14" src="https://user-images.githubusercontent.com/25267873/108577430-f282cd80-7318-11eb-888b-82dcf90d4f32.png">
 
+
 ## uwhales <a name="uwhales"></a>
 ```
 usage: uwhales
 ```
-Good website for SPACs research. [Source: www.spachero.com]
+Good website for SPACs research. [Source: www.unusualwhales.com]
 
-<img width="1269" alt="Captura de ecrã 2021-02-20, às 01 12 49" src="https://user-images.githubusercontent.com/25267873/108577429-f1ea3700-7318-11eb-9d0a-54e77e2500d2.png">
+<img width="1247" alt="Captura de ecrã 2021-02-20, às 11 38 54" src="https://user-images.githubusercontent.com/25267873/108594176-47056780-7370-11eb-8f2d-5972c8634974.png">
+
