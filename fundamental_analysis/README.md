@@ -65,7 +65,7 @@ Financial Modeling Prep API
   * [growth](#growth)
     - financial statement growth of the company
     
-Note: Some of these functionalities are repeated in the sense of the overall information contained within. However, since none of the provided data is paid, there isn't a single all-time up-to-date API source. You get what you pay for. It comes to the user to select the functionalities under the API that they trust the most, or compare their outputs, and then make an informed decision.
+**Note:** _Some of these functionalities are repeated in the sense of the overall information contained within. However, since none of the provided data is paid, there isn't a single all-time up-to-date API source. You get what you pay for. It comes to the user to select the functionalities under the API that they trust the most, or compare their outputs, and then make an informed decision._
 
 ## screener <a name="screener"></a>
 ```
