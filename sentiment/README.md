@@ -15,7 +15,7 @@ This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, 
     - show other users spacs announcements from subreddit SPACs
 
 [STOCKTWITS](#STOCKTWITS)
-  * [sentiment](#sentiment)
+  * [bullbear](#bullbear)
     - estimate quick sentiment from last 30 messages on board 
   * [messages](#messages)
     - output up to the 30 last messages on the board
@@ -24,6 +24,11 @@ This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, 
   * [stalker](#stalker)
     - stalk stocktwits user's last messages
 
+[TWITTER](#TWITTER)
+  * [infer](#infer)
+    - infer about stock's sentiment from latest tweets
+  * [sentiment](#sentiment)
+    - in-depth sentiment prediction from tweets over time
 
 # REDDIT <a name="REDDIT"></a>
 
@@ -67,11 +72,11 @@ Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
 
 # STOCKTWITS <a name="STOCKTWITS"></a>
 
-## sentiment <a name="sentiment"></a>
+## bullbear <a name="bullbear"></a>
 ```
-usage: sentiment [-t S_TICKER]
+usage: bullbear [-t S_TICKER]
 ```
-Print stock sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
+Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
   * -t : ticker to gather sentiment from.
                                      
 <img width="934" alt="sentiment" src="https://user-images.githubusercontent.com/25267873/108612307-42c46300-73df-11eb-9cec-253c8fb6d62f.png">
@@ -106,3 +111,25 @@ Print up to the last 30 messages of a user. [Source: Stocktwits]
   * -l : limit messages shown. Default 30.
 
 <img width="943" alt="stalker" src="https://user-images.githubusercontent.com/25267873/108612309-435cf980-73df-11eb-92c9-e9f15f966d8e.png">
+
+
+# TWITTER <a name="TWITTER"></a>
+
+## infer <a name="infer"></a>
+```
+usage: infer [-n N_NUM]
+```
+Print quick sentiment inference from last tweets that contain the ticker. Not only time period of these, but also frequency. [Source: Twitter]
+  * -n : num of latest tweets to infer from. Default 100.
+
+
+## sentiment <a name="sentiment"></a>
+```
+usage: sentiment [-n N_NUM] [-d N_DAYS_PAST]
+```
+Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. Note that a big num of tweets extracted per hour in conjunction with a high number of days in the past, will make the algorithm take a long period of time to estimate sentiment. [Source: Twitter] [Source: Twitter]
+  * -n : num of tweets to extract per hour. Default 100.
+  * -d : num of days in the past to extract tweets. Default 7.
+
+
+
