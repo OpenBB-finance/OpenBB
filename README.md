@@ -65,10 +65,14 @@ spac          show other users spacs announcements
 spac_c        show other users spacs announcements from subreddit SPACs
 
 Stocktwits:
-sentiment     estimate quick sentiment from last 30 messages on board
+bullbear      estimate quick sentiment from last 30 messages on board
 messages      output up to the 30 last messages on the board
 trending      trending stocks
 stalker       stalk stocktwits user's last messages
+
+Twitter:
+   infer         infer about stock's sentiment from latest tweets
+   sentiment     in-depth sentiment prediction from tweets over time
 ```
 
 ### Research Web pages <a name="Research_Web_pages"></a>
