@@ -60,7 +60,7 @@ usage: spac_c [-l N_LIMIT] [-p]
 ```
 Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
   * -l : limit of posts with SPACs retrieved. Default 10.
-  * -p : popular flag, if true the posts retrieved are based on score rather than time. Default false.
+  * -p : popular flag, if true the posts retrieved are based on score rather than time. Default False.
 
 <img width="959" alt="spac_c" src="https://user-images.githubusercontent.com/25267873/108612072-d34d7400-73dc-11eb-850c-36a4e7224918.png">
 
@@ -68,9 +68,41 @@ Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
 # STOCKTWITS <a name="STOCKTWITS"></a>
 
 ## sentiment <a name="sentiment"></a>
+```
+usage: sentiment [-t S_TICKER]
+```
+Print stock sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
+  * -t : ticker to gather sentiment from.
+                                     
+<img width="934" alt="sentiment" src="https://user-images.githubusercontent.com/25267873/108612307-42c46300-73df-11eb-9cec-253c8fb6d62f.png">
+
 
 ## messages <a name="messages"></a>
+```
+usage: messages [-t S_TICKER] [-l N_LIM]
+```
+Print up to 30 of the last messages on the board. [Source: Stocktwits]
+  * -t : get board messages from this ticker. Default pre-loaded.
+  * -l : limit messages shown. Default 30.
+
+<img width="958" alt="messages" src="https://user-images.githubusercontent.com/25267873/108612310-448e2680-73df-11eb-8fa8-b619c6269742.png">
+
 
 ## trending <a name="trending"></a>
+```
+usage: trending
+```
+Stocks trending. [Source: Stocktwits]
+
+<img width="956" alt="trending" src="https://user-images.githubusercontent.com/25267873/108612311-4526bd00-73df-11eb-840b-18829fcecdd3.png">
+
 
 ## stalker <a name="stalker"></a>
+```
+usage: stalker [-u S_USER] [-l N_LIM]
+```
+Print up to the last 30 messages of a user. [Source: Stocktwits]
+  * -u : username. Default newsfilter.
+  * -l : limit messages shown. Default 30.
+
+<img width="943" alt="stalker" src="https://user-images.githubusercontent.com/25267873/108612309-435cf980-73df-11eb-92c9-e9f15f966d8e.png">
