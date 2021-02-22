@@ -55,7 +55,7 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
 def ta_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the technical analysis parser accepts
-    ta_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
+    ta_parser = argparse.ArgumentParser(prog='ta', add_help=False)
     ta_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                            'ema', 'sma', 'vwap', # overlap
                                            'cci', 'macd', 'rsi', 'stoch', # momentum
@@ -69,7 +69,7 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
     while True:
         # Get input command from user
         as_input = input('> ')
-        
+
         # Parse fundamental analysis command of the list of possible commands
         try:
             (ns_known_args, l_args) = ta_parser.parse_known_args(as_input.split())
@@ -111,7 +111,7 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'stoch':
             ta_momentum.stoch(l_args, s_ticker, s_interval, df_stock)
-            
+
         # ---------------------------------------------------- TREND ----------------------------------------------------
         elif ns_known_args.cmd == 'adx':
             ta_trend.adx(l_args, s_ticker, s_interval, df_stock)

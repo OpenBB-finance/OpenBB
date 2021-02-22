@@ -75,10 +75,10 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- INFO ----------------------------------------------------
 def info(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='info', 
+    parser = argparse.ArgumentParser(prog='info',
                                      description="""Provides information about main key metrics. Namely: EBITDA,
                                      EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.""")
-        
+
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
@@ -96,13 +96,13 @@ def info(l_args, s_ticker):
     except:
         print("ERROR!\n")
         return
-    
+
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts
-    fa_parser = argparse.ArgumentParser(prog='fundamental_analysis', add_help=False)
+    fa_parser = argparse.ArgumentParser(prog='fa', add_help=False)
     fa_parser.add_argument('cmd', choices=['help', 'q', 'quit', #
                                            'screener', # Finviz
                                            'mgmt', # Business Insider
@@ -118,7 +118,7 @@ def fa_menu(s_ticker, s_start, s_interval):
     while True:
         # Get input command from user
         as_input = input('> ')
-        
+
         # Parse fundamental analysis command of the list of possible commands
         try:
             (ns_known_args, l_args) = fa_parser.parse_known_args(as_input.split())
@@ -129,7 +129,7 @@ def fa_menu(s_ticker, s_start, s_interval):
 
         #if ns_known_args.cmd == 'info':
         #    info(l_args, s_ticker)
-            
+
         if ns_known_args.cmd == 'help':
             print_fundamental_analysis(s_ticker, s_start, s_interval)
 
@@ -180,7 +180,7 @@ def fa_menu(s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'cal':
             yf_api.calendar_earnings(l_args, s_ticker)
-        
+
          # ALPHA VANTAGE API
         elif ns_known_args.cmd == 'overview':
             av_api.overview(l_args, s_ticker)
@@ -204,7 +204,7 @@ def fa_menu(s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == 'quote':
             fmp_api.quote(l_args, s_ticker)
-        
+
         elif ns_known_args.cmd == 'enterprise':
             fmp_api.enterprise(l_args, s_ticker)
 

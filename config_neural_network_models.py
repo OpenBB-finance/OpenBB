@@ -19,33 +19,33 @@
 #   - The loss function
 
 MultiLayer_Perceptron \
-    = [ {'Dense': 
+    = [ {'Dense':
                 {'units':50, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'units':100, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'units':80, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'units':30, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'activation':'linear'} }]
 
 Recurrent_Neural_Network \
-    = [ {'SimpleRNN': 
+    = [ {'SimpleRNN':
                 {'units':100, 'activation':'linear', 'return_sequences':True} },
-        {'SimpleRNN': 
+        {'SimpleRNN':
                 {'units':50, 'activation':'linear', 'return_sequences':True} },
-        {'Dropout': 
+        {'Dropout':
                 {'rate':0.2} },
-        {'SimpleRNN': 
+        {'SimpleRNN':
                 {'units':21, 'activation':'linear', 'return_sequences':False} },
-        {'Dense': 
+        {'Dense':
                 {'activation':'linear'} }]
 
 Long_Short_Term_Memory \
-    = [ {'LSTM': 
+    = [ {'LSTM':
                 {'units':25, 'activation':'tanh', 'return_sequences':True} },
-        {'LSTM': 
+        {'LSTM':
                 {'units':15, 'activation':'tanh', 'return_sequences':False} },
-        {'Dense': 
-                {'activation':'linear'} }]    
+        {'Dense':
+                {'activation':'linear'} }]

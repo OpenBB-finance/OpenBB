@@ -18,11 +18,11 @@ def get_last_time_market_was_open(dt):
     # Check if it is a weekend
     if dt.date().weekday() > 4:
         dt = get_last_time_market_was_open(dt - timedelta(hours=24))
-    
+
     # Check if it is a holiday
     if dt.strftime('%Y-%m-%d') in holidaysUS():
         dt = get_last_time_market_was_open(dt - timedelta(hours=24))
-        
+
     dt = dt.replace(hour=21, minute=0, second=0)
 
     return dt
@@ -30,9 +30,10 @@ def get_last_time_market_was_open(dt):
 
 # -------------------------------------------------------------------------------------------------------------------
 def watchlist(l_args):
-    parser = argparse.ArgumentParser(prog='watchlist', 
-                                     description=""" Show other users watchlist [Reddit] """)
-    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5, help='Limit of posts with watchlists retrieved')
+    parser = argparse.ArgumentParser(prog='watchlist',
+                                     description="""Print other users watchlist. [Source: Reddit]""")
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5,
+                        help='limit of posts with watchlists retrieved.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -61,21 +62,21 @@ def watchlist(l_args):
                                                     subreddit=l_sub_reddits,
                                                     q='WATCHLIST|Watchlist|watchlist',
                                                     filter=['id'])
-        
+
         n_flair_posts_found = 0
         while True:
             submission = next(submissions, None)
             if submission:
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
-                
+
                 # Ensure that the post hasn't been removed  by moderator in the meanwhile,
                 #that there is a description and it's not just an image, that the flair is
                 #meaningful, and that we aren't re-considering same author's watchlist
                 if not submission.removed_by_category and submission.selftext \
                     and submission.link_flair_text not in ['Yolo', 'Meme'] \
                     and submission.author.name not in l_watchlist_author:
-                        
+
                         # Make sure there is at least 1 ticker found on the post text
                         l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
                         if l_tickers_found:
@@ -120,18 +121,18 @@ def watchlist(l_args):
                             print(f"\n{s_datetime} - {submission.title}")
                             print(f"{s_link}")
                             t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score, 
+                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
                                             submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
                             print(t_post)
-                            print("\n")
+                            print("")
 
                             # Increment count of valid posts found
                             n_flair_posts_found += 1
-                    
+
                 # Check if number of wanted posts found has been reached
                 if n_flair_posts_found > ns_parser.n_limit-1:
                     break
-                    
+
             # Check if search_submissions didn't get anymore posts
             else:
                 break
@@ -160,15 +161,15 @@ def watchlist(l_args):
 
 # -------------------------------------------------------------------------------------------------------------------
 def popular_tickers(l_args):
-    parser = argparse.ArgumentParser(prog='popular', 
+    parser = argparse.ArgumentParser(prog='popular',
                                      description=""" Latest popular tickers [Reddit] """)
-    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=30, 
-                        help='Limit of posts retrieved per sub reddit')
-    parser.add_argument('-s', "--sub", action="store", dest="s_subreddit", type=str, 
-                        help="""Subreddit to look for tickers. Default: pennystocks, RobinHoodPennyStocks, Daytrading, 
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=30,
+                        help='limit of posts retrieved per sub reddit.')
+    parser.add_argument('-s', "--sub", action="store", dest="s_subreddit", type=str,
+                        help="""subreddit to look for tickers. Default: pennystocks, RobinHoodPennyStocks, Daytrading,
                         StockMarket, stocks, investing, wallstreetbets""")
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=1,
-                        help="Look for the tickers from those n past days")
+                        help="look for the tickers from those n past days.")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -176,7 +177,7 @@ def popular_tickers(l_args):
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
-    
+
         n_ts_after = int((datetime.today() - timedelta(days=ns_parser.n_days)).timestamp())
 
         if ns_parser.s_subreddit:
@@ -211,41 +212,41 @@ def popular_tickers(l_args):
                     # Get more information about post using PRAW api
                     submission = praw_api.submission(id=submission.id)
 
-                    # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+                    # Ensure that the post hasn't been removed by moderator in the meanwhile,
                     #that there is a description and it's not just an image, that the flair is
                     #meaningful, and that we aren't re-considering same author's content
                     if not submission.removed_by_category and (submission.selftext or submission.title) \
                         and submission.link_flair_text not in ['Yolo', 'Meme'] \
                         and submission.author.name not in l_watchlist_author:
 
-                            # Make sure there is at least 1 ticker found on the post text
-                            l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
-                            if not l_tickers_found:
-                                l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.title))
-                            
-                            if l_tickers_found:
-                                
-                                n_tickers += len(l_tickers_found)
+                        # Make sure there is at least 1 ticker found on the post text
+                        l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
+                        if not l_tickers_found:
+                            l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.title))
 
-                                # Add another author's name to the parsed watchlists
-                                l_watchlist_author.append(submission.author.name)
+                        if l_tickers_found:
 
-                                # Lookup stock tickers within a watchlist
-                                for key in l_tickers_found:
-                                    if key in d_watchlist_tickers:
-                                        # Increment stock ticker found
-                                        d_watchlist_tickers[key] += 1
-                                    else:
-                                        # Initialize stock ticker found
-                                        d_watchlist_tickers[key] = 1
+                            n_tickers += len(l_tickers_found)
+
+                            # Add another author's name to the parsed watchlists
+                            l_watchlist_author.append(submission.author.name)
+
+                            # Lookup stock tickers within a watchlist
+                            for key in l_tickers_found:
+                                if key in d_watchlist_tickers:
+                                    # Increment stock ticker found
+                                    d_watchlist_tickers[key] += 1
+                                else:
+                                    # Initialize stock ticker found
+                                    d_watchlist_tickers[key] = 1
 
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-                    
+
             print(f"  {n_tickers} tickers found.")
 
-    
+
 
         lt_watchlist_sorted = sorted(d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True)
         print("\nThe following TOP10 tickers have been mentioned in the last 24 hours:")
@@ -265,15 +266,16 @@ def popular_tickers(l_args):
 
     except:
         print("")
-        
+
 
 # -------------------------------------------------------------------------------------------------------------------
 def spac(l_args):
-    parser = argparse.ArgumentParser(prog='spac', 
+    parser = argparse.ArgumentParser(prog='spac',
                                      description=""" Show other users SPACs announcement [Reddit] """)
-    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5, help='Limit of posts with SPACs retrieved')
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5,
+                        help='limit of posts with SPACs retrieved')
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5,
-                        help="Look for the tickers from those n past days")
+                        help="look for the tickers from those n past days")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -295,7 +297,7 @@ def spac(l_args):
 
         n_ts_after = int((datetime.today() - timedelta(days=ns_parser.n_days)).timestamp())
         l_sub_reddits = ['pennystocks', 'RobinHoodPennyStocks', 'Daytrading', 'StockMarket', 'stocks', 'investing', 'wallstreetbets']
-        
+
         warnings.filterwarnings("ignore") # To avoid printing the warning
         psaw_api = PushshiftAPI()
         submissions = psaw_api.search_submissions(after=n_ts_after,
@@ -308,14 +310,14 @@ def spac(l_args):
             if submission:
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
-                
+
                 # Ensure that the post hasn't been removed  by moderator in the meanwhile,
                 #that there is a description and it's not just an image, that the flair is
                 #meaningful, and that we aren't re-considering same author's watchlist
                 if not submission.removed_by_category and submission.selftext \
                     and submission.link_flair_text not in ['Yolo', 'Meme'] \
                     and submission.author.name not in l_watchlist_author:
-                        
+
                         # Make sure there is at least 1 ticker found on the post text
                         l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
                         if not l_tickers_found:
@@ -362,18 +364,18 @@ def spac(l_args):
                             print(f"{s_datetime} - {submission.title}")
                             print(f"{s_link}")
                             t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score, 
+                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
                                             submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
                             print(t_post)
                             print("\n")
 
                             # Increment count of valid posts found
                             n_flair_posts_found += 1
-                    
+
                 # Check if number of wanted posts found has been reached
                 if n_flair_posts_found > ns_parser.n_limit-1:
                     break
-                    
+
             # Check if search_submissions didn't get anymore posts
             else:
                 break
@@ -402,10 +404,12 @@ def spac(l_args):
 
 # -------------------------------------------------------------------------------------------------------------------
 def spac_community(l_args):
-    parser = argparse.ArgumentParser(prog='spac_c', 
-                                     description=""" Show other users SPACs announcement under subreddit SPACs [Reddit] """)
-    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=10, help='Limit of posts with SPACs retrieved')
-    parser.add_argument('-p', "--popular", action="store_true", default=False, dest="b_popular", help='If popular, the posts retrieved are based on score rather than time')
+    parser = argparse.ArgumentParser(prog='spac_c',
+                                     description="""Print other users SPACs announcement under subreddit 'SPACs' [Source: Reddit]""")
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=10,
+                        help='limit of posts with SPACs retrieved')
+    parser.add_argument('-p', "--popular", action="store_true", default=False, dest="b_popular",
+                        help='popular flag, if true the posts retrieved are based on score rather than time')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -437,18 +441,18 @@ def spac_community(l_args):
             if submission:
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
-                
+
                 # Ensure that the post hasn't been removed  by moderator in the meanwhile,
                 #that there is a description and it's not just an image, that the flair is
                 #meaningful, and that we aren't re-considering same author's watchlist
                 if not submission.removed_by_category and submission.selftext \
                     and submission.author.name not in l_watchlist_author: # and submission.link_flair_text not in ['Yolo', 'Meme'] \
-                        
+
                         # Make sure there is at least 1 ticker found on the post text
                         l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
                         if not l_tickers_found:
                             l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.title))
-                            
+
                         if l_tickers_found:
                             # Add another author's name to the parsed watchlists
                             l_watchlist_author.append(submission.author.name)
@@ -490,11 +494,11 @@ def spac_community(l_args):
                             print(f"{s_datetime} - {submission.title}")
                             print(f"{s_link}")
                             t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score, 
+                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
                                             submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
                             print(t_post)
                             print("\n")
-                    
+
             # Check if search_submissions didn't get anymore posts
             else:
                 break
@@ -516,17 +520,19 @@ def spac_community(l_args):
                 print("The following stock tickers have been mentioned across the previous SPACs:")
                 print(s_watchlist_tickers[:-2])
         print("")
-    
+
     except:
         print("")
 
 
 # -------------------------------------------------------------------------------------------------------------------
 def wsb_community(l_args):
-    parser = argparse.ArgumentParser(prog='wsb', 
-                                     description="""Show what WSB gang are up to in subreddit wallstreetbets [Reddit] """)
-    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=10, help='Limit of posts')
-    parser.add_argument('-n', "--new", action="store_true", default=False, dest="b_new", help='If new, the posts retrieved are based on more recent rather than score')
+    parser = argparse.ArgumentParser(prog='wsb',
+                                     description="""Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]""")
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive,
+                        default=10, help='limit of posts to print.')
+    parser.add_argument('-n', "--new", action="store_true", default=False, dest="b_new",
+                        help='new flag, if true the posts retrieved are based on being more recent rather than their score.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -542,9 +548,7 @@ def wsb_community(l_args):
                                 password=cfg.API_REDDIT_PASSWORD)
 
         d_submission = {}
-        d_watchlist_tickers = {}
         l_watchlist_links = list()
-        l_watchlist_author = list()
 
         psaw_api = PushshiftAPI()
 
@@ -552,91 +556,52 @@ def wsb_community(l_args):
             submissions = praw_api.subreddit('wallstreetbets').new(limit=ns_parser.n_limit)
         else:
             submissions = praw_api.subreddit('wallstreetbets').hot(limit=ns_parser.n_limit)
-            
+
         while True:
             submission = next(submissions, None)
             if submission:
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
-                
+
                 # Ensure that the post hasn't been removed  by moderator in the meanwhile,
                 #that there is a description and it's not just an image, that the flair is
                 #meaningful, and that we aren't re-considering same author's watchlist
-                if not submission.removed_by_category and submission.selftext \
-                    and submission.author.name not in l_watchlist_author: # and submission.link_flair_text not in ['Yolo', 'Meme'] \
-                        
-                        # Make sure there is at least 1 ticker found on the post text
-                        l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
-                        if not l_tickers_found:
-                            l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.title))
-                            
-                        if l_tickers_found:
-                            # Add another author's name to the parsed watchlists
-                            l_watchlist_author.append(submission.author.name)
+                if not submission.removed_by_category:
 
-                            # Lookup stock tickers within a watchlist
-                            for key in l_tickers_found:
-                                if key in d_watchlist_tickers:
-                                    # Increment stock ticker found
-                                    d_watchlist_tickers[key] += 1
-                                else:
-                                    # Initialize stock ticker found
-                                    d_watchlist_tickers[key] = 1
+                    l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
 
-                            l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
-                            # delte below, not necessary I reckon. Probably just link?
+                    # Refactor data
+                    s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
+                    s_link = f"https://www.reddit.com{submission.permalink}"
+                    s_all_awards = ""
+                    for award in submission.all_awardings:
+                        s_all_awards += f"{award['count']} {award['name']}\n"
+                    s_all_awards = s_all_awards[:-2]
 
-                            # Refactor data
-                            s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
-                            s_link = f"https://www.reddit.com{submission.permalink}"
-                            s_all_awards = ""
-                            for award in submission.all_awardings:
-                                s_all_awards += f"{award['count']} {award['name']}\n"
-                            s_all_awards = s_all_awards[:-2]
+                    # Create dictionary with data to construct dataframe allows to save data
+                    d_submission[submission.id] = {
+                                                    'created_utc': s_datetime,
+                                                    'subreddit': submission.subreddit,
+                                                    'link_flair_text': submission.link_flair_text,
+                                                    'title':submission.title,
+                                                    'score': submission.score,
+                                                    'link': s_link,
+                                                    'num_comments': submission.num_comments,
+                                                    'upvote_ratio': submission.upvote_ratio,
+                                                    'awards': s_all_awards
+                                                }
 
-                            # Create dictionary with data to construct dataframe allows to save data
-                            d_submission[submission.id] = {
-                                                            'created_utc': s_datetime,
-                                                            'subreddit': submission.subreddit,
-                                                            'link_flair_text': submission.link_flair_text,
-                                                            'title':submission.title,
-                                                            'score': submission.score,
-                                                            'link': s_link,
-                                                            'num_comments': submission.num_comments,
-                                                            'upvote_ratio': submission.upvote_ratio,
-                                                            'awards': s_all_awards
-                                                        }
-
-                            # Print post data collected so far
-                            print(f"{s_datetime} - {submission.title}")
-                            print(f"{s_link}")
-                            t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score, 
-                                            submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
-                            print(t_post)
-                            print("\n")
-                    
+                    # Print post data collected so far
+                    print(f"{s_datetime} - {submission.title}")
+                    print(f"{s_link}")
+                    t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
+                    t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
+                                    submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
+                    print(t_post)
+                    print("")
             # Check if search_submissions didn't get anymore posts
             else:
                 break
-
-        if d_watchlist_tickers:
-            lt_watchlist_sorted = sorted(d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True)
-            s_watchlist_tickers = ""
-            n_tickers = 0
-            for t_ticker in lt_watchlist_sorted:
-                try:
-                    # If try doesn't trigger exception, it means that this stock exists on finviz
-                    #thus we can print it.
-                    finviz.get_stock(t_ticker[0])
-                    s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
-                    n_tickers += 1
-                except:
-                    pass
-            if n_tickers:
-                print("The following stock tickers have been mentioned across the previous SPACs:")
-                print(s_watchlist_tickers[:-2])
-        print("")
-    
+            print("")
     except:
         print("")

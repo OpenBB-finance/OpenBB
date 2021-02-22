@@ -16,10 +16,11 @@ register_matplotlib_converters()
 
 # ------------------------------------------- PRICE_TARGET_FROM_ANALYSTS -------------------------------------------
 def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
-    parser = argparse.ArgumentParser(prog='price_target_from_analysts', 
-                                     description="""Price target from analysts [Source: Business Insider API]""")
-        
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Number of latest price targets')
+    parser = argparse.ArgumentParser(prog='pt',
+                                     description="""Prints price target from analysts. [Source: Business Insider]""")
+
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
+                        help='number of latest price targets from analysts to print.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -38,14 +39,14 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
                 s_analyst_data = script.get_text().split("config: ",1)[1].split(",\r\n",1)[0]
                 d_analyst_data = json.loads(s_analyst_data)
                 break
-                
+
         #pprint.pprint(d_analyst_data)
-        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data['Markers']) 
+        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data['Markers'])
         df_analyst_data = df_analyst_data[['DateLabel', 'Company', 'InternalRating', 'PriceTarget']]
         df_analyst_data.columns = ['Date', 'Company', 'Rating', 'Price Target']
         df_analyst_data
-        df_analyst_data['Rating'].replace({'gut': 'BUY', 
-                                           'neutral': 'HOLD', 
+        df_analyst_data['Rating'].replace({'gut': 'BUY',
+                                           'neutral': 'HOLD',
                                            'schlecht':'SELL'}, inplace=True)
         df_analyst_data['Date'] = pd.to_datetime(df_analyst_data['Date'])
         df_analyst_data = df_analyst_data.set_index('Date')
@@ -56,7 +57,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock['5. adjusted close'].values, lw=3)
-        # Intraday 
+        # Intraday
         else:
             plt.plot(df_stock.index, df_stock['4. close'].values, lw=3)
 
@@ -82,7 +83,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         pd.set_option('display.max_colwidth', -1)
         print(df_analyst_data.sort_index(ascending=False).head(ns_parser.n_num).to_string())
         print("")
-        
+
     except:
         print("")
         return
@@ -90,8 +91,8 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
 # ----------------------------------------------- ESTIMATES -----------------------------------------------
 def estimates(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='estimates', 
-                                     description="""Yearly and quarter earnings estimates [Source: Business Insider API]""")
+    parser = argparse.ArgumentParser(prog='est',
+                                     description="""Yearly estimates and quarter earnings/revenues [Source: Business Insider]""")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -115,7 +116,7 @@ def estimates(l_args, s_ticker):
         l_estimates_year_metric = list()
         for estimates_year_metric in text_soup_market_business_insider.findAll('td', {'class': 'table__td black'}):
             l_estimates_year_metric.append(estimates_year_metric.text)
-            
+
         l_estimates_quarter_metric = list()
         for estimates_quarter_metric in text_soup_market_business_insider.findAll('td', {'class': 'table__td font-color-dim-gray'}):
             l_estimates_quarter_metric.append(estimates_quarter_metric.text)
@@ -127,32 +128,32 @@ def estimates(l_args, s_ticker):
         n_metrics = 0
         b_year = True
         for idx, metric_value in enumerate(text_soup_market_business_insider.findAll('td', {'class': 'table__td text-right'})):
-            
+
             if b_year:
                 # YEAR metrics
                 l_metrics.append(metric_value.text.strip())
-                
+
                 # Check if we have processed all year metrics
                 if n_metrics > len(l_estimates_year_metric)-1:
                     b_year = False
                     n_metrics = 0
                     l_metrics = list()
                     idx_y = idx
-                
+
                 # Add value to dictionary
                 if (idx+1)%len(l_estimates_year_header) == 0:
                     d_metric_year[l_estimates_year_metric[n_metrics]] = l_metrics
                     l_metrics = list()
                     n_metrics += 1
-            
-            if not b_year:        
+
+            if not b_year:
                 # QUARTER metrics
                 l_metrics.append(metric_value.text.strip())
-                
+
                 # Check if we have processed all quarter metrics
                 if n_metrics > len(l_estimates_quarter_metric)-1:
                     break
-            
+
                 # Add value to dictionary
                 if (idx-idx_y+1)%len(l_estimates_quarter_header) == 0:
                     if n_metrics < 4:
@@ -177,7 +178,7 @@ def estimates(l_args, s_ticker):
                 l_date.append('ending ' + re.split('  ending',quarter_title)[1].strip())
             else:
                 l_date.append('-')
-                
+
         df_quarter_earnings.columns = l_quarter
         df_quarter_earnings.loc["Date"] = l_date
         df_quarter_earnings = df_quarter_earnings.reindex(["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"])
@@ -197,7 +198,7 @@ def estimates(l_args, s_ticker):
 
         print(text_soup_market_business_insider.find('div', {'class': "text_right instrument-description"}).text.strip())
         print("")
-                
+
     except:
         print("")
         return
@@ -205,9 +206,10 @@ def estimates(l_args, s_ticker):
 
 # ----------------------------------------------- INSIDER_ACTIVITY -----------------------------------------------
 def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
-    parser = argparse.ArgumentParser(prog='insider_activity', 
-                                     description="""Insider activity over time [Source: Business Insider API]""")
-    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Number of latest insider activity')
+    parser = argparse.ArgumentParser(prog='ins',
+                                     description="""Prints insider activity over time [Source: Business Insider]""")
+    parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
+                        help='number of latest insider activity.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -218,7 +220,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
 
         url_market_business_insider = f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
         text_soup_market_business_insider = BeautifulSoup(requests.get(url_market_business_insider).text, "lxml")
-       
+
         d_insider = dict()
         l_insider_vals = list()
         for idx, insider_val in enumerate(text_soup_market_business_insider.findAll('td', {'class':"table__td text-center"})):
@@ -248,7 +250,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
 
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock['5. adjusted close'].values, lw=3)
-        else: # Intraday 
+        else: # Intraday
             plt.plot(df_stock.index, df_stock['4. close'].values, lw=3)
 
         plt.title(f"{s_ticker.upper()} (Time Series) and Price Target")
@@ -269,33 +271,33 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
                 ind_dt = ind
             else:
                 ind_dt = get_next_stock_market_days(ind, 1)[0]
-            
+
             n_stock_price = 0
             if s_interval == "1440min":
-                n_stock_price = df_stock['5. adjusted close'][ind_dt]    
+                n_stock_price = df_stock['5. adjusted close'][ind_dt]
             else:
                 n_stock_price = df_stock['4. close'][ind_dt]
-                
-            plt.vlines(x=ind_dt, 
-                       ymin= n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Sell'].groupby(by=['Date']).sum()['Trade'][ind]), 
-                       ymax= n_stock_price, 
+
+            plt.vlines(x=ind_dt,
+                       ymin= n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Sell'].groupby(by=['Date']).sum()['Trade'][ind]),
+                       ymax= n_stock_price,
                        colors='red', ls='-', lw=5)
-            
+
         for ind in df_insider[df_insider['Type'] == 'Buy'].groupby(by=['Date']).sum().index:
             if ind in df_stock.index:
                 ind_dt = ind
             else:
                 ind_dt = get_next_stock_market_days(ind, 1)[0]
-                
+
             n_stock_price = 0
             if s_interval == "1440min":
-                n_stock_price = df_stock['5. adjusted close'][ind_dt]    
+                n_stock_price = df_stock['5. adjusted close'][ind_dt]
             else:
                 n_stock_price = df_stock['4. close'][ind_dt]
-                
-            plt.vlines(x=ind_dt, 
-                       ymin=n_stock_price, 
-                       ymax=n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Buy'].groupby(by=['Date']).sum()['Trade'][ind]), 
+
+            plt.vlines(x=ind_dt,
+                       ymin=n_stock_price,
+                       ymax=n_stock_price + n_proportion * float(df_insider[df_insider['Type'] == 'Buy'].groupby(by=['Date']).sum()['Trade'][ind]),
                        colors='green', ls='-', lw=5)
 
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
@@ -305,12 +307,12 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
 
         l_names = list()
         for s_name in text_soup_market_business_insider.findAll('a', {'onclick':"silentTrackPI()"}):
-            l_names.append(s_name.text.strip())    
+            l_names.append(s_name.text.strip())
         df_insider['Insider'] = l_names
 
         print(df_insider.sort_index(ascending=False).head(n=ns_parser.n_num).to_string())
         print("")
-                
+
     except:
         print("")
         return

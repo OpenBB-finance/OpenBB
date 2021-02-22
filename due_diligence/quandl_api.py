@@ -10,12 +10,14 @@ from helper_funcs import *
 
 # -------------------------------------------------------- SHORT_INTEREST --------------------------------------------------------
 def short_interest(l_args, s_ticker, s_start):
-    parser = argparse.ArgumentParser(prog='short', 
-                                     description="""Short interest corresponds to the number of shares that have been sold short 
-                                     but have not yet been covered or closed out. [Source: Quandl API]""")
+    parser = argparse.ArgumentParser(prog='short',
+                                     description="""Plots the short interest of a stock. This corresponds to the number of shares that
+                                     have been sold short but have not yet been covered or closed out. Either NASDAQ or NYSE [Source: Quandl]""")
 
-    parser.add_argument('-n', "--nyse", action="store_true", default=False, dest="b_nyse", help='Data from NYSE')
-    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=10, help='Number of latest days to see data')
+    parser.add_argument('-n', "--nyse", action="store_true", default=False, dest="b_nyse",
+                        help='data from NYSE flag.')
+    parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=10,
+                        help='number of latest days to print data.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -45,7 +47,7 @@ def short_interest(l_args, s_ticker, s_start):
             ax.set_title(f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker} from {s_start.date()}")
         else:
             ax.set_title(f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker}")
-        
+
         ax.legend(labels=['Short Volume', 'Total Volume'])
         ax.tick_params(axis='both', which='major')
         ax.yaxis.set_major_formatter(ticker.EngFormatter())
@@ -56,7 +58,7 @@ def short_interest(l_args, s_ticker, s_start):
         ax_twin.tick_params(axis='y', which='major', color='green')
         ax_twin.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.0f%%'))
         plt.xlim([df_short_interest.index[0], df_short_interest.index[-1]])
-        
+
         df_short_interest['% of Volume Shorted'] = df_short_interest['% of Volume Shorted'].apply(lambda x: f'{x/100:.2%}')
         df_short_interest = df_short_interest.applymap(lambda x: long_number_format(x)).sort_index(ascending=False)
 
@@ -69,4 +71,3 @@ def short_interest(l_args, s_ticker, s_start):
     except:
         print("")
         return
-    

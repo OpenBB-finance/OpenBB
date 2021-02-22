@@ -14,15 +14,16 @@ import config_terminal as cfg
 
 # -------------------------------------------------------------------------------------------------------------------
 def due_diligence(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='dd', 
-                                     description=""" Search for a stock's due diligence [Reddit] """)
-    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5, 
-                        help='Limit of posts with the watchlist word')
+    parser = argparse.ArgumentParser(prog='red',
+                                     description="""Print top stock's due diligence from other users. [Source: Reddit] """)
+
+    parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5,
+                        help='limit of posts to retrieve.')
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=3,
-                        help="Look for a watchlist created on the past n days")
+                        help="number of prior days to look for.")
     parser.add_argument('-a', "--all", action="store_true", dest="b_all", default=False,
-                        help=""" Search through all flairs (apart from Yolo and Meme), otherwise we focus on the 
-                        flairs: DD, technical analysis, Catalyst, News, Advice, Chart """)
+                        help="""search through all flairs (apart from Yolo and Meme), otherwise we focus on
+                        specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart """)
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -54,12 +55,12 @@ def due_diligence(l_args, s_ticker):
             if submission:
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
-                
+
                 # Ensure that the post hasn't been removed in the meanwhile
                 if not submission.removed_by_category:
 
                     # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
-                    if (submission.link_flair_text in l_flair_text, 
+                    if (submission.link_flair_text in l_flair_text,
                         submission.link_flair_text not in ['Yolo', 'Meme'])[ns_parser.b_all]:
 
                             # Refactor data
@@ -87,20 +88,20 @@ def due_diligence(l_args, s_ticker):
                             print(f"{s_datetime} - {submission.title}")
                             print(f"{s_link}")
                             t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score, 
+                            t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
                                             submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
                             print(t_post)
                             print("\n")
-                            
+
                             # If needed, submission.comments could give us the top comments
 
                             # Increment count of valid posts found
                             n_flair_posts_found += 1
-                    
+
                 # Check if number of wanted posts found has been reached
                 if n_flair_posts_found > ns_parser.n_limit-1:
                     break
-                    
+
             # Check if search_submissions didn't get anymore posts
             else:
                 break

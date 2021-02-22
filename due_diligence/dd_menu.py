@@ -53,8 +53,8 @@ def print_due_diligence(s_ticker, s_start, s_interval):
 def dd_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the due diligence parser accepts
-    dd_parser = argparse.ArgumentParser(prog='due_diligence', add_help=False)
-    dd_parser.add_argument('cmd', choices=['info', 'help', 'q', 'quit', 
+    dd_parser = argparse.ArgumentParser(prog='dd', add_help=False)
+    dd_parser.add_argument('cmd', choices=['info', 'help', 'q', 'quit',
                                            'red', # Reddit
                                            'short', # Quandl
                                            'rating', # FMP
@@ -68,7 +68,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
     while True:
         # Get input command from user
         as_input = input('> ')
-        
+
         # Parse due diligence command of the list of possible commands
         try:
             (ns_known_args, l_args) = dd_parser.parse_known_args(as_input.split())
@@ -76,7 +76,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-            
+
         if ns_known_args.cmd == 'help':
             print_due_diligence(s_ticker, s_start, s_interval)
 
@@ -91,7 +91,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
         # REDDIT API
         elif ns_known_args.cmd == 'red':
             r_api.due_diligence(l_args, s_ticker)
-        
+
         # FINVIZ API
         elif ns_known_args.cmd == 'insider':
             fvz_api.insider(l_args, s_ticker)

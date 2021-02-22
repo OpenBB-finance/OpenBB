@@ -8,11 +8,11 @@ import pandas as pd
 
 # ---------------------------------------------------- RATING ----------------------------------------------------
 def rating(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='rating', 
-                                     description="""Based on specific ratios, provides information whether the company 
+    parser = argparse.ArgumentParser(prog='rating',
+                                     description="""Based on specific ratios, prints information whether the company
                                      is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
-                                     P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep API]""")
-        
+                                     P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]""")
+
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
@@ -29,4 +29,3 @@ def rating(l_args, s_ticker):
         print("")
         return
 
- 

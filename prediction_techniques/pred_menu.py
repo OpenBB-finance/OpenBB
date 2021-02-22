@@ -45,14 +45,14 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   lstm        Long-Short Term Memory")
     print("")
 
- 
+
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the prediction techniques parser accepts
-    pred_parser = argparse.ArgumentParser(prog='technical_analysis', add_help=False)
+    pred_parser = argparse.ArgumentParser(prog='pred', add_help=False)
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'sma', 'knn', 
+                                             'sma', 'knn',
                                              'linear', 'quadratic', 'cubic', 'regression',
                                              'arima', 'prophet', 'mlp', 'rnn', 'lstm'])
 
@@ -62,7 +62,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     while True:
         # Get input command from user
         as_input = input('> ')
-        
+
         # Parse prediction techniques command of the list of possible commands
         try:
             (ns_known_args, l_args) = pred_parser.parse_known_args(as_input.split())

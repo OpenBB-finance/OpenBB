@@ -44,13 +44,13 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
         # Daily
         if s_interval == "1440min":
-            df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=ns_parser.s_ticker, outputsize='full')     
+            df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=ns_parser.s_ticker, outputsize='full')
         # Intraday
-        else: 
-            df_stock, d_stock_metadata = ts.get_intraday(symbol=ns_parser.s_ticker, outputsize='full', interval=s_interval)  
+        else:
+            df_stock, d_stock_metadata = ts.get_intraday(symbol=ns_parser.s_ticker, outputsize='full', interval=s_interval)
 
         df_stock.sort_index(ascending=True, inplace=True)
-            
+
     except:
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return [s_ticker, s_start, s_interval, df_stock]
@@ -72,7 +72,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(prog='view', description='Visualise historical data of a stock. An alpha_vantage key is necessary.')
     if s_ticker:
-        parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", default=s_ticker, help='Stock ticker')  
+        parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", default=s_ticker, help='Stock ticker')
     else:
         parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", required=True, help='Stock ticker')
     parser.add_argument('-s', "--start", type=valid_date, dest="s_start_date", help="The starting date (format YYYY-MM-DD) of the stock")
@@ -85,7 +85,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     except SystemExit:
         print("")
         return
-    
+
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
@@ -105,8 +105,8 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
             df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
         # Intraday
         else:
-            df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)  
-              
+            df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)
+
     except:
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return
@@ -125,7 +125,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
             print("An index bigger than 4 was given, which is wrong. Try again")
             return
         # Append last column of df to be filtered which corresponds to: 6. Volume
-        ln_col_idx.append(5) 
+        ln_col_idx.append(5)
     # Intraday
     else:
         # The default doesn't exist for intradaily data
@@ -138,7 +138,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
             print("An index bigger than 3 was given, which is wrong. Try again")
             return
         # Append last column of df to be filtered which corresponds to: 5. Volume
-        ln_col_idx.append(4) 
+        ln_col_idx.append(4)
 
     # Plot view of the stock
     plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
@@ -155,7 +155,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
     print("   view        view and load a specific stock ticker for technical analysis")
-    
+
     s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
     if s_ticker and s_start:
         print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
@@ -179,7 +179,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 # -----------------------------------------------------------------------------------------------------------------------
 def main():
     """ Main function of the program
-    """ 
+    """
 
     s_ticker = ""
     s_start = ""
@@ -188,12 +188,12 @@ def main():
     s_interval = "1440min"
 
     # Set stock by default to speed up testing
-    s_ticker = "AAPL"
+    s_ticker = "BB"
     s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
     df_stock.sort_index(ascending=True, inplace=True)
-    df_stock = df_stock[s_start:] 
+    df_stock = df_stock[s_start:]
     # Delete above in the future
 
     # Add list of arguments that the main parser accepts
@@ -201,7 +201,7 @@ def main():
     menu_parser.add_argument('opt', choices=['help', 'quit', 'q',
                                              'clear', 'load', 'view',
                                              'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred'])
-                                             
+
     # Print first welcome message and help
     print("\nWelcome to Didier's Gamestonk Terminal\n")
     print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
@@ -215,7 +215,7 @@ def main():
         if not len(as_input):
             print("")
             continue
-        
+
         # Parse main command of the list of possible commands
         try:
             (ns_known_args, l_args) = menu_parser.parse_known_args(as_input.split())
@@ -230,7 +230,7 @@ def main():
         elif (ns_known_args.opt == 'quit') or (ns_known_args.opt == 'q'):
             print("Hope you made money today. Good bye my lover, good bye my friend.\n")
             return
-       
+
         elif ns_known_args.opt == 'clear':
             print("Clearing stock ticker to be used for analysis")
             s_ticker = ""
@@ -304,7 +304,7 @@ def main():
 
         # PREDICTION TECHNIQUES
         elif ns_known_args.opt == 'pred':
-        
+
             if s_interval == "1440min":
                 b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
             # If stock data is intradaily, we need to get data again as prediction techniques work on daily adjusted data

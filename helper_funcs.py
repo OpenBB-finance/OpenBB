@@ -2,7 +2,10 @@
 from pytz import timezone
 from holidays import US as holidaysUS
 from datetime import datetime, time as Time
+import re
+import numpy as np
 import sys
+import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
 from datetime import timedelta
@@ -147,11 +150,11 @@ def long_number_format(num):
         magnitude = 0
         while abs(num) >= 1000:
             magnitude += 1
-            num /= 1000.0 
+            num /= 1000.0
         if num.is_integer():
             return '%d%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
         else:
-            return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude]) 
+            return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
     if isinstance(num, int):
         num = str(num)
     if num.lstrip("-").isdigit():
@@ -160,11 +163,11 @@ def long_number_format(num):
         magnitude = 0
         while abs(num) >= 1000:
             magnitude += 1
-            num /= 1000.0 
+            num /= 1000.0
         if num.is_integer():
             return '%d%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
         else:
-            return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])            
+            return '%.3f%s' % (num, ['', ' K', ' M', ' B', ' T', ' P'][magnitude])
     return num
 
 
@@ -175,10 +178,10 @@ def clean_data_values_to_float(val):
         val = val[1:]
     if val.endswith(')'):
         val = val[:-1]
-        
+
     if val == '-':
         val = '0'
-    
+
     # Convert percentage to decimal
     if val.endswith('%'):
         val = float(val[:-1])/100.0
@@ -206,9 +209,9 @@ def int_or_round_float(x):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def divide_chunks(l, n):   
-    # looping till length l 
-    for i in range(0, len(l), n):  
+def divide_chunks(l, n):
+    # looping till length l
+    for i in range(0, len(l), n):
         yield l[i:i + n]
 
 
@@ -230,5 +233,37 @@ def get_next_stock_market_days(last_stock_day, n_next_days):
         else:
             n_days += 1
             l_pred_days.append(last_stock_day)
-            
+
     return l_pred_days
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def get_data(tweet):
+    if '+' in tweet['created_at']:
+        s_datetime = tweet['created_at'].split(' +')[0]
+    else:
+        s_datetime = iso8601.parse_date(tweet['created_at']).strftime("%Y-%m-%d %H:%M:%S")
+
+    if 'full_text' in tweet.keys():
+        s_text = tweet['full_text']
+    else:
+        s_text = tweet['text']
+
+    data = {'created_at': s_datetime,
+            'text': s_text }
+    return data
+
+
+# -----------------------------------------------------------------------------------------------------------------------
+def clean_tweet(tweet, s_ticker):
+    whitespace = re.compile(r"\s+")
+    web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
+    ticker = re.compile(r"(?i)@{}(?=\b)".format(s_ticker))
+    user = re.compile(r"(?i)@[a-z0-9_]+")
+
+    tweet = whitespace.sub(' ', tweet)
+    tweet = web_address.sub('', tweet)
+    tweet = ticker.sub(s_ticker, tweet)
+    tweet = user.sub('', tweet)
+
+    return tweet
