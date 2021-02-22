@@ -153,23 +153,46 @@ Additional examples:
 
 ![tsla](https://user-images.githubusercontent.com/25267873/108643609-2e499e80-74a3-11eb-8fa8-489ea15b27c4.png)
 
+
 # GOOGLE
 
 ## mentions <a name="mentions"></a>
+```
+usage: mentions [-s S_START]
+```
+Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+  * -s : starting date (format YYYY-MM-DD) from when we are interested in stock's mentions. Default: the one provided in main menu.
 
 ![gme](https://user-images.githubusercontent.com/25267873/108776894-e9813e80-755a-11eb-8b7e-654124c0ef8f.png)
 
+
 ## regions <a name="regions"></a>
+```
+usage: regions [-n N_NUM]
+```
+Plot bars of regions based on stock's interest. [Source: Google]
+  * -n : number of regions to plot that show highest interest. Default 10.
 
 ![regions](https://user-images.githubusercontent.com/25267873/108776889-e8e8a800-755a-11eb-8bcc-fcf7b6156f50.png)
 
-## queries <a name="queries"></a>
 
-<img width="946" alt="amcqueries" src="https://user-images.githubusercontent.com/25267873/108776884-e8501180-755a-11eb-852c-7c30f6ef35f1.png">
+## queries <a name="queries"></a>
+```
+usage: queries [-n N_NUM]
+```
+Print top related queries with this stock's query. [Source: Google]
+  * -n : number of top related queries to print. Default 10.
+
+<img width="937" alt="Captura de ecrã 2021-02-22, às 22 15 16" src="https://user-images.githubusercontent.com/25267873/108777341-91970780-755b-11eb-985e-819285688eea.png">
+
 
 ## rise <a name="rise"></a>
+```
+usage: rise [-n N_NUM]
+```
+Print top rising related queries with this stock's query. [Source: Google]
+  * -n : number of top rising related queries to print. Default 10.
 
-<img width="953" alt="tslarise" src="https://user-images.githubusercontent.com/25267873/108776881-e71ee480-755a-11eb-88a0-d4fc909a798f.png">
-
+<img width="934" alt="Captura de ecrã 2021-02-22, às 22 21 21" src="https://user-images.githubusercontent.com/25267873/108777814-4f21fa80-755c-11eb-96da-0327c9a0da57.png">
 
 
