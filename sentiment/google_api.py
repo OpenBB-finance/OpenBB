@@ -98,6 +98,7 @@ def queries(l_args, s_ticker):
         df_related_queries = pytrend.related_queries()
         df_related_queries = df_related_queries[s_ticker]['top'].head(ns_parser.n_num)
         df_related_queries['value'] = df_related_queries['value'].apply(lambda x: str(x)+'%')
+        print(f"Top {s_ticker}'s related queries")
         print(df_related_queries.to_string(index=False))
         print("")
 
@@ -124,6 +125,7 @@ def rise(l_args, s_ticker):
         pytrend.build_payload(kw_list=[s_ticker])
         df_related_queries = pytrend.related_queries()
         df_related_queries = df_related_queries[s_ticker]['rising'].head(ns_parser.n_num)
+        print(f"Top rising {s_ticker}'s related queries")
         print(df_related_queries.to_string(index=False))
         print("")
 
