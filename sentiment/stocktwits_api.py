@@ -4,12 +4,13 @@ import pandas as pd
 from helper_funcs import *
 
 # -------------------------------------------------------------------------------------------------------------------
-def sentiment(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='sentiment', 
-                                     description="""Gather a stock sentiment based on last 30 messages on the board.
-                                     Also prints the watchlist_count [stocktwits] """)
+def bullbear(l_args, s_ticker):
+    parser = argparse.ArgumentParser(prog='bullbear',
+                                     description="""Print bullbear sentiment based on last 30 messages on the board.
+                                     Also prints the watchlist_count. [Source: Stocktwits]""")
 
-    parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker, help='Ticker to gather sentiment')
+    parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker,
+                        help='ticker to gather sentiment from.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -43,11 +44,13 @@ def sentiment(l_args, s_ticker):
 
 # -------------------------------------------------------------------------------------------------------------------
 def messages(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='messages', 
-                                     description="""Print up to 30 of the last messages on the board [stocktwits] """)
+    parser = argparse.ArgumentParser(prog='messages',
+                                     description="""Print up to 30 of the last messages on the board. [Source: Stocktwits]""")
 
-    parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker, help='Ticker to get board messages')
-    parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30, help='Limit messages shown')
+    parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker,
+                        help='get board messages from this ticker.')
+    parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30,
+                        help='limit messages shown.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -73,8 +76,8 @@ def messages(l_args, s_ticker):
 
 # -------------------------------------------------------------------------------------------------------------------
 def trending(l_args):
-    parser = argparse.ArgumentParser(prog='trending', 
-                                     description="""Stocks trending [stocktwits] """)
+    parser = argparse.ArgumentParser(prog='trending',
+                                     description="""Stocks trending. [Source: Stocktwits]""")
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -93,7 +96,7 @@ def trending(l_args):
             df_trending = pd.DataFrame(l_symbols, columns=['Ticker', 'Watchlist Count', 'Name'])
             print(df_trending.to_string(index=False))
         else:
-            print("Error!") 
+            print("Error!")
         print("")
 
     except:
@@ -102,11 +105,13 @@ def trending(l_args):
 
 # -------------------------------------------------------------------------------------------------------------------
 def stalker(l_args):
-    parser = argparse.ArgumentParser(prog='stalker', 
-                                     description="""Print up to the last 30 messages of a user [stocktwits] """)
+    parser = argparse.ArgumentParser(prog='stalker',
+                                     description="""Print up to the last 30 messages of a user. [Source: Stocktwits]""")
 
-    parser.add_argument('-u', "--user", action="store", dest="s_user", type=str, default='Newsfilter', help='Username')
-    parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30, help='Limit messages shown')
+    parser.add_argument('-u', "--user", action="store", dest="s_user", type=str, default='Newsfilter',
+                        help='username.')
+    parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30,
+                        help='limit messages shown.')
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)

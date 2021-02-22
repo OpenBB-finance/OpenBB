@@ -2,12 +2,14 @@ import config_terminal as cfg
 import argparse
 from sentiment import reddit_api
 from sentiment import stocktwits_api
+from sentiment import twitter_api
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_sentiment():
     """ Print help """
 
-    print("\nSentiment:") 
+    print("\nSentiment:")
     print("   help          show this sentiment menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
@@ -20,10 +22,14 @@ def print_sentiment():
     print("   spac_c        show other users spacs announcements from subreddit SPACs")
     print("")
     print("Stocktwits:")
-    print("   sentiment     estimate quick sentiment from last 30 messages on board")
+    print("   bullbear      estimate quick sentiment from last 30 messages on board")
     print("   messages      output up to the 30 last messages on the board")
     print("   trending      trending stocks")
     print("   stalker       stalk stocktwits user's last messages")
+    print("")
+    print("Twitter:")
+    print("   infer         infer about stock's sentiment from latest tweets")
+    print("   sentiment     in-depth sentiment prediction from tweets over time")
     print("")
 
     return
@@ -33,10 +39,11 @@ def print_sentiment():
 def sen_menu(s_ticker):
 
     # Add list of arguments that the discovery parser accepts
-    sen_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
+    sen_parser = argparse.ArgumentParser(prog='sen', add_help=False)
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                             'watchlist', 'spac', 'spac_c', 'wsb', 'popular',
-                                            'sentiment', 'messages', 'trending', 'stalker'])
+                                            'bullbear', 'messages', 'trending', 'stalker',
+                                            'infer', 'sentiment'])
 
     print_sentiment()
 
@@ -44,7 +51,7 @@ def sen_menu(s_ticker):
     while True:
         # Get input command from user
         as_input = input('> ')
-        
+
         # Parse sentiment command of the list of possible commands
         try:
             (ns_known_args, l_args) = sen_parser.parse_known_args(as_input.split())
@@ -52,7 +59,7 @@ def sen_menu(s_ticker):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-            
+
         if ns_known_args.cmd == 'help':
             print_sentiment()
 
@@ -67,7 +74,7 @@ def sen_menu(s_ticker):
         # ---------------------------------------------------- REDDIT ---------------------------------------------------
         elif ns_known_args.cmd == 'watchlist':
             reddit_api.watchlist(l_args)
-        
+
         elif ns_known_args.cmd == 'spac':
             reddit_api.spac(l_args)
 
@@ -81,8 +88,8 @@ def sen_menu(s_ticker):
             reddit_api.popular_tickers(l_args)
 
         # ---------------------------------------------------- STOCKTWITS ---------------------------------------------------
-        elif ns_known_args.cmd == 'sentiment':
-            stocktwits_api.sentiment(l_args, s_ticker)
+        elif ns_known_args.cmd == 'bullbear':
+            stocktwits_api.bullbear(l_args, s_ticker)
 
         elif ns_known_args.cmd == 'messages':
             stocktwits_api.messages(l_args, s_ticker)
@@ -92,6 +99,13 @@ def sen_menu(s_ticker):
 
         elif ns_known_args.cmd == 'stalker':
             stocktwits_api.stalker(l_args)
+
+        # ----------------------------------------------------- TWITTER ---------------------------------------------------
+        elif ns_known_args.cmd == 'infer':
+            twitter_api.inference(l_args, s_ticker)
+
+        elif ns_known_args.cmd == 'sentiment':
+            twitter_api.sentiment(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
