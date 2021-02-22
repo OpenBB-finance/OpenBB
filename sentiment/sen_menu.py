@@ -34,6 +34,9 @@ def print_sentiment():
     print("")
     print("Google:")
     print("   mentions      interest over time based on stock's mentions")
+    print("   regions       regions that show highest interest in stock")
+    print("   queries       top related queries with this stock")
+    print("   rise          top rising related queries with stock")
     print("")
 
     return
@@ -47,7 +50,8 @@ def sen_menu(s_ticker, s_start):
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                             'watchlist', 'spac', 'spac_c', 'wsb', 'popular',
                                             'bullbear', 'messages', 'trending', 'stalker',
-                                            'infer', 'sentiment', 'mentions'])
+                                            'infer', 'sentiment', 'mentions', 'regions',
+                                            'queries', 'rise'])
 
     print_sentiment()
 
@@ -114,6 +118,15 @@ def sen_menu(s_ticker, s_start):
         # ----------------------------------------------------- GOOGLE ---------------------------------------------------
         elif ns_known_args.cmd == 'mentions':
             google_api.mentions(l_args, s_ticker, s_start)
+
+        elif ns_known_args.cmd == 'regions':
+            google_api.regions(l_args, s_ticker)
+
+        elif ns_known_args.cmd == 'queries':
+            google_api.queries(l_args, s_ticker)
+
+        elif ns_known_args.cmd == 'rise':
+            google_api.rise(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
