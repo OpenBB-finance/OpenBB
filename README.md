@@ -71,8 +71,14 @@ trending      trending stocks
 stalker       stalk stocktwits user's last messages
 
 Twitter:
-   infer         infer about stock's sentiment from latest tweets
-   sentiment     in-depth sentiment prediction from tweets over time
+infer         infer about stock's sentiment from latest tweets
+sentiment     in-depth sentiment prediction from tweets over time
+
+Google:
+mentions      interest over time based on stock's mentions
+regions       regions that show highest interest in stock
+queries       top related queries with this stock
+rise          top rising related queries with stock
 ```
 
 ### Research Web pages <a name="Research_Web_pages"></a>
