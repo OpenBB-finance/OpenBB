@@ -29,6 +29,17 @@ This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, 
     - infer about stock's sentiment from latest tweets
   * [sentiment](#sentiment)
     - in-depth sentiment prediction from tweets over time
+   
+[GOOGLE](#GOOGLE)
+  * [mentions](#mentions)
+    - interest over time based on stock's mentions
+  * [regions](#regions)
+    - regions that show highest interest in stock
+  * [queries](#queries)
+    - top related queries with this stock
+  * [rise](#rise)
+    - top rising related queries with stock
+
 
 # REDDIT <a name="REDDIT"></a>
 
@@ -141,3 +152,24 @@ Additional examples:
 ![bb](https://user-images.githubusercontent.com/25267873/108643608-2db10800-74a3-11eb-838c-3db6ec2be9aa.png)
 
 ![tsla](https://user-images.githubusercontent.com/25267873/108643609-2e499e80-74a3-11eb-8fa8-489ea15b27c4.png)
+
+# GOOGLE
+
+## mentions <a name="mentions"></a>
+
+![gme](https://user-images.githubusercontent.com/25267873/108776894-e9813e80-755a-11eb-8b7e-654124c0ef8f.png)
+
+## regions <a name="regions"></a>
+
+![regions](https://user-images.githubusercontent.com/25267873/108776889-e8e8a800-755a-11eb-8bcc-fcf7b6156f50.png)
+
+## queries <a name="queries"></a>
+
+<img width="946" alt="amcqueries" src="https://user-images.githubusercontent.com/25267873/108776884-e8501180-755a-11eb-852c-7c30f6ef35f1.png">
+
+## rise <a name="rise"></a>
+
+<img width="953" alt="tslarise" src="https://user-images.githubusercontent.com/25267873/108776881-e71ee480-755a-11eb-88a0-d4fc909a798f.png">
+
+
+
