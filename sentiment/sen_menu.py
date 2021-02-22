@@ -3,6 +3,7 @@ import argparse
 from sentiment import reddit_api
 from sentiment import stocktwits_api
 from sentiment import twitter_api
+from sentiment import google_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -31,19 +32,22 @@ def print_sentiment():
     print("   infer         infer about stock's sentiment from latest tweets")
     print("   sentiment     in-depth sentiment prediction from tweets over time")
     print("")
+    print("Google:")
+    print("   mentions      interest over time based on stock's mentions")
+    print("")
 
     return
 
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
-def sen_menu(s_ticker):
+def sen_menu(s_ticker, s_start):
 
     # Add list of arguments that the discovery parser accepts
     sen_parser = argparse.ArgumentParser(prog='sen', add_help=False)
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
                                             'watchlist', 'spac', 'spac_c', 'wsb', 'popular',
                                             'bullbear', 'messages', 'trending', 'stalker',
-                                            'infer', 'sentiment'])
+                                            'infer', 'sentiment', 'mentions'])
 
     print_sentiment()
 
@@ -106,6 +110,10 @@ def sen_menu(s_ticker):
 
         elif ns_known_args.cmd == 'sentiment':
             twitter_api.sentiment(l_args, s_ticker)
+
+        # ----------------------------------------------------- GOOGLE ---------------------------------------------------
+        elif ns_known_args.cmd == 'mentions':
+            google_api.mentions(l_args, s_ticker, s_start)
 
         # ------------------------------------------------------------------------------------------------------------
         else:
