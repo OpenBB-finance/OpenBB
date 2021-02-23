@@ -61,7 +61,7 @@ usage: watchlist [-l N_LIMIT]
 Print other users watchlist. [Source: Reddit]
   * -l : limit of posts to print. Default 5.
 
-<img width="931" alt="watchlist" src="https://user-images.githubusercontent.com/25267873/108612073-d5173780-73dc-11eb-9757-0f135f43f21e.png">
+<img width="941" alt="watchlist" src="https://user-images.githubusercontent.com/25267873/108920576-caeb7800-762c-11eb-937c-94ecbb65d119.png">
 
 
 ## popular <a name="popular"></a>
@@ -73,7 +73,7 @@ Print latest popular tickers. [Source: Reddit]
   * -s : subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets.
   * -d : look for the tickers from those n past days. Default 1.
 
-<img width="944" alt="popular" src="https://user-images.githubusercontent.com/25267873/108911709-873e4180-761f-11eb-911a-07e4e2a6c2e9.png">
+<img width="948" alt="popular" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">
 
 
 ## spac_c <a name="spac_c"></a>
@@ -84,7 +84,7 @@ Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
   * -l : limit of posts with SPACs retrieved. Default 10.
   * -p : popular flag, if true the posts retrieved are based on score rather than time. Default False.
 
-<img width="959" alt="spac_c" src="https://user-images.githubusercontent.com/25267873/108612072-d34d7400-73dc-11eb-850c-36a4e7224918.png">
+<img width="936" alt="spac_c" src="https://user-images.githubusercontent.com/25267873/108920571-c8891e00-762c-11eb-8da8-e2b775bc7109.png">
 
 
 ## spac <a name="spac"></a>
@@ -95,7 +95,7 @@ Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
   * -l : limit of posts with SPACs retrieved. Default 5.
   * -d : look for the tickers from those n past days.. Default 5.
 
-<img width="947" alt="spac" src="https://user-images.githubusercontent.com/25267873/108904032-eac37180-7615-11eb-8c48-bd3e4380c1b3.png">
+<img width="939" alt="spac" src="https://user-images.githubusercontent.com/25267873/108920696-04bc7e80-762d-11eb-896b-1b1c19903584.png">
 
 
 # STOCKTWITS <a name="STOCKTWITS"></a>
