@@ -95,7 +95,7 @@ Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
   * -l : limit of posts with SPACs retrieved. Default 5.
   * -d : look for the tickers from those n past days.. Default 5.
 
-<img width="939" alt="spac" src="https://user-images.githubusercontent.com/25267873/108920579-cb840e80-762c-11eb-8c08-10c1e9ea62ed.png">
+<img width="939" alt="spac" src="https://user-images.githubusercontent.com/25267873/108920696-04bc7e80-762d-11eb-896b-1b1c19903584.png">
 
 
 # STOCKTWITS <a name="STOCKTWITS"></a>
