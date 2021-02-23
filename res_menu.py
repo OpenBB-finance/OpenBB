@@ -7,7 +7,7 @@ import webbrowser
 def print_research():
     """ Print help """
 
-    print("\nResearch Mode:") 
+    print("\nResearch Mode:")
     print("   help              show this fundamental analysis menu again")
     print("   q                 quit this menu, and shows back to main menu")
     print("   quit              quit to abandon program")
@@ -30,7 +30,7 @@ def print_research():
     print("   macrotrends       www.macrotrends.net")
     print("   newsfilter        www.newsfilter.io")
     print("")
-    print("   resources         www.tradinganalysisresources.com")
+    print("   resources         trading analysis, tips and research")
     print("")
     return
 
@@ -41,7 +41,7 @@ def res_menu(s_ticker):
     # Add list of arguments that the research parser accepts
     res_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     res_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                            'macroaxis', 'yahoo', 'finviz', 'marketwatch', 'fool', 'businessinsider', 
+                                            'macroaxis', 'yahoo', 'finviz', 'marketwatch', 'fool', 'businessinsider',
                                             'fmp', 'fidelity', 'tradingview', 'marketchameleon', 'stockrow', 'barchart',
                                             'grufity', 'fintel', 'zacks', 'macrotrends', 'newsfilter', 'resources'])
 
@@ -51,7 +51,7 @@ def res_menu(s_ticker):
     while True:
         # Get input command from user
         as_input = input('> ')
-        
+
         # Parse fundamental analysis command of the list of possible commands
         try:
             (ns_known_args, l_args) = res_parser.parse_known_args(as_input.split())
@@ -59,7 +59,7 @@ def res_menu(s_ticker):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-            
+
         if ns_known_args.cmd == 'help':
             print_research()
 
@@ -106,7 +106,7 @@ def res_menu(s_ticker):
             except SystemExit:
                 print("")
                 return
-  
+
         # ------------------------------------------------------------------------------------------------------------
         elif ns_known_args.cmd == 'fool':
             try:
@@ -205,7 +205,7 @@ def res_menu(s_ticker):
             except SystemExit:
                 print("")
                 return
-           
+
         # ------------------------------------------------------------------------------------------------------------
         elif ns_known_args.cmd == 'macrotrends':
             try:
@@ -227,7 +227,9 @@ def res_menu(s_ticker):
          # ------------------------------------------------------------------------------------------------------------
         elif ns_known_args.cmd == 'resources':
             try:
-                webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources.html")
+                #webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources.html")
+                webbrowser.open(f"https://moongangcapital.com/free-stock-market-resources/")
+
                 print("")
             except SystemExit:
                 print("")
