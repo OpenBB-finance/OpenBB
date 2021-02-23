@@ -65,6 +65,15 @@ Print other users watchlist. [Source: Reddit]
 
 
 ## popular <a name="popular"></a>
+```
+usage: popular [-l N_LIMIT] [-s S_SUBREDDIT] [-d N_DAYS]
+```
+Print latest popular tickers. [Source: Reddit]
+  * -l : limit of posts retrieved per sub reddit. Default 50.
+  * -s : subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets.
+  * -d : look for the tickers from those n past days. Default 1.
+
+<img width="944" alt="popular" src="https://user-images.githubusercontent.com/25267873/108911709-873e4180-761f-11eb-911a-07e4e2a6c2e9.png">
 
 
 ## spac_c <a name="spac_c"></a>
