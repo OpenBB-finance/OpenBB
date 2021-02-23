@@ -192,7 +192,6 @@ def popular_tickers(l_args):
         d_watchlist_tickers = {}
         l_watchlist_links = list()
         l_watchlist_author = list()
-        ls_text = list()
 
         praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
                                client_secret=cfg.API_REDDIT_CLIENT_SECRET,
@@ -221,6 +220,7 @@ def popular_tickers(l_args):
                     #meaningful, and that we aren't re-considering same author's content
                     if not submission.removed_by_category and (submission.selftext or submission.title) \
                         and submission.author.name not in l_watchlist_author:
+                        ls_text = list()
                         ls_text.append(submission.selftext)
                         ls_text.append(submission.title)
 
@@ -230,7 +230,7 @@ def popular_tickers(l_args):
 
                         l_tickers_found = list()
                         for s_text in ls_text:
-                            for s_ticker in set(re.findall(r'\$([A-Z]{3,5} )', s_text)):
+                            for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
                                 l_tickers_found.append(s_ticker.strip())
 
                         if l_tickers_found:
