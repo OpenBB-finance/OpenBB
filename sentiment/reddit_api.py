@@ -332,12 +332,20 @@ def spac_community(l_args):
                 #that there is a description and it's not just an image, that the flair is
                 #meaningful, and that we aren't re-considering same author's watchlist
                 if not submission.removed_by_category and submission.selftext \
-                    and submission.author.name not in l_watchlist_author: # and submission.link_flair_text not in ['Yolo', 'Meme'] \
+                    and submission.link_flair_text not in ['Yolo', 'Meme'] \
+                    and submission.author.name not in l_watchlist_author:
+                        ls_text = list()
+                        ls_text.append(submission.selftext)
+                        ls_text.append(submission.title)
 
-                        # Make sure there is at least 1 ticker found on the post text
-                        l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
-                        if not l_tickers_found:
-                            l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.title))
+                        submission.comments.replace_more(limit=0)
+                        for comment in submission.comments.list():
+                            ls_text.append(comment.body)
+
+                        l_tickers_found = list()
+                        for s_text in ls_text:
+                            for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
+                                l_tickers_found.append(s_ticker.strip())
 
                         if l_tickers_found:
                             # Add another author's name to the parsed watchlists
@@ -398,12 +406,13 @@ def spac_community(l_args):
                     # If try doesn't trigger exception, it means that this stock exists on finviz
                     #thus we can print it.
                     finviz.get_stock(t_ticker[0])
-                    s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
+                    if int(t_ticker[1]) > 1:
+                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except:
                     pass
             if n_tickers:
-                print("The following stock tickers have been mentioned across the previous SPACs:")
+                print("The following stock tickers have been mentioned more than once across the previous SPACs:")
                 print(s_watchlist_tickers[:-2])
         print("")
 
@@ -461,12 +470,20 @@ def spac(l_args):
                     and submission.link_flair_text not in ['Yolo', 'Meme'] \
                     and submission.author.name not in l_watchlist_author:
 
-                        # Make sure there is at least 1 ticker found on the post text
-                        l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.selftext))
-                        if not l_tickers_found:
-                            l_tickers_found = set(re.findall("[A-Z]{3,5}", submission.title))
-                        if l_tickers_found:
+                        ls_text = list()
+                        ls_text.append(submission.selftext)
+                        ls_text.append(submission.title)
 
+                        submission.comments.replace_more(limit=0)
+                        for comment in submission.comments.list():
+                            ls_text.append(comment.body)
+
+                        l_tickers_found = list()
+                        for s_text in ls_text:
+                            for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
+                                l_tickers_found.append(s_ticker.strip())
+
+                        if l_tickers_found:
                             # Add another author's name to the parsed watchlists
                             l_watchlist_author.append(submission.author.name)
 
@@ -523,7 +540,6 @@ def spac(l_args):
             else:
                 break
 
-        '''
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True)
             s_watchlist_tickers = ""
@@ -533,14 +549,14 @@ def spac(l_args):
                     # If try doesn't trigger exception, it means that this stock exists on finviz
                     #thus we can print it.
                     finviz.get_stock(t_ticker[0])
-                    s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
+                    if int(t_ticker[1]) > 1:
+                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except:
                     pass
             if n_tickers:
-                print("The following stock tickers have been mentioned across the previous SPACs:")
+                print("The following stock tickers have been mentioned more than once across the previous SPACs:")
                 print(s_watchlist_tickers[:-2])
-        '''
         print("")
 
     except:
