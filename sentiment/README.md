@@ -9,10 +9,10 @@ This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, 
     - show other users watchlist
   * [popular](#popular)
     - show popular tickers
-  * [spac](#spac)
-    - show other users spacs announcements
   * [spac_c](#spac_c)
-    - show other users spacs announcements from subreddit SPACs
+    - show other users spacs announcements from subreddit SPACs community
+  * [spac](#spac)
+    - show other users spacs announcements from other subs      
 
 [STOCKTWITS](#STOCKTWITS)
   * [bullbear](#bullbear)
@@ -67,9 +67,6 @@ Print other users watchlist. [Source: Reddit]
 ## popular <a name="popular"></a>
 
 
-## spac <a name="spac"></a>
-
-
 ## spac_c <a name="spac_c"></a>
 ```
 usage: spac_c [-l N_LIMIT] [-p]
@@ -79,6 +76,17 @@ Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
   * -p : popular flag, if true the posts retrieved are based on score rather than time. Default False.
 
 <img width="959" alt="spac_c" src="https://user-images.githubusercontent.com/25267873/108612072-d34d7400-73dc-11eb-850c-36a4e7224918.png">
+
+
+## spac <a name="spac"></a>
+```
+usage: spac [-h] [-l N_LIMIT] [-d N_DAYS]
+```
+Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
+  * -l : limit of posts with SPACs retrieved. Default 5.
+  * -d : look for the tickers from those n past days.. Default 5.
+
+<img width="947" alt="spac" src="https://user-images.githubusercontent.com/25267873/108904032-eac37180-7615-11eb-8c48-bd3e4380c1b3.png">
 
 
 # STOCKTWITS <a name="STOCKTWITS"></a>
