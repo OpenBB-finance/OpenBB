@@ -73,7 +73,7 @@ Print latest popular tickers. [Source: Reddit]
   * -s : subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets.
   * -d : look for the tickers from those n past days. Default 1.
 
-<img width="944" alt="popular" src="https://user-images.githubusercontent.com/25267873/108911709-873e4180-761f-11eb-911a-07e4e2a6c2e9.png">
+<img width="948" alt="popular" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">
 
 
 ## spac_c <a name="spac_c"></a>
