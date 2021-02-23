@@ -61,8 +61,8 @@ Reddit:
 wsb           show what WSB gang is up to in subreddit wallstreetbets
 watchlist     show other users watchlist
 popular       show popular tickers
-spac          show other users spacs announcements
-spac_c        show other users spacs announcements from subreddit SPACs
+spac_c        show other users spacs announcements from subreddit SPACs community
+spac          show other users spacs announcements from other subs
 
 Stocktwits:
 bullbear      estimate quick sentiment from last 30 messages on board
