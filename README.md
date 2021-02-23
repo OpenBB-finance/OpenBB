@@ -227,7 +227,7 @@ When these are obtained, don't forget to update [config_terminal.txt](/config_te
 
 ## Support <a name="Support"></a>
 
-If you like this project, and would like for me to keep adding features / maintaining the repository, feel free to buy me a coffee!
+If you like this project, and would like me to maintain it and keep adding features, feel free to buy me a coffee!
 
 <a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
