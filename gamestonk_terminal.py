@@ -75,7 +75,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", default=s_ticker, help='Stock ticker')
     else:
         parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", required=True, help='Stock ticker')
-    parser.add_argument('-s', "--start", type=valid_date, dest="s_start_date", help="The starting date (format YYYY-MM-DD) of the stock")
+    parser.add_argument('-s', "--start", type=valid_date, dest="s_start_date", default=s_start, help="The starting date (format YYYY-MM-DD) of the stock")
     parser.add_argument('-i', "--interval", action="store", dest="n_interval", type=int, default=0, choices=[1,5,15,30,60], help="Intraday stock minutes")
     parser.add_argument("--type", action="store", dest="n_type", type=check_positive, default=5, # in case it's daily
                         help='1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close')
@@ -91,8 +91,6 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
     # Update values:
     s_ticker = ns_parser.s_ticker
-    if ns_parser.s_start_date:
-        s_start = ns_parser.s_start_date
 
     # A new interval intraday period was given
     if ns_parser.n_interval != 0:
@@ -111,8 +109,11 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return
 
+    df_stock.sort_index(ascending=True, inplace=True)
+
     # Slice dataframe from the starting date YYYY-MM-DD selected
-    df_stock = df_stock[s_start:]
+    df_stock = df_stock[ns_parser.s_start_date:]
+
 
     # Daily
     if s_interval == "1440min":
