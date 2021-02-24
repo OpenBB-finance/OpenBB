@@ -11,13 +11,12 @@ from discovery import disc_menu as dm
 from sentiment import sen_menu as sm
 from prediction_techniques import pred_menu as pm
 import res_menu as rm
+import config_terminal as cfg
+from alpha_vantage.timeseries import TimeSeries
 #import warnings
 #warnings.simplefilter("always")
 
-# delete this important when automatic loading tesla
-#i.e. when program is done
-import config_terminal as cfg
-from alpha_vantage.timeseries import TimeSeries
+
 
 # ----------------------------------------------------- LOAD -----------------------------------------------------
 def load(l_args, s_ticker, s_start, s_interval, df_stock):
@@ -179,8 +178,8 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
 # -----------------------------------------------------------------------------------------------------------------------
 def main():
-    """ Main function of the program
-    """
+    """Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
+    while I saw my GME shares tanking. But hey, I like the stock."""
 
     s_ticker = ""
     s_start = ""
@@ -188,17 +187,18 @@ def main():
     b_intraday = False
     s_interval = "1440min"
 
+    '''
     # Set stock by default to speed up testing
     s_ticker = "BB"
-    s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
     df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
     df_stock.sort_index(ascending=True, inplace=True)
+    s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
     df_stock = df_stock[s_start:]
-    # Delete above in the future
+    '''
 
     # Add list of arguments that the main parser accepts
-    menu_parser = argparse.ArgumentParser(prog='stock_market_bot', add_help=False)
+    menu_parser = argparse.ArgumentParser(prog='gamestonk_terminal', add_help=False)
     menu_parser.add_argument('opt', choices=['help', 'quit', 'q',
                                              'clear', 'load', 'view',
                                              'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred'])
