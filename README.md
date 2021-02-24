@@ -41,6 +41,10 @@ With their functions being:
      * -i : Intraday stock minutes
      * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
 
+![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
+
+Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
+
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 ```
 map           S&P500 index stocks map [Finviz]
