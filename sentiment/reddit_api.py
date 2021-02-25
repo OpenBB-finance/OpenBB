@@ -6,11 +6,11 @@ from datetime import timedelta, datetime
 import finviz
 import praw
 from holidays import US as holidaysUS
-from prettytable import PrettyTable
 from psaw import PushshiftAPI
 
 import config_terminal as cfg
 from helper_funcs import check_positive
+from reddit_helpers import print_and_record_reddit_post
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -104,36 +104,7 @@ def watchlist(l_args):
                                 d_watchlist_tickers[key] = 1
 
                         l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
-                        # delete below, not necessary I reckon. Probably just link?
-
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                                                        'created_utc': s_datetime,
-                                                        'subreddit': submission.subreddit,
-                                                        'link_flair_text': submission.link_flair_text,
-                                                        'title':submission.title,
-                                                        'score': submission.score,
-                                                        'link': s_link,
-                                                        'num_comments': submission.num_comments,
-                                                        'upvote_ratio': submission.upvote_ratio,
-                                                        'awards': s_all_awards
-                                                    }
-
-                        # Print post data collected so far
-                        print(f"\n{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                        t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
-                                        submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
-                        print(t_post)
+                        print_and_record_reddit_post(d_submission, submission)
                         print("")
 
                         # Increment count of valid posts found
@@ -355,35 +326,7 @@ def spac_community(l_args):
                         l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
                         # delete below, not necessary I reckon. Probably just link?
 
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                                                        'created_utc': s_datetime,
-                                                        'subreddit': submission.subreddit,
-                                                        'link_flair_text': submission.link_flair_text,
-                                                        'title':submission.title,
-                                                        'score': submission.score,
-                                                        'link': s_link,
-                                                        'num_comments': submission.num_comments,
-                                                        'upvote_ratio': submission.upvote_ratio,
-                                                        'awards': s_all_awards
-                                                    }
-
-                        # Print post data collected so far
-                        print(f"{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                        t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
-                                        submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
-                        print(t_post)
-                        print("\n")
+                        print_and_record_reddit_post(d_submission, submission)
 
         # Check if search_submissions didn't get anymore posts
         else:
@@ -487,35 +430,7 @@ def spac(l_args):
                         l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
                         # delete below, not necessary I reckon. Probably just link?
 
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                                                        'created_utc': s_datetime,
-                                                        'subreddit': submission.subreddit,
-                                                        'link_flair_text': submission.link_flair_text,
-                                                        'title':submission.title,
-                                                        'score': submission.score,
-                                                        'link': s_link,
-                                                        'num_comments': submission.num_comments,
-                                                        'upvote_ratio': submission.upvote_ratio,
-                                                        'awards': s_all_awards
-                                                    }
-
-                        # Print post data collected so far
-                        print(f"{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                        t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
-                                        submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
-                        print(t_post)
-                        print("\n")
+                        print_and_record_reddit_post(d_submission, submission)
 
                         # Increment count of valid posts found
                         n_flair_posts_found += 1
@@ -592,33 +507,6 @@ def wsb_community(l_args):
 
                 l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
 
-                # Refactor data
-                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
-                s_link = f"https://www.reddit.com{submission.permalink}"
-                s_all_awards = ""
-                for award in submission.all_awardings:
-                    s_all_awards += f"{award['count']} {award['name']}\n"
-                s_all_awards = s_all_awards[:-2]
-
-                # Create dictionary with data to construct dataframe allows to save data
-                d_submission[submission.id] = {
-                                                'created_utc': s_datetime,
-                                                'subreddit': submission.subreddit,
-                                                'link_flair_text': submission.link_flair_text,
-                                                'title':submission.title,
-                                                'score': submission.score,
-                                                'link': s_link,
-                                                'num_comments': submission.num_comments,
-                                                'upvote_ratio': submission.upvote_ratio,
-                                                'awards': s_all_awards
-                                            }
-
-                # Print post data collected so far
-                print(f"{s_datetime} - {submission.title}")
-                print(f"{s_link}")
-                t_post = PrettyTable(['Subreddit', 'Flair', 'Score', '# Comments', 'Upvote %', "Awards"])
-                t_post.add_row([submission.subreddit, submission.link_flair_text, submission.score,
-                                submission.num_comments,f"{round(100*submission.upvote_ratio)}%", s_all_awards])
-                print(t_post)
+                print_and_record_reddit_post(d_submission, submission)
                 print("")
         print("")
