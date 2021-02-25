@@ -20,7 +20,7 @@ WORKDIR /home/gamestonkterminal
 
 COPY . .
 
-RUN pip install -r requirements.txt
+RUN INSTALL_ON_LINUX=1 && pip install -r requirements.txt
 RUN pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
 
 RUN chown -R python /home/gamestonkterminal
