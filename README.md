@@ -222,7 +222,18 @@ These are the ones where a key is necessary:
   * Reddit: https://www.reddit.com/prefs/apps
   * Twitter: https://developer.twitter.com
 
-When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py)
+When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py).  Alternatively, you can also set them to the following environment variables:  
+  * GT_API_KEY_ALPHAVANTAGE
+  * GT_API_KEY_FINANCIALMODELINGPREP
+  * GT_API_KEY_QUANDL
+  * GT_API_REDDIT_CLIENT_ID
+  * GT_API_REDDIT_CLIENT_SECRET
+  * GT_API_REDDIT_USERNAME
+  * GT_API_REDDIT_USER_AGENT
+  * GT_API_REDDIT_PASSWORD
+  * GT_API_TWITTER_KEY
+  * GT_API_TWITTER_SECRET_KEY
+  * GT_API_TWITTER_BEARER_TOKEN.
 
 ## Disclaimer <a name="Disclaimer"></a>
 
