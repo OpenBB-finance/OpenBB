@@ -122,4 +122,3 @@ yahoo-fin==0.8.4
 yarl==1.6.3
 yfinance==0.1.55
 zipp==3.4.0
-git+https://github.com/DidierRLopes/TimeSeriesCrossValidation@master
