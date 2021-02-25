@@ -208,7 +208,7 @@ In order to install all libraries used by this repository, you must run
 ```
 pip install -r requirements.txt
 ```
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment previous to install these. This allows to keep dependencies required by different projects in separate places.
+Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
 
 ## API Keys <a name="API_Keys"></a>
