@@ -48,11 +48,11 @@ Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, a
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 Command|Explanation
 ---|---
-`map`           |S&P500 index stocks map [Finviz]
-`sectors`       |show sectors performance [Alpha Vantage]
-`gainers`       |show latest top gainers [Yahoo Finance]
-`orders`        |orders by Fidelity Customers [Fidelity]
-`up_earnings`   |upcoming earnings release dates [Seeking Alpha]
+`map`           |S&P500 index stocks map [www.finviz.com]
+`sectors`       |show sectors performance [www.alphavantage.co]
+`gainers`       |show latest top gainers [finance.yahoo.com]
+`orders`        |orders by Fidelity Customers [www.fidelity.com]
+`up_earnings`   |upcoming earnings release dates [seekingalpha.com]
 `high_short`    |show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
 `low_float`     |show low float stocks under 10M shares float [www.lowfloat.com]
 `simply_wallst` |Simply Wall St. research data [Simply Wall St.]
