@@ -48,7 +48,7 @@ Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, a
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 Command|Explanation
 ---|---
-`map`           |S&P500 index stocks map [www.finviz.com]
+`map`           |S&P500 index stocks map [[Finviz](https://finviz.com)]
 `sectors`       |show sectors performance [www.alphavantage.co]
 `gainers`       |show latest top gainers [finance.yahoo.com]
 `orders`        |orders by Fidelity Customers [www.fidelity.com]
