@@ -208,6 +208,11 @@ In order to install all libraries used by this repository, you must run
 ```
 pip install -r requirements.txt
 ```
+and then:
+```
+pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
+```
+where the latest is a library that I made to split the time-series data for training, validation and testing. See more information at https://github.com/DidierRLopes/TimeSeriesCrossValidation.
 
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment previous to install these. This allows to keep dependencies required by different projects in separate places.
 
