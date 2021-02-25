@@ -183,7 +183,7 @@ Command|Explanation
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
 Command|Algorithm
 ------ | ----------
-`sma`         |simple moving average ([1]https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [2](https://www.investopedia.com/terms/s/sma.asp)
+`sma`         |simple moving average ([1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [2](https://www.investopedia.com/terms/s/sma.asp)
 `knn`         |k-Nearest Neighbors ([1](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
 `linear`      |linear regression (polynomial 1) ([1](https://en.wikipedia.org/wiki/Linear_regression), [2](https://www.investopedia.com/terms/r/regression.asp))
 `quadratic`   |quadratic regression (polynomial 2) ([1](https://en.wikipedia.org/wiki/Polynomial_regression), [2](https://www.investopedia.com/terms/r/regression.asp))
