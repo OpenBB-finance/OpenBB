@@ -48,16 +48,16 @@ Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, a
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
 Command|Explanation
 ---|---
-`map`           |S&P500 index stocks map [[Finviz](https://finviz.com)]
-`sectors`       |show sectors performance [[Alpha Vantage](www.alphavantage.co)]
-`gainers`       |show latest top gainers [{Yahoo Finance](https://finance.yahoo.com/)]
-`orders`        |orders by Fidelity Customers [[Fidelity](https://www.fidelity.com/)]
-`up_earnings`   |upcoming earnings release dates [[seekingalpha.com](https://seekingalpha.com/)]
-`high_short`    |show top high short interest stocks of over 20% ratio [[High Short Interest](https://www.highshortinterest.com/)]
-`low_float`     |show low float stocks under 10M shares float [[Low Float](https://www.lowfloat.com/)]
-`simply_wallst` |Simply Wall St. research data [[Simply Wall St.](https://simplywall.st/about)]
-`spachero`      |great website for SPACs research [[SpacHero](https://www.spachero.com/)]
-`uwhales`       |good website for SPACs research [[UnusualWhales](https://unusualwhales.com/)]
+`map`           |S&P500 index stocks map ([Finviz](https://finviz.com))
+`sectors`       |show sectors performance ([Alpha Vantage](www.alphavantage.co))
+`gainers`       |show latest top gainers ([Yahoo Finance](https://finance.yahoo.com/))
+`orders`        |orders by Fidelity Customers ([Fidelity](https://www.fidelity.com/))
+`up_earnings`   |upcoming earnings release dates ([Seeking Alpha](https://seekingalpha.com/))
+`high_short`    |show top high short interest stocks of over 20% ratio ([High Short Interest](https://www.highshortinterest.com/))
+`low_float`     |show low float stocks under 10M shares float ([Low Float](https://www.lowfloat.com/))
+`simply_wallst` |Simply Wall St. research data ([Simply Wall St.](https://simplywall.st/about))
+`spachero`      |great website for SPACs research ([SpacHero](https://www.spachero.com/))
+`uwhales`       |good website for SPACs research ([UnusualWhales](https://unusualwhales.com/))
 
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
@@ -247,4 +247,3 @@ When these are obtained, don't forget to update [config_terminal.py](/config_ter
 If you like this project, and would like me to maintain it and keep adding features, feel free to buy me a coffee!
 
 <a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
