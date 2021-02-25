@@ -66,56 +66,59 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'help':
-            print_prediction(s_ticker, s_start, s_interval)
+        try:
+            if ns_known_args.cmd == 'help':
+                print_prediction(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == 'q':
-            # Just leave the FA menu
-            return False
+            elif ns_known_args.cmd == 'q':
+                # Just leave the FA menu
+                return False
 
-        elif ns_known_args.cmd == 'quit':
-            # Abandon the program
-            return True
+            elif ns_known_args.cmd == 'quit':
+                # Abandon the program
+                return True
 
-        # ------------------------------------------ SIMPLE MOVING AVERAGE ------------------------------------------
-        elif ns_known_args.cmd == 'sma':
-            sma.simple_moving_average(l_args, s_ticker, s_interval, df_stock)
+            # ------------------------------------------ SIMPLE MOVING AVERAGE ------------------------------------------
+            elif ns_known_args.cmd == 'sma':
+                sma.simple_moving_average(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------- k NEAREST NEIGHBORS ------------------------------------------
-        elif ns_known_args.cmd == 'knn':
-            knn.k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock)
+            # ------------------------------------------- k NEAREST NEIGHBORS ------------------------------------------
+            elif ns_known_args.cmd == 'knn':
+                knn.k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock)
 
-        # ----------------------------------------------- REGRESSION -------------------------------------------------
-        elif ns_known_args.cmd == 'linear':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.LINEAR)
+            # ----------------------------------------------- REGRESSION -------------------------------------------------
+            elif ns_known_args.cmd == 'linear':
+                regression.regression(l_args, s_ticker, s_interval, df_stock, regression.LINEAR)
 
-        elif ns_known_args.cmd == 'quadratic':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.QUADRATIC)
+            elif ns_known_args.cmd == 'quadratic':
+                regression.regression(l_args, s_ticker, s_interval, df_stock, regression.QUADRATIC)
 
-        elif ns_known_args.cmd == 'cubic':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.CUBIC)
+            elif ns_known_args.cmd == 'cubic':
+                regression.regression(l_args, s_ticker, s_interval, df_stock, regression.CUBIC)
 
-        elif ns_known_args.cmd == 'regression':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.USER_INPUT)
+            elif ns_known_args.cmd == 'regression':
+                regression.regression(l_args, s_ticker, s_interval, df_stock, regression.USER_INPUT)
 
-        # ------------------------------------------------- ARIMA -------------------------------------------------
-        elif ns_known_args.cmd == 'arima':
-            arima.arima(l_args, s_ticker, s_interval, df_stock)
+            # ------------------------------------------------- ARIMA -------------------------------------------------
+            elif ns_known_args.cmd == 'arima':
+                arima.arima(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------ FBPROPHET ------------------------------------------------
-        elif ns_known_args.cmd == 'prophet':
-            fbprophet.fbprophet(l_args, s_ticker, s_interval, df_stock)
+            # ------------------------------------------------ FBPROPHET ------------------------------------------------
+            elif ns_known_args.cmd == 'prophet':
+                fbprophet.fbprophet(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------- NEURAL NETWORK ----------------------------------------------
-        elif ns_known_args.cmd == 'mlp':
-            neural_networks.mlp(l_args, s_ticker, s_interval, df_stock)
+            # ---------------------------------------------- NEURAL NETWORK ----------------------------------------------
+            elif ns_known_args.cmd == 'mlp':
+                neural_networks.mlp(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'rnn':
-            neural_networks.rnn(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'rnn':
+                neural_networks.rnn(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'lstm':
-            neural_networks.lstm(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'lstm':
+                neural_networks.lstm(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------------------------------------------------------------------
-        else:
-            print("Command not recognized!")
+            # ------------------------------------------------------------------------------------------------------------
+            else:
+                print("Command not recognized!")
+        except Exception as exc:
+            print("ERROR:", exc)
