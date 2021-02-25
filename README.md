@@ -228,7 +228,7 @@ These are the ones where a key is necessary:
   * Reddit: https://www.reddit.com/prefs/apps
   * Twitter: https://developer.twitter.com
 
-When these are obtained, don't forget to update [config_terminal.txt](/config_terminal.py)
+When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py)
 
 ## Disclaimer <a name="Disclaimer"></a>
 
