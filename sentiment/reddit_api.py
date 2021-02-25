@@ -77,18 +77,7 @@ def watchlist(l_args):
             if not submission.removed_by_category and submission.selftext \
                 and submission.link_flair_text not in ['Yolo', 'Meme'] \
                 and submission.author.name not in l_watchlist_author:
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
-                            l_tickers_found.append(s_ticker.strip())
+                    l_tickers_found = find_tickers(submission)
 
                     if l_tickers_found:
                         # Add another author's name to the parsed watchlists
@@ -136,6 +125,20 @@ def watchlist(l_args):
             print("The following stock tickers have been mentioned more than once across the previous watchlists:")
             print(s_watchlist_tickers[:-2]+'\n')
     print("")
+
+
+def find_tickers(submission):
+    ls_text = list()
+    ls_text.append(submission.selftext)
+    ls_text.append(submission.title)
+    submission.comments.replace_more(limit=0)
+    for comment in submission.comments.list():
+        ls_text.append(comment.body)
+    l_tickers_found = list()
+    for s_text in ls_text:
+        for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
+            l_tickers_found.append(s_ticker.strip())
+    return l_tickers_found
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -198,18 +201,7 @@ def popular_tickers(l_args):
                 #meaningful, and that we aren't re-considering same author's content
                 if not submission.removed_by_category and (submission.selftext or submission.title) \
                     and submission.author.name not in l_watchlist_author:
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
-                            l_tickers_found.append(s_ticker.strip())
+                    l_tickers_found = find_tickers(submission)
 
                     if l_tickers_found:
                         n_tickers += len(l_tickers_found)
@@ -297,18 +289,7 @@ def spac_community(l_args):
             if not submission.removed_by_category and submission.selftext \
                 and submission.link_flair_text not in ['Yolo', 'Meme'] \
                 and submission.author.name not in l_watchlist_author:
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
-                            l_tickers_found.append(s_ticker.strip())
+                    l_tickers_found = find_tickers(submission)
 
                     if l_tickers_found:
                         # Add another author's name to the parsed watchlists
@@ -400,19 +381,7 @@ def spac(l_args):
             if not submission.removed_by_category and submission.selftext \
                 and submission.link_flair_text not in ['Yolo', 'Meme'] \
                 and submission.author.name not in l_watchlist_author:
-
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r'([A-Z]{3,5} )', s_text)):
-                            l_tickers_found.append(s_ticker.strip())
+                    l_tickers_found = find_tickers(submission)
 
                     if l_tickers_found:
                         # Add another author's name to the parsed watchlists
