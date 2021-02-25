@@ -27,3 +27,6 @@ FundamentalAnalysis==0.2.6
 python_dateutil==2.8.1
 scikit_learn==0.24.1
 tensorflow==2.4.1
+lunarcalendar
+fbprophet
+levenshtein
