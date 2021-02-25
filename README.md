@@ -125,7 +125,7 @@ financing     cash flow financing activities of the company
 
 Yahoo Finance API
 info          information scope of the company
-shrs          hareholders of the company
+shrs          shareholders of the company
 sust          sustainability values of the company
 cal           calendar earnings and estimates of the company
 
@@ -219,7 +219,7 @@ Note: The libraries specified in the [requirements.txt](/requirements.txt) file 
 
 ## API Keys <a name="API_Keys"></a>
 
-The project is build around several different API calls, whether it is to access historical data or finantials.
+The project is build around several different API calls, whether it is to access historical data or financials.
 
 These are the ones where a key is necessary:
   * Alpha Vantage: https://www.alphavantage.co
