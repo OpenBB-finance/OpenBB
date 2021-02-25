@@ -1,6 +1,8 @@
 FROM python:3.6.13-slim-buster
 
 RUN apt-get update && apt-get -y install --no-install-recommends \
+gcc \
+make \
 ca-certificates \
 wget \
 curl \

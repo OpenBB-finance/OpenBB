@@ -78,7 +78,6 @@ PyMeeus==0.4.2
 pyparsing==2.4.7
 PySocks==1.7.1
 python-dateutil==2.8.1
-python-Levenshtein==0.12.2
 pytrends==4.7.3
 pytz==2019.3
 Quandl==3.6.0
@@ -88,7 +87,7 @@ requests-oauthlib==1.3.0
 rsa==4.7.2
 sacremoses==0.0.43
 scikit-learn==0.24.1
-scipy==1.6.1
+scipy==1.4.1
 segtok==1.5.10
 sentencepiece==0.1.91
 six==1.15.0
@@ -129,4 +128,3 @@ tensorflow==2.4.1
 zipp==3.4.0
 lunarcalendar
 fbprophet
-levenshtein
