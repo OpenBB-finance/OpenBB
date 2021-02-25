@@ -24,4 +24,9 @@ COPY . .
 RUN INSTALL_ON_LINUX=1 pip install -r requirements.txt
 RUN pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
 
+# is there a better way to do this?
+USER root
+RUN chown -R python /home/python
+
+USER python
 CMD ["python", "gamestonk_terminal.py"]
