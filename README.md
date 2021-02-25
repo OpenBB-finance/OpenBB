@@ -240,8 +240,7 @@ When these are obtained, don't forget to update [config_terminal.py](/config_ter
 
 ## Disclaimer <a name="Disclaimer"></a>
 
->"A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." 
--DFV
+"A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
 
 ## Support <a name="Support"></a>
 
