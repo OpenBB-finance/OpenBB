@@ -1,13 +1,5 @@
 import argparse
 
-from due_diligence import business_insider_api as bi_api
-from due_diligence import financial_modeling_prep_api as fmp_api
-from due_diligence import finviz_api as fvz_api
-from due_diligence import market_watch_api as mw_api
-from due_diligence import quandl_api as q_api
-from due_diligence import reddit_api as r_api
-
-
 # -----------------------------------------------------------------------------------------------------------------------
 def print_due_diligence(s_ticker, s_start, s_interval):
     """ Print help """
@@ -41,6 +33,12 @@ def print_due_diligence(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def dd_menu(df_stock, s_ticker, s_start, s_interval):
+    from due_diligence import business_insider_api as bi_api
+    from due_diligence import financial_modeling_prep_api as fmp_api
+    from due_diligence import finviz_api as fvz_api
+    from due_diligence import market_watch_api as mw_api
+    from due_diligence import quandl_api as q_api
+    from due_diligence import reddit_api as r_api
 
     # Add list of arguments that the due diligence parser accepts
     dd_parser = argparse.ArgumentParser(prog='dd', add_help=False)

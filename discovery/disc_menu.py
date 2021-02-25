@@ -1,15 +1,5 @@
 import argparse
 
-from discovery import alpha_vantage_api
-from discovery import fidelity_api
-from discovery import finviz_api
-from discovery import seeking_alpha_api
-from discovery import short_interest_api
-from discovery import simply_wallst_api
-from discovery import spachero_api
-from discovery import unusual_whales_api
-from discovery import yahoo_finance_api
-
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_discovery():
@@ -36,6 +26,15 @@ def print_discovery():
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def disc_menu():
+    from discovery import alpha_vantage_api
+    from discovery import fidelity_api
+    from discovery import finviz_api
+    from discovery import seeking_alpha_api
+    from discovery import short_interest_api
+    from discovery import simply_wallst_api
+    from discovery import spachero_api
+    from discovery import unusual_whales_api
+    from discovery import yahoo_finance_api
 
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog='discovery', add_help=False)

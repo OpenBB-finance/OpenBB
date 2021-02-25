@@ -1,10 +1,5 @@
 import argparse
 
-from sentiment import google_api
-from sentiment import reddit_api
-from sentiment import stocktwits_api
-from sentiment import twitter_api
-
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_sentiment():
@@ -44,7 +39,10 @@ def print_sentiment():
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def sen_menu(s_ticker, s_start):
-
+    from sentiment import google_api
+    from sentiment import reddit_api
+    from sentiment import stocktwits_api
+    from sentiment import twitter_api
     # Add list of arguments that the discovery parser accepts
     sen_parser = argparse.ArgumentParser(prog='sen', add_help=False)
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',

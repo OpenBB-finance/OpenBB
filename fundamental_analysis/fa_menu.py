@@ -1,12 +1,5 @@
 import argparse
 
-from fundamental_analysis import alpha_vantage_api as av_api
-from fundamental_analysis import business_insider_api as bi_api
-from fundamental_analysis import financial_modeling_prep_api as fmp_api
-from fundamental_analysis import finviz_api as fvz_api
-from fundamental_analysis import market_watch_api as mw_api
-from fundamental_analysis import yahoo_finance_api as yf_api
-
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_fundamental_analysis(s_ticker, s_start, s_interval):
@@ -86,6 +79,12 @@ def info(l_args, s_ticker):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def fa_menu(s_ticker, s_start, s_interval):
+    from fundamental_analysis import alpha_vantage_api as av_api
+    from fundamental_analysis import business_insider_api as bi_api
+    from fundamental_analysis import financial_modeling_prep_api as fmp_api
+    from fundamental_analysis import finviz_api as fvz_api
+    from fundamental_analysis import market_watch_api as mw_api
+    from fundamental_analysis import yahoo_finance_api as yf_api
 
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fa', add_help=False)

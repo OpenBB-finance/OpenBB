@@ -4,12 +4,6 @@ from pandas.plotting import register_matplotlib_converters
 
 register_matplotlib_converters()
 
-from prediction_techniques import sma
-from prediction_techniques import knn
-from prediction_techniques import regression
-from prediction_techniques import arima
-from prediction_techniques import fbprophet
-from prediction_techniques import neural_networks
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
@@ -43,7 +37,12 @@ def print_prediction(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
-
+    from prediction_techniques import sma
+    from prediction_techniques import knn
+    from prediction_techniques import regression
+    from prediction_techniques import arima
+    from prediction_techniques import fbprophet
+    from prediction_techniques import neural_networks
     # Add list of arguments that the prediction techniques parser accepts
     pred_parser = argparse.ArgumentParser(prog='pred', add_help=False)
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
