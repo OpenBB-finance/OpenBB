@@ -46,127 +46,120 @@ With their functions being:
 Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
-```
-map           S&P500 index stocks map [Finviz]
-sectors       show sectors performance [Alpha Vantage]
-gainers       show latest top gainers [Yahoo Finance]
-orders        orders by Fidelity Customers [Fidelity]
-up_earnings   upcoming earnings release dates [Seeking Alpha]
-high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
-low_float     show low float stocks under 10M shares float [www.lowfloat.com]
-simply_wallst Simply Wall St. research data [Simply Wall St.]
-spachero      great website for SPACs research [SpacHero]
-uwhales       good website for SPACs research [UnusualWhales]
-```
+Command|Explanation
+---|---
+`map`           |S&P500 index stocks map [Finviz]
+`sectors`       |show sectors performance [Alpha Vantage]
+`gainers`       |show latest top gainers [Yahoo Finance]
+`orders`        |orders by Fidelity Customers [Fidelity]
+`up_earnings`   |upcoming earnings release dates [Seeking Alpha]
+`high_short`    |show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
+`low_float`     |show low float stocks under 10M shares float [www.lowfloat.com]
+`simply_wallst` |Simply Wall St. research data [Simply Wall St.]
+`spachero`      |great website for SPACs research [SpacHero]
+`uwhales`       |good website for SPACs research [UnusualWhales]
+
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
-```
-Reddit:
-wsb           show what WSB gang is up to in subreddit wallstreetbets
-watchlist     show other users watchlist
-popular       show popular tickers
-spac_c        show other users spacs announcements from subreddit SPACs community
-spac          show other users spacs announcements from other subs
-
-Stocktwits:
-bullbear      estimate quick sentiment from last 30 messages on board
-messages      output up to the 30 last messages on the board
-trending      trending stocks
-stalker       stalk stocktwits user's last messages
-
-Twitter:
-infer         infer about stock's sentiment from latest tweets
-sentiment     in-depth sentiment prediction from tweets over time
-
-Google:
-mentions      interest over time based on stock's mentions
-regions       regions that show highest interest in stock
-queries       top related queries with this stock
-rise          top rising related queries with stock
-```
+Command|Explanation
+----|----
+Reddit:| 
+`wsb`           |show what WSB gang is up to in subreddit wallstreetbets
+`watchlist`     |show other users watchlist
+`popular`       |show popular tickers
+`spac_c`        |show other users spacs announcements from subreddit SPACs community
+`spac`          |show other users spacs announcements from other subs
+Stocktwits:| 
+`bullbear`      |estimate quick sentiment from last 30 messages on board
+`messages`      |output up to the 30 last messages on the board
+`trending`      |trending stocks
+`stalker`       |stalk stocktwits user's last message
+Twitter:| 
+`infer`         |infer about stock's sentiment from latest tweets
+`sentiment`     |in-depth sentiment prediction from tweets over time
+Google:| 
+`mentions`      |interest over time based on stock's mentions
+`regions`       |regions that show highest interest in stock
+`queries`       |top related queries with this stock
+`rise`          |top rising related queries with stock
 
 ### Research Web pages <a name="Research_Web_pages"></a>
-```
-macroaxis         www.macroaxis.com
-yahoo             www.finance.yahoo.com
-finviz            www.finviz.com
-marketwatch       www.marketwatch.com
-fool              www.fool.com
-businessinsider   www.markets.businessinsider.com
-fmp               www.financialmodelingprep.com
-fidelity          www.eresearch.fidelity.com
-tradingview       www.tradingview.com
-marketchameleon   www.marketchameleon.com
-stockrow          www.stockrow.com
-barchart          www.barchart.com
-grufity           www.grufity.com
-fintel            www.fintel.com
-zacks             www.zacks.com
-macrotrends       www.macrotrends.net
-newsfilter        www.newsfilter.io
+Command|Website
+----|----
+`macroaxis`         |www.macroaxis.com
+`yahoo`             |www.finance.yahoo.com
+`finviz`            |www.finviz.com
+`marketwatch`       |www.marketwatch.com
+`fool`              |www.fool.com
+`businessinsider`   |www.markets.businessinsider.com
+`fmp`               |www.financialmodelingprep.com
+`fidelity`          |www.eresearch.fidelity.com
+`tradingview`       |www.tradingview.com
+`marketchameleon`   |www.marketchameleon.com
+`stockrow`          |www.stockrow.com
+`barchart`          |www.barchart.com
+`grufity`           |www.grufity.com
+`fintel`            |www.fintel.com
+`zacks`             |www.zacks.com
+`macrotrends`       |www.macrotrends.net
+`newsfilter`        |www.newsfilter.io
+`resources`         |www.tradinganalysisresources.com
 
-resources         www.tradinganalysisresources.com
-```
 
 ### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
-```
-Daily Stock: BB (from 2020-06-04)
+Command|Explanation
 
-screener      screen info about the company [Finviz]
-mgmt          management team of the company [Business Insider]
+`screener`      |screen info about the company [Finviz]
+`mgmt`          |management team of the company [Business Insider]
+Market Watch API | 
+`income`        |income statement of the company
+`assets`        |assets of the company
+`liabilities`   |liabilities and shareholders equity of the company
+`operating`     |cash flow operating activities of the company
+`investing`     |cash flow investing activities of the company
+`financing`     |cash flow financing activities of the company
+Yahoo Finance API | 
+`info`          |information scope of the company
+`shrs`          |shareholders of the company
+`sust`          |sustainability values of the company
+`cal`           |calendar earnings and estimates of the company
+Alpha Vantage API | 
+`overview`      |overview of the company
+`income`        |income statements of the company
+`balance`       |balance sheet of the company
+`cash`          |cash flow of the company
+`earnings`      |earnings dates and reported EPS
+Financial Modeling Prep API | 
+`profile`       |profile of the company
+`quote`         |quote of the company
+`enterprise`    |enterprise value of the company over time
+`dcf`           |discounted cash flow of the company over time
+`inc`           |income statements of the company
+`bal`           |balance sheet of the company
+`cashf`         |cash flow of the company
+`metrics`       |key metrics of the company
+`ratios`        |financial ratios of the company
+`growth`        |financial statement growth of the company
 
-Market Watch API
-income        income statement of the company
-assets        assets of the company
-liabilities   liabilities and shareholders equity of the company
-operating     cash flow operating activities of the company
-investing     cash flow investing activities of the company
-financing     cash flow financing activities of the company
-
-Yahoo Finance API
-info          information scope of the company
-shrs          shareholders of the company
-sust          sustainability values of the company
-cal           calendar earnings and estimates of the company
-
-Alpha Vantage API
-overview      overview of the company
-income        income statements of the company
-balance       balance sheet of the company
-cash          cash flow of the company
-earnings      earnings dates and reported EPS
-
-Financial Modeling Prep API
-profile       profile of the company
-quote         quote of the company
-enterprise    enterprise value of the company over time
-dcf           discounted cash flow of the company over time
-inc           income statements of the company
-bal           balance sheet of the company
-cashf         cash flow of the company
-metrics       key metrics of the company
-ratios        financial ratios of the company
-growth        financial statement growth of the company
-```
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
 Command|Explanation
 ------ | ------
-overlap:
-`ema`         exponential moving average
-`sma`         simple moving average
-`vwap`        volume weighted average price
-momentum:
-`cci`         commodity channel index
-`macd`        moving average convergence/divergence
-`rsi`         relative strength index
-`stoch`       stochastic oscillator
+overlap: | 
+`ema`         exponential moving average [1,](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)[2](https://www.investopedia.com/terms/e/ema.asp)
+`sma`         [simple moving average](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter))
+`vwap`        [volume weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price)
+momentum: | 
+`cci`         [commodity channel index](https://en.wikipedia.org/wiki/Commodity_channel_index)
+`macd`        [moving average convergence/divergence](https://en.wikipedia.org/wiki/MACD)
+`rsi`         [relative strength index](https://en.wikipedia.org/wiki/Relative_strength_index)
+`stoch`       [stochastic oscillator](https://en.wikipedia.org/wiki/Stochastic_oscillator)
 trend:
-`adx`         average directional movement index
-`aroon`       aroon indicator
-volatility:
+`adx`         [average directional movement index](https://en.wikipedia.org/wiki/Average_directional_movement_index)
+`aroon`       [aroon indicator](https://www.investopedia.com/terms/a/aroon.asp)
+volatility: | 
 `bbands`      bollinger bands
-volume:
+volume: | 
 `ad`          chaikin accumulation/distribution line values
 `obv`         on balance volume
 
