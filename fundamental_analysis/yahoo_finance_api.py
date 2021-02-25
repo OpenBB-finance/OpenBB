@@ -1,7 +1,8 @@
-import yfinance as yf
-import pandas as pd
-import config_terminal as cfg
 import argparse
+
+import pandas as pd
+import yfinance as yf
+
 from helper_funcs import *
 
 

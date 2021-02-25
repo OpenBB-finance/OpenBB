@@ -1,7 +1,10 @@
 import argparse
-import requests
+
 import pandas as pd
+import requests
+
 from helper_funcs import *
+
 
 # -------------------------------------------------------------------------------------------------------------------
 def bullbear(l_args, s_ticker):

@@ -1,10 +1,9 @@
-import FundamentalAnalysis as fa # Financial Modeling Prep
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
+
+import FundamentalAnalysis as fa  # Financial Modeling Prep
+
+import config_terminal as cfg
+
 
 # ---------------------------------------------------- RATING ----------------------------------------------------
 def rating(l_args, s_ticker):

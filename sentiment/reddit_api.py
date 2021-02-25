@@ -1,17 +1,16 @@
 import argparse
-from prettytable import PrettyTable
-from datetime import datetime, timedelta
-import pandas as pd
-from psaw import PushshiftAPI
-import praw
-from datetime import datetime
-from pytz import timezone
-from holidays import US as holidaysUS
-from helper_funcs import *
 import re
-import finviz
-import config_terminal as cfg
 import warnings
+
+import finviz
+import praw
+from holidays import US as holidaysUS
+from prettytable import PrettyTable
+from psaw import PushshiftAPI
+
+import config_terminal as cfg
+from helper_funcs import *
+
 
 # -------------------------------------------------------------------------------------------------------------------
 def get_last_time_market_was_open(dt):

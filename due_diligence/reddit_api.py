@@ -1,16 +1,12 @@
 import argparse
-from prettytable import PrettyTable
-from datetime import datetime, timedelta
-import pandas as pd
-from psaw import PushshiftAPI
+
 import praw
-from datetime import datetime
-from pytz import timezone
-from holidays import US as holidaysUS
-from helper_funcs import *
-import re
-import finviz
+from prettytable import PrettyTable
+from psaw import PushshiftAPI
+
 import config_terminal as cfg
+from helper_funcs import *
+
 
 # -------------------------------------------------------------------------------------------------------------------
 def due_diligence(l_args, s_ticker):

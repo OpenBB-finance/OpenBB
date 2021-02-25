@@ -1,11 +1,12 @@
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-from helper_funcs import *
+
 import pandas as pd
-import json
 import requests
+from alpha_vantage.fundamentaldata import FundamentalData
 from pandas.io.json import json_normalize
+
+import config_terminal as cfg
+from helper_funcs import *
 
 
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------

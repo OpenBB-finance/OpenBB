@@ -1,12 +1,10 @@
 import argparse
-import numpy as np
-import pandas as pd
+
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
 register_matplotlib_converters()
-import datetime
-from datetime import datetime
-from alpha_vantage.timeseries import TimeSeries
 from helper_funcs import *
 from fbprophet import Prophet
 import warnings

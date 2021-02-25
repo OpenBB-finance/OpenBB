@@ -1,8 +1,10 @@
 import argparse
-import pandas as pd
-from bs4 import BeautifulSoup
-import requests
+
 import numpy as np
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
 from helper_funcs import *
 
 

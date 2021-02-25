@@ -1,7 +1,10 @@
-import finviz
 import argparse
-from helper_funcs import *
+
+import finviz
 import pandas as pd
+
+from helper_funcs import *
+
 
 # ---------------------------------------------------- INSIDER ----------------------------------------------------
 def insider(l_args, s_ticker):

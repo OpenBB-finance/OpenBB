@@ -1,12 +1,9 @@
-from bs4 import BeautifulSoup
-import requests
-import pandas as pd
-import re
-import json
-import config_terminal as cfg
-from datetime import datetime
 import argparse
 from rapidfuzz import fuzz
+
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------

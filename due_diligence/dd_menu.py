@@ -1,21 +1,11 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
 
+from due_diligence import business_insider_api as bi_api
+from due_diligence import financial_modeling_prep_api as fmp_api
 from due_diligence import finviz_api as fvz_api
 from due_diligence import market_watch_api as mw_api
-from due_diligence import reddit_api as r_api
 from due_diligence import quandl_api as q_api
-from due_diligence import financial_modeling_prep_api as fmp_api
-from due_diligence import business_insider_api as bi_api
+from due_diligence import reddit_api as r_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------

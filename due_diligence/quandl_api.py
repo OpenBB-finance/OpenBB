@@ -1,12 +1,13 @@
-import quandl
-from datetime import datetime
-import config_terminal as cfg
 import argparse
-from matplotlib import pyplot as plt
-import numpy as np
+
 import matplotlib.ticker as ticker
 import pandas as pd
+import quandl
+from matplotlib import pyplot as plt
+
+import config_terminal as cfg
 from helper_funcs import *
+
 
 # -------------------------------------------------------- SHORT_INTEREST --------------------------------------------------------
 def short_interest(l_args, s_ticker, s_start):

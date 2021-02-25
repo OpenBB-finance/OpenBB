@@ -1,20 +1,11 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
 
-from technical_analysis import overlap as ta_overlap
 from technical_analysis import momentum as ta_momentum
+from technical_analysis import overlap as ta_overlap
 from technical_analysis import trend as ta_trend
 from technical_analysis import volatility as ta_volatility
 from technical_analysis import volume as ta_volume
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_technical_analysis(s_ticker, s_start, s_interval):

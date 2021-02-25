@@ -1,12 +1,9 @@
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import config_terminal as cfg
-import pandas as pd
-import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+import argparse
+
+from pandas.plotting import register_matplotlib_converters
+
 register_matplotlib_converters()
 
 from prediction_techniques import sma

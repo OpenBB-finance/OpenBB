@@ -1,9 +1,9 @@
-import pandas as pd
-from pytrends.request import TrendReq
-from datetime import datetime
-import matplotlib.pyplot as plt
-from helper_funcs import *
 import argparse
+
+import matplotlib.pyplot as plt
+from pytrends.request import TrendReq
+
+from helper_funcs import *
 
 
 # -------------------------------------------------------------------------------------------------------------------

@@ -2,17 +2,21 @@
 
 """
 import argparse
+
 import pandas as pd
-from helper_funcs import *
-from fundamental_analysis import fa_menu as fam
-from technical_analysis import ta_menu as tam
-from due_diligence import dd_menu as ddm
-from discovery import disc_menu as dm
-from sentiment import sen_menu as sm
-from prediction_techniques import pred_menu as pm
-import res_menu as rm
-import config_terminal as cfg
 from alpha_vantage.timeseries import TimeSeries
+
+import config_terminal as cfg
+import res_menu as rm
+from discovery import disc_menu as dm
+from due_diligence import dd_menu as ddm
+from fundamental_analysis import fa_menu as fam
+from helper_funcs import *
+from prediction_techniques import pred_menu as pm
+from sentiment import sen_menu as sm
+from technical_analysis import ta_menu as tam
+
+
 #import warnings
 #warnings.simplefilter("always")
 

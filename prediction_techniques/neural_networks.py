@@ -1,16 +1,19 @@
 import argparse
-from helper_funcs import *
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
+from helper_funcs import *
+
 register_matplotlib_converters()
 
 from TimeSeriesCrossValidation import splitTrain
 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout, Activation, RepeatVector, TimeDistributed
+from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
 
 import config_neural_network_models as cfg_nn_models
 

@@ -1,9 +1,9 @@
-import config_terminal as cfg
 import argparse
+
+from sentiment import google_api
 from sentiment import reddit_api
 from sentiment import stocktwits_api
 from sentiment import twitter_api
-from sentiment import google_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------

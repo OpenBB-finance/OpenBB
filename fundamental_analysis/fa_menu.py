@@ -1,20 +1,10 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
 
 from fundamental_analysis import alpha_vantage_api as av_api
+from fundamental_analysis import business_insider_api as bi_api
 from fundamental_analysis import financial_modeling_prep_api as fmp_api
 from fundamental_analysis import finviz_api as fvz_api
 from fundamental_analysis import market_watch_api as mw_api
-from fundamental_analysis import business_insider_api as bi_api
 from fundamental_analysis import yahoo_finance_api as yf_api
 
 

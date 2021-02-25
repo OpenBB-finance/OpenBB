@@ -1,10 +1,10 @@
-import FundamentalAnalysis as fa # Financial Modeling Prep
-import config_terminal as cfg
-import argparse
 import datetime
-from datetime import datetime
-from helper_funcs import *
+
+import FundamentalAnalysis as fa  # Financial Modeling Prep
 import pandas as pd
+
+import config_terminal as cfg
+from helper_funcs import *
 
 
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
@@ -509,4 +509,7 @@ def financial_statement_growth(l_args, s_ticker):
     except:
         print("")
         return
+<<<<<<< HEAD
     
+=======
+>>>>>>> 63fc66c... Clean up imports

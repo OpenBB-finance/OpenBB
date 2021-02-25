@@ -1,11 +1,11 @@
 import argparse
-import requests
-import pandas as pd
-import re
+
+import dateutil
 import flair
 import matplotlib.pyplot as plt
-import iso8601
-import dateutil
+import pandas as pd
+import requests
+
 import config_terminal as cfg
 from helper_funcs import *
 

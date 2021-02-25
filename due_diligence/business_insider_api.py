@@ -1,16 +1,15 @@
-from bs4 import BeautifulSoup
-from alpha_vantage.timeseries import TimeSeries
-from helper_funcs import *
-import requests
-import pandas as pd
-import re
-import json
-import config_terminal as cfg
-from datetime import datetime
 import argparse
-from rapidfuzz import fuzz
+import json
+import re
+
 import matplotlib.pyplot as plt
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 from pandas.plotting import register_matplotlib_converters
+
+from helper_funcs import check_positive
+
 register_matplotlib_converters()
 
 

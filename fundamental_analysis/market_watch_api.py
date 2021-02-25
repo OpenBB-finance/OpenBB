@@ -1,9 +1,9 @@
 import argparse
+
 import pandas as pd
-from bs4 import BeautifulSoup
 import requests
-import numpy as np
-from helper_funcs import *
+from bs4 import BeautifulSoup
+
 
 # ---------------------------------------------------- INCOME ----------------------------------------------------
 def income(l_args, s_ticker):

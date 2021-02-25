@@ -1,7 +1,10 @@
 import argparse
+
 import pandas_ta as ta
-from helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
+
+from helper_funcs import *
+
 register_matplotlib_converters()
 
 # ----------------------------------------------------- BBANDS -----------------------------------------------------
@@ -75,4 +78,3 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
 
     except:
         print("")
-    

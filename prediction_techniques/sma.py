@@ -1,9 +1,12 @@
 import argparse
-import numpy as np
-from helper_funcs import *
-import pandas as pd
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
+from helper_funcs import *
+
 register_matplotlib_converters()
 
 # ----------------------------------------------------- SMA -----------------------------------------------------
