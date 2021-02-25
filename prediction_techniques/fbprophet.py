@@ -7,7 +7,6 @@ from pandas.plotting import register_matplotlib_converters
 from helper_funcs import get_next_stock_market_days, check_positive
 
 register_matplotlib_converters()
-from fbprophet import Prophet
 import warnings
 warnings.simplefilter("ignore")
 
@@ -32,6 +31,7 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
     df_stock = df_stock.rename(columns={"date": "ds", "5. adjusted close": "y"})
     df_stock['ds'] = pd.to_datetime(df_stock['ds'])
 
+    from fbprophet import Prophet
     model = Prophet(yearly_seasonality=False, daily_seasonality=False)
     model.fit(df_stock)
 

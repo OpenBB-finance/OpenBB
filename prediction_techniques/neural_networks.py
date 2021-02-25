@@ -12,8 +12,6 @@ register_matplotlib_converters()
 from TimeSeriesCrossValidation import splitTrain
 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
 
 import config_neural_network_models as cfg_nn_models
 
@@ -26,6 +24,8 @@ simplefilter(action='ignore', category=FutureWarning)
 
 # ----------------------------------------------------------------------------------------------------
 def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
     model = Sequential()
     
     for idx_layer, d_layer in enumerate(Recurrent_Neural_Network):

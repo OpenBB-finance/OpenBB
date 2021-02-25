@@ -2,7 +2,6 @@ import argparse
 from datetime import datetime, timedelta
 
 import dateutil.parser
-import flair
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -14,6 +13,7 @@ from helper_funcs import clean_tweet, get_data
 
 # ------------------------------------------------- INFERENCE -------------------------------------------------
 def inference(l_args, s_ticker):
+    import flair
     parser = argparse.ArgumentParser(prog='infer',
                                      description="""Print quick sentiment inference from last tweets that contain
                                      the ticker. This model splits the text into character-level
@@ -107,6 +107,7 @@ def inference(l_args, s_ticker):
 
 # ------------------------------------------------- SENTIMENT -------------------------------------------------
 def sentiment(l_args, s_ticker):
+    import flair
     parser = argparse.ArgumentParser(prog='sen',
                                      description="""Plot in-depth sentiment predicted from tweets from last days
                                      that contain pre-defined ticker. This model splits the text into character-level
