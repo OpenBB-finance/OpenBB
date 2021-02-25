@@ -29,17 +29,16 @@ The main menu allows the following commands:
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 ```
-```
-clear
-```
-```
-view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
-```
-With their functions being:
    * Load stock ticker to perform analysis on
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes 
+```
+clear
+```
    * Clear previously loaded stock ticker.
+```
+view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
+```
    * Visualise historical data of a stock. An alpha_vantage key is necessary.
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
