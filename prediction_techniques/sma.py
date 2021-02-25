@@ -3,11 +3,8 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from helper_funcs import get_next_stock_market_days, check_positive, parse_known_args_and_warn
-
-register_matplotlib_converters()
 
 # ----------------------------------------------------- SMA -----------------------------------------------------
 def simple_moving_average(l_args, s_ticker, s_interval, df_stock):

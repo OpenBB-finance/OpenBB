@@ -6,11 +6,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from pandas.plotting import register_matplotlib_converters
 
 from helper_funcs import check_positive, get_next_stock_market_days, parse_known_args_and_warn
-
-register_matplotlib_converters()
 
 
 # ------------------------------------------- PRICE_TARGET_FROM_ANALYSTS -------------------------------------------

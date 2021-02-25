@@ -1,9 +1,5 @@
 import argparse
 
-from pandas.plotting import register_matplotlib_converters
-
-register_matplotlib_converters()
-
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):

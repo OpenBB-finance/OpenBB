@@ -2,11 +2,8 @@ import argparse
 
 import pandas_ta as ta
 import matplotlib.pyplot as plt
-from pandas.plotting import register_matplotlib_converters
 
 from helper_funcs import check_positive, parse_known_args_and_warn
-
-register_matplotlib_converters()
 
 # ------------------------------------------------------- AD -------------------------------------------------------
 def ad(l_args, s_ticker, s_interval, df_stock):

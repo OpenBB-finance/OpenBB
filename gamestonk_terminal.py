@@ -16,7 +16,6 @@ from prediction_techniques import pred_menu as pm
 from sentiment import sen_menu as sm
 from technical_analysis import ta_menu as tam
 
-
 #import warnings
 #warnings.simplefilter("always")
 

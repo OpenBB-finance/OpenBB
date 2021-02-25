@@ -8,6 +8,10 @@ import matplotlib.pyplot as plt
 from holidays import US as holidaysUS
 from pytz import timezone
 
+# Can just as well do this here...
+from pandas.plotting import register_matplotlib_converters
+register_matplotlib_converters()
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def check_non_negative(value):

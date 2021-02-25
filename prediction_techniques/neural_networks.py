@@ -3,11 +3,8 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from helper_funcs import check_positive, get_next_stock_market_days, parse_known_args_and_warn
-
-register_matplotlib_converters()
 
 from TimeSeriesCrossValidation import splitTrain
 
