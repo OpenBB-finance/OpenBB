@@ -143,25 +143,25 @@ Financial Modeling Prep API |
 
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
-Command|Explanation
+Command | Explanation
 ------ | ------
 overlap: | 
-`ema`         exponential moving average [1,](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)[2](https://www.investopedia.com/terms/e/ema.asp)
-`sma`         [simple moving average](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter))
-`vwap`        [volume weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price)
+`ema`         | exponential moving average [1,](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)[2](https://www.investopedia.com/terms/e/ema.asp)
+`sma`         |[simple moving average](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter))
+`vwap`        |[volume weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price)
 momentum: | 
-`cci`         [commodity channel index](https://en.wikipedia.org/wiki/Commodity_channel_index)
-`macd`        [moving average convergence/divergence](https://en.wikipedia.org/wiki/MACD)
-`rsi`         [relative strength index](https://en.wikipedia.org/wiki/Relative_strength_index)
-`stoch`       [stochastic oscillator](https://en.wikipedia.org/wiki/Stochastic_oscillator)
+`cci`         |[commodity channel index](https://en.wikipedia.org/wiki/Commodity_channel_index)
+`macd`        |[moving average convergence/divergence](https://en.wikipedia.org/wiki/MACD)
+`rsi`         |[relative strength index](https://en.wikipedia.org/wiki/Relative_strength_index)
+`stoch`       |[stochastic oscillator](https://en.wikipedia.org/wiki/Stochastic_oscillator)
 trend:
-`adx`         [average directional movement index](https://en.wikipedia.org/wiki/Average_directional_movement_index)
-`aroon`       [aroon indicator](https://www.investopedia.com/terms/a/aroon.asp)
+`adx`         |[average directional movement index](https://en.wikipedia.org/wiki/Average_directional_movement_index)
+`aroon`       |[aroon indicator](https://www.investopedia.com/terms/a/aroon.asp)
 volatility: | 
-`bbands`      bollinger bands
+`bbands`      |bollinger bands
 volume: | 
-`ad`          chaikin accumulation/distribution line values
-`obv`         on balance volume
+`ad`          |chaikin accumulation/distribution line values
+`obv`         |on balance volume
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
 Command|Explanation
