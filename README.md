@@ -150,62 +150,66 @@ growth        financial statement growth of the company
 ```
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
-```
+Command|Explanation
+------ | ------
 overlap:
-ema         exponential moving average
-sma         simple moving average
-vwap        volume weighted average price
+`ema`         exponential moving average
+`sma`         simple moving average
+`vwap`        volume weighted average price
 momentum:
-cci         commodity channel index
-macd        moving average convergence/divergence
-rsi         relative strength index
-stoch       stochastic oscillator
+`cci`         commodity channel index
+`macd`        moving average convergence/divergence
+`rsi`         relative strength index
+`stoch`       stochastic oscillator
 trend:
-adx         average directional movement index
-aroon       aroon indicator
+`adx`         average directional movement index
+`aroon`       aroon indicator
 volatility:
-bbands      bollinger bands
+`bbands`      bollinger bands
 volume:
-ad          chaikin accumulation/distribution line values
-obv         on balance volume
-```
+`ad`          chaikin accumulation/distribution line values
+`obv`         on balance volume
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
-```
-news          latest news of the company [Finviz]
-red           gets due diligence from another user's post [Reddit]
-analyst       analyst prices and ratings of the company [Finviz]
-rating        rating of the company from strong sell to strong buy [FMP]
-pt            price targets over time [Business Insider]
-est           quarter and year analysts earnings estimates [Business Insider]
-ins           insider activity over time [Business Insider]
-insider       insider trading of the company [Finviz]
-sec           SEC filings [Market Watch]
-short         short interest [Quandl]
-warnings      company warnings according to Sean Seah book [Market Watch]
-```
+Command|Explanation
+------ | --------
+`news`          |latest news of the company [Finviz]
+`red`           |gets due diligence from another user's post [Reddit]
+`analyst`       |analyst prices and ratings of the company [Finviz]
+`rating`        |rating of the company from strong sell to strong buy [FMP]
+`pt`            |price targets over time [Business Insider]
+`est`           |quarter and year analysts earnings estimates [Business Insider]
+`ins`           |insider activity over time [Business Insider]
+`insider`       |insider trading of the company [Finviz]
+`sec`           |SEC filings [Market Watch]
+`short`         |short interest [Quandl]
+`warnings`      |company warnings according to Sean Seah book [Market Watch]
+
 
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
-```
-sma         simple moving average
-knn         k-Nearest Neighbors
-linear      linear regression (polynomial 1)
-quadratic   quadratic regression (polynomial 2)
-cubic       cubic regression (polynomial 3)
-regression  regression (other polynomial)
-arima       autoregressive integrated moving average
-prophet     Facebook's prophet prediction
-mlp         MultiLayer Perceptron
-rnn         Recurrent Neural Network
-lstm        Long-Short Term Memory
-```
+Command|Algorithm
+------ | ----------
+`sma`         |[simple moving average](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average)
+`knn`         |[k-Nearest Neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
+`linear`      |[linear regression (polynomial 1)](https://en.wikipedia.org/wiki/Linear_regression)
+`quadratic`   |[quadratic regression (polynomial 2)](https://en.wikipedia.org/wiki/Polynomial_regression)
+`cubic`       |[cubic regression (polynomial 3)](https://en.wikipedia.org/wiki/Polynomial_regression)
+`regression`  |[regression (other polynomial)](https://en.wikipedia.org/wiki/Polynomial_regression)
+`arima`       |[autoregressive integrated moving average](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average)
+`prophet`     |[Facebook's prophet prediction](https://facebook.github.io/prophet/)
+`mlp`         |[MultiLayer Perceptron](https://en.wikipedia.org/wiki/Multilayer_perceptron)
+`rnn`         |[Recurrent Neural Network](https://en.wikipedia.org/wiki/Recurrent_neural_network)
+`lstm`        |[Long Short-Term Memory](https://en.wikipedia.org/wiki/Long_short-term_memory)
+
 
 ## Install <a name="Install"></a>
 
 This project was written and tested with Python 3.6.8.
 
-In order to install all libraries used by this repository, you must run
+In order to install, you must run
 ```
+git clone https://github.com/DidierRLopes/GamestonkTerminal
+cd GamestonkTerminal/
 pip install -r requirements.txt
 ```
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
