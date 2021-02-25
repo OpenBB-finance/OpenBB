@@ -4,10 +4,12 @@ import FundamentalAnalysis as fa  # Financial Modeling Prep
 import pandas as pd
 
 import config_terminal as cfg
-from helper_funcs import *
 
 
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
+from helper_funcs import check_positive, long_number_format
+
+
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='profile', 
                                      description="""Prints information about, among other things, the industry, sector 
@@ -61,7 +63,7 @@ def quote(l_args, s_ticker):
         df_fa.loc['Market cap'][0] = long_number_format(df_fa.loc['Market cap'][0])
         df_fa.loc['Shares outstanding'][0] = long_number_format(df_fa.loc['Shares outstanding'][0])
         df_fa.loc['Volume'][0] = long_number_format(df_fa.loc['Volume'][0])
-        earning_announcment = datetime.strptime(df_fa.loc['Earnings announcement'][0][0:19],"%Y-%m-%dT%H:%M:%S")
+        earning_announcment = datetime.datetime.strptime(df_fa.loc['Earnings announcement'][0][0:19],"%Y-%m-%dT%H:%M:%S")
         df_fa.loc['Earnings announcement'][0] = f"{earning_announcment.date()} {earning_announcment.time()}"
         print(df_fa.to_string(header=False))
 

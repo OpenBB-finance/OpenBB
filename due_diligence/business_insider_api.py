@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, get_next_stock_market_days
 
 register_matplotlib_converters()
 

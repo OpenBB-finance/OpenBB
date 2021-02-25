@@ -1,9 +1,10 @@
 import argparse
+from datetime import datetime
 
 import pandas as pd
 import yfinance as yf
 
-from helper_funcs import *
+from helper_funcs import long_number_format
 
 
 # ---------------------------------------------------- INFO ----------------------------------------------------

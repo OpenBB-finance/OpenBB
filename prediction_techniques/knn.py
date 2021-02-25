@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import *
+from helper_funcs import check_positive, get_next_stock_market_days
 
 register_matplotlib_converters()
 from sklearn import neighbors

@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 import requests
 
-from helper_funcs import *
+from helper_funcs import check_positive
 
 
 # -------------------------------------------------------------------------------------------------------------------

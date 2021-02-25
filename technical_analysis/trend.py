@@ -1,9 +1,10 @@
 import argparse
 
 import pandas_ta as ta
+import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import *
+from helper_funcs import check_positive
 
 register_matplotlib_converters()
 

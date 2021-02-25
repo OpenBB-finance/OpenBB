@@ -2,8 +2,7 @@ import argparse
 
 import matplotlib.pyplot as plt
 from pytrends.request import TrendReq
-
-from helper_funcs import *
+from helper_funcs import check_positive, valid_date
 
 
 # -------------------------------------------------------------------------------------------------------------------

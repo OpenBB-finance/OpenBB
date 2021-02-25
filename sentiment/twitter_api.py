@@ -1,13 +1,15 @@
 import argparse
+from datetime import datetime, timedelta
 
-import dateutil
+import dateutil.parser
 import flair
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 import requests
 
 import config_terminal as cfg
-from helper_funcs import *
+from helper_funcs import clean_tweet, get_data
 
 
 # ------------------------------------------------- INFERENCE -------------------------------------------------

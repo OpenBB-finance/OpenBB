@@ -1,6 +1,4 @@
 import argparse
-from pandas.plotting import register_matplotlib_converters
-import argparse
 
 from pandas.plotting import register_matplotlib_converters
 

@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+from helper_funcs import get_next_stock_market_days, check_positive
+
 register_matplotlib_converters()
-from helper_funcs import *
 from fbprophet import Prophet
 import warnings
 warnings.simplefilter("ignore")

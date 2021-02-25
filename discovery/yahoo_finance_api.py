@@ -3,9 +3,6 @@ import argparse
 import pandas as pd
 
 
-#from helper_funcs import *
-
-
 # ---------------------------------------------------- GAINERS ----------------------------------------------------
 def gainers(l_args):
     parser = argparse.ArgumentParser(prog='gainers', 

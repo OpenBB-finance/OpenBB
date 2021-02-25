@@ -6,10 +6,12 @@ from alpha_vantage.fundamentaldata import FundamentalData
 from pandas.io.json import json_normalize
 
 import config_terminal as cfg
-from helper_funcs import *
 
 
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
+from helper_funcs import long_number_format, check_positive
+
+
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='overview', 
                                      description="""Prints an overview about the company. The following fields are expected: 

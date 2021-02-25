@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from helper_funcs import *
+from helper_funcs import check_positive, clean_data_values_to_float, int_or_round_float
 
 
 # ---------------------------------------------------- SEC FILLINGS ----------------------------------------------------

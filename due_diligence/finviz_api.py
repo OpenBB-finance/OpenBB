@@ -2,9 +2,7 @@ import argparse
 
 import finviz
 import pandas as pd
-
-from helper_funcs import *
-
+from helper_funcs import check_positive
 
 # ---------------------------------------------------- INSIDER ----------------------------------------------------
 def insider(l_args, s_ticker):

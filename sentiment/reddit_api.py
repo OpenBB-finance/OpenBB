@@ -1,6 +1,7 @@
 import argparse
 import re
 import warnings
+from datetime import timedelta, datetime
 
 import finviz
 import praw
@@ -9,7 +10,7 @@ from prettytable import PrettyTable
 from psaw import PushshiftAPI
 
 import config_terminal as cfg
-from helper_funcs import *
+from helper_funcs import check_positive
 
 
 # -------------------------------------------------------------------------------------------------------------------
