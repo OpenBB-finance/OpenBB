@@ -125,7 +125,7 @@ financing     cash flow financing activities of the company
 
 Yahoo Finance API
 info          information scope of the company
-shrs          hareholders of the company
+shrs          shareholders of the company
 sust          sustainability values of the company
 cal           calendar earnings and estimates of the company
 
@@ -208,18 +208,12 @@ In order to install all libraries used by this repository, you must run
 ```
 pip install -r requirements.txt
 ```
-and then:
-```
-pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
-```
-where the latest is a library that I made to split the time-series data for training, validation and testing. See more information at https://github.com/DidierRLopes/TimeSeriesCrossValidation.
-
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment previous to install these. This allows to keep dependencies required by different projects in separate places.
 
 
 ## API Keys <a name="API_Keys"></a>
 
-The project is build around several different API calls, whether it is to access historical data or finantials.
+The project is build around several different API calls, whether it is to access historical data or financials.
 
 These are the ones where a key is necessary:
   * Alpha Vantage: https://www.alphavantage.co
@@ -228,7 +222,18 @@ These are the ones where a key is necessary:
   * Reddit: https://www.reddit.com/prefs/apps
   * Twitter: https://developer.twitter.com
 
-When these are obtained, don't forget to update [config_terminal.txt](/config_terminal.py)
+When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py).  Alternatively, you can also set them to the following environment variables:  
+  * GT_API_KEY_ALPHAVANTAGE
+  * GT_API_KEY_FINANCIALMODELINGPREP
+  * GT_API_KEY_QUANDL
+  * GT_API_REDDIT_CLIENT_ID
+  * GT_API_REDDIT_CLIENT_SECRET
+  * GT_API_REDDIT_USERNAME
+  * GT_API_REDDIT_USER_AGENT
+  * GT_API_REDDIT_PASSWORD
+  * GT_API_TWITTER_KEY
+  * GT_API_TWITTER_SECRET_KEY
+  * GT_API_TWITTER_BEARER_TOKEN.
 
 ## Disclaimer <a name="Disclaimer"></a>
 
