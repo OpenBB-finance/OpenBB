@@ -34,7 +34,6 @@ def ema(l_args, s_ticker, s_interval, df_stock):
     if s_interval == "1440min":
         df_ta = ta.ema(df_stock['5. adjusted close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
         plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, f"{ns_parser.n_length} EMA")
-
     # Intraday
     else:
         df_ta = ta.ema(df_stock['4. close'], length=ns_parser.n_length, offset=ns_parser.n_offset).dropna()
@@ -62,45 +61,33 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
 
-    # Daily
-    if s_interval == "1440min":
-        plt.plot(df_stock.index, df_stock['5. adjusted close'].values, color='k')
-        l_legend = list()
-        l_legend.append(s_ticker)
-        for length in ns_parser.l_length:
-            df_ta = ta.sma(df_stock['5. adjusted close'], length=length, offset=ns_parser.n_offset).dropna()
-            plt.plot(df_ta.index, df_ta.values)
-            l_legend.append(f"{length} SMA")
-        plt.title(f"SMA on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.xlabel('Time')
-        plt.ylabel('Share Price ($)')
-        plt.legend(l_legend)
-        plt.grid(b=True, which='major', color='#666666', linestyle='-')
-        plt.minorticks_on()
-        plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.show()
 
-    # Intraday
-    else:
-        plt.plot(df_stock.index, df_stock['4. close'].values, color='k')
-        l_legend = list()
-        l_legend.append(s_ticker)
-        for length in ns_parser.n_length:
-            df_ta = ta.sma(df_stock['4. close'], length=length, offset=ns_parser.n_offset).dropna()
-            plt.plot(df_ta.index, df_ta.values)
-            l_legend.append(f"{length} SMA")
-        plt.title(f"SMA on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.xlabel('Time')
-        plt.ylabel('Share Price ($)')
-        plt.legend(l_legend)
-        plt.grid(b=True, which='major', color='#666666', linestyle='-')
-        plt.minorticks_on()
-        plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.show()
+    title = f"SMA on {s_ticker}"
+    offset = ns_parser.n_offset
+    if s_interval == "1440min":  # Daily
+        _plot_sma(df_stock, s_ticker, '5. adjusted close', ns_parser.l_length, title, offset)
+    else:  # Intraday
+        _plot_sma(df_stock, s_ticker, '4. close', ns_parser.n_length, title, offset)
     print("")
 
+
+def _plot_sma(df_stock, s_ticker, close_field, length, title, offset):
+    plt.plot(df_stock.index, df_stock[close_field].values, color='k')
+    l_legend = list()
+    l_legend.append(s_ticker)
+    for length in length:
+        df_ta = ta.sma(df_stock[close_field], length=length, offset=offset).dropna()
+        plt.plot(df_ta.index, df_ta.values)
+        l_legend.append(f"{length} SMA")
+    plt.title(title)
+    plt.xlim(df_stock.index[0], df_stock.index[-1])
+    plt.xlabel('Time')
+    plt.ylabel('Share Price ($)')
+    plt.legend(l_legend)
+    plt.grid(b=True, which='major', color='#666666', linestyle='-')
+    plt.minorticks_on()
+    plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.show()
 
 
 # ----------------------------------------------------- VWAP -----------------------------------------------------
@@ -117,46 +104,31 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
 
-    # Daily
-    if s_interval == "1440min":
-        df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['5. adjusted close'],
-                        volume=df_stock['6. volume'], offset=ns_parser.n_offset)
 
-        pfig, axPrice = plt.subplots()
-        plt.plot(df_stock.index, df_stock['5. adjusted close'].values, color='k')
-        plt.plot(df_ta.index, df_ta.values)
-        plt.title(f"VWAP on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.xlabel('Time')
-        plt.ylabel('Share Price ($)')
-        plt.legend([s_ticker, "VWAP"])
-        axVolume = axPrice.twinx()
-        plt.bar(df_stock.index, df_stock['6. volume'].values, color='k', alpha=0.8, width=.3)
-        plt.ylabel('Volume')
-        plt.grid(b=True, which='major', color='#666666', linestyle='-')
-        plt.minorticks_on()
-        plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.show()
-        print("")
+    title = f"VWAP on {s_ticker}"
+    offset = ns_parser.n_offset
+    if s_interval == "1440min":  # Daily
+        _plot_vwap(title, offset, s_ticker, df_stock, '5. adjusted close')
+    else:  # Intraday
+        _plot_vwap(title, offset, s_ticker, df_stock, '4. close')
+    print("")
 
-    # Intraday
-    else:
-        df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'],  close=df_stock['4. close'],
-                        volume=df_stock['5. volume'], offset=ns_parser.n_offset)
 
-        pfig, axPrice = plt.subplots()
-        plt.plot(df_stock.index, df_stock['4. close'].values, color='k')
-        plt.plot(df_ta.index, df_ta.values)
-        plt.title(f"VWAP on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.xlabel('Time')
-        plt.ylabel('Share Price ($)')
-        plt.legend([s_ticker, "VWAP"])
-        axVolume = axPrice.twinx()
-        plt.bar(df_stock.index, df_stock['5. volume'].values, color='k', alpha=0.8, width=.3)
-        plt.ylabel('Volume')
-        plt.grid(b=True, which='major', color='#666666', linestyle='-')
-        plt.minorticks_on()
-        plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.show()
-        print("")
+def _plot_vwap(title, offset, s_ticker, df_stock, data_field):
+    df_ta = ta.vwap(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock[data_field],
+                    volume=df_stock['6. volume'], offset=offset)
+    pfig, axPrice = plt.subplots()
+    plt.plot(df_stock.index, df_stock[data_field].values, color='k')
+    plt.plot(df_ta.index, df_ta.values)
+    plt.title(title)
+    plt.xlim(df_stock.index[0], df_stock.index[-1])
+    plt.xlabel('Time')
+    plt.ylabel('Share Price ($)')
+    plt.legend([s_ticker, "VWAP"])
+    axVolume = axPrice.twinx()
+    plt.bar(df_stock.index, df_stock['6. volume'].values, color='k', alpha=0.8, width=.3)
+    plt.ylabel('Volume')
+    plt.grid(b=True, which='major', color='#666666', linestyle='-')
+    plt.minorticks_on()
+    plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.show()
