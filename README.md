@@ -171,7 +171,7 @@ volume: |
 Command|Explanation
 ------ | --------
 `news`          |latest news of the company ([Finviz](https://finviz.com/))
-`red`           |gets due diligence from another user's post ((Reddit)[https://reddit.com])
+`red`           |gets due diligence from another user's post ([Reddit](https://reddit.com))
 `analyst`       |analyst prices and ratings of the company ([Finviz](https://finviz.com/))
 `rating`        |rating of the company from strong sell to strong buy [FMP]
 `pt`            |price targets over time ([Business Insider](https://www.businessinsider.com/))
