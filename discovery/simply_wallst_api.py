@@ -16,12 +16,6 @@ def simply_wallst(l_args):
                                  'media', 'pharmaceuticals-biotech', 'real-estate', 'retail', 'semiconductors',
                                  'software', 'tech', 'telecom', 'transportation', 'utilities'] )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
-
-        webbrowser.open(f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1")
-        print("")
-
-    except SystemExit:
-        print("")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
+    webbrowser.open(f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1")
+    print("")

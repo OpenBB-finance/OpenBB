@@ -18,44 +18,39 @@ def orders(l_args):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, 
                         help='Number of top ordered stocks to be printed.')
     
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
-        url_orders = f"https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"
-        text_soup_url_orders = BeautifulSoup(requests.get(url_orders).text, "lxml")
-        
-        l_orders = list()
-        l_orders_vals = list()
-        idx = 0
-        for orders in text_soup_url_orders.findAll('td', {'class' : ['second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eight']}):
-            
-            if ((idx+1)%3 == 0) or ((idx+1)%4 == 0) or ((idx+1)%6 == 0):
-                l_orders_vals.append(orders.contents[1])
-            elif ((idx+1)%5 == 0):
-                s_orders = str(orders)
-                l_orders_vals.append(s_orders[s_orders.find('title="') + len('title="'): s_orders.find('"/>')])
-            else:
-                l_orders_vals.append(orders.text.strip())
-            
-            idx += 1
-            
-            # Add value to dictionary
-            if (idx+1)%8 == 0:
-                l_orders.append(l_orders_vals)
-                l_orders_vals = list()
-                idx = 0
+    url_orders = f"https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"
+    text_soup_url_orders = BeautifulSoup(requests.get(url_orders).text, "lxml")
 
-        df_orders = pd.DataFrame(l_orders, columns = ['Symbol', 'Company', 'Price Change', '# Buy Orders', 
-                                                'Buy / Sell Ratio', '# Sell Orders', 'Latest News'])
+    l_orders = list()
+    l_orders_vals = list()
+    idx = 0
+    for orders in text_soup_url_orders.findAll('td', {'class' : ['second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eight']}):
 
-        df_orders = df_orders[['Symbol', 'Buy / Sell Ratio', 'Price Change', 'Company', '# Buy Orders', '# Sell Orders', 'Latest News']]
+        if ((idx+1)%3 == 0) or ((idx+1)%4 == 0) or ((idx+1)%6 == 0):
+            l_orders_vals.append(orders.contents[1])
+        elif ((idx+1)%5 == 0):
+            s_orders = str(orders)
+            l_orders_vals.append(s_orders[s_orders.find('title="') + len('title="'): s_orders.find('"/>')])
+        else:
+            l_orders_vals.append(orders.text.strip())
 
-        print(text_soup_url_orders.findAll('span', {'class' : 'source'})[0].text.capitalize() + ':')
+        idx += 1
 
-        pd.set_option('display.max_colwidth', -1)
-        print(df_orders.head(n=ns_parser.n_num).iloc[:,:-1].to_string(index=False))
-        print("")
+        # Add value to dictionary
+        if (idx+1)%8 == 0:
+            l_orders.append(l_orders_vals)
+            l_orders_vals = list()
+            idx = 0
 
-    except SystemExit:
-        print("")
-        return
+    df_orders = pd.DataFrame(l_orders, columns = ['Symbol', 'Company', 'Price Change', '# Buy Orders',
+                                            'Buy / Sell Ratio', '# Sell Orders', 'Latest News'])
+
+    df_orders = df_orders[['Symbol', 'Buy / Sell Ratio', 'Price Change', 'Company', '# Buy Orders', '# Sell Orders', 'Latest News']]
+
+    print(text_soup_url_orders.findAll('span', {'class' : 'source'})[0].text.capitalize() + ':')
+
+    pd.set_option('display.max_colwidth', -1)
+    print(df_orders.head(n=ns_parser.n_num).iloc[:,:-1].to_string(index=False))
+    print("")

@@ -7,12 +7,5 @@ def unusual_whales(l_args):
     parser = argparse.ArgumentParser(prog='uwhales', 
                                      description='''Good website for SPACs research. [Source: www.unusualwhales.com]''')
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
-
-        webbrowser.open(f"https://unusualwhales.com/spacs")
-        print("")
-
-    except SystemExit:
-        print("")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
+    webbrowser.open(f"https://unusualwhales.com/spacs")
