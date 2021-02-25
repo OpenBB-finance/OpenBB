@@ -28,7 +28,11 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 The main menu allows the following commands:
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
+```
+```
 clear
+```
+```
 view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 ```
 With their functions being:
