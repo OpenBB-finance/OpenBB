@@ -147,22 +147,22 @@ Financial Modeling Prep API |
 Command | Explanation
 ------ | ------
 overlap: | 
-`ema`         | exponential moving average ([1](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average),[2](https://www.investopedia.com/terms/e/ema.asp))
-`sma`         |simple moving average ([1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [2](https://www.investopedia.com/terms/s/sma.asp))
-`vwap`        |volume weighted average price ([1](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [2](https://www.investopedia.com/terms/v/vwap.asp))
+`ema`         | exponential moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average),[source 2](https://www.investopedia.com/terms/e/ema.asp))
+`sma`         |simple moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [source 2](https://www.investopedia.com/terms/s/sma.asp))
+`vwap`        |volume weighted average price ([source 1](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [source 2](https://www.investopedia.com/terms/v/vwap.asp))
 momentum: | 
-`cci`         |commodity channel index ([1](https://en.wikipedia.org/wiki/Commodity_channel_index), [2](https://www.investopedia.com/terms/c/commoditychannelindex.asp))
-`macd`        |moving average convergence/divergence ([1](https://en.wikipedia.org/wiki/MACD), [2](https://www.investopedia.com/terms/m/macd.asp))
-`rsi`         |relative strength index ([1](https://en.wikipedia.org/wiki/Relative_strength_index), [2](https://www.investopedia.com/terms/r/rsi.asp))
-`stoch`       |stochastic oscillator ([1](https://en.wikipedia.org/wiki/Stochastic_oscillator), [2](https://www.investopedia.com/terms/s/stochasticoscillator.asp))
+`cci`         |commodity channel index ([source 1](https://en.wikipedia.org/wiki/Commodity_channel_index), [source 2](https://www.investopedia.com/terms/c/commoditychannelindex.asp))
+`macd`        |moving average convergence/divergence ([source 1](https://en.wikipedia.org/wiki/MACD), [source 2](https://www.investopedia.com/terms/m/macd.asp))
+`rsi`         |relative strength index ([source 1](https://en.wikipedia.org/wiki/Relative_strength_index), [source 2](https://www.investopedia.com/terms/r/rsi.asp))
+`stoch`       |stochastic oscillator ([source 1](https://en.wikipedia.org/wiki/Stochastic_oscillator), [source 2](https://www.investopedia.com/terms/s/stochasticoscillator.asp))
 trend:
-`adx`         |average directional movement index ([1](https://en.wikipedia.org/wiki/Average_directional_movement_index), [2](https://www.investopedia.com/terms/a/adx.asp))
-`aroon`       |aroon indicator ([1](https://www.investopedia.com/terms/a/aroon.asp))
+`adx`         |average directional movement index ([source 1](https://en.wikipedia.org/wiki/Average_directional_movement_index), [source 2](https://www.investopedia.com/terms/a/adx.asp))
+`aroon`       |aroon indicator ([source 1](https://www.investopedia.com/terms/a/aroon.asp))
 volatility: | 
-`bbands`      |bollinger bands ([1](https://en.wikipedia.org/wiki/Bollinger_Bands), [2](https://www.investopedia.com/terms/b/bollingerbands.asp))
+`bbands`      |bollinger bands ([source 1](https://en.wikipedia.org/wiki/Bollinger_Bands), [source 2](https://www.investopedia.com/terms/b/bollingerbands.asp))
 volume: | 
-`ad`          |chaikin accumulation/distribution line values ([1](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [2](https://www.investopedia.com/terms/a/accumulationdistribution.asp))
-`obv`         |on balance volume ([1](https://en.wikipedia.org/wiki/On-balance_volume), [2](https://www.investopedia.com/terms/o/onbalancevolume.asp))
+`ad`          |chaikin accumulation/distribution line values ([source 1](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [source 2](https://www.investopedia.com/terms/a/accumulationdistribution.asp))
+`obv`         |on balance volume ([source 1](https://en.wikipedia.org/wiki/On-balance_volume), [source 2](https://www.investopedia.com/terms/o/onbalancevolume.asp))
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
 Command|Explanation
@@ -183,17 +183,17 @@ Command|Explanation
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
 Command|Algorithm
 ------ | ----------
-`sma`         |simple moving average ([1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [2](https://www.investopedia.com/terms/s/sma.asp)
-`knn`         |k-Nearest Neighbors ([1](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
-`linear`      |linear regression (polynomial 1) ([1](https://en.wikipedia.org/wiki/Linear_regression), [2](https://www.investopedia.com/terms/r/regression.asp))
-`quadratic`   |quadratic regression (polynomial 2) ([1](https://en.wikipedia.org/wiki/Polynomial_regression), [2](https://www.investopedia.com/terms/r/regression.asp))
-`cubic`       |cubic regression (polynomial 3) ([1](https://en.wikipedia.org/wiki/Polynomial_regression), [2](https://www.investopedia.com/terms/r/regression.asp))
-`regression`  |regression (other polynomial) ([1](https://en.wikipedia.org/wiki/Polynomial_regression), [2](https://www.investopedia.com/terms/r/regression.asp))
-`arima`       |autoregressive integrated moving average ([1](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [2](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)) 
-`prophet`     |Facebook's prophet prediction] ([1](https://facebook.github.io/prophet/))
-`mlp`         |MultiLayer Perceptron ([1](https://en.wikipedia.org/wiki/Multilayer_perceptron))
-`rnn`         |Recurrent Neural Network  ([1](https://en.wikipedia.org/wiki/Recurrent_neural_network))
-`lstm`        |Long Short-Term Memory  ([1](https://en.wikipedia.org/wiki/Long_short-term_memory))
+`sma`         |simple moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [source 2](https://www.investopedia.com/terms/s/sma.asp)
+`knn`         |k-Nearest Neighbors ([source 1](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
+`linear`      |linear regression (polynomial 1) ([source 1](https://en.wikipedia.org/wiki/Linear_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`quadratic`   |quadratic regression (polynomial 2) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`cubic`       |cubic regression (polynomial 3) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`regression`  |regression (other polynomial) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`arima`       |autoregressive integrated moving average ([source 1](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [source 2](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)) 
+`prophet`     |Facebook's prophet prediction] ([source 1](https://facebook.github.io/prophet/))
+`mlp`         |MultiLayer Perceptron ([source 1](https://en.wikipedia.org/wiki/Multilayer_perceptron))
+`rnn`         |Recurrent Neural Network  ([source 1](https://en.wikipedia.org/wiki/Recurrent_neural_network))
+`lstm`        |Long Short-Term Memory  ([source 1](https://en.wikipedia.org/wiki/Long_short-term_memory))
 
 
 ## Install <a name="Install"></a>
