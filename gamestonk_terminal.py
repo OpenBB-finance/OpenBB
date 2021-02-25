@@ -190,7 +190,6 @@ def main():
     s_ticker = ""
     s_start = ""
     df_stock = pd.DataFrame()
-    b_intraday = False
     s_interval = "1440min"
 
     '''
@@ -211,15 +210,19 @@ def main():
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Gamestonk Terminal\n")
-    print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+    should_print_help = True
+
 
     # Loop forever and ever
     while True:
+        if should_print_help:
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+            should_print_help = False
         # Get input command from user
         as_input = input('> ')
 
         # Is command empty
-        if not len(as_input):
+        if not as_input:
             print("")
             continue
 
@@ -231,110 +234,55 @@ def main():
             print("The command selected doesn't exist\n")
             continue
 
+        b_quit = False
         if ns_known_args.opt == 'help':
-            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
+            should_print_help = True
         elif (ns_known_args.opt == 'quit') or (ns_known_args.opt == 'q'):
-            print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-            return
-
+            break
         elif ns_known_args.opt == 'clear':
             print("Clearing stock ticker to be used for analysis")
             s_ticker = ""
             s_start = ""
-
         elif ns_known_args.opt == 'load':
-            [s_ticker, s_start, s_interval, df_stock] = load(l_args, s_ticker, s_start, s_interval, df_stock)
-
+            s_ticker, s_start, s_interval, df_stock = load(l_args, s_ticker, s_start, s_interval, df_stock)
         elif ns_known_args.opt == 'view':
             view(l_args, s_ticker, s_start, s_interval, df_stock)
-
-        # DISCOVERY MENU
-        elif ns_known_args.opt == 'disc':
+        elif ns_known_args.opt == 'disc':  # DISCOVERY MENU
             b_quit = dm.disc_menu()
-
-            if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-                return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
-        # SENTIMENT MARKET
-        elif ns_known_args.opt == 'sen':
+        elif ns_known_args.opt == 'sen':  # SENTIMENT MARKET
             b_quit = sm.sen_menu(s_ticker, s_start)
-
-            if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-                return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
-        # RESEARCH MENU
-        elif ns_known_args.opt == 'res':
+        elif ns_known_args.opt == 'res':  # RESEARCH MENU
             b_quit = rm.res_menu(s_ticker)
-
-            if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-                return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
-        # FUNDAMENTAL ANALYSIS MENU
-        elif ns_known_args.opt == 'fa':
+        elif ns_known_args.opt == 'fa':  # FUNDAMENTAL ANALYSIS MENU
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
-
-            if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-                return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
-        # TECHNICAL ANALYSIS MENU
-        elif ns_known_args.opt == 'ta':
+        elif ns_known_args.opt == 'ta':  # TECHNICAL ANALYSIS MENU
             b_quit = tam.ta_menu(df_stock, s_ticker, s_start, s_interval)
-
-            if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-                return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
-        # DUE DILIGENCE MENU
-        elif ns_known_args.opt == 'dd':
+        elif ns_known_args.opt == 'dd':  # DUE DILIGENCE MENU
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
-
-            if b_quit:
-                print("Hope you made money today. Good bye my lover, good bye my friend.\n")
-                return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
-        # PREDICTION TECHNIQUES
-        elif ns_known_args.opt == 'pred':
-
+        elif ns_known_args.opt == 'pred':  # PREDICTION TECHNIQUES
             if s_interval == "1440min":
                 b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
-            # If stock data is intradaily, we need to get data again as prediction techniques work on daily adjusted data
             else:
-                try:
-                    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-                    df_stock_pred, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
-                    df_stock_pred = df_stock_pred.sort_index(ascending=True)
-                    df_stock_pred = df_stock_pred[s_start:]
-                    b_quit = pm.pred_menu(df_stock_pred, s_ticker, s_start, s_interval="1440min")
-                except:
-                    print("Either the ticker or the API_KEY are invalids. Try again!")
-                    b_quit = False
-                    return
+                # If stock data is intradaily, we need to get data again as prediction techniques work on daily adjusted data
+                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+                df_stock_pred, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
+                df_stock_pred = df_stock_pred.sort_index(ascending=True)
+                df_stock_pred = df_stock_pred[s_start:]
+                b_quit = pm.pred_menu(df_stock_pred, s_ticker, s_start, s_interval="1440min")
 
             if b_quit:
                 print("Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n")
                 return
             else:
                 print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-
         else:
             print('Shouldnt see this command!')
+            continue
+        if b_quit:
+            break
+        else:
+            should_print_help = True
+    print("Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n")
 
 if __name__ == "__main__":
     main()
