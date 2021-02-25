@@ -172,8 +172,8 @@ Command|Explanation
 `analyst`       |analyst prices and ratings of the company ([Finviz](https://finviz.com/))
 `rating`        |rating of the company from strong sell to strong buy [FMP]
 `pt`            |price targets over time ([Business Insider](https://www.businessinsider.com/))
-`est`           |quarter and year analysts earnings estimates [Business Insider]
-`ins`           |insider activity over time [Business Insider]
+`est`           |quarter and year analysts earnings estimates ([Business Insider](https://www.businessinsider.com/))
+`ins`           |insider activity over time ([Business Insider](https://www.businessinsider.com/))
 `insider`       |insider trading of the company ([Finviz](https://finviz.com/))
 `sec`           |SEC filings ([MarketWatch](https://www.marketwatch.com/))
 `short`         |short interest ([Quandl](https://www.quandl.com/))
