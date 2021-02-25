@@ -49,15 +49,15 @@ Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, a
 Command|Explanation
 ---|---
 `map`           |S&P500 index stocks map [[Finviz](https://finviz.com)]
-`sectors`       |show sectors performance [www.alphavantage.co]
-`gainers`       |show latest top gainers [finance.yahoo.com]
-`orders`        |orders by Fidelity Customers [www.fidelity.com]
-`up_earnings`   |upcoming earnings release dates [seekingalpha.com]
-`high_short`    |show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
-`low_float`     |show low float stocks under 10M shares float [www.lowfloat.com]
-`simply_wallst` |Simply Wall St. research data [Simply Wall St.]
-`spachero`      |great website for SPACs research [SpacHero]
-`uwhales`       |good website for SPACs research [UnusualWhales]
+`sectors`       |show sectors performance [[Alpha Vantage](www.alphavantage.co)]
+`gainers`       |show latest top gainers [{Yahoo Finance](https://finance.yahoo.com/)]
+`orders`        |orders by Fidelity Customers [[Fidelity](https://www.fidelity.com/)]
+`up_earnings`   |upcoming earnings release dates [[seekingalpha.com](https://seekingalpha.com/)]
+`high_short`    |show top high short interest stocks of over 20% ratio [[High Short Interest](https://www.highshortinterest.com/)]
+`low_float`     |show low float stocks under 10M shares float [[Low Float](https://www.lowfloat.com/)]
+`simply_wallst` |Simply Wall St. research data [[Simply Wall St.](https://simplywall.st/about)]
+`spachero`      |great website for SPACs research [[SpacHero](https://www.spachero.com/)]
+`uwhales`       |good website for SPACs research [[UnusualWhales](https://unusualwhales.com/)]
 
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
