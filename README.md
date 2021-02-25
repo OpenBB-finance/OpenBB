@@ -110,8 +110,8 @@ Command|Website
 
 Command|Explanation
 ----- | ---------
-`screener`      |screen info about the company [Finviz]
-`mgmt`          |management team of the company [Business Insider]
+`screener`      |screen info about the company ([Finviz](https://finviz.com/))
+`mgmt`          |management team of the company ([Business Insider](https://www.businessinsider.com/))
 Market Watch API | 
 `income`        |income statement of the company
 `assets`        |assets of the company
