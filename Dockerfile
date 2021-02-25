@@ -26,4 +26,4 @@ RUN pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
 RUN chown -R python /home/gamestonkterminal
 USER python
 
-CMD ["python", "gameston_terminal.py"]
+CMD ["python", "gamestonk_terminal.py"]
