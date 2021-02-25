@@ -15,15 +15,18 @@ bzip2 && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /home/gamestonkterminal
-WORKDIR /home/gamestonkterminal
+RUN useradd --create-home --shell /bin/bash python
+USER python
+
+RUN mkdir -p /home/python/gamestonkterminal
+WORKDIR /home/python/gamestonkterminal
 
 COPY . .
 
-RUN INSTALL_ON_LINUX=1 && pip install -r requirements.txt
+RUN INSTALL_ON_LINUX=1 pip install -r requirements.txt
 RUN pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
 
 RUN chown -R python /home/gamestonkterminal
-USER python
+
 
 CMD ["python", "gamestonk_terminal.py"]
