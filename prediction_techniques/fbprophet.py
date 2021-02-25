@@ -5,8 +5,6 @@ import pandas as pd
 
 from helper_funcs import get_next_stock_market_days, check_positive, parse_known_args_and_warn
 
-import warnings
-warnings.simplefilter("ignore")
 
 # ----------------------------------------------------- FBPROPHET -----------------------------------------------------
 def fbprophet(l_args, s_ticker, s_interval, df_stock):
