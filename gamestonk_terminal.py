@@ -11,7 +11,7 @@ import res_menu as rm
 from discovery import disc_menu as dm
 from due_diligence import dd_menu as ddm
 from fundamental_analysis import fa_menu as fam
-from helper_funcs import valid_date, check_positive, plot_view_stock, b_is_stock_market_open
+from helper_funcs import valid_date, check_positive, plot_view_stock, b_is_stock_market_open, parse_known_args_and_warn
 from prediction_techniques import pred_menu as pm
 from sentiment import sen_menu as sm
 from technical_analysis import ta_menu as tam
@@ -30,13 +30,10 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser.add_argument('-i', "--interval", action="store", dest="n_interval", type=int, default=1440, choices=[1,5,15,30,60], help="Intraday stock minutes")
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
     except SystemExit:
         print("")
         return [s_ticker, s_start, s_interval, df_stock]
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     # Update values:
     s_ticker = ns_parser.s_ticker
@@ -84,14 +81,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     parser.add_argument("--type", action="store", dest="n_type", type=check_positive, default=5, # in case it's daily
                         help='1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close')
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Update values:
     s_ticker = ns_parser.s_ticker

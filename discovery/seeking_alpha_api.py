@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 
 # ------------------------------------------------ EARNINGS_RELEASE_DATES -------------------------------------------------
@@ -18,10 +18,7 @@ def earnings_release_dates(l_args):
                         help='Number of upcoming earnings release dates to print')
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         l_earnings = list()
         for idx in range(0, ns_parser.n_pages):
@@ -30,13 +27,13 @@ def earnings_release_dates(l_args):
             else:
                 url_next_earnings = f"https://seekingalpha.com/earnings/earnings-calendar/{idx+1}"
             text_soup_earnings = BeautifulSoup(requests.get(url_next_earnings).text, "lxml")
-            
+
             for bs_stock in text_soup_earnings.findAll('tr', {'data-exchange': 'NASDAQ'}):
                 l_stock = list()
                 for stock in bs_stock.contents[:3]:
                     l_stock.append(stock.text)
                 l_earnings.append(l_stock)
-                
+
         df_earnings = pd.DataFrame(l_earnings, columns=['Ticker', 'Name', 'Date'])
         df_earnings['Date'] = pd.to_datetime(df_earnings['Date'])
         df_earnings = df_earnings.set_index('Date')
@@ -45,7 +42,7 @@ def earnings_release_dates(l_args):
         for n_days, earning_date in enumerate(df_earnings.index.unique()):
             if n_days > (ns_parser.n_num-1):
                 break
-                
+
             print(f"Earning Release on {earning_date.date()}")
             print("----------------------------------------------")
             print(df_earnings[earning_date == df_earnings.index][['Ticker', 'Name']].to_string(index=False, header=False))

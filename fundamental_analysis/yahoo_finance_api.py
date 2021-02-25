@@ -4,7 +4,7 @@ from datetime import datetime
 import pandas as pd
 import yfinance as yf
 
-from helper_funcs import long_number_format
+from helper_funcs import long_number_format, parse_known_args_and_warn
 
 
 # ---------------------------------------------------- INFO ----------------------------------------------------
@@ -29,11 +29,7 @@ def info(l_args, s_ticker):
                                      Date short interest, PEG ratio, Short percent of float, Shares short prior month, 
                                      Regular market price, Logo_url. [Source: Yahoo Finance]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     stock = yf.Ticker(s_ticker)
     df_info = pd.DataFrame(stock.info.items(), columns=['Metric', 'Value'])
@@ -68,11 +64,7 @@ def shareholders(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='shrs', 
                                      description="""Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    parse_known_args_and_warn(parser, l_args)
 
     stock = yf.Ticker(s_ticker)
     pd.set_option('display.max_colwidth', -1)
@@ -116,12 +108,7 @@ def sustainability(l_args, s_ticker):
                                      Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides, Adult, Percentile, 
                                      Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
-
+    parse_known_args_and_warn(parser, l_args)
     stock = yf.Ticker(s_ticker)
     pd.set_option('display.max_colwidth', -1)
 
@@ -151,11 +138,7 @@ def calendar_earnings(l_args, s_ticker):
                                      description="""Calendar earnings of the company. Including revenue and earnings estimates.
                                      [Source: Yahoo Finance]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    parse_known_args_and_warn(parser, l_args)
 
     stock = yf.Ticker(s_ticker)
     df_calendar = stock.calendar

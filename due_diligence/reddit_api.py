@@ -5,8 +5,8 @@ import praw
 from psaw import PushshiftAPI
 
 import config_terminal as cfg
-from helper_funcs import check_positive
 from reddit_helpers import print_and_record_reddit_post
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 # -------------------------------------------------------------------------------------------------------------------
 def due_diligence(l_args, s_ticker):
@@ -21,11 +21,7 @@ def due_diligence(l_args, s_ticker):
                         help="""search through all flairs (apart from Yolo and Meme), otherwise we focus on
                         specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart """)
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
                             client_secret=cfg.API_REDDIT_CLIENT_SECRET,

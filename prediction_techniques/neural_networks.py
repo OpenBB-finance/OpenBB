@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive, get_next_stock_market_days
+from helper_funcs import check_positive, get_next_stock_market_days, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -92,11 +92,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
                         choices=['mae', 'mape', 'mse', 'msle'], help='loss function.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Pre-process data
     if ns_parser.s_preprocessing == 'standardization':
@@ -182,11 +178,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
                         choices=['mae', 'mape', 'mse', 'msle'], help='loss function.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Pre-process data
     if ns_parser.s_preprocessing == 'standardization':
@@ -271,11 +263,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-l', "--loss", action="store", dest="s_loss", default='mae', 
                         choices=['mae', 'mape', 'mse', 'msle'], help='loss function.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Pre-process data
     if ns_parser.s_preprocessing == 'standardization':

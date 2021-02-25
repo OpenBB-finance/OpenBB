@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive, get_next_stock_market_days
+from helper_funcs import check_positive, get_next_stock_market_days, parse_known_args_and_warn
 
 register_matplotlib_converters()
 import pmdarima
@@ -34,11 +34,7 @@ def arima(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-r', "--results", action="store_true", dest="b_results", default=False,
                         help='results about ARIMA summary flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Machine Learning model
     if ns_parser.s_order:

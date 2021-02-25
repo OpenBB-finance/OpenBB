@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 
 # ---------------------------------------------------- ORDERS ----------------------------------------------------
@@ -19,10 +19,7 @@ def orders(l_args):
                         help='Number of top ordered stocks to be printed.')
     
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         url_orders = f"https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"
         text_soup_url_orders = BeautifulSoup(requests.get(url_orders).text, "lxml")

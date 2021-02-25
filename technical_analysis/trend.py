@@ -4,7 +4,7 @@ import pandas_ta as ta
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -21,11 +21,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=1, help='drift')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
 
     title = f"Average Directional Movement Index (ADX) on {s_ticker}"
@@ -83,11 +79,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=100, help='scalar')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_ta = ta.aroon(high=df_stock['2. high'], low=df_stock['3. low'], length=ns_parser.n_length,
                      scalar=ns_parser.n_scalar, offset=ns_parser.n_offset).dropna()

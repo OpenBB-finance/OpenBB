@@ -4,12 +4,9 @@ import pandas as pd
 import requests
 from alpha_vantage.fundamentaldata import FundamentalData
 from pandas.io.json import json_normalize
-
+from helper_funcs import long_number_format, check_positive, parse_known_args_and_warn
 import config_terminal as cfg
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
-from helper_funcs import long_number_format, check_positive
-
-
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='overview', 
                                      description="""Prints an overview about the company. The following fields are expected: 
@@ -26,11 +23,7 @@ def overview(l_args, s_ticker):
                                      Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
                                      [Source: Alpha Vantage]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Request OVERVIEW data from Alpha Vantage API
     s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -86,11 +79,7 @@ def key(l_args, s_ticker):
                                      Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 
                                      50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Request OVERVIEW data
     s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -139,11 +128,7 @@ def income_statement(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -192,11 +177,7 @@ def balance_sheet(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -243,11 +224,7 @@ def cash_flow(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -284,11 +261,7 @@ def earnings(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5, help='Number of latest info')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)

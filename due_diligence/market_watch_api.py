@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from helper_funcs import check_positive, clean_data_values_to_float, int_or_round_float
+from helper_funcs import check_positive, clean_data_values_to_float, int_or_round_float, parse_known_args_and_warn
 
 
 # ---------------------------------------------------- SEC FILLINGS ----------------------------------------------------
@@ -18,11 +18,7 @@ def sec_fillings(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5,
                         help='number of latest SEC filings.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     pd.set_option('display.max_colwidth', -1)
 
@@ -75,11 +71,7 @@ def sean_seah_warnings(l_args, s_ticker):
     parser.add_argument('-d', "--debug", action="store_true", default=False, dest="b_debug",
                         help='print insights into warnings calculation.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.b_info:
         filepath = 'fundamental_analysis/info_sean_seah.txt'

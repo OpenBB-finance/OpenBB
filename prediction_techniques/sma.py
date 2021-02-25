@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import get_next_stock_market_days, check_positive
+from helper_funcs import get_next_stock_market_days, check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -25,11 +25,7 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5, 
                         help='prediction days.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Prediction data
     l_predictions = list()

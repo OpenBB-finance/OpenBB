@@ -2,7 +2,7 @@ import argparse
 
 import matplotlib.pyplot as plt
 from pytrends.request import TrendReq
-from helper_funcs import check_positive, valid_date
+from helper_funcs import check_positive, valid_date, parse_known_args_and_warn
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -14,11 +14,7 @@ def mentions(l_args, s_ticker, s_start):
     parser.add_argument('-s', "--start", type=valid_date, dest="s_start", default=s_start,
                         help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[s_ticker])
@@ -49,11 +45,7 @@ def regions(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of regions to plot that show highest interest.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[s_ticker])
@@ -78,11 +70,7 @@ def queries(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of top related queries to print.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[s_ticker])
@@ -103,11 +91,7 @@ def rise(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of top rising related queries to print.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[s_ticker])

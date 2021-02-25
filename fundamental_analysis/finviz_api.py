@@ -2,7 +2,7 @@ import argparse
 
 import finviz
 import pandas as pd
-
+from helper_funcs import parse_known_args_and_warn
 
 # ---------------------------------------------------- SCREENER ----------------------------------------------------
 def screener(l_args, s_ticker):
@@ -19,11 +19,7 @@ def screener(l_args, s_ticker):
                                                     Earnings, Payout, Avg Volume, Price, Recom, SMA20, SMA50, SMA200, Volume, Change. 
                                                     [Source: Finviz]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     d_finviz_stock = finviz.get_stock(s_ticker)
     df_fa = pd.DataFrame.from_dict(d_finviz_stock, orient='index', columns=['Values'])

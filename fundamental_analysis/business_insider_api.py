@@ -4,6 +4,7 @@ from rapidfuzz import fuzz
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from helper_funcs import parse_known_args_and_warn
 
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
@@ -12,11 +13,7 @@ def management(l_args, s_ticker):
                                      description="""Print management team. Namely: Name, Title, Information from google and
                                                     (potentially) Insider Activity page. [Source: Business Insider]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    parse_known_args_and_warn(parser, l_args)
 
     url_market_business_insider = f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
     text_soup_market_business_insider = BeautifulSoup(requests.get(url_market_business_insider).text, "lxml")

@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 import requests
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -15,11 +15,7 @@ def bullbear(l_args, s_ticker):
     parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker,
                         help='ticker to gather sentiment from.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     result = requests.get(f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json")
     if result.status_code == 200:
@@ -52,11 +48,7 @@ def messages(l_args, s_ticker):
     parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30,
                         help='limit messages shown.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     result = requests.get(f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json")
     if result.status_code == 200:
@@ -76,11 +68,7 @@ def trending(l_args):
     parser = argparse.ArgumentParser(prog='trending',
                                      description="""Stocks trending. [Source: Stocktwits]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    parse_known_args_and_warn(parser, l_args)
 
     result = requests.get(f"https://api.stocktwits.com/api/2/trending/symbols.json")
     if result.status_code == 200:
@@ -106,11 +94,7 @@ def stalker(l_args):
     parser.add_argument('-l', "--limit", action="store", dest="n_lim", type=check_positive, default=30,
                         help='limit messages shown.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     result = requests.get(f"https://api.stocktwits.com/api/2/streams/user/{ns_parser.s_user}.json")
 

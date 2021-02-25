@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive, get_next_stock_market_days
+from helper_funcs import check_positive, get_next_stock_market_days, parse_known_args_and_warn
 
 register_matplotlib_converters()
 from TimeSeriesCrossValidation import splitTrain
@@ -36,11 +36,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         parser.add_argument('-p', "--polynomial", action="store", dest="n_polynomial", type=check_positive, required=True, 
                             help='polynomial associated with regression.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Split training data
     stock_x, stock_y = splitTrain.split_train(df_stock['5. adjusted close'].values, ns_parser.n_inputs, ns_parser.n_days, ns_parser.n_jumps)

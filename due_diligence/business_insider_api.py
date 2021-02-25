@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive, get_next_stock_market_days
+from helper_funcs import check_positive, get_next_stock_market_days, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -21,11 +21,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of latest price targets from analysts to print.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_market_business_insider = f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
     text_soup_market_business_insider = BeautifulSoup(requests.get(url_market_business_insider).text, "lxml")
@@ -88,11 +84,7 @@ def estimates(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='est',
                                      description="""Yearly estimates and quarter earnings/revenues [Source: Business Insider]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_market_business_insider = f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
     text_soup_market_business_insider = BeautifulSoup(requests.get(url_market_business_insider).text, "lxml")
@@ -201,11 +193,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of latest insider activity.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_market_business_insider = f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
     text_soup_market_business_insider = BeautifulSoup(requests.get(url_market_business_insider).text, "lxml")

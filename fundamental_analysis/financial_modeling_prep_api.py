@@ -5,12 +5,10 @@ import FundamentalAnalysis as fa  # Financial Modeling Prep
 import pandas as pd
 
 import config_terminal as cfg
+from helper_funcs import check_positive, long_number_format, parse_known_args_and_warn
 
 
 # ---------------------------------------------------- PROFILE ----------------------------------------------------
-from helper_funcs import check_positive, long_number_format
-
-
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='profile', 
                                      description="""Prints information about, among other things, the industry, sector 
@@ -19,12 +17,7 @@ def profile(l_args, s_ticker):
                                      Default image, Description, Exchange, Exchange short name, Full time employees, Image, 
                                      Industry, Ipo date, Isin, Last div, Mkt cap, Phone, Price, Range, Sector, State, Symbol, 
                                      Vol avg, Website, Zip. [Source: Financial Modeling Prep]""")
-
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    parse_known_args_and_warn(parser, l_args)
 
     df_fa = fa.profile(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
     df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
@@ -45,11 +38,7 @@ def quote(l_args, s_ticker):
                                      Day high, Day low, Earnings announcement, Eps, Exchange, Market cap, Name, Open, 
                                      Pe, Previous close, Price, Price avg200, Price avg50, Shares outstanding, Symbol, 
                                      Timestamp, Volume, Year high, and Year low. [Source: Financial Modeling Prep]""")
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    parse_known_args_and_warn(parser, l_args)
 
     df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
     df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
@@ -77,11 +66,7 @@ def enterprise(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -114,11 +99,7 @@ def discounted_cash_flow(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -159,11 +140,7 @@ def income_statement(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -217,11 +194,7 @@ def balance_sheet(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -272,11 +245,7 @@ def cash_flow(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -331,11 +300,7 @@ def key_metrics(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -388,11 +353,7 @@ def financial_ratios(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)
@@ -440,11 +401,7 @@ def financial_statement_growth(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.n_num == 1:
         pd.set_option('display.max_colwidth', -1)

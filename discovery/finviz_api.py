@@ -1,6 +1,9 @@
 import argparse
 import webbrowser
 
+from helper_funcs import parse_known_args_and_warn
+
+
 # ---------------------------------------------------- MAP_SP500 ----------------------------------------------------
 def map_sp500(l_args):
     parser = argparse.ArgumentParser(prog='map', 
@@ -17,11 +20,7 @@ def map_sp500(l_args):
     d_type = {'sp500':'sec', 'world':'geo', 'full':'sec_all', 'etf':'etf'}
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
+        ns_parser = parse_known_args_and_warn(parser, l_args)
         webbrowser.open(f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}")
         print("")
 

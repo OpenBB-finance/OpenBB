@@ -1,5 +1,6 @@
 import argparse
 import webbrowser
+from helper_funcs import parse_known_args_and_warn
 
 # ---------------------------------------------------- UNUSUAL WHALES ----------------------------------------------------
 def unusual_whales(l_args):
@@ -7,10 +8,7 @@ def unusual_whales(l_args):
                                      description='''Good website for SPACs research. [Source: www.unusualwhales.com]''')
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         webbrowser.open(f"https://unusualwhales.com/spacs")
         print("")

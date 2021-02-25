@@ -9,8 +9,8 @@ from holidays import US as holidaysUS
 from psaw import PushshiftAPI
 
 import config_terminal as cfg
-from helper_funcs import check_positive
 from reddit_helpers import print_and_record_reddit_post
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -35,12 +35,7 @@ def watchlist(l_args):
     parser.add_argument('-l', "--limit", action="store", dest="n_limit", type=check_positive, default=5,
                         help='limit of posts with watchlists retrieved.')
 
-
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     l_sub_reddits = ['pennystocks', 'RobinHoodPennyStocks', 'Daytrading', 'StockMarket', 'stocks', 'investing', 'wallstreetbets']
 
@@ -153,11 +148,7 @@ def popular_tickers(l_args):
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=1,
                         help="look for the tickers from those n past days.")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     n_ts_after = int((datetime.today() - timedelta(days=ns_parser.n_days)).timestamp())
 
@@ -253,11 +244,7 @@ def spac_community(l_args):
     parser.add_argument('-p', "--popular", action="store_true", default=False, dest="b_popular",
                         help='popular flag, if true the posts retrieved are based on score rather than time')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
                             client_secret=cfg.API_REDDIT_CLIENT_SECRET,
@@ -342,11 +329,7 @@ def spac(l_args):
     parser.add_argument('-d', "--days", action="store", dest="n_days", type=check_positive, default=5,
                         help="look for the tickers from those n past days.")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
                            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
@@ -441,11 +424,7 @@ def wsb_community(l_args):
     parser.add_argument('-n', "--new", action="store_true", default=False, dest="b_new",
                         help='new flag, if true the posts retrieved are based on being more recent rather than their score.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     praw_api = praw.Reddit(client_id=cfg.API_REDDIT_CLIENT_ID,
                             client_secret=cfg.API_REDDIT_CLIENT_SECRET,

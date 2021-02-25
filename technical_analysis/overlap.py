@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive, plot_stock_ta
+from helper_funcs import check_positive, plot_stock_ta, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -24,11 +24,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=20, help='length')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Daily
     if s_interval == "1440min":
@@ -55,12 +51,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-l', "--length", dest="l_length", type=lambda s: [int(item) for item in s.split(',')], default=[20, 50], help='length of MA window')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
-
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     title = f"SMA on {s_ticker}"
     offset = ns_parser.n_offset
@@ -98,11 +89,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
 
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
 
     title = f"VWAP on {s_ticker}"

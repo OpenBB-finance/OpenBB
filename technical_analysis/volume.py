@@ -4,7 +4,7 @@ import pandas_ta as ta
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -25,11 +25,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
     parser.add_argument('--open', action="store_true", default=False, dest="b_use_open", help='uses open value of stock')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Daily
     if s_interval == "1440min":
@@ -110,11 +106,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
 
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Daily
     if s_interval == "1440min":

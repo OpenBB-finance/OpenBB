@@ -8,7 +8,7 @@ import numpy as np
 import requests
 
 import config_terminal as cfg
-from helper_funcs import clean_tweet, get_data
+from helper_funcs import clean_tweet, get_data, parse_known_args_and_warn
 
 
 # ------------------------------------------------- INFERENCE -------------------------------------------------
@@ -24,11 +24,7 @@ def inference(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=int, default=100, choices=range(10,101),
                         help='num of latest tweets to infer from.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Get tweets using Twitter API
     params = {
@@ -122,11 +118,7 @@ def sentiment(l_args, s_ticker):
     parser.add_argument('-d', "--days", action="store", dest="n_days_past", type=int, default=7, choices=range(1,8),
                         help='num of days in the past to extract tweets.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     # Setup API request params and headers
     headers = {'authorization': f'Bearer {cfg.API_TWITTER_BEARER_TOKEN}'}

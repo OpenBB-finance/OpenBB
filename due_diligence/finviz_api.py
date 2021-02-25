@@ -2,7 +2,8 @@ import argparse
 
 import finviz
 import pandas as pd
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
+
 
 # ---------------------------------------------------- INSIDER ----------------------------------------------------
 def insider(l_args, s_ticker):
@@ -14,11 +15,7 @@ def insider(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of latest inside traders.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     d_finviz_insider = finviz.get_insider(s_ticker)
     df_fa = pd.DataFrame.from_dict(d_finviz_insider)
@@ -38,11 +35,7 @@ def news(l_args, s_ticker):
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5,
                         help='Number of latest news being printed.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     d_finviz_news = finviz.get_news(s_ticker)
     i=0
@@ -65,11 +58,7 @@ def analyst(l_args, s_ticker):
                                      are expected: date, analyst, category, price from, price to, and rating.
                                      [Source: Finviz]""")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
     df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)

@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 
 # ------------------------------------------------ HIGH_SHORT_INTEREST -------------------------------------------------
@@ -20,15 +20,7 @@ def high_short_interest(l_args):
     
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, 
                         help='Number of top stocks to print.')
-
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_high_short_interested_stocks = f"https://www.highshortinterest.com"
     text_soup_high_short_interested_stocks = BeautifulSoup(requests.get(url_high_short_interested_stocks).text, "lxml")
@@ -70,14 +62,7 @@ def low_float(l_args):
     
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10, help='Number of top stocks to print.')
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-    
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_high_short_interested_stocks = f"https://www.lowfloat.com"
     text_soup_low_float_stocks = BeautifulSoup(requests.get(url_high_short_interested_stocks).text, "lxml")

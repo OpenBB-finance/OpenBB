@@ -4,7 +4,7 @@ import pandas_ta as ta
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
@@ -27,11 +27,7 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-m', "--mamode", action="store", dest="s_mamode", default="sma", help='mamode')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if s_interval == "1440min":  # Daily
         _plot_bollinger(df_stock, '5. adjusted close', ns_parser, s_ticker)

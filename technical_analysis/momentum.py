@@ -3,7 +3,7 @@ import argparse
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
 
-from helper_funcs import check_positive
+from helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 import matplotlib.pyplot as plt
@@ -21,11 +21,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-s', "--scalar", action="store", dest="n_scalar", type=check_positive, default=0.015, help='scalar')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
 
     title = f"Commodity Channel Index (CCI) on {s_ticker}"
@@ -86,11 +82,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0,
                         help='How many periods to offset the result.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
 
     title = f"Moving Average Convergence Divergence (MACD) on {s_ticker}"
@@ -141,11 +133,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-d', "--drift", action="store", dest="n_drift", type=check_positive, default=1, help='drift')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     title = f"Relative Strength Index (RSI) on {s_ticker}"
     if s_interval == "1440min":  # Daily
@@ -202,11 +190,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                         help='The time period of the slowk moving average')
     parser.add_argument('-o', "--offset", action="store", dest="n_offset", type=check_positive, default=0, help='offset')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
 
     title = f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}"

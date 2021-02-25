@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-
+from helper_funcs import parse_known_args_and_warn
 
 # ---------------------------------------------------- INCOME ----------------------------------------------------
 def income(l_args, s_ticker):
@@ -27,11 +27,7 @@ def income(l_args, s_ticker):
     
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     if ns_parser.b_quarter:
         url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income/quarter"
@@ -77,10 +73,7 @@ def assets(l_args, s_ticker):
     
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_financials = prepare_df_financials(ns_parser, s_ticker)
 
@@ -134,11 +127,7 @@ def liabilities(l_args, s_ticker):
     
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_financials = prepare_df_financials(ns_parser, s_ticker)
 
@@ -159,11 +148,7 @@ def operating(l_args, s_ticker):
     
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_financials = prepare_df_financials(ns_parser, s_ticker)
 
@@ -184,11 +169,7 @@ def investing(l_args, s_ticker):
     
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_financials = prepare_df_financials(ns_parser, s_ticker)
 
@@ -212,11 +193,7 @@ def financing(l_args, s_ticker):
     
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_financials = prepare_df_financials(ns_parser, s_ticker)
     print(df_financials.iloc[31:].to_string())
