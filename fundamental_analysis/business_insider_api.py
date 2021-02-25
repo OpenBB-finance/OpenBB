@@ -6,7 +6,7 @@ import json
 import config_terminal as cfg
 from datetime import datetime
 import argparse
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
