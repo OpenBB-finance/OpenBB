@@ -66,7 +66,7 @@ def short_interest(l_args, s_ticker, s_start):
         print(df_short_interest.head(n=ns_parser.n_days).to_string())
         print("")
 
-        plt.show()
+        plt.show(block=False)
 
     except:
         print("")

@@ -150,7 +150,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
         plt.vlines(df_stock.index[-1], ymin, ymax, colors='k', linewidth=3, linestyle='--', color='k')
-        plt.show()
+        plt.show(block=False)
 
         # Print prediction data
         print("Predicted share price:")
@@ -243,7 +243,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
         plt.vlines(df_stock.index[-1], ymin, ymax, colors='k', linewidth=3, linestyle='--', color='k')
-        plt.show()
+        plt.show(block=False)
 
         # Print prediction data
         print("Predicted share price:")
@@ -336,7 +336,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
         plt.vlines(df_stock.index[-1], ymin, ymax, colors='k', linewidth=3, linestyle='--', color='k')
-        plt.show()
+        plt.show(block=False)
 
         # Print prediction data
         print("Predicted share price:")

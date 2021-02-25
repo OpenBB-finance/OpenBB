@@ -52,7 +52,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.2, .8], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()
+            plt.show(block=False)
 
         # Intraday 
         else:
@@ -81,7 +81,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.2, .8], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()
+            plt.show(block=False)
         print("")
 
     except:
@@ -142,7 +142,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.xlabel('Time')
-            plt.show()
+            plt.show(block=False)
 
         # Intraday 
         else:
@@ -169,7 +169,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.xlabel('Time')
-            plt.show()
+            plt.show(block=False)
         print("")
 
     except:
@@ -225,7 +225,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.15, .85], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()
+            plt.show(block=False)
 
         # Intraday 
         else:
@@ -255,7 +255,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.15, .85], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()    
+            plt.show(block=False)    
         print("")
 
     except:
@@ -317,7 +317,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.1, .9], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()
+            plt.show(block=False)
 
         # Intraday 
         else:
@@ -349,7 +349,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.gca().twinx()
             plt.ylim(plt.gca().get_ylim())
             plt.yticks([.1, .9], ('OVERSOLD', 'OVERBOUGHT'))
-            plt.show()
+            plt.show(block=False)
         print("")
 
     except:

@@ -273,7 +273,7 @@ def sentiment(l_args, s_ticker):
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.ylabel('Sentiment')
         plt.xlabel("Time")
-        plt.show()
+        plt.show(block=False)
 
     except:
         print("")

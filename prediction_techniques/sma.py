@@ -57,7 +57,7 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
         xmin, xmax, ymin, ymax = plt.axis()
         plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle='--', color='k')
-        plt.show()
+        plt.show(block=False)
 
         # Print prediction data
         print("Predicted share price:")
