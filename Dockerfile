@@ -14,6 +14,7 @@ git \
 gnupg \
 unzip \
 bzip2 && \
+apt-get -y autoremove && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -24,6 +25,5 @@ WORKDIR /home/python
 COPY --chown=python:python . .
 
 RUN INSTALL_ON_LINUX=1 pip install -r requirements.txt
-RUN pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
 
 CMD ["python", "gamestonk_terminal.py"]

@@ -4,3 +4,5 @@ services:
     build:
       context: .
     image: gamestonkterminal:dev
+    volumes:
+      - .:/home/python
