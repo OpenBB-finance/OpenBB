@@ -107,7 +107,9 @@ Command|Website
 
 
 ### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
+
 Command|Explanation
+----- | ---------
 `screener`      |screen info about the company [Finviz]
 `mgmt`          |management team of the company [Business Insider]
 Market Watch API | 
