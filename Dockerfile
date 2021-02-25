@@ -24,9 +24,9 @@ COPY . .
 RUN INSTALL_ON_LINUX=1 pip install -r requirements.txt
 RUN pip install git+https://github.com/DidierRLopes/TimeSeriesCrossValidation
 
-# is there a better way to do this?
+# is there a better way to do this? The chown is quite slow!
 USER root
-RUN chown -R python /home/python
-
+RUN chown -R python:python /home/python
 USER python
+
 CMD ["python", "gamestonk_terminal.py"]
