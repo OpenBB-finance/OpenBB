@@ -1,14 +1,4 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-from gamestonk_terminal import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
 
 from gamestonk_terminal.fundamental_analysis import alpha_vantage_api as av_api
 from gamestonk_terminal.fundamental_analysis import (
@@ -79,8 +69,10 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
 def info(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="info",
-        description="""Provides information about main key metrics. Namely: EBITDA,
-                                     EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.""",
+        description="""
+            Provides information about main key metrics. Namely: EBITDA,
+            EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
+        """,
     )
 
     try:
