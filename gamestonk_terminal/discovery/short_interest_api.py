@@ -49,9 +49,6 @@ def high_short_interest(l_args):
     # stock_list = text_soup_high_short_interested_stocks.find_all("td")
     # stock_list_tr = text_soup_high_short_interested_stocks.find_all("tr")
 
-    # for a_stock in stock_list_tr:
-    #     print(a_stock.text)
-
     a_high_short_interest_header = list()
     for high_short_interest_header in text_soup_high_short_interested_stocks.findAll(
         "td", {"class": "tblhdr"}
@@ -64,34 +61,21 @@ def high_short_interest(l_args):
 
     stock_list_tr = text_soup_high_short_interested_stocks.find_all("tr")
 
+    shorted_stock_data = list()
     for a_stock in stock_list_tr:
         a_stock_txt = a_stock.text
 
         if a_stock_txt == "":
             continue
 
-        a_stock_txt_cols = a_stock_txt.split("\n")
+        shorted_stock_data = a_stock_txt.split("\n")
 
-    a_high_short_interested_stocks = re.sub(
-        "<!--.*?//-->",
-        "",
-        text_soup_high_short_interested_stocks.find_all("td")[3].text,
-        flags=re.DOTALL,
-    ).split("\n")[2:]
-    a_high_short_interested_stocks[0] = a_high_short_interested_stocks[0].replace(
-        "TickerCompanyExchangeShortIntFloatOutstdIndustry", ""
-    )
+        if len(shorted_stock_data) == 8:
+            df_high_short_interest.loc[
+                len(df_high_short_interest.index)
+            ] = shorted_stock_data[:-1]
 
-    l_stock_info = list()
-    for elem in a_high_short_interested_stocks:
-        if elem is "":
-            continue
-
-        l_stock_info.append(elem)
-
-        if len(l_stock_info) == 7:
-            df_high_short_interest.loc[len(df_high_short_interest.index)] = l_stock_info
-            l_stock_info = list()
+        shorted_stock_data = list()
 
     pd.set_option("display.max_colwidth", -1)
     print(df_high_short_interest.head(n=ns_parser.n_num).to_string(index=False))

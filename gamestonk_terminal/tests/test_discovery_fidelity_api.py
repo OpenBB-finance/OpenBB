@@ -8,6 +8,6 @@ import pytest
 from gamestonk_terminal.discovery.fidelity_api import orders
 
 
-class TestCLI(unittest.TestCase):
+class TestDiscoveryFidelityApi(unittest.TestCase):
     def test_orders(self):
         orders([])
