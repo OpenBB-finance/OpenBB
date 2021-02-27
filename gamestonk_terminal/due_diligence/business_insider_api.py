@@ -1,5 +1,4 @@
 import argparse
-from datetime import datetime
 import json
 import re
 import requests
@@ -7,14 +6,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from bs4 import BeautifulSoup
-from alpha_vantage.timeseries import TimeSeries
-from fuzzywuzzy import fuzz
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     get_user_agent,
 )
-from gamestonk_terminal import config_terminal as cfg
 
 register_matplotlib_converters()
 

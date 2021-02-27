@@ -3,16 +3,22 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
-from gamestonk_terminal.helper_funcs import *
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_user_agent,
+    clean_data_values_to_float,
+    int_or_round_float,
+)
 
 
 # ---------------------------------------------------- SEC FILLINGS ----------------------------------------------------
 def sec_fillings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="sec",
-        description="""Prints SEC filings of the company. The following fields
-                                     are expected: Filing Date, Document Date, Type, Category, Amended, and Link.
-                                     [Source: Market Watch]""",
+        description="""
+            Prints SEC filings of the company. The following fields are expected: Filing Date,
+            Document Date, Type, Category, Amended, and Link. [Source: Market Watch]
+        """,
     )
 
     parser.add_argument(

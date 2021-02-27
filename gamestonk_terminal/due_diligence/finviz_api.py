@@ -1,15 +1,16 @@
-import finviz
 import argparse
-from gamestonk_terminal.helper_funcs import *
+import finviz
 import pandas as pd
+from gamestonk_terminal.helper_funcs import check_positive
 
 # ---------------------------------------------------- INSIDER ----------------------------------------------------
 def insider(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="insider",
-        description="""Prints information about inside traders. The following fields are expected:
-                                     Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading,
-                                     SEC Form 4. [Source: Finviz]""",
+        description="""
+            Prints information about inside traders. The following fields are expected: Date, Relationship,
+            Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
+        """,
     )
 
     parser.add_argument(
@@ -57,8 +58,9 @@ def insider(l_args, s_ticker):
 def news(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="news",
-        description="""Prints latest news about company, including title and web link.
-                                     [Source: Finviz]""",
+        description="""
+            Prints latest news about company, including title and web link. [Source: Finviz]
+        """,
     )
 
     parser.add_argument(
@@ -99,13 +101,14 @@ def news(l_args, s_ticker):
 def analyst(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="analyst",
-        description="""Print analyst prices and ratings of the company. The following fields
-                                     are expected: date, analyst, category, price from, price to, and rating.
-                                     [Source: Finviz]""",
+        description="""
+            Print analyst prices and ratings of the company. The following fields are expected:
+            date, analyst, category, price from, price to, and rating. [Source: Finviz]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")

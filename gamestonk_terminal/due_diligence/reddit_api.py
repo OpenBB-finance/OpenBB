@@ -1,22 +1,18 @@
 import argparse
-from prettytable import PrettyTable
 from datetime import datetime, timedelta
-import pandas as pd
+from prettytable import PrettyTable
 from psaw import PushshiftAPI
 import praw
-from datetime import datetime
-from pytz import timezone
-from holidays import US as holidaysUS
-from gamestonk_terminal.helper_funcs import *
-import re
-import finviz
+from gamestonk_terminal.helper_funcs import check_positive
 from gamestonk_terminal import config_terminal as cfg
 
 # -------------------------------------------------------------------------------------------------------------------
 def due_diligence(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="red",
-        description="""Print top stock's due diligence from other users. [Source: Reddit] """,
+        description="""
+            Print top stock's due diligence from other users. [Source: Reddit]
+        """,
     )
 
     parser.add_argument(
@@ -43,8 +39,10 @@ def due_diligence(l_args, s_ticker):
         action="store_true",
         dest="b_all",
         default=False,
-        help="""search through all flairs (apart from Yolo and Meme), otherwise we focus on
-                        specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart """,
+        help="""
+            search through all flairs (apart from Yolo and Meme), otherwise we focus on
+            specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart
+        """,
     )
 
     try:

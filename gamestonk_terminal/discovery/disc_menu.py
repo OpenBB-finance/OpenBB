@@ -1,4 +1,3 @@
-from gamestonk_terminal import config_terminal as cfg
 import argparse
 from gamestonk_terminal.discovery import alpha_vantage_api
 from gamestonk_terminal.discovery import yahoo_finance_api

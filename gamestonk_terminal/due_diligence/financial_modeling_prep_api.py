@@ -1,22 +1,20 @@
+import argparse
 import FundamentalAnalysis as fa  # Financial Modeling Prep
 from gamestonk_terminal import config_terminal as cfg
-import argparse
-import datetime
-from datetime import datetime
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
 
 # ---------------------------------------------------- RATING ----------------------------------------------------
 def rating(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="rating",
-        description="""Based on specific ratios, prints information whether the company
-                                     is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
-                                     P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]""",
+        description="""
+            Based on specific ratios, prints information whether the company
+            is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
+            P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -30,4 +28,3 @@ def rating(l_args, s_ticker):
     except:
         print("")
         return
-

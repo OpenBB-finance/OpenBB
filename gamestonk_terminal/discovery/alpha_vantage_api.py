@@ -1,5 +1,4 @@
 import argparse
-import pandas as pd
 import matplotlib.pyplot as plt
 from alpha_vantage.sectorperformance import SectorPerformances
 from gamestonk_terminal import config_terminal as cfg
@@ -13,7 +12,7 @@ def sectors(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
     except SystemExit:
         print("")
         return
@@ -24,7 +23,8 @@ def sectors(l_args):
     sector_perf = SectorPerformances(
         key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
     )
-    df_sectors, d_meta_data = sector_perf.get_sector()
+    df_sectors, _, _ = sector_perf.get_sector()
+    # pylint: disable=invalid-sequence-index
     df_sectors["Rank A: Real-Time Performance"].plot(kind="bar")
     plt.title("Real Time Performance (%) per Sector")
     plt.tight_layout()
