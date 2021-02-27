@@ -104,7 +104,7 @@ def watchlist(l_args):
                                     d_watchlist_tickers[key] = 1
 
                             l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
-                            # delte below, not necessary I reckon. Probably just link?
+                            # delete below, not necessary I reckon. Probably just link?
 
                             # Refactor data
                             s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
@@ -361,7 +361,7 @@ def spac_community(l_args):
                                     d_watchlist_tickers[key] = 1
 
                             l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
-                            # delte below, not necessary I reckon. Probably just link?
+                            # delete below, not necessary I reckon. Probably just link?
 
                             # Refactor data
                             s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
@@ -497,7 +497,7 @@ def spac(l_args):
                                     d_watchlist_tickers[key] = 1
 
                             l_watchlist_links.append(f"https://www.reddit.com{submission.permalink}")
-                            # delte below, not necessary I reckon. Probably just link?
+                            # delete below, not necessary I reckon. Probably just link?
 
                             # Refactor data
                             s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime("%d/%m/%Y %H:%M:%S")
