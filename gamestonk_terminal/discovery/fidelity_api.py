@@ -56,7 +56,10 @@ def orders(l_args):
         ):
 
             if ((idx + 1) % 3 == 0) or ((idx + 1) % 4 == 0) or ((idx + 1) % 6 == 0):
-                l_orders_vals.append(an_order.contents[1])
+                if len(an_order) == 0:
+                    l_orders_vals.append("")
+                else:
+                    l_orders_vals.append(an_order.contents[1])
             elif (idx + 1) % 5 == 0:
                 s_orders = str(an_order)
                 l_orders_vals.append(
