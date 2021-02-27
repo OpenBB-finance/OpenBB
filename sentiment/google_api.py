@@ -1,15 +1,13 @@
-import pandas as pd
 from pytrends.request import TrendReq
-from datetime import datetime
-import matplotlib.pyplot as plt
+
 from helper_funcs import *
-import argparse
 
 
 # -------------------------------------------------------------------------------------------------------------------
 def mentions(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(prog='mentions',
-                                     description="""Plot weekly bars of stock's interest over time. other users watchlist.
+                                     description="""Plot weekly bars of stock's interest over time. other users
+                                     watchlist.
                                      [Source: Google]""")
 
     parser.add_argument('-s', "--start", type=valid_date, dest="s_start", default=s_start,
@@ -65,7 +63,7 @@ def regions(l_args, s_ticker):
         df_interest_region = pytrend.interest_by_region()
         df_interest_region = df_interest_region.sort_values([s_ticker], ascending=False).head(ns_parser.n_num)
 
-        plt.figure(figsize=(25,5))
+        plt.figure(figsize=(25, 5))
         plt.title(f"Top's regions interest on {s_ticker}")
         plt.bar(df_interest_region.index, df_interest_region[s_ticker], width=0.8)
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
@@ -81,7 +79,8 @@ def regions(l_args, s_ticker):
 # -------------------------------------------------------------------------------------------------------------------
 def queries(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='queries',
-                                     description="""Print top related queries with this stock's query. [Source: Google]""")
+                                     description="""Print top related queries with this stock's query. [Source:
+                                     Google]""")
 
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=10,
                         help='number of top related queries to print.')
@@ -97,7 +96,7 @@ def queries(l_args, s_ticker):
         pytrend.build_payload(kw_list=[s_ticker])
         df_related_queries = pytrend.related_queries()
         df_related_queries = df_related_queries[s_ticker]['top'].head(ns_parser.n_num)
-        df_related_queries['value'] = df_related_queries['value'].apply(lambda x: str(x)+'%')
+        df_related_queries['value'] = df_related_queries['value'].apply(lambda x: str(x) + '%')
         print(f"Top {s_ticker}'s related queries")
         print(df_related_queries.to_string(index=False))
         print("")
@@ -131,4 +130,3 @@ def rise(l_args, s_ticker):
 
     except:
         print("")
-

@@ -1,21 +1,10 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
-import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
-
+from due_diligence import business_insider_api as bi_api
+from due_diligence import financial_modeling_prep_api as fmp_api
 from due_diligence import finviz_api as fvz_api
 from due_diligence import market_watch_api as mw_api
-from due_diligence import reddit_api as r_api
 from due_diligence import quandl_api as q_api
-from due_diligence import financial_modeling_prep_api as fmp_api
-from due_diligence import business_insider_api as bi_api
+from due_diligence import reddit_api as r_api
+from helper_funcs import *
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -51,16 +40,15 @@ def print_due_diligence(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def dd_menu(df_stock, s_ticker, s_start, s_interval):
-
     # Add list of arguments that the due diligence parser accepts
     dd_parser = argparse.ArgumentParser(prog='dd', add_help=False)
     dd_parser.add_argument('cmd', choices=['info', 'help', 'q', 'quit',
-                                           'red', # Reddit
-                                           'short', # Quandl
-                                           'rating', # FMP
-                                           'pt', 'est', 'ins', # BI
-                                           'insider', 'news', 'analyst', # Finviz
-                                           'warnings', 'sec']) # MW
+                                           'red',  # Reddit
+                                           'short',  # Quandl
+                                           'rating',  # FMP
+                                           'pt', 'est', 'ins',  # BI
+                                           'insider', 'news', 'analyst',  # Finviz
+                                           'warnings', 'sec'])  # MW
 
     print_due_diligence(s_ticker, s_start, s_interval)
 

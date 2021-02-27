@@ -1,12 +1,7 @@
-import config_terminal as cfg
-import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import config_terminal as cfg
-import pandas as pd
-import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+
+from helper_funcs import *
+
 register_matplotlib_converters()
 
 from prediction_techniques import sma
@@ -15,6 +10,7 @@ from prediction_techniques import regression
 from prediction_techniques import arima
 from prediction_techniques import fbprophet
 from prediction_techniques import neural_networks
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
@@ -48,7 +44,6 @@ def print_prediction(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
-
     # Add list of arguments that the prediction techniques parser accepts
     pred_parser = argparse.ArgumentParser(prog='pred', add_help=False)
     pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',

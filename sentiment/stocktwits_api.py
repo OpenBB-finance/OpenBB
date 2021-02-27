@@ -1,7 +1,8 @@
-import argparse
-import requests
 import pandas as pd
+import requests
+
 from helper_funcs import *
+
 
 # -------------------------------------------------------------------------------------------------------------------
 def bullbear(l_args, s_ticker):
@@ -32,8 +33,8 @@ def bullbear(l_args, s_ticker):
                     n_bear += (message['entities']['sentiment']['basic'] == 'Bearish')
             if n_cases > 0:
                 print(f"\nOver {n_cases} sentiment messages:")
-                print(f"Bullish {round(100*n_bull/n_cases, 2)}%")
-                print(f"Bearish {round(100*n_bear/n_cases, 2)}%")
+                print(f"Bullish {round(100 * n_bull / n_cases, 2)}%")
+                print(f"Bearish {round(100 * n_bear / n_cases, 2)}%")
         else:
             print("Invalid symbol")
         print("")
@@ -45,7 +46,8 @@ def bullbear(l_args, s_ticker):
 # -------------------------------------------------------------------------------------------------------------------
 def messages(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='messages',
-                                     description="""Print up to 30 of the last messages on the board. [Source: Stocktwits]""")
+                                     description="""Print up to 30 of the last messages on the board. [Source:
+                                     Stocktwits]""")
 
     parser.add_argument('-t', "--ticker", action="store", dest="s_ticker", type=str, default=s_ticker,
                         help='get board messages from this ticker.')
@@ -64,7 +66,7 @@ def messages(l_args, s_ticker):
             for idx, message in enumerate(result.json()['messages']):
                 print("------------------------------------------------------------------------------------------")
                 print(message['body'])
-                if idx > ns_parser.n_lim-1:
+                if idx > ns_parser.n_lim - 1:
                     break
         else:
             print("Invalid symbol")
@@ -128,7 +130,7 @@ def stalker(l_args):
                 print(message['created_at'].replace('T', ' ').replace('Z', ''))
                 print(message['body'])
                 print("")
-                if idx > ns_parser.n_lim-1:
+                if idx > ns_parser.n_lim - 1:
                     break
         else:
             print("Invalid user")

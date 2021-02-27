@@ -1,18 +1,13 @@
-
-from pytz import timezone
-from holidays import US as holidaysUS
-from datetime import datetime, time as Time
-import re
-import numpy as np
-import sys
-import iso8601
-import matplotlib
-import matplotlib.pyplot as plt
-from datetime import timedelta
-from pytz import timezone
-from holidays import US as holidaysUS
-from datetime import datetime, timedelta, time as Time
 import argparse
+import re
+from datetime import datetime, timedelta, time as Time
+
+import iso8601
+import matplotlib.pyplot as plt
+import sys
+from holidays import US as holidaysUS
+from pytz import timezone
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def check_non_negative(value):
@@ -114,8 +109,8 @@ def plot_ta(s_ticker, df_ta, s_ta):
     plt.title(f"{s_ta} on {s_ticker}")
     plt.xlim(df_ta.index[0], df_ta.index[-1])
     plt.xlabel('Time')
-    #plt.ylabel('Share Price ($)')
-    #if isinstance(df_ta, pd.DataFrame):
+    # plt.ylabel('Share Price ($)')
+    # if isinstance(df_ta, pd.DataFrame):
     #    plt.legend(df_ta.columns)
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
@@ -185,16 +180,16 @@ def clean_data_values_to_float(val):
 
     # Convert percentage to decimal
     if val.endswith('%'):
-        val = float(val[:-1])/100.0
+        val = float(val[:-1]) / 100.0
     # Convert from billions
     elif val.endswith('B'):
-        val = float(val[:-1])*1_000_000_000
+        val = float(val[:-1]) * 1_000_000_000
     # Convert from millions
     elif val.endswith('M'):
-        val = float(val[:-1])*1_000_000
+        val = float(val[:-1]) * 1_000_000
     # Convert from thousands
     elif val.endswith('K'):
-        val = float(val[:-1])*1_000
+        val = float(val[:-1]) * 1_000
     else:
         val = float(val)
 
@@ -251,7 +246,7 @@ def get_data(tweet):
         s_text = tweet['text']
 
     data = {'created_at': s_datetime,
-            'text': s_text }
+            'text': s_text}
     return data
 
 

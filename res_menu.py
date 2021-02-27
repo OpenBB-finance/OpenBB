@@ -1,4 +1,3 @@
-import config_terminal as cfg
 import argparse
 import webbrowser
 
@@ -37,7 +36,6 @@ def print_research():
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def res_menu(s_ticker):
-
     # Add list of arguments that the research parser accepts
     res_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
     res_parser.add_argument('cmd', choices=['help', 'q', 'quit',
@@ -137,7 +135,8 @@ def res_menu(s_ticker):
         # ------------------------------------------------------------------------------------------------------------
         elif ns_known_args.cmd == 'fidelity':
             try:
-                webbrowser.open(f"https://eresearch.fidelity.com/eresearch/goto/evaluate/snapshot.jhtml?symbols={s_ticker}")
+                webbrowser.open(
+                    f"https://eresearch.fidelity.com/eresearch/goto/evaluate/snapshot.jhtml?symbols={s_ticker}")
                 print("")
             except SystemExit:
                 print("")
@@ -224,10 +223,11 @@ def res_menu(s_ticker):
                 print("")
                 return
 
-         # ------------------------------------------------------------------------------------------------------------
+        # ------------------------------------------------------------------------------------------------------------
         elif ns_known_args.cmd == 'resources':
             try:
-                #webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources.html")
+                # webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources
+                # .html")
                 webbrowser.open(f"https://moongangcapital.com/free-stock-market-resources/")
 
                 print("")

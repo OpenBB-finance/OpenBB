@@ -1,13 +1,16 @@
 import argparse
-from alpha_vantage.sectorperformance import SectorPerformances
-import config_terminal as cfg
-import pandas as pd
+
 import matplotlib.pyplot as plt
+from alpha_vantage.sectorperformance import SectorPerformances
+
+import config_terminal as cfg
+
 
 # ---------------------------------------------------- SECTORS ----------------------------------------------------
 def sectors(l_args):
-    parser = argparse.ArgumentParser(prog='sectors', 
-                                     description='''Real-time and historical sector performances calculated from S&P500 incumbents.
+    parser = argparse.ArgumentParser(prog='sectors',
+                                     description='''Real-time and historical sector performances calculated from
+                                     S&P500 incumbents.
                                      Pops plot in terminal. [Source: Alpha Vantage]''')
 
     try:
@@ -15,7 +18,7 @@ def sectors(l_args):
     except SystemExit:
         print("")
         return
-    
+
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
 

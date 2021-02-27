@@ -1,21 +1,10 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
-import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
-
 from fundamental_analysis import alpha_vantage_api as av_api
+from fundamental_analysis import business_insider_api as bi_api
 from fundamental_analysis import financial_modeling_prep_api as fmp_api
 from fundamental_analysis import finviz_api as fvz_api
 from fundamental_analysis import market_watch_api as mw_api
-from fundamental_analysis import business_insider_api as bi_api
 from fundamental_analysis import yahoo_finance_api as yf_api
+from helper_funcs import *
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -29,7 +18,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     else:
         print(f"\n{s_intraday} Stock: {s_ticker}")
 
-    print("\nFundamental Analysis:") # https://github.com/JerBouma/FundamentalAnalysis
+    print("\nFundamental Analysis:")  # https://github.com/JerBouma/FundamentalAnalysis
     print("   help          show this fundamental analysis menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
@@ -100,17 +89,17 @@ def info(l_args, s_ticker):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def fa_menu(s_ticker, s_start, s_interval):
-
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog='fa', add_help=False)
-    fa_parser.add_argument('cmd', choices=['help', 'q', 'quit', #
-                                           'screener', # Finviz
-                                           'mgmt', # Business Insider
-                                           'info', 'shrs', 'sust', 'cal', # Yahoo Finance
-                                           'income', 'assets', 'liabilities', 'operating', 'investing', 'financing', # MW
-                                           'overview', 'key', 'incom', 'balance', 'cash', 'earnings', # AV
-                                           'profile', 'quote', 'enterprise', 'dcf', # FMP
-                                           'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth']) # FMP
+    fa_parser.add_argument('cmd', choices=['help', 'q', 'quit',  #
+                                           'screener',  # Finviz
+                                           'mgmt',  # Business Insider
+                                           'info', 'shrs', 'sust', 'cal',  # Yahoo Finance
+                                           'income', 'assets', 'liabilities', 'operating', 'investing', 'financing',
+                                           # MW
+                                           'overview', 'key', 'incom', 'balance', 'cash', 'earnings',  # AV
+                                           'profile', 'quote', 'enterprise', 'dcf',  # FMP
+                                           'inc', 'bal', 'cashf', 'metrics', 'ratios', 'growth'])  # FMP
 
     print_fundamental_analysis(s_ticker, s_start, s_interval)
 
@@ -127,7 +116,7 @@ def fa_menu(s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        #if ns_known_args.cmd == 'info':
+        # if ns_known_args.cmd == 'info':
         #    info(l_args, s_ticker)
 
         if ns_known_args.cmd == 'help':
@@ -181,7 +170,7 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'cal':
             yf_api.calendar_earnings(l_args, s_ticker)
 
-         # ALPHA VANTAGE API
+        # ALPHA VANTAGE API
         elif ns_known_args.cmd == 'overview':
             av_api.overview(l_args, s_ticker)
 

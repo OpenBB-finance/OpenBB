@@ -50,7 +50,7 @@ korean-lunar-calendar==0.2.1
 langdetect==1.0.8
 lxml==4.6.2
 Markdown==3.3.4
-matplotlib==3.1.1
+matplotlib==3.3.1
 more-itertools==8.7.0
 mpld3==0.3
 multidict==5.1.0
@@ -102,7 +102,7 @@ tensorflow==2.4.1
 tensorflow-estimator==2.4.0
 termcolor==1.1.0
 threadpoolctl==2.1.0
-TimeSeriesCrossValidation @ git+https://github.com/DidierRLopes/TimeSeriesCrossValidation@1e29d393204abb3bde23ff3f15258ed85d3b263e
+TimeSeriesCrossValidation@git+https://github.com/DidierRLopes/TimeSeriesCrossValidation@1e29d393204abb3bde23ff3f15258ed85d3b263e
 tokenizers==0.9.3
 torch==1.7.1
 tqdm==4.57.0
@@ -126,6 +126,6 @@ python_dateutil==2.8.1
 scikit_learn==0.24.1
 tensorflow==2.4.1
 zipp==3.4.0
-lunarcalendar
-fbprophet
-levenshtein
+lunarcalendar==0.0.9
+fbprophet==0.7.1
+levenshtein==0.12.2

@@ -1,18 +1,19 @@
-import quandl
-from datetime import datetime
-import config_terminal as cfg
-import argparse
-from matplotlib import pyplot as plt
-import numpy as np
 import matplotlib.ticker as ticker
 import pandas as pd
+import quandl
+
+import config_terminal as cfg
 from helper_funcs import *
 
-# -------------------------------------------------------- SHORT_INTEREST --------------------------------------------------------
+
+# -------------------------------------------------------- SHORT_INTEREST
+# --------------------------------------------------------
 def short_interest(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(prog='short',
-                                     description="""Plots the short interest of a stock. This corresponds to the number of shares that
-                                     have been sold short but have not yet been covered or closed out. Either NASDAQ or NYSE [Source: Quandl]""")
+                                     description="""Plots the short interest of a stock. This corresponds to the
+                                     number of shares that
+                                     have been sold short but have not yet been covered or closed out. Either NASDAQ
+                                     or NYSE [Source: Quandl]""")
 
     parser.add_argument('-n', "--nyse", action="store_true", default=False, dest="b_nyse",
                         help='data from NYSE flag.')
@@ -34,12 +35,15 @@ def short_interest(l_args, s_ticker, s_start):
             df_short_interest = quandl.get(f"FINRA/FNSQ_{s_ticker}")
 
         df_short_interest = df_short_interest[s_start:]
-        df_short_interest.columns = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_short_interest.columns.tolist()]
-        df_short_interest['% of Volume Shorted'] = round(100*df_short_interest['Short Volume']/df_short_interest['Total Volume'], 2)
+        df_short_interest.columns = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for
+                                     idx in df_short_interest.columns.tolist()]
+        df_short_interest['% of Volume Shorted'] = round(
+            100 * df_short_interest['Short Volume'] / df_short_interest['Total Volume'], 2)
 
         fig, ax = plt.subplots()
         ax.bar(df_short_interest.index, df_short_interest['Short Volume'], 0.3, color='r')
-        ax.bar(df_short_interest.index, df_short_interest['Total Volume']-df_short_interest['Short Volume'], 0.3, bottom=df_short_interest['Short Volume'], color='b')
+        ax.bar(df_short_interest.index, df_short_interest['Total Volume'] - df_short_interest['Short Volume'], 0.3,
+               bottom=df_short_interest['Short Volume'], color='b')
         ax.set_ylabel('Shares')
         ax.set_xlabel('Date')
 
@@ -59,7 +63,8 @@ def short_interest(l_args, s_ticker, s_start):
         ax_twin.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.0f%%'))
         plt.xlim([df_short_interest.index[0], df_short_interest.index[-1]])
 
-        df_short_interest['% of Volume Shorted'] = df_short_interest['% of Volume Shorted'].apply(lambda x: f'{x/100:.2%}')
+        df_short_interest['% of Volume Shorted'] = df_short_interest['% of Volume Shorted'].apply(
+            lambda x: f'{x / 100:.2%}')
         df_short_interest = df_short_interest.applymap(lambda x: long_number_format(x)).sort_index(ascending=False)
 
         pd.set_option('display.max_colwidth', 70)

@@ -1,20 +1,10 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
-import argparse
-import datetime
-from datetime import datetime
 from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
-
-from technical_analysis import overlap as ta_overlap
 from technical_analysis import momentum as ta_momentum
+from technical_analysis import overlap as ta_overlap
 from technical_analysis import trend as ta_trend
 from technical_analysis import volatility as ta_volatility
 from technical_analysis import volume as ta_volume
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_technical_analysis(s_ticker, s_start, s_interval):
@@ -27,7 +17,7 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
     else:
         print(f"\n{s_intraday} Stock: {s_ticker}")
 
-    print("\nTechnical Analysis:") # https://github.com/twopirllc/pandas-ta
+    print("\nTechnical Analysis:")  # https://github.com/twopirllc/pandas-ta
     print("   help        show this technical analysis menu again")
     print("   q           quit this menu, and shows back to main menu")
     print("   quit        quit to abandon program")
@@ -53,15 +43,14 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def ta_menu(df_stock, s_ticker, s_start, s_interval):
-
     # Add list of arguments that the technical analysis parser accepts
     ta_parser = argparse.ArgumentParser(prog='ta', add_help=False)
     ta_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                           'ema', 'sma', 'vwap', # overlap
-                                           'cci', 'macd', 'rsi', 'stoch', # momentum
-                                           'adx', 'aroon', # trend
-                                           'bbands', # volatility
-                                           'ad', 'obv']) # volume
+                                           'ema', 'sma', 'vwap',  # overlap
+                                           'cci', 'macd', 'rsi', 'stoch',  # momentum
+                                           'adx', 'aroon',  # trend
+                                           'bbands',  # volatility
+                                           'ad', 'obv'])  # volume
 
     print_technical_analysis(s_ticker, s_start, s_interval)
 
@@ -99,7 +88,8 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'vwap':
             ta_overlap.vwap(l_args, s_ticker, s_interval, df_stock)
 
-        # --------------------------------------------------- MOMENTUM ---------------------------------------------------
+        # --------------------------------------------------- MOMENTUM
+        # ---------------------------------------------------
         elif ns_known_args.cmd == 'cci':
             ta_momentum.cci(l_args, s_ticker, s_interval, df_stock)
 
@@ -112,18 +102,21 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == 'stoch':
             ta_momentum.stoch(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------------- TREND ----------------------------------------------------
+        # ---------------------------------------------------- TREND
+        # ----------------------------------------------------
         elif ns_known_args.cmd == 'adx':
             ta_trend.adx(l_args, s_ticker, s_interval, df_stock)
 
         elif ns_known_args.cmd == 'aroon':
             ta_trend.aroon(l_args, s_ticker, s_interval, df_stock)
 
-        # -------------------------------------------------- VOLATILITY --------------------------------------------------
+        # -------------------------------------------------- VOLATILITY
+        # --------------------------------------------------
         elif ns_known_args.cmd == 'bbands':
             ta_volatility.bbands(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------------- VOLUME ----------------------------------------------------
+        # ---------------------------------------------------- VOLUME
+        # ----------------------------------------------------
         elif ns_known_args.cmd == 'ad':
             ta_volume.ad(l_args, s_ticker, s_interval, df_stock)
 

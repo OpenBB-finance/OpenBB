@@ -1,9 +1,9 @@
-import config_terminal as cfg
 import argparse
+
+from sentiment import google_api
 from sentiment import reddit_api
 from sentiment import stocktwits_api
 from sentiment import twitter_api
-from sentiment import google_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,6 @@ def print_sentiment():
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def sen_menu(s_ticker, s_start):
-
     # Add list of arguments that the discovery parser accepts
     sen_parser = argparse.ArgumentParser(prog='sen', add_help=False)
     sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
@@ -79,7 +78,8 @@ def sen_menu(s_ticker, s_start):
             # Abandon the program
             return True
 
-        # ---------------------------------------------------- REDDIT ---------------------------------------------------
+        # ---------------------------------------------------- REDDIT
+        # ---------------------------------------------------
         elif ns_known_args.cmd == 'watchlist':
             reddit_api.watchlist(l_args)
 
@@ -95,7 +95,8 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == 'popular':
             reddit_api.popular_tickers(l_args)
 
-        # ---------------------------------------------------- STOCKTWITS ---------------------------------------------------
+        # ---------------------------------------------------- STOCKTWITS
+        # ---------------------------------------------------
         elif ns_known_args.cmd == 'bullbear':
             stocktwits_api.bullbear(l_args, s_ticker)
 
@@ -108,14 +109,16 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == 'stalker':
             stocktwits_api.stalker(l_args)
 
-        # ----------------------------------------------------- TWITTER ---------------------------------------------------
+        # ----------------------------------------------------- TWITTER
+        # ---------------------------------------------------
         elif ns_known_args.cmd == 'infer':
             twitter_api.inference(l_args, s_ticker)
 
         elif ns_known_args.cmd == 'sentiment':
             twitter_api.sentiment(l_args, s_ticker)
 
-        # ----------------------------------------------------- GOOGLE ---------------------------------------------------
+        # ----------------------------------------------------- GOOGLE
+        # ---------------------------------------------------
         elif ns_known_args.cmd == 'mentions':
             google_api.mentions(l_args, s_ticker, s_start)
 
