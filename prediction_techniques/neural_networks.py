@@ -27,7 +27,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
     
     for idx_layer, d_layer in enumerate(Recurrent_Neural_Network):
         # Recurrent Neural Network
-        if str(*d_layer) is 'SimpleRNN':
+        if str(*d_layer) == 'SimpleRNN':
             # Is this the input layer? If so, define input_shape
             if idx_layer == 0:
                 model.add(SimpleRNN(**d_layer['SimpleRNN'], input_shape=(n_inputs, 1))) 
@@ -38,7 +38,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
                 model.add(SimpleRNN(**d_layer['SimpleRNN']))
                 
         # Long-Short Term-Memory
-        elif str(*d_layer) is 'LSTM':
+        elif str(*d_layer) == 'LSTM':
             # Is this the input layer? If so, define input_shape
             if idx_layer == 0:
                 model.add(LSTM(**d_layer['LSTM'], input_shape=(n_inputs, 1))) 
@@ -49,7 +49,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
                 model.add(LSTM(**d_layer['LSTM']))
 
         # Dense (Simple Neuron)
-        elif str(*d_layer) is 'Dense':
+        elif str(*d_layer) == 'Dense':
             # Is this the input layer? If so, define input_shape
             if idx_layer == 0:
                 model.add(Dense(**d_layer['Dense'], input_dim=n_inputs))  
