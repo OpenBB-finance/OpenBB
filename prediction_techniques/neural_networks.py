@@ -60,7 +60,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
                 model.add(Dense(**d_layer['Dense'])) 
 
         # Dropout (Regularization)
-        elif str(*d_layer) is 'Dropout':
+        elif str(*d_layer) == 'Dropout':
             model.add(Dropout(**d_layer['Dropout'])) 
 
         else:
