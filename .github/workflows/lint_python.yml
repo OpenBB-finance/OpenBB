@@ -9,7 +9,7 @@ jobs:
       - run: pip install bandit black codespell flake8 isort mypy pytest pyupgrade
       - run: bandit -r . || true
       - run: black --check . || true
-      - run: codespell --ignore-words-list="mape" --quiet-level=2 || true  # --skip=""
+      - run: codespell --ignore-words-list="mape" --quiet-level=2  # --skip=""
       - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - run: isort --check-only --profile black . || true
       - run: pip install -r requirements.txt
