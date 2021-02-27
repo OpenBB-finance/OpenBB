@@ -3,12 +3,13 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
-from helper_funcs import *
+from gamestonk_terminal.helper_funcs import *
 
 # ---------------------------------------------------- INCOME ----------------------------------------------------
 def income(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='income', 
-                                     description="""Prints either yearly or quarterly income statement the company. 
+    parser = argparse.ArgumentParser(
+        prog="income",
+        description="""Prints either yearly or quarterly income statement the company. 
                                      The following fields are expected: Sales Growth, Cost of Goods Sold (COGS) incl. D&A, 
                                      COGS Growth, COGS excluding D&A, Depreciation & Amortization Expense, Depreciation, 
                                      Amortization of Intangibles, Gross Income, Gross Income Growth, Gross Profit Margin, 
@@ -23,9 +24,17 @@ def income(l_args, s_ticker):
                                      Cumulative Effect - Accounting Chg, Discontinued Operations, Net Income After Extraordinaries, 
                                      Preferred Dividends, Net Income Available to Common, EPS (Basic), EPS (Basic) Growth, 
                                      Basic Shares Outstanding, EPS (Diluted), EPS (Diluted) Growth, Diluted Shares Outstanding, EBITDA, 
-                                     EBITDA Growth, EBITDA Margin, Sales/Revenue, and Net Income. [Source: Market Watch]""")
-    
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
+                                     EBITDA Growth, EBITDA Margin, Sales/Revenue, and Net Income. [Source: Market Watch]""",
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quarter",
+        action="store_true",
+        default=False,
+        dest="b_quarter",
+        help="Quarter fundamental data flag.",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -38,21 +47,27 @@ def income(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income/quarter"
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
-            
+
         text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
 
         # Define financials columns
         a_financials_header = list()
-        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
-            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        ):
+            a_financials_header.append(
+                financials_header.text.strip("\n").split("\n")[0]
+            )
         df_financials = pd.DataFrame(columns=a_financials_header[0:-1])
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
-        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials += text_soup_financials.findAll(
+            "tr", {"class": "table__row is-highlighted"}
+        )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split('\n')
-            l_financials = [a_financials_info[2]] 
+            a_financials_info = financials_info.text.split("\n")
+            l_financials = [a_financials_info[2]]
             l_financials.extend(a_financials_info[5:-2])
             # Append data values to financials
             df_financials.loc[len(df_financials.index)] = l_financials
@@ -67,8 +82,9 @@ def income(l_args, s_ticker):
 
 # ---------------------------------------------------- ASSETS ----------------------------------------------------
 def assets(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='assets', 
-                                     description="""Prints either yearly or quarterly assets from balance sheet of the company. 
+    parser = argparse.ArgumentParser(
+        prog="assets",
+        description="""Prints either yearly or quarterly assets from balance sheet of the company. 
                                      The following fields are expected: Cash & Short Term Investments, Cash & Short Term Investments
                                      Growth, Cash Only, Short-Term Investments, Cash & ST Investments / Total Assets, Total Accounts 
                                      Receivable, Total Accounts Receivable Growth, Accounts Receivables, Net, Accounts Receivables, 
@@ -78,9 +94,17 @@ def assets(l_args, s_ticker):
                                      Buildings, Land & Improvements, Computer Software and Equipment, Other Property, Plant & Equipment, 
                                      Accumulated Depreciation, Total Investments and Advances, Other Long-Term Investments, 
                                      Long-Term Note Receivables, Intangible Assets, Net Goodwill, Net Other Intangibles, Other Assets
-                                     [Source: Market Watch]""")
-    
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
+                                     [Source: Market Watch]""",
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quarter",
+        action="store_true",
+        default=False,
+        dest="b_quarter",
+        help="Quarter fundamental data flag.",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -92,28 +116,38 @@ def assets(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
-            
+
         text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
 
         # Define financials columns
         a_financials_header = list()
-        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
-            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        ):
+            a_financials_header.append(
+                financials_header.text.strip("\n").split("\n")[0]
+            )
         s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(columns=a_financials_header[0:a_financials_header.index(s_header_end_trend)])
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
-        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials += text_soup_financials.findAll(
+            "tr", {"class": "table__row is-highlighted"}
+        )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split('\n')
-            l_financials = [a_financials_info[2]] 
+            a_financials_info = financials_info.text.split("\n")
+            l_financials = [a_financials_info[2]]
             l_financials.extend(a_financials_info[5:-2])
             # Append data values to financials
             df_financials.loc[len(df_financials.index)] = l_financials
 
         # Set item name as index
-        df_financials = df_financials.set_index('Item')
+        df_financials = df_financials.set_index("Item")
 
         print(df_financials.iloc[:33].to_string())
         print("")
@@ -125,8 +159,9 @@ def assets(l_args, s_ticker):
 
 # ---------------------------------------------------- LIABILITIES ----------------------------------------------------
 def liabilities(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='liabilities', 
-                                     description="""Prints either yearly or quarterly liablities and shareholders' equity from balance sheet of the company. 
+    parser = argparse.ArgumentParser(
+        prog="liabilities",
+        description="""Prints either yearly or quarterly liablities and shareholders' equity from balance sheet of the company. 
                                      The following fields are expected: ST Debt & Current Portion LT Debt, Short Term Debt, 
                                      Current Portion of Long Term Debt, Accounts Payable, Accounts Payable Growth, Income Tax Payable, 
                                      Other Current Liabilities, Dividends Payable, Accrued Payroll, Miscellaneous Current Liabilities, 
@@ -139,9 +174,17 @@ def liabilities(l_args, s_ticker):
                                      Adjustment/Unrealized For. Exch. Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, 
                                      Treasury Stock, Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, 
                                      Accumulated Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current Liabilities, 
-                                     Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market Watch]""")
-    
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
+                                     Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market Watch]""",
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quarter",
+        action="store_true",
+        default=False,
+        dest="b_quarter",
+        help="Quarter fundamental data flag.",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -154,28 +197,38 @@ def liabilities(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
-            
+
         text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
 
         # Define financials columns
         a_financials_header = list()
-        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
-            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        ):
+            a_financials_header.append(
+                financials_header.text.strip("\n").split("\n")[0]
+            )
         s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(columns=a_financials_header[0:a_financials_header.index(s_header_end_trend)])
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
-        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials += text_soup_financials.findAll(
+            "tr", {"class": "table__row is-highlighted"}
+        )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split('\n')
-            l_financials = [a_financials_info[2]] 
+            a_financials_info = financials_info.text.split("\n")
+            l_financials = [a_financials_info[2]]
             l_financials.extend(a_financials_info[5:-2])
             # Append data values to financials
             df_financials.loc[len(df_financials.index)] = l_financials
 
         # Set item name as index
-        df_financials = df_financials.set_index('Item')
+        df_financials = df_financials.set_index("Item")
 
         print(df_financials.iloc[34:].to_string())
         print("")
@@ -187,15 +240,24 @@ def liabilities(l_args, s_ticker):
 
 # ---------------------------------------------------- OPERATING ----------------------------------------------------
 def operating(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='operating', 
-                                     description="""Prints either yearly or quarterly cash flow operating activities of the company. 
+    parser = argparse.ArgumentParser(
+        prog="operating",
+        description="""Prints either yearly or quarterly cash flow operating activities of the company. 
                                      The following fields are expected: Net Income before Extraordinaries, Net Income Growth, Depreciation, 
                                      Depletion & Amortization, Depreciation and Depletion, Amortization of Intangible Assets, 
                                      Deferred Taxes & Investment Tax Credit, Deferred Taxes, Investment Tax Credit, Other Funds, 
                                      Funds from Operations, Extraordinaries, Changes in Working Capital, Receivables, Accounts Payable, 
-                                     Other Assets/Liabilities, and Net Operating Cash Flow Growth. [Source: Market Watch]""")
-    
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
+                                     Other Assets/Liabilities, and Net Operating Cash Flow Growth. [Source: Market Watch]""",
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quarter",
+        action="store_true",
+        default=False,
+        dest="b_quarter",
+        help="Quarter fundamental data flag.",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -203,38 +265,47 @@ def operating(l_args, s_ticker):
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
-            
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
-            
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text,"lxml")
+
+        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
 
         # Define financials columns
         a_financials_header = list()
-        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
-            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        ):
+            a_financials_header.append(
+                financials_header.text.strip("\n").split("\n")[0]
+            )
 
         s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(columns=a_financials_header[0:a_financials_header.index(s_header_end_trend)])
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
-        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials += text_soup_financials.findAll(
+            "tr", {"class": "table__row is-highlighted"}
+        )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split('\n')
-            l_financials = [a_financials_info[2]] 
+            a_financials_info = financials_info.text.split("\n")
+            l_financials = [a_financials_info[2]]
             l_financials.extend(a_financials_info[5:-2])
-            n_vals_to_add = len(df_financials.columns)-len(l_financials)
+            n_vals_to_add = len(df_financials.columns) - len(l_financials)
             if n_vals_to_add > 0:
-                l_financials.append(n_vals_to_add * ' ')
+                l_financials.append(n_vals_to_add * " ")
             # Append data values to financials
             df_financials.loc[len(df_financials.index)] = l_financials
 
         # Set item name as index
-        df_financials = df_financials.set_index('Item')
+        df_financials = df_financials.set_index("Item")
 
         print(df_financials.iloc[:16].to_string())
         print("")
@@ -246,15 +317,24 @@ def operating(l_args, s_ticker):
 
 # ---------------------------------------------------- INVESTING ----------------------------------------------------
 def investing(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='investing', 
-                                     description="""Prints either yearly or quarterly cash flow investing activities of the company. 
+    parser = argparse.ArgumentParser(
+        prog="investing",
+        description="""Prints either yearly or quarterly cash flow investing activities of the company. 
                                      The following fields are expected: Capital Expenditures, Capital Expenditures Growth, Capital 
                                      Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures (Other Assets),
                                      Net Assets from Acquisitions, Sale of Fixed Assets & Businesses, Purchase/Sale of Investments, 
                                      Purchase of Investments, Sale/Maturity of Investments, Other Uses, Other Sources, Net Investing 
-                                     Cash Flow Growth. [Source: Market Watch]""")
-    
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
+                                     Cash Flow Growth. [Source: Market Watch]""",
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quarter",
+        action="store_true",
+        default=False,
+        dest="b_quarter",
+        help="Quarter fundamental data flag.",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -267,32 +347,42 @@ def investing(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
-            
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text,"lxml")
+
+        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
 
         # Define financials columns
         a_financials_header = list()
-        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
-            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        ):
+            a_financials_header.append(
+                financials_header.text.strip("\n").split("\n")[0]
+            )
 
         s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(columns=a_financials_header[0:a_financials_header.index(s_header_end_trend)])
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
-        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials += text_soup_financials.findAll(
+            "tr", {"class": "table__row is-highlighted"}
+        )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split('\n')
-            l_financials = [a_financials_info[2]] 
+            a_financials_info = financials_info.text.split("\n")
+            l_financials = [a_financials_info[2]]
             l_financials.extend(a_financials_info[5:-2])
-            n_vals_to_add = len(df_financials.columns)-len(l_financials)
+            n_vals_to_add = len(df_financials.columns) - len(l_financials)
             if n_vals_to_add > 0:
-                l_financials.append(n_vals_to_add * ' ')
+                l_financials.append(n_vals_to_add * " ")
             # Append data values to financials
             df_financials.loc[len(df_financials.index)] = l_financials
 
         # Set item name as index
-        df_financials = df_financials.set_index('Item')
+        df_financials = df_financials.set_index("Item")
 
         print(df_financials.iloc[17:30].to_string())
         print("")
@@ -304,8 +394,9 @@ def investing(l_args, s_ticker):
 
 # ---------------------------------------------------- FINANCING ----------------------------------------------------
 def financing(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='financing', 
-                                     description="""Prints either yearly or quarterly cash flow financing activities of the company.
+    parser = argparse.ArgumentParser(
+        prog="financing",
+        description="""Prints either yearly or quarterly cash flow financing activities of the company.
                                      The following fields are expected: Cash Dividends Paid - Total, Common Dividends, Preferred Dividends, 
                                      Change in Capital Stock, Repurchase of Common & Preferred Stk., Sale of Common & Preferred Stock, 
                                      Proceeds from Stock Options, Other Proceeds from Sale of Stock, Issuance/Reduction of Debt, Net, 
@@ -313,9 +404,17 @@ def financing(l_args, s_ticker):
                                      Other Funds, Other Uses, Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, 
                                      Exchange Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow Growth, 
                                      Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net Financing Cash Flow 
-                                     [Source: Market Watch]""")
-    
-    parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
+                                     [Source: Market Watch]""",
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quarter",
+        action="store_true",
+        default=False,
+        dest="b_quarter",
+        help="Quarter fundamental data flag.",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -328,36 +427,47 @@ def financing(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
-            
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text,"lxml")
+
+        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
 
         # Define financials columns
         a_financials_header = list()
-        for financials_header in text_soup_financials.findAll('th',  {'class': 'overflow__heading'}):
-            a_financials_header.append(financials_header.text.strip('\n').split('\n')[0])
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        ):
+            a_financials_header.append(
+                financials_header.text.strip("\n").split("\n")[0]
+            )
 
         s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(columns=a_financials_header[0:a_financials_header.index(s_header_end_trend)])
+        df_financials = pd.DataFrame(
+            columns=a_financials_header[
+                0 : a_financials_header.index(s_header_end_trend)
+            ]
+        )
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll('tr', {'class': 'table__row '})
-        soup_financials += text_soup_financials.findAll('tr', {'class': 'table__row is-highlighted'})
+        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials += text_soup_financials.findAll(
+            "tr", {"class": "table__row is-highlighted"}
+        )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split('\n')
-            l_financials = [a_financials_info[2]] 
+            a_financials_info = financials_info.text.split("\n")
+            l_financials = [a_financials_info[2]]
             l_financials.extend(a_financials_info[5:-2])
-            n_vals_to_add = len(df_financials.columns)-len(l_financials)
+            n_vals_to_add = len(df_financials.columns) - len(l_financials)
             if n_vals_to_add > 0:
-                l_financials.append(n_vals_to_add * ' ')
+                l_financials.append(n_vals_to_add * " ")
             # Append data values to financials
             df_financials.loc[len(df_financials.index)] = l_financials
 
         # Set item name as index
-        df_financials = df_financials.set_index('Item')
+        df_financials = df_financials.set_index("Item")
 
         print(df_financials.iloc[31:].to_string())
         print("")
-        
+
     except:
         print("")
         return
+

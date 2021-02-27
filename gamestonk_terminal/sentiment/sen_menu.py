@@ -1,9 +1,9 @@
-import config_terminal as cfg
+from gamestonk_terminal import config_terminal as cfg
 import argparse
-from sentiment import reddit_api
-from sentiment import stocktwits_api
-from sentiment import twitter_api
-from sentiment import google_api
+from gamestonk_terminal.sentiment import reddit_api
+from gamestonk_terminal.sentiment import stocktwits_api
+from gamestonk_terminal.sentiment import twitter_api
+from gamestonk_terminal.sentiment import google_api
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,9 @@ def print_sentiment():
     print("   wsb           show what WSB gang is up to in subreddit wallstreetbets")
     print("   watchlist     show other users watchlist")
     print("   popular       show popular tickers")
-    print("   spac_c        show other users spacs announcements from subreddit SPACs community")
+    print(
+        "   spac_c        show other users spacs announcements from subreddit SPACs community"
+    )
     print("   spac          show other users spacs announcements from other subs")
     print("")
     print("Stocktwits:")
@@ -46,19 +48,37 @@ def print_sentiment():
 def sen_menu(s_ticker, s_start):
 
     # Add list of arguments that the discovery parser accepts
-    sen_parser = argparse.ArgumentParser(prog='sen', add_help=False)
-    sen_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                            'watchlist', 'spac', 'spac_c', 'wsb', 'popular',
-                                            'bullbear', 'messages', 'trending', 'stalker',
-                                            'infer', 'sentiment', 'mentions', 'regions',
-                                            'queries', 'rise'])
+    sen_parser = argparse.ArgumentParser(prog="sen", add_help=False)
+    sen_parser.add_argument(
+        "cmd",
+        choices=[
+            "help",
+            "q",
+            "quit",
+            "watchlist",
+            "spac",
+            "spac_c",
+            "wsb",
+            "popular",
+            "bullbear",
+            "messages",
+            "trending",
+            "stalker",
+            "infer",
+            "sentiment",
+            "mentions",
+            "regions",
+            "queries",
+            "rise",
+        ],
+    )
 
     print_sentiment()
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input('> ')
+        as_input = input("> ")
 
         # Parse sentiment command of the list of possible commands
         try:
@@ -68,64 +88,64 @@ def sen_menu(s_ticker, s_start):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'help':
+        if ns_known_args.cmd == "help":
             print_sentiment()
 
-        elif ns_known_args.cmd == 'q':
+        elif ns_known_args.cmd == "q":
             # Just leave the DISC menu
             return False
 
-        elif ns_known_args.cmd == 'quit':
+        elif ns_known_args.cmd == "quit":
             # Abandon the program
             return True
 
         # ---------------------------------------------------- REDDIT ---------------------------------------------------
-        elif ns_known_args.cmd == 'watchlist':
+        elif ns_known_args.cmd == "watchlist":
             reddit_api.watchlist(l_args)
 
-        elif ns_known_args.cmd == 'spac':
+        elif ns_known_args.cmd == "spac":
             reddit_api.spac(l_args)
 
-        elif ns_known_args.cmd == 'spac_c':
+        elif ns_known_args.cmd == "spac_c":
             reddit_api.spac_community(l_args)
 
-        elif ns_known_args.cmd == 'wsb':
+        elif ns_known_args.cmd == "wsb":
             reddit_api.wsb_community(l_args)
 
-        elif ns_known_args.cmd == 'popular':
+        elif ns_known_args.cmd == "popular":
             reddit_api.popular_tickers(l_args)
 
         # ---------------------------------------------------- STOCKTWITS ---------------------------------------------------
-        elif ns_known_args.cmd == 'bullbear':
+        elif ns_known_args.cmd == "bullbear":
             stocktwits_api.bullbear(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'messages':
+        elif ns_known_args.cmd == "messages":
             stocktwits_api.messages(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'trending':
+        elif ns_known_args.cmd == "trending":
             stocktwits_api.trending(l_args)
 
-        elif ns_known_args.cmd == 'stalker':
+        elif ns_known_args.cmd == "stalker":
             stocktwits_api.stalker(l_args)
 
         # ----------------------------------------------------- TWITTER ---------------------------------------------------
-        elif ns_known_args.cmd == 'infer':
+        elif ns_known_args.cmd == "infer":
             twitter_api.inference(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'sentiment':
+        elif ns_known_args.cmd == "sentiment":
             twitter_api.sentiment(l_args, s_ticker)
 
         # ----------------------------------------------------- GOOGLE ---------------------------------------------------
-        elif ns_known_args.cmd == 'mentions':
+        elif ns_known_args.cmd == "mentions":
             google_api.mentions(l_args, s_ticker, s_start)
 
-        elif ns_known_args.cmd == 'regions':
+        elif ns_known_args.cmd == "regions":
             google_api.regions(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'queries':
+        elif ns_known_args.cmd == "queries":
             google_api.queries(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'rise':
+        elif ns_known_args.cmd == "rise":
             google_api.rise(l_args, s_ticker)
 
         # ------------------------------------------------------------------------------------------------------------

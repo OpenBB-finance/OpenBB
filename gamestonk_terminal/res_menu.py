@@ -1,4 +1,4 @@
-import config_terminal as cfg
+from gamestonk_terminal import config_terminal as cfg
 import argparse
 import webbrowser
 
@@ -39,18 +39,40 @@ def print_research():
 def res_menu(s_ticker):
 
     # Add list of arguments that the research parser accepts
-    res_parser = argparse.ArgumentParser(prog='discovery', add_help=False)
-    res_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                            'macroaxis', 'yahoo', 'finviz', 'marketwatch', 'fool', 'businessinsider',
-                                            'fmp', 'fidelity', 'tradingview', 'marketchameleon', 'stockrow', 'barchart',
-                                            'grufity', 'fintel', 'zacks', 'macrotrends', 'newsfilter', 'resources'])
+    res_parser = argparse.ArgumentParser(prog="discovery", add_help=False)
+    res_parser.add_argument(
+        "cmd",
+        choices=[
+            "help",
+            "q",
+            "quit",
+            "macroaxis",
+            "yahoo",
+            "finviz",
+            "marketwatch",
+            "fool",
+            "businessinsider",
+            "fmp",
+            "fidelity",
+            "tradingview",
+            "marketchameleon",
+            "stockrow",
+            "barchart",
+            "grufity",
+            "fintel",
+            "zacks",
+            "macrotrends",
+            "newsfilter",
+            "resources",
+        ],
+    )
 
     print_research()
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input('> ')
+        as_input = input("> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:
@@ -60,19 +82,19 @@ def res_menu(s_ticker):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'help':
+        if ns_known_args.cmd == "help":
             print_research()
 
-        elif ns_known_args.cmd == 'q':
+        elif ns_known_args.cmd == "q":
             # Just leave the RES menu
             return False
 
-        elif ns_known_args.cmd == 'quit':
+        elif ns_known_args.cmd == "quit":
             # Abandon the program
             return True
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'macroaxis':
+        elif ns_known_args.cmd == "macroaxis":
             try:
                 webbrowser.open(f"https://www.macroaxis.com/invest/market/{s_ticker}")
                 print("")
@@ -81,7 +103,7 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'yahoo':
+        elif ns_known_args.cmd == "yahoo":
             try:
                 webbrowser.open(f"https://finance.yahoo.com/quote/{s_ticker}")
                 print("")
@@ -90,7 +112,7 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'finviz':
+        elif ns_known_args.cmd == "finviz":
             try:
                 webbrowser.open(f"https://finviz.com/quote.ashx?t={s_ticker}")
                 print("")
@@ -99,16 +121,18 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'marketwatch':
+        elif ns_known_args.cmd == "marketwatch":
             try:
-                webbrowser.open(f"https://www.marketwatch.com/investing/stock/{s_ticker}")
+                webbrowser.open(
+                    f"https://www.marketwatch.com/investing/stock/{s_ticker}"
+                )
                 print("")
             except SystemExit:
                 print("")
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'fool':
+        elif ns_known_args.cmd == "fool":
             try:
                 webbrowser.open(f"https://www.fool.com/quote/{s_ticker}")
                 print("")
@@ -117,34 +141,40 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'businessinsider':
+        elif ns_known_args.cmd == "businessinsider":
             try:
-                webbrowser.open(f"https://markets.businessinsider.com/stocks/{s_ticker}-stock/")
+                webbrowser.open(
+                    f"https://markets.businessinsider.com/stocks/{s_ticker}-stock/"
+                )
                 print("")
             except SystemExit:
                 print("")
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'fmp':
+        elif ns_known_args.cmd == "fmp":
             try:
-                webbrowser.open(f"https://financialmodelingprep.com/financial-summary/{s_ticker}")
+                webbrowser.open(
+                    f"https://financialmodelingprep.com/financial-summary/{s_ticker}"
+                )
                 print("")
             except SystemExit:
                 print("")
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'fidelity':
+        elif ns_known_args.cmd == "fidelity":
             try:
-                webbrowser.open(f"https://eresearch.fidelity.com/eresearch/goto/evaluate/snapshot.jhtml?symbols={s_ticker}")
+                webbrowser.open(
+                    f"https://eresearch.fidelity.com/eresearch/goto/evaluate/snapshot.jhtml?symbols={s_ticker}"
+                )
                 print("")
             except SystemExit:
                 print("")
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'tradingview':
+        elif ns_known_args.cmd == "tradingview":
             try:
                 webbrowser.open(f"https://www.tradingview.com/symbols/{s_ticker}")
                 print("")
@@ -153,7 +183,7 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'marketchameleon':
+        elif ns_known_args.cmd == "marketchameleon":
             try:
                 webbrowser.open(f"https://marketchameleon.com/Overview/{s_ticker}")
                 print("")
@@ -162,7 +192,7 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'stockrow':
+        elif ns_known_args.cmd == "stockrow":
             try:
                 webbrowser.open(f"https://stockrow.com/{s_ticker}")
                 print("")
@@ -171,16 +201,18 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'barchart':
+        elif ns_known_args.cmd == "barchart":
             try:
-                webbrowser.open(f"https://www.barchart.com/stocks/quotes/{s_ticker}/overview")
+                webbrowser.open(
+                    f"https://www.barchart.com/stocks/quotes/{s_ticker}/overview"
+                )
                 print("")
             except SystemExit:
                 print("")
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'grufity':
+        elif ns_known_args.cmd == "grufity":
             try:
                 webbrowser.open(f"https://grufity.com/stock/{s_ticker}")
                 print("")
@@ -189,7 +221,7 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'fintel':
+        elif ns_known_args.cmd == "fintel":
             try:
                 webbrowser.open(f"https://fintel.io/s/us/{s_ticker}")
                 print("")
@@ -198,7 +230,7 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'zacks':
+        elif ns_known_args.cmd == "zacks":
             try:
                 webbrowser.open(f"https://www.zacks.com/stock/quote/{s_ticker}")
                 print("")
@@ -207,16 +239,18 @@ def res_menu(s_ticker):
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'macrotrends':
+        elif ns_known_args.cmd == "macrotrends":
             try:
-                webbrowser.open(f"https://www.macrotrends.net/stocks/charts/{s_ticker}/{s_ticker}/market-cap")
+                webbrowser.open(
+                    f"https://www.macrotrends.net/stocks/charts/{s_ticker}/{s_ticker}/market-cap"
+                )
                 print("")
             except SystemExit:
                 print("")
                 return
 
         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'newsfilter':
+        elif ns_known_args.cmd == "newsfilter":
             try:
                 webbrowser.open(f"https://newsfilter.io/search?query={s_ticker}")
                 print("")
@@ -224,11 +258,13 @@ def res_menu(s_ticker):
                 print("")
                 return
 
-         # ------------------------------------------------------------------------------------------------------------
-        elif ns_known_args.cmd == 'resources':
+        # ------------------------------------------------------------------------------------------------------------
+        elif ns_known_args.cmd == "resources":
             try:
-                #webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources.html")
-                webbrowser.open(f"https://moongangcapital.com/free-stock-market-resources/")
+                # webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources.html")
+                webbrowser.open(
+                    f"https://moongangcapital.com/free-stock-market-resources/"
+                )
 
                 print("")
             except SystemExit:

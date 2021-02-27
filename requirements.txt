@@ -129,3 +129,5 @@ zipp==3.4.0
 lunarcalendar
 fbprophet
 levenshtein
+black
+pylint

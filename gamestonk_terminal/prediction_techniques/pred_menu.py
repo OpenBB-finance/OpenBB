@@ -1,26 +1,26 @@
-import config_terminal as cfg
+from gamestonk_terminal import config_terminal as cfg
 import argparse
 import datetime
 from datetime import datetime
-from helper_funcs import *
-import config_terminal as cfg
+from gamestonk_terminal.helper_funcs import *
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
+
 register_matplotlib_converters()
 
-from prediction_techniques import sma
-from prediction_techniques import knn
-from prediction_techniques import regression
-from prediction_techniques import arima
-from prediction_techniques import fbprophet
-from prediction_techniques import neural_networks
+from gamestonk_terminal.prediction_techniques import sma
+from gamestonk_terminal.prediction_techniques import knn
+from gamestonk_terminal.prediction_techniques import regression
+from gamestonk_terminal.prediction_techniques import arima
+from gamestonk_terminal.prediction_techniques import fbprophet
+from gamestonk_terminal.prediction_techniques import neural_networks
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
     """ Print help """
 
-    s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
+    s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
 
     if s_start:
         print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
@@ -50,18 +50,33 @@ def print_prediction(s_ticker, s_start, s_interval):
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the prediction techniques parser accepts
-    pred_parser = argparse.ArgumentParser(prog='pred', add_help=False)
-    pred_parser.add_argument('cmd', choices=['help', 'q', 'quit',
-                                             'sma', 'knn',
-                                             'linear', 'quadratic', 'cubic', 'regression',
-                                             'arima', 'prophet', 'mlp', 'rnn', 'lstm'])
+    pred_parser = argparse.ArgumentParser(prog="pred", add_help=False)
+    pred_parser.add_argument(
+        "cmd",
+        choices=[
+            "help",
+            "q",
+            "quit",
+            "sma",
+            "knn",
+            "linear",
+            "quadratic",
+            "cubic",
+            "regression",
+            "arima",
+            "prophet",
+            "mlp",
+            "rnn",
+            "lstm",
+        ],
+    )
 
     print_prediction(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input('> ')
+        as_input = input("> ")
 
         # Parse prediction techniques command of the list of possible commands
         try:
@@ -71,54 +86,62 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'help':
+        if ns_known_args.cmd == "help":
             print_prediction(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == 'q':
+        elif ns_known_args.cmd == "q":
             # Just leave the FA menu
             return False
 
-        elif ns_known_args.cmd == 'quit':
+        elif ns_known_args.cmd == "quit":
             # Abandon the program
             return True
 
         # ------------------------------------------ SIMPLE MOVING AVERAGE ------------------------------------------
-        elif ns_known_args.cmd == 'sma':
+        elif ns_known_args.cmd == "sma":
             sma.simple_moving_average(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------- k NEAREST NEIGHBORS ------------------------------------------
-        elif ns_known_args.cmd == 'knn':
+        elif ns_known_args.cmd == "knn":
             knn.k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock)
 
         # ----------------------------------------------- REGRESSION -------------------------------------------------
-        elif ns_known_args.cmd == 'linear':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.LINEAR)
+        elif ns_known_args.cmd == "linear":
+            regression.regression(
+                l_args, s_ticker, s_interval, df_stock, regression.LINEAR
+            )
 
-        elif ns_known_args.cmd == 'quadratic':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.QUADRATIC)
+        elif ns_known_args.cmd == "quadratic":
+            regression.regression(
+                l_args, s_ticker, s_interval, df_stock, regression.QUADRATIC
+            )
 
-        elif ns_known_args.cmd == 'cubic':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.CUBIC)
+        elif ns_known_args.cmd == "cubic":
+            regression.regression(
+                l_args, s_ticker, s_interval, df_stock, regression.CUBIC
+            )
 
-        elif ns_known_args.cmd == 'regression':
-            regression.regression(l_args, s_ticker, s_interval, df_stock, regression.USER_INPUT)
+        elif ns_known_args.cmd == "regression":
+            regression.regression(
+                l_args, s_ticker, s_interval, df_stock, regression.USER_INPUT
+            )
 
         # ------------------------------------------------- ARIMA -------------------------------------------------
-        elif ns_known_args.cmd == 'arima':
+        elif ns_known_args.cmd == "arima":
             arima.arima(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------ FBPROPHET ------------------------------------------------
-        elif ns_known_args.cmd == 'prophet':
+        elif ns_known_args.cmd == "prophet":
             fbprophet.fbprophet(l_args, s_ticker, s_interval, df_stock)
 
         # ---------------------------------------------- NEURAL NETWORK ----------------------------------------------
-        elif ns_known_args.cmd == 'mlp':
+        elif ns_known_args.cmd == "mlp":
             neural_networks.mlp(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'rnn':
+        elif ns_known_args.cmd == "rnn":
             neural_networks.rnn(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'lstm':
+        elif ns_known_args.cmd == "lstm":
             neural_networks.lstm(l_args, s_ticker, s_interval, df_stock)
 
         # ------------------------------------------------------------------------------------------------------------

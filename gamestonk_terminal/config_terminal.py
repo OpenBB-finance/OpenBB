@@ -4,7 +4,9 @@ import os
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
 
 # https://financialmodelingprep.com/developer
-API_KEY_FINANCIALMODELINGPREP = os.getenv("GT_API_KEY_FINANCIALMODELINGPREP") or "REPLACE_ME"
+API_KEY_FINANCIALMODELINGPREP = (
+    os.getenv("GT_API_KEY_FINANCIALMODELINGPREP") or "REPLACE_ME"
+)
 
 # https://www.quandl.com/tools/api
 API_KEY_QUANDL = os.getenv("GT_API_KEY_QUANDL") or "REPLACE_ME"
