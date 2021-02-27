@@ -1,20 +1,22 @@
-from bs4 import BeautifulSoup
-import requests
-import pandas as pd
+import argparse
 import re
 import json
-from gamestonk_terminal import config_terminal as cfg
 from datetime import datetime
-import argparse
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
 from fuzzywuzzy import fuzz
+from gamestonk_terminal import config_terminal as cfg
 
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
 def management(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="mgmt",
-        description="""Print management team. Namely: Name, Title, Information from google and 
-                                                    (potentially) Insider Activity page. [Source: Business Insider]""",
+        description="""
+            Print management team. Namely: Name, Title, Information from google and
+            (potentially) Insider Activity page. [Source: Business Insider]
+        """,
     )
 
     try:

@@ -2,7 +2,7 @@ import argparse
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
 
 # ---------------------------------------------------- ORDERS ----------------------------------------------------
 def orders(l_args):
@@ -35,7 +35,11 @@ def orders(l_args):
         url_orders = (
             "https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"
         )
-        text_soup_url_orders = BeautifulSoup(requests.get(url_orders).text, "lxml")
+
+        text_soup_url_orders = BeautifulSoup(
+            requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         l_orders = list()
         l_orders_vals = list()

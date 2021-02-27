@@ -1,16 +1,20 @@
+import argparse
+from datetime import datetime
+import json
+import re
+import requests
+import matplotlib.pyplot as plt
+import pandas as pd
+from pandas.plotting import register_matplotlib_converters
 from bs4 import BeautifulSoup
 from alpha_vantage.timeseries import TimeSeries
-from gamestonk_terminal.helper_funcs import *
-import requests
-import pandas as pd
-import re
-import json
-from gamestonk_terminal import config_terminal as cfg
-from datetime import datetime
-import argparse
 from fuzzywuzzy import fuzz
-import matplotlib.pyplot as plt
-from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    get_user_agent,
+)
+from gamestonk_terminal import config_terminal as cfg
 
 register_matplotlib_converters()
 
@@ -43,7 +47,10 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
-            requests.get(url_market_business_insider).text, "lxml"
+            requests.get(
+                url_market_business_insider, headers={"User-Agent": get_user_agent()}
+            ).text,
+            "lxml",
         )
 
         for script in text_soup_market_business_insider.find_all("script"):
@@ -129,7 +136,10 @@ def estimates(l_args, s_ticker):
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
-            requests.get(url_market_business_insider).text, "lxml"
+            requests.get(
+                url_market_business_insider, headers={"User-Agent": get_user_agent()}
+            ).text,
+            "lxml",
         )
 
         l_estimates_year_header = list()
@@ -295,7 +305,10 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
-            requests.get(url_market_business_insider).text, "lxml"
+            requests.get(
+                url_market_business_insider, headers={"User-Agent": get_user_agent()}
+            ).text,
+            "lxml",
         )
 
         d_insider = dict()

@@ -2,7 +2,7 @@ import argparse
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
 
 
 # ------------------------------------------------ EARNINGS_RELEASE_DATES -------------------------------------------------
@@ -48,7 +48,10 @@ def earnings_release_dates(l_args):
                     f"https://seekingalpha.com/earnings/earnings-calendar/{idx+1}"
                 )
             text_soup_earnings = BeautifulSoup(
-                requests.get(url_next_earnings).text, "lxml"
+                requests.get(
+                    url_next_earnings, headers={"User-Agent": get_user_agent()}
+                ).text,
+                "lxml",
             )
 
             for bs_stock in text_soup_earnings.findAll(
@@ -76,7 +79,6 @@ def earnings_release_dates(l_args):
                 ].to_string(index=False, header=False)
             )
             print("")
-
     except SystemExit:
         print("")
         return

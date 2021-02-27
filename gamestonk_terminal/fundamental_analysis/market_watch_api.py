@@ -2,6 +2,7 @@ import argparse
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 # ---------------------------------------------------- INCOME ----------------------------------------------------
 def income(l_args, s_ticker):
@@ -48,7 +49,10 @@ def income(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()
@@ -119,7 +123,10 @@ def assets(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()
@@ -202,7 +209,10 @@ def liabilities(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()
@@ -277,7 +287,10 @@ def operating(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()
@@ -356,7 +369,10 @@ def investing(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()
@@ -438,7 +454,10 @@ def financing(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()

@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime, timedelta, time as Time
+import random
 import re
 import sys
 import iso8601
@@ -8,7 +9,7 @@ from pytz import timezone
 from holidays import US as holidaysUS
 
 # -----------------------------------------------------------------------------------------------------------------------
-def check_non_negative(value):
+def check_non_negative(value) -> int:
     ivalue = int(value)
     if ivalue < 0:
         raise argparse.ArgumentTypeError(f"{value} is negative")
@@ -16,7 +17,7 @@ def check_non_negative(value):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def check_positive(value):
+def check_positive(value) -> int:
     ivalue = int(value)
     if ivalue <= 0:
         raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
@@ -24,7 +25,7 @@ def check_positive(value):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def valid_date(s):
+def valid_date(s: str) -> datetime:
     try:
         return datetime.strptime(s, "%Y-%m-%d")
     except ValueError:
@@ -118,7 +119,7 @@ def plot_ta(s_ticker, df_ta, s_ta):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def b_is_stock_market_open():
+def b_is_stock_market_open() -> bool:
     """ checks if the stock market is open """
     # Get current US time
     now = datetime.now(timezone("US/Eastern"))
@@ -139,7 +140,7 @@ def b_is_stock_market_open():
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def long_number_format(num):
+def long_number_format(num) -> str:
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -166,7 +167,7 @@ def long_number_format(num):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def clean_data_values_to_float(val):
+def clean_data_values_to_float(val: str) -> float:
     # Remove parenthesis if they exist
     if val.startswith("("):
         val = val[1:]
@@ -210,7 +211,7 @@ def divide_chunks(l, n):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def get_next_stock_market_days(last_stock_day, n_next_days):
+def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     n_days = 0
     l_pred_days = list()
     while n_days < n_next_days:
@@ -232,7 +233,7 @@ def get_next_stock_market_days(last_stock_day, n_next_days):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def get_data(tweet):
+def get_data(tweet) -> hash:
     if "+" in tweet["created_at"]:
         s_datetime = tweet["created_at"].split(" +")[0]
     else:
@@ -250,7 +251,7 @@ def get_data(tweet):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def clean_tweet(tweet, s_ticker):
+def clean_tweet(tweet: str, s_ticker: str) -> str:
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
     ticker = re.compile(r"(?i)@{}(?=\b)".format(s_ticker))
@@ -262,3 +263,17 @@ def clean_tweet(tweet, s_ticker):
     tweet = user.sub("", tweet)
 
     return tweet
+
+
+def get_user_agent() -> str:
+    user_agent_strings = [
+        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0",
+        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0",
+        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
+    ]
+
+    return random.choice(user_agent_strings)

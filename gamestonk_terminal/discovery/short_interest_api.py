@@ -3,7 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
 
 
 # ------------------------------------------------ HIGH_SHORT_INTEREST -------------------------------------------------
@@ -111,7 +111,10 @@ def low_float(l_args):
 
     url_high_short_interested_stocks = "https://www.lowfloat.com"
     text_soup_low_float_stocks = BeautifulSoup(
-        requests.get(url_high_short_interested_stocks).text, "lxml"
+        requests.get(
+            url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
+        ).text,
+        "lxml",
     )
 
     a_low_float_header = list()
