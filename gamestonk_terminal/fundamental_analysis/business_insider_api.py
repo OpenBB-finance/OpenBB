@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from fuzzywuzzy import fuzz
+from gamestonk_terminal.helper_funcs import get_user_agent
 from gamestonk_terminal import config_terminal as cfg
 
 
@@ -30,7 +31,10 @@ def management(l_args, s_ticker):
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
-            requests.get(url_market_business_insider).text, "lxml"
+            requests.get(
+                url_market_business_insider, headers={"User-Agent": get_user_agent()}
+            ).text,
+            "lxml",
         )
 
         l_titles = list()

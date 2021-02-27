@@ -36,7 +36,10 @@ def sec_fillings(l_args, s_ticker):
 
         url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/secfilings"
 
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         a_financials_header = list()
         b_ready_to_process_info = False
@@ -120,7 +123,10 @@ def sean_seah_warnings(l_args, s_ticker):
         url_financials = (
             f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
         )
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()
@@ -153,7 +159,10 @@ def sean_seah_warnings(l_args, s_ticker):
 
         # From BALANCE SHEET, get: 'Liabilities & Shareholders\' Equity', 'Long-Term Debt'
         url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
-        text_soup_financials = BeautifulSoup(requests.get(url_financials).text, "lxml")
+        text_soup_financials = BeautifulSoup(
+            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+            "lxml",
+        )
 
         # Define financials columns
         a_financials_header = list()

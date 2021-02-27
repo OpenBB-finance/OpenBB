@@ -1,5 +1,4 @@
 import argparse
-import re
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -41,7 +40,10 @@ def high_short_interest(l_args):
 
     url_high_short_interested_stocks = "https://www.highshortinterest.com"
     text_soup_high_short_interested_stocks = BeautifulSoup(
-        requests.get(url_high_short_interested_stocks).text, "lxml"
+        requests.get(
+            url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
+        ).text,
+        "lxml",
     )
 
     a_high_short_interest_header = list()
