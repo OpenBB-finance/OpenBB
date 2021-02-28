@@ -1,15 +1,38 @@
 import argparse
-from gamestonk_terminal.config_terminal import USE_COLOR
+import re
 import requests
 from colorama import Fore, Style
 from bs4 import BeautifulSoup
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
+
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_user_agent,
+    patch_pandas_text_adjustment,
+)
+from gamestonk_terminal.config_terminal import USE_COLOR
 
 
-def color_red_green(val):
-    vval = float(val.split(" ")[0])
-    if vval < 0:
+def buy_sell_ratio_color_red_green(val: str) -> str:
+    buy_sell_match = re.match(r"(\d+)% Buys, (\d+)% Sells", val, re.M | re.I)
+
+    if not buy_sell_match:
+        return val
+
+    buys = int(buy_sell_match.group(1))
+    sells = int(buy_sell_match.group(2))
+
+    if buys >= sells:
+        return "{}{}%{} Buys, {}% Sells".format(
+            Fore.GREEN, buys, Style.RESET_ALL, sells
+        )
+
+    return "{}% Buys, {}{}%{} Sells".format(buys, Fore.RED, sells, Style.RESET_ALL)
+
+
+def price_change_color_red_green(val: str) -> str:
+    val_float = float(val.split(" ")[0])
+    if val_float > 0:
         color = Fore.GREEN
     else:
         color = Fore.RED
@@ -129,7 +152,14 @@ def orders(l_args):
         pd.set_option("display.max_colwidth", -1)
 
         if USE_COLOR:
-            df_orders["Price Change"] = df_orders["Price Change"].apply(color_red_green)
+            df_orders["Buy / Sell Ratio"] = df_orders["Buy / Sell Ratio"].apply(
+                buy_sell_ratio_color_red_green
+            )
+            df_orders["Price Change"] = df_orders["Price Change"].apply(
+                price_change_color_red_green
+            )
+
+            patch_pandas_text_adjustment()
 
         print(df_orders.head(n=ns_parser.n_num).iloc[:, :-1].to_string(index=False))
         print("")

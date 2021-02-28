@@ -72,12 +72,12 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            df_stock, d_stock_metadata = ts.get_daily_adjusted(
+            df_stock, _, _ = ts.get_daily_adjusted(
                 symbol=ns_parser.s_ticker, outputsize="full"
             )
         # Intraday
         else:
-            df_stock, d_stock_metadata = ts.get_intraday(
+            df_stock, _, _ = ts.get_intraday(
                 symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
             )
 
@@ -173,12 +173,10 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            df_stock, d_stock_metadata = ts.get_daily_adjusted(
-                symbol=s_ticker, outputsize="full"
-            )
+            df_stock, _, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
         # Intraday
         else:
-            df_stock, d_stock_metadata = ts.get_intraday(
+            df_stock, _, _ = ts.get_intraday(
                 symbol=s_ticker, outputsize="full", interval=s_interval
             )
 
@@ -270,24 +268,23 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
 # -----------------------------------------------------------------------------------------------------------------------
 def main():
-    """Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
-    while I saw my GME shares tanking. But hey, I like the stock."""
+    """
+    Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
+    while I saw my GME shares tanking. But hey, I like the stock.
+    """
 
     s_ticker = ""
     s_start = ""
     df_stock = pd.DataFrame()
-    b_intraday = False
     s_interval = "1440min"
 
-    """
     # Set stock by default to speed up testing
-    s_ticker = "BB"
-    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-    df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
-    df_stock.sort_index(ascending=True, inplace=True)
-    s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
-    df_stock = df_stock[s_start:]
-    """
+    # s_ticker = "BB"
+    # ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+    # df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
+    # df_stock.sort_index(ascending=True, inplace=True)
+    # s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
+    # df_stock = df_stock[s_start:]
 
     # Add list of arguments that the main parser accepts
     menu_parser = argparse.ArgumentParser(prog="gamestonk_terminal", add_help=False)
@@ -320,7 +317,7 @@ def main():
         as_input = input("> ")
 
         # Is command empty
-        if not len(as_input):
+        if not as_input:
             print("")
             continue
 
@@ -433,9 +430,10 @@ def main():
             else:
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
 
-                df_stock_pred, _ = ts.get_daily_adjusted(
+                df_stock_pred, _, _ = ts.get_daily_adjusted(
                     symbol=s_ticker, outputsize="full"
                 )
+                # pylint: disable=no-member
                 df_stock_pred = df_stock_pred.sort_index(ascending=True)
                 df_stock_pred = df_stock_pred[s_start:]
                 b_quit = pm.pred_menu(

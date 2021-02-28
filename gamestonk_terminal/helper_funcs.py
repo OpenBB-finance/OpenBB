@@ -5,6 +5,8 @@ import re
 import sys
 import iso8601
 import matplotlib.pyplot as plt
+import pandas.io.formats.format
+from pandas._config.config import get_option
 from pytz import timezone
 from holidays import US as holidaysUS
 
@@ -28,17 +30,17 @@ def check_positive(value) -> int:
 def valid_date(s: str) -> datetime:
     try:
         return datetime.strptime(s, "%Y-%m-%d")
-    except ValueError:
-        raise argparse.ArgumentTypeError("Not a valid date: {s}")
+    except ValueError as value_error:
+        raise argparse.ArgumentTypeError("Not a valid date: {s}") from value_error
 
 
 # -----------------------------------------------------------------------------------------------------------------------
 def plot_view_stock(df, symbol):
     df.sort_index(ascending=True, inplace=True)
-    pfig, axVolume = plt.subplots()
+    _, axVolume = plt.subplots()
     plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
     plt.ylabel("Volume")
-    axPrice = axVolume.twinx()
+    _ = axVolume.twinx()
     plt.plot(df.index, df.iloc[:, :-1])
     plt.title(symbol + " (Time Series)")
     plt.xlim(df.index[0], df.index[-1])
@@ -77,7 +79,7 @@ def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
 
 # -----------------------------------------------------------------------------------------------------------------------
 def plot_stock_and_ta(df_stock, s_ticker, df_ta, s_ta):
-    pfig, axPrice = plt.subplots()
+    _, axPrice = plt.subplots()
     plt.title(f"{s_ta} on {s_ticker}")
     plt.plot(df_stock.index, df_stock.values, "k", lw=3)
     plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -277,3 +279,72 @@ def get_user_agent() -> str:
     ]
 
     return random.choice(user_agent_strings)
+
+
+# monkey patch Pandas
+def text_adjustment_init(self):
+    self.ansi_regx = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
+    self.encoding = get_option("display.encoding")
+
+
+def text_adjustment_len(self, text):
+    # return compat.strlen(self.ansi_regx.sub("", text), encoding=self.encoding)
+    return len(self.ansi_regx.sub("", text))
+
+
+def text_adjustment_justify(self, texts, max_len, mode="right"):
+    jfunc = (
+        str.ljust
+        if (mode == "left")
+        else str.rjust
+        if (mode == "right")
+        else str.center
+    )
+    out = []
+    for s in texts:
+        escapes = self.ansi_regx.findall(s)
+        if len(escapes) == 2:
+            out.append(
+                escapes[0].strip()
+                + jfunc(self.ansi_regx.sub("", s), max_len)
+                + escapes[1].strip()
+            )
+        else:
+            out.append(jfunc(s, max_len))
+    return out
+
+
+# pylint: disable=unused-argument
+def text_adjustment_join_unicode(self, lines, sep=""):
+    try:
+        return sep.join(lines)
+    except UnicodeDecodeError:
+        # sep = compat.text_type(sep)
+        return sep.join([x.decode("utf-8") if isinstance(x, str) else x for x in lines])
+
+
+# pylint: disable=unused-argument
+def text_adjustment_adjoin(self, space, *lists, **kwargs):
+    # Add space for all but the last column:
+    pads = ([space] * (len(lists) - 1)) + [0]
+    max_col_len = max([len(col) for col in lists])
+    new_cols = []
+    for col, pad in zip(lists, pads):
+        width = max([self.len(s) for s in col]) + pad
+        c = self.justify(col, width, mode="left")
+        # Add blank cells to end of col if needed for different col lens:
+        if len(col) < max_col_len:
+            c.extend([" " * width] * (max_col_len - len(col)))
+        new_cols.append(c)
+
+    rows = [self.join_unicode(row_tup) for row_tup in zip(*new_cols)]
+    return self.join_unicode(rows, sep="\n")
+
+
+# https://github.com/pandas-dev/pandas/issues/18066#issuecomment-522192922
+def patch_pandas_text_adjustment():
+    pandas.io.formats.format.TextAdjustment.__init__ = text_adjustment_init
+    pandas.io.formats.format.TextAdjustment.len = text_adjustment_len
+    pandas.io.formats.format.TextAdjustment.justify = text_adjustment_justify
+    pandas.io.formats.format.TextAdjustment.join_unicode = text_adjustment_join_unicode
+    pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
