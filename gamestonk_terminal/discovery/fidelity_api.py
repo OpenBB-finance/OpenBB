@@ -1,8 +1,20 @@
 import argparse
-from bs4 import BeautifulSoup
+from gamestonk_terminal.config_terminal import USE_COLOR
 import requests
+from colorama import Fore, Style
+from bs4 import BeautifulSoup
 import pandas as pd
 from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
+
+
+def color_red_green(val):
+    vval = float(val.split(" ")[0])
+    if vval < 0:
+        color = Fore.GREEN
+    else:
+        color = Fore.RED
+    return color + val + Style.RESET_ALL
+
 
 # ---------------------------------------------------- ORDERS ----------------------------------------------------
 def orders(l_args):
@@ -44,7 +56,7 @@ def orders(l_args):
         l_orders = list()
         l_orders_vals = list()
         idx = 0
-        for an_order in text_soup_url_orders.findAll(
+        order_list = text_soup_url_orders.findAll(
             "td",
             {
                 "class": [
@@ -57,10 +69,10 @@ def orders(l_args):
                     "eight",
                 ]
             },
-        ):
-
+        )
+        for an_order in order_list:
             if ((idx + 1) % 3 == 0) or ((idx + 1) % 4 == 0) or ((idx + 1) % 6 == 0):
-                if len(an_order) == 0:
+                if not an_order:
                     l_orders_vals.append("")
                 else:
                     l_orders_vals.append(an_order.contents[1])
@@ -115,6 +127,10 @@ def orders(l_args):
         )
 
         pd.set_option("display.max_colwidth", -1)
+
+        if USE_COLOR:
+            df_orders["Price Change"] = df_orders["Price Change"].apply(color_red_green)
+
         print(df_orders.head(n=ns_parser.n_num).iloc[:, :-1].to_string(index=False))
         print("")
 

@@ -1,6 +1,6 @@
 import argparse
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 import pandas as pd
 from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
 
