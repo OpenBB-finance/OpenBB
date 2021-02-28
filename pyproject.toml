@@ -5,7 +5,7 @@ description = ""
 authors = ["Didier Rodrigues Lopes"]
 
 [tool.poetry.dependencies]
-python = "3.6.13"
+python = "~3.6.8"
 fbprophet = "0.6"
 pandas = "1.1.5"
 iso8601 = "0.1.14"
