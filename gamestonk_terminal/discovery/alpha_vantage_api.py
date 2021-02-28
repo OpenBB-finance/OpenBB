@@ -23,7 +23,8 @@ def sectors(l_args):
     sector_perf = SectorPerformances(
         key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
     )
-    df_sectors, _, _ = sector_perf.get_sector()
+    # pylint: disable unbalanced-tuple-unpacking
+    df_sectors, _ = sector_perf.get_sector()
     # pylint: disable=invalid-sequence-index
     df_sectors["Rank A: Real-Time Performance"].plot(kind="bar")
     plt.title("Real Time Performance (%) per Sector")

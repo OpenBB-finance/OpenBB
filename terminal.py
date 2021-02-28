@@ -72,18 +72,21 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            df_stock, _, _ = ts.get_daily_adjusted(
+            # pylint: disable unbalanced-tuple-unpacking
+            df_stock, _ = ts.get_daily_adjusted(
                 symbol=ns_parser.s_ticker, outputsize="full"
             )
         # Intraday
         else:
-            df_stock, _, _ = ts.get_intraday(
+            # pylint: disable unbalanced-tuple-unpacking
+            df_stock, _ = ts.get_intraday(
                 symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
             )
 
         df_stock.sort_index(ascending=True, inplace=True)
 
-    except:
+    except Exception as e:
+        print(e)
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return [s_ticker, s_start, s_interval, df_stock]
 
@@ -173,10 +176,12 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            df_stock, _, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
+            # pylint: disable unbalanced-tuple-unpacking
+            df_stock, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
         # Intraday
         else:
-            df_stock, _, _ = ts.get_intraday(
+            # pylint: disable unbalanced-tuple-unpacking
+            df_stock, _ = ts.get_intraday(
                 symbol=s_ticker, outputsize="full", interval=s_interval
             )
 
@@ -430,7 +435,8 @@ def main():
             else:
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
 
-                df_stock_pred, _, _ = ts.get_daily_adjusted(
+                # pylint: disable unbalanced-tuple-unpacking
+                df_stock_pred, _ = ts.get_daily_adjusted(
                     symbol=s_ticker, outputsize="full"
                 )
                 # pylint: disable=no-member
