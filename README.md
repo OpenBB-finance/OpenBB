@@ -2,7 +2,7 @@
 
 ## About
 
-Gamestonk Terminal is an awesome stock market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
+Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
 
 The implementation (in python) allows to easily add more commands, and expand on their configuration.
 
@@ -234,6 +234,8 @@ When these are obtained, don't forget to update [config_terminal.py](/config_ter
   * GT_API_TWITTER_KEY
   * GT_API_TWITTER_SECRET_KEY
   * GT_API_TWITTER_BEARER_TOKEN.
+
+Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ## Disclaimer <a name="Disclaimer"></a>
 
