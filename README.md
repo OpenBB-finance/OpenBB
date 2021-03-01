@@ -49,38 +49,38 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
-Command|Explanation
----|---
-`map`           |S&P500 index stocks map ([Finviz](https://finviz.com))
-`sectors`       |show sectors performance ([Alpha Vantage](www.alphavantage.co))
-`gainers`       |show latest top gainers ([Yahoo Finance](https://finance.yahoo.com/))
-`orders`        |orders by Fidelity Customers ([Fidelity](https://www.fidelity.com/))
-`up_earnings`   |upcoming earnings release dates ([Seeking Alpha](https://seekingalpha.com/))
-`high_short`    |show top high short interest stocks of over 20% ratio ([High Short Interest](https://www.highshortinterest.com/))
-`low_float`     |show low float stocks under 10M shares float ([Low Float](https://www.lowfloat.com/))
-`simply_wallst` |Simply Wall St. research data ([Simply Wall St.](https://simplywall.st/about))
-`spachero`      |great website for SPACs research ([SpacHero](https://www.spachero.com/))
-`uwhales`       |good website for SPACs research ([UnusualWhales](https://unusualwhales.com/))
+Command|Description|Source
+---|---|---
+`map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
+`sectors`       |show sectors performance |[Alpha Vantage](www.alphavantage.co)
+`gainers`       |show latest top gainers |[Yahoo Finance](https://finance.yahoo.com/)
+`orders`        |orders by Fidelity Customers |[Fidelity](https://www.fidelity.com/)
+`up_earnings`   |upcoming earnings release dates |[Seeking Alpha](https://seekingalpha.com/)
+`high_short`    |show top high short interest stocks of over 20% ratio |[High Short Interest](https://www.highshortinterest.com/)
+`low_float`     |show low float stocks under 10M shares float |[Low Float](https://www.lowfloat.com/)
+`simply_wallst` |Simply Wall St. research data |[Simply Wall St.](https://simplywall.st/about)
+`spachero`      |great website for SPACs research |[SpacHero](https://www.spachero.com/)
+`uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
 
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
-Command|Explanation
+Command|Description
 ----|----
-Reddit:| 
+[Reddit](https://reddit.com):| 
 `wsb`           |show what WSB gang is up to in subreddit wallstreetbets
 `watchlist`     |show other users watchlist
 `popular`       |show popular tickers
 `spac_c`        |show other users spacs announcements from subreddit SPACs community
 `spac`          |show other users spacs announcements from other subs
-Stocktwits:| 
+[Stocktwits](https://stocktwits.com/):| 
 `bullbear`      |estimate quick sentiment from last 30 messages on board
 `messages`      |output up to the 30 last messages on the board
 `trending`      |trending stocks
 `stalker`       |stalk stocktwits user's last message
-Twitter:| 
+[Twitter](https://twitter.com/):| 
 `infer`         |infer about stock's sentiment from latest tweets
 `sentiment`     |in-depth sentiment prediction from tweets over time
-Google:| 
+[Google](https://google.com/):|
 `mentions`      |interest over time based on stock's mentions
 `regions`       |regions that show highest interest in stock
 `queries`       |top related queries with this stock
@@ -111,7 +111,7 @@ Command|Website
 
 ### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
 
-Command|Explanation
+Command|Description
 ----- | ---------
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
 `mgmt`          |management team of the company ([Business Insider](https://www.businessinsider.com/))
@@ -147,25 +147,25 @@ Financial Modeling Prep API |
 
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
-Command | Explanation
------- | ------
+Command | Description | Wikipedia | Investopedia
+------ | ------ | ------ | -----
 overlap: | 
-`ema`         | exponential moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [source 2](https://www.investopedia.com/terms/e/ema.asp))
-`sma`         |simple moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [source 2](https://www.investopedia.com/terms/s/sma.asp))
-`vwap`        |volume weighted average price ([source 1](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [source 2](https://www.investopedia.com/terms/v/vwap.asp))
+`ema`         | exponential moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) | [Link](https://www.investopedia.com/terms/e/ema.asp)
+`sma`         |simple moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter))| [Link](https://www.investopedia.com/terms/s/sma.asp)
+`vwap`        |volume weighted average price | [Link](https://en.wikipedia.org/wiki/Volume-weighted_average_price)| [Link](https://www.investopedia.com/terms/v/vwap.asp)
 momentum: | 
-`cci`         |commodity channel index ([source 1](https://en.wikipedia.org/wiki/Commodity_channel_index), [source 2](https://www.investopedia.com/terms/c/commoditychannelindex.asp))
-`macd`        |moving average convergence/divergence ([source 1](https://en.wikipedia.org/wiki/MACD), [source 2](https://www.investopedia.com/terms/m/macd.asp))
-`rsi`         |relative strength index ([source 1](https://en.wikipedia.org/wiki/Relative_strength_index), [source 2](https://www.investopedia.com/terms/r/rsi.asp))
-`stoch`       |stochastic oscillator ([source 1](https://en.wikipedia.org/wiki/Stochastic_oscillator), [source 2](https://www.investopedia.com/terms/s/stochasticoscillator.asp))
+`cci`         |commodity channel index | [Link](https://en.wikipedia.org/wiki/Commodity_channel_index)| [Link](https://www.investopedia.com/terms/c/commoditychannelindex.asp)
+`macd`        |moving average convergence/divergence | [Link](https://en.wikipedia.org/wiki/MACD)| [Link](https://www.investopedia.com/terms/m/macd.asp)
+`rsi`         |relative strength index | [Link](https://en.wikipedia.org/wiki/Relative_strength_index)| [Link](https://www.investopedia.com/terms/r/rsi.asp)
+`stoch`       |stochastic oscillator | [Link](https://en.wikipedia.org/wiki/Stochastic_oscillator)| [Link](https://www.investopedia.com/terms/s/stochasticoscillator.asp)
 trend:
-`adx`         |average directional movement index ([source 1](https://en.wikipedia.org/wiki/Average_directional_movement_index), [source 2](https://www.investopedia.com/terms/a/adx.asp))
-`aroon`       |aroon indicator ([source 1](https://www.investopedia.com/terms/a/aroon.asp))
+`adx`         |average directional movement index | [Link](https://en.wikipedia.org/wiki/Average_directional_movement_index)| [Link](https://www.investopedia.com/terms/a/adx.asp)
+`aroon`       |aroon indicator | [Link](https://www.investopedia.com/terms/a/aroon.asp)
 volatility: | 
-`bbands`      |bollinger bands ([source 1](https://en.wikipedia.org/wiki/Bollinger_Bands), [source 2](https://www.investopedia.com/terms/b/bollingerbands.asp))
+`bbands`      |bollinger bands | [Link](https://en.wikipedia.org/wiki/Bollinger_Bands)| [Link](https://www.investopedia.com/terms/b/bollingerbands.asp)
 volume: | 
-`ad`          |chaikin accumulation/distribution line values ([source 1](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [source 2](https://www.investopedia.com/terms/a/accumulationdistribution.asp))
-`obv`         |on balance volume ([source 1](https://en.wikipedia.org/wiki/On-balance_volume), [source 2](https://www.investopedia.com/terms/o/onbalancevolume.asp))
+`ad`          |chaikin accumulation/distribution line values | [Link](https://en.wikipedia.org/wiki/Accumulation/distribution_index)| [Link](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
+`obv`         |on balance volume | [Link](https://en.wikipedia.org/wiki/On-balance_volume)| [Link](https://www.investopedia.com/terms/o/onbalancevolume.asp)
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
 Command|Explanation
@@ -186,17 +186,17 @@ Command|Explanation
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
 Command|Algorithm
 ------ | ----------
-`sma`         |simple moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [source 2](https://www.investopedia.com/terms/s/sma.asp))
-`knn`         |k-Nearest Neighbors ([source 1](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
-`linear`      |linear regression (polynomial 1) ([source 1](https://en.wikipedia.org/wiki/Linear_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
-`quadratic`   |quadratic regression (polynomial 2) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
-`cubic`       |cubic regression (polynomial 3) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
-`regression`  |regression (other polynomial) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
-`arima`       |autoregressive integrated moving average ([source 1](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [source 2](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)) 
-`prophet`     |Facebook's prophet prediction] ([source 1](https://facebook.github.io/prophet/))
-`mlp`         |MultiLayer Perceptron ([source 1](https://en.wikipedia.org/wiki/Multilayer_perceptron))
-`rnn`         |Recurrent Neural Network  ([source 1](https://en.wikipedia.org/wiki/Recurrent_neural_network))
-`lstm`        |Long Short-Term Memory  ([source 1](https://en.wikipedia.org/wiki/Long_short-term_memory))
+`sma`         |simple moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average)| [Link](https://www.investopedia.com/terms/s/sma.asp)
+`knn`         |k-Nearest Neighbors | [Link](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
+`linear`      |linear regression (polynomial 1) | [Link](https://en.wikipedia.org/wiki/Linear_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
+`quadratic`   |quadratic regression (polynomial 2) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
+`cubic`       |cubic regression (polynomial 3) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
+`regression`  |regression (other polynomial) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
+`arima`       |autoregressive integrated moving average | [Link](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average)| [Link](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp) 
+`prophet`     |Facebook's prophet prediction] | [Link](https://facebook.github.io/prophet/))
+`mlp`         |MultiLayer Perceptron | [Link](https://en.wikipedia.org/wiki/Multilayer_perceptron))
+`rnn`         |Recurrent Neural Network  | [Link](https://en.wikipedia.org/wiki/Recurrent_neural_network))
+`lstm`        |Long Short-Term Memory  | [Link](https://en.wikipedia.org/wiki/Long_short-term_memory))
 
 
 ## Install <a name="Install"></a>
