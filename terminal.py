@@ -16,6 +16,7 @@ from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.sentiment import sen_menu as sm
 from gamestonk_terminal.prediction_techniques import pred_menu as pm
+from gamestonk_terminal.papermill import papermill_menu as mill
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal import config_terminal as cfg
 
@@ -252,6 +253,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print(
         "   disc        discover trending stocks, \t e.g. map, sectors, high short interest"
     )
+    print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print(
         "   sen         sentiment of the market, \t from: reddit, stocktwits, twitter"
     )
@@ -306,6 +308,7 @@ def main():
             "load",
             "view",
             "disc",
+            "mill",
             "sen",
             "res",
             "fa",
@@ -360,6 +363,18 @@ def main():
         # DISCOVERY MENU
         elif ns_known_args.opt == "disc":
             b_quit = dm.disc_menu()
+
+            if b_quit:
+                print(
+                    "Hope you made money today. Good bye my lover, good bye my friend.\n"
+                )
+                return
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+        # PAPERMILL MENU
+        elif ns_known_args.opt == "mill":
+            b_quit = mill.papermill_menu()
 
             if b_quit:
                 print(

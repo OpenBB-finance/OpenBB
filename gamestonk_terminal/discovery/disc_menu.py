@@ -59,6 +59,7 @@ def disc_menu():
             "up_earnings",
             "simply_wallst",
             "uwhales",
+            "mill",
         ],
     )
 

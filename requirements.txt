@@ -6,6 +6,7 @@ astunparse==1.6.3
 async-timeout==3.0.1
 attrs==20.3.0
 beautifulsoup4==4.9.3
+black==19.10b0
 bpemb==0.3.2
 cachetools==4.2.1
 certifi==2020.12.5
@@ -41,6 +42,7 @@ idna==2.10
 importlib-metadata==3.7.0
 inflection==0.5.1
 iso8601==0.1.14
+jupyter==1.0.0
 Janome==0.4.1
 joblib==1.0.1
 Keras-Preprocessing==1.1.2
@@ -64,6 +66,7 @@ overrides==3.0.0
 packaging==20.9
 pandas==1.1.5
 pandas-ta==0.2.23b0
+papermill==2.3.2
 patsy==0.5.1
 pmdarima==1.8.0
 praw==7.1.4
@@ -75,8 +78,10 @@ psutil==5.8.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 PyMeeus==0.4.2
+pylint==2.7.0
 pyparsing==2.4.7
 PySocks==1.7.1
+pytest==6.2.2
 python-dateutil==2.8.1
 python-Levenshtein==0.12.2
 pytrends==4.7.3
@@ -131,6 +136,3 @@ zipp==3.4.0
 lunarcalendar
 fbprophet
 levenshtein
-black
-pylint
-pytest

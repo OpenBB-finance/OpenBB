@@ -4,5 +4,7 @@ __pycache__/
 .env
 .venv
 .vscode
+.ipynb_checkpoints
 env/
 venv/
+notebooks/reports/
