@@ -127,7 +127,7 @@ def watchlist(l_args):
                                 d_watchlist_tickers[key] = 1
 
                         l_watchlist_links.append(
-                            f"https://www.reddit.com{submission.permalink}"
+                            f"https://old.reddit.com{submission.permalink}"
                         )
                         # delte below, not necessary I reckon. Probably just link?
 
@@ -135,7 +135,7 @@ def watchlist(l_args):
                         s_datetime = datetime.utcfromtimestamp(
                             submission.created_utc
                         ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
+                        s_link = f"https://old.reddit.com{submission.permalink}"
                         s_all_awards = ""
                         for award in submission.all_awardings:
                             s_all_awards += f"{award['count']} {award['name']}\n"
@@ -673,7 +673,7 @@ def spac(l_args):
                                 d_watchlist_tickers[key] = 1
 
                         l_watchlist_links.append(
-                            f"https://www.reddit.com{submission.permalink}"
+                            f"https://old.reddit.com{submission.permalink}"
                         )
                         # delte below, not necessary I reckon. Probably just link?
 
@@ -681,7 +681,7 @@ def spac(l_args):
                         s_datetime = datetime.utcfromtimestamp(
                             submission.created_utc
                         ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
+                        s_link = f"https://old.reddit.com{submission.permalink}"
                         s_all_awards = ""
                         for award in submission.all_awardings:
                             s_all_awards += f"{award['count']} {award['name']}\n"
@@ -831,14 +831,14 @@ def wsb_community(l_args):
                 if not submission.removed_by_category:
 
                     l_watchlist_links.append(
-                        f"https://www.reddit.com{submission.permalink}"
+                        f"https://old.reddit.com{submission.permalink}"
                     )
 
                     # Refactor data
                     s_datetime = datetime.utcfromtimestamp(
                         submission.created_utc
                     ).strftime("%d/%m/%Y %H:%M:%S")
-                    s_link = f"https://www.reddit.com{submission.permalink}"
+                    s_link = f"https://old.reddit.com{submission.permalink}"
                     s_all_awards = ""
                     for award in submission.all_awardings:
                         s_all_awards += f"{award['count']} {award['name']}\n"
