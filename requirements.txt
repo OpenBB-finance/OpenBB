@@ -1,7 +1,7 @@
 absl-py==0.11.0
 aiohttp==3.7.3
 alpha-vantage==2.3.1
-appscript==1.1.2
+# appscript==1.1.2
 astunparse==1.6.3
 async-timeout==3.0.1
 attrs==20.3.0
@@ -20,7 +20,7 @@ Cython==0.29.17
 decorator==4.4.2
 Deprecated==1.2.11
 filelock==3.0.12
-finviz==1.3.4
+finviz @ git+https://github.com/mariostoev/finviz@be8dc934e80bf03d26ddd37b4c78a5e3d57abeef
 flair==0.7
 flatbuffers==1.12
 ftfy==5.9
@@ -50,7 +50,8 @@ korean-lunar-calendar==0.2.1
 langdetect==1.0.8
 lxml==4.6.2
 Markdown==3.3.4
-matplotlib==3.1.1
+# matplotlib==3.1.1
+matplotlib==3.3.2
 more-itertools==8.7.0
 mpld3==0.3
 multidict==5.1.0
@@ -77,6 +78,7 @@ PyMeeus==0.4.2
 pyparsing==2.4.7
 PySocks==1.7.1
 python-dateutil==2.8.1
+python-Levenshtein==0.12.2
 pytrends==4.7.3
 pytz==2019.3
 Quandl==3.6.0

@@ -1,4 +1,4 @@
-""" CLI tests """
+""" discovery/fidelity_api.py tests """
 # noqa: F401
 import unittest
 

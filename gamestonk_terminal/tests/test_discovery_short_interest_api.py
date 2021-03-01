@@ -1,4 +1,4 @@
-""" CLI tests """
+""" discovery/short_interest_api.py tests """
 # noqa: F401
 import unittest
 
