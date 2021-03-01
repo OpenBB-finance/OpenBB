@@ -1,7 +1,7 @@
 import argparse
+import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-import requests
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 # ---------------------------------------------------- INCOME ----------------------------------------------------

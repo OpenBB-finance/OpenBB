@@ -21,7 +21,7 @@ def profile(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -62,7 +62,7 @@ def quote(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")

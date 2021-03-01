@@ -66,6 +66,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
 
 
 # ---------------------------------------------------- INFO ----------------------------------------------------
+# pylint: disable=unused-argument
 def info(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="info",
@@ -76,7 +77,7 @@ def info(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}")
@@ -89,7 +90,8 @@ def info(l_args, s_ticker):
                 line = fp.readline()
             print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("ERROR!\n")
         return
 

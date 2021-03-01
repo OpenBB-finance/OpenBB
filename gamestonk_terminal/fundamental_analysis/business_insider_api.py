@@ -1,13 +1,9 @@
 import argparse
-import re
-import json
-from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from fuzzywuzzy import fuzz
 from gamestonk_terminal.helper_funcs import get_user_agent
-from gamestonk_terminal import config_terminal as cfg
 
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
@@ -21,7 +17,7 @@ def management(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -87,6 +83,7 @@ def management(l_args, s_ticker):
                 print(f"{df_management['Insider Activity'][ind]}")
             print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

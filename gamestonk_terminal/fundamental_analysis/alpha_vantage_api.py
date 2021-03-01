@@ -1,34 +1,35 @@
-from alpha_vantage.fundamentaldata import FundamentalData
-from gamestonk_terminal import config_terminal as cfg
 import argparse
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
-import json
 import requests
+from alpha_vantage.fundamentaldata import FundamentalData
+import pandas as pd
 from pandas.io.json import json_normalize
+from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.helper_funcs import check_positive, long_number_format
 
 
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="overview",
-        description="""Prints an overview about the company. The following fields are expected: 
-                                     Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry, 
-                                     Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization, 
-                                     EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS, 
-                                     Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM, 
-                                     Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, 
-                                     Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, 
-                                     Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 
-                                     52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, 
-                                     Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, 
-                                     Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, 
-                                     Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
-                                     [Source: Alpha Vantage]""",
+        description="""
+            Prints an overview about the company. The following fields are expected:
+            Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry,
+            Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization,
+            EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS,
+            Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM,
+            Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY,
+            Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE,
+            Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high,
+            52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float,
+            Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float,
+            Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield,
+            Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date.
+            [Source: Alpha Vantage]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -84,7 +85,8 @@ def overview(l_args, s_ticker):
             print(f"Error: {result.status_code}")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -93,15 +95,16 @@ def overview(l_args, s_ticker):
 def key(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="key",
-        description="""Gives main key metrics about the company (it's a subset of the 
-                                     Overview data from Alpha Vantage API). The following fields are expected: 
-                                     Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio, 
-                                     Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 
-                                     50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]""",
+        description="""
+            Gives main key metrics about the company (it's a subset of the Overview data from Alpha Vantage API).
+            The following fields are expected: Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio,
+            Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 50 day moving average, Analyst
+            target price, Beta [Source: Alpha Vantage API]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -156,7 +159,8 @@ def key(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -165,14 +169,15 @@ def key(l_args, s_ticker):
 def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="incom",
-        description="""Prints a complete income statement over time. This can be either quarterly 
-                                     or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of 
-                                     revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, 
-                                     Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income 
-                                     before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, 
-                                     Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, 
-                                     Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other 
-                                     income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]""",
+        description="""
+            Prints a complete income statement over time. This can be either quarterly or annually.
+            The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation
+            and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and
+            administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio,
+            Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses,
+            Operating income, Operating income ratio, Other expenses, Period, Research and development expenses,
+            Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out,
+            Weighted average shs out dil [Source: Alpha Vantage]""",
     )
 
     parser.add_argument(
@@ -207,15 +212,19 @@ def income_statement(l_args, s_ticker):
 
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
-            df_fa, d_fd_metadata = fd.get_income_statement_quarterly(symbol=s_ticker)
+            # pylint: disable=unbalanced-tuple-unpacking
+            df_fa, _ = fd.get_income_statement_quarterly(symbol=s_ticker)
         else:
-            df_fa, d_fd_metadata = fd.get_income_statement_annual(symbol=s_ticker)
+            # pylint: disable=unbalanced-tuple-unpacking
+            df_fa, _ = fd.get_income_statement_annual(symbol=s_ticker)
 
+        # pylint: disable=no-member
         df_fa = df_fa.set_index("fiscalDateEnding")
         df_fa = df_fa.head(n=ns_parser.n_num).T
         df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["None"])).dropna()
         df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["0"])).dropna()
         df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        # begin problematic for pylint
         df_fa.index = [
             "".join(
                 " " + char if char.isupper() else char.strip() for char in idx
@@ -224,11 +233,13 @@ def income_statement(l_args, s_ticker):
         ]
         df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
         df_fa.columns.name = "Fiscal Date Ending"
+        # end problematic for pylint
         print(df_fa)
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -237,20 +248,19 @@ def income_statement(l_args, s_ticker):
 def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="balance",
-        description="""Prints a complete balance sheet statement over time. This can be 
-                                     either quarterly or annually. The following fields are expected: Accepted date, 
-                                     Account payables, Accumulated other comprehensive income loss, Cash and cash 
-                                     equivalents, Cash and short term investments, Common stock, Deferred revenue, 
-                                     Deferred revenue non current, Deferred tax liabilities non current, Filling date, 
-                                     Final link, Goodwill, Goodwill and intangible assets, Intangible assets, Inventory, 
-                                     Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, 
-                                     Other current assets, Other current liabilities, Other liabilities, Other non current 
-                                     assets, Other non current liabilities, Othertotal stockholders equity, Period, Property 
-                                     plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, 
-                                     Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, 
-                                     Total investments, Total liabilities, Total liabilities and stockholders equity, Total 
-                                     non current assets, Total non current liabilities, and Total stockholders equity. 
-                                     [Source: Alpha Vantage]""",
+        description="""
+            Prints a complete balance sheet statement over time. This can be either quarterly or annually.
+            The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive
+            income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue,
+            Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill,
+            Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments,
+            Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities,
+            Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property
+            plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables,
+            Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total
+            liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current
+            liabilities, and Total stockholders equity. [Source: Alpha Vantage]
+        """,
     )
 
     parser.add_argument(
@@ -285,9 +295,9 @@ def balance_sheet(l_args, s_ticker):
 
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
-            df_fa, d_fd_metadata = fd.get_balance_sheet_quarterly(symbol=s_ticker)
+            df_fa, _ = fd.get_balance_sheet_quarterly(symbol=s_ticker)
         else:
-            df_fa, d_fd_metadata = fd.get_balance_sheet_annual(symbol=s_ticker)
+            df_fa, _ = fd.get_balance_sheet_annual(symbol=s_ticker)
 
         df_fa = df_fa.set_index("fiscalDateEnding")
         df_fa = df_fa.head(n=ns_parser.n_num).T
@@ -306,7 +316,8 @@ def balance_sheet(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -315,17 +326,18 @@ def balance_sheet(l_args, s_ticker):
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="cash",
-        description="""Prints a complete cash flow statement over time. This can be either 
-                                     quarterly or annually. The following fields are expected: Accepted date, Accounts payables, 
-                                     Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, 
-                                     Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, 
-                                     Debt repayment, Deferred income tax, Depreciation and amortization, Dividends paid, 
-                                     Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory, 
-                                     Investments in property plant and equipment, Link, Net cash provided by operating activities, 
-                                     Net cash used for investing activites, Net cash used provided by financing activities, Net 
-                                     change in cash, Net income, Operating cash flow, Other financing activites, Other investing 
-                                     activites, Other non cash items, Other working capital, Period, Purchases of investments, 
-                                     Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]""",
+        description="""
+            Prints a complete cash flow statement over time. This can be either quarterly or annually. The following
+            fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital
+            expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock
+            issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
+            Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory,
+            Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash
+            used for investing activites, Net cash used provided by financing activities, Net change in cash, Net income,
+            Operating cash flow, Other financing activites, Other investing activites, Other non cash items, Other working
+            capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation.
+            [Source: Alpha Vantage]
+        """,
     )
 
     parser.add_argument(
@@ -360,9 +372,9 @@ def cash_flow(l_args, s_ticker):
 
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
-            df_fa, d_fd_metadata = fd.get_cash_flow_quarterly(symbol=s_ticker)
+            df_fa, _ = fd.get_cash_flow_quarterly(symbol=s_ticker)
         else:
-            df_fa, d_fd_metadata = fd.get_cash_flow_annual(symbol=s_ticker)
+            df_fa, _ = fd.get_cash_flow_annual(symbol=s_ticker)
 
         df_fa = df_fa.set_index("fiscalDateEnding")
         df_fa = df_fa.head(n=ns_parser.n_num).T
@@ -381,7 +393,8 @@ def cash_flow(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -390,9 +403,10 @@ def cash_flow(l_args, s_ticker):
 def earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="earnings",
-        description="""Print earnings dates and reported EPS of the company. 
-                                     The following fields are expected: Fiscal Date Ending and Reported EPS.
-                                     [Source: Alpha Vantage]""",
+        description="""
+            Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date
+            Ending and Reported EPS. [Source: Alpha Vantage]
+        """,
     )
 
     parser.add_argument(
@@ -470,7 +484,7 @@ def earnings(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
-

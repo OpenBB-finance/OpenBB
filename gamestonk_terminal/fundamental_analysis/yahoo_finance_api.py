@@ -1,36 +1,39 @@
+import argparse
+from datetime import datetime
 import yfinance as yf
 import pandas as pd
-from gamestonk_terminal import config_terminal as cfg
-import argparse
-from gamestonk_terminal.helper_funcs import *
+
+from gamestonk_terminal.helper_funcs import long_number_format
 
 
 # ---------------------------------------------------- INFO ----------------------------------------------------
 def info(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="info",
-        description="""Print information about the company. The following fields are expected: 
-                                     Zip, Sector, Full time employees, Long business summary, City, Phone, State, Country, 
-                                     Website, Max age, Address, Industry, Previous close, Regular market open, Two hundred 
-                                     day average, Payout ratio, Regular market day high, Average daily volume 10 day, 
-                                     Regular market previous close, Fifty day average, Open, Average volume 10 days, Beta, 
-                                     Regular market day low, Price hint, Currency, Trailing PE, Regular market volume, 
-                                     Market cap, Average volume, Price to sales trailing 12 months, Day low, Ask, Ask size, 
-                                     Volume, Fifty two week high, Forward PE, Fifty two week low, Bid, Tradeable, Bid size, 
-                                     Day high, Exchange, Short name, Long name, Exchange timezone name, Exchange timezone 
-                                     short name, Is esg populated, Gmt off set milliseconds, Quote type, Symbol, Message board id, 
-                                     Market, Enterprise to revenue, Profit margins, Enterprise to ebitda, 52 week change, 
-                                     Forward EPS, Shares outstanding, Book value, Shares short, Shares percent shares out, 
-                                     Last fiscal year end, Held percent institutions, Net income to common, Trailing EPS, 
-                                     Sand p52 week change, Price to book, Held percent insiders, Next fiscal year end, 
-                                     Most recent quarter, Short ratio, Shares short previous month date, Float shares, 
-                                     Enterprise value, Last split date, Last split factor, Earnings quarterly growth, 
-                                     Date short interest, PEG ratio, Short percent of float, Shares short prior month, 
-                                     Regular market price, Logo_url. [Source: Yahoo Finance]""",
+        description="""
+            Print information about the company. The following fields are expected:
+            Zip, Sector, Full time employees, Long business summary, City, Phone, State, Country,
+            Website, Max age, Address, Industry, Previous close, Regular market open, Two hundred
+            day average, Payout ratio, Regular market day high, Average daily volume 10 day,
+            Regular market previous close, Fifty day average, Open, Average volume 10 days, Beta,
+            Regular market day low, Price hint, Currency, Trailing PE, Regular market volume,
+            Market cap, Average volume, Price to sales trailing 12 months, Day low, Ask, Ask size,
+            Volume, Fifty two week high, Forward PE, Fifty two week low, Bid, Tradeable, Bid size,
+            Day high, Exchange, Short name, Long name, Exchange timezone name, Exchange timezone
+            short name, Is esg populated, Gmt off set milliseconds, Quote type, Symbol, Message board id,
+            Market, Enterprise to revenue, Profit margins, Enterprise to ebitda, 52 week change,
+            Forward EPS, Shares outstanding, Book value, Shares short, Shares percent shares out,
+            Last fiscal year end, Held percent institutions, Net income to common, Trailing EPS,
+            Sand p52 week change, Price to book, Held percent insiders, Next fiscal year end,
+            Most recent quarter, Short ratio, Shares short previous month date, Float shares,
+            Enterprise value, Last split date, Last split factor, Earnings quarterly growth,
+            Date short interest, PEG ratio, Short percent of float, Shares short prior month,
+            Regular market price, Logo_url. [Source: Yahoo Finance]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -73,7 +76,8 @@ def info(l_args, s_ticker):
         print(df_info.loc["Long business summary"].values[0])
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -86,7 +90,7 @@ def shareholders(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -141,7 +145,8 @@ def shareholders(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -150,15 +155,17 @@ def shareholders(l_args, s_ticker):
 def sustainability(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="sust",
-        description="""Print sustainability values of the company. The following fields are expected: 
-                                     Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo, 
-                                     Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting, 
-                                     Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides, Adult, Percentile, 
-                                     Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]""",
+        description="""
+            Print sustainability values of the company. The following fields are expected:
+            Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo,
+            Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting,
+            Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides, Adult, Percentile,
+            Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -197,7 +204,8 @@ def sustainability(l_args, s_ticker):
         print(df_sustainability.to_string(header=False))
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -206,12 +214,13 @@ def sustainability(l_args, s_ticker):
 def calendar_earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="calendar_earnings",
-        description="""Calendar earnings of the company. Including revenue and earnings estimates.
-                                     [Source: Yahoo Finance]""",
+        description="""
+            Calendar earnings of the company. Including revenue and earnings estimates. [Source: Yahoo Finance]
+        """,
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -226,14 +235,16 @@ def calendar_earnings(l_args, s_ticker):
 
         print(f"Earnings Date: {df_calendar.iloc[:, 0]['Earnings Date']}")
         print(
-            f"Earnings Estimate Avg: {df_calendar.iloc[:, 0]['Earnings Average']} [{df_calendar.iloc[:, 0]['Earnings Low']}, {df_calendar.iloc[:, 0]['Earnings High']}]"
+            f"Earnings Estimate Avg: {df_calendar.iloc[:, 0]['Earnings Average']} \
+                [{df_calendar.iloc[:, 0]['Earnings Low']}, {df_calendar.iloc[:, 0]['Earnings High']}]"
         )
         print(
-            f"Revenue Estimate Avg:  {df_calendar.iloc[:, 0]['Revenue Average']} [{df_calendar.iloc[:, 0]['Revenue Low']}, {df_calendar.iloc[:, 0]['Revenue High']}]"
+            f"Revenue Estimate Avg:  {df_calendar.iloc[:, 0]['Revenue Average']} \
+                [{df_calendar.iloc[:, 0]['Revenue Low']}, {df_calendar.iloc[:, 0]['Revenue High']}]"
         )
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
-
