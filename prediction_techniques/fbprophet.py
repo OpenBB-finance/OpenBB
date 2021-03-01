@@ -49,7 +49,8 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
         plt.ylim(ymin, ymax)
         plt.xlim(df_stock['ds'].values[0], get_next_stock_market_days(l_pred_days[-1], 1)[-1])
         plt.title(f"Fb Prophet on {s_ticker} - {ns_parser.n_days} days prediction")
-        plt.show(block=False)
+        plt.ion()
+        plt.show()
 
         print("")
         print("Predicted share price:")

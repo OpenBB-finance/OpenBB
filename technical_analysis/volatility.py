@@ -49,7 +49,8 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-            plt.show(block=False)
+            plt.ion()
+            plt.show()
             
         # Intraday 
         else:
@@ -70,7 +71,8 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='major', color='#666666', linestyle='-')
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-            plt.show(block=False)
+            plt.ion()
+            plt.show()
         print("")
 
     except:

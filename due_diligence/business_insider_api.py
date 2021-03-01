@@ -77,7 +77,8 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.minorticks_on()
         plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.show(block=False)
+        plt.ion()
+        plt.show()
         print("")
 
         pd.set_option('display.max_colwidth', -1)
@@ -303,7 +304,8 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.minorticks_on()
         plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.show(block=False)
+        plt.ion()
+        plt.show()
 
         l_names = list()
         for s_name in text_soup_market_business_insider.findAll('a', {'onclick':"silentTrackPI()"}):

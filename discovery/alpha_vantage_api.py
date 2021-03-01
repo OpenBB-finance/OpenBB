@@ -25,5 +25,6 @@ def sectors(l_args):
     plt.title('Real Time Performance (%) per Sector')
     plt.tight_layout()
     plt.grid()
-    plt.show(block=False)
+    plt.ion()
+    plt.show()
     print("")

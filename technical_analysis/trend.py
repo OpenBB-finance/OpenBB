@@ -51,7 +51,8 @@ def adx(l_args, s_ticker, s_interval, df_stock):
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.ylim([0, 100])
-            plt.show(block=False)
+            plt.ion()
+            plt.show()
 
         # Intraday 
         else:
@@ -80,7 +81,8 @@ def adx(l_args, s_ticker, s_interval, df_stock):
             plt.minorticks_on()
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.ylim([0, 100])
-            plt.show(block=False)
+            plt.ion()
+            plt.show()
         print("")
 
     except:
@@ -149,7 +151,8 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         plt.minorticks_on()
         plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
         plt.ylim([-100, 100])
-        plt.show(block=False)
+        plt.ion()
+        plt.show()
         print("")
 
     except:

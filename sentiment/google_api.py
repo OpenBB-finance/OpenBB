@@ -38,7 +38,8 @@ def mentions(l_args, s_ticker, s_start):
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.ylabel('Interest [%]')
         plt.xlabel("Time")
-        plt.show(block=False)
+        plt.ion()
+        plt.show()
         print("")
 
     except:
@@ -71,7 +72,8 @@ def regions(l_args, s_ticker):
         plt.grid(b=True, which='major', color='#666666', linestyle='-')
         plt.ylabel('Interest [%]')
         plt.xlabel("Time")
-        plt.show(block=False)
+        plt.ion()
+        plt.show()
         print("")
 
     except:

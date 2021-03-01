@@ -53,7 +53,8 @@ def plot_view_stock(df, symbol):
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-    plt.show(block=False)
+    plt.ion()
+    plt.show()
     print("")
 
 
@@ -76,7 +77,8 @@ def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-    plt.show(block=False)
+    plt.ion()
+    plt.show()
     print("")
 
 
@@ -103,7 +105,8 @@ def plot_stock_and_ta(df_stock, s_ticker, df_ta, s_ta):
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-    plt.show(block=False)
+    plt.ion()
+    plt.show()
     print("")
 
 
@@ -119,7 +122,8 @@ def plot_ta(s_ticker, df_ta, s_ta):
     plt.grid(b=True, which='major', color='#666666', linestyle='-')
     plt.minorticks_on()
     plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-    plt.show(block=False)
+    plt.ion()
+    plt.show()
     print("")
 
 
