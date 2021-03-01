@@ -31,6 +31,7 @@ matplotlib = "3.3.3"
 plotly = "4.14.3"
 
 [tool.poetry.dev-dependencies]
+pytest = "^6.2.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
