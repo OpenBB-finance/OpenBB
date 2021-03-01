@@ -1,7 +1,8 @@
 import argparse
+import matplotlib.pyplot as plt
 import pandas_ta as ta
-from gamestonk_terminal.helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.helper_funcs import check_positive, plot_stock_ta
 
 register_matplotlib_converters()
 
@@ -10,14 +11,16 @@ register_matplotlib_converters()
 def ema(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="ema",
-        description="""The Exponential Moving Average is a staple of technical 
-                                     analysis and is used in countless technical indicators. In a Simple Moving 
-                                     Average, each value in the time period carries equal weight, and values outside 
-                                     of the time period are not included in the average. However, the Exponential 
-                                     Moving Average is a cumulative calculation, including all data. Past values have 
-                                     a diminishing contribution to the average, while more recent values have a greater 
-                                     contribution. This method allows the moving average to be more responsive to changes 
-                                     in the data.""",
+        description="""
+            The Exponential Moving Average is a staple of technical
+            analysis and is used in countless technical indicators. In a Simple Moving
+            Average, each value in the time period carries equal weight, and values outside
+            of the time period are not included in the average. However, the Exponential
+            Moving Average is a cumulative calculation, including all data. Past values have
+            a diminishing contribution to the average, while more recent values have a greater
+            contribution. This method allows the moving average to be more responsive to changes
+            in the data.
+        """,
     )
 
     parser.add_argument(
@@ -71,7 +74,8 @@ def ema(l_args, s_ticker, s_interval, df_stock):
                 df_stock["4. close"], s_ticker, df_ta, f"{ns_parser.n_length} EMA"
             )
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -79,13 +83,15 @@ def ema(l_args, s_ticker, s_interval, df_stock):
 def sma(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="sma",
-        description=""" Moving Averages are used to smooth the data in an array to 
-                                     help eliminate noise and identify trends. The Simple Moving Average is literally 
-                                     the simplest form of a moving average. Each output value is the average of the 
-                                     previous n values. In a Simple Moving Average, each value in the time period carries 
-                                     equal weight, and values outside of the time period are not included in the average. 
-                                     This makes it less responsive to recent changes in the data, which can be useful for 
-                                     filtering out those changes. """,
+        description="""
+            Moving Averages are used to smooth the data in an array to
+            help eliminate noise and identify trends. The Simple Moving Average is literally
+            the simplest form of a moving average. Each output value is the average of the
+            previous n values. In a Simple Moving Average, each value in the time period carries
+            equal weight, and values outside of the time period are not included in the average.
+            This makes it less responsive to recent changes in the data, which can be useful for
+            filtering out those changes.
+        """,
     )
 
     parser.add_argument(
@@ -158,7 +164,8 @@ def sma(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -166,8 +173,10 @@ def sma(l_args, s_ticker, s_interval, df_stock):
 def vwap(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="vwap",
-        description=""" The Volume Weighted Average Price that measures the average typical price
-                                     by volume.  It is typically used with intraday charts to identify general direction. """,
+        description="""
+            The Volume Weighted Average Price that measures the average typical price
+            by volume.  It is typically used with intraday charts to identify general direction.
+        """,
     )
 
     parser.add_argument(
@@ -197,7 +206,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             )
 
-            pfig, axPrice = plt.subplots()
+            _, axPrice = plt.subplots()
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
             plt.plot(df_ta.index, df_ta.values)
             plt.title(f"VWAP on {s_ticker}")
@@ -205,6 +214,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
             plt.xlabel("Time")
             plt.ylabel("Share Price ($)")
             plt.legend([s_ticker, "VWAP"])
+            # pylint: disable=unused-variable
             axVolume = axPrice.twinx()
             plt.bar(
                 df_stock.index,
@@ -230,7 +240,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             )
 
-            pfig, axPrice = plt.subplots()
+            _, axPrice = plt.subplots()
             plt.plot(df_stock.index, df_stock["4. close"].values, color="k")
             plt.plot(df_ta.index, df_ta.values)
             plt.title(f"VWAP on {s_ticker}")
@@ -253,6 +263,6 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
             plt.show()
             print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-
