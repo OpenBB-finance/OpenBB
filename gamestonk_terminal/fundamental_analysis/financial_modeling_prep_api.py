@@ -41,7 +41,8 @@ def profile(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -90,7 +91,8 @@ def quote(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -157,7 +159,8 @@ def enterprise(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -223,7 +226,8 @@ def discounted_cash_flow(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -303,7 +307,8 @@ def income_statement(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -391,7 +396,8 @@ def balance_sheet(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -474,7 +480,8 @@ def cash_flow(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -560,7 +567,8 @@ def key_metrics(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -644,7 +652,8 @@ def financial_ratios(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -726,6 +735,7 @@ def financial_statement_growth(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

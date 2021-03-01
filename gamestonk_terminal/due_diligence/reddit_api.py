@@ -107,7 +107,7 @@ def due_diligence(l_args, s_ticker):
                         s_datetime = datetime.utcfromtimestamp(
                             submission.created_utc
                         ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
+                        s_link = f"https://old.reddit.com{submission.permalink}"
                         s_all_awards = ""
                         for award in submission.all_awardings:
                             s_all_awards += f"{award['count']} {award['name']}\n"
@@ -172,5 +172,6 @@ def due_diligence(l_args, s_ticker):
         # df_submissions = pd.DataFrame.from_dict(d_submission, orient='index', columns=list(d_submission[next(iter(d_submission.keys()))].keys()))
         # df_submissions.sort_values(by=['created_utc'], inplace=True, ascending=True)
 
-    except:
+    except Exception as e:
+        print(e)
         print("")

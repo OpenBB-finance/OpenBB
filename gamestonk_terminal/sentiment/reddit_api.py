@@ -216,7 +216,8 @@ def watchlist(l_args):
                 print(s_watchlist_tickers[:-2] + "\n")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -379,7 +380,8 @@ def popular_tickers(l_args):
             print("No tickers found")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -556,7 +558,8 @@ def spac_community(l_args):
                 print(s_watchlist_tickers[:-2])
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -756,7 +759,8 @@ def spac(l_args):
                 print(s_watchlist_tickers[:-2])
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -880,5 +884,6 @@ def wsb_community(l_args):
             else:
                 break
             print("")
-    except:
+    except Exception as e:
+        print(e)
         print("")

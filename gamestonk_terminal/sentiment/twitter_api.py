@@ -1,24 +1,25 @@
 import argparse
+from datetime import datetime, timedelta
 import requests
+import dateutil
 import pandas as pd
-import re
+import numpy as np
 import flair
 import matplotlib.pyplot as plt
-import iso8601
-import dateutil
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import *
+from gamestonk_terminal.helper_funcs import get_data, clean_tweet
 
 
 # ------------------------------------------------- INFERENCE -------------------------------------------------
 def inference(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="infer",
-        description="""Print quick sentiment inference from last tweets that contain
-                                     the ticker. This model splits the text into character-level
-                                     tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled
-                                     version of the powerful BERT transformer model. Not only time period of these,
-                                     but also frequency. [Source: Twitter]""",
+        description="""
+            Print quick sentiment inference from last tweets that contain the ticker.
+            This model splits the text into character-level tokens and uses the DistilBERT
+            model to make predictions. DistilBERT is a distilled version of the powerful
+            BERT transformer model. Not only time period of these, but also frequency. [Source: Twitter]
+        """,
     )
 
     parser.add_argument(
@@ -110,6 +111,12 @@ def inference(l_args, s_ticker):
         print(f"From: {dt_from.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"To:   {dt_to.strftime('%Y-%m-%d %H:%M:%S')}")
 
+        # pd.set_option("display.max_rows", None)
+        # pd.set_option("display.max_columns", None)
+        # pd.set_option("display.width", None)
+        # pd.set_option("display.max_colwidth", None)
+        # print(df_tweets)
+
         print(f"{len(df_tweets)} tweets were analyzed.")
         dt_delta = dt_to - dt_from
         n_freq = dt_delta.total_seconds() / len(df_tweets)
@@ -120,7 +127,8 @@ def inference(l_args, s_ticker):
         print(f"The sentiment of {s_ticker} is: {s_sen} ({s_conf})")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -128,12 +136,14 @@ def inference(l_args, s_ticker):
 def sentiment(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="sen",
-        description="""Plot in-depth sentiment predicted from tweets from last days
-                                     that contain pre-defined ticker. This model splits the text into character-level
-                                     tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled
-                                     version of the powerful BERT transformer model. Note that a big num of tweets extracted per
-                                     hour in conjunction with a high number of days in the past, will make the
-                                     algorithm take a long period of time to estimate sentiment. [Source: Twitter]""",
+        description="""
+            Plot in-depth sentiment predicted from tweets from last days
+            that contain pre-defined ticker. This model splits the text into character-level
+            tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled
+            version of the powerful BERT transformer model. Note that a big num of tweets extracted per
+            hour in conjunction with a high number of days in the past, will make the
+            algorithm take a long period of time to estimate sentiment. [Source: Twitter]
+        """,
     )
 
     # in reality this argument could be 100, but after testing it takes too long to compute which may not be acceptable
@@ -386,5 +396,6 @@ def sentiment(l_args, s_ticker):
         plt.xlabel("Time")
         plt.show()
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
