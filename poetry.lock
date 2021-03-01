@@ -402,9 +402,9 @@ smart-open = ">=1.8.1"
 
 [package.extras]
 distributed = ["Pyro4 (>=4.27)"]
-docs = ["pytest", "pytest-rerunfailures", "mock", "cython", "testfixtures", "Morfessor (==2.0.2a4)", "python-Levenshtein (>=0.10.2)", "visdom (>0.1.8.7)", "scikit-learn", "Pyro4 (>=4.27)", "sphinx", "sphinxcontrib-napoleon", "plotly", "pattern (<=2.6)", "sphinxcontrib.programoutput"]
-test = ["pytest", "pytest-rerunfailures", "mock", "cython", "testfixtures", "Morfessor (==2.0.2a4)", "python-Levenshtein (>=0.10.2)", "visdom (>0.1.8.7)", "scikit-learn"]
-test-win = ["pytest", "pytest-rerunfailures", "mock", "cython", "testfixtures", "Morfessor (==2.0.2a4)", "python-Levenshtein (>=0.10.2)", "visdom (>0.1.8.7)", "scikit-learn"]
+docs = ["pytest", "pytest-rerunfailures", "mock", "cython", "testfixtures", "Morfessor (==2.0.2a4)", "python-Levenshtein (>=0.10.2)", "visdom (>=0.1.8,!=0.1.8.7)", "scikit-learn", "Pyro4 (>=4.27)", "sphinx", "sphinxcontrib-napoleon", "plotly", "pattern (<=2.6)", "sphinxcontrib.programoutput"]
+test = ["pytest", "pytest-rerunfailures", "mock", "cython", "testfixtures", "Morfessor (==2.0.2a4)", "python-Levenshtein (>=0.10.2)", "visdom (>=0.1.8,!=0.1.8.7)", "scikit-learn"]
+test-win = ["pytest", "pytest-rerunfailures", "mock", "cython", "testfixtures", "Morfessor (==2.0.2a4)", "python-Levenshtein (>=0.10.2)", "visdom (>=0.1.8,!=0.1.8.7)", "scikit-learn"]
 
 [[package]]
 name = "google-auth"
@@ -1603,8 +1603,8 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.6.13"
-content-hash = "93086c15c0e3a2cb06ea26b57f4af5e3b20128492e916eefba79c8d7f28350b4"
+python-versions = "~3.6.8"
+content-hash = "8eb522fff7107ad0fc1c444f5932434da119093b35e283e6a43e7b6bb8fb8b17"
 
 [metadata.files]
 absl-py = [
