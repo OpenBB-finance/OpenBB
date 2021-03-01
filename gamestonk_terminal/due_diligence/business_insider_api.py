@@ -65,7 +65,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
             ["DateLabel", "Company", "InternalRating", "PriceTarget"]
         ]
         df_analyst_data.columns = ["Date", "Company", "Rating", "Price Target"]
-        df_analyst_data
+        # df_analyst_data
         df_analyst_data["Rating"].replace(
             {"gut": "BUY", "neutral": "HOLD", "schlecht": "SELL"}, inplace=True
         )
@@ -109,7 +109,8 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         )
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -122,7 +123,7 @@ def estimates(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -269,7 +270,8 @@ def estimates(l_args, s_ticker):
         )
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -339,7 +341,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         if s_start:
             df_insider = df_insider[s_start:]
 
-        pfig, ax = plt.subplots()
+        _, ax = plt.subplots()
 
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=3)
@@ -447,6 +449,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         )
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

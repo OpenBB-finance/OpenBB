@@ -25,6 +25,7 @@ def rating(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

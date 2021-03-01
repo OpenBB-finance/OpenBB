@@ -1,19 +1,19 @@
-import quandl
-from datetime import datetime
-from gamestonk_terminal import config_terminal as cfg
 import argparse
+import quandl
 from matplotlib import pyplot as plt
-import numpy as np
 import matplotlib.ticker as ticker
 import pandas as pd
-from gamestonk_terminal.helper_funcs import *
+from gamestonk_terminal.helper_funcs import check_positive, long_number_format
+from gamestonk_terminal import config_terminal as cfg
 
 # -------------------------------------------------------- SHORT_INTEREST --------------------------------------------------------
 def short_interest(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(
         prog="short",
-        description="""Plots the short interest of a stock. This corresponds to the number of shares that
-                                     have been sold short but have not yet been covered or closed out. Either NASDAQ or NYSE [Source: Quandl]""",
+        description="""
+            Plots the short interest of a stock. This corresponds to the number of shares that
+            have been sold short but have not yet been covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
+        """,
     )
 
     parser.add_argument(
@@ -60,7 +60,7 @@ def short_interest(l_args, s_ticker, s_start):
             2,
         )
 
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
         ax.bar(
             df_short_interest.index, df_short_interest["Short Volume"], 0.3, color="r"
         )
@@ -111,6 +111,7 @@ def short_interest(l_args, s_ticker, s_start):
 
         plt.show()
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

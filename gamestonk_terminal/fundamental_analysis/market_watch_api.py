@@ -79,7 +79,8 @@ def income(l_args, s_ticker):
         print(df_financials.to_string(index=False))
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -161,7 +162,8 @@ def assets(l_args, s_ticker):
         print(df_financials.iloc[:33].to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -247,7 +249,8 @@ def liabilities(l_args, s_ticker):
         print(df_financials.iloc[34:].to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -329,7 +332,8 @@ def operating(l_args, s_ticker):
         print(df_financials.iloc[:16].to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -411,7 +415,8 @@ def investing(l_args, s_ticker):
         print(df_financials.iloc[17:30].to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -496,6 +501,7 @@ def financing(l_args, s_ticker):
         print(df_financials.iloc[31:].to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

@@ -49,7 +49,8 @@ def insider(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -92,7 +93,8 @@ def news(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -120,6 +122,7 @@ def analyst(l_args, s_ticker):
         print(df_fa)
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

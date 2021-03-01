@@ -1,7 +1,7 @@
 import argparse
+import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-import requests
 import numpy as np
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -47,7 +47,7 @@ def sec_fillings(l_args, s_ticker):
             "lxml",
         )
 
-        a_financials_header = list()
+        # a_financials_header = list()
         b_ready_to_process_info = False
         soup_financials = text_soup_financials.findAll("tr", {"class": "table__row"})
         for financials_info in soup_financials:
@@ -76,7 +76,8 @@ def sec_fillings(l_args, s_ticker):
         print(df_financials.head(n=ns_parser.n_num).to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -307,6 +308,7 @@ def sean_seah_warnings(l_args, s_ticker):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return

@@ -169,7 +169,9 @@ def due_diligence(l_args, s_ticker):
             f"{('No more posts with specified requirements found.', '')[n_flair_posts_found > ns_parser.n_limit-1]}"
         )
         # Create df with found data. Useful for saving all info in excel file.
-        # df_submissions = pd.DataFrame.from_dict(d_submission, orient='index', columns=list(d_submission[next(iter(d_submission.keys()))].keys()))
+        # df_submissions = pd.DataFrame.from_dict(
+        #   d_submission, orient='index', columns=list(d_submission[next(iter(d_submission.keys()))].keys())
+        # )
         # df_submissions.sort_values(by=['created_utc'], inplace=True, ascending=True)
 
     except Exception as e:
