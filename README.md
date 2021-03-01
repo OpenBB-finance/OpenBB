@@ -173,7 +173,7 @@ Command|Explanation|Source
 `news`          |latest news of the company |[Finviz](https://finviz.com/)
 `red`           |gets due diligence from another user's post |[Reddit](https://reddit.com)
 `analyst`       |analyst prices and ratings of the company |[Finviz](https://finviz.com/)
-`rating`        |rating of the company from strong sell to strong buy [FMP]
+`rating`        |rating of the company from strong sell to strong buy | [FMP](https://financialmodelingprep.com/)
 `pt`            |price targets over time |[Business Insider](https://www.businessinsider.com/)
 `est`           |quarter and year analysts earnings estimates |[Business Insider](https://www.businessinsider.com/)
 `ins`           |insider activity over time |[Business Insider](https://www.businessinsider.com/)
