@@ -1,14 +1,16 @@
 import argparse
 import requests
 import pandas as pd
-from gamestonk_terminal.helper_funcs import *
+from gamestonk_terminal.helper_funcs import check_positive
 
 # -------------------------------------------------------------------------------------------------------------------
 def bullbear(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="bullbear",
-        description="""Print bullbear sentiment based on last 30 messages on the board.
-                                     Also prints the watchlist_count. [Source: Stocktwits]""",
+        description="""
+            Print bullbear sentiment based on last 30 messages on the board.
+            Also prints the watchlist_count. [Source: Stocktwits]
+        """,
     )
 
     parser.add_argument(
@@ -49,7 +51,8 @@ def bullbear(l_args, s_ticker):
             print("Invalid symbol")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -101,7 +104,8 @@ def messages(l_args, s_ticker):
             print("Invalid symbol")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -112,13 +116,13 @@ def trending(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(l_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
-        result = requests.get(f"https://api.stocktwits.com/api/2/trending/symbols.json")
+        result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
         if result.status_code == 200:
             l_symbols = list()
             for symbol in result.json()["symbols"]:
@@ -135,7 +139,8 @@ def trending(l_args):
             print("Error!")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -190,5 +195,6 @@ def stalker(l_args):
             print("Invalid user")
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")

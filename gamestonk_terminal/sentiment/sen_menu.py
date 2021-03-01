@@ -1,4 +1,3 @@
-from gamestonk_terminal import config_terminal as cfg
 import argparse
 from gamestonk_terminal.sentiment import reddit_api
 from gamestonk_terminal.sentiment import stocktwits_api

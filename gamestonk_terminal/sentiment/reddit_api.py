@@ -1,16 +1,14 @@
 import argparse
 import re
 from datetime import datetime, timedelta
+import warnings
 from prettytable import PrettyTable
-import pandas as pd
 from psaw import PushshiftAPI
 import praw
-from pytz import timezone
 from holidays import US as holidaysUS
 import finviz
 from gamestonk_terminal.helper_funcs import check_positive
 from gamestonk_terminal import config_terminal as cfg
-import warnings
 
 # -------------------------------------------------------------------------------------------------------------------
 def get_last_time_market_was_open(dt):
@@ -207,8 +205,9 @@ def watchlist(l_args):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
+                    # pass
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous watchlists:"
@@ -282,9 +281,9 @@ def popular_tickers(l_args):
                 "wallstreetbets",
             ]
 
-        d_submission = {}
+        # d_submission = {}
         d_watchlist_tickers = {}
-        l_watchlist_links = list()
+        # l_watchlist_links = list()
         l_watchlist_author = list()
 
         praw_api = praw.Reddit(
@@ -374,8 +373,9 @@ def popular_tickers(l_args):
                     finviz.get_stock(t_ticker[0])
                     print(f"{t_ticker[1]} {t_ticker[0]}")
                     n_top_stocks += 1
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
+                    # pass
         else:
             print("No tickers found")
         print("")
@@ -429,7 +429,7 @@ def spac_community(l_args):
         l_watchlist_links = list()
         l_watchlist_author = list()
 
-        psaw_api = PushshiftAPI()
+        # psaw_api = PushshiftAPI()
 
         if ns_parser.b_popular:
             submissions = praw_api.subreddit("SPACs").hot(limit=ns_parser.n_limit)
@@ -549,8 +549,9 @@ def spac_community(l_args):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
+                    # pass
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
@@ -750,8 +751,9 @@ def spac(l_args):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
+                    # pass
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
@@ -806,7 +808,7 @@ def wsb_community(l_args):
         d_submission = {}
         l_watchlist_links = list()
 
-        psaw_api = PushshiftAPI()
+        # psaw_api = PushshiftAPI()
 
         if ns_parser.b_new:
             submissions = praw_api.subreddit("wallstreetbets").new(

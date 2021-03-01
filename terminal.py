@@ -72,13 +72,13 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            # pylint: disable unbalanced-tuple-unpacking
+            # pylint: disable=unbalanced-tuple-unpacking
             df_stock, _ = ts.get_daily_adjusted(
                 symbol=ns_parser.s_ticker, outputsize="full"
             )
         # Intraday
         else:
-            # pylint: disable unbalanced-tuple-unpacking
+            # pylint: disable=unbalanced-tuple-unpacking
             df_stock, _ = ts.get_intraday(
                 symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
             )
@@ -176,16 +176,17 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            # pylint: disable unbalanced-tuple-unpacking
+            # pylint: disable=unbalanced-tuple-unpacking
             df_stock, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
         # Intraday
         else:
-            # pylint: disable unbalanced-tuple-unpacking
+            # pylint: disable=unbalanced-tuple-unpacking
             df_stock, _ = ts.get_intraday(
                 symbol=s_ticker, outputsize="full", interval=s_interval
             )
 
-    except:
+    except Exception as e:
+        print(e)
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return
 
@@ -201,6 +202,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         if 4 not in ln_col_idx:
             ln_col_idx.append(4)
         # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
+        # pylint: disable=len-as-condition
         if len([i for i in ln_col_idx if i > 4]) > 0:
             print("An index bigger than 4 was given, which is wrong. Try again")
             return
@@ -214,6 +216,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         else:
             ln_col_idx = [int(x) - 1 for x in list(str(ns_parser.n_type))]
         # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
+        # pylint: disable=len-as-condition
         if len([i for i in ln_col_idx if i > 3]) > 0:
             print("An index bigger than 3 was given, which is wrong. Try again")
             return
@@ -363,8 +366,8 @@ def main():
                     "Hope you made money today. Good bye my lover, good bye my friend.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # SENTIMENT MARKET
         elif ns_known_args.opt == "sen":
@@ -375,8 +378,8 @@ def main():
                     "Hope you made money today. Good bye my lover, good bye my friend.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # RESEARCH MENU
         elif ns_known_args.opt == "res":
@@ -387,8 +390,8 @@ def main():
                     "Hope you made money today. Good bye my lover, good bye my friend.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # FUNDAMENTAL ANALYSIS MENU
         elif ns_known_args.opt == "fa":
@@ -399,8 +402,8 @@ def main():
                     "Hope you made money today. Good bye my lover, good bye my friend.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # TECHNICAL ANALYSIS MENU
         elif ns_known_args.opt == "ta":
@@ -411,8 +414,8 @@ def main():
                     "Hope you made money today. Good bye my lover, good bye my friend.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # DUE DILIGENCE MENU
         elif ns_known_args.opt == "dd":
@@ -423,8 +426,8 @@ def main():
                     "Hope you made money today. Good bye my lover, good bye my friend.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         # PREDICTION TECHNIQUES
         elif ns_known_args.opt == "pred":
@@ -435,7 +438,7 @@ def main():
             else:
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
 
-                # pylint: disable unbalanced-tuple-unpacking
+                # pylint: disable=unbalanced-tuple-unpacking
                 df_stock_pred, _ = ts.get_daily_adjusted(
                     symbol=s_ticker, outputsize="full"
                 )
@@ -451,8 +454,8 @@ def main():
                     "Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n"
                 )
                 return
-            else:
-                print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
+
+            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         else:
             print("Shouldnt see this command!")

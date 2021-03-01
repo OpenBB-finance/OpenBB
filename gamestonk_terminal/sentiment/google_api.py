@@ -1,17 +1,16 @@
-import pandas as pd
-from pytrends.request import TrendReq
-from datetime import datetime
-import matplotlib.pyplot as plt
-from gamestonk_terminal.helper_funcs import *
 import argparse
+from pytrends.request import TrendReq
+import matplotlib.pyplot as plt
+from gamestonk_terminal.helper_funcs import check_positive, valid_date
 
 
 # -------------------------------------------------------------------------------------------------------------------
 def mentions(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(
         prog="mentions",
-        description="""Plot weekly bars of stock's interest over time. other users watchlist.
-                                     [Source: Google]""",
+        description="""
+            Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+        """,
     )
 
     parser.add_argument(
@@ -59,7 +58,8 @@ def mentions(l_args, s_ticker, s_start):
         plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -103,7 +103,8 @@ def regions(l_args, s_ticker):
         plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -142,7 +143,8 @@ def queries(l_args, s_ticker):
         print(df_related_queries.to_string(index=False))
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -180,6 +182,6 @@ def rise(l_args, s_ticker):
         print(df_related_queries.to_string(index=False))
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-

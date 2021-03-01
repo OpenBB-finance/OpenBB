@@ -100,6 +100,7 @@ def inference(l_args, s_ticker):
         # Percentage of confidence
         if df_tweets["sentiment_estimation"].values[-1] > 0:
             n_pos = df_tweets[df_tweets["prob_sen"] > 0]["prob_sen"].sum()
+            # pylint: disable=unused-variable
             n_pct = round(100 * n_pos / df_tweets["probability"].sum())
         else:
             n_neg = abs(df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].sum())
@@ -361,7 +362,7 @@ def sentiment(l_args, s_ticker):
                 lw=3,
             )
         l_xticks.append(len(df_tweets))
-        datetime.strptime(dt_created, "%Y-%m-%d %H:%M:%S") + timedelta(days=1)
+        # (unused?) datetime.strptime(dt_created, "%Y-%m-%d %H:%M:%S") + timedelta(days=1)
         l_xlabels.append(
             datetime.strftime(
                 datetime.strptime(

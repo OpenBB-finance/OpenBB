@@ -91,7 +91,7 @@ score=yes
 [REFACTORING]
 
 # Maximum number of nested blocks for function / method body
-max-nested-blocks=5
+max-nested-blocks=9
 
 
 [LOGGING]
@@ -407,10 +407,10 @@ max-attributes=11
 max-bool-expr=5
 
 # Maximum number of branch for function / method body
-max-branches=20
+max-branches=35
 
 # Maximum number of locals for function / method body
-max-locals=15
+max-locals=40
 
 # Maximum number of parents for a class (see R0901).
 max-parents=7
@@ -419,10 +419,10 @@ max-parents=7
 max-public-methods=20
 
 # Maximum number of return / yield for function / method body
-max-returns=6
+max-returns=9
 
 # Maximum number of statements in function / method body
-max-statements=50
+max-statements=120
 
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=1
