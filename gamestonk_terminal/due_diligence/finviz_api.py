@@ -1,7 +1,18 @@
 import argparse
+from colorama import Fore, Style
 import finviz
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, patch_pandas_text_adjustment
+from gamestonk_terminal.config_terminal import USE_COLOR
+
+
+def category_color_red_green(val: str) -> str:
+    if val == "Upgrade":
+        return Fore.GREEN + val + Style.RESET_ALL
+    elif val == "Downgrade":
+        return Fore.RED + val + Style.RESET_ALL
+    return val
+
 
 # ---------------------------------------------------- INSIDER ----------------------------------------------------
 def insider(l_args, s_ticker):
@@ -119,6 +130,12 @@ def analyst(l_args, s_ticker):
         d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
         df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
         df_fa.set_index("date", inplace=True)
+
+        if USE_COLOR:
+            df_fa["category"] = df_fa["category"].apply(category_color_red_green)
+
+            patch_pandas_text_adjustment()
+
         print(df_fa)
         print("")
 
