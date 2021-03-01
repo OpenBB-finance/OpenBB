@@ -1,20 +1,22 @@
 import argparse
+import matplotlib.pyplot as plt
 import pandas_ta as ta
-from gamestonk_terminal.helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.helper_funcs import check_positive
 
 register_matplotlib_converters()
-import matplotlib.pyplot as plt
 
 # ----------------------------------------------------- CCI -----------------------------------------------------
 def cci(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="cci",
-        description=""" The CCI is designed to detect beginning and ending market trends. 
-                                     The range of 100 to -100 is the normal trading range. CCI values outside of this 
-                                     range indicate overbought or oversold conditions. You can also look for price 
-                                     divergence in the CCI. If the price is making new highs, and the CCI is not, 
-                                     then a price correction is likely. """,
+        description="""
+            The CCI is designed to detect beginning and ending market trends.
+            The range of 100 to -100 is the normal trading range. CCI values outside of this
+            range indicate overbought or oversold conditions. You can also look for price
+            divergence in the CCI. If the price is making new highs, and the CCI is not,
+            then a price correction is likely.
+        """,
     )
 
     parser.add_argument(
@@ -67,7 +69,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -102,7 +104,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -123,7 +125,8 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -131,15 +134,17 @@ def cci(l_args, s_ticker, s_interval, df_stock):
 def macd(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="macd",
-        description=""" The Moving Average Convergence Divergence (MACD) is the difference 
-                                     between two Exponential Moving Averages. The Signal line is an Exponential Moving 
-                                     Average of the MACD. \n \n The MACD signals trend changes and indicates the start 
-                                     of new trend direction. High values indicate overbought conditions, low values 
-                                     indicate oversold conditions. Divergence with the price indicates an end to the 
-                                     current trend, especially if the MACD is at extreme high or low values. When the MACD 
-                                     line crosses above the signal line a buy signal is generated. When the MACD crosses 
-                                     below the signal line a sell signal is generated. To confirm the signal, the MACD 
-                                     should be above zero for a buy, and below zero for a sell. """,
+        description="""
+            The Moving Average Convergence Divergence (MACD) is the difference
+            between two Exponential Moving Averages. The Signal line is an Exponential Moving
+            Average of the MACD. \n \n The MACD signals trend changes and indicates the start
+            of new trend direction. High values indicate overbought conditions, low values
+            indicate oversold conditions. Divergence with the price indicates an end to the
+            current trend, especially if the MACD is at extreme high or low values. When the MACD
+            line crosses above the signal line a buy signal is generated. When the MACD crosses
+            below the signal line a sell signal is generated. To confirm the signal, the MACD
+            should be above zero for a buy, and below zero for a sell.
+        """,
     )
 
     parser.add_argument(
@@ -199,7 +204,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -235,7 +240,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -258,7 +263,8 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -266,11 +272,13 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 def rsi(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="rsi",
-        description=""" The Relative Strength Index (RSI) calculates a ratio of the 
-                                     recent upward price movements to the absolute price movement. The RSI ranges 
-                                     from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when 
-                                     the value is over 70/below 30. You can also look for divergence with price. If 
-                                     the price is making new highs/lows, and the RSI is not, it indicates a reversal. """,
+        description="""
+            The Relative Strength Index (RSI) calculates a ratio of the
+            recent upward price movements to the absolute price movement. The RSI ranges
+            from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when
+            the value is over 70/below 30. You can also look for divergence with price. If
+            the price is making new highs/lows, and the RSI is not, it indicates a reversal.
+        """,
     )
 
     parser.add_argument(
@@ -331,7 +339,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -366,7 +374,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -388,7 +396,8 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -396,12 +405,14 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
 def stoch(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="stoch",
-        description=""" The Stochastic Oscillator measures where the close is in relation 
-                                     to the recent trading range. The values range from zero to 100. %D values over 75 
-                                     indicate an overbought condition; values under 25 indicate an oversold condition. 
-                                     When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses 
-                                     below, it is a sell signal. The Raw %K is generally considered too erratic to use 
-                                     for crossover signals. """,
+        description="""
+            The Stochastic Oscillator measures where the close is in relation
+            to the recent trading range. The values range from zero to 100. %D values over 75
+            indicate an overbought condition; values under 25 indicate an oversold condition.
+            When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses
+            below, it is a sell signal. The Raw %K is generally considered too erratic to use
+            for crossover signals.
+        """,
     )
 
     parser.add_argument(
@@ -463,7 +474,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -502,7 +513,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -526,6 +537,6 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-
