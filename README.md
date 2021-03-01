@@ -114,26 +114,26 @@ Command|Website
 Command|Description
 ----- | ---------
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
-`mgmt`          |management team of the company ([Business Insider](https://www.businessinsider.com/))
-Market Watch API | 
+`mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
+[Market Watch API](https://markets.businessinsider.com/) | 
 `income`        |income statement of the company
 `assets`        |assets of the company
 `liabilities`   |liabilities and shareholders equity of the company
 `operating`     |cash flow operating activities of the company
 `investing`     |cash flow investing activities of the company
 `financing`     |cash flow financing activities of the company
-Yahoo Finance API | 
+[Yahoo Finance API](https://finance.yahoo.com/) | 
 `info`          |information scope of the company
 `shrs`          |shareholders of the company
 `sust`          |sustainability values of the company
 `cal`           |calendar earnings and estimates of the company
-Alpha Vantage API | 
+[Alpha Vantage API](https://www.alphavantage.co/) | 
 `overview`      |overview of the company
 `income`        |income statements of the company
 `balance`       |balance sheet of the company
 `cash`          |cash flow of the company
 `earnings`      |earnings dates and reported EPS
-Financial Modeling Prep API | 
+[Financial Modeling Prep API](https://financialmodelingprep.com/) | 
 `profile`       |profile of the company
 `quote`         |quote of the company
 `enterprise`    |enterprise value of the company over time
@@ -168,35 +168,35 @@ volume: |
 `obv`         |on balance volume | [Link](https://en.wikipedia.org/wiki/On-balance_volume)| [Link](https://www.investopedia.com/terms/o/onbalancevolume.asp)
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
-Command|Explanation
------- | --------
-`news`          |latest news of the company ([Finviz](https://finviz.com/))
-`red`           |gets due diligence from another user's post ([Reddit](https://reddit.com))
-`analyst`       |analyst prices and ratings of the company ([Finviz](https://finviz.com/))
+Command|Explanation|Source
+------ | --------|----
+`news`          |latest news of the company |[Finviz](https://finviz.com/)
+`red`           |gets due diligence from another user's post |[Reddit](https://reddit.com)
+`analyst`       |analyst prices and ratings of the company |[Finviz](https://finviz.com/)
 `rating`        |rating of the company from strong sell to strong buy [FMP]
-`pt`            |price targets over time ([Business Insider](https://www.businessinsider.com/))
-`est`           |quarter and year analysts earnings estimates ([Business Insider](https://www.businessinsider.com/))
-`ins`           |insider activity over time ([Business Insider](https://www.businessinsider.com/))
-`insider`       |insider trading of the company ([Finviz](https://finviz.com/))
-`sec`           |SEC filings ([MarketWatch](https://www.marketwatch.com/))
-`short`         |short interest ([Quandl](https://www.quandl.com/))
-`warnings`      |company warnings according to Sean Seah book ([MarketWatch](https://www.marketwatch.com/))
+`pt`            |price targets over time |[Business Insider](https://www.businessinsider.com/)
+`est`           |quarter and year analysts earnings estimates |[Business Insider](https://www.businessinsider.com/)
+`ins`           |insider activity over time |[Business Insider](https://www.businessinsider.com/)
+`insider`       |insider trading of the company |[Finviz](https://finviz.com/)
+`sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
+`short`         |short interest |[Quandl](https://www.quandl.com/)
+`warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
 
 
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
-Command|Algorithm
------- | ----------
+Command|Technique|Wikipedia|Investopedia
+------ | ------------|---|----
 `sma`         |simple moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average)| [Link](https://www.investopedia.com/terms/s/sma.asp)
-`knn`         |k-Nearest Neighbors | [Link](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
+`knn`         |k-Nearest Neighbors | [Link](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
 `linear`      |linear regression (polynomial 1) | [Link](https://en.wikipedia.org/wiki/Linear_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
 `quadratic`   |quadratic regression (polynomial 2) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
 `cubic`       |cubic regression (polynomial 3) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
 `regression`  |regression (other polynomial) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
 `arima`       |autoregressive integrated moving average | [Link](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average)| [Link](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp) 
-`prophet`     |Facebook's prophet prediction] | [Link](https://facebook.github.io/prophet/))
-`mlp`         |MultiLayer Perceptron | [Link](https://en.wikipedia.org/wiki/Multilayer_perceptron))
-`rnn`         |Recurrent Neural Network  | [Link](https://en.wikipedia.org/wiki/Recurrent_neural_network))
-`lstm`        |Long Short-Term Memory  | [Link](https://en.wikipedia.org/wiki/Long_short-term_memory))
+`prophet`     |Facebook's prophet prediction ([Link](https://facebook.github.io/prophet/))|
+`mlp`         |MultiLayer Perceptron | [Link](https://en.wikipedia.org/wiki/Multilayer_perceptron)
+`rnn`         |Recurrent Neural Network  | [Link](https://en.wikipedia.org/wiki/Recurrent_neural_network)
+`lstm`        |Long Short-Term Memory  | [Link](https://en.wikipedia.org/wiki/Long_short-term_memory)
 
 
 ## Install <a name="Install"></a>
