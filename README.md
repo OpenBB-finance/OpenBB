@@ -28,14 +28,17 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 The main menu allows the following commands:
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
-clear
-view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 ```
-With their functions being:
    * Load stock ticker to perform analysis on
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes 
+```
+clear
+```
    * Clear previously loaded stock ticker.
+```
+view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
+```
    * Visualise historical data of a stock. An alpha_vantage key is necessary.
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
@@ -46,168 +49,171 @@ With their functions being:
 Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
-```
-map           S&P500 index stocks map [Finviz]
-sectors       show sectors performance [Alpha Vantage]
-gainers       show latest top gainers [Yahoo Finance]
-orders        orders by Fidelity Customers [Fidelity]
-up_earnings   upcoming earnings release dates [Seeking Alpha]
-high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]
-low_float     show low float stocks under 10M shares float [www.lowfloat.com]
-simply_wallst Simply Wall St. research data [Simply Wall St.]
-spachero      great website for SPACs research [SpacHero]
-uwhales       good website for SPACs research [UnusualWhales]
-```
+Command|Explanation
+---|---
+`map`           |S&P500 index stocks map ([Finviz](https://finviz.com))
+`sectors`       |show sectors performance ([Alpha Vantage](www.alphavantage.co))
+`gainers`       |show latest top gainers ([Yahoo Finance](https://finance.yahoo.com/))
+`orders`        |orders by Fidelity Customers ([Fidelity](https://www.fidelity.com/))
+`up_earnings`   |upcoming earnings release dates ([Seeking Alpha](https://seekingalpha.com/))
+`high_short`    |show top high short interest stocks of over 20% ratio ([High Short Interest](https://www.highshortinterest.com/))
+`low_float`     |show low float stocks under 10M shares float ([Low Float](https://www.lowfloat.com/))
+`simply_wallst` |Simply Wall St. research data ([Simply Wall St.](https://simplywall.st/about))
+`spachero`      |great website for SPACs research ([SpacHero](https://www.spachero.com/))
+`uwhales`       |good website for SPACs research ([UnusualWhales](https://unusualwhales.com/))
+
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
-```
-Reddit:
-wsb           show what WSB gang is up to in subreddit wallstreetbets
-watchlist     show other users watchlist
-popular       show popular tickers
-spac_c        show other users spacs announcements from subreddit SPACs community
-spac          show other users spacs announcements from other subs
-
-Stocktwits:
-bullbear      estimate quick sentiment from last 30 messages on board
-messages      output up to the 30 last messages on the board
-trending      trending stocks
-stalker       stalk stocktwits user's last messages
-
-Twitter:
-infer         infer about stock's sentiment from latest tweets
-sentiment     in-depth sentiment prediction from tweets over time
-
-Google:
-mentions      interest over time based on stock's mentions
-regions       regions that show highest interest in stock
-queries       top related queries with this stock
-rise          top rising related queries with stock
-```
+Command|Explanation
+----|----
+Reddit:| 
+`wsb`           |show what WSB gang is up to in subreddit wallstreetbets
+`watchlist`     |show other users watchlist
+`popular`       |show popular tickers
+`spac_c`        |show other users spacs announcements from subreddit SPACs community
+`spac`          |show other users spacs announcements from other subs
+Stocktwits:| 
+`bullbear`      |estimate quick sentiment from last 30 messages on board
+`messages`      |output up to the 30 last messages on the board
+`trending`      |trending stocks
+`stalker`       |stalk stocktwits user's last message
+Twitter:| 
+`infer`         |infer about stock's sentiment from latest tweets
+`sentiment`     |in-depth sentiment prediction from tweets over time
+Google:| 
+`mentions`      |interest over time based on stock's mentions
+`regions`       |regions that show highest interest in stock
+`queries`       |top related queries with this stock
+`rise`          |top rising related queries with stock
 
 ### Research Web pages <a name="Research_Web_pages"></a>
-```
-macroaxis         www.macroaxis.com
-yahoo             www.finance.yahoo.com
-finviz            www.finviz.com
-marketwatch       www.marketwatch.com
-fool              www.fool.com
-businessinsider   www.markets.businessinsider.com
-fmp               www.financialmodelingprep.com
-fidelity          www.eresearch.fidelity.com
-tradingview       www.tradingview.com
-marketchameleon   www.marketchameleon.com
-stockrow          www.stockrow.com
-barchart          www.barchart.com
-grufity           www.grufity.com
-fintel            www.fintel.com
-zacks             www.zacks.com
-macrotrends       www.macrotrends.net
-newsfilter        www.newsfilter.io
+Command|Website
+----|----
+`macroaxis`         |www.macroaxis.com
+`yahoo`             |www.finance.yahoo.com
+`finviz`            |www.finviz.com
+`marketwatch`       |www.marketwatch.com
+`fool`              |www.fool.com
+`businessinsider`   |www.markets.businessinsider.com
+`fmp`               |www.financialmodelingprep.com
+`fidelity`          |www.eresearch.fidelity.com
+`tradingview`       |www.tradingview.com
+`marketchameleon`   |www.marketchameleon.com
+`stockrow`          |www.stockrow.com
+`barchart`          |www.barchart.com
+`grufity`           |www.grufity.com
+`fintel`            |www.fintel.com
+`zacks`             |www.zacks.com
+`macrotrends`       |www.macrotrends.net
+`newsfilter`        |www.newsfilter.io
+`resources`         |www.tradinganalysisresources.com
 
-resources         www.tradinganalysisresources.com
-```
 
 ### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
-```
-Daily Stock: BB (from 2020-06-04)
 
-screener      screen info about the company [Finviz]
-mgmt          management team of the company [Business Insider]
+Command|Explanation
+----- | ---------
+`screener`      |screen info about the company ([Finviz](https://finviz.com/))
+`mgmt`          |management team of the company ([Business Insider](https://www.businessinsider.com/))
+Market Watch API | 
+`income`        |income statement of the company
+`assets`        |assets of the company
+`liabilities`   |liabilities and shareholders equity of the company
+`operating`     |cash flow operating activities of the company
+`investing`     |cash flow investing activities of the company
+`financing`     |cash flow financing activities of the company
+Yahoo Finance API | 
+`info`          |information scope of the company
+`shrs`          |shareholders of the company
+`sust`          |sustainability values of the company
+`cal`           |calendar earnings and estimates of the company
+Alpha Vantage API | 
+`overview`      |overview of the company
+`income`        |income statements of the company
+`balance`       |balance sheet of the company
+`cash`          |cash flow of the company
+`earnings`      |earnings dates and reported EPS
+Financial Modeling Prep API | 
+`profile`       |profile of the company
+`quote`         |quote of the company
+`enterprise`    |enterprise value of the company over time
+`dcf`           |discounted cash flow of the company over time
+`inc`           |income statements of the company
+`bal`           |balance sheet of the company
+`cashf`         |cash flow of the company
+`metrics`       |key metrics of the company
+`ratios`        |financial ratios of the company
+`growth`        |financial statement growth of the company
 
-Market Watch API
-income        income statement of the company
-assets        assets of the company
-liabilities   liabilities and shareholders equity of the company
-operating     cash flow operating activities of the company
-investing     cash flow investing activities of the company
-financing     cash flow financing activities of the company
-
-Yahoo Finance API
-info          information scope of the company
-shrs          shareholders of the company
-sust          sustainability values of the company
-cal           calendar earnings and estimates of the company
-
-Alpha Vantage API
-overview      overview of the company
-income        income statements of the company
-balance       balance sheet of the company
-cash          cash flow of the company
-earnings      earnings dates and reported EPS
-
-Financial Modeling Prep API
-profile       profile of the company
-quote         quote of the company
-enterprise    enterprise value of the company over time
-dcf           discounted cash flow of the company over time
-inc           income statements of the company
-bal           balance sheet of the company
-cashf         cash flow of the company
-metrics       key metrics of the company
-ratios        financial ratios of the company
-growth        financial statement growth of the company
-```
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
-```
-overlap:
-ema         exponential moving average
-sma         simple moving average
-vwap        volume weighted average price
-momentum:
-cci         commodity channel index
-macd        moving average convergence/divergence
-rsi         relative strength index
-stoch       stochastic oscillator
+Command | Explanation
+------ | ------
+overlap: | 
+`ema`         | exponential moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [source 2](https://www.investopedia.com/terms/e/ema.asp))
+`sma`         |simple moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [source 2](https://www.investopedia.com/terms/s/sma.asp))
+`vwap`        |volume weighted average price ([source 1](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [source 2](https://www.investopedia.com/terms/v/vwap.asp))
+momentum: | 
+`cci`         |commodity channel index ([source 1](https://en.wikipedia.org/wiki/Commodity_channel_index), [source 2](https://www.investopedia.com/terms/c/commoditychannelindex.asp))
+`macd`        |moving average convergence/divergence ([source 1](https://en.wikipedia.org/wiki/MACD), [source 2](https://www.investopedia.com/terms/m/macd.asp))
+`rsi`         |relative strength index ([source 1](https://en.wikipedia.org/wiki/Relative_strength_index), [source 2](https://www.investopedia.com/terms/r/rsi.asp))
+`stoch`       |stochastic oscillator ([source 1](https://en.wikipedia.org/wiki/Stochastic_oscillator), [source 2](https://www.investopedia.com/terms/s/stochasticoscillator.asp))
 trend:
-adx         average directional movement index
-aroon       aroon indicator
-volatility:
-bbands      bollinger bands
-volume:
-ad          chaikin accumulation/distribution line values
-obv         on balance volume
-```
+`adx`         |average directional movement index ([source 1](https://en.wikipedia.org/wiki/Average_directional_movement_index), [source 2](https://www.investopedia.com/terms/a/adx.asp))
+`aroon`       |aroon indicator ([source 1](https://www.investopedia.com/terms/a/aroon.asp))
+volatility: | 
+`bbands`      |bollinger bands ([source 1](https://en.wikipedia.org/wiki/Bollinger_Bands), [source 2](https://www.investopedia.com/terms/b/bollingerbands.asp))
+volume: | 
+`ad`          |chaikin accumulation/distribution line values ([source 1](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [source 2](https://www.investopedia.com/terms/a/accumulationdistribution.asp))
+`obv`         |on balance volume ([source 1](https://en.wikipedia.org/wiki/On-balance_volume), [source 2](https://www.investopedia.com/terms/o/onbalancevolume.asp))
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
-```
-news          latest news of the company [Finviz]
-red           gets due diligence from another user's post [Reddit]
-analyst       analyst prices and ratings of the company [Finviz]
-rating        rating of the company from strong sell to strong buy [FMP]
-pt            price targets over time [Business Insider]
-est           quarter and year analysts earnings estimates [Business Insider]
-ins           insider activity over time [Business Insider]
-insider       insider trading of the company [Finviz]
-sec           SEC filings [Market Watch]
-short         short interest [Quandl]
-warnings      company warnings according to Sean Seah book [Market Watch]
-```
+Command|Explanation
+------ | --------
+`news`          |latest news of the company ([Finviz](https://finviz.com/))
+`red`           |gets due diligence from another user's post ([Reddit](https://reddit.com))
+`analyst`       |analyst prices and ratings of the company ([Finviz](https://finviz.com/))
+`rating`        |rating of the company from strong sell to strong buy [FMP]
+`pt`            |price targets over time ([Business Insider](https://www.businessinsider.com/))
+`est`           |quarter and year analysts earnings estimates ([Business Insider](https://www.businessinsider.com/))
+`ins`           |insider activity over time ([Business Insider](https://www.businessinsider.com/))
+`insider`       |insider trading of the company ([Finviz](https://finviz.com/))
+`sec`           |SEC filings ([MarketWatch](https://www.marketwatch.com/))
+`short`         |short interest ([Quandl](https://www.quandl.com/))
+`warnings`      |company warnings according to Sean Seah book ([MarketWatch](https://www.marketwatch.com/))
+
 
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
-```
-sma         simple moving average
-knn         k-Nearest Neighbors
-linear      linear regression (polynomial 1)
-quadratic   quadratic regression (polynomial 2)
-cubic       cubic regression (polynomial 3)
-regression  regression (other polynomial)
-arima       autoregressive integrated moving average
-prophet     Facebook's prophet prediction
-mlp         MultiLayer Perceptron
-rnn         Recurrent Neural Network
-lstm        Long-Short Term Memory
-```
+Command|Algorithm
+------ | ----------
+`sma`         |simple moving average ([source 1](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [source 2](https://www.investopedia.com/terms/s/sma.asp))
+`knn`         |k-Nearest Neighbors ([source 1](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm))
+`linear`      |linear regression (polynomial 1) ([source 1](https://en.wikipedia.org/wiki/Linear_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`quadratic`   |quadratic regression (polynomial 2) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`cubic`       |cubic regression (polynomial 3) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`regression`  |regression (other polynomial) ([source 1](https://en.wikipedia.org/wiki/Polynomial_regression), [source 2](https://www.investopedia.com/terms/r/regression.asp))
+`arima`       |autoregressive integrated moving average ([source 1](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [source 2](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)) 
+`prophet`     |Facebook's prophet prediction] ([source 1](https://facebook.github.io/prophet/))
+`mlp`         |MultiLayer Perceptron ([source 1](https://en.wikipedia.org/wiki/Multilayer_perceptron))
+`rnn`         |Recurrent Neural Network  ([source 1](https://en.wikipedia.org/wiki/Recurrent_neural_network))
+`lstm`        |Long Short-Term Memory  ([source 1](https://en.wikipedia.org/wiki/Long_short-term_memory))
+
 
 ## Install <a name="Install"></a>
 
 This project was written and tested with Python 3.6.8.
 
-In order to install all libraries used by this repository, you must run
+In order to install, you must run:
 ```
-pip install -r requirements.txt
+git clone https://github.com/DidierRLopes/GamestonkTerminal
+cd GamestonkTerminal/
+pip3 install -r requirements.txt
 ```
+Then run:
+```
+python3 gamestonk_terminal.py
+```
+
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
 
@@ -244,4 +250,3 @@ When these are obtained, don't forget to update [config_terminal.py](/config_ter
 If you like this project, and would like me to maintain it and keep adding features, feel free to buy me a coffee!
 
 <a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
