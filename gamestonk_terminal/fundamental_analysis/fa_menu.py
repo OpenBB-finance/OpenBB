@@ -97,6 +97,7 @@ def info(l_args, s_ticker):
 
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
+# pylint: disable=too-many-branches
 def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts

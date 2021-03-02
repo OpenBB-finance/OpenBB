@@ -277,6 +277,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
+# pylint: disable=too-many-branches
 def main():
     """
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,

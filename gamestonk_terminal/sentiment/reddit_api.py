@@ -87,108 +87,108 @@ def watchlist(l_args):
         n_flair_posts_found = 0
         while True:
             submission = next(submissions, None)
-            if submission:
-                # Get more information about post using PRAW api
-                submission = praw_api.submission(id=submission.id)
-
-                # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's watchlist
-                if (
-                    not submission.removed_by_category
-                    and submission.selftext
-                    and submission.link_flair_text not in ["Yolo", "Meme"]
-                    and submission.author.name not in l_watchlist_author
-                ):
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
-                            l_tickers_found.append(s_ticker.strip())
-
-                    if l_tickers_found:
-                        # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission.author.name)
-
-                        # Lookup stock tickers within a watchlist
-                        for key in l_tickers_found:
-                            if key in d_watchlist_tickers:
-                                # Increment stock ticker found
-                                d_watchlist_tickers[key] += 1
-                            else:
-                                # Initialize stock ticker found
-                                d_watchlist_tickers[key] = 1
-
-                        l_watchlist_links.append(
-                            f"https://old.reddit.com{submission.permalink}"
-                        )
-                        # delte below, not necessary I reckon. Probably just link?
-
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(
-                            submission.created_utc
-                        ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://old.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                            "created_utc": s_datetime,
-                            "subreddit": submission.subreddit,
-                            "link_flair_text": submission.link_flair_text,
-                            "title": submission.title,
-                            "score": submission.score,
-                            "link": s_link,
-                            "num_comments": submission.num_comments,
-                            "upvote_ratio": submission.upvote_ratio,
-                            "awards": s_all_awards,
-                        }
-
-                        # Print post data collected so far
-                        print(f"\n{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(
-                            [
-                                "Subreddit",
-                                "Flair",
-                                "Score",
-                                "# Comments",
-                                "Upvote %",
-                                "Awards",
-                            ]
-                        )
-                        t_post.add_row(
-                            [
-                                submission.subreddit,
-                                submission.link_flair_text,
-                                submission.score,
-                                submission.num_comments,
-                                f"{round(100*submission.upvote_ratio)}%",
-                                s_all_awards,
-                            ]
-                        )
-                        print(t_post)
-                        print("")
-
-                        # Increment count of valid posts found
-                        n_flair_posts_found += 1
-
-                # Check if number of wanted posts found has been reached
-                if n_flair_posts_found > ns_parser.n_limit - 1:
-                    break
 
             # Check if search_submissions didn't get anymore posts
-            else:
+            if not submission:
+                break
+
+            # Get more information about post using PRAW api
+            submission = praw_api.submission(id=submission.id)
+
+            # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+            # that there is a description and it's not just an image, that the flair is
+            # meaningful, and that we aren't re-considering same author's watchlist
+            if (
+                not submission.removed_by_category
+                and submission.selftext
+                and submission.link_flair_text not in ["Yolo", "Meme"]
+                and submission.author.name not in l_watchlist_author
+            ):
+                ls_text = list()
+                ls_text.append(submission.selftext)
+                ls_text.append(submission.title)
+
+                submission.comments.replace_more(limit=0)
+                for comment in submission.comments.list():
+                    ls_text.append(comment.body)
+
+                l_tickers_found = list()
+                for s_text in ls_text:
+                    for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
+                        l_tickers_found.append(s_ticker.strip())
+
+                if l_tickers_found:
+                    # Add another author's name to the parsed watchlists
+                    l_watchlist_author.append(submission.author.name)
+
+                    # Lookup stock tickers within a watchlist
+                    for key in l_tickers_found:
+                        if key in d_watchlist_tickers:
+                            # Increment stock ticker found
+                            d_watchlist_tickers[key] += 1
+                        else:
+                            # Initialize stock ticker found
+                            d_watchlist_tickers[key] = 1
+
+                    l_watchlist_links.append(
+                        f"https://old.reddit.com{submission.permalink}"
+                    )
+                    # delte below, not necessary I reckon. Probably just link?
+
+                    # Refactor data
+                    s_datetime = datetime.utcfromtimestamp(
+                        submission.created_utc
+                    ).strftime("%d/%m/%Y %H:%M:%S")
+                    s_link = f"https://old.reddit.com{submission.permalink}"
+                    s_all_awards = ""
+                    for award in submission.all_awardings:
+                        s_all_awards += f"{award['count']} {award['name']}\n"
+                    s_all_awards = s_all_awards[:-2]
+
+                    # Create dictionary with data to construct dataframe allows to save data
+                    d_submission[submission.id] = {
+                        "created_utc": s_datetime,
+                        "subreddit": submission.subreddit,
+                        "link_flair_text": submission.link_flair_text,
+                        "title": submission.title,
+                        "score": submission.score,
+                        "link": s_link,
+                        "num_comments": submission.num_comments,
+                        "upvote_ratio": submission.upvote_ratio,
+                        "awards": s_all_awards,
+                    }
+
+                    # Print post data collected so far
+                    print(f"\n{s_datetime} - {submission.title}")
+                    print(f"{s_link}")
+                    t_post = PrettyTable(
+                        [
+                            "Subreddit",
+                            "Flair",
+                            "Score",
+                            "# Comments",
+                            "Upvote %",
+                            "Awards",
+                        ]
+                    )
+                    t_post.add_row(
+                        [
+                            submission.subreddit,
+                            submission.link_flair_text,
+                            submission.score,
+                            submission.num_comments,
+                            f"{round(100*submission.upvote_ratio)}%",
+                            s_all_awards,
+                        ]
+                    )
+                    print(t_post)
+                    print("")
+
+                    # Increment count of valid posts found
+                    n_flair_posts_found += 1
+
+            # Check if number of wanted posts found has been reached
+            if n_flair_posts_found > ns_parser.n_limit - 1:
                 break
 
         if n_flair_posts_found:
