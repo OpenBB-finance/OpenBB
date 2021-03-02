@@ -8,7 +8,7 @@ import json
 import config_terminal as cfg
 from datetime import datetime
 import argparse
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
