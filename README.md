@@ -19,6 +19,7 @@ Feel free to request features, I'll be happy to work on them on my spare time.
   * [Due Diligence](#Due_Diligence)
   * [Prediction Techniques](#Prediction_Techniques)
 * [Install](#Install)
+* [Docker](#Docker)
 * [API Keys](#API_Keys)
 * [Disclaimer](#Disclaimer)
 * [Support](#Support)
