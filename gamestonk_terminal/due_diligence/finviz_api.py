@@ -9,7 +9,7 @@ from gamestonk_terminal.helper_funcs import check_positive, patch_pandas_text_ad
 def category_color_red_green(val: str) -> str:
     if val == "Upgrade":
         return Fore.GREEN + val + Style.RESET_ALL
-    elif val == "Downgrade":
+    if val == "Downgrade":
         return Fore.RED + val + Style.RESET_ALL
     return val
 
