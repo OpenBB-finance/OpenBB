@@ -3,6 +3,7 @@
 """
 import argparse
 import pandas as pd
+from sys import stdout
 from helper_funcs import *
 from fundamental_analysis import fa_menu as fam
 from technical_analysis import ta_menu as tam
@@ -144,6 +145,37 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
 
 
+# ----------------------------------------------------- EXPORT -----------------------------------------------------
+def export(l_args, df_stock):
+    parser = argparse.ArgumentParser(prog='export', description='Exports the current dataframe to a file or stdout')
+    parser.add_argument('-f', "--filename", type=str, dest="s_filename", default=stdout, help="Where to save the export (stdout if unspecified)")
+    parser.add_argument('-F', "--format", dest="s_format", type=str, default="csv", help="Export format (csv json excel clipboard)")
+
+    try:
+        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        s_format = ns_parser.s_format
+        s_filename = ns_parser.s_filename
+    except SystemExit:
+        print("")
+        return
+
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
+    if df_stock.empty:
+        print("No data loaded yet to export.")
+        return
+
+    if s_format == "csv":
+        df_stock.to_csv(s_filename)
+    elif s_format == "json":
+        df_stock.to_json(s_filename)
+    elif s_format == "excel":
+        df_stock.to_excel(s_filename)
+    elif s_format == "clipboard":
+        df_stock.to_clipboard()
+
+
 # ----------------------------------------------------- HELP ------------------------------------------------------------------
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     """ Print help
@@ -155,6 +187,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
     print("   view        view and load a specific stock ticker for technical analysis")
+    print("   export      export the currently loaded dataframe to a file or stdout")
 
     s_intraday = (f'Intraday {s_interval}', 'Daily')[s_interval == "1440min"]
     if s_ticker and s_start:
@@ -201,7 +234,7 @@ def main():
     menu_parser = argparse.ArgumentParser(prog='gamestonk_terminal', add_help=False)
     menu_parser.add_argument('opt', choices=['help', 'quit', 'q',
                                              'clear', 'load', 'view',
-                                             'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred'])
+                                             'disc', 'sen', 'res', 'fa', 'ta', 'dd', 'pred', 'export'])
 
     # Print first welcome message and help
     print("\nWelcome to Didier's Gamestonk Terminal\n")
@@ -242,6 +275,9 @@ def main():
 
         elif ns_known_args.opt == 'view':
             view(l_args, s_ticker, s_start, s_interval, df_stock)
+
+        elif ns_known_args.opt == 'export':
+            export(l_args, df_stock)
 
         # DISCOVERY MENU
         elif ns_known_args.opt == 'disc':
