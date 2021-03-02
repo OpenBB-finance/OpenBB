@@ -38,7 +38,7 @@ def high_short_interest(l_args):
     df_high_short_interest = pd.DataFrame(columns=a_high_short_interest_header)
     df_high_short_interest.loc[0] = ['', '', '', '', '', '', '']
 
-    a_high_short_interested_stocks = re.sub('<!--.*?//-->','', text_soup_high_short_interested_stocks.find_all('td')[3].text, flags=re.DOTALL).split('\n')[2:]
+    a_high_short_interested_stocks = re.sub('<!--.*?//-->','', text_soup_high_short_interested_stocks.find_all('td')[2].text, flags=re.DOTALL).split('\n')[2:]
     a_high_short_interested_stocks[0] = a_high_short_interested_stocks[0].replace('TickerCompanyExchangeShortIntFloatOutstdIndustry','')
 
     l_stock_info = list()
@@ -87,7 +87,7 @@ def low_float(l_args):
     df_low_float = pd.DataFrame(columns=a_low_float_header)
     df_low_float.loc[0] = ['', '', '', '', '', '', '']
 
-    a_low_float_stocks = re.sub('<!--.*?//-->','', text_soup_low_float_stocks.find_all('td')[3].text, flags=re.DOTALL).split('\n')[2:]
+    a_low_float_stocks = re.sub('<!--.*?//-->','', text_soup_low_float_stocks.find_all('td')[2].text, flags=re.DOTALL).split('\n')[2:]
     a_low_float_stocks[0] = a_low_float_stocks[0].replace('TickerCompanyExchangeFloatOutstdShortIntIndustry','')
 
     l_stock_info = list()
