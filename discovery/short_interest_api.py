@@ -43,7 +43,7 @@ def high_short_interest(l_args):
 
     l_stock_info = list()
     for elem in a_high_short_interested_stocks:
-        if elem is '':
+        if elem == '':
             continue
             
         l_stock_info.append(elem)
@@ -92,7 +92,7 @@ def low_float(l_args):
 
     l_stock_info = list()
     for elem in a_low_float_stocks:
-        if elem is '':
+        if elem == '':
             continue
             
         l_stock_info.append(elem)
