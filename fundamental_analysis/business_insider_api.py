@@ -11,10 +11,10 @@ from rapidfuzz import fuzz
 
 # ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
 def management(l_args, s_ticker):
-    parser = argparse.ArgumentParser(prog='mgmt', 
-                                     description="""Print management team. Namely: Name, Title, Information from google and 
+    parser = argparse.ArgumentParser(prog='mgmt',
+                                     description="""Print management team. Namely: Name, Title, Information from google and
                                                     (potentially) Insider Activity page. [Source: Business Insider]""")
-        
+
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
@@ -33,7 +33,7 @@ def management(l_args, s_ticker):
         l_names = list()
         for s_name in text_soup_market_business_insider.findAll('td', {'class': 'table__td table--allow-wrap'}):
             l_names.append(s_name.text.strip())
-            
+
         df_management = pd.DataFrame({'Name': l_names[-len(l_titles):], 'Title':l_titles}, columns=['Name','Title'])
 
         df_management['Info'] = '-'
@@ -57,7 +57,7 @@ def management(l_args, s_ticker):
             if df_management['Insider Activity'][ind] not in '-':
                 print(f"{df_management['Insider Activity'][ind]}")
             print("")
-        
+
     except:
         print("")
         return
