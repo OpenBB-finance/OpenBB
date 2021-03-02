@@ -211,7 +211,7 @@ pip3 install -r requirements.txt
 ```
 Then run:
 ```
-python3 gamestonk_terminal.py
+python gamestonk_terminal.py
 ```
 
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
