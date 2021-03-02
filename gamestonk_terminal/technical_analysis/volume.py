@@ -1,7 +1,8 @@
 import argparse
+import matplotlib.pyplot as plt
 import pandas_ta as ta
-from gamestonk_terminal.helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.helper_funcs import check_positive
 
 register_matplotlib_converters()
 
@@ -9,16 +10,18 @@ register_matplotlib_converters()
 def ad(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="ad",
-        description=""" The Accumulation/Distribution Line is similar to the On Balance 
-                                     Volume (OBV), which sums the volume times +1/-1 based on whether the close is 
-                                     higher than the previous close. The Accumulation/Distribution indicator, however 
-                                     multiplies the volume by the close location value (CLV). The CLV is based on the 
-                                     movement of the issue within a single bar and can be +1, -1 or zero. \n \n 
-                                     The Accumulation/Distribution Line is interpreted by looking for a divergence in 
-                                     the direction of the indicator relative to price. If the Accumulation/Distribution 
-                                     Line is trending upward it indicates that the price may follow. Also, if the 
-                                     Accumulation/Distribution Line becomes flat while the price is still rising (or falling) 
-                                     then it signals an impending flattening of the price.""",
+        description="""
+            The Accumulation/Distribution Line is similar to the On Balance
+            Volume (OBV), which sums the volume times +1/-1 based on whether the close is
+            higher than the previous close. The Accumulation/Distribution indicator, however
+            multiplies the volume by the close location value (CLV). The CLV is based on the
+            movement of the issue within a single bar and can be +1, -1 or zero. \n \n
+            The Accumulation/Distribution Line is interpreted by looking for a divergence in
+            the direction of the indicator relative to price. If the Accumulation/Distribution
+            Line is trending upward it indicates that the price may follow. Also, if the
+            Accumulation/Distribution Line becomes flat while the price is still rising (or falling)
+            then it signals an impending flattening of the price.
+        """,
     )
 
     parser.add_argument(
@@ -71,10 +74,11 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            # pylint: disable=unused-variable
             axVolume = axPrice.twinx()
             plt.bar(
                 df_stock.index,
@@ -87,7 +91,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_ta.index, df_ta.values, "b", lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.axhline(0, linewidth=2, color="k", ls="--")
-            plt.legend([f"Chaikin Oscillator"])
+            plt.legend(["Chaikin Oscillator"])
             plt.xlabel("Time")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -120,7 +124,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -136,7 +140,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_ta.index, df_ta.values, "b", lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
             plt.axhline(0, linewidth=2, color="k", ls="--")
-            plt.legend([f"Chaikin Oscillator"])
+            plt.legend(["Chaikin Oscillator"])
             plt.xlabel("Time")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -144,7 +148,8 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
         return
 
@@ -153,13 +158,15 @@ def ad(l_args, s_ticker, s_interval, df_stock):
 def obv(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="obv",
-        description=""" The On Balance Volume (OBV) is a cumulative total of the up and 
-                                     down volume. When the close is higher than the previous close, the volume is added 
-                                     to the running total, and when the close is lower than the previous close, the volume 
-                                     is subtracted from the running total. \n \n To interpret the OBV, look for the OBV 
-                                     to move with the price or precede price moves. If the price moves before the OBV, 
-                                     then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the 
-                                     OBV indicates a strong trend. If the OBV is flat, then the market is not trending. """,
+        description="""
+            The On Balance Volume (OBV) is a cumulative total of the up and
+            down volume. When the close is higher than the previous close, the volume is added
+            to the running total, and when the close is lower than the previous close, the volume
+            is subtracted from the running total. \n \n To interpret the OBV, look for the OBV
+            to move with the price or precede price moves. If the price moves before the OBV,
+            then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the
+            OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
+        """,
     )
 
     parser.add_argument(
@@ -191,10 +198,11 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            # pylint: disable=unused-variable
             axVolume = axPrice.twinx()
             plt.bar(
                 df_stock.index,
@@ -206,7 +214,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, "b", lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.legend([f"OBV"])
+            plt.legend(["OBV"])
             plt.xlabel("Time")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -225,7 +233,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -240,7 +248,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.subplot(212)
             plt.plot(df_ta.index, df_ta.values, "b", lw=1)
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.legend([f"OBV"])
+            plt.legend(["OBV"])
             plt.xlabel("Time")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -249,6 +257,6 @@ def obv(l_args, s_ticker, s_interval, df_stock):
 
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-
