@@ -1,7 +1,8 @@
 import argparse
+import matplotlib.pyplot as plt
 import pandas_ta as ta
-from gamestonk_terminal.helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.helper_funcs import check_positive
 
 register_matplotlib_converters()
 
@@ -9,16 +10,18 @@ register_matplotlib_converters()
 def bbands(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="bbands",
-        description=""" Bollinger Bands consist of three lines. The middle band is a simple 
-                                     moving average (generally 20 periods) of the typical price (TP). The upper and lower 
-                                     bands are F standard deviations (generally 2) above and below the middle band. 
-                                     The bands widen and narrow when the volatility of the price is higher or lower, respectively.
-                                     \n \nBollinger Bands do not, in themselves, generate buy or sell signals; they are an 
-                                     indicator of overbought or oversold conditions. When the price is near the upper or lower 
-                                     band it indicates that a reversal may be imminent. The middle band becomes a support or 
-                                     resistance level. The upper and lower bands can also be interpreted as price targets. 
-                                     When the price bounces off of the lower band and crosses the middle band, then the 
-                                     upper band becomes the price target. """,
+        description="""
+            Bollinger Bands consist of three lines. The middle band is a simple
+            moving average (generally 20 periods) of the typical price (TP). The upper and lower
+            bands are F standard deviations (generally 2) above and below the middle band.
+            The bands widen and narrow when the volatility of the price is higher or lower, respectively.
+            \n \nBollinger Bands do not, in themselves, generate buy or sell signals; they are an
+            indicator of overbought or oversold conditions. When the price is near the upper or lower
+            band it indicates that a reversal may be imminent. The middle band becomes a support or
+            resistance level. The upper and lower bands can also be interpreted as price targets.
+            When the price bounces off of the lower band and crosses the middle band, then the
+            upper band becomes the price target.
+        """,
     )
 
     parser.add_argument(
@@ -126,6 +129,6 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-
