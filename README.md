@@ -2,7 +2,7 @@
 
 ## About
 
-Gamestonk Terminal is an awesome stock market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
+Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
 
 The implementation (in python) allows to easily add more commands, and expand on their configuration.
 
@@ -208,7 +208,7 @@ In order to install all libraries used by this repository, you must run
 ```
 pip install -r requirements.txt
 ```
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment previous to install these. This allows to keep dependencies required by different projects in separate places.
+Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
 
 ## API Keys <a name="API_Keys"></a>
@@ -234,6 +234,8 @@ When these are obtained, don't forget to update [config_terminal.py](/config_ter
   * GT_API_TWITTER_KEY
   * GT_API_TWITTER_SECRET_KEY
   * GT_API_TWITTER_BEARER_TOKEN.
+
+Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ## Disclaimer <a name="Disclaimer"></a>
 
