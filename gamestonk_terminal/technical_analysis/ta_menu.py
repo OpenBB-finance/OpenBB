@@ -1,14 +1,4 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-from gamestonk_terminal import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
 
 from gamestonk_terminal.technical_analysis import overlap as ta_overlap
 from gamestonk_terminal.technical_analysis import momentum as ta_momentum

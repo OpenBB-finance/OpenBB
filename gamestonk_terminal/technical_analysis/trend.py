@@ -1,7 +1,8 @@
 import argparse
+import matplotlib.pyplot as plt
 import pandas_ta as ta
-from gamestonk_terminal.helper_funcs import *
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal.helper_funcs import check_positive
 
 register_matplotlib_converters()
 
@@ -9,10 +10,11 @@ register_matplotlib_converters()
 def adx(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="adx",
-        description=""" The ADX is a Welles Wilder style moving average of the Directional 
-                                     Movement Index (DX). The values range from 0 to 100, but rarely get above 60. 
-                                     To interpret the ADX, consider a high number to be a strong trend, and a low number, 
-                                     a weak trend. """,
+        description="""
+            The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
+            The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
+            a high number to be a strong trend, and a low number, a weak trend.
+        """,
     )
 
     parser.add_argument(
@@ -75,7 +77,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
             plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -115,7 +117,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
             plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
             plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel(f"Share Price ($)")
+            plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -140,7 +142,8 @@ def adx(l_args, s_ticker, s_interval, df_stock):
             plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
 
 
@@ -148,16 +151,18 @@ def adx(l_args, s_ticker, s_interval, df_stock):
 def aroon(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="aroon",
-        description=""" The word aroon is Sanskrit for "dawn's early light." The Aroon 
-                                     indicator attempts to show when a new trend is dawning. The indicator consists 
-                                     of two lines (Up and Down) that measure how long it has been since the highest 
-                                     high/lowest low has occurred within an n period range. \n \n When the Aroon Up is 
-                                     staying between 70 and 100 then it indicates an upward trend. When the Aroon Down 
-                                     is staying between 70 and 100 then it indicates an downward trend. A strong upward 
-                                     trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30. 
-                                     Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while 
-                                     the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above 
-                                     the Aroon Up, it indicates a weakening of the upward trend (and vice versa). """,
+        description="""
+            The word aroon is Sanskrit for "dawn's early light." The Aroon
+            indicator attempts to show when a new trend is dawning. The indicator consists
+            of two lines (Up and Down) that measure how long it has been since the highest
+            high/lowest low has occurred within an n period range. \n \n When the Aroon Up is
+            staying between 70 and 100 then it indicates an upward trend. When the Aroon Down
+            is staying between 70 and 100 then it indicates an downward trend. A strong upward
+            trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
+            Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while
+            the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above
+            the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
+        """,
     )
 
     parser.add_argument(
@@ -214,7 +219,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
         plt.title(f"Aroon on {s_ticker}")
         plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel(f"Share Price ($)")
+        plt.ylabel("Share Price ($)")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -241,6 +246,6 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         plt.show()
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-
