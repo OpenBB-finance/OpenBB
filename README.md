@@ -66,21 +66,21 @@ Command|Description|Source
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
 Command|Description
 ----|----
-[Reddit](https://reddit.com):| 
+[Reddit](https://reddit.com)| 
 `wsb`           |show what WSB gang is up to in subreddit wallstreetbets
 `watchlist`     |show other users watchlist
 `popular`       |show popular tickers
 `spac_c`        |show other users spacs announcements from subreddit SPACs community
 `spac`          |show other users spacs announcements from other subs
-[Stocktwits](https://stocktwits.com/):| 
+[Stocktwits](https://stocktwits.com/)| 
 `bullbear`      |estimate quick sentiment from last 30 messages on board
 `messages`      |output up to the 30 last messages on the board
 `trending`      |trending stocks
 `stalker`       |stalk stocktwits user's last message
-[Twitter](https://twitter.com/):| 
+[Twitter](https://twitter.com/)| 
 `infer`         |infer about stock's sentiment from latest tweets
 `sentiment`     |in-depth sentiment prediction from tweets over time
-[Google](https://google.com/):|
+[Google](https://google.com/)|
 `mentions`      |interest over time based on stock's mentions
 `regions`       |regions that show highest interest in stock
 `queries`       |top related queries with this stock
@@ -147,25 +147,25 @@ Command|Description
 
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
-Command | Description | Wikipedia | Investopedia
------- | ------ | ------ | -----
+Command | Description | Sources
+------ | ------ | ------ 
 overlap: | 
-`ema`         | exponential moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) | [Link](https://www.investopedia.com/terms/e/ema.asp)
-`sma`         |simple moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter))| [Link](https://www.investopedia.com/terms/s/sma.asp)
-`vwap`        |volume weighted average price | [Link](https://en.wikipedia.org/wiki/Volume-weighted_average_price)| [Link](https://www.investopedia.com/terms/v/vwap.asp)
+`ema`         | exponential moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [Investopedia](https://www.investopedia.com/terms/e/ema.asp)
+`sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
+`vwap`        |volume weighted average price | [Wikipedia](https://en.wikipedia.org/wiki/Volume-weighted_average_price), [Investopedia](https://www.investopedia.com/terms/v/vwap.asp)
 momentum: | 
-`cci`         |commodity channel index | [Link](https://en.wikipedia.org/wiki/Commodity_channel_index)| [Link](https://www.investopedia.com/terms/c/commoditychannelindex.asp)
-`macd`        |moving average convergence/divergence | [Link](https://en.wikipedia.org/wiki/MACD)| [Link](https://www.investopedia.com/terms/m/macd.asp)
-`rsi`         |relative strength index | [Link](https://en.wikipedia.org/wiki/Relative_strength_index)| [Link](https://www.investopedia.com/terms/r/rsi.asp)
-`stoch`       |stochastic oscillator | [Link](https://en.wikipedia.org/wiki/Stochastic_oscillator)| [Link](https://www.investopedia.com/terms/s/stochasticoscillator.asp)
+`cci`         |commodity channel index | [Wikipedia](https://en.wikipedia.org/wiki/Commodity_channel_index), [Investopedia](https://www.investopedia.com/terms/c/commoditychannelindex.asp)
+`macd`        |moving average convergence/divergence | [Wikipedia](https://en.wikipedia.org/wiki/MACD), [Investopedia](https://www.investopedia.com/terms/m/macd.asp)
+`rsi`         |relative strength index | [Wikipedia](https://en.wikipedia.org/wiki/Relative_strength_index), [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)
+`stoch`       |stochastic oscillator | [Wikipedia](https://en.wikipedia.org/wiki/Stochastic_oscillator), [Investopedia](https://www.investopedia.com/terms/s/stochasticoscillator.asp)
 trend:
-`adx`         |average directional movement index | [Link](https://en.wikipedia.org/wiki/Average_directional_movement_index)| [Link](https://www.investopedia.com/terms/a/adx.asp)
-`aroon`       |aroon indicator | [Link](https://www.investopedia.com/terms/a/aroon.asp)
+`adx`         |average directional movement index | [Wikipedia](https://en.wikipedia.org/wiki/Average_directional_movement_index), [Investopedia](https://www.investopedia.com/terms/a/adx.asp)
+`aroon`       |aroon indicator | [Investopedia](https://www.investopedia.com/terms/a/aroon.asp)
 volatility: | 
-`bbands`      |bollinger bands | [Link](https://en.wikipedia.org/wiki/Bollinger_Bands)| [Link](https://www.investopedia.com/terms/b/bollingerbands.asp)
+`bbands`      |bollinger bands | [Wikipedia](https://en.wikipedia.org/wiki/Bollinger_Bands), [Investopedia](https://www.investopedia.com/terms/b/bollingerbands.asp)
 volume: | 
-`ad`          |chaikin accumulation/distribution line values | [Link](https://en.wikipedia.org/wiki/Accumulation/distribution_index)| [Link](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
-`obv`         |on balance volume | [Link](https://en.wikipedia.org/wiki/On-balance_volume)| [Link](https://www.investopedia.com/terms/o/onbalancevolume.asp)
+`ad`          |chaikin accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
+`obv`         |on balance volume | [Wikipedia](https://en.wikipedia.org/wiki/On-balance_volume), [Investopedia](https://www.investopedia.com/terms/o/onbalancevolume.asp)
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
 Command|Explanation|Source
@@ -184,19 +184,19 @@ Command|Explanation|Source
 
 
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
-Command|Technique|Wikipedia|Investopedia
------- | ------------|---|----
-`sma`         |simple moving average | [Link](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average)| [Link](https://www.investopedia.com/terms/s/sma.asp)
-`knn`         |k-Nearest Neighbors | [Link](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
-`linear`      |linear regression (polynomial 1) | [Link](https://en.wikipedia.org/wiki/Linear_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
-`quadratic`   |quadratic regression (polynomial 2) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
-`cubic`       |cubic regression (polynomial 3) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
-`regression`  |regression (other polynomial) | [Link](https://en.wikipedia.org/wiki/Polynomial_regression)| [Link](https://www.investopedia.com/terms/r/regression.asp)
-`arima`       |autoregressive integrated moving average | [Link](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average)| [Link](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp) 
-`prophet`     |Facebook's prophet prediction ([Link](https://facebook.github.io/prophet/))|
-`mlp`         |MultiLayer Perceptron | [Link](https://en.wikipedia.org/wiki/Multilayer_perceptron)
-`rnn`         |Recurrent Neural Network  | [Link](https://en.wikipedia.org/wiki/Recurrent_neural_network)
-`lstm`        |Long Short-Term Memory  | [Link](https://en.wikipedia.org/wiki/Long_short-term_memory)
+Command|Technique|Sources
+------ | ------------|---
+`sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
+`knn`         |k-Nearest Neighbors | [Wikipedia](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
+`linear`      |linear regression (polynomial 1) | [Wikipedia](https://en.wikipedia.org/wiki/Linear_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
+`quadratic`   |quadratic regression (polynomial 2) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
+`cubic`       |cubic regression (polynomial 3) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
+`regression`  |regression (other polynomial) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
+`arima`       |autoregressive integrated moving average | [Wikipedia](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Investopedia](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp) 
+`prophet`     |Facebook's prophet prediction | [Link](https://facebook.github.io/prophet/)
+`mlp`         |MultiLayer Perceptron | [Wikipedia](https://en.wikipedia.org/wiki/Multilayer_perceptron)
+`rnn`         |Recurrent Neural Network  | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network)
+`lstm`        |Long Short-Term Memory  | [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory)
 
 
 ## Install <a name="Install"></a>
