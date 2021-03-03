@@ -1,21 +1,23 @@
 import argparse
-import numpy as np
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-
-register_matplotlib_converters()
 from sklearn import neighbors
 from TimeSeriesCrossValidation import splitTrain
+from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+
+register_matplotlib_converters()
 
 # ----------------------------------------------------- kNN -----------------------------------------------------
+# pylint: disable=unused-argument
 def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="knn",
-        description=""" K nearest neighbors is a simple algorithm that stores all 
-                                     available cases and predict the numerical target based on a similarity measure 
-                                     (e.g. distance functions). """,
+        description="""
+            K nearest neighbors is a simple algorithm that stores all
+            available cases and predict the numerical target based on a similarity measure
+            (e.g. distance functions).
+        """,
     )
 
     parser.add_argument(
@@ -108,7 +110,7 @@ def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(
             df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
         )
-        xmin, xmax, ymin, ymax = plt.axis()
+        _, _, ymin, ymax = plt.axis()
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
@@ -120,5 +122,6 @@ def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
         print(df_pred.to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
