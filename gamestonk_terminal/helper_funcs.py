@@ -3,11 +3,11 @@ from datetime import datetime, timedelta, time as Time
 import random
 import re
 import sys
+from pytz import timezone
 import iso8601
 import matplotlib.pyplot as plt
 import pandas.io.formats.format
 from pandas._config.config import get_option
-from pytz import timezone
 from holidays import US as holidaysUS
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -150,8 +150,8 @@ def long_number_format(num) -> str:
             num /= 1000.0
         if num.is_integer():
             return "%d%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
-        else:
-            return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
+
+        return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
     if isinstance(num, int):
         num = str(num)
     if num.lstrip("-").isdigit():
@@ -163,8 +163,8 @@ def long_number_format(num) -> str:
             num /= 1000.0
         if num.is_integer():
             return "%d%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
-        else:
-            return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
+
+        return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
     return num
 
 
@@ -201,8 +201,8 @@ def clean_data_values_to_float(val: str) -> float:
 def int_or_round_float(x):
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
-    else:
-        return " " + str(int(x))
+
+    return " " + str(int(x))
 
 
 # -----------------------------------------------------------------------------------------------------------------------
