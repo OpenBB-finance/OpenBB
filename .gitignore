@@ -7,4 +7,5 @@ __pycache__/
 .ipynb_checkpoints
 env/
 venv/
-notebooks/reports/
+notebooks/reports/*
+!notebooks/reports/.gitkeep
