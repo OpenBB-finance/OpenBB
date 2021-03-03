@@ -3,12 +3,15 @@ on: [pull_request, push]
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.6.13', '3.7', '3.8']
+        python-version: ['3.6', '3.7', '3.8']
         os: [ubuntu-latest, macos-latest, windows-latest]
-    name: Python ${{ matrix.python-version }}
+    name: ${{ matrix.os}} Python ${{ matrix.python-version }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -36,9 +39,12 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
+      - name: Install Package
+        run: poetry install --no-interaction
+
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
-          source .venv/bin/activate
+          source $VENV
           pytest tests/
