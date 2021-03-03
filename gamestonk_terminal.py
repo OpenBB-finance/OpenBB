@@ -13,6 +13,7 @@ from prediction_techniques import pred_menu as pm
 import res_menu as rm
 import config_terminal as cfg
 from alpha_vantage.timeseries import TimeSeries
+import readline
 #import warnings
 #warnings.simplefilter("always")
 
