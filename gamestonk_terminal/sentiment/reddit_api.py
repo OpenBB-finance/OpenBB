@@ -133,7 +133,7 @@ def watchlist(l_args):
                     l_watchlist_links.append(
                         f"https://old.reddit.com{submission.permalink}"
                     )
-                    # delte below, not necessary I reckon. Probably just link?
+                    # delete below, not necessary I reckon. Probably just link?
 
                     # Refactor data
                     s_datetime = datetime.utcfromtimestamp(
@@ -482,7 +482,7 @@ def spac_community(l_args):
                         l_watchlist_links.append(
                             f"https://www.reddit.com{submission.permalink}"
                         )
-                        # delte below, not necessary I reckon. Probably just link?
+                        # delete below, not necessary I reckon. Probably just link?
 
                         # Refactor data
                         s_datetime = datetime.utcfromtimestamp(
@@ -677,7 +677,7 @@ def spac(l_args):
                         l_watchlist_links.append(
                             f"https://old.reddit.com{submission.permalink}"
                         )
-                        # delte below, not necessary I reckon. Probably just link?
+                        # delete below, not necessary I reckon. Probably just link?
 
                         # Refactor data
                         s_datetime = datetime.utcfromtimestamp(

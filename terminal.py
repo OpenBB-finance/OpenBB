@@ -473,7 +473,7 @@ def main():
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
 
         else:
-            print("Shouldnt see this command!")
+            print("Shouldn't see this command!")
 
 
 if __name__ == "__main__":

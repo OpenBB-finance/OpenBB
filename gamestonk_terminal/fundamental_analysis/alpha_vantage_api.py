@@ -333,8 +333,8 @@ def cash_flow(l_args, s_ticker):
             issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
             Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory,
             Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash
-            used for investing activites, Net cash used provided by financing activities, Net change in cash, Net income,
-            Operating cash flow, Other financing activites, Other investing activites, Other non cash items, Other working
+            used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income,
+            Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working
             capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation.
             [Source: Alpha Vantage]
         """,
@@ -465,7 +465,7 @@ def earnings(l_args, s_ticker):
                         "estimatedEPS": "Estimated EPS",
                         "reportedDate": "Reported Date",
                         "surprise": "Surprise",
-                        "surprisePercentage": "Suprise Percentage",
+                        "surprisePercentage": "Surprise Percentage",
                     }
                 )
             else:

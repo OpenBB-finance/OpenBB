@@ -13,6 +13,7 @@ certifi==2020.12.5
 chardet==3.0.4
 click==7.1.2
 cloudpickle==1.6.0
+codespell==2.0.0
 config==0.5.0.post0
 convertdate==2.3.1
 cssselect==1.1.0

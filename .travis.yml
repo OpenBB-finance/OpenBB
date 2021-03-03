@@ -6,10 +6,11 @@ cache:
   pip: true
 
 install:
-  - pip install pylint black
+  - pip install pylint black codespell
 
 before_script:
   - black --check . || true
+  - codespell --ignore-words-list="mape" --quiet-level=2 -S '*.ipynb'
 
 script:
   - ./pylint_check.sh

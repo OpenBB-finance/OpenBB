@@ -431,7 +431,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         dest="n_slowdperiod",
         type=check_positive,
         default=3,
-        help="TThe time period of the slowd moving average",
+        help="The time period of the slowd moving average",
     )
     parser.add_argument(
         "--slowkperiod",
