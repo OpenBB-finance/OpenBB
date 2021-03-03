@@ -1,7 +1,7 @@
 name: Tests
 on: [pull_request, push]
 jobs:
-   linting:
+  linting:
     name: Linting
     runs-on: ubuntu-latest
     steps:
