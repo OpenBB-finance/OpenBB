@@ -230,8 +230,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
 # ----------------------------------------------------- HELP ------------------------------------------------------------------
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
-    """ Print help
-    """
+    """Print help"""
     print("What do you want to do?")
     print("   help        help to see this menu again")
     print("   quit        to abandon the program")

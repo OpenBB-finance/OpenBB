@@ -2,6 +2,8 @@
 # GamestonkTerminal 🚀
 
 [![Build Status](https://api.travis-ci.org/aia/GamestonkTerminal.svg?branch=main)](https://travis-ci.org/aia/GamestonkTerminal)
+[![GitHub release](https://img.shields.io/github/release/aia/GamestonkTerminal.svg?maxAge=3600)](https://github.com/aia/GamestonkTerminal/releases)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## About
 

@@ -6,7 +6,10 @@ cache:
   pip: true
 
 install:
-  - pip install pylint
+  - pip install pylint black
+
+before_script:
+  - black --check . || true
 
 script:
   - ./pylint_check.sh
