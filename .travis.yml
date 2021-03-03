@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.8"
+
+cache:
+  pip: true
+
+install:
+  - pip install pylint
+
+script:
+  - ./pylint_check.sh
