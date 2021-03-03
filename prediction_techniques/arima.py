@@ -34,57 +34,53 @@ def arima(l_args, s_ticker, s_interval, df_stock):
     parser.add_argument('-r', "--results", action="store_true", dest="b_results", default=False,
                         help='results about ARIMA summary flag.')
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+        return
 
-        # Machine Learning model
-        if ns_parser.s_order:
-            t_order = tuple([int(ord) for ord in list(ns_parser.s_order)])
-            model = ARIMA(df_stock['5. adjusted close'].values, order=t_order).fit()
-            l_predictions = model.predict(start=len(df_stock['5. adjusted close'])+1, end=len(df_stock['5. adjusted close'])+ns_parser.n_days)
+    # Machine Learning model
+    if ns_parser.s_order:
+        t_order = tuple([int(ord) for ord in list(ns_parser.s_order)])
+        model = ARIMA(df_stock['5. adjusted close'].values, order=t_order).fit()
+        l_predictions = model.predict(start=len(df_stock['5. adjusted close'])+1, end=len(df_stock['5. adjusted close'])+ns_parser.n_days)
+    else:
+        if ns_parser.b_seasonal:
+            model = pmdarima.auto_arima(df_stock['5. adjusted close'].values, error_action='ignore', seasonal=True, m=5, information_criteria=ns_parser.s_ic)
         else:
-            if ns_parser.b_seasonal:
-                model = pmdarima.auto_arima(df_stock['5. adjusted close'].values, error_action='ignore', seasonal=True, m=5, information_criteria=ns_parser.s_ic)
-            else:
-                model = pmdarima.auto_arima(df_stock['5. adjusted close'].values, error_action='ignore', seasonal=False, information_criteria=ns_parser.s_ic)
-            l_predictions = model.predict(n_periods=ns_parser.n_days)
+            model = pmdarima.auto_arima(df_stock['5. adjusted close'].values, error_action='ignore', seasonal=False, information_criteria=ns_parser.s_ic)
+        l_predictions = model.predict(n_periods=ns_parser.n_days)
 
-        # Prediction data
-        l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['5. adjusted close'].index[-1], n_next_days=ns_parser.n_days)
-        df_pred = pd.Series(l_predictions, index=l_pred_days, name='Price')
+    # Prediction data
+    l_pred_days = get_next_stock_market_days(last_stock_day=df_stock['5. adjusted close'].index[-1], n_next_days=ns_parser.n_days)
+    df_pred = pd.Series(l_predictions, index=l_pred_days, name='Price')
 
-        if ns_parser.b_results:
-            print(model.summary())
-            print("")
-
-        # Plotting
-        plt.plot(df_stock.index, df_stock['5. adjusted close'], lw=2)
-        if ns_parser.s_order:
-            plt.title(f"ARIMA {str(t_order)} on {s_ticker} - {ns_parser.n_days} days prediction")
-        else:
-            plt.title(f"ARIMA {model.order} on {s_ticker} - {ns_parser.n_days} days prediction")
-        plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1] )
-        plt.xlabel('Time')
-        plt.ylabel('Share Price ($)')
-        plt.grid(b=True, which='major', color='#666666', linestyle='-')
-        plt.minorticks_on()
-        plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
-        plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['5. adjusted close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
-        plt.plot(df_pred.index, df_pred, lw=2, c='tab:green')
-        plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
-        xmin, xmax, ymin, ymax = plt.axis()
-        plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle='--', color='k')
-        plt.show()
-
-        # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+    if ns_parser.b_results:
+        print(model.summary())
         print("")
 
-    except:
-        print("")
+    # Plotting
+    plt.plot(df_stock.index, df_stock['5. adjusted close'], lw=2)
+    if ns_parser.s_order:
+        plt.title(f"ARIMA {str(t_order)} on {s_ticker} - {ns_parser.n_days} days prediction")
+    else:
+        plt.title(f"ARIMA {model.order} on {s_ticker} - {ns_parser.n_days} days prediction")
+    plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1] )
+    plt.xlabel('Time')
+    plt.ylabel('Share Price ($)')
+    plt.grid(b=True, which='major', color='#666666', linestyle='-')
+    plt.minorticks_on()
+    plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
+    plt.plot([df_stock.index[-1], df_pred.index[0]], [df_stock['5. adjusted close'].values[-1], df_pred.values[0]], lw=1, c='tab:green', linestyle='--')
+    plt.plot(df_pred.index, df_pred, lw=2, c='tab:green')
+    plt.axvspan(df_stock.index[-1], df_pred.index[-1], facecolor='tab:orange', alpha=0.2)
+    xmin, xmax, ymin, ymax = plt.axis()
+    plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle='--', color='k')
+    plt.show()
+
+    # Print prediction data
+    print("Predicted share price:")
+    df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
+    print(df_pred.to_string())
+    print("")

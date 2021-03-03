@@ -54,7 +54,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 
         df_stock.sort_index(ascending=True, inplace=True)
 
-    except:
+    except Exception as exc:
+        print("ERROR:", exc)
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return [s_ticker, s_start, s_interval, df_stock]
 
@@ -108,7 +109,8 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         else:
             df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)
 
-    except:
+    except Exception as exc:
+        print("ERROR:", exc)
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return
 

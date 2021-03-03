@@ -12,19 +12,13 @@ def rating(l_args, s_ticker):
                                      is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
                                      P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]""")
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
-
-        df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        print(df_fa)
-
-        print("")
-
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
 
+    df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+    print(df_fa)
+
+    print("")

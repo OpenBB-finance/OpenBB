@@ -69,23 +69,19 @@ def info(l_args, s_ticker):
                                      description="""Provides information about main key metrics. Namely: EBITDA,
                                      EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.""")
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
-        filepath = 'fundamental_analysis/key_metrics_explained.txt'
-        with open(filepath) as fp:
+    filepath = 'fundamental_analysis/key_metrics_explained.txt'
+    with open(filepath) as fp:
+        line = fp.readline()
+        while line:
+            print("{}".format(line.strip()))
             line = fp.readline()
-            while line:
-                print("{}".format(line.strip()))
-                line = fp.readline()
-            print("")
+        print("")
 
-    except:
-        print("ERROR!\n")
-        return
 
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
