@@ -241,8 +241,10 @@ def popular_tickers(l_args):
         action="store",
         dest="s_subreddit",
         type=str,
-        help="""subreddits to look for tickers, e.g. pennystocks,stocks.
-                        Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets""",
+        help="""
+            subreddits to look for tickers, e.g. pennystocks,stocks.
+            Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets
+        """,
     )
     parser.add_argument(
         "-d",

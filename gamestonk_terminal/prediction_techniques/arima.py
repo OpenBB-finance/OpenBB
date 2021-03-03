@@ -1,26 +1,29 @@
 import argparse
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-
-register_matplotlib_converters()
 import pmdarima
 from statsmodels.tsa.arima.model import ARIMA
+from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+
+register_matplotlib_converters()
 
 # -------------------------------------------------- ARIMA --------------------------------------------------
+# pylint: disable=unused-argument
 def arima(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="arima",
-        description="""In statistics and econometrics, and in particular in time
-                                     series analysis, an autoregressive integrated moving average (ARIMA) model
-                                     is a generalization of an autoregressive moving average (ARMA) model. Both
-                                     of these models are fitted to time series data either to better understand
-                                     the data or to predict future points in the series (forecasting).
-                                     ARIMA(p,d,q) where parameters p, d, and q are non-negative integers, p is
-                                     the order (number of time lags) of the autoregressive model, d is the degree
-                                     of differencing (the number of times the data have had past values subtracted),
-                                     and q is the order of the moving-average model.""",
+        description="""
+            In statistics and econometrics, and in particular in time
+            series analysis, an autoregressive integrated moving average (ARIMA) model
+            is a generalization of an autoregressive moving average (ARMA) model. Both
+            of these models are fitted to time series data either to better understand
+            the data or to predict future points in the series (forecasting).
+            ARIMA(p,d,q) where parameters p, d, and q are non-negative integers, p is
+            the order (number of time lags) of the autoregressive model, d is the degree
+            of differencing (the number of times the data have had past values subtracted),
+            and q is the order of the moving-average model.
+        """,
     )
 
     parser.add_argument(
@@ -140,7 +143,7 @@ def arima(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(
             df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
         )
-        xmin, xmax, ymin, ymax = plt.axis()
+        _, _, ymin, ymax = plt.axis()
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
@@ -152,5 +155,6 @@ def arima(l_args, s_ticker, s_interval, df_stock):
         print(df_pred.to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")

@@ -1,26 +1,25 @@
 import argparse
-import numpy as np
-import pandas as pd
+import warnings
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+from fbprophet import Prophet
+from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
 
 register_matplotlib_converters()
-import datetime
-from datetime import datetime
-from alpha_vantage.timeseries import TimeSeries
-from gamestonk_terminal.helper_funcs import *
-from fbprophet import Prophet
-import warnings
 
 warnings.simplefilter("ignore")
 
 # ----------------------------------------------------- FBPROPHET -----------------------------------------------------
+# pylint: disable=unused-argument
 def fbprophet(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="fbprophet",
-        description="""Facebook Prophet is a forecasting procedure that is fast and provides 
-                                     completely automated forecasts that can be tuned by hand by data scientists and analysts.
-                                     It was developed by Facebook's data science team and is open source. """,
+        description="""
+            Facebook Prophet is a forecasting procedure that is fast and provides
+            completely automated forecasts that can be tuned by hand by data scientists and analysts.
+            It was developed by Facebook's data science team and is open source.
+        """,
     )
 
     parser.add_argument(
@@ -56,9 +55,9 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
         close_prices = model.make_future_dataframe(periods=ns_parser.n_days)
         forecast = model.predict(close_prices)
 
-        fig, ax = plt.subplots()
+        _, ax = plt.subplots()
         model.plot(forecast, ax=ax, xlabel="Time", ylabel="Share Price ($)")
-        xmin, xmax, ymin, ymax = ax.axis()
+        _, _, ymin, ymax = ax.axis()
         ax.vlines(
             df_stock["ds"].values[-1],
             ymin,
@@ -87,5 +86,6 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
         print(df_pred.to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
