@@ -3,11 +3,73 @@ from datetime import datetime, timedelta
 import requests
 import dateutil
 import pandas as pd
+from pandas.core.frame import DataFrame
 import numpy as np
 import flair
 import matplotlib.pyplot as plt
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import get_data, clean_tweet
+
+
+def load_tweets(s_ticker: str, count: int) -> DataFrame:
+    # Get tweets using Twitter API
+    params = {
+        "q": "$" + s_ticker,
+        "tweet_mode": "extended",
+        "lang": "en",
+        "count": count,
+    }
+
+    # Request Twitter API
+    response = requests.get(
+        "https://api.twitter.com/1.1/search/tweets.json",
+        params=params,
+        headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
+    )
+
+    # Create dataframe
+    df_tweets = pd.DataFrame()
+
+    # Check that the API response was successful
+    if response.status_code == 200:
+        for tweet in response.json()["statuses"]:
+            row = get_data(tweet)
+            df_tweets = df_tweets.append(row, ignore_index=True)
+
+    # Load sentiment model
+    sentiment_model = flair.models.TextClassifier.load("en-sentiment")
+    print("")
+
+    # We will append probability/sentiment preds later
+    probs = []
+    sentiments = []
+    for s_tweet in df_tweets["text"].to_list():
+        tweet = clean_tweet(s_tweet, s_ticker)
+
+        # Make sentiment prediction
+        sentence = flair.data.Sentence(tweet)
+        sentiment_model.predict(sentence)
+
+        # Extract sentiment prediction (POSITIVE/NEGATIVE) and confidence (0-1)
+        probs.append(sentence.labels[0].score)
+        sentiments.append(sentence.labels[0].value)
+
+    # Add probability and sentiment predictions to tweets dataframe
+    df_tweets["probability"] = probs
+    df_tweets["sentiment"] = sentiments
+
+    # Add sentiment estimation (probability positive for POSITIVE sentiment, and negative for NEGATIVE sentiment)
+    df_tweets["sentiment_estimation"] = df_tweets.apply(
+        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
+        axis=1,
+    ).cumsum()
+    # Cumulative sentiment_estimation
+    df_tweets["prob_sen"] = df_tweets.apply(
+        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
+        axis=1,
+    )
+
+    return df_tweets
 
 
 # ------------------------------------------------- INFERENCE -------------------------------------------------
