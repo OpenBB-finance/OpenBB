@@ -1,4 +1,7 @@
+
 # GamestonkTerminal 🚀
+
+[![Build Status](https://api.travis-ci.org/aia/GamestonkTerminal.svg?branch=main)](https://travis-ci.org/aia/GamestonkTerminal)
 
 ## About
 
@@ -26,27 +29,31 @@ Feel free to request features, I'll be happy to work on them on my spare time.
 ## Features <a name="Features"></a>
 
 The main menu allows the following commands:
-```
+
+```text
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 clear
 view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 ```
+
 With their functions being:
-   * Load stock ticker to perform analysis on
-     * -s : The starting date (format YYYY-MM-DD) of the stock
-     * -i : Intraday stock minutes 
-   * Clear previously loaded stock ticker.
-   * Visualise historical data of a stock. An alpha_vantage key is necessary.
-     * -s : The starting date (format YYYY-MM-DD) of the stock
-     * -i : Intraday stock minutes
-     * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
+
+* Load stock ticker to perform analysis on
+  * -s : The starting date (format YYYY-MM-DD) of the stock
+  * -i : Intraday stock minutes
+* Clear previously loaded stock ticker.
+* Visualise historical data of a stock. An alpha_vantage key is necessary.
+  * -s : The starting date (format YYYY-MM-DD) of the stock
+  * -i : Intraday stock minutes
+  * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
 
 ![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
 
 Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
-```
+
+```text
 map           S&P500 index stocks map [Finviz]
 sectors       show sectors performance [Alpha Vantage]
 gainers       show latest top gainers [Yahoo Finance]
@@ -60,7 +67,8 @@ uwhales       good website for SPACs research [UnusualWhales]
 ```
 
 ### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
-```
+
+```text
 Reddit:
 wsb           show what WSB gang is up to in subreddit wallstreetbets
 watchlist     show other users watchlist
@@ -86,7 +94,8 @@ rise          top rising related queries with stock
 ```
 
 ### Research Web pages <a name="Research_Web_pages"></a>
-```
+
+```text
 macroaxis         www.macroaxis.com
 yahoo             www.finance.yahoo.com
 finviz            www.finviz.com
@@ -109,7 +118,8 @@ resources         www.tradinganalysisresources.com
 ```
 
 ### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
-```
+
+```text
 Daily Stock: BB (from 2020-06-04)
 
 screener      screen info about the company [Finviz]
@@ -150,7 +160,8 @@ growth        financial statement growth of the company
 ```
 
 ### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
-```
+
+```text
 overlap:
 ema         exponential moving average
 sma         simple moving average
@@ -171,7 +182,8 @@ obv         on balance volume
 ```
 
 ### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
-```
+
+```text
 news          latest news of the company [Finviz]
 red           gets due diligence from another user's post [Reddit]
 analyst       analyst prices and ratings of the company [Finviz]
@@ -186,7 +198,8 @@ warnings      company warnings according to Sean Seah book [Market Watch]
 ```
 
 ### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
-```
+
+```text
 sma         simple moving average
 knn         k-Nearest Neighbors
 linear      linear regression (polynomial 1)
@@ -205,35 +218,38 @@ lstm        Long-Short Term Memory
 This project was written and tested with Python 3.6.8.
 
 In order to install all libraries used by this repository, you must run
-```
+
+```text
 pip install -r requirements.txt
 ```
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
+Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
 ## API Keys <a name="API_Keys"></a>
 
 The project is build around several different API calls, whether it is to access historical data or financials.
 
 These are the ones where a key is necessary:
-  * Alpha Vantage: https://www.alphavantage.co
-  * Financial Modeling Prep: https://financialmodelingprep.com/developer
-  * Quandl: https://www.quandl.com/tools/api
-  * Reddit: https://www.reddit.com/prefs/apps
-  * Twitter: https://developer.twitter.com
 
-When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py).  Alternatively, you can also set them to the following environment variables:  
-  * GT_API_KEY_ALPHAVANTAGE
-  * GT_API_KEY_FINANCIALMODELINGPREP
-  * GT_API_KEY_QUANDL
-  * GT_API_REDDIT_CLIENT_ID
-  * GT_API_REDDIT_CLIENT_SECRET
-  * GT_API_REDDIT_USERNAME
-  * GT_API_REDDIT_USER_AGENT
-  * GT_API_REDDIT_PASSWORD
-  * GT_API_TWITTER_KEY
-  * GT_API_TWITTER_SECRET_KEY
-  * GT_API_TWITTER_BEARER_TOKEN.
+* Alpha Vantage: <https://www.alphavantage.co>
+* Financial Modeling Prep: <https://financialmodelingprep.com/developer>
+* Quandl: <https://www.quandl.com/tools/api>
+* Reddit: <https://www.reddit.com/prefs/apps>
+* Twitter: <https://developer.twitter.com>
+
+When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py).  Alternatively, you can also set them to the following environment variables
+
+* GT_API_KEY_ALPHAVANTAGE
+* GT_API_KEY_FINANCIALMODELINGPREP
+* GT_API_KEY_QUANDL
+* GT_API_REDDIT_CLIENT_ID
+* GT_API_REDDIT_CLIENT_SECRET
+* GT_API_REDDIT_USERNAME
+* GT_API_REDDIT_USER_AGENT
+* GT_API_REDDIT_PASSWORD
+* GT_API_TWITTER_KEY
+* GT_API_TWITTER_SECRET_KEY
+* GT_API_TWITTER_BEARER_TOKEN.
 
 ## Disclaimer <a name="Disclaimer"></a>
 
@@ -244,4 +260,3 @@ When these are obtained, don't forget to update [config_terminal.py](/config_ter
 If you like this project, and would like me to maintain it and keep adding features, feel free to buy me a coffee!
 
 <a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
