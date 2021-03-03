@@ -1,12 +1,86 @@
 name: Tests
-on: push
+on: [pull_request, push]
 jobs:
-  tests:
+  linting:
+    name: Linting
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-linting
+          restore-keys: ${{ runner.os }}-linting
+
+      - run: pip install bandit black codespell flake8 isort mypy pyupgrade safety
+      - run: bandit -r . || true
+      - run: black --check . || true
+      - run: codespell --ignore-words-list="mape" --quiet-level=2  # --skip=""
+      - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - run: isort --check-only --profile black . || true
+      - run: mypy --ignore-missing-imports . || true
+      - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
+      - run: safety check
+  test:
+    name: ubuntu-latest - Python 3.8
+    needs: linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      - name: Install Package
+        run: poetry install --no-interaction
+
+      - name: Run tests
+        env:
+          MPLBACKEND: Agg
+        run: |
+          source $VENV
+          pytest tests/
+  tests:
+    needs: test
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: true
       matrix:
-        python-version: ['3.6.13', '3.7', '3.8']
-    name: Python ${{ matrix.python-version }}
+        python-version: ['3.6', '3.7', '3.8']
+        os: [ubuntu-latest, macos-latest]
+        exclude:
+          - os: ubuntu-latest
+            python-version: '3.8'
+    name: ${{ matrix.os}} - Python ${{ matrix.python-version }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -34,9 +108,12 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
+      - name: Install Package
+        run: poetry install --no-interaction
+
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
-          source .venv/bin/activate
+          source $VENV
           pytest tests/
