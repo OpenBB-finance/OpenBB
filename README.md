@@ -53,7 +53,7 @@ With their functions being:
 
 Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
-### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
+### [Discover Stocks](gamestonk_terminal/discovery/README.md) <a name="Discover_Stocks"></a>
 
 ```text
 map           S&P500 index stocks map [Finviz]
@@ -68,7 +68,7 @@ spachero      great website for SPACs research [SpacHero]
 uwhales       good website for SPACs research [UnusualWhales]
 ```
 
-### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
+### [Market Sentiment](gamestonk_terminal/sentiment/README.md) <a name="Market_Sentiment"></a>
 
 ```text
 Reddit:
@@ -119,7 +119,7 @@ newsfilter        www.newsfilter.io
 resources         www.tradinganalysisresources.com
 ```
 
-### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
+### [Fundamental Analysis](gamestonk_terminal/fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
 
 ```text
 Daily Stock: BB (from 2020-06-04)
@@ -161,7 +161,7 @@ ratios        financial ratios of the company
 growth        financial statement growth of the company
 ```
 
-### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
+### [Technical Analysis](gamestonk_terminal/technical_analysis/README.md) <a name="Technical_Analysis"></a>
 
 ```text
 overlap:
@@ -183,7 +183,7 @@ ad          chaikin accumulation/distribution line values
 obv         on balance volume
 ```
 
-### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
+### [Due Diligence](gamestonk_terminal/due_diligence/README.md) <a name="Due_Diligence"></a>
 
 ```text
 news          latest news of the company [Finviz]
@@ -199,7 +199,7 @@ short         short interest [Quandl]
 warnings      company warnings according to Sean Seah book [Market Watch]
 ```
 
-### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
+### [Prediction Techniques](gamestonk_terminal/prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
 
 ```text
 sma         simple moving average
