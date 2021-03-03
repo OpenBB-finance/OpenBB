@@ -1,13 +1,4 @@
-from gamestonk_terminal import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
-import matplotlib.pyplot as plt
-from pandas.plotting import register_matplotlib_converters
-
-register_matplotlib_converters()
 
 from gamestonk_terminal.prediction_techniques import sma
 from gamestonk_terminal.prediction_techniques import knn

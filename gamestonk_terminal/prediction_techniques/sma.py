@@ -1,23 +1,27 @@
 import argparse
 import numpy as np
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
+from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
 
 register_matplotlib_converters()
 
 # ----------------------------------------------------- SMA -----------------------------------------------------
+# pylint: disable=unused-argument
 def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="sma",
-        description=""" Moving Averages are used to smooth the data in an array to 
-                                     help eliminate noise and identify trends. The Simple Moving Average is literally 
-                                     the simplest form of a moving average. Each output value is the average of the 
-                                     previous n values. In a Simple Moving Average, each value in the time period carries 
-                                     equal weight, and values outside of the time period are not included in the average. 
-                                     This makes it less responsive to recent changes in the data, which can be useful for 
-                                     filtering out those changes. """,
+        description="""
+            Moving Averages are used to smooth the data in an array to
+            help eliminate noise and identify trends. The Simple Moving Average is literally
+            the simplest form of a moving average. Each output value is the average of the
+            previous n values. In a Simple Moving Average, each value in the time period carries
+            equal weight, and values outside of the time period are not included in the average.
+            This makes it less responsive to recent changes in the data, which can be useful for
+            filtering out those changes.
+        """,
     )
 
     parser.add_argument(
@@ -89,7 +93,7 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         plt.axvspan(
             df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
         )
-        xmin, xmax, ymin, ymax = plt.axis()
+        _, _, ymin, ymax = plt.axis()
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
@@ -101,6 +105,6 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         print(df_pred.to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-

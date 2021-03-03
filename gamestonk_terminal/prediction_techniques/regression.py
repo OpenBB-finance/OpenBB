@@ -1,15 +1,15 @@
 import argparse
-import numpy as np
-from gamestonk_terminal.helper_funcs import *
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-
-register_matplotlib_converters()
 from TimeSeriesCrossValidation import splitTrain
 from sklearn import linear_model
 from sklearn import pipeline
 from sklearn import preprocessing
+
+from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+
+register_matplotlib_converters()
 
 USER_INPUT = 0
 LINEAR = 1
@@ -17,13 +17,16 @@ QUADRATIC = 2
 CUBIC = 3
 
 # -------------------------------------------------- REGRESSION --------------------------------------------------
+# pylint: disable=unused-argument
 def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
     parser = argparse.ArgumentParser(
         prog="regression",
-        description="""Regression attempts to model the relationship between 
-                                     two variables by fitting a linear/quadratic/cubic/other equation to 
-                                     observed data. One variable is considered to be an explanatory variable, 
-                                     and the other is considered to be a dependent variable. """,
+        description="""
+            Regression attempts to model the relationship between
+            two variables by fitting a linear/quadratic/cubic/other equation to
+            observed data. One variable is considered to be an explanatory variable,
+            and the other is considered to be a dependent variable.
+        """,
     )
 
     parser.add_argument(
@@ -126,7 +129,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         plt.axvspan(
             df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
         )
-        xmin, xmax, ymin, ymax = plt.axis()
+        _, _, ymin, ymax = plt.axis()
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
@@ -138,6 +141,6 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         print(df_pred.to_string())
         print("")
 
-    except:
+    except Exception as e:
+        print(e)
         print("")
-
