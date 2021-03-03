@@ -28,6 +28,8 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
+        plt.figure()
+
         # Daily
         if s_interval == "1440min":
             # Use open stock values
@@ -119,6 +121,8 @@ def obv(l_args, s_ticker, s_interval, df_stock):
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
+
+        plt.figure()
 
         # Daily
         if s_interval == "1440min":

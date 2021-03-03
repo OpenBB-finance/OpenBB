@@ -59,6 +59,7 @@ def arima(l_args, s_ticker, s_interval, df_stock):
             print("")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock['5. adjusted close'], lw=2)
         if ns_parser.s_order:
             plt.title(f"ARIMA {str(t_order)} on {s_ticker} - {ns_parser.n_days} days prediction")

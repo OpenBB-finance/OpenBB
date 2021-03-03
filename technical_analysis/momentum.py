@@ -25,6 +25,8 @@ def cci(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
+        plt.figure()
+
         # Daily
         if s_interval == "1440min":
             df_ta = ta.cci(high=df_stock['2. high'], low=df_stock['3. low'], close=df_stock['5. adjusted close'], 
@@ -119,6 +121,8 @@ def macd(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
+        plt.figure()
+
         # Daily
         if s_interval == "1440min":
             df_ta = ta.macd(df_stock['5. adjusted close'], fast=ns_parser.n_fast, slow=ns_parser.n_slow,
@@ -200,6 +204,8 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
+
+        plt.figure()
 
         # Daily
         if s_interval == "1440min":
@@ -292,6 +298,8 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
+
+        plt.figure()
 
         # Daily
         if s_interval == "1440min":

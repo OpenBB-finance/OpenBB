@@ -60,6 +60,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         df_pred = pd.Series(l_predictions, index=l_pred_days, name='Price') 
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock['5. adjusted close'], lw=2)
         plt.title(f"Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1] )

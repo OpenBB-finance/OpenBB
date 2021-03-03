@@ -6,16 +6,16 @@ register_matplotlib_converters()
 
 # ----------------------------------------------------- BBANDS -----------------------------------------------------
 def bbands(l_args, s_ticker, s_interval, df_stock):
-    parser = argparse.ArgumentParser(prog='bbands', 
-                                     description=""" Bollinger Bands consist of three lines. The middle band is a simple 
-                                     moving average (generally 20 periods) of the typical price (TP). The upper and lower 
-                                     bands are F standard deviations (generally 2) above and below the middle band. 
+    parser = argparse.ArgumentParser(prog='bbands',
+                                     description=""" Bollinger Bands consist of three lines. The middle band is a simple
+                                     moving average (generally 20 periods) of the typical price (TP). The upper and lower
+                                     bands are F standard deviations (generally 2) above and below the middle band.
                                      The bands widen and narrow when the volatility of the price is higher or lower, respectively.
-                                     \n \nBollinger Bands do not, in themselves, generate buy or sell signals; they are an 
-                                     indicator of overbought or oversold conditions. When the price is near the upper or lower 
-                                     band it indicates that a reversal may be imminent. The middle band becomes a support or 
-                                     resistance level. The upper and lower bands can also be interpreted as price targets. 
-                                     When the price bounces off of the lower band and crosses the middle band, then the 
+                                     \n \nBollinger Bands do not, in themselves, generate buy or sell signals; they are an
+                                     indicator of overbought or oversold conditions. When the price is near the upper or lower
+                                     band it indicates that a reversal may be imminent. The middle band becomes a support or
+                                     resistance level. The upper and lower bands can also be interpreted as price targets.
+                                     When the price bounces off of the lower band and crosses the middle band, then the
                                      upper band becomes the price target. """)
 
     parser.add_argument('-l', "--length", action="store", dest="n_length", type=check_positive, default=5, help='length')
@@ -30,9 +30,12 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
+        # create new figure
+        plt.figure()
+
         # Daily
         if s_interval == "1440min":
-            df_ta = ta.bbands(close=df_stock['5. adjusted close'], length=ns_parser.n_length, std=ns_parser.n_std, 
+            df_ta = ta.bbands(close=df_stock['5. adjusted close'], length=ns_parser.n_length, std=ns_parser.n_std,
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
             #plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "BBANDS")
 
@@ -51,10 +54,10 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which='minor', color='#999999', linestyle='-', alpha=0.2)
             plt.ion()
             plt.show()
-            
-        # Intraday 
+
+        # Intraday
         else:
-            df_ta = ta.bbands(close=df_stock['4. close'], length=ns_parser.n_length, std=ns_parser.n_std, 
+            df_ta = ta.bbands(close=df_stock['4. close'], length=ns_parser.n_length, std=ns_parser.n_std,
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
             #plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
 
@@ -77,4 +80,4 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
 
     except:
         print("")
-    
+

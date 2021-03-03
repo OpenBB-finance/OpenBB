@@ -221,6 +221,7 @@ def sentiment(l_args, s_ticker):
         df_tweets.reset_index(inplace=True)
 
         # Plotting
+        plt.figure()
         plt.subplot(211)
         plt.title(f"Twitter's {s_ticker} sentiment over time is {s_sen} ({n_pct} %)")
         plt.plot(df_tweets.index, df_tweets['sentiment_estimation'].values, lw=3, c='cyan')

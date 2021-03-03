@@ -51,6 +51,8 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         df_analyst_data['Date'] = pd.to_datetime(df_analyst_data['Date'])
         df_analyst_data = df_analyst_data.set_index('Date')
 
+        plt.figure()
+
         # Slice start of ratings
         if s_start:
             df_analyst_data = df_analyst_data[s_start:]
