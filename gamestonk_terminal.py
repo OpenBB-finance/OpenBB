@@ -2,6 +2,7 @@
 
 """
 import argparse
+import readline
 import pandas as pd
 from helper_funcs import *
 from fundamental_analysis import fa_menu as fam
