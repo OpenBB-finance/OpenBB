@@ -59,6 +59,7 @@ Markdown==3.3.4
 matplotlib==3.3.2
 more-itertools==8.7.0
 mpld3==0.3
+mplfinance==0.12.7a7
 multidict==5.1.0
 multitasking==0.0.9
 networkx==2.5
