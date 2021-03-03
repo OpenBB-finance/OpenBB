@@ -2,10 +2,12 @@ name: Tests
 on: [pull_request, push]
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         python-version: ['3.6.13', '3.7', '3.8']
+        os: [ubuntu-latest, macos-latest, windows-latest]
     name: Python ${{ matrix.python-version }}
     steps:
       - name: Checkout Code
