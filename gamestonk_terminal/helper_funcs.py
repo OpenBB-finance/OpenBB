@@ -227,9 +227,8 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
         if last_stock_day.strftime("%Y-%m-%d") in holidaysUS():
             continue
         # Otherwise stock market is open
-        else:
-            n_days += 1
-            l_pred_days.append(last_stock_day)
+        n_days += 1
+        l_pred_days.append(last_stock_day)
 
     return l_pred_days
 
