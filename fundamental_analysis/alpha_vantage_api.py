@@ -6,8 +6,6 @@ from alpha_vantage.fundamentaldata import FundamentalData
 from pandas.io.json import json_normalize
 
 import config_terminal as cfg
-
-
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
 from helper_funcs import long_number_format, check_positive
 
@@ -307,12 +305,14 @@ def earnings(l_args, s_ticker):
         if ns_parser.b_quarter:
             df_fa = pd.DataFrame(df_fa['quarterlyEarnings'][0])
             df_fa = df_fa[["fiscalDateEnding", "reportedDate", "reportedEPS", "estimatedEPS", "surprise", "surprisePercentage"]]
-            df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
-                                        "reportedEPS":"Reported EPS",
-                                        "estimatedEPS":"Estimated EPS",
-                                        "reportedDate":"Reported Date",
-                                        "surprise":"Surprise",
-                                        "surprisePercentage":"Suprise Percentage"})
+            df_fa = df_fa.rename(columns={
+                "fiscalDateEnding": "Fiscal Date Ending",
+                "reportedEPS": "Reported EPS",
+                "estimatedEPS": "Estimated EPS",
+                "reportedDate": "Reported Date",
+                "surprise": "Surprise",
+                "surprisePercentage": "Surprise Percentage",
+            })
         else:
             df_fa = pd.DataFrame(df_fa['annualEarnings'][0])
             df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
