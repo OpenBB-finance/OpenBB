@@ -186,6 +186,10 @@ def sustainability(l_args, s_ticker):
 
         df_sustainability = stock.sustainability
 
+        if not df_sustainability:
+            print(f"No sustainability information in Yahoo for {s_ticker}")
+            return
+
         df_sustainability.index = [
             "".join(
                 " " + char if char.isupper() else char.strip() for char in idx
