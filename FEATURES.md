@@ -3,13 +3,13 @@
 ### Table of contents
 
 * [Main](#Main)
-* [Discover Stocks](##Discover-Stocks-)
-* [Market Sentiment](#Market_Sentiment)
-* [Research Web pages](#Research_Web_pages)
-* [Fundamental Analysis](#Fundamental_Analysis)
-* [Technical Analysis](#Technical_Analysis)
-* [Due Diligence](#Due_Diligence)
-* [Prediction Techniques](#Prediction_Techniques)
+* [Discover Stocks](#Discover-Stocks-)
+* [Market Sentiment](#Market-Sentiment-)
+* [Research Web pages](#Research-Web-pages-)
+* [Fundamental Analysis](#Fundamental-Analysis-)
+* [Technical Analysis](#Technical-Analysis-)
+* [Due Diligence](#Due-Diligence-)
+* [Prediction Techniques](#Prediction-Techniques-)
 
 ## Main
 
@@ -39,7 +39,7 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 
 
-### Discover Stocks [»](discovery/README.md)
+## Discover Stocks [»](discovery/README.md)
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
@@ -54,7 +54,7 @@ Command|Description|Source
 `uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
 
 
-### [Market Sentiment](sentiment/README.md) <a name="Market_Sentiment"></a>
+## Market Sentiment [»](sentiment/README.md)
 Command|Description
 ----|----
 [Reddit](https://reddit.com)|
@@ -77,7 +77,7 @@ Command|Description
 `queries`       |top related queries with this stock
 `rise`          |top rising related queries with stock
 
-### Research Web pages <a name="Research_Web_pages"></a>
+## Research Web pages
 Command|Website
 ----|----
 `macroaxis`         |www.macroaxis.com
@@ -100,7 +100,7 @@ Command|Website
 `resources`         |www.tradinganalysisresources.com
 
 
-### [Fundamental Analysis](fundamental_analysis/README.md) <a name="Fundamental_Analysis"></a>
+### Fundamental Analysis [»](fundamental_analysis/README.md)
 
 Command|Description
 ----- | ---------
@@ -137,7 +137,7 @@ Command|Description
 `growth`        |financial statement growth of the company
 
 
-### [Technical Analysis](technical_analysis/README.md) <a name="Technical_Analysis"></a>
+## Technical Analysis [»](technical_analysis/README.md)
 Command | Description | Sources
 ------ | ------ | ------
 [overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
@@ -158,7 +158,7 @@ Command | Description | Sources
 `ad`          |chaikin accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
 `obv`         |on balance volume | [Wikipedia](https://en.wikipedia.org/wiki/On-balance_volume), [Investopedia](https://www.investopedia.com/terms/o/onbalancevolume.asp)
 
-### [Due Diligence](due_diligence/README.md) <a name="Due_Diligence"></a>
+## Due Diligence [»](due_diligence/README.md)
 Command|Explanation|Source
 ------ | --------|----
 `news`          |latest news of the company |[Finviz](https://finviz.com/)
@@ -174,7 +174,7 @@ Command|Explanation|Source
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
 
 
-### [Prediction Techniques](prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
+## Prediction Techniques [»](prediction_techniques/README.md)
 Command|Technique|Sources
 ------ | ------------|---
 `sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
