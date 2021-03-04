@@ -1,8 +1,10 @@
 import argparse
-from alpha_vantage.sectorperformance import SectorPerformances
-import config_terminal as cfg
-import pandas as pd
+
 import matplotlib.pyplot as plt
+from alpha_vantage.sectorperformance import SectorPerformances
+
+import config_terminal as cfg
+
 
 # ---------------------------------------------------- SECTORS ----------------------------------------------------
 def sectors(l_args):
