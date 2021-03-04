@@ -3,7 +3,7 @@
 ### Table of contents
 
 * [Main](#Main)
-* [Discover Stocks](#Discover-Stocks-»)
+* [Discover Stocks](#Discover-Stocks-)
 * [Market Sentiment](#Market_Sentiment)
 * [Research Web pages](#Research_Web_pages)
 * [Fundamental Analysis](#Fundamental_Analysis)
