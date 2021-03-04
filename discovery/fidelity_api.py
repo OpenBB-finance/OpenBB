@@ -1,9 +1,11 @@
 import argparse
-from bs4 import BeautifulSoup
-import requests
+
 import pandas as pd
-import re
-from helper_funcs import *
+import requests
+from bs4 import BeautifulSoup
+
+from helper_funcs import check_positive
+
 
 # ---------------------------------------------------- ORDERS ----------------------------------------------------
 def orders(l_args):

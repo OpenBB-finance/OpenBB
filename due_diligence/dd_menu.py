@@ -1,22 +1,4 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
-
-from due_diligence import finviz_api as fvz_api
-from due_diligence import market_watch_api as mw_api
-from due_diligence import reddit_api as r_api
-from due_diligence import quandl_api as q_api
-from due_diligence import financial_modeling_prep_api as fmp_api
-from due_diligence import business_insider_api as bi_api
-
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_due_diligence(s_ticker, s_start, s_interval):
@@ -51,6 +33,12 @@ def print_due_diligence(s_ticker, s_start, s_interval):
 
 # ---------------------------------------------------- MENU ----------------------------------------------------
 def dd_menu(df_stock, s_ticker, s_start, s_interval):
+    from due_diligence import business_insider_api as bi_api
+    from due_diligence import financial_modeling_prep_api as fmp_api
+    from due_diligence import finviz_api as fvz_api
+    from due_diligence import market_watch_api as mw_api
+    from due_diligence import quandl_api as q_api
+    from due_diligence import reddit_api as r_api
 
     # Add list of arguments that the due diligence parser accepts
     dd_parser = argparse.ArgumentParser(prog='dd', add_help=False)
@@ -77,55 +65,58 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'help':
-            print_due_diligence(s_ticker, s_start, s_interval)
+        try:
+            if ns_known_args.cmd == 'help':
+                print_due_diligence(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == 'q':
-            # Just leave the DD menu
-            return False
+            elif ns_known_args.cmd == 'q':
+                # Just leave the DD menu
+                return False
 
-        elif ns_known_args.cmd == 'quit':
-            # Abandon the program
-            return True
+            elif ns_known_args.cmd == 'quit':
+                # Abandon the program
+                return True
 
-        # REDDIT API
-        elif ns_known_args.cmd == 'red':
-            r_api.due_diligence(l_args, s_ticker)
+            # REDDIT API
+            elif ns_known_args.cmd == 'red':
+                r_api.due_diligence(l_args, s_ticker)
 
-        # FINVIZ API
-        elif ns_known_args.cmd == 'insider':
-            fvz_api.insider(l_args, s_ticker)
+            # FINVIZ API
+            elif ns_known_args.cmd == 'insider':
+                fvz_api.insider(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'news':
-            fvz_api.news(l_args, s_ticker)
+            elif ns_known_args.cmd == 'news':
+                fvz_api.news(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'analyst':
-            fvz_api.analyst(l_args, s_ticker)
+            elif ns_known_args.cmd == 'analyst':
+                fvz_api.analyst(l_args, s_ticker)
 
-        # BUSINESS INSIDER API
-        elif ns_known_args.cmd == 'pt':
-            bi_api.price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval)
+            # BUSINESS INSIDER API
+            elif ns_known_args.cmd == 'pt':
+                bi_api.price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == 'est':
-            bi_api.estimates(l_args, s_ticker)
+            elif ns_known_args.cmd == 'est':
+                bi_api.estimates(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'ins':
-            bi_api.insider_activity(l_args, df_stock, s_ticker, s_start, s_interval)
+            elif ns_known_args.cmd == 'ins':
+                bi_api.insider_activity(l_args, df_stock, s_ticker, s_start, s_interval)
 
-        # FINANCIAL MODELING PREP API
-        elif ns_known_args.cmd == 'rating':
-            fmp_api.rating(l_args, s_ticker)
+            # FINANCIAL MODELING PREP API
+            elif ns_known_args.cmd == 'rating':
+                fmp_api.rating(l_args, s_ticker)
 
-        # MARKET WATCH API
-        elif ns_known_args.cmd == 'sec':
-            mw_api.sec_fillings(l_args, s_ticker)
+            # MARKET WATCH API
+            elif ns_known_args.cmd == 'sec':
+                mw_api.sec_fillings(l_args, s_ticker)
 
-        elif ns_known_args.cmd == 'warnings':
-            mw_api.sean_seah_warnings(l_args, s_ticker)
+            elif ns_known_args.cmd == 'warnings':
+                mw_api.sean_seah_warnings(l_args, s_ticker)
 
-        # QUANDL API
-        elif ns_known_args.cmd == 'short':
-            q_api.short_interest(l_args, s_ticker, s_start)
+            # QUANDL API
+            elif ns_known_args.cmd == 'short':
+                q_api.short_interest(l_args, s_ticker, s_start)
 
-        else:
-            print("Command not recognized!")
+            else:
+                print("Command not recognized!")
+        except Exception as exc:
+            print("ERROR:", exc)

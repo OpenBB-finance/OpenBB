@@ -1,8 +1,10 @@
 import argparse
-from bs4 import BeautifulSoup
-import requests
+
 import pandas as pd
-from helper_funcs import *
+import requests
+from bs4 import BeautifulSoup
+
+from helper_funcs import check_positive
 
 
 # ------------------------------------------------ EARNINGS_RELEASE_DATES -------------------------------------------------

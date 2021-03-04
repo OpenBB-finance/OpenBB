@@ -1,9 +1,6 @@
 import argparse
-from alpha_vantage.sectorperformance import SectorPerformances
-from alpha_vantage.timeseries import TimeSeries
-import config_terminal as cfg
+
 import pandas as pd
-#from helper_funcs import *
 
 
 # ---------------------------------------------------- GAINERS ----------------------------------------------------
