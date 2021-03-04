@@ -3,7 +3,7 @@
 ### Table of contents
 
 * [Main](#Main)
-* [Discover Stocks](#Discover-Stocks-)
+* [Discover Stocks](##Discover-Stocks-)
 * [Market Sentiment](#Market_Sentiment)
 * [Research Web pages](#Research_Web_pages)
 * [Fundamental Analysis](#Fundamental_Analysis)
@@ -21,7 +21,7 @@ load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
 
-Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
+**Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ```
 clear
@@ -39,7 +39,7 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 
 
-## Discover Stocks [»](discovery/README.md)
+### Discover Stocks [»](discovery/README.md)
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
