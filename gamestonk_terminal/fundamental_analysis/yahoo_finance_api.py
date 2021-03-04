@@ -43,6 +43,7 @@ def info(l_args, s_ticker):
         df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
         df_info = df_info.set_index("Metric")
 
+        # Remove white spaces
         df_info.index = [
             "".join(
                 " " + char if char.isupper() else char.strip() for char in idx
@@ -51,9 +52,13 @@ def info(l_args, s_ticker):
         ]
         df_info.index = [s_val.capitalize() for s_val in df_info.index]
 
-        df_info.loc["Last split date"].values[0] = datetime.fromtimestamp(
-            df_info.loc["Last split date"].values[0]
-        ).strftime("%d/%m/%Y")
+        if (
+            "Last split date" in df_info.index
+            and df_info.loc["Last split date"].values[0]
+        ):
+            df_info.loc["Last split date"].values[0] = datetime.fromtimestamp(
+                df_info.loc["Last split date"].values[0]
+            ).strftime("%d/%m/%Y")
 
         df_info = df_info.mask(df_info["Value"].astype(str).eq("[]")).dropna()
         df_info = df_info.applymap(lambda x: long_number_format(x))
@@ -71,10 +76,15 @@ def info(l_args, s_ticker):
         df_info.index = df_info.index.str.replace("Peg", "PEG")
 
         pd.set_option("display.max_colwidth", -1)
-        print(df_info.drop(index=["Long business summary"]).to_string(header=False))
-        print("")
-        print(df_info.loc["Long business summary"].values[0])
-        print("")
+
+        if "Long business summary" in df_info.index:
+            print(df_info.drop(index=["Long business summary"]).to_string(header=False))
+            print("")
+            print(df_info.loc["Long business summary"].values[0])
+            print("")
+        else:
+            print(df_info.to_string(header=False))
+            print("")
 
     except Exception as e:
         print(e)
@@ -111,8 +121,8 @@ def shareholders(l_args, s_ticker):
         # Institutional holders
         print("Institutional holders")
         df_institutional_shareholders = stock.institutional_holders
-        df_institutional_shareholders.columns = (
-            df_institutional_shareholders.columns.str.replace("% Out", "Stake")
+        df_institutional_shareholders.columns = df_institutional_shareholders.columns.str.replace(
+            "% Out", "Stake"
         )
         df_institutional_shareholders["Shares"] = df_institutional_shareholders[
             "Shares"
@@ -129,8 +139,8 @@ def shareholders(l_args, s_ticker):
         # Mutualfunds holders
         print("Mutualfunds holders")
         df_mutualfund_shareholders = stock.mutualfund_holders
-        df_mutualfund_shareholders.columns = (
-            df_mutualfund_shareholders.columns.str.replace("% Out", "Stake")
+        df_mutualfund_shareholders.columns = df_mutualfund_shareholders.columns.str.replace(
+            "% Out", "Stake"
         )
         df_mutualfund_shareholders["Shares"] = df_mutualfund_shareholders[
             "Shares"
