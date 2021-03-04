@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "GamestonkTerminal"
 version = "0.1.0"
-description = ""
+description = "The next best thing after Bloomberg Terminal"
 authors = ["Didier Rodrigues Lopes"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.6.8"
