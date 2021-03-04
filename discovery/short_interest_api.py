@@ -1,10 +1,11 @@
 import argparse
-import webbrowser
-from bs4 import BeautifulSoup
-import requests
-import pandas as pd
 import re
-from helper_funcs import *
+
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
+from helper_funcs import check_positive
 
 
 # ------------------------------------------------ HIGH_SHORT_INTEREST -------------------------------------------------

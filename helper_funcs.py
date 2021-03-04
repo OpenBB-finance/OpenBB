@@ -1,18 +1,13 @@
-
-from pytz import timezone
-from holidays import US as holidaysUS
-from datetime import datetime, time as Time
-import re
-import numpy as np
-import sys
-import iso8601
-import matplotlib
-import matplotlib.pyplot as plt
-from datetime import timedelta
-from pytz import timezone
-from holidays import US as holidaysUS
-from datetime import datetime, timedelta, time as Time
 import argparse
+import re
+import sys
+from datetime import datetime, timedelta, time as Time
+
+import iso8601
+import matplotlib.pyplot as plt
+from holidays import US as holidaysUS
+from pytz import timezone
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def check_non_negative(value):

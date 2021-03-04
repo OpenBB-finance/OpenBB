@@ -1,14 +1,15 @@
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-from helper_funcs import *
+
 import pandas as pd
-import json
 import requests
+from alpha_vantage.fundamentaldata import FundamentalData
 from pandas.io.json import json_normalize
 
-
+import config_terminal as cfg
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
+from helper_funcs import long_number_format, check_positive
+
+
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(prog='overview', 
                                      description="""Prints an overview about the company. The following fields are expected: 
@@ -24,58 +25,56 @@ def overview(l_args, s_ticker):
                                      Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, 
                                      Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. 
                                      [Source: Alpha Vantage]""")
-        
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        # Request OVERVIEW data from Alpha Vantage API
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"      
-        result = requests.get(s_req, stream=True)
-        
-        # If the returned data was successful
-        if result.status_code == 200:
-            # Parse json data to dataframe
-            df_fa = json_normalize(result.json())
-            # Keep json data sorting in dataframe
-            df_fa = df_fa[list(result.json().keys())].T
-            df_fa = df_fa.applymap(lambda x: long_number_format(x))
-            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-            df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
-                                        "P e ratio":"PE ratio",
-                                        "P e g ratio":"PEG ratio",
-                                        "E p s":"EPS",
-                                        "Revenue per share t t m":"Revenue per share TTM",
-                                        "Operating margin t t m":"Operating margin TTM",
-                                        "Return on assets t t m":"Return on assets TTM",
-                                        "Return on equity t t m":"Return on equity TTM",
-                                        "Revenue t t m":"Revenue TTM",
-                                        "Gross profit t t m":"Gross profit TTM",
-                                        "Diluted e p s t t m":"Diluted EPS TTM",
-                                        "Quarterly earnings growth y o y":"Quarterly earnings growth YOY",
-                                        "Quarterly revenue growth y o y":"Quarterly revenue growth YOY",
-                                        "Trailing p e":"Trailing PE",
-                                        "Forward p e":"Forward PE",
-                                        "Price to sales ratio t t m":"Price to sales ratio TTM",
-                                        "E v to revenue":"EV to revenue",
-                                        "E v to e b i t d a":"EV to EBITDA"})
-
-            pd.set_option('display.max_colwidth', -1)
-            
-            print(df_fa.drop(index=['Description']).to_string(header=False))
-            print(f"Description: {df_fa.loc['Description'][0]}")
-            print("")
-        else:
-            print(f"Error: {result.status_code}")
-        print("")
-
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
+
+    # Request OVERVIEW data from Alpha Vantage API
+    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    result = requests.get(s_req, stream=True)
+
+    # If the returned data was successful
+    if result.status_code == 200:
+        # Parse json data to dataframe
+        df_fa = json_normalize(result.json())
+        # Keep json data sorting in dataframe
+        df_fa = df_fa[list(result.json().keys())].T
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa = df_fa.rename(index={
+            "E b i t d a": "EBITDA",
+            "P e ratio": "PE ratio",
+            "P e g ratio": "PEG ratio",
+            "E p s": "EPS",
+            "Revenue per share t t m": "Revenue per share TTM",
+            "Operating margin t t m": "Operating margin TTM",
+            "Return on assets t t m": "Return on assets TTM",
+            "Return on equity t t m": "Return on equity TTM",
+            "Revenue t t m": "Revenue TTM",
+            "Gross profit t t m": "Gross profit TTM",
+            "Diluted e p s t t m": "Diluted EPS TTM",
+            "Quarterly earnings growth y o y": "Quarterly earnings growth YOY",
+            "Quarterly revenue growth y o y": "Quarterly revenue growth YOY",
+            "Trailing p e": "Trailing PE",
+            "Forward p e": "Forward PE",
+            "Price to sales ratio t t m": "Price to sales ratio TTM",
+            "E v to revenue": "EV to revenue",
+            "E v to e b i t d a": "EV to EBITDA",
+        })
+
+        pd.set_option('display.max_colwidth', -1)
+
+        print(df_fa.drop(index=['Description']).to_string(header=False))
+        print(f"Description: {df_fa.loc['Description'][0]}")
+        print("")
+    else:
+        print(f"Error: {result.status_code}")
+    print("")
+
 
 
 # ------------------------------------------------------ KEY ------------------------------------------------------
@@ -86,45 +85,41 @@ def key(l_args, s_ticker):
                                      Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio, 
                                      Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 
                                      50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]""")
-        
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        # Request OVERVIEW data
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
-        result = requests.get(s_req, stream=True)
-        
-        # If the returned data was successful
-        if result.status_code == 200:
-            df_fa = json_normalize(result.json())
-            df_fa = df_fa[list(result.json().keys())].T
-
-            df_fa = df_fa.applymap(lambda x: long_number_format(x))
-            df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-            df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
-                                        "P e ratio":"PE ratio",
-                                        "P e g ratio":"PEG ratio",
-                                        "E p s":"EPS",
-                                        "Return on equity t t m":"Return on equity TTM",
-                                        "Price to sales ratio t t m":"Price to sales ratio TTM"})
-            as_key_metrics = ["Market capitalization", "EBITDA", "EPS", "PE ratio", "PEG ratio", "Price to book ratio",
-                        "Return on equity TTM", "Payout ratio", "Price to sales ratio TTM", "Dividend yield", 
-                        "50 day moving average", "Analyst target price", "Beta"]
-            print(df_fa.loc[as_key_metrics].to_string(header=False))
-            print("")
-        else:
-            print(f"Error: {result.status_code}")
-
-        print("")
-
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
+
+    # Request OVERVIEW data
+    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    result = requests.get(s_req, stream=True)
+
+    # If the returned data was successful
+    if result.status_code == 200:
+        df_fa = json_normalize(result.json())
+        df_fa = df_fa[list(result.json().keys())].T
+
+        df_fa = df_fa.applymap(lambda x: long_number_format(x))
+        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
+                                    "P e ratio":"PE ratio",
+                                    "P e g ratio":"PEG ratio",
+                                    "E p s":"EPS",
+                                    "Return on equity t t m":"Return on equity TTM",
+                                    "Price to sales ratio t t m":"Price to sales ratio TTM"})
+        as_key_metrics = ["Market capitalization", "EBITDA", "EPS", "PE ratio", "PEG ratio", "Price to book ratio",
+                    "Return on equity TTM", "Payout ratio", "Price to sales ratio TTM", "Dividend yield",
+                    "50 day moving average", "Analyst target price", "Beta"]
+        print(df_fa.loc[as_key_metrics].to_string(header=False))
+        print("")
+    else:
+        print(f"Error: {result.status_code}")
+
+    print("")
+
 
 
 # ---------------------------------------------------- INCOME_STATEMENT ----------------------------------------------------
@@ -144,40 +139,35 @@ def income_statement(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
-
-        if ns_parser.n_num == 1:
-            pd.set_option('display.max_colwidth', -1)
-        else:
-            pd.options.display.max_colwidth = 40
-
-        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-        if ns_parser.b_quarter:
-            df_fa, d_fd_metadata = fd.get_income_statement_quarterly(symbol=s_ticker)
-        else:
-            df_fa, d_fd_metadata = fd.get_income_statement_annual(symbol=s_ticker)
-
-        df_fa = df_fa.set_index('fiscalDateEnding')
-        df_fa = df_fa.head(n=ns_parser.n_num).T
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        df_fa.columns.name = "Fiscal Date Ending"
-        print(df_fa)
-
-        print("")
-
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
-    
+
+    if ns_parser.n_num == 1:
+        pd.set_option('display.max_colwidth', -1)
+    else:
+        pd.options.display.max_colwidth = 40
+
+    fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+    if ns_parser.b_quarter:
+        df_fa, d_fd_metadata = fd.get_income_statement_quarterly(symbol=s_ticker)
+    else:
+        df_fa, d_fd_metadata = fd.get_income_statement_annual(symbol=s_ticker)
+
+    df_fa = df_fa.set_index('fiscalDateEnding')
+    df_fa = df_fa.head(n=ns_parser.n_num).T
+    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    df_fa.columns.name = "Fiscal Date Ending"
+    print(df_fa)
+
+    print("")
+
 
 # ---------------------------------------------------- BALANCE_SHEET ----------------------------------------------------
 def balance_sheet(l_args, s_ticker):
@@ -202,39 +192,35 @@ def balance_sheet(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
-
-        if ns_parser.n_num == 1:
-            pd.set_option('display.max_colwidth', -1)
-        else:
-            pd.options.display.max_colwidth = 40
-
-        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-        if ns_parser.b_quarter:
-            df_fa, d_fd_metadata = fd.get_balance_sheet_quarterly(symbol=s_ticker)
-        else:
-            df_fa, d_fd_metadata = fd.get_balance_sheet_annual(symbol=s_ticker)
-
-        df_fa = df_fa.set_index('fiscalDateEnding')
-        df_fa = df_fa.head(n=ns_parser.n_num).T
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        df_fa.columns.name = "Fiscal Date Ending"
-        print(df_fa)
-
-        print("")
-
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
+
+    if ns_parser.n_num == 1:
+        pd.set_option('display.max_colwidth', -1)
+    else:
+        pd.options.display.max_colwidth = 40
+
+    fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+    if ns_parser.b_quarter:
+        df_fa, d_fd_metadata = fd.get_balance_sheet_quarterly(symbol=s_ticker)
+    else:
+        df_fa, d_fd_metadata = fd.get_balance_sheet_annual(symbol=s_ticker)
+
+    df_fa = df_fa.set_index('fiscalDateEnding')
+    df_fa = df_fa.head(n=ns_parser.n_num).T
+    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    df_fa.columns.name = "Fiscal Date Ending"
+    print(df_fa)
+
+    print("")
+
     
 
 # ---------------------------------------------------- CASH_FLOW ----------------------------------------------------
@@ -257,39 +243,35 @@ def cash_flow(l_args, s_ticker):
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", 
                         help='Quarter fundamental data flag.')
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
-
-        if ns_parser.n_num == 1:
-            pd.set_option('display.max_colwidth', -1)
-        else:
-            pd.options.display.max_colwidth = 40
-
-        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-        if ns_parser.b_quarter:
-            df_fa, d_fd_metadata = fd.get_cash_flow_quarterly(symbol=s_ticker)
-        else:
-            df_fa, d_fd_metadata = fd.get_cash_flow_annual(symbol=s_ticker)
-
-        df_fa = df_fa.set_index('fiscalDateEnding')
-        df_fa = df_fa.head(n=ns_parser.n_num).T
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        df_fa.columns.name = "Fiscal Date Ending"
-        print(df_fa)
-
-        print("")
-        
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
+
+    if ns_parser.n_num == 1:
+        pd.set_option('display.max_colwidth', -1)
+    else:
+        pd.options.display.max_colwidth = 40
+
+    fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+    if ns_parser.b_quarter:
+        df_fa, d_fd_metadata = fd.get_cash_flow_quarterly(symbol=s_ticker)
+    else:
+        df_fa, d_fd_metadata = fd.get_cash_flow_annual(symbol=s_ticker)
+
+    df_fa = df_fa.set_index('fiscalDateEnding')
+    df_fa = df_fa.head(n=ns_parser.n_num).T
+    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
+    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
+    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
+    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    df_fa.columns.name = "Fiscal Date Ending"
+    print(df_fa)
+
+    print("")
+
 
 
 # ---------------------------------------------------- EARNINGS ----------------------------------------------------
@@ -301,47 +283,44 @@ def earnings(l_args, s_ticker):
 
     parser.add_argument('-q', "--quarter", action="store_true", default=False, dest="b_quarter", help='Quarter fundamental data flag.')
     parser.add_argument('-n', "--num", action="store", dest="n_num", type=check_positive, default=5, help='Number of latest info')
-        
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
-        if ns_parser.n_num == 1:
-            pd.set_option('display.max_colwidth', -1)
-        else:
-            pd.options.display.max_colwidth = 40
-
-        # Request EARNINGS data from Alpha Vantage API
-        s_req = f"https://www.alphavantage.co/query?function=EARNINGS&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"      
-        result = requests.get(s_req, stream=True)
-        
-        # If the returned data was successful
-        if result.status_code == 200:
-            df_fa = json_normalize(result.json())
-            if ns_parser.b_quarter:
-                df_fa = pd.DataFrame(df_fa['quarterlyEarnings'][0])
-                df_fa = df_fa[["fiscalDateEnding", "reportedDate", "reportedEPS", "estimatedEPS", "surprise", "surprisePercentage"]]
-                df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
-                                            "reportedEPS":"Reported EPS",
-                                            "estimatedEPS":"Estimated EPS",
-                                            "reportedDate":"Reported Date",
-                                            "surprise":"Surprise",
-                                            "surprisePercentage":"Surprise Percentage"})
-            else:
-                df_fa = pd.DataFrame(df_fa['annualEarnings'][0])
-                df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
-                                            "reportedEPS":"Reported EPS"})
-
-            print(df_fa.head(n=ns_parser.n_num).T.to_string(header=False))
-            print("")
-        else:
-            print(f"Error: {result.status_code}")
-
-        print("")
-        
-    except:
-        print("")
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
         return
+
+    if ns_parser.n_num == 1:
+        pd.set_option('display.max_colwidth', -1)
+    else:
+        pd.options.display.max_colwidth = 40
+
+    # Request EARNINGS data from Alpha Vantage API
+    s_req = f"https://www.alphavantage.co/query?function=EARNINGS&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+    result = requests.get(s_req, stream=True)
+
+    # If the returned data was successful
+    if result.status_code == 200:
+        df_fa = json_normalize(result.json())
+        if ns_parser.b_quarter:
+            df_fa = pd.DataFrame(df_fa['quarterlyEarnings'][0])
+            df_fa = df_fa[["fiscalDateEnding", "reportedDate", "reportedEPS", "estimatedEPS", "surprise", "surprisePercentage"]]
+            df_fa = df_fa.rename(columns={
+                "fiscalDateEnding": "Fiscal Date Ending",
+                "reportedEPS": "Reported EPS",
+                "estimatedEPS": "Estimated EPS",
+                "reportedDate": "Reported Date",
+                "surprise": "Surprise",
+                "surprisePercentage": "Surprise Percentage",
+            })
+        else:
+            df_fa = pd.DataFrame(df_fa['annualEarnings'][0])
+            df_fa = df_fa.rename(columns={"fiscalDateEnding":"Fiscal Date Ending",
+                                        "reportedEPS":"Reported EPS"})
+
+        print(df_fa.head(n=ns_parser.n_num).T.to_string(header=False))
+        print("")
+    else:
+        print(f"Error: {result.status_code}")
+
+    print("")

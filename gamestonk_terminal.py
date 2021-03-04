@@ -2,17 +2,21 @@
 
 """
 import argparse
+
 import pandas as pd
-from helper_funcs import *
-from fundamental_analysis import fa_menu as fam
-from technical_analysis import ta_menu as tam
-from due_diligence import dd_menu as ddm
-from discovery import disc_menu as dm
-from sentiment import sen_menu as sm
-from prediction_techniques import pred_menu as pm
-import res_menu as rm
-import config_terminal as cfg
 from alpha_vantage.timeseries import TimeSeries
+
+import config_terminal as cfg
+import res_menu as rm
+from discovery import disc_menu as dm
+from due_diligence import dd_menu as ddm
+from fundamental_analysis import fa_menu as fam
+from helper_funcs import valid_date, check_positive, plot_view_stock, b_is_stock_market_open
+from prediction_techniques import pred_menu as pm
+from sentiment import sen_menu as sm
+from technical_analysis import ta_menu as tam
+
+
 #import warnings
 #warnings.simplefilter("always")
 
@@ -50,7 +54,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 
         df_stock.sort_index(ascending=True, inplace=True)
 
-    except:
+    except Exception as exc:
+        print("ERROR:", exc)
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return [s_ticker, s_start, s_interval, df_stock]
 
@@ -104,7 +109,8 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         else:
             df_stock, d_stock_metadata = ts.get_intraday(symbol=s_ticker, outputsize='full', interval=s_interval)
 
-    except:
+    except Exception as exc:
+        print("ERROR:", exc)
         print("Either the ticker or the API_KEY are invalids. Try again!")
         return
 
@@ -310,7 +316,7 @@ def main():
                 b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
             # If stock data is intradaily, we need to get data again as prediction techniques work on daily adjusted data
             else:
-                df_stock_pred, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
+                df_stock_pred, _ = TimeSeries.get_daily_adjusted(symbol=s_ticker, outputsize='full')
                 df_stock_pred = df_stock_pred.sort_index(ascending=True)
                 df_stock_pred = df_stock_pred[s_start:]
                 b_quit = pm.pred_menu(df_stock_pred, s_ticker, s_start, s_interval="1440min")

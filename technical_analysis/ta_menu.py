@@ -1,20 +1,11 @@
-import FundamentalAnalysis as fa
-from alpha_vantage.fundamentaldata import FundamentalData
-import config_terminal as cfg
 import argparse
-import datetime
-from datetime import datetime
-from helper_funcs import *
-import pandas as pd
-import json
-import requests
-from pandas.io.json import json_normalize
 
-from technical_analysis import overlap as ta_overlap
 from technical_analysis import momentum as ta_momentum
+from technical_analysis import overlap as ta_overlap
 from technical_analysis import trend as ta_trend
 from technical_analysis import volatility as ta_volatility
 from technical_analysis import volume as ta_volume
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_technical_analysis(s_ticker, s_start, s_interval):
@@ -78,58 +69,62 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
             print("The command selected doesn't exist\n")
             continue
 
-        if ns_known_args.cmd == 'help':
-            print_technical_analysis(s_ticker, s_start, s_interval)
+        try:
 
-        elif ns_known_args.cmd == 'q':
-            # Just leave the FA menu
-            return False
+            if ns_known_args.cmd == 'help':
+                print_technical_analysis(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == 'quit':
-            # Abandon the program
-            return True
+            elif ns_known_args.cmd == 'q':
+                # Just leave the FA menu
+                return False
 
-        # -------------------------------------------------- OVERLAP --------------------------------------------------
-        elif ns_known_args.cmd == 'ema':
-            ta_overlap.ema(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'quit':
+                # Abandon the program
+                return True
 
-        elif ns_known_args.cmd == 'sma':
-            ta_overlap.sma(l_args, s_ticker, s_interval, df_stock)
+            # -------------------------------------------------- OVERLAP --------------------------------------------------
+            elif ns_known_args.cmd == 'ema':
+                ta_overlap.ema(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'vwap':
-            ta_overlap.vwap(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'sma':
+                ta_overlap.sma(l_args, s_ticker, s_interval, df_stock)
 
-        # --------------------------------------------------- MOMENTUM ---------------------------------------------------
-        elif ns_known_args.cmd == 'cci':
-            ta_momentum.cci(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'vwap':
+                ta_overlap.vwap(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'macd':
-            ta_momentum.macd(l_args, s_ticker, s_interval, df_stock)
+            # --------------------------------------------------- MOMENTUM ---------------------------------------------------
+            elif ns_known_args.cmd == 'cci':
+                ta_momentum.cci(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'rsi':
-            ta_momentum.rsi(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'macd':
+                ta_momentum.macd(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'stoch':
-            ta_momentum.stoch(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'rsi':
+                ta_momentum.rsi(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------------- TREND ----------------------------------------------------
-        elif ns_known_args.cmd == 'adx':
-            ta_trend.adx(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'stoch':
+                ta_momentum.stoch(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'aroon':
-            ta_trend.aroon(l_args, s_ticker, s_interval, df_stock)
+            # ---------------------------------------------------- TREND ----------------------------------------------------
+            elif ns_known_args.cmd == 'adx':
+                ta_trend.adx(l_args, s_ticker, s_interval, df_stock)
 
-        # -------------------------------------------------- VOLATILITY --------------------------------------------------
-        elif ns_known_args.cmd == 'bbands':
-            ta_volatility.bbands(l_args, s_ticker, s_interval, df_stock)
+            elif ns_known_args.cmd == 'aroon':
+                ta_trend.aroon(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------------- VOLUME ----------------------------------------------------
-        elif ns_known_args.cmd == 'ad':
-            ta_volume.ad(l_args, s_ticker, s_interval, df_stock)
+            # -------------------------------------------------- VOLATILITY --------------------------------------------------
+            elif ns_known_args.cmd == 'bbands':
+                ta_volatility.bbands(l_args, s_ticker, s_interval, df_stock)
 
-        elif ns_known_args.cmd == 'obv':
-            ta_volume.obv(l_args, s_ticker, s_interval, df_stock)
+            # ---------------------------------------------------- VOLUME ----------------------------------------------------
+            elif ns_known_args.cmd == 'ad':
+                ta_volume.ad(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------------------------------------------------------------------
-        else:
-            print("Command not recognized!")
+            elif ns_known_args.cmd == 'obv':
+                ta_volume.obv(l_args, s_ticker, s_interval, df_stock)
+
+            # ------------------------------------------------------------------------------------------------------------
+            else:
+                print("Command not recognized!")
+        except Exception as exc:
+            print("ERROR:", exc)
