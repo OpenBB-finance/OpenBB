@@ -1,5 +1,9 @@
 name: Tests
-on: [pull_request, push]
+on:
+  pull_request:
+    paths:
+      - '**.py'
+      - 'poetry.lock'
 jobs:
   linting:
     name: Linting
