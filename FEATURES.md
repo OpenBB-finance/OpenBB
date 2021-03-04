@@ -39,7 +39,7 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 
 
-## Discover Stocks [»](discovery/README.md)
+## [Discover Stocks](discovery/README.md)
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
