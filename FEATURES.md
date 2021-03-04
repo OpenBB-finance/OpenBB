@@ -3,7 +3,7 @@
 ### Table of contents
 
 * [Main](#Main)
-* [Discover Stocks](#Discover%20Stocks)
+* [Discover Stocks](#Discover-Stocks)
 * [Market Sentiment](#Market_Sentiment)
 * [Research Web pages](#Research_Web_pages)
 * [Fundamental Analysis](#Fundamental_Analysis)
@@ -39,7 +39,7 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 
 
-## DiscoverStocks [»](discovery/README.md)
+## Discover Stocks [»](discovery/README.md)
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
