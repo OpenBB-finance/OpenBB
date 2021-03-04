@@ -3,7 +3,7 @@
 ### Table of contents
 
 * [Main](#Main)
-* [Discover Stocks](#Discover_Stocks)
+* [Discover Stocks](#Discover%20Stocks)
 * [Market Sentiment](#Market_Sentiment)
 * [Research Web pages](#Research_Web_pages)
 * [Fundamental Analysis](#Fundamental_Analysis)
@@ -11,7 +11,7 @@
 * [Due Diligence](#Due_Diligence)
 * [Prediction Techniques](#Prediction_Techniques)
 
-### Main <a name="Main"></a>
+## Main
 
 The main menu allows the following commands:
 ```
@@ -20,6 +20,9 @@ load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
    * Load stock ticker to perform analysis on
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
+
+Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
+
 ```
 clear
 ```
@@ -34,9 +37,9 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 ![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
 
-Note: Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
-### [Discover Stocks](discovery/README.md) <a name="Discover_Stocks"></a>
+
+### DiscoverStocks [»](discovery/README.md)
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
