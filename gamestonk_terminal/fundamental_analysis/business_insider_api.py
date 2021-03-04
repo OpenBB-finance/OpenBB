@@ -33,8 +33,23 @@ def management(l_args, s_ticker):
             "lxml",
         )
 
+        found_h2s = dict()
+
+        for next_h2 in text_soup_market_business_insider.findAll(
+            "h2", {"class": "header-underline"}
+        ):
+            next_table = next_h2.find_next_sibling("table", {"class": "table"})
+
+            if next_table:
+                found_h2s[next_h2.text] = next_table
+
+        if found_h2s.get("Management") is None:
+            print(f"No management information in Business Insider for {s_ticker}")
+            print("")
+            return
+
         l_titles = list()
-        for s_title in text_soup_market_business_insider.findAll(
+        for s_title in found_h2s["Management"].findAll(
             "td", {"class": "table__td text-right"}
         ):
             if any(c.isalpha() for c in s_title.text.strip()) and (
@@ -43,7 +58,7 @@ def management(l_args, s_ticker):
                 l_titles.append(s_title.text.strip())
 
         l_names = list()
-        for s_name in text_soup_market_business_insider.findAll(
+        for s_name in found_h2s["Management"].findAll(
             "td", {"class": "table__td table--allow-wrap"}
         ):
             l_names.append(s_name.text.strip())
