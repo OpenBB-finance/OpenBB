@@ -6,7 +6,7 @@ astunparse==1.6.3
 async-timeout==3.0.1
 attrs==20.3.0
 beautifulsoup4==4.9.3
-black==19.10b0
+black==20.8b1
 bpemb==0.3.2
 cachetools==4.2.1
 certifi==2020.12.5
