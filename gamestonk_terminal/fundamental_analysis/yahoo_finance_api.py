@@ -188,6 +188,7 @@ def sustainability(l_args, s_ticker):
 
         if not df_sustainability:
             print(f"No sustainability information in Yahoo for {s_ticker}")
+            print("")
             return
 
         df_sustainability.index = [
@@ -242,6 +243,12 @@ def calendar_earnings(l_args, s_ticker):
 
         stock = yf.Ticker(s_ticker)
         df_calendar = stock.calendar
+
+        if len(df_calendar.columns) == 0:
+            print(f"No earnings calendar information in Yahoo for {s_ticker}")
+            print("")
+            return
+
         df_calendar.iloc[0, 0] = df_calendar.iloc[0, 0].date().strftime("%d/%m/%Y")
         df_calendar.iloc[:, 0] = df_calendar.iloc[:, 0].apply(
             lambda x: long_number_format(x)
