@@ -316,10 +316,16 @@ def main():
                 b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
             # If stock data is intradaily, we need to get data again as prediction techniques work on daily adjusted data
             else:
-                df_stock_pred, _ = TimeSeries.get_daily_adjusted(symbol=s_ticker, outputsize='full')
-                df_stock_pred = df_stock_pred.sort_index(ascending=True)
-                df_stock_pred = df_stock_pred[s_start:]
-                b_quit = pm.pred_menu(df_stock_pred, s_ticker, s_start, s_interval="1440min")
+                try:
+                    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
+                    df_stock_pred, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
+                    df_stock_pred = df_stock_pred.sort_index(ascending=True)
+                    df_stock_pred = df_stock_pred[s_start:]
+                    b_quit = pm.pred_menu(df_stock_pred, s_ticker, s_start, s_interval="1440min")
+                except:
+                    print("Either the ticker or the API_KEY are invalids. Try again!")
+                    b_quit = False
+                    return
 
             if b_quit:
                 print("Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n")
