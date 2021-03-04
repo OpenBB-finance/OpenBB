@@ -5,7 +5,7 @@
 * [Main](#Main)
 * [Discover Stocks](#Discover-Stocks-)
 * [Market Sentiment](#Market-Sentiment-)
-* [Research Web pages](#Research-Web-pages-)
+* [Research Web pages](#Research-Web-pages)
 * [Fundamental Analysis](#Fundamental-Analysis-)
 * [Technical Analysis](#Technical-Analysis-)
 * [Due Diligence](#Due-Diligence-)
