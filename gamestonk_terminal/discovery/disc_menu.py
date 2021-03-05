@@ -10,7 +10,6 @@ from gamestonk_terminal.discovery import spachero_api
 from gamestonk_terminal.discovery import unusual_whales_api
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def print_discovery():
     """ Print help """
 
@@ -37,7 +36,6 @@ def print_discovery():
     return
 
 
-# ---------------------------------------------------- MENU ----------------------------------------------------
 def disc_menu():
 
     # Add list of arguments that the discovery parser accepts
@@ -89,45 +87,35 @@ def disc_menu():
             # Abandon the program
             return True
 
-        # --------------------------------------------------- FINVIZ ---------------------------------------------------
         elif ns_known_args.cmd == "map":
             finviz_api.map_sp500(l_args)
 
-        # ------------------------------------------------ ALPHA VANTAGE -----------------------------------------------
         elif ns_known_args.cmd == "sectors":
             alpha_vantage_api.sectors(l_args)
 
-        # ------------------------------------------------ YAHOO FINANCE ------------------------------------------------
         elif ns_known_args.cmd == "gainers":
             yahoo_finance_api.gainers(l_args)
 
-        # -------------------------------------------------- SPACHERO --------------------------------------------------
         elif ns_known_args.cmd == "spachero":
             spachero_api.spachero(l_args)
 
-        # -------------------------------------------------- UNUSUAL WHALES --------------------------------------------------
         elif ns_known_args.cmd == "uwhales":
             unusual_whales_api.unusual_whales(l_args)
 
-        # --------------------------------------------------- FIDELITY ---------------------------------------------------
         elif ns_known_args.cmd == "orders":
             fidelity_api.orders(l_args)
 
-        # ------------------------------------------------ SIMPLY WALL ST ------------------------------------------------
         elif ns_known_args.cmd == "simply_wallst":
             simply_wallst_api.simply_wallst(l_args)
 
-        # ------------------------------------------------ SEEKING ALPHA ------------------------------------------------
         elif ns_known_args.cmd == "up_earnings":
             seeking_alpha_api.earnings_release_dates(l_args)
 
-        # ------------------------------------------------ SHORT_INTEREST ------------------------------------------------
         elif ns_known_args.cmd == "high_short":
             short_interest_api.high_short_interest(l_args)
 
         elif ns_known_args.cmd == "low_float":
             short_interest_api.low_float(l_args)
 
-        # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")
