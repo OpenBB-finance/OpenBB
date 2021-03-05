@@ -458,6 +458,7 @@ def main():
                     df_stock_pred, _ = ts.get_daily_adjusted(
                         symbol=s_ticker, outputsize="full"
                     )
+                    # pylint: disable=no-member
                     df_stock_pred = df_stock_pred.sort_index(ascending=True)
                     df_stock_pred = df_stock_pred[s_start:]
                     b_quit = pm.pred_menu(
