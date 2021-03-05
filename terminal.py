@@ -464,8 +464,9 @@ def main():
                     b_quit = pm.pred_menu(
                         df_stock_pred, s_ticker, s_start, s_interval="1440min"
                     )
-                except:
+                except Exception as e:
                     print("Either the ticker or the API_KEY are invalids. Try again!")
+                    print(e)
                     b_quit = False
                     return
 
