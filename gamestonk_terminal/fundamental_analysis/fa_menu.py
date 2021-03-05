@@ -84,10 +84,11 @@ def info(l_args, s_ticker):
 
         filepath = "fundamental_analysis/key_metrics_explained.txt"
         with open(filepath) as fp:
-            # Fix: this needs to be going somewhere
-            # pylint: disable=unused-variable
             line = fp.readline()
-        print("")
+            while line:
+                print(f"{line.strip()}")
+                line = fp.readline()
+            print("")
 
     except Exception as e:
         print(e)
