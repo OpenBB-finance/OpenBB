@@ -2,7 +2,7 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
