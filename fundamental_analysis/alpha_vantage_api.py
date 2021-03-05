@@ -141,14 +141,7 @@ def income_statement(l_args, s_ticker):
     else:
         df_fa, d_fd_metadata = fd.get_income_statement_annual(symbol=s_ticker)
 
-    df_fa = df_fa.set_index('fiscalDateEnding')
-    df_fa = df_fa.head(n=ns_parser.n_num).T
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+    df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
     print(df_fa)
 
     print("")
@@ -190,19 +183,11 @@ def balance_sheet(l_args, s_ticker):
     else:
         df_fa, d_fd_metadata = fd.get_balance_sheet_annual(symbol=s_ticker)
 
-    df_fa = df_fa.set_index('fiscalDateEnding')
-    df_fa = df_fa.head(n=ns_parser.n_num).T
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+    df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
     print(df_fa)
 
     print("")
 
-    
 
 # ---------------------------------------------------- CASH_FLOW ----------------------------------------------------
 def cash_flow(l_args, s_ticker):
@@ -237,14 +222,7 @@ def cash_flow(l_args, s_ticker):
     else:
         df_fa, d_fd_metadata = fd.get_cash_flow_annual(symbol=s_ticker)
 
-    df_fa = df_fa.set_index('fiscalDateEnding')
-    df_fa = df_fa.head(n=ns_parser.n_num).T
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+    df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
     print(df_fa)
 
     print("")
@@ -297,3 +275,16 @@ def earnings(l_args, s_ticker):
         print(f"Error: {result.status_code}")
 
     print("")
+
+
+def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
+    df_fa = df_fa.set_index('fiscalDateEnding')
+    df_fa = df_fa.head(n=num).T
+    df_fa = df_fa.mask(df_fa.astype(object).eq(num * ['None'])).dropna()
+    df_fa = df_fa.mask(df_fa.astype(object).eq(num * ['0'])).dropna()
+    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in
+                   df_fa.index.tolist()]
+    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    df_fa.columns.name = "Fiscal Date Ending"
+    return df_fa
