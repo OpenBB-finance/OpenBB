@@ -27,7 +27,7 @@ def rating(l_args, s_ticker):
 
     except KeyError:
         print(
-            f"Financialmodelingprep.com is returning empty responses the ticker {s_ticker}."
+            f"Financialmodelingprep.com is returning empty responce the ticker {s_ticker}."
         )
         print("")
         return
