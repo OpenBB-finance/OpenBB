@@ -20,15 +20,15 @@ jobs:
           key: ${{ runner.os }}-linting
           restore-keys: ${{ runner.os }}-linting
 
-      - run: pip install bandit black codespell flake8 isort mypy pyupgrade safety
+      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint
       - run: bandit -r . || true
-      - run: black --check . || true
+      - run: black --check .
       - run: codespell --ignore-words-list="mape" --quiet-level=2  # --skip=""
       - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-      - run: isort --check-only --profile black . || true
       - run: mypy --ignore-missing-imports . || true
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
       - run: safety check
+      - run: pylint **/*.py
   test:
     name: ubuntu-latest - Python 3.8
     needs: linting
