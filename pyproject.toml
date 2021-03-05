@@ -28,6 +28,7 @@ pmdarima = "^1.8.0"
 tensorflow = "^2.4.1"
 matplotlib = "^3.3.3"
 plotly = "^4.14.3"
+colorama = "^0.4.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
