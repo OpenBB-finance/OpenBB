@@ -30,15 +30,13 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
             return
 
-        # create new figure
-        plt.figure()
-
         # Daily
         if s_interval == "1440min":
             df_ta = ta.bbands(close=df_stock['5. adjusted close'], length=ns_parser.n_length, std=ns_parser.n_std,
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
             #plot_stock_ta(df_stock['5. adjusted close'], s_ticker, df_ta, "BBANDS")
 
+            plt.figure()
             plt.plot(df_stock.index, df_stock['5. adjusted close'].values, color='k', lw=3)
             plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'r', lw=2)
             plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'b', lw=1.5, ls='--')
@@ -61,6 +59,7 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
                               mamode=ns_parser.s_mamode, offset=ns_parser.n_offset).dropna()
             #plot_stock_ta(df_stock['4. close'], s_ticker, df_ta, "BBANDS")
 
+            plt.figure()
             plt.plot(df_stock.index, df_stock['4. close'].values, color='k', lw=3)
             plt.plot(df_ta.index, df_ta.iloc[:,0].values, 'r', lw=2)
             plt.plot(df_ta.index, df_ta.iloc[:,1].values, 'b', lw=1.5, ls='--')
