@@ -51,7 +51,7 @@ Command|Description|Source
 `spachero`      |great website for SPACs research |[SpacHero](https://www.spachero.com/)
 `uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
 
-
+&nbsp;
 
 ## Market Sentiment [»](sentiment/README.md)
 Command|Description
@@ -76,6 +76,7 @@ Command|Description
 `queries`       |top related queries with this stock
 `rise`          |top rising related queries with stock
 
+&nbsp;
 
 ## Research Web pages
 Command|Website
@@ -99,6 +100,7 @@ Command|Website
 `newsfilter`        |www.newsfilter.io
 `resources`         |www.tradinganalysisresources.com
 
+&nbsp;
 
 ### Fundamental Analysis [»](fundamental_analysis/README.md)
 
@@ -136,6 +138,7 @@ Command|Description
 `ratios`        |financial ratios of the company
 `growth`        |financial statement growth of the company
 
+&nbsp;
 
 ## Technical Analysis [»](technical_analysis/README.md)
 Command | Description | Sources
@@ -158,6 +161,8 @@ Command | Description | Sources
 `ad`          |chaikin accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
 `obv`         |on balance volume | [Wikipedia](https://en.wikipedia.org/wiki/On-balance_volume), [Investopedia](https://www.investopedia.com/terms/o/onbalancevolume.asp)
 
+&nbsp;
+
 ## Due Diligence [»](due_diligence/README.md)
 Command|Explanation|Source
 ------ | --------|----
@@ -173,6 +178,7 @@ Command|Explanation|Source
 `short`         |short interest |[Quandl](https://www.quandl.com/)
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
 
+&nbsp;
 
 ## Prediction Techniques [»](prediction_techniques/README.md)
 Command|Technique|Sources
