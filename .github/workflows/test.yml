@@ -68,7 +68,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest gamestonk_terminal/tests/
+          pytest tests/
   tests:
     needs: test
     runs-on: ${{ matrix.os }}
@@ -116,4 +116,4 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest gamestonk_terminal/tests/
+          pytest tests/

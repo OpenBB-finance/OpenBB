@@ -1,8 +1,8 @@
 
 # GamestonkTerminal 🚀
 
-[![Build Status](https://api.travis-ci.org/aia/GamestonkTerminal.svg?branch=main)](https://travis-ci.org/aia/GamestonkTerminal)
-[![GitHub release](https://img.shields.io/github/release/aia/GamestonkTerminal.svg?maxAge=3600)](https://github.com/aia/GamestonkTerminal/releases)
+[![Build Status](https://github.com/DidierRLopes/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DidierRLopes/GamestonkTerminal/actions)
+[![GitHub release](https://img.shields.io/github/release/DidierRLopes/GamestonkTerminal.svg?maxAge=3600)](https://github.com/DidierRLopes/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## About
@@ -73,7 +73,6 @@ Command|Description|Source
 `simply_wallst` |Simply Wall St. research data |[Simply Wall St.](https://simplywall.st/about)
 `spachero`      |great website for SPACs research |[SpacHero](https://www.spachero.com/)
 `uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
-
 
 ### [Market Sentiment](gamestonk_terminal/sentiment/README.md) <a name="Market_Sentiment"></a>
 
@@ -195,7 +194,6 @@ Command|Explanation|Source
 `sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
 `short`         |short interest |[Quandl](https://www.quandl.com/)
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
-
 
 ### [Prediction Techniques](gamestonk_terminal/prediction_techniques/README.md) <a name="Prediction_Techniques"></a>
 
