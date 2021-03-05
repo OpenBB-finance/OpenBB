@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-linting
           restore-keys: ${{ runner.os }}-linting
 
-      - run: pip install bandit black codespell flake8 isort mypy pyupgrade safety
+      - run: pip install bandit black codespell flake8 isort mypy pyupgrade safety pylint
       - run: bandit -r . || true
       - run: black --check . || true
       - run: codespell --ignore-words-list="mape" --quiet-level=2  # --skip=""
@@ -29,6 +29,7 @@ jobs:
       - run: mypy --ignore-missing-imports . || true
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
       - run: safety check
+      - run: pylint **/*.py
   test:
     name: ubuntu-latest - Python 3.8
     needs: linting
@@ -68,7 +69,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest gamestonk_terminal/tests/
   tests:
     needs: test
     runs-on: ${{ matrix.os }}
@@ -116,4 +117,4 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest gamestonk_terminal/tests/
