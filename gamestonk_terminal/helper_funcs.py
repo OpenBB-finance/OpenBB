@@ -206,10 +206,10 @@ def int_or_round_float(x):
 
 
 # -----------------------------------------------------------------------------------------------------------------------
-def divide_chunks(l, n):
-    # looping till length l
-    for i in range(0, len(l), n):
-        yield l[i : i + n]
+def divide_chunks(data, n):
+    # looping till length of data
+    for i in range(0, len(data), n):
+        yield data[i : i + n]
 
 
 # -----------------------------------------------------------------------------------------------------------------------
