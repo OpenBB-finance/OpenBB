@@ -224,6 +224,8 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 
 ## Acknowledgments
 
+* [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
+* [Daily Fintech article](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
 * [HackerNews](https://news.ycombinator.com/item?id=26258773)
 * [Reddit](https://www.reddit.com/r/algotrading/comments/lrndzi/cant_afford_the_bloomberg_terminal_no_worries_i/)
 
