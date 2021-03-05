@@ -24,7 +24,7 @@ jobs:
       - run: bandit -r . || true
       - run: black --check .
       - run: codespell --ignore-words-list="mape" --quiet-level=2  # --skip=""
-      - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - run: flake8 . --count --show-source --statistics
       - run: mypy --ignore-missing-imports . || true
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
       - run: safety check
