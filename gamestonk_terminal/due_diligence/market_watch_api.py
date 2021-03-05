@@ -48,6 +48,7 @@ def sec_fillings(l_args, s_ticker):
         )
 
         # a_financials_header = list()
+        df_financials = None
         b_ready_to_process_info = False
         soup_financials = text_soup_financials.findAll("tr", {"class": "table__row"})
         for financials_info in soup_financials:
