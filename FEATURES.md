@@ -77,7 +77,6 @@ Command|Description
 `rise`          |top rising related queries with stock
 
 
-<br />
 ## Research Web pages
 Command|Website
 ----|----
