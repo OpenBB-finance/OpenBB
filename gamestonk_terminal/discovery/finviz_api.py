@@ -43,4 +43,3 @@ def map_sp500(l_args):
         f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}"
     )
     print("")
-

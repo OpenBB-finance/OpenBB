@@ -1,12 +1,12 @@
 import argparse
 from datetime import datetime, timedelta
-from prettytable import PrettyTable
 from psaw import PushshiftAPI
 import praw
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.reddit_helpers import print_and_record_reddit_post
 
-# -------------------------------------------------------------------------------------------------------------------
+
 def due_diligence(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="red",
@@ -46,11 +46,7 @@ def due_diligence(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -103,54 +99,7 @@ def due_diligence(l_args, s_ticker):
                         submission.link_flair_text not in ["Yolo", "Meme"],
                     )[ns_parser.b_all]:
 
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(
-                            submission.created_utc
-                        ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://old.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                            "created_utc": s_datetime,
-                            "subreddit": submission.subreddit,
-                            "link_flair_text": submission.link_flair_text,
-                            "title": submission.title,
-                            "score": submission.score,
-                            "link": s_link,
-                            "num_comments": submission.num_comments,
-                            "upvote_ratio": submission.upvote_ratio,
-                            "awards": s_all_awards,
-                        }
-
-                        # Print post data collected so far
-                        print(f"{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(
-                            [
-                                "Subreddit",
-                                "Flair",
-                                "Score",
-                                "# Comments",
-                                "Upvote %",
-                                "Awards",
-                            ]
-                        )
-                        t_post.add_row(
-                            [
-                                submission.subreddit,
-                                submission.link_flair_text,
-                                submission.score,
-                                submission.num_comments,
-                                f"{round(100*submission.upvote_ratio)}%",
-                                s_all_awards,
-                            ]
-                        )
-                        print(t_post)
-                        print("\n")
+                        print_and_record_reddit_post(d_submission, submission)
 
                         # If needed, submission.comments could give us the top comments
 

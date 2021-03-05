@@ -9,7 +9,7 @@ def unusual_whales(l_args):
         description="""Good website for SPACs research. [Source: www.unusualwhales.com]""",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    parse_known_args_and_warn(parser, l_args)
 
     webbrowser.open("https://unusualwhales.com/spacs")
     print("")

@@ -13,4 +13,3 @@ def spachero(l_args):
 
     webbrowser.open("https://www.spachero.com")
     print("")
-

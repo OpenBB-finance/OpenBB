@@ -146,4 +146,3 @@ def orders(l_args):
 
     print(df_orders.head(n=ns_parser.n_num).iloc[:, :-1].to_string(index=False))
     print("")
-

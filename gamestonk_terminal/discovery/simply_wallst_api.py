@@ -54,4 +54,3 @@ def simply_wallst(l_args):
 
     webbrowser.open(f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1")
     print("")
-

@@ -1,4 +1,5 @@
 import argparse
+import re
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -8,10 +9,10 @@ from gamestonk_terminal.helper_funcs import (
     get_user_agent,
     clean_data_values_to_float,
     int_or_round_float,
+    parse_known_args_and_warn,
 )
 
 
-# ---------------------------------------------------- SEC FILLINGS ----------------------------------------------------
 def sec_fillings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="sec",
@@ -32,11 +33,7 @@ def sec_fillings(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         pd.set_option("display.max_colwidth", -1)
 
@@ -83,7 +80,6 @@ def sec_fillings(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- Sean Seah Warnings ----------------------------------------------------
 def sean_seah_warnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="warnings",
@@ -114,11 +110,7 @@ def sean_seah_warnings(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.b_info:
             filepath = "fundamental_analysis/info_sean_seah.txt"
@@ -149,16 +141,23 @@ def sean_seah_warnings(l_args, s_ticker):
         df_financials = pd.DataFrame(columns=a_financials_header[0:-1])
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials = text_soup_financials.findAll(
+            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
+        )
         soup_financials += text_soup_financials.findAll(
             "tr", {"class": "table__row is-highlighted"}
         )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split("\n")
-            l_financials = [a_financials_info[2]]
-            l_financials.extend(a_financials_info[5:-2])
-            # Append data values to financials
-            df_financials.loc[len(df_financials.index)] = l_financials
+            financials_row = financials_info.text.split("\n")
+            if len(financials_row) > 5:
+                for item in financials_row:
+                    if bool(re.search(r"\d", item)):
+                        a_financials_info = financials_info.text.split("\n")
+                        l_financials = [a_financials_info[2]]
+                        l_financials.extend(a_financials_info[5:-2])
+                        # Append data values to financials
+                        df_financials.loc[len(df_financials.index)] = l_financials
+                        break
 
         # Set item name as index
         df_financials = df_financials.set_index("Item")
@@ -191,16 +190,23 @@ def sean_seah_warnings(l_args, s_ticker):
         )
 
         # Add financials values
-        soup_financials = text_soup_financials.findAll("tr", {"class": "table__row "})
+        soup_financials = text_soup_financials.findAll(
+            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
+        )
         soup_financials += text_soup_financials.findAll(
             "tr", {"class": "table__row is-highlighted"}
         )
         for financials_info in soup_financials:
-            a_financials_info = financials_info.text.split("\n")
-            l_financials = [a_financials_info[2]]
-            l_financials.extend(a_financials_info[5:-2])
-            # Append data values to financials
-            df_financials.loc[len(df_financials.index)] = l_financials
+            financials_row = financials_info.text.split("\n")
+            if len(financials_row) > 5:
+                for item in financials_row:
+                    if bool(re.search(r"\d", item)):
+                        a_financials_info = financials_info.text.split("\n")
+                        l_financials = [a_financials_info[2]]
+                        l_financials.extend(a_financials_info[5:-2])
+                        # Append data values to financials
+                        df_financials.loc[len(df_financials.index)] = l_financials
+                        break
 
         # Set item name as index
         df_financials = df_financials.set_index("Item")

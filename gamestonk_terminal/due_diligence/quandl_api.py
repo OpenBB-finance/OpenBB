@@ -3,10 +3,14 @@ import quandl
 from matplotlib import pyplot as plt
 import matplotlib.ticker as ticker
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive, long_number_format
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    long_number_format,
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal import config_terminal as cfg
 
-# -------------------------------------------------------- SHORT_INTEREST --------------------------------------------------------
+
 def short_interest(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(
         prog="short",
@@ -35,11 +39,7 @@ def short_interest(l_args, s_ticker, s_start):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         quandl.ApiConfig.api_key = cfg.API_KEY_QUANDL
 
