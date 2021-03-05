@@ -2,6 +2,9 @@ import argparse
 import re
 from datetime import datetime, timedelta
 import warnings
+import pandas as pd
+from prawcore.exceptions import ResponseException
+from requests import HTTPError
 from prettytable import PrettyTable
 from psaw import PushshiftAPI
 import praw
@@ -227,6 +230,15 @@ def popular_tickers(l_args):
         description="""Print latest popular tickers. [Source: Reddit] """,
     )
     parser.add_argument(
+        "-n",
+        "--number",
+        action="store",
+        dest="n_top",
+        type=check_positive,
+        default=10,
+        help="display top N tickers",
+    )
+    parser.add_argument(
         "-l",
         "--limit",
         action="store",
@@ -261,6 +273,7 @@ def popular_tickers(l_args):
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+            print("popular -s <subreddit> -l <posts per subreddit> -d <days>")
             return
 
         n_ts_after = int(
@@ -356,31 +369,73 @@ def popular_tickers(l_args):
                 else:
                     break
 
-            print(f"  {n_tickers} tickers found.")
+            print(f"  {n_tickers} potential tickers found.")
 
         lt_watchlist_sorted = sorted(
             d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
         )
+
         if lt_watchlist_sorted:
-            print(
-                f"\nThe following TOP10 tickers have been mentioned in the last {ns_parser.n_days} days:"
-            )
             n_top_stocks = 0
+            # pylint: disable=redefined-outer-name
+            popular_tickers = []
             for t_ticker in lt_watchlist_sorted:
-                if n_top_stocks > 9:
+                if n_top_stocks > ns_parser.n_top:
                     break
                 try:
                     # If try doesn't trigger exception, it means that this stock exists on finviz
                     # thus we can print it.
-                    finviz.get_stock(t_ticker[0])
-                    print(f"{t_ticker[1]} {t_ticker[0]}")
+                    stock_info = finviz.get_stock(t_ticker[0])
+                    popular_tickers.append(
+                        (
+                            t_ticker[1],
+                            t_ticker[0],
+                            stock_info["Company"],
+                            stock_info["Sector"],
+                            stock_info["Price"],
+                            stock_info["Change"],
+                            stock_info["Perf Month"],
+                            f"https://finviz.com/quote.ashx?t={t_ticker[0]}",
+                        )
+                    )
                     n_top_stocks += 1
+                except HTTPError as e:
+                    if e.response.status_code != 404:
+                        print(f"Unexpected exception from Fiviz: {e}")
                 except Exception as e:
                     print(e)
-                    # pass
+
+            popular_tickers_df = pd.DataFrame(
+                popular_tickers,
+                columns=[
+                    "Mentions",
+                    "Ticker",
+                    "Company",
+                    "Sector",
+                    "Price",
+                    "Change",
+                    "Perf Month",
+                    "URL",
+                ],
+            )
+
+            print(
+                f"\nThe following TOP {ns_parser.n_top} tickers have been mentioned in the last {ns_parser.n_days} days:"
+            )
+
+            print(popular_tickers_df)
+            print("")
         else:
             print("No tickers found")
+
         print("")
+
+    except ResponseException as e:
+        if e.response.status_code == 401:
+            print(
+                "Received a response from Reddit with an authorization error. Check your token."
+            )
+            print("")
 
     except Exception as e:
         print(e)
