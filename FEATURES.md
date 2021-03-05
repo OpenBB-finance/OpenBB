@@ -1,8 +1,6 @@
 # Features 📈
 
 ### Table of contents
-
-* [Main](#Main)
 * [Discover Stocks](#Discover-Stocks-)
 * [Market Sentiment](#Market-Sentiment-)
 * [Research Web pages](#Research-Web-pages)
@@ -54,6 +52,7 @@ Command|Description|Source
 `uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
 
 
+
 ## Market Sentiment [»](sentiment/README.md)
 Command|Description
 ----|----
@@ -77,6 +76,8 @@ Command|Description
 `queries`       |top related queries with this stock
 `rise`          |top rising related queries with stock
 
+
+<br />
 ## Research Web pages
 Command|Website
 ----|----
