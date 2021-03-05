@@ -4,6 +4,7 @@ from datetime import datetime
 import pandas as pd
 import yfinance as yf
 
+from dataframe_helpers import clean_df_index
 from helper_funcs import long_number_format, parse_known_args_and_warn
 
 
@@ -35,8 +36,7 @@ def info(l_args, s_ticker):
     df_info = pd.DataFrame(stock.info.items(), columns=['Metric', 'Value'])
     df_info = df_info.set_index('Metric')
 
-    df_info.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_info.index.tolist()]
-    df_info.index = [s_val.capitalize() for s_val in df_info.index]
+    clean_df_index(df_info)
 
     df_info.loc['Last split date'].values[0] = datetime.fromtimestamp(df_info.loc['Last split date'].values[0]).strftime('%d/%m/%Y')
 
@@ -113,9 +113,7 @@ def sustainability(l_args, s_ticker):
     pd.set_option('display.max_colwidth', -1)
 
     df_sustainability = stock.sustainability
-
-    df_sustainability.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_sustainability.index.tolist()]
-    df_sustainability.index = [s_val.capitalize() for s_val in df_sustainability.index]
+    clean_df_index(df_sustainability)
 
     df_sustainability = df_sustainability.rename(index={"Controversialweapons": "Controversial Weapons",
                                                         "Socialpercentile": "Social Percentile",

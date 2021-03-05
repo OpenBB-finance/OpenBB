@@ -4,6 +4,8 @@ import pandas as pd
 import requests
 from alpha_vantage.fundamentaldata import FundamentalData
 from pandas.io.json import json_normalize
+
+from dataframe_helpers import clean_df_index
 from helper_funcs import long_number_format, check_positive, parse_known_args_and_warn
 import config_terminal as cfg
 # ---------------------------------------------------- OVERVIEW ----------------------------------------------------
@@ -36,8 +38,7 @@ def overview(l_args, s_ticker):
         # Keep json data sorting in dataframe
         df_fa = df_fa[list(result.json().keys())].T
         df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        clean_df_index(df_fa)
         df_fa = df_fa.rename(index={
             "E b i t d a": "EBITDA",
             "P e ratio": "PE ratio",
@@ -91,8 +92,7 @@ def key(l_args, s_ticker):
         df_fa = df_fa[list(result.json().keys())].T
 
         df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+        clean_df_index(df_fa)
         df_fa = df_fa.rename(index={"E b i t d a":"EBITDA",
                                     "P e ratio":"PE ratio",
                                     "P e g ratio":"PEG ratio",
@@ -283,8 +283,6 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
     df_fa = df_fa.mask(df_fa.astype(object).eq(num * ['None'])).dropna()
     df_fa = df_fa.mask(df_fa.astype(object).eq(num * ['0'])).dropna()
     df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in
-                   df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    clean_df_index(df_fa)
     df_fa.columns.name = "Fiscal Date Ending"
     return df_fa

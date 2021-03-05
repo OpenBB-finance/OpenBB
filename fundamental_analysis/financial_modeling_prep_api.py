@@ -5,6 +5,7 @@ import FundamentalAnalysis as fa  # Financial Modeling Prep
 import pandas as pd
 
 import config_terminal as cfg
+from dataframe_helpers import clean_df_index
 from helper_funcs import check_positive, long_number_format, parse_known_args_and_warn
 
 
@@ -20,8 +21,7 @@ def profile(l_args, s_ticker):
     parse_known_args_and_warn(parser, l_args)
 
     df_fa = fa.profile(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    clean_df_index(df_fa)
     print(df_fa.drop(index=['Description', 'Image']).to_string(header=False))
     print(f"\nImage: {df_fa.loc['Image'][0]}")
     print(f"\nDescription: {df_fa.loc['Description'][0]}")
@@ -41,8 +41,7 @@ def quote(l_args, s_ticker):
     parse_known_args_and_warn(parser, l_args)
 
     df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    clean_df_index(df_fa)
     df_fa.loc['Market cap'][0] = long_number_format(df_fa.loc['Market cap'][0])
     df_fa.loc['Shares outstanding'][0] = long_number_format(df_fa.loc['Shares outstanding'][0])
     df_fa.loc['Volume'][0] = long_number_format(df_fa.loc['Volume'][0])
@@ -78,10 +77,7 @@ def enterprise(l_args, s_ticker):
     else:
         df_fa = fa.enterprise(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num, mask=False)
     print(df_fa)
 
     print("")
@@ -111,11 +107,7 @@ def discounted_cash_flow(l_args, s_ticker):
     else:
         df_fa = fa.discounted_cash_flow(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa = df_fa.rename(index={"D c f": "DCF"})
+    df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num, mask=False)
     print(df_fa)
 
     print("")
@@ -152,13 +144,8 @@ def income_statement(l_args, s_ticker):
     else:
         df_fa = fa.income_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+
+    df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
     print(df_fa.drop(index=['Final link', 'Link']).to_string())
 
     pd.set_option('display.max_colwidth', -1)
@@ -206,13 +193,7 @@ def balance_sheet(l_args, s_ticker):
     else:
         df_fa = fa.balance_sheet_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+    df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
     print(df_fa.drop(index=['Final link', 'Link']).to_string())
 
     pd.set_option('display.max_colwidth', -1)
@@ -257,13 +238,8 @@ def cash_flow(l_args, s_ticker):
     else:
         df_fa = fa.cash_flow_statement(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+
+    df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
     print(df_fa.drop(index=['Final link', 'Link']).to_string())
 
     pd.set_option('display.max_colwidth', -1)
@@ -369,8 +345,7 @@ def financial_ratios(l_args, s_ticker):
     df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
     df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
     df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+    clean_df_index(df_fa)
     df_fa.columns.name = "Fiscal Date Ending"
     df_fa = df_fa.rename(index={"Net income per e b t": "Net income per EBT"})
     print(df_fa)
@@ -413,13 +388,23 @@ def financial_statement_growth(l_args, s_ticker):
     else:
         df_fa = fa.financial_statement_growth(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-    df_fa = df_fa.iloc[:, 0:ns_parser.n_num]
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['None'])).dropna()
-    df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num*['0'])).dropna()
-    df_fa = df_fa.applymap(lambda x: long_number_format(x))
-    df_fa.index = [''.join(' ' + char if char.isupper() else char.strip() for char in idx).strip() for idx in df_fa.index.tolist()]
-    df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-    df_fa.columns.name = "Fiscal Date Ending"
+    df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
     print(df_fa)
 
     print("")
+
+
+def clean_metrics_df(df_fa, num, mask=True):
+    df_fa = df_fa.iloc[:, 0:num]
+    if mask:
+        df_fa = df_fa.mask(df_fa.astype(object).eq(num * ['None'])).dropna()
+        df_fa = df_fa.mask(df_fa.astype(object).eq(num * ['0'])).dropna()
+    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    clean_df_index(df_fa)
+    df_fa.columns.name = "Fiscal Date Ending"
+    df_fa = df_fa.rename(index={
+        "Enterprise value over e b i t d a": "Enterprise value over EBITDA",
+        "Net debt to e b i t d a": "Net debt to EBITDA",
+        "D c f": "DCF",
+    })
+    return df_fa
