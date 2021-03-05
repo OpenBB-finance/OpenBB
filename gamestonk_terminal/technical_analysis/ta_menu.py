@@ -6,6 +6,7 @@ from gamestonk_terminal.technical_analysis import trend as ta_trend
 from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
 
+
 # -----------------------------------------------------------------------------------------------------------------------
 def print_technical_analysis(s_ticker, s_start, s_interval):
     """ Print help """

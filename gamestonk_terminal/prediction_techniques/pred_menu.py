@@ -135,6 +135,6 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == "lstm":
             neural_networks.lstm(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------------------------------------------------------------------
+            # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")
