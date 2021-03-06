@@ -213,25 +213,66 @@ Command|Technique|Sources
 
 ## Install <a name="Install"></a>
 
-This project was written and tested with Python 3.6.8.
+This project was originally written and tested with Python 3.6.8.
 
-In order to install, you must run:
+Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
+
+1. Install Anaconda
+
+2. Create a virtual environment with Python 3.8
+
+```text
+conda create -n gst python=3.8
+```
+
+3. Activate the virtual environment
+
+```text
+conda activate gst
+```
+
+4. Clone GamestonkTerminal
 
 ```text
 git clone https://github.com/DidierRLopes/GamestonkTerminal
 cd GamestonkTerminal/
-pip install -r requirements.txt
 ```
 
-Then run:
+5. Install Poetry
+
+```text
+conda install poetry
+```
+
+6. Install project dependencies
+
+```text
+poetry install
+```
+7. Launch GamestonkTerminal
 
 ```text
 python terminal.py
 ```
 
-Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
+If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can pick from to download project dependencies.
 
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
+
+If you would like to use optional Machine Learning features
+
+* Update your *gamestonk_terminal/config_terminal.py*
+
+```text
+ENABLE_PREDICT = False
+```
+
+* Install optional *prediction* dependency collection with poetry
+
+```text
+poetry install -E prediction
+```
+
 
 ## API Keys <a name="API_Keys"></a>
 
