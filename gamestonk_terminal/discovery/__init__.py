@@ -1,1 +1,1 @@
-from . import disc_menu
+from . import disc_menu  # noqa: F401

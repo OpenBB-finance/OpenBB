@@ -1,9 +1,5 @@
 """ discovery/short_interest_api.py tests """
-# noqa: F401
 import unittest
-
-# pylint: disable=unused-import
-import pytest
 
 from gamestonk_terminal.sentiment.reddit_api import popular_tickers
 

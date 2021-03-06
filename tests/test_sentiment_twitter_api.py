@@ -3,8 +3,6 @@
 import unittest
 
 # pylint: disable=unused-import
-import pytest
-
 try:
     from gamestonk_terminal.sentiment.twitter_api import inference, sentiment
 except ModuleNotFoundError as e:
