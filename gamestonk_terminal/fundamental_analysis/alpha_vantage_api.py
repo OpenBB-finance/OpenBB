@@ -4,10 +4,14 @@ from alpha_vantage.fundamentaldata import FundamentalData
 import pandas as pd
 from pandas.io.json import json_normalize
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import check_positive, long_number_format
+from gamestonk_terminal.dataframe_helpers import clean_df_index
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    long_number_format,
+    parse_known_args_and_warn,
+)
 
 
-# ---------------------------------------------------- OVERVIEW ----------------------------------------------------
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="overview",
@@ -17,23 +21,12 @@ def overview(l_args, s_ticker):
             Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization,
             EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS,
             Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM,
-            Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY,
-            Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE,
-            Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high,
-            52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float,
-            Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float,
-            Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield,
-            Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date.
-            [Source: Alpha Vantage]
+            Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. [Source: Alpha Vantage]
         """,
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        parse_known_args_and_warn(parser, l_args)
 
         # Request OVERVIEW data from Alpha Vantage API
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -46,13 +39,7 @@ def overview(l_args, s_ticker):
             # Keep json data sorting in dataframe
             df_fa = df_fa[list(result.json().keys())].T
             df_fa = df_fa.applymap(lambda x: long_number_format(x))
-            df_fa.index = [
-                "".join(
-                    " " + char if char.isupper() else char.strip() for char in idx
-                ).strip()
-                for idx in df_fa.index.tolist()
-            ]
-            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            clean_df_index(df_fa)
             df_fa = df_fa.rename(
                 index={
                     "E b i t d a": "EBITDA",
@@ -91,24 +78,16 @@ def overview(l_args, s_ticker):
         return
 
 
-# ------------------------------------------------------ KEY ------------------------------------------------------
 def key(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="key",
         description="""
-            Gives main key metrics about the company (it's a subset of the Overview data from Alpha Vantage API).
-            The following fields are expected: Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio,
-            Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 50 day moving average, Analyst
-            target price, Beta [Source: Alpha Vantage API]
+            Gives main key metrics about the company (it's a subset of the Overview data from Alpha Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]
         """,
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        parse_known_args_and_warn(parser, l_args)
 
         # Request OVERVIEW data
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -118,15 +97,8 @@ def key(l_args, s_ticker):
         if result.status_code == 200:
             df_fa = json_normalize(result.json())
             df_fa = df_fa[list(result.json().keys())].T
-
             df_fa = df_fa.applymap(lambda x: long_number_format(x))
-            df_fa.index = [
-                "".join(
-                    " " + char if char.isupper() else char.strip() for char in idx
-                ).strip()
-                for idx in df_fa.index.tolist()
-            ]
-            df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
+            clean_df_index(df_fa)
             df_fa = df_fa.rename(
                 index={
                     "E b i t d a": "EBITDA",
@@ -165,19 +137,12 @@ def key(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- INCOME_STATEMENT ----------------------------------------------------
 def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="incom",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
-            The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation
-            and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and
-            administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio,
-            Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses,
-            Operating income, Operating income ratio, Other expenses, Period, Research and development expenses,
-            Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out,
-            Weighted average shs out dil [Source: Alpha Vantage]""",
+            The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]""",
     )
 
     parser.add_argument(
@@ -199,11 +164,7 @@ def income_statement(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", -1)
@@ -218,24 +179,8 @@ def income_statement(l_args, s_ticker):
             # pylint: disable=unbalanced-tuple-unpacking
             df_fa, _ = fd.get_income_statement_annual(symbol=s_ticker)
 
-        # pylint: disable=no-member
-        df_fa = df_fa.set_index("fiscalDateEnding")
-        df_fa = df_fa.head(n=ns_parser.n_num).T
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["None"])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["0"])).dropna()
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        # begin problematic for pylint
-        df_fa.index = [
-            "".join(
-                " " + char if char.isupper() else char.strip() for char in idx
-            ).strip()
-            for idx in df_fa.index.tolist()
-        ]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        df_fa.columns.name = "Fiscal Date Ending"
-        # end problematic for pylint
+        df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
         print(df_fa)
-
         print("")
 
     except Exception as e:
@@ -244,22 +189,12 @@ def income_statement(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- BALANCE_SHEET ----------------------------------------------------
 def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="balance",
         description="""
-            Prints a complete balance sheet statement over time. This can be either quarterly or annually.
-            The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive
-            income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue,
-            Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill,
-            Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments,
-            Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities,
-            Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property
-            plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables,
-            Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total
-            liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current
-            liabilities, and Total stockholders equity. [Source: Alpha Vantage]
+            Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill,
+            Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]
         """,
     )
 
@@ -299,21 +234,8 @@ def balance_sheet(l_args, s_ticker):
         else:
             df_fa, _ = fd.get_balance_sheet_annual(symbol=s_ticker)
 
-        df_fa = df_fa.set_index("fiscalDateEnding")
-        df_fa = df_fa.head(n=ns_parser.n_num).T
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["None"])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["0"])).dropna()
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [
-            "".join(
-                " " + char if char.isupper() else char.strip() for char in idx
-            ).strip()
-            for idx in df_fa.index.tolist()
-        ]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        df_fa.columns.name = "Fiscal Date Ending"
+        df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
         print(df_fa)
-
         print("")
 
     except Exception as e:
@@ -322,21 +244,13 @@ def balance_sheet(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- CASH_FLOW ----------------------------------------------------
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="cash",
         description="""
-            Prints a complete cash flow statement over time. This can be either quarterly or annually. The following
-            fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital
-            expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock
-            issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
-            Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory,
-            Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash
-            used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income,
-            Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working
-            capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation.
-            [Source: Alpha Vantage]
+            Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
+            Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working
+            capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
         """,
     )
 
@@ -359,11 +273,7 @@ def cash_flow(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", -1)
@@ -376,21 +286,8 @@ def cash_flow(l_args, s_ticker):
         else:
             df_fa, _ = fd.get_cash_flow_annual(symbol=s_ticker)
 
-        df_fa = df_fa.set_index("fiscalDateEnding")
-        df_fa = df_fa.head(n=ns_parser.n_num).T
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["None"])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(ns_parser.n_num * ["0"])).dropna()
-        df_fa = df_fa.applymap(lambda x: long_number_format(x))
-        df_fa.index = [
-            "".join(
-                " " + char if char.isupper() else char.strip() for char in idx
-            ).strip()
-            for idx in df_fa.index.tolist()
-        ]
-        df_fa.index = [s_val.capitalize() for s_val in df_fa.index]
-        df_fa.columns.name = "Fiscal Date Ending"
+        df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
         print(df_fa)
-
         print("")
 
     except Exception as e:
@@ -399,13 +296,11 @@ def cash_flow(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- EARNINGS ----------------------------------------------------
 def earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="earnings",
         description="""
-            Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date
-            Ending and Reported EPS. [Source: Alpha Vantage]
+            Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
         """,
     )
 
@@ -428,11 +323,7 @@ def earnings(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", -1)
@@ -488,3 +379,15 @@ def earnings(l_args, s_ticker):
         print(e)
         print("")
         return
+
+
+def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
+    # pylint: disable=no-member
+    df_fa = df_fa.set_index("fiscalDateEnding")
+    df_fa = df_fa.head(n=num).T
+    df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["None"])).dropna()
+    df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["0"])).dropna()
+    df_fa = df_fa.applymap(lambda x: long_number_format(x))
+    clean_df_index(df_fa)
+    df_fa.columns.name = "Fiscal Date Ending"
+    return df_fa
