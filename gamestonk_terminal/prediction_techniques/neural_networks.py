@@ -8,17 +8,15 @@ from pandas.plotting import register_matplotlib_converters
 from TimeSeriesCrossValidation import splitTrain
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import (
-    LSTM,
-    SimpleRNN,
-    Dense,
-    Dropout,
-    # Activation,
-    # RepeatVector,
-    # TimeDistributed,
+from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
+
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    print_pretty_prediction,
 )
 
-from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
 
 
@@ -77,9 +75,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
     return model
 
 
-# -------------------------------------------------- MLP --------------------------------------------------
-# pylint: disable=unused-argument
-def mlp(l_args, s_ticker, s_interval, df_stock):
+def mlp(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="mlp", description="""Multilayer Perceptron. """
     )
@@ -159,11 +155,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -227,6 +219,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
         plt.title(f"MLP on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(
@@ -258,12 +251,11 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
             linestyle="--",
             color="k",
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
@@ -271,9 +263,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# -------------------------------------------------- RNN --------------------------------------------------
-# pylint: disable=unused-argument
-def rnn(l_args, s_ticker, s_interval, df_stock):
+def rnn(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="rnn", description="""Recurrent Neural Network. """
     )
@@ -353,11 +343,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -421,6 +407,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
         plt.title(f"RNN on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(
@@ -452,12 +439,11 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
             linestyle="--",
             color="k",
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
@@ -465,9 +451,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# -------------------------------------------------- LSTM --------------------------------------------------
-# pylint: disable=unused-argument
-def lstm(l_args, s_ticker, s_interval, df_stock):
+def lstm(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="lstm", description="""Long-Short Term Memory. """
     )
@@ -547,11 +531,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -615,6 +595,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
         df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
         plt.title(f"LSTM on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(
@@ -646,12 +627,11 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
             linestyle="--",
             color="k",
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:

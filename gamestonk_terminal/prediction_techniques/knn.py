@@ -4,14 +4,17 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from sklearn import neighbors
 from TimeSeriesCrossValidation import splitTrain
-from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    print_pretty_prediction,
+)
 
 register_matplotlib_converters()
 
 
-# ----------------------------------------------------- kNN -----------------------------------------------------
-# pylint: disable=unused-argument
-def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
+def k_nearest_neighbors(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="knn",
         description="""
@@ -59,11 +62,7 @@ def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Split training data
         stock_x, stock_y = splitTrain.split_train(
@@ -88,6 +87,7 @@ def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
         df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
         plt.title(
             f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker} - {ns_parser.n_days} days prediction"
@@ -115,12 +115,11 @@ def k_nearest_neighbors(l_args, s_ticker, s_interval, df_stock):
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:

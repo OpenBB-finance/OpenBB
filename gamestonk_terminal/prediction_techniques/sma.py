@@ -4,14 +4,18 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    print_pretty_prediction,
+)
 
 register_matplotlib_converters()
 
 
-# ----------------------------------------------------- SMA -----------------------------------------------------
 # pylint: disable=unused-argument
-def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
+def simple_moving_average(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="sma",
         description="""
@@ -45,11 +49,7 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Prediction data
         l_predictions = list()
@@ -98,12 +98,11 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
