@@ -23,7 +23,7 @@ def load_tweets(s_ticker: str, count: int) -> DataFrame:
     # Request Twitter API
     response = requests.get(
         "https://api.twitter.com/1.1/search/tweets.json",
-        params=params,
+        params=params,  # type: ignore
         headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
     )
 

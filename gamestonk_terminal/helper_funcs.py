@@ -161,34 +161,29 @@ def long_number_format(num) -> str:
 
 
 def clean_data_values_to_float(val: str) -> float:
-    # Remove parenthesis if they exist
-    if val.startswith("("):
-        val = val[1:]
-    if val.endswith(")"):
-        val = val[:-1]
-
+    # Remove any leading or trailing parentheses and spaces
+    val = val.strip("( )")
     if val == "-":
         val = "0"
 
     # Convert percentage to decimal
     if val.endswith("%"):
-        val = float(val[:-1]) / 100.0
+        val_as_float = float(val[:-1]) / 100.0
     # Convert from billions
     elif val.endswith("B"):
-        val = float(val[:-1]) * 1_000_000_000
+        val_as_float = float(val[:-1]) * 1_000_000_000
     # Convert from millions
     elif val.endswith("M"):
-        val = float(val[:-1]) * 1_000_000
+        val_as_float = float(val[:-1]) * 1_000_000
     # Convert from thousands
     elif val.endswith("K"):
-        val = float(val[:-1]) * 1000
+        val_as_float = float(val[:-1]) * 1000
     else:
-        val = float(val)
+        val_as_float = float(val)
+    return val_as_float
 
-    return val
 
-
-def int_or_round_float(x):
+def int_or_round_float(x) -> str:
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
 
@@ -221,7 +216,7 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     return l_pred_days
 
 
-def get_data(tweet) -> hash:
+def get_data(tweet):
     if "+" in tweet["created_at"]:
         s_datetime = tweet["created_at"].split(" +")[0]
     else:
