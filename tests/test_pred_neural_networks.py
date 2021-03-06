@@ -23,7 +23,7 @@ class TestPredNeuralNetworks(unittest.TestCase):
         # Fix: need to come up with a better way of doing this
         try:
             # Fix: need to move loading of ticker data into a df somewhere
-            mlp([], "TLSA", None, None)
+            mlp([], "TLSA", None)
         except NameError as e:
             print("One of the optional packages seems to be missing")
             print(e)
