@@ -8,12 +8,12 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     parse_known_args_and_warn,
+    print_pretty_prediction,
 )
 
 register_matplotlib_converters()
 
 
-# pylint: disable=unused-argument
 def arima(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="arima",
@@ -114,6 +114,7 @@ def arima(l_args, s_ticker, df_stock):
             print("")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
         if ns_parser.s_order:
             plt.title(
@@ -146,12 +147,11 @@ def arima(l_args, s_ticker, df_stock):
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
