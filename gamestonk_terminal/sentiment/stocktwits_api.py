@@ -1,10 +1,9 @@
 import argparse
 import requests
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def bullbear(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="bullbear",
@@ -25,11 +24,7 @@ def bullbear(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
@@ -57,7 +52,6 @@ def bullbear(l_args, s_ticker):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def messages(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="messages",
@@ -84,11 +78,7 @@ def messages(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
@@ -96,7 +86,7 @@ def messages(l_args, s_ticker):
         if result.status_code == 200:
             for idx, message in enumerate(result.json()["messages"]):
                 print(
-                    "------------------------------------------------------------------------------------------"
+                    "------------------------------------------------------------------------------"
                 )
                 print(message["body"])
                 if idx > ns_parser.n_lim - 1:
@@ -110,18 +100,13 @@ def messages(l_args, s_ticker):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def trending(l_args):
     parser = argparse.ArgumentParser(
         prog="trending", description="""Stocks trending. [Source: Stocktwits]"""
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
         if result.status_code == 200:
@@ -145,7 +130,6 @@ def trending(l_args):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def stalker(l_args):
     parser = argparse.ArgumentParser(
         prog="stalker",
@@ -172,11 +156,7 @@ def stalker(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/user/{ns_parser.s_user}.json"
@@ -185,7 +165,7 @@ def stalker(l_args):
         if result.status_code == 200:
             for idx, message in enumerate(result.json()["messages"]):
                 print(
-                    "------------------------------------------------------------------------------------------"
+                    "------------------------------------------------------------------------------"
                 )
                 print(message["created_at"].replace("T", " ").replace("Z", ""))
                 print(message["body"])

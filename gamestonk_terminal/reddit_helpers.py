@@ -1,5 +1,6 @@
-from datetime import datetime
-
+from datetime import datetime, timedelta
+import re
+from holidays import US as holidaysUS
 from prettytable import PrettyTable
 
 
@@ -43,3 +44,35 @@ def print_and_record_reddit_post(submissions_dict, submission):
     )
     print(t_post)
     print("\n")
+
+
+def get_last_time_market_was_open(dt):
+    # Check if it is a weekend
+    if dt.date().weekday() > 4:
+        dt = get_last_time_market_was_open(dt - timedelta(hours=24))
+
+    # Check if it is a holiday
+    if dt.strftime("%Y-%m-%d") in holidaysUS():
+        dt = get_last_time_market_was_open(dt - timedelta(hours=24))
+
+    dt = dt.replace(hour=21, minute=0, second=0)
+
+    return dt
+
+
+def find_tickers(submission):
+    ls_text = list()
+    ls_text.append(submission.selftext)
+    ls_text.append(submission.title)
+
+    submission.comments.replace_more(limit=0)
+    for comment in submission.comments.list():
+        ls_text.append(comment.body)
+
+    l_tickers_found = list()
+    for s_text in ls_text:
+        for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
+            l_tickers_found.append(s_ticker.strip())
+
+    return l_tickers_found
+

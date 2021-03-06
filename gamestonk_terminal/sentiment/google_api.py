@@ -1,10 +1,13 @@
 import argparse
 from pytrends.request import TrendReq
 import matplotlib.pyplot as plt
-from gamestonk_terminal.helper_funcs import check_positive, valid_date
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    valid_date,
+    parse_known_args_and_warn,
+)
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def mentions(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(
         prog="mentions",
@@ -23,11 +26,7 @@ def mentions(l_args, s_ticker, s_start):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])
@@ -63,7 +62,6 @@ def mentions(l_args, s_ticker, s_start):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def regions(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="regions",
@@ -81,11 +79,7 @@ def regions(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])
@@ -108,7 +102,6 @@ def regions(l_args, s_ticker):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def queries(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="queries",
@@ -126,11 +119,7 @@ def queries(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])
@@ -148,7 +137,6 @@ def queries(l_args, s_ticker):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def rise(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="rise",
@@ -166,11 +154,7 @@ def rise(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])

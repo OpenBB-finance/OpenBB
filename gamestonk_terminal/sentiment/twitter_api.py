@@ -8,7 +8,11 @@ import numpy as np
 import flair
 import matplotlib.pyplot as plt
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import get_data, clean_tweet
+from gamestonk_terminal.helper_funcs import (
+    get_data,
+    clean_tweet,
+    parse_known_args_and_warn,
+)
 
 
 def load_tweets(s_ticker: str, count: int) -> DataFrame:
@@ -58,21 +62,19 @@ def load_tweets(s_ticker: str, count: int) -> DataFrame:
     df_tweets["probability"] = probs
     df_tweets["sentiment"] = sentiments
 
-    # Add sentiment estimation (probability positive for POSITIVE sentiment, and negative for NEGATIVE sentiment)
+    # Add sentiment estimation (probability positive for POSITIVE sentiment,
+    # and negative for NEGATIVE sentiment)
     df_tweets["sentiment_estimation"] = df_tweets.apply(
-        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-        axis=1,
+        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"], axis=1
     ).cumsum()
     # Cumulative sentiment_estimation
     df_tweets["prob_sen"] = df_tweets.apply(
-        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-        axis=1,
+        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"], axis=1
     )
 
     return df_tweets
 
 
-# ------------------------------------------------- INFERENCE -------------------------------------------------
 def inference(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="infer",
@@ -80,7 +82,8 @@ def inference(l_args, s_ticker):
             Print quick sentiment inference from last tweets that contain the ticker.
             This model splits the text into character-level tokens and uses the DistilBERT
             model to make predictions. DistilBERT is a distilled version of the powerful
-            BERT transformer model. Not only time period of these, but also frequency. [Source: Twitter]
+            BERT transformer model. Not only time period of these, but also frequency.
+            [Source: Twitter]
         """,
     )
 
@@ -96,11 +99,7 @@ def inference(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Get tweets using Twitter API
         params = {
@@ -148,7 +147,8 @@ def inference(l_args, s_ticker):
         df_tweets["probability"] = probs
         df_tweets["sentiment"] = sentiments
 
-        # Add sentiment estimation (probability positive for POSITIVE sentiment, and negative for NEGATIVE sentiment)
+        # Add sentiment estimation (probability positive for POSITIVE sentiment,
+        # and negative for NEGATIVE sentiment)
         df_tweets["sentiment_estimation"] = df_tweets.apply(
             lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
             axis=1,
@@ -174,20 +174,13 @@ def inference(l_args, s_ticker):
         print(f"From: {dt_from.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"To:   {dt_to.strftime('%Y-%m-%d %H:%M:%S')}")
 
-        # pd.set_option("display.max_rows", None)
-        # pd.set_option("display.max_columns", None)
-        # pd.set_option("display.width", None)
-        # pd.set_option("display.max_colwidth", None)
-        # print(df_tweets)
-
         print(f"{len(df_tweets)} tweets were analyzed.")
         dt_delta = dt_to - dt_from
         n_freq = dt_delta.total_seconds() / len(df_tweets)
         print(f"Frequency of approx 1 tweet every {round(n_freq)} seconds.")
 
         s_sen = f"{('NEGATIVE', 'POSITIVE')[int(df_tweets['sentiment_estimation'].values[-1] > 0)]}"
-        s_conf = f"{round(100*df_tweets['sentiment_estimation'].values[-1]/df_tweets['probability'].sum())}%"
-        print(f"The sentiment of {s_ticker} is: {s_sen} ({s_conf})")
+        print(f"The sentiment of {s_ticker} is: {s_sen} ({n_pct} %)")
         print("")
 
     except Exception as e:
@@ -195,7 +188,6 @@ def inference(l_args, s_ticker):
         print("")
 
 
-# ------------------------------------------------- SENTIMENT -------------------------------------------------
 def sentiment(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="sen",
@@ -203,13 +195,14 @@ def sentiment(l_args, s_ticker):
             Plot in-depth sentiment predicted from tweets from last days
             that contain pre-defined ticker. This model splits the text into character-level
             tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled
-            version of the powerful BERT transformer model. Note that a big num of tweets extracted per
-            hour in conjunction with a high number of days in the past, will make the
+            version of the powerful BERT transformer model. Note that a big num of tweets
+            extracted per hour in conjunction with a high number of days in the past, will make the
             algorithm take a long period of time to estimate sentiment. [Source: Twitter]
         """,
     )
 
-    # in reality this argument could be 100, but after testing it takes too long to compute which may not be acceptable
+    # in reality this argument could be 100, but after testing it takes too long
+    # to compute which may not be acceptable
     parser.add_argument(
         "-n",
         "--num",
@@ -232,11 +225,7 @@ def sentiment(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Setup API request params and headers
         headers = {"authorization": f"Bearer {cfg.API_TWITTER_BEARER_TOKEN}"}
