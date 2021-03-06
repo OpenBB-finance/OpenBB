@@ -8,6 +8,7 @@ from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_marke
 
 register_matplotlib_converters()
 
+
 # -------------------------------------------------- ARIMA --------------------------------------------------
 # pylint: disable=unused-argument
 def arima(l_args, s_ticker, s_interval, df_stock):
