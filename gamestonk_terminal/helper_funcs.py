@@ -10,7 +10,7 @@ import pandas.io.formats.format
 from pandas._config.config import get_option
 from holidays import US as holidaysUS
 
-# -----------------------------------------------------------------------------------------------------------------------
+
 def check_non_negative(value) -> int:
     ivalue = int(value)
     if ivalue < 0:
@@ -18,7 +18,6 @@ def check_non_negative(value) -> int:
     return ivalue
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def check_positive(value) -> int:
     ivalue = int(value)
     if ivalue <= 0:
@@ -26,7 +25,6 @@ def check_positive(value) -> int:
     return ivalue
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def valid_date(s: str) -> datetime:
     try:
         return datetime.strptime(s, "%Y-%m-%d")
@@ -34,7 +32,6 @@ def valid_date(s: str) -> datetime:
         raise argparse.ArgumentTypeError("Not a valid date: {s}") from value_error
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def plot_view_stock(df, symbol):
     df.sort_index(ascending=True, inplace=True)
     _, axVolume = plt.subplots()
@@ -54,7 +51,6 @@ def plot_view_stock(df, symbol):
     print("")
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
     plt.plot(df_stock.index, df_stock.values, color="k")
     plt.plot(df_ta.index, df_ta.values)
@@ -77,7 +73,6 @@ def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
     print("")
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def plot_stock_and_ta(df_stock, s_ticker, df_ta, s_ta):
     _, axPrice = plt.subplots()
     plt.title(f"{s_ta} on {s_ticker}")
@@ -104,7 +99,6 @@ def plot_stock_and_ta(df_stock, s_ticker, df_ta, s_ta):
     print("")
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def plot_ta(s_ticker, df_ta, s_ta):
     plt.plot(df_ta.index, df_ta.values)
     plt.title(f"{s_ta} on {s_ticker}")
@@ -120,7 +114,6 @@ def plot_ta(s_ticker, df_ta, s_ta):
     print("")
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def b_is_stock_market_open() -> bool:
     """ checks if the stock market is open """
     # Get current US time
@@ -141,7 +134,6 @@ def b_is_stock_market_open() -> bool:
     return True
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def long_number_format(num) -> str:
     if isinstance(num, float):
         magnitude = 0
@@ -168,7 +160,6 @@ def long_number_format(num) -> str:
     return num
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def clean_data_values_to_float(val: str) -> float:
     # Remove parenthesis if they exist
     if val.startswith("("):
@@ -190,14 +181,13 @@ def clean_data_values_to_float(val: str) -> float:
         val = float(val[:-1]) * 1_000_000
     # Convert from thousands
     elif val.endswith("K"):
-        val = float(val[:-1]) * 1_000
+        val = float(val[:-1]) * 1000
     else:
         val = float(val)
 
     return val
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def int_or_round_float(x):
     if (x - int(x) < -sys.float_info.epsilon) or (x - int(x) > sys.float_info.epsilon):
         return " " + str(round(x, 2))
@@ -205,14 +195,12 @@ def int_or_round_float(x):
     return " " + str(int(x))
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def divide_chunks(data, n):
     # looping till length of data
     for i in range(0, len(data), n):
         yield data[i : i + n]
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     n_days = 0
     l_pred_days = list()
@@ -233,7 +221,6 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     return l_pred_days
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def get_data(tweet) -> hash:
     if "+" in tweet["created_at"]:
         s_datetime = tweet["created_at"].split(" +")[0]
@@ -251,7 +238,6 @@ def get_data(tweet) -> hash:
     return data
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def clean_tweet(tweet: str, s_ticker: str) -> str:
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
@@ -347,3 +333,10 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.justify = text_adjustment_justify
     pandas.io.formats.format.TextAdjustment.join_unicode = text_adjustment_join_unicode
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
+
+
+def parse_known_args_and_warn(parser, l_args):
+    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    if l_unknown_args:
+        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    return ns_parser

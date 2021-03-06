@@ -2,10 +2,13 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive, get_user_agent
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_user_agent,
+    parse_known_args_and_warn,
+)
 
 
-# ------------------------------------------------ HIGH_SHORT_INTEREST -------------------------------------------------
 def high_short_interest(l_args):
     parser = argparse.ArgumentParser(
         prog="high_short",
@@ -28,15 +31,7 @@ def high_short_interest(l_args):
         help="Number of top stocks to print.",
     )
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
-        return
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_high_short_interested_stocks = "https://www.highshortinterest.com"
     text_soup_high_short_interested_stocks = BeautifulSoup(
@@ -79,7 +74,6 @@ def high_short_interest(l_args):
     print("")
 
 
-# ---------------------------------------------------- LOW_FLOAT -----------------------------------------------------
 def low_float(l_args):
     parser = argparse.ArgumentParser(
         prog="low_float",
@@ -102,14 +96,7 @@ def low_float(l_args):
         help="Number of top stocks to print.",
     )
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     url_high_short_interested_stocks = "https://www.lowfloat.com"
     text_soup_low_float_stocks = BeautifulSoup(

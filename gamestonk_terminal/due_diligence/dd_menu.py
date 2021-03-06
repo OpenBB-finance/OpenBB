@@ -8,7 +8,6 @@ from gamestonk_terminal.due_diligence import financial_modeling_prep_api as fmp_
 from gamestonk_terminal.due_diligence import business_insider_api as bi_api
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def print_due_diligence(s_ticker, s_start, s_interval):
     """ Print help """
 
@@ -43,7 +42,6 @@ def print_due_diligence(s_ticker, s_start, s_interval):
     return
 
 
-# ---------------------------------------------------- MENU ----------------------------------------------------
 def dd_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the due diligence parser accepts
@@ -55,19 +53,19 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
             "help",
             "q",
             "quit",
-            "red",  # Reddit
-            "short",  # Quandl
-            "rating",  # FMP
+            "red",
+            "short",
+            "rating",
             "pt",
             "est",
-            "ins",  # BI
+            "ins",
             "insider",
             "news",
-            "analyst",  # Finviz
+            "analyst",
             "warnings",
             "sec",
         ],
-    )  # MW
+    )
 
     print_due_diligence(s_ticker, s_start, s_interval)
 
