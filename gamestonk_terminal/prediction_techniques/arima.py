@@ -4,25 +4,27 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import pmdarima
 from statsmodels.tsa.arima.model import ARIMA
-from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+)
 
 register_matplotlib_converters()
 
 
-# -------------------------------------------------- ARIMA --------------------------------------------------
 # pylint: disable=unused-argument
-def arima(l_args, s_ticker, s_interval, df_stock):
+def arima(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="arima",
         description="""
-            In statistics and econometrics, and in particular in time
-            series analysis, an autoregressive integrated moving average (ARIMA) model
-            is a generalization of an autoregressive moving average (ARMA) model. Both
-            of these models are fitted to time series data either to better understand
-            the data or to predict future points in the series (forecasting).
-            ARIMA(p,d,q) where parameters p, d, and q are non-negative integers, p is
-            the order (number of time lags) of the autoregressive model, d is the degree
-            of differencing (the number of times the data have had past values subtracted),
+            In statistics and econometrics, and in particular in time series analysis, an
+            autoregressive integrated moving average (ARIMA) model is a generalization of an
+            autoregressive moving average (ARMA) model. Both of these models are fitted to time
+            series data either to better understand the data or to predict future points in the
+            series (forecasting). ARIMA(p,d,q) where parameters p, d, and q are non-negative
+            integers, p is the order (number of time lags) of the autoregressive model, d is the
+            degree of differencing (the number of times the data have had past values subtracted),
             and q is the order of the moving-average model.
         """,
     )
@@ -72,11 +74,7 @@ def arima(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Machine Learning model
         if ns_parser.s_order:

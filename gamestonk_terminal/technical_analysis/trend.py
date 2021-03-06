@@ -2,12 +2,11 @@ import argparse
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
 
-# ----------------------------------------------------- ADX -----------------------------------------------------
 def adx(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="adx",
@@ -56,11 +55,7 @@ def adx(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -74,34 +69,6 @@ def adx(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-            plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=1)
-            plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=1)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhline(25, linewidth=3, color="k", ls="--")
-            plt.legend(
-                [
-                    f"ADX ({df_ta.columns[0]})",
-                    f"+DI ({df_ta.columns[1]})",
-                    f"- DI ({df_ta.columns[2]})",
-                ]
-            )
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.ylim([0, 100])
-            plt.show()
-
         # Intraday
         else:
             df_ta = ta.adx(
@@ -114,33 +81,8 @@ def adx(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-            plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=1)
-            plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=1)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhline(25, linewidth=3, color="k", ls="--")
-            plt.legend(
-                [
-                    f"ADX ({df_ta.columns[0]})",
-                    f"+DI ({df_ta.columns[1]})",
-                    f"- DI ({df_ta.columns[2]})",
-                ]
-            )
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.ylim([0, 100])
-            plt.show()
+        plot_adx(df_stock, s_ticker, df_ta)
+
         print("")
 
     except Exception as e:
@@ -148,7 +90,38 @@ def adx(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# ----------------------------------------------------- AROON -----------------------------------------------------
+def plot_adx(df_stock, s_ticker, df_ta):
+    plt.figure()
+    plt.subplot(211)
+    plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+    plt.title(f"Average Directional Movement Index (ADX) on {s_ticker}")
+    plt.xlim(df_stock.index[0], df_stock.index[-1])
+    plt.ylabel("Share Price ($)")
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    plt.subplot(212)
+    plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
+    plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=1)
+    plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=1)
+    plt.xlim(df_stock.index[0], df_stock.index[-1])
+    plt.axhline(25, linewidth=3, color="k", ls="--")
+    plt.legend(
+        [
+            f"ADX ({df_ta.columns[0]})",
+            f"+DI ({df_ta.columns[1]})",
+            f"- DI ({df_ta.columns[2]})",
+        ]
+    )
+    plt.xlabel("Time")
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    plt.ylim([0, 100])
+    plt.ion()
+    plt.show()
+
+
 def aroon(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="aroon",
@@ -195,11 +168,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         df_ta = ta.aroon(
             high=df_stock["2. high"],
@@ -209,21 +178,22 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
             offset=ns_parser.n_offset,
         ).dropna()
 
+        plt.figure()
         plt.subplot(311)
         # Daily
         if s_interval == "1440min":
-            # plot_stock_and_ta(df_stock['5. adjusted close'], s_ticker, df_ta.iloc[:,-1], "AROON")
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
         # Intraday
         else:
-            # plot_stock_and_ta(df_stock['4. close'], s_ticker, df_ta.iloc[:,-1], "AROON")
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+
         plt.title(f"Aroon on {s_ticker}")
         plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.ylabel("Share Price ($)")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
         plt.subplot(312)
         plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
         plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "g", lw=2)
@@ -236,6 +206,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         plt.ylim([0, 100])
+
         plt.subplot(313)
         plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=2)
         plt.xlabel("Time")
@@ -244,6 +215,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         plt.ylim([-100, 100])
+        plt.ion()
         plt.show()
         print("")
 
