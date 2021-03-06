@@ -1,35 +1,21 @@
 import argparse
-import re
-from datetime import datetime, timedelta
 import warnings
+from datetime import datetime, timedelta
 import pandas as pd
 from prawcore.exceptions import ResponseException
 from requests import HTTPError
-from prettytable import PrettyTable
 from psaw import PushshiftAPI
 import praw
-from holidays import US as holidaysUS
 import finviz
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.reddit_helpers import (
+    get_last_time_market_was_open,
+    print_and_record_reddit_post,
+    find_tickers,
+)
 
 
-# -------------------------------------------------------------------------------------------------------------------
-def get_last_time_market_was_open(dt):
-    # Check if it is a weekend
-    if dt.date().weekday() > 4:
-        dt = get_last_time_market_was_open(dt - timedelta(hours=24))
-
-    # Check if it is a holiday
-    if dt.strftime("%Y-%m-%d") in holidaysUS():
-        dt = get_last_time_market_was_open(dt - timedelta(hours=24))
-
-    dt = dt.replace(hour=21, minute=0, second=0)
-
-    return dt
-
-
-# -------------------------------------------------------------------------------------------------------------------
 def watchlist(l_args):
     parser = argparse.ArgumentParser(
         prog="watchlist",
@@ -46,11 +32,7 @@ def watchlist(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         l_sub_reddits = [
             "pennystocks",
@@ -66,7 +48,6 @@ def watchlist(l_args):
         d_watchlist_tickers = {}
         l_watchlist_links = list()
         l_watchlist_author = list()
-        ls_text = list()
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -108,18 +89,7 @@ def watchlist(l_args):
                 and submission.link_flair_text not in ["Yolo", "Meme"]
                 and submission.author.name not in l_watchlist_author
             ):
-                ls_text = list()
-                ls_text.append(submission.selftext)
-                ls_text.append(submission.title)
-
-                submission.comments.replace_more(limit=0)
-                for comment in submission.comments.list():
-                    ls_text.append(comment.body)
-
-                l_tickers_found = list()
-                for s_text in ls_text:
-                    for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
-                        l_tickers_found.append(s_ticker.strip())
+                l_tickers_found = find_tickers(submission)
 
                 if l_tickers_found:
                     # Add another author's name to the parsed watchlists
@@ -137,56 +107,8 @@ def watchlist(l_args):
                     l_watchlist_links.append(
                         f"https://old.reddit.com{submission.permalink}"
                     )
-                    # delete below, not necessary I reckon. Probably just link?
 
-                    # Refactor data
-                    s_datetime = datetime.utcfromtimestamp(
-                        submission.created_utc
-                    ).strftime("%d/%m/%Y %H:%M:%S")
-                    s_link = f"https://old.reddit.com{submission.permalink}"
-                    s_all_awards = ""
-                    for award in submission.all_awardings:
-                        s_all_awards += f"{award['count']} {award['name']}\n"
-                    s_all_awards = s_all_awards[:-2]
-
-                    # Create dictionary with data to construct dataframe allows to save data
-                    d_submission[submission.id] = {
-                        "created_utc": s_datetime,
-                        "subreddit": submission.subreddit,
-                        "link_flair_text": submission.link_flair_text,
-                        "title": submission.title,
-                        "score": submission.score,
-                        "link": s_link,
-                        "num_comments": submission.num_comments,
-                        "upvote_ratio": submission.upvote_ratio,
-                        "awards": s_all_awards,
-                    }
-
-                    # Print post data collected so far
-                    print(f"\n{s_datetime} - {submission.title}")
-                    print(f"{s_link}")
-                    t_post = PrettyTable(
-                        [
-                            "Subreddit",
-                            "Flair",
-                            "Score",
-                            "# Comments",
-                            "Upvote %",
-                            "Awards",
-                        ]
-                    )
-                    t_post.add_row(
-                        [
-                            submission.subreddit,
-                            submission.link_flair_text,
-                            submission.score,
-                            submission.num_comments,
-                            f"{round(100*submission.upvote_ratio)}%",
-                            s_all_awards,
-                        ]
-                    )
-                    print(t_post)
-                    print("")
+                    print_and_record_reddit_post(d_submission, submission)
 
                     # Increment count of valid posts found
                     n_flair_posts_found += 1
@@ -224,7 +146,6 @@ def watchlist(l_args):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def popular_tickers(l_args):
     parser = argparse.ArgumentParser(
         prog="popular",
@@ -256,7 +177,8 @@ def popular_tickers(l_args):
         type=str,
         help="""
             subreddits to look for tickers, e.g. pennystocks,stocks.
-            Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets
+            Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing,
+            wallstreetbets
         """,
     )
     parser.add_argument(
@@ -270,12 +192,7 @@ def popular_tickers(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            print("popular -s <subreddit> -l <posts per subreddit> -d <days>")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         n_ts_after = int(
             (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
@@ -338,18 +255,7 @@ def popular_tickers(l_args):
                         and (submission.selftext or submission.title)
                         and submission.author.name not in l_watchlist_author
                     ):
-                        ls_text = list()
-                        ls_text.append(submission.selftext)
-                        ls_text.append(submission.title)
-
-                        submission.comments.replace_more(limit=0)
-                        for comment in submission.comments.list():
-                            ls_text.append(comment.body)
-
-                        l_tickers_found = list()
-                        for s_text in ls_text:
-                            for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
-                                l_tickers_found.append(s_ticker.strip())
+                        l_tickers_found = find_tickers(submission)
 
                         if l_tickers_found:
                             n_tickers += len(l_tickers_found)
@@ -443,7 +349,6 @@ def popular_tickers(l_args):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def spac_community(l_args):
     parser = argparse.ArgumentParser(
         prog="spac_c",
@@ -468,11 +373,7 @@ def spac_community(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -509,18 +410,7 @@ def spac_community(l_args):
                     and submission.link_flair_text not in ["Yolo", "Meme"]
                     and submission.author.name not in l_watchlist_author
                 ):
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
-                            l_tickers_found.append(s_ticker.strip())
+                    l_tickers_found = find_tickers(submission)
 
                     if l_tickers_found:
                         # Add another author's name to the parsed watchlists
@@ -536,58 +426,10 @@ def spac_community(l_args):
                                 d_watchlist_tickers[key] = 1
 
                         l_watchlist_links.append(
-                            f"https://www.reddit.com{submission.permalink}"
+                            f"https://old.reddit.com{submission.permalink}"
                         )
-                        # delete below, not necessary I reckon. Probably just link?
 
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(
-                            submission.created_utc
-                        ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://www.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                            "created_utc": s_datetime,
-                            "subreddit": submission.subreddit,
-                            "link_flair_text": submission.link_flair_text,
-                            "title": submission.title,
-                            "score": submission.score,
-                            "link": s_link,
-                            "num_comments": submission.num_comments,
-                            "upvote_ratio": submission.upvote_ratio,
-                            "awards": s_all_awards,
-                        }
-
-                        # Print post data collected so far
-                        print(f"{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(
-                            [
-                                "Subreddit",
-                                "Flair",
-                                "Score",
-                                "# Comments",
-                                "Upvote %",
-                                "Awards",
-                            ]
-                        )
-                        t_post.add_row(
-                            [
-                                submission.subreddit,
-                                submission.link_flair_text,
-                                submission.score,
-                                submission.num_comments,
-                                f"{round(100*submission.upvote_ratio)}%",
-                                s_all_awards,
-                            ]
-                        )
-                        print(t_post)
-                        print("\n")
+                        print_and_record_reddit_post(d_submission, submission)
 
             # Check if search_submissions didn't get anymore posts
             else:
@@ -622,7 +464,6 @@ def spac_community(l_args):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def spac(l_args):
     parser = argparse.ArgumentParser(
         prog="spac", description=""" Show other users SPACs announcement [Reddit] """
@@ -647,11 +488,7 @@ def spac(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -703,19 +540,7 @@ def spac(l_args):
                     and submission.link_flair_text not in ["Yolo", "Meme"]
                     and submission.author.name not in l_watchlist_author
                 ):
-
-                    ls_text = list()
-                    ls_text.append(submission.selftext)
-                    ls_text.append(submission.title)
-
-                    submission.comments.replace_more(limit=0)
-                    for comment in submission.comments.list():
-                        ls_text.append(comment.body)
-
-                    l_tickers_found = list()
-                    for s_text in ls_text:
-                        for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
-                            l_tickers_found.append(s_ticker.strip())
+                    l_tickers_found = find_tickers(submission)
 
                     if l_tickers_found:
                         # Add another author's name to the parsed watchlists
@@ -733,56 +558,8 @@ def spac(l_args):
                         l_watchlist_links.append(
                             f"https://old.reddit.com{submission.permalink}"
                         )
-                        # delete below, not necessary I reckon. Probably just link?
 
-                        # Refactor data
-                        s_datetime = datetime.utcfromtimestamp(
-                            submission.created_utc
-                        ).strftime("%d/%m/%Y %H:%M:%S")
-                        s_link = f"https://old.reddit.com{submission.permalink}"
-                        s_all_awards = ""
-                        for award in submission.all_awardings:
-                            s_all_awards += f"{award['count']} {award['name']}\n"
-                        s_all_awards = s_all_awards[:-2]
-
-                        # Create dictionary with data to construct dataframe allows to save data
-                        d_submission[submission.id] = {
-                            "created_utc": s_datetime,
-                            "subreddit": submission.subreddit,
-                            "link_flair_text": submission.link_flair_text,
-                            "title": submission.title,
-                            "score": submission.score,
-                            "link": s_link,
-                            "num_comments": submission.num_comments,
-                            "upvote_ratio": submission.upvote_ratio,
-                            "awards": s_all_awards,
-                        }
-
-                        # Print post data collected so far
-                        print(f"{s_datetime} - {submission.title}")
-                        print(f"{s_link}")
-                        t_post = PrettyTable(
-                            [
-                                "Subreddit",
-                                "Flair",
-                                "Score",
-                                "# Comments",
-                                "Upvote %",
-                                "Awards",
-                            ]
-                        )
-                        t_post.add_row(
-                            [
-                                submission.subreddit,
-                                submission.link_flair_text,
-                                submission.score,
-                                submission.num_comments,
-                                f"{round(100*submission.upvote_ratio)}%",
-                                s_all_awards,
-                            ]
-                        )
-                        print(t_post)
-                        print("\n")
+                        print_and_record_reddit_post(d_submission, submission)
 
                         # Increment count of valid posts found
                         n_flair_posts_found += 1
@@ -824,7 +601,6 @@ def spac(l_args):
         print("")
 
 
-# -------------------------------------------------------------------------------------------------------------------
 def wsb_community(l_args):
     parser = argparse.ArgumentParser(
         prog="wsb",
@@ -849,11 +625,7 @@ def wsb_community(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -892,54 +664,8 @@ def wsb_community(l_args):
                         f"https://old.reddit.com{submission.permalink}"
                     )
 
-                    # Refactor data
-                    s_datetime = datetime.utcfromtimestamp(
-                        submission.created_utc
-                    ).strftime("%d/%m/%Y %H:%M:%S")
-                    s_link = f"https://old.reddit.com{submission.permalink}"
-                    s_all_awards = ""
-                    for award in submission.all_awardings:
-                        s_all_awards += f"{award['count']} {award['name']}\n"
-                    s_all_awards = s_all_awards[:-2]
+                    print_and_record_reddit_post(d_submission, submission)
 
-                    # Create dictionary with data to construct dataframe allows to save data
-                    d_submission[submission.id] = {
-                        "created_utc": s_datetime,
-                        "subreddit": submission.subreddit,
-                        "link_flair_text": submission.link_flair_text,
-                        "title": submission.title,
-                        "score": submission.score,
-                        "link": s_link,
-                        "num_comments": submission.num_comments,
-                        "upvote_ratio": submission.upvote_ratio,
-                        "awards": s_all_awards,
-                    }
-
-                    # Print post data collected so far
-                    print(f"{s_datetime} - {submission.title}")
-                    print(f"{s_link}")
-                    t_post = PrettyTable(
-                        [
-                            "Subreddit",
-                            "Flair",
-                            "Score",
-                            "# Comments",
-                            "Upvote %",
-                            "Awards",
-                        ]
-                    )
-                    t_post.add_row(
-                        [
-                            submission.subreddit,
-                            submission.link_flair_text,
-                            submission.score,
-                            submission.num_comments,
-                            f"{round(100*submission.upvote_ratio)}%",
-                            s_all_awards,
-                        ]
-                    )
-                    print(t_post)
-                    print("")
             # Check if search_submissions didn't get anymore posts
             else:
                 break
