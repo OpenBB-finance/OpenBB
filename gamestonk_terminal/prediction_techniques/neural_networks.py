@@ -8,21 +8,13 @@ from pandas.plotting import register_matplotlib_converters
 from TimeSeriesCrossValidation import splitTrain
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import (
-    LSTM,
-    SimpleRNN,
-    Dense,
-    Dropout,
-    # Activation,
-    # RepeatVector,
-    # TimeDistributed,
-)
+from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     parse_known_args_and_warn,
-    print_pretty_prediction
+    print_pretty_prediction,
 )
 
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models

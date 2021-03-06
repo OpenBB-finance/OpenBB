@@ -14,6 +14,7 @@ register_matplotlib_converters()
 
 warnings.simplefilter("ignore")
 
+
 def fbprophet(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="fbprophet",
