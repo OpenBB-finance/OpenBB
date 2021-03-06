@@ -18,14 +18,13 @@ def arima(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="arima",
         description="""
-            In statistics and econometrics, and in particular in time
-            series analysis, an autoregressive integrated moving average (ARIMA) model
-            is a generalization of an autoregressive moving average (ARMA) model. Both
-            of these models are fitted to time series data either to better understand
-            the data or to predict future points in the series (forecasting).
-            ARIMA(p,d,q) where parameters p, d, and q are non-negative integers, p is
-            the order (number of time lags) of the autoregressive model, d is the degree
-            of differencing (the number of times the data have had past values subtracted),
+            In statistics and econometrics, and in particular in time series analysis, an
+            autoregressive integrated moving average (ARIMA) model is a generalization of an
+            autoregressive moving average (ARMA) model. Both of these models are fitted to time
+            series data either to better understand the data or to predict future points in the
+            series (forecasting). ARIMA(p,d,q) where parameters p, d, and q are non-negative
+            integers, p is the order (number of time lags) of the autoregressive model, d is the
+            degree of differencing (the number of times the data have had past values subtracted),
             and q is the order of the moving-average model.
         """,
     )
