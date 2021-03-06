@@ -1,8 +1,9 @@
 import argparse
 import FundamentalAnalysis as fa  # Financial Modeling Prep
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# ---------------------------------------------------- RATING ----------------------------------------------------
+
 def rating(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="rating",
@@ -14,11 +15,7 @@ def rating(l_args, s_ticker):
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        parse_known_args_and_warn(parser, l_args)
 
         df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         print(df_fa)
