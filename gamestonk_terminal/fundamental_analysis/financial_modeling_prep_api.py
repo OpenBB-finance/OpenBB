@@ -56,14 +56,14 @@ def quote(l_args, s_ticker):
             df_fa.loc["Shares outstanding"][0]
         )
         df_fa.loc["Volume"][0] = long_number_format(df_fa.loc["Volume"][0])
-        # Check if there is a valid earnings announcment
+        # Check if there is a valid earnings announcement
         if df_fa.loc["Earnings announcement"][0]:
-            earning_announcment = datetime.strptime(
+            earning_announcement = datetime.strptime(
                 df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
             )
             df_fa.loc["Earnings announcement"][
                 0
-            ] = f"{earning_announcment.date()} {earning_announcment.time()}"
+            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
         print(df_fa.to_string(header=False))
         print("")
 
