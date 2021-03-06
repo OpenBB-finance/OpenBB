@@ -202,7 +202,7 @@ def sustainability(l_args, s_ticker):
 
 def calendar_earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
-        prog="calendar_earnings",
+        prog="cal",
         description="""
             Calendar earnings of the company. Including revenue and earnings estimates.
             [Source: Yahoo Finance]
@@ -215,7 +215,7 @@ def calendar_earnings(l_args, s_ticker):
         stock = yf.Ticker(s_ticker)
         df_calendar = stock.calendar
 
-        if len(df_calendar.columns) == 0:
+        if df_calendar.empty:
             print(f"No earnings calendar information in Yahoo for {s_ticker}")
             print("")
             return
