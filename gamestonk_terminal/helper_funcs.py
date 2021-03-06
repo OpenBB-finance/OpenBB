@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from holidays import US as holidaysUS
+from pandas.plotting import register_matplotlib_converters
+
+register_matplotlib_converters()
 
 
 def check_non_negative(value) -> int:
@@ -44,69 +47,6 @@ def plot_view_stock(df, symbol):
     plt.xlabel("Time")
     plt.ylabel("Share Price ($)")
     plt.legend(df.columns)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.show()
-    print("")
-
-
-def plot_stock_ta(df_stock, s_ticker, df_ta, s_ta):
-    plt.plot(df_stock.index, df_stock.values, color="k")
-    plt.plot(df_ta.index, df_ta.values)
-    plt.title(f"{s_ta} on {s_ticker}")
-    plt.xlim(df_stock.index[0], df_stock.index[-1])
-    plt.xlabel("Time")
-    plt.ylabel("Share Price ($)")
-    # Pandas series
-    if len(df_ta.shape) == 1:
-        l_legend = [s_ticker, s_ta]
-    # Pandas dataframe
-    else:
-        l_legend = df_ta.columns.tolist()
-        l_legend.insert(0, s_ticker)
-    plt.legend(l_legend)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.show()
-    print("")
-
-
-def plot_stock_and_ta(df_stock, s_ticker, df_ta, s_ta):
-    _, axPrice = plt.subplots()
-    plt.title(f"{s_ta} on {s_ticker}")
-    plt.plot(df_stock.index, df_stock.values, "k", lw=3)
-    plt.xlim(df_stock.index[0], df_stock.index[-1])
-    plt.xlabel("Time")
-    plt.ylabel(f"Share Price of {s_ticker} ($)")
-    axTa = axPrice.twinx()
-    plt.plot(df_ta.index, df_ta.values)
-    # Pandas series
-    if len(df_ta.shape) == 1:
-        l_legend = [s_ta]
-    # Pandas dataframe
-    else:
-        l_legend = df_ta.columns.tolist()
-    plt.legend(l_legend)
-    axTa.set_ylabel(s_ta, color="tab:blue")
-    axTa.spines["right"].set_color("tab:blue")
-    axTa.tick_params(axis="y", colors="tab:blue")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.show()
-    print("")
-
-
-def plot_ta(s_ticker, df_ta, s_ta):
-    plt.plot(df_ta.index, df_ta.values)
-    plt.title(f"{s_ta} on {s_ticker}")
-    plt.xlim(df_ta.index[0], df_ta.index[-1])
-    plt.xlabel("Time")
-    # plt.ylabel('Share Price ($)')
-    # if isinstance(df_ta, pd.DataFrame):
-    #    plt.legend(df_ta.columns)
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)

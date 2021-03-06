@@ -5,9 +5,9 @@ from gamestonk_terminal.technical_analysis import momentum as ta_momentum
 from gamestonk_terminal.technical_analysis import trend as ta_trend
 from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
+import matplotlib.pyplot as plt
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def print_technical_analysis(s_ticker, s_start, s_interval):
     """ Print help """
 
@@ -42,7 +42,6 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
     print("")
 
 
-# ---------------------------------------------------- MENU ----------------------------------------------------
 def ta_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the technical analysis parser accepts
@@ -55,18 +54,18 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
             "quit",
             "ema",
             "sma",
-            "vwap",  # overlap
+            "vwap",
             "cci",
             "macd",
             "rsi",
-            "stoch",  # momentum
+            "stoch",
             "adx",
-            "aroon",  # trend
-            "bbands",  # volatility
+            "aroon",
+            "bbands",
             "ad",
             "obv",
         ],
-    )  # volume
+    )
 
     print_technical_analysis(s_ticker, s_start, s_interval)
 
@@ -74,6 +73,9 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
     while True:
         # Get input command from user
         as_input = input("> ")
+
+        # Images are non blocking - allows to close them if we type other command
+        plt.close()
 
         # Parse fundamental analysis command of the list of possible commands
         try:
@@ -94,7 +96,7 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
             # Abandon the program
             return True
 
-        # -------------------------------------------------- OVERLAP --------------------------------------------------
+        # OVERLAP
         elif ns_known_args.cmd == "ema":
             ta_overlap.ema(l_args, s_ticker, s_interval, df_stock)
 
@@ -104,7 +106,7 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == "vwap":
             ta_overlap.vwap(l_args, s_ticker, s_interval, df_stock)
 
-        # --------------------------------------------------- MOMENTUM ---------------------------------------------------
+        # MOMENTUM
         elif ns_known_args.cmd == "cci":
             ta_momentum.cci(l_args, s_ticker, s_interval, df_stock)
 
@@ -117,24 +119,23 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == "stoch":
             ta_momentum.stoch(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------------- TREND ----------------------------------------------------
+        # TREND
         elif ns_known_args.cmd == "adx":
             ta_trend.adx(l_args, s_ticker, s_interval, df_stock)
 
         elif ns_known_args.cmd == "aroon":
             ta_trend.aroon(l_args, s_ticker, s_interval, df_stock)
 
-        # -------------------------------------------------- VOLATILITY --------------------------------------------------
+        # VOLATILITY
         elif ns_known_args.cmd == "bbands":
             ta_volatility.bbands(l_args, s_ticker, s_interval, df_stock)
 
-        # ---------------------------------------------------- VOLUME ----------------------------------------------------
+        # VOLUME
         elif ns_known_args.cmd == "ad":
             ta_volume.ad(l_args, s_ticker, s_interval, df_stock)
 
         elif ns_known_args.cmd == "obv":
             ta_volume.obv(l_args, s_ticker, s_interval, df_stock)
 
-        # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")

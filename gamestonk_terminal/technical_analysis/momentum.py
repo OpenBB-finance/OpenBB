@@ -2,11 +2,11 @@ import argparse
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
-# ----------------------------------------------------- CCI -----------------------------------------------------
+
 def cci(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="cci",
@@ -48,11 +48,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -65,30 +61,6 @@ def cci(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
-            plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
-            plt.axhline(100, linewidth=3, color="r", ls="--")
-            plt.axhline(-100, linewidth=3, color="g", ls="--")
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.gca().twinx()
-            plt.ylim(plt.gca().get_ylim())
-            plt.yticks([0.2, 0.8], ("OVERSOLD", "OVERBOUGHT"))
-            plt.show()
-
         # Intraday
         else:
             df_ta = ta.cci(
@@ -100,29 +72,35 @@ def cci(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
+        plt.figure()
+        plt.subplot(211)
+        plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
+        if s_interval == "1440min":
+            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+        else:
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
-            plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
-            plt.axhline(100, linewidth=3, color="r", ls="--")
-            plt.axhline(-100, linewidth=3, color="g", ls="--")
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.gca().twinx()
-            plt.ylim(plt.gca().get_ylim())
-            plt.yticks([0.2, 0.8], ("OVERSOLD", "OVERBOUGHT"))
-            plt.show()
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.ylabel("Share Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.subplot(212)
+        plt.plot(df_ta.index, df_ta.values, "b", lw=2)
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
+        plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
+        plt.axhline(100, linewidth=3, color="r", ls="--")
+        plt.axhline(-100, linewidth=3, color="g", ls="--")
+        plt.xlabel("Time")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.gca().twinx()
+        plt.ylim(plt.gca().get_ylim())
+        plt.yticks([0.2, 0.8], ("OVERSOLD", "OVERBOUGHT"))
+        plt.ion()
+        plt.show()
+
         print("")
 
     except Exception as e:
@@ -130,7 +108,6 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# ----------------------------------------------------- MACD -----------------------------------------------------
 def macd(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="macd",
@@ -184,11 +161,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -200,32 +173,6 @@ def macd(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
-            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-            plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=2)
-            plt.bar(df_ta.index, df_ta.iloc[:, 1].values, color="g")
-            plt.legend(
-                [
-                    f"MACD Line {df_ta.columns[0]}",
-                    f"Signal Line {df_ta.columns[2]}",
-                    f"Histogram {df_ta.columns[1]}",
-                ]
-            )
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.xlabel("Time")
-            plt.show()
-
         # Intraday
         else:
             df_ta = ta.macd(
@@ -236,31 +183,36 @@ def macd(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
+        plt.figure()
+        plt.subplot(211)
+        plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
+        if s_interval == "1440min":
+            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+        else:
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-            plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=2)
-            plt.bar(df_ta.index, df_ta.iloc[:, 1].values, color="g")
-            plt.legend(
-                [
-                    f"MACD Line {df_ta.columns[0]}",
-                    f"Signal Line {df_ta.columns[2]}",
-                    f"Histogram {df_ta.columns[1]}",
-                ]
-            )
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.xlabel("Time")
-            plt.show()
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.ylabel("Share Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.subplot(212)
+        plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
+        plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=2)
+        plt.bar(df_ta.index, df_ta.iloc[:, 1].values, color="g")
+        plt.legend(
+            [
+                f"MACD Line {df_ta.columns[0]}",
+                f"Signal Line {df_ta.columns[2]}",
+                f"Histogram {df_ta.columns[1]}",
+            ]
+        )
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.xlabel("Time")
+        plt.ion()
+        plt.show()
         print("")
 
     except Exception as e:
@@ -268,7 +220,6 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# ----------------------------------------------------- RSI -----------------------------------------------------
 def rsi(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="rsi",
@@ -319,11 +270,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -335,31 +282,6 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhspan(70, 100, facecolor="r", alpha=0.2)
-            plt.axhspan(0, 30, facecolor="g", alpha=0.2)
-            plt.axhline(70, linewidth=3, color="r", ls="--")
-            plt.axhline(30, linewidth=3, color="g", ls="--")
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.ylim([0, 100])
-            plt.gca().twinx()
-            plt.ylim(plt.gca().get_ylim())
-            plt.yticks([0.15, 0.85], ("OVERSOLD", "OVERBOUGHT"))
-            plt.show()
-
         # Intraday
         else:
             df_ta = ta.rsi(
@@ -370,30 +292,36 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
+        plt.figure()
+        plt.subplot(211)
+        if s_interval == "1440min":
+            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+        else:
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=2)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhspan(70, 100, facecolor="r", alpha=0.2)
-            plt.axhspan(0, 30, facecolor="g", alpha=0.2)
-            plt.axhline(70, linewidth=3, color="r", ls="--")
-            plt.axhline(30, linewidth=3, color="g", ls="--")
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.ylim([0, 100])
-            plt.gca().twinx()
-            plt.ylim(plt.gca().get_ylim())
-            plt.yticks([0.15, 0.85], ("OVERSOLD", "OVERBOUGHT"))
-            plt.show()
+        plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.ylabel("Share Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.subplot(212)
+        plt.plot(df_ta.index, df_ta.values, "b", lw=2)
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.axhspan(70, 100, facecolor="r", alpha=0.2)
+        plt.axhspan(0, 30, facecolor="g", alpha=0.2)
+        plt.axhline(70, linewidth=3, color="r", ls="--")
+        plt.axhline(30, linewidth=3, color="g", ls="--")
+        plt.xlabel("Time")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.ylim([0, 100])
+        plt.gca().twinx()
+        plt.ylim(plt.gca().get_ylim())
+        plt.yticks([0.15, 0.85], ("OVERSOLD", "OVERBOUGHT"))
+        plt.ion()
+        plt.show()
+
         print("")
 
     except Exception as e:
@@ -401,7 +329,6 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# ----------------------------------------------------- STOCH -----------------------------------------------------
 def stoch(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="stoch",
@@ -452,11 +379,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -470,33 +393,6 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
-            plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhspan(80, 100, facecolor="r", alpha=0.2)
-            plt.axhspan(0, 20, facecolor="g", alpha=0.2)
-            plt.axhline(80, linewidth=3, color="r", ls="--")
-            plt.axhline(20, linewidth=3, color="g", ls="--")
-            plt.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.ylim([0, 100])
-            plt.gca().twinx()
-            plt.ylim(plt.gca().get_ylim())
-            plt.yticks([0.1, 0.9], ("OVERSOLD", "OVERBOUGHT"))
-            plt.show()
-
         # Intraday
         else:
             df_ta = ta.stoch(
@@ -509,32 +405,38 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            plt.subplot(211)
+        plt.figure()
+        plt.subplot(211)
+        if s_interval == "1440min":
+            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+        else:
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
-            plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhspan(80, 100, facecolor="r", alpha=0.2)
-            plt.axhspan(0, 20, facecolor="g", alpha=0.2)
-            plt.axhline(80, linewidth=3, color="r", ls="--")
-            plt.axhline(20, linewidth=3, color="g", ls="--")
-            plt.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.ylim([0, 100])
-            plt.gca().twinx()
-            plt.ylim(plt.gca().get_ylim())
-            plt.yticks([0.1, 0.9], ("OVERSOLD", "OVERBOUGHT"))
-            plt.show()
+        plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.ylabel("Share Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.subplot(212)
+        plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
+        plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.axhspan(80, 100, facecolor="r", alpha=0.2)
+        plt.axhspan(0, 20, facecolor="g", alpha=0.2)
+        plt.axhline(80, linewidth=3, color="r", ls="--")
+        plt.axhline(20, linewidth=3, color="g", ls="--")
+        plt.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
+        plt.xlabel("Time")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.ylim([0, 100])
+        plt.gca().twinx()
+        plt.ylim(plt.gca().get_ylim())
+        plt.yticks([0.1, 0.9], ("OVERSOLD", "OVERBOUGHT"))
+        plt.ion()
+        plt.show()
+
         print("")
 
     except Exception as e:

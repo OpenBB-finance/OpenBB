@@ -91,7 +91,11 @@ def management(l_args, s_ticker):
 
         for ind in df_management.index:
             s_name = f"{ind}{(max([len(x) for x in df_management.index])-len(ind))*' '}"
-            s_title = f"{df_management['Title'][ind]}{(max([len(x) for x in df_management['Title']])-len(df_management['Title'][ind]))*' '}"
+            spacing = (
+                max([len(x) for x in df_management["Title"]])
+                - len(df_management["Title"][ind])
+            ) * " "
+            s_title = f"{df_management['Title'][ind]}{spacing}"
             s_management = f"""{s_name} {s_title} {df_management['Info'][ind]}"""
             print(s_management)
             if df_management["Insider Activity"][ind] not in "-":
