@@ -24,7 +24,7 @@ jobs:
       - run: bandit -r . || true
       - run: black --check .
       - run: codespell --ignore-words-list="mape" --quiet-level=2 --skip=".git" # --skip=""
-      - run: flake8 . --count --ignore=E203,E302,E722,F401,F841,W503 --max-line-length=140 --show-source --statistics
+      - run: flake8 . --count --ignore=E203,E302,F401,F841,W503 --max-line-length=140 --show-source --statistics
       - run: mypy --ignore-missing-imports . || true
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py || true
       - run: safety check
