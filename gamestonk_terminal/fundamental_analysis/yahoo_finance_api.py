@@ -108,8 +108,8 @@ def shareholders(l_args, s_ticker):
         # Institutional holders
         print("Institutional holders")
         df_institutional_shareholders = stock.institutional_holders
-        df_institutional_shareholders.columns = df_institutional_shareholders.columns.str.replace(
-            "% Out", "Stake"
+        df_institutional_shareholders.columns = (
+            df_institutional_shareholders.columns.str.replace("% Out", "Stake")
         )
         df_institutional_shareholders["Shares"] = df_institutional_shareholders[
             "Shares"
@@ -126,8 +126,8 @@ def shareholders(l_args, s_ticker):
         # Mutualfunds holders
         print("Mutualfunds holders")
         df_mutualfund_shareholders = stock.mutualfund_holders
-        df_mutualfund_shareholders.columns = df_mutualfund_shareholders.columns.str.replace(
-            "% Out", "Stake"
+        df_mutualfund_shareholders.columns = (
+            df_mutualfund_shareholders.columns.str.replace("% Out", "Stake")
         )
         df_mutualfund_shareholders["Shares"] = df_mutualfund_shareholders[
             "Shares"
@@ -226,10 +226,12 @@ def calendar_earnings(l_args, s_ticker):
         )
 
         print(f"Earnings Date: {df_calendar.iloc[:, 0]['Earnings Date']}")
-        print(
-            f"Earnings Estimate Avg: {df_calendar.iloc[:, 0]['Earnings Average']} \
-                [{df_calendar.iloc[:, 0]['Earnings Low']}, {df_calendar.iloc[:, 0]['Earnings High']}]"
-        )
+
+        avg = df_calendar.iloc[:, 0]["Earnings Average"]
+        low = df_calendar.iloc[:, 0]["Earnings Low"]
+        high = df_calendar.iloc[:, 0]["Earnings High"]
+
+        print(f"Earnings Estimate Avg: {avg} [{low}, {high}]")
         print(
             f"Revenue Estimate Avg:  {df_calendar.iloc[:, 0]['Revenue Average']} \
                 [{df_calendar.iloc[:, 0]['Revenue Low']}, {df_calendar.iloc[:, 0]['Revenue High']}]"
