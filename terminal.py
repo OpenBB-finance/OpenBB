@@ -16,7 +16,6 @@ from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.sentiment import sen_menu as sm
-from gamestonk_terminal.prediction_techniques import pred_menu as pm
 from gamestonk_terminal.papermill import papermill_menu as mill
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal import config_terminal as cfg
@@ -107,7 +106,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="view",
-        description="Visualise historical data of a stock. An alpha_vantage key is necessary.",
+        description="Visualize historical data of a stock. An alpha_vantage key is necessary.",
     )
     if s_ticker:
         parser.add_argument(
@@ -380,6 +379,26 @@ def main():
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "pred":
+
+            if not cfg.ENABLE_PREDICT:
+                print("Predict is not enabled in config_terminal.py")
+                print("Prediction menu is disabled")
+                print("")
+                continue
+
+            try:
+                # pylint: disable=import-outside-toplevel
+                from gamestonk_terminal.prediction_techniques import pred_menu as pm
+            except ModuleNotFoundError as e:
+                print("One of the optional packages seems to be missing")
+                print("Optional packages need to be installed")
+                print(e)
+                print("")
+                continue
+            except Exception as e:
+                print(e)
+                print("")
+                continue
 
             if s_interval == "1440min":
                 b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
