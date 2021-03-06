@@ -1,7 +1,8 @@
 import argparse
 import webbrowser
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# ---------------------------------------------------- Simply WallSt ----------------------------------------------------
+
 def simply_wallst(l_args):
     parser = argparse.ArgumentParser(
         prog="simply_wallst",
@@ -49,17 +50,7 @@ def simply_wallst(l_args):
         ],
     )
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
-
-        webbrowser.open(
-            f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1"
-        )
-        print("")
-
-    except SystemExit:
-        print("")
-        return
+    webbrowser.open(f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1")
+    print("")

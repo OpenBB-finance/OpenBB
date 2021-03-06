@@ -1,7 +1,8 @@
 import argparse
 import pandas as pd
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# ---------------------------------------------------- GAINERS ----------------------------------------------------
+
 def gainers(l_args):
     parser = argparse.ArgumentParser(
         prog="gainers",
@@ -19,14 +20,7 @@ def gainers(l_args):
         help="Number of the top gainers stocks to retrieve.",
     )
 
-    try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-    except SystemExit:
-        print("")
-        return
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    ns_parser = parse_known_args_and_warn(parser, l_args)
 
     df_gainers = pd.read_html(
         "https://finance.yahoo.com/screener/predefined/day_gainers"

@@ -3,7 +3,11 @@ from colorama import Fore, Style
 import finviz
 import pandas as pd
 from pandas.core.frame import DataFrame
-from gamestonk_terminal.helper_funcs import check_positive, patch_pandas_text_adjustment
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    patch_pandas_text_adjustment,
+    parse_known_args_and_warn,
+)
 
 
 def category_color_red_green(val: str) -> str:
@@ -14,7 +18,6 @@ def category_color_red_green(val: str) -> str:
     return val
 
 
-# ---------------------------------------------------- INSIDER ----------------------------------------------------
 def insider(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="insider",
@@ -35,11 +38,7 @@ def insider(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         d_finviz_insider = finviz.get_insider(s_ticker)
         df_fa = pd.DataFrame.from_dict(d_finviz_insider)
@@ -66,7 +65,6 @@ def insider(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- NEWS ----------------------------------------------------
 def news(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="news",
@@ -86,11 +84,7 @@ def news(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         d_finviz_news = finviz.get_news(s_ticker)
         i = 0
@@ -110,7 +104,6 @@ def news(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- ANALYST ----------------------------------------------------
 def analyst_df(s_ticker: str) -> DataFrame:
     d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
     df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
@@ -140,15 +133,7 @@ def analyst(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
-
-        # d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
-        # df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
-        # df_fa.set_index("date", inplace=True)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         df_fa = analyst_df(s_ticker)
 

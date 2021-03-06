@@ -10,12 +10,12 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     get_user_agent,
+    parse_known_args_and_warn,
 )
 
 register_matplotlib_converters()
 
 
-# ------------------------------------------- PRICE_TARGET_FROM_ANALYSTS -------------------------------------------
 def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     parser = argparse.ArgumentParser(
         prog="pt",
@@ -33,11 +33,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
@@ -49,12 +45,13 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
             "lxml",
         )
 
+        d_analyst_data = None
         for script in text_soup_market_business_insider.find_all("script"):
             # Get Analyst data
-            if "window.analyseChartConfigs.push" in script.get_text():
+            if "window.analyseChartConfigs.push" in str(script):
                 # Extract config data:
                 s_analyst_data = (
-                    script.get_text().split("config: ", 1)[1].split(",\r\n", 1)[0]
+                    str(script).split("config: ", 1)[1].split(",\r\n", 1)[0]
                 )
                 d_analyst_data = json.loads(s_analyst_data)
                 break
@@ -115,7 +112,6 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         return
 
 
-# ----------------------------------------------- ESTIMATES -----------------------------------------------
 def estimates(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="est",
@@ -123,11 +119,7 @@ def estimates(l_args, s_ticker):
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        parse_known_args_and_warn(parser, l_args)
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
@@ -276,7 +268,6 @@ def estimates(l_args, s_ticker):
         return
 
 
-# ----------------------------------------------- INSIDER_ACTIVITY -----------------------------------------------
 def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
     parser = argparse.ArgumentParser(
         prog="ins",
@@ -293,11 +284,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
