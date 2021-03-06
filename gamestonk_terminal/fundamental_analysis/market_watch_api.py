@@ -34,44 +34,9 @@ def income(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
 
-        text_soup_financials = BeautifulSoup(
-            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
-            "lxml",
-        )
+        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
-        # Define financials columns
-        a_financials_header = list()
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        ):
-            a_financials_header.append(
-                financials_header.text.strip("\n").split("\n")[0]
-            )
-        df_financials = pd.DataFrame(columns=a_financials_header[0:-1])
-
-        # Add financials values
-        soup_financials = text_soup_financials.findAll(
-            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
-        )
-        soup_financials += text_soup_financials.findAll(
-            "tr", {"class": "table__row is-highlighted"}
-        )
-        for financials_info in soup_financials:
-            financials_row = financials_info.text.split("\n")
-            if len(financials_row) > 5:
-                for item in financials_row:
-                    if bool(re.search(r"\d", item)):
-                        a_financials_info = financials_info.text.split("\n")
-                        l_financials = [a_financials_info[2]]
-                        l_financials.extend(a_financials_info[5:-2])
-                        # Append data values to financials
-                        df_financials.loc[len(df_financials.index)] = l_financials
-                        break
-
-        df_financials = df_financials.drop(index=0)
-
-        # Set item name as index
-        df_financials = df_financials.set_index("Item")
+        df_financials = df_financials.drop(index="Item")
 
         print(df_financials.to_string(index=False))
         print("")
@@ -109,49 +74,9 @@ def assets(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
 
-        text_soup_financials = BeautifulSoup(
-            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
-            "lxml",
-        )
+        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
-        # Define financials columns
-        a_financials_header = list()
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        ):
-            a_financials_header.append(
-                financials_header.text.strip("\n").split("\n")[0]
-            )
-        s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(
-            columns=a_financials_header[
-                0 : a_financials_header.index(s_header_end_trend)
-            ]
-        )
-
-        # Add financials values
-        soup_financials = text_soup_financials.findAll(
-            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
-        )
-        soup_financials += text_soup_financials.findAll(
-            "tr", {"class": "table__row is-highlighted"}
-        )
-        for financials_info in soup_financials:
-            financials_row = financials_info.text.split("\n")
-            if len(financials_row) > 5:
-                for item in financials_row:
-                    if bool(re.search(r"\d", item)):
-                        a_financials_info = financials_info.text.split("\n")
-                        l_financials = [a_financials_info[2]]
-                        l_financials.extend(a_financials_info[5:-2])
-                        # Append data values to financials
-                        df_financials.loc[len(df_financials.index)] = l_financials
-                        break
-
-        df_financials = df_financials.drop(index=0)
-
-        # Set item name as index
-        df_financials = df_financials.set_index("Item")
+        df_financials.drop(index="Item")
 
         print(df_financials.iloc[:33].to_string())
         print("")
@@ -188,47 +113,7 @@ def liabilities(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
 
-        text_soup_financials = BeautifulSoup(
-            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
-            "lxml",
-        )
-
-        # Define financials columns
-        a_financials_header = list()
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        ):
-            a_financials_header.append(
-                financials_header.text.strip("\n").split("\n")[0]
-            )
-        s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(
-            columns=a_financials_header[
-                0 : a_financials_header.index(s_header_end_trend)
-            ]
-        )
-
-        # Add financials values
-        soup_financials = text_soup_financials.findAll(
-            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
-        )
-        soup_financials += text_soup_financials.findAll(
-            "tr", {"class": "table__row is-highlighted"}
-        )
-        for financials_info in soup_financials:
-            financials_row = financials_info.text.split("\n")
-            if len(financials_row) > 5:
-                for item in financials_row:
-                    if bool(re.search(r"\d", item)):
-                        a_financials_info = financials_info.text.split("\n")
-                        l_financials = [a_financials_info[2]]
-                        l_financials.extend(a_financials_info[5:-2])
-                        # Append data values to financials
-                        df_financials.loc[len(df_financials.index)] = l_financials
-                        break
-
-        # Set item name as index
-        df_financials = df_financials.set_index("Item")
+        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
         print(df_financials.iloc[34:].to_string())
         print("")
@@ -265,50 +150,9 @@ def operating(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
-        text_soup_financials = BeautifulSoup(
-            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
-            "lxml",
-        )
+        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
-        # Define financials columns
-        a_financials_header = list()
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        ):
-            a_financials_header.append(
-                financials_header.text.strip("\n").split("\n")[0]
-            )
-
-        s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(
-            columns=a_financials_header[
-                0 : a_financials_header.index(s_header_end_trend)
-            ]
-        )
-
-        # Add financials values
-        soup_financials = text_soup_financials.findAll(
-            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
-        )
-        soup_financials += text_soup_financials.findAll(
-            "tr", {"class": "table__row is-highlighted"}
-        )
-        for financials_info in soup_financials:
-            financials_row = financials_info.text.split("\n")
-            if len(financials_row) > 5:
-                for item in financials_row:
-                    if bool(re.search(r"\d", item)):
-                        a_financials_info = financials_info.text.split("\n")
-                        l_financials = [a_financials_info[2]]
-                        l_financials.extend(a_financials_info[5:-2])
-                        # Append data values to financials
-                        df_financials.loc[len(df_financials.index)] = l_financials
-                        break
-
-        df_financials = df_financials.drop(index=0)
-
-        # Set item name as index
-        df_financials = df_financials.set_index("Item")
+        df_financials.drop(index="Item")
 
         print(df_financials.iloc[:16].to_string())
         print("")
@@ -345,48 +189,7 @@ def investing(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
-        text_soup_financials = BeautifulSoup(
-            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
-            "lxml",
-        )
-
-        # Define financials columns
-        a_financials_header = list()
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        ):
-            a_financials_header.append(
-                financials_header.text.strip("\n").split("\n")[0]
-            )
-
-        s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(
-            columns=a_financials_header[
-                0 : a_financials_header.index(s_header_end_trend)
-            ]
-        )
-
-        # Add financials values
-        soup_financials = text_soup_financials.findAll(
-            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
-        )
-        soup_financials += text_soup_financials.findAll(
-            "tr", {"class": "table__row is-highlighted"}
-        )
-        for financials_info in soup_financials:
-            financials_row = financials_info.text.split("\n")
-            if len(financials_row) > 5:
-                for item in financials_row:
-                    if bool(re.search(r"\d", item)):
-                        a_financials_info = financials_info.text.split("\n")
-                        l_financials = [a_financials_info[2]]
-                        l_financials.extend(a_financials_info[5:-2])
-                        # Append data values to financials
-                        df_financials.loc[len(df_financials.index)] = l_financials
-                        break
-
-        # Set item name as index
-        df_financials = df_financials.set_index("Item")
+        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
         print(df_financials.iloc[17:30].to_string())
         print("")
@@ -423,48 +226,7 @@ def financing(l_args, s_ticker):
         else:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
-        text_soup_financials = BeautifulSoup(
-            requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
-            "lxml",
-        )
-
-        # Define financials columns
-        a_financials_header = list()
-        for financials_header in text_soup_financials.findAll(
-            "th", {"class": "overflow__heading"}
-        ):
-            a_financials_header.append(
-                financials_header.text.strip("\n").split("\n")[0]
-            )
-
-        s_header_end_trend = ("5-year trend", "5- qtr trend")[ns_parser.b_quarter]
-        df_financials = pd.DataFrame(
-            columns=a_financials_header[
-                0 : a_financials_header.index(s_header_end_trend)
-            ]
-        )
-
-        # Add financials values
-        soup_financials = text_soup_financials.findAll(
-            lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
-        )
-        soup_financials += text_soup_financials.findAll(
-            "tr", {"class": "table__row is-highlighted"}
-        )
-        for financials_info in soup_financials:
-            financials_row = financials_info.text.split("\n")
-            if len(financials_row) > 5:
-                for item in financials_row:
-                    if bool(re.search(r"\d", item)):
-                        a_financials_info = financials_info.text.split("\n")
-                        l_financials = [a_financials_info[2]]
-                        l_financials.extend(a_financials_info[5:-2])
-                        # Append data values to financials
-                        df_financials.loc[len(df_financials.index)] = l_financials
-                        break
-
-        # Set item name as index
-        df_financials = df_financials.set_index("Item")
+        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
         print(df_financials.iloc[31:].to_string())
         print("")
@@ -473,3 +235,46 @@ def financing(l_args, s_ticker):
         print(e)
         print("")
         return
+
+
+def prepare_df_financials(url_financials: str, quarter: bool) -> pd.DataFrame:
+    text_soup_financials = BeautifulSoup(
+        requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+        "lxml",
+    )
+
+    # Define financials columns
+    a_financials_header = list()
+    for financials_header in text_soup_financials.findAll(
+        "th", {"class": "overflow__heading"}
+    ):
+        a_financials_header.append(financials_header.text.strip("\n").split("\n")[0])
+
+    s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
+    df_financials = pd.DataFrame(
+        columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
+    )
+
+    # Add financials values
+    soup_financials = text_soup_financials.findAll(
+        lambda tag: tag.name == "tr" and tag.get("class") == ["table__row"]
+    )
+    soup_financials += text_soup_financials.findAll(
+        "tr", {"class": "table__row is-highlighted"}
+    )
+    for financials_info in soup_financials:
+        financials_row = financials_info.text.split("\n")
+        if len(financials_row) > 5:
+            for item in financials_row:
+                if bool(re.search(r"\d", item)):
+                    a_financials_info = financials_info.text.split("\n")
+                    l_financials = [a_financials_info[2]]
+                    l_financials.extend(a_financials_info[5:-2])
+                    # Append data values to financials
+                    df_financials.loc[len(df_financials.index)] = l_financials
+                    break
+
+    # Set item name as index
+    df_financials = df_financials.set_index("Item")
+
+    return df_financials

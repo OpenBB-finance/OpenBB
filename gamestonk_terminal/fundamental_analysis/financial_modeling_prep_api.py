@@ -542,7 +542,7 @@ def financial_statement_growth(l_args, s_ticker):
         return
 
 
-def clean_metrics_df(df_fa, num, mask=True):
+def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
     df_fa = df_fa.iloc[:, 0:num]
     if mask:
         df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["None"])).dropna()
