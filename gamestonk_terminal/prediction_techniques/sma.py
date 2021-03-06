@@ -8,6 +8,7 @@ from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_marke
 
 register_matplotlib_converters()
 
+
 # ----------------------------------------------------- SMA -----------------------------------------------------
 # pylint: disable=unused-argument
 def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
