@@ -75,4 +75,3 @@ def find_tickers(submission):
             l_tickers_found.append(s_ticker.strip())
 
     return l_tickers_found
-

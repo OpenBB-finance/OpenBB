@@ -2,9 +2,7 @@ import argparse
 from datetime import datetime
 import yfinance as yf
 import pandas as pd
-
 from gamestonk_terminal.dataframe_helpers import clean_df_index
-
 from gamestonk_terminal.helper_funcs import (
     long_number_format,
     parse_known_args_and_warn,
@@ -155,7 +153,11 @@ def sustainability(l_args, s_ticker):
         prog="sust",
         description="""
             Print sustainability values of the company. The following fields are expected:
-            Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting, Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides, Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]
+            Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic,
+            Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile,
+            Animaltesting, Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides,
+            Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile,
+            Militarycontract. [Source: Yahoo Finance]
         """,
     )
 
