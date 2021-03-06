@@ -270,15 +270,15 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/DidierRLopes/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/DidierRLopes/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/DidierRLopes/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/DidierRLopes/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/DidierRLopes/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/DidierRLopes/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/DidierRLopes/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/DidierRLopes/repo/issues
-[license-shield]: https://img.shields.io/github/license/DidierRLopes/repo.svg?style=for-the-badge
-[license-url]: https://github.com/DidierRLopes/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
+[contributors-url]: https://github.com/DidierRLopes/GamestonkTerminal/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
+[forks-url]: https://github.com/DidierRLopes/GamestonkTerminal/network/members
+[stars-shield]: https://img.shields.io/github/stars/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
+[stars-url]: https://github.com/DidierRLopes/GamestonkTerminal/stargazers
+[issues-shield]: https://img.shields.io/github/issues/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
+[issues-url]: https://github.com/DidierRLopes/GamestonkTerminal/issues
+[license-shield]: https://img.shields.io/github/license/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
+[license-url]: https://github.com/DidierRLopes/GamestonkTerminal/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/DidierRLopes
