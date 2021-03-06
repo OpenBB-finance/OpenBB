@@ -3,10 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from rapidfuzz import fuzz
-from gamestonk_terminal.helper_funcs import get_user_agent
+from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and_warn
 
 
-# ---------------------------------------------------- MANAGEMENT ----------------------------------------------------
 def management(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="mgmt",
@@ -17,11 +16,7 @@ def management(l_args, s_ticker):
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        parse_known_args_and_warn(parser, l_args)
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
