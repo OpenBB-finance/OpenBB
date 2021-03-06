@@ -1,5 +1,5 @@
 """ sentiment/twitter_api.py """
-# noqa: F401
+# flake8: noqa: F401
 import unittest
 
 # pylint: disable=unused-import
