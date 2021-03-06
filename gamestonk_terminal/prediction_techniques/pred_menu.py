@@ -38,7 +38,6 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("")
 
 
-# ---------------------------------------------------- MENU ----------------------------------------------------
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the prediction techniques parser accepts

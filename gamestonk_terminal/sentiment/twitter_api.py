@@ -23,7 +23,7 @@ def load_tweets(s_ticker: str, count: int) -> DataFrame:
     # Request Twitter API
     response = requests.get(
         "https://api.twitter.com/1.1/search/tweets.json",
-        params=params,
+        params=params,  # type: ignore
         headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
     )
 
@@ -166,7 +166,7 @@ def inference(l_args, s_ticker):
             n_pct = round(100 * n_pos / df_tweets["probability"].sum())
         else:
             n_neg = abs(df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].sum())
-            n_pct = round(100 * n_neg / df_tweets["probability"].sum())
+            n_pct = round(100 * n_neg / df_tweets["probability"].sum())  # noqa: F841
 
         # Parse tweets
         dt_from = dateutil.parser.parse(df_tweets["created_at"].values[-1])
