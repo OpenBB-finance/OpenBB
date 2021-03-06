@@ -4,13 +4,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from fbprophet import Prophet
-from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+)
 
 register_matplotlib_converters()
 
 warnings.simplefilter("ignore")
 
-# ----------------------------------------------------- FBPROPHET -----------------------------------------------------
 # pylint: disable=unused-argument
 def fbprophet(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
@@ -33,11 +36,7 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         df_stock = df_stock.sort_index(ascending=True)
         df_stock.reset_index(level=0, inplace=True)
@@ -77,6 +76,7 @@ def fbprophet(l_args, s_ticker, s_interval, df_stock):
             df_stock["ds"].values[0], get_next_stock_market_days(l_pred_days[-1], 1)[-1]
         )
         plt.title(f"Fb Prophet on {s_ticker} - {ns_parser.n_days} days prediction")
+        plt.ion()
         plt.show()
 
         print("")

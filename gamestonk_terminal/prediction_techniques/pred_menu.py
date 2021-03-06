@@ -6,8 +6,9 @@ from gamestonk_terminal.prediction_techniques import regression
 from gamestonk_terminal.prediction_techniques import arima
 from gamestonk_terminal.prediction_techniques import fbprophet
 from gamestonk_terminal.prediction_techniques import neural_networks
+import matplotlib.pyplot as plt
 
-# -----------------------------------------------------------------------------------------------------------------------
+
 def print_prediction(s_ticker, s_start, s_interval):
     """ Print help """
 
@@ -68,6 +69,9 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     while True:
         # Get input command from user
         as_input = input("> ")
+
+        # Images are non blocking - allows to close them if we type other command
+        plt.close()
 
         # Parse prediction techniques command of the list of possible commands
         try:
