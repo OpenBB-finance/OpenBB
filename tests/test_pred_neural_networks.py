@@ -11,4 +11,4 @@ from gamestonk_terminal.prediction_techniques.neural_networks import mlp
 class TestPredNeuralNetworks(unittest.TestCase):
     def test_mlp(self):
         # Fix: need to move loading of ticker data into a df somewhere
-        mlp([], "TLSA", None, None)
+        mlp([], "TLSA", None)
