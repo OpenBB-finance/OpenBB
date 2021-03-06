@@ -7,7 +7,12 @@ from sklearn import linear_model
 from sklearn import pipeline
 from sklearn import preprocessing
 
-from gamestonk_terminal.helper_funcs import check_positive, get_next_stock_market_days
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    get_next_stock_market_days,
+    parse_known_args_and_warn,
+    print_pretty_prediction,
+)
 
 register_matplotlib_converters()
 
@@ -17,9 +22,7 @@ QUADRATIC = 2
 CUBIC = 3
 
 
-# -------------------------------------------------- REGRESSION --------------------------------------------------
-# pylint: disable=unused-argument
-def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
+def regression(l_args, s_ticker, df_stock, polynomial):
     parser = argparse.ArgumentParser(
         prog="regression",
         description="""
@@ -70,11 +73,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Split training data
         stock_x, stock_y = splitTrain.split_train(
@@ -107,6 +106,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
         # Plotting
+        plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
         plt.title(
             f"Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
@@ -134,12 +134,11 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
+        plt.ion()
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:

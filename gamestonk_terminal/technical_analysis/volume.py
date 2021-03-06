@@ -2,12 +2,11 @@ import argparse
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import check_positive
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 register_matplotlib_converters()
 
 
-# ------------------------------------------------------- AD -------------------------------------------------------
 def ad(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="ad",
@@ -43,11 +42,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -71,33 +66,6 @@ def ad(l_args, s_ticker, s_interval, df_stock):
                     offset=ns_parser.n_offset,
                 ).dropna()
 
-            axPrice = plt.subplot(211)
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            _ = axPrice.twinx()
-            plt.bar(
-                df_stock.index,
-                df_stock["6. volume"].values,
-                color="k",
-                alpha=0.8,
-                width=0.3,
-            )
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=1)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhline(0, linewidth=2, color="k", ls="--")
-            plt.legend(["Chaikin Oscillator"])
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.show()
-
         # Intraday
         else:
             # Use open stock values
@@ -120,15 +88,28 @@ def ad(l_args, s_ticker, s_interval, df_stock):
                     offset=ns_parser.n_offset,
                 ).dropna()
 
-            axPrice = plt.subplot(211)
+        plt.figure()
+        axPrice = plt.subplot(211)
+        if s_interval == "1440min":
+            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+        else:
             plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
-            plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            _ = axPrice.twinx()
+        plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.ylabel("Share Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        _ = axPrice.twinx()
+        if s_interval == "1440min":
+            plt.bar(
+                df_stock.index,
+                df_stock["6. volume"].values,
+                color="k",
+                alpha=0.8,
+                width=0.3,
+            )
+        else:
             plt.bar(
                 df_stock.index,
                 df_stock["5. volume"].values,
@@ -136,16 +117,17 @@ def ad(l_args, s_ticker, s_interval, df_stock):
                 alpha=0.8,
                 width=0.3,
             )
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=1)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.axhline(0, linewidth=2, color="k", ls="--")
-            plt.legend(["Chaikin Oscillator"])
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.show()
+        plt.subplot(212)
+        plt.plot(df_ta.index, df_ta.values, "b", lw=1)
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.axhline(0, linewidth=2, color="k", ls="--")
+        plt.legend(["Chaikin Oscillator"])
+        plt.xlabel("Time")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.ion()
+        plt.show()
         print("")
 
     except Exception as e:
@@ -154,7 +136,6 @@ def ad(l_args, s_ticker, s_interval, df_stock):
         return
 
 
-# ------------------------------------------------------- OBV -------------------------------------------------------
 def obv(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         prog="obv",
@@ -180,11 +161,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
-            return
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
         # Daily
         if s_interval == "1440min":
@@ -194,32 +171,6 @@ def obv(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            axPrice = plt.subplot(211)
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            _ = axPrice.twinx()
-            plt.bar(
-                df_stock.index,
-                df_stock["6. volume"].values,
-                color="k",
-                alpha=0.8,
-                width=0.3,
-            )
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=1)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.legend(["OBV"])
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.show()
-
         # Intraday
         else:
             df_ta = ta.obv(
@@ -228,15 +179,28 @@ def obv(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-            axPrice = plt.subplot(211)
+        plt.figure()
+        axPrice = plt.subplot(211)
+        if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
-            plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            _ = axPrice.twinx()
+        else:
+            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+        plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.ylabel("Share Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        _ = axPrice.twinx()
+        if s_interval == "1440min":
+            plt.bar(
+                df_stock.index,
+                df_stock["6. volume"].values,
+                color="k",
+                alpha=0.8,
+                width=0.3,
+            )
+        else:
             plt.bar(
                 df_stock.index,
                 df_stock["5. volume"].values,
@@ -244,15 +208,16 @@ def obv(l_args, s_ticker, s_interval, df_stock):
                 alpha=0.8,
                 width=0.3,
             )
-            plt.subplot(212)
-            plt.plot(df_ta.index, df_ta.values, "b", lw=1)
-            plt.xlim(df_stock.index[0], df_stock.index[-1])
-            plt.legend(["OBV"])
-            plt.xlabel("Time")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.show()
+        plt.subplot(212)
+        plt.plot(df_ta.index, df_ta.values, "b", lw=1)
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.legend(["OBV"])
+        plt.xlabel("Time")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.ion()
+        plt.show()
 
         print("")
 
