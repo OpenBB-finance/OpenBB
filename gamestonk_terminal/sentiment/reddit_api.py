@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import pandas as pd
 from prawcore.exceptions import ResponseException
 from requests import HTTPError
-from prettytable import PrettyTable
 from psaw import PushshiftAPI
 import praw
 import finviz
