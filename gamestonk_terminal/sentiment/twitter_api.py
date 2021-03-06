@@ -163,10 +163,10 @@ def inference(l_args, s_ticker):
         if df_tweets["sentiment_estimation"].values[-1] > 0:
             n_pos = df_tweets[df_tweets["prob_sen"] > 0]["prob_sen"].sum()
             # pylint: disable=unused-variable
-            n_pct = round(100 * n_pos / df_tweets["probability"].sum())  # noqa: F841
+            n_pct = round(100 * n_pos / df_tweets["probability"].sum())
         else:
             n_neg = abs(df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].sum())
-            n_pct = round(100 * n_neg / df_tweets["probability"].sum())  # noqa: F841
+            n_pct = round(100 * n_neg / df_tweets["probability"].sum())
 
         # Parse tweets
         dt_from = dateutil.parser.parse(df_tweets["created_at"].values[-1])

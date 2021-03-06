@@ -78,8 +78,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            # pylint: disable=unused-variable
-            axVolume = axPrice.twinx()  # noqa: F841
+            _ = axPrice.twinx()
             plt.bar(
                 df_stock.index,
                 df_stock["6. volume"].values,
@@ -128,8 +127,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            # pylint: disable=unused-variable
-            axVolume = axPrice.twinx()  # noqa: F841
+            _ = axPrice.twinx()
             plt.bar(
                 df_stock.index,
                 df_stock["5. volume"].values,
@@ -203,8 +201,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            # pylint: disable=unused-variable
-            axVolume = axPrice.twinx()  # noqa: F841
+            _ = axPrice.twinx()
             plt.bar(
                 df_stock.index,
                 df_stock["6. volume"].values,
@@ -238,8 +235,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            # pylint: disable=unused-variable
-            axVolume = axPrice.twinx()  # noqa: F841
+            _ = axPrice.twinx()
             plt.bar(
                 df_stock.index,
                 df_stock["5. volume"].values,
