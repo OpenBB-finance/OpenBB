@@ -6,9 +6,9 @@ import sys
 from pytz import timezone
 import iso8601
 import matplotlib.pyplot as plt
+from holidays import US as holidaysUS
 import pandas.io.formats.format
 from pandas._config.config import get_option
-from holidays import US as holidaysUS
 from pandas.plotting import register_matplotlib_converters
 
 register_matplotlib_converters()
