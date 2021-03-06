@@ -14,7 +14,7 @@ register_matplotlib_converters()
 
 
 # pylint: disable=unused-argument
-def arima(l_args, s_ticker, s_interval, df_stock):
+def arima(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="arima",
         description="""
