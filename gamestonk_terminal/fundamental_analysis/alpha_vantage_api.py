@@ -21,7 +21,14 @@ def overview(l_args, s_ticker):
             Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization,
             EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS,
             Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM,
-            Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. [Source: Alpha Vantage]
+            Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly
+            earnings growth YOY, Quarterly revenue growth YOY, Analyst target price, Trailing PE,
+            Forward PE, Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA,
+            Beta, 52 week high, 52 week low, 50 day moving average, 200 day moving average, Shares
+            outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short
+            percent outstanding, Short percent float, Percent insiders, Percent institutions,
+            Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend
+            date, Ex dividend date, Last split factor, and Last split date. [Source: Alpha Vantage]
         """,
     )
 
@@ -82,7 +89,11 @@ def key(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="key",
         description="""
-            Gives main key metrics about the company (it's a subset of the Overview data from Alpha Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]
+            Gives main key metrics about the company (it's a subset of the Overview data from Alpha
+            Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE
+            ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to
+            sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta
+            [Source: Alpha Vantage API]
         """,
     )
 
@@ -200,8 +211,20 @@ def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="balance",
         description="""
-            Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill,
-            Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]
+            Prints a complete balance sheet statement over time. This can be either quarterly or
+            annually. The following fields are expected: Accepted date, Account payables,
+            Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short
+            term investments, Common stock, Deferred revenue, Deferred revenue non current,
+            Deferred tax liabilities non current, Filling date, Final link, Goodwill,
+            Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt,
+            Long term investments, Net debt, Net receivables, Other assets, Other current assets,
+            Other current liabilities, Other liabilities, Other non current assets, Other non
+            current liabilities, Othertotal stockholders equity, Period, Property plant equipment
+            net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax
+            payables, Total assets, Total current assets, Total current liabilities, Total debt,
+            Total investments, Total liabilities, Total liabilities and stockholders equity, Total
+            non current assets, Total non current liabilities, and Total stockholders equity.
+            [Source: Alpha Vantage]
         """,
     )
 
@@ -257,9 +280,18 @@ def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="cash",
         description="""
-            Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
-            Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working
-            capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
+            Prints a complete cash flow statement over time. This can be either quarterly or
+            annually. The following fields are expected: Accepted date, Accounts payables, Accounts
+            receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash
+            at end of period, Change in working capital, Common stock issued, Common stock
+            repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
+            Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash
+            flow, Inventory, Investments in property plant and equipment, Link, Net cash provided
+            by operating activities, Net cash used for investing activities, Net cash used provided
+            by financing activities, Net change in cash, Net income, Operating cash flow, Other
+            financing activities, Other investing activities, Other non cash items, Other working
+            capital, Period, Purchases of investments, Sales maturities of investments, Stock based
+            compensation. [Source: Alpha Vantage]
         """,
     )
 
@@ -311,7 +343,8 @@ def earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="earnings",
         description="""
-            Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
+            Print earnings dates and reported EPS of the company. The following fields are
+            expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
         """,
     )
 
