@@ -225,7 +225,7 @@ def sustainability(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- CALENDAR_EARNINGS ----------------------------------------------------
+# ---------------------------------------------------- CALENDAR_EARNINGS ------------------------------------------------
 def calendar_earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="calendar_earnings",

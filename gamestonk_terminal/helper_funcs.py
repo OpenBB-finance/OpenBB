@@ -83,7 +83,7 @@ def long_number_format(num) -> str:
         if num.is_integer():
             return "%d%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
 
-        return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
+        return "{:.3f}{}".format(num, ["", " K", " M", " B", " T", " P"][magnitude])
     if isinstance(num, int):
         num = str(num)
     if num.lstrip("-").isdigit():
@@ -96,7 +96,7 @@ def long_number_format(num) -> str:
         if num.is_integer():
             return "%d%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
 
-        return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
+        return "{:.3f}{}".format(num, ["", " K", " M", " B", " T", " P"][magnitude])
     return num
 
 
@@ -176,7 +176,7 @@ def get_data(tweet):
 def clean_tweet(tweet: str, s_ticker: str) -> str:
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(r"(?i)@{}(?=\b)".format(s_ticker))
+    ticker = re.compile(fr"(?i)@{s_ticker}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)

@@ -114,7 +114,7 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == "popular":
             reddit_api.popular_tickers(l_args)
 
-        # ---------------------------------------------------- STOCKTWITS ---------------------------------------------------
+        # ---------------------------------------------------- STOCKTWITS -----------------------------------------------
         elif ns_known_args.cmd == "bullbear":
             stocktwits_api.bullbear(l_args, s_ticker)
 
@@ -127,7 +127,7 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == "stalker":
             stocktwits_api.stalker(l_args)
 
-        # ----------------------------------------------------- TWITTER ---------------------------------------------------
+        # ----------------------------------------------------- TWITTER -------------------------------------------------
         elif ns_known_args.cmd == "infer":
             twitter_api.inference(l_args, s_ticker)
 

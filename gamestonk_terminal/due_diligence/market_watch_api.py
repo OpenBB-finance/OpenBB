@@ -117,7 +117,7 @@ def sean_seah_warnings(l_args, s_ticker):
             with open(filepath) as fp:
                 line = fp.readline()
                 while line:
-                    print("{}".format(line.strip()))
+                    print(f"{line.strip()}")
                     line = fp.readline()
                 print("")
 

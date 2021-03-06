@@ -28,7 +28,7 @@ def buy_sell_ratio_color_red_green(val: str) -> str:
             Fore.GREEN, buys, Style.RESET_ALL, sells
         )
 
-    return "{}% Buys, {}{}%{} Sells".format(buys, Fore.RED, sells, Style.RESET_ALL)
+    return f"{buys}% Buys, {Fore.RED}{sells}%{Style.RESET_ALL} Sells"
 
 
 def price_change_color_red_green(val: str) -> str:

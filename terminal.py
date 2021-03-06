@@ -154,7 +154,10 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         dest="n_type",
         type=check_positive,
         default=5,  # in case it's daily
-        help="1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close",
+        help=(
+            "1234 corresponds to types: 1. open; 2. high; 3. low; 4. close; "
+            "while 14 corresponds to types: 1. open; 4. close"
+        ),
     )
 
     try:
@@ -228,7 +231,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
 
 
-# ----------------------------------------------------- HELP ------------------------------------------------------------------
+# ----------------------------------------------------- HELP ------------------------------------------------------------
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     """Print help"""
     print("What do you want to do?")
