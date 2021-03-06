@@ -37,7 +37,7 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 
 
-## Discover Stocks [»](gamestonk_terminal/discovery/README.md)
+## Discover Stocks [»](discovery/README.md)
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
@@ -53,7 +53,7 @@ Command|Description|Source
 
 &nbsp;
 
-## Market Sentiment [»](gamestonk_terminal/sentiment/README.md)
+## Market Sentiment [»](sentiment/README.md)
 Command|Description
 ----|----
 [Reddit](https://reddit.com)|
@@ -102,7 +102,7 @@ Command|Website
 
 &nbsp;
 
-### Fundamental Analysis [»](gamestonk_terminal/fundamental_analysis/README.md)
+### Fundamental Analysis [»](fundamental_analysis/README.md)
 
 Command|Description
 ----- | ---------
@@ -140,7 +140,7 @@ Command|Description
 
 &nbsp;
 
-## Technical Analysis [»](gamestonk_terminal/technical_analysis/README.md)
+## Technical Analysis [»](technical_analysis/README.md)
 Command | Description | Sources
 ------ | ------ | ------
 [overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
@@ -163,7 +163,7 @@ Command | Description | Sources
 
 &nbsp;
 
-## Due Diligence [»](gamestonk_terminal/due_diligence/README.md)
+## Due Diligence [»](due_diligence/README.md)
 Command|Explanation|Source
 ------ | --------|----
 `news`          |latest news of the company |[Finviz](https://finviz.com/)
@@ -180,7 +180,7 @@ Command|Explanation|Source
 
 &nbsp;
 
-## Prediction Techniques [»](gamestonk_terminal/prediction_techniques/README.md)
+## Prediction Techniques [»](prediction_techniques/README.md)
 Command|Technique|Sources
 ------ | ------------|---
 `sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
