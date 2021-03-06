@@ -6,6 +6,7 @@ from gamestonk_terminal.helper_funcs import check_positive
 
 register_matplotlib_converters()
 
+
 # ----------------------------------------------------- BBANDS -----------------------------------------------------
 def bbands(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(

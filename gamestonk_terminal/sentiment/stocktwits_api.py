@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from gamestonk_terminal.helper_funcs import check_positive
 
+
 # -------------------------------------------------------------------------------------------------------------------
 def bullbear(l_args, s_ticker):
     parser = argparse.ArgumentParser(

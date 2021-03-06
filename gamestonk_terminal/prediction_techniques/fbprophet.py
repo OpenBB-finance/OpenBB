@@ -10,6 +10,7 @@ register_matplotlib_converters()
 
 warnings.simplefilter("ignore")
 
+
 # ----------------------------------------------------- FBPROPHET -----------------------------------------------------
 # pylint: disable=unused-argument
 def fbprophet(l_args, s_ticker, s_interval, df_stock):
