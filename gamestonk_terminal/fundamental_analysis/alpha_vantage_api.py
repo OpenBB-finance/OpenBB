@@ -375,7 +375,10 @@ def earnings(l_args, s_ticker):
             pd.options.display.max_colwidth = 40
 
         # Request EARNINGS data from Alpha Vantage API
-        s_req = f"https://www.alphavantage.co/query?function=EARNINGS&symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+        s_req = (
+            "https://www.alphavantage.co/query?function=EARNINGS&"
+            f"symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+        )
         result = requests.get(s_req, stream=True)
 
         # If the returned data was successful

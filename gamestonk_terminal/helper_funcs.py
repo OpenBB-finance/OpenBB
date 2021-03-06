@@ -82,10 +82,8 @@ def long_number_format(num) -> str:
         while abs(num) >= 1000:
             magnitude += 1
             num /= 1000.0
-        if num.is_integer():
-            return "%d%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
-
-        return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
+        num_str = int(num) if num.is_integer() else f"{num:.3f}"
+        return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
     if num.lstrip("-").isdigit():
@@ -95,10 +93,8 @@ def long_number_format(num) -> str:
         while abs(num) >= 1000:
             magnitude += 1
             num /= 1000.0
-        if num.is_integer():
-            return "%d%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
-
-        return "%.3f%s" % (num, ["", " K", " M", " B", " T", " P"][magnitude])
+        num_str = int(num) if num.is_integer() else f"{num:.3f}"
+        return f"{num_str} {' KMBTP'[magnitude]}".strip()
     return num
 
 
@@ -178,7 +174,7 @@ def get_data(tweet):
 def clean_tweet(tweet: str, s_ticker: str) -> str:
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(r"(?i)@{}(?=\b)".format(s_ticker))
+    ticker = re.compile(fr"(?i)@{s_ticker}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)
