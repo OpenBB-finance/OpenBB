@@ -81,7 +81,7 @@ def long_number_format(num) -> str:
             magnitude += 1
             num /= 1000.0
         num_str = int(num) if num.is_integer() else f"{num:.3f}"
-        return f"{num_str} {[' KMBTP'][magnitude]}".strip()
+        return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
     if num.lstrip("-").isdigit():
@@ -92,7 +92,7 @@ def long_number_format(num) -> str:
             magnitude += 1
             num /= 1000.0
         num_str = int(num) if num.is_integer() else f"{num:.3f}"
-        return f"{num_str} {[' KMBTP'][magnitude]}".strip()
+        return f"{num_str} {' KMBTP'[magnitude]}".strip()
     return num
 
 
