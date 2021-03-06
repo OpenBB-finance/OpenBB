@@ -455,6 +455,7 @@ def main():
                     ts = TimeSeries(
                         key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
                     )
+                    # pylint: disable=unbalanced-tuple-unpacking
                     df_stock_pred, _ = ts.get_daily_adjusted(
                         symbol=s_ticker, outputsize="full"
                     )
@@ -464,7 +465,8 @@ def main():
                     b_quit = pm.pred_menu(
                         df_stock_pred, s_ticker, s_start, s_interval="1440min"
                     )
-                except:
+                except Exception as e:
+                    print(e)
                     print("Either the ticker or the API_KEY are invalids. Try again!")
                     b_quit = False
                     return

@@ -141,8 +141,7 @@ def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         prog="incom",
         description="""
-            Prints a complete income statement over time. This can be either quarterly or annually.
-            The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]""",
+            Prints a complete income statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]""",
     )
 
     parser.add_argument(
@@ -230,8 +229,10 @@ def balance_sheet(l_args, s_ticker):
 
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
+            # pylint: disable=unbalanced-tuple-unpacking
             df_fa, _ = fd.get_balance_sheet_quarterly(symbol=s_ticker)
         else:
+            # pylint: disable=unbalanced-tuple-unpacking
             df_fa, _ = fd.get_balance_sheet_annual(symbol=s_ticker)
 
         df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
@@ -282,8 +283,10 @@ def cash_flow(l_args, s_ticker):
 
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
+            # pylint: disable=unbalanced-tuple-unpacking
             df_fa, _ = fd.get_cash_flow_quarterly(symbol=s_ticker)
         else:
+            # pylint: disable=unbalanced-tuple-unpacking
             df_fa, _ = fd.get_cash_flow_annual(symbol=s_ticker)
 
         df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
