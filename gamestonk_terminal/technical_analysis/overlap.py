@@ -215,7 +215,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
             plt.ylabel("Share Price ($)")
             plt.legend([s_ticker, "VWAP"])
             # pylint: disable=unused-variable
-            axVolume = axPrice.twinx()
+            axVolume = axPrice.twinx()  # noqa: F841
             plt.bar(
                 df_stock.index,
                 df_stock["6. volume"].values,
@@ -248,7 +248,8 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
             plt.xlabel("Time")
             plt.ylabel("Share Price ($)")
             plt.legend([s_ticker, "VWAP"])
-            axVolume = axPrice.twinx()
+            # pylint: disable=unused-variable
+            axVolume = axPrice.twinx()  # noqa: F841
             plt.bar(
                 df_stock.index,
                 df_stock["5. volume"].values,
