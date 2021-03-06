@@ -22,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     parse_known_args_and_warn,
+    print_pretty_prediction
 )
 
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
@@ -82,8 +83,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
     return model
 
 
-# pylint: disable=unused-argument
-def mlp(l_args, s_ticker, s_interval, df_stock):
+def mlp(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="mlp", description="""Multilayer Perceptron. """
     )
@@ -263,9 +263,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
@@ -273,8 +271,7 @@ def mlp(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# pylint: disable=unused-argument
-def rnn(l_args, s_ticker, s_interval, df_stock):
+def rnn(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="rnn", description="""Recurrent Neural Network. """
     )
@@ -454,9 +451,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
@@ -464,8 +459,7 @@ def rnn(l_args, s_ticker, s_interval, df_stock):
         print("")
 
 
-# pylint: disable=unused-argument
-def lstm(l_args, s_ticker, s_interval, df_stock):
+def lstm(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="lstm", description="""Long-Short Term Memory. """
     )
@@ -645,9 +639,7 @@ def lstm(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:

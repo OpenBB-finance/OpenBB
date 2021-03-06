@@ -8,12 +8,14 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     parse_known_args_and_warn,
+    print_pretty_prediction,
 )
 
 register_matplotlib_converters()
 
+
 # pylint: disable=unused-argument
-def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
+def simple_moving_average(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="sma",
         description="""
@@ -100,9 +102,7 @@ def simple_moving_average(l_args, s_ticker, s_interval, df_stock):
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:

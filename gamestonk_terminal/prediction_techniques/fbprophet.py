@@ -14,14 +14,14 @@ register_matplotlib_converters()
 
 warnings.simplefilter("ignore")
 
-# pylint: disable=unused-argument
-def fbprophet(l_args, s_ticker, s_interval, df_stock):
+def fbprophet(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
         prog="fbprophet",
         description="""
             Facebook Prophet is a forecasting procedure that is fast and provides
-            completely automated forecasts that can be tuned by hand by data scientists and analysts.
-            It was developed by Facebook's data science team and is open source.
+            completely automated forecasts that can be tuned by hand by data scientists
+            and analysts. It was developed by Facebook's data science team and is open
+            source.
         """,
     )
 

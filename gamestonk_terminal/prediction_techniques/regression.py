@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_next_stock_market_days,
     parse_known_args_and_warn,
+    print_pretty_prediction,
 )
 
 register_matplotlib_converters()
@@ -20,8 +21,8 @@ LINEAR = 1
 QUADRATIC = 2
 CUBIC = 3
 
-# pylint: disable=unused-argument
-def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
+
+def regression(l_args, s_ticker, df_stock, polynomial):
     parser = argparse.ArgumentParser(
         prog="regression",
         description="""
@@ -137,9 +138,7 @@ def regression(l_args, s_ticker, s_interval, df_stock, polynomial):
         plt.show()
 
         # Print prediction data
-        print("Predicted share price:")
-        df_pred = df_pred.apply(lambda x: f"{x:.2f} $")
-        print(df_pred.to_string())
+        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:

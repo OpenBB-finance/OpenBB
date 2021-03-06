@@ -6,9 +6,11 @@ import sys
 from pytz import timezone
 import iso8601
 import matplotlib.pyplot as plt
+import pandas as pd
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from holidays import US as holidaysUS
+from colorama import Fore, Style
 
 
 def check_non_negative(value) -> int:
@@ -340,3 +342,18 @@ def parse_known_args_and_warn(parser, l_args):
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
     return ns_parser
+
+
+def price_prediction_color(val: int, last_val: int) -> str:
+    if float(val) > last_val:
+        color = Fore.GREEN
+    else:
+        color = Fore.RED
+    return f"{color}{val:.2f} ${Style.RESET_ALL}"
+
+
+def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
+    print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
+
+    print("Prediction:")
+    print(df_pred.apply(price_prediction_color, last_val=last_price).to_string())
