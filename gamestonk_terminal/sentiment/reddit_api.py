@@ -13,6 +13,7 @@ import finviz
 from gamestonk_terminal.helper_funcs import check_positive
 from gamestonk_terminal import config_terminal as cfg
 
+
 # -------------------------------------------------------------------------------------------------------------------
 def get_last_time_market_was_open(dt):
     # Check if it is a weekend

@@ -16,6 +16,7 @@ LINEAR = 1
 QUADRATIC = 2
 CUBIC = 3
 
+
 # -------------------------------------------------- REGRESSION --------------------------------------------------
 # pylint: disable=unused-argument
 def regression(l_args, s_ticker, s_interval, df_stock, polynomial):

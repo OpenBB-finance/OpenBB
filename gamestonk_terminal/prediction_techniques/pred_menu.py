@@ -7,6 +7,7 @@ from gamestonk_terminal.prediction_techniques import arima
 from gamestonk_terminal.prediction_techniques import fbprophet
 from gamestonk_terminal.prediction_techniques import neural_networks
 
+
 # -----------------------------------------------------------------------------------------------------------------------
 def print_prediction(s_ticker, s_start, s_interval):
     """ Print help """

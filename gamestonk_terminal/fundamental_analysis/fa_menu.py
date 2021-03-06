@@ -10,7 +10,6 @@ from gamestonk_terminal.fundamental_analysis import business_insider_api as bi_a
 from gamestonk_terminal.fundamental_analysis import yahoo_finance_api as yf_api
 
 
-# -----------------------------------------------------------------------------------------------------------------------
 def print_fundamental_analysis(s_ticker, s_start, s_interval):
     """ Print help """
 
@@ -65,9 +64,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     return
 
 
-# ---------------------------------------------------- INFO ----------------------------------------------------
-# pylint: disable=unused-argument
-def info(l_args, s_ticker):
+def key_metrics_explained(l_args):
     parser = argparse.ArgumentParser(
         prog="info",
         description="""
@@ -96,7 +93,6 @@ def info(l_args, s_ticker):
         return
 
 
-# ---------------------------------------------------- MENU ----------------------------------------------------
 # pylint: disable=too-many-branches
 def fa_menu(s_ticker, s_start, s_interval):
 
@@ -107,29 +103,29 @@ def fa_menu(s_ticker, s_start, s_interval):
         choices=[
             "help",
             "q",
-            "quit",  #
-            "screener",  # Finviz
-            "mgmt",  # Business Insider
+            "quit",
+            "screener",
+            "mgmt",
             "info",
             "shrs",
             "sust",
-            "cal",  # Yahoo Finance
+            "cal",
             "income",
             "assets",
             "liabilities",
             "operating",
             "investing",
-            "financing",  # MW
+            "financing",
             "overview",
             "key",
             "incom",
             "balance",
             "cash",
-            "earnings",  # AV
+            "earnings",
             "profile",
             "quote",
             "enterprise",
-            "dcf",  # FMP
+            "dcf",
             "inc",
             "bal",
             "cashf",
@@ -137,7 +133,7 @@ def fa_menu(s_ticker, s_start, s_interval):
             "ratios",
             "growth",
         ],
-    )  # FMP
+    )
 
     print_fundamental_analysis(s_ticker, s_start, s_interval)
 
@@ -153,9 +149,6 @@ def fa_menu(s_ticker, s_start, s_interval):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
-        # if ns_known_args.cmd == 'info':
-        #    info(l_args, s_ticker)
 
         if ns_known_args.cmd == "help":
             print_fundamental_analysis(s_ticker, s_start, s_interval)
