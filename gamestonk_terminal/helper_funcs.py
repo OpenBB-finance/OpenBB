@@ -288,3 +288,16 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
 
     print("Prediction:")
     print(df_pred.apply(price_prediction_color, last_val=last_price).to_string())
+
+
+def check_ohlc(type_ohlc: str) -> str:
+    if bool(re.match("^[ohlca]+$", type_ohlc)):
+        return type_ohlc
+    raise argparse.ArgumentTypeError("The type specified is not recognized")
+
+
+def lett_to_num(word: str) -> str:
+    replacements = [("o", "1"), ("h", "2"), ("l", "3"), ("c", "4"), ("a", "5")]
+    for (a, b) in replacements:
+        word = word.replace(a, b)
+    return word
