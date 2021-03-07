@@ -2,6 +2,7 @@ import argparse
 from sys import stdout
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -9,6 +10,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_ohlc,
     lett_to_num,
+    check_sources,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -82,7 +84,7 @@ def clear(l_args, s_ticker, s_start, s_interval, df_stock):
 
 def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
-        prog="load", description=""" Load a stock in order to perform analysis"""
+        prog="load", description=""" Load a stock in order to perform analysis."""
     )
     parser.add_argument(
         "-t",
@@ -110,6 +112,16 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         help="Intraday stock minutes",
     )
 
+    parser.add_argument(
+        "--source",
+        action="store",
+        dest="source",
+        type=check_sources,
+        default="quandl",
+        help="Source of historical data. Intraday: Only 'av' available."
+        "Daily: 'quandl' and 'av' available.",
+    )
+
     try:
         # For the case where a user uses: 'load BB'
         if l_args:
@@ -128,21 +140,56 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     s_interval = str(ns_parser.n_interval) + "min"
 
     try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # Daily
         if s_interval == "1440min":
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_daily_adjusted(
-                symbol=ns_parser.s_ticker, outputsize="full"
-            )
+
+            if ns_parser.source == "av":
+                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+                # pylint: disable=unbalanced-tuple-unpacking
+                df_stock, _ = ts.get_daily_adjusted(
+                    symbol=ns_parser.s_ticker, outputsize="full"
+                )
+                df_stock.sort_index(ascending=True, inplace=True)
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock = df_stock[ns_parser.s_start_date :]
+
+            elif ns_parser.source == "quandl":
+                df_stock = yf.download(
+                    ns_parser.s_ticker, start=ns_parser.s_start_date, progress=False
+                )
+                # Check that a stock was successfully retrieved
+                if df_stock.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock = df_stock.rename(
+                    columns={
+                        "Open": "1. open",
+                        "High": "2. high",
+                        "Low": "3. low",
+                        "Close": "4. close",
+                        "Adj Close": "5. adjusted close",
+                        "Volume": "6. volume",
+                    }
+                )
         # Intraday
         else:
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_intraday(
-                symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
-            )
+            if ns_parser.source == "av":
+                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+                # pylint: disable=unbalanced-tuple-unpacking
+                df_stock, _ = ts.get_intraday(
+                    symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
+                )
+                df_stock.sort_index(ascending=True, inplace=True)
 
-        df_stock.sort_index(ascending=True, inplace=True)
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock = df_stock[ns_parser.s_start_date :]
+
+            elif ns_parser.source == "quandl":
+                print(
+                    "Unfortunately, quandl historical data doesn't contain intraday prices"
+                )
 
     except Exception as e:
         print(e)
@@ -152,8 +199,6 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
 
     if s_start:
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date :]
         print(
             f"Loading {s_intraday} {s_ticker} stock with starting period {s_start.strftime('%Y-%m-%d')} for analysis."
         )
@@ -289,7 +334,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 def export(l_args, df_stock):
     parser = argparse.ArgumentParser(
         prog="export",
-        description="Exports the historical data from this ticker to a file or stdout",
+        description="Exports the historical data from this ticker to a file or stdout.",
     )
     parser.add_argument(
         "-f",
