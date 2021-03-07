@@ -127,7 +127,7 @@ def main():
             b_quit = sm.sen_menu(s_ticker, s_start)
 
         elif ns_known_args.opt == "res":
-            b_quit = rm.res_menu(s_ticker)
+            b_quit = rm.res_menu(s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
@@ -163,7 +163,9 @@ def main():
             if s_interval == "1440min":
                 b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
             # If stock data is intradaily, we need to get data again as prediction
-            # techniques work on daily adjusted data
+            # techniques work on daily adjusted data. By default we load data from
+            # Alpha Vantage because the historical data loaded gives a larger
+            # dataset than the one provided by quandl
             else:
                 try:
                     ts = TimeSeries(
