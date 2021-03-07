@@ -82,7 +82,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         plt.plot(df_ta.index, df_ta.values)
         # Pandas series
         if len(df_ta.shape) == 1:
-            l_legend = ["{ns_parser.n_length} EMA"]
+            l_legend = [f"{ns_parser.n_length} EMA"]
         # Pandas dataframe
         else:
             l_legend = df_ta.columns.tolist()
