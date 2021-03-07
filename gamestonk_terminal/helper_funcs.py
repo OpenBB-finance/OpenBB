@@ -294,7 +294,7 @@ def check_ohlc(type_ohlc: str) -> str:
     if bool(re.match("^[ohlca]+$", type_ohlc)):
         return type_ohlc
     else:
-        raise argparse.ArgumentTypeError(f"The type specified is not recognized")
+        raise argparse.ArgumentTypeError("The type specified is not recognized")
 
 
 def lett_to_num(word: str) -> str:
