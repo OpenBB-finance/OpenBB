@@ -9,6 +9,8 @@ from gamestonk_terminal.discovery import simply_wallst_api
 from gamestonk_terminal.discovery import spachero_api
 from gamestonk_terminal.discovery import unusual_whales_api
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 def print_discovery():
     """ Print help """
@@ -66,7 +68,7 @@ def disc_menu():
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()} (disc)> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:
