@@ -19,6 +19,7 @@ from gamestonk_terminal import config_terminal as cfg
 # import warnings
 # warnings.simplefilter("always")
 
+
 # pylint: disable=too-many-branches
 def main():
     """
