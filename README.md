@@ -210,7 +210,8 @@ sma -l 10
 
 Example:
 
-GIF here
+<img src='/images/usage.gif' width="1000">
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
