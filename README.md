@@ -30,7 +30,7 @@
   <p align="center">
     The next best thing after Bloomberg Terminal.
     <br />
-    <a href="https://github.com/DidierRLopes/GamestonkTerminal/gamestonk_terminal/README.md"><strong>Features »</strong></a>
+    <a href="https://github.com/DidierRLopes/GamestonkTerminal/tree/main/gamestonk_terminal/README.md"><strong>Features »</strong></a>
     <br />
     <br />
     <a href="https://github.com/DidierRLopes/GamestonkTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D">Report Bug</a>
