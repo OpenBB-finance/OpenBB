@@ -44,7 +44,7 @@
 ## Fundamental Analysis
 
 ### Short term
-* Multi-ticker comparison
+* Multi-ticker comparison (@didier)
 ### Medium term
 ### Long term
 
