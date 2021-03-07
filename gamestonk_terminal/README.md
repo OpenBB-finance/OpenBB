@@ -35,6 +35,12 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 
 ![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
 
+```
+export -f GNUS_data -F csv
+```
+   * Exports the historical data from this ticker to a file or stdout.
+     * -f : Name of file to save the historical data exported (stdout if unspecified). Default: stdout.
+     * -F : Export historical data into following formats: csv, json, excel, clipboard. Default: csv.
 
 
 ## Discover Stocks [»](discovery/README.md)

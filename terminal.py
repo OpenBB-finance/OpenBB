@@ -226,10 +226,10 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
 
 
-# ----------------------------------------------------- EXPORT -----------------------------------------------------
 def export(l_args, df_stock):
     parser = argparse.ArgumentParser(
-        prog="export", description="Exports the current dataframe to a file or stdout"
+        prog="export",
+        description="Exports the historical data from this ticker to a file or stdout",
     )
     parser.add_argument(
         "-f",
@@ -237,7 +237,7 @@ def export(l_args, df_stock):
         type=str,
         dest="s_filename",
         default=stdout,
-        help="Where to save the export (stdout if unspecified)",
+        help="Name of file to save the historical data exported (stdout if unspecified)",
     )
     parser.add_argument(
         "-F",
@@ -247,33 +247,31 @@ def export(l_args, df_stock):
         default="csv",
         help="Export historical data into following formats: csv, json, excel, clipboard",
     )
-
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
-        s_format = ns_parser.s_format
-        s_filename = ns_parser.s_filename
+        ns_parser = parse_known_args_and_warn(parser, l_args)
     except SystemExit:
         print("")
         return
-
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
 
     if df_stock.empty:
         print("No data loaded yet to export.")
         return
 
-    if s_format == "csv":
-        df_stock.to_csv(s_filename)
-    elif s_format == "json":
-        df_stock.to_json(s_filename)
-    elif s_format == "excel":
-        df_stock.to_excel(s_filename)
-    elif s_format == "clipboard":
+    if ns_parser.s_format == "csv":
+        df_stock.to_csv(ns_parser.s_filename)
+
+    elif ns_parser.s_format == "json":
+        df_stock.to_json(ns_parser.s_filename)
+
+    elif ns_parser.s_format == "excel":
+        df_stock.to_excel(ns_parser.s_filename)
+
+    elif ns_parser.s_format == "clipboard":
         df_stock.to_clipboard()
 
+    print("")
 
-# ----------------------------------------------------- HELP ------------------------------------------------------------
+
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     """Print help"""
     print("What do you want to do?")
