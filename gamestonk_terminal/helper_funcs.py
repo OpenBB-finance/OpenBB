@@ -315,6 +315,8 @@ def check_sources(source: str) -> str:
 
 def get_flair() -> str:
     flair = {
+        "rocket": "(🚀🚀)",
+        "diamond": "(💎💎)",
         "stars": "(✨)",
         "baseball": "(⚾)",
         "boat": "(⛵)",
