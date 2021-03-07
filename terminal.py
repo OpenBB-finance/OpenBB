@@ -228,9 +228,25 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
 # ----------------------------------------------------- EXPORT -----------------------------------------------------
 def export(l_args, df_stock):
-    parser = argparse.ArgumentParser(prog='export', description='Exports the current dataframe to a file or stdout')
-    parser.add_argument('-f', "--filename", type=str, dest="s_filename", default=stdout, help="Where to save the export (stdout if unspecified)")
-    parser.add_argument('-F', "--format", dest="s_format", type=str, default="csv", help="Export historical data into following formats: csv, json, excel, clipboard")
+    parser = argparse.ArgumentParser(
+        prog="export", description="Exports the current dataframe to a file or stdout"
+    )
+    parser.add_argument(
+        "-f",
+        "--filename",
+        type=str,
+        dest="s_filename",
+        default=stdout,
+        help="Where to save the export (stdout if unspecified)",
+    )
+    parser.add_argument(
+        "-F",
+        "--format",
+        dest="s_format",
+        type=str,
+        default="csv",
+        help="Export historical data into following formats: csv, json, excel, clipboard",
+    )
 
     try:
         (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
@@ -268,7 +284,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   load        load a specific stock ticker for analysis")
     print("   view        view and load a specific stock ticker for technical analysis")
     if s_ticker:
-        print("   export      export the currently loaded dataframe to a file or stdout")
+        print(
+            "   export      export the currently loaded dataframe to a file or stdout"
+        )
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
     if s_ticker and s_start:
