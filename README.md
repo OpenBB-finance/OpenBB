@@ -81,11 +81,9 @@ This project was originally written and tested with Python 3.6.8. It should now 
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
 
-1. Install [Anaconda](https://docs.anaconda.com/anaconda/install/)
+1. Install Anaconda
 
-Confirm that you have it with: `conda -V`
-
-The output should be like `conda 4.9.2`
+Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
 2. Create Environment
 
@@ -99,14 +97,14 @@ conda create -n gst python=3.6.8
 ```
 conda activate gst
 ```
-Note: At the end, you can deactivate it with `conda deactivate`
+Note: At the end, you can deactivate it with: `conda deactivate`
 
 4. Fork the Project
 
 - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
 - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
 
-Navigate into the folder with `cd GamestonkTerminal/`
+Navigate into the folder with: `cd GamestonkTerminal/`
 
 5. Install poetry
 ```
@@ -117,7 +115,7 @@ conda install poetry
 ```
 poetry install
 ```
-This is a library for package management, and makes sure to should ensure a better experience than: ``pip install -r requirements.txt``
+This is a library for package management, and ensures a smoother experience than: ``pip install -r requirements.txt``
 
 7.  You're ready to Gamestonk it!
 
@@ -133,12 +131,12 @@ Note: The libraries specified in the [requirements.txt](/requirements.txt) file 
 
 *If you would like to use optional Machine Learning features:*
 
-* Update your *gamestonk_terminal/config_terminal.py*
+* Update your [config_terminal.py](/gamestonk_terminal/config_terminal.py) with:
 ```
 ENABLE_PREDICT = False
 ```
 
-* Install optional *prediction* dependency collection with poetry
+* Install optional ML features dependencies collection with poetry:
 ```
 poetry install -E prediction
 ```
@@ -166,18 +164,12 @@ These are the ones where a key is necessary:
   * Reddit: https://www.reddit.com/prefs/apps
   * Twitter: https://developer.twitter.com
 
-When these are obtained, don't forget to update [config_terminal.py](/config_terminal.py).  Alternatively, you can also set them to the following environment variables:
-  * GT_API_KEY_ALPHAVANTAGE
-  * GT_API_KEY_FINANCIALMODELINGPREP
-  * GT_API_KEY_QUANDL
-  * GT_API_REDDIT_CLIENT_ID
-  * GT_API_REDDIT_CLIENT_SECRET
-  * GT_API_REDDIT_USERNAME
-  * GT_API_REDDIT_USER_AGENT
-  * GT_API_REDDIT_PASSWORD
-  * GT_API_TWITTER_KEY
-  * GT_API_TWITTER_SECRET_KEY
-  * GT_API_TWITTER_BEARER_TOKEN.
+When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).  Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN.
+
+Example:
+```
+export GT_API_REDDIT_USERNAME=SexyYear
+```
 
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
