@@ -187,8 +187,7 @@ View the historical data of this stock:
 ```
 view
 ```
-Apply some technical indicators to the ticker, starting at 2020-06-04.
-Re-load ticker with starting time, this time:
+Slice the historical data by loading ticker and setting a starting point, e.g. 
 ```
 load -t GME -s 2020-06-04
 ```
@@ -208,6 +207,10 @@ Once that has been seen, set the parameters that you want after flagging them. I
 ```
 sma -l 10
 ```
+
+Example:
+
+GIF here
 
 <!-- CONTRIBUTING -->
 ## Contributing
