@@ -22,7 +22,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/DidierRLopes/GamestonkTerminal">
-    <img src="images/logo.png" alt="Logo" width="300" height="250">
+    <img src="images/GamestonkLogo.jpg" alt="Logo" width="300" height="250">
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
@@ -187,7 +187,7 @@ View the historical data of this stock:
 ```
 view
 ```
-Slice the historical data by loading ticker and setting a starting point, e.g. 
+Slice the historical data by loading ticker and setting a starting point, e.g.
 ```
 load -t GME -s 2020-06-04
 ```
