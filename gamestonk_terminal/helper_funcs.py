@@ -12,6 +12,7 @@ import pandas as pd
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
+from gamestonk_terminal import config_terminal as cfg
 
 register_matplotlib_converters()
 
@@ -310,3 +311,34 @@ def check_sources(source: str) -> str:
     raise argparse.ArgumentTypeError(
         "This source for historical data is not available."
     )
+
+
+def get_flair() -> str:
+    flair = {
+        "rocket": "(🚀🚀)",
+        "diamond": "(💎💎)",
+        "stars": "(✨)",
+        "baseball": "(⚾)",
+        "boat": "(⛵)",
+        "phone": "(☎)",
+        "mercury": "(☿)",
+        "sun": "(☼)",
+        "moon": "(☾)",
+        "nuke": "(☢)",
+        "hazard": "(☣)",
+        "tunder": "(☈)",
+        "king": "(♔)",
+        "queen": "(♕)",
+        "knight": "(♘)",
+        "recycle": "(♻)",
+        "scales": "(⚖)",
+        "ball": "(⚽)",
+        "golf": "(⛳)",
+        "piece": "(☮)",
+        "yy": "(☯)",
+    }
+
+    if flair.get(cfg.USE_FLAIR):
+        return flair[cfg.USE_FLAIR]
+
+    return ""

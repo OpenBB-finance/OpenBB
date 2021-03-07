@@ -5,6 +5,8 @@ from gamestonk_terminal.sentiment import google_api
 
 from gamestonk_terminal import config_terminal as cfg
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 # -----------------------------------------------------------------------------------------------------------------------
 def print_sentiment():
@@ -78,7 +80,7 @@ def sen_menu(s_ticker, s_start):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()} (sen)> ")
 
         # Parse sentiment command of the list of possible commands
         try:

@@ -7,6 +7,8 @@ from gamestonk_terminal.due_diligence import quandl_api as q_api
 from gamestonk_terminal.due_diligence import financial_modeling_prep_api as fmp_api
 from gamestonk_terminal.due_diligence import business_insider_api as bi_api
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 def print_due_diligence(s_ticker, s_start, s_interval):
     """ Print help """
@@ -72,7 +74,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()} (dd)> ")
 
         # Parse due diligence command of the list of possible commands
         try:

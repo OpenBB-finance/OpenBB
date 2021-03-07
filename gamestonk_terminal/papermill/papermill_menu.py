@@ -2,6 +2,8 @@ import argparse
 
 from gamestonk_terminal.papermill import due_diligence
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 def print_papermill():
     """ Print help """
@@ -28,7 +30,7 @@ def papermill_menu():
 
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()} (mill)> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:

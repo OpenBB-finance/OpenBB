@@ -9,6 +9,8 @@ from gamestonk_terminal.fundamental_analysis import market_watch_api as mw_api
 from gamestonk_terminal.fundamental_analysis import business_insider_api as bi_api
 from gamestonk_terminal.fundamental_analysis import yahoo_finance_api as yf_api
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 def print_fundamental_analysis(s_ticker, s_start, s_interval):
     """ Print help """
@@ -140,7 +142,7 @@ def fa_menu(s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()} (fa)> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:

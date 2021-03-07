@@ -5,7 +5,7 @@ import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 
 from gamestonk_terminal.main_helper import print_help, clear, load, view, export
-from gamestonk_terminal.helper_funcs import b_is_stock_market_open
+from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.technical_analysis import ta_menu as tam
@@ -64,7 +64,9 @@ def main():
     )
 
     # Print first welcome message and help
-    print("\nWelcome to Didier's Gamestonk Terminal\n")
+    print("")
+    print("🚀🚀 Welcome to Didier's Gamestonk Terminal!")
+    print("")
     should_print_help = True
 
     # Loop forever and ever
@@ -75,7 +77,7 @@ def main():
             should_print_help = False
 
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()}> ")
 
         # Is command empty
         if not as_input:

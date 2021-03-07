@@ -7,6 +7,8 @@ from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
 import matplotlib.pyplot as plt
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 def print_technical_analysis(s_ticker, s_start, s_interval):
     """ Print help """
@@ -72,7 +74,7 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair} (ta)> ")
 
         # Images are non blocking - allows to close them if we type other command
         plt.close()

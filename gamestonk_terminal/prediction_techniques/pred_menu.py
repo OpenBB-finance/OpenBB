@@ -8,6 +8,8 @@ from gamestonk_terminal.prediction_techniques import fbprophet
 from gamestonk_terminal.prediction_techniques import neural_networks
 import matplotlib.pyplot as plt
 
+from gamestonk_terminal.helper_funcs import get_flair
+
 
 def print_prediction(s_ticker, s_start, s_interval):
     """ Print help """
@@ -67,7 +69,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input(f"{get_flair()} (pred)> ")
 
         # Images are non blocking - allows to close them if we type other command
         plt.close()
