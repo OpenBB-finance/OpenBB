@@ -22,13 +22,13 @@
 <br />
 <p align="center">
   <a href="https://github.com/DidierRLopes/GamestonkTerminal">
-    <img src="images/GamestonkLogo.jpg" alt="Logo" width="300" height="250">
+    <img src="images/GamestonkLogo.jpg" alt="Logo" width="400" height="350">
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
 
   <p align="center">
-    The next best thing after Bloomberg Terminal.
+    The next best thing after Bloomberg Terminal. #weliketheterminal
     <br />
     <a href="https://github.com/DidierRLopes/GamestonkTerminal/tree/main/gamestonk_terminal/README.md"><strong>Features »</strong></a>
     <br />
