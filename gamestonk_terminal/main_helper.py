@@ -115,7 +115,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         if l_args:
             if "-" not in l_args[0]:
                 l_args.insert(0, "-t")
-          
+
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
     except SystemExit:
