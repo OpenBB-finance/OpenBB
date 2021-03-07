@@ -72,7 +72,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input("dd> ")
 
         # Parse due diligence command of the list of possible commands
         try:

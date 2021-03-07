@@ -66,7 +66,7 @@ def disc_menu():
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input("disc> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:

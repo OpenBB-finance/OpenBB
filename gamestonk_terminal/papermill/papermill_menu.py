@@ -28,7 +28,7 @@ def papermill_menu():
 
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input("mill> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:

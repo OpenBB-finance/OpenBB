@@ -67,7 +67,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input("pred> ")
 
         # Images are non blocking - allows to close them if we type other command
         plt.close()

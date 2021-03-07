@@ -74,7 +74,7 @@ def res_menu(s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input("res> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:

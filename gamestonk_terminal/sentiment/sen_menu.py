@@ -78,7 +78,7 @@ def sen_menu(s_ticker, s_start):
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input("> ")
+        as_input = input("sen> ")
 
         # Parse sentiment command of the list of possible commands
         try:
@@ -99,7 +99,7 @@ def sen_menu(s_ticker, s_start):
             # Abandon the program
             return True
 
-        # ---------------------------------------------------- REDDIT ---------------------------------------------------
+        # Reddit
         elif ns_known_args.cmd == "watchlist":
             reddit_api.watchlist(l_args)
 
@@ -115,7 +115,7 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == "popular":
             reddit_api.popular_tickers(l_args)
 
-        # ---------------------------------------------------- STOCKTWITS -----------------------------------------------
+        # Stocktwits
         elif ns_known_args.cmd == "bullbear":
             stocktwits_api.bullbear(l_args, s_ticker)
 
@@ -128,7 +128,7 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == "stalker":
             stocktwits_api.stalker(l_args)
 
-        # ----------------------------------------------------- TWITTER -------------------------------------------------
+        # Twitter
         elif ns_known_args.cmd == "infer":
             if not cfg.ENABLE_PREDICT:
                 print("Predict is not enabled in config_terminal.py")
@@ -175,7 +175,7 @@ def sen_menu(s_ticker, s_start):
 
             twitter_api.sentiment(l_args, s_ticker)
 
-        # ----------------------------------------------------- GOOGLE ---------------------------------------------------
+        # Google
         elif ns_known_args.cmd == "mentions":
             google_api.mentions(l_args, s_ticker, s_start)
 
@@ -188,6 +188,5 @@ def sen_menu(s_ticker, s_start):
         elif ns_known_args.cmd == "rise":
             google_api.rise(l_args, s_ticker)
 
-        # ------------------------------------------------------------------------------------------------------------
         else:
             print("Command not recognized!")
