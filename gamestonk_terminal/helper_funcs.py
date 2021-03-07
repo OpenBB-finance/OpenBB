@@ -307,4 +307,6 @@ def check_sources(source: str) -> str:
     available_historical_price_sources = ["quandl", "av"]
     if source in available_historical_price_sources:
         return source
-    raise argparse.ArgumentTypeError("This source for historical data is not available.")
+    raise argparse.ArgumentTypeError(
+        "This source for historical data is not available."
+    )
