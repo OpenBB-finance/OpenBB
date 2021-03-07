@@ -11,6 +11,8 @@ from gamestonk_terminal.helper_funcs import (
     b_is_stock_market_open,
     plot_view_stock,
     parse_known_args_and_warn,
+    check_ohlc,
+    lett_to_num,
 )
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.technical_analysis import ta_menu as tam
@@ -23,6 +25,22 @@ from gamestonk_terminal import config_terminal as cfg
 
 # import warnings
 # warnings.simplefilter("always")
+
+
+def clear(l_args, s_ticker, s_start, s_interval, df_stock):
+    parser = argparse.ArgumentParser(
+        prog="clear",
+        description="""Clear previously loaded stock ticker.""",
+    )
+
+    try:
+        parse_known_args_and_warn(parser, l_args)
+        print("Clearing stock ticker to be used for analysis\n")
+        return "", "", "", pd.DataFrame()
+
+    except SystemExit:
+        print("")
+        return s_ticker, s_start, s_interval, df_stock
 
 
 def load(l_args, s_ticker, s_start, s_interval, df_stock):
@@ -148,12 +166,12 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     parser.add_argument(
         "--type",
         action="store",
-        dest="n_type",
-        type=check_positive,
-        default=5,  # in case it's daily
+        dest="type",
+        type=check_ohlc,
+        default="a",  # in case it's adjusted close
         help=(
-            "1234 corresponds to types: 1. open; 2. high; 3. low; 4. close; "
-            "while 14 corresponds to types: 1. open; 4. close"
+            "ohlc corresponds to types: open; high; low; close; "
+            "while oc corresponds to types: open; close"
         ),
     )
 
@@ -170,6 +188,8 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     # A new interval intraday period was given
     if ns_parser.n_interval != 0:
         s_interval = str(ns_parser.n_interval) + "min"
+
+    type_candles = lett_to_num(ns_parser.type)
 
     try:
         ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
@@ -197,9 +217,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     # Daily
     if s_interval == "1440min":
         # The default doesn't exist for intradaily data
-        ln_col_idx = [int(x) - 1 for x in list(str(ns_parser.n_type))]
-        if 4 not in ln_col_idx:
-            ln_col_idx.append(4)
+        ln_col_idx = [int(x) - 1 for x in list(type_candles)]
         # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
         # pylint: disable=len-as-condition
         if len([i for i in ln_col_idx if i > 4]) > 0:
@@ -210,10 +228,10 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     # Intraday
     else:
         # The default doesn't exist for intradaily data
-        if ns_parser.n_type == 5:
+        if ns_parser.type == "a":
             ln_col_idx = [3]
         else:
-            ln_col_idx = [int(x) - 1 for x in list(str(ns_parser.n_type))]
+            ln_col_idx = [int(x) - 1 for x in list(type_candles)]
         # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
         # pylint: disable=len-as-condition
         if len([i for i in ln_col_idx if i > 3]) > 0:
@@ -371,6 +389,7 @@ def main():
 
     # Loop forever and ever
     while True:
+        main_cmd = False
         if should_print_help:
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
@@ -399,20 +418,24 @@ def main():
             break
 
         elif ns_known_args.opt == "clear":
-            print("Clearing stock ticker to be used for analysis")
-            s_ticker = ""
-            s_start = ""
+            s_ticker, s_start, s_interval, df_stock = clear(
+                l_args, s_ticker, s_start, s_interval, df_stock
+            )
+            main_cmd = True
 
         elif ns_known_args.opt == "load":
             s_ticker, s_start, s_interval, df_stock = load(
                 l_args, s_ticker, s_start, s_interval, df_stock
             )
+            main_cmd = True
 
         elif ns_known_args.opt == "view":
             view(l_args, s_ticker, s_start, s_interval, df_stock)
+            main_cmd = True
 
         elif ns_known_args.opt == "export":
             export(l_args, df_stock)
+            main_cmd = True
 
         elif ns_known_args.opt == "disc":
             b_quit = dm.disc_menu()
@@ -489,7 +512,8 @@ def main():
         if b_quit:
             break
         else:
-            should_print_help = True
+            if not main_cmd:
+                should_print_help = True
 
     print(
         "Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n"
