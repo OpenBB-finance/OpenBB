@@ -1,10 +1,8 @@
 """ sentiment/twitter_api.py """
-# noqa: F401
+# flake8: noqa: F401
 import unittest
 
 # pylint: disable=unused-import
-import pytest
-
 try:
     from gamestonk_terminal.sentiment.twitter_api import inference, sentiment
 except ModuleNotFoundError as e:

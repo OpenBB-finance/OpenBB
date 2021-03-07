@@ -1,12 +1,8 @@
 """ fundamental_analysis/yahoo_finance_api.py tests """
-# noqa: F401
 import unittest
 
 # pylint: disable=unused-import
-import pytest
-
-# pylint: disable=unused-import
-from gamestonk_terminal.fundamental_analysis.yahoo_finance_api import (
+from gamestonk_terminal.fundamental_analysis.yahoo_finance_api import (  # noqa: F401
     info,
     sustainability,
     calendar_earnings,

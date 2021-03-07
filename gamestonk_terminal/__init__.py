@@ -1,3 +1,4 @@
+# flake8: noqa
 from . import discovery
 from . import due_diligence
 from . import fundamental_analysis
