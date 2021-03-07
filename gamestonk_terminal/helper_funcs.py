@@ -338,5 +338,5 @@ def get_flair() -> str:
 
     if flair.get(cfg.USE_FLAIR):
         return flair[cfg.USE_FLAIR]
-    else:
-        return ""
+
+    return ""
