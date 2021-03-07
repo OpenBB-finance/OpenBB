@@ -111,15 +111,14 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         choices=[1, 5, 15, 30, 60],
         help="Intraday stock minutes",
     )
-
     parser.add_argument(
         "--source",
         action="store",
         dest="source",
         type=check_sources,
-        default="quandl",
+        default="yf",
         help="Source of historical data. Intraday: Only 'av' available."
-        "Daily: 'quandl' and 'av' available.",
+        "Daily: 'yf' and 'av' available.",
     )
 
     try:
@@ -154,7 +153,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 # Slice dataframe from the starting date YYYY-MM-DD selected
                 df_stock = df_stock[ns_parser.s_start_date :]
 
-            elif ns_parser.source == "quandl":
+            elif ns_parser.source == "yf":
                 df_stock = yf.download(
                     ns_parser.s_ticker, start=ns_parser.s_start_date, progress=False
                 )
@@ -186,14 +185,14 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 # Slice dataframe from the starting date YYYY-MM-DD selected
                 df_stock = df_stock[ns_parser.s_start_date :]
 
-            elif ns_parser.source == "quandl":
+            elif ns_parser.source == "yf":
                 print(
-                    "Unfortunately, quandl historical data doesn't contain intraday prices"
+                    "Unfortunately, yahoo finance historical data doesn't contain intraday prices"
                 )
 
     except Exception as e:
         print(e)
-        print("Either the ticker or the API_KEY are invalids. Try again!")
+        print("Either the ticker or the API_KEY are invalids. Try again!\n")
         return [s_ticker, s_start, s_interval, df_stock]
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
