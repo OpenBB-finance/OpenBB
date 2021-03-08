@@ -30,4 +30,4 @@ COPY --chown=python:python . .
 RUN pip install "poetry==1.1.4"
 RUN poetry export --without-hashes -f requirements.txt | pip install -r /dev/stdin
 
-CMD ["python", "gamestonk_terminal.py"]
+CMD ["python", "terminal.py"]
