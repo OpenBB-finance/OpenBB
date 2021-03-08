@@ -115,11 +115,11 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
             if ~np.isnan(forecast).any():
 
                 print(f"\n{title}")
-                print(f"\nFit model parameters:")
+                print("\nFit model parameters:")
                 for key, value in model.params.items():
                     print(f"{key} {' '*(18-len(key))}: {value}")
 
-                print(f"\nAssess fit model:")
+                print("\nAssess fit model:")
                 print(f"AIC: {round(model.aic, 2)}")
                 print(f"BIC: {round(model.bic, 2)}")
                 print(f"SSE: {round(model.sse, 2)}\n")
