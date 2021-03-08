@@ -4,6 +4,8 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
 
   * [sma](#sma)
     - simple moving average
+  * [ets](#ets)
+    - Exponential Smoothing (e.g. Holt-Winters)
   * [knn](#knn)
     - k-Nearest Neighbors
   * [linear](#linear)
@@ -37,6 +39,17 @@ Simple Moving Average:
   * -d : prediciton days. Default 5.
 
 ![sma](https://user-images.githubusercontent.com/25267873/108604945-d29aea80-73a8-11eb-8dac-6a545b9c52b9.png)
+
+## ets <a name="ets"></a>
+```
+usage: ets [-t TREND] [-s SEASONAL] [-p SEASONAL_PERIODS] [-d N_DAYS]
+```
+Exponential Smoothing:
+  * -t : trend component: N: None, A: Additive, Ad: Additive Damped. Default N.
+  * -s : seasonality component: N: None, A: Additive, M: Multiplicative. Default N.
+  * -p : seasonal periods. Default 5.
+  * -d : prediciton days. Default 5.
+Based on trend+seasonality, the following methods are implemented: https://otexts.com/fpp2/taxonomy.html
 
 ## knn <a name="knn"></a>
 ```
@@ -125,7 +138,7 @@ Facebook's Prophet:
 
 ## mlp <a name="mlp"></a>
 ```
-usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}] 
+usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}]
 [-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
 ```
 MulitLayer Perceptron:
@@ -140,15 +153,15 @@ MulitLayer Perceptron:
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
 MultiLayer_Perceptron \
-    = [ {'Dense': 
+    = [ {'Dense':
                 {'units':50, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'units':100, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'units':80, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'units':30, 'activation':'relu'} },
-        {'Dense': 
+        {'Dense':
                 {'activation':'linear'} }]
 ```
 
@@ -156,7 +169,7 @@ MultiLayer_Perceptron \
 
 ## rnn <a name="rnn"></a>
 ```
-usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}] 
+usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}]
 [-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
 ```
 Recurrent Neural Network:
@@ -171,15 +184,15 @@ Recurrent Neural Network:
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
 Recurrent_Neural_Network \
-    = [ {'SimpleRNN': 
+    = [ {'SimpleRNN':
                 {'units':100, 'activation':'linear', 'return_sequences':True} },
-        {'SimpleRNN': 
+        {'SimpleRNN':
                 {'units':50, 'activation':'linear', 'return_sequences':True} },
-        {'Dropout': 
+        {'Dropout':
                 {'rate':0.2} },
-        {'SimpleRNN': 
+        {'SimpleRNN':
                 {'units':21, 'activation':'linear', 'return_sequences':False} },
-        {'Dense': 
+        {'Dense':
                 {'activation':'linear'} }]
 ```
 
@@ -187,7 +200,7 @@ Recurrent_Neural_Network \
 
 ## lstm <a name="lstm"></a>
 ```
-usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}] 
+usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}]
 [-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
 ```
 Long-Short Term Memory:
@@ -202,11 +215,11 @@ Long-Short Term Memory:
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
 Long_Short_Term_Memory \
-    = [ {'LSTM': 
+    = [ {'LSTM':
                 {'units':25, 'activation':'tanh', 'return_sequences':True} },
-        {'LSTM': 
+        {'LSTM':
                 {'units':15, 'activation':'tanh', 'return_sequences':False} },
-        {'Dense': 
+        {'Dense':
                 {'activation':'linear'} }]
 ```
 
