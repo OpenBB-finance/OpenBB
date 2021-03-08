@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import pmdarima
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from gamestonk_terminal.helper_funcs import (
     check_positive,
