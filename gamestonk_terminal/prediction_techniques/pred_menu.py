@@ -1,6 +1,7 @@
 import argparse
 
 from gamestonk_terminal.prediction_techniques import sma
+from gamestonk_terminal.prediction_techniques import ets
 from gamestonk_terminal.prediction_techniques import knn
 from gamestonk_terminal.prediction_techniques import regression
 from gamestonk_terminal.prediction_techniques import arima
@@ -27,6 +28,7 @@ def print_prediction(s_ticker, s_start, s_interval):
     print("   quit        quit to abandon program")
     print("")
     print("   sma         simple moving average")
+    print("   ets         exponential smoothing (e.g. Holt-Winters)")
     print("   knn         k-Nearest Neighbors")
     print("   linear      linear regression (polynomial 1)")
     print("   quadratic   quadratic regression (polynomial 2)")
@@ -51,6 +53,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
             "q",
             "quit",
             "sma",
+            "ets",
             "knn",
             "linear",
             "quadratic",
@@ -95,6 +98,9 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
         elif ns_known_args.cmd == "sma":
             sma.simple_moving_average(l_args, s_ticker, df_stock)
+
+        elif ns_known_args.cmd == "ets":
+            ets.exponential_smoothing(l_args, s_ticker, df_stock)
 
         elif ns_known_args.cmd == "knn":
             knn.k_nearest_neighbors(l_args, s_ticker, df_stock)
