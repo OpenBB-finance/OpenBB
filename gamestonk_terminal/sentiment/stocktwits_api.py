@@ -116,7 +116,7 @@ def trending(l_args):
                     [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]
                 )
 
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
             df_trending = pd.DataFrame(
                 l_symbols, columns=["Ticker", "Watchlist Count", "Name"]
             )

@@ -61,7 +61,7 @@ def earnings_release_dates(l_args):
     df_earnings["Date"] = pd.to_datetime(df_earnings["Date"])
     df_earnings = df_earnings.set_index("Date")
 
-    pd.set_option("display.max_colwidth", -1)
+    pd.set_option("display.max_colwidth", None)
     for n_days, earning_date in enumerate(df_earnings.index.unique()):
         if n_days > (ns_parser.n_num - 1):
             break

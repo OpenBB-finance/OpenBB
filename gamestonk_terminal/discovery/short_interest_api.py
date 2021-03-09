@@ -69,7 +69,7 @@ def high_short_interest(l_args):
 
         shorted_stock_data = list()
 
-    pd.set_option("display.max_colwidth", -1)
+    pd.set_option("display.max_colwidth", None)
     print(df_high_short_interest.head(n=ns_parser.n_num).to_string(index=False))
     print("")
 
@@ -130,6 +130,6 @@ def low_float(l_args):
 
         low_float_data = list()
 
-    pd.set_option("display.max_colwidth", -1)
+    pd.set_option("display.max_colwidth", None)
     print(df_low_float.head(n=ns_parser.n_num).to_string(index=False))
     print("")

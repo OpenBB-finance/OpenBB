@@ -116,7 +116,7 @@ def enterprise(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 40
 
@@ -169,7 +169,7 @@ def discounted_cash_flow(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 40
 
@@ -229,7 +229,7 @@ def income_statement(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 40
 
@@ -244,7 +244,7 @@ def income_statement(l_args, s_ticker):
 
         print(df_fa.drop(index=["Final link", "Link"]).to_string())
 
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
         print("")
         print(df_fa.loc["Final link"].to_frame().to_string())
         print("")
@@ -300,7 +300,7 @@ def balance_sheet(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 40
 
@@ -317,7 +317,7 @@ def balance_sheet(l_args, s_ticker):
 
         print(df_fa.drop(index=["Final link", "Link"]).to_string())
 
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
         print("")
         print(df_fa.loc["Final link"].to_frame().to_string())
         print("")
@@ -371,7 +371,7 @@ def cash_flow(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 40
 
@@ -386,7 +386,7 @@ def cash_flow(l_args, s_ticker):
 
         print(df_fa.drop(index=["Final link", "Link"]).to_string())
 
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
         print("")
         print(df_fa.loc["Final link"].to_frame().to_string())
         print("")
@@ -445,7 +445,7 @@ def key_metrics(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 50
 
@@ -514,7 +514,7 @@ def financial_ratios(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 40
 
@@ -579,7 +579,7 @@ def financial_statement_growth(l_args, s_ticker):
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
         if ns_parser.n_num == 1:
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option("display.max_colwidth", None)
         else:
             pd.options.display.max_colwidth = 50
 

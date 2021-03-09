@@ -132,7 +132,7 @@ def orders(l_args):
         + ":"
     )
 
-    pd.set_option("display.max_colwidth", -1)
+    pd.set_option("display.max_colwidth", None)
 
     if USE_COLOR:
         df_orders["Buy / Sell Ratio"] = df_orders["Buy / Sell Ratio"].apply(

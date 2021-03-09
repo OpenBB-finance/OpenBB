@@ -66,7 +66,7 @@ def info(l_args, s_ticker):
         df_info.index = df_info.index.str.replace("p e", "PE")
         df_info.index = df_info.index.str.replace("Peg", "PEG")
 
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
 
         if "Long business summary" in df_info.index:
             print(df_info.drop(index=["Long business summary"]).to_string(header=False))
@@ -94,7 +94,7 @@ def shareholders(l_args, s_ticker):
         parse_known_args_and_warn(parser, l_args)
 
         stock = yf.Ticker(s_ticker)
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
 
         # Major holders
         print("Major holders")
@@ -165,7 +165,7 @@ def sustainability(l_args, s_ticker):
         parse_known_args_and_warn(parser, l_args)
 
         stock = yf.Ticker(s_ticker)
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
 
         df_sustainability = stock.sustainability
 
