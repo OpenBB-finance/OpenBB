@@ -1,11 +1,10 @@
 import argparse
 import json
-from pandas.core.base import DataError
-from pandas.core.frame import DataFrame
 import requests
 from colorama import Fore, Style
 from bs4 import BeautifulSoup
 import pandas as pd
+from pandas.core.frame import DataFrame
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
