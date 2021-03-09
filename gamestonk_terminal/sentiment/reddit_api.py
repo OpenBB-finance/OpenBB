@@ -308,7 +308,7 @@ def popular_tickers(l_args):
                     n_top_stocks += 1
                 except HTTPError as e:
                     if e.response.status_code != 404:
-                        print(f"Unexpected exception from Fiviz: {e}")
+                        print(f"Unexpected exception from Finviz: {e}")
                 except Exception as e:
                     print(e)
 
