@@ -98,7 +98,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         plt.show()
         print("")
 
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
         print(
             df_analyst_data.sort_index(ascending=False)
             .head(ns_parser.n_num)

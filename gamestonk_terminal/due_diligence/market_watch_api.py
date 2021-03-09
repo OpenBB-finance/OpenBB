@@ -35,7 +35,7 @@ def sec_fillings(l_args, s_ticker):
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
 
-        pd.set_option("display.max_colwidth", -1)
+        pd.set_option("display.max_colwidth", None)
 
         url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/secfilings"
 
