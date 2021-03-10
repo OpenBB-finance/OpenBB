@@ -5,6 +5,7 @@ from gamestonk_terminal.discovery import finviz_api
 from gamestonk_terminal.discovery import short_interest_api
 from gamestonk_terminal.discovery import seeking_alpha_api
 from gamestonk_terminal.discovery import fidelity_api
+from gamestonk_terminal.discovery import ark_api
 from gamestonk_terminal.discovery import simply_wallst_api
 from gamestonk_terminal.discovery import spachero_api
 from gamestonk_terminal.discovery import unusual_whales_api
@@ -27,6 +28,7 @@ def print_discovery():
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   orders        orders by Fidelity Customers [Fidelity]")
+    print("   ark_orders    orders by ARK Investment Management LLC")
     print("   up_earnings   upcoming earnings release dates [Seeking Alpha]")
     print(
         "   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]"
@@ -54,6 +56,7 @@ def disc_menu():
         "gainers",
         "spacs",
         "orders",
+        "ark_orders",
         "spachero",
         "high_short",
         "low_float",
@@ -111,6 +114,9 @@ def disc_menu():
 
         elif ns_known_args.cmd == "orders":
             fidelity_api.orders(l_args)
+
+        elif ns_known_args.cmd == "ark_orders":
+            ark_api.ark_orders(l_args)
 
         elif ns_known_args.cmd == "simply_wallst":
             simply_wallst_api.simply_wallst(l_args)
