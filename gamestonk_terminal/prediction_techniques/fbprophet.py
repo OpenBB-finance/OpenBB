@@ -17,6 +17,7 @@ warnings.simplefilter("ignore")
 
 def fbprophet(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="fbprophet",
         description="""
             Facebook Prophet is a forecasting procedure that is fast and provides

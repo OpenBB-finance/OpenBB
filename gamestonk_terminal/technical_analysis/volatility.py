@@ -9,6 +9,7 @@ register_matplotlib_converters()
 
 def bbands(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="bbands",
         description="""
             Bollinger Bands consist of three lines. The middle band is a simple

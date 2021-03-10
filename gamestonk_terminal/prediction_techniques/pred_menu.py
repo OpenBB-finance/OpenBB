@@ -45,7 +45,7 @@ def print_prediction(s_ticker, s_start, s_interval):
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the prediction techniques parser accepts
-    pred_parser = argparse.ArgumentParser(prog="pred", add_help=False)
+    pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
     pred_parser.add_argument(
         "cmd",
         choices=[

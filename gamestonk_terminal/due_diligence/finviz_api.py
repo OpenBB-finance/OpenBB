@@ -20,6 +20,7 @@ def category_color_red_green(val: str) -> str:
 
 def insider(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="insider",
         description="""
             Prints information about inside traders. The following fields are expected: Date, Relationship,
@@ -69,6 +70,7 @@ def insider(l_args, s_ticker):
 
 def news(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="news",
         description="""
             Prints latest news about company, including title and web link. [Source: Finviz]
@@ -118,6 +120,7 @@ def analyst_df(s_ticker: str) -> DataFrame:
 
 def analyst(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="analyst",
         description="""
             Print analyst prices and ratings of the company. The following fields are expected:

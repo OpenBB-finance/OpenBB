@@ -5,6 +5,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 def map_sp500(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="map",
         description="""
             Performance index stocks map categorized by sectors and industries.

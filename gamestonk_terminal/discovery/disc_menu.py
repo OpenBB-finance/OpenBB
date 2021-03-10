@@ -46,7 +46,7 @@ def print_discovery():
 def disc_menu():
 
     # Add list of arguments that the discovery parser accepts
-    disc_parser = argparse.ArgumentParser(prog="discovery", add_help=False)
+    disc_parser = argparse.ArgumentParser(add_help=False, prog="discovery")
     choices = [
         "help",
         "q",

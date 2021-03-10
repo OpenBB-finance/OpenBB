@@ -42,6 +42,7 @@ def price_change_color_red_green(val: str) -> str:
 
 def orders(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="orders",
         description="""
             Orders by Fidelity customers. Information shown in the table below

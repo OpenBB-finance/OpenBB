@@ -7,6 +7,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 def sectors(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="sectors",
         description="""Real-time and historical sector performances calculated from
         S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]""",

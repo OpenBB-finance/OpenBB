@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def profile(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="profile",
         description="""
             Prints information about, among other things, the industry, sector exchange and company
@@ -43,6 +44,7 @@ def profile(l_args, s_ticker):
 
 def quote(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="quote",
         description="""
             Prints actual information about the company which is, among other things, the day high,
@@ -85,6 +87,7 @@ def quote(l_args, s_ticker):
 
 def enterprise(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="enterprise",
         description="""
             Prints stock price, number of shares, market capitalization and
@@ -142,6 +145,7 @@ def enterprise(l_args, s_ticker):
 
 def discounted_cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="dcf",
         description="""
             Prints the discounted cash flow of a company over time including the DCF of today. The
@@ -197,6 +201,7 @@ def discounted_cash_flow(l_args, s_ticker):
 
 def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="inc",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
@@ -265,6 +270,7 @@ def income_statement(l_args, s_ticker):
 
 def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="bal",
         description="""
             Prints a complete balance sheet statement over time. This can be
@@ -340,6 +346,7 @@ def balance_sheet(l_args, s_ticker):
 
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="cash",
         description="""
             Prints a complete cash flow statement over time. This can be either
@@ -411,6 +418,7 @@ def cash_flow(l_args, s_ticker):
 
 def key_metrics(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="metrics",
         description="""
             Prints a list of the key metrics of a company over time. This can be either
@@ -481,6 +489,7 @@ def key_metrics(l_args, s_ticker):
 
 def financial_ratios(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ratios",
         description="""
             Prints in-depth ratios of a company over time. This can be either quarterly or
@@ -552,6 +561,7 @@ def financial_ratios(l_args, s_ticker):
 
 def financial_statement_growth(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="growth",
         description=""" Prints the growth of several financial statement items and ratios over
         time. This can be either annually and quarterly. These are, among other things, Revenue

@@ -77,6 +77,7 @@ def load_tweets(s_ticker: str, count: int) -> DataFrame:
 
 def inference(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="infer",
         description="""
             Print quick sentiment inference from last tweets that contain the ticker.
@@ -192,6 +193,7 @@ def inference(l_args, s_ticker):
 
 def sentiment(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="sen",
         description="""
             Plot in-depth sentiment predicted from tweets from last days

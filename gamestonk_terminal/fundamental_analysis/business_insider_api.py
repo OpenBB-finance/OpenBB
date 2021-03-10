@@ -8,6 +8,7 @@ from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and
 
 def management(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="mgmt",
         description="""
             Print management team. Namely: Name, Title, Information from google and

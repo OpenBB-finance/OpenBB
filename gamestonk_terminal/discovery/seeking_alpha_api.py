@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def earnings_release_dates(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="up_earnings",
         description="""Upcoming earnings release dates. [Source: Seeking Alpha]""",
     )

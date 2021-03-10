@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="overview",
         description="""
             Prints an overview about the company. The following fields are expected:
@@ -87,6 +88,7 @@ def overview(l_args, s_ticker):
 
 def key(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="key",
         description="""
             Gives main key metrics about the company (it's a subset of the Overview data from Alpha
@@ -150,6 +152,7 @@ def key(l_args, s_ticker):
 
 def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="incom",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
@@ -211,6 +214,7 @@ def income_statement(l_args, s_ticker):
 
 def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="balance",
         description="""
             Prints a complete balance sheet statement over time. This can be either quarterly or
@@ -280,6 +284,7 @@ def balance_sheet(l_args, s_ticker):
 
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="cash",
         description="""
             Prints a complete cash flow statement over time. This can be either quarterly or
@@ -345,6 +350,7 @@ def cash_flow(l_args, s_ticker):
 
 def earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="earnings",
         description="""
             Print earnings dates and reported EPS of the company. The following fields are

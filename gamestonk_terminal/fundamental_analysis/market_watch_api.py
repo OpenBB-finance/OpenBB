@@ -8,6 +8,7 @@ from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and
 
 def income(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="income",
         description="""
             Prints either yearly or quarterly income statement the company. The following fields
@@ -65,6 +66,7 @@ def income(l_args, s_ticker):
 
 def assets(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="assets",
         description="""
             Prints either yearly or quarterly assets from balance sheet of the company.
@@ -116,6 +118,7 @@ def assets(l_args, s_ticker):
 
 def liabilities(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="liabilities",
         description="""
             Prints either yearly or quarterly liablities and shareholders' equity from balance
@@ -170,6 +173,7 @@ def liabilities(l_args, s_ticker):
 
 def operating(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="operating",
         description="""
             Prints either yearly or quarterly cash flow operating activities of the company.
@@ -216,6 +220,7 @@ def operating(l_args, s_ticker):
 
 def investing(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="investing",
         description="""
             Prints either yearly or quarterly cash flow investing activities of the company.
@@ -259,6 +264,7 @@ def investing(l_args, s_ticker):
 
 def financing(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="financing",
         description="""
             Prints either yearly or quarterly cash flow financing activities of the company.

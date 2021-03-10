@@ -6,6 +6,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 def rating(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="rating",
         description="""
             Based on specific ratios, prints information whether the company

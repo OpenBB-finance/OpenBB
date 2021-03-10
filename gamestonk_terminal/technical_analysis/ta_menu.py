@@ -47,7 +47,7 @@ def print_technical_analysis(s_ticker, s_start, s_interval):
 def ta_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the technical analysis parser accepts
-    ta_parser = argparse.ArgumentParser(prog="ta", add_help=False)
+    ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
     ta_parser.add_argument(
         "cmd",
         choices=[

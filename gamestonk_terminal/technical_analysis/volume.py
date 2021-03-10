@@ -9,6 +9,7 @@ register_matplotlib_converters()
 
 def ad(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ad",
         description="""
             The Accumulation/Distribution Line is similar to the On Balance
@@ -140,6 +141,7 @@ def ad(l_args, s_ticker, s_interval, df_stock):
 
 def obv(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="obv",
         description="""
             The On Balance Volume (OBV) is a cumulative total of the up and

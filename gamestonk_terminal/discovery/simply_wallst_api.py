@@ -5,6 +5,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 def simply_wallst(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="simply_wallst",
         description="""
             Simply Wall Street Research. Opens web browser. Although this does not require

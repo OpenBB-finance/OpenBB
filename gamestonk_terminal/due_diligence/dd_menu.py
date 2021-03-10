@@ -47,7 +47,7 @@ def print_due_diligence(s_ticker, s_start, s_interval):
 def dd_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the due diligence parser accepts
-    dd_parser = argparse.ArgumentParser(prog="dd", add_help=False)
+    dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
     dd_parser.add_argument(
         "cmd",
         choices=[

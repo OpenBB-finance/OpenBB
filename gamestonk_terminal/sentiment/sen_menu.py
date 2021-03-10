@@ -50,7 +50,7 @@ def print_sentiment():
 def sen_menu(s_ticker, s_start):
 
     # Add list of arguments that the discovery parser accepts
-    sen_parser = argparse.ArgumentParser(prog="sen", add_help=False)
+    sen_parser = argparse.ArgumentParser(add_help=False, prog="sen")
     sen_parser.add_argument(
         "cmd",
         choices=[

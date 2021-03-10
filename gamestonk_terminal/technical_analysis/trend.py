@@ -9,6 +9,7 @@ register_matplotlib_converters()
 
 def adx(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="adx",
         description="""
             The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
@@ -126,6 +127,7 @@ def plot_adx(df_stock, s_ticker, df_ta):
 
 def aroon(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="aroon",
         description="""
             The word aroon is Sanskrit for "dawn's early light." The Aroon

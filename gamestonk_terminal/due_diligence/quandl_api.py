@@ -13,6 +13,7 @@ from gamestonk_terminal import config_terminal as cfg
 
 def short_interest(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="short",
         description="""
             Plots the short interest of a stock. This corresponds to the number of shares that

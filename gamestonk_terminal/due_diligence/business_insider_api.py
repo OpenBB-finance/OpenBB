@@ -18,6 +18,7 @@ register_matplotlib_converters()
 
 def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="pt",
         description="""Prints price target from analysts. [Source: Business Insider]""",
     )
@@ -116,6 +117,7 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
 def estimates(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="est",
         description="""Yearly estimates and quarter earnings/revenues [Source: Business Insider]""",
     )
@@ -272,6 +274,7 @@ def estimates(l_args, s_ticker):
 
 def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ins",
         description="""Prints insider activity over time [Source: Business Insider]""",
     )

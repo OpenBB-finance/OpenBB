@@ -36,6 +36,7 @@ def check_valid_seasonal(seasonal: str) -> str:
 
 def exponential_smoothing(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ets",
         description="""
             Exponential Smoothing, see https://otexts.com/fpp2/taxonomy.html

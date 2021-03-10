@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def high_short_interest(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="high_short",
         description="""
             Print top stocks being more heavily shorted. HighShortInterest.com provides
@@ -78,6 +79,7 @@ def high_short_interest(l_args):
 
 def low_float(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="low_float",
         description="""
             Print top stocks with lowest float. LowFloat.com provides a convenient

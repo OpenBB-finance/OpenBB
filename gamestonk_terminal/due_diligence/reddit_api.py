@@ -9,6 +9,7 @@ from gamestonk_terminal.reddit_helpers import print_and_record_reddit_post
 
 def due_diligence(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="red",
         description="""
             Print top stock's due diligence from other users. [Source: Reddit]

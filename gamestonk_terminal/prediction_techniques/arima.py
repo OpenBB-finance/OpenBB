@@ -16,6 +16,7 @@ register_matplotlib_converters()
 
 def arima(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="arima",
         description="""
             In statistics and econometrics, and in particular in time series analysis, an

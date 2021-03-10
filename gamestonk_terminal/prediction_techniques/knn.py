@@ -16,6 +16,7 @@ register_matplotlib_converters()
 
 def k_nearest_neighbors(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="knn",
         description="""
             K nearest neighbors is a simple algorithm that stores all

@@ -6,12 +6,12 @@ from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and
 
 def bullbear(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="bullbear",
         description="""
             Print bullbear sentiment based on last 30 messages on the board.
             Also prints the watchlist_count. [Source: Stocktwits]
         """,
-        add_help=False,
     )
     parser.add_argument(
         "-t",
@@ -56,6 +56,7 @@ def bullbear(l_args, s_ticker):
 
 def messages(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="messages",
         description="""Print up to 30 of the last messages on the board. [Source: Stocktwits]""",
     )
@@ -106,7 +107,9 @@ def messages(l_args, s_ticker):
 
 def trending(l_args):
     parser = argparse.ArgumentParser(
-        prog="trending", description="""Stocks trending. [Source: Stocktwits]"""
+        add_help=False,
+        prog="trending",
+        description="""Stocks trending. [Source: Stocktwits]""",
     )
 
     try:
@@ -136,6 +139,7 @@ def trending(l_args):
 
 def stalker(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="stalker",
         description="""Print up to the last 30 messages of a user. [Source: Stocktwits]""",
     )

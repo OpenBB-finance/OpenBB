@@ -5,6 +5,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 def gainers(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="gainers",
         description="Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]",
     )

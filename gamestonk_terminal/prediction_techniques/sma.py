@@ -17,6 +17,7 @@ register_matplotlib_converters()
 # pylint: disable=unused-argument
 def simple_moving_average(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="sma",
         description="""
             Moving Averages are used to smooth the data in an array to

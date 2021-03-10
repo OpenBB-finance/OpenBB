@@ -6,6 +6,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 def screener(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="screener",
         description="""
             Print several metrics about the company. The following fields are expected:

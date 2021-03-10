@@ -24,6 +24,7 @@ CUBIC = 3
 
 def regression(l_args, s_ticker, df_stock, polynomial):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="regression",
         description="""
             Regression attempts to model the relationship between

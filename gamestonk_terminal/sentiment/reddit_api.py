@@ -18,6 +18,7 @@ from gamestonk_terminal.reddit_helpers import (
 
 def watchlist(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="watchlist",
         description="""Print other users watchlist. [Source: Reddit]""",
     )
@@ -150,6 +151,7 @@ def watchlist(l_args):
 
 def popular_tickers(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="popular",
         description="""Print latest popular tickers. [Source: Reddit] """,
     )
@@ -355,6 +357,7 @@ def popular_tickers(l_args):
 
 def spac_community(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="spac_c",
         description="""Print other users SPACs announcement under subreddit 'SPACs' [Source: Reddit]""",
     )
@@ -472,7 +475,9 @@ def spac_community(l_args):
 
 def spac(l_args):
     parser = argparse.ArgumentParser(
-        prog="spac", description=""" Show other users SPACs announcement [Reddit] """
+        add_help=False,
+        prog="spac",
+        description=""" Show other users SPACs announcement [Reddit] """,
     )
     parser.add_argument(
         "-l",
@@ -611,6 +616,7 @@ def spac(l_args):
 
 def wsb_community(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="wsb",
         description="""Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]""",
     )

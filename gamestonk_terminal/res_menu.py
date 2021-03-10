@@ -41,7 +41,7 @@ def print_research(s_ticker, s_start, s_interval):
 
 def res_menu(s_ticker, s_start, s_interval):
     # Add list of arguments that the research parser accepts
-    res_parser = argparse.ArgumentParser(prog="discovery", add_help=False)
+    res_parser = argparse.ArgumentParser(add_help=False, prog="discovery")
     res_parser.add_argument(
         "cmd",
         choices=[

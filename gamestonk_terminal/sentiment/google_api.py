@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def mentions(l_args, s_ticker, s_start):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="mentions",
         description="""
             Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
@@ -66,6 +67,7 @@ def mentions(l_args, s_ticker, s_start):
 
 def regions(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="regions",
         description="""Plot bars of regions based on stock's interest. [Source: Google]""",
     )
@@ -108,6 +110,7 @@ def regions(l_args, s_ticker):
 
 def queries(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="queries",
         description="""Print top related queries with this stock's query. [Source: Google]""",
     )
@@ -145,6 +148,7 @@ def queries(l_args, s_ticker):
 
 def rise(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="rise",
         description="""Print top rising related queries with this stock's query.
                                     [Source: Google]""",

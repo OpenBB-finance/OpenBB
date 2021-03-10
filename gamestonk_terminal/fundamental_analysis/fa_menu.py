@@ -68,6 +68,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
 
 def key_metrics_explained(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="info",
         description="""
             Provides information about main key metrics. Namely: EBITDA,
@@ -99,7 +100,7 @@ def key_metrics_explained(l_args):
 def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts
-    fa_parser = argparse.ArgumentParser(prog="fa", add_help=False)
+    fa_parser = argparse.ArgumentParser(add_help=False, prog="fa")
     fa_parser.add_argument(
         "cmd",
         choices=[

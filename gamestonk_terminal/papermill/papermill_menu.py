@@ -20,7 +20,7 @@ def print_papermill():
 
 
 def papermill_menu():
-    papermill_parser = argparse.ArgumentParser(prog="papermill", add_help=False)
+    papermill_parser = argparse.ArgumentParser(add_help=False, prog="papermill")
     papermill_parser.add_argument(
         "cmd",
         choices=["help", "q", "quit", "dd"],
