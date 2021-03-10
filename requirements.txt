@@ -90,3 +90,4 @@ websocket-client==0.58.0; python_version >= "3.6" and python_full_version < "3.0
 yarl==1.6.3; python_version >= "3.6"
 yfinance==0.1.55
 zipp==3.4.1; python_version < "3.8" and python_version >= "3.6"
+prompt-toolkit==3.0.16; python_version >= "3.6"

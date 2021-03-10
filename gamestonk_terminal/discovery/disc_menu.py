@@ -12,6 +12,9 @@ from gamestonk_terminal.discovery import unusual_whales_api
 
 from gamestonk_terminal.helper_funcs import get_flair
 
+from gamestonk_terminal.menu import session
+from prompt_toolkit.completion import WordCompleter
+
 
 def print_discovery():
     """ Print help """
@@ -44,34 +47,36 @@ def disc_menu():
 
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog="discovery", add_help=False)
-    disc_parser.add_argument(
-        "cmd",
-        choices=[
-            "help",
-            "q",
-            "quit",
-            "map",
-            "sectors",
-            "gainers",
-            "spacs",
-            "orders",
-            "ark_orders",
-            "spachero",
-            "high_short",
-            "low_float",
-            "up_earnings",
-            "simply_wallst",
-            "uwhales",
-            "mill",
-        ],
-    )
+    choices = [
+        "help",
+        "q",
+        "quit",
+        "map",
+        "sectors",
+        "gainers",
+        "spacs",
+        "orders",
+        "ark_orders",
+        "spachero",
+        "high_short",
+        "low_float",
+        "up_earnings",
+        "simply_wallst",
+        "uwhales",
+        "mill",
+    ]
+    disc_parser.add_argument("cmd", choices=choices)
+    word_completer = WordCompleter(choices)
 
     print_discovery()
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair()} (disc)> ")
+        as_input = session.prompt(
+            f"{get_flair()} (disc)> ",
+            completer=word_completer,
+        )
 
         # Parse fundamental analysis command of the list of possible commands
         try:
