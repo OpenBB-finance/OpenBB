@@ -9,3 +9,4 @@ env/
 venv/
 notebooks/reports/*
 !notebooks/reports/.gitkeep
+.python-version
