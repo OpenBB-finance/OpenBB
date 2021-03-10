@@ -135,7 +135,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
-            return
+            return [s_ticker, s_start, s_interval, df_stock]
 
     except SystemExit:
         print("")
