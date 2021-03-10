@@ -21,92 +21,78 @@
 ## Discovery
 
 ### Short term
-* Add Cathy's ARK trading activity (@aia)
 * Top Losers (@didier)
-### Medium term
-* Add screeners (@didier)
 ### Long term
+* Add screeners (@didier)
 
 ## Behavioral Analysis
 
 ### Short term
 * Implement a better Twitter client (@aia)
-### Medium term:
-* Add Stocktwits (@aia)
 ### Long term
+* Add Stocktwits (@aia)
 
 ## Sell-side Equity Research
 
 ### Short term
-### Medium term
 ### Long term
 
 ## Fundamental Analysis
 
 ### Short term
 * Multi-ticker comparison (@didier)
-### Medium term
+* Rearrange FA menu to have AV and FMP as submenus (@didier)
 ### Long term
 
 ## Technical Analysis
 
 ### Short term
-### Medium term
 * Add auto-recognition of major TA patterns (@didier)
 ### Long term
 
 ## Due Diligence
 
 ### Short term
-### Medium term
 ### Long term
 
 ## Prediction Techniques
 
 ### Short term
-* Implement several exponential smoothing methods (@didier)
-### Medium term
 ### Long term
 
-### Reports
+## Reports
 
 ### Short term
 * Expand Due Diligence report
 * Add multi-ticker comparison report
-### Medium term
 ### Long term
 
 ## Portfolio Analysis
 
 ### Short term
-### Medium term
 ### Long term
 
 ## Credit Analysis
 
 ### Short term
-### Medium term
 ### Long term
 
 ## Cryptocurrencies
 
 ### Short term
-### Medium term
 ### Long term
 
 ## Backend
 
 ### Short term
-### Medium term
+### Long term
 * Add caching
 * APIs
-### Long term
 * GraphQL
 
 ## Frontend
 
 ### Short term
-### Medium term
 ### Long term
 
 ## Developer Experience
@@ -114,13 +100,10 @@
 ### Short term
 * Add Windows CI (@aia)
 * Write a developer guide
-### Medium term
 ### Long term
 
 ## User Experience
 
 ### Short term
-### Medium term
-* Add a WHL installation
 ### Long term
-
+* Add a WHL installation

@@ -5,11 +5,15 @@ from gamestonk_terminal.discovery import finviz_api
 from gamestonk_terminal.discovery import short_interest_api
 from gamestonk_terminal.discovery import seeking_alpha_api
 from gamestonk_terminal.discovery import fidelity_api
+from gamestonk_terminal.discovery import ark_api
 from gamestonk_terminal.discovery import simply_wallst_api
 from gamestonk_terminal.discovery import spachero_api
 from gamestonk_terminal.discovery import unusual_whales_api
 
 from gamestonk_terminal.helper_funcs import get_flair
+
+from gamestonk_terminal.menu import session
+from prompt_toolkit.completion import WordCompleter
 
 
 def print_discovery():
@@ -24,6 +28,7 @@ def print_discovery():
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
     print("   orders        orders by Fidelity Customers [Fidelity]")
+    print("   ark_orders    orders by ARK Investment Management LLC")
     print("   up_earnings   upcoming earnings release dates [Seeking Alpha]")
     print(
         "   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]"
@@ -42,33 +47,36 @@ def disc_menu():
 
     # Add list of arguments that the discovery parser accepts
     disc_parser = argparse.ArgumentParser(prog="discovery", add_help=False)
-    disc_parser.add_argument(
-        "cmd",
-        choices=[
-            "help",
-            "q",
-            "quit",
-            "map",
-            "sectors",
-            "gainers",
-            "spacs",
-            "orders",
-            "spachero",
-            "high_short",
-            "low_float",
-            "up_earnings",
-            "simply_wallst",
-            "uwhales",
-            "mill",
-        ],
-    )
+    choices = [
+        "help",
+        "q",
+        "quit",
+        "map",
+        "sectors",
+        "gainers",
+        "spacs",
+        "orders",
+        "ark_orders",
+        "spachero",
+        "high_short",
+        "low_float",
+        "up_earnings",
+        "simply_wallst",
+        "uwhales",
+        "mill",
+    ]
+    disc_parser.add_argument("cmd", choices=choices)
+    word_completer = WordCompleter(choices)
 
     print_discovery()
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair()} (disc)> ")
+        as_input = session.prompt(
+            f"{get_flair()} (disc)> ",
+            completer=word_completer,
+        )
 
         # Parse fundamental analysis command of the list of possible commands
         try:
@@ -106,6 +114,9 @@ def disc_menu():
 
         elif ns_known_args.cmd == "orders":
             fidelity_api.orders(l_args)
+
+        elif ns_known_args.cmd == "ark_orders":
+            ark_api.ark_orders(l_args)
 
         elif ns_known_args.cmd == "simply_wallst":
             simply_wallst_api.simply_wallst(l_args)
