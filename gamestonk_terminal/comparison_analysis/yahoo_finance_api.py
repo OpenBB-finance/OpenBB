@@ -1,12 +1,11 @@
 import argparse
-import requests
 import numpy as np
 import pandas as pd
+from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import yfinance as yf
 import seaborn as sns
-from datetime import datetime
-from pandas.plotting import register_matplotlib_converters
+
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 register_matplotlib_converters()
@@ -126,7 +125,7 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
                 min_start_date = max(l_min)
 
                 df_stock = d_stock[s_ticker]["Adj Close"].rename(s_ticker)
-                for symbol in d_stock.keys():
+                for symbol in d_stock:
                     if symbol != s_ticker:
                         if not d_stock[symbol].empty:
                             df_stock = pd.concat(
