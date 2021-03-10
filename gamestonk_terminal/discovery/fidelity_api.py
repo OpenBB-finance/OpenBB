@@ -62,6 +62,8 @@ def orders(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     url_orders = (
         "https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"

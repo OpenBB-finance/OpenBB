@@ -11,8 +11,8 @@ def bullbear(l_args, s_ticker):
             Print bullbear sentiment based on last 30 messages on the board.
             Also prints the watchlist_count. [Source: Stocktwits]
         """,
+        add_help=False,
     )
-
     parser.add_argument(
         "-t",
         "--ticker",
@@ -25,6 +25,8 @@ def bullbear(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
@@ -79,6 +81,8 @@ def messages(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
@@ -157,6 +161,8 @@ def stalker(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/user/{ns_parser.s_user}.json"

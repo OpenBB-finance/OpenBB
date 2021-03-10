@@ -42,6 +42,8 @@ def income(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income/quarter"
@@ -91,6 +93,8 @@ def assets(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
@@ -145,6 +149,8 @@ def liabilities(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
@@ -187,6 +193,8 @@ def operating(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
@@ -230,6 +238,8 @@ def investing(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
@@ -275,6 +285,8 @@ def financing(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"

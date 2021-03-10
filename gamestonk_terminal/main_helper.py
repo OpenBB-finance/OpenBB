@@ -128,6 +128,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 l_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
     except SystemExit:
         print("")
@@ -263,6 +265,8 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
     except SystemExit:
         print("")
@@ -353,6 +357,9 @@ def export(l_args, df_stock):
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
+
     except SystemExit:
         print("")
         return

@@ -156,6 +156,8 @@ def mlp(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -344,6 +346,8 @@ def rnn(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -532,6 +536,8 @@ def lstm(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":

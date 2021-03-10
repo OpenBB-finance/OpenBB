@@ -34,6 +34,8 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
@@ -285,6 +287,8 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"

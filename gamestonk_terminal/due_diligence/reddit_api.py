@@ -47,6 +47,8 @@ def due_diligence(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,

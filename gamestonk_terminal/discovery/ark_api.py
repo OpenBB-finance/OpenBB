@@ -110,6 +110,8 @@ def ark_orders(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     df_orders = get_ark_orders()
 

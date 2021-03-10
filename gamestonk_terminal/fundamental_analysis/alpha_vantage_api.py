@@ -183,6 +183,8 @@ def income_statement(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", None)
@@ -315,6 +317,8 @@ def cash_flow(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", None)
@@ -368,6 +372,8 @@ def earnings(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", None)

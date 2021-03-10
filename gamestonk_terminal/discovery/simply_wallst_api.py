@@ -51,6 +51,8 @@ def simply_wallst(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     webbrowser.open(f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1")
     print("")

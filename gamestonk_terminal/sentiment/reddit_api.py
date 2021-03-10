@@ -33,6 +33,8 @@ def watchlist(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         l_sub_reddits = [
             "pennystocks",
@@ -193,6 +195,8 @@ def popular_tickers(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         n_ts_after = int(
             (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
@@ -374,6 +378,8 @@ def spac_community(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -489,6 +495,8 @@ def spac(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -626,6 +634,8 @@ def wsb_community(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,

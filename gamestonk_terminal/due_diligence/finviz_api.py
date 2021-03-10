@@ -39,6 +39,8 @@ def insider(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         d_finviz_insider = finviz.get_insider(s_ticker)
         df_fa = pd.DataFrame.from_dict(d_finviz_insider)
@@ -85,6 +87,8 @@ def news(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         d_finviz_news = finviz.get_news(s_ticker)
         i = 0
@@ -134,6 +138,8 @@ def analyst(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         df_fa = analyst_df(s_ticker)
 

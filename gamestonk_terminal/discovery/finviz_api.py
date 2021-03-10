@@ -38,6 +38,8 @@ def map_sp500(l_args):
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     webbrowser.open(
         f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}"

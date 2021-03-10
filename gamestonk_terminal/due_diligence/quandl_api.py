@@ -40,6 +40,8 @@ def short_interest(l_args, s_ticker, s_start):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         quandl.ApiConfig.api_key = cfg.API_KEY_QUANDL
 

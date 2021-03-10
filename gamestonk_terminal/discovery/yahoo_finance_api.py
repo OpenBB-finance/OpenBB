@@ -21,6 +21,8 @@ def gainers(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     df_gainers = pd.read_html(
         "https://finance.yahoo.com/screener/predefined/day_gainers"

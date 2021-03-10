@@ -27,6 +27,8 @@ def mentions(l_args, s_ticker, s_start):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])
@@ -80,6 +82,8 @@ def regions(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])
@@ -120,6 +124,8 @@ def queries(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])
@@ -155,6 +161,8 @@ def rise(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[s_ticker])

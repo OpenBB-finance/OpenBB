@@ -50,6 +50,8 @@ def simple_moving_average(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Prediction data
         l_predictions = list()

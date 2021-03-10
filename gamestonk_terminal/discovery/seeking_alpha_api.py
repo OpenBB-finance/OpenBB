@@ -35,6 +35,8 @@ def earnings_release_dates(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     l_earnings = list()
     for idx in range(0, ns_parser.n_pages):

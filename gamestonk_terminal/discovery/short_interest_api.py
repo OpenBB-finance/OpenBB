@@ -32,6 +32,8 @@ def high_short_interest(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     url_high_short_interested_stocks = "https://www.highshortinterest.com"
     text_soup_high_short_interested_stocks = BeautifulSoup(
@@ -97,6 +99,8 @@ def low_float(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     url_high_short_interested_stocks = "https://www.lowfloat.com"
     text_soup_low_float_stocks = BeautifulSoup(

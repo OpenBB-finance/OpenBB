@@ -270,9 +270,20 @@ def patch_pandas_text_adjustment():
 
 
 def parse_known_args_and_warn(parser, l_args):
+    parser.add_argument(
+        "-h", "--help", action="store_true", dest="help", help="show this help message"
+    )
+
     (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+
+    if ns_parser.help:
+        parser.print_help()
+        print("")
+        return None
+
     if l_unknown_args:
         print(f"The following args couldn't be interpreted: {l_unknown_args}")
+
     return ns_parser
 
 

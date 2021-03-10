@@ -100,6 +100,8 @@ def inference(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Get tweets using Twitter API
         params = {
@@ -226,6 +228,8 @@ def sentiment(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Setup API request params and headers
         headers = {"authorization": f"Bearer {cfg.API_TWITTER_BEARER_TOKEN}"}

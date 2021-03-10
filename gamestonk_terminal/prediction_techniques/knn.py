@@ -63,6 +63,8 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Split training data
         stock_x, stock_y = splitTrain.split_train(

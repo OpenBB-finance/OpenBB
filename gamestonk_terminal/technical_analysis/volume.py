@@ -43,6 +43,8 @@ def ad(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -162,6 +164,8 @@ def obv(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":
