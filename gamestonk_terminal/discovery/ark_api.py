@@ -1,10 +1,13 @@
 import argparse
+from datetime import timedelta
 import json
 import requests
 from colorama import Fore, Style
 from bs4 import BeautifulSoup
+import numpy as np
 import pandas as pd
 from pandas.core.frame import DataFrame
+import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -54,6 +57,40 @@ def get_ark_orders() -> DataFrame:
     return df_orders
 
 
+def add_order_total(df_orders: DataFrame) -> DataFrame:
+    start_date = df_orders["date"].iloc[-1] - timedelta(days=1)
+
+    tickers = " ".join(df_orders["ticker"].unique())
+
+    print("")
+
+    prices = yf.download(tickers, start=start_date, progress=False)
+
+    for i, candle in enumerate(["Volume", "Open", "Close", "High", "Low", "Total"]):
+        df_orders.insert(i + 3, candle.lower(), 0)
+
+    for i, _ in df_orders.iterrows():
+        if np.isnan(
+            prices["Open"][df_orders.loc[i, "ticker"]][
+                df_orders.loc[i, "date"].strftime("%Y-%m-%d")
+            ]
+        ):
+            for candle in ["Volume", "Open", "Close", "High", "Low", "Total"]:
+                df_orders.loc[i, candle.lower()] = 0
+            continue
+
+        for candle in ["Volume", "Open", "Close", "High", "Low"]:
+            df_orders.loc[i, candle.lower()] = prices[candle][
+                df_orders.loc[i, "ticker"]
+            ][df_orders.loc[i, "date"].strftime("%Y-%m-%d")]
+
+        df_orders.loc[i, "total"] = (
+            df_orders.loc[i, "close"] * df_orders.loc[i, "shares"]
+        )
+
+    return df_orders
+
+
 def ark_orders(l_args):
     parser = argparse.ArgumentParser(
         prog="ARK Orders",
@@ -76,6 +113,9 @@ def ark_orders(l_args):
 
     df_orders = get_ark_orders()
 
+    pd.set_option("mode.chained_assignment", None)
+    df_orders = add_order_total(df_orders.head(ns_parser.n_num))
+
     if USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
 
@@ -85,8 +125,9 @@ def ark_orders(l_args):
 
     pd.set_option("display.max_colwidth", None)
     pd.set_option("display.max_rows", None)
+    pd.set_option("display.float_format", "{:,.2f}".format)
     print("")
     print("Orders by ARK Investment Management LLC")
     print("")
-    print(df_orders.head(ns_parser.n_num))
+    print(df_orders.to_string(index=False))
     print("")

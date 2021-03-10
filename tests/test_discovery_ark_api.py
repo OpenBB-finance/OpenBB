@@ -7,4 +7,4 @@ from gamestonk_terminal.discovery.ark_api import (
 
 class TestDiscoveryArkApi(unittest.TestCase):
     def test_ark_orders(self):
-        ark_orders([])
+        ark_orders(["-n", "2"])
