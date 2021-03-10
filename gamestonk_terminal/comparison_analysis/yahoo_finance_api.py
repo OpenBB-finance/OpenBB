@@ -11,6 +11,27 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 register_matplotlib_converters()
 
 
+d_candle_types = {
+    "o": "Open",
+    "h": "High",
+    "l": "Low",
+    "c": "Close",
+    "a": "Adj Close",
+}
+
+
+def check_one_of_ohlca(type_candles: str) -> str:
+    if (
+        type_candles == "o"
+        or type_candles == "h"
+        or type_candles == "l"
+        or type_candles == "c"
+        or type_candles == "a"
+    ):
+        return type_candles
+    raise argparse.ArgumentTypeError("The type of candles specified is not recognized")
+
+
 def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
     parser = argparse.ArgumentParser(
         prog="historical",
@@ -31,7 +52,16 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
         dest="l_also",
         type=lambda s: [str(item) for item in s.split(",")],
         default=[],
-        help="apart from similar companies (from Polygon API) also compare with.",
+        help="apart from loaded similar companies also compare with.",
+    )
+    parser.add_argument(
+        "-t",
+        "--type",
+        action="store",
+        dest="type_candle",
+        type=check_one_of_ohlca,
+        default="a",  # in case it's adjusted close
+        help=("type of candles: o-open, h-high, l-low, c-close, a-adjusted close."),
     )
 
     try:
@@ -48,14 +78,19 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
             plt.figure()
             plt.title(f"Similar companies to {s_ticker}")
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=2)
+            df_stock = yf.download(s_ticker, start=s_start, progress=False)
+            plt.plot(
+                df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
+            )
+            # plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=2)
             l_min = [df_stock.index[0]]
             l_leg = [s_ticker]
             for symbol in similar:
                 df_similar_stock = yf.download(symbol, start=s_start, progress=False)
                 if not df_similar_stock.empty:
                     plt.plot(
-                        df_similar_stock.index, df_similar_stock["Adj Close"].values
+                        df_similar_stock.index,
+                        df_similar_stock[d_candle_types[ns_parser.type_candle]].values,
                     )
                     l_min.append(df_similar_stock.index[0])
                     l_leg.append(symbol)
@@ -78,7 +113,8 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
     parser = argparse.ArgumentParser(
         prog="corr",
-        description=""" Correlation heatmap based on historical price comparison between similar companies. [Source: Yahoo Finance]
+        description=""" Correlation heatmap based on historical price comparison between similar
+        companies. [Source: Yahoo Finance]
         """,
     )
     parser.add_argument(
@@ -95,7 +131,16 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
         dest="l_also",
         type=lambda s: [str(item) for item in s.split(",")],
         default=[],
-        help="apart from similar companies (from Polygon API) also compare with.",
+        help="apart from loaded similar companies also compare with.",
+    )
+    parser.add_argument(
+        "-t",
+        "--type",
+        action="store",
+        dest="type_candle",
+        type=check_one_of_ohlca,
+        default="a",  # in case it's adjusted close
+        help=("type of data: o-open, h-high, l-low, c-close, a-adjusted close"),
     )
 
     try:
@@ -124,12 +169,19 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
                 min_start_date = max(l_min)
 
-                df_stock = d_stock[s_ticker]["Adj Close"].rename(s_ticker)
+                df_stock = d_stock[s_ticker][
+                    d_candle_types[ns_parser.type_candle]
+                ].rename(s_ticker)
                 for symbol in d_stock:
                     if symbol != s_ticker:
                         if not d_stock[symbol].empty:
                             df_stock = pd.concat(
-                                [df_stock, d_stock[symbol]["Adj Close"].rename(symbol)],
+                                [
+                                    df_stock,
+                                    d_stock[symbol][
+                                        d_candle_types[ns_parser.type_candle]
+                                    ].rename(symbol),
+                                ],
                                 axis=1,
                             )
 
