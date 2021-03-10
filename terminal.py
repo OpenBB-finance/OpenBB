@@ -13,6 +13,7 @@ from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.sentiment import sen_menu as sm
 from gamestonk_terminal.papermill import papermill_menu as mill
+from gamestonk_terminal.comparison_analysis import ca_menu as cam
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal import config_terminal as cfg
 
@@ -56,6 +57,7 @@ def main():
             "mill",
             "sen",
             "res",
+            "ca",
             "fa",
             "ta",
             "dd",
@@ -64,9 +66,7 @@ def main():
     )
 
     # Print first welcome message and help
-    print("")
-    print("🚀🚀 Welcome to Didier's Gamestonk Terminal!")
-    print("")
+    print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
 
     # Loop forever and ever
@@ -130,6 +130,9 @@ def main():
 
         elif ns_known_args.opt == "res":
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "ca":
+            b_quit = cam.ca_menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
