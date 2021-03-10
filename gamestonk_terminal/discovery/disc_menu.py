@@ -73,10 +73,13 @@ def disc_menu():
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = session.prompt(
-            f"{get_flair()} (disc)> ",
-            completer=word_completer,
-        )
+        if session:
+            as_input = session.prompt(
+                f"{get_flair()} (disc)> ",
+                completer=word_completer,
+            )
+        else:
+            as_input = input(f"{get_flair()} (disc)> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:
