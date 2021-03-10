@@ -46,27 +46,25 @@ def main():
 
     # Add list of arguments that the main parser accepts
     menu_parser = argparse.ArgumentParser(prog="gamestonk_terminal", add_help=False)
-    menu_parser.add_argument(
-        "opt",
-        choices=[
-            "help",
-            "quit",
-            "q",
-            "clear",
-            "load",
-            "view",
-            "export",
-            "disc",
-            "mill",
-            "sen",
-            "res",
-            "ca",
-            "fa",
-            "ta",
-            "dd",
-            "pred",
-        ],
-    )
+    choices = [
+        "help",
+        "quit",
+        "q",
+        "clear",
+        "load",
+        "view",
+        "export",
+        "disc",
+        "mill",
+        "sen",
+        "res",
+        "fa",
+        "ta",
+        "dd",
+        "pred",
+    ]
+    menu_parser.add_argument("opt", choices=choices)
+    word_completer = WordCompleter(choices)
 
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
