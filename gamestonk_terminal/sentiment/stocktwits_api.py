@@ -113,7 +113,9 @@ def trending(l_args):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
         if result.status_code == 200:

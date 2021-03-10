@@ -74,7 +74,10 @@ def clear(l_args, s_ticker, s_start, s_interval, df_stock):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return "", "", "", pd.DataFrame()
+
         print("Clearing stock ticker to be used for analysis\n")
         return "", "", "", pd.DataFrame()
 

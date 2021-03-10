@@ -26,7 +26,9 @@ def profile(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         df_fa = fa.profile(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         clean_df_index(df_fa)
@@ -57,7 +59,9 @@ def quote(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         df_fa = fa.quote(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 

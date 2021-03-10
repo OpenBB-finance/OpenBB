@@ -16,7 +16,9 @@ def rating(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         print(df_fa)

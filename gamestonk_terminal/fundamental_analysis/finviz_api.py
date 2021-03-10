@@ -24,7 +24,9 @@ def screener(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         d_finviz_stock = finviz.get_stock(s_ticker)
         df_fa = pd.DataFrame.from_dict(

@@ -36,7 +36,9 @@ def info(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
@@ -93,7 +95,9 @@ def shareholders(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         pd.set_option("display.max_colwidth", None)
@@ -165,7 +169,9 @@ def sustainability(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         pd.set_option("display.max_colwidth", None)
@@ -214,7 +220,9 @@ def calendar_earnings(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         df_calendar = stock.calendar

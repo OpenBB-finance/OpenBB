@@ -13,7 +13,9 @@ def sectors(l_args):
         S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]""",
     )
 
-    parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     sector_perf = SectorPerformances(
         key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"

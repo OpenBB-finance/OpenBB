@@ -17,7 +17,9 @@ def management(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
