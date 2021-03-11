@@ -74,51 +74,55 @@ def watchlist(l_args):
 
         n_flair_posts_found = 0
         while True:
-            submission = next(submissions, None)
-
-            # Check if search_submissions didn't get anymore posts
-            if not submission:
-                break
-
-            # Get more information about post using PRAW api
-            submission = praw_api.submission(id=submission.id)
-
-            # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-            # that there is a description and it's not just an image, that the flair is
-            # meaningful, and that we aren't re-considering same author's watchlist
-            if (
-                not submission.removed_by_category
-                and submission.selftext
-                and submission.link_flair_text not in ["Yolo", "Meme"]
-                and submission.author.name not in l_watchlist_author
-            ):
-                l_tickers_found = find_tickers(submission)
-
-                if l_tickers_found:
-                    # Add another author's name to the parsed watchlists
-                    l_watchlist_author.append(submission.author.name)
-
-                    # Lookup stock tickers within a watchlist
-                    for key in l_tickers_found:
-                        if key in d_watchlist_tickers:
-                            # Increment stock ticker found
-                            d_watchlist_tickers[key] += 1
-                        else:
-                            # Initialize stock ticker found
-                            d_watchlist_tickers[key] = 1
-
-                    l_watchlist_links.append(
-                        f"https://old.reddit.com{submission.permalink}"
-                    )
-
-                    print_and_record_reddit_post(d_submission, submission)
-
-                    # Increment count of valid posts found
-                    n_flair_posts_found += 1
-
-            # Check if number of wanted posts found has been reached
-            if n_flair_posts_found > ns_parser.n_limit - 1:
-                break
+            try:
+                submission = next(submissions, None)
+    
+                # Check if search_submissions didn't get anymore posts
+                if not submission:
+                    break
+    
+                # Get more information about post using PRAW api
+                submission = praw_api.submission(id=submission.id)
+    
+                # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+                # that there is a description and it's not just an image, that the flair is
+                # meaningful, and that we aren't re-considering same author's watchlist
+                if (
+                    not submission.removed_by_category
+                    and submission.selftext
+                    and submission.link_flair_text not in ["Yolo", "Meme"]
+                    and submission.author.name not in l_watchlist_author
+                ):
+                    l_tickers_found = find_tickers(submission)
+    
+                    if l_tickers_found:
+                        # Add another author's name to the parsed watchlists
+                        l_watchlist_author.append(submission.author.name)
+    
+                        # Lookup stock tickers within a watchlist
+                        for key in l_tickers_found:
+                            if key in d_watchlist_tickers:
+                                # Increment stock ticker found
+                                d_watchlist_tickers[key] += 1
+                            else:
+                                # Initialize stock ticker found
+                                d_watchlist_tickers[key] = 1
+    
+                        l_watchlist_links.append(
+                            f"https://old.reddit.com{submission.permalink}"
+                        )
+    
+                        print_and_record_reddit_post(d_submission, submission)
+    
+                        # Increment count of valid posts found
+                        n_flair_posts_found += 1
+    
+                # Check if number of wanted posts found has been reached
+                if n_flair_posts_found > ns_parser.n_limit - 1:
+                    break
+            except Exception as e:
+                print(e)
+                print("")
 
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(
@@ -248,39 +252,43 @@ def popular_tickers(l_args):
 
             n_tickers = 0
             while True:
-                submission = next(submissions, None)
-                if submission:
-                    # Get more information about post using PRAW api
-                    submission = praw_api.submission(id=submission.id)
-
-                    # Ensure that the post hasn't been removed by moderator in the meanwhile,
-                    # that there is a description and it's not just an image, that the flair is
-                    # meaningful, and that we aren't re-considering same author's content
-                    if (
-                        not submission.removed_by_category
-                        and (submission.selftext or submission.title)
-                        and submission.author.name not in l_watchlist_author
-                    ):
-                        l_tickers_found = find_tickers(submission)
-
-                        if l_tickers_found:
-                            n_tickers += len(l_tickers_found)
-
-                            # Add another author's name to the parsed watchlists
-                            l_watchlist_author.append(submission.author.name)
-
-                            # Lookup stock tickers within a watchlist
-                            for key in l_tickers_found:
-                                if key in d_watchlist_tickers:
-                                    # Increment stock ticker found
-                                    d_watchlist_tickers[key] += 1
-                                else:
-                                    # Initialize stock ticker found
-                                    d_watchlist_tickers[key] = 1
-
-                # Check if search_submissions didn't get anymore posts
-                else:
-                    break
+                try:
+                    submission = next(submissions, None)
+                    if submission:
+                        # Get more information about post using PRAW api
+                        submission = praw_api.submission(id=submission.id)
+    
+                        # Ensure that the post hasn't been removed by moderator in the meanwhile,
+                        # that there is a description and it's not just an image, that the flair is
+                        # meaningful, and that we aren't re-considering same author's content
+                        if (
+                            not submission.removed_by_category
+                            and (submission.selftext or submission.title)
+                            and submission.author.name not in l_watchlist_author
+                        ):
+                            l_tickers_found = find_tickers(submission)
+    
+                            if l_tickers_found:
+                                n_tickers += len(l_tickers_found)
+    
+                                # Add another author's name to the parsed watchlists
+                                l_watchlist_author.append(submission.author.name)
+    
+                                # Lookup stock tickers within a watchlist
+                                for key in l_tickers_found:
+                                    if key in d_watchlist_tickers:
+                                        # Increment stock ticker found
+                                        d_watchlist_tickers[key] += 1
+                                    else:
+                                        # Initialize stock ticker found
+                                        d_watchlist_tickers[key] = 1
+    
+                    # Check if search_submissions didn't get anymore posts
+                    else:
+                        break
+                except Exception as e:
+                    print(e)
+                    print("")
 
             print(f"  {n_tickers} potential tickers found.")
 
@@ -405,44 +413,48 @@ def spac_community(l_args):
             submissions = praw_api.subreddit("SPACs").new(limit=ns_parser.n_limit)
 
         while True:
-            submission = next(submissions, None)
-            if submission:
-                # Get more information about post using PRAW api
-                submission = praw_api.submission(id=submission.id)
-
-                # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's watchlist
-                if (
-                    not submission.removed_by_category
-                    and submission.selftext
-                    and submission.link_flair_text not in ["Yolo", "Meme"]
-                    and submission.author.name not in l_watchlist_author
-                ):
-                    l_tickers_found = find_tickers(submission)
-
-                    if l_tickers_found:
-                        # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission.author.name)
-
-                        # Lookup stock tickers within a watchlist
-                        for key in l_tickers_found:
-                            if key in d_watchlist_tickers:
-                                # Increment stock ticker found
-                                d_watchlist_tickers[key] += 1
-                            else:
-                                # Initialize stock ticker found
-                                d_watchlist_tickers[key] = 1
-
-                        l_watchlist_links.append(
-                            f"https://old.reddit.com{submission.permalink}"
-                        )
-
-                        print_and_record_reddit_post(d_submission, submission)
-
-            # Check if search_submissions didn't get anymore posts
-            else:
-                break
+            try:
+                submission = next(submissions, None)
+                if submission:
+                    # Get more information about post using PRAW api
+                    submission = praw_api.submission(id=submission.id)
+    
+                    # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+                    # that there is a description and it's not just an image, that the flair is
+                    # meaningful, and that we aren't re-considering same author's watchlist
+                    if (
+                        not submission.removed_by_category
+                        and submission.selftext
+                        and submission.link_flair_text not in ["Yolo", "Meme"]
+                        and submission.author.name not in l_watchlist_author
+                    ):
+                        l_tickers_found = find_tickers(submission)
+    
+                        if l_tickers_found:
+                            # Add another author's name to the parsed watchlists
+                            l_watchlist_author.append(submission.author.name)
+    
+                            # Lookup stock tickers within a watchlist
+                            for key in l_tickers_found:
+                                if key in d_watchlist_tickers:
+                                    # Increment stock ticker found
+                                    d_watchlist_tickers[key] += 1
+                                else:
+                                    # Initialize stock ticker found
+                                    d_watchlist_tickers[key] = 1
+    
+                            l_watchlist_links.append(
+                                f"https://old.reddit.com{submission.permalink}"
+                            )
+    
+                            print_and_record_reddit_post(d_submission, submission)
+    
+                # Check if search_submissions didn't get anymore posts
+                else:
+                    break
+            except Exception as e:
+                print(e)
+                print("")
 
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
@@ -539,51 +551,55 @@ def spac(l_args):
         )
         n_flair_posts_found = 0
         while True:
-            submission = next(submissions, None)
-            if submission:
-                # Get more information about post using PRAW api
-                submission = praw_api.submission(id=submission.id)
-
-                # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's watchlist
-                if (
-                    not submission.removed_by_category
-                    and submission.selftext
-                    and submission.link_flair_text not in ["Yolo", "Meme"]
-                    and submission.author.name not in l_watchlist_author
-                ):
-                    l_tickers_found = find_tickers(submission)
-
-                    if l_tickers_found:
-                        # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission.author.name)
-
-                        # Lookup stock tickers within a watchlist
-                        for key in l_tickers_found:
-                            if key in d_watchlist_tickers:
-                                # Increment stock ticker found
-                                d_watchlist_tickers[key] += 1
-                            else:
-                                # Initialize stock ticker found
-                                d_watchlist_tickers[key] = 1
-
-                        l_watchlist_links.append(
-                            f"https://old.reddit.com{submission.permalink}"
-                        )
-
-                        print_and_record_reddit_post(d_submission, submission)
-
-                        # Increment count of valid posts found
-                        n_flair_posts_found += 1
-
-                # Check if number of wanted posts found has been reached
-                if n_flair_posts_found > ns_parser.n_limit - 1:
+            try:
+                submission = next(submissions, None)
+                if submission:
+                    # Get more information about post using PRAW api
+                    submission = praw_api.submission(id=submission.id)
+    
+                    # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+                    # that there is a description and it's not just an image, that the flair is
+                    # meaningful, and that we aren't re-considering same author's watchlist
+                    if (
+                        not submission.removed_by_category
+                        and submission.selftext
+                        and submission.link_flair_text not in ["Yolo", "Meme"]
+                        and submission.author.name not in l_watchlist_author
+                    ):
+                        l_tickers_found = find_tickers(submission)
+    
+                        if l_tickers_found:
+                            # Add another author's name to the parsed watchlists
+                            l_watchlist_author.append(submission.author.name)
+    
+                            # Lookup stock tickers within a watchlist
+                            for key in l_tickers_found:
+                                if key in d_watchlist_tickers:
+                                    # Increment stock ticker found
+                                    d_watchlist_tickers[key] += 1
+                                else:
+                                    # Initialize stock ticker found
+                                    d_watchlist_tickers[key] = 1
+    
+                            l_watchlist_links.append(
+                                f"https://old.reddit.com{submission.permalink}"
+                            )
+    
+                            print_and_record_reddit_post(d_submission, submission)
+    
+                            # Increment count of valid posts found
+                            n_flair_posts_found += 1
+    
+                    # Check if number of wanted posts found has been reached
+                    if n_flair_posts_found > ns_parser.n_limit - 1:
+                        break
+    
+                # Check if search_submissions didn't get anymore posts
+                else:
                     break
-
-            # Check if search_submissions didn't get anymore posts
-            else:
-                break
+            except Exception as e:
+                print(e)
+                print("")
 
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(
@@ -666,25 +682,29 @@ def wsb_community(l_args):
             )
 
         while True:
-            submission = next(submissions, None)
-            if submission:
-                # Get more information about post using PRAW api
-                submission = praw_api.submission(id=submission.id)
-
-                # Ensure that the post hasn't been removed  by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's watchlist
-                if not submission.removed_by_category:
-
-                    l_watchlist_links.append(
-                        f"https://old.reddit.com{submission.permalink}"
-                    )
-
-                    print_and_record_reddit_post(d_submission, submission)
-
-            # Check if search_submissions didn't get anymore posts
-            else:
-                break
+            try:
+                submission = next(submissions, None)
+                if submission:
+                    # Get more information about post using PRAW api
+                    submission = praw_api.submission(id=submission.id)
+    
+                    # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+                    # that there is a description and it's not just an image, that the flair is
+                    # meaningful, and that we aren't re-considering same author's watchlist
+                    if not submission.removed_by_category:
+    
+                        l_watchlist_links.append(
+                            f"https://old.reddit.com{submission.permalink}"
+                        )
+    
+                        print_and_record_reddit_post(d_submission, submission)
+    
+                # Check if search_submissions didn't get anymore posts
+                else:
+                    break
+            except Exception as e:
+                print(e)
+                print("")
             print("")
     except Exception as e:
         print(e)
