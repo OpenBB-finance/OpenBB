@@ -183,6 +183,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                         "Volume": "6. volume",
                     }
                 )
+                df_stock.index.name = "date"
+
         # Intraday
         else:
             if ns_parser.source == "av":
@@ -200,6 +202,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 print(
                     "Unfortunately, yahoo finance historical data doesn't contain intraday prices"
                 )
+                return [s_ticker, s_start, s_interval, df_stock]
 
     except Exception as e:
         print(e)
