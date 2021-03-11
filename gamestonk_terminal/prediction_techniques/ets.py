@@ -36,6 +36,7 @@ def check_valid_seasonal(seasonal: str) -> str:
 
 def exponential_smoothing(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ets",
         description="""
             Exponential Smoothing, see https://otexts.com/fpp2/taxonomy.html
@@ -94,6 +95,8 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         model, title = get_exponential_smoothing_model(
             df_stock["5. adjusted close"].values,

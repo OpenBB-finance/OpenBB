@@ -16,6 +16,7 @@ register_matplotlib_converters()
 
 def arima(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="arima",
         description="""
             In statistics and econometrics, and in particular in time series analysis, an
@@ -75,6 +76,8 @@ def arima(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Machine Learning model
         if ns_parser.s_order:

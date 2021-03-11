@@ -18,6 +18,7 @@ from gamestonk_terminal.reddit_helpers import (
 
 def watchlist(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="watchlist",
         description="""Print other users watchlist. [Source: Reddit]""",
     )
@@ -33,6 +34,8 @@ def watchlist(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         l_sub_reddits = [
             "pennystocks",
@@ -148,6 +151,7 @@ def watchlist(l_args):
 
 def popular_tickers(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="popular",
         description="""Print latest popular tickers. [Source: Reddit] """,
     )
@@ -193,6 +197,8 @@ def popular_tickers(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         n_ts_after = int(
             (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
@@ -351,6 +357,7 @@ def popular_tickers(l_args):
 
 def spac_community(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="spac_c",
         description="""Print other users SPACs announcement under subreddit 'SPACs' [Source: Reddit]""",
     )
@@ -374,6 +381,8 @@ def spac_community(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -466,7 +475,9 @@ def spac_community(l_args):
 
 def spac(l_args):
     parser = argparse.ArgumentParser(
-        prog="spac", description=""" Show other users SPACs announcement [Reddit] """
+        add_help=False,
+        prog="spac",
+        description=""" Show other users SPACs announcement [Reddit] """,
     )
     parser.add_argument(
         "-l",
@@ -489,6 +500,8 @@ def spac(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -603,6 +616,7 @@ def spac(l_args):
 
 def wsb_community(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="wsb",
         description="""Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]""",
     )
@@ -626,6 +640,8 @@ def wsb_community(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,

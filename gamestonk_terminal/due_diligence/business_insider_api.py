@@ -18,6 +18,7 @@ register_matplotlib_converters()
 
 def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="pt",
         description="""Prints price target from analysts. [Source: Business Insider]""",
     )
@@ -34,6 +35,8 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
@@ -114,12 +117,15 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
 def estimates(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="est",
         description="""Yearly estimates and quarter earnings/revenues [Source: Business Insider]""",
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
@@ -270,6 +276,7 @@ def estimates(l_args, s_ticker):
 
 def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ins",
         description="""Prints insider activity over time [Source: Business Insider]""",
     )
@@ -285,6 +292,8 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"

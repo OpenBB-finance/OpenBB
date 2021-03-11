@@ -20,6 +20,7 @@ def category_color_red_green(val: str) -> str:
 
 def insider(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="insider",
         description="""
             Prints information about inside traders. The following fields are expected: Date, Relationship,
@@ -39,6 +40,8 @@ def insider(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         d_finviz_insider = finviz.get_insider(s_ticker)
         df_fa = pd.DataFrame.from_dict(d_finviz_insider)
@@ -67,6 +70,7 @@ def insider(l_args, s_ticker):
 
 def news(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="news",
         description="""
             Prints latest news about company, including title and web link. [Source: Finviz]
@@ -85,6 +89,8 @@ def news(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         d_finviz_news = finviz.get_news(s_ticker)
         i = 0
@@ -114,6 +120,7 @@ def analyst_df(s_ticker: str) -> DataFrame:
 
 def analyst(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="analyst",
         description="""
             Print analyst prices and ratings of the company. The following fields are expected:
@@ -134,6 +141,8 @@ def analyst(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         df_fa = analyst_df(s_ticker)
 

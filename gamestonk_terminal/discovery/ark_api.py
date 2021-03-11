@@ -93,6 +93,7 @@ def add_order_total(df_orders: DataFrame) -> DataFrame:
 
 def ark_orders(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ARK Orders",
         description="""
             Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
@@ -110,6 +111,8 @@ def ark_orders(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     df_orders = get_ark_orders()
 

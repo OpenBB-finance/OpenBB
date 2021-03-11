@@ -69,6 +69,7 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
 
 def key_metrics_explained(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="info",
         description="""
             Provides information about main key metrics. Namely: EBITDA,

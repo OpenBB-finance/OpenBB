@@ -34,6 +34,8 @@ def sec_fillings(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         pd.set_option("display.max_colwidth", None)
 
@@ -111,6 +113,8 @@ def sean_seah_warnings(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_info:
             filepath = "fundamental_analysis/info_sean_seah.txt"

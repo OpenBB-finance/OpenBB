@@ -71,12 +71,16 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
 def clear(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="clear",
         description="""Clear previously loaded stock ticker.""",
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return "", "", "", pd.DataFrame()
+
         print("Clearing stock ticker to be used for analysis\n")
         return "", "", "", pd.DataFrame()
 
@@ -87,7 +91,9 @@ def clear(l_args, s_ticker, s_start, s_interval, df_stock):
 
 def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
-        prog="load", description=""" Load a stock in order to perform analysis."""
+        add_help=False,
+        prog="load",
+        description=""" Load a stock in order to perform analysis.""",
     )
     parser.add_argument(
         "-t",
@@ -131,6 +137,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 l_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return [s_ticker, s_start, s_interval, df_stock]
 
     except SystemExit:
         print("")
@@ -213,6 +221,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="view",
         description="Visualize historical data of a stock. An alpha_vantage key is necessary.",
     )
@@ -266,6 +275,8 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
     except SystemExit:
         print("")
@@ -335,6 +346,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
 def export(l_args, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="export",
         description="Exports the historical data from this ticker to a file or stdout.",
     )
@@ -356,6 +368,9 @@ def export(l_args, df_stock):
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
+
     except SystemExit:
         print("")
         return

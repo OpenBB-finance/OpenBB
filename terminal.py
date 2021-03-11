@@ -44,7 +44,7 @@ def main():
     # df_stock = df_stock[s_start:]
 
     # Add list of arguments that the main parser accepts
-    menu_parser = argparse.ArgumentParser(prog="gamestonk_terminal", add_help=False)
+    menu_parser = argparse.ArgumentParser(add_help=False, prog="gamestonk_terminal")
     choices = [
         "help",
         "quit",

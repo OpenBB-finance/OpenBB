@@ -8,6 +8,7 @@ from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and
 
 def management(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="mgmt",
         description="""
             Print management team. Namely: Name, Title, Information from google and
@@ -16,7 +17,9 @@ def management(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         url_market_business_insider = (
             f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
