@@ -69,7 +69,8 @@ jobs:
         run: |
           source $VENV
           pytest tests/
-  tests:
+  tests-python:
+    name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}
     strategy:
@@ -80,7 +81,6 @@ jobs:
         exclude:
           - os: ubuntu-latest
             python-version: '3.8'
-    name: ${{ matrix.os}} - Python ${{ matrix.python-version }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -117,3 +117,70 @@ jobs:
         run: |
           source $VENV
           pytest tests/
+  tests-conda:
+    name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "windows-latest"]
+        python-version: ["3.8"]
+        dependencies: [""]
+        include:
+          - os: ubuntu
+            python: 3.8
+          - os: windows
+            python: 3.8
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt') }}
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python }}
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge
+          show-channel-urls: true
+          environment-file: conda-environment.yaml
+          activate-environment: testing
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Update Temp permissions on windows
+        if: runner.os == 'Windows'
+        shell: cmd /C CALL {0}
+        run: >-
+          c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+      - name: Install dependencies (Bash)
+        shell: bash -l {0}
+        run: |
+          conda info
+          pip install --user --requirement requirements.txt
+      - name: List installed packages (Bash)
+        shell: bash -l {0}
+        run: conda list
+
+      - name: Run tests (Bash)
+        shell: bash -l {0}
+        run: pytest tests/
