@@ -65,9 +65,7 @@ def main():
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     # Print first welcome message and help
-    print("")
-    print("🚀🚀 Welcome to Didier's Gamestonk Terminal!")
-    print("")
+    print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
 
     # Loop forever and ever
@@ -134,6 +132,9 @@ def main():
 
         elif ns_known_args.opt == "res":
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "ca":
+            b_quit = cam.ca_menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
