@@ -17,6 +17,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_menu as mill
 from gamestonk_terminal.sentiment import sen_menu as sm
 from gamestonk_terminal.technical_analysis import ta_menu as tam
+from gamestonk_terminal.comparison_analysis import ca_menu as cam
 
 # import warnings
 # warnings.simplefilter("always")
