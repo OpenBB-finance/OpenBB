@@ -1,19 +1,20 @@
 import argparse
-from gamestonk_terminal.discovery import alpha_vantage_api
-from gamestonk_terminal.discovery import yahoo_finance_api
-from gamestonk_terminal.discovery import finviz_api
-from gamestonk_terminal.discovery import short_interest_api
-from gamestonk_terminal.discovery import seeking_alpha_api
-from gamestonk_terminal.discovery import fidelity_api
-from gamestonk_terminal.discovery import ark_api
-from gamestonk_terminal.discovery import simply_wallst_api
-from gamestonk_terminal.discovery import spachero_api
-from gamestonk_terminal.discovery import unusual_whales_api
 
+from gamestonk_terminal.discovery import (
+    alpha_vantage_api,
+    ark_api,
+    fidelity_api,
+    finviz_api,
+    seeking_alpha_api,
+    short_interest_api,
+    simply_wallst_api,
+    spachero_api,
+    unusual_whales_api,
+    yahoo_finance_api,
+)
 from gamestonk_terminal.helper_funcs import get_flair
-
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.completion import NestedCompleter
 
 
 def print_discovery():
@@ -66,7 +67,7 @@ def disc_menu():
         "mill",
     ]
     disc_parser.add_argument("cmd", choices=choices)
-    word_completer = WordCompleter(choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     print_discovery()
 
@@ -76,7 +77,7 @@ def disc_menu():
         if session:
             as_input = session.prompt(
                 f"{get_flair()} (disc)> ",
-                completer=word_completer,
+                completer=completer,
             )
         else:
             as_input = input(f"{get_flair()} (disc)> ")

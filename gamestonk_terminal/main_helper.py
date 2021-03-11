@@ -52,6 +52,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
         )
         print(
+            "   ca          comparison analysis,     \t e.g.: historical, correlation, financials"
+        )
+        print(
             "   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings"
         )
         print(

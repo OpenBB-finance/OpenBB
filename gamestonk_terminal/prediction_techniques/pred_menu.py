@@ -1,15 +1,18 @@
 import argparse
 
-from gamestonk_terminal.prediction_techniques import sma
-from gamestonk_terminal.prediction_techniques import ets
-from gamestonk_terminal.prediction_techniques import knn
-from gamestonk_terminal.prediction_techniques import regression
-from gamestonk_terminal.prediction_techniques import arima
-from gamestonk_terminal.prediction_techniques import fbprophet
-from gamestonk_terminal.prediction_techniques import neural_networks
 import matplotlib.pyplot as plt
-
 from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.prediction_techniques import (
+    arima,
+    ets,
+    fbprophet,
+    knn,
+    neural_networks,
+    regression,
+    sma,
+)
+from prompt_toolkit.completion import NestedCompleter
 
 
 def print_prediction(s_ticker, s_start, s_interval):
@@ -45,34 +48,39 @@ def print_prediction(s_ticker, s_start, s_interval):
 def pred_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the prediction techniques parser accepts
-    pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-    pred_parser.add_argument(
-        "cmd",
-        choices=[
-            "help",
-            "q",
-            "quit",
-            "sma",
-            "ets",
-            "knn",
-            "linear",
-            "quadratic",
-            "cubic",
-            "regression",
-            "arima",
-            "prophet",
-            "mlp",
-            "rnn",
-            "lstm",
-        ],
-    )
+    pred_parser = argparse.ArgumentParser(prog="pred", add_help=False)
+    choices = [
+        "help",
+        "q",
+        "quit",
+        "sma",
+        "ets",
+        "knn",
+        "linear",
+        "quadratic",
+        "cubic",
+        "regression",
+        "arima",
+        "prophet",
+        "mlp",
+        "rnn",
+        "lstm",
+    ]
+    pred_parser.add_argument("cmd", choices=choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     print_prediction(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair()} (pred)> ")
+        if session:
+            as_input = session.prompt(
+                f"{get_flair()} (pred)> ",
+                completer=completer,
+            )
+        else:
+            as_input = input(f"{get_flair()} (pred)> ")
 
         # Images are non blocking - allows to close them if we type other command
         plt.close()

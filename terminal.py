@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 
 import argparse
+
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.main_helper import print_help, clear, load, view, export
-from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
-
-from gamestonk_terminal.fundamental_analysis import fa_menu as fam
-from gamestonk_terminal.technical_analysis import ta_menu as tam
-from gamestonk_terminal.due_diligence import dd_menu as ddm
-from gamestonk_terminal.discovery import disc_menu as dm
-from gamestonk_terminal.sentiment import sen_menu as sm
-from gamestonk_terminal.papermill import papermill_menu as mill
-from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import res_menu as rm
+from gamestonk_terminal.discovery import disc_menu as dm
+from gamestonk_terminal.due_diligence import dd_menu as ddm
+from gamestonk_terminal.fundamental_analysis import fa_menu as fam
+from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
+from gamestonk_terminal.main_helper import clear, export, load, print_help, view
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import WordCompleter
-
+from gamestonk_terminal.papermill import papermill_menu as mill
+from gamestonk_terminal.sentiment import sen_menu as sm
+from gamestonk_terminal.technical_analysis import ta_menu as tam
 
 # import warnings
 # warnings.simplefilter("always")
@@ -63,12 +62,10 @@ def main():
         "pred",
     ]
     menu_parser.add_argument("opt", choices=choices)
-    word_completer = WordCompleter(choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     # Print first welcome message and help
-    print("")
-    print("🚀🚀 Welcome to Didier's Gamestonk Terminal!")
-    print("")
+    print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
 
     # Loop forever and ever
@@ -79,10 +76,10 @@ def main():
             should_print_help = False
 
         # Get input command from user
-        as_input = session.prompt(
-            f"{get_flair()}> ",
-            completer=word_completer,
-        )
+        if session:
+            as_input = session.prompt(f"{get_flair()}> ", completer=completer)
+        else:
+            as_input = input(f"{get_flair()}> ")
 
         # Is command empty
         if not as_input:
@@ -135,6 +132,9 @@ def main():
 
         elif ns_known_args.opt == "res":
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "ca":
+            b_quit = cam.ca_menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
