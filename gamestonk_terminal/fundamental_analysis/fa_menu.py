@@ -32,11 +32,8 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("")
     print("Market Watch API")
     print("   income        income statement of the company")
-    print("   assets        assets of the company")
-    print("   liabilities   liabilities and shareholders equity of the company")
-    print("   operating     cash flow operating activities of the company")
-    print("   investing     cash flow investing activities of the company")
-    print("   financing     cash flow financing activities of the company")
+    print("   balance       balance sheet of the company")
+    print("   cash          cash flow statement of the company")
     print("")
     print("Yahoo Finance API")
     print("   info          information scope of the company")
@@ -113,11 +110,8 @@ def fa_menu(s_ticker, s_start, s_interval):
             "sust",
             "cal",
             "income",
-            "assets",
-            "liabilities",
-            "operating",
-            "investing",
-            "financing",
+            "balance",
+            "cash",
             "overview",
             "key",
             "incom",
@@ -175,20 +169,11 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == "income":
             mw_api.income(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "assets":
-            mw_api.assets(l_args, s_ticker)
+        elif ns_known_args.cmd == "balance":
+            mw_api.balance(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "liabilities":
-            mw_api.liabilities(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "operating":
-            mw_api.operating(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "investing":
-            mw_api.investing(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "financing":
-            mw_api.financing(l_args, s_ticker)
+        elif ns_known_args.cmd == "cash":
+            mw_api.cash(l_args, s_ticker)
 
         # YAHOO FINANCE API
         elif ns_known_args.cmd == "info":
