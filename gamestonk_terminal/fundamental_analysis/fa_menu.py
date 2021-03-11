@@ -1,15 +1,16 @@
 import argparse
 
 from gamestonk_terminal.fundamental_analysis import alpha_vantage_api as av_api
+from gamestonk_terminal.fundamental_analysis import business_insider_api as bi_api
 from gamestonk_terminal.fundamental_analysis import (
     financial_modeling_prep_api as fmp_api,
 )
 from gamestonk_terminal.fundamental_analysis import finviz_api as fvz_api
 from gamestonk_terminal.fundamental_analysis import market_watch_api as mw_api
-from gamestonk_terminal.fundamental_analysis import business_insider_api as bi_api
 from gamestonk_terminal.fundamental_analysis import yahoo_finance_api as yf_api
-
 from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
+from prompt_toolkit.completion import NestedCompleter
 
 
 def print_fundamental_analysis(s_ticker, s_start, s_interval):
@@ -97,46 +98,51 @@ def fa_menu(s_ticker, s_start, s_interval):
 
     # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog="fa", add_help=False)
-    fa_parser.add_argument(
-        "cmd",
-        choices=[
-            "help",
-            "q",
-            "quit",
-            "screener",
-            "mgmt",
-            "info",
-            "shrs",
-            "sust",
-            "cal",
-            "income",
-            "balance",
-            "cash",
-            "overview",
-            "key",
-            "incom",
-            "balance",
-            "cash",
-            "earnings",
-            "profile",
-            "quote",
-            "enterprise",
-            "dcf",
-            "inc",
-            "bal",
-            "cashf",
-            "metrics",
-            "ratios",
-            "growth",
-        ],
-    )
+    choices = [
+        "help",
+        "q",
+        "quit",
+        "screener",
+        "mgmt",
+        "info",
+        "shrs",
+        "sust",
+        "cal",
+        "income",
+        "balance",
+        "cash",
+        "overview",
+        "key",
+        "incom",
+        "balance",
+        "cash",
+        "earnings",
+        "profile",
+        "quote",
+        "enterprise",
+        "dcf",
+        "inc",
+        "bal",
+        "cashf",
+        "metrics",
+        "ratios",
+        "growth",
+    ]
+    fa_parser.add_argument("cmd", choices=choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     print_fundamental_analysis(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair()} (fa)> ")
+        if session:
+            as_input = session.prompt(
+                f"{get_flair()} (fa)> ",
+                completer=completer,
+            )
+        else:
+            as_input = input(f"{get_flair()} (fa)> ")
 
         # Parse fundamental analysis command of the list of possible commands
         try:
