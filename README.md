@@ -13,7 +13,7 @@
 
 [![Issues][issues-shield]][issues-url]
 [![Bugs Open][bugs-open-shield]][bugs-open-url]
-[![Bugs Open][bugs-closed-shield]][bugs-closed-url]
+[![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
 [![Build Status](https://github.com/DidierRLopes/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DidierRLopes/GamestonkTerminal/actions)
 [![GitHub release](https://img.shields.io/github/release/DidierRLopes/GamestonkTerminal.svg?maxAge=3600)](https://github.com/DidierRLopes/GamestonkTerminal/releases)
