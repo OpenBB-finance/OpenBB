@@ -100,7 +100,7 @@ def key_metrics_explained(l_args):
 # pylint: disable=too-many-branches
 def fa_menu(s_ticker, s_start, s_interval):
 
-    # Add list of arguments that the fundamental analysis parser accepts   
+    # Add list of arguments that the fundamental analysis parser accepts
     fa_parser = argparse.ArgumentParser(prog="fa", add_help=False)
     choices = [
         "help",
