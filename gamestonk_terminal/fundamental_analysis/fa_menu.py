@@ -33,23 +33,20 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("")
     print("Market Watch API")
     print("   income        income statement of the company")
-    print("   assets        assets of the company")
-    print("   liabilities   liabilities and shareholders equity of the company")
-    print("   operating     cash flow operating activities of the company")
-    print("   investing     cash flow investing activities of the company")
-    print("   financing     cash flow financing activities of the company")
+    print("   balance       balance sheet of the company")
+    print("   cash          cash flow statement of the company")
     print("")
     print("Yahoo Finance API")
     print("   info          information scope of the company")
-    print("   shrs          hareholders of the company")
+    print("   shrs          shareholders of the company")
     print("   sust          sustainability values of the company")
     print("   cal           calendar earnings and estimates of the company")
     print("")
     print("Alpha Vantage API")
     print("   overview      overview of the company")
-    print("   incom         income statements of the company")
-    print("   balance       balance sheet of the company")
-    print("   cash          cash flow of the company")
+    print("   alpha_income  income statements of the company")
+    print("   alpha_balance balance sheet of the company")
+    print("   alpha_cash    cash flow of the company")
     print("   earnings      earnings dates and reported EPS")
     print("")
     print("Financial Modeling Prep API")
@@ -57,9 +54,9 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   quote         quote of the company")
     print("   enterprise    enterprise value of the company over time")
     print("   dcf           discounted cash flow of the company over time")
-    print("   inc           income statements of the company")
-    print("   bal           balance sheet of the company")
-    print("   cashf         cash flow of the company")
+    print("   fmp_income    income statements of the company")
+    print("   fmp_balance   balance sheet of the company")
+    print("   fmp_cash      cash flow statement of the company")
     print("   metrics       key metrics of the company")
     print("   ratios        financial ratios of the company")
     print("   growth        financial statement growth of the company")
@@ -113,24 +110,21 @@ def fa_menu(s_ticker, s_start, s_interval):
         "sust",
         "cal",
         "income",
-        "assets",
-        "liabilities",
-        "operating",
-        "investing",
-        "financing",
-        "overview",
-        "key",
-        "incom",
         "balance",
         "cash",
+        "overview",
+        "key",
+        "alpha_income",
+        "alpha_balance",
+        "alpha_cash",
         "earnings",
         "profile",
         "quote",
         "enterprise",
         "dcf",
-        "inc",
-        "bal",
-        "cashf",
+        "fmp_income",
+        "fmp_balance",
+        "fmp_cash",
         "metrics",
         "ratios",
         "growth",
@@ -182,20 +176,11 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == "income":
             mw_api.income(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "assets":
-            mw_api.assets(l_args, s_ticker)
+        elif ns_known_args.cmd == "balance":
+            mw_api.balance(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "liabilities":
-            mw_api.liabilities(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "operating":
-            mw_api.operating(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "investing":
-            mw_api.investing(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "financing":
-            mw_api.financing(l_args, s_ticker)
+        elif ns_known_args.cmd == "cash":
+            mw_api.cash(l_args, s_ticker)
 
         # YAHOO FINANCE API
         elif ns_known_args.cmd == "info":
@@ -214,13 +199,13 @@ def fa_menu(s_ticker, s_start, s_interval):
         elif ns_known_args.cmd == "overview":
             av_api.overview(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "incom":
+        elif ns_known_args.cmd == "alpha_incom":
             av_api.income_statement(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "balance":
+        elif ns_known_args.cmd == "alpha_balance":
             av_api.balance_sheet(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "cash":
+        elif ns_known_args.cmd == "alpha_cash":
             av_api.cash_flow(l_args, s_ticker)
 
         elif ns_known_args.cmd == "earnings":
@@ -241,13 +226,13 @@ def fa_menu(s_ticker, s_start, s_interval):
             fmp_api.discounted_cash_flow(l_args, s_ticker)
 
         # Financial statement:
-        elif ns_known_args.cmd == "inc":
+        elif ns_known_args.cmd == "fmp_income":
             fmp_api.income_statement(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "bal":
+        elif ns_known_args.cmd == "fmp_balance":
             fmp_api.balance_sheet(l_args, s_ticker)
 
-        elif ns_known_args.cmd == "cashf":
+        elif ns_known_args.cmd == "fmp_cash":
             fmp_api.cash_flow(l_args, s_ticker)
 
         # Ratios:
