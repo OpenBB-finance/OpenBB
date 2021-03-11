@@ -42,6 +42,7 @@ def price_change_color_red_green(val: str) -> str:
 
 def orders(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="orders",
         description="""
             Orders by Fidelity customers. Information shown in the table below
@@ -62,6 +63,8 @@ def orders(l_args):
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
+    if not ns_parser:
+        return
 
     url_orders = (
         "https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"

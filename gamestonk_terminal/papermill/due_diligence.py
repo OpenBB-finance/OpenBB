@@ -6,6 +6,7 @@ import papermill as pm
 
 def analysis(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="dd",
         description="""
             Run due diligence analysis

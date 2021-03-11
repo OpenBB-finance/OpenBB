@@ -13,7 +13,7 @@ def print_research(s_ticker, s_start, s_interval):
         print(f"\n{s_intraday} Stock: {s_ticker}")
 
     print("\nResearch Mode:")
-    print("   help              show this fundamental analysis menu again")
+    print("   help              show this research menu again")
     print("   q                 quit this menu, and shows back to main menu")
     print("   quit              quit to abandon program")
     print("")
@@ -41,7 +41,7 @@ def print_research(s_ticker, s_start, s_interval):
 
 def res_menu(s_ticker, s_start, s_interval):
     # Add list of arguments that the research parser accepts
-    res_parser = argparse.ArgumentParser(prog="discovery", add_help=False)
+    res_parser = argparse.ArgumentParser(add_help=False, prog="discovery")
     res_parser.add_argument(
         "cmd",
         choices=[

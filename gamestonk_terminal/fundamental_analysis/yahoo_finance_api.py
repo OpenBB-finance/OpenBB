@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def info(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="info",
         description="""
             Print information about the company. The following fields are expected:
@@ -35,7 +36,9 @@ def info(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
@@ -85,13 +88,16 @@ def info(l_args, s_ticker):
 
 def shareholders(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="shrs",
         description="""Print Major, institutional and mutualfunds shareholders.
         [Source: Yahoo Finance]""",
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         pd.set_option("display.max_colwidth", None)
@@ -150,6 +156,7 @@ def shareholders(l_args, s_ticker):
 
 def sustainability(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="sust",
         description="""
             Print sustainability values of the company. The following fields are expected:
@@ -162,7 +169,9 @@ def sustainability(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         pd.set_option("display.max_colwidth", None)
@@ -202,6 +211,7 @@ def sustainability(l_args, s_ticker):
 
 def calendar_earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="cal",
         description="""
             Calendar earnings of the company. Including revenue and earnings estimates.
@@ -210,7 +220,9 @@ def calendar_earnings(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         stock = yf.Ticker(s_ticker)
         df_calendar = stock.calendar

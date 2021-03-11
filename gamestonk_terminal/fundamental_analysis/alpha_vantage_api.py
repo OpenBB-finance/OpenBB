@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="overview",
         description="""
             Prints an overview about the company. The following fields are expected:
@@ -33,7 +34,9 @@ def overview(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Request OVERVIEW data from Alpha Vantage API
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -87,6 +90,7 @@ def overview(l_args, s_ticker):
 
 def key(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="key",
         description="""
             Gives main key metrics about the company (it's a subset of the Overview data from Alpha
@@ -98,7 +102,9 @@ def key(l_args, s_ticker):
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Request OVERVIEW data
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
@@ -150,6 +156,7 @@ def key(l_args, s_ticker):
 
 def income_statement(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="incom",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
@@ -183,6 +190,8 @@ def income_statement(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", None)
@@ -209,6 +218,7 @@ def income_statement(l_args, s_ticker):
 
 def balance_sheet(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="balance",
         description="""
             Prints a complete balance sheet statement over time. This can be either quarterly or
@@ -278,6 +288,7 @@ def balance_sheet(l_args, s_ticker):
 
 def cash_flow(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="cash",
         description="""
             Prints a complete cash flow statement over time. This can be either quarterly or
@@ -315,6 +326,8 @@ def cash_flow(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", None)
@@ -341,6 +354,7 @@ def cash_flow(l_args, s_ticker):
 
 def earnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="earnings",
         description="""
             Print earnings dates and reported EPS of the company. The following fields are
@@ -368,6 +382,8 @@ def earnings(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.n_num == 1:
             pd.set_option("display.max_colwidth", None)

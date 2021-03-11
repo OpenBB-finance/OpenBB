@@ -9,6 +9,7 @@ register_matplotlib_converters()
 
 def cci(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="cci",
         description="""
             The CCI is designed to detect beginning and ending market trends.
@@ -49,6 +50,8 @@ def cci(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -110,6 +113,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
 
 def macd(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="macd",
         description="""
             The Moving Average Convergence Divergence (MACD) is the difference
@@ -162,6 +166,8 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -222,6 +228,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 
 def rsi(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="rsi",
         description="""
             The Relative Strength Index (RSI) calculates a ratio of the
@@ -271,6 +278,8 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -331,6 +340,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
 
 def stoch(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="stoch",
         description="""
             The Stochastic Oscillator measures where the close is in relation
@@ -380,6 +390,8 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":

@@ -9,6 +9,7 @@ register_matplotlib_converters()
 
 def ema(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="ema",
         description="""
             The Exponential Moving Average is a staple of technical
@@ -43,6 +44,8 @@ def ema(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":
@@ -104,6 +107,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
 
 def sma(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="sma",
         description="""
             Moving Averages are used to smooth the data in an array to
@@ -136,6 +140,8 @@ def sma(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         plt.figure()
         if s_interval == "1440min":
@@ -176,6 +182,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
 
 def vwap(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="vwap",
         description="""
             The Volume Weighted Average Price that measures the average typical price
@@ -195,6 +202,8 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Daily
         if s_interval == "1440min":

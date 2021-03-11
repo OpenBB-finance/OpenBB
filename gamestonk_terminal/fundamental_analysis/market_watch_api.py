@@ -7,6 +7,7 @@ from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and
 
 def income(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="income",
         description="""
             Prints either yearly or quarterly income statement the company. The following fields
@@ -41,6 +42,8 @@ def income(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income/quarter"
@@ -106,6 +109,8 @@ def balance(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
@@ -134,14 +139,12 @@ def cash(l_args, s_ticker):
             Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries,
             Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities,
             and Net Operating Cash Flow Growth. [Source: Market Watch]
-
             Prints either yearly or quarterly cash flow investing activities of the company.
             The following fields are expected: Capital Expenditures, Capital Expenditures Growth,
             Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures
             (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses,
             Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments,
             Other Uses, Other Sources, Net Investing Cash Flow Growth. [Source: Market Watch]
-
             Prints either yearly or quarterly cash flow financing activities of the company.
             The following fields are expected: Cash Dividends Paid - Total, Common Dividends,
             Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk.,
@@ -166,6 +169,8 @@ def cash(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_quarter:
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"

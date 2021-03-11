@@ -6,13 +6,13 @@ from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and
 
 def bullbear(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="bullbear",
         description="""
             Print bullbear sentiment based on last 30 messages on the board.
             Also prints the watchlist_count. [Source: Stocktwits]
         """,
     )
-
     parser.add_argument(
         "-t",
         "--ticker",
@@ -25,6 +25,8 @@ def bullbear(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
@@ -54,6 +56,7 @@ def bullbear(l_args, s_ticker):
 
 def messages(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="messages",
         description="""Print up to 30 of the last messages on the board. [Source: Stocktwits]""",
     )
@@ -79,6 +82,8 @@ def messages(l_args, s_ticker):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
@@ -102,11 +107,15 @@ def messages(l_args, s_ticker):
 
 def trending(l_args):
     parser = argparse.ArgumentParser(
-        prog="trending", description="""Stocks trending. [Source: Stocktwits]"""
+        add_help=False,
+        prog="trending",
+        description="""Stocks trending. [Source: Stocktwits]""",
     )
 
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
         if result.status_code == 200:
@@ -132,6 +141,7 @@ def trending(l_args):
 
 def stalker(l_args):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="stalker",
         description="""Print up to the last 30 messages of a user. [Source: Stocktwits]""",
     )
@@ -157,6 +167,8 @@ def stalker(l_args):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.stocktwits.com/api/2/streams/user/{ns_parser.s_user}.json"

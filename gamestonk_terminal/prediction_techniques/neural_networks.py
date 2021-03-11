@@ -77,7 +77,7 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
 
 def mlp(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
-        prog="mlp", description="""Multilayer Perceptron. """
+        add_help=False, prog="mlp", description="""Multilayer Perceptron. """
     )
 
     parser.add_argument(
@@ -156,6 +156,8 @@ def mlp(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -265,7 +267,7 @@ def mlp(l_args, s_ticker, df_stock):
 
 def rnn(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
-        prog="rnn", description="""Recurrent Neural Network. """
+        add_help=False, prog="rnn", description="""Recurrent Neural Network. """
     )
 
     parser.add_argument(
@@ -344,6 +346,8 @@ def rnn(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -453,7 +457,7 @@ def rnn(l_args, s_ticker, df_stock):
 
 def lstm(l_args, s_ticker, df_stock):
     parser = argparse.ArgumentParser(
-        prog="lstm", description="""Long-Short Term Memory. """
+        add_help=False, prog="lstm", description="""Long-Short Term Memory. """
     )
 
     parser.add_argument(
@@ -532,6 +536,8 @@ def lstm(l_args, s_ticker, df_stock):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
