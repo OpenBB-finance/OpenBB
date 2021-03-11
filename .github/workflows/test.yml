@@ -120,13 +120,13 @@ jobs:
   tests-conda:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: ['ubuntu', 'windows']
         python-version: ['3.8']
-        dependencies: [""]
+        dependencies: ['']
         include:
           - os: ubuntu
             python: 3.8
