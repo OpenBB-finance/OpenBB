@@ -1,11 +1,10 @@
 import argparse
-from gamestonk_terminal.sentiment import reddit_api
-from gamestonk_terminal.sentiment import stocktwits_api
-from gamestonk_terminal.sentiment import google_api
 
 from gamestonk_terminal import config_terminal as cfg
-
 from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.sentiment import google_api, reddit_api, stocktwits_api
+from prompt_toolkit.completion import NestedCompleter
 
 
 # -----------------------------------------------------------------------------------------------------------------------
@@ -51,36 +50,41 @@ def sen_menu(s_ticker, s_start):
 
     # Add list of arguments that the discovery parser accepts
     sen_parser = argparse.ArgumentParser(prog="sen", add_help=False)
-    sen_parser.add_argument(
-        "cmd",
-        choices=[
-            "help",
-            "q",
-            "quit",
-            "watchlist",
-            "spac",
-            "spac_c",
-            "wsb",
-            "popular",
-            "bullbear",
-            "messages",
-            "trending",
-            "stalker",
-            "infer",
-            "sentiment",
-            "mentions",
-            "regions",
-            "queries",
-            "rise",
-        ],
-    )
+    choices = [
+        "help",
+        "q",
+        "quit",
+        "watchlist",
+        "spac",
+        "spac_c",
+        "wsb",
+        "popular",
+        "bullbear",
+        "messages",
+        "trending",
+        "stalker",
+        "infer",
+        "sentiment",
+        "mentions",
+        "regions",
+        "queries",
+        "rise",
+    ]
+    sen_parser.add_argument("cmd", choices=choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     print_sentiment()
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair()} (sen)> ")
+        if session:
+            as_input = session.prompt(
+                f"{get_flair()} (sen)> ",
+                completer=completer,
+            )
+        else:
+            as_input = input(f"{get_flair()} (sen)> ")
 
         # Parse sentiment command of the list of possible commands
         try:
