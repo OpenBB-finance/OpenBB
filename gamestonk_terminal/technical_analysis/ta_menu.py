@@ -1,13 +1,14 @@
 import argparse
 
-from gamestonk_terminal.technical_analysis import overlap as ta_overlap
+import matplotlib.pyplot as plt
+from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.technical_analysis import momentum as ta_momentum
+from gamestonk_terminal.technical_analysis import overlap as ta_overlap
 from gamestonk_terminal.technical_analysis import trend as ta_trend
 from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
-import matplotlib.pyplot as plt
-
-from gamestonk_terminal.helper_funcs import get_flair
+from prompt_toolkit.completion import NestedCompleter
 
 
 def print_technical_analysis(s_ticker, s_start, s_interval):
@@ -48,33 +49,38 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the technical analysis parser accepts
     ta_parser = argparse.ArgumentParser(prog="ta", add_help=False)
-    ta_parser.add_argument(
-        "cmd",
-        choices=[
-            "help",
-            "q",
-            "quit",
-            "ema",
-            "sma",
-            "vwap",
-            "cci",
-            "macd",
-            "rsi",
-            "stoch",
-            "adx",
-            "aroon",
-            "bbands",
-            "ad",
-            "obv",
-        ],
-    )
+    choices = [
+        "help",
+        "q",
+        "quit",
+        "ema",
+        "sma",
+        "vwap",
+        "cci",
+        "macd",
+        "rsi",
+        "stoch",
+        "adx",
+        "aroon",
+        "bbands",
+        "ad",
+        "obv",
+    ]
+    ta_parser.add_argument("cmd", choices=choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     print_technical_analysis(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair} (ta)> ")
+        if session:
+            as_input = session.prompt(
+                f"{get_flair()} (ta)> ",
+                completer=completer,
+            )
+        else:
+            as_input = input(f"{get_flair()} (ta)> ")
 
         # Images are non blocking - allows to close them if we type other command
         plt.close()

@@ -1,13 +1,14 @@
 import argparse
 
+from gamestonk_terminal.due_diligence import business_insider_api as bi_api
+from gamestonk_terminal.due_diligence import financial_modeling_prep_api as fmp_api
 from gamestonk_terminal.due_diligence import finviz_api as fvz_api
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
-from gamestonk_terminal.due_diligence import reddit_api as r_api
 from gamestonk_terminal.due_diligence import quandl_api as q_api
-from gamestonk_terminal.due_diligence import financial_modeling_prep_api as fmp_api
-from gamestonk_terminal.due_diligence import business_insider_api as bi_api
-
+from gamestonk_terminal.due_diligence import reddit_api as r_api
 from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
+from prompt_toolkit.completion import NestedCompleter
 
 
 def print_due_diligence(s_ticker, s_start, s_interval):
@@ -48,33 +49,38 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the due diligence parser accepts
     dd_parser = argparse.ArgumentParser(prog="dd", add_help=False)
-    dd_parser.add_argument(
-        "cmd",
-        choices=[
-            "info",
-            "help",
-            "q",
-            "quit",
-            "red",
-            "short",
-            "rating",
-            "pt",
-            "est",
-            "ins",
-            "insider",
-            "news",
-            "analyst",
-            "warnings",
-            "sec",
-        ],
-    )
+    choices = [
+        "info",
+        "help",
+        "q",
+        "quit",
+        "red",
+        "short",
+        "rating",
+        "pt",
+        "est",
+        "ins",
+        "insider",
+        "news",
+        "analyst",
+        "warnings",
+        "sec",
+    ]
+    dd_parser.add_argument("cmd", choices=choices)
+    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     print_due_diligence(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
         # Get input command from user
-        as_input = input(f"{get_flair()} (dd)> ")
+        if session:
+            as_input = session.prompt(
+                f"{get_flair()} (dd)> ",
+                completer=completer,
+            )
+        else:
+            as_input = input(f"{get_flair()} (dd)> ")
 
         # Parse due diligence command of the list of possible commands
         try:
