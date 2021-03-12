@@ -1,6 +1,6 @@
 import argparse
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.sentiment import google_api, reddit_api, stocktwits_api
@@ -78,7 +78,7 @@ def sen_menu(s_ticker, s_start):
     # Loop forever and ever
     while True:
         # Get input command from user
-        if session:
+        if session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(
                 f"{get_flair()} (sen)> ",
                 completer=completer,
@@ -136,7 +136,7 @@ def sen_menu(s_ticker, s_start):
 
         # ----------------------------------------------------- TWITTER -------------------------------------------------
         elif ns_known_args.cmd == "infer":
-            if not cfg.ENABLE_PREDICT:
+            if not gtff.ENABLE_PREDICT:
                 print("Predict is not enabled in config_terminal.py")
                 print("Twitter inference menu is disabled")
                 print("")
@@ -159,7 +159,7 @@ def sen_menu(s_ticker, s_start):
             twitter_api.inference(l_args, s_ticker)
 
         elif ns_known_args.cmd == "sentiment":
-            if not cfg.ENABLE_PREDICT:
+            if not gtff.ENABLE_PREDICT:
                 print("Predict is not enabled in config_terminal.py")
                 print("Twitter sentiment menu is disabled")
                 print("")

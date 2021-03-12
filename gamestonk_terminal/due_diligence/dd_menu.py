@@ -6,6 +6,7 @@ from gamestonk_terminal.due_diligence import finviz_api as fvz_api
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
 from gamestonk_terminal.due_diligence import quandl_api as q_api
 from gamestonk_terminal.due_diligence import reddit_api as r_api
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
@@ -74,7 +75,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        if session:
+        if session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(
                 f"{get_flair()} (dd)> ",
                 completer=completer,

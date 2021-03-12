@@ -10,19 +10,19 @@ except ModuleNotFoundError as e:
     print(e)
     print("Skipping the test")
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 
 
 class TestSentimentTwitterApi(unittest.TestCase):
     def test_inference(self):
-        if not cfg.ENABLE_PREDICT:
+        if not gtff.ENABLE_PREDICT:
             return
         # Fix: implement a better twitter client
         # inference([], "PLTR")
         return
 
     def test_sentiment(self):
-        if not cfg.ENABLE_PREDICT:
+        if not gtff.ENABLE_PREDICT:
             return
         # Fix: implement a better twitter client
         # sentiment([], "PLTR")

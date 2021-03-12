@@ -1,6 +1,7 @@
 import argparse
 
 import matplotlib.pyplot as plt
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.technical_analysis import momentum as ta_momentum
@@ -74,7 +75,7 @@ def ta_menu(df_stock, s_ticker, s_start, s_interval):
     # Loop forever and ever
     while True:
         # Get input command from user
-        if session:
+        if session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(
                 f"{get_flair()} (ta)> ",
                 completer=completer,

@@ -136,9 +136,9 @@ Note: The libraries specified in the [requirements.txt](/requirements.txt) file 
 
 *If you would like to use optional Machine Learning features:*
 
-* Update your [config_terminal.py](/gamestonk_terminal/config_terminal.py) with:
+* Update your [feature_flags.py](/gamestonk_terminal/feature_flags.py) with:
 ```
-ENABLE_PREDICT = False
+ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 
 * Install optional ML features dependencies collection with poetry:

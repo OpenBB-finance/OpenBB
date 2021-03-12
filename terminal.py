@@ -7,6 +7,7 @@ from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.due_diligence import dd_menu as ddm
@@ -77,7 +78,7 @@ def main():
             should_print_help = False
 
         # Get input command from user
-        if session:
+        if session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(f"{get_flair()}> ", completer=completer)
         else:
             as_input = input(f"{get_flair()}> ")
@@ -148,7 +149,7 @@ def main():
 
         elif ns_known_args.opt == "pred":
 
-            if not cfg.ENABLE_PREDICT:
+            if not gtff.ENABLE_PREDICT:
                 print("Predict is not enabled in config_terminal.py")
                 print("Prediction menu is disabled")
                 print("")
