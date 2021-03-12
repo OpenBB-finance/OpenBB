@@ -62,6 +62,7 @@ def main():
         "ta",
         "dd",
         "pred",
+        "ca",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
