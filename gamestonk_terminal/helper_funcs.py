@@ -300,10 +300,14 @@ def price_prediction_color(val: int, last_val: int) -> str:
 
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
-    print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
-
-    print("Prediction:")
-    print(df_pred.apply(price_prediction_color, last_val=last_price).to_string())
+    if gtff.USE_COLOR:
+        print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
+        print("Prediction:")
+        print(df_pred.apply(price_prediction_color, last_val=last_price).to_string())
+    else:
+        print(f"Actual price: {last_price:.2f} $\n")
+        print("Prediction:")
+        print(df_pred.to_string())
 
 
 def check_ohlc(type_ohlc: str) -> str:
