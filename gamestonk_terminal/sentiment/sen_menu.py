@@ -137,7 +137,7 @@ def sen_menu(s_ticker, s_start):
         # ----------------------------------------------------- TWITTER -------------------------------------------------
         elif ns_known_args.cmd == "infer":
             if not gtff.ENABLE_PREDICT:
-                print("Predict is not enabled in config_terminal.py")
+                print("Predict is not enabled in feature_flags.py")
                 print("Twitter inference menu is disabled")
                 print("")
                 continue
