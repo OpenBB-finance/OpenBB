@@ -121,7 +121,7 @@ def plot_adx(df_stock, s_ticker, df_ta):
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     plt.ylim([0, 100])
-    plt.ion()
+    # plt.ion()
     plt.show()
 
 
@@ -221,7 +221,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         plt.ylim([-100, 100])
-        plt.ion()
+        # plt.ion()
         plt.show()
         print("")
 
