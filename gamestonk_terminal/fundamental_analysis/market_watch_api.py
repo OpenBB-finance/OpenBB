@@ -63,6 +63,7 @@ def income(l_args, s_ticker):
 
 def balance(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="balance",
         description="""
             Prints either yearly or quarterly assets from balance sheet of the company.
@@ -130,6 +131,7 @@ def balance(l_args, s_ticker):
 
 def cash(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="cash_flow",
         description="""
             Prints either yearly or quarterly cash flow operating activities of the company.
