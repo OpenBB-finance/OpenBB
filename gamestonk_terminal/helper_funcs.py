@@ -39,21 +39,35 @@ def valid_date(s: str) -> datetime:
 
 
 def plot_view_stock(df, symbol):
-    df.sort_index(ascending=True, inplace=True)
-    _, axVolume = plt.subplots()
-    plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
-    plt.ylabel("Volume")
-    _ = axVolume.twinx()
-    plt.plot(df.index, df.iloc[:, :-1])
-    plt.title(symbol + " (Time Series)")
-    plt.xlim(df.index[0], df.index[-1])
-    plt.xlabel("Time")
-    plt.ylabel("Share Price ($)")
-    plt.legend(df.columns)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.show()
+    # df.sort_index(ascending=True, inplace=True)
+    # _, axVolume = plt.subplots()
+    # plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
+    # plt.ylabel("Volume")
+    # _ = axVolume.twinx()
+    # plt.plot(df.index, df.iloc[:, :-1])
+    # plt.title(symbol + " (Time Series)")
+    # plt.xlim(df.index[0], df.index[-1])
+    # plt.xlabel("Time")
+    # plt.ylabel("Share Price ($)")
+    # plt.legend(df.columns)
+    # plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    # plt.minorticks_on()
+    # plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    # plt.show()
+
+    print(df)
+
+    import mplfinance as mpf
+
+    mpf.plot(
+        df.iloc[:, :-1],
+        type="candle",
+        mav=(10, 20, 50),
+        volume=True,
+        style="yahoo",
+        figratio=(10, 5),
+        figscale=1.25,
+    )
     print("")
 
 

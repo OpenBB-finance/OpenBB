@@ -173,16 +173,16 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
 
-                df_stock = df_stock.rename(
-                    columns={
-                        "Open": "1. open",
-                        "High": "2. high",
-                        "Low": "3. low",
-                        "Close": "4. close",
-                        "Adj Close": "5. adjusted close",
-                        "Volume": "6. volume",
-                    }
-                )
+                # df_stock = df_stock.rename(
+                #     columns={
+                #         "Open": "1. open",
+                #         "High": "2. high",
+                #         "Low": "3. low",
+                #         "Close": "4. close",
+                #         "Adj Close": "5. adjusted close",
+                #         "Volume": "6. volume",
+                #     }
+                # )
                 df_stock.index.name = "date"
 
         # Intraday

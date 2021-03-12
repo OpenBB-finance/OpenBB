@@ -101,7 +101,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         plt.gca().twinx()
         plt.ylim(plt.gca().get_ylim())
         plt.yticks([0.2, 0.8], ("OVERSOLD", "OVERBOUGHT"))
-        #plt.ion()
+        # plt.ion()
         plt.show()
 
         print("")

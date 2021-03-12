@@ -112,6 +112,20 @@ def main():
             s_ticker, s_start, s_interval, df_stock = load(
                 l_args, s_ticker, s_start, s_interval, df_stock
             )
+
+            print(df_stock)
+            import mplfinance as mpf
+
+            mpf.plot(
+                df_stock.tail(90),
+                type="candle",
+                mav=(10, 20, 50),
+                volume=True,
+                xrotation=10,
+                style="yahoo",
+                # figratio=(10, 5),
+                # figscale=1.25,
+            )
             main_cmd = True
 
         elif ns_known_args.opt == "view":
