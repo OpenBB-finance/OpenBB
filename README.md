@@ -167,7 +167,7 @@ These are the ones where a key is necessary:
   * Quandl: https://www.quandl.com/tools/api
   * Reddit: https://www.reddit.com/prefs/apps
   * Twitter: https://developer.twitter.com
-  * Polygon: # https://polygon.io
+  * Polygon: https://polygon.io
   * Financial Modeling Prep: https://financialmodelingprep.com/developer
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
