@@ -101,7 +101,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         plt.gca().twinx()
         plt.ylim(plt.gca().get_ylim())
         plt.yticks([0.2, 0.8], ("OVERSOLD", "OVERBOUGHT"))
-        plt.ion()
+        # plt.ion()
         plt.show()
 
         print("")
@@ -217,7 +217,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         plt.xlabel("Time")
-        plt.ion()
+        # plt.ion()
         plt.show()
         print("")
 
@@ -328,7 +328,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         plt.gca().twinx()
         plt.ylim(plt.gca().get_ylim())
         plt.yticks([0.15, 0.85], ("OVERSOLD", "OVERBOUGHT"))
-        plt.ion()
+        # plt.ion()
         plt.show()
 
         print("")
@@ -446,7 +446,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         plt.gca().twinx()
         plt.ylim(plt.gca().get_ylim())
         plt.yticks([0.1, 0.9], ("OVERSOLD", "OVERBOUGHT"))
-        plt.ion()
+        # plt.ion()
         plt.show()
 
         print("")

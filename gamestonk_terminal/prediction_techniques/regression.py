@@ -137,7 +137,7 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
-        plt.ion()
+        # plt.ion()
         plt.show()
 
         # Print prediction data

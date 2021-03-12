@@ -165,7 +165,7 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
                     linestyle="--",
                     color="k",
                 )
-                plt.ion()
+                # plt.ion()
                 plt.show()
 
                 # Print prediction data
