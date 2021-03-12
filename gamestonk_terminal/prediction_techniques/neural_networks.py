@@ -17,6 +17,8 @@ from gamestonk_terminal.helper_funcs import (
     print_pretty_prediction,
 )
 
+from gamestonk_terminal import feature_flags as gtff
+
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
 
 
@@ -253,7 +255,10 @@ def mlp(l_args, s_ticker, df_stock):
             linestyle="--",
             color="k",
         )
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
         # Print prediction data
@@ -443,7 +448,10 @@ def rnn(l_args, s_ticker, df_stock):
             linestyle="--",
             color="k",
         )
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
         # Print prediction data
@@ -633,7 +641,10 @@ def lstm(l_args, s_ticker, df_stock):
             linestyle="--",
             color="k",
         )
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
         # Print prediction data

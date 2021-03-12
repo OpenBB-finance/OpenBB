@@ -15,7 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
     parse_known_args_and_warn,
 )
-from gamestonk_terminal.config_terminal import USE_COLOR
+from gamestonk_terminal import feature_flags as gtff
 
 
 def direction_color_red_green(val: str) -> str:
@@ -119,7 +119,7 @@ def ark_orders(l_args):
     pd.set_option("mode.chained_assignment", None)
     df_orders = add_order_total(df_orders.head(ns_parser.n_num))
 
-    if USE_COLOR:
+    if gtff.USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
 
         patch_pandas_text_adjustment()

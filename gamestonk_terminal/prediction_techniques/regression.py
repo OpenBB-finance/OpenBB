@@ -14,6 +14,8 @@ from gamestonk_terminal.helper_funcs import (
     print_pretty_prediction,
 )
 
+from gamestonk_terminal import feature_flags as gtff
+
 register_matplotlib_converters()
 
 USER_INPUT = 0
@@ -137,7 +139,10 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         plt.vlines(
             df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
         )
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
         # Print prediction data

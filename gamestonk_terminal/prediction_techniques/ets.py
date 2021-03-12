@@ -11,6 +11,8 @@ from gamestonk_terminal.helper_funcs import (
     print_pretty_prediction,
 )
 
+from gamestonk_terminal import feature_flags as gtff
+
 register_matplotlib_converters()
 
 trend = "Ad"  # Additive damped, A Additive, N None
@@ -165,7 +167,10 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
                     linestyle="--",
                     color="k",
                 )
-                # plt.ion()
+
+                if gtff.USE_ION:
+                    plt.ion()
+
                 plt.show()
 
                 # Print prediction data

@@ -8,12 +8,12 @@ except ModuleNotFoundError as e:
     print(e)
     print("Skipping the test")
 
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 
 
 class TestPredNeuralNetworks(unittest.TestCase):
     def test_mlp(self):
-        if not cfg.ENABLE_PREDICT:
+        if not gtff.ENABLE_PREDICT:
             return
 
         # Fix: need to come up with a better way of doing this

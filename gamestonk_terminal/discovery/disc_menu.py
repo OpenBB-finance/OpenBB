@@ -12,6 +12,7 @@ from gamestonk_terminal.discovery import (
     unusual_whales_api,
     yahoo_finance_api,
 )
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
@@ -74,7 +75,7 @@ def disc_menu():
     # Loop forever and ever
     while True:
         # Get input command from user
-        if session:
+        if session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(
                 f"{get_flair()} (disc)> ",
                 completer=completer,

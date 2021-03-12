@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -96,7 +97,10 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
         print("")
 
@@ -171,7 +175,10 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
         print("")
 
@@ -257,7 +264,10 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
         print("")
 

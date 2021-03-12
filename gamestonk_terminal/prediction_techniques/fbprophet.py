@@ -10,6 +10,8 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 
+from gamestonk_terminal import feature_flags as gtff
+
 register_matplotlib_converters()
 
 warnings.simplefilter("ignore")
@@ -81,7 +83,10 @@ def fbprophet(l_args, s_ticker, df_stock):
             df_stock["ds"].values[0], get_next_stock_market_days(l_pred_days[-1], 1)[-1]
         )
         plt.title(f"Fb Prophet on {s_ticker} - {ns_parser.n_days} days prediction")
-        # plt.ion()
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
         print("")

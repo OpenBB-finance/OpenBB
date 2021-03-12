@@ -12,7 +12,7 @@ import pandas as pd
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -53,6 +53,10 @@ def plot_view_stock(df, symbol):
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+    if gtff.USE_ION:
+        plt.ion()
+
     plt.show()
     print("")
 
@@ -349,7 +353,7 @@ def get_flair() -> str:
         "yy": "(☯)",
     }
 
-    if flair.get(cfg.USE_FLAIR):
-        return flair[cfg.USE_FLAIR]
+    if flair.get(gtff.USE_FLAIR):
+        return flair[gtff.USE_FLAIR]
 
     return ""
