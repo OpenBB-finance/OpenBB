@@ -18,92 +18,165 @@
 * [Developer Experience](#Developer-Experience)
 * [User Experience](#User-Experience)
 
+---
+
 ## Discovery
 
 ### Short term
-* Top Losers (@didier)
+
+- [ ] Top Losers (@didier)
+- [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
+
 ### Long term
-* Add screeners (@didier)
+
+- [ ] Add screeners (@didier)
+
+---
 
 ## Behavioral Analysis
 
 ### Short term
-* Implement a better Twitter client (@aia)
+
+- [ ] Implement a better Twitter client (@aia)
+
 ### Long term
-* Add Stocktwits (@aia)
+
+- [ ] Add Stocktwits (@aia)
+
+---
 
 ## Sell-side Equity Research
 
 ### Short term
+
 ### Long term
+
+- [ ] Add logic to Equity pull data from Bank of America, Charles Schwab
+
+---
 
 ## Fundamental Analysis
 
 ### Short term
-* Multi-ticker comparison (@didier)
-* Rearrange FA menu to have AV and FMP as submenus (@didier)
+
+- [x] Multi-ticker comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
+- [ ] Rearrange FA menu to have AV and FMP as submenus (@didier)
+
 ### Long term
+
+---
 
 ## Technical Analysis
 
 ### Short term
-* Add auto-recognition of major TA patterns (@didier)
+
+- [ ] Add auto-recognition of major TA patterns (@didier)
+
 ### Long term
+
+---
 
 ## Due Diligence
 
 ### Short term
+
 ### Long term
+
+---
 
 ## Prediction Techniques
 
 ### Short term
+
+- [x] Add several exponential smoothing techniques [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
+
 ### Long term
+
+---
 
 ## Reports
 
 ### Short term
-* Expand Due Diligence report
-* Add multi-ticker comparison report
+
+* [ ] Expand Due Diligence report (@aia)
+* [ ] Add multi-ticker comparison report (@aia)
+
 ### Long term
+
+---
 
 ## Portfolio Analysis
 
 ### Short term
+
 ### Long term
+
+---
 
 ## Credit Analysis
 
 ### Short term
+
 ### Long term
+
+- [ ] Add FINRA
+- [ ] Moodies data
+
+---
 
 ## Cryptocurrencies
 
 ### Short term
+
+- [ ] Add Coingecko
+- [ ] Add crypto charts
+
 ### Long term
+
+---
 
 ## Backend
 
 ### Short term
+
 ### Long term
-* Add caching
-* APIs
-* GraphQL
+
+* [ ] Add caching
+* [ ] APIs
+* [ ] GraphQL
+
+---
 
 ## Frontend
 
 ### Short term
+
+- [x] Add terminal flair (@aia) - [PR #131](https://github.com/DidierRLopes/GamestonkTerminal/pull/131)
+- [ ] Prompt-toolkit (@ricleal) - [PR #142](https://github.com/DidierRLopes/GamestonkTerminal/)
+
 ### Long term
+
+---
 
 ## Developer Experience
 
 ### Short term
-* Add Windows CI (@aia)
-* Write a developer guide
+
+- [x] Add Windows CI (@aia) - [PR #151](https://github.com/DidierRLopes/GamestonkTerminal/pull/151)
+- [ ] Write a developer guide
+- [ ] Add a docker CI
+- [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
+
 ### Long term
+
+---
 
 ## User Experience
 
 ### Short term
+
+- [ ] Publish Docker
+
 ### Long term
-* Add a WHL installation
+
+- [ ] Add a WHL installation
