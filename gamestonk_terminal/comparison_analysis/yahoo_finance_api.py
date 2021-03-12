@@ -34,6 +34,7 @@ def check_one_of_ohlca(type_candles: str) -> str:
 
 def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="historical",
         description="""Historical price comparison between similar companies [Source: Yahoo Finance]
         """,
@@ -70,6 +71,8 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
             # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
         else:
             ns_parser = parse_known_args_and_warn(parser, l_args)
+            if not ns_parser:
+                return
 
             if ns_parser.l_similar:
                 similar = ns_parser.l_similar
@@ -112,6 +115,7 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
 def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="corr",
         description=""" Correlation heatmap based on historical price comparison between similar
         companies. [Source: Yahoo Finance]
@@ -149,6 +153,8 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
             # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
         else:
             ns_parser = parse_known_args_and_warn(parser, l_args)
+            if not ns_parser:
+                return
 
             if ns_parser.l_similar:
                 similar = ns_parser.l_similar

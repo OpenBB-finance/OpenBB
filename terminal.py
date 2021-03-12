@@ -62,6 +62,7 @@ def main():
         "ta",
         "dd",
         "pred",
+        "ca",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -150,7 +151,7 @@ def main():
         elif ns_known_args.opt == "pred":
 
             if not gtff.ENABLE_PREDICT:
-                print("Predict is not enabled in config_terminal.py")
+                print("Predict is not enabled in feature_flags.py")
                 print("Prediction menu is disabled")
                 print("")
                 continue

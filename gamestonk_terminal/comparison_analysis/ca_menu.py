@@ -10,13 +10,16 @@ from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 def get_similar_companies(l_args, s_ticker):
     """ Get similar companies. [Source: Polygon API] """
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="get",
         description="""Get similar companies to compare with.""",
     )
 
     l_similar = []
     try:
-        parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
         result = requests.get(
             f"https://api.polygon.io/v1/meta/symbols/{s_ticker}/company?&apiKey={cfg.API_POLYGON_KEY}"
@@ -35,6 +38,7 @@ def get_similar_companies(l_args, s_ticker):
 def select_similar_companies(l_args):
     """ Select similar companies, e.g. NIO,XPEV,LI"""
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="select",
         description="""Select similar companies to compare with.""",
     )
@@ -54,6 +58,9 @@ def select_similar_companies(l_args):
                 l_args.insert(0, "-s")
 
         ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
+
         print("")
         return ns_parser.l_similar
 
