@@ -1,4 +1,5 @@
 import argparse
+import datetime
 import os
 from warnings import simplefilter
 import numpy as np
@@ -12,10 +13,18 @@ from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
-    get_next_stock_market_days,
     parse_known_args_and_warn,
-    print_pretty_prediction,
+    valid_date,
+    patch_pandas_text_adjustment,
+    get_next_stock_market_days,
 )
+
+from gamestonk_terminal.prediction_techniques.pred_helper import (
+    print_pretty_prediction,
+    price_prediction_backtesting_color,
+    print_prediction_kpis,
+)
+
 
 from gamestonk_terminal import feature_flags as gtff
 
@@ -29,7 +38,6 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 simplefilter(action="ignore", category=FutureWarning)
 
 
-# ----------------------------------------------------------------------------------------------------
 def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
     model = Sequential()
 
@@ -101,7 +109,6 @@ def mlp(l_args, s_ticker, df_stock):
         help="number of days to use for prediction.",
     )
     parser.add_argument(
-        "-e",
         "--epochs",
         action="store",
         dest="n_epochs",
@@ -155,11 +162,53 @@ def mlp(l_args, s_ticker, df_stock):
         choices=["mae", "mape", "mse", "msle"],
         help="loss function.",
     )
+    parser.add_argument(
+        "-e",
+        "--end",
+        action="store",
+        type=valid_date,
+        dest="s_end_date",
+        default=None,
+        help="The end date (format YYYY-MM-DD) to select - Backtesting",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
             return
+
+        # BACKTESTING
+        if ns_parser.s_end_date:
+
+            if ns_parser.s_end_date < df_stock.index[0]:
+                print(
+                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                )
+                return
+
+            if (
+                ns_parser.s_end_date
+                < get_next_stock_market_days(
+                    last_stock_day=df_stock.index[0], n_next_days=ns_parser.n_inputs + ns_parser.n_days
+                )[-1]
+            ):
+                print(
+                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                )
+                return
+
+            future_index = get_next_stock_market_days(
+                last_stock_day=ns_parser.s_end_date, n_next_days=ns_parser.n_days
+            )
+
+            if future_index[-1] > datetime.datetime.now():
+                print(
+                    "Backtesting not allowed, since End Date + Prediction days is in the future\n"
+                )
+                return
+
+            df_future = df_stock[future_index[0] : future_index[-1]]
+            df_stock = df_stock[: ns_parser.s_end_date]
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -184,6 +233,11 @@ def mlp(l_args, s_ticker, df_stock):
             ns_parser.n_days,
             numJumps=ns_parser.n_jumps,
         )
+
+        if not stock_x:
+            print("Given the model parameters more training data is needed.\n")
+            return
+
         stock_x = np.array(stock_x)
         stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1]))
         stock_y = np.array(stock_y)
@@ -225,7 +279,13 @@ def mlp(l_args, s_ticker, df_stock):
         # Plotting
         plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
-        plt.title(f"MLP on {s_ticker} - {ns_parser.n_days} days prediction")
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.title(
+                f"BACKTESTING: MLP on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
+        else:
+            plt.title(f"MLP on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
         )
@@ -256,13 +316,143 @@ def mlp(l_args, s_ticker, df_stock):
             color="k",
         )
 
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.plot(
+                df_future.index,
+                df_future["5. adjusted close"],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_future["5. adjusted close"].values[0],
+                ],
+                lw=1,
+                c="tab:blue",
+                linestyle="--",
+            )
+
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
 
-        # Print prediction data
-        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.figure()
+            plt.subplot(211)
+            plt.plot(
+                df_future.index,
+                df_future["5. adjusted close"],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.plot(df_pred.index, df_pred, lw=2, c="green")
+            plt.scatter(
+                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.scatter(df_pred.index, df_pred, c="green", lw=3)
+            plt.plot(
+                [df_stock.index[-1], df_pred.index[0]],
+                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                lw=2,
+                c="green",
+                ls="--",
+            )
+            plt.title("BACKTESTING: Real data price versus Prediction")
+            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
+            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.ylabel("Share Price ($)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.legend(["Real data", "Prediction data"])
+            plt.xticks([])
+
+            plt.subplot(212)
+            plt.axhline(y=0, color="k", linestyle="--", linewidth=2)
+            plt.plot(
+                df_future.index,
+                100
+                * (df_pred.values - df_future["5. adjusted close"].values)
+                / df_future["5. adjusted close"].values,
+                lw=2,
+                c="red",
+            )
+            plt.scatter(
+                df_future.index,
+                100
+                * (df_pred.values - df_future["5. adjusted close"].values)
+                / df_future["5. adjusted close"].values,
+                c="red",
+                lw=5,
+            )
+            plt.title("BACKTESTING: Error between Real data and Prediction [%]")
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    0,
+                    100
+                    * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
+                    / df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                ls="--",
+                c="red",
+            )
+            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
+            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xlabel("Time")
+            plt.ylabel("Prediction Error (%)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.legend(["Real data", "Prediction data"])
+
+            if gtff.USE_ION:
+                plt.ion()
+
+            plt.show()
+
+            # Refactor prediction dataframe for backtesting print
+            df_pred.name = "Prediction"
+            df_pred = df_pred.to_frame()
+            df_pred["Real"] = df_future["5. adjusted close"]
+
+            if gtff.USE_COLOR:
+
+                patch_pandas_text_adjustment()
+
+                print("Time         Real [$]  x  Prediction [$]")
+                print(
+                    df_pred.apply(
+                        price_prediction_backtesting_color, axis=1
+                    ).to_string()
+                )
+            else:
+                print(df_pred[["Real", "Prediction"]].round(2).to_string())
+
+            print("")
+            print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
+
+        else:
+            # Print prediction data
+            print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
@@ -294,7 +484,6 @@ def rnn(l_args, s_ticker, df_stock):
         help="number of days to use for prediction.",
     )
     parser.add_argument(
-        "-e",
         "--epochs",
         action="store",
         dest="n_epochs",
@@ -348,11 +537,53 @@ def rnn(l_args, s_ticker, df_stock):
         choices=["mae", "mape", "mse", "msle"],
         help="loss function.",
     )
+    parser.add_argument(
+        "-e",
+        "--end",
+        action="store",
+        type=valid_date,
+        dest="s_end_date",
+        default=None,
+        help="The end date (format YYYY-MM-DD) to select - Backtesting",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
             return
+
+        # BACKTESTING
+        if ns_parser.s_end_date:
+
+            if ns_parser.s_end_date < df_stock.index[0]:
+                print(
+                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                )
+                return
+
+            if (
+                ns_parser.s_end_date
+                < get_next_stock_market_days(
+                    last_stock_day=df_stock.index[0], n_next_days=ns_parser.n_inputs + ns_parser.n_days
+                )[-1]
+            ):
+                print(
+                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                )
+                return
+
+            future_index = get_next_stock_market_days(
+                last_stock_day=ns_parser.s_end_date, n_next_days=ns_parser.n_days
+            )
+
+            if future_index[-1] > datetime.datetime.now():
+                print(
+                    "Backtesting not allowed, since End Date + Prediction days is in the future\n"
+                )
+                return
+
+            df_future = df_stock[future_index[0] : future_index[-1]]
+            df_stock = df_stock[: ns_parser.s_end_date]
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -377,6 +608,11 @@ def rnn(l_args, s_ticker, df_stock):
             ns_parser.n_days,
             numJumps=ns_parser.n_jumps,
         )
+
+        if not stock_x:
+            print("Given the model parameters more training data is needed.\n")
+            return
+
         stock_x = np.array(stock_x)
         stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
         stock_y = np.array(stock_y)
@@ -418,7 +654,13 @@ def rnn(l_args, s_ticker, df_stock):
         # Plotting
         plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
-        plt.title(f"RNN on {s_ticker} - {ns_parser.n_days} days prediction")
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.title(
+                f"BACKTESTING: RNN on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
+        else:
+            plt.title(f"RNN on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
         )
@@ -449,13 +691,143 @@ def rnn(l_args, s_ticker, df_stock):
             color="k",
         )
 
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.plot(
+                df_future.index,
+                df_future["5. adjusted close"],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_future["5. adjusted close"].values[0],
+                ],
+                lw=1,
+                c="tab:blue",
+                linestyle="--",
+            )
+
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
 
-        # Print prediction data
-        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.figure()
+            plt.subplot(211)
+            plt.plot(
+                df_future.index,
+                df_future["5. adjusted close"],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.plot(df_pred.index, df_pred, lw=2, c="green")
+            plt.scatter(
+                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.scatter(df_pred.index, df_pred, c="green", lw=3)
+            plt.plot(
+                [df_stock.index[-1], df_pred.index[0]],
+                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                lw=2,
+                c="green",
+                ls="--",
+            )
+            plt.title("BACKTESTING: Real data price versus Prediction")
+            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
+            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.ylabel("Share Price ($)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.legend(["Real data", "Prediction data"])
+            plt.xticks([])
+
+            plt.subplot(212)
+            plt.axhline(y=0, color="k", linestyle="--", linewidth=2)
+            plt.plot(
+                df_future.index,
+                100
+                * (df_pred.values - df_future["5. adjusted close"].values)
+                / df_future["5. adjusted close"].values,
+                lw=2,
+                c="red",
+            )
+            plt.scatter(
+                df_future.index,
+                100
+                * (df_pred.values - df_future["5. adjusted close"].values)
+                / df_future["5. adjusted close"].values,
+                c="red",
+                lw=5,
+            )
+            plt.title("BACKTESTING: Error between Real data and Prediction [%]")
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    0,
+                    100
+                    * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
+                    / df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                ls="--",
+                c="red",
+            )
+            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
+            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xlabel("Time")
+            plt.ylabel("Prediction Error (%)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.legend(["Real data", "Prediction data"])
+
+            if gtff.USE_ION:
+                plt.ion()
+
+            plt.show()
+
+            # Refactor prediction dataframe for backtesting print
+            df_pred.name = "Prediction"
+            df_pred = df_pred.to_frame()
+            df_pred["Real"] = df_future["5. adjusted close"]
+
+            if gtff.USE_COLOR:
+
+                patch_pandas_text_adjustment()
+
+                print("Time         Real [$]  x  Prediction [$]")
+                print(
+                    df_pred.apply(
+                        price_prediction_backtesting_color, axis=1
+                    ).to_string()
+                )
+            else:
+                print(df_pred[["Real", "Prediction"]].round(2).to_string())
+
+            print("")
+            print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
+
+        else:
+            # Print prediction data
+            print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
@@ -487,7 +859,6 @@ def lstm(l_args, s_ticker, df_stock):
         help="number of days to use for prediction.",
     )
     parser.add_argument(
-        "-e",
         "--epochs",
         action="store",
         dest="n_epochs",
@@ -541,11 +912,53 @@ def lstm(l_args, s_ticker, df_stock):
         choices=["mae", "mape", "mse", "msle"],
         help="loss function.",
     )
+    parser.add_argument(
+        "-e",
+        "--end",
+        action="store",
+        type=valid_date,
+        dest="s_end_date",
+        default=None,
+        help="The end date (format YYYY-MM-DD) to select - Backtesting",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
             return
+
+        # BACKTESTING
+        if ns_parser.s_end_date:
+
+            if ns_parser.s_end_date < df_stock.index[0]:
+                print(
+                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                )
+                return
+
+            if (
+                ns_parser.s_end_date
+                < get_next_stock_market_days(
+                    last_stock_day=df_stock.index[0], n_next_days=ns_parser.n_inputs + ns_parser.n_days
+                )[-1]
+            ):
+                print(
+                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                )
+                return
+
+            future_index = get_next_stock_market_days(
+                last_stock_day=ns_parser.s_end_date, n_next_days=ns_parser.n_days
+            )
+
+            if future_index[-1] > datetime.datetime.now():
+                print(
+                    "Backtesting not allowed, since End Date + Prediction days is in the future\n"
+                )
+                return
+
+            df_future = df_stock[future_index[0] : future_index[-1]]
+            df_stock = df_stock[: ns_parser.s_end_date]
 
         # Pre-process data
         if ns_parser.s_preprocessing == "standardization":
@@ -570,6 +983,11 @@ def lstm(l_args, s_ticker, df_stock):
             ns_parser.n_days,
             numJumps=ns_parser.n_jumps,
         )
+
+        if not stock_x:
+            print("Given the model parameters more training data is needed.\n")
+            return
+
         stock_x = np.array(stock_x)
         stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
         stock_y = np.array(stock_y)
@@ -611,7 +1029,13 @@ def lstm(l_args, s_ticker, df_stock):
         # Plotting
         plt.figure()
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
-        plt.title(f"LSTM on {s_ticker} - {ns_parser.n_days} days prediction")
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.title(
+                f"BACKTESTING: LSTM on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
+        else:
+            plt.title(f"LSTM on {s_ticker} - {ns_parser.n_days} days prediction")
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
         )
@@ -642,13 +1066,143 @@ def lstm(l_args, s_ticker, df_stock):
             color="k",
         )
 
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.plot(
+                df_future.index,
+                df_future["5. adjusted close"],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_future["5. adjusted close"].values[0],
+                ],
+                lw=1,
+                c="tab:blue",
+                linestyle="--",
+            )
+
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
 
-        # Print prediction data
-        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
+        # BACKTESTING
+        if ns_parser.s_end_date:
+            plt.figure()
+            plt.subplot(211)
+            plt.plot(
+                df_future.index,
+                df_future["5. adjusted close"],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.plot(df_pred.index, df_pred, lw=2, c="green")
+            plt.scatter(
+                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                c="tab:blue",
+                ls="--",
+            )
+            plt.scatter(df_pred.index, df_pred, c="green", lw=3)
+            plt.plot(
+                [df_stock.index[-1], df_pred.index[0]],
+                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                lw=2,
+                c="green",
+                ls="--",
+            )
+            plt.title("BACKTESTING: Real data price versus Prediction")
+            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
+            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.ylabel("Share Price ($)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.legend(["Real data", "Prediction data"])
+            plt.xticks([])
+
+            plt.subplot(212)
+            plt.axhline(y=0, color="k", linestyle="--", linewidth=2)
+            plt.plot(
+                df_future.index,
+                100
+                * (df_pred.values - df_future["5. adjusted close"].values)
+                / df_future["5. adjusted close"].values,
+                lw=2,
+                c="red",
+            )
+            plt.scatter(
+                df_future.index,
+                100
+                * (df_pred.values - df_future["5. adjusted close"].values)
+                / df_future["5. adjusted close"].values,
+                c="red",
+                lw=5,
+            )
+            plt.title("BACKTESTING: Error between Real data and Prediction [%]")
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    0,
+                    100
+                    * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
+                    / df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                ls="--",
+                c="red",
+            )
+            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
+            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xlabel("Time")
+            plt.ylabel("Prediction Error (%)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.legend(["Real data", "Prediction data"])
+
+            if gtff.USE_ION:
+                plt.ion()
+
+            plt.show()
+
+            # Refactor prediction dataframe for backtesting print
+            df_pred.name = "Prediction"
+            df_pred = df_pred.to_frame()
+            df_pred["Real"] = df_future["5. adjusted close"]
+
+            if gtff.USE_COLOR:
+
+                patch_pandas_text_adjustment()
+
+                print("Time         Real [$]  x  Prediction [$]")
+                print(
+                    df_pred.apply(
+                        price_prediction_backtesting_color, axis=1
+                    ).to_string()
+                )
+            else:
+                print(df_pred[["Real", "Prediction"]].round(2).to_string())
+
+            print("")
+            print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
+
+        else:
+            # Print prediction data
+            print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
     except Exception as e:
