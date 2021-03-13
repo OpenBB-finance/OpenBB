@@ -314,13 +314,11 @@ def financials_colored_values(val: str) -> str:
     if sum(c.isalpha() for c in val) < 2:
         if "%" in val:
             if "-" in val:
-                color = Fore.RED
+                return f"{Fore.RED}{val}{Style.RESET_ALL}"
             else:
-                color = Fore.GREEN
-            return f"{color}{val}{Style.RESET_ALL}"
+                return f"{Fore.GREEN}{val}{Style.RESET_ALL}"
         elif "(" in val:
-            color = Fore.RED
-            return f"{color}{val}{Style.RESET_ALL}"
+            return f"{Fore.RED}{val}{Style.RESET_ALL}"
         else:
             return val
     else:
