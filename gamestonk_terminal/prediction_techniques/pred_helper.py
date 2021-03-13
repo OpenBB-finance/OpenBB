@@ -2,32 +2,13 @@ import numpy as np
 import pandas as pd
 from colorama import Fore, Style
 from gamestonk_terminal import feature_flags as gtff
+import sklearn
 from sklearn.metrics import (
     mean_absolute_error,
     mean_squared_error,
     r2_score,
     mean_squared_error,
 )
-
-
-def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
-    n_days = 0
-    l_pred_days = list()
-    while n_days < n_next_days:
-
-        last_stock_day += timedelta(hours=24)
-
-        # Check if it is a weekend
-        if last_stock_day.date().weekday() > 4:
-            continue
-        # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidaysUS():
-            continue
-        # Otherwise stock market is open
-        n_days += 1
-        l_pred_days.append(last_stock_day)
-
-    return l_pred_days
 
 
 def price_prediction_color(val: int, last_val: int) -> str:

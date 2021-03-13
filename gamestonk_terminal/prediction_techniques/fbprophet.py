@@ -13,7 +13,6 @@ from gamestonk_terminal.helper_funcs import (
     patch_pandas_text_adjustment,
 )
 from gamestonk_terminal.prediction_techniques.pred_helper import (
-    print_pretty_prediction,
     price_prediction_backtesting_color,
     print_prediction_kpis,
 )
