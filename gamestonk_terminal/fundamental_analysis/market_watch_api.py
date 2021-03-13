@@ -90,7 +90,7 @@ def balance(l_args, s_ticker):
             Equipment - Gross, Buildings, Land & Improvements, Computer Software and Equipment,
             Other Property, Plant & Equipment, Accumulated Depreciation, Total Investments and
             Advances, Other Long-Term Investments, Long-Term Note Receivables, Intangible Assets,
-            Net Goodwill, Net Other Intangibles, Other Assets [Source: Market Watch]
+            Net Goodwill, Net Other Intangibles, Other Assets.
 
             Prints either yearly or quarterly liabilities and shareholders' equity from balance
             sheet of the company. The following fields are expected: ST Debt & Current Portion LT
@@ -107,8 +107,8 @@ def balance(l_args, s_ticker):
             Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, Treasury Stock,
             Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, Accumulated
             Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current
-            Liabilities, Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market
-            Watch]
+            Liabilities, Total Liabilities, and Liabilities & Shareholders' Equity.
+            [Source: Market Watch]
         """,
     )
 
@@ -160,13 +160,13 @@ def cash(l_args, s_ticker):
             Amortization of Intangible Assets, Deferred Taxes & Investment Tax Credit, Deferred
             Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries,
             Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities,
-            and Net Operating Cash Flow Growth. [Source: Market Watch]
+            and Net Operating Cash Flow Growth.
             Prints either yearly or quarterly cash flow investing activities of the company.
             The following fields are expected: Capital Expenditures, Capital Expenditures Growth,
             Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures
             (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses,
             Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments,
-            Other Uses, Other Sources, Net Investing Cash Flow Growth. [Source: Market Watch]
+            Other Uses, Other Sources, Net Investing Cash Flow Growth.
             Prints either yearly or quarterly cash flow financing activities of the company.
             The following fields are expected: Cash Dividends Paid - Total, Common Dividends,
             Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk.,
@@ -176,7 +176,8 @@ def cash(l_args, s_ticker):
             Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange
             Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow
             Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net
-            Financing Cash Flow [Source: Market Watch]
+            Financing Cash Flow.
+            [Source: Market Watch]
         """,
     )
 
