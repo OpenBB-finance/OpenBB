@@ -310,6 +310,18 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         print(df_pred.to_string())
 
 
+def financials_colored_values(val: str) -> str:
+    if sum(c.isalpha() for c in val) < 2:
+        if "%" in val:
+            if "-" in val:
+                val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+            else:
+                val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
+        elif "(" in val:
+            val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+    return val
+
+
 def check_ohlc(type_ohlc: str) -> str:
     if bool(re.match("^[ohlca]+$", type_ohlc)):
         return type_ohlc
