@@ -321,7 +321,10 @@ def financials_colored_values(val: str) -> str:
         elif "(" in val:
             color = Fore.RED
             return f"{color}{val}{Style.RESET_ALL}"
-    return val
+        else:
+            return val
+    else:
+        return val
 
 
 def check_ohlc(type_ohlc: str) -> str:
