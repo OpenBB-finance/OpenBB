@@ -88,19 +88,16 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
 
         # BACKTESTING
         if ns_parser.s_end_date:
-
             if ns_parser.s_end_date < df_stock.index[0]:
                 print(
                     "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                 )
                 return
 
-            if (
-                ns_parser.s_end_date
-                < get_next_stock_market_days(
-                    last_stock_day=df_stock.index[0], n_next_days=ns_parser.n_inputs + ns_parser.n_days
-                )[-1]
-            ):
+            if ns_parser.s_end_date < get_next_stock_market_days(
+                last_stock_day=df_stock.index[0],
+                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
+            )[-1]:
                 print(
                     "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                 )
@@ -150,13 +147,10 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.title(
-                f"BACKTESTING: {ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker} - {ns_parser.n_days} days prediction"
-            )
+            s_knn = f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker}"
+            plt.title(f"BACKTESTING: {s_knn} - {ns_parser.n_days} days prediction")
         else:
-            plt.title(
-                f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker} - {ns_parser.n_days} days prediction"
-            )
+            plt.title(f"{s_knn} - {ns_parser.n_days} days prediction")
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
         )
@@ -241,7 +235,9 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
             )
             plt.title("BACKTESTING: Real data price versus Prediction")
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
+            )
             plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -281,7 +277,9 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
                 c="red",
             )
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
+            )
             plt.xlabel("Time")
             plt.ylabel("Prediction Error (%)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -300,7 +298,6 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
             df_pred["Real"] = df_future["5. adjusted close"]
 
             if gtff.USE_COLOR:
-
                 patch_pandas_text_adjustment()
 
                 print("Time         Real [$]  x  Prediction [$]")
