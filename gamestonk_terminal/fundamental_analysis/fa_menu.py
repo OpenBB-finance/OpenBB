@@ -42,12 +42,8 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   sust          sustainability values of the company")
     print("   cal           calendar earnings and estimates of the company")
     print("")
-    print("Alpha Vantage API")
-    print("   overview      overview of the company")
-    print("   alpha_income  income statements of the company")
-    print("   alpha_balance balance sheet of the company")
-    print("   alpha_cash    cash flow of the company")
-    print("   earnings      earnings dates and reported EPS")
+    print("Other Sources:")
+    print("   av            Alpha Vantage API")
     print("")
     print("Financial Modeling Prep API")
     print("   profile       profile of the company")
@@ -109,15 +105,10 @@ def fa_menu(s_ticker, s_start, s_interval):
         "shrs",
         "sust",
         "cal",
+        "av",
         "income",
         "balance",
         "cash",
-        "overview",
-        "key",
-        "alpha_income",
-        "alpha_balance",
-        "alpha_cash",
-        "earnings",
         "profile",
         "quote",
         "enterprise",
@@ -132,10 +123,14 @@ def fa_menu(s_ticker, s_start, s_interval):
     fa_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
-    print_fundamental_analysis(s_ticker, s_start, s_interval)
+    should_print_help = True
 
     # Loop forever and ever
     while True:
+        if should_print_help:
+            print_fundamental_analysis(s_ticker, s_start, s_interval)
+            should_print_help = False
+
         # Get input command from user
         if session:
             as_input = session.prompt(
@@ -154,7 +149,7 @@ def fa_menu(s_ticker, s_start, s_interval):
             continue
 
         if ns_known_args.cmd == "help":
-            print_fundamental_analysis(s_ticker, s_start, s_interval)
+            should_print_help = True
 
         elif ns_known_args.cmd == "q":
             # Just leave the FA menu
@@ -196,20 +191,13 @@ def fa_menu(s_ticker, s_start, s_interval):
             yf_api.calendar_earnings(l_args, s_ticker)
 
         # ALPHA VANTAGE API
-        elif ns_known_args.cmd == "overview":
-            av_api.overview(l_args, s_ticker)
+        elif ns_known_args.cmd == "av":
+            b_quit = av_api.menu(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == "alpha_incom":
-            av_api.income_statement(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "alpha_balance":
-            av_api.balance_sheet(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "alpha_cash":
-            av_api.cash_flow(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "earnings":
-            av_api.earnings(l_args, s_ticker)
+            if b_quit:
+                return True
+            else:
+                should_print_help = True
 
         # FINANCIAL MODELING PREP API
         # Details:
