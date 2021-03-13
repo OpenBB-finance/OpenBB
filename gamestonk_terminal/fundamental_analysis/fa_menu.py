@@ -42,24 +42,9 @@ def print_fundamental_analysis(s_ticker, s_start, s_interval):
     print("   sust          sustainability values of the company")
     print("   cal           calendar earnings and estimates of the company")
     print("")
-    print("Alpha Vantage API")
-    print("   overview      overview of the company")
-    print("   alpha_income  income statements of the company")
-    print("   alpha_balance balance sheet of the company")
-    print("   alpha_cash    cash flow of the company")
-    print("   earnings      earnings dates and reported EPS")
-    print("")
-    print("Financial Modeling Prep API")
-    print("   profile       profile of the company")
-    print("   quote         quote of the company")
-    print("   enterprise    enterprise value of the company over time")
-    print("   dcf           discounted cash flow of the company over time")
-    print("   fmp_income    income statements of the company")
-    print("   fmp_balance   balance sheet of the company")
-    print("   fmp_cash      cash flow statement of the company")
-    print("   metrics       key metrics of the company")
-    print("   ratios        financial ratios of the company")
-    print("   growth        financial statement growth of the company")
+    print("Other Sources:")
+    print(">  av            Alpha Vantage MENU")
+    print(">  fmp           Financial Modeling Prep MENU")
     print("")
     return
 
@@ -104,38 +89,28 @@ def fa_menu(s_ticker, s_start, s_interval):
         "q",
         "quit",
         "screener",
+        "income",
+        "balance",
+        "cash",
         "mgmt",
         "info",
         "shrs",
         "sust",
         "cal",
-        "income",
-        "balance",
-        "cash",
-        "overview",
-        "key",
-        "alpha_income",
-        "alpha_balance",
-        "alpha_cash",
-        "earnings",
-        "profile",
-        "quote",
-        "enterprise",
-        "dcf",
-        "fmp_income",
-        "fmp_balance",
-        "fmp_cash",
-        "metrics",
-        "ratios",
-        "growth",
+        "av",
+        "fmp",
     ]
     fa_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
-    print_fundamental_analysis(s_ticker, s_start, s_interval)
+    should_print_help = True
 
     # Loop forever and ever
     while True:
+        if should_print_help:
+            print_fundamental_analysis(s_ticker, s_start, s_interval)
+            should_print_help = False
+
         # Get input command from user
         if session:
             as_input = session.prompt(
@@ -154,7 +129,7 @@ def fa_menu(s_ticker, s_start, s_interval):
             continue
 
         if ns_known_args.cmd == "help":
-            print_fundamental_analysis(s_ticker, s_start, s_interval)
+            should_print_help = True
 
         elif ns_known_args.cmd == "q":
             # Just leave the FA menu
@@ -196,54 +171,22 @@ def fa_menu(s_ticker, s_start, s_interval):
             yf_api.calendar_earnings(l_args, s_ticker)
 
         # ALPHA VANTAGE API
-        elif ns_known_args.cmd == "overview":
-            av_api.overview(l_args, s_ticker)
+        elif ns_known_args.cmd == "av":
+            b_quit = av_api.menu(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == "alpha_incom":
-            av_api.income_statement(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "alpha_balance":
-            av_api.balance_sheet(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "alpha_cash":
-            av_api.cash_flow(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "earnings":
-            av_api.earnings(l_args, s_ticker)
+            if b_quit:
+                return True
+            else:
+                should_print_help = True
 
         # FINANCIAL MODELING PREP API
-        # Details:
-        elif ns_known_args.cmd == "profile":
-            fmp_api.profile(l_args, s_ticker)
+        elif ns_known_args.cmd == "fmp":
+            b_quit = fmp_api.menu(s_ticker, s_start, s_interval)
 
-        elif ns_known_args.cmd == "quote":
-            fmp_api.quote(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "enterprise":
-            fmp_api.enterprise(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "dcf":
-            fmp_api.discounted_cash_flow(l_args, s_ticker)
-
-        # Financial statement:
-        elif ns_known_args.cmd == "fmp_income":
-            fmp_api.income_statement(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "fmp_balance":
-            fmp_api.balance_sheet(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "fmp_cash":
-            fmp_api.cash_flow(l_args, s_ticker)
-
-        # Ratios:
-        elif ns_known_args.cmd == "metrics":
-            fmp_api.key_metrics(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "ratios":
-            fmp_api.financial_ratios(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "growth":
-            fmp_api.financial_statement_growth(l_args, s_ticker)
+            if b_quit:
+                return True
+            else:
+                should_print_help = True
 
         else:
             print("Command not recognized!")

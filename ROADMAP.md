@@ -10,6 +10,7 @@
 * [Due Diligence](#Due-Diligence)
 * [Prediction Techniques](#Prediction-Techniques)
 * [Reports](#Reports)
+* [Comparison Analysis](#Comparison-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
@@ -59,7 +60,6 @@
 
 ### Short term
 
-- [x] Multi-ticker comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
 - [ ] Rearrange FA menu to have AV and FMP as submenus (@didier)
 
 ### Long term
@@ -104,6 +104,18 @@
 ### Long term
 
 ---
+
+## ComparisonAnalysis
+
+### Short term
+
+* [X] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
+* [ ] Add multi-ticker financials comparison (@didier)
+
+### Long term
+
+---
+
 
 ## Portfolio Analysis
 
