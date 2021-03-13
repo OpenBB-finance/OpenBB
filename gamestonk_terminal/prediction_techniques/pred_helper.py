@@ -42,7 +42,7 @@ def print_prediction_kpis(real, pred):
     print(f"RMSE: {mean_squared_error(real, pred, squared=False):.3f}")
 
 
-def price_prediction_backtesting_color(val: int) -> str:
+def price_prediction_backtesting_color(val: list) -> str:
     err_pct = 100 * (val[0] - val[1]) / val[1]
     if val[0] > val[1]:
         s_err_pct = f"       {Fore.GREEN} +{err_pct:.2f} %"
