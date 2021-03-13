@@ -84,7 +84,7 @@ def pred_menu(df_stock, s_ticker, s_start, s_interval):
             as_input = input(f"{get_flair()} (pred)> ")
 
         # Images are non blocking - allows to close them if we type other command
-        plt.close()
+        plt.close("all")
 
         # Parse prediction techniques command of the list of possible commands
         try:
