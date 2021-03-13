@@ -106,12 +106,10 @@ def regression(l_args, s_ticker, df_stock, polynomial):
                 )
                 return
 
-            if (
-                ns_parser.s_end_date
-                < get_next_stock_market_days(
-                    last_stock_day=df_stock.index[0], n_next_days=ns_parser.n_inputs + ns_parser.n_days
-                )[-1]
-            ):
+            if ns_parser.s_end_date < get_next_stock_market_days(
+                last_stock_day=df_stock.index[0],
+                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
+            )[-1]:
                 print(
                     "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                 )
@@ -260,7 +258,10 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             )
             plt.title("BACKTESTING: Real data price versus Prediction")
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -300,7 +301,10 @@ def regression(l_args, s_ticker, df_stock, polynomial):
                 c="red",
             )
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.xlabel("Time")
             plt.ylabel("Prediction Error (%)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
