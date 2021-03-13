@@ -2,7 +2,13 @@ import argparse
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_user_agent,
+    parse_known_args_and_warn,
+    patch_pandas_text_adjustment,
+    financials_colored_values,
+)
+from gamestonk_terminal import feature_flags as gtff
 
 
 def income(l_args, s_ticker):
@@ -51,6 +57,13 @@ def income(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
 
         df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
+
+        if gtff.USE_COLOR:
+            df_financials = df_financials.applymap(financials_colored_values)
+
+            patch_pandas_text_adjustment()
+            pd.set_option("display.max_colwidth", None)
+            pd.set_option("display.max_rows", None)
 
         print(df_financials.to_string(index=False))
         print("")
@@ -120,6 +133,13 @@ def balance(l_args, s_ticker):
 
         df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
 
+        if gtff.USE_COLOR:
+            df_financials = df_financials.applymap(financials_colored_values)
+
+            patch_pandas_text_adjustment()
+            pd.set_option("display.max_colwidth", None)
+            pd.set_option("display.max_rows", None)
+
         print(df_financials.to_string(index=False))
         print("")
 
@@ -180,6 +200,13 @@ def cash(l_args, s_ticker):
             url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
 
         df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
+
+        if gtff.USE_COLOR:
+            df_financials = df_financials.applymap(financials_colored_values)
+
+            patch_pandas_text_adjustment()
+            pd.set_option("display.max_colwidth", None)
+            pd.set_option("display.max_rows", None)
 
         print(df_financials.to_string(index=False))
         print("")
