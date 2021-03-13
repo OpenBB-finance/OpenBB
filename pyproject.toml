@@ -37,6 +37,7 @@ prompt-toolkit = "^3.0.16"
 jupyter = "^1.0.0"
 mplfinance = "^0.12.7-alpha.7"
 seaborn = "^0.11.0"
+scipy = "1.5.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

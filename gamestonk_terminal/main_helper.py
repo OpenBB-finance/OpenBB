@@ -1,7 +1,9 @@
 import argparse
 from sys import stdout
+import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+import mplfinance as mpf
 import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import (
@@ -14,6 +16,8 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.fundamental_analysis import trendline_api as trend
 
 
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
@@ -24,6 +28,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("")
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
+    print("   candle      view a candle chart for a specific stock ticker")
     print("   view        view and load a specific stock ticker for technical analysis")
     if s_ticker:
         print(
@@ -220,6 +225,49 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 
     print("")
     return [s_ticker, s_start, s_interval, df_stock]
+
+
+def candle(s_ticker: str, s_start: str):
+    df_stock = trend.load_ticker(s_ticker, s_start)
+    df_stock = trend.find_trendline(df_stock, "OC_High", "high")
+    df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
+
+    mc = mpf.make_marketcolors(
+        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+    )
+
+    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+
+    ap0 = []
+
+    if "OC_High_trend" in df_stock.columns:
+        ap0.append(
+            mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+        )
+
+    if "OC_Low_trend" in df_stock.columns:
+        ap0.append(
+            mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+        )
+
+    if gtff.USE_ION:
+        plt.ion()
+
+    mpf.plot(
+        df_stock,
+        type="candle",
+        mav=(20, 50),
+        volume=True,
+        title=f"\n{s_ticker} - Last 6 months",
+        addplot=ap0,
+        xrotation=10,
+        style=s,
+        figratio=(10, 7),
+        figscale=1.10,
+        update_width_config=dict(
+            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+        ),
+    )
 
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):

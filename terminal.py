@@ -2,6 +2,7 @@
 
 import argparse
 
+from datetime import datetime, timedelta
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
@@ -13,7 +14,7 @@ from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
-from gamestonk_terminal.main_helper import clear, export, load, print_help, view
+from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_menu as mill
 from gamestonk_terminal.sentiment import sen_menu as sm
@@ -52,6 +53,7 @@ def main():
         "q",
         "clear",
         "load",
+        "candle",
         "view",
         "export",
         "disc",
@@ -115,6 +117,11 @@ def main():
                 l_args, s_ticker, s_start, s_interval, df_stock
             )
             main_cmd = True
+
+        elif ns_known_args.opt == "candle":
+            candle(
+                s_ticker, (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d")
+            )
 
         elif ns_known_args.opt == "view":
             view(l_args, s_ticker, s_start, s_interval, df_stock)
