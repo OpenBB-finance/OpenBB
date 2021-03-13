@@ -374,7 +374,10 @@ def mlp(l_args, s_ticker, df_stock):
             )
             plt.title("BACKTESTING: Real data price versus Prediction")
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -414,7 +417,10 @@ def mlp(l_args, s_ticker, df_stock):
                 c="red",
             )
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.xlabel("Time")
             plt.ylabel("Prediction Error (%)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -747,7 +753,10 @@ def rnn(l_args, s_ticker, df_stock):
             )
             plt.title("BACKTESTING: Real data price versus Prediction")
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -787,7 +796,10 @@ def rnn(l_args, s_ticker, df_stock):
                 c="red",
             )
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.xlabel("Time")
             plt.ylabel("Prediction Error (%)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -1120,7 +1132,10 @@ def lstm(l_args, s_ticker, df_stock):
             )
             plt.title("BACKTESTING: Real data price versus Prediction")
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
@@ -1160,7 +1175,10 @@ def lstm(l_args, s_ticker, df_stock):
                 c="red",
             )
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks([df_stock.index[-1], df_pred.index[-1]+datetime.timedelta(days=1)], visible=True)
+            plt.xticks(
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
+                visible=True,
+            )
             plt.xlabel("Time")
             plt.ylabel("Prediction Error (%)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
