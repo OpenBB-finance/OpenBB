@@ -314,15 +314,12 @@ def financials_colored_values(val: str) -> str:
     if sum(c.isalpha() for c in val) < 2:
         if "%" in val:
             if "-" in val:
-                return f"{Fore.RED}{val}{Style.RESET_ALL}"
+                val = f"{Fore.RED}{val}{Style.RESET_ALL}"
             else:
-                return f"{Fore.GREEN}{val}{Style.RESET_ALL}"
+                val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
         elif "(" in val:
-            return f"{Fore.RED}{val}{Style.RESET_ALL}"
-        else:
-            return val
-    else:
-        return val
+            val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+    return val
 
 
 def check_ohlc(type_ohlc: str) -> str:
