@@ -53,8 +53,10 @@ def find_trendline(df_data: DataFrame, y_key: str, high_low: str = "high") -> Da
     Returns
     -------
     DataFrame
-        An updated Panda's data frame with {y_key}_trend column added containing trend data - if a trend is successfully found.
-        An original Panda's data frame - if no trend was found.
+        An updated Panda's data frame with {y_key}_trend column added containing trend data
+            - if a trend is successfully found.
+        An original Panda's data frame
+            - if no trend was found.
     """
 
     for iteration in [3, 4, 5, 6, 7]:
