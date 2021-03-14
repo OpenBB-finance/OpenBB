@@ -36,6 +36,13 @@ view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 ![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
 
 ```
+candle
+```
+  * Visualize candles historical data from the past 6 months, with support and resistance bars, and moving averages of 20 and 50
+
+![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
+
+```
 export -f GNUS_data -F csv
 ```
    * Exports the historical data from this ticker to a file or stdout.
