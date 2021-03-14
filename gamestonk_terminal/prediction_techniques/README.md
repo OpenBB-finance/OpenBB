@@ -239,7 +239,7 @@ Long_Short_Term_Memory \
 
 ![lstm](https://user-images.githubusercontent.com/25267873/108604943-d2025400-73a8-11eb-83c5-edb4a2121cba.png)
 
-### Backtesting Exmaple <a name="backtesting"></a>
+### Backtesting Example <a name="backtesting"></a>
 
 ![appl_pred](https://user-images.githubusercontent.com/25267873/111053156-4173dc80-8459-11eb-9fcb-e81211961743.png)
 
