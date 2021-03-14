@@ -8,6 +8,8 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * show sectors performance [Alpha Vantage]
 * [gainers](#gainers)
   * show latest top gainers [Yahoo Finance]
+* [losers](#losers)
+  * show latest top losers [Yahoo Finance]
 * [orders](#orders)
   * orders by Fidelity Customers [Fidelity]
 * [ark_orders](#ark_orders)
@@ -59,6 +61,18 @@ Print up to 25 top ticker gainers in terminal. [Source: Yahoo Finance]
 * -n : Number of the top gainers stocks to retrieve. Default 5.
 
 <img width="935" alt="Captura de ecrã 2021-02-20, às 11 46 09" src="https://user-images.githubusercontent.com/25267873/108594319-46b99c00-7371-11eb-877e-ef75d3ba472b.png">
+
+## losers <a name="losers"></a>
+
+```shell
+usage: losers [-n {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24}]
+```
+
+Print up to 25 top ticker losers in terminal. [Source: Yahoo Finance]
+
+* -n : Number of the top losers stocks to retrieve. Default 5.
+
+<img width="993" alt="Captura de ecrã 2021-03-14, às 20 23 21" src="https://user-images.githubusercontent.com/25267873/111083099-a421b280-8503-11eb-9bb0-c728ce1e313f.png">
 
 ## orders <a name="orders"></a>
 
