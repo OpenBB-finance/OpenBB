@@ -41,6 +41,10 @@ def get_ark_orders() -> DataFrame:
     parsed_json = json.loads(parsed_script.string)
 
     df_orders = pd.json_normalize(parsed_json["props"]["pageProps"]["arkTrades"])
+
+    if df_orders.empty:
+        return pd.DataFrame()
+
     df_orders.drop(
         [
             "everything",
@@ -115,6 +119,10 @@ def ark_orders(l_args):
         return
 
     df_orders = get_ark_orders()
+
+    if df_orders.empty:
+        print("The ARK orders aren't anavilable at the moment.\n")
+        return
 
     pd.set_option("mode.chained_assignment", None)
     df_orders = add_order_total(df_orders.head(ns_parser.n_num))
