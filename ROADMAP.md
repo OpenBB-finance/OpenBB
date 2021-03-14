@@ -11,6 +11,7 @@
 * [Prediction Techniques](#Prediction-Techniques)
 * [Reports](#Reports)
 * [Comparison Analysis](#Comparison-Analysis)
+* [Exploratory Data Analysis](#Exploratory-Data-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
@@ -25,7 +26,7 @@
 
 ### Short term
 
-- [ ] Top Losers (@didier)
+- [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
 - [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
 
 ### Long term
@@ -60,7 +61,7 @@
 
 ### Short term
 
-- [ ] Rearrange FA menu to have AV and FMP as submenus (@didier)
+- [x] Rearrange FA menu to have AV and FMP as submenus (@didier) - [PR #166](https://github.com/DidierRLopes/GamestonkTerminal/pull/166)
 
 ### Long term
 
@@ -105,17 +106,27 @@
 
 ---
 
-## ComparisonAnalysis
+## Comparison Analysis
 
 ### Short term
 
-* [X] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
+* [x] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
 * [ ] Add multi-ticker financials comparison (@didier)
 
 ### Long term
 
 ---
 
+## Exploratory Data Analysis
+
+### Short term
+
+* [ ] Statistical techniques applied to a stock share price (e.g. decompose seasonality, trend, level, auto-correlation, cusum, ...) (@didier)
+* [ ] Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ...) (@didier)
+
+### Long term
+
+---
 
 ## Portfolio Analysis
 
@@ -164,7 +175,7 @@
 ### Short term
 
 - [x] Add terminal flair (@aia) - [PR #131](https://github.com/DidierRLopes/GamestonkTerminal/pull/131)
-- [ ] Prompt-toolkit (@ricleal) - [PR #142](https://github.com/DidierRLopes/GamestonkTerminal/)
+- [x] Prompt-toolkit (@ricleal) - [PR #142](https://github.com/DidierRLopes/GamestonkTerminal/pull/142)
 
 ### Long term
 
