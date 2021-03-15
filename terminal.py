@@ -119,12 +119,19 @@ def main():
             main_cmd = True
 
         elif ns_known_args.opt == "candle":
-            candle(
-                s_ticker, (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d")
-            )
+            if s_ticker:
+                candle(
+                    s_ticker, (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d")
+                )
+            else: 
+                print("No ticker selected. Use 'load ticker' to load the ticker you want to look at.")
+                main_cmd = True
 
         elif ns_known_args.opt == "view":
-            view(l_args, s_ticker, s_start, s_interval, df_stock)
+            if s_ticker:
+                view(l_args, s_ticker, s_start, s_interval, df_stock)
+            else: 
+                print("No ticker selected. Use 'load ticker' to load the ticker you want to look at.")
             main_cmd = True
 
         elif ns_known_args.opt == "export":
