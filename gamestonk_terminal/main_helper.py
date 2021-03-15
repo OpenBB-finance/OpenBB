@@ -17,7 +17,7 @@ from gamestonk_terminal.helper_funcs import (
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.fundamental_analysis import trendline_api as trend
+from gamestonk_terminal.technical_analysis import trendline_api as trend
 
 
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
