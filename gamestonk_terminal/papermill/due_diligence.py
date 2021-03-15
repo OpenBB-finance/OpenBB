@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime
+import os
 import webbrowser
 import papermill as pm
 
@@ -36,15 +37,22 @@ def analysis(l_args):
 
     today = datetime.now()
 
-    analysis_notebook = (
-        f"notebooks/reports/{today.strftime('%Y%m%d_%H%M%S')}_due_diligence.ipynb"
-    )
+    analysis_notebook = f"notebooks/reports/{s_ticker}_{today.strftime('%Y%m%d_%H%M%S')}_due_diligence.ipynb"
 
-    pm.execute_notebook(
-        "notebooks/templates/due_diligence.ipynb",
-        analysis_notebook,
-        parameters=dict(ticker=s_ticker),
-    )
+    try:
+        pm.execute_notebook(
+            "notebooks/templates/due_diligence.ipynb",
+            analysis_notebook,
+            parameters=dict(
+                ticker=s_ticker,
+                report_name=f"{s_ticker}_{today.strftime('%Y%m%d_%H%M%S')}_due_diligence",
+                base_path=os.path.abspath(os.path.join(".")),
+            ),
+        )
+    except Exception as e:
+        print(e)
+        print("")
+        return
 
     webbrowser.open(f"http://localhost:8888/notebooks/{analysis_notebook}")
     print("")

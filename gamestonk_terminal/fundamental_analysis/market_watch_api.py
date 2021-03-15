@@ -1,3 +1,6 @@
+""" Fundamental Analysis Market Watch API """
+__docformat__ = "numpy"
+
 import argparse
 import requests
 import pandas as pd
@@ -51,12 +54,7 @@ def income(l_args, s_ticker):
         if not ns_parser:
             return
 
-        if ns_parser.b_quarter:
-            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income/quarter"
-        else:
-            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/income"
-
-        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
+        df_financials = prepare_df_financials(s_ticker, "income", ns_parser.b_quarter)
 
         if gtff.USE_COLOR:
             df_financials = df_financials.applymap(financials_colored_values)
@@ -126,12 +124,7 @@ def balance(l_args, s_ticker):
         if not ns_parser:
             return
 
-        if ns_parser.b_quarter:
-            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet/quarter"
-        else:
-            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/balance-sheet"
-
-        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
+        df_financials = prepare_df_financials(s_ticker, "balance", ns_parser.b_quarter)
 
         if gtff.USE_COLOR:
             df_financials = df_financials.applymap(financials_colored_values)
@@ -195,12 +188,7 @@ def cash(l_args, s_ticker):
         if not ns_parser:
             return
 
-        if ns_parser.b_quarter:
-            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow/quarter"
-        else:
-            url_financials = f"https://www.marketwatch.com/investing/stock/{s_ticker}/financials/cash-flow"
-
-        df_financials = prepare_df_financials(url_financials, ns_parser.b_quarter)
+        df_financials = prepare_df_financials(s_ticker, "cashflow", ns_parser.b_quarter)
 
         if gtff.USE_COLOR:
             df_financials = df_financials.applymap(financials_colored_values)
@@ -218,9 +206,58 @@ def cash(l_args, s_ticker):
         return
 
 
-def prepare_df_financials(url_financials: str, quarter: bool) -> pd.DataFrame:
+def prepare_df_financials(
+    ticker: str, statement: str, quarter: bool = False
+) -> pd.DataFrame:
+    """Builds a DataFrame with financial statements for a given company
+
+    Parameters
+    ----------
+    ticker : str
+        Company's stock ticker
+    statement : str
+        Either income, balance or cashflow
+    quarter : bool, optional
+        Return quarterly financial statements instead of annual, by default False
+
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame with financial info
+
+    Raises
+    ------
+    ValueError
+        If statement is not income, balance or cashflow
+    """
+    financial_urls = {
+        "income": {
+            "quarter": "https://www.marketwatch.com/investing/stock/{}/financials/income/quarter",
+            "annual": "https://www.marketwatch.com/investing/stock/{}/financials/income",
+        },
+        "balance": {
+            "quarter": "https://www.marketwatch.com/investing/stock/{}/financials/balance-sheet/quarter",
+            "annual": "https://www.marketwatch.com/investing/stock/{}/financials/balance-sheet",
+        },
+        "cashflow": {
+            "quarter": "https://www.marketwatch.com/investing/stock/{}/financials/cash-flow/quarter",
+            "annual": "https://www.marketwatch.com/investing/stock/{}/financials/cash-flow",
+        },
+    }
+
+    if statement not in financial_urls.keys():
+        raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
+
+    if quarter:
+        period = "quarter"
+    else:
+        period = "annual"
+
     text_soup_financials = BeautifulSoup(
-        requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+        requests.get(
+            financial_urls[statement][period].format(ticker),
+            headers={"User-Agent": get_user_agent()},
+        ).text,
         "lxml",
     )
 
