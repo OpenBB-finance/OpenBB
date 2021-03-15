@@ -29,6 +29,7 @@ def print_discovery():
     print("   map           S&P500 index stocks map [Finviz]")
     print("   sectors       show sectors performance [Alpha Vantage]")
     print("   gainers       show latest top gainers [Yahoo Finance]")
+    print("   losers        show latest top losers [Yahoo Finance]")
     print("   orders        orders by Fidelity Customers [Fidelity]")
     print("   ark_orders    orders by ARK Investment Management LLC")
     print("   up_earnings   upcoming earnings release dates [Seeking Alpha]")
@@ -56,6 +57,7 @@ def disc_menu():
         "map",
         "sectors",
         "gainers",
+        "losers",
         "spacs",
         "orders",
         "ark_orders",
@@ -110,6 +112,9 @@ def disc_menu():
 
         elif ns_known_args.cmd == "gainers":
             yahoo_finance_api.gainers(l_args)
+
+        elif ns_known_args.cmd == "losers":
+            yahoo_finance_api.losers(l_args)
 
         elif ns_known_args.cmd == "spachero":
             spachero_api.spachero(l_args)
