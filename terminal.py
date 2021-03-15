@@ -130,7 +130,8 @@ def main():
                 print(
                     "No ticker selected. Use 'load ticker' to load the ticker you want to look at."
                 )
-                main_cmd = True
+
+            main_cmd = True
 
         elif ns_known_args.opt == "view":
 
