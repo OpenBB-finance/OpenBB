@@ -2,6 +2,11 @@
 
 import argparse
 
+try:
+    import readline  # noqa: F401
+except ImportError:
+    pass
+
 from datetime import datetime, timedelta
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
