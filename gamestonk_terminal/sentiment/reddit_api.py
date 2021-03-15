@@ -60,6 +60,12 @@ def watchlist(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
+        try:
+            praw_api.user.me()
+        except Exception:
+            print("REDDIT API Keys are incorrect\n")
+            return
+
         dt_last_time_market_close = get_last_time_market_was_open(
             datetime.now() - timedelta(hours=24)
         )
@@ -237,6 +243,12 @@ def popular_tickers(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
+        try:
+            praw_api.user.me()
+        except Exception:
+            print("REDDIT API Keys are incorrect\n")
+            return
+
         psaw_api = PushshiftAPI()
 
         for s_sub_reddit in l_sub_reddits:
@@ -400,6 +412,12 @@ def spac_community(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
+        try:
+            praw_api.user.me()
+        except Exception:
+            print("REDDIT API Keys are incorrect\n")
+            return
+
         d_submission = {}
         d_watchlist_tickers = {}
         l_watchlist_links = list()
@@ -522,6 +540,12 @@ def spac(l_args):
             user_agent=cfg.API_REDDIT_USER_AGENT,
             password=cfg.API_REDDIT_PASSWORD,
         )
+
+        try:
+            praw_api.user.me()
+        except Exception:
+            print("REDDIT API Keys are incorrect\n")
+            return
 
         d_submission = {}
         d_watchlist_tickers = {}
@@ -666,6 +690,12 @@ def wsb_community(l_args):
             user_agent=cfg.API_REDDIT_USER_AGENT,
             password=cfg.API_REDDIT_PASSWORD,
         )
+
+        try:
+            praw_api.user.me()
+        except Exception:
+            print("REDDIT API Keys are incorrect\n")
+            return
 
         d_submission = {}
         l_watchlist_links = list()
