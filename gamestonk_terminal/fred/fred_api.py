@@ -8,7 +8,7 @@ from gamestonk_terminal.config_terminal import API_FRED_KEY
 
 
 def get_GDP(l_args):
-    fred = Fred(api_key=FRED_API_KEY)
+    fred = Fred(api_key=API_FRED_KEY)
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="GDP",
@@ -68,7 +68,7 @@ def get_GDP(l_args):
 
 
 def custom_data(l_args):
-    fred = Fred(api_key=FRED_API_KEY)
+    fred = Fred(api_key=API_FRED_KEY)
 
     parser = argparse.ArgumentParser(
         add_help=False,
