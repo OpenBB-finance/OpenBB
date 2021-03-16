@@ -3,7 +3,6 @@ on: [push, workflow_dispatch]
 jobs:
   windows-conda:
     name: Windows-latest, Conda-latest,  Python 3.8
-    needs: test
     runs-on: windows-latest
     steps:
       - name: Checkout
