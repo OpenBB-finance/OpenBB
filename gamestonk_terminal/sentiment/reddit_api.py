@@ -60,12 +60,6 @@ def watchlist(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        try:
-            praw_api.user.me()
-        except Exception:
-            print("REDDIT API Keys are incorrect\n")
-            return
-
         dt_last_time_market_close = get_last_time_market_was_open(
             datetime.now() - timedelta(hours=24)
         )
@@ -126,8 +120,10 @@ def watchlist(l_args):
                 # Check if number of wanted posts found has been reached
                 if n_flair_posts_found > ns_parser.n_limit - 1:
                     break
-            except Exception as e:
-                print(e)
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. Check your token."
+                )
                 print("")
 
         if n_flair_posts_found:
@@ -243,12 +239,6 @@ def popular_tickers(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        try:
-            praw_api.user.me()
-        except Exception:
-            print("REDDIT API Keys are incorrect\n")
-            return
-
         psaw_api = PushshiftAPI()
 
         for s_sub_reddit in l_sub_reddits:
@@ -298,8 +288,10 @@ def popular_tickers(l_args):
                     # Check if search_submissions didn't get anymore posts
                     else:
                         break
-                except Exception as e:
-                    print(e)
+                except ResponseException:
+                    print(
+                        "Received a response from Reddit with an authorization error. Check your token."
+                    )
                     print("")
 
             print(f"  {n_tickers} potential tickers found.")
@@ -363,15 +355,10 @@ def popular_tickers(l_args):
 
         print("")
 
-    except ResponseException as e:
-        if e.response.status_code == 401:
-            print(
-                "Received a response from Reddit with an authorization error. Check your token."
-            )
-            print("")
-
-    except Exception as e:
-        print(e)
+    except ResponseException:
+        print(
+            "Received a response from Reddit with an authorization error. Check your token."
+        )
         print("")
 
 
@@ -411,12 +398,6 @@ def spac_community(l_args):
             user_agent=cfg.API_REDDIT_USER_AGENT,
             password=cfg.API_REDDIT_PASSWORD,
         )
-
-        try:
-            praw_api.user.me()
-        except Exception:
-            print("REDDIT API Keys are incorrect\n")
-            return
 
         d_submission = {}
         d_watchlist_tickers = {}
@@ -470,8 +451,10 @@ def spac_community(l_args):
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-            except Exception as e:
-                print(e)
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. Check your token."
+                )
                 print("")
 
         if d_watchlist_tickers:
@@ -540,12 +523,6 @@ def spac(l_args):
             user_agent=cfg.API_REDDIT_USER_AGENT,
             password=cfg.API_REDDIT_PASSWORD,
         )
-
-        try:
-            praw_api.user.me()
-        except Exception:
-            print("REDDIT API Keys are incorrect\n")
-            return
 
         d_submission = {}
         d_watchlist_tickers = {}
@@ -621,8 +598,10 @@ def spac(l_args):
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-            except Exception as e:
-                print(e)
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. Check your token."
+                )
                 print("")
 
         if n_flair_posts_found:
@@ -691,12 +670,6 @@ def wsb_community(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        try:
-            praw_api.user.me()
-        except Exception:
-            print("REDDIT API Keys are incorrect\n")
-            return
-
         d_submission = {}
         l_watchlist_links = list()
 
@@ -710,7 +683,6 @@ def wsb_community(l_args):
             submissions = praw_api.subreddit("wallstreetbets").hot(
                 limit=ns_parser.n_limit
             )
-
         while True:
             try:
                 submission = next(submissions, None)
@@ -732,10 +704,11 @@ def wsb_community(l_args):
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-            except Exception as e:
-                print(e)
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. Check your token."
+                )
                 print("")
-            print("")
     except Exception as e:
         print(e)
         print("")
