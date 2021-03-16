@@ -30,6 +30,9 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
 
 **Note:** _Use this at your own discretion. All of these prediciton techniques rely solely on the closing price of the stock. This means that there are several factors that the models aren't aware of at the time of prediction, and may - drastically - move the price up or down. Examples are: news, analyst price targets, reddit post, tweets from Elon Musk, and so on._
 
+**Note 2:** _[Enabling GPU acceleration for TensorFlow requires CUDA setup](README-gpu-accel.md) and will probably not provide any speedup unless you are building large custom models._
+
+
 
 ## sma <a name="sma"></a>
 ```
