@@ -359,9 +359,7 @@ def get_flair() -> str:
 
 def get_screeninfo():
     screens = get_monitors()  # Get all available monitors
-    if (
-        len(screens) - 1 < cfgPlot.MONITOR
-    ):  # Check to see if choosen monitor is detected
+    if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
         print(f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor.")
     else:
