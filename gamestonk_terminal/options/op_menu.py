@@ -5,7 +5,8 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.options import get_volume_graph
 
-def volume(l_args, s_ticker):
+
+def print_volume(l_args, s_ticker):
     """ Show traded options volume. [Source: Yahoo Finance] """
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -23,7 +24,8 @@ def volume(l_args, s_ticker):
         print(e)
 
     print("")
-    return l_similar
+    return get_volume_graph(s_ticker, expiration_date)
+
 
 def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
