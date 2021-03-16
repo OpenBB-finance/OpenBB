@@ -1,5 +1,5 @@
 name: Ad-hoc Windows Build
-on: workflow_dispatch
+on: [push, workflow_dispatch]
 jobs:
   windows-conda:
     name: Windows-latest, Conda-latest,  Python 3.8
