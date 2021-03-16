@@ -1,13 +1,10 @@
 import argparse
-import requests
-
-from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
-from gamestonk_terminal.options import volume as vol
-from gamestonk_terminal.menu import session
 
 from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.options import volume as vol
+from gamestonk_terminal.menu import session
 
 def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
