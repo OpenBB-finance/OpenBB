@@ -10,19 +10,19 @@ from gamestonk_terminal.fred import fred_api
 def print_fred():
     """ Print help """
 
-    print("\nFred Economic Data:")  # https://github.com/JerBouma/FundamentalAnalysis
+    print("\nFred Economic Data:")
     print("   help          show this menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print(" ")
-    print("   GDP           get GDP")
+    print("   gdp           get GDP")
     print("   cust          User Specified FRED Data")
     return
 
 
 def fred_menu():
-    fred_parser = argparse.ArgumentParser(prog="fa", add_help=False)
-    choices = ["help", "q", "quit", "GDP", "cust"]
+    fred_parser = argparse.ArgumentParser(prog="fred", add_help=False)
+    choices = ["help", "q", "quit", "gdp", "cust"]
     fred_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
@@ -51,14 +51,14 @@ def fred_menu():
             should_print_help = True
 
         elif ns_known_args.cmd == "q":
-            # Just leave the FA menu
+            # Leave the fred menu
             return False
 
         elif ns_known_args.cmd == "quit":
             # Abandon the program
             return True
 
-        elif ns_known_args.cmd == "GDP":
+        elif ns_known_args.cmd == "gdp":
             fred_api.get_GDP(l_args)
 
         elif ns_known_args.cmd == "cust":

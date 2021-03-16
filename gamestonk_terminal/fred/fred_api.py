@@ -35,7 +35,11 @@ def get_GDP(l_args):
     )
 
     parser.add_argument(
-        "-p", dest="plot_", type=bool, default=False, required=False, help="Plot GDP"
+        "-p", dest="plot",
+        type=bool,
+        default=True,
+        required=False,
+        help="Plot GDP"
     )
 
     try:
@@ -55,12 +59,13 @@ def get_GDP(l_args):
         for date, val in lastn.iteritems():
             print(f'Date: {date.strftime("%m-%d-%Y")}, GDP: {val} ')
 
-        if ns_parser.plot_:
+        if ns_parser.plot:
             plt.figure()
             lastn.plot(style="ok")
             plt.xlabel("Time")
             plt.ylabel("GDP")
             plt.show()
+
     except Exception as e:
         print(e)
         print("")
@@ -78,8 +83,12 @@ def custom_data(l_args):
                 """,
     )
     parser.add_argument(
-        "-id", dest="series_id", required=True, type=str, help="FRED Series ID"
+        "-id", dest="series_id",
+        required=True,
+        type=str,
+        help="FRED Series ID"
     )
+
     parser.add_argument(
         "-s",
         dest="start_date",
@@ -89,10 +98,20 @@ def custom_data(l_args):
         help="Date to Start",
     )
     parser.add_argument(
-        "-p", dest="plot_", type=bool, default=False, required=False, help="Plot data"
+        "-p",
+        dest="plot",
+        type=bool,
+        default=True,
+        required=False,
+        help="Plot data"
     )
     parser.add_argument(
-        "-disp", dest="disp_", type=bool, default=True, required=False, help="Printdata"
+        "-disp",
+        dest="disp",
+        type=bool,
+        default=False,
+        required=False,
+        help="Print data"
     )
 
     try:
@@ -102,11 +121,11 @@ def custom_data(l_args):
             return
 
         data = fred.get_series(ns_parser.series_id, ns_parser.start_date)
-        if ns_parser.disp_:
+        if ns_parser.disp:
             for date, val in data.iteritems():
                 print(f'Date: {date.strftime("%m-%d-%Y")}, DATA: {val} ')
         try:
-            if ns_parser.plot_:
+            if ns_parser.plot:
                 plt.figure()
                 data.plot(style="ok")
                 plt.xlabel("Time")
