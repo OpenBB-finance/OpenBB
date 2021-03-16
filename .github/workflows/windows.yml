@@ -8,7 +8,7 @@ on:
         description: 'Test scenario tags'
 jobs:
   windows-conda:
-    name: Windows-latest, Conda-latest,  Python 3.8
+    name: Windows-latest, Conda-latest,  Python 3.7
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: '3.8'
+          python-version: '3.7'
           miniconda-version: 'latest'
           auto-update-conda: true
           channels: conda-forge
