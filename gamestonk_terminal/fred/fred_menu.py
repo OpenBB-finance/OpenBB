@@ -19,14 +19,10 @@ def print_fred():
     print("   cust          User Specified FRED Data")
     return
 
+
 def fred_menu():
     fred_parser = argparse.ArgumentParser(prog="fa", add_help=False)
-    choices = [
-        "help",
-        "q",
-        "quit",
-        "GDP",
-        "cust"]
+    choices = ["help", "q", "quit", "GDP", "cust"]
     fred_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
