@@ -525,9 +525,6 @@ def _plot_and_print_results(
     print("")
 
 
-# ----------------------------------------------------------------------------------------------------
-
-
 def mlp(l_args, s_ticker, df_stock):
     try:
         ns_parser = _parse_args(

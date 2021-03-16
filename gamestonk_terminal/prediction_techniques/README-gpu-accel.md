@@ -13,11 +13,27 @@ Most up-to-date docs and recommendations: https://www.tensorflow.org/install/gpu
     | Linux    | /usr/local/cuda-X.Y                                        |
     | Windows  | C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v<XX.Y> |
 
-3. Set the environment variables `CUDA_PATH` and `CUDA_PATH_V11` if needed. These are usually set by the CUDA installer.
+3. Set the environment variables `CUDA_PATH` and `CUDA_PATH_V11_0` if needed. These are usually set by the CUDA installer.
 
 ### CUDA 11.1, cuDNN 8.0.5 - not tested
 
-### CUDA 11.2.1, cuDNN 8.1 - does not work
+### CUDA 11.2.1, cuDNN 8.1 - may work, requires hack
+
+Getting this to run at all requires you to make a link for cusolver10. Even with this fix I ran into out-of-memory issues, so your mileage may vary. See https://github.com/tensorflow/tensorflow/issues/44777.
+
+Linux:
+
+```bash
+cd $LD_LIBRARY_PATH
+sudo ln libcusolver.so.11 libcusolver.so.10
+```
+
+Windows:
+
+```cmd
+cd "%CUDA_PATH_V11_2%\bin"
+mklink /h cusolver64_10.dll cusolver64_11.dll
+```
 
 ## Enable XLA for Neural Networks
 
