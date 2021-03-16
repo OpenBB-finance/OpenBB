@@ -159,6 +159,7 @@ smart-open==4.2.0; python_version >= "3.6"
 soupsieve==2.2; python_version >= "3.6"
 sqlitedict==1.7.0; python_version >= "3.6"
 statsmodels==0.12.2; python_version >= "3.6"
+screeninfo == 0.6.7;
 tabulate==0.8.9; python_version >= "3.6"
 tenacity==7.0.0; python_version >= "3.6"
 tensorboard-plugin-wit==1.8.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.2.0"
