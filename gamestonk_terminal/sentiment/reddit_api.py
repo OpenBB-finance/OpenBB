@@ -124,7 +124,7 @@ def watchlist(l_args):
                 print(
                     "Received a response from Reddit with an authorization error. check your token.\n"
                 )
-                break
+                return
 
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(
@@ -292,7 +292,7 @@ def popular_tickers(l_args):
                     print(
                         "Received a response from Reddit with an authorization error. check your token.\n"
                     )
-                    break
+                    return
 
             print(f"  {n_tickers} potential tickers found.")
 
@@ -599,7 +599,7 @@ def spac(l_args):
                 print(
                     "Received a response from Reddit with an authorization error. check your token.\n"
                 )
-                break
+                return
 
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(
@@ -704,6 +704,6 @@ def wsb_community(l_args):
                 print(
                     "Received a response from Reddit with an authorization error. check your token.\n"
                 )
-                break
+                return
     except Exception as e:
         print(e, "\n")
