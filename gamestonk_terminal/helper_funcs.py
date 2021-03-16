@@ -354,6 +354,7 @@ def get_flair() -> str:
 
     return ""
 
+
 def str_to_bool(value):
     if isinstance(value, bool):
         return value

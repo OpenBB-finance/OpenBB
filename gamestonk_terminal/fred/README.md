@@ -65,9 +65,39 @@ usage: cust [-id] [-s START_DATE] [-p PLOT] [-disp DISP]
 * -p : Option to plot. Defaults to True
 * -disp : Option to print data to console.  Defaults to False.
 
-The GDP is specifically defined in this menu, but to reproduce it with the custom function, it would be
-````
-cust -id GDP -s 2020-01-01 -p True 
-````
+An example of custom data could be the unemployment rate.  According to https://fred.stlouisfed.org/series/UNRATE , the series ID is UNRATE.  So to plot this for 2019 to now
 
-The plot flag allows for plotting and the disp flag tells whether to print data to the console.
+````
+cust -id UNRATE -s 2019-01-01 -disp True
+````
+This will plot and display:
+
+
+````
+Date: 01-01-2019, DATA: 4.0 
+Date: 02-01-2019, DATA: 3.8 
+Date: 03-01-2019, DATA: 3.8 
+Date: 04-01-2019, DATA: 3.7 
+Date: 05-01-2019, DATA: 3.7 
+Date: 06-01-2019, DATA: 3.6 
+Date: 07-01-2019, DATA: 3.6 
+Date: 08-01-2019, DATA: 3.7 
+Date: 09-01-2019, DATA: 3.5 
+Date: 10-01-2019, DATA: 3.6 
+Date: 11-01-2019, DATA: 3.6 
+Date: 12-01-2019, DATA: 3.6 
+Date: 01-01-2020, DATA: 3.5 
+Date: 02-01-2020, DATA: 3.5 
+Date: 03-01-2020, DATA: 4.4 
+Date: 04-01-2020, DATA: 14.8 
+Date: 05-01-2020, DATA: 13.3 
+Date: 06-01-2020, DATA: 11.1 
+Date: 07-01-2020, DATA: 10.2 
+Date: 08-01-2020, DATA: 8.4 
+Date: 09-01-2020, DATA: 7.8 
+Date: 10-01-2020, DATA: 6.9 
+Date: 11-01-2020, DATA: 6.7 
+Date: 12-01-2020, DATA: 6.7 
+Date: 01-01-2021, DATA: 6.3 
+Date: 02-01-2021, DATA: 6.2 
+````
