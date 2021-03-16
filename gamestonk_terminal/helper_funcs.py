@@ -11,8 +11,8 @@ from colorama import Fore, Style
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal import feature_flags as gtff
 from screeninfo import get_monitors
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
