@@ -2,7 +2,12 @@ import argparse
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    parse_known_args_and_warn,
+    plot_autoscale,
+)
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -64,7 +69,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        _, axPrice = plt.subplots()
+        _, axPrice = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.title(f"{ns_parser.n_length} EMA on {s_ticker}")
         if s_interval == "1440min":
             plt.plot(
@@ -147,7 +152,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         if not ns_parser:
             return
 
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
         else:
@@ -232,7 +237,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             )
 
-        _, axPrice = plt.subplots()
+        _, axPrice = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
         else:
