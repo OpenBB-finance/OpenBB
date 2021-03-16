@@ -12,6 +12,8 @@ import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal import feature_flags as gtff
+from screeninfo import get_monitors
+from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
 
@@ -39,7 +41,7 @@ def valid_date(s: str) -> datetime:
 
 def plot_view_stock(df, symbol):
     df.sort_index(ascending=True, inplace=True)
-    _, axVolume = plt.subplots()
+    _, axVolume = plt.subplots(figsize=plot_autoscale())
     plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
     plt.ylabel("Volume")
     _ = axVolume.twinx()
@@ -353,3 +355,25 @@ def get_flair() -> str:
         return flair[gtff.USE_FLAIR]
 
     return ""
+
+
+def get_screeninfo():
+    screens = get_monitors()  # Get all aviable monitors
+    main_screen = screens[0]  # Choose the first screen as main screen
+
+    return (main_screen.width, main_screen.height)
+
+
+def plot_autoscale():
+    if gtff.USE_PLOT_AUTOSCALING:
+        x, y = get_screeninfo()  # Get screen size
+        x = ((x) * cfgPlot.PLOT_WIDTH_PRECENTAGE * 10 ** -2) / (
+            cfgPlot.PLOT_DPI
+        )  # Calculate width
+        if cfgPlot.PLOT_HEIGHT_PRECENTAGE == 100:  # If full height
+            y = y - 60  # Remove the height of window toolbar
+        y = ((y) * cfgPlot.PLOT_HEIGHT_PRECENTAGE * 10 ** -2) / (cfgPlot.PLOT_DPI)
+    else:  # If not autoscale, use size defined in config_plot.py
+        x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
+        y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
+    return x, y

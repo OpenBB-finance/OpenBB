@@ -1,0 +1,11 @@
+import screeninfo
+
+SCREEN_HEIGHT = 0
+SCREEN_WIDTH = 0
+
+PLOT_HEIGHT_PRECENTAGE = 100  # Set = 0 to disable
+PLOT_WIDTH_PRECENTAGE = 50  # Set = 0 to disable
+
+PLOT_HEIGHT = 800
+PLOT_WIDTH = 800
+PLOT_DPI = 100

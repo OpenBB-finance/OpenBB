@@ -7,3 +7,6 @@ USE_PROMPT_TOOLKIT = os.getenv("GTFF_USE_PROMPT_TOOLKIT") or False
 
 # Enable Prediction features
 ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or False
+
+# Enable plot autoscaling
+USE_PLOT_AUTOSCALING = os.getenv("GTFF_USE_PLOT_AUTOSCALING") or False
