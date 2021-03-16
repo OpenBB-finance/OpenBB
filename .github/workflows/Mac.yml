@@ -1,6 +1,9 @@
-name: Ad-hoc Mac OS X Build
+name: Mac OS X Full Clean Build with ML
 on:
   push:
+    branches:
+      - "main"
+      - "full-builds"
   workflow_dispatch:
     inputs:
       comments:
@@ -36,14 +39,22 @@ jobs:
           # Needed for caching
           use-only-tar-bz2: true
 
+      - name: Install gensim with conda
+        shell: bash -l {0}
+        run: |
+          conda install gensim=3.8.3
+
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
           conda info
           pip install --user --requirement requirements-full.txt
+
       - name: List installed packages (Bash)
         shell: bash -l {0}
-        run: conda list
+        run: |
+          conda list
+          pip list
 
       - name: Run tests (Bash)
         shell: bash -l {0}
