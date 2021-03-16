@@ -13,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     check_ohlc,
     lett_to_num,
     check_sources,
+    plot_autoscale,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -264,6 +265,7 @@ def candle(s_ticker: str, s_start: str):
         style=s,
         figratio=(10, 7),
         figscale=1.10,
+        figsize=(plot_autoscale()),
         update_width_config=dict(
             candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
         ),
