@@ -211,8 +211,8 @@
 
 ### Short term
 
-- [ ] Add Volume graph
-- [ ] Add Open Interest graph
+- [ ] Add Volume graph (@lolrenx)
+- [ ] Add Open Interest graph (@lolrenx)
 
 ### Long term
 
