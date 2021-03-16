@@ -71,7 +71,7 @@ def menu(s_ticker, s_start, s_interval):
         # Get input command from user
         if session:
             as_input = session.prompt(
-                f"{get_flair()} (fa)>(av)> ",
+                f"{get_flair()} (fa)>(fmp)> ",
                 completer=completer,
             )
         else:

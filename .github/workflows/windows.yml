@@ -1,0 +1,70 @@
+name: Windows 10 Full Clean Build with ML
+on:
+  push:
+    branches:
+      - "main"
+      - "full-builds"
+  workflow_dispatch:
+    inputs:
+      comments:
+        required: true
+        description: 'Test scenario tags'
+jobs:
+  windows-conda:
+    name: Windows-latest, Conda-latest,  Python 3.7
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: '3.7'
+          miniconda-version: 'latest'
+          auto-update-conda: true
+          channels: conda-forge
+          show-channel-urls: true
+          environment-file: conda-environment.yaml
+          activate-environment: testing
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Update Temp permissions on windows
+        if: runner.os == 'Windows'
+        shell: cmd /C CALL {0}
+        run: >-
+          c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+
+      - name: Install fbprophet with conda
+        shell: bash -l {0}
+        run: |
+          conda install -c conda-forge fbprophet=0.6
+          conda install spyder
+          conda install gensim=3.8.3
+
+      - name: Install dependencies (Bash)
+        shell: bash -l {0}
+        run: |
+          conda info
+          pip install --user --requirement requirements-full.txt
+
+      - name: List installed packages (Bash)
+        shell: bash -l {0}
+        run: |
+          conda list
+          pip list
+
+      - name: Run tests (Bash)
+        shell: bash -l {0}
+        run: pytest tests/
+
