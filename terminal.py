@@ -32,9 +32,9 @@ def main():
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
     while I saw my GME shares tanking. But hey, I like the stock.
     """
-    
-    if sys.platform == 'win32':
-        os.system('') # enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+
+    if sys.platform == "win32":
+        os.system("")  # enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
 
     s_ticker = ""
     s_start = ""

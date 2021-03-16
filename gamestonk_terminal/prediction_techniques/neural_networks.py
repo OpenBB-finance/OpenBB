@@ -93,8 +93,10 @@ def _parse_args(prog, description, l_args):
     """Create an argparser and parse l_args. Will print help if user requests it.
     :return: ns_parser"""
     parser = argparse.ArgumentParser(
-        prog=prog, description=description, add_help=False, 
-        formatter_class=argparse.RawTextHelpFormatter # enable multiline help messages
+        prog=prog,
+        description=description,
+        add_help=False,
+        formatter_class=argparse.RawTextHelpFormatter,  # enable multiline help messages
     )
     parser.add_argument(
         "-d",
@@ -165,16 +167,16 @@ def _parse_args(prog, description, l_args):
         dest="s_loss",
         default="mae",
         choices=[
-            "mae", 
-            "mape", 
-            "mse", 
-            "msle", 
-            "poisson", 
-            "logcosh", 
-            "kld", 
-            "hinge", 
-            "squared_hinge", 
-            "huber"
+            "mae",
+            "mape",
+            "mse",
+            "msle",
+            "poisson",
+            "logcosh",
+            "kld",
+            "hinge",
+            "squared_hinge",
+            "huber",
         ],
         help="loss function (see https://www.tensorflow.org/api_docs/python/tf/keras/losses)",
     )
@@ -215,9 +217,9 @@ def _parse_args(prog, description, l_args):
         dest="s_force_gpu_allow_growth",
         default="true",
         choices=["true", "false", "default"],
-        help="true: GPU memory will grow as needed. \n" +
-             "false: TensorFlow will allocate 100%% of GPU memory. \n"
-             "default: usually the same as false, uses env/TensorFlow default",
+        help="true: GPU memory will grow as needed. \n"
+        "false: TensorFlow will allocate 100%% of GPU memory. \n"
+        "default: usually the same as false, uses env/TensorFlow default",
     )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
@@ -225,7 +227,9 @@ def _parse_args(prog, description, l_args):
         return None
 
     # set xla flags if requested
-    xla_flags = set(ORIGINAL_TF_XLA_FLAGS.split(" ")) if ORIGINAL_TF_XLA_FLAGS else set()
+    xla_flags = (
+        set(ORIGINAL_TF_XLA_FLAGS.split(" ")) if ORIGINAL_TF_XLA_FLAGS else set()
+    )
     if ns_parser.b_xla_cpu or ns_parser.b_xla_gpu:
         xla_flags.add("--tf_xla_enable_xla_devices")
         if ns_parser.b_xla_cpu:
@@ -245,12 +249,14 @@ def _parse_args(prog, description, l_args):
 
 def _restore_env():
     """Restore environment variables to original values"""
+
     def restore(key, value):
         if value is None:
             if key in os.environ:
                 del os.environ[key]
         else:
             os.environ[key] = value
+
     restore("TF_XLA_FLAGS", ORIGINAL_TF_XLA_FLAGS)
     restore("TF_FORCE_GPU_ALLOW_GROWTH", ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH)
 
@@ -262,20 +268,26 @@ def _setup_backtesting(df_stock, ns_parser):
     df_future = None
     if ns_parser.s_end_date:
         if ns_parser.s_end_date < df_stock.index[0]:
-            raise Exception("Backtesting not allowed, since End Date is older than Start Date of historical data")
+            raise Exception(
+                "Backtesting not allowed, since End Date is older than Start Date of historical data"
+            )
 
         if ns_parser.s_end_date < get_next_stock_market_days(
             last_stock_day=df_stock.index[0],
             n_next_days=ns_parser.n_inputs + ns_parser.n_days,
         )[-1]:
-            raise Exception("Backtesting not allowed, since End Date is too close to Start Date to train model")
+            raise Exception(
+                "Backtesting not allowed, since End Date is too close to Start Date to train model"
+            )
 
         future_index = get_next_stock_market_days(
             last_stock_day=ns_parser.s_end_date, n_next_days=ns_parser.n_days
         )
 
         if future_index[-1] > datetime.datetime.now():
-            raise Exception("Backtesting not allowed, since End Date + Prediction days is in the future")
+            raise Exception(
+                "Backtesting not allowed, since End Date + Prediction days is in the future"
+            )
 
         df_future = df_stock[future_index[0] : future_index[-1]]
         df_stock = df_stock[: ns_parser.s_end_date]
@@ -298,9 +310,7 @@ def _preprocess_split(df_stock, ns_parser):
             np.array(df_stock["5. adjusted close"].values.reshape(-1, 1))
         )
     else:  # No pre-processing
-        stock_train_data = np.array(
-            df_stock["5. adjusted close"].values.reshape(-1, 1)
-        )
+        stock_train_data = np.array(df_stock["5. adjusted close"].values.reshape(-1, 1))
 
     # Split training data for the neural network
     stock_x, stock_y = splitTrain.split_train(
@@ -333,7 +343,9 @@ def _rescale_data(df_stock, ns_parser, scaler, yhat):
     return df_pred
 
 
-def _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, model_name, s_ticker):
+def _plot_and_print_results(
+    df_stock, ns_parser, df_future, df_pred, model_name, s_ticker
+):
     """Plot and print the results. """
     # Plotting
     plt.figure()
@@ -341,12 +353,12 @@ def _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, model_name,
 
     # BACKTESTING
     if ns_parser.s_end_date:
-        plt.title(f"BACKTESTING: {model_name} on {s_ticker} - {ns_parser.n_days} days prediction")
+        plt.title(
+            f"BACKTESTING: {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
+        )
     else:
         plt.title(f"{model_name} on {s_ticker} - {ns_parser.n_days} days prediction")
-    plt.xlim(
-        df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
-    )
+    plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
     plt.xlabel("Time")
     plt.ylabel("Share Price ($)")
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -411,9 +423,7 @@ def _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, model_name,
             ls="--",
         )
         plt.plot(df_pred.index, df_pred, lw=2, c="green")
-        plt.scatter(
-            df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
-        )
+        plt.scatter(df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3)
         plt.plot(
             [df_stock.index[-1], df_future.index[0]],
             [
@@ -502,11 +512,7 @@ def _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, model_name,
             patch_pandas_text_adjustment()
 
             print("Time         Real [$]  x  Prediction [$]")
-            print(
-                df_pred.apply(
-                    price_prediction_backtesting_color, axis=1
-                ).to_string()
-            )
+            print(df_pred.apply(price_prediction_backtesting_color, axis=1).to_string())
         else:
             print(df_pred[["Real", "Prediction"]].round(2).to_string())
 
@@ -518,7 +524,9 @@ def _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, model_name,
         print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
     print("")
 
+
 # ----------------------------------------------------------------------------------------------------
+
 
 def mlp(l_args, s_ticker, df_stock):
     try:
@@ -530,9 +538,11 @@ def mlp(l_args, s_ticker, df_stock):
 
         # Setup backtesting
         df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
-        
+
         # Pre-process data
-        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(df_stock, ns_parser)
+        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(
+            df_stock, ns_parser
+        )
         stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1]))
         stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1]))
 
@@ -543,7 +553,13 @@ def mlp(l_args, s_ticker, df_stock):
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
         # Train our model
-        model.fit(stock_x, stock_y, epochs=ns_parser.n_epochs, batch_size=ns_parser.n_batch_size, verbose=1)
+        model.fit(
+            stock_x,
+            stock_y,
+            epochs=ns_parser.n_epochs,
+            batch_size=ns_parser.n_batch_size,
+            verbose=1,
+        )
         print("")
 
         print(model.summary())
@@ -557,7 +573,9 @@ def mlp(l_args, s_ticker, df_stock):
 
         # Re-scale the data back, plot, and print the results
         df_pred = _rescale_data(df_stock, ns_parser, scaler, yhat)
-        _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, "MLP", s_ticker)
+        _plot_and_print_results(
+            df_stock, ns_parser, df_future, df_pred, "MLP", s_ticker
+        )
 
     except Exception as e:
         print(e)
@@ -578,9 +596,11 @@ def rnn(l_args, s_ticker, df_stock):
 
         # Setup backtesting
         df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
-        
+
         # Pre-process data
-        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(df_stock, ns_parser)
+        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(
+            df_stock, ns_parser
+        )
         stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
         stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
 
@@ -591,7 +611,13 @@ def rnn(l_args, s_ticker, df_stock):
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
         # Train our model
-        model.fit(stock_x, stock_y, epochs=ns_parser.n_epochs, batch_size=ns_parser.n_batch_size, verbose=1)
+        model.fit(
+            stock_x,
+            stock_y,
+            epochs=ns_parser.n_epochs,
+            batch_size=ns_parser.n_batch_size,
+            verbose=1,
+        )
         print("")
 
         print(model.summary())
@@ -605,7 +631,9 @@ def rnn(l_args, s_ticker, df_stock):
 
         # Re-scale the data back, plot, and print the results
         df_pred = _rescale_data(df_stock, ns_parser, scaler, yhat)
-        _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, "RNN", s_ticker)
+        _plot_and_print_results(
+            df_stock, ns_parser, df_future, df_pred, "RNN", s_ticker
+        )
 
     except Exception as e:
         print(e)
@@ -626,9 +654,11 @@ def lstm(l_args, s_ticker, df_stock):
 
         # Setup backtesting
         df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
-        
+
         # Pre-process data
-        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(df_stock, ns_parser)
+        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(
+            df_stock, ns_parser
+        )
         stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
         stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
 
@@ -639,7 +669,13 @@ def lstm(l_args, s_ticker, df_stock):
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
         # Train our model
-        model.fit(stock_x, stock_y, epochs=ns_parser.n_epochs, batch_size=ns_parser.n_batch_size, verbose=1)
+        model.fit(
+            stock_x,
+            stock_y,
+            epochs=ns_parser.n_epochs,
+            batch_size=ns_parser.n_batch_size,
+            verbose=1,
+        )
         print("")
 
         print(model.summary())
@@ -653,7 +689,9 @@ def lstm(l_args, s_ticker, df_stock):
 
         # Re-scale the data back, plot, and print the results
         df_pred = _rescale_data(df_stock, ns_parser, scaler, yhat)
-        _plot_and_print_results(df_stock, ns_parser, df_future, df_pred, "LSTM", s_ticker)
+        _plot_and_print_results(
+            df_stock, ns_parser, df_future, df_pred, "LSTM", s_ticker
+        )
 
     except Exception as e:
         print(e)

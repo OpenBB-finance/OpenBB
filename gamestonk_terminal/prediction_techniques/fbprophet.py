@@ -95,7 +95,9 @@ def fbprophet(l_args, s_ticker, df_stock):
 
         df_stock = df_stock.sort_index(ascending=True)
         df_stock.reset_index(level=0, inplace=True)
-        df_stock.columns = map(str.lower, df_stock.columns) # column names are sometimes upper cased
+        df_stock.columns = map(
+            str.lower, df_stock.columns
+        )  # column names are sometimes upper cased
         df_stock = df_stock[["date", "5. adjusted close"]]
         df_stock = df_stock.rename(columns={"date": "ds", "5. adjusted close": "y"})
         df_stock["ds"] = pd.to_datetime(df_stock["ds"])
