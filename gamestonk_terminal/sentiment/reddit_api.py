@@ -122,7 +122,7 @@ def watchlist(l_args):
                     break
             except ResponseException:
                 print(
-                    "Received a response from Reddit with an authorization error. Check your token."
+                    "Received a response from Reddit with an authorization error. check your token.\n"
                 )
                 break
 
@@ -290,7 +290,7 @@ def popular_tickers(l_args):
                         break
                 except ResponseException:
                     print(
-                        "Received a response from Reddit with an authorization error. Check your token."
+                        "Received a response from Reddit with an authorization error. check your token.\n"
                     )
                     break
 
@@ -348,8 +348,7 @@ def popular_tickers(l_args):
                 f"\nThe following TOP {ns_parser.n_top} tickers have been mentioned in the last {ns_parser.n_days} days:"
             )
 
-            print(popular_tickers_df)
-            print("")
+            print(popular_tickers_df, "\n")
         else:
             print("No tickers found")
 
@@ -357,9 +356,8 @@ def popular_tickers(l_args):
 
     except ResponseException:
         print(
-            "Received a response from Reddit with an authorization error. Check your token."
+            "Received a response from Reddit with an authorization error. check your token.\n"
         )
-        print("")
 
 
 def spac_community(l_args):
@@ -453,7 +451,7 @@ def spac_community(l_args):
                     break
             except ResponseException:
                 print(
-                    "Received a response from Reddit with an authorization error. Check your token."
+                    "Received a response from Reddit with an authorization error. check your token.\n"
                 )
                 break
 
@@ -482,8 +480,7 @@ def spac_community(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def spac(l_args):
@@ -600,7 +597,7 @@ def spac(l_args):
                     break
             except ResponseException:
                 print(
-                    "Received a response from Reddit with an authorization error. Check your token."
+                    "Received a response from Reddit with an authorization error. check your token.\n"
                 )
                 break
 
@@ -629,8 +626,7 @@ def spac(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def wsb_community(l_args):
@@ -706,9 +702,8 @@ def wsb_community(l_args):
                     break
             except ResponseException:
                 print(
-                    "Received a response from Reddit with an authorization error. Check your token."
+                    "Received a response from Reddit with an authorization error. check your token.\n"
                 )
                 break
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
