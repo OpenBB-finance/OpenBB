@@ -16,6 +16,7 @@ def print_fred():
     print("   quit          quit to abandon program")
     print(" ")
     print("   GDP           get GDP")
+    print("   cust          User Specified FRED Data")
     return
 
 def fred_menu():
@@ -24,7 +25,8 @@ def fred_menu():
         "help",
         "q",
         "quit",
-        "GDP"]
+        "GDP",
+        "cust"]
     fred_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
@@ -62,3 +64,6 @@ def fred_menu():
 
         elif ns_known_args.cmd == "GDP":
             fred_api.get_GDP(l_args)
+
+        elif ns_known_args.cmd == "cust":
+            fred_api.custom_data(l_args)
