@@ -2,30 +2,12 @@ import argparse
 import requests
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
-from gamestonk_terminal.options import get_volume_graph
+from gamestonk_terminal.options import volume as vol
+from gamestonk_terminal.menu import session
 
-
-def print_volume(l_args, s_ticker):
-    """ Show traded options volume. [Source: Yahoo Finance] """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="volume",
-        description="""Display volume graph for a date. [Source: Yahoo Finance].""",
-    )
-
-    l_similar = []
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
-        if not ns_parser:
-            return
-
-    except Exception as e:
-        print(e)
-
-    print("")
-    return get_volume_graph(s_ticker, expiration_date)
-
+from prompt_toolkit.completion import NestedCompleter
 
 def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
@@ -40,7 +22,7 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
     opt_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
-    print_technical_analysis(s_ticker, s_start, s_interval)
+    #print_options(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
@@ -53,8 +35,6 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
         else:
             as_input = input(f"{get_flair()} (opt)> ")
 
-        # Images are non blocking - allows to close them if we type other command
-        plt.close()
 
         # Parse fundamental analysis command of the list of possible commands
         try:
@@ -65,15 +45,20 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
             continue
 
         if ns_known_args.cmd == "help":
-            print_technical_analysis(s_ticker, s_start, s_interval)
+            pass
+            #print_options(s_ticker, s_start, s_interval)
 
         elif ns_known_args.cmd == "q":
-            # Just leave the FA menu
+            # Just leave the options menu
             return False
 
         elif ns_known_args.cmd == "quit":
             # Abandon the program
             return True
+
+        elif ns_known_args.cmd == "volume":
+                # call the volume graph
+            vol.volume_graph(l_args, s_ticker)
 
         else:
             print("Command not recognized!")
