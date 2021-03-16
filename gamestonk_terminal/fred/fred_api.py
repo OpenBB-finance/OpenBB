@@ -3,6 +3,8 @@ import argparse
 import matplotlib.pyplot as plt
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
+    valid_date,
+    str_to_bool,
 )
 from gamestonk_terminal.config_terminal import API_FRED_KEY
 
@@ -28,18 +30,19 @@ def get_GDP(l_args):
     parser.add_argument(
         "-s",
         dest="start_date",
-        type=str,
-        default="1/1/2020",
+        type=valid_date,
+        default="2015-01-01",
         required=False,
         help="Date to Start",
     )
 
     parser.add_argument(
-        "-p", dest="plot",
-        type=bool,
+        "-p",
+        dest="plot",
+        type=str_to_bool,
         default=True,
         required=False,
-        help="Plot GDP"
+        help="Plot GDP",
     )
 
     try:
@@ -61,7 +64,7 @@ def get_GDP(l_args):
 
         if ns_parser.plot:
             plt.figure()
-            lastn.plot(style="ok")
+            lastn.plot(style="-ok")
             plt.xlabel("Time")
             plt.ylabel("GDP")
             plt.show()
@@ -83,35 +86,32 @@ def custom_data(l_args):
                 """,
     )
     parser.add_argument(
-        "-id", dest="series_id",
-        required=True,
-        type=str,
-        help="FRED Series ID"
+        "-id", dest="series_id", required=True, type=str, help="FRED Series ID"
     )
 
     parser.add_argument(
         "-s",
         dest="start_date",
-        type=str,
-        default="1/1/2020",
+        type=valid_date,
+        default="2015-01-01",
         required=False,
         help="Date to Start",
     )
     parser.add_argument(
         "-p",
         dest="plot",
-        type=bool,
+        type=str_to_bool,
         default=True,
         required=False,
-        help="Plot data"
+        help="Plot data",
     )
     parser.add_argument(
         "-disp",
         dest="disp",
-        type=bool,
+        type=str_to_bool,
         default=False,
         required=False,
-        help="Print data"
+        help="Print data",
     )
 
     try:
@@ -127,7 +127,7 @@ def custom_data(l_args):
         try:
             if ns_parser.plot:
                 plt.figure()
-                data.plot(style="ok")
+                data.plot(style="-ok")
                 plt.xlabel("Time")
                 plt.ylabel("DATA")
                 plt.show()
@@ -135,6 +135,7 @@ def custom_data(l_args):
             print(e)
             print("")
             return
+
     except Exception as e:
         print(e)
         print("")
