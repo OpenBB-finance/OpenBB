@@ -2,7 +2,8 @@
 
 import argparse
 
-import sys, os
+import sys
+import os
 from datetime import datetime, timedelta
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
@@ -33,8 +34,9 @@ def main():
     while I saw my GME shares tanking. But hey, I like the stock.
     """
 
+    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
-        os.system("")  # enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+        os.system("")
 
     s_ticker = ""
     s_start = ""
