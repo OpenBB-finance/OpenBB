@@ -358,7 +358,7 @@ def get_flair() -> str:
 
 
 def get_screeninfo():
-    screens = get_monitors()  # Get all aviable monitors
+    screens = get_monitors()  # Get all available monitors
     main_screen = screens[0]  # Choose the first screen as main screen
 
     return (main_screen.width, main_screen.height)
