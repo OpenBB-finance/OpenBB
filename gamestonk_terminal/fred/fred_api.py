@@ -14,32 +14,48 @@ from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
+api_map = {
+    "gdp": "GDP",
+    "t10": "DGS10",
+    "t01": "DGS1",
+    "t05": "DGS5",
+    "t30": "DGS30",
+    "mort30": "MORTGAGE30US",
+    "libor3m": "USD3MTD156N",
+    "moodAAA": "AAA",
+    "unemp": "UNRATE",
+}
+title_map = {
+    "gdp": "GDP",
+    "t10": "10-Year Treasury Constant Maturity Rate",
+    "t01": "1-Year Treasury Constant Maturity Rate",
+    "t05": "5-Year Treasury Constant Maturity Rate",
+    "t30": "30-Year Treasury Constant Maturity Rate",
+    "mort30": "30-Year Treasury Constant Maturity Rate",
+    "libor3m": "3-Month LIBOR, based on U.S. Dollar",
+    "moodAAA": "Moody's Seasoned AAA Corporate Bond Yield",
+    "unemp": "Unemployment Rate",
+}
 
-def get_GDP(l_args):
+
+def get_fred_data(l_args, choice):
     fred = Fred(api_key=API_FRED_KEY)
+
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="GDP",
+        prog="Custom",
         description="""
-                GDP
-            """,
-    )
-    parser.add_argument(
-        "-n",
-        dest="n_to_get",
-        type=int,
-        default=-1,
-        required=False,
-        help="Number of GDP Values to Grab",
+                        Custom Data
+                    """,
     )
 
     parser.add_argument(
         "-s",
         dest="start_date",
         type=valid_date,
-        default="2015-01-01",
+        default="2019-01-01",
         required=False,
-        help="Date to Start",
+        help="Starting date (YYYY-MM-DD) of data",
     )
 
     parser.add_argument(
@@ -64,32 +80,33 @@ def get_GDP(l_args):
         if not ns_parser:
             return
 
-        gdp = fred.get_series("GDP", ns_parser.start_date)
-        gdp = pd.DataFrame(gdp, columns=["GDP"])
-        gdp.index.name = "Date"
-        if int(ns_parser.n_to_get) > 0:
-            lastn = gdp.tail(int(ns_parser.n_to_get))
+        string_to_get = api_map[choice]
+        title = title_map[choice]
+        data = fred.get_series(string_to_get, ns_parser.start_date)
 
-        else:
-            lastn = gdp
-
+        data = pd.DataFrame(data, columns=[f"{string_to_get}"])
+        data.index.name = "Date"
         if ns_parser.hidedata:
-            print(lastn)
+            print(data)
             print("")
-
         if ns_parser.noplot:
             plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.plot(lastn.index, lastn.GDP, "-ok")
+            plt.plot(data.index, data.iloc[:, 0], "-ok")
             plt.xlabel("Time")
-            plt.xlim(lastn.index[0], lastn.index[-1])
-            plt.ylabel("GDP (bn $)")
-            plt.title("FRED GDP Data (in Billions of USD)")
+            plt.xlim(data.index[0], data.index[-1])
+            plt.ylabel(f"{string_to_get}")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.title(title)
             plt.show()
             print("")
 
+            if gtff.USE_ION:
+                plt.ion()
+
+    except SystemExit:
+        print("")
     except Exception as e:
         print(e)
         print("")
@@ -114,7 +131,7 @@ def custom_data(l_args):
         "-s",
         dest="start_date",
         type=valid_date,
-        default="2015-01-01",
+        default="2019-01-01",
         required=False,
         help="Starting date (YYYY-MM-DD) of data",
     )

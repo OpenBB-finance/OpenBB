@@ -14,15 +14,36 @@ def print_fred():
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print(" ")
-    print("   gdp           get GDP")
-    print("   cust          User Specified FRED Data")
+    print("   gdp           GDP")
+    print("   unemp         Unemployment Rate")
+    print("   t01           1-Year Treasury Constant Maturity Rate")
+    print("   t05           5-Year Treasury Constant Maturity Rate")
+    print("   t10           10-Year Treasury Constant Maturity Rate")
+    print("   t30           30-Year Treasury Constant Maturity Rate")
+    print("   mort30        30-Year Fixed Rate Mortgage Average")
+    print("   libor3m       3-Month LIBOR, based on U.S. Dollar")
+    print("   moodAAA       Moody's Seasoned AAA Corporate Bond Yield")
+    print("")
+    print("   cust          User Specified FRED Data - Please Specify --id")
     print("")
     return
 
 
 def fred_menu():
     fred_parser = argparse.ArgumentParser(prog="fred", add_help=False)
-    choices = ["help", "q", "quit", "gdp", "cust"]
+    defined_choices = [
+        "gdp",
+        "unemp",
+        "t01",
+        "t05",
+        "t10",
+        "t30",
+        "mort30",
+        "libor3m",
+        "moodAAA",
+    ]
+    choices = ["help", "q", "quit", "cust"] + defined_choices
+
     fred_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
@@ -58,8 +79,8 @@ def fred_menu():
             # Abandon the program
             return True
 
-        elif ns_known_args.cmd == "gdp":
-            fred_api.get_GDP(l_args)
+        elif ns_known_args.cmd in defined_choices:
+            fred_api.get_fred_data(l_args, ns_known_args.cmd)
 
         elif ns_known_args.cmd == "cust":
             fred_api.custom_data(l_args)
