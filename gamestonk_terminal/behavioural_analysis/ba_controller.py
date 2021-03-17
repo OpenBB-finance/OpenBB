@@ -19,6 +19,28 @@ from prompt_toolkit.completion import NestedCompleter
 class BehaviouralAnalysisController:
     """Behavioural Analysis Controller class"""
 
+    # Command choices
+    CHOICES = [
+        "help",
+        "q",
+        "quit",
+        "watchlist",
+        "spac",
+        "spac_c",
+        "wsb",
+        "popular",
+        "bullbear",
+        "messages",
+        "trending",
+        "stalker",
+        "infer",
+        "sentiment",
+        "mentions",
+        "regions",
+        "queries",
+        "rise",
+    ]
+
     def __init__(self, ticker: str, start: datetime):
         """Constructor"""
         self.ticker = ticker
@@ -26,26 +48,7 @@ class BehaviouralAnalysisController:
         self.ba_parser = argparse.ArgumentParser(add_help=False, prog="ba")
         self.ba_parser.add_argument(
             "cmd",
-            choices=[
-                "help",
-                "q",
-                "quit",
-                "watchlist",
-                "spac",
-                "spac_c",
-                "wsb",
-                "popular",
-                "bullbear",
-                "messages",
-                "trending",
-                "stalker",
-                "infer",
-                "sentiment",
-                "mentions",
-                "regions",
-                "queries",
-                "rise",
-            ],
+            choices=self.CHOICES,
         )
 
     @staticmethod
@@ -217,6 +220,9 @@ def menu(ticker: str, start: datetime):
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
+            completer = NestedCompleter.from_nested_dict(
+                {c: None for c in ba_controller.CHOICES}
+            )
             an_input = session.prompt(
                 f"{get_flair()} (ba)> ",
                 completer=completer,
