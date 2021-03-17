@@ -109,7 +109,10 @@ def __get_volume_data(ticker_name, exp_date):
 
 def __generate_graph_plotly(df, ticker_name, exp_date, for_open_interest=False):
     # version with plotly express
-    op_type = "openInterest" if for_open_interest else "volume"
+    if for_open_interest:
+        op_type = "openInterest"
+    else:
+        op_type = "volume"
 
     fig = px.line(
         df,
@@ -125,10 +128,14 @@ def __generate_graph_plotly(df, ticker_name, exp_date, for_open_interest=False):
 
 def __generate_graph_sns(df, ticker_name, exp_date, for_open_interest=False):
     # version with seaborn express
-    op_type = "openInterest" if for_open_interest else "volume"
+    if for_open_interest:
+        op_type = "openInterest"
+    else:
+        op_type = "volume"
+
     plt.figure(figsize=(12, 6))
     fig = sns.lineplot(
-        data=df, x="strike", y="op_type", hue="type", palette=["limegreen", "tomato"]
+        data=df, x="strike", y=op_type, hue="type", palette=["limegreen", "tomato"]
     )
 
     plt.title(f"{ticker_name} options {op_type} for {exp_date}")
