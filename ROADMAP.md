@@ -189,6 +189,7 @@
 - [ ] Write a developer guide
 - [ ] Add a docker CI
 - [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
+- [ ] Add ad-hoc builds
 
 ### Long term
 
