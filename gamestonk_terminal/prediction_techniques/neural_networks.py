@@ -29,6 +29,7 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
 
 from gamestonk_terminal import feature_flags as gtff
 
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
 
 
@@ -349,7 +350,7 @@ def _plot_and_print_results(
 ):
     """Plot and print the results. """
     # Plotting
-    plt.figure()
+    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
 
     # BACKTESTING
@@ -414,7 +415,7 @@ def _plot_and_print_results(
 
     # BACKTESTING
     if ns_parser.s_end_date:
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.subplot(211)
         plt.plot(
             df_future.index,
