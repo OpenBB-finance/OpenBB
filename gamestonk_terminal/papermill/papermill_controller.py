@@ -24,7 +24,15 @@ class PapermillController:
         )
 
     def switch(self, an_input: str):
-        """Process and dispatch input"""
+        """Process and dispatch input
+
+        Returns
+        -------
+        True, False or None
+            False - quit the menu
+            True - quit the program
+            None - continue in the menu
+        """
         (known_args, other_args) = self.papermill_parser.parse_known_args(
             an_input.split()
         )
@@ -38,11 +46,11 @@ class PapermillController:
         print_papermill()
 
     def call_q(self, _):
-        """Process Q command"""
+        """Process Q command - quit the menu"""
         return False
 
     def call_quit(self, _):
-        """Process Quit command"""
+        """Process Quit command - quit the program"""
         return True
 
     def call_dd(self, other_args: List[str]):
