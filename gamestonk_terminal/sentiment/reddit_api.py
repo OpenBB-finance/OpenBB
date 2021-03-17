@@ -120,9 +120,11 @@ def watchlist(l_args):
                 # Check if number of wanted posts found has been reached
                 if n_flair_posts_found > ns_parser.n_limit - 1:
                     break
-            except Exception as e:
-                print(e)
-                print("")
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. check your token.\n"
+                )
+                return
 
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(
@@ -139,7 +141,7 @@ def watchlist(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e)
+                    print(e, "\n")
                     # pass
             if n_tickers:
                 print(
@@ -149,7 +151,7 @@ def watchlist(l_args):
         print("")
 
     except Exception as e:
-        print(e)
+        print(e, "\n")
         print("")
 
 
@@ -286,9 +288,11 @@ def popular_tickers(l_args):
                     # Check if search_submissions didn't get anymore posts
                     else:
                         break
-                except Exception as e:
-                    print(e)
-                    print("")
+                except ResponseException:
+                    print(
+                        "Received a response from Reddit with an authorization error. check your token.\n"
+                    )
+                    return
 
             print(f"  {n_tickers} potential tickers found.")
 
@@ -324,7 +328,8 @@ def popular_tickers(l_args):
                     if e.response.status_code != 404:
                         print(f"Unexpected exception from Finviz: {e}")
                 except Exception as e:
-                    print(e)
+                    print(e, "\n")
+                    return
 
             popular_tickers_df = pd.DataFrame(
                 popular_tickers,
@@ -344,23 +349,17 @@ def popular_tickers(l_args):
                 f"\nThe following TOP {ns_parser.n_top} tickers have been mentioned in the last {ns_parser.n_days} days:"
             )
 
-            print(popular_tickers_df)
-            print("")
+            print(popular_tickers_df, "\n")
         else:
             print("No tickers found")
 
         print("")
 
-    except ResponseException as e:
-        if e.response.status_code == 401:
-            print(
-                "Received a response from Reddit with an authorization error. Check your token."
-            )
-            print("")
-
-    except Exception as e:
-        print(e)
-        print("")
+    except ResponseException:
+        print(
+            "Received a response from Reddit with an authorization error. check your token.\n"
+        )
+        return
 
 
 def spac_community(l_args):
@@ -452,9 +451,11 @@ def spac_community(l_args):
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-            except Exception as e:
-                print(e)
-                print("")
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. check your token.\n"
+                )
+                return
 
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
@@ -471,8 +472,7 @@ def spac_community(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e)
-                    # pass
+                    print(e, "\n")
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
@@ -481,8 +481,7 @@ def spac_community(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def spac(l_args):
@@ -597,9 +596,11 @@ def spac(l_args):
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-            except Exception as e:
-                print(e)
-                print("")
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. check your token.\n"
+                )
+                return
 
         if n_flair_posts_found:
             lt_watchlist_sorted = sorted(
@@ -616,7 +617,7 @@ def spac(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e)
+                    print(e, "\n")
                     # pass
             if n_tickers:
                 print(
@@ -626,8 +627,7 @@ def spac(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def wsb_community(l_args):
@@ -680,7 +680,6 @@ def wsb_community(l_args):
             submissions = praw_api.subreddit("wallstreetbets").hot(
                 limit=ns_parser.n_limit
             )
-
         while True:
             try:
                 submission = next(submissions, None)
@@ -702,10 +701,10 @@ def wsb_community(l_args):
                 # Check if search_submissions didn't get anymore posts
                 else:
                     break
-            except Exception as e:
-                print(e)
-                print("")
-            print("")
+            except ResponseException:
+                print(
+                    "Received a response from Reddit with an authorization error. check your token.\n"
+                )
+                return
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

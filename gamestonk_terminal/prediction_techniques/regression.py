@@ -344,6 +344,8 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
+    except SystemExit:
+        print("")
     except Exception as e:
         print(e)
         print("")

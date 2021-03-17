@@ -146,9 +146,9 @@ def k_nearest_neighbors(l_args, s_ticker, df_stock):
         # Plotting
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
+        s_knn = f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker}"
         # BACKTESTING
         if ns_parser.s_end_date:
-            s_knn = f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker}"
             plt.title(f"BACKTESTING: {s_knn} - {ns_parser.n_days} days prediction")
         else:
             plt.title(f"{s_knn} - {ns_parser.n_days} days prediction")

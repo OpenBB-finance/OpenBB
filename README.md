@@ -65,18 +65,22 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#disclaimer">Disclaimer</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contacts">Contacts</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
 ## About The Project
 
-How it started:
-"Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌."
+**How it started:**
 
-How it's going:
-u/schoen: _(...) I think people have upvoted this so much because it's an initial version of a single person's passion project that manages to put a whole bunch of financial information at your fingertips. With an active community, it could easily grow and grow and grow in functionality._
+Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
+
+**How it's going:**
+
+Gamestonk Terminal provides a modern Python-based integrated environment for investment research, that allows the average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
+
+As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup, and numerous third-party APIs). 
 
 
 ## Getting Started
@@ -231,8 +235,11 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to your Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+4. Appease the linters and commit again if needed
+   1. Install and run `black` for every change you've made
+   2. Install and run `flake8` for every change you've made. `flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics`
+5. Push to your Branch (`git push origin feature/AmazingFeature`)
+6. Open a Pull Request
 
 
 **Become a Karen 🤷**
@@ -258,11 +265,14 @@ Welcome to the club, and feel free to support the developers behind this amazing
 Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes/GamestonkTerminal/blob/main/LICENSE) for more information.
 
 ## Disclaimer
+
 "A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
 
-## Contact
+## Contacts
 
 [Didier Rodrigues Lopes](https://www.linkedin.com/in/didier-lopes/) - dro.lopes@campus.fct.unl.pt
+
+[Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
 
 ## Acknowledgments
 

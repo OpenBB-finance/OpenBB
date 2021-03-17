@@ -34,11 +34,13 @@ def print_research(s_ticker, s_start, s_interval):
     print("   zacks             www.zacks.com")
     print("   macrotrends       www.macrotrends.net")
     print("   newsfilter        www.newsfilter.io")
+    print("   stockanalysis     www.stockanalysis.com")
     print("")
     print("   resources         trading analysis, tips and research")
     print("")
 
 
+# pylint: disable=too-many-branches
 def res_menu(s_ticker, s_start, s_interval):
     # Add list of arguments that the research parser accepts
     res_parser = argparse.ArgumentParser(add_help=False, prog="discovery")
@@ -66,6 +68,7 @@ def res_menu(s_ticker, s_start, s_interval):
             "macrotrends",
             "newsfilter",
             "resources",
+            "stockanalysis",
         ],
     )
 
@@ -157,6 +160,9 @@ def res_menu(s_ticker, s_start, s_interval):
 
             elif ns_known_args.cmd == "newsfilter":
                 webbrowser.open(f"https://newsfilter.io/search?query={s_ticker}")
+
+            elif ns_known_args.cmd == "stockanalysis":
+                webbrowser.open(f"https://stockanalysis.com/stocks/{s_ticker}")
 
             elif ns_known_args.cmd == "resources":
                 # webbrowser.open(f"https://www.tradinganalysisresources.com/2020/05/free-references-and-resources.html")
