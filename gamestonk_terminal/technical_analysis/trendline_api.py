@@ -1,4 +1,4 @@
-"""Fundamental Analysis Trendline Module"""
+"""Technical Analysis Trendline Module"""
 __docformat__ = "numpy"
 
 from pandas.core.frame import DataFrame
@@ -22,7 +22,7 @@ def load_ticker(ticker: str, start_date: str) -> DataFrame:
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
     """
-    print(f"Start date: {start_date}")
+    # print(f"Start date: {start_date}")
     df_data = yf.download(ticker, start=start_date, progress=False)
 
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
@@ -53,10 +53,10 @@ def find_trendline(df_data: DataFrame, y_key: str, high_low: str = "high") -> Da
     Returns
     -------
     DataFrame
-        An updated Panda's data frame with {y_key}_trend column added containing trend data
-            - if a trend is successfully found.
-        An original Panda's data frame
-            - if no trend was found.
+        If a trend is successfully found,
+            An updated Panda's data frame with a trend data {y_key}_trend column.
+        If no trend was found,
+            An original Panda's data frame
     """
 
     for iteration in [3, 4, 5, 6, 7]:

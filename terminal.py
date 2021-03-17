@@ -2,6 +2,8 @@
 
 import argparse
 
+import sys
+import os
 from datetime import datetime, timedelta
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
@@ -16,7 +18,7 @@ from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.papermill import papermill_menu as mill
+from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.sentiment import sen_menu as sm
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
@@ -32,6 +34,10 @@ def main():
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
     while I saw my GME shares tanking. But hey, I like the stock.
     """
+
+    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+    if sys.platform == "win32":
+        os.system("")
 
     s_ticker = ""
     s_start = ""
@@ -121,12 +127,29 @@ def main():
             main_cmd = True
 
         elif ns_known_args.opt == "candle":
-            candle(
-                s_ticker, (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d")
-            )
+
+            if s_ticker:
+                candle(
+                    s_ticker,
+                    (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
+                )
+
+            else:
+                print(
+                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at."
+                )
+
+            main_cmd = True
 
         elif ns_known_args.opt == "view":
-            view(l_args, s_ticker, s_start, s_interval, df_stock)
+
+            if s_ticker:
+                view(l_args, s_ticker, s_start, s_interval, df_stock)
+
+            else:
+                print(
+                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at."
+                )
             main_cmd = True
 
         elif ns_known_args.opt == "export":

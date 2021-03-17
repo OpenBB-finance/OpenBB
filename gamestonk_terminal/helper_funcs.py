@@ -11,7 +11,9 @@ from colorama import Fore, Style
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
+from screeninfo import get_monitors
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
 
@@ -39,7 +41,7 @@ def valid_date(s: str) -> datetime:
 
 def plot_view_stock(df, symbol):
     df.sort_index(ascending=True, inplace=True)
-    _, axVolume = plt.subplots()
+    _, axVolume = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
     plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
     plt.ylabel("Volume")
     _ = axVolume.twinx()
@@ -353,3 +355,31 @@ def get_flair() -> str:
         return flair[gtff.USE_FLAIR]
 
     return ""
+
+
+def get_screeninfo():
+    screens = get_monitors()  # Get all available monitors
+    if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
+        monitor = 0
+        print(f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor.")
+    else:
+        monitor = cfgPlot.MONITOR
+    main_screen = screens[monitor]  # Choose what monitor to get
+
+    return (main_screen.width, main_screen.height)
+
+
+def plot_autoscale():
+
+    if gtff.USE_PLOT_AUTOSCALING:
+        x, y = get_screeninfo()  # Get screen size
+        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10 ** -2) / (
+            cfgPlot.PLOT_DPI
+        )  # Calculate width
+        if cfgPlot.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
+            y = y - 60  # Remove the height of window toolbar
+        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10 ** -2) / (cfgPlot.PLOT_DPI)
+    else:  # If not autoscale, use size defined in config_plot.py
+        x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
+        y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
+    return x, y

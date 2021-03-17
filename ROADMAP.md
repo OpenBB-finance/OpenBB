@@ -152,6 +152,7 @@
 ### Short term
 
 - [ ] Add Coingecko
+- [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 - [ ] Add crypto charts
 
 ### Long term
@@ -189,6 +190,7 @@
 - [ ] Write a developer guide
 - [ ] Add a docker CI
 - [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
+- [ ] Add ad-hoc builds
 
 ### Long term
 

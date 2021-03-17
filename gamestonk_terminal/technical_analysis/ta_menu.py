@@ -6,7 +6,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.technical_analysis import momentum as ta_momentum
 from gamestonk_terminal.technical_analysis import overlap as ta_overlap
-from gamestonk_terminal.technical_analysis import trend as ta_trend
+from gamestonk_terminal.technical_analysis import trend_indicators as ta_trend
 from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
 from prompt_toolkit.completion import NestedCompleter

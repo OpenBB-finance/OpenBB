@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 import seaborn as sns
 
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
+from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
-
 
 d_candle_types = {
     "o": "Open",
@@ -79,7 +79,7 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
             similar += ns_parser.l_also
 
-            plt.figure()
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.title(f"Similar companies to {s_ticker}")
             df_stock = yf.download(s_ticker, start=s_start, progress=False)
             plt.plot(

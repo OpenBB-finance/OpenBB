@@ -13,11 +13,12 @@ from gamestonk_terminal.helper_funcs import (
     check_ohlc,
     lett_to_num,
     check_sources,
+    plot_autoscale,
 )
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.fundamental_analysis import trendline_api as trend
+from gamestonk_terminal.technical_analysis import trendline_api as trend
 
 
 def print_help(s_ticker, s_start, s_interval, b_is_market_open):
@@ -167,6 +168,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock, _ = ts.get_daily_adjusted(
                     symbol=ns_parser.s_ticker, outputsize="full"
                 )
+                # pylint: disable=no-member
                 df_stock.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
@@ -201,6 +203,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock, _ = ts.get_intraday(
                     symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
                 )
+                # pylint: disable=no-member
                 df_stock.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
@@ -267,6 +270,7 @@ def candle(s_ticker: str, s_start: str):
         style=s,
         figratio=(10, 7),
         figscale=1.10,
+        figsize=(plot_autoscale()),
         update_width_config=dict(
             candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
         ),

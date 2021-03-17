@@ -107,6 +107,7 @@ seaborn==0.11.1; python_version >= "3.6"
 send2trash==1.5.0; python_version >= "3.5"
 six==1.15.0; python_full_version >= "3.6.1" and python_version >= "3.6" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "3.6" and python_full_version < "3.0.0" and python_version < "4.0" or python_version >= "3.6" and python_version < "4.0" and python_full_version >= "3.4.0") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6") and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.5")
 soupsieve==2.2; python_version >= "3.6"
+screeninfo==0.6.7;
 tenacity==7.0.0; python_version >= "3.6"
 terminado==0.9.2; python_version >= "3.6"
 testpath==0.4.4; python_version >= "3.6"
@@ -128,3 +129,4 @@ widgetsnbextension==3.5.1
 yarl==1.6.3; python_version >= "3.6"
 yfinance==0.1.55
 zipp==3.4.1; python_version < "3.8" and python_version >= "3.6"
+
