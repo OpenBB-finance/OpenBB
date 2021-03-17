@@ -367,6 +367,7 @@ def str_to_bool(value):
     else:
         raise ValueError(f"{value} is not a valid boolean value")
 
+
 def get_screeninfo():
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
