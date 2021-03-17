@@ -43,7 +43,7 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
         if ns_known_args.cmd == "help":
             pass
-            #print_options(s_ticker, s_start, s_interval)
+            #print_options(s_ticker)
 
         elif ns_known_args.cmd == "q":
             # Just leave the options menu
