@@ -30,6 +30,9 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
 
 **Note:** _Use this at your own discretion. All of these prediciton techniques rely solely on the closing price of the stock. This means that there are several factors that the models aren't aware of at the time of prediction, and may - drastically - move the price up or down. Examples are: news, analyst price targets, reddit post, tweets from Elon Musk, and so on._
 
+**Note 2:** _[Enabling GPU acceleration for TensorFlow requires CUDA setup](README-gpu-accel.md) and will probably not provide any speedup unless you are building large custom models._
+
+
 
 ## sma <a name="sma"></a>
 ```
@@ -161,6 +164,10 @@ MulitLayer Perceptron:
   * -o : optimization technique. Default adam.
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
+  * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
+  * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
+  * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
+  * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -193,6 +200,10 @@ Recurrent Neural Network:
   * -o : optimization technique. Default adam.
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
+  * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
+  * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
+  * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
+  * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -225,8 +236,12 @@ Long-Short Term Memory:
   * -o : optimization technique. Default adam.
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
+  * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
+  * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
+  * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
+  * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
 
-Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
+Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.py](/config_neural_network_models.py)
 ```
 Long_Short_Term_Memory \
     = [ {'LSTM':

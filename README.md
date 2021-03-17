@@ -235,8 +235,11 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to your Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+4. Appease the linters and commit again if needed
+   1. Install and run `black` for every change you've made
+   2. Install and run `flake8` for every change you've made. `flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics`
+5. Push to your Branch (`git push origin feature/AmazingFeature`)
+6. Open a Pull Request
 
 
 **Become a Karen 🤷**
