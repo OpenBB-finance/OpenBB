@@ -359,6 +359,7 @@ def popular_tickers(l_args):
         print(
             "Received a response from Reddit with an authorization error. check your token.\n"
         )
+        return
 
 
 def spac_community(l_args):
@@ -454,7 +455,7 @@ def spac_community(l_args):
                 print(
                     "Received a response from Reddit with an authorization error. check your token.\n"
                 )
-                break
+                return
 
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
