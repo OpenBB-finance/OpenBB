@@ -9,6 +9,7 @@ import mplfinance as mpf
 
 from gamestonk_terminal.technical_analysis import trendline_api as trend
 
+
 # pylint: disable=too-many-arguments
 def draw_graph(
     ticker: str,
