@@ -1,12 +1,18 @@
-from fredapi import Fred
 import argparse
+import pandas as pd
+from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
+from fredapi import Fred
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
-    str_to_bool,
+    plot_autoscale,
 )
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.config_terminal import API_FRED_KEY
+from gamestonk_terminal import feature_flags as gtff
+
+register_matplotlib_converters()
 
 
 def get_GDP(l_args):
@@ -37,12 +43,19 @@ def get_GDP(l_args):
     )
 
     parser.add_argument(
-        "-p",
-        dest="plot",
-        type=str_to_bool,
+        "--noplot",
+        action="store_false",
         default=True,
-        required=False,
-        help="Plot GDP",
+        dest="noplot",
+        help="Suppress output plot",
+    )
+
+    parser.add_argument(
+        "--hidedata",
+        action="store_false",
+        default=True,
+        dest="hidedata",
+        help="Suppress data display plot",
     )
 
     try:
@@ -52,22 +65,30 @@ def get_GDP(l_args):
             return
 
         gdp = fred.get_series("GDP", ns_parser.start_date)
-
+        gdp = pd.DataFrame(gdp, columns=["GDP"])
+        gdp.index.name = "Date"
         if int(ns_parser.n_to_get) > 0:
             lastn = gdp.tail(int(ns_parser.n_to_get))
 
         else:
             lastn = gdp
 
-        for date, val in lastn.iteritems():
-            print(f'Date: {date.strftime("%m-%d-%Y")}, GDP: {val} ')
+        if ns_parser.hidedata:
+            print(lastn)
+            print("")
 
-        if ns_parser.plot:
-            plt.figure()
-            lastn.plot(style="-ok")
+        if ns_parser.noplot:
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            plt.plot(lastn.index, lastn.GDP, "-ok")
             plt.xlabel("Time")
-            plt.ylabel("GDP")
+            plt.xlim(lastn.index[0], lastn.index[-1])
+            plt.ylabel("GDP (bn $)")
+            plt.title("FRED GDP Data (in Billions of USD)")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
             plt.show()
+            print("")
 
     except Exception as e:
         print(e)
@@ -86,7 +107,7 @@ def custom_data(l_args):
                 """,
     )
     parser.add_argument(
-        "-id", dest="series_id", required=True, type=str, help="FRED Series ID"
+        "-i", "--id", dest="series_id", required=True, type=str, help="FRED Series ID"
     )
 
     parser.add_argument(
@@ -95,23 +116,23 @@ def custom_data(l_args):
         type=valid_date,
         default="2015-01-01",
         required=False,
-        help="Date to Start",
+        help="Starting date (YYYY-MM-DD) of data",
     )
+
     parser.add_argument(
-        "-p",
-        dest="plot",
-        type=str_to_bool,
+        "--noplot",
+        action="store_false",
         default=True,
-        required=False,
-        help="Plot data",
+        dest="noplot",
+        help="Suppress output plot",
     )
+
     parser.add_argument(
-        "-disp",
-        dest="disp",
-        type=str_to_bool,
-        default=False,
-        required=False,
-        help="Print data",
+        "--hidedata",
+        action="store_false",
+        default=True,
+        dest="hidedata",
+        help="Suppress data display plot",
     )
 
     try:
@@ -121,20 +142,28 @@ def custom_data(l_args):
             return
 
         data = fred.get_series(ns_parser.series_id, ns_parser.start_date)
-        if ns_parser.disp:
-            for date, val in data.iteritems():
-                print(f'Date: {date.strftime("%m-%d-%Y")}, DATA: {val} ')
-        try:
-            if ns_parser.plot:
-                plt.figure()
-                data.plot(style="-ok")
-                plt.xlabel("Time")
-                plt.ylabel("DATA")
-                plt.show()
-        except Exception as e:
-            print(e)
+
+        data = pd.DataFrame(data, columns=[f"{ns_parser.series_id}"])
+        data.index.name = "Date"
+        if ns_parser.hidedata:
+            print(data)
             print("")
-            return
+        if ns_parser.noplot:
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            plt.plot(data.index, data.iloc[:, 0], "-ok")
+            plt.xlabel("Time")
+            plt.xlim(data.index[0], data.index[-1])
+            plt.ylabel(f"{ns_parser.series_id}")
+            plt.grid(b=True, which="major", color="#666666", linestyle="-")
+            plt.minorticks_on()
+            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+            plt.title(f"FRED {ns_parser.series_id} Series")
+            plt.show()
+            print("")
+
+            if gtff.USE_ION:
+                plt.ion()
+
     except SystemExit:
         print("")
     except Exception as e:
