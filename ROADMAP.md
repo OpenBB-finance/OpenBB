@@ -152,6 +152,7 @@
 ### Short term
 
 - [ ] Add Coingecko
+- [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 - [ ] Add crypto charts
 
 ### Long term
