@@ -1,7 +1,7 @@
 name: Tests
 env:
-    GTFF_USE_PROMPT_TOOLKIT: False
-    GTFF_USE_ION: False
+    GTFF_USE_PROMPT_TOOLKIT:
+    GTFF_USE_ION:
 on: [pull_request, push]
 jobs:
   linting:

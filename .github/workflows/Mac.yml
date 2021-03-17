@@ -1,7 +1,7 @@
 name: Mac OS X Full Clean Build with ML
 env:
-  GTFF_USE_PROMPT_TOOLKIT: False
-  GTFF_USE_ION: False
+  GTFF_USE_PROMPT_TOOLKIT:
+  GTFF_USE_ION:
 on:
   push:
     branches:
