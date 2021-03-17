@@ -165,6 +165,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock, _ = ts.get_daily_adjusted(
                     symbol=ns_parser.s_ticker, outputsize="full"
                 )
+                # pylint: disable=no-member
                 df_stock.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
@@ -199,6 +200,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock, _ = ts.get_intraday(
                     symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
                 )
+                # pylint: disable=no-member
                 df_stock.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected

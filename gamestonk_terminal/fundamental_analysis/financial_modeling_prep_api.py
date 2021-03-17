@@ -2,6 +2,7 @@ import argparse
 from datetime import datetime
 import pandas as pd
 import FundamentalAnalysis as fa  # Financial Modeling Prep
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.dataframe_helpers import clean_df_index
 from gamestonk_terminal.helper_funcs import (
@@ -11,7 +12,6 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
 )
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
 
 
 def print_menu(s_ticker, s_start, s_interval):
