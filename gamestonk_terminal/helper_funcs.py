@@ -360,12 +360,11 @@ def get_flair() -> str:
 def str_to_bool(value):
     if isinstance(value, bool):
         return value
-    elif value.lower() in {"false", "f", "0", "no", "n"}:
+    if value.lower() in {"false", "f", "0", "no", "n"}:
         return False
-    elif value.lower() in {"true", "t", "1", "yes", "y"}:
+    if value.lower() in {"true", "t", "1", "yes", "y"}:
         return True
-    else:
-        raise ValueError(f"{value} is not a valid boolean value")
+    raise ValueError(f"{value} is not a valid boolean value")
 
 
 def get_screeninfo():
