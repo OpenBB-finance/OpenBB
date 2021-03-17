@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     patch_pandas_text_adjustment,
     get_next_stock_market_days,
+    plot_autoscale,
 )
 
 from gamestonk_terminal.prediction_techniques.pred_helper import (
@@ -25,7 +26,7 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_prediction_kpis,
 )
 
-
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
@@ -275,7 +276,7 @@ def mlp(l_args, s_ticker, df_stock):
         df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
 
         # Plotting
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
         # BACKTESTING
         if ns_parser.s_end_date:
@@ -341,7 +342,7 @@ def mlp(l_args, s_ticker, df_stock):
 
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.figure()
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.subplot(211)
             plt.plot(
                 df_future.index,
@@ -654,7 +655,7 @@ def rnn(l_args, s_ticker, df_stock):
         df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
 
         # Plotting
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
         # BACKTESTING
         if ns_parser.s_end_date:
@@ -720,7 +721,7 @@ def rnn(l_args, s_ticker, df_stock):
 
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.figure()
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.subplot(211)
             plt.plot(
                 df_future.index,
@@ -1033,7 +1034,7 @@ def lstm(l_args, s_ticker, df_stock):
         df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
 
         # Plotting
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
         # BACKTESTING
         if ns_parser.s_end_date:
@@ -1099,7 +1100,7 @@ def lstm(l_args, s_ticker, df_stock):
 
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.figure()
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.subplot(211)
             plt.plot(
                 df_future.index,
