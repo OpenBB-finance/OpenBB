@@ -25,3 +25,6 @@ API_POLYGON_KEY = os.getenv("GT_API_POLYGON_KEY") or "REPLACE_ME"
 API_TWITTER_KEY = os.getenv("GT_API_TWITTER_KEY") or "REPLACE_ME"
 API_TWITTER_SECRET_KEY = os.getenv("GT_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("GT_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
+
+# https://fred.stlouisfed.org/docs/api/api_key.html
+API_FRED_KEY = os.getenv("GT_FRED_API_KEY") or "REPLACE_ME"

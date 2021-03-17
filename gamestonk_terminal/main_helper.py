@@ -53,6 +53,10 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print(
         "   sen         sentiment of the market, \t from: reddit, stocktwits, twitter"
     )
+    print(
+        "   fred        economic data, \t\t\t from: Federal Reserve Bank of St. Louis "
+    )
+
     if s_ticker:
         print(
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"

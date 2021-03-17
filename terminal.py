@@ -22,6 +22,7 @@ from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.sentiment import sen_menu as sm
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
+from gamestonk_terminal.fred import fred_menu as fm
 
 # import warnings
 # warnings.simplefilter("always")
@@ -71,6 +72,7 @@ def main():
         "dd",
         "pred",
         "ca",
+        "fred",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -177,6 +179,9 @@ def main():
 
         elif ns_known_args.opt == "dd":
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "fred":
+            b_quit = fm.fred_menu()
 
         elif ns_known_args.opt == "pred":
 
