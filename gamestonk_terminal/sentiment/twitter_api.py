@@ -357,7 +357,6 @@ def sentiment(l_args, s_ticker):
             df_tweets["created_at"].values[0], "%Y-%m-%d %H:%M:%S"
         ).day
         n_idx = 0
-        n_next_idx = 0
         for n_next_idx, dt_created in enumerate(df_tweets["created_at"]):
             if datetime.strptime(dt_created, "%Y-%m-%d %H:%M:%S").day > n_day:
                 l_xticks.append(n_next_idx)

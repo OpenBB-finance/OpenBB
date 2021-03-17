@@ -224,7 +224,6 @@ def main():
                 except Exception as e:
                     print(e)
                     print("Either the ticker or the API_KEY are invalids. Try again!")
-                    b_quit = False
                     return
 
         else:
