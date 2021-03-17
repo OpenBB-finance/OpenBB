@@ -35,7 +35,7 @@ def due_diligence(other_args: List[str]):
     )
 
     try:
-        (parser, unknown_args) = parser.parse_known_args(other_args)
+        (ns_parser, unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         print("")
         return
@@ -44,7 +44,7 @@ def due_diligence(other_args: List[str]):
         print(f"The following args couldn't be interpreted: {unknown_args}")
 
     # Update values:
-    s_ticker = parser.s_ticker
+    s_ticker = ns_parser.s_ticker
 
     today = datetime.now()
 
