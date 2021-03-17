@@ -3,7 +3,7 @@
 This menu aims to perform a technical analysis on a pre-loaded ticker chart, and the usage of the following commands along with an example will be exploited below.
 
 [OVERLAP](#OVERLAP)
-  * [ema](#ema)       
+  * [ema](#ema)
     - exponential moving average
   * [sma](#sma)
     - simple moving average
@@ -12,7 +12,7 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
 
 [MOMENTUM](#MOMENTUM)
   * [cci](#cci)
-    - commodity channel index 
+    - commodity channel index
   * [macd](#macd)
     - moving average convergence/divergence
   * [rsi](#rsi)

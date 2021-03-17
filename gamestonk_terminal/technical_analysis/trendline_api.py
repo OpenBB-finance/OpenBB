@@ -22,7 +22,7 @@ def load_ticker(ticker: str, start_date: str) -> DataFrame:
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
     """
-    print(f"Start date: {start_date}")
+    # print(f"Start date: {start_date}")
     df_data = yf.download(ticker, start=start_date, progress=False)
 
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(

@@ -1,1 +1,1 @@
-from . import papermill_menu  # noqa: F401
+from . import papermill_controller  # noqa: F401

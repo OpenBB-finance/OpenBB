@@ -1,11 +1,22 @@
+"""Papermill Due Diligence View Module"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 from datetime import datetime
 import os
 import webbrowser
 import papermill as pm
 
 
-def analysis(l_args):
+def due_diligence(other_args: List[str]):
+    """Due Diligence report
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="dd",
@@ -24,13 +35,13 @@ def analysis(l_args):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (ns_parser, unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         print("")
         return
 
-    if l_unknown_args:
-        print(f"The following args couldn't be interpreted: {l_unknown_args}")
+    if unknown_args:
+        print(f"The following args couldn't be interpreted: {unknown_args}")
 
     # Update values:
     s_ticker = ns_parser.s_ticker
