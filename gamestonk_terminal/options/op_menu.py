@@ -6,6 +6,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.options import volume as vol
 from gamestonk_terminal.menu import session
 
+
 def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the options parser accepts
@@ -33,7 +34,6 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
         else:
             as_input = input(f"{get_flair()} (opt)> ")
 
-
         # Parse fundamental analysis command of the list of possible commands
         try:
             (ns_known_args, l_args) = opt_parser.parse_known_args(as_input.split())
@@ -44,7 +44,7 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
         if ns_known_args.cmd == "help":
             pass
-            #print_options(s_ticker)
+            # print_options(s_ticker)
 
         elif ns_known_args.cmd == "q":
             # Just leave the options menu
@@ -55,11 +55,11 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
             return True
 
         elif ns_known_args.cmd == "volume":
-                # call the volume graph
+            # call the volume graph
             vol.volume_graph(l_args, s_ticker)
 
         elif ns_known_args.cmd == "oi":
-                # call the volume graph
+            # call the volume graph
             vol.open_interest_graph(l_args, s_ticker)
         else:
             print("Command not recognized!")
