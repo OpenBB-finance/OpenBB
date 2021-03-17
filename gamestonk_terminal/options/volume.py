@@ -7,7 +7,33 @@ import argparse
 import datetime
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn, valid_date
 
+def open_interest_graph(l_args, s_ticker):
+    """ Show traded options volume. [Source: Yahoo Finance] """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="volume",
+        description="""Display volume graph for a date. [Source: Yahoo Finance].""",
+    )
+    parser.add_argument(
+        "-e",
+        "--expiry",
+        type=valid_date,
+        dest="s_expiry_date",
+        help="The expiry date (format YYYY-MM-DD) for the option chain",
+        required=True
+    )
+    l_similar = []
+    try:
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
 
+        __get_open_interest_graph(s_ticker, ns_parser.s_expiry_date.strftime("%Y-%m-%d"))
+
+    except SystemExit:
+         print("")
+    except Exception as e:
+        print(e)
 
 def volume_graph(l_args, s_ticker):
     """ Show traded options volume. [Source: Yahoo Finance] """
@@ -37,6 +63,10 @@ def volume_graph(l_args, s_ticker):
     except Exception as e:
         print(e)
 
+def __get_open_interest_graph(ticker_name, exp_date):
+    df = __get_volume_data(ticker_name, exp_date)
+    __generate_graph_sns(df, ticker_name, exp_date, True)
+    #__generate_graph_plotly(df, ticker_name, exp_date)
 
 
 def __get_volume_graph(ticker_name, exp_date):
@@ -81,30 +111,33 @@ def __get_volume_data(ticker_name, exp_date):
     #dataframe
     return volume_data
 
-def __generate_graph_plotly(df, ticker_name, exp_date):
+def __generate_graph_plotly(df, ticker_name, exp_date, for_open_interest = False):
     #version with plotly express
+    op_type = 'openInterest'if for_open_interest else 'volume'
+
     fig = px.line(
         df,
         x="strike",
-        y="volume",
-        title=f'{ticker_name} options volume for {exp_date}',
+        y=op_type,
+        title=f'{ticker_name} options {op_type} for {exp_date}',
         color= 'type'
         )
     fig.show()
 
     return
 
-def __generate_graph_sns(df, ticker_name, exp_date):
+def __generate_graph_sns(df, ticker_name, exp_date, for_open_interest = False):
     #version with seaborn express
+    op_type = 'openInterest'if for_open_interest else 'volume'
     plt.figure(figsize=(12,6))
     fig = sns.lineplot(
         data = df,
         x = 'strike',
-        y = 'volume',
+        y = 'op_type',
         hue = 'type',
         palette=  ['limegreen', 'tomato'])
 
-    plt.title(f'{ticker_name} options volume for {exp_date}')
+    plt.title(f'{ticker_name} options {op_type} for {exp_date}')
 
     plt.show()
     return

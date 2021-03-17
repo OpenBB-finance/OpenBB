@@ -14,7 +14,8 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
         "help",
         "q",
         "quit",
-        "volume"
+        "volume",
+        "oi"
     ]
     opt_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -57,5 +58,8 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
                 # call the volume graph
             vol.volume_graph(l_args, s_ticker)
 
+        elif ns_known_args.cmd == "oi":
+                # call the volume graph
+            vol.open_interest_graph(l_args, s_ticker)
         else:
             print("Command not recognized!")
