@@ -135,7 +135,8 @@ def custom_data(l_args):
             print(e)
             print("")
             return
-
+    except SystemExit:
+         print("")
     except Exception as e:
         print(e)
         print("")
