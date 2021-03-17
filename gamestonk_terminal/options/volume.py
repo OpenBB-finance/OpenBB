@@ -68,7 +68,6 @@ def __get_open_interest_graph(ticker_name, exp_date):
     __generate_graph_sns(df, ticker_name, exp_date, True)
     #__generate_graph_plotly(df, ticker_name, exp_date)
 
-
 def __get_volume_graph(ticker_name, exp_date):
     df = __get_volume_data(ticker_name, exp_date)
     __generate_graph_sns(df, ticker_name, exp_date)
