@@ -23,6 +23,7 @@ from gamestonk_terminal.sentiment import sen_menu as sm
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
 from gamestonk_terminal.options import op_menu as opm
+from gamestonk_terminal.fred import fred_menu as fm
 
 # import warnings
 # warnings.simplefilter("always")
@@ -73,6 +74,7 @@ def main():
         "pred",
         "ca",
         "op"
+        "fred",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -182,6 +184,9 @@ def main():
 
         elif ns_known_args.opt == "op":
             b_quit = opm.opt_menu(df_stock, s_ticker, s_start, s_interval)
+            
+        elif ns_known_args.opt == "fred":
+            b_quit = fm.fred_menu()
 
         elif ns_known_args.opt == "pred":
 
@@ -229,7 +234,6 @@ def main():
                 except Exception as e:
                     print(e)
                     print("Either the ticker or the API_KEY are invalids. Try again!")
-                    b_quit = False
                     return
 
         else:

@@ -357,6 +357,16 @@ def get_flair() -> str:
     return ""
 
 
+def str_to_bool(value):
+    if isinstance(value, bool):
+        return value
+    if value.lower() in {"false", "f", "0", "no", "n"}:
+        return False
+    if value.lower() in {"true", "t", "1", "yes", "y"}:
+        return True
+    raise ValueError(f"{value} is not a valid boolean value")
+
+
 def get_screeninfo():
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
