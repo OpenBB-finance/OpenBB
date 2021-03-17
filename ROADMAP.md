@@ -19,7 +19,7 @@
 * [Frontend](#Frontend)
 * [Developer Experience](#Developer-Experience)
 * [User Experience](#User-Experience)
-
+* [Options](#Options)
 ---
 
 ## Discovery
@@ -205,3 +205,17 @@
 ### Long term
 
 - [ ] Add a WHL installation
+
+
+---
+
+## Options
+
+### Short term
+
+- [ ] Add Volume graph (@lolrenx)
+- [ ] Add Open Interest graph (@lolrenx)
+
+### Long term
+
+- [ ] Add max pain graph
