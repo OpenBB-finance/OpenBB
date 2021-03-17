@@ -30,37 +30,81 @@ def volume_graph(l_args, s_ticker):
         if not ns_parser:
             return
 
-        opt = yf.Ticker(s_ticker).option_chain(ns_parser.s_expiry_date.strftime("%Y-%m-%d"))
-        # data available via: opt.calls, opt.puts
-
-        volume_data = pd.concat(
-            [
-                __volume_data(opt.calls, 'calls'),
-                __volume_data(opt.puts, 'puts')
-            ],
-            axis=0
-        )
-        fig = px.line(
-            volume_data,
-            x="strike",
-            y="volume",
-            title=f'{s_ticker} Volume for {ns_parser.s_expiry_date.strftime("%Y-%m-%d")}',
-            color='type'
-        )
-        fig.show()
+        __get_volume_graph(s_ticker, ns_parser.s_expiry_date.strftime("%Y-%m-%d"))
 
     except SystemExit:
          print("")
     except Exception as e:
         print(e)
 
-def __volume_data(opt_data, flag):
-    # get option chain for specific expiration
-    df = opt_data.pivot_table(
+
+
+def __get_volume_graph(ticker_name, exp_date):
+    df = __get_volume_data(ticker_name, exp_date)
+    __generate_graph_sns(df, ticker_name, exp_date)
+    #__generate_graph_plotly(df, ticker_name, exp_date)
+
+def __pull_call_put_data(call_put, flag):
+    df = call_put.pivot_table(
         index='strike',
-        values=['volume', 'openInterest'],
+        values = ['volume','openInterest'],
         aggfunc='sum')
+
     df.reindex()
+
     df['strike'] = df.index
     df['type'] = flag
+
     return df
+
+def __get_volume_data(ticker_name, exp_date):
+
+    option_chain = yf.Ticker(ticker_name).option_chain(exp_date)
+
+    calls = __pull_call_put_data(
+        option_chain.calls,
+        'calls'
+        )
+
+    puts = __pull_call_put_data(
+        option_chain.puts,
+        'puts'
+        )
+
+    volume_data = pd.concat(
+        [
+            calls,
+            puts
+        ],
+            axis = 0
+            )
+    #dataframe
+    return volume_data
+
+def __generate_graph_plotly(df, ticker_name, exp_date):
+    #version with plotly express
+    fig = px.line(
+        df,
+        x="strike",
+        y="volume",
+        title=f'{ticker_name} options volume for {exp_date}',
+        color= 'type'
+        )
+    fig.show()
+
+    return
+
+def __generate_graph_sns(df, ticker_name, exp_date):
+    #version with seaborn express
+    plt.figure(figsize=(12,6))
+    fig = sns.lineplot(
+        data = df,
+        x = 'strike',
+        y = 'volume',
+        hue = 'type',
+        palette=  ['limegreen', 'tomato'])
+
+    plt.title(f'{ticker_name} options volume for {exp_date}')
+
+    plt.show()
+    return
