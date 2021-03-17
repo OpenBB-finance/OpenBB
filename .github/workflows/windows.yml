@@ -1,4 +1,7 @@
 name: Windows 10 Full Clean Build with ML
+env:
+  GTFF_USE_PROMPT_TOOLKIT: false
+  GTFF_USE_ION: false
 on:
   push:
     branches:
