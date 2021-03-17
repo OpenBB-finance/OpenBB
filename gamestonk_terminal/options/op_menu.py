@@ -11,17 +11,11 @@ def opt_menu(df_stock, s_ticker, s_start, s_interval):
 
     # Add list of arguments that the options parser accepts
     opt_parser = argparse.ArgumentParser(prog="opt", add_help=False)
-    choices = [
-        "help",
-        "q",
-        "quit",
-        "volume",
-        "oi"
-    ]
+    choices = ["help", "q", "quit", "volume", "oi"]
     opt_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
-    #print_options(s_ticker, s_start, s_interval)
+    # print_options(s_ticker, s_start, s_interval)
 
     # Loop forever and ever
     while True:
