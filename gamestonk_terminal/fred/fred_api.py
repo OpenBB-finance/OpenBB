@@ -17,23 +17,25 @@ register_matplotlib_converters()
 api_map = {
     "gdp": "GDP",
     "t10": "DGS10",
-    "t01": "DGS1",
-    "t05": "DGS5",
+    "t1": "DGS1",
+    "t5": "DGS5",
     "t30": "DGS30",
     "mort30": "MORTGAGE30US",
-    "libor3m": "USD3MTD156N",
+    "fedrate": "FEDFUNDS",
     "moodAAA": "AAA",
+    "usdcad": "DEXCAUS",
     "unemp": "UNRATE",
 }
 title_map = {
-    "gdp": "GDP",
+    "gdp": "Gross Domestic Product",
     "t10": "10-Year Treasury Constant Maturity Rate",
-    "t01": "1-Year Treasury Constant Maturity Rate",
-    "t05": "5-Year Treasury Constant Maturity Rate",
+    "t1": "1-Year Treasury Constant Maturity Rate",
+    "t5": "5-Year Treasury Constant Maturity Rate",
     "t30": "30-Year Treasury Constant Maturity Rate",
-    "mort30": "30-Year Treasury Constant Maturity Rate",
-    "libor3m": "3-Month LIBOR, based on U.S. Dollar",
+    "mort30": "30-Year Mortgage Rate",
+    "fedrate": "Effective Federal Funds Rate",
     "moodAAA": "Moody's Seasoned AAA Corporate Bond Yield",
+    "usdcad": "Canada / U.S. Foreign Exchange Rate",
     "unemp": "Unemployment Rate",
 }
 

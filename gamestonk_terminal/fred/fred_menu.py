@@ -1,4 +1,5 @@
 import argparse
+from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -16,13 +17,14 @@ def print_fred():
     print(" ")
     print("   gdp           GDP")
     print("   unemp         Unemployment Rate")
-    print("   t01           1-Year Treasury Constant Maturity Rate")
-    print("   t05           5-Year Treasury Constant Maturity Rate")
+    print("   t1            1-Year Treasury Constant Maturity Rate")
+    print("   t5            5-Year Treasury Constant Maturity Rate")
     print("   t10           10-Year Treasury Constant Maturity Rate")
     print("   t30           30-Year Treasury Constant Maturity Rate")
     print("   mort30        30-Year Fixed Rate Mortgage Average")
-    print("   libor3m       3-Month LIBOR, based on U.S. Dollar")
+    print("   fedrate       Effective Federal Funds Rate")
     print("   moodAAA       Moody's Seasoned AAA Corporate Bond Yield")
+    print("   usdcad        Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)")
     print("")
     print("   cust          User Specified FRED Data - Please Specify --id")
     print("")
@@ -30,17 +32,19 @@ def print_fred():
 
 
 def fred_menu():
+    plt.close("all")
     fred_parser = argparse.ArgumentParser(prog="fred", add_help=False)
     defined_choices = [
         "gdp",
         "unemp",
-        "t01",
-        "t05",
+        "t1",
+        "t5",
         "t10",
         "t30",
         "mort30",
-        "libor3m",
+        "fedrate",
         "moodAAA",
+        "usdcad",
     ]
     choices = ["help", "q", "quit", "cust"] + defined_choices
 

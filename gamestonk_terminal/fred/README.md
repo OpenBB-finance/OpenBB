@@ -14,8 +14,9 @@ The current predefined options are
 * 1,5,10,30 Year Treasury Rates
 * 30 Year Mortgage Rates
 * Unemployment Rate
-* 3 Month LIBOR
+* Effective Federal Funds rate
 * Moody's AAA Corporate Bond
+* CAD to USD Conversion.
 
 ## predefined <a name="predefined"></a>
 ```text
@@ -31,6 +32,9 @@ To plot the 30-Year Mortgage rates since 2018-01-01 suppressing the output.
 ````
 mort30 -s 2018-01-01 --hidedata
 ````
+
+![mort30](https://user-images.githubusercontent.com/18151143/111521185-3d80dc80-872f-11eb-989d-c2bb256aa213.png)
+
 To show all GDP data since 1/1/2016, with no plot.
 ````
 gdp -s 2016-01-01 --noplot
@@ -78,9 +82,10 @@ An example of custom data could be the USD/EURO exchange rate.
 According to https://fred.stlouisfed.org/series/DEXUSEU , the series ID is DEXUSEU.  So to plot this from the start of February 2021 to now (3/17)
 
 ````
-cust --id UNRATE -s 2021-02-01 
+cust --id DEXUSEU -s 2021-02-01 
 ````
 This will plot and display:
+![cust](https://user-images.githubusercontent.com/18151143/111521481-92bcee00-872f-11eb-8a02-e7346e56e462.png)
 
 ````
             DEXUSEU
