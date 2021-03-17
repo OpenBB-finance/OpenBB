@@ -1,12 +1,10 @@
+import argparse
 import yfinance as yf
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-import argparse
-import datetime
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     parse_known_args_and_warn,
     valid_date,
 )
@@ -27,7 +25,6 @@ def open_interest_graph(l_args, s_ticker):
         help="The expiry date (format YYYY-MM-DD) for the option chain",
         required=True,
     )
-    l_similar = []
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
@@ -58,7 +55,7 @@ def volume_graph(l_args, s_ticker):
         help="The expiry date (format YYYY-MM-DD) for the option chain",
         required=True,
     )
-    l_similar = []
+
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
@@ -137,4 +134,4 @@ def __generate_graph_sns(df, ticker_name, exp_date, for_open_interest=False):
     plt.title(f"{ticker_name} options {op_type} for {exp_date}")
 
     plt.show()
-    return
+    return fig

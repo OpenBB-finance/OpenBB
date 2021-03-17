@@ -73,7 +73,8 @@ def main():
         "dd",
         "pred",
         "ca",
-        "op" "fred",
+        "op",
+        "fred",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -182,7 +183,7 @@ def main():
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "op":
-            b_quit = opm.opt_menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = opm.opt_menu(s_ticker)
 
         elif ns_known_args.opt == "fred":
             b_quit = fm.fred_menu()

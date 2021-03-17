@@ -7,7 +7,7 @@ from gamestonk_terminal.options import volume as vol
 from gamestonk_terminal.menu import session
 
 
-def opt_menu(df_stock, s_ticker, s_start, s_interval):
+def opt_menu(s_ticker):
 
     # Add list of arguments that the options parser accepts
     opt_parser = argparse.ArgumentParser(prog="opt", add_help=False)
