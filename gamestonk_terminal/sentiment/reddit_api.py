@@ -141,7 +141,7 @@ def watchlist(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e)
+                    print(e, "\n")
                     # pass
             if n_tickers:
                 print(
@@ -151,7 +151,7 @@ def watchlist(l_args):
         print("")
 
     except Exception as e:
-        print(e)
+        print(e, "\n")
         print("")
 
 
@@ -328,7 +328,8 @@ def popular_tickers(l_args):
                     if e.response.status_code != 404:
                         print(f"Unexpected exception from Finviz: {e}")
                 except Exception as e:
-                    print(e)
+                    print(e, "\n")
+                    return
 
             popular_tickers_df = pd.DataFrame(
                 popular_tickers,
@@ -470,8 +471,7 @@ def spac_community(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e)
-                    # pass
+                    print(e, "\n")
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
@@ -616,7 +616,7 @@ def spac(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e)
+                    print(e, "\n")
                     # pass
             if n_tickers:
                 print(
