@@ -487,7 +487,7 @@ def earnings(l_args, s_ticker):
         # Request EARNINGS data from Alpha Vantage API
         s_req = (
             "https://www.alphavantage.co/query?function=EARNINGS&"
-            f"symbol={s_ticker}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+            f"symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
         )
         result = requests.get(s_req, stream=True)
 
