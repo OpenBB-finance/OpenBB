@@ -6,10 +6,12 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory
 
+
 def inputhook(inputhook_context):
     while not inputhook_context.input_is_ready():
         pyplot.pause(0.1)
     return False
+
 
 history_file = os.path.join(os.path.expanduser("~"), ".gamestonk_terminal.his")
 
