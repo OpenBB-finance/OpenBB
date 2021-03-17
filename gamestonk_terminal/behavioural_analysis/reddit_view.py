@@ -17,6 +17,7 @@ from gamestonk_terminal.reddit_helpers import (
 
 
 def watchlist(l_args):
+    # other_args: List[str]
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="watchlist",

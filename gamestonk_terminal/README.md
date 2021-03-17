@@ -2,7 +2,7 @@
 
 ### Table of contents
 * [Discover Stocks](#Discover-Stocks-)
-* [Market Sentiment](#Market-Sentiment-)
+* [Behavioural Analysis](#Behavioural-Analysis-)
 * [Research Web pages](#Research-Web-pages)
 * [Fundamental Analysis](#Fundamental-Analysis-)
 * [Technical Analysis](#Technical-Analysis-)
@@ -66,7 +66,7 @@ Command|Description|Source
 
 &nbsp;
 
-## Market Sentiment [»](sentiment/README.md)
+## Behavioural Analysis [»](behavioural_analysis/README.md)
 Command|Description
 ----|----
 [Reddit](https://reddit.com)|

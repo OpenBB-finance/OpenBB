@@ -19,7 +19,7 @@ from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
-from gamestonk_terminal.sentiment import sen_menu as sm
+from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
 from gamestonk_terminal.fred import fred_menu as fm
@@ -65,7 +65,7 @@ def main():
         "export",
         "disc",
         "mill",
-        "sen",
+        "ba",
         "res",
         "fa",
         "ta",
@@ -162,8 +162,8 @@ def main():
         elif ns_known_args.opt == "mill":
             b_quit = mill.papermill_menu()
 
-        elif ns_known_args.opt == "sen":
-            b_quit = sm.sen_menu(s_ticker, s_start)
+        elif ns_known_args.opt == "ba":
+            b_quit = ba_controller.menu(s_ticker, s_start)
 
         elif ns_known_args.opt == "res":
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)

@@ -1,6 +1,6 @@
-# MARKET SENTIMENT
+# BEHAVIOURAL ANALYSIS
 
-This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, and the usage of the following commands along with an example will be exploited below.
+This menu aims to extrapolate behavioural analysis regarding a pre-loaded ticker, and the usage of the following commands along with an example will be exploited below.
 
 [REDDIT](#REDDIT)
   * [wsb](#wsb)
@@ -12,11 +12,11 @@ This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, 
   * [spac_c](#spac_c)
     - show other users spacs announcements from subreddit SPACs community
   * [spac](#spac)
-    - show other users spacs announcements from other subs      
+    - show other users spacs announcements from other subs
 
 [STOCKTWITS](#STOCKTWITS)
   * [bullbear](#bullbear)
-    - estimate quick sentiment from last 30 messages on board 
+    - estimate quick sentiment from last 30 messages on board
   * [messages](#messages)
     - output up to the 30 last messages on the board
   * [trending](#trending)
@@ -29,7 +29,7 @@ This menu aims to extrapolate market's sentiment regarding a pre-loaded ticker, 
     - infer about stock's sentiment from latest tweets
   * [sentiment](#sentiment)
     - in-depth sentiment prediction from tweets over time
-   
+
 [GOOGLE](#GOOGLE)
   * [mentions](#mentions)
     - interest over time based on stock's mentions
@@ -106,7 +106,7 @@ usage: bullbear [-t S_TICKER]
 ```
 Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
   * -t : ticker to gather sentiment from.
-                                     
+
 <img width="934" alt="sentiment" src="https://user-images.githubusercontent.com/25267873/108612307-42c46300-73df-11eb-9cec-253c8fb6d62f.png">
 
 
@@ -156,7 +156,7 @@ Print quick sentiment inference from last tweets that contain the ticker. This m
 ```
 usage: sentiment [-n N_NUM] [-d N_DAYS_PAST]
 ```
-Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled version of the powerful BERT transformer model. Note that a big num of tweets extracted per hour in conjunction with a high number of days in the past, will make the algorithm take a long period of time to estimate sentiment. Inspired by https://towardsdatascience.com/sentiment-analysis-for-stock-price-prediction-in-python-bed40c65d178. [Source: Twitter] 
+Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled version of the powerful BERT transformer model. Note that a big num of tweets extracted per hour in conjunction with a high number of days in the past, will make the algorithm take a long period of time to estimate sentiment. Inspired by https://towardsdatascience.com/sentiment-analysis-for-stock-price-prediction-in-python-bed40c65d178. [Source: Twitter]
   * -n : num of tweets to extract per hour. Default 100.
   * -d : num of days in the past to extract tweets. Default 7.
 
