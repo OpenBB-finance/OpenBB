@@ -56,7 +56,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
 
     if s_ticker:
         print(
-            "   ba          behavioural analysis, \t\t\t from: reddit, stocktwits, twitter"
+            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter"
         )
         print(
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
