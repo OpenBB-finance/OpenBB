@@ -131,7 +131,7 @@ def sentiment_analysis(other_args: List[str], ticker: str):
 
                     [Source: FinBrain Technologies develops deep learning algorithms for
                     financial analysis and prediction, which currently serves traders from
-                    more than 150 countries all around the world.]""",
+                    more than 150 countries all around the world. See https://finbrain.tech]""",
     )
 
     try:
