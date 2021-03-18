@@ -62,6 +62,8 @@ class BehaviouralAnalysisController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
+        print("   finbrain      sentiment from 15+ major news headlines")
+        print("")
         print("Reddit:")
         print(
             "   wsb           show what WSB gang is up to in subreddit wallstreetbets"
@@ -90,8 +92,6 @@ class BehaviouralAnalysisController:
         print("   regions       regions that show highest interest in stock")
         print("   queries       top related queries with this stock")
         print("   rise          top rising related queries with stock")
-        print("")
-        print("   finbrain      sentiment from 15+ major news headlines")
         print("")
 
     def switch(self, an_input: str):
