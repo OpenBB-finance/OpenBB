@@ -21,14 +21,14 @@ def print_port(show_login):
     if show_login:
         print("   login         login")
     print("   hold          look at current holdings")
-    print("   hist          look at historical portfolio")
+    print("   rhhist        look at historical portfolio")
     print(" ")
 
 
 def port_menu():
     plt.close("all")
     port_parser = argparse.ArgumentParser(prog="port", add_help=False)
-    choices = ["help", "q", "quit", "hold", "hist", "login", "logoff"]
+    choices = ["help", "q", "quit", "hold", "rhhist", "login", "logoff"]
     port_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
     should_print_help = True
@@ -81,7 +81,7 @@ def port_menu():
                 print(e)
                 print("")
 
-        elif ns_known_args.cmd == "hist":
+        elif ns_known_args.cmd == "rhhist":
             rh_api.plot_historical(l_args)
 
         elif ns_known_args.cmd == "login":

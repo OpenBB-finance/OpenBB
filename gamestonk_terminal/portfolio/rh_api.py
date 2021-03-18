@@ -110,15 +110,15 @@ def plot_historical(l_args):
                 "Invalid Span: Must be one of : day, week, month, 3month, year, 5year, all"
             )
 
-        hist = r.account.get_historical_portfolio(
+        rhhist = r.account.get_historical_portfolio(
             ns_parser.interval, span=ns_parser.span
         )
-        hist_eq = hist["equity_historicals"]
+        rhhist_eq = rhhist["equity_historicals"]
         open_eq = []
         close_eq = []
         time = []
 
-        for h in hist_eq:
+        for h in rhhist_eq:
             time.append(
                 dt.strptime(h["begins_at"], dt_format) - datetime.timedelta(hours=4)
             )
