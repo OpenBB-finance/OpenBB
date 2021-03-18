@@ -49,6 +49,10 @@ usage: finbrain
 ```
 FinBrain collects the news headlines from 15+ major financial news sources on a daily basis and analyzes them to generate sentiment scores for more than 4500 US stocks. FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world. [Source: See https://finbrain.tech]
 
+![finbrain](https://user-images.githubusercontent.com/25267873/111560461-6f735c80-878a-11eb-8f3a-72ef0ddbf8e3.png)
+
+<img width="992" alt="Captura de ecrã 2021-03-18, às 01 33 35" src="https://user-images.githubusercontent.com/25267873/111560455-6edac600-878a-11eb-9e1f-599abe3b8263.png">
+
 
 # REDDIT <a name="REDDIT"></a>
 
