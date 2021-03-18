@@ -82,7 +82,7 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str):
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     start_date = sentiment.index[0].strftime("%Y/%m/%d")
-    plt.title(f"FinBrain's Sentiment Analysis For {ticker} since {start_date}")
+    plt.title(f"FinBrain's Sentiment Analysis for {ticker.upper()} since {start_date}")
     plt.ylim([-1.1, 1.1])
     senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
     senNone = np.array(0 * len(sentiment))
@@ -124,11 +124,10 @@ def sentiment_analysis(other_args: List[str], ticker: str):
         prog="finbrain",
         description="""FinBrain collects the news headlines from 15+ major financial news
                     sources on a daily basis and analyzes them to generate sentiment scores
-                    for more than 4500 US stocks.
-
-                    [Source: FinBrain Technologies develops deep learning algorithms for
-                    financial analysis and prediction, which currently serves traders from
-                    more than 150 countries all around the world. See https://finbrain.tech]""",
+                    for more than 4500 US stocks.FinBrain Technologies develops deep learning
+                    algorithms for financial analysis and prediction, which currently serves
+                    traders from more than 150 countries all around the world.
+                    [Source:  https://finbrain.tech]""",
     )
 
     try:
@@ -140,6 +139,8 @@ def sentiment_analysis(other_args: List[str], ticker: str):
 
         if not df_sentiment.empty:
             plot_sentiment(df_sentiment, ticker)
+
+        df_sentiment.sort_index(ascending=True, inplace=True)
 
         if gtff.USE_COLOR:
             print(
