@@ -2,18 +2,15 @@
 __docformat__ = "numpy"
 
 import argparse
-import warnings
-import requests
-import pandas as pd
-from matplotlib import pyplot as plt
-from pandas.plotting import register_matplotlib_converters
-from datetime import datetime
-import numpy as np
 from typing import List
+import requests
+from matplotlib import pyplot as plt
+import pandas as pd
+from pandas.plotting import register_matplotlib_converters
+import numpy as np
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
-    patch_pandas_text_adjustment,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
