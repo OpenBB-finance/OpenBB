@@ -85,6 +85,7 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str):
     start_date = sentiment.index[-1].strftime("%Y/%m/%d")
     plt.title(f"FinBrain's Sentiment Analysis for {ticker.upper()} since {start_date}")
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=1))
     plt.gcf().autofmt_xdate()
     plt.ylim([-1.1, 1.1])
     senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
