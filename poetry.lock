@@ -477,6 +477,17 @@ optional = true
 python-versions = "*"
 
 [[package]]
+name = "fredapi"
+version = "0.4.3"
+description = "Python API for Federal Reserve Economic Data (FRED) from St. Louis Fed"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pandas = "*"
+
+[[package]]
 name = "ftfy"
 version = "5.9"
 description = "Fixes some problems with Unicode text after the fact"
@@ -2506,7 +2517,8 @@ prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "t
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "c4a363cd8824c8ccab409ccfc74956db82f9cf9800cd46539b14c7ea927f36de"
+content-hash = "184502c6b8d4b7db5baa4323e7f70b2585c6140c304583f0678e24681b8f9c9b"
+
 
 [metadata.files]
 absl-py = [
@@ -2809,6 +2821,10 @@ flair = [
 flatbuffers = [
     {file = "flatbuffers-1.12-py2.py3-none-any.whl", hash = "sha256:9e9ef47fa92625c4721036e7c4124182668dc6021d9e7c73704edd395648deb9"},
     {file = "flatbuffers-1.12.tar.gz", hash = "sha256:63bb9a722d5e373701913e226135b28a6f6ac200d5cc7b4d919fa38d73b44610"},
+]
+fredapi = [
+    {file = "fredapi-0.4.3-py3-none-any.whl", hash = "sha256:e06075592eabddadfe0635f3c59e9072c9f48647430328b4582171ea10f7df2f"},
+    {file = "fredapi-0.4.3.tar.gz", hash = "sha256:d9b3194fb60541991bd33f019c710d4a9580ecfb5e47efbf2d2571888a2aac02"},
 ]
 ftfy = [
     {file = "ftfy-5.9.tar.gz", hash = "sha256:8c4fb2863c0b82eae2ab3cf353d9ade268dfbde863d322f78d6a9fd5cefb31e9"},

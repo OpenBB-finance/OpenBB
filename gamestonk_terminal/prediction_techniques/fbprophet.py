@@ -11,12 +11,14 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     valid_date,
     patch_pandas_text_adjustment,
+    plot_autoscale,
 )
 from gamestonk_terminal.prediction_techniques.pred_helper import (
     price_prediction_backtesting_color,
     print_prediction_kpis,
 )
 
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -114,7 +116,7 @@ def fbprophet(l_args, s_ticker, df_stock):
         ]  # .apply(lambda x: f"{x:.2f} $")
         df_pred.index = l_pred_days
 
-        _, ax = plt.subplots()
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         model.plot(
             forecast[: -ns_parser.n_days],
             ax=ax,
@@ -177,7 +179,7 @@ def fbprophet(l_args, s_ticker, df_stock):
 
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.figure()
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.subplot(211)
             plt.plot(
                 df_future.index,

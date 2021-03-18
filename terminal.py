@@ -19,9 +19,11 @@ from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
-from gamestonk_terminal.sentiment import sen_menu as sm
+from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
+from gamestonk_terminal.options import op_menu as opm
+from gamestonk_terminal.fred import fred_menu as fm
 
 # import warnings
 # warnings.simplefilter("always")
@@ -64,13 +66,15 @@ def main():
         "export",
         "disc",
         "mill",
-        "sen",
+        "ba",
         "res",
         "fa",
         "ta",
         "dd",
         "pred",
         "ca",
+        "op",
+        "fred",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -160,8 +164,8 @@ def main():
         elif ns_known_args.opt == "mill":
             b_quit = mill.papermill_menu()
 
-        elif ns_known_args.opt == "sen":
-            b_quit = sm.sen_menu(s_ticker, s_start)
+        elif ns_known_args.opt == "ba":
+            b_quit = ba_controller.menu(s_ticker, s_start)
 
         elif ns_known_args.opt == "res":
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)
@@ -177,6 +181,12 @@ def main():
 
         elif ns_known_args.opt == "dd":
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "op":
+            b_quit = opm.opt_menu(s_ticker)
+
+        elif ns_known_args.opt == "fred":
+            b_quit = fm.fred_menu()
 
         elif ns_known_args.opt == "pred":
 
@@ -224,7 +234,6 @@ def main():
                 except Exception as e:
                     print(e)
                     print("Either the ticker or the API_KEY are invalids. Try again!")
-                    b_quit = False
                     return
 
         else:
