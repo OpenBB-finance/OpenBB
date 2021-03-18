@@ -43,21 +43,17 @@ def logoff():
 
 def show_holdings():
 
-    r.login(user, pw)
-
     holds = r.account.build_holdings()
     stocks = []
-    quant = []
     equity = []
     for stock, data in holds.items():
         stocks.append(stock)
-        quant.append(float(data["quantity"]))
         equity.append(round(float(data["equity"]), 2))
 
     print("")
     print("Stonk\t last price \t prev close \t equity \t % Change")
     print("")
-    for stonk, n, eq in zip(stocks, quant, equity):
+    for stonk, eq in zip(stocks, equity):
         stonk_data = r.stocks.get_quotes(stonk)[0]
         prev_close = round(float(stonk_data["adjusted_previous_close"]), 2)
         last_price = round(float(stonk_data["last_trade_price"]), 2)
@@ -105,13 +101,13 @@ def plot_historical(l_args):
         if not ns_parser:
             return
 
-        if ns_parser.span not in valid_span:
-            raise ValueError(
-                "Invalid Span: Must be one of: '5minute','10minute','hour','day',or 'week'"
-            )
         if ns_parser.interval not in valid_interval:
             raise ValueError(
-                "Invalid Interval: Must be one of : 'day','week','month','3month','year', '5year' or 'all'"
+                "Invalid Interval: Must be one of: 5minute, 10minute, hour, day, week"
+            )
+        if ns_parser.span not in valid_span:
+            raise ValueError(
+                "Invalid Span: Must be one of : day, week, month, 3month, year, 5year, all"
             )
 
         hist = r.account.get_historical_portfolio(

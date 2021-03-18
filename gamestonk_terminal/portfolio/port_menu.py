@@ -7,8 +7,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio import rh_api
 
 
-
-
 def print_port(show_login):
 
     """ Print help """
@@ -18,16 +16,16 @@ def print_port(show_login):
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print(" ")
+    print("Robinhood:")
+    print("")
     if show_login:
         print("   login         login")
-        print(" ")
     print("   hold          look at current holdings")
     print("   hist          look at historical portfolio")
     print(" ")
 
 
-
-def rh_port_menu():
+def port_menu():
     plt.close("all")
     port_parser = argparse.ArgumentParser(prog="port", add_help=False)
     choices = ["help", "q", "quit", "hold", "hist", "login", "logoff"]
@@ -60,11 +58,19 @@ def rh_port_menu():
 
         elif ns_known_args.cmd == "q":
             # Leave the port menu + logout of robinhood
-            rh_api.logoff()
+            # logoff raises error if not logged in
+            try:
+                rh_api.logoff()
+            except Exception:
+                pass
             return False
 
         elif ns_known_args.cmd == "quit":
-            rh_api.logoff()
+            # Will raise exception if not logged in
+            try:
+                rh_api.logoff()
+            except Exception:
+                pass
             # Abandon the program
             return True
 
