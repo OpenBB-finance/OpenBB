@@ -5,6 +5,7 @@ import argparse
 from typing import List
 import requests
 from matplotlib import pyplot as plt
+import matplotlib.dates as mdates
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import numpy as np
@@ -81,8 +82,10 @@ def plot_sentiment(sentiment: pd.DataFrame, ticker: str):
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    start_date = sentiment.index[0].strftime("%Y/%m/%d")
+    start_date = sentiment.index[-1].strftime("%Y/%m/%d")
     plt.title(f"FinBrain's Sentiment Analysis for {ticker.upper()} since {start_date}")
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+    plt.gcf().autofmt_xdate()
     plt.ylim([-1.1, 1.1])
     senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
     senNone = np.array(0 * len(sentiment))
