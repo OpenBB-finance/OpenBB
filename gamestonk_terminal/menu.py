@@ -19,5 +19,7 @@ try:
     session = PromptSession(history=FileHistory(history_file))
     set_eventloop_with_inputhook(inputhook)
 except Exception as e:  # noqa: F841
-    print("WARNING: Prompt toolkit is turned on but did not initialize succesfully. Falling back to input()...")
+    print(
+        "WARNING: Prompt toolkit is turned on but did not initialize succesfully. Falling back to input()..."
+    )
     session = None
