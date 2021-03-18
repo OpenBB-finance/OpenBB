@@ -51,13 +51,13 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     )
     print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print(
-        "   sen         sentiment of the market, \t from: reddit, stocktwits, twitter"
-    )
-    print(
         "   fred        economic data, \t\t\t from: Federal Reserve Bank of St. Louis "
     )
 
     if s_ticker:
+        print(
+            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter"
+        )
         print(
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
         )
