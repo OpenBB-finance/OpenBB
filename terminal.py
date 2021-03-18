@@ -74,7 +74,7 @@ def main():
         "pred",
         "ca",
         "fred",
-        "port"
+        "port",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -185,7 +185,7 @@ def main():
         elif ns_known_args.opt == "fred":
             b_quit = fm.fred_menu()
 
-        elif ns_known_args.opt == 'port':
+        elif ns_known_args.opt == "port":
             b_quit = port_menu.port_menu()
 
         elif ns_known_args.opt == "pred":
