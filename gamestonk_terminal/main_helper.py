@@ -76,7 +76,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print(
             "   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
         )
-        print("   op          options info,            \t e.g.: volume")
+        print("   op          options info,            \t e.g.: volume, oi")
     print("")
 
 

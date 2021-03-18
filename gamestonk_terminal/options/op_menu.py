@@ -15,10 +15,14 @@ def opt_menu(s_ticker):
     opt_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
-    # print_options(s_ticker, s_start, s_interval)
+    # print_options(s_ticker)
+    should_print_help = True
 
     # Loop forever and ever
     while True:
+        if should_print_help:
+            print_options(s_ticker)
+            should_print_help = False
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(
@@ -37,8 +41,7 @@ def opt_menu(s_ticker):
             continue
 
         if ns_known_args.cmd == "help":
-            pass
-            # print_options(s_ticker)
+            should_print_help = True
 
         elif ns_known_args.cmd == "q":
             # Just leave the options menu
@@ -57,3 +60,21 @@ def opt_menu(s_ticker):
             vol.open_interest_graph(l_args, s_ticker)
         else:
             print("Command not recognized!")
+
+
+def print_options(s_ticker):
+    """ Print help """
+
+    print(f"\nOptions analytics for {s_ticker}:")
+    print("   help          show this options menu again")
+    print("   q             quit this menu, and shows back to main menu")
+    print("   quit          quit to abandon program")
+    print("")
+    print(
+        "   volume -e     show traded volume for expiry date. Usage : volume -e yyyy-mm-dd [Yahoo finance]"
+    )
+    print(
+        "   oi -e         show open interest for expiry date. Usage : oi -e yyyy-mm-dd [Yahoo finance]"
+    )
+    print("")
+    return
