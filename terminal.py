@@ -16,7 +16,15 @@ from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
-from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle, snapshot
+from gamestonk_terminal.main_helper import (
+    clear,
+    export,
+    load,
+    print_help,
+    view,
+    candle,
+    snapshot,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
