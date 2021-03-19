@@ -490,7 +490,7 @@ def snapshot(l_args, s_ticker):
         print(f"Supported image formats: {supported_image_formats}")
         return
     if not s_ticker:
-        print(f"You must LOAD a ticker symbol and plot a graph first")
+        print("You must LOAD a ticker symbol and plot a graph first")
         return
     plt.savefig(
         f"{ns_parser.fname}.{ns_parser.image_format}", format=ns_parser.image_format
