@@ -157,7 +157,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         return [s_ticker, s_start, s_interval, df_stock]
 
     # Update values:
-    s_ticker = ns_parser.s_ticker
+    s_ticker = ns_parser.s_ticker.upper()
     s_start = ns_parser.s_start_date
     s_interval = str(ns_parser.n_interval) + "min"
 
