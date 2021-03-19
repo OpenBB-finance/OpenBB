@@ -28,3 +28,7 @@ API_TWITTER_BEARER_TOKEN = os.getenv("GT_API_TWITTER_BEARER_TOKEN") or "REPLACE_
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
 API_FRED_KEY = os.getenv("GT_FRED_API_KEY") or "REPLACE_ME"
+
+# Robinhood
+RH_USERNAME = os.getenv("GT_RH_USERNAME") or "REPLACE_ME"
+RH_PASSWORD = os.getenv("GT_RH_PASSWORD") or "REPLACE_ME"

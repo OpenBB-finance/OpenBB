@@ -40,6 +40,9 @@ seaborn = "^0.11.0"
 scipy = "1.5.4"
 fredapi = "^0.4.3"
 screeninfo = "^0.6.7"
+robin-stocks = "^2.0.3"
+termcolor = "^1.1.0"
+alpaca-trade-api = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
