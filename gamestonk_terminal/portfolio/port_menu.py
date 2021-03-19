@@ -1,4 +1,5 @@
 import argparse
+import time
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -26,7 +27,7 @@ def print_port(show_login):
 def port_menu():
     plt.close("all")
     port_parser = argparse.ArgumentParser(prog="port", add_help=False)
-    choices = ["help", "q", "quit", "hold", "rhhist", "login", "logoff"]
+    choices = ["help", "q", "quit", "hold", "rhhist", "login"]
     port_parser.add_argument("cmd", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
     should_print_help = True
@@ -83,9 +84,16 @@ def port_menu():
             rh_api.plot_historical(l_args)
 
         elif ns_known_args.cmd == "login":
-            rh_api.login()
+            try:
+                rh_api.login()
+            except Exception as e:
+                print(e)
+                print("Incorrect Login")
+                print("")
+                time.sleep(2)
             should_print_help = True
             print_login = False
 
         else:
             print("Command not recognized")
+            print("")
