@@ -131,9 +131,13 @@
 ## Portfolio Analysis
 
 ### Short term
+* [ ] Add Brokers (td, alpaca, webull)
+* [ ] Merge data from different brokers
+* [ ] Refactor
 
 ### Long term
-
+* [ ] Summaries / tear sheets
+* [ ] Portfolio Optimization
 ---
 
 ## Credit Analysis

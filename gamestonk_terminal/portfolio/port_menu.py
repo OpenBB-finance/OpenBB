@@ -1,5 +1,4 @@
 import argparse
-import time
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -86,13 +85,15 @@ def port_menu():
         elif ns_known_args.cmd == "login":
             try:
                 rh_api.login()
+                should_print_help = True
+                print_login = False
             except Exception as e:
-                print(e)
-                print("Incorrect Login")
                 print("")
-                time.sleep(2)
-            should_print_help = True
-            print_login = False
+                print(e)
+                print("Make sure credentials are defined in config_terminal.py ")
+                print("")
+                should_print_help = False
+                print_login = True
 
         else:
             print("Command not recognized")
