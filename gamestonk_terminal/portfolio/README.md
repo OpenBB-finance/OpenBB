@@ -9,7 +9,7 @@ login
 ````
 Which will use your  login information, which should be stored as environment variables in [config file](/gamestonk_terminal/config_terminal.py)
 
-Robinhood has Two Factor Autentication, so you will likely be prompted to enter a code that is texted/emailed to you.
+Robinhood has Two Factor Authentication, so you will likely be prompted to enter a code that is texted/emailed to you.
 ###NOTE THAT LOGGING IN WILL SAVE A TOKEN TO `os.path.expanduser("~")/.tokens` WHICH CAN BE USED TO LOGIN EVEN IF USER CREDENTIALS ARE INCORRECT.
 
 [ROBINHOOD](#ROBINHOOD)
