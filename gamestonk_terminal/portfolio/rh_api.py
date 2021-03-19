@@ -69,9 +69,13 @@ def show_holdings():
 
 
 def plot_historical(l_args):
-    parser = argparse.ArgumentParser(add_help=False,prog="Port", description="""
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="Port",
+        description="""
                             Historical Portfolio Info
-                        """)
+                        """,
+    )
 
     parser.add_argument(
         "-s",

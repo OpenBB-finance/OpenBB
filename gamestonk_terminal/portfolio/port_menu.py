@@ -6,6 +6,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio import rh_api
 
+
 def print_port(show_login):
     """ Print help """
     print("\nPortfolio:")
