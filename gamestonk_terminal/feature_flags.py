@@ -1,8 +1,9 @@
 import os
+from typing import Optional
 
 
-def convert_to_bool(ins: str) -> bool:
-    return True if ins == "True" else False
+def convert_to_bool(ins: Optional[str]) -> bool:
+    return bool(str(ins) == "True")
 
 
 USE_COLOR = (
