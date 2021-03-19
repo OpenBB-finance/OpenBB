@@ -16,7 +16,7 @@ from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
-from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
+from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle, snapshot
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
@@ -75,6 +75,7 @@ def main():
         "ca",
         "op",
         "fred",
+        "snapshot",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -156,6 +157,10 @@ def main():
 
         elif ns_known_args.opt == "export":
             export(l_args, df_stock)
+            main_cmd = True
+
+        elif ns_known_args.opt == "snapshot":
+            snapshot(l_args, s_ticker)
             main_cmd = True
 
         elif ns_known_args.opt == "disc":

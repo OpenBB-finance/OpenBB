@@ -1,5 +1,6 @@
 import argparse
 from sys import stdout
+from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
@@ -32,9 +33,8 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   candle      view a candle chart for a specific stock ticker")
     print("   view        view and load a specific stock ticker for technical analysis")
     if s_ticker:
-        print(
-            "   export      export the currently loaded dataframe to a file or stdout"
-        )
+        print("   export      export the current dataframe to a file or stdout")
+        print("   snapshot    save a snapshot of the current plot to an image file")
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
     if s_ticker and s_start:
@@ -452,3 +452,45 @@ def export(l_args, df_stock):
         df_stock.to_clipboard()
 
     print("")
+
+
+def snapshot(l_args, s_ticker):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="snapshot",
+        description="Saves an image of the current figure to a file.",
+    )
+    parser.add_argument(
+        "-F",
+        "--format",
+        dest="image_format",
+        default="svg",
+        type=str,
+        help="Save image as one of the following formats: svg, png, pdf",
+    )
+    parser.add_argument(
+        "-f",
+        "--filename",
+        type=str,
+        dest="fname",
+        default=f"{s_ticker}_{str(datetime.now()).replace(' ', '_')}",
+        help="Path to save to ([TICKER][TIMESTAMP].[FORMAT] if unspecified)",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
+    except SystemExit:
+        print("")
+        return
+
+    supported_image_formats = ["svg", "pdf", "png"]
+    if ns_parser.image_format not in supported_image_formats:
+        print(f"Unsupported format {ns_parser.image_format} passed to -F")
+        print(f"Supported image formats: {supported_image_formats}")
+        return
+    if not s_ticker:
+        print(f"You must LOAD a ticker symbol and plot a graph first")
+        return
+    plt.savefig(f"{ns_parser.fname}.{ns_parser.image_format}", format=ns_parser.image_format)
+    print(f"Saved {ns_parser.fname}.{ns_parser.image_format}")
