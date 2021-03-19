@@ -278,6 +278,7 @@ def candle(s_ticker: str, s_start: str):
             candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
         ),
     )
+    print("")
 
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
