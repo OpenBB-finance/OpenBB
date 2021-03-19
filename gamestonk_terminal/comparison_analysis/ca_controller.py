@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
+from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
@@ -27,6 +28,7 @@ class ComparisonAnalysisController:
         "select",
         "historical",
         "corr",
+        "income",
     ]
 
     def __init__(
@@ -76,6 +78,8 @@ class ComparisonAnalysisController:
         if self.similar:
             print("   historical    historical data comparison")
             print("   corr          correlation between similar companies")
+            print("")
+            print("   income        income financials comparison")
             print("")
         return
 
@@ -192,6 +196,10 @@ class ComparisonAnalysisController:
         yf_api.correlation(
             other_args, self.stock, self.ticker, self.start, self.interval, self.similar
         )
+
+    def call_income(self, other_args: List[str]):
+        """Process income command"""
+        mw_api.compare_income(other_args, self.ticker, self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
