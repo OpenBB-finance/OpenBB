@@ -131,7 +131,7 @@
 ## Portfolio Analysis
 
 ### Short term
-* [ ] Add Brokers (td, alpaca, webull)
+* [ ] Add Brokers (td, alpaca, webull, etc)
 * [ ] Merge data from different brokers
 * [ ] Refactor
 
