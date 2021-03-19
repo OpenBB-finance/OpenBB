@@ -6,11 +6,8 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio import rh_api
 
-
 def print_port(show_login):
-
     """ Print help """
-
     print("\nPortfolio:")
     print("   help          show this menu again")
     print("   q             quit this menu, and shows back to main menu")
@@ -88,3 +85,6 @@ def port_menu():
             rh_api.login()
             should_print_help = True
             print_login = False
+
+        else:
+            print("Command not recognized")

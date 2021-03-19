@@ -1,20 +1,23 @@
-#PORTFOLIO
+# PORTFOLIO
 
-This was developed to interface with Robinhood.  
+This page shows the available brokers for loading in data.  If yours is not listed, please submit a new issue and we will look at adding it.
+
 
 Once this screen is accessed, the first command to be run is 
 ````
 login
 ````
-Which will use your robinhood login information, which should be stored as environment variables or in the config_terminal.py
+Which will use your  login information, which should be stored as environment variables in [config file](/gamestonk_terminal/config_terminal.py)
 
-Currently there are 2 options:
+[ROBINHOOD](#ROBINHOOD)
 * [hold](#hold)
     * Look at current (stock only) holdings
 * [rhhist](#rhhist)
-    * Get and plot rhhistorical portfolio
+    * Get and plot historical portfolio
 
-## hold <a name="hold"></a>
+## ROBINHOOD <a name="ROBINHOOD"></a>
+
+### hold <a name="hold"></a>
 
 Displays current holdings to the console:
 
@@ -25,8 +28,10 @@ There are no additional flags.  This just prints all current stonks, their last 
 the % change from previous close.
 
 Example:
+
 ![hold](https://user-images.githubusercontent.com/18151143/111685384-3c6ab080-87fe-11eb-80ce-9b256c396bf2.png)
-## rhhist <a name="rhhist"></a>
+
+### rhhist <a name="rhhist"></a>
 Display your RH portfolio based on provided interval and span.  Based on the API data availablility, plotted as a candlestick chart.
 ````
 usage: rhhist [-s --span] [-i --interval]
@@ -37,4 +42,5 @@ usage: rhhist [-s --span] [-i --interval]
     * [5minute, 10minute, hour, day, week]
     
 Example Default Output:
-![rhhist](https://user-images.githubusercontent.com/18151143/111685390-3d9bdd80-87fe-11eb-90f9-7ca8b0c1e7f8.png)
+
+![rhhist](https://user-images.githubusercontent.com/18151143/111718919-36da8e00-8831-11eb-99e1-957c8eccb583.png)

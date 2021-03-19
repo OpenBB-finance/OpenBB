@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 import numpy as np
 
-import robin_stocks.robinhood as r
+from robin_stocks import robinhood
 from termcolor import colored
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -34,16 +34,16 @@ span_title_dict = {
 
 
 def login():
-    r.login(user, pw)
+    robinhood.login(user, pw)
 
 
 def logoff():
-    r.logout()
+    robinhood.logout()
 
 
 def show_holdings():
 
-    holds = r.account.build_holdings()
+    holds = robinhood.account.build_holdings()
     stocks = []
     equity = []
     for stock, data in holds.items():
@@ -54,7 +54,7 @@ def show_holdings():
     print("Stonk\t last price \t prev close \t equity \t % Change")
     print("")
     for stonk, eq in zip(stocks, equity):
-        stonk_data = r.stocks.get_quotes(stonk)[0]
+        stonk_data = robinhood.stocks.get_quotes(stonk)[0]
         prev_close = round(float(stonk_data["adjusted_previous_close"]), 2)
         last_price = round(float(stonk_data["last_trade_price"]), 2)
         pct_change = round((last_price - prev_close) / prev_close, 3)
@@ -69,13 +69,9 @@ def show_holdings():
 
 
 def plot_historical(l_args):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="Port",
-        description="""
+    parser = argparse.ArgumentParser(add_help=False,prog="Port", description="""
                             Historical Portfolio Info
-                        """,
-    )
+                        """)
 
     parser.add_argument(
         "-s",
@@ -110,7 +106,7 @@ def plot_historical(l_args):
                 "Invalid Span: Must be one of : day, week, month, 3month, year, 5year, all"
             )
 
-        rhhist = r.account.get_historical_portfolio(
+        rhhist = robinhood.account.get_historical_portfolio(
             ns_parser.interval, span=ns_parser.span
         )
         rhhist_eq = rhhist["equity_historicals"]
