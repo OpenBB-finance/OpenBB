@@ -12,7 +12,7 @@ USE_COLOR = (
     else convert_to_bool(os.getenv("GTFF_USE_COLOR"))
 )
 USE_FLAIR = (
-    "stars" if os.getenv("GTFF_USE_FLAIR") is None else os.getenv("GTFF_USE_FLAIR")
+    "stars" if os.getenv("GTFF_USE_FLAIR") is None else str(os.getenv("GTFF_USE_FLAIR"))
 )
 USE_ION = (
     True
