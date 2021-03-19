@@ -108,9 +108,10 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
             plt.show()
         print("")
 
+    except SystemExit:
+        print("Similar companies need to be provided", "\n")
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
@@ -209,6 +210,7 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
         print("")
 
+    except SystemExit:
+        print("Similar companies need to be provided", "\n")
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
