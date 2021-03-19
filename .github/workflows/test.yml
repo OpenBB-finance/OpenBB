@@ -1,4 +1,7 @@
 name: Tests
+env:
+    GTFF_USE_PROMPT_TOOLKIT: false
+    GTFF_USE_ION: false
 on: [pull_request, push]
 jobs:
   linting:
