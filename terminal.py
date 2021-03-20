@@ -11,6 +11,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.due_diligence import dd_menu as ddm
@@ -24,6 +25,7 @@ from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
 from gamestonk_terminal.options import op_menu as opm
 from gamestonk_terminal.fred import fred_menu as fm
+from gamestonk_terminal.portfolio import port_menu
 
 # import warnings
 # warnings.simplefilter("always")
@@ -75,6 +77,7 @@ def main():
         "ca",
         "op",
         "fred",
+        "port",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -83,6 +86,13 @@ def main():
     print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
     parsed_stdin = False
+
+    print("-------------------")
+    try:
+        thought.get_thought_of_the_day()
+    except Exception as e:
+        print(e)
+    print("")
 
     # Loop forever and ever
     while True:
@@ -192,6 +202,9 @@ def main():
 
         elif ns_known_args.opt == "fred":
             b_quit = fm.fred_menu()
+
+        elif ns_known_args.opt == "port":
+            b_quit = port_menu.port_menu()
 
         elif ns_known_args.opt == "pred":
 
