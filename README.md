@@ -132,6 +132,21 @@ This is a library for package management, and ensures a smoother experience than
 python terminal.py
 ```
 
+### Advanced User Install - Python 3.8
+
+*Note that the `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
+
+```
+conda create -n gst python=3.8.8
+conda activate gst
+conda install poetry
+conda deactivate
+conda activate gst
+poetry install
+conda install -c conda-forge fbprophet numpy=1.19.5 hdf5=1.10.5
+poetry install -E prediction
+```
+
 ### Advanced User Install - Machine Learning
 
 If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can pick from to download project dependencies.
@@ -145,8 +160,15 @@ Note: The libraries specified in the [requirements.txt](/requirements.txt) file 
 ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 
-* Install optional ML features dependencies collection with poetry:
+* Install optional ML features dependencies:
 ```
+poetry install -E prediction
+```
+*If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:*
+
+```
+conda install -c conda-forge fbprophet numpy=1.19.5 hdf5=1.10.5
+poetry install
 poetry install -E prediction
 ```
 
@@ -157,10 +179,40 @@ poetry install -E prediction
 
 Note: The problem with docker is that it won't output matplotlib figures.
 
-*Commands that may help you in case of an error:*
-* `conda install -c conda-forge fbprophet -y`
+*Commands that may help you in case of an error:
+
 * `python -m pip install --upgrade pip`
 * `pip install pystan --upgrade`
+* `poetry update --lock`
+
+### Other issues
+
+If you run into trouble with poetry and the advice above did not help, your best bet is to try
+
+1. `poetry update --lock`
+
+2. `conda deactivate` -> `conda activate gst`, then try again
+
+3. Delete the poetry cache, then try again
+
+   | Platform | Location                        |
+   | -------- | ------------------------------- |
+   | Linux    | "~/.cache/pypoetry"             |
+   | Mac      | "~/Library/Caches/pypoetry"     |
+   | Windows  | "%localappdata%/pypoetry/cache" |
+
+4. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
+
+   | Platform  | Location                                     |
+   | --------- | -------------------------------------------- |
+   | Linux/Mac | "~/anaconda3/envs" or "~/opt/anaconda3/envs" |
+   | Windows   | "%userprofile%/anaconda3/envs"               |
+
+5. Completely nuke your conda environment folder and make a new environment from scratch
+
+6. Reboot your computer and try again
+
+7. Submit a ticket on github
 
 ### API Keys
 

@@ -85,6 +85,7 @@ def main():
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
+    parsed_stdin = False
 
     print("-------------------")
     try:
@@ -100,8 +101,12 @@ def main():
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
 
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        # Get input command from stdin or user
+        if not parsed_stdin and len(sys.argv) > 1:
+            as_input = " ".join(sys.argv[1:])
+            parsed_stdin = True
+            print(f"{get_flair()}> {as_input}")
+        elif session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(f"{get_flair()}> ", completer=completer)
         else:
             as_input = input(f"{get_flair()}> ")
