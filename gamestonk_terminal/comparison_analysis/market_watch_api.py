@@ -2,10 +2,10 @@
 __docformat__ = "numpy"
 
 import argparse
+from typing import List, Dict, Tuple
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-from typing import List, Dict, Tuple
 from gamestonk_terminal.helper_funcs import (
     get_user_agent,
     parse_known_args_and_warn,
