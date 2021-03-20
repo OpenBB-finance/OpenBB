@@ -39,15 +39,15 @@ def compare_income(other_args: List[str], ticker: str, similar: List[str]):
         "-s",
         "--similar",
         dest="l_similar",
-        type=lambda s: [str(item) for item in s.split(",")],
-        default=[],
+        type=lambda s: [str(item).upper() for item in s.split(",")],
+        default=similar,
         help="similar companies to compare with.",
     )
     parser.add_argument(
         "-a",
         "--also",
         dest="l_also",
-        type=lambda s: [str(item) for item in s.split(",")],
+        type=lambda s: [str(item).upper() for item in s.split(",")],
         default=[],
         help="apart from loaded similar companies also compare with.",
     )
@@ -73,29 +73,31 @@ def compare_income(other_args: List[str], ticker: str, similar: List[str]):
         if not ns_parser:
             return
 
-        if ns_parser.l_similar:
-            similar = ns_parser.l_similar
-
-        similar += ns_parser.l_also
+        l_similar = ns_parser.l_similar
+        l_similar += ns_parser.l_also
 
         # Add main ticker to similar list of companies
-        similar.insert(0, ticker)
+        l_similar.insert(0, ticker)
 
         l_timeframes, ddf_financials = prepare_comparison_financials(
-            similar, "income", ns_parser.b_quarter
+            l_similar, "income", ns_parser.b_quarter
         )
 
         if ns_parser.s_timeframe:
             if ns_parser.s_timeframe not in l_timeframes:
                 raise ValueError(
-                    f"Timeframe {ns_parser.s_timeframe} should be one of {l_timeframes}"
+                    f"Timeframe selected should be one of {', '.join(l_timeframes)}"
                 )
             s_timeframe = ns_parser.s_timeframe
         else:
             s_timeframe = l_timeframes[-1]
 
+        print(
+            f"Other available {('yearly', 'quarterly')[ns_parser.b_quarter]} timeframes are: {', '.join(l_timeframes)}\n"
+        )
+
         df_financials_compared = combine_similar_financials(
-            ddf_financials, similar, s_timeframe
+            ddf_financials, l_similar, s_timeframe, ns_parser.b_quarter
         )
 
         if gtff.USE_COLOR:
@@ -107,147 +109,224 @@ def compare_income(other_args: List[str], ticker: str, similar: List[str]):
             pd.set_option("display.max_colwidth", None)
             pd.set_option("display.max_rows", None)
 
-        df_financials_compared.index.name = s_timeframe
+        if not ns_parser.b_quarter:
+            df_financials_compared.index.name = s_timeframe
+
         print(df_financials_compared.to_string())
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
 
 
-def balance(l_args, s_ticker):
+def compare_balance(other_args: List[str], ticker: str, similar: List[str]):
+    """Compare balance between companies
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker : str
+        Main ticker to compare income
+    similar : List[str]
+        Similar companies to compare income with
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="balance",
+        prog="compare_balance",
         description="""
-            Prints either yearly or quarterly assets from balance sheet of the company.
-            The following fields are expected: Cash & Short Term Investments, Cash & Short Term
-            Investments Growth, Cash Only, Short-Term Investments, Cash & ST Investments / Total
-            Assets, Total Accounts Receivable, Total Accounts Receivable Growth, Accounts
-            Receivables, Net, Accounts Receivables, Gross, Bad Debt/Doubtful Accounts, Other
-            Receivable, Accounts Receivable Turnover, Inventories, Finished Goods, Work in
-            Progress, Raw Materials, Progress Payments & Other, Other Current Assets,
-            Miscellaneous Current Assets, Net Property, Plant & Equipment, Property, Plant &
-            Equipment - Gross, Buildings, Land & Improvements, Computer Software and Equipment,
-            Other Property, Plant & Equipment, Accumulated Depreciation, Total Investments and
-            Advances, Other Long-Term Investments, Long-Term Note Receivables, Intangible Assets,
-            Net Goodwill, Net Other Intangibles, Other Assets.
-
-            Prints either yearly or quarterly liabilities and shareholders' equity from balance
-            sheet of the company. The following fields are expected: ST Debt & Current Portion LT
-            Debt, Short Term Debt, Current Portion of Long Term Debt, Accounts Payable, Accounts
-            Payable Growth, Income Tax Payable, Other Current Liabilities, Dividends Payable,
-            Accrued Payroll, Miscellaneous Current Liabilities, Long-Term Debt, Long-Term Debt
-            excl. Capitalized Leases, Non-Convertible Debt, Convertible Debt, Capitalized Lease
-            Obligations, Provision for Risks & Charges, Deferred Taxes, Deferred Taxes - Credits,
-            Deferred Taxes - Debit, Other Liabilities, Other Liabilities (excl. Deferred Income),
-            Deferred Income, Non-Equity Reserves, Total Liabilities / Total Assets, Preferred Stock
-            (Carrying Value), Redeemable Preferred Stock, Non-Redeemable Preferred Stock, Common
-            Equity (Total), Common Equity/Total Assets, Common Stock Par/Carry Value, Retained
-            Earnings, ESOP Debt Guarantee, Cumulative Translation Adjustment/Unrealized For. Exch.
-            Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, Treasury Stock,
-            Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, Accumulated
-            Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current
-            Liabilities, Total Liabilities, and Liabilities & Shareholders' Equity.
-            [Source: Market Watch]
+            Prints either yearly or quarterly balance statement the company, and compares
+            it against similar companies. [Source: Market Watch]
         """,
     )
-
+    parser.add_argument(
+        "-s",
+        "--similar",
+        dest="l_similar",
+        type=lambda s: [str(item).upper() for item in s.split(",")],
+        default=similar,
+        help="similar companies to compare with.",
+    )
+    parser.add_argument(
+        "-a",
+        "--also",
+        dest="l_also",
+        type=lambda s: [str(item).upper() for item in s.split(",")],
+        default=[],
+        help="apart from loaded similar companies also compare with.",
+    )
     parser.add_argument(
         "-q",
         "--quarter",
         action="store_true",
         default=False,
         dest="b_quarter",
-        help="Quarter fundamental data flag.",
+        help="Quarter financial data flag.",
+    )
+    parser.add_argument(
+        "-t",
+        "--timeframe",
+        dest="s_timeframe",
+        type=str,
+        default=None,
+        help="Specify yearly/quarterly timeframe. Default is last.",
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_financials = prepare_df_financials(s_ticker, "balance", ns_parser.b_quarter)
+        l_similar = ns_parser.l_similar
+        l_similar += ns_parser.l_also
+
+        # Add main ticker to similar list of companies
+        l_similar.insert(0, ticker)
+
+        l_timeframes, ddf_financials = prepare_comparison_financials(
+            l_similar, "balance", ns_parser.b_quarter
+        )
+
+        if ns_parser.s_timeframe:
+            if ns_parser.s_timeframe not in l_timeframes:
+                raise ValueError(
+                    f"Timeframe selected should be one of {', '.join(l_timeframes)}"
+                )
+            s_timeframe = ns_parser.s_timeframe
+        else:
+            s_timeframe = l_timeframes[-1]
+
+        print(
+            f"Other available {('yearly', 'quarterly')[ns_parser.b_quarter]} timeframes are: {', '.join(l_timeframes)}\n"
+        )
+
+        df_financials_compared = combine_similar_financials(
+            ddf_financials, l_similar, s_timeframe, ns_parser.b_quarter
+        )
 
         if gtff.USE_COLOR:
-            df_financials = df_financials.applymap(financials_colored_values)
+            df_financials_compared = df_financials_compared.applymap(
+                financials_colored_values
+            )
 
             patch_pandas_text_adjustment()
             pd.set_option("display.max_colwidth", None)
             pd.set_option("display.max_rows", None)
 
-        print(df_financials.to_string(index=False))
+        if not ns_parser.b_quarter:
+            df_financials_compared.index.name = s_timeframe
+
+        print(df_financials_compared.to_string())
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
 
 
-def cash(l_args, s_ticker):
+def compare_cashflow(other_args: List[str], ticker: str, similar: List[str]):
+    """Compare balance between companies
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker : str
+        Main ticker to compare income
+    similar : List[str]
+        Similar companies to compare income with
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="cash_flow",
+        prog="compare_cashflow",
         description="""
-            Prints either yearly or quarterly cash flow operating activities of the company.
-            The following fields are expected: Net Income before Extraordinaries, Net Income
-            Growth, Depreciation, Depletion & Amortization, Depreciation and Depletion,
-            Amortization of Intangible Assets, Deferred Taxes & Investment Tax Credit, Deferred
-            Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries,
-            Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities,
-            and Net Operating Cash Flow Growth.
-            Prints either yearly or quarterly cash flow investing activities of the company.
-            The following fields are expected: Capital Expenditures, Capital Expenditures Growth,
-            Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures
-            (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses,
-            Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments,
-            Other Uses, Other Sources, Net Investing Cash Flow Growth.
-            Prints either yearly or quarterly cash flow financing activities of the company.
-            The following fields are expected: Cash Dividends Paid - Total, Common Dividends,
-            Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk.,
-            Sale of Common & Preferred Stock, Proceeds from Stock Options, Other Proceeds from Sale
-            of Stock, Issuance/Reduction of Debt, Net, Change in Current Debt, Change in Long-Term
-            Debt, Issuance of Long-Term Debt, Reduction in Long-Term Debt, Other Funds, Other Uses,
-            Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange
-            Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow
-            Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net
-            Financing Cash Flow.
-            [Source: Market Watch]
+            Prints either yearly or quarterly cash statement the company, and compares
+            it against similar companies. [Source: Market Watch]
         """,
     )
-
+    parser.add_argument(
+        "-s",
+        "--similar",
+        dest="l_similar",
+        type=lambda s: [str(item).upper() for item in s.split(",")],
+        default=similar,
+        help="similar companies to compare with.",
+    )
+    parser.add_argument(
+        "-a",
+        "--also",
+        dest="l_also",
+        type=lambda s: [str(item).upper() for item in s.split(",")],
+        default=[],
+        help="apart from loaded similar companies also compare with.",
+    )
     parser.add_argument(
         "-q",
         "--quarter",
         action="store_true",
         default=False,
         dest="b_quarter",
-        help="Quarter fundamental data flag.",
+        help="Quarter financial data flag.",
+    )
+    parser.add_argument(
+        "-t",
+        "--timeframe",
+        dest="s_timeframe",
+        type=str,
+        default=None,
+        help="Specify yearly/quarterly timeframe. Default is last.",
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_financials = prepare_df_financials(s_ticker, "cashflow", ns_parser.b_quarter)
+        l_similar = ns_parser.l_similar
+        l_similar += ns_parser.l_also
+
+        # Add main ticker to similar list of companies
+        l_similar.insert(0, ticker)
+
+        l_timeframes, ddf_financials = prepare_comparison_financials(
+            l_similar, "cashflow", ns_parser.b_quarter
+        )
+
+        if ns_parser.s_timeframe:
+            if ns_parser.s_timeframe not in l_timeframes:
+                raise ValueError(
+                    f"Timeframe selected should be one of {', '.join(l_timeframes)}"
+                )
+            s_timeframe = ns_parser.s_timeframe
+        else:
+            s_timeframe = l_timeframes[-1]
+
+        print(
+            f"Other available {('yearly', 'quarterly')[ns_parser.b_quarter]} timeframes are: {', '.join(l_timeframes)}\n"
+        )
+
+        df_financials_compared = combine_similar_financials(
+            ddf_financials, l_similar, s_timeframe, ns_parser.b_quarter
+        )
 
         if gtff.USE_COLOR:
-            df_financials = df_financials.applymap(financials_colored_values)
+            df_financials_compared = df_financials_compared.applymap(
+                financials_colored_values
+            )
 
             patch_pandas_text_adjustment()
             pd.set_option("display.max_colwidth", None)
             pd.set_option("display.max_rows", None)
 
-        print(df_financials.to_string(index=False))
+        if not ns_parser.b_quarter:
+            df_financials_compared.index.name = s_timeframe
+
+        print(df_financials_compared.to_string())
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
 
 
@@ -381,19 +460,23 @@ def prepare_comparison_financials(
             symbol, statement, quarter
         ).set_index("Item")
 
-    items = []
-    # Get common headers between tickers
-    for symbol in similar:
-        if len(financials[symbol].columns) > len(items):
-            items = financials[symbol].columns
+    if quarter:
+        items = financials[similar[0]].columns
 
-    # Add columns with N/A when data is not available, to have similar columns
-    for symbol in similar:
-        if len(financials[symbol].columns) < len(items):
-            for item in items:
-                if item not in financials[symbol].columns:
-                    financials[symbol][item] = "N/A"
-        financials[symbol] = financials[symbol].reindex(sorted(items), axis=1)
+    else:
+        items = []
+        # Get common headers between tickers
+        for symbol in similar:
+            if len(financials[symbol].columns) > len(items):
+                items = financials[symbol].columns
+
+        # Add columns with N/A when data is not available, to have similar columns
+        for symbol in similar:
+            if len(financials[symbol].columns) < len(items):
+                for item in items:
+                    if item not in financials[symbol].columns:
+                        financials[symbol][item] = "N/A"
+            financials[symbol] = financials[symbol].reindex(sorted(items), axis=1)
 
     return list(items), financials
 
@@ -402,28 +485,52 @@ def combine_similar_financials(
     financials: Dict[str, pd.DataFrame],
     similar: List[str],
     timeframe: str,
+    quarter: bool,
 ) -> pd.DataFrame:
     """Builds a DataFrame with financial statements from a certain timeframe of a list of tickers
 
     Parameters
     ----------
-    Dict[str, pd.DataFrame]
+    financials : Dict[str, pd.DataFrame]
         A dictionary of DataFrame with financial info from list of similar tickers
     similar : List[str]
         List of similar stock tickers
     statement : str
         Either income, balance or cashflow
-
+    quarter : bool
+        False for yearly data, True for quarterly
     Returns
     -------
     pd.DataFrame
         A DataFrame with financial statements from a certain timeframe of a list of tickers
     """
 
-    compare_financials = financials[similar[0]][timeframe].to_frame()
-    compare_financials.rename(columns={timeframe: similar[0]}, inplace=True)
+    # Quarter data is a bit more confusing for comparison due to the fact that
+    # the reports may occur at slight different moments. Hence we rely on the
+    # order set by the Market Watch website
 
-    for symbol in similar[1:]:
-        compare_financials[symbol] = financials[symbol][timeframe]
+    if quarter:
+        compare_financials = financials[similar[0]][timeframe].to_frame()
+        compare_financials.rename(columns={timeframe: similar[0]}, inplace=True)
+        earnings_dates = [timeframe]
+        idx = len(financials[similar[0]].columns) - list(
+            financials[similar[0]].columns
+        ).index(timeframe)
+
+        for symbol in similar[1:]:
+            report_quarter_date = list(financials[symbol].columns)[-idx]
+            earnings_dates.append(report_quarter_date)
+            compare_financials[symbol] = financials[symbol][report_quarter_date]
+
+        compare_financials.columns = pd.MultiIndex.from_tuples(
+            zip(earnings_dates, compare_financials.columns),
+        )
+
+    else:
+        compare_financials = financials[similar[0]][timeframe].to_frame()
+        compare_financials.rename(columns={timeframe: similar[0]}, inplace=True)
+
+        for symbol in similar[1:]:
+            compare_financials[symbol] = financials[symbol][timeframe]
 
     return compare_financials

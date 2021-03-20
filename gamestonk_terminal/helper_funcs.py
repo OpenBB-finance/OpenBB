@@ -293,8 +293,8 @@ def parse_known_args_and_warn(parser, l_args):
 
 
 def financials_colored_values(val: str) -> str:
-    if val == "N/A":
-        val = f"{Fore.YELLOW}{val}{Style.RESET_ALL}"
+    if val == "N/A" or str(val) == "nan":
+        val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
     elif sum(c.isalpha() for c in val) < 2:
         if "%" in val:
             if "-" in val:
@@ -303,6 +303,7 @@ def financials_colored_values(val: str) -> str:
                 val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
         elif "(" in val:
             val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+
     return val
 
 

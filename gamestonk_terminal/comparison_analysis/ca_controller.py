@@ -29,6 +29,8 @@ class ComparisonAnalysisController:
         "historical",
         "corr",
         "income",
+        "balance",
+        "cash",
     ]
 
     def __init__(
@@ -80,6 +82,8 @@ class ComparisonAnalysisController:
             print("   corr          correlation between similar companies")
             print("")
             print("   income        income financials comparison")
+            print("   balance       balance financials comparison")
+            print("   cash          cash financials comparison")
             print("")
         return
 
@@ -126,7 +130,7 @@ class ComparisonAnalysisController:
             "-s",
             "--similar",
             dest="l_similar",
-            type=lambda s: [str(item) for item in s.split(",")],
+            type=lambda s: [str(item).upper() for item in s.split(",")],
             default=[],
             help="similar companies to compare with.",
         )
@@ -200,6 +204,14 @@ class ComparisonAnalysisController:
     def call_income(self, other_args: List[str]):
         """Process income command"""
         mw_api.compare_income(other_args, self.ticker, self.similar)
+
+    def call_balance(self, other_args: List[str]):
+        """Process balance command"""
+        mw_api.compare_balance(other_args, self.ticker, self.similar)
+
+    def call_cash(self, other_args: List[str]):
+        """Process cash command"""
+        mw_api.compare_cashflow(other_args, self.ticker, self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
