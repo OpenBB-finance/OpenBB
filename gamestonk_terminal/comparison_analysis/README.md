@@ -10,6 +10,12 @@ This menu aims to compare a pre-loaded stock with similar companies, and the usa
   * historical data comparison [Yahoo Finance]
 * [corr](#corr)
   * correlation between similar companies [Yahoo Finance]
+* [income](#income)
+  * income financials comparison [Market Watch]
+* [balance](#balance)
+  * balance financials comparison [Market Watch]
+* [cashflow](#cashflow)
+  * cashflow financials comparison [Market Watch]
 
 
 ## get <a name="get"></a>
@@ -59,3 +65,53 @@ Historical price comparison between similar companies [Source: Yahoo Finance]
 * -t : type of candles: o-open, h-high, l-low, c-close, a-adjusted close. Default 'a'.
 
 ![corr](https://user-images.githubusercontent.com/25267873/110699596-efc41b80-81e6-11eb-924f-8739058aa54e.png)
+
+
+## income <a name="income"></a>
+
+```text
+usage: income [-s L_SIMILAR] [-a L_ALSO] [-t 31-Dec-2020/2017] [-q]
+```
+
+Income financials comparison between similar companies [Source: Market Watch]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+* -t : timeframe of earnings. Default: Last.
+* -q : quarterly data instead of yearly. Default: False.
+
+<img width="1007" alt="Captura de ecrã 2021-03-20, às 09 10 02" src="https://user-images.githubusercontent.com/25267873/111865162-4fe05d80-895d-11eb-8a0f-d7c2ba7700e2.png">
+
+
+## balance <a name="balance"></a>
+
+```text
+usage: balance [-s L_SIMILAR] [-a L_ALSO] [-t 31-Dec-2020/2017] [-q]
+```
+
+Balance financials comparison between similar companies [Source: Market Watch]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+* -t : timeframe of earnings. Default: Last.
+* -q : quarterly data instead of yearly. Default: False.
+
+<img width="1014" alt="Captura de ecrã 2021-03-20, às 09 10 53" src="https://user-images.githubusercontent.com/25267873/111865168-5373e480-895d-11eb-960f-b919e338ab83.png">
+
+## cashflow <a name="cashflow"></a>
+
+```text
+usage: cashflow [-s L_SIMILAR] [-a L_ALSO] [-t 31-Dec-2020/2017] [-q]
+```
+
+Cashflow financials comparison between similar companies [Source: Market Watch]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+* -t : timeframe of earnings. Default: Last.
+* -q : quarterly data instead of yearly. Default: False.
+
+<img width="1010" alt="Captura de ecrã 2021-03-20, às 09 12 59" src="https://user-images.githubusercontent.com/25267873/111865169-54a51180-895d-11eb-8d31-b499ab74854e.png">
+
+
+
