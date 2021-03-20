@@ -30,7 +30,7 @@ class ComparisonAnalysisController:
         "corr",
         "income",
         "balance",
-        "cash",
+        "cashflow",
     ]
 
     def __init__(
@@ -89,7 +89,7 @@ class ComparisonAnalysisController:
             print("")
             print("   income        income financials comparison")
             print("   balance       balance financials comparison")
-            print("   cash          cash financials comparison")
+            print("   cashflow      cashflow comparison")
             print("")
         return
 
@@ -215,8 +215,8 @@ class ComparisonAnalysisController:
         """Process balance command"""
         mw_api.compare_balance(other_args, self.ticker, self.similar)
 
-    def call_cash(self, other_args: List[str]):
-        """Process cash command"""
+    def call_cashflow(self, other_args: List[str]):
+        """Process cashflow command"""
         mw_api.compare_cashflow(other_args, self.ticker, self.similar)
 
 
