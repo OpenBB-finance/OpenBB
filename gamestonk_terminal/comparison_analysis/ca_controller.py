@@ -34,11 +34,17 @@ class ComparisonAnalysisController:
     ]
 
     def __init__(
-        self, stock: pd.DataFrame, ticker: str, start: datetime, interval: str
+        self,
+        stock: pd.DataFrame,
+        ticker: str,
+        start: datetime,
+        interval: str,
+        similar: List[str],
+        user: bool,
     ):
         """Constructor"""
-        self.user = False
-        self.similar = []
+        self.similar = similar
+        self.user = user
         self.stock = stock
         self.ticker = ticker
         self.start = start
@@ -217,7 +223,9 @@ class ComparisonAnalysisController:
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
     """Comparison Analysis Menu"""
 
-    ca_controller = ComparisonAnalysisController(stock, ticker, start, interval)
+    ca_controller = ComparisonAnalysisController(
+        stock, ticker, start, interval, [], False
+    )
     ca_controller.call_help(None)
 
     while True:
