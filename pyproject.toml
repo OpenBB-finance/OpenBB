@@ -40,9 +40,16 @@ seaborn = "^0.11.0"
 scipy = "1.5.4"
 fredapi = "^0.4.3"
 screeninfo = "^0.6.7"
+numpy = "~1.19.5"
+pyrsistent = "~0.14.11"
+regex = "~2020.11.13"
+h5py = "~2.10.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
+pylint = "^2.7.2"
+flake8 = "^3.9.0"
+black = "^20.8b1"
 
 [tool.poetry.extras]
 prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "torch"]
