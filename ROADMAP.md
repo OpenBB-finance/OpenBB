@@ -96,8 +96,11 @@
 
 - [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
 - [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
+- [ ] Add averaging around multiple predictions - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
 
 ### Long term
+
+- [ ] Combine Sentiment Analysis with Chart data - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
 
 ---
 
