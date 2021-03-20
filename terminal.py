@@ -25,8 +25,7 @@ from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_menu as cam
 from gamestonk_terminal.options import op_menu as opm
 from gamestonk_terminal.fred import fred_menu as fm
-from gamestonk_terminal.portfolio import port_menu
-
+from gamestonk_terminal.portfolio import port_controller
 # import warnings
 # warnings.simplefilter("always")
 
@@ -199,8 +198,8 @@ def main():
             b_quit = fm.fred_menu()
 
         elif ns_known_args.opt == "port":
-            b_quit = port_menu.port_menu()
-
+            #b_quit = port_menu.port_menu()
+            b_quit = port_controller.menu()
         elif ns_known_args.opt == "pred":
 
             if not gtff.ENABLE_PREDICT:
