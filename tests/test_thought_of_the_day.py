@@ -1,13 +1,11 @@
 """ thought_of_the_day.py tests """
 import unittest
 
-from bs4 import BeautifulSoup
-
 from gamestonk_terminal import thought_of_the_day
 
 import mock
 
-mock_goodreads_page = """
+mock_goodreads_page = """ # noqa: E501, E101, W191
 <html>
 <body>
 <div class="quotes">
