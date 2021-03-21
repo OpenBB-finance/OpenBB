@@ -2,12 +2,26 @@
 
 This page shows the available brokers for loading in data.  If yours is not listed, please submit a new issue and we will look at adding it.
 
+Current brokers:
+* Robinhood
+
 
 Once this screen is accessed, the first command to be run is 
 ````
-login
+login [brokers]
 ````
-Which will use your  login information, which should be stored as environment variables in [config file](/gamestonk_terminal/config_terminal.py)
+
+The brokers should just be your brokers from the list shown on the first menu.  To login to Robinhood, the command is 
+````
+login rh
+````
+When td is added, the command will be 
+````
+login rh td
+````
+After logging in, the help menu will display which brokers you logged into.
+
+Your  login information should be stored as environment variables in [config file](/gamestonk_terminal/config_terminal.py)
 
 Robinhood has Two Factor Authentication, so you will likely be prompted to enter a code that is texted/emailed to you.
 ###NOTE THAT LOGGING IN WILL SAVE A TOKEN TO `os.path.expanduser("~")/.tokens` WHICH CAN BE USED TO LOGIN EVEN IF USER CREDENTIALS ARE INCORRECT.
