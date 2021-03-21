@@ -3,7 +3,7 @@ import unittest
 
 from gamestonk_terminal import thought_of_the_day
 
-import mock
+from unittest import mock
 
 mock_goodreads_page = """ # noqa: E501, E101, W191
 <html>
