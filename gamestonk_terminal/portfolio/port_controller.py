@@ -1,8 +1,8 @@
 __docformat__ = "numpy"
 
 import argparse
+from ast import literal_eval
 from typing import List
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -42,13 +42,18 @@ class PortfolioController:
         """ Print help """
         print("\nPortfolio:")
         print("   help          show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
+        print(
+            "   q             quit this menu, and shows back to main menu, logs out of brokers"
+        )
+        print("   quit          quit to abandon program, logs out of brokers")
         print("   login         login to your brokers")
         print("\nCurrent Brokers :" + print_broke)
-        print("")
         print("\nCurrently Supported :")
         print("   rh             Robinhood - fuck these guys")
+        print("\nCommands (login required):")
+        print("")
+        print("   hold           view rh holdings")
+        print("   rhhist         plot rh portfolio history")
         print("")
 
     def print_portfolio_menu(self):
@@ -92,23 +97,29 @@ class PortfolioController:
 
     def call_login(self, other_args):
 
+        logged_in = False
         if not other_args:
             print("Please enter brokers you wish to login to")
             print("")
             return
         for broker in other_args:
-            api = broker + "_api"
-            self.brokers_list.add(broker)
-            try:
-                eval(api + ".login()")
-            except Exception as e:
-                print("")
-                print(f"Error at broker : {broker}")
-                print(e)
-                print("Make sure credentials are defined in config_terminal.py ")
-                print("")
+            if broker in self.BROKERS:
+                api = broker + "_api"
+                try:
+                    eval(api + ".login()")
+                    self.brokers_list.add(broker)
+                    logged_in = True
+                except Exception as e:
+                    print("")
+                    print(f"Error at broker : {broker}")
+                    print(e)
+                    print("Make sure credentials are defined in config_terminal.py ")
+                    print("")
+            else:
+                print(f"{broker} not supported")
 
-        self.print_portfolio_menu()
+        if logged_in:
+            self.print_portfolio_menu()
 
     def call_rhhist(self, other_args: List[str]):
         rh_api.plot_historical(other_args)
