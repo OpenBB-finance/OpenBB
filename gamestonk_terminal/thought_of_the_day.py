@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import re
 import random
+from typing import Dict
 import requests
 from bs4 import BeautifulSoup
 
@@ -12,19 +13,25 @@ from gamestonk_terminal.helper_funcs import get_user_agent
 class ThoughtOfTheDay:
     """ ThoughtOfTheDay class """
 
-    def __init__(self):
+    def __init__(self, urls: Dict[str, str] = None):
         """ Constructor """
-        self.urls = {
-            "Marcus_Aurelius": "https://www.goodreads.com/author/quotes/17212.Marcus_Aurelius",
-            "Epictetus": "https://www.goodreads.com/author/quotes/13852.Epictetus",
-            "Seneca": "https://www.goodreads.com/author/quotes/4918776.Seneca",
-            "Marcus_Tullius_Cicero": "https://www.goodreads.com/author/quotes/13755.Marcus_Tullius_Cicero",
-            "Aristotle": "https://www.goodreads.com/author/quotes/2192.Aristotle",
-            "Plato": "https://www.goodreads.com/author/quotes/879.Plato",
-            "Pythagoras": "https://www.goodreads.com/author/quotes/203707.Pythagoras",
-        }
 
         self.metadata = {}
+
+        if urls is None:
+            self.urls = {
+                "Marcus_Aurelius": "https://www.goodreads.com/author/quotes/17212.Marcus_Aurelius",
+                "Epictetus": "https://www.goodreads.com/author/quotes/13852.Epictetus",
+                "Seneca": "https://www.goodreads.com/author/quotes/4918776.Seneca",
+                "Marcus_Tullius_Cicero": "https://www.goodreads.com/author/quotes/13755.Marcus_Tullius_Cicero",
+                "Aristotle": "https://www.goodreads.com/author/quotes/2192.Aristotle",
+                "Plato": "https://www.goodreads.com/author/quotes/879.Plato",
+                "Pythagoras": "https://www.goodreads.com/author/quotes/203707.Pythagoras",
+            }
+
+            return
+
+        self.urls = urls
 
     def get_urls(self) -> dict:
         """ Getter method for URLs """
