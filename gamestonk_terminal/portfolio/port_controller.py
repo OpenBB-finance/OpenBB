@@ -1,7 +1,6 @@
 __docformat__ = "numpy"
 
 import argparse
-from ast import literal_eval
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
