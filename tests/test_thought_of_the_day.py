@@ -1,9 +1,9 @@
 """ thought_of_the_day.py tests """
 import unittest
+from unittest import mock
 
 from gamestonk_terminal import thought_of_the_day
 
-from unittest import mock
 
 mock_goodreads_page = """ # noqa: E501, E101, W191
 <html>
