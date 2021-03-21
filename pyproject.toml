@@ -1,3 +1,4 @@
+# https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
 name = "GamestonkTerminal"
 version = "0.1.0"
@@ -6,7 +7,7 @@ authors = ["Didier Rodrigues Lopes"]
 
 [tool.poetry.dependencies]
 python = "^3.6.8"
-pandas = "^1.1.5"
+pandas = "^1.1.5,<1.2"
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
@@ -37,15 +38,22 @@ prompt-toolkit = "^3.0.16"
 jupyter = "^1.0.0"
 mplfinance = "^0.12.7-alpha.7"
 seaborn = "^0.11.0"
-scipy = "1.5.4"
+scipy = "~1.5.4"
 fredapi = "^0.4.3"
 screeninfo = "^0.6.7"
+numpy = "~1.19.5,<1.20"
+pyrsistent = "~0.14.11"
+regex = "~2020.11.13"
+h5py = "~2.10.0"
 robin-stocks = "^2.0.3"
 termcolor = "^1.1.0"
 alpaca-trade-api = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
+pylint = "^2.7.2"
+flake8 = "^3.9.0"
+black = "^20.8b1"
 
 [tool.poetry.extras]
 prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "torch"]
@@ -53,3 +61,13 @@ prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "t
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+# Notes for developers:
+# 1. numpy >= 1.20.0 sometimes has issues with tensorflow=2.4.1
+# 2. The following packages dropped support for python<3.7:
+#    pandas >= 1.2.0
+#    numpy >= 1.20.0
+#    scipy >= 1.6.0
+# 3. The following often cause poetry to misbehave:
+#    pyrsistent >= 0.17
+#    regex >= 2021

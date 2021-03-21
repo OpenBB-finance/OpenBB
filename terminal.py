@@ -22,7 +22,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_menu as tam
-from gamestonk_terminal.comparison_analysis import ca_menu as cam
+from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.options import op_menu as opm
 from gamestonk_terminal.fred import fred_menu as fm
 from gamestonk_terminal.portfolio import port_menu
@@ -85,13 +85,15 @@ def main():
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
+    parsed_stdin = False
 
-    print("-------------------")
-    try:
-        thought.get_thought_of_the_day()
-    except Exception as e:
-        print(e)
-    print("")
+    if gtff.ENABLE_THOUGHTS_DAY:
+        print("-------------------")
+        try:
+            thought.get_thought_of_the_day()
+        except Exception as e:
+            print(e)
+        print("")
 
     # Loop forever and ever
     while True:
@@ -100,8 +102,12 @@ def main():
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
 
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        # Get input command from stdin or user
+        if not parsed_stdin and len(sys.argv) > 1:
+            as_input = " ".join(sys.argv[1:])
+            parsed_stdin = True
+            print(f"{get_flair()}> {as_input}")
+        elif session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(f"{get_flair()}> ", completer=completer)
         else:
             as_input = input(f"{get_flair()}> ")
@@ -148,7 +154,8 @@ def main():
 
             else:
                 print(
-                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at."
+                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at.",
+                    "\n",
                 )
 
             main_cmd = True
@@ -181,7 +188,7 @@ def main():
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "ca":
-            b_quit = cam.ca_menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
