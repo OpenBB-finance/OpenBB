@@ -6,12 +6,13 @@ import requests
 from typing import List
 from datetime import datetime
 import pandas as pd
-
+from matplotlib import pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
+from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
@@ -27,10 +28,12 @@ class ComparisonAnalysisController:
         "get",
         "select",
         "historical",
-        "corr",
+        "hcorr",
         "income",
         "balance",
         "cashflow",
+        "sentiment",
+        "scorr",
     ]
 
     def __init__(
@@ -84,12 +87,15 @@ class ComparisonAnalysisController:
         print("   select        select similar companies")
         print("")
         if self.similar:
-            print("   historical    historical data comparison")
-            print("   corr          correlation between similar companies")
+            print("   historical    historical price data comparison")
+            print("   hcorr         historical price correlation")
             print("")
             print("   income        income financials comparison")
             print("   balance       balance financials comparison")
             print("   cashflow      cashflow comparison")
+            print("")
+            print("   sentiment     sentiment analysis comparison")
+            print("   scorr         sentiment correlation")
             print("")
         return
 
@@ -201,8 +207,8 @@ class ComparisonAnalysisController:
             other_args, self.stock, self.ticker, self.start, self.interval, self.similar
         )
 
-    def call_corr(self, other_args: List[str]):
-        """Process correlation command"""
+    def call_hcorr(self, other_args: List[str]):
+        """Process historical correlation command"""
         yf_api.correlation(
             other_args, self.stock, self.ticker, self.start, self.interval, self.similar
         )
@@ -218,6 +224,14 @@ class ComparisonAnalysisController:
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
         mw_api.compare_cashflow(other_args, self.ticker, self.similar)
+
+    def call_sentiment(self, other_args: List[str]):
+        """Process sentiment command"""
+        f_api.sentiment_compare(other_args, self.ticker, self.similar)
+
+    def call_scorr(self, other_args: List[str]):
+        """Process sentiment correlation command"""
+        f_api.sentiment_correlation(other_args, self.ticker, self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
@@ -242,6 +256,8 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
             an_input = input(f"{get_flair()} (ca)> ")
 
         try:
+            plt.close("all")
+
             process_input = ca_controller.switch(an_input)
 
             if process_input is not None:
