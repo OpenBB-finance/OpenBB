@@ -32,11 +32,7 @@ class PortfolioController:
     @staticmethod
     def print_help(broker_list):
         if not broker_list:
-            print_broke = " None"
-        if broker_list:
-            print_broke = " "
-            for broker in broker_list:
-                print_broke += broker + " "
+            broker_list = [" None"]
 
         """ Print help """
         print("\nPortfolio:")
@@ -46,7 +42,7 @@ class PortfolioController:
         )
         print("   quit          quit to abandon program, logs out of brokers")
         print("   login         login to your brokers")
-        print("\nCurrent Brokers :" + print_broke)
+        print(f"\nCurrent Brokers : {('', ', '.join(broker_list))[bool(broker_list)]}")
         print("\nCurrently Supported :")
         print("   rh             Robinhood - fuck these guys")
         print("\nCommands (login required):")
@@ -144,11 +140,11 @@ def menu():
                 {c: None for c in port_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (port)> ",
+                f"{get_flair()} (pa)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (port)> ")
+            an_input = input(f"{get_flair()} (pa)> ")
 
         try:
             process_input = port_controller.switch(an_input)
