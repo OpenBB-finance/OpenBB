@@ -28,6 +28,7 @@ filelock==3.0.12; python_full_version >= "3.6.0" and python_version >= "3.6"
 finviz==1.3.4
 flair==0.7; python_version >= "3.6"
 flatbuffers==1.12
+fredapi==0.4.3
 ftfy==5.9; python_version >= "3.6"
 fundamentalanalysis==0.2.6
 future==0.18.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6"
