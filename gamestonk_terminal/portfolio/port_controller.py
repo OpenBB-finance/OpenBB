@@ -9,6 +9,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio import rh_api
 
+
 class PortfolioController:
 
     CHOICES = [
@@ -18,7 +19,7 @@ class PortfolioController:
         "login",
         "hold",
         "rhhist",
-            ]
+    ]
 
     BROKERS = [
         "rh",
@@ -26,19 +27,17 @@ class PortfolioController:
 
     def __init__(self):
         self.port_parser = argparse.ArgumentParser(add_help=False, prog="port")
-        self.port_parser.add_argument("cmd",
-                                      choices = self.CHOICES)
+        self.port_parser.add_argument("cmd", choices=self.CHOICES)
         self.brokers_list = set()
-
 
     @staticmethod
     def print_help(broker_list):
         if not broker_list:
             print_broke = " None"
         if broker_list:
-            print_broke=" "
+            print_broke = " "
             for broker in broker_list:
-                print_broke += broker+" "
+                print_broke += broker + " "
 
         """ Print help """
         print("\nPortfolio:")
@@ -52,7 +51,6 @@ class PortfolioController:
         print("   rh             Robinhood - fuck these guys")
         print("")
 
-
     def print_portfolio_menu(self):
 
         print_broke = " "
@@ -63,7 +61,6 @@ class PortfolioController:
         print("    hold       check holdings")
         print("   rhhist      plot historical RH portfolio")
         print("")
-
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -103,7 +100,7 @@ class PortfolioController:
             api = broker + "_api"
             self.brokers_list.add(broker)
             try:
-                eval(api+".login()")
+                eval(api + ".login()")
             except Exception as e:
                 print("")
                 print(f"Error at broker : {broker}")
@@ -116,12 +113,13 @@ class PortfolioController:
     def call_rhhist(self, other_args: List[str]):
         rh_api.plot_historical(other_args)
 
-    def call_hold(self,_):
+    def call_hold(self, _):
         try:
             rh_api.show_holdings()
         except Exception as e:
             print(e)
             print("")
+
 
 def menu():
     """Portfolio Analysis Menu"""
