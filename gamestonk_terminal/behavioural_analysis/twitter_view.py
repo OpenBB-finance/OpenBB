@@ -128,6 +128,10 @@ def inference(l_args, s_ticker):
                 row = get_data(tweet)
                 df_tweets = df_tweets.append(row, ignore_index=True)
 
+        elif response.status_code == 401:
+            print("Twitter API Key provided is incorrect\n")
+            return
+
         # Load sentiment model
         sentiment_model = flair.models.TextClassifier.load("en-sentiment")
         print("")
@@ -286,6 +290,10 @@ def sentiment(l_args, s_ticker):
                 for tweet in response.json()["data"]:
                     row = get_data(tweet)
                     df_tweets = df_tweets.append(row, ignore_index=True)
+
+            elif response.status_code == 401:
+                print("Twitter API Key provided is incorrect\n")
+                return
 
         # Load sentiment model
         print("")
