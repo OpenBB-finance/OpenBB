@@ -78,7 +78,7 @@ Alpaca has a nicely maintained python API that is used here.  To login, the best
 * "APCA_API_KEY_ID"
 * "APCA_API_SECRET_KEY"
 
-If these are defined, then the login command does not explictly need to be run, but the login command verifies all those keys are defined. 
+If these are defined, then the login command does not explicitly need to be run, but the login command verifies all those keys are defined. 
 
 Note that alpaca does support paper trading, so if your base_url is "https://paper-api.alpaca.markets", then this will be importing
 your paper trading account.  
