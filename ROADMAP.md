@@ -141,13 +141,12 @@
 ## Portfolio Analysis
 
 ### Short term
-* [ ] Add Brokers (td, alpaca, webull, etc)
-* [ ] Merge data from different brokers
-* [ ] Refactor
 
+- [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 - [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
-- [ ] Add Brokers (td, alpaca, webull, etc) (@jmaslek)
+- [ ] Add Brokers (td, webull, etc) (@jmaslek)
 - [ ] Merge data from different brokers (@jmaslek)
+- [ ] Refactoring
 
 ### Long term
 

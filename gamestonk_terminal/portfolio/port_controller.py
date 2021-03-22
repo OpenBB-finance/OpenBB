@@ -6,33 +6,25 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio import rh_api
+from gamestonk_terminal.portfolio import rh_api, alp_api
 
 
 class PortfolioController:
 
-    CHOICES = [
-        "help",
-        "q",
-        "quit",
-        "login",
-        "hold",
-        "rhhist",
-    ]
+    CHOICES = ["help", "q", "quit", "login", "rhhold", "rhhist", "alphold", "alphist"]
 
     BROKERS = [
         "rh",
+        "alp",
     ]
 
     def __init__(self):
         self.port_parser = argparse.ArgumentParser(add_help=False, prog="port")
         self.port_parser.add_argument("cmd", choices=self.CHOICES)
-        self.brokers_list = set()
+        self.broker_list = set()
 
     @staticmethod
     def print_help(broker_list):
-        if not broker_list:
-            broker_list = [" None"]
 
         """ Print help """
         print("\nPortfolio:")
@@ -42,24 +34,33 @@ class PortfolioController:
         )
         print("   quit          quit to abandon program, logs out of brokers")
         print("   login         login to your brokers")
-        print(f"\nCurrent Brokers : {('', ', '.join(broker_list))[bool(broker_list)]}")
+        print(
+            f"\nCurrent Brokers : {('None', ', '.join(broker_list))[bool(broker_list)]}"
+        )
         print("\nCurrently Supported :")
         print("   rh             Robinhood - fuck these guys")
+        print("   alp            Alpaca ")
         print("\nCommands (login required):")
-        print("")
-        print("   hold           view rh holdings")
+        print("\nRobinhood:")
+        print("   rhhold         view rh holdings")
         print("   rhhist         plot rh portfolio history")
+        print("\nAlpaca:")
+        print("   alphold        view alp holdings")
+        print("   alphist        view alp portfolio history")
         print("")
 
     def print_portfolio_menu(self):
 
-        print_broke = " "
-        for broker in self.brokers_list:
-            print_broke += broker + " "
-        print("\nCurrent Brokers :" + print_broke)
-        print("")
-        print("    hold       check holdings")
+        print(
+            f"\nCurrent Brokers : {('None', ', '.join(self.broker_list))[bool(self.broker_list)]}"
+        )
+        print("\nRobinhood:")
+        print("   rhhold      check holdings")
         print("   rhhist      plot historical RH portfolio")
+        print("\nAlpaca:")
+        print("   alphold     view alpaca holdings")
+        print("   alphist     plot historical alpaca portfolio")
+
         print("")
 
     def switch(self, an_input: str):
@@ -80,7 +81,7 @@ class PortfolioController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self.brokers_list)
+        self.print_help(self.broker_list)
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -102,7 +103,7 @@ class PortfolioController:
                 api = broker + "_api"
                 try:
                     eval(api + ".login()")
-                    self.brokers_list.add(broker)
+                    self.broker_list.add(broker)
                     logged_in = True
                 except Exception as e:
                     print("")
@@ -119,19 +120,29 @@ class PortfolioController:
     def call_rhhist(self, other_args: List[str]):
         rh_api.plot_historical(other_args)
 
-    def call_hold(self, _):
+    def call_rhhold(self, _):
         try:
             rh_api.show_holdings()
         except Exception as e:
             print(e)
             print("")
 
+    def call_alphold(self, _):
+        try:
+            alp_api.show_holdings()
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_alphist(self, other_args: List[str]):
+        alp_api.plot_historical(other_args)
+
 
 def menu():
     """Portfolio Analysis Menu"""
 
     port_controller = PortfolioController()
-    port_controller.print_help(port_controller.brokers_list)
+    port_controller.print_help(port_controller.broker_list)
 
     while True:
         # Get input command from user
