@@ -333,7 +333,8 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 * [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
 * [Daily Fintech article](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
 * [HackerNews](https://news.ycombinator.com/item?id=26258773)
-* [Reddit](https://www.reddit.com/r/algotrading/comments/lrndzi/cant_afford_the_bloomberg_terminal_no_worries_i/)
+* [Reddit r/algotrading](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
+* [Reddit r/Python](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
