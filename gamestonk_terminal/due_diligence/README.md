@@ -35,7 +35,8 @@ Prints latest news about company, including date, title and web link. [Source: N
 
 * -n : Number of latest news being printed. Default 10.
 
-<img width="939" alt="news" src="https://user-images.githubusercontent.com/25267873/108609254-a8572600-73c4-11eb-9497-75530c50e82c.png">
+<img width="770" alt="Captura de ecrã 2021-03-22, às 22 47 42" src="https://user-images.githubusercontent.com/25267873/112070935-b2587a00-8b66-11eb-8dfb-0353fc83311d.png">
+
 
 ## red <a name="red"></a>
 
