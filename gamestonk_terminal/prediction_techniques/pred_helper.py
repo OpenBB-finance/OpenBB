@@ -9,7 +9,7 @@ from sklearn.metrics import (
 )
 
 
-def price_prediction_color(val: int, last_val: int) -> str:
+def price_prediction_color(val: float, last_val: float) -> str:
     if float(val) > last_val:
         color = Fore.GREEN
     else:
