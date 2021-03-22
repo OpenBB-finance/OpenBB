@@ -121,6 +121,7 @@
 
 * [x] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
 * [x] Add multi-ticker financials comparison (@didier) - [PR #237](https://github.com/DidierRLopes/GamestonkTerminal/pull/237)
+* [x] Add multi-ticker sentiment comparison (@didier) - [PR #250](https://github.com/DidierRLopes/GamestonkTerminal/pull/250)
 
 ### Long term
 
@@ -144,9 +145,10 @@
 * [ ] Merge data from different brokers
 * [ ] Refactor
 
-- [x] Add robinhood (@jmaslek) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
+- [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 - [ ] Add Brokers (td, alpaca, webull, etc) (@jmaslek)
 - [ ] Merge data from different brokers (@jmaslek)
+
 ### Long term
 
 - [ ] Summaries / tear sheets (@jmaslek)

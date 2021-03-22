@@ -77,7 +77,7 @@ def compare_income(other_args: List[str], ticker: str, similar: List[str]):
         l_similar += ns_parser.l_also
 
         # Add main ticker to similar list of companies
-        l_similar.insert(0, ticker)
+        l_similar = [ticker] + l_similar
 
         l_timeframes, ddf_financials = prepare_comparison_financials(
             l_similar, "income", ns_parser.b_quarter
@@ -182,7 +182,7 @@ def compare_balance(other_args: List[str], ticker: str, similar: List[str]):
         l_similar += ns_parser.l_also
 
         # Add main ticker to similar list of companies
-        l_similar.insert(0, ticker)
+        l_similar = [ticker] + l_similar
 
         l_timeframes, ddf_financials = prepare_comparison_financials(
             l_similar, "balance", ns_parser.b_quarter
@@ -287,7 +287,7 @@ def compare_cashflow(other_args: List[str], ticker: str, similar: List[str]):
         l_similar += ns_parser.l_also
 
         # Add main ticker to similar list of companies
-        l_similar.insert(0, ticker)
+        l_similar = [ticker] + l_similar
 
         l_timeframes, ddf_financials = prepare_comparison_financials(
             l_similar, "cashflow", ns_parser.b_quarter
