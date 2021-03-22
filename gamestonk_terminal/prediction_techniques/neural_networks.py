@@ -232,29 +232,34 @@ def _parse_args(prog, description, l_args):
         help="number of loops to iterate and train models",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
-    if not ns_parser:
+    try:
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return None
+
+        # set xla flags if requested
+        xla_flags = (
+            set(ORIGINAL_TF_XLA_FLAGS.split(" ")) if ORIGINAL_TF_XLA_FLAGS else set()
+        )
+        if ns_parser.b_xla_cpu or ns_parser.b_xla_gpu:
+            xla_flags.add("--tf_xla_enable_xla_devices")
+            if ns_parser.b_xla_cpu:
+                xla_flags.add("--tf_xla_cpu_global_jit")
+            if ns_parser.b_xla_gpu:
+                xla_flags.add("--tf_xla_auto_jit=2")
+        os.environ["TF_XLA_FLAGS"] = " ".join(xla_flags)
+
+        # set GPU memory growth flag
+        if ns_parser.s_force_gpu_allow_growth == "true":
+            os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+        elif ns_parser.s_force_gpu_allow_growth == "false":
+            os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "false"
+
+        return ns_parser
+
+    except SystemExit:
+        print("")
         return None
-
-    # set xla flags if requested
-    xla_flags = (
-        set(ORIGINAL_TF_XLA_FLAGS.split(" ")) if ORIGINAL_TF_XLA_FLAGS else set()
-    )
-    if ns_parser.b_xla_cpu or ns_parser.b_xla_gpu:
-        xla_flags.add("--tf_xla_enable_xla_devices")
-        if ns_parser.b_xla_cpu:
-            xla_flags.add("--tf_xla_cpu_global_jit")
-        if ns_parser.b_xla_gpu:
-            xla_flags.add("--tf_xla_auto_jit=2")
-    os.environ["TF_XLA_FLAGS"] = " ".join(xla_flags)
-
-    # set GPU memory growth flag
-    if ns_parser.s_force_gpu_allow_growth == "true":
-        os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
-    elif ns_parser.s_force_gpu_allow_growth == "false":
-        os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "false"
-
-    return ns_parser
 
 
 def _restore_env():
@@ -544,6 +549,14 @@ def _plot_and_print_results(
                 c="green",
                 ls="--",
             )
+            plt.fill_between(
+                df_pred.index,
+                df_quantiles["Quantile 10%"],
+                df_quantiles["Quantile 90%"],
+                alpha=0.30,
+                color="tab:green",
+                interpolate=True,
+            )
 
         plt.title("BACKTESTING: Real data price versus Prediction")
         plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
@@ -635,6 +648,24 @@ def _plot_and_print_results(
                 lw=2,
                 ls="--",
                 c="red",
+            )
+            plt.fill_between(
+                df_pred.index,
+                100
+                * (
+                    df_quantiles["Quantile 10%"].values
+                    - df_future["5. adjusted close"].values
+                )
+                / df_future["5. adjusted close"].values,
+                100
+                * (
+                    df_quantiles["Quantile 90%"].values
+                    - df_future["5. adjusted close"].values
+                )
+                / df_future["5. adjusted close"].values,
+                alpha=0.30,
+                color="red",
+                interpolate=True,
             )
         plt.title("BACKTESTING: Error between Real data and Prediction [%]")
 

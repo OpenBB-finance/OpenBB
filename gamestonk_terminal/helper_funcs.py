@@ -36,7 +36,7 @@ def valid_date(s: str) -> datetime:
     try:
         return datetime.strptime(s, "%Y-%m-%d")
     except ValueError as value_error:
-        raise argparse.ArgumentTypeError("Not a valid date: {s}") from value_error
+        raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
 def plot_view_stock(df, symbol):
