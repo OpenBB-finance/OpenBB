@@ -86,17 +86,16 @@ class ComparisonAnalysisController:
         print("   get           get similar companies [Polygon API]")
         print("   select        select similar companies")
         print("")
-        if self.similar:
-            print("   historical    historical price data comparison")
-            print("   hcorr         historical price correlation")
-            print("")
-            print("   income        income financials comparison")
-            print("   balance       balance financials comparison")
-            print("   cashflow      cashflow comparison")
-            print("")
-            print("   sentiment     sentiment analysis comparison")
-            print("   scorr         sentiment correlation")
-            print("")
+        print("   historical    historical price data comparison")
+        print("   hcorr         historical price correlation")
+        print("")
+        print("   income        income financials comparison")
+        print("   balance       balance financials comparison")
+        print("   cashflow      cashflow comparison")
+        print("")
+        print("   sentiment     sentiment analysis comparison")
+        print("   scorr         sentiment correlation")
+        print("")
         return
 
     @staticmethod
