@@ -374,8 +374,10 @@ def _plot_and_print_results(
             )
     else:
         if ns_parser.s_end_date:
-            s_title = f"{ns_parser.n_loops} loops - BACKTESTING: {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
-            plt.title(s_title)
+            plt.title(
+                f"{ns_parser.n_loops} loops - BACKTESTING: {model_name} on {s_ticker}"
+                f" - {ns_parser.n_days} days prediction"
+            )
         else:
             plt.title(
                 f"{ns_parser.n_loops} loops - {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
