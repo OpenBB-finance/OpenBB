@@ -96,7 +96,7 @@
 
 - [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
 - [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
-- [ ] Add averaging around multiple predictions - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
+- [x] Add averaging around multiple predictions (@didier) - [PR #252](https://github.com/DidierRLopes/GamestonkTerminal/pull/252)
 
 ### Long term
 
