@@ -62,6 +62,64 @@ def plot_view_stock(df, symbol):
     print("")
 
 
+def us_market_holidays(years) -> list:
+    if isinstance(years, int):
+        years = [
+            years,
+        ]
+    # https://www.nyse.com/markets/hours-calendars
+    marketHolidays = [
+        "Martin Luther King Jr. Day",
+        "Washington's Birthday",
+        "Memorial Day",
+        "Independence Day",
+        "Labor Day",
+        "Thanksgiving",
+        "Christmas Day",
+    ]
+    #   http://www.maa.clell.de/StarDate/publ_holidays.html
+    goodFridays = {
+        2010: "2010-04-02",
+        2011: "2011-04-22",
+        2012: "2012-04-06",
+        2013: "2013-03-29",
+        2014: "2014-04-18",
+        2015: "2015-04-03",
+        2016: "2016-03-25",
+        2017: "2017-04-14",
+        2018: "2018-03-30",
+        2019: "2019-04-19",
+        2020: "2020-04-10",
+        2021: "2020-04-02",
+        2022: "2020-04-15",
+        2023: "2020-04-07",
+        2024: "2020-03-29",
+        2025: "2020-04-18",
+        2026: "2020-04-03",
+        2027: "2020-03-26",
+        2028: "2020-04-14",
+        2029: "2020-03-30",
+        2030: "2020-04-19",
+    }
+    marketHolidays_and_obsrvd = marketHolidays + [
+        holiday + " (Observed)" for holiday in marketHolidays
+    ]
+    allHolidays = holidaysUS(years=years)
+    validHolidays = []
+    for date in list(allHolidays):
+        if allHolidays[date] in marketHolidays_and_obsrvd:
+            validHolidays.append(date)
+    for year in years:
+        new_Year = datetime.strptime(f"{year}-01-01", "%Y-%m-%d")
+        if new_Year.weekday() != 5:  # ignore saturday
+            validHolidays.append(new_Year.date())
+        if new_Year.weekday() == 6:  # add monday for Sunday
+            validHolidays.append(new_Year.date() + timedelta(1))
+    for year in years:
+        validHolidays.append(datetime.strptime(goodFridays[year], "%Y-%m-%d").date())
+    return validHolidays
+
+
 def b_is_stock_market_open() -> bool:
     """ checks if the stock market is open """
     # Get current US time
@@ -70,7 +128,7 @@ def b_is_stock_market_open() -> bool:
     if now.date().weekday() > 4:
         return False
     # Check if it is a holiday
-    if now.strftime("%Y-%m-%d") in holidaysUS():
+    if now.strftime("%Y-%m-%d") in us_market_holidays(now.year):
         return False
     # Check if it hasn't open already
     if now.time() < Time(hour=9, minute=30, second=0):
@@ -143,15 +201,19 @@ def divide_chunks(data, n):
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     n_days = 0
     l_pred_days = list()
+    years: list = []
+    holidays: list = []
     while n_days < n_next_days:
-
         last_stock_day += timedelta(hours=24)
-
+        year = last_stock_day.date().year
+        if year not in years:
+            years.append(year)
+            holidays = holidays + us_market_holidays(year)
         # Check if it is a weekend
         if last_stock_day.date().weekday() > 4:
             continue
         # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidaysUS():
+        if last_stock_day.strftime("%Y-%m-%d") in holidays:
             continue
         # Otherwise stock market is open
         n_days += 1
