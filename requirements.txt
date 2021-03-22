@@ -1,5 +1,5 @@
 aiohttp==3.7.4.post0; python_version >= "3.6"
-alpaca-trade-api==1.0.1
+alpaca-trade-api==1.1.0
 alpha-vantage==2.3.1
 ansiwrap==0.8.4; python_version >= "3.6"
 appdirs==1.4.4; python_version >= "3.6"
