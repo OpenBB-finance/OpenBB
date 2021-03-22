@@ -201,16 +201,14 @@ def divide_chunks(data, n):
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     n_days = 0
     l_pred_days = list()
-    years = list()
-    holidays = list()
+    years: list = []
+    holidays: list = []
     while n_days < n_next_days:
-
         last_stock_day += timedelta(hours=24)
         year = last_stock_day.date().year
         if year not in years:
             years.append(year)
             holidays = holidays + us_market_holidays(year)
-
         # Check if it is a weekend
         if last_stock_day.date().weekday() > 4:
             continue
