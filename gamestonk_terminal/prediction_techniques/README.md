@@ -24,6 +24,7 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
     - MultiLayer Perceptron
   * [rnn](#rnn)
     - Recurrent Neural Network
+    - Contains a [looping example](#looping)
   * [lstm](#lstm)
     - Long-Short Term Memory
     - Contains a [backtesting example](#backtesting)
@@ -168,6 +169,7 @@ MulitLayer Perceptron:
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --loops: number of loops to iterate and train models. Default 1.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -204,6 +206,7 @@ Recurrent Neural Network:
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --loops: number of loops to iterate and train models. Default 1.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -221,6 +224,13 @@ Recurrent_Neural_Network \
 ```
 
 ![rnn](https://user-images.githubusercontent.com/25267873/108604940-d0d12700-73a8-11eb-837e-a5aa128942d9.png)
+
+### Looping Example <a name="looping"></a>
+
+![loops](https://user-images.githubusercontent.com/25267873/111932423-479b3600-8ab5-11eb-9d0b-7210d5f02e83.png)
+
+<img width="1006" alt="Captura de ecrã 2021-03-22, às 02 14 38" src="https://user-images.githubusercontent.com/25267873/111932420-436f1880-8ab5-11eb-831c-ebb88f1c5473.png">
+
 
 ## lstm <a name="lstm"></a>
 ```
@@ -240,6 +250,7 @@ Long-Short Term Memory:
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --loops: number of loops to iterate and train models. Default 1.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.py](/config_neural_network_models.py)
 ```
