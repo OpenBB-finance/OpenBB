@@ -22,7 +22,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal.prediction_techniques.pred_helper import (
-    print_pretty_prediction,
+    print_pretty_prediction_nn,
     price_prediction_backtesting_color,
     print_prediction_kpis,
 )
@@ -223,6 +223,14 @@ def _parse_args(prog, description, l_args):
         "false: TensorFlow will allocate 100%% of GPU memory. \n"
         "default: usually the same as false, uses env/TensorFlow default",
     )
+    parser.add_argument(
+        "--loops",
+        action="store",
+        dest="n_loops",
+        type=check_positive,
+        default=1,
+        help="number of loops to iterate and train models",
+    )
 
     ns_parser = parse_known_args_and_warn(parser, l_args)
     if not ns_parser:
@@ -328,7 +336,7 @@ def _preprocess_split(df_stock, ns_parser):
     return scaler, stock_train_data, stock_x, stock_y
 
 
-def _rescale_data(df_stock, ns_parser, scaler, yhat):
+def _rescale_data(df_stock, ns_parser, scaler, yhat, idx_loop):
     """Re-scale the data back and return the prediction dataframe. """
     if (ns_parser.s_preprocessing == "standardization") or (
         ns_parser.s_preprocessing == "normalization"
@@ -341,7 +349,8 @@ def _rescale_data(df_stock, ns_parser, scaler, yhat):
         last_stock_day=df_stock["5. adjusted close"].index[-1],
         n_next_days=ns_parser.n_days,
     )
-    df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name="Price")
+    column_name = f"Price [{idx_loop+1}]"
+    df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name=column_name)
     return df_pred
 
 
@@ -354,26 +363,95 @@ def _plot_and_print_results(
     plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
 
     # BACKTESTING
-    if ns_parser.s_end_date:
-        plt.title(
-            f"BACKTESTING: {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
-        )
+    if ns_parser.n_loops == 1:
+        if ns_parser.s_end_date:
+            plt.title(
+                f"BACKTESTING: {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
+        else:
+            plt.title(
+                f"{model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
     else:
-        plt.title(f"{model_name} on {s_ticker} - {ns_parser.n_days} days prediction")
+        if ns_parser.s_end_date:
+            plt.title(
+                f"{ns_parser.n_loops} loops - BACKTESTING: {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
+        else:
+            plt.title(
+                f"{ns_parser.n_loops} loops - {model_name} on {s_ticker} - {ns_parser.n_days} days prediction"
+            )
+
     plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
     plt.xlabel("Time")
     plt.ylabel("Share Price ($)")
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
     plt.minorticks_on()
     plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.plot(
-        [df_stock.index[-1], df_pred.index[0]],
-        [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
-        lw=1,
-        c="tab:green",
-        linestyle="--",
-    )
-    plt.plot(df_pred.index, df_pred, lw=2, c="tab:green")
+
+    if ns_parser.n_loops == 1:
+        plt.plot(
+            [df_stock.index[-1], df_pred.index[0]],
+            [
+                df_stock["5. adjusted close"].values[-1],
+                df_pred[df_pred.columns[0]].values[0],
+            ],
+            lw=1,
+            c="tab:green",
+            linestyle="--",
+        )
+        plt.plot(df_pred.index, df_pred[df_pred.columns[0]], lw=2, c="tab:green")
+    else:
+        """
+        # Looks too noisy to output all loops predictions
+        for idx_loop in range(ns_parser.n_loops):
+            plt.plot(
+                [df_stock.index[-1], df_pred.index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_pred[df_pred.columns[idx_loop]].values[0],
+                ],
+                lw=0.5,
+                c="tab:green",
+                linestyle="--",
+            )
+            plt.plot(
+                df_pred.index,
+                df_pred[df_pred.columns[idx_loop]],
+                lw=1,
+                ls="--",
+                c="tab:green",
+            )
+        """
+        df_quantiles = pd.DataFrame()
+        df_quantiles["Quantile 10%"] = df_pred.quantile(0.1, axis=1)
+        df_quantiles["Median"] = df_pred.quantile(0.5, axis=1)
+        df_quantiles["Quantile 90%"] = df_pred.quantile(0.9, axis=1)
+
+        plt.plot(df_pred.index, df_quantiles["Median"], lw=2, c="tab:green")
+        plt.fill_between(
+            df_pred.index,
+            df_quantiles["Quantile 10%"],
+            df_quantiles["Quantile 90%"],
+            alpha=0.30,
+            color="tab:green",
+            interpolate=True,
+        )
+        plt.fill_between(
+            [df_stock.index[-1], df_pred.index[0]],
+            [
+                df_stock["5. adjusted close"].values[-1],
+                df_quantiles["Quantile 10%"].values[0],
+            ],
+            [
+                df_stock["5. adjusted close"].values[-1],
+                df_quantiles["Quantile 90%"].values[0],
+            ],
+            alpha=0.30,
+            color="tab:green",
+            interpolate=True,
+        )
+
     plt.axvspan(
         df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
     )
@@ -424,7 +502,13 @@ def _plot_and_print_results(
             c="tab:blue",
             ls="--",
         )
-        plt.plot(df_pred.index, df_pred, lw=2, c="green")
+        if ns_parser.n_loops == 1:
+            plt.plot(df_pred.index, df_pred, lw=2, c="green")
+        else:
+            plt.plot(
+                df_quantiles["Median"].index, df_quantiles["Median"], lw=2, c="green"
+            )
+
         plt.scatter(df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3)
         plt.plot(
             [df_stock.index[-1], df_future.index[0]],
@@ -436,14 +520,30 @@ def _plot_and_print_results(
             c="tab:blue",
             ls="--",
         )
-        plt.scatter(df_pred.index, df_pred, c="green", lw=3)
-        plt.plot(
-            [df_stock.index[-1], df_pred.index[0]],
-            [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
-            lw=2,
-            c="green",
-            ls="--",
-        )
+        if ns_parser.n_loops == 1:
+            plt.scatter(df_pred.index, df_pred, c="green", lw=3)
+            plt.plot(
+                [df_stock.index[-1], df_pred.index[0]],
+                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                lw=2,
+                c="green",
+                ls="--",
+            )
+        else:
+            plt.scatter(
+                df_quantiles["Median"].index, df_quantiles["Median"], lw=3, c="green"
+            )
+            plt.plot(
+                [df_stock.index[-1], df_quantiles["Median"].index[0]],
+                [
+                    df_stock["5. adjusted close"].values[-1],
+                    df_quantiles["Median"].values[0],
+                ],
+                lw=2,
+                c="green",
+                ls="--",
+            )
+
         plt.title("BACKTESTING: Real data price versus Prediction")
         plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
         plt.xticks(
@@ -459,35 +559,84 @@ def _plot_and_print_results(
 
         plt.subplot(212)
         plt.axhline(y=0, color="k", linestyle="--", linewidth=2)
-        plt.plot(
-            df_future.index,
-            100
-            * (df_pred.values - df_future["5. adjusted close"].values)
-            / df_future["5. adjusted close"].values,
-            lw=2,
-            c="red",
-        )
-        plt.scatter(
-            df_future.index,
-            100
-            * (df_pred.values - df_future["5. adjusted close"].values)
-            / df_future["5. adjusted close"].values,
-            c="red",
-            lw=5,
-        )
-        plt.title("BACKTESTING: Error between Real data and Prediction [%]")
-        plt.plot(
-            [df_stock.index[-1], df_future.index[0]],
-            [
-                0,
+        if ns_parser.n_loops == 1:
+            plt.plot(
+                df_future.index,
                 100
-                * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
-                / df_future["5. adjusted close"].values[0],
-            ],
-            lw=2,
-            ls="--",
-            c="red",
-        )
+                * (
+                    df_pred[df_pred.columns[0]].values
+                    - df_future["5. adjusted close"].values
+                )
+                / df_future["5. adjusted close"].values,
+                lw=2,
+                c="red",
+            )
+            plt.scatter(
+                df_future.index,
+                100
+                * (
+                    df_pred[df_pred.columns[0]].values
+                    - df_future["5. adjusted close"].values
+                )
+                / df_future["5. adjusted close"].values,
+                c="red",
+                lw=5,
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    0,
+                    100
+                    * (
+                        df_pred[df_pred.columns[0]].values[0]
+                        - df_future["5. adjusted close"].values[0]
+                    )
+                    / df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                ls="--",
+                c="red",
+            )
+        else:
+            plt.plot(
+                df_future.index,
+                100
+                * (
+                    df_quantiles["Median"].values
+                    - df_future["5. adjusted close"].values
+                )
+                / df_future["5. adjusted close"].values,
+                lw=2,
+                c="red",
+            )
+            plt.scatter(
+                df_future.index,
+                100
+                * (
+                    df_quantiles["Median"].values
+                    - df_future["5. adjusted close"].values
+                )
+                / df_future["5. adjusted close"].values,
+                c="red",
+                lw=5,
+            )
+            plt.plot(
+                [df_stock.index[-1], df_future.index[0]],
+                [
+                    0,
+                    100
+                    * (
+                        df_quantiles["Median"].values[0]
+                        - df_future["5. adjusted close"].values[0]
+                    )
+                    / df_future["5. adjusted close"].values[0],
+                ],
+                lw=2,
+                ls="--",
+                c="red",
+            )
+        plt.title("BACKTESTING: Error between Real data and Prediction [%]")
+
         plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
         plt.xticks(
             [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
@@ -506,8 +655,13 @@ def _plot_and_print_results(
         plt.show()
 
         # Refactor prediction dataframe for backtesting print
-        df_pred.name = "Prediction"
-        df_pred = df_pred.to_frame()
+        if ns_parser.n_loops == 1:
+            df_pred.rename(columns={df_pred.columns[0]: "Prediction"}, inplace=True)
+
+        else:
+            df_pred = pd.DataFrame()
+            df_pred["Prediction"] = df_quantiles["Median"]
+
         df_pred["Real"] = df_future["5. adjusted close"]
 
         if gtff.USE_COLOR:
@@ -520,11 +674,18 @@ def _plot_and_print_results(
 
         print("")
         print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
+        print("")
 
     else:
+        patch_pandas_text_adjustment()
         # Print prediction data
-        print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
-    print("")
+        print_pretty_prediction_nn(df_pred, df_stock["5. adjusted close"].values[-1])
+        print("")
+
+        if ns_parser.n_loops > 1:
+            print("Prediction Stats:")
+            print(df_quantiles.round(2).to_string())
+            print("")
 
 
 def mlp(l_args, s_ticker, df_stock):
@@ -551,27 +712,38 @@ def mlp(l_args, s_ticker, df_stock):
         )
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
-        # Train our model
-        model.fit(
-            stock_x,
-            stock_y,
-            epochs=ns_parser.n_epochs,
-            batch_size=ns_parser.n_batch_size,
-            verbose=1,
-        )
-        print("")
+        for idx_loop in range(ns_parser.n_loops):
+            # Train our model
+            model.fit(
+                stock_x,
+                stock_y,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                verbose=1,
+            )
+            print("")
 
-        print(model.summary())
-        print("")
+            print(model.summary())
+            print("")
 
-        # Prediction
-        yhat = model.predict(
-            stock_train_data[-ns_parser.n_inputs :].reshape(1, ns_parser.n_inputs),
-            verbose=0,
-        )
+            # Prediction
+            yhat = model.predict(
+                stock_train_data[-ns_parser.n_inputs :].reshape(1, ns_parser.n_inputs),
+                verbose=0,
+            )
 
-        # Re-scale the data back, plot, and print the results
-        df_pred = _rescale_data(df_stock, ns_parser, scaler, yhat)
+            if idx_loop == 0:
+                # Re-scale the data back, plot, and print the results
+                df_pred = _rescale_data(
+                    df_stock, ns_parser, scaler, yhat, idx_loop
+                ).to_frame()
+            else:
+                df_pred = df_pred.join(
+                    _rescale_data(
+                        df_stock, ns_parser, scaler, yhat, idx_loop
+                    ).to_frame()
+                )
+
         _plot_and_print_results(
             df_stock, ns_parser, df_future, df_pred, "MLP", s_ticker
         )
@@ -609,27 +781,40 @@ def rnn(l_args, s_ticker, df_stock):
         )
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
-        # Train our model
-        model.fit(
-            stock_x,
-            stock_y,
-            epochs=ns_parser.n_epochs,
-            batch_size=ns_parser.n_batch_size,
-            verbose=1,
-        )
-        print("")
+        for idx_loop in range(ns_parser.n_loops):
+            # Train our model
+            model.fit(
+                stock_x,
+                stock_y,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                verbose=1,
+            )
+            print("")
 
-        print(model.summary())
-        print("")
+            print(model.summary())
+            print("")
 
-        # Prediction
-        yhat = model.predict(
-            stock_train_data[-ns_parser.n_inputs :].reshape(1, ns_parser.n_inputs, 1),
-            verbose=0,
-        )
+            # Prediction
+            yhat = model.predict(
+                stock_train_data[-ns_parser.n_inputs :].reshape(
+                    1, ns_parser.n_inputs, 1
+                ),
+                verbose=0,
+            )
 
-        # Re-scale the data back, plot, and print the results
-        df_pred = _rescale_data(df_stock, ns_parser, scaler, yhat)
+            if idx_loop == 0:
+                # Re-scale the data back, plot, and print the results
+                df_pred = _rescale_data(
+                    df_stock, ns_parser, scaler, yhat, idx_loop
+                ).to_frame()
+            else:
+                df_pred = df_pred.join(
+                    _rescale_data(
+                        df_stock, ns_parser, scaler, yhat, idx_loop
+                    ).to_frame()
+                )
+
         _plot_and_print_results(
             df_stock, ns_parser, df_future, df_pred, "RNN", s_ticker
         )
@@ -667,27 +852,40 @@ def lstm(l_args, s_ticker, df_stock):
         )
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
-        # Train our model
-        model.fit(
-            stock_x,
-            stock_y,
-            epochs=ns_parser.n_epochs,
-            batch_size=ns_parser.n_batch_size,
-            verbose=1,
-        )
-        print("")
+        for idx_loop in range(ns_parser.n_loops):
+            # Train our model
+            model.fit(
+                stock_x,
+                stock_y,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                verbose=1,
+            )
+            print("")
 
-        print(model.summary())
-        print("")
+            print(model.summary())
+            print("")
 
-        # Prediction
-        yhat = model.predict(
-            stock_train_data[-ns_parser.n_inputs :].reshape(1, ns_parser.n_inputs, 1),
-            verbose=0,
-        )
+            # Prediction
+            yhat = model.predict(
+                stock_train_data[-ns_parser.n_inputs :].reshape(
+                    1, ns_parser.n_inputs, 1
+                ),
+                verbose=0,
+            )
 
-        # Re-scale the data back, plot, and print the results
-        df_pred = _rescale_data(df_stock, ns_parser, scaler, yhat)
+            if idx_loop == 0:
+                # Re-scale the data back, plot, and print the results
+                df_pred = _rescale_data(
+                    df_stock, ns_parser, scaler, yhat, idx_loop
+                ).to_frame()
+            else:
+                df_pred = df_pred.join(
+                    _rescale_data(
+                        df_stock, ns_parser, scaler, yhat, idx_loop
+                    ).to_frame()
+                )
+
         _plot_and_print_results(
             df_stock, ns_parser, df_future, df_pred, "LSTM", s_ticker
         )

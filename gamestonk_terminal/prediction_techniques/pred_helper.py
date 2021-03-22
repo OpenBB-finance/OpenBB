@@ -28,6 +28,21 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         print(df_pred.to_string())
 
 
+def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
+    if gtff.USE_COLOR:
+        print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
+        print("Prediction:")
+        print(
+            df_pred.applymap(
+                lambda x: price_prediction_color(x, last_val=last_price)
+            ).to_string()
+        )
+    else:
+        print(f"Actual price: {last_price:.2f} $\n")
+        print("Prediction:")
+        print(df_pred.to_string())
+
+
 def mean_absolute_percentage_error(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
