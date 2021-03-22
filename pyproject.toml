@@ -54,6 +54,10 @@ pytest = "^6.2.2"
 pylint = "^2.7.2"
 flake8 = "^3.9.0"
 black = "^20.8b1"
+mypy = "^0.812"
+mock = "^4.0.3"
+codespell = "^2.0.0"
+pyupgrade = "^2.11.0"
 
 [tool.poetry.extras]
 prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "torch"]
