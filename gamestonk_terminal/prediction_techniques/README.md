@@ -153,8 +153,8 @@ Facebook's Prophet:
 
 ## mlp <a name="mlp"></a>
 ```
-usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
+usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
+[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
 ```
 MulitLayer Perceptron:
   * -d : prediciton days. Default 5.
@@ -190,8 +190,8 @@ MultiLayer_Perceptron \
 
 ## rnn <a name="rnn"></a>
 ```
-usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
+usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
+[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
 ```
 Recurrent Neural Network:
   * -d : prediciton days. Default 5.
@@ -234,8 +234,8 @@ Recurrent_Neural_Network \
 
 ## lstm <a name="lstm"></a>
 ```
-usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [-e N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}]
+usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
+[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
 ```
 Long-Short Term Memory:
   * -d : prediciton days. Default 5.
