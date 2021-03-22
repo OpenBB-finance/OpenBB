@@ -1,7 +1,6 @@
-import requests
-import json
 import argparse
 from datetime import datetime, timedelta
+import requests
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import (
     check_positive,
