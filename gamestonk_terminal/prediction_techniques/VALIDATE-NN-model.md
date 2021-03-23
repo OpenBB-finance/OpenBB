@@ -59,9 +59,9 @@ Have a look at: https://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
 7. **Define NN Model**
 
-**Number of hidden layers**: Due to the comlexity of these NN models (particularly LSTM), this value should be kept low (2, 3 or 4). Otherwise, the model will not generalize well to unseen examples (i.e. it will overfit).
+**Number of hidden layers**: Due to the complexity of these NN models (particularly LSTM), this value should be kept low (2, 3 or 4). Otherwise, the model will not generalize well to unseen examples (i.e. it will overfit).
 
-**Number of units per layers**: This is one of the hardest to know how to set, I usually set this one by trial and iteration, and understanding how the model performs. Note: Be carefuly about this iterative process, to not overfit your hyperparameters to work well in the validation data. Because then it may fail badly on the real prediction.
+**Number of units per layers**: This is one of the hardest to know how to set, I usually set this one by trial and iteration, and understanding how the model performs. Note: Be carefully about this iterative process, to not overfit your hyperparameters to work well in the validation data. Because then it may fail badly on the real prediction.
 
 **Activation function**: _tanh_ is recommended. It is proved to outperform other activation functions. See https://stats.stackexchange.com/questions/101560/tanh-activation-function-vs-sigmoid-activation-function
 
