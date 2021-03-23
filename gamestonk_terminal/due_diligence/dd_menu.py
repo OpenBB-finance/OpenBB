@@ -6,6 +6,7 @@ from gamestonk_terminal.due_diligence import finviz_api as fvz_api
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
 from gamestonk_terminal.due_diligence import quandl_api as q_api
 from gamestonk_terminal.due_diligence import reddit_api as r_api
+from gamestonk_terminal.due_diligence import news_api
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -27,7 +28,7 @@ def print_due_diligence(s_ticker, s_start, s_interval):
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print("")
-    print("   news          latest news of the company [Finviz]")
+    print("   news          latest news of the company [News API]")
     print("   red           gets due diligence from another user's post [Reddit]")
     print("   analyst       analyst prices and ratings of the company [Finviz]")
     print("   rating        rating of the company from strong sell to strong buy [FMP]")
@@ -111,7 +112,7 @@ def dd_menu(df_stock, s_ticker, s_start, s_interval):
             fvz_api.insider(l_args, s_ticker)
 
         elif ns_known_args.cmd == "news":
-            fvz_api.news(l_args, s_ticker)
+            news_api.news(l_args, s_ticker)
 
         elif ns_known_args.cmd == "analyst":
             fvz_api.analyst(l_args, s_ticker)
