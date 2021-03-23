@@ -1,4 +1,4 @@
-""" Fundamental Analysis Market Watch API """
+""" Thought of The Day """
 __docformat__ = "numpy"
 
 import re
