@@ -27,7 +27,7 @@ def parametrize_from_file(test_namespace: str, parameter_file: str) -> Callable:
         test_file_base_path = pathlib.Path(__file__).parent.absolute()
         data_file_full_path = pathlib.Path(test_file_base_path, parameter_file)
 
-        with open(data_file_full_path, "r", encoding="utf-8") as file:
+        with open(data_file_full_path, encoding="utf-8") as file:
             parameter_data = yaml.full_load(file)
 
         idlist = []
