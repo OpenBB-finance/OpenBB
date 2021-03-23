@@ -1,3 +1,4 @@
+"""options info. [Source: Yahoo Finance]."""
 import argparse
 from bisect import bisect_left
 import yfinance as yf

@@ -1,3 +1,4 @@
+"""Control options main menu."""
 import argparse
 
 
@@ -9,7 +10,7 @@ from gamestonk_terminal.menu import session
 
 
 def opt_menu(s_ticker):
-
+    """Control options main menu."""
     # Add list of arguments that the options parser accepts
     opt_parser = argparse.ArgumentParser(prog="op", add_help=False)
     choices = ["help", "q", "quit", "volume", "oi"]
