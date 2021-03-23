@@ -66,7 +66,7 @@ def __get_volume_graph(ticker_name, volume_percentile_threshold=50):
     _, ax = plt.subplots(figsize=(15, 12))
     sns.set_style(style="darkgrid")
 
-    # make x axis symetric
+    # make x axis symmetric
     axis_origin = max(abs(max(puts["oi+v"])), abs(max(calls["oi+v"])))
     ax.set_xlim(-axis_origin, +axis_origin)
 
