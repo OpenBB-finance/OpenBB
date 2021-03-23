@@ -1,6 +1,6 @@
 # Roadmap 📍
 
-### Table of contents
+## Table of contents
 
 * [Discovery](#Discovery)
 * [Behavioral Analysis](#Behavioral-Analysis)
@@ -13,13 +13,17 @@
 * [Comparison Analysis](#Comparison-Analysis)
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
+* [FRED](#FRED)
+* [Options](#Options)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
+
+## Additional
 * [Backend](#Backend)
 * [Frontend](#Frontend)
 * [Developer Experience](#Developer-Experience)
 * [User Experience](#User-Experience)
-* [Options](#Options)
+
 ---
 
 ## Discovery
@@ -40,6 +44,7 @@
 ### Short term
 
 - [ ] Implement a better Twitter client (@aia)
+- [x] Add FinBrain sentiment from news (@didier) - [PR #223](https://github.com/DidierRLopes/GamestonkTerminal/pull/223)
 
 ### Long term
 
@@ -89,9 +94,13 @@
 
 ### Short term
 
-- [x] Add several exponential smoothing techniques [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
+- [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
+- [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
+- [x] Add averaging around multiple predictions (@didier) - [PR #252](https://github.com/DidierRLopes/GamestonkTerminal/pull/252)
 
 ### Long term
+
+- [ ] Combine Sentiment Analysis with Chart data - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
 
 ---
 
@@ -111,7 +120,8 @@
 ### Short term
 
 * [x] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
-* [ ] Add multi-ticker financials comparison (@didier)
+* [x] Add multi-ticker financials comparison (@didier) - [PR #237](https://github.com/DidierRLopes/GamestonkTerminal/pull/237)
+* [x] Add multi-ticker sentiment comparison (@didier) - [PR #250](https://github.com/DidierRLopes/GamestonkTerminal/pull/250)
 
 ### Long term
 
@@ -132,7 +142,39 @@
 
 ### Short term
 
+- [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
+- [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
+- [ ] Add Brokers (td, webull, etc) (@jmaslek)
+- [ ] Merge data from different brokers (@jmaslek)
+- [ ] Refactoring
+
 ### Long term
+
+- [ ] Summaries / tear sheets (@jmaslek)
+- [ ] Portfolio Optimization (@jmaslek)
+
+
+---
+
+## FRED
+
+### Short term
+
+- [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
+### Long term
+
+---
+
+## Options
+
+### Short term
+
+- [x] Add Volume graph (@lolrenx) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
+- [x] Add Open Interest graph (@lolrenx) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
+
+### Long term
+
+- [ ] Add max pain graph (@lolrenx)
 
 ---
 
@@ -209,13 +251,3 @@
 
 ---
 
-## Options
-
-### Short term
-
-- [ ] Add Volume graph (@lolrenx)
-- [ ] Add Open Interest graph (@lolrenx)
-
-### Long term
-
-- [ ] Add max pain graph

@@ -51,13 +51,14 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     )
     print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print(
-        "   sen         sentiment of the market, \t from: reddit, stocktwits, twitter"
-    )
-    print(
         "   fred        economic data, \t\t\t from: Federal Reserve Bank of St. Louis "
     )
+    print("   pa          portfolio analysis, \t\t Currently Supported: Robinhood ")
 
     if s_ticker:
+        print(
+            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter"
+        )
         print(
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
         )
@@ -156,7 +157,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         return [s_ticker, s_start, s_interval, df_stock]
 
     # Update values:
-    s_ticker = ns_parser.s_ticker
+    s_ticker = ns_parser.s_ticker.upper()
     s_start = ns_parser.s_start_date
     s_interval = str(ns_parser.n_interval) + "min"
 
@@ -277,6 +278,7 @@ def candle(s_ticker: str, s_start: str):
             candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
         ),
     )
+    print("")
 
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):

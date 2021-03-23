@@ -10,9 +10,16 @@ This menu aims to give insight on options. options can cause significant share p
 ## volume <a name="get"></a>
 
 ```text
-usage: volume -d 'yyyy-mm-dd'
+usage: volume -e yyyy-mm-dd 
 ```
+
+or
+
+```text
+usage: volume --expiry yyyy-mm-dd 
+```
+
 
 Display volume graph for a date. [Source: Yahoo Finance]
 
-* -d : expiration date.
+* -e, --expiry : expiration date.

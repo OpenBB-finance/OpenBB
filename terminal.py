@@ -11,6 +11,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_menu as dm
 from gamestonk_terminal.due_diligence import dd_menu as ddm
@@ -19,11 +20,12 @@ from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
-from gamestonk_terminal.sentiment import sen_menu as sm
+from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_menu as tam
-from gamestonk_terminal.comparison_analysis import ca_menu as cam
+from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.options import op_menu as opm
 from gamestonk_terminal.fred import fred_menu as fm
+from gamestonk_terminal.portfolio import port_controller
 
 # import warnings
 # warnings.simplefilter("always")
@@ -66,7 +68,7 @@ def main():
         "export",
         "disc",
         "mill",
-        "sen",
+        "ba",
         "res",
         "fa",
         "ta",
@@ -75,6 +77,7 @@ def main():
         "ca",
         "op",
         "fred",
+        "pa",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -82,6 +85,15 @@ def main():
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
+    parsed_stdin = False
+
+    if gtff.ENABLE_THOUGHTS_DAY:
+        print("-------------------")
+        try:
+            thought.get_thought_of_the_day()
+        except Exception as e:
+            print(e)
+        print("")
 
     # Loop forever and ever
     while True:
@@ -90,8 +102,12 @@ def main():
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
 
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
+        # Get input command from stdin or user
+        if not parsed_stdin and len(sys.argv) > 1:
+            as_input = " ".join(sys.argv[1:])
+            parsed_stdin = True
+            print(f"{get_flair()}> {as_input}")
+        elif session and gtff.USE_PROMPT_TOOLKIT:
             as_input = session.prompt(f"{get_flair()}> ", completer=completer)
         else:
             as_input = input(f"{get_flair()}> ")
@@ -138,7 +154,8 @@ def main():
 
             else:
                 print(
-                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at."
+                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at.",
+                    "\n",
                 )
 
             main_cmd = True
@@ -164,14 +181,14 @@ def main():
         elif ns_known_args.opt == "mill":
             b_quit = mill.papermill_menu()
 
-        elif ns_known_args.opt == "sen":
-            b_quit = sm.sen_menu(s_ticker, s_start)
+        elif ns_known_args.opt == "ba":
+            b_quit = ba_controller.menu(s_ticker, s_start)
 
         elif ns_known_args.opt == "res":
             b_quit = rm.res_menu(s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "ca":
-            b_quit = cam.ca_menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
@@ -187,6 +204,9 @@ def main():
 
         elif ns_known_args.opt == "fred":
             b_quit = fm.fred_menu()
+
+        elif ns_known_args.opt == "pa":
+            b_quit = port_controller.menu()
 
         elif ns_known_args.opt == "pred":
 
