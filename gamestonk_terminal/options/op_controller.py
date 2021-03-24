@@ -126,10 +126,15 @@ class OptionsController:
                 process_input = an_input
 
                 if process_input is not None:
-                    self.__set_exp_date(int(an_input))
-                    print(f"\nNew selected expiry date : [{self.expiry_date}]\n")
-                    return
-                    # menu(self.ticker, self)
+                    try:
+                        self.__set_exp_date(int(an_input))
+                        print(f"\nNew selected expiry date : [{self.expiry_date}]\n")
+                        return
+                        # menu(self.ticker, self)
+                    except IndexError:
+                        print(
+                            f"\nSelection must be between [0 - {len(self.raw_data_options.options) - 1}]\n"
+                        )
 
             except SystemExit:
                 print("The command selected doesn't exist\n")
