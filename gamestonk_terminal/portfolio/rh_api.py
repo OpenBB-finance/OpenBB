@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import RH_USERNAME as user, RH_PASSWORD as pw
+from gamestonk_terminal.portfolio.portfolio_helpers import rh_positions_to_df
 
 register_matplotlib_converters()
 
@@ -66,6 +67,11 @@ def show_holdings():
             print(colored(to_print, "red"))
 
     print("")
+
+
+def return_holdings() -> pd.DataFrame:
+    holds = robinhood.account.build_holdings()
+    return rh_positions_to_df(holds)
 
 
 def plot_historical(l_args):

@@ -2,26 +2,44 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio import rh_api, alp_api
+from gamestonk_terminal.portfolio import rh_api, alp_api, ally_api
+from gamestonk_terminal.portfolio.portfolio_helpers import (
+    merge_portfolios,
+    print_portfolio,
+)
 
 
 class PortfolioController:
 
-    CHOICES = ["help", "q", "quit", "login", "rhhold", "rhhist", "alphold", "alphist"]
+    CHOICES = [
+        "help",
+        "q",
+        "quit",
+        "login",
+        "rhhold",
+        "rhhist",
+        "alphold",
+        "alphist",
+        "allyhold",
+        "hold",
+    ]
 
     BROKERS = [
         "rh",
         "alp",
+        "ally",
     ]
 
     def __init__(self):
         self.port_parser = argparse.ArgumentParser(add_help=False, prog="port")
         self.port_parser.add_argument("cmd", choices=self.CHOICES)
         self.broker_list = set()
+        self.merged_holdings = None
 
     @staticmethod
     def print_help(broker_list):
@@ -40,6 +58,7 @@ class PortfolioController:
         print("\nCurrently Supported :")
         print("   rh             Robinhood - fuck these guys")
         print("   alp            Alpaca ")
+        print("   ally           Ally Invest")
         print("\nCommands (login required):")
         print("\nRobinhood:")
         print("   rhhold         view rh holdings")
@@ -47,6 +66,10 @@ class PortfolioController:
         print("\nAlpaca:")
         print("   alphold        view alp holdings")
         print("   alphist        view alp portfolio history")
+        print("\nAlly:")
+        print("   allyhold       view ally holdings")
+        print("\nMerge:")
+        print("   hold           view net holdings across all logins")
         print("")
 
     def print_portfolio_menu(self):
@@ -60,7 +83,10 @@ class PortfolioController:
         print("\nAlpaca:")
         print("   alphold     view alpaca holdings")
         print("   alphist     plot historical alpaca portfolio")
-
+        print("\nAlly:")
+        print("   allyhold    view ally holdings")
+        print("\nMerge:")
+        print("   hold        view net holdings across all logins")
         print("")
 
     def switch(self, an_input: str):
@@ -136,6 +162,26 @@ class PortfolioController:
 
     def call_alphist(self, other_args: List[str]):
         alp_api.plot_historical(other_args)
+
+    def call_allyhold(self, _):
+        try:
+            ally_api.show_holdings()
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_hold(self, _):
+        holdings = pd.DataFrame(
+            columns=["Symbol", "MarketValue", "Quantity", "CostBasis"]
+        )
+        if not self.broker_list:
+            print("Login to desired brokers\n")
+        for broker in self.broker_list:
+            holdings = pd.concat(
+                [holdings, eval(broker + "_api.return_holdings()")], axis=0
+            )
+        self.merged_holdings = merge_portfolios(holdings)
+        print_portfolio(self.merged_holdings)
 
 
 def menu():
