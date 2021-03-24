@@ -1,4 +1,3 @@
-"""Docstring makes linters happy."""
 #!/usr/bin/env python
 
 import argparse
