@@ -2,11 +2,12 @@
 __docformat__ = "numpy"
 
 import argparse
+from typing import List
 import matplotlib.pyplot as plt
 
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.options import volume
 from gamestonk_terminal.menu import session
@@ -25,34 +26,56 @@ class OptionsController:
         """Construct data."""
         self.ticker = ticker
         self.raw_data_options = yf.Ticker(self.ticker)
-        self.expiry_date = ""
-
-        self.__set_exp_date()
-
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="ca")
+        self.expiry_date = self.raw_data_options.options[0]
+        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
         self.op_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
-    def __set_exp_date(self, date_index=0):
-        self.expiry_date = self.raw_data_options.options[date_index]
-        return
-
     @staticmethod
-    def print_exp_dates(expiry_date, all_dates):
+    def expiry_dates(self, other_args: List[str]):
         """Print all available expiry dates."""
-        print(f"Current selected expiry date: [{expiry_date}]")
-        print("\nAvailable dates:\n")
-        for i, d in enumerate(all_dates):
-            if len(str(i)) == 1:
-                spacer = " "
-            else:
-                spacer = ""
-            print(f"  [{i}]   {spacer}{d}")
-        print(
-            f"\nPlease select date: input a number between 0 and {len(all_dates)-1}\n"
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="exp",
+            description="""See expiry dates.""",
         )
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="n_date",
+            action="store",
+            type=int,
+            default=-1,
+            choices=range(len(self.raw_data_options.options)),
+            help=f"Expiry date index for {self.ticker}.",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-d")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            # Print possible expiry dates
+            if ns_parser.n_date == -1:
+                print("\nAvailable expiry dates:")
+                for i, d in enumerate(self.raw_data_options.options):
+                    print(f"   {(2-len(str(i)))*' '}{i}.  {d}")
+
+            # It means an expiry date was correctly selected
+            else:
+                self.expiry_date = self.raw_data_options.options[ns_parser.n_date]
+                print(f"\nSelected expiry date : {self.expiry_date}")
+
+        except Exception as e:
+            print(e)
+
+        print("")
         return
 
     @staticmethod
@@ -63,10 +86,9 @@ class OptionsController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-
-        print(
-            f"   exp           set expiry date, current selected date : [{expiry_date}]"
-        )
+        print(f"Selected expiry date: {expiry_date}")
+        print("")
+        print("   exp           see/set expiry date")
         print("   volume        plot options trading volume / open interest")
         print("")
         return
@@ -109,58 +131,16 @@ class OptionsController:
         )
         print("")
 
-    def call_exp(self, _):
+    def call_exp(self, other_args: List[str]):
         """Process exp command."""
-        self.print_exp_dates(self.expiry_date, self.raw_data_options.options)
-
-        date_index_choices = list(range(len(self.raw_data_options.options) - 1))
-        while True:
-            # Get input command from user
-            if session and gtff.USE_PROMPT_TOOLKIT:
-                completer = NestedCompleter.from_nested_dict(
-                    {c: None for c in date_index_choices}
-                )
-                an_input = session.prompt(
-                    f"{get_flair()} (exp)> ",
-                    completer=completer,
-                )
-            else:
-                an_input = input(f"{get_flair()} (exp)> ")
-
-            try:
-                plt.close("all")
-
-                process_input = an_input
-
-                if process_input is not None:
-                    try:
-                        self.__set_exp_date(int(an_input))
-                        print(f"\nNew selected expiry date : [{self.expiry_date}]\n")
-                        return
-                        # menu(self.ticker, self)
-                    except IndexError:
-                        print(
-                            f"\nSelection must be between [0 - {len(self.raw_data_options.options) - 1}]\n"
-                        )
-                        continue
-                    except ValueError:
-                        print("The command selected doesn't exist\n")
-                        self.print_exp_dates(
-                            self.expiry_date, self.raw_data_options.options
-                        )
-
-            except SystemExit:
-                print("The command selected doesn't exist\n")
-                continue
+        self.expiry_dates(self, other_args)
 
 
-def menu(ticker: str, op_con=None):
+def menu(ticker: str):
     """Options info Menu."""
-    if op_con is None:
-        op_controller = OptionsController(ticker)
-    else:
-        op_controller = op_con
-    op_controller.call_help("")
+
+    op_controller = OptionsController(ticker)
+    op_controller.call_help(None)
 
     while True:
         # Get input command from user
