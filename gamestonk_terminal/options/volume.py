@@ -30,13 +30,14 @@ def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50
     # Initialize the matplotlib figure
 
     _, ax = plt.subplots(figsize=(12, 10))
-    sns.set_style(style="darkgrid")
 
     # make x axis symmetric
     axis_origin = max(abs(max(puts["oi+v"])), abs(max(calls["oi+v"])))
     ax.set_xlim(-axis_origin, +axis_origin)
 
     VOLUME_THRESHOLD = np.percentile(calls["oi+v"], PERCENTILE_THRESHOLD)
+
+    sns.set_style(style="darkgrid")
 
     g = sns.barplot(
         x="oi+v",
@@ -87,7 +88,7 @@ def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50
     # ax.axhline(max_pain_index, ls='--')
     # format ticklabels without - for puts
     g.set_xticks(g.get_xticks())
-    xlabels = ["{:,.0f}".format(x).replace("-", "") for x in g.get_xticks()]
+    xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
     g.set_xticklabels(xlabels)
 
     plt.title(
@@ -113,7 +114,6 @@ def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50
     ]
 
     plt.legend(handles=handles[:], labels=labels)
-
     sns.despine(left=True, bottom=True)
     plt.show()
 
