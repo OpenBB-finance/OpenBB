@@ -42,7 +42,7 @@ class OptionsController:
     @staticmethod
     def print_exp_dates(expiry_date, all_dates):
         """Print all available expiry dates."""
-        print(f"\nCurrent selected expiry date: [{expiry_date}]")
+        print(f"Current selected expiry date: [{expiry_date}]")
         print("\nAvailable dates:\n")
         for i, d in enumerate(all_dates):
             if len(str(i)) == 1:
@@ -143,6 +143,11 @@ class OptionsController:
                             f"\nSelection must be between [0 - {len(self.raw_data_options.options) - 1}]\n"
                         )
                         continue
+                    except ValueError:
+                        print("The command selected doesn't exist\n")
+                        self.print_exp_dates(
+                            self.expiry_date, self.raw_data_options.options
+                        )
 
             except SystemExit:
                 print("The command selected doesn't exist\n")
