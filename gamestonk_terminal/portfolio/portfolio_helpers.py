@@ -1,7 +1,6 @@
 import pandas as pd
 from termcolor import colored
 
-
 def alpaca_positions_to_df(positions):
 
     df = pd.DataFrame(columns=["Symbol", "MarketValue", "Quantity", "CostBasis"])
@@ -64,9 +63,9 @@ def rh_positions_to_df(holds: dict):
 
 
 def merge_portfolios(df: pd.DataFrame) -> pd.DataFrame:
-    if set(df.columns) != set(
-        ["Symbol", "MarketValue", "Quantity", "CostBasis", "Broker"]
-    ):
+    if set(df.columns) != {
+        "Symbol", "MarketValue", "Quantity", "CostBasis", "Broker"
+    }:
         print("Check df generation")
         return None
 
