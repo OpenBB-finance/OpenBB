@@ -5,6 +5,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal import config_plot as cfgPlot
+
 
 def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50):
     """Docstring make linter hap."""
@@ -28,8 +31,8 @@ def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50
     max_pain = __calc_max_pain(calls, puts)
 
     # Initialize the matplotlib figure
-
-    _, ax = plt.subplots(figsize=(12, 10))
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    # _, ax = plt.subplots(figsize=(12, 10))
 
     # make x axis symmetric
     axis_origin = max(abs(max(puts["oi+v"])), abs(max(calls["oi+v"])))
