@@ -5,6 +5,7 @@ This page shows the available brokers for loading in data.  If yours is not list
 Current brokers:
 * Robinhood
 * Alpaca
+* Ally
 
 
 Once this screen is accessed, the first command to be run is 
@@ -35,6 +36,15 @@ Your  login information should be stored as environment variables in [config fil
     * Look at current (stock only) holdings
 * [alphist](#rhhist)
     * Get and plot historical portfolio
+
+[ALLY](#ALLY)
+* [allyhold](#allyhold)
+  * Look at Ally Invest Holdings
+
+[Merge](#Merge)
+* [hold](#hold)
+  * View holdings across all brokers
+  
 
 ## ROBINHOOD <a name="ROBINHOOD"></a>
 Robinhood has Two Factor Authentication, so you will likely be prompted to enter a code that is texted/emailed to you.
@@ -71,6 +81,7 @@ usage: rhhist [-s --span] [-i --interval]
 Example Default Output:
 
 ![rhhist](https://user-images.githubusercontent.com/18151143/111718919-36da8e00-8831-11eb-99e1-957c8eccb583.png)
+
 ## ALPACA <a name="ALPACA"></a>
 
 Alpaca has a nicely maintained python API that is used here.  To login, the best approach is to just save the following environment variables:
@@ -106,3 +117,38 @@ usage: alphist [-p --period] [-t --timeframe]
 
 * -p/--period The duration of the data in \<number> + \<unit>, such as 1D, where <unit> can be D for day, W for week, M for month and A for year. Defaults to 1M
 * -t/--timeframe The resolution of time window. 1Min, 5Min, 15Min, 1H, or 1D. If omitted, 1Min for less than 7 days period, 15Min for less than 30 days, or otherwise 1D.
+
+## ALLY <a name="ALLY"></a>
+
+In order to access your Ally Invest account through the API, you must first acquire a key from 
+[your Ally Invest Account](#https://www.ally.com/api/invest/documentation/getting-started/).
+
+Once you have this, you want to load in the following environment variables (similar to alpaca, the api will access these
+directly from the environment)
+* ALLY_CONSUMER_KEY
+* ALLY_CONSUMER_SECRET
+* ALLY_OAUTH_TOKEN
+* ALLY_OAUTH_SECRET
+* ALLY_ACCOUNT_NBR
+  * This is obtained from your actual account - not through the api application.
+
+As of writing this, the ally API does not provide historical portfolio data, so only a holdings option is provided.
+### allyhold <a name="allyhold"></a>
+Show all Ally Invest holdings:
+````
+usage : allyhold
+````
+No additional flags.
+
+## Merge <a name="Merge"></a>
+
+When logged into 1 or more brokers - this option is available.  Currently, this allows for
+viewing holding across all platforms.  The PnL is shown for all time (Market Value and your Cost Basis)
+
+### hold <a name = "hold"></a>
+
+Show holdings across all brokers that are logged in.
+````
+usage: hold
+````
+Currently no additional flags.  If not all brokers are represented, double check that they are logged in.

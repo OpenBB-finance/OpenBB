@@ -1,5 +1,6 @@
 import argparse
 import os
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import alpaca_trade_api as alp_api
@@ -10,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.portfolio.portfolio_helpers import alpaca_positions_to_df
 
 register_matplotlib_converters()
 
@@ -42,6 +44,12 @@ def show_holdings():
         else:
             print(colored(to_print, "red"))
     print("")
+
+
+def return_holdings() -> pd.DataFrame:
+    api = alp_api.REST()
+    positions = api.list_positions()
+    return alpaca_positions_to_df(positions)
 
 
 def plot_historical(l_args):
