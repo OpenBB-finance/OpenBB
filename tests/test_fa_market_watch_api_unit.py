@@ -28,4 +28,8 @@ class TestFaMarketWatchApiUnit:
         mock_request_get.get().text = mock_market_watch
         ret = prepare_df_financials(ticker, statement)
 
-        assertions.assertEqual(ret.to_csv(), expected_result)
+        assertions.assertEqual.__self__.maxDiff = None
+        assertions.assertEqual(
+            ret.to_csv().replace("\r\n", "\n"),
+            expected_result.replace("\r\n", "\n"),
+        )
