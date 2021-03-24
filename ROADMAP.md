@@ -144,8 +144,10 @@
 
 - [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 - [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
+- [x] Add Ally Invest (@jmaslek)
+- [x] Merge data from different brokers (@jmaslek)
+- [x] Add more options around merged portfolios
 - [ ] Add Brokers (td, webull, etc) (@jmaslek)
-- [ ] Merge data from different brokers (@jmaslek)
 - [ ] Refactoring
 
 ### Long term
