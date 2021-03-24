@@ -21,6 +21,7 @@ class TestFaMarketWatchApiUnit:
         "test_prepare_df_financials",
         "../tests/data/fa_market_watch_api.yaml",
     )
+    # pylint: disable=too-many-arguments
     def test_prepare_df_financials(
         self, mock_request_get, ticker, statement, mock_market_watch, expected_result
     ):
