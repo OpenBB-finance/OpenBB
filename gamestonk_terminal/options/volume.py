@@ -1,53 +1,19 @@
 """options info. [Source: Yahoo Finance]."""
-import argparse
 from bisect import bisect_left
-import yfinance as yf
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    valid_date,
-)
 
 
-def volume_graph(s_ticker, l_args):
-    """Show traded options volume. [Source: Yahoo Finance]."""
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="volume",
-        description="""Display volume graph for a date. [Source: Yahoo Finance].""",
-    )
-    parser.add_argument(
-        "-e",
-        "--expiry",
-        type=valid_date,
-        dest="s_expiry_date",
-        help="The expiry date (format YYYY-MM-DD) for the option chain",
-        required=True,
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
-        if not ns_parser:
-            return
-
-        __get_volume_graph(s_ticker, ns_parser.s_expiry_date.strftime("%Y-%m-%d"))
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e)
-
-
-def __get_volume_graph(ticker_name, volume_percentile_threshold=50):
+def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50):
+    """Docstring make linter hap."""
     # SET VOLUME TO BE FILTERED, default = 50
     PERCENTILE_THRESHOLD = volume_percentile_threshold
 
     TICKER_NAME = ticker_name
-    raw_data_options = yf.Ticker(TICKER_NAME)
-    EXP_DATE = __get_exp_data(raw_data_options)
+    raw_data_options = raw_data
+    EXP_DATE = exp_date
 
     # current stock price
     spot = __get_current_spot(raw_data_options)
@@ -62,9 +28,8 @@ def __get_volume_graph(ticker_name, volume_percentile_threshold=50):
     max_pain = __calc_max_pain(calls, puts)
 
     # Initialize the matplotlib figure
-    sns.set_style("darkgrid")
-    plt.rcParams["figure.dpi"] = 360
-    _, ax = plt.subplots(figsize=(15, 12))
+
+    _, ax = plt.subplots(figsize=(12, 10))
     sns.set_style(style="darkgrid")
 
     # make x axis symmetric
@@ -206,7 +171,3 @@ def __parse_opt_data(raw_data_options, exp_date, is_calls=True):
 
 def __get_current_spot(raw_data_options):
     return raw_data_options.history().tail(1)["Close"].iloc[0]
-
-
-def __get_exp_data(raw_data_options, date_index=0):
-    return raw_data_options.options[date_index]
