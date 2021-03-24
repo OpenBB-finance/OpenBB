@@ -23,7 +23,7 @@ from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_controller
-from gamestonk_terminal.options import op_menu as opm
+from gamestonk_terminal.options import op_controller
 from gamestonk_terminal.fred import fred_menu as fm
 from gamestonk_terminal.portfolio import port_controller
 
@@ -32,12 +32,13 @@ from gamestonk_terminal.portfolio import port_controller
 
 
 # pylint: disable=too-many-branches
+
+
 def main():
     """
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
     while I saw my GME shares tanking. But hey, I like the stock.
     """
-
     # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
     if sys.platform == "win32":
         os.system("")
@@ -200,7 +201,7 @@ def main():
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "op":
-            b_quit = opm.opt_menu(s_ticker)
+            b_quit = op_controller.menu(s_ticker)
 
         elif ns_known_args.opt == "fred":
             b_quit = fm.fred_menu()

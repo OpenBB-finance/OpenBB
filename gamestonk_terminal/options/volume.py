@@ -1,144 +1,176 @@
-import argparse
-import yfinance as yf
+"""options info. [Source: Yahoo Finance]."""
+from bisect import bisect_left
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
-import plotly.express as px
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    valid_date,
-)
+import numpy as np
+
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal import config_plot as cfgPlot
 
 
-def open_interest_graph(l_args, s_ticker):
-    """ Show traded options volume. [Source: Yahoo Finance] """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="volume",
-        description="""Display volume graph for a date. [Source: Yahoo Finance].""",
-    )
-    parser.add_argument(
-        "-e",
-        "--expiry",
-        type=valid_date,
-        dest="s_expiry_date",
-        help="The expiry date (format YYYY-MM-DD) for the option chain",
-        required=True,
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
-        if not ns_parser:
-            return
+def volume_graph(raw_data, ticker_name, exp_date, volume_percentile_threshold=50):
+    """Docstring make linter hap."""
+    # SET VOLUME TO BE FILTERED, default = 50
+    PERCENTILE_THRESHOLD = volume_percentile_threshold
 
-        __get_open_interest_graph(
-            s_ticker, ns_parser.s_expiry_date.strftime("%Y-%m-%d")
-        )
+    TICKER_NAME = ticker_name
+    raw_data_options = raw_data
+    EXP_DATE = exp_date
 
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e)
+    # current stock price
+    spot = __get_current_spot(raw_data_options)
 
+    calls = __parse_opt_data(raw_data_options, EXP_DATE)
+    puts = __parse_opt_data(raw_data_options, EXP_DATE, is_calls=False)
 
-def volume_graph(l_args, s_ticker):
-    """ Show traded options volume. [Source: Yahoo Finance] """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="volume",
-        description="""Display volume graph for a date. [Source: Yahoo Finance].""",
-    )
-    parser.add_argument(
-        "-e",
-        "--expiry",
-        type=valid_date,
-        dest="s_expiry_date",
-        help="The expiry date (format YYYY-MM-DD) for the option chain",
-        required=True,
+    calls = __add_max_pain_data(calls, spot)
+
+    puts = __add_max_pain_data(puts, spot, is_calls=False)
+
+    max_pain = __calc_max_pain(calls, puts)
+
+    # Initialize the matplotlib figure
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    # _, ax = plt.subplots(figsize=(12, 10))
+
+    # make x axis symmetric
+    axis_origin = max(abs(max(puts["oi+v"])), abs(max(calls["oi+v"])))
+    ax.set_xlim(-axis_origin, +axis_origin)
+
+    VOLUME_THRESHOLD = np.percentile(calls["oi+v"], PERCENTILE_THRESHOLD)
+
+    sns.set_style(style="darkgrid")
+
+    g = sns.barplot(
+        x="oi+v",
+        y="strike",
+        data=calls[calls["oi+v"] > VOLUME_THRESHOLD],
+        label="Calls: Open Interest",
+        color="lightgreen",
+        orient="h",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
-        if not ns_parser:
-            return
-
-        __get_volume_graph(s_ticker, ns_parser.s_expiry_date.strftime("%Y-%m-%d"))
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e)
-
-
-def __get_open_interest_graph(ticker_name, exp_date):
-    df = __get_volume_data(ticker_name, exp_date)
-    __generate_graph_sns(df, ticker_name, exp_date, True)
-    # __generate_graph_plotly(df, ticker_name, exp_date)
-
-
-def __get_volume_graph(ticker_name, exp_date):
-    df = __get_volume_data(ticker_name, exp_date)
-    __generate_graph_sns(df, ticker_name, exp_date)
-    # __generate_graph_plotly(df, ticker_name, exp_date)
-
-
-def __pull_call_put_data(call_put, flag):
-    df = call_put.pivot_table(
-        index="strike", values=["volume", "openInterest"], aggfunc="sum"
+    g = sns.barplot(
+        x="volume",
+        y="strike",
+        data=calls[calls["oi+v"] > VOLUME_THRESHOLD],
+        label="Calls: Volume",
+        color="green",
+        orient="h",
     )
 
-    df.reindex()
+    g = sns.barplot(
+        x="oi+v",
+        y="strike",
+        data=puts[puts["oi+v"] < -VOLUME_THRESHOLD],
+        label="Puts: Open Interest",
+        color="pink",
+        orient="h",
+    )
 
-    df["strike"] = df.index
-    df["type"] = flag
+    g = sns.barplot(
+        x="volume",
+        y="strike",
+        data=puts[puts["oi+v"] < -VOLUME_THRESHOLD],
+        label="Puts: Volume",
+        color="red",
+        orient="h",
+    )
 
+    # draw spot line
+    s = [float(strike.get_text()) for strike in ax.get_yticklabels()]
+    spot_index = bisect_left(s, spot)  # find where the spot is on the graph
+    spot_line = ax.axhline(spot_index, ls="--", color="dodgerblue", alpha=0.3)
+
+    # draw max pain line
+    max_pain_index = bisect_left(s, max_pain)
+    max_pain_line = ax.axhline(max_pain_index, ls="-", color="black", alpha=0.3)
+    max_pain_line.set_linewidth(5)
+
+    # ax.axhline(max_pain_index, ls='--')
+    # format ticklabels without - for puts
+    g.set_xticks(g.get_xticks())
+    xlabels = [f"{x:,.0f}".replace("-", "") for x in g.get_xticks()]
+    g.set_xticklabels(xlabels)
+
+    plt.title(
+        f"{TICKER_NAME.upper()} volumes for {EXP_DATE} (open interest displayed only during market hours)"
+    )
+    ax.invert_yaxis()
+
+    # ax.spines['left'].set_position('center')
+
+    _ = ax.legend()
+    handles, _ = ax.get_legend_handles_labels()
+    handles.append(spot_line)
+    handles.append(max_pain_line)
+
+    # create legend labels + add to graph
+    labels = [
+        "Calls open interest",
+        "Calls volume ",
+        "Puts open interest",
+        "Puts volume",
+        "Current stock price",
+        f"Max pain = {max_pain}",
+    ]
+
+    plt.legend(handles=handles[:], labels=labels)
+    sns.despine(left=True, bottom=True)
+    plt.show()
+
+
+def __add_max_pain_data(df, spot, is_calls=True):
+    # max pain parsing + calculation
+    df["spot"] = round(spot, 2)
+    if is_calls:
+        df["dv"] = spot - df.index
+    else:
+        df["dv"] = df.index - spot
+    df["dv"] = df["dv"].apply(lambda x: max(0, x))
+    df["dv"] = abs(df["dv"] * df["volume"])
     return df
 
 
-def __get_volume_data(ticker_name, exp_date):
+def __calc_max_pain(calls, puts):
 
-    option_chain = yf.Ticker(ticker_name).option_chain(exp_date)
+    df = pd.merge(calls, puts, left_index=True, right_index=True)
+    df["dv"] = round(df["dv_x"] + df["dv_y"], 2)
 
-    calls = __pull_call_put_data(option_chain.calls, "calls")
-
-    puts = __pull_call_put_data(option_chain.puts, "puts")
-
-    volume_data = pd.concat([calls, puts], axis=0)
-    # dataframe
-    return volume_data
+    max_pain = df["dv"].idxmax()
+    return max_pain
 
 
-def __generate_graph_plotly(df, ticker_name, exp_date, for_open_interest=False):
-    # version with plotly express
-    if for_open_interest:
-        op_type = "openInterest"
+def __parse_opt_data(raw_data_options, exp_date, is_calls=True):
+    # get option chain for specific expiration
+    opt = raw_data_options.option_chain(exp_date)
+
+    # PARSE DATA
+    if is_calls:
+        option_data = opt.calls
+        flag = "calls"
     else:
-        op_type = "volume"
+        option_data = opt.puts
+        flag = "puts"
 
-    fig = px.line(
-        df,
-        x="strike",
-        y=op_type,
-        title=f"{ticker_name} options {op_type} for {exp_date}",
-        color="type",
-    )
-    fig.show()
+    data = option_data.pivot_table(
+        index="strike", values=["volume", "openInterest"], aggfunc="sum"
+    ).reindex()
 
-    return
+    data["strike"] = data.index
+    data["type"] = flag
 
-
-def __generate_graph_sns(df, ticker_name, exp_date, for_open_interest=False):
-    # version with seaborn express
-    if for_open_interest:
-        op_type = "openInterest"
+    if is_calls:
+        data["openInterest"] = data["openInterest"]
+        data["volume"] = data["volume"]
     else:
-        op_type = "volume"
+        data["openInterest"] = -data["openInterest"]
+        data["volume"] = -data["volume"]
 
-    plt.figure(figsize=(12, 6))
-    fig = sns.lineplot(
-        data=df, x="strike", y=op_type, hue="type", palette=["limegreen", "tomato"]
-    )
+    data["oi+v"] = data["openInterest"] + data["volume"]
+    return data
 
-    plt.title(f"{ticker_name} options {op_type} for {exp_date}")
 
-    plt.show()
-    return fig
+def __get_current_spot(raw_data_options):
+    return raw_data_options.history().tail(1)["Close"].iloc[0]
