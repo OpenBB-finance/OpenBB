@@ -60,13 +60,13 @@ def watchlist(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        dt_last_time_market_close = get_last_time_market_was_open(
-            datetime.now() - timedelta(hours=24)
-        )
-        n_ts_after = int(dt_last_time_market_close.timestamp())
+        # dt_last_time_market_close = get_last_time_market_was_open(
+        #    datetime.now() - timedelta(hours=24)
+        # )
+        # n_ts_after = int(dt_last_time_market_close.timestamp())
         psaw_api = PushshiftAPI()
         submissions = psaw_api.search_submissions(
-            after=n_ts_after,
+            # after=n_ts_after,
             subreddit=l_sub_reddits,
             q="WATCHLIST|Watchlist|watchlist",
             filter=["id"],
@@ -141,8 +141,8 @@ def watchlist(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e, "\n")
-                    # pass
+                    # print(e, "\n")
+                    pass
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous watchlists:"
@@ -191,6 +191,7 @@ def popular_tickers(l_args):
             wallstreetbets
         """,
     )
+    """
     parser.add_argument(
         "-d",
         "--days",
@@ -200,15 +201,16 @@ def popular_tickers(l_args):
         default=1,
         help="look for the tickers from those n past days.",
     )
+    """
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
         if not ns_parser:
             return
 
-        n_ts_after = int(
-            (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
-        )
+        # n_ts_after = int(
+        #    (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
+        # )
 
         if ns_parser.s_subreddit:
             if "," in ns_parser.s_subreddit:
@@ -246,7 +248,7 @@ def popular_tickers(l_args):
                 f"Search for latest tickers under {ns_parser.n_limit} '{s_sub_reddit}' posts"
             )
             submissions = psaw_api.search_submissions(
-                after=int(n_ts_after),
+                # after=int(n_ts_after),
                 subreddit=s_sub_reddit,
                 limit=ns_parser.n_limit,
                 filter=["id"],
@@ -345,9 +347,7 @@ def popular_tickers(l_args):
                 ],
             )
 
-            print(
-                f"\nThe following TOP {ns_parser.n_top} tickers have been mentioned in the last {ns_parser.n_days} days:"
-            )
+            print(f"\nThe following TOP {ns_parser.n_top} tickers have been mentioned:")
 
             print(popular_tickers_df, "\n")
         else:
@@ -472,7 +472,9 @@ def spac_community(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e, "\n")
+                    # print(e, "\n")
+                    pass
+
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
@@ -499,6 +501,7 @@ def spac(l_args):
         default=5,
         help="limit of posts with SPACs retrieved.",
     )
+    """
     parser.add_argument(
         "-d",
         "--days",
@@ -508,6 +511,7 @@ def spac(l_args):
         default=5,
         help="look for the tickers from those n past days.",
     )
+    """
 
     try:
         ns_parser = parse_known_args_and_warn(parser, l_args)
@@ -527,9 +531,9 @@ def spac(l_args):
         l_watchlist_links = list()
         l_watchlist_author = list()
 
-        n_ts_after = int(
-            (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
-        )
+        # n_ts_after = int(
+        #    (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
+        # )
         l_sub_reddits = [
             "pennystocks",
             "RobinHoodPennyStocks",
@@ -543,7 +547,7 @@ def spac(l_args):
         warnings.filterwarnings("ignore")  # To avoid printing the warning
         psaw_api = PushshiftAPI()
         submissions = psaw_api.search_submissions(
-            after=n_ts_after,
+            # after=n_ts_after,
             subreddit=l_sub_reddits,
             q="SPAC|Spac|spac|Spacs|spacs",
             filter=["id"],
@@ -617,8 +621,8 @@ def spac(l_args):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception as e:
-                    print(e, "\n")
-                    # pass
+                    # print(e, "\n")
+                    pass
             if n_tickers:
                 print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
