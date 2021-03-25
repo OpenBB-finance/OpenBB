@@ -1,6 +1,6 @@
 # PREDICTION TECHNIQUES
 
-This menu aims to predict the share price of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below. See [Validate NN model guidelines](VALIDATE-NN-model.md).
+This menu aims to predict the share price of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below. See [How to fune-tuning a NN model](FUNE-TUNING-NN-models.md).
 
   * [sma](#sma)
     - simple moving average
