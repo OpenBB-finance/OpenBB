@@ -1,5 +1,7 @@
 # Validate/Tweaking Neural Network Model
 
+Note: Modeling a NN this way is intended for learning (fun some may say), a user guest or YOLOing on GME may be more accurate - No financial advisor tho.
+
 1. **Select the stock that you want to attempt to predict share price**
 ```
 load MSFT
@@ -84,12 +86,12 @@ This model is set in [config_neural_network_models.py](/config_neural_network_mo
 
 8. **Model compilation with loss function and optimization technique**
 
-**Loss function**: Often chosen having the activation functions of the hidden layers in mind. See https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/
+**Loss function**: Often chosen having the activation functions of the hidden layers in mind. See https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/, and https://www.tensorflow.org/api_docs/python/tf/keras/losses.
 ```
 -l/--loss : loss function. Default mae.
 ```
 
-**Optimizer technique**: Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems.
+**Optimizer technique**: Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
 ```
 -o/--optimizer : optimization technique. Default adam.
 ```
@@ -113,9 +115,16 @@ Select the number of loops to - using the defined model - train and predict. Thi
 Interpret the following metrics: MAPE, R2, MAE, MSE and RMSE.
 
 12. **Advanced User**
-
+```
 --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+```
+This can be set to `floor(log2(input_layer_size))` for much faster training if a large amount of input samples (assuming you have the RAM for it). It shouldn't have much effect on the results.
+
+```
 --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
 --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
 --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
+```
+See https://www.tensorflow.org/xla
 
+In the Roadmap: Cross-Validation (Forward Chaining, K-Fold, Group K-fold), NN to use sentiment analysis

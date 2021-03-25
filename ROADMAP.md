@@ -97,10 +97,12 @@
 - [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
 - [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
 - [x] Add averaging around multiple predictions (@didier) - [PR #252](https://github.com/DidierRLopes/GamestonkTerminal/pull/252)
+- [ ] CNN 1D (@didier)
 
 ### Long term
 
 - [ ] Combine Sentiment Analysis with Chart data - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
+- [ ] Cross-Validation methods (Forward Chaining, K-Fold, Group K-Fold) (@didier)
 
 ---
 
