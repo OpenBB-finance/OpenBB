@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
 
 def sec_fillings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="sec",
         description="""
             Prints SEC filings of the company. The following fields are expected: Filing Date,
@@ -84,6 +85,7 @@ def sec_fillings(l_args, s_ticker):
 
 def sean_seah_warnings(l_args, s_ticker):
     parser = argparse.ArgumentParser(
+        add_help=False,
         prog="warnings",
         description="""
             Sean Seah warnings. Check: Consistent historical earnings per share;
