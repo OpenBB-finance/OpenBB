@@ -1,6 +1,7 @@
 import argparse
 import warnings
-from datetime import datetime, timedelta
+
+# from datetime import datetime, timedelta
 import pandas as pd
 from prawcore.exceptions import ResponseException
 from requests import HTTPError
@@ -140,7 +141,7 @@ def watchlist(l_args):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception as e:
+                except Exception:
                     # print(e, "\n")
                     pass
             if n_tickers:
@@ -471,7 +472,7 @@ def spac_community(l_args):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception as e:
+                except Exception:
                     # print(e, "\n")
                     pass
 
@@ -620,7 +621,7 @@ def spac(l_args):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception as e:
+                except Exception:
                     # print(e, "\n")
                     pass
             if n_tickers:
