@@ -245,6 +245,8 @@
 ### Short term
 
 - [ ] Publish Docker
+- [ ] Most commands to have export flag to save output into csv/txt file
+- [ ] Most commands to have save flag to save image into png/jpg file
 
 ### Long term
 
