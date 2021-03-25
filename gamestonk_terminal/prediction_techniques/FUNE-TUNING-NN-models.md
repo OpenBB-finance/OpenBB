@@ -1,6 +1,6 @@
 # Validate/Tweaking Neural Network Model
 
-Note: Modeling a NN this way is intended for learning (fun some may say), a user guest or YOLOing on GME may be more accurate - No financial advisor tho.
+Note: Modeling a NN this way is intended for learning purposes (or fun) only. A user guess or YOLOing on GME may present better returns - No financial advisor tho.
 
 1. **Select the stock that you want to attempt to predict share price**
 ```
