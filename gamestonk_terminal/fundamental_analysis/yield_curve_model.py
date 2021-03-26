@@ -30,19 +30,19 @@ def get_yield_curve(start: datetime, end: datetime) -> DataFrame:
     """
 
     if start.year == end.year:
-        df_yield_curve = get_yield_curve_year(start.year)
-        return df_yield_curve[start:end]
+        df_yield_curve = get_yield_curve_year(str(start.year))
+        return df_yield_curve[start:end]  # type: ignore
 
-    df_yield_curve = get_yield_curve_year(start.year)
+    df_yield_curve = get_yield_curve_year(str(start.year))
 
     a_year = start.year + 1
 
     while a_year <= end.year:
-        df_temp_curve = get_yield_curve_year(a_year)
+        df_temp_curve = get_yield_curve_year(str(a_year))
         df_yield_curve = df_yield_curve.append(df_temp_curve)
         a_year += 1
 
-    return df_yield_curve[start:end]
+    return df_yield_curve[start:end]  # type: ignore
 
 
 def get_yield_curve_year(year: str) -> DataFrame:
@@ -86,7 +86,7 @@ def get_yield_curve_year(year: str) -> DataFrame:
             if idx == 0:
                 a_yield_row.append(datetime.strptime(yield_table_col.text, "%m/%d/%y"))
             else:
-                a_yield_row.append(float(yield_table_col.text))
+                a_yield_row.append(float(yield_table_col.text))  # type: ignore
 
         df_yield_curve.loc[len(df_yield_curve)] = a_yield_row
 
