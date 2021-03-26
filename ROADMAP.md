@@ -195,7 +195,7 @@
 
 ### Short term
 
-- [ ] Add Coingecko
+- [x] Add Coingecko (@jmaslek) 
 - [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 - [ ] Add crypto charts
 
