@@ -12,7 +12,7 @@ from gamestonk_terminal.cryptocurrency import coin_api
 
 class CryptoController:
 
-    CHOICES = ["help", "q", "quit", "load", "view", "clear"]
+    CHOICES = ["help", "q", "quit", "load", "view"]
 
     def __init__(self):
         """ CONSTRUCTOR """
@@ -33,7 +33,6 @@ class CryptoController:
         print("")
         print("   load          load cryptocurrency data")
         print("   view          load and view cryptocurrency data")
-        print("   clear         clear current ticker")
         print("")
 
     def switch(self, an_input: str):
@@ -67,17 +66,13 @@ class CryptoController:
     def call_load(self, other_args):
         self.current_coin, self.current_df = coin_api.load(other_args)
 
-    def call_view(self, _):
+    def call_view(self, other_args):
         if self.current_coin:
-            coin_api.view(self.current_coin, self.current_df)
+            coin_api.view(self.current_coin, self.current_df, other_args)
 
         else:
             print("No coin selected. Use 'load' to load the coin you want to look at.")
             print("")
-
-    def call_clear(self, _):
-        self.current_coin = None
-        self.current_df = pd.DataFrame()
 
 
 def menu():

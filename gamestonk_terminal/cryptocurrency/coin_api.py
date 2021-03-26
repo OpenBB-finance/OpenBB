@@ -81,18 +81,35 @@ def load(l_args):
         return [None, pd.DataFrame()]
 
 
-def view(coin, prices):
+def view(coin, prices, l_args):
 
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    plt.plot(prices.index, prices.Price, "-ok", ms=2)
-    plt.xlabel("Time")
-    plt.xlim(prices.index[0], prices.index[-1])
-    plt.ylabel("Price")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.title(f"{coin}/{prices['currency'][0]}")
-    plt.show()
-    print("")
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="Crypto",
+        description="""
+                        Cryptocurrencies
+                        """,
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
-    return [coin, prices]
+        if not ns_parser:
+            return
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        plt.plot(prices.index, prices.Price, "-ok", ms=2)
+        plt.xlabel("Time")
+        plt.xlim(prices.index[0], prices.index[-1])
+        plt.ylabel("Price")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.title(f"{coin}/{prices['currency'][0]}")
+        plt.show()
+        print("")
+
+    except SystemExit:
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
