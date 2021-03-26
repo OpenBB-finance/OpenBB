@@ -6,7 +6,7 @@ from typing import Callable
 import yaml
 
 
-def parametrize_from_file(test_namespace: str, parameter_file: str) -> Callable:
+def parameterize_from_file(test_namespace: str, parameter_file: str) -> Callable:
     """A test helper function returns a wrapper function that loads sets of parameters from a YAML and
     attaches test scenarios as metadata
 

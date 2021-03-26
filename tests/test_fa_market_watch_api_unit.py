@@ -4,7 +4,7 @@ from unittest import mock
 
 # pylint: disable=unused-import
 from gamestonk_terminal.test_helper import (  # noqa: F401
-    parametrize_from_file,
+    parameterize_from_file,
     pytest_generate_tests,
 )
 
@@ -17,7 +17,7 @@ assertions = unittest.TestCase("__init__")
 
 class TestFaMarketWatchApiUnit:
     @mock.patch("gamestonk_terminal.fundamental_analysis.market_watch_api.requests")
-    @parametrize_from_file(
+    @parameterize_from_file(
         "test_prepare_df_financials",
         "../tests/data/fa_market_watch_api.yaml",
     )
