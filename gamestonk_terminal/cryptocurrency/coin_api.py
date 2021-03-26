@@ -8,9 +8,9 @@ from gamestonk_terminal.cryptocurrency.crypto_helper import coin_symbol_to_id, c
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
-
 # pylint: disable=inconsistent-return-statements
 def load(l_args):
+
     cg = CoinGeckoAPI()
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -77,7 +77,6 @@ def load(l_args):
         print(e)
         print("")
         return [None, pd.DataFrame()]
-
 
 def view(coin, prices):
 
