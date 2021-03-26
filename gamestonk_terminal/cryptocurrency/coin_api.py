@@ -9,6 +9,8 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
 # pylint: disable=inconsistent-return-statements
+
+
 def load(l_args):
 
     cg = CoinGeckoAPI()
