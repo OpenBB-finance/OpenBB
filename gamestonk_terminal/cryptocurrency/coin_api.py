@@ -78,6 +78,7 @@ def load(l_args):
         print("")
         return [None, pd.DataFrame()]
 
+
 def view(coin, prices):
 
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
