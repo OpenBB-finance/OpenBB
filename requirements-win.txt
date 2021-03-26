@@ -87,6 +87,7 @@ psaw==0.0.12; python_version >= "3"
 pyally==1.1.2
 pyasn1-modules==0.2.8; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 pyasn1==0.4.8; python_version >= "3.5" and python_full_version < "3.0.0" and python_version < "4" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6") or python_version >= "3.5" and python_version < "4" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6") and python_full_version >= "3.6.0"
+pycoingecko==1.4.0
 pymeeus==0.4.3; python_version >= "3.5"
 pyparsing==2.4.7; python_full_version >= "3.6.0" and python_version >= "3.6"
 pysocks==1.7.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"

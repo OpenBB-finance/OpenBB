@@ -85,6 +85,7 @@ psaw==0.0.12; python_version >= "3"
 ptyprocess==0.7.0; os_name != "nt" and python_version >= "3.6" and sys_platform != "win32"
 py==1.10.0; python_version >= "3.6" and python_full_version < "3.0.0" and implementation_name == "pypy" or implementation_name == "pypy" and python_version >= "3.6" and python_full_version >= "3.4.0"
 pyally==1.1.2
+pycoingecko==1.4.0
 pycparser==2.20; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.5"
 pygments==2.8.1; python_version >= "3.6"
 pymeeus==0.5.9; python_version >= "3.5"
