@@ -4,7 +4,7 @@ from unittest import mock
 
 # pylint: disable=unused-import
 from gamestonk_terminal.test_helper import (  # noqa: F401
-    parametrize_from_file,
+    parameterize_from_file,
     pytest_generate_tests,
 )
 from gamestonk_terminal import thought_of_the_day
@@ -13,7 +13,7 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestThoughtOfTheDay:
-    @parametrize_from_file(
+    @parameterize_from_file(
         "test_get_urls",
         "../tests/data/thought_of_the_day.yaml",
     )
@@ -23,7 +23,7 @@ class TestThoughtOfTheDay:
         assertions.assertEqual(a_totd.get_urls(), urls)
 
     @mock.patch("gamestonk_terminal.thought_of_the_day.requests")
-    @parametrize_from_file(
+    @parameterize_from_file(
         "test_get_metadata",
         "../tests/data/thought_of_the_day.yaml",
     )
