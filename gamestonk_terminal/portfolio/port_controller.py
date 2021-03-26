@@ -56,8 +56,8 @@ class PortfolioController:
             f"\nCurrent Brokers : {('None', ', '.join(broker_list))[bool(broker_list)]}"
         )
         print("\nCurrently Supported :")
-        print("   rh             Robinhood - fuck these guys")
-        print("   alp            Alpaca ")
+        print("   rh             Robinhood")
+        print("   alp            Alpaca")
         print("   ally           Ally Invest")
         print("\nCommands (login required):")
         print("\nRobinhood:")
