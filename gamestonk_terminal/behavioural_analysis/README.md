@@ -84,7 +84,6 @@ usage: popular [-l N_LIMIT] [-s S_SUBREDDIT] [-d N_DAYS]
 Print latest popular tickers. [Source: Reddit]
   * -l : limit of posts retrieved per sub reddit. Default 50.
   * -s : subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets.
-  * -d : look for the tickers from those n past days. Default 1.
 
 <img width="948" alt="popular" src="https://user-images.githubusercontent.com/25267873/108917846-4dbe0400-7628-11eb-821e-9fda97a6d9cd.png">
 
@@ -106,7 +105,6 @@ usage: spac [-h] [-l N_LIMIT] [-d N_DAYS]
 ```
 Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
   * -l : limit of posts with SPACs retrieved. Default 5.
-  * -d : look for the tickers from those n past days.. Default 5.
 
 <img width="939" alt="spac" src="https://user-images.githubusercontent.com/25267873/108920696-04bc7e80-762d-11eb-896b-1b1c19903584.png">
 
