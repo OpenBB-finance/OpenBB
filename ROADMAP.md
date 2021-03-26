@@ -67,6 +67,7 @@
 ### Short term
 
 - [x] Rearrange FA menu to have AV and FMP as submenus (@didier) - [PR #166](https://github.com/DidierRLopes/GamestonkTerminal/pull/166)
+- [ ] Add Treasury Yield Curve data (@aia) [PR #281](https://github.com/DidierRLopes/GamestonkTerminal/pull/281)
 
 ### Long term
 
@@ -77,6 +78,7 @@
 ### Short term
 
 - [ ] Add auto-recognition of major TA patterns (@didier)
+- [x] Add initial implementation of trendline analysis (@aia) [PR #173](https://github.com/DidierRLopes/GamestonkTerminal/pull/173)
 
 ### Long term
 
@@ -110,6 +112,9 @@
 
 * [ ] Expand Due Diligence report (@aia)
 * [ ] Add multi-ticker comparison report (@aia)
+* [x] Add Economy analysis report (@aia) [PR #205](https://github.com/DidierRLopes/GamestonkTerminal/pull/205)
+* [ ] Add interest rate analysis to Economy report (@aia)
+* [ ] Add a report for major business categories - growth vs value, cyclicals, small-cap vs large-caps (@aia)
 
 ### Long term
 
@@ -221,6 +226,7 @@
 
 - [x] Add terminal flair (@aia) - [PR #131](https://github.com/DidierRLopes/GamestonkTerminal/pull/131)
 - [x] Prompt-toolkit (@ricleal) - [PR #142](https://github.com/DidierRLopes/GamestonkTerminal/pull/142)
+- [x] Add thought of the day (@aia) - [PR #233](https://github.com/DidierRLopes/GamestonkTerminal/pull/233)
 
 ### Long term
 
@@ -234,7 +240,9 @@
 - [ ] Write a developer guide
 - [ ] Add a docker CI
 - [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
-- [ ] Add ad-hoc builds
+- [x] Add ad-hoc builds (@aia) - [PR #192](https://github.com/DidierRLopes/GamestonkTerminal/pull/192)
+- [x] Add test generators and test parametrization helpers (@aia) - [PR #264](https://github.com/DidierRLopes/GamestonkTerminal/pull/264)
+- [ ] Reorganize tests to separate Unit and Integration
 
 ### Long term
 
