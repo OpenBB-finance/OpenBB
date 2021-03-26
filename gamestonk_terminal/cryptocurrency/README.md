@@ -39,4 +39,4 @@ usage: view
 ````
 After loading the above 1 day dogecoin/eur.  Running view plots the data:
 
-![doge](#https://user-images.githubusercontent.com/18151143/112675579-b83bad00-8e3d-11eb-87d9-db8d17896403.png)
+![doge](https://user-images.githubusercontent.com/18151143/112690617-7832f500-8e52-11eb-84c4-253ab222a918.png)

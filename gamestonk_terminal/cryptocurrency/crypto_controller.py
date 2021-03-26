@@ -15,6 +15,7 @@ class CryptoController:
     CHOICES = ["help", "q", "quit", "load", "view", "clear"]
 
     def __init__(self):
+        """ CONSTRUCTOR """
 
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
         self.crypto_parser.add_argument("cmd", choices=self.CHOICES)
@@ -32,7 +33,7 @@ class CryptoController:
         print("")
         print("   load          load cryptocurrency data")
         print("   view          load and view cryptocurrency data")
-        print("   clear          load cryptocurrency data")
+        print("   clear         clear current ticker")
         print("")
 
     def switch(self, an_input: str):
