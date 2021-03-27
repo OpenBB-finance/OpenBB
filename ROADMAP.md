@@ -202,7 +202,7 @@
 
 ### Short term
 
-- [ ] Add Coingecko
+- [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pulls)
 - [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 - [ ] Add crypto charts
 
