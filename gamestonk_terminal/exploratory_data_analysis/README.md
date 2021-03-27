@@ -28,6 +28,7 @@ usage: summary
 
 Summary statistics
 
+<img width="983" alt="summary" src="https://user-images.githubusercontent.com/25267873/112729900-6cb0fe00-8f26-11eb-8a6b-0dda0a9113d9.png">
 
 
 ## hist <a name="hist"></a>
@@ -38,6 +39,7 @@ usage: hist
 
 Plot histogram and density
 
+![hist](https://user-images.githubusercontent.com/25267873/112729911-75a1cf80-8f26-11eb-925c-252a90657128.png)
 
 
 ## cdf <a name="cdf"></a>
@@ -48,6 +50,7 @@ usage: cdf
 
 Plot cumulative distribution function
 
+![cdf](https://user-images.githubusercontent.com/25267873/112729910-75a1cf80-8f26-11eb-801a-2b44b193022b.png)
 
 
 ## bwy <a name="bwy"></a>
@@ -58,7 +61,7 @@ usage: bwy
 
 Box and Whisker plot yearly
 
-![bwy](https://user-images.githubusercontent.com/25267873/112729437-ff03d280-8f23-11eb-87fb-a331747357f5.png)
+![bwy](https://user-images.githubusercontent.com/25267873/112729912-763a6600-8f26-11eb-81b6-3df0b632b3af.png)
 
 
 ## bwm <a name="bwm"></a>
@@ -69,7 +72,7 @@ usage: bwm
 
 Box and Whisker plot monthly
 
-![bwm](https://user-images.githubusercontent.com/25267873/112729439-ff9c6900-8f23-11eb-9a63-8d60f23f1435.png)
+![bwm](https://user-images.githubusercontent.com/25267873/112729913-76d2fc80-8f26-11eb-8338-448147ed5703.png)
 
 
 ## rolling <a name="rolling"></a>
@@ -82,9 +85,7 @@ Rolling mean and std deviation
 
 * -w : rolling window. Default 100.
 
-![rolling](https://user-images.githubusercontent.com/25267873/112729342-843ab780-8f23-11eb-93f2-11c7c516d224.png)
-
-<img width="972" alt="Captura de ecrã 2021-03-27, às 17 32 05" src="https://user-images.githubusercontent.com/25267873/112729352-9157a680-8f23-11eb-9db7-6ecc760a4a25.png">
+![rolling](https://user-images.githubusercontent.com/25267873/112729908-75093900-8f26-11eb-9056-16bac2f54386.png)
 
 
 ## decompose <a name="decompose"></a>
@@ -100,6 +101,8 @@ Decompose time series as:
 * -m : multiplicative model. Default additive.
 
 ![decompose](https://user-images.githubusercontent.com/25267873/112729282-4c337480-8f23-11eb-913c-f30e5c0ef459.png)
+
+<img width="972" alt="Captura de ecrã 2021-03-27, às 17 32 05" src="https://user-images.githubusercontent.com/25267873/112729352-9157a680-8f23-11eb-9db7-6ecc760a4a25.png">
 
 
 ## cusum <a name="cusum"></a>
