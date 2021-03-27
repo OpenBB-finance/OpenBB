@@ -139,8 +139,8 @@
 
 ### Short term
 
-* [ ] Statistical techniques applied to a stock share price (e.g. decompose seasonality, trend, level, auto-correlation, cusum, ...) (@didier)
-* [ ] Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ...) (@didier)
+* [x] Summary statistics, cdf, histogram, box-whiskers, cusum, decompose (@didier) - [PR #289](https://github.com/DidierRLopes/GamestonkTerminal/pull/289)
+* [ ] Residuals sub-menu with Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ... and such) (@didier)
 
 ### Long term
 
