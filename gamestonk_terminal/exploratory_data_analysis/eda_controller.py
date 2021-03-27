@@ -8,8 +8,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from gamestonk_terminal.exploratory_data_analysis import eda_api
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
