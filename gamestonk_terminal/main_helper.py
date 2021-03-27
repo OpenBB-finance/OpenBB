@@ -76,6 +76,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             "   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
         )
         print(
+            "   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
+        )
+        print(
             "   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
         )
         print("   op          options info,            \t e.g.: volume")
