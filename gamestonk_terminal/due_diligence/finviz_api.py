@@ -111,9 +111,13 @@ def news(l_args, s_ticker):
 
 
 def analyst_df(s_ticker: str) -> DataFrame:
-    d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
-    df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
-    df_fa.set_index("date", inplace=True)
+    try:
+        d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
+        df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
+        df_fa.set_index("date", inplace=True)
+    except Exception as e:
+        print(e)
+        print("Encountered a potential connectivity issue trying to access Finviz.")
 
     return df_fa
 
