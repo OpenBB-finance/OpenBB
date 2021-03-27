@@ -113,19 +113,19 @@ class EdaController:
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
-        eda_api.hist(other_args, self.ticker, self.stock)
+        eda_api.hist(other_args, self.ticker, self.stock, self.start)
 
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
-        eda_api.cdf(other_args, self.ticker, self.stock)
+        eda_api.cdf(other_args, self.ticker, self.stock, self.start)
 
     def call_bwy(self, other_args: List[str]):
         """Process bwy command"""
-        eda_api.bwy(other_args, self.ticker, self.stock)
+        eda_api.bwy(other_args, self.ticker, self.stock, self.start)
 
     def call_bwm(self, other_args: List[str]):
         """Process bwm command"""
-        eda_api.bwm(other_args, self.ticker, self.stock)
+        eda_api.bwm(other_args, self.ticker, self.stock, self.start)
 
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""

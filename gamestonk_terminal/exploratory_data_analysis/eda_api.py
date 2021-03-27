@@ -5,6 +5,7 @@ import argparse
 from typing import List
 from detecta import detect_cusum
 from matplotlib import pyplot as plt
+from datetime import datetime
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import numpy as np
@@ -60,7 +61,7 @@ def summary(other_args: List[str], stock: pd.DataFrame):
         return
 
 
-def hist(other_args: List[str], ticker: str, stock: pd.DataFrame):
+def hist(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime):
     """Plot histogram and density
 
     Parameters
@@ -100,7 +101,9 @@ def hist(other_args: List[str], ticker: str, stock: pd.DataFrame):
             rug=True,
             rug_kws={"edgecolor": "orange"},
         )
-        plt.title(ticker + " (Histogram with Density)")
+        plt.title(
+            f"Histogram with Density of {ticker} from {start.strftime('%Y-%m-%d')}"
+        )
         plt.ylabel("Density")
         plt.xlabel("Share Price")
         plt.grid(True)
@@ -116,7 +119,7 @@ def hist(other_args: List[str], ticker: str, stock: pd.DataFrame):
         return
 
 
-def cdf(other_args: List[str], ticker: str, stock: pd.DataFrame):
+def cdf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime):
     """Plot cumulative distribution function
 
     Parameters
@@ -147,7 +150,9 @@ def cdf(other_args: List[str], ticker: str, stock: pd.DataFrame):
 
         cdf = stock.value_counts().sort_index().div(len(stock)).cumsum()
         cdf.plot(lw=2)
-        plt.title(ticker + " (Cumulative Distribution Function)")
+        plt.title(
+            f"Cumulative Distribution Function of {ticker} from {start.strftime('%Y-%m-%d')}"
+        )
         plt.ylabel("Probability")
         plt.xlabel("Share Price")
         minVal = stock.values.min()
@@ -198,7 +203,7 @@ def cdf(other_args: List[str], ticker: str, stock: pd.DataFrame):
         return
 
 
-def bwy(other_args: List[str], ticker: str, stock: pd.DataFrame):
+def bwy(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime):
     """Box and Whisker plot yearly
 
     Parameters
@@ -230,7 +235,9 @@ def bwy(other_args: List[str], ticker: str, stock: pd.DataFrame):
         sns.set(style="whitegrid")
         box_plot = sns.boxplot(x=stock.index.year, y=stock)
         box_plot.set(
-            xlabel="Year", ylabel="Share Price", title=ticker + " (Box-plot per Year)"
+            xlabel="Year",
+            ylabel="Share Price",
+            title=f"Box-plot per Year of {ticker} from {start.strftime('%Y-%m-%d')}",
         )
 
         if gtff.USE_ION:
@@ -244,7 +251,7 @@ def bwy(other_args: List[str], ticker: str, stock: pd.DataFrame):
         return
 
 
-def bwm(other_args: List[str], ticker: str, stock: pd.DataFrame):
+def bwm(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime):
     """Box and Whisker plot monthly
 
     Parameters
@@ -278,7 +285,7 @@ def bwm(other_args: List[str], ticker: str, stock: pd.DataFrame):
         box_plot.set(
             xlabel="Month",
             ylabel="Share Price",
-            title=ticker + " (Box-plot per Month)",
+            title=f"Box-plot per Month of {ticker} from {start.strftime('%Y-%m-%d')}",
         )
         l_months = [
             "Jan",
