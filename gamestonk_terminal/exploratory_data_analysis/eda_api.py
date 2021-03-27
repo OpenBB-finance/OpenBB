@@ -650,7 +650,7 @@ def acf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
         "--lags",
         dest="lags",
         type=check_positive,
-        default=20,
+        default=40,
         help="maximum lags to display in plots",
     )
 
