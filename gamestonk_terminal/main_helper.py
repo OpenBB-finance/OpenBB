@@ -54,6 +54,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   fred        economic data, \t\t\t from: Federal Reserve Bank of St. Louis "
     )
     print("   pa          portfolio analysis, \t\t Currently Supported: Robinhood ")
+    print("   crypto      cryptocurrencies, \t\t coingecko api")
 
     if s_ticker:
         print(

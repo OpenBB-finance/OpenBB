@@ -26,6 +26,7 @@ from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.options import op_controller
 from gamestonk_terminal.fred import fred_menu as fm
 from gamestonk_terminal.portfolio import port_controller
+from gamestonk_terminal.cryptocurrency import crypto_controller
 
 # import warnings
 # warnings.simplefilter("always")
@@ -79,6 +80,7 @@ def main():
         "op",
         "fred",
         "pa",
+        "crypto",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -208,6 +210,9 @@ def main():
 
         elif ns_known_args.opt == "pa":
             b_quit = port_controller.menu()
+
+        elif ns_known_args.opt == "crypto":
+            b_quit = crypto_controller.menu()
 
         elif ns_known_args.opt == "pred":
 
