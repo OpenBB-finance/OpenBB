@@ -29,6 +29,7 @@ class EdaController:
         "rolling",
         "decompose",
         "cusum",
+        "acf",
     ]
 
     def __init__(
@@ -75,6 +76,7 @@ class EdaController:
         print("   rolling       rolling mean and std deviation")
         print("   decompose     decomposition in cyclic-trend, season, and residuals")
         print("   cusum         detects abrupt changes using cumulative sum algorithm")
+        print("   acf           (partial) auto-correlation function differentials")
         print("")
         return
 
@@ -137,6 +139,10 @@ class EdaController:
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
         eda_api.cusum(other_args, self.ticker, self.stock)
+
+    def call_acf(self, other_args: List[str]):
+        """Process acf command"""
+        eda_api.acf(other_args, self.ticker, self.stock, self.start)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):

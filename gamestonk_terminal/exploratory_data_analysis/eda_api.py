@@ -624,3 +624,86 @@ def cusum(other_args: List[str], ticker: str, stock: pd.DataFrame):
     except Exception as e:
         print(e, "\n")
         return
+
+
+def acf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime):
+    """Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
+
+    Parameters
+    ----------
+    other_args : str
+        Command line arguments to be processed with argparse
+    ticker : str
+        Ticker of the stock
+    stock : pd.DataFrame
+        Stock data
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="acf",
+        description="""
+            Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
+        """,
+    )
+    parser.add_argument(
+        "-l",
+        "--lags",
+        dest="lags",
+        type=check_positive,
+        default=20,
+        help="maximum lags to display in plots",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        stock = stock["5. adjusted close"]
+
+        fig = plt.figure(
+            figsize=plot_autoscale(), dpi=PLOT_DPI, constrained_layout=True
+        )
+        spec = gridspec.GridSpec(ncols=2, nrows=2, figure=fig)
+
+        # Diff Auto-correlation function for original time series
+        ax_acf = fig.add_subplot(spec[0, 0])
+        sm.graphics.tsa.plot_acf(
+            np.diff(np.diff(stock.values)), lags=ns_parser.lags, ax=ax_acf
+        )
+        plt.title(f"Diff({ticker}) Auto-Correlation from {start.strftime('%Y-%m-%d')}")
+        # Diff Partial auto-correlation function for original time series
+        ax_pacf = fig.add_subplot(spec[0, 1])
+        sm.graphics.tsa.plot_pacf(
+            np.diff(np.diff(stock.values)), lags=ns_parser.lags, ax=ax_pacf
+        )
+        plt.title(
+            f"Diff({ticker}) Partial Auto-Correlation from {start.strftime('%Y-%m-%d')}"
+        )
+
+        # Diff Diff Auto-correlation function for original time series
+        ax_acf = fig.add_subplot(spec[1, 0])
+        sm.graphics.tsa.plot_acf(
+            np.diff(np.diff(stock.values)), lags=ns_parser.lags, ax=ax_acf
+        )
+        plt.title(
+            f"Diff(Diff({ticker})) Auto-Correlation from {start.strftime('%Y-%m-%d')}"
+        )
+        # Diff Diff Partial auto-correlation function for original time series
+        ax_pacf = fig.add_subplot(spec[1, 1])
+        sm.graphics.tsa.plot_pacf(
+            np.diff(np.diff(stock.values)), lags=ns_parser.lags, ax=ax_pacf
+        )
+        plt.title(
+            f"Diff(Diff({ticker})) Partial Auto-Correlation from {start.strftime('%Y-%m-%d')}"
+        )
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+        return
