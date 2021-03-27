@@ -41,7 +41,16 @@ def valid_date(s: str) -> datetime:
 
 def plot_view_stock(df, symbol):
     df.sort_index(ascending=True, inplace=True)
-    _, axVolume = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
+    try:
+        _, axVolume = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    except Exception as e:
+        print(e)
+        print(
+            "Encountered an error trying to open a chart window. Check your X server configuration."
+        )
+        return
+
     plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
     plt.ylabel("Volume")
     _ = axVolume.twinx()
