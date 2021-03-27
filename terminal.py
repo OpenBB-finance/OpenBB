@@ -6,6 +6,7 @@ import sys
 import os
 from datetime import datetime, timedelta
 import pandas as pd
+import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
 
@@ -208,9 +209,7 @@ def main():
             if s_interval == "1440min":
                 b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
             else:
-                df_stock = yf.download(
-                    ns_parser.s_ticker, start=ns_parser.s_start_date, progress=False
-                )
+                df_stock = yf.download(s_ticker, start=s_start, progress=False)
                 df_stock = df_stock.rename(
                     columns={
                         "Open": "1. open",
@@ -222,6 +221,7 @@ def main():
                     }
                 )
                 df_stock.index.name = "date"
+                s_interval = "1440min"
 
                 b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
