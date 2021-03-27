@@ -533,28 +533,28 @@ def decompose(other_args: List[str], ticker: str, stock: pd.DataFrame):
             FtMul = max(0, 1 - np.var(resultMul.resid)) / np.var(
                 resultMul.trend + resultMul.resid
             )
-            print("Strenght of Trend: %.4f" % FtMul)
+            print("Strength of Trend: %.4f" % FtMul)
             FsMul = max(
                 0,
                 1
                 - np.var(resultMul.resid)
                 / np.var(resultMul.seasonal + resultMul.resid),
             )
-            print("Strenght of Seasonality: %.4f" % FsMul)
+            print("Strength of Seasonality: %.4f" % FsMul)
 
         else:
             FtAdd = max(
                 0,
                 1 - np.var(resultAdd.resid) / np.var(resultAdd.trend + resultAdd.resid),
             )
-            print("Strenght of Trend: %.4f" % FtAdd)
+            print("Strength of Trend: %.4f" % FtAdd)
             FsAdd = max(
                 0,
                 1
                 - np.var(resultAdd.resid)
                 / np.var(resultAdd.seasonal + resultAdd.resid),
             )
-            print("Strenght of Seasonality: %.4f" % FsAdd)
+            print("Strength of Seasonality: %.4f" % FsAdd)
         print("")
 
     except Exception as e:
