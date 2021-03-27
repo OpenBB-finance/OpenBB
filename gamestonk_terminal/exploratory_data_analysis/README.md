@@ -18,6 +18,8 @@ This menu aims to perform exploratory data analysis on a pre-loaded stock, and t
   * decomposition in cyclic-trend, season, and residuald
 * [cusum](#cusum)
   * detects abrupt changes using cumulative sum algorithm
+* [acf](#acf)
+  * (partial) auto-correlation function differentials
 
 
 ## summary <a name="summary"></a>
@@ -117,4 +119,18 @@ Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 * -d : drift. Default (MAX-min)/80.
 
 ![cusum](https://user-images.githubusercontent.com/25267873/112729206-ef37be80-8f22-11eb-9a53-8e8e55c4caf0.png)
+
+
+## acf <a name="acf"></a>
+
+```text
+usage: acf [-l LAGS]
+```
+
+Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
+
+* -l : maximum lags to display in plots. Default 20.
+
+![acf](https://user-images.githubusercontent.com/25267873/112733336-637c5d00-8f37-11eb-9aae-38e75dff9ad2.png)
+
 
