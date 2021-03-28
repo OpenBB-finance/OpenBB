@@ -3,22 +3,18 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from detecta import detect_cusum
 from matplotlib import pyplot as plt
-from datetime import datetime
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import numpy as np
 import seaborn as sns
 import scipy.stats as stats
 import statsmodels.api as sm
 from collections import OrderedDict
 import matplotlib.gridspec as gridspec
 from statsmodels.graphics.gofplots import qqplot
-from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss, bds
 from statsmodels.stats.diagnostic import het_arch
-from scipy.stats import skewtest, kurtosistest, skew, kurtosis, boxcox, shapiro
+from scipy.stats import skewtest, kurtosistest, skew, kurtosis
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,

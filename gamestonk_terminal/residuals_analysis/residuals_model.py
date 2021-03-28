@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import argparse
-import pandas as pd
 from typing import List
+import pandas as pd
 import pmdarima
 from statsmodels.tsa.arima.model import ARIMA
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
