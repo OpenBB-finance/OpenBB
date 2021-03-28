@@ -7,6 +7,7 @@ from datetime import datetime
 import pandas as pd
 from matplotlib import pyplot as plt
 from gamestonk_terminal.residuals_analysis import residuals_api
+from gamestonk_terminal.residuals_analysis import residuals_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -73,7 +74,6 @@ class ResidualsController:
         print("\nCurrently supported:")
         print("   naive         naive method")
         print("   arima         autoregressive integrated moving average")
-        print("   regression    regression")
 
         print("\nResiduals Analysis:")
         print("   help          show this comparison analysis menu again")
@@ -117,7 +117,7 @@ class ResidualsController:
             "--model",
             dest="model",
             type=str,
-            choices=["naive", "regression"],
+            choices=["naive", "arima"],
             help="Model to fit",
         )
 
@@ -138,17 +138,14 @@ class ResidualsController:
                 return
 
             if ns_parser.model == "naive":
-                if other_args[2:]:
-                    print(f"Unknown args: {other_args[2:]}")
+                self.model_name, self.model, self.residuals = residuals_model.naive(
+                    other_args[2:], self.stock
+                )
 
-                naive = pd.Series(self.stock.values[:-1], index=self.stock[1:].index)
-
-                self.model_name = "Naive"
-                self.model = naive
-                self.residuals = self.stock[1:].values - naive.values
-
-            elif ns_parser.model == "regression":
-                print(other_args[2:])
+            elif ns_parser.model == "arima":
+                self.model_name, self.model, self.residuals = residuals_model.arima(
+                    other_args[2:], self.stock
+                )
 
         except Exception as e:
             print(e)
