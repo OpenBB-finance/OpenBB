@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from alpha_vantage.sectorperformance import SectorPerformances
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal import feature_flags as gtff
 
 
 def sectors(l_args):
@@ -27,5 +28,9 @@ def sectors(l_args):
     plt.title("Real Time Performance (%) per Sector")
     plt.tight_layout()
     plt.grid()
+
+    if gtff.USE_ION:
+        plt.ion()
+
     plt.show()
     print("")
