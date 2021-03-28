@@ -2,6 +2,8 @@
 
 This menu aims to perform a technical analysis on a pre-loaded ticker chart, and the usage of the following commands along with an example will be exploited below.
 
+ * [summary](#summary)
+    - technical summary report [Finbrain API]
 [OVERLAP](#OVERLAP)
   * [ema](#ema)
     - exponential moving average
@@ -37,6 +39,13 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
     - on balance volume
 
 **S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let me know if there's any that you would like. Personally I use mostly these ones, hence why I didn't add more._
+
+## summary  <a name="summary"></a>
+```
+usage: summary
+```
+
+Technical summary report provided by FinBrain's API. FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world. [Source: See https://finbrain.tech]
 
 # OVERLAP <a name="OVERLAP"></a>
 

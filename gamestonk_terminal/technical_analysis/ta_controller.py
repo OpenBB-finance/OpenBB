@@ -14,6 +14,7 @@ from gamestonk_terminal.technical_analysis import overlap as ta_overlap
 from gamestonk_terminal.technical_analysis import trend_indicators as ta_trend
 from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
+from gamestonk_terminal.technical_analysis import finbrain_view
 from prompt_toolkit.completion import NestedCompleter
 
 
@@ -25,6 +26,7 @@ class TechnicalAnalysisController:
         "help",
         "q",
         "quit",
+        "summary",
         "ema",
         "sma",
         "vwap",
@@ -74,6 +76,8 @@ class TechnicalAnalysisController:
         print("   help        show this technical analysis menu again")
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
+        print("")
+        print("   summary     technical summary report [Finbrain API]")
         print("overlap:")
         print("   ema         exponential moving average")
         print("   sma         simple moving average")
@@ -121,6 +125,10 @@ class TechnicalAnalysisController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_summary(self, other_args: List[str]):
+        """Process summary command"""
+        finbrain_view.technical_summary_report(other_args, self.ticker)
 
     # OVERLAP
     def call_ema(self, other_args: List[str]):
