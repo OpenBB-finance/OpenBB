@@ -71,15 +71,12 @@ class ResidualsController:
 
         print(f"\nModel fit: {self.model_name}")
 
-        print("\nCurrently supported:")
-        print("   naive         naive method")
-        print("   arima         autoregressive integrated moving average")
-
         print("\nResiduals Analysis:")
         print("   help          show this comparison analysis menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print("   pick          pick one of the model fitting above")
+        print("   pick          pick one of the model fitting.")
+        print("                 Supports: naive, arima")
         print("")
         if self.model_name != "None":
             print("   fit           show model fit against stock")
