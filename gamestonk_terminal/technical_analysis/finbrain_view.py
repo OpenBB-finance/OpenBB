@@ -1,7 +1,6 @@
 import argparse
-import requests
-import json
 from typing import List
+import requests
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
