@@ -87,18 +87,16 @@ def ema(l_args, s_ticker, s_interval, df_stock):
             plt.xlim(df_stock["4. close"].index[0], df_stock["4. close"].index[-1])
         plt.xlabel("Time")
         plt.ylabel(f"Share Price of {s_ticker} ($)")
-        axTa = axPrice.twinx()
-        plt.plot(df_ta.index, df_ta.values)
+        plt.plot(df_ta.index, df_ta.values, c="tab:blue")
+        l_legend = list()
+        l_legend.append(s_ticker)
         # Pandas series
         if len(df_ta.shape) == 1:
-            l_legend = [f"{ns_parser.n_length} EMA"]
+            l_legend.append(f"{ns_parser.n_length} EMA")
         # Pandas dataframe
         else:
-            l_legend = df_ta.columns.tolist()
+            l_legend.append(df_ta.columns.tolist())
         plt.legend(l_legend)
-        axTa.set_ylabel("{ns_parser.n_length} EMA", color="tab:blue")
-        axTa.spines["right"].set_color("tab:blue")
-        axTa.tick_params(axis="y", colors="tab:blue")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)

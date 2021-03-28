@@ -224,6 +224,7 @@ def aroon(l_args, s_ticker, s_interval, df_stock):
 
         plt.subplot(313)
         plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=2)
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.xlabel("Time")
         plt.legend([f"Aroon OSC ({df_ta.columns[2]})"])
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
