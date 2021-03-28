@@ -69,7 +69,7 @@
 ### Short term
 
 * [x] Rearrange FA menu to have AV and FMP as submenus (@didier) - [PR #166](https://github.com/DidierRLopes/GamestonkTerminal/pull/166)
-* [ ] Add Treasury Yield Curve data (@aia) [PR #281](https://github.com/DidierRLopes/GamestonkTerminal/pull/281)
+* [ ] Add Treasury Yield Curve data (@aia) - [PR #281](https://github.com/DidierRLopes/GamestonkTerminal/pull/281)
 
 ### Long term
 
@@ -80,7 +80,8 @@
 ### Short term
 
 * [ ] Add auto-recognition of major TA patterns (@didier)
-* [x] Add initial implementation of trendline analysis (@aia) [PR #173](https://github.com/DidierRLopes/GamestonkTerminal/pull/173)
+* [x] Add initial implementation of trendline analysis (@aia) - [PR #173](https://github.com/DidierRLopes/GamestonkTerminal/pull/173)
+* [x] Add technical summary report provided by FinBrain (@didier) - [PR #294](https://github.com/DidierRLopes/GamestonkTerminal/pull/294)
 
 ### Long term
 
@@ -116,7 +117,7 @@
 
 * [ ] Expand Due Diligence report (@aia)
 * [ ] Add multi-ticker comparison report (@aia)
-* [x] Add Economy analysis report (@aia) [PR #205](https://github.com/DidierRLopes/GamestonkTerminal/pull/205)
+* [x] Add Economy analysis report (@aia) - [PR #205](https://github.com/DidierRLopes/GamestonkTerminal/pull/205)
 * [ ] Add interest rate analysis to Economy report (@aia)
 * [ ] Add a report for major business categories - growth vs value, cyclicals, small-cap vs large-caps (@aia)
 
