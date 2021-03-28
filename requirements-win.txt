@@ -23,6 +23,7 @@ cython==0.29.17; python_version >= "3.6" and python_full_version < "3.0.0" or py
 dataclasses==0.8; python_version >= "3.6" and python_version < "3.7" and python_full_version >= "3.6.2"
 decorator==4.4.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.2.0" and python_version >= "3.6"
 deprecated==1.2.11; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
+detecta==0.0.5
 ephem==3.7.7.1; python_version >= "2.7" and python_version < "4"
 fbprophet==0.7.1
 filelock==3.0.12; python_full_version >= "3.6.0" and python_version >= "3.6"

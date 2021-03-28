@@ -6,6 +6,7 @@ import sys
 import os
 from datetime import datetime, timedelta
 import pandas as pd
+import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
 
@@ -23,6 +24,7 @@ from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_controller
+from gamestonk_terminal.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.options import op_controller
 from gamestonk_terminal.fred import fred_menu as fm
 from gamestonk_terminal.residuals_analysis import ra_controller
@@ -76,6 +78,7 @@ def main():
         "fa",
         "ta",
         "dd",
+        "eda",
         "pred",
         "ca",
         "op",
@@ -203,6 +206,26 @@ def main():
 
         elif ns_known_args.opt == "dd":
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "eda":
+            if s_interval == "1440min":
+                b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
+            else:
+                df_stock = yf.download(s_ticker, start=s_start, progress=False)
+                df_stock = df_stock.rename(
+                    columns={
+                        "Open": "1. open",
+                        "High": "2. high",
+                        "Low": "3. low",
+                        "Close": "4. close",
+                        "Adj Close": "5. adjusted close",
+                        "Volume": "6. volume",
+                    }
+                )
+                df_stock.index.name = "date"
+                s_interval = "1440min"
+
+                b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "op":
             b_quit = op_controller.menu(s_ticker)
