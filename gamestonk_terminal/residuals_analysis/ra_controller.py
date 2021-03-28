@@ -47,9 +47,9 @@ class ResidualsController:
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.model_name = "None"
-        self.model = None
-        self.residuals = list()
+        self.model_name: str = "None"
+        self.model: pd.Series = None
+        self.residuals: List[float] = list()
         self.ra_parser = argparse.ArgumentParser(add_help=False, prog="ra")
         self.ra_parser.add_argument(
             "cmd",
