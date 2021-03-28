@@ -25,6 +25,7 @@ from gamestonk_terminal.technical_analysis import ta_menu as tam
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.options import op_controller
 from gamestonk_terminal.fred import fred_menu as fm
+from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 
@@ -81,6 +82,7 @@ def main():
         "fred",
         "pa",
         "crypto",
+        "ra",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -261,6 +263,9 @@ def main():
                     print(e)
                     print("Either the ticker or the API_KEY are invalids. Try again!")
                     return
+
+        elif ns_known_args.opt == "ra":
+            b_quit = ra_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         else:
             print("Shouldn't see this command!")
