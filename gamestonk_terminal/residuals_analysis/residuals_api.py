@@ -517,7 +517,7 @@ def unitroot(
         # Kwiatkowski-Phillips-Schmidt-Shin test
         # Test for level or trend stationarity
         # Note: regressionstr{‘c’, ‘ct’}
-        # regressionstr{‘c’, ‘ct’} wher:
+        # regressionstr{‘c’, ‘ct’} where:
         # ‘c’  : The data is stationary around a constant (default).
         # ‘ct’ : The data is stationary around a trend.
         # lags{None, ‘auto’, ‘legacy’}
