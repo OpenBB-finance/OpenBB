@@ -1,3 +1,6 @@
+""" ARK Model """
+__docformat__ = "numpy"
+
 from datetime import timedelta
 import json
 import requests
@@ -11,6 +14,15 @@ from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_ark_orders() -> DataFrame:
+    """Returns a ARK orders as a Dataframe
+
+    Returns
+    -------
+    DataFrame
+        ARK orders data frame with the following columns:
+        ticker, date, shares, weight, fund, direction
+    """
+
     url_orders = "https://cathiesark.com/ark-funds-combined/trades"
 
     raw_page = requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text
@@ -43,6 +55,21 @@ def get_ark_orders() -> DataFrame:
 
 
 def add_order_total(df_orders: DataFrame) -> DataFrame:
+    """Takes an ARK orders dataframe and pulls data from Yahoo Finance to add
+    volume, open, close, high, low, and total columns
+
+    Parameters
+    ----------
+    df_orders : DataFrame
+        ARK orders data frame with the following columns:
+        ticker, date, shares, weight, fund, direction
+
+    Returns
+    -------
+    DataFrame
+        ARK orders data frame with the following columns:
+        ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction
+    """
     start_date = df_orders["date"].iloc[-1] - timedelta(days=1)
 
     tickers = " ".join(df_orders["ticker"].unique())

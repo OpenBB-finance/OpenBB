@@ -1,3 +1,6 @@
+""" ARK View """
+__docformat__ = "numpy"
+
 import argparse
 from colorama import Fore, Style
 import pandas as pd
