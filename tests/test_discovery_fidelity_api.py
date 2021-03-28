@@ -1,7 +1,7 @@
 """ discovery/fidelity_api.py tests """
 import unittest
 
-from gamestonk_terminal.discovery.fidelity_api import (
+from gamestonk_terminal.discovery.fidelity_view import (
     buy_sell_ratio_color_red_green,
     price_change_color_red_green,
     orders,
