@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+from typing import List
 from colorama import Fore, Style
 import pandas as pd
 
@@ -16,6 +17,19 @@ from gamestonk_terminal.discovery import ark_model
 
 
 def direction_color_red_green(val: str) -> str:
+    """Adds color tags to the Direction information: Buy -> Green, Sell -> Red
+
+    Parameters
+    ----------
+    val : str
+        Direction string - either Buy or Sell
+
+    Returns
+    -------
+    str
+        Direction string with color tags added
+    """
+
     if val == "Buy":
         ret = Fore.GREEN + val + Style.RESET_ALL
     elif val == "Sell":
@@ -26,7 +40,14 @@ def direction_color_red_green(val: str) -> str:
     return ret
 
 
-def ark_orders(l_args):
+def ark_orders_view(other_args: List[str]):
+    """Prints a table of the last N ARK Orders
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="ARK Orders",
@@ -45,7 +66,7 @@ def ark_orders(l_args):
         help="Last N orders.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 

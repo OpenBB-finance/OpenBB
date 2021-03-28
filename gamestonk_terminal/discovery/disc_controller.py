@@ -1,5 +1,6 @@
 import argparse
 from typing import List
+from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -16,7 +17,6 @@ from gamestonk_terminal.discovery import (
     unusual_whales_view,
     yahoo_finance_view,
 )
-from prompt_toolkit.completion import NestedCompleter
 
 
 class DiscoveryController:
@@ -126,7 +126,7 @@ class DiscoveryController:
 
     def call_ark_orders(self, other_args: List[str]):
         """Process ark_orders command"""
-        ark_view.ark_orders(other_args)
+        ark_view.ark_orders_view(other_args)
 
     def call_up_earnings(self, other_args: List[str]):
         """Process up_earnings command"""
