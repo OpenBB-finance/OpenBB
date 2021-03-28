@@ -507,7 +507,7 @@ def unitroot(
         print("Critical Values:")
         d = OrderedDict(sorted(result[4].items(), key=lambda t: t[1]))
         for key, value in d.items():
-            print("\t%s: %.3f" % (key, value))
+            print(f"\t{key}: {value:.3f}")
         print("")
 
         # Kwiatkowski-Phillips-Schmidt-Shin test
@@ -524,7 +524,7 @@ def unitroot(
         print("Critical Values:")
         d = OrderedDict(sorted(result[3].items(), key=lambda t: t[1], reverse=True))
         for key, value in d.items():
-            print("\t%s: %.3f" % (key, value))
+            print(f"\t{key}: {value:.3f}")
         print("")
 
     except Exception as e:
@@ -559,11 +559,11 @@ def independence(
 
         result = bds(residuals, max_dim=6)
         print("BDS Test")
-        print("Dim 2: z-static %.4f Prob %.4f" % (result[0][0], result[1][0]))
-        print("Dim 3: z-static %.4f Prob %.4f" % (result[0][1], result[1][1]))
-        print("Dim 4: z-static %.4f Prob %.4f" % (result[0][2], result[1][2]))
-        print("Dim 5: z-static %.4f Prob %.4f" % (result[0][3], result[1][3]))
-        print("Dim 6: z-static %.4f Prob %.4f" % (result[0][4], result[1][4]))
+        print("Dim 2: z-static {:.4f} Prob {:.4f}".format(result[0][0], result[1][0]))
+        print("Dim 3: z-static {:.4f} Prob {:.4f}".format(result[0][1], result[1][1]))
+        print("Dim 4: z-static {:.4f} Prob {:.4f}".format(result[0][2], result[1][2]))
+        print("Dim 5: z-static {:.4f} Prob {:.4f}".format(result[0][3], result[1][3]))
+        print("Dim 6: z-static {:.4f} Prob {:.4f}".format(result[0][4], result[1][4]))
 
         print("")
 
