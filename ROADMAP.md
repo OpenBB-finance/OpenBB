@@ -12,6 +12,7 @@
 * [Reports](#Reports)
 * [Comparison Analysis](#Comparison-Analysis)
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis)
+* [Residual Analysis](#Residual-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
 * [FRED](#FRED)
 * [Options](#Options)
@@ -140,7 +141,16 @@
 ### Short term
 
 * [x] Summary statistics, cdf, histogram, box-whiskers, cusum, decompose (@didier) - [PR #289](https://github.com/DidierRLopes/GamestonkTerminal/pull/289)
-* [ ] Residuals sub-menu with Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ... and such) (@didier)
+
+### Long term
+
+---
+
+## Residual Analysis
+
+### Short term
+
+* [x] Residuals analysis menu with histogram, qqplot, acf, hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF) (@didier) - [PR #292](https://github.com/DidierRLopes/GamestonkTerminal/pull/292)
 
 ### Long term
 
