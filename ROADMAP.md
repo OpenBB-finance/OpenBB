@@ -139,8 +139,8 @@
 
 ### Short term
 
-* [x] Summary statistics, cdf, histogram, box-whiskers, cusum, decompose (@didier) - [PR #289](https://github.com/DidierRLopes/GamestonkTerminal/pull/289)
-* [ ] Residuals sub-menu with Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ... and such) (@didier)
+* [x] Summary stats, CDF, Histogram, Box Whiskers, Decompose (in Trend, Cyclic Trend, Season), CUSUM (@didier) - [PR #289](https://github.com/DidierRLopes/GamestonkTerminal/pull/289)
+* [ ] Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ...) (@didier)
 
 ### Long term
 
