@@ -4,6 +4,7 @@ This menu aims to perform residual analysis on a pre-loaded stock in order to do
 
 * [pick](#pick)
   * pick one of the model fitting
+  * Currently Supported: Naive, ARIMA
 * [fit](#fit)
   * show model fit against stock
 * [res](#res)
@@ -31,7 +32,8 @@ This menu aims to perform residual analysis on a pre-loaded stock in order to do
 usage: pick [-m MODEL]
 ```
 
-Pick model to fit to stock data
+Pick model to fit to stock data. Currently supported: Naive, ARIMA
+
 
 * -m : model to fit to stock data. Default: None.
 
