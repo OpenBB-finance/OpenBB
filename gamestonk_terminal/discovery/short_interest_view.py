@@ -3,14 +3,13 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import requests
-from bs4 import BeautifulSoup
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     check_positive,
-    get_user_agent,
     parse_known_args_and_warn,
 )
+
+from gamestonk_terminal.discovery import short_interest_model
 
 
 def high_short_interest_view(other_args: List[str]):
@@ -47,41 +46,7 @@ def high_short_interest_view(other_args: List[str]):
     if not ns_parser:
         return
 
-    url_high_short_interested_stocks = "https://www.highshortinterest.com"
-    text_soup_high_short_interested_stocks = BeautifulSoup(
-        requests.get(
-            url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
-        ).text,
-        "lxml",
-    )
-
-    a_high_short_interest_header = list()
-    for high_short_interest_header in text_soup_high_short_interested_stocks.findAll(
-        "td", {"class": "tblhdr"}
-    ):
-        a_high_short_interest_header.append(
-            high_short_interest_header.text.strip("\n").split("\n")[0]
-        )
-    df_high_short_interest = pd.DataFrame(columns=a_high_short_interest_header)
-    df_high_short_interest.loc[0] = ["", "", "", "", "", "", ""]
-
-    stock_list_tr = text_soup_high_short_interested_stocks.find_all("tr")
-
-    shorted_stock_data = list()
-    for a_stock in stock_list_tr:
-        a_stock_txt = a_stock.text
-
-        if a_stock_txt == "":
-            continue
-
-        shorted_stock_data = a_stock_txt.split("\n")
-
-        if len(shorted_stock_data) == 8:
-            df_high_short_interest.loc[
-                len(df_high_short_interest.index)
-            ] = shorted_stock_data[:-1]
-
-        shorted_stock_data = list()
+    df_high_short_interest = short_interest_model.get_high_short_interest()
 
     pd.set_option("display.max_colwidth", None)
     print(df_high_short_interest.head(n=ns_parser.n_num).to_string(index=False))
@@ -123,37 +88,7 @@ def low_float_view(other_args: List[str]):
     if not ns_parser:
         return
 
-    url_high_short_interested_stocks = "https://www.lowfloat.com"
-    text_soup_low_float_stocks = BeautifulSoup(
-        requests.get(
-            url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
-        ).text,
-        "lxml",
-    )
-
-    a_low_float_header = list()
-    for low_float_header in text_soup_low_float_stocks.findAll(
-        "td", {"class": "tblhdr"}
-    ):
-        a_low_float_header.append(low_float_header.text.strip("\n").split("\n")[0])
-    df_low_float = pd.DataFrame(columns=a_low_float_header)
-    df_low_float.loc[0] = ["", "", "", "", "", "", ""]
-
-    stock_list_tr = text_soup_low_float_stocks.find_all("tr")
-
-    low_float_data = list()
-    for a_stock in stock_list_tr:
-        a_stock_txt = a_stock.text
-
-        if a_stock_txt == "":
-            continue
-
-        low_float_data = a_stock_txt.split("\n")
-
-        if len(low_float_data) == 8:
-            df_low_float.loc[len(df_low_float.index)] = low_float_data[:-1]
-
-        low_float_data = list()
+    df_low_float = short_interest_model.get_low_float()
 
     pd.set_option("display.max_colwidth", None)
     print(df_low_float.head(n=ns_parser.n_num).to_string(index=False))
