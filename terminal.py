@@ -22,7 +22,7 @@ from gamestonk_terminal.main_helper import clear, export, load, print_help, view
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
-from gamestonk_terminal.technical_analysis import ta_menu as tam
+from gamestonk_terminal.technical_analysis import ta_controller
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.options import op_controller
@@ -202,7 +202,7 @@ def main():
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "ta":
-            b_quit = tam.ta_menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = ta_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "dd":
             b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)

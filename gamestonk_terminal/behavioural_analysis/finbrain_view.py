@@ -1,4 +1,4 @@
-"""Finbrain View Module"""
+"""FinBrain View Module"""
 __docformat__ = "numpy"
 
 import argparse

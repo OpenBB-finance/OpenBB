@@ -206,6 +206,9 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 )
                 df_stock.index.name = "date"
 
+                if df_stock.index[0] > s_start:
+                    s_start = df_stock.index[0]
+
         # Intraday
         else:
             if ns_parser.source == "av":
