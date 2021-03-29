@@ -14,7 +14,7 @@ from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_ark_orders() -> DataFrame:
-    """Returns a ARK orders as a Dataframe
+    """Returns ARK orders in a Dataframe
 
     Returns
     -------

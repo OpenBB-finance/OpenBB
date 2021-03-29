@@ -122,7 +122,7 @@ class DiscoveryController:
 
     def call_orders(self, other_args: List[str]):
         """Process orders command"""
-        fidelity_view.orders(other_args)
+        fidelity_view.orders_view(other_args)
 
     def call_ark_orders(self, other_args: List[str]):
         """Process ark_orders command"""
