@@ -9,8 +9,8 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
 )
 
 from gamestonk_terminal.discovery.short_interest_view import (
-    high_short_interest,
-    low_float,
+    high_short_interest_view,
+    low_float_view,
 )
 
 assertions = unittest.TestCase("__init__")
@@ -27,7 +27,7 @@ class TestDiscoveryShortInterestApi:
         self, mock_request_get, mock_high_short, expected_result
     ):
         mock_request_get.get().text = mock_high_short
-        high_short_interest(["-n", "10"])
+        high_short_interest_view(["-n", "10"])
 
     @mock.patch("gamestonk_terminal.discovery.short_interest_view.requests")
     @parameterize_from_file(
@@ -37,4 +37,4 @@ class TestDiscoveryShortInterestApi:
     # pylint: disable=unused-argument
     def test_low_float(self, mock_request_get, mock_low_float, expected_result):
         mock_request_get.get().text = mock_low_float
-        low_float(["-n", "10"])
+        low_float_view(["-n", "10"])
