@@ -77,7 +77,7 @@ class TechnicalAnalysisController:
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
         print("")
-        print("   summary     technical summary report [Finbrain API]")
+        print("   summary     technical summary report [FinBrain API]")
         print("overlap:")
         print("   ema         exponential moving average")
         print("   sma         simple moving average")

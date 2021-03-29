@@ -1,4 +1,4 @@
-""" Comparison Analysis Finbrain API """
+""" Comparison Analysis FinBrain API """
 __docformat__ = "numpy"
 
 import argparse
@@ -38,7 +38,7 @@ def sentiment_compare(other_args: List[str], ticker: str, similar: List[str]):
         prog="sentiment_compare",
         description="""
             FinBrain's sentiment comparison across similar tickers.
-            Finbrain collects the news headlines from 15+ major financial news
+            FinBrain collects the news headlines from 15+ major financial news
             sources on a daily basis and analyzes them to generate sentiment scores
             for more than 4500 US stocks.FinBrain Technologies develops deep learning
             algorithms for financial analysis and prediction, which currently serves
@@ -103,7 +103,7 @@ def sentiment_correlation(other_args: List[str], ticker: str, similar: List[str]
         prog="sentiment_compare",
         description="""
             FinBrain's sentiment correlation across similar tickers.
-            Finbrain collects the news headlines from 15+ major financial news
+            FinBrain collects the news headlines from 15+ major financial news
             sources on a daily basis and analyzes them to generate sentiment scores
             for more than 4500 US stocks.FinBrain Technologies develops deep learning
             algorithms for financial analysis and prediction, which currently serves

@@ -3,7 +3,7 @@
 This menu aims to perform a technical analysis on a pre-loaded ticker chart, and the usage of the following commands along with an example will be exploited below.
 
  * [summary](#summary)
-    - technical summary report [Finbrain API]
+    - technical summary report [FinBrain API]
 [OVERLAP](#OVERLAP)
   * [ema](#ema)
     - exponential moving average
