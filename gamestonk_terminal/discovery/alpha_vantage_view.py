@@ -1,4 +1,8 @@
+""" Alpha Vantage View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import matplotlib.pyplot as plt
 from alpha_vantage.sectorperformance import SectorPerformances
 from gamestonk_terminal import config_terminal as cfg
@@ -6,15 +10,25 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
 
 
-def sectors(l_args):
+def sectors_view(other_args: List[str]):
+    """Opens a bar chart with sector performance
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="sectors",
-        description="""Real-time and historical sector performances calculated from
-        S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]""",
+        description="""
+            Real-time and historical sector performances calculated from
+            S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
+        """,
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 

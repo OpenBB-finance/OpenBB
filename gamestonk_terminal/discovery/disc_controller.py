@@ -1,3 +1,6 @@
+""" Disc Controller """
+__docformat__ = "numpy"
+
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
@@ -106,19 +109,19 @@ class DiscoveryController:
 
     def call_map(self, other_args: List[str]):
         """Process map command"""
-        finviz_view.map_sp500(other_args)
+        finviz_view.map_sp500_view(other_args)
 
     def call_sectors(self, other_args: List[str]):
         """Process sectors command"""
-        alpha_vantage_view.sectors(other_args)
+        alpha_vantage_view.sectors_view(other_args)
 
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
-        yahoo_finance_view.gainers(other_args)
+        yahoo_finance_view.gainers_view(other_args)
 
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
-        yahoo_finance_view.losers(other_args)
+        yahoo_finance_view.losers_view(other_args)
 
     def call_orders(self, other_args: List[str]):
         """Process orders command"""
@@ -130,27 +133,27 @@ class DiscoveryController:
 
     def call_up_earnings(self, other_args: List[str]):
         """Process up_earnings command"""
-        seeking_alpha_view.earnings_release_dates(other_args)
+        seeking_alpha_view.earnings_release_dates_view(other_args)
 
     def call_high_short(self, other_args: List[str]):
         """Process high_short command"""
-        short_interest_view.high_short_interest(other_args)
+        short_interest_view.high_short_interest_view(other_args)
 
     def call_low_float(self, other_args: List[str]):
         """Process low_float command"""
-        short_interest_view.low_float(other_args)
+        short_interest_view.low_float_view(other_args)
 
     def call_simply_wallst(self, other_args: List[str]):
         """Process simply_wallst command"""
-        simply_wallst_view.simply_wallst(other_args)
+        simply_wallst_view.simply_wallst_view(other_args)
 
     def call_spachero(self, other_args: List[str]):
         """Process spachero command"""
-        spachero_view.spachero(other_args)
+        spachero_view.spachero_view(other_args)
 
     def call_uwhales(self, other_args: List[str]):
         """Process uwhales command"""
-        unusual_whales_view.unusual_whales(other_args)
+        unusual_whales_view.unusual_whales_view(other_args)
 
 
 def menu():

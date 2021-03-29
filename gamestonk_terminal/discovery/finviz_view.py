@@ -1,9 +1,21 @@
+""" Finviz View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import webbrowser
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
-def map_sp500(l_args):
+def map_sp500_view(other_args: List[str]):
+    """Opens Finviz website in a browser
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-p", "6m", "-t", "sp500"]
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="map",
@@ -38,7 +50,7 @@ def map_sp500(l_args):
     d_period = {"1d": "", "1w": "w1", "1m": "w4", "3m": "w13", "6m": "w26", "1y": "w52"}
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 

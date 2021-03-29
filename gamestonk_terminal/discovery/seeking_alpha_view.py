@@ -1,4 +1,8 @@
+""" Seeking Alpha View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -9,7 +13,15 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def earnings_release_dates(l_args):
+def earnings_release_dates_view(other_args: List[str]):
+    """Prints a data frame with earnings release dates
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-p", "20", "-n", "5"]
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="up_earnings",
@@ -35,7 +47,7 @@ def earnings_release_dates(l_args):
         help="Number of upcoming earnings release dates to print",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 

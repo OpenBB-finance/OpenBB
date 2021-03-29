@@ -1,4 +1,8 @@
+""" Short Interest View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -9,7 +13,14 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def high_short_interest(l_args):
+def high_short_interest_view(other_args: List[str]):
+    """Prints top N shorted stocks
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "20"]
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="high_short",
@@ -32,7 +43,7 @@ def high_short_interest(l_args):
         help="Number of top stocks to print.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
@@ -77,7 +88,15 @@ def high_short_interest(l_args):
     print("")
 
 
-def low_float(l_args):
+def low_float_view(other_args: List[str]):
+    """Prints top N low float stocks
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "20"]
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="low_float",
@@ -100,7 +119,7 @@ def low_float(l_args):
         help="Number of top stocks to print.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
