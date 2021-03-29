@@ -1,9 +1,21 @@
+""" Yahoo Finance View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import pandas as pd
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
-def gainers(l_args):
+def gainers_view(other_args: List[str]):
+    """Prints top N gainers
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "20"]
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="gainers",
@@ -21,7 +33,7 @@ def gainers(l_args):
         help="Number of the top gainers stocks to retrieve.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
@@ -32,7 +44,15 @@ def gainers(l_args):
     print("")
 
 
-def losers(l_args):
+def losers_view(other_args: List[str]):
+    """Prints top N loosers
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "20"]
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="losers",
@@ -50,7 +70,7 @@ def losers(l_args):
         help="Number of the top losers stocks to retrieve.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 

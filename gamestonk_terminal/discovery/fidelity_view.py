@@ -1,20 +1,36 @@
+""" Fidelity View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import re
-import requests
 from colorama import Fore, Style
-from bs4 import BeautifulSoup
 import pandas as pd
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
-    get_user_agent,
     patch_pandas_text_adjustment,
     parse_known_args_and_warn,
 )
 from gamestonk_terminal import feature_flags as gtff
 
+from gamestonk_terminal.discovery import fidelity_model
+
 
 def buy_sell_ratio_color_red_green(val: str) -> str:
+    """Add color tags to the Buys/Sells ratio cell
+
+    Parameters
+    ----------
+    val : str
+        Buys/Sells ratio cell
+
+    Returns
+    -------
+    str
+        Buys/Sells ratio cell with color tags
+    """
+
     buy_sell_match = re.match(r"(\d+)% Buys, (\d+)% Sells", val, re.M | re.I)
 
     if not buy_sell_match:
@@ -32,6 +48,19 @@ def buy_sell_ratio_color_red_green(val: str) -> str:
 
 
 def price_change_color_red_green(val: str) -> str:
+    """Add color tags to the price change cell
+
+    Parameters
+    ----------
+    val : str
+        Price change cell
+
+    Returns
+    -------
+    str
+        Price change cell with color tags
+    """
+
     val_float = float(val.split(" ")[0])
     if val_float > 0:
         color = Fore.GREEN
@@ -40,7 +69,15 @@ def price_change_color_red_green(val: str) -> str:
     return color + val + Style.RESET_ALL
 
 
-def orders(l_args):
+def orders_view(other_args: List[str]):
+    """Prints a table with the last N orders by Fidelity customers
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="orders",
@@ -62,78 +99,13 @@ def orders(l_args):
         help="Number of top ordered stocks to be printed.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, l_args)
+    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
-    url_orders = (
-        "https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"
-    )
+    order_header, df_orders = fidelity_model.get_orders()
 
-    text_soup_url_orders = BeautifulSoup(
-        requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text, "lxml"
-    )
-
-    l_orders = list()
-    l_orders_vals = list()
-    idx = 0
-    order_list = text_soup_url_orders.findAll(
-        "td",
-        {"class": ["second", "third", "fourth", "fifth", "sixth", "seventh", "eight"]},
-    )
-    for an_order in order_list:
-        if ((idx + 1) % 3 == 0) or ((idx + 1) % 4 == 0) or ((idx + 1) % 6 == 0):
-            if not an_order:
-                l_orders_vals.append("")
-            else:
-                l_orders_vals.append(an_order.contents[1])
-        elif (idx + 1) % 5 == 0:
-            s_orders = str(an_order)
-            l_orders_vals.append(
-                s_orders[
-                    s_orders.find('title="') + len('title="') : s_orders.find('"/>')
-                ]
-            )
-        else:
-            l_orders_vals.append(an_order.text.strip())
-
-        idx += 1
-
-        # Add value to dictionary
-        if (idx + 1) % 8 == 0:
-            l_orders.append(l_orders_vals)
-            l_orders_vals = list()
-            idx = 0
-
-    df_orders = pd.DataFrame(
-        l_orders,
-        columns=[
-            "Symbol",
-            "Company",
-            "Price Change",
-            "# Buy Orders",
-            "Buy / Sell Ratio",
-            "# Sell Orders",
-            "Latest News",
-        ],
-    )
-
-    df_orders = df_orders[
-        [
-            "Symbol",
-            "Buy / Sell Ratio",
-            "Price Change",
-            "Company",
-            "# Buy Orders",
-            "# Sell Orders",
-            "Latest News",
-        ]
-    ]
-
-    print(
-        text_soup_url_orders.findAll("span", {"class": "source"})[0].text.capitalize()
-        + ":"
-    )
+    print(order_header, ":")
 
     pd.set_option("display.max_colwidth", None)
 

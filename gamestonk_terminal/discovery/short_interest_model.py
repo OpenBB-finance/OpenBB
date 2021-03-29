@@ -1,42 +1,26 @@
-import argparse
+""" Short Interest View """
+__docformat__ = "numpy"
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    get_user_agent,
-    parse_known_args_and_warn,
-)
+from pandas.core.frame import DataFrame
+
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
-def high_short_interest(l_args):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="high_short",
-        description="""
-            Print top stocks being more heavily shorted. HighShortInterest.com provides
-            a convenient sorted database of stocks which have a short interest of over
-            20 percent. Additional key data such as the float, number of outstanding shares,
-            and company industry is displayed. Data is presented for the Nasdaq Stock Market,
-            the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
-        """,
-    )
+def get_high_short_interest() -> DataFrame:
+    """Returns a high short interest DataFrame
 
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="Number of top stocks to print.",
-    )
-
-    ns_parser = parse_known_args_and_warn(parser, l_args)
-    if not ns_parser:
-        return
+    Returns
+    -------
+    DataFrame
+        High short interest Dataframe with the following columns:
+        Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
+    """
 
     url_high_short_interested_stocks = "https://www.highshortinterest.com"
+
     text_soup_high_short_interested_stocks = BeautifulSoup(
         requests.get(
             url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
@@ -72,39 +56,21 @@ def high_short_interest(l_args):
 
         shorted_stock_data = list()
 
-    pd.set_option("display.max_colwidth", None)
-    print(df_high_short_interest.head(n=ns_parser.n_num).to_string(index=False))
-    print("")
+    return df_high_short_interest
 
 
-def low_float(l_args):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="low_float",
-        description="""
-            Print top stocks with lowest float. LowFloat.com provides a convenient
-            sorted database of stocks which have a float of under 10 million shares. Additional key
-            data such as the number of outstanding shares, short interest, and company industry is
-            displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange,
-            the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
-        """,
-    )
+def get_low_float() -> DataFrame:
+    """Returns low float DataFrame
 
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="Number of top stocks to print.",
-    )
-
-    ns_parser = parse_known_args_and_warn(parser, l_args)
-    if not ns_parser:
-        return
+    Returns
+    -------
+    DataFrame
+        Low float DataFrame with the following columns:
+        Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
+    """
 
     url_high_short_interested_stocks = "https://www.lowfloat.com"
+
     text_soup_low_float_stocks = BeautifulSoup(
         requests.get(
             url_high_short_interested_stocks, headers={"User-Agent": get_user_agent()}
@@ -136,6 +102,4 @@ def low_float(l_args):
 
         low_float_data = list()
 
-    pd.set_option("display.max_colwidth", None)
-    print(df_low_float.head(n=ns_parser.n_num).to_string(index=False))
-    print("")
+    return df_low_float

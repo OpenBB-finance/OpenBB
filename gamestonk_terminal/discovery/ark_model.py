@@ -1,35 +1,28 @@
-import argparse
+""" ARK Model """
+__docformat__ = "numpy"
+
 from datetime import timedelta
 import json
 import requests
-from colorama import Fore, Style
 from bs4 import BeautifulSoup
 import numpy as np
 import pandas as pd
 from pandas.core.frame import DataFrame
 import yfinance as yf
 
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    get_user_agent,
-    patch_pandas_text_adjustment,
-    parse_known_args_and_warn,
-)
-from gamestonk_terminal import feature_flags as gtff
-
-
-def direction_color_red_green(val: str) -> str:
-    if val == "Buy":
-        ret = Fore.GREEN + val + Style.RESET_ALL
-    elif val == "Sell":
-        ret = Fore.RED + val + Style.RESET_ALL
-    else:
-        ret = val
-
-    return ret
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_ark_orders() -> DataFrame:
+    """Returns ARK orders in a Dataframe
+
+    Returns
+    -------
+    DataFrame
+        ARK orders data frame with the following columns:
+        ticker, date, shares, weight, fund, direction
+    """
+
     url_orders = "https://cathiesark.com/ark-funds-combined/trades"
 
     raw_page = requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text
@@ -62,6 +55,21 @@ def get_ark_orders() -> DataFrame:
 
 
 def add_order_total(df_orders: DataFrame) -> DataFrame:
+    """Takes an ARK orders dataframe and pulls data from Yahoo Finance to add
+    volume, open, close, high, low, and total columns
+
+    Parameters
+    ----------
+    df_orders : DataFrame
+        ARK orders data frame with the following columns:
+        ticker, date, shares, weight, fund, direction
+
+    Returns
+    -------
+    DataFrame
+        ARK orders data frame with the following columns:
+        ticker, date, shares, volume, open, close, high, low, total, weight, fund, direction
+    """
     start_date = df_orders["date"].iloc[-1] - timedelta(days=1)
 
     tickers = " ".join(df_orders["ticker"].unique())
@@ -93,52 +101,3 @@ def add_order_total(df_orders: DataFrame) -> DataFrame:
         )
 
     return df_orders
-
-
-def ark_orders(l_args):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="ARK Orders",
-        description="""
-            Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
-        """,
-    )
-
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=20,
-        help="Last N orders.",
-    )
-
-    ns_parser = parse_known_args_and_warn(parser, l_args)
-    if not ns_parser:
-        return
-
-    df_orders = get_ark_orders()
-
-    if df_orders.empty:
-        print("The ARK orders aren't anavilable at the moment.\n")
-        return
-
-    pd.set_option("mode.chained_assignment", None)
-    df_orders = add_order_total(df_orders.head(ns_parser.n_num))
-
-    if gtff.USE_COLOR:
-        df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
-
-        patch_pandas_text_adjustment()
-
-    df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
-
-    pd.set_option("display.max_colwidth", None)
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.float_format", "{:,.2f}".format)
-    print("")
-    print("Orders by ARK Investment Management LLC")
-    print("")
-    print(df_orders.to_string(index=False))
-    print("")

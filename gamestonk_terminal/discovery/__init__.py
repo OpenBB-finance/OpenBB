@@ -1,1 +1,1 @@
-from . import disc_menu  # noqa: F401
+from . import disc_controller  # noqa: F401

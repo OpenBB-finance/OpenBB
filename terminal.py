@@ -14,7 +14,7 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
-from gamestonk_terminal.discovery import disc_menu as dm
+from gamestonk_terminal.discovery import disc_controller
 from gamestonk_terminal.due_diligence import dd_menu as ddm
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
@@ -184,7 +184,7 @@ def main():
             main_cmd = True
 
         elif ns_known_args.opt == "disc":
-            b_quit = dm.disc_menu()
+            b_quit = disc_controller.menu()
 
         elif ns_known_args.opt == "mill":
             b_quit = mill.papermill_menu()
