@@ -30,11 +30,6 @@ class TestDiscoveryFidelityModel:
         mock_requests_get.get().text = mock_fidelity_orders_html
         header, ret = get_orders()
 
-        print("")
-        print(ret.to_csv())
-        print("")
-        print(header)
-
         assertions.assertEqual.__self__.maxDiff = None
         assertions.assertEqual(
             header.replace("\r\n", "\n"), expected_header.replace("\r\n", "\n")
