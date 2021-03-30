@@ -15,6 +15,7 @@ from gamestonk_terminal.technical_analysis import trend_indicators as ta_trend
 from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
 from gamestonk_terminal.technical_analysis import finbrain_view
+from gamestonk_terminal.technical_analysis import tradingview_view
 from prompt_toolkit.completion import NestedCompleter
 
 
@@ -27,6 +28,7 @@ class TechnicalAnalysisController:
         "q",
         "quit",
         "summary",
+        "recom",
         "ema",
         "sma",
         "vwap",
@@ -78,6 +80,9 @@ class TechnicalAnalysisController:
         print("   quit        quit to abandon program")
         print("")
         print("   summary     technical summary report [FinBrain API]")
+        print(
+            "   recom       recommendation based on Technical Indicators [Tradingview API]"
+        )
         print("overlap:")
         print("   ema         exponential moving average")
         print("   sma         simple moving average")
@@ -129,6 +134,10 @@ class TechnicalAnalysisController:
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         finbrain_view.technical_summary_report(other_args, self.ticker)
+
+    def call_recom(self, other_args: List[str]):
+        """Process recom command"""
+        tradingview_view.print_recommendation(other_args, self.ticker)
 
     # OVERLAP
     def call_ema(self, other_args: List[str]):
