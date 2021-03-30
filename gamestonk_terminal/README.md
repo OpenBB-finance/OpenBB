@@ -8,6 +8,8 @@
 * [Technical Analysis](#Technical-Analysis-)
 * [Due Diligence](#Due-Diligence-)
 * [Prediction Techniques](#Prediction-Techniques-)
+* [Portfolio Analysis](#Portfolio-Analysis-)
+* [Cryptocurrencies](#Cryptocurrencies-)
 
 ## Main
 
@@ -207,3 +209,24 @@ Command|Technique|Sources
 `mlp`         |MultiLayer Perceptron | [Wikipedia](https://en.wikipedia.org/wiki/Multilayer_perceptron)
 `rnn`         |Recurrent Neural Network  | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network)
 `lstm`        |Long Short-Term Memory  | [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory), [Details](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+
+&nbsp;
+## Portfolio Analysis [»](portfolio/README.md)
+
+Command|Description
+------ | ------------
+`login`| login to desired brokers
+`rhhold`| look at robinhood holdings
+`rhhist`| look at robinhood portfolio history
+`alphold`| look at alpaca holdings
+`alphist`| look at alpaca portfolio history
+`allyhold`| look at ally holdings
+`hold`| look at holdings across all brokers for which you have logged in
+
+&nbsp;
+## Cryptocurrency [»](cryptocurrency/README.md)
+
+Command|Description
+------ | ------------
+`load`| load coin data vs specified currency
+`view`| plot the loaded coin data
