@@ -123,6 +123,7 @@ timeseriescrossvalidation @ git+https://github.com/DidierRLopes/TimeSeriesCrossV
 toml==0.10.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6"
 tornado==6.1; python_full_version >= "3.6.1" and python_version >= "3.6"
 tqdm==4.59.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
+tradingview-ta==3.2.3
 traitlets==4.3.3; python_full_version >= "3.6.1" and python_version >= "3.6"
 typed-ast==1.4.2; python_version >= "3.6"
 typing-extensions==3.7.4.3; python_version < "3.8" and python_version >= "3.6"
