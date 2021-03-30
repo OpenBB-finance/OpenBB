@@ -12,7 +12,7 @@ def get_technical_summary_report(ticker: str) -> str:
     Parameters
     ----------
     ticker : str
-        Ticker to get the sentiment analysis from
+        Ticker to get the technical summary
 
     Returns
     -------
