@@ -9,7 +9,11 @@ from prompt_toolkit.history import FileHistory
 
 def inputhook(inputhook_context):
     while not inputhook_context.input_is_ready():
-        pyplot.pause(0.1)
+        try:
+            pyplot.pause(0.1)
+        # pylint: disable=unused-variable
+        except Exception as e:
+            continue
     return False
 
 
