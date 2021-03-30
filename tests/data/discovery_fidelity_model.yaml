@@ -1,0 +1,2466 @@
+test_get_orders:
+  base_orders:
+    mock_fidelity_orders_html: |
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+      <!-- SLICE = XXX -->
+      <head>
+          <script type="text/javascript" src="https://dmt.fidelity.com/prod/meas/"></script>
+
+        <script type="text/javascript">
+            if (top.location != location) {
+                top.location.href = document.location.href;
+             }
+        </script>
+        <script type="text/javascript" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/js/jquery-1.11.1.min.js"></script>
+
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+              <meta name="keywords" content="" />
+               <meta name="description" content="" />
+
+          <meta name="ereview" content="455146"/>
+
+
+        <title>
+
+
+          Stock Research - Fidelity
+
+
+        </title>
+
+            <link href="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/css/research3.css" rel="stylesheet" type="text/css" media="screen, print"/>
+
+            <!--[if IE]>
+              <link href="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/css/ie.css" rel="stylesheet" type="text/css" media="screen"/>
+              <![endif]-->
+            <!--[if IE 7]>
+            <link href="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/css/ie7.css" rel="stylesheet" type="text/css" media="screen"/>
+            <![endif]-->
+
+
+
+        <!--[if IE 6]>
+        <link href="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/css/ie6.css" rel="stylesheet" type="text/css" media="screen"/>
+        <![endif]-->
+
+          <style type="text/css">
+              .previous {float: left; width: 75px;}
+              .next {float: right; width: 75px;}
+          .font-control-bar .font-control-links ul li {list-style-type:none; display:inline;}
+          </style>
+          <script type="text/javascript">
+            var newwindow;
+          function openWin(url){
+            var width = 820;
+            var height = 795;
+            var left = 80;
+            var top = 80;
+            var scrollbar = 'scrollbars=yes';
+            if(openWin.arguments.length > 1){
+              width = openWin.arguments[1];
+              height = openWin.arguments[2];
+            }
+            if(openWin.arguments.length > 3){
+              left = openWin.arguments[3];
+              top = openWin.arguments[4];
+              scrollbar = 'scrollbars=no';
+              if (screen.width <= 800){
+                top=19;
+                left=309;
+              }
+            }
+            if(!newwindow || newwindow.closed){
+              newwindow = window.open(url,'newwindow','resizable=yes,' + scrollbar + ',menubar=no,toolbar=no,width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',screenX=20,screenY=20');
+            }
+            else{
+              newwindow.location.replace(url);
+            }
+            newwindow.focus();
+          }
+        </script>
+      </head>
+        <title>
+          Top Orders By Fidelity Customers
+        </title>
+
+      <body>
+
+      <script type="text/javascript">
+      try{
+      if (typeof Bootstrapper !== "object"){
+      document.writeln('<scr'+'ipt type="text/javascript" src="https://nexus.ensighten.com/fidelity/prod/Bootstrap.js"></sc'+'ript>');
+      }
+      }catch(e){
+       console.log('no load bs');
+      }
+      </script>
+      <!-- begin_nav -->
+          <link rel="stylesheet" href="https://www.fidelity.com/bin-public/060_www_fidelity_com/css/nav-07.18.min.css" type="text/css">
+                    <div class="mboxDefault">
+      <!--[if lte IE 7 ]>    
+      <div id="pgnb" class="pgnb ie ie7" data-nav-ver="12" data-tmsId="526-79240-64"> 
+      <![endif]-->
+      <!--[if IE 8 ]>
+      <div id="pgnb" class="pgnb ie ie8  bm" data-nav-ver="12" data-tmsId="526-79240-64"> 
+      <![endif]-->
+      <!--[if IE 9 ]>
+      <div id="pgnb" class="pgnb ie ie9  bm" data-nav-ver="12" data-tmsId="526-79240-64"> 
+      <![endif]-->
+      <!--[if (gt IE 9)|!(IE)]><!-->
+      <div id="pgnb" class="pgnb bm" data-nav-ver="12" data-tmsId="526-79240-64">
+      <!--<![endif]-->
+          <div class="pbn" role="banner">
+              <div class="pnsn"><a href="#piNavSkipToContent" class="pnsl" id="pnsl">Skip to Main Content.</a></div> 
+              <a id="pnt" class="pnt" href="javascript:void(0)"><span class="pntstrp"><span class="off-screen">Site navigation</span></span></a>
+                   <div class="pnld"><a target="_top" href="https://www.fidelity.com/?bar=p"><span class="screen-reader-only">Fidelity.com Home</span></a></div>
+              <div class="pntlt">
+      <ul class="pntl pnlogout">
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/overview" target="_top" >Customer Service</a>
+          </li>
+          <li class="static ">
+            <a href="https://digital.fidelity.com/ftgw/digital/profile" target="_top">Profile</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/open-account/overview" target="_top" >Open an Account</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/friendsandfamily3a" target="_top" >Refer a Friend</a>
+          </li>
+            <li class="pnls last-child">
+            <a href="https://digital.fidelity.com/prgw/digital/login/full-page?AuthRedUrl=https://oltx.fidelity.com/ftgw/fbc/ofsummary/defaultPage" target="_top" >Log In</a>
+          </li>
+      </ul><ul class="pntl pnlogin">
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/overview" target="_top" >Customer Service</a>
+          </li>
+          <li class="static ">
+            <a href="https://digital.fidelity.com/ftgw/digital/profile" target="_top" >Profile</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/open-account/overview" target="_top" >Open an Account</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/friendsandfamily3a" target="_top" >Refer a Friend</a>
+          </li>
+            <li class="pnls last-child">
+            <a href="https://login.fidelity.com/ftgw/Fidelity/RtlCust/Logout/Init?AuthRedUrl=https://www.fidelity.com/customer-service/customer-logout" target="_top">Log Out</a>
+          </li>
+      </ul>        </div>
+              <div id="pns" class="pns" role="search">
+      <form class="pnsm" method="get" action="https://digital.fidelity.com/search/main?q=">
+          <label for="nav-search-mobile" class="screen-reader-only">Search fidelity.com or get a quote</label>
+                      <div class="pnst-container">
+                  <input id="nav-search-mobile" type="text" placeholder="Search or get a quote" class="pnst search-autocomplete" name="question"  maxlength="64">
+                      </div>
+          <input type="submit" value="Search Site" class="pnss">
+        </form>        </div>
+          </div>
+          <div class="pnacr-wrapper"> <div class="pnacr"></div></div>
+          <div id="pnmm" class="pnmm" role="navigation" aria-label="Site Navigation">
+              <ul class="pnl1 pns-5">
+      <li class="pnhs">
+        <div class="pnsh"><a class="pnshl" href="#" aria-haspopup="true" aria-expanded="false">Accounts &amp; Trade</a></div>
+        <div class="pnl2">
+          <ul>
+                    <li class="pnlogout" tms="navLink"><a href="https://scs.fidelity.com/customeronly/portfolio.shtml" target="_top">Portfolio <span class="pnlock pnlogout"><span class="screen-reader-only">Log In Required</span></span></a></li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://oltx.fidelity.com/ftgw/fbc/oftop/portfolio#summary" target="_top" name="Link_1369248506220" id="Link_1369248506220">Portfolio</a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://scs.fidelity.com/customeronly/accountposition.shtml" target="_top">Account<span class="pi-nav-nowrap" style="padding-left:6px">Positions <span class="pnlock pnlogout">
+                  <span class="screen-reader-only">Log In Required</span>
+                </span></span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://oltx.fidelity.com/ftgw/fbc/oftop/portfolio#positions" target="_top">Account<span class="pi-nav-nowrap" style="padding-left:6px">Positions</span></a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://scs.fidelity.com/customeronly/trade.shtml" target="_top">Trade <span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://oltx.fidelity.com/ftgw/fbc/oftrade/EntrOrder?FRAME_LOADED=Y&amp;NAVBAR=Y" target="_top">Trade</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/trading/advanced-trading-tools/active-trader-pro/overview" target="_top">Active Trader Pro</a>
+          </li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/customer-service/money-movement" target="_top">Transfers</a></li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://oltx.fidelity.com/ftgw/fbc/ofcashmgmt/cashMgmtApp">Cash Management <span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://oltx.fidelity.com/ftgw/fbc/ofcashmgmt/cashMgmtApp">Cash Management</a>
+          </li>
+                    <li class="pnlogout" tms="navLink"><a href="https://digital.fidelity.com/ftgw/digital/billpay/home" id="Link_1366018845877" target="_top" name="Link_1366018845877" >Bill Pay <span class="pnlock pnlogout"><span class="screen-reader-only">Log In Required</span></span></a></li>
+                    <li class="pnlogin" tms="navLink"><a href="https://digital.fidelity.com/ftgw/digital/billpay/home" id="Link_1366018845877" target="_top" name="Link_1366018845877" >Bill Pay</a></li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://wealth.emaplan.com/fidelity/framein?fromOrigin=https://digital.fidelity.com&amp;destination=https://digital.fidelity.com/ftgw/digital/emoney/home" target="_top">Full View<span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://wealth.emaplan.com/fidelity/framein?fromOrigin=https://digital.fidelity.com&amp;destination=https://digital.fidelity.com/ftgw/digital/emoney/home" target="_top">Full View</a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://digital.fidelity.com/ftgw/digital/security/dashboard/view" target="_top" >Security Settings<span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://digital.fidelity.com/ftgw/digital/security/dashboard/view" target="_top" >Security Settings</a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://scs.fidelity.com/customeronly/update-features.shtml" id="Link_1366018882368" target="_top" name="Link_1366018882368">Account Features <span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://oltx.fidelity.com/ftgw/fbc/oftop/portfolio#Feature" id="Link_1366018882368" target="_top" name="Link_1366018882368">Account Features</a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://statements.fidelity.com/ftgw/fbc/ofstatements/getStatementsList" id="Link_1366018909540" target="_top" name="Link_1366018909540" >Statements <span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://statements.fidelity.com/ftgw/fbc/ofstatements/getStatementsList" id="Link_1366018909540" target="_top" name="Link_1366018909540" >Statements</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/tax-information/overview" target="_top">Tax Forms &amp; Information</a>
+          </li>
+                    <li class="dynamic-act-prof " data-dynamic-act-prof="D1026~Y" tms="navLink"><a href="https://digital.fidelity.com/ftgw/digital/guide-to-required-minimum-distribution/" target="_top" >Retirement Distributions<span class="pnlock pnlogout"><span class="screen-reader-only">Log In Required</span></span></a></li>
+                    <li class="dynamic-act-prof " data-dynamic-act-prof="D2677=C" tms="navLink"><a href="https://rewards.fidelity.com/offers/rewards/secure/status/rewards-wealth-status?ofr=1311" id="Link_1582559257661" target="_top" name="Link_1582559257661" >Fidelity Rewards+<span class="pnlock pnlogout"><span class="screen-reader-only">Log In Required</span></span></a></li>
+                    <li class="dynamic-act-prof " data-dynamic-act-prof="T30=T30A" tms="navLink"><a href="https://digital.fidelity.com/ftgw/digital/new-account-tasks/tasks" id="Link_1607457231600" name="Link_1607457231600" target="_top" >New Account Checklist<span class="pnlock pnlogout"><span class="screen-reader-only">Log In Required</span></span></a></li>
+          </ul>
+        </div>
+      </li><li class="pnhs">
+        <div class="pnsh"><a class="pnshl" href="#" aria-haspopup="true" aria-expanded="false">Planning &amp; Advice</a></div>
+        <div class="pnl2">
+          <ul>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/what-we-offer/overview" >What We Offer</a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://myguidance.fidelity.com/ftgw/pna/customer/pgc/hub/" >My Goals</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/financial-basics/overview" >Financial Basics</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/building-savings/overview" >Building Savings</a>
+          </li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/digital-investing-and-advice/overview" >Robo Investing Plus Financial Advice</a></li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/wealth-management/overview" >Wealth Management</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://digital.fidelity.com/prgw/digital/faa/0/connect-with-an-advisor" >Find an advisor</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/retirement-planning/overview" >Retirement</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://myguidance.fidelity.com/ftgw/pna/public/lifeevents/content/uncertain-times-guidance" >Life Events</a>
+          </li>
+          </ul>
+        </div>
+      </li><li class="pnhs">
+        <div class="pnsh"><a class="pnshl" href="#" aria-haspopup="true" aria-expanded="false">News &amp; Research</a></div>
+        <div class="pnl2">
+          <ul>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/news/overview" id="Link_1474659208719" name="Link_1474659208719" >News</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://watchlists.fidelity.com/ftgw/watchlists/goto/retail/getWatchlist" target="_top" >Watch List <span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://quotes.fidelity.com/ftgw/fbc/ofquotes/webxpress/get_quote" id="Link_1474659319682" name="Link_1474659319682" >Quotes</a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://digital.fidelity.com/prgw/digital/research/" id="Link_1474659319682" name="Link_1474659319682" >Quotes</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://alertable.fidelity.com/ftgw/alerts/GetAlertsSummary" target="_top" >Alerts <span class="pnlock pnlogout">
+                <span class="screen-reader-only">Log In Required</span>
+              </span></a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://fundresearch.fidelity.com/fund-screener" id="Link_1474659463496" name="Link_1474659463496" >Mutual Funds</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://eresearch.fidelity.com/eresearch/landing.jhtml" target="_top">Stocks</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://fixedincome.fidelity.com/ftgw/fi/FILanding" target="_top" >Fixed Income, Bonds &amp; CDs</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://screener.fidelity.com/ftgw/etf/evaluator/goto/landing" target="_top" >ETFs</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://researchtools.fidelity.com/ftgw/mloptions/goto/optionChain" target="_top">Options</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://eresearch.fidelity.com/eresearch/goto/markets_sectors/landing.jhtml" target="_top" >Markets &amp; Sectors</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://brokerage.fidelity.com/ftgw/brkg/ipo/calendar" target="_top" >IPOs</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/research-annuities/overview" target="_top" >Annuities</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/learning-center/overview" id="Link_1474659825988" name="Link_1474659825988" >Learning Center</a>
+          </li>
+                    <li class="pnlogout" tms="navLink">
+            <a href="https://www.fidelity.com/go/notebook" id="Link_1474659859175" name="Link_1474659859175" >Notebook</a>
+          </li>
+                    <li class="pnlogin" tms="navLink">
+            <a href="https://dpcs.fidelity.com/ftgw/dpcs/notebook/#?channel=nav" target="_top">Notebook</a>
+          </li>
+          </ul>
+        </div>
+      </li><li class="pnhs">
+        <div class="pnsh"><a class="pnshl" href="#" aria-haspopup="true" aria-expanded="false">Investment Products</a></div>
+        <div class="pnl2">
+          <ul>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/mutual-funds/overview" id="4MutualFunds" target="_top" name="4MutualFunds" >Mutual Funds</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/retirement-ira/overview" id="4RetirementAndIRAs" target="_top" name="4RetirementAndIRAs" >Retirement &amp; IRAs</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/trading/overview" id="4Trading" name="4Trading" >Trading</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/stock-trading/overview" id="4Stocks" name="4Stocks" >Stocks</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/fixed-income-bonds/overview" id="4FixedIncome" name="4FixedIncome" >Fixed Income, Bonds &amp; CDs</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/etfs/overview" target="_top" id="4ETFs" name="4ETFs" >ETFs</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/options-trading/overview" target="_top" id="4Options" name="4Options" >Options</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/sector-investing/overview" target="_top" id="4SectorInvesting" name="4SectorInvesting" >Sector Investing</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/cash-management/overview" target="_top" id="4CashManagement" name="4CashManagement" >Cash Management &amp; Credit Cards</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/managed-accounts/overview" target="_top" id="4ManagedAccounts" name="4ManagedAccounts" >Managed Accounts</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/529-plans/overview" target="_top" id="4529CollegeSavings" name="4529CollegeSavings" >529 College Savings</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/go/hsa/why-hsa" target="_top" >Health Savings Account</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/annuities/overview" target="_top" id="4Annuities" name="4Annuities" >Annuities</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/life-insurance/overview" target="_top" id="4LifeInsurance" name="4LifeInsurance" >Life Insurance &amp; Long Term Care</a>
+          </li>
+                    <li class="" tms="navLink">
+            <a href="https://www.fidelity.com/building-savings/charitable-giving" target="_top" id="4CharitableGiving" name="4CharitableGiving" >Charitable Giving</a>
+          </li>
+          </ul>
+        </div>
+      </li><li class="pnhs">
+        <div class="pnsh"><a class="pnshl" href="#" aria-haspopup="true" aria-expanded="false">Why Fidelity</a></div>
+        <div class="pnl2">
+          <ul>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/why-fidelity/overview" id="Link_1474662025230" name="Link_1474662025230">The Fidelity Advantage</a></li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/why-fidelity/planning-advice" target="_top">Planning &amp; Advice</a></li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/why-fidelity/trading" target="_top">Trading</a></li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/why-fidelity/pricing-fees" target="_top">Straightforward Pricing</a></li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/why-fidelity/insights-tools" target="_top">Insights &amp; Tools</a></li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/why-fidelity/security-protection" target="_top">Security &amp; Protection</a></li>
+                    <li class="" tms="navLink"><a href="https://www.fidelity.com/about-fidelity/our-company" target="_top">About Fidelity</a></li>
+                    <li class="" tms="navLink"><a href="https://jobs.fidelity.com" target="_top">Careers</a></li>
+          </ul>
+        </div>
+      </li>        </ul><!-- pnl1 -->
+              <div class="pntlb">
+      <ul class="pntl pnlogout">
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/overview" target="_top" >Customer Service</a>
+          </li>
+          <li class="static ">
+            <a href="https://digital.fidelity.com/ftgw/digital/profile" target="_top">Profile</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/open-account/overview" target="_top" >Open an Account</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/friendsandfamily3a" target="_top" >Refer a Friend</a>
+          </li>
+            <li class="pnls last-child">
+            <a href="https://digital.fidelity.com/prgw/digital/login/full-page?AuthRedUrl=https://oltx.fidelity.com/ftgw/fbc/ofsummary/defaultPage" target="_top" >Log In</a>
+          </li>
+      </ul><ul class="pntl pnlogin">
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/overview" target="_top" >Customer Service</a>
+          </li>
+          <li class="static ">
+            <a href="https://digital.fidelity.com/ftgw/digital/profile" target="_top" >Profile</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/open-account/overview" target="_top" >Open an Account</a>
+          </li>
+          <li class="static ">
+            <a href="https://www.fidelity.com/customer-service/friendsandfamily3a" target="_top" >Refer a Friend</a>
+          </li>
+            <li class="pnls last-child">
+            <a href="https://login.fidelity.com/ftgw/Fidelity/RtlCust/Logout/Init?AuthRedUrl=https://www.fidelity.com/customer-service/customer-logout" target="_top">Log Out</a>
+          </li>
+      </ul>        </div>
+          </div>
+          <a name="piNavSkipToContent" id="piNavSkipToContent" tabindex="-1" class="off-screen"></a>
+      </div>
+                    </div>
+                   <script type="text/javascript">
+                     window.mboxCreate = window.mboxCreate || function (){};
+                     mboxCreate("PI_Navbar");
+                   </script>
+      <script  type="text/javascript">
+      var PIGlobalNav_WWWHOST = "https://www.fidelity.com";
+      var PIGlobalNav_ACTIVEQUOTE_HOST = "https://quotes.fidelity.com";
+      var PIGlobalNav_ERESEARCH_HOST = "https://eresearch.fidelity.com";
+      var PIGlobalNav_RESEARCHTOOLS_HOST ="https://researchtools.fidelity.com";
+      var PGNBProperties = {
+      fadeInTime : 4000 ,
+      menuDelayTime : 400 
+      }
+      </script>
+      <script src="https://www.fidelity.com/bin-public/060_www_fidelity_com/js/nav-07.18.min.js" type="text/javascript"></script>
+      <!-- end_nav -->
+
+      <div class="spacing-div_8X0"></div>	
+
+      <div class="breadcrumb layout-outer-table-width">
+        <div class="right-align">
+          <span class="footnote">
+            Content and data provided by various third parties and Fidelity &minus; <a href="https://www.fidelity.com/terms-of-use#third" onClick="javascript:openPopup('https://www.fidelity.com/terms-of-use#third',420,450);return false;">Terms of Use</a>
+          <br/>
+          </span>
+        </div>
+        <ul>
+          <li><span class="first">Research</span> &gt;</li>
+          <li><a href="/eresearch/landing.jhtml">Stocks</a> &gt;</li>
+
+        </ul>
+        <div class="spacing-div_5X0"></div>
+          <div class="dotted-hr"><div class="hr-for-ie"></div></div>
+        <div class="spacing-div_10X0"></div>
+      </div>
+
+      <table cellspacing="0" cellpadding="0" border="0" class="layout-outer-table-width">
+        <tr>
+          <td class="layout-left-gutter"></td>
+          <td class="layout-left-toc-col" valign="top">
+
+      <div id="Fidelity">
+
+      <script>
+      function switchToc(e) {
+        //if Esc key is pressed, don't do anything
+        if(!e) var e = window.event;
+        if(e != null && e.keyCode != null && e.keyCode == 27) return;
+
+        var symbol = document.getElementById("symbol").value;
+        if(symbol.indexOf(":") > 0) {
+          document.getElementById("domesticoptions").style.display = 'none';
+          document.getElementById("intloptions").style.display = '';
+        } else {
+          document.getElementById("intloptions").style.display = 'none';
+          document.getElementById("domesticoptions").style.display = '';
+        }
+      }
+      function selectLink(form) {
+        if(document.getElementById("intloptions").style.display == 'none'){
+          form.action = document.getElementById("rRDDom").options[document.getElementById("rRDDom").selectedIndex].value;
+        } else if(document.getElementById("domesticoptions").style.display == 'none'){
+          form.action = document.getElementById("rRDIntl").options[document.getElementById("rRDIntl").selectedIndex].value;
+        }
+      }
+      function selectLinkTOC(form) {
+        if(document.getElementById("intloptions").style.display == 'none'){
+          form.action = document.getElementById("rRDDom").options[document.getElementById("rRDDom").selectedIndex].value;
+        } else if(document.getElementById("domesticoptions").style.display == 'none'){
+          form.action = document.getElementById("rRDIntl").options[document.getElementById("rRDIntl").selectedIndex].value;
+        }
+      }
+      var newwindow;
+      function openWinTOC(url){
+        var width = 810;
+        var height = 795;
+        var left = 80;
+        var top = 80;
+        var scrollbar = 'scrollbars=yes';
+        if(openWinTOC.arguments.length > 1){
+          width = openWinTOC.arguments[1];
+          height = openWinTOC.arguments[2];
+        }
+        if(openWinTOC.arguments.length > 3){
+          left = openWinTOC.arguments[3];
+          top = openWinTOC.arguments[4];
+          scrollbar = 'scrollbars=no';
+          if (screen.width <= 800){
+            top=19;
+            left=309;
+          }
+        }
+        if(!newwindow || newwindow.closed){
+          newwindow = window.open(url,'newwindow','resizable=yes,' + scrollbar + ',menubar=no,toolbar=no,width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',screenX=20,screenY=20');
+        }
+        else{
+          newwindow.location.replace(url);
+        }
+        newwindow.focus();
+      }
+
+      var topOpenerWin = null;
+      function openMyResearchPanel(url) {
+        /*if (sonWin == null || sonWin.closed) {
+          sonWin = window.open(url,"_blank","titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=868, height=620");
+        } else {
+          sonWin.focus();
+        }*/
+
+        //if(window.opener && !window.opener.closed){
+        if(topOpenerWin && !topOpenerWin.closed){	
+          //window.opener.focus();
+          topOpenerWin.focus();
+        } else {
+          topOpenerWin = window.open(url,"MyResearch","titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=888, height=640");
+          //window.opener = topOpenerWin;
+        }
+      }
+      function openAdvancedChart(url, symbolValue){
+        var advTarget = "win_" + symbolValue.replace(".","").replace("/","").replace("-","");
+        var advanceChartWin = window.open(url,advTarget,"titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no, width=860, height=780, top=60");
+        advanceChartWin.focus();
+      }
+      </script>
+
+
+
+      <div class="toc-wrapper">
+        <div class="stock-details">
+        <div class="navhead"><h2>Stock Details</h2>
+        </div>
+        <div class="content-stock-details">
+        <h3><label for="symbol">Enter Company or Symbol<span class="offScreen">. Press down arrow for suggestions, or Escape to return to entry field.</span></label></h3>
+        <div class="form-box">
+
+        <form onSubmit="selectLinkTOC(this); return onFormSubmit(this)" name="EnterASymbolForm"  target="_top" action="https://eresearch.fidelity.com/eresearch/evaluate/snapshot.jhtml" id="search">
+          <input class="symtxt" autocomplete="OFF" onfocus="symbolTextBoxClicked=true" onkeypress="symbolTextBoxClicked=true" id="symbol" name="symbols" value="" type="text" size="3" maxlength="20" onKeyUp="javascript:switchToc(event)"><br/>
+          <div class="acResults" id="resultPane"></div>
+              <div class="acError" id="errorPane"></div>
+              <div id="debug"></div>
+          <span id="domesticoptions">
+          <span class="offScreen"><label for="rRDDom">View this information for the company or symbol</label></span>
+          <select id="rRDDom" class="dd" title="Snapshot" onchange="javascript:this.title=this.options[this.selectedIndex].title;">
+            <option title="Snapshot" value="https://eresearch.fidelity.com/eresearch/evaluate/snapshot.jhtml" >Snapshot</option>
+            <option title="Detailed Quote" value="https://eresearch.fidelity.com/eresearch/evaluate/quote.jhtml" >Detailed Quote</option>		
+            <option title="Advanced Chart & Technical Analysis" value="https://eresearch.fidelity.com/eresearch/gotoBL/evaluate/chart/chartAdvanced.jhtml" >Adv Chart & Technical..</option>
+            <option title="News & Events" value="https://eresearch.fidelity.com/eresearch/evaluate/news/basicNews.jhtml" >News & Events</option>
+            <option title="Compare" value="https://eresearch.fidelity.com/eresearch/compare/main.jhtml" >Compare</option>
+            <option title="Analyst Opinions" value="https://eresearch.fidelity.com/eresearch/evaluate/analystsOpinions.jhtml" >Analyst Opinions</option>
+            <option title="Research Reports" value="https://eresearch.fidelity.com/eresearch/evaluate/analystsOpinionsReport.jhtml">Research Reports</option>
+            <option title="Key Statistics" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/valuation.jhtml?stockspage=keyStatistics" >Key Statistics</option>
+            <option title="Earnings" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/earnings.jhtml?stockspage=earnings" >Earnings</option>
+            <option title="Dividends" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/dividends.jhtml?stockspage=dividends" >Dividends</option>		
+            <option title="Ownership & Insiders" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/ownership.jhtml?stockspage=ownership" >Ownership & Insiders</option>
+            <option title="Financial Statements" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/financials.jhtml?stockspage=financials" >Financial Statements</option>
+            <option title="SEC Filings" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/secFilings.jhtml?stockspage=secFilings" >SEC Filings</option>
+          </select>
+          </span>
+          <span id="intloptions" style="display: none;">
+          <span class="offScreen"><label for="rRDIntl">View this information for the company or symbol</label></span>
+          <select id="rRDIntl" class="dd" title="Snapshot" onchange="javascript:this.title=this.options[this.selectedIndex].title;">
+            <option title="Snapshot" value="/eresearch/evaluate/snapshot.jhtml" >Snapshot</option>
+            <option title="Detailed Quote" value="/eresearch/evaluate/quote.jhtml" >Detailed Quote</option>		
+            <option title="Advanced Chart" value="/eresearch/gotoBL/evaluate/chart/chartAdvanced.jhtml" >Advanced Chart</option>
+            <option title="News" value="/eresearch/evaluate/news/basicNews.jhtml" >News</option>
+            <option title="Analyst Reports" value="/eresearch/international/analystReports.jhtml" >Analyst Reports</option>
+          </select>
+          </span>
+          <input id="rRDG" type="submit" value="Go" class="button" />
+          <div class="link"><a href="javascript:openWinTOC('https://quotes.fidelity.com/webxpress/popup_lookup.phtml', 454, 491, 478, 133)">Find Symbol<span class="offScreen">. Opens in new window.</span></a></div>
+        </form>
+        </div>
+        </div>
+        </div>
+        <div class="spacing-div_15X0"></div>
+      <div class="toc">
+        <div class="navhead"><h2>Stock Research & Ideas</h2>
+        </div>
+        <div class="navcontent">
+        <ul>
+          <li id="toc-overview-id" class="selected"><span class="offScreen">You are here: </span><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/landing.jhtml" title="You are here.">Stock Research Center</a></li>
+          <li id="toc-myresearch-id">
+
+
+          <a  target="_top" href="javascript:void(0);" onclick="javascript:openMyResearchPanel('https://myresearch.fidelity.com/myresearch/landing.jhtml');" >
+
+
+
+          My Research <img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/popup.gif" alt="Opens in New Window"></img><span class="auto-padlock-notRetailCustomer"></span></a></li>
+        </ul>
+        <h3>Screen & Filter</h3>
+        <ul>
+          <li id="toc-stocksearch-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/screeners/commonstock/index.asp?page=landing.asp">Stock Screeners</a></li>
+          <li id="toc-expertstrategies-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/screeners/stock/frameset.asp?page=screenlibrary.asp">Preset Expert Strategies<span class="auto-padlock"></span></a></li>		
+        </ul>
+        <h3>News & Insights</h3>
+        <ul>
+          <li id="toc-eventscalendar-id"><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/conferenceCalls.jhtml">Events Calendar</a></li>
+          <li id="toc-upgradesdowngrades-id"><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/upsdowns/latest.jhtml">Upgrades / Downgrades<span class="auto-padlock"></span></a></li>
+        </ul>
+        <h3>Explore Firm Research</h3>
+        <ul class="last">
+          <li id="toc-researchfirms-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/research/reports/release2/ExploreResearchFirms.asp">Research Firms</a></li>
+          <li id="toc-researchscorecard-id"><a  target="_top" href= "https://eresearch.fidelity.com/eresearch/goto/scorecards.jhtml">Research Firm Scorecards</a></li>
+          <li id="toc-reportsearch-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/research/reports/release2/SearchReports.asp">Reports Search</a></li>
+        </ul>
+        </div>
+      </div>
+
+      <div class="spacing-div_17X0"></div>
+
+      <div class="stock-links-bricklet">
+      <h3>RELATED RESOURCES</h3>
+      <ul>	
+        <li><a href="javascript:openWinTOC('https://www.fidelity.com/learning-center?bar=p');">Fidelity Learning Center <img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/popup.gif" alt="Opens in New Window"></img></a></li>
+        <li><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/markets_sectors/landing.jhtml?linkpage=usmarkets#usMarketAnchor">U.S. Markets</a></li>
+        <li><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/markets_sectors/global/landing.jhtml?viewType=map">Global Markets</a></li>
+        <li><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/markets_sectors/sectors/sectors_in_market.jhtml">Sectors & Industries</a></li>
+      </ul>
+      </div>
+
+      </div>
+      </div>
+
+
+      <script>
+      if (typeof tocHighlightItem != "undefined" && typeof dojo != "undefined") {
+        tocHighlightItem = "toc-" + tocHighlightItem + "-id";
+        if (dojo.byId(tocHighlightItem)) {
+          dojo.addClass(tocHighlightItem, "selected");
+        }
+      }
+      var rRDDomSelect = document.getElementById("rRDDom");
+      rRDDomSelect.title = rRDDomSelect.options[rRDDomSelect.selectedIndex].title;
+      </script>
+
+          </td>
+          <td class="layout-right-gutter"></td>
+          <td class="layout-main-cont-col" valign="top">
+
+      <div class="stock-ticker">
+
+      <style>
+      .marketbar a {
+        color:#0F57C2;
+        text-decoration:none;
+      }
+      .marketbar a:hover {
+        text-decoration:underline;
+      }
+      .marketbar a:active, .marketbar a:focus {
+        color:#E74B00;
+        text-decoration:underline;
+      }
+      .marketbar a:visited {
+        color:#64406C;
+      }
+      </style>
+      <span fmr-attach-component="fmr.qnr.components.MarketBar"></span>
+      </div>
+
+          <div class="page-header">
+          <div class="dark-grey-hr"><div class="hr-for-ie"></div></div>
+          <div class="spacing-div_6X0"></div>
+
+      <div class="hidden-div contextual-help-popup" id="contextual-help-container">
+        <a class="contextual-help-focus" href="#"/>
+        <div class="close">
+          <a class="contextual-help-close-link" href="javascript:hidePopupDiv('agr_hlp');">
+            <img align="right" alt="Close" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/close_small.gif" />
+          </a>
+        </div> 
+        <div class="contextual-help-placeholder">
+        </div>
+      </div>
+
+      <div class="top-orders">
+      <h1>Orders By Fidelity Customers</h1>
+      <p style="width: 94%;">Information shown in the table below is based on the volume of orders entered on the "as of" date shown. Securities identified are not recommended or endorsed by Fidelity and are displayed for informational purposes only. Fidelity strongly encourages all investors to review and research their investments to ensure they align with their overall financial plan.</p>
+      <div class="spacing-div_26X0"></div>
+
+      <div class="header-with-border">
+      <span class="bold">Top Buys and Sells</span> 
+
+      <span class="source">as of market close 03/29/21</span>
+
+
+      <div class="clear-both"></div>
+      </div>
+
+      <table id="topOrdersTable" class="topordersgrid" cellpadding="0" cellspacing="0" border="0" summary="The top thirty most active trades by fidelity customers" align="left">
+      <thead>
+        <tr>
+          <th scope="col" class="first"><a href="#">Rank</a> <sup>&Dagger;</sup></th>
+          <th scope="col" class="second"><a href="#">Symbol</a></th>
+          <th scope="col" class="third"><a href="#">Company</a></th>
+          <th scope="col" class="fourth"><a href="#">Price Change</a></th>
+          <th scope="col" class="fifth"><a href="#"># Buy Orders</a></th>
+          <th scope="col" class="sixth">Buy / Sell Ratio</th>
+          <th scope="col" class="seventh"><a href="#"># Sell Orders</a></th>
+          <th scope="col" class="eighth">Latest News</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="first"><span class="offScreen">1</span>1.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="TSLA">TSLA</span>
+
+          </td>
+          <td class="third">TESLA&#x20;INC</td>
+
+              <td class="fourth green"><span class="offScreen">8.29</span>+8.29 (+1.3561%)</td>
+
+          <td class="fifth"><span class="offScreen">16267</span>16,267</td>
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio71.gif" title="71% Buys, 29% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">6675</span>6,675</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=TSLA&storyid=202103301417RTRSNEWSCOMBINED_FWN2LS0U7_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="BRIEF-Tesla Building New Tesla Semi Production Line At New Building Near Its Gigafactory Nevada Plant - Electrek"/>BRIEF-Tesla Building New Tesla Semi Production Line At New Building Near Its Gigafactory Nevada Plant - Electrek</a></span></td>
+        </tr>
+
+        <tr>
+          <td class="first"><span class="offScreen">2</span>2.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="GME">GME</span>
+
+
+
+          </td>
+          <td class="third">GAMESTOP&#x20;CORP</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">15.58</span>+15.58 (+8.5935%)</td>
+
+          <td class="fifth"><span class="offScreen">8441</span>8,441</td>
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio65.gif" title="65% Buys, 35% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">4621</span>4,621</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=GME&storyid=202103300649RTRSNEWSCOMBINED_L4N2LS2ZO_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="GameStop appoints Amazon executive as chief growth officer"/>GameStop appoints Amazon executive as chief growth officer</a></span></td>
+        </tr>
+
+        <tr>
+          <td class="first"><span class="offScreen">3</span>3.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="HGEN">HGEN</span>
+
+
+          </td>
+          <td class="third">HUMANIGEN&#x20;INC</td>
+
+              <td class="fourth green"><span class="offScreen">0.63</span>+0.63 (+2.9153%)</td>
+
+          <td class="fifth"><span class="offScreen">6072</span>6,072</td>
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio49.gif" title="49% Buys, 51% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">6427</span>6,427</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=HGEN&storyid=202103291745RTRSNEWSCOMBINED_FWN2LR0YD_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="BRIEF-Humanigen Inc Says Drew Initial $25.0 Million Term Loan Pursuant To Its Loan And Security Agreement With Hercules Capital Inc"/>BRIEF-Humanigen Inc Says Drew Initial $25.0 Million Term Loan Pursuant To Its Loan And Security Agreement With Hercules Capital Inc</a></span></td>
+        </tr>
+
+        <tr>
+          <td class="first"><span class="offScreen">4</span>4.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="VIAC">VIAC</span>
+
+
+
+          </td>
+          <td class="third">VIACOMCBS&#x20;INC</td>
+
+              <td class="fourth green"><span class="offScreen">0.92</span>+0.92 (+2.044%)</td>
+
+          <td class="fifth"><span class="offScreen">8277</span>8,277</td>
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio71.gif" title="71% Buys, 29% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">3313</span>3,313</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=VIAC&storyid=202103300543RTRSNEWSCOMBINED_KBN2BM11L-OUSBS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Credit Suisse in firing line after Archegos losses"/>Credit Suisse in firing line after Archegos losses</a></span></td>
+        </tr>
+
+        <tr>
+          <td class="first"><span class="offScreen">5</span>5.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="PLTR">PLTR</span>
+
+
+
+          </td>
+          <td class="third">PALANTIR&#x20;TECHNOLOGIES&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-0.06</span>-0.06 (-0.2761%)</td>
+
+          <td class="fifth"><span class="offScreen">8051</span>8,051</td>
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio83.gif" title="83% Buys, 17% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1615</span>1,615</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=PLTR&storyid=202103300559RTRSNEWSCOMBINED_L8N2LS0K3_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Aviation startup Lilium to float in US via $3.3 bln SPAC deal"/>Aviation startup Lilium to float in US via $3.3 bln SPAC deal</a></span></td>
+        </tr>
+
+        <tr>
+          <td class="first"><span class="offScreen">6</span>6.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="SEAC">SEAC</span>
+
+
+
+          </td>
+          <td class="third">SEACHANGE&#x20;INTERNATIONAL&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-0.6459</span>-0.6459 (-31.0529%)</td>
+
+          <td class="fifth"><span class="offScreen">4412</span>4,412</td>
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio49.gif" title="49% Buys, 51% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">4630</span>4,630</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=SEAC&storyid=202103300934RTRSNEWSCOMBINED_ASA01Y4S_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="BRIEF-Seachange International Prices $19.1 Million Underwritten Public Offering Of Common Stock"/>BRIEF-Seachange International Prices $19.1 Million Underwritten Public Offering Of Common Stock</a></span></td>
+        </tr>
+
+        <tr>
+          <td class="first"><span class="offScreen">7</span>7.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="AAPL">AAPL</span>
+
+
+
+          </td>
+          <td class="third">APPLE&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-1.795</span>-1.795 (-1.4787%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">4905</span>4,905</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio55.gif" title="55% Buys, 45% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">4070</span>4,070</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=AAPL&storyid=202103301428RTRSNEWSCOMBINED_L1N2LR2V5_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Google, U.S. government tangle over pre-trial document production"/>Google, U.S. government tangle over pre-trial document production</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">8</span>8.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="NIO">NIO</span>
+
+
+
+          </td>
+          <td class="third">NIO&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">1.79</span>+1.79 (+5.0408%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">6103</span>6,103</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio69.gif" title="69% Buys, 31% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2780</span>2,780</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=NIO&storyid=202103261603TENKWIZ_SECEDGAR_A8BZQ22C8Z22O9Z2229K2ZZZKS9BZ2R2NL32&provider=TENKWIZ_&product=SECEDGAR&sb=1" title="Form  6-K        NIO Inc.                  For: Mar 26"/>Form  6-K        NIO Inc.                  For: Mar 26</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">9</span>9.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="AMC">AMC</span>
+
+
+
+          </td>
+          <td class="third">AMC&#x20;ENTERTAINMENT&#x20;HOLDINGS&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-0.125</span>-0.125 (-1.2077%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">4736</span>4,736</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio67.gif" title="67% Buys, 33% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2345</span>2,345</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=AMC&storyid=202103260924BIZWIRE_USPR_____BW5272&provider=BIZWIRE_&product=USPR____&sb=1" title="National CineMedia, Inc. Appoints Mark Zoradi to Its Board of Directors"/>National CineMedia, Inc. Appoints Mark Zoradi to Its Board of Directors</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">10</span>10.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="HOFV">HOFV</span>
+
+
+
+          </td>
+          <td class="third">HALL&#x20;OF&#x20;FAME&#x20;RESORT&#x20;&amp;&#x20;ENTERTAINMENT&#x20;CO</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-1.191</span>-1.191 (-17.6444%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">3179</span>3,179</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio49.gif" title="49% Buys, 51% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">3364</span>3,364</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=HOFV&storyid=202103300800BIZWIRE_USPR_____BW5415&provider=BIZWIRE_&product=USPR____&sb=1" title="Hall of Fame Resort & Entertainment Company Unveils Cities, Team Names and Logos for the Hall Of Fantasy League"/>Hall of Fame Resort & Entertainment Company Unveils Cities, Team Names and Logos for the Hall Of Fantasy League</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">11</span>11.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="BIDU">BIDU</span>
+
+
+
+          </td>
+          <td class="third">BAIDU&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">10.7843</span>+10.7843 (+5.2683%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">3442</span>3,442</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio62.gif" title="62% Buys, 38% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2144</span>2,144</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=BIDU&storyid=202103300930TENKWIZ_SECEDGAR_AM22922CZZ2RQ2ZZ2RZB2WYPKPKMOZ22Z23Q&provider=TENKWIZ_&product=SECEDGAR&sb=1" title="Form  6-K        Baidu, Inc.               For: Mar 30"/>Form  6-K        Baidu, Inc.               For: Mar 30</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">12</span>12.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="BA">BA</span>
+
+
+
+          </td>
+          <td class="third">BOEING&#x20;CO</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">1.3479</span>+1.3479 (+0.538%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2740</span>2,740</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio54.gif" title="54% Buys, 46% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2340</span>2,340</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=BA&storyid=202103301034RTRSNEWSCOMBINED_L4N2LS40P_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="US STOCKS-Wall St drops as tech stocks hit by spike in yields"/>US STOCKS-Wall St drops as tech stocks hit by spike in yields</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">13</span>13.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="TQQQ">TQQQ</span>
+
+
+
+          </td>
+          <td class="third">PROSHARES&#x20;ULTRAPRO&#x20;QQQ</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-2.18</span>-2.18 (-2.4605%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2632</span>2,632</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio53.gif" title="53% Buys, 47% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2373</span>2,373</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=TQQQ&storyid=202102170106RTRSNEWSCOMBINED_KBN2AH0FK-OUSBS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Traders chase sky-high returns in leveraged exchange traded products"/>Traders chase sky-high returns in leveraged exchange traded products</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">14</span>14.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="UPC">UPC</span>
+
+
+
+          </td>
+          <td class="third">UNIVERSE&#x20;PHARMACEUTICALS&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-1.12</span>-1.12 (-19.9643%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2611</span>2,611</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio53.gif" title="53% Buys, 47% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2346</span>2,346</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=UPC&storyid=202103251907TENKWIZ_SECEDGAR_A92TC62CLC22LZ7Z282H2ZY2DM4DZ222Z232&provider=TENKWIZ_&product=SECEDGAR&sb=1" title="Form  6-K        Universe Pharmaceuticals  For: Mar 25"/>Form  6-K        Universe Pharmaceuticals  For: Mar 25</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">15</span>15.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="CCIV">CCIV</span>
+
+
+
+          </td>
+          <td class="third">CHURCHILL&#x20;CAPITAL&#x20;IV&#x20;CORP</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">1.38</span>+1.38 (+6.4637%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">3896</span>3,896</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio80.gif" title="80% Buys, 20% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">944</span>944</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=CCIV&storyid=202103230906RTRSNEWSCOMBINED_FWN2LL0SA_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="BRIEF-Lucid Motors Says Michael Bell Joining As Senior Vice President Of Digital"/>BRIEF-Lucid Motors Says Michael Bell Joining As Senior Vice President Of Digital</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">16</span>16.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="RKT">RKT</span>
+
+
+
+          </td>
+          <td class="third">ROCKET&#x20;COMPANIES&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">0.035</span>+0.035 (+0.1471%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">1954</span>1,954</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio41.gif" title="41% Buys, 59% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2810</span>2,810</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=RKT&storyid=202103241711TENKWIZ_SECEDGAR_AEL2422C4222J2Z2222H22ZADRBMA222A232&provider=TENKWIZ_&product=SECEDGAR&sb=1" title="Form  10-K       Rocket Companies, Inc.    For: Dec 31"/>Form  10-K       Rocket Companies, Inc.    For: Dec 31</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">17</span>17.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="ARKK">ARKK</span>
+
+
+
+          </td>
+          <td class="third">ARK&#x20;INNOVATION&#x20;ETF</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">2.16</span>+2.16 (+1.943%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">3384</span>3,384</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio75.gif" title="75% Buys, 25% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1149</span>1,149</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=ARKK&storyid=202103201546RTRSNEWSCOMBINED_KBN2BC0O9-OUSBS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Cathie Wood's Ark expects Tesla stock to reach $3000 by 2025"/>Cathie Wood's Ark expects Tesla stock to reach $3000 by 2025</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">18</span>18.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="AMZN">AMZN</span>
+
+
+
+          </td>
+          <td class="third">AMAZONCOM&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-26.40</span>-26.40 (-0.8583%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2392</span>2,392</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio53.gif" title="53% Buys, 47% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">2137</span>2,137</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=AMZN&storyid=202103301400RTRSNEWSCOMBINED_L1N2LS1ZN_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Arm Ltd debuts new chip technology aimed at overtaking data centers"/>Arm Ltd debuts new chip technology aimed at overtaking data centers</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">19</span>19.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="RIOT">RIOT</span>
+
+
+
+          </td>
+          <td class="third">RIOT&#x20;BLOCKCHAIN&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">1.931</span>+1.931 (+4.0322%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2209</span>2,209</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio53.gif" title="53% Buys, 47% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1933</span>1,933</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=RIOT&storyid=202103230900PR_NEWS_USPR_____IO18411&provider=PR_NEWS_&product=USPR____&sb=1" title="Web Based Education Solutions to Remain Vital Post-Pandemic"/>Web Based Education Solutions to Remain Vital Post-Pandemic</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">20</span>20.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="DKNG">DKNG</span>
+
+
+
+          </td>
+          <td class="third">DRAFTKINGS&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">2.13</span>+2.13 (+3.6598%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">3131</span>3,131</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio76.gif" title="76% Buys, 24% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1006</span>1,006</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=DKNG&storyid=202103300806RTRSNEWSCOMBINED_ASA01Y2A_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="BRIEF-Draftkings Acquires Vsin, Multi-Platform Sports Betting Broadcast And Content Company"/>BRIEF-Draftkings Acquires Vsin, Multi-Platform Sports Betting Broadcast And Content Company</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">21</span>21.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="TME">TME</span>
+
+
+
+          </td>
+          <td class="third">TENCENT&#x20;MUSIC&#x20;ENTERTAINMENT&#x20;GROUP</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">0.558</span>+0.558 (+2.7434%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2612</span>2,612</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio65.gif" title="65% Buys, 35% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1418</span>1,418</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=TME&storyid=202103300543RTRSNEWSCOMBINED_KBN2BM11L-OUSBS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Credit Suisse in firing line after Archegos losses"/>Credit Suisse in firing line after Archegos losses</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">22</span>22.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="SPY">SPY</span>
+
+
+
+          </td>
+          <td class="third">SPDR&#x20;S&amp;P&#x20;500&#x20;ETF&#x20;TRUST</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-1.545</span>-1.545 (-0.3904%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2619</span>2,619</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio67.gif" title="67% Buys, 33% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1285</span>1,285</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=SPY&storyid=202103300108RTRSNEWSCOMBINED_KBN2BM0CG-OUSBS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Analysis: Debacle at Archegos throws excessive risk-taking into spotlight"/>Analysis: Debacle at Archegos throws excessive risk-taking into spotlight</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">23</span>23.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="SQ">SQ</span>
+
+
+
+          </td>
+          <td class="third">SQUARE&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">3.41</span>+3.41 (+1.6459%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2881</span>2,881</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio76.gif" title="76% Buys, 24% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">888</span>888</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=SQ&storyid=202103251938TENKWIZ_SECEDGAR_AQZZU22C3M2272H2222P22Z28IGOZ22SY532&provider=TENKWIZ_&product=SECEDGAR&sb=1" title="Form  4          Square, Inc.              For: Mar 23  Filed by: Ahuja Amrita"/>Form  4          Square, Inc.              For: Mar 23  Filed by: Ahuja Amrita</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">24</span>24.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="HCMC">HCMC</span>
+
+
+
+          </td>
+          <td class="third">HEALTHIER&#x20;CHOICES&#x20;MANAGEMENT&#x20;CORP</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-0.0001</span>-0.0001 (-8.333333%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">3046</span>3,046</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio81.gif" title="81% Buys, 19% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">723</span>723</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=HCMC&storyid=202103290818PRIMZONEFULLFEED8207857&provider=PRIMZONE&product=FULLFEED&sb=1" title="Healthier Choices Management Corp. Announces Re-Launching of its Vitamins and Supplements Online Store at TheVitaminStore.com"/>Healthier Choices Management Corp. Announces Re-Launching of its Vitamins and Supplements Online Store at TheVitaminStore.com</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">25</span>25.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="AMD">AMD</span>
+
+
+
+          </td>
+          <td class="third">ADVANCED&#x20;MICRO&#x20;DEVICES&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-1.425</span>-1.425 (-1.8473%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2143</span>2,143</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio60.gif" title="60% Buys, 40% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1439</span>1,439</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=AMD&storyid=202103301400RTRSNEWSCOMBINED_L1N2LS1ZN_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Arm Ltd debuts new chip technology aimed at overtaking data centers"/>Arm Ltd debuts new chip technology aimed at overtaking data centers</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">26</span>26.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="DISCA">DISCA</span>
+
+
+
+          </td>
+          <td class="third">DISCOVERY&#x20;INC</td>
+
+
+
+
+
+              <td class="fourth green"><span class="offScreen">1.67</span>+1.67 (+4.0504%)</td>
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2712</span>2,712</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio77.gif" title="77% Buys, 23% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">830</span>830</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=DISCA&storyid=202103300543RTRSNEWSCOMBINED_KBN2BM11L-OUSBS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Credit Suisse in firing line after Archegos losses"/>Credit Suisse in firing line after Archegos losses</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">27</span>27.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="FB">FB</span>
+
+
+
+          </td>
+          <td class="third">FACEBOOK&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-1.23</span>-1.23 (-0.4229%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">1818</span>1,818</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio52.gif" title="52% Buys, 48% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1684</span>1,684</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=FB&storyid=202103301113RTRSNEWSCOMBINED_L1N2LS1JS_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Facebook's chief revenue officer to leave later this year"/>Facebook's chief revenue officer to leave later this year</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">28</span>28.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="MSFT">MSFT</span>
+
+
+
+          </td>
+          <td class="third">MICROSOFT&#x20;CORP</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-3.48</span>-3.48 (-1.4793%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2242</span>2,242</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio65.gif" title="65% Buys, 35% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1218</span>1,218</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=MSFT&storyid=202103301428RTRSNEWSCOMBINED_L1N2LR2V5_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="Google, U.S. government tangle over pre-trial document production"/>Google, U.S. government tangle over pre-trial document production</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">29</span>29.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="MRNA">MRNA</span>
+
+
+
+          </td>
+          <td class="third">MODERNA&#x20;INC</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-5.83</span>-5.83 (-4.7237%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2477</span>2,477</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio72.gif" title="72% Buys, 28% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">957</span>957</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=MRNA&storyid=202103301429RTRSNEWSCOMBINED_L4N2LS4LE_1&provider=RTRSNEWS&product=COMBINED&sb=1" title="U.S. administers 147.6 mln doses of COVID-19 vaccines - CDC"/>U.S. administers 147.6 mln doses of COVID-19 vaccines - CDC</a></span></td>
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+          <td class="first"><span class="offScreen">30</span>30.</td>
+          <td class="second">
+
+
+              <span fmr-attach-component="fmr.qnr.components.snapshot.Mini" fmr-param-symbol="QQQ">QQQ</span>
+
+
+
+          </td>
+          <td class="third">INVESCO&#x20;QQQ&#x20;TRUST&#x20;SERIES&#x20;1</td>
+
+
+
+
+              <td class="fourth red"><span class="offScreen">-2.63</span>-2.63 (-0.8325%)</td>
+
+
+
+
+
+
+
+          <td class="fifth"><span class="offScreen">2167</span>2,167</td>
+
+
+
+
+
+
+
+
+
+          <td class="sixth"><img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/ratio64.gif" title="64% Buys, 36% Sells"></img></td>
+          <td class="seventh"><span class="offScreen">1221</span>1,221</td>
+          <td class="eight one-line"><span class="one-line"><a href="/eresearch/evaluate/news/basicNewsStory.jhtml?symbols=QQQ&storyid=202103161045TENKWIZ_SECEDGAR_A322VG2CZZ22FZZ622JA2ZOGD9LSYQ22Z232&provider=TENKWIZ_&product=SECEDGAR&sb=1" title="Form  N-CEN      INVESCO QQQ TRUST, SERIE  For: Dec 31"/>Form  N-CEN      INVESCO QQQ TRUST, SERIE  For: Dec 31</a></span></td>
+        </tr>
+
+      </tbody>
+      </table>
+      <div class="clear-both spacing-div_16X0"></div>
+      <sup>&Dagger;</sup><span class="footnote">Rank is based on the total of buy and sell orders for the security</span>
+      </div>
+      <script type="text/javascript">
+      if(top.document.title == null || top.document.title == '') 
+        top.document.title = 'Stocks Research - Fidelity Investments';
+      </script>
+          <td class="layout-spacer-10"></td>
+        </tr>
+      </table>
+
+      <div class="spacing-div_60X0"></div>
+
+
+      <div id="FidelityFooter">
+
+
+      <script language="javascript" type="text/javascript">
+          var tradeUrl = 'https://oltx.fidelity.com/ftgw/fbc/oftrade/snippet/quickTradeStandAlone';
+
+          $(document).ready(function () {
+              ngttWindowLoad();
+          });
+
+          function ngttWindowLoad() {
+
+              var featureToggle = 'on';
+
+              var isBrowserCompatible = false;
+
+              var queryString = 'login=no';
+              var loggedIn = getLoggedInParam(queryString);
+              var defaultsForTicket = getDefaultParam(queryString);
+
+              // if we recognize the default param passed in as mm, we want to pass this along to
+              // trade so that client trade starts with special settings for market monitor
+              if (defaultsForTicket === 'mm') {
+                  tradeUrl = tradeUrl + "?DEFAULT=mm"
+              }
+
+              // this is using the comment based html markup on next gen that sets the html class based on which version
+              // of IE the user's current browser is. lt-ie10 stands for less than IE10. So this is a good check for IE9 and older.
+              var ieVersion = getInternetExplorerVersion();
+
+              if (ieVersion == -1 || ieVersion >= 10) {
+                  isBrowserCompatible = true;
+              } else {
+                  isBrowserCompatible = false;
+              }
+
+              $('body').prepend('<div class="docked-top-container" style="display:none;">'
+                  + '<div class="docked-trade-ticket" id="dockedTicketContainer" role="dialog" aria-label="docked-trade-ticket"></div>'
+                  + '<div id="dockedTicketBrowserCompatability" style="display:none;">' + isBrowserCompatible + '</div>'
+                  + '<div id="dockedTicketEnabledEntitlement"  style="display:none;">true</div>'
+                  + '<div id="dockedTicketPreference"  style="display:none;">true</div>'
+                  + '<div id="dockedTicketLoggedInState"  style="display:none;">' + loggedIn + '</div>'
+                  + '<div id="ticketBootstrapped"  style="display:none;">true</div>'
+                  + '<div id="featureToggle"  style="display:none;">' + featureToggle + '</div>'
+                  + '<div class="base-popup base-modal--container base-modal--container-large terms-of-use-modal trade-ticket-modal"></div>'
+                  + '<div class="base-popup base-modal--container base-modal--container-large extended-hours-trading-modal trade-ticket-modal"></div>'
+                  + '<div class="base-popup base-modal--container base-modal--container-large select-a-fund-i-own-modal trade-ticket-modal" role="dialog" aria-labelledby="select-a-fund-i-own--header"></div>'
+                  + '<div class="base-popup base-modal--container base-modal--container-large additional-important-information-modal trade-ticket-modal" role="dialog" aria-labelledby="additional-important-information--header"></div>'
+                  + '<div class="docked-ticket-remove-popup"></div>'
+                  + '<div class="docked-additional-important-information"></div>'
+                  + '<div class="trade-container" id="tradeTicketContainer"></div>'
+                  + '</div>'
+                  + '<!-- shtml -->');
+              //insert a placeholder for the docked TT
+
+              if (isBrowserCompatible === true && featureToggle == 'on' && loggedIn == 'yes') {
+                  // fetch the trade ticket
+                  $("<div id='dockedComponents' style='z-index: 99999997; left: 0; width:100%; position:absolute; bottom: 0;'></div>").appendTo(".docked-top-container");
+                  $.ajax({
+                      type: 'GET',
+                      url: tradeUrl,
+                      contentType: 'text/plain',
+                      xhrFields: {
+                          withCredentials: true
+                      },
+
+                      headers: {},
+                      success: function (response) {
+                          $("#dockedComponents").html(response);
+                      },
+                      error: function (xhRequest, ErrorText, thrownError) {
+                          console.log("CORS Error while importing DOCKED TT: " + xhRequest.responseText)
+                      }
+                  });
+              }
+          }
+
+          function getInternetExplorerVersion() {
+              var rv = -1;
+              var ua = navigator.userAgent;
+              if (navigator.appName === 'Microsoft Internet Explorer') {
+                  var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                  if (re.exec(ua) != null) {
+                      rv = parseFloat(RegExp.$1);
+                  }
+              } else if (navigator.appName === 'Netscape') {
+                  var re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+                  if (re.exec(ua) != null) {
+                      rv = parseFloat(RegExp.$1);
+                  }
+              }
+              return rv;
+          }
+
+          function seedATicket(jsonInput) {
+
+              //fetch the state variables
+              var browserCompatability = false;
+              var dockedEntitled = false;
+              var dockedPreference = true;
+              var loggedInState = false;
+              var featureToggle = 'off';
+              var featureToggleDiv = $('#featureToggle');
+              if (featureToggleDiv != null || featureToggleDiv != undefined) {
+                  featureToggle = featureToggleDiv.html();
+              }
+              var browserCompatabilityDiv = $('#dockedTicketBrowserCompatability');
+              if (browserCompatabilityDiv != null || browserCompatabilityDiv != undefined) {
+                  browserCompatability = browserCompatabilityDiv.html();
+              }
+              var dockedEntitledDiv = $('#dockedTicketEnabledEntitlement');
+              if (dockedEntitledDiv != null || dockedEntitledDiv != undefined) {
+                  dockedEntitled = dockedEntitledDiv.html();
+              }
+              var dockedPreferenceDiv = $('#dockedTicketPreference');
+              if (dockedPreferenceDiv != null || dockedPreferenceDiv != undefined) {
+                  dockedPreference = dockedPreferenceDiv.html();
+              }
+              var loggedInStateDiv = $('#dockedTicketLoggedInState');
+              if (loggedInStateDiv != null || loggedInStateDiv != undefined) {
+                  loggedInState = loggedInStateDiv.html();
+              }
+
+              // fetch data to seed from json input
+              var seedingParams = fetchParams(jsonInput);
+
+              var securityType = seedingParams.securityType;
+
+              if (browserCompatability == 'false' || ((typeof mmDefault !== 'undefined' && mmDefault != "true") && (dockedEntitled == 'false' || dockedPreference == 'false' || featureToggle != 'on'))) {
+                  //if not showing docked, then rebuild link
+                  var url = rebuildTradeLink(jsonInput);
+                  window.open(url, "_self");
+              } else if (securityType == 'H' || securityType == 'F' || securityType == 'BT' || securityType == 'MLO' || securityType == 'CT' || securityType == 'X') {
+                  //if not showing docked, then rebuild link
+                  var url = rebuildTradeLink(jsonInput);
+                  window.open(url, "_self");
+              } else if (loggedInState == 'no' || loggedInState == 'member') {
+                  // [PIATQTR-3635] set flag to open float ticket.
+                  setSessionStorage("openFloatTicket", true);
+                  var orderInfo = {
+                      'SYMBOL': seedingParams.symbol,
+                      'ORDER_TYPE': seedingParams.securityType,
+                      'ORDER_ACTION': seedingParams.orderAction,
+                      'LIMIT_STOP_PRICE': seedingParams.limitStopPrice,
+                      'ACCOUNT': seedingParams.account,
+                      'QTY': seedingParams.qty,
+                      'ACCOUNT_TYPE': seedingParams.accountType
+                  };
+                  var tradeInfo = {
+                      'orderInfo': orderInfo
+                  };
+                  setSessionStorage("tradeInfo", JSON.stringify(tradeInfo));
+
+                  var redirectUrl = $(location).attr('href');
+                  $(location).attr('href', 'https://login.fidelity.com/ftgw/Fas/Fidelity/RtlCust/Login/Init?AuthRedUrl=' + redirectUrl);
+              } else {
+                  //test for float on page
+                  var quickTradewrapper = $('.quick-trade-popup-wrapper');
+                  if (quickTradewrapper == null || quickTradewrapper == undefined || quickTradewrapper.length == 0) {
+                      //if float is not present, reopen it
+                      openNewFloat(seedingParams);
+
+                  } else {
+                      //if floating ticket is present, attempt to seed ticket
+                      populateExistingTicket(seedingParams);
+                  }
+              }
+          }
+
+          function fetchParams(jsonInput) {
+
+              var symbol = "symbol";
+              var securityType = "securityType";
+              var orderAction = "orderAction";
+              var limitStopPrice = "limitStopPrice";
+              var results = {};
+
+              for (var i = 0; i < jsonInput.length; i++) {
+                  var obj = jsonInput[i];
+                  for (var key in obj) {
+
+                      switch (key) {
+                          case 'SECURITY_ID':
+                              results.symbol = decodeURIComponent(obj[key]);
+                              break;
+                          case 'SECURITY_TYPE':
+                          case 'ORDER_TYPE':
+                              results.securityType = obj[key];
+                              break;
+                          case 'ORDER_ACTION':
+                              results.orderAction = obj[key];
+                              break;
+                          case 'LIMIT_STOP_PRICE':
+                              results.limitStopPrice = decodeURIComponent(obj[key]);
+                              break;
+                          case 'ACCOUNT':
+                              results.account = decodeURIComponent(obj[key]);
+                              break;
+                          case 'QTY':
+                              results.qty = decodeURIComponent(obj[key]);
+                              break;
+                          case 'ACCT_TYPE':
+                              results.accountType = decodeURIComponent(obj[key]);
+                              break;
+                          default:
+                              break;
+                      }
+                  }
+              }
+
+              return results;
+          }
+
+          function populateExistingTicket(seedingParams) {
+
+              var closeButton = $(".close-qt");
+              if (closeButton != null || closeButton != undefined) {
+                  closeButton.trigger('click');
+                  openNewFloat(seedingParams);
+              } else {
+
+                  var symbolBox = $("#qt-symbol");
+                  if (symbolBox != null || symbolBox != undefined) {
+                      symbolBox.val(seedingParams.symbol);
+                      symbolBox.trigger('blur');
+                  }
+              }
+          }
+
+          function openNewFloat(seedingParams) {
+              var orderInfo = {
+                  'SYMBOL': seedingParams.symbol,
+                  'ORDER_TYPE': seedingParams.securityType,
+                  'ORDER_ACTION': seedingParams.orderAction,
+                  'LIMIT_STOP_PRICE': seedingParams.limitStopPrice,
+                  'ACCOUNT': seedingParams.account,
+                  'QTY': seedingParams.qty,
+                  'ACCOUNT_TYPE': seedingParams.accountType
+              };
+              var tradeInfo = {
+                  'orderInfo': orderInfo
+              };
+
+              this.tradeInfo = tradeInfo;
+
+              $(document).trigger("QUICK_TRADE", tradeInfo);
+          }
+
+          function rebuildTradeLink(jsonInput) {
+
+              var url = "https://oltx.fidelity.com/ftgw/fbc/oftrade/EntrOrder?";
+              var first = true;
+
+              for (var i = 0; i < jsonInput.length; i++) {
+                  var obj = jsonInput[i];
+                  for (var key in obj) {
+                      var attrName = key;
+                      var attrValue = obj[key];
+                      if (first) {
+                          url = url + attrName + "=" + attrValue;
+                          first = false;
+                      } else {
+                          url = url + "&" + attrName + "=" + attrValue;
+                      }
+                  }
+              }
+
+              return url;
+          }
+
+          function setSessionStorage(key, val) {
+              if (typeof (Storage) !== "undefined") {
+                  sessionStorage.setItem(key, val);
+              }
+          }
+
+          /**
+           * Parses the logged in param after app calls this bootstrap file
+           * @returns {string}  whether a user is logged in or not
+           */
+          function getLoggedInParam(queryString) {
+
+              var loggedInParam = "no";
+
+              if (queryString != null && queryString != undefined && queryString != "") {
+                  var queryParamSplit = queryString.split("&");
+                  if (queryParamSplit.length > 0) {
+                      // split the logged in param value out
+                      var loggedInQuery = queryParamSplit[0].split("=");
+                      if (loggedInQuery.length > 1 && loggedInQuery[0] === 'login') {
+                          if (loggedInQuery[1] && (loggedInQuery[1] === 'yes' || loggedInQuery[1] === 'no' || loggedInQuery[1] === 'member')) {
+                              loggedInParam = loggedInQuery[1];
+                          }
+                      }
+                  }
+              }
+
+              return loggedInParam;
+          }
+
+          /**
+           * Parses the default param after app calls this bootstrap file
+           * @returns {string}  whether the calling app needs to pass in a default value for use in initialization
+           */
+          function getDefaultParam(queryString) {
+
+              var defaultsForTicketParam = "none";
+
+              if (queryString != null && queryString != undefined && queryString != "") {
+                  var queryParamSplit = queryString.split("&amp;");
+                  if (queryParamSplit.length > 1) {
+                      // split the default param
+                      var defaultQuery = queryParamSplit[1].split("=");
+                      if (defaultQuery.length > 1 && defaultQuery[0] === 'default') {
+                          if (defaultQuery[1] && (defaultQuery[1] === 'mm')) {
+                              defaultsForTicketParam = defaultQuery[1];
+                          }
+                      }
+                  }
+              }
+
+              return defaultsForTicketParam;
+          }
+
+      </script>
+
+
+      <div class="footer"><a href="https://www.fidelity.com" target="_top"><img
+        src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/logo_gray_trans.gif"
+        width="147" height="55" alt="Fidelity Investments."
+        title="Fidelity Investments." class="footerLogo" /></a><span class="copyright"> Copyright
+      1998&ndash;2021 FMR LLC.&nbsp;<br />
+      All rights reserved.&nbsp;</span><br />
+      <ul>
+
+        <li><a class="links" href="http://www.fidelity.com/terms-of-use"
+          target="_top">Terms of Use</a><span class="pipe">|</span></li>
+        <li><a class="links" 
+          href="http://www.fidelity.com/privacy-policy"
+          target="_top">Privacy</a><span class="pipe">|</span></li>
+        <li><a class="links" 
+          href="http://www.fidelity.com/security/overview"
+          target="_top">Security</a><span class="pipe">|</span></li>
+        <li><a class="links" 
+          href="http://www.fidelity.com/sitemap/overview"
+          target="_top">Site Map</a>&nbsp;</li>
+      </ul>
+      </div>
+      </div>
+
+      <script type="text/javascript">
+          var isAuthorized = false;
+          var isRetailCustomer = false;
+      </script>
+
+      <div class="nestedHelp" id="nestedHelp">
+        <iframe frameborder="0" title="nestedHelp" class="nestedHelpIframe" id="nestedHelpIframe"></iframe>
+          <div class="arrowleft" id="nestedHelpArrow"></div>
+           <div class="nestedHelpContainer">
+
+            <div class="content">
+            <table border="0">
+
+          <tbody>
+            <tr>
+              <td valign="top">
+                <span id="nestedHelpText"></span>
+              </td>
+              <td align="center" valign="top" width="30">
+                <label for="nestedHelpAnchor"></label>
+                <input name="nested help" value="" type="text" id="nestedHelpAnchor" title="Help Text" class="nestedHelpAnchor"/>
+                <a href="javascript:showNestedHelp('','close');" title="Close">
+                  <img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/close.gif" alt="Close" align="top" border="0"/>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+        </div>
+       </div>
+       </div>
+
+      <script type="text/javascript">
+          var personal_server = "https://www.fidelity.com";
+          var ac_domain = "https://www.fidelity.com";        
+          var aq_domain = "https://fastquote.fidelity.com";
+          var pl_domain = "https://www.fidelity.com";
+          var wsod_domain = "https://research2.fidelity.com";
+          var eresearch_domain = "https://eresearch.fidelity.com";
+          var fh_domain = "https://www.fidelity.com";
+          var fq_domain = "https://fastquote.fidelity.com";
+          var contentPath = "/webcontent/ap002388-eresearch-content/21.03.0";
+          var er_domain = "";
+          var symbolTextBoxClicked = false;
+          var embeddedQuotesConfig = {};
+          var fmrProductid="eresearch"; 
+      </script>
+
+
+
+
+
+
+        <script type="text/javascript" src="https://www.fidelity.com/rct/2.0.0/dojo/dojo/dojo.xd.js" djconfig="parseOnLoad: true, isDebug:false"></script>
+        <script type="text/javascript" src="https://www.fidelity.com/rct/2.0.0/rct-ui/rct-ui.js"></script>
+
+
+
+      <script>
+      dojo.addOnLoad(function(){ 
+        dojo.query("table.indexgrid a").forEach ( function (inputElement) { 
+          var minisnapNode = dojo.doc.createElement('span');
+          minisnapNode.setAttribute("fmr-attach-component", "fmr.qnr.components.snapshot.Mini");
+          minisnapNode.setAttribute("fmr-param-symbol", inputElement.innerHTML);
+          var minisnapParent = inputElement.parentNode;
+          inputElement.parentNode.removeChild(inputElement);
+          minisnapNode.appendChild(inputElement);
+          minisnapParent.appendChild(minisnapNode); 
+        }); 
+      });
+      </script>
+
+
+
+
+          <script type="text/javascript" src="https://www.fidelity.com/products/embeddedquotes/js/embeddedquotes.js.shtml"></script>
+
+
+
+      <script type="text/javascript" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/js/eresearch3.js"></script>
+      <script type="text/javascript" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/js/international_research.js"></script>
+      <script type="text/javascript" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/js/ChartBridge.js"></script>
+
+
+
+
+
+
+
+
+      <script type="text/javascript" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/js/jquery-1.11.1.min.js"></script>
+      <script type="text/javascript" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/js/jquery.tablesorter.js"></script>
+
+
+
+
+
+      <script type="text/javascript">
+      $(document).ready(function(){ 
+      $("#topOrdersTable:has(tbody tr)").tablesorter({
+        sortList: [[0,0]],
+        headers:{
+          5: { sorter: false },
+          7: { sorter: false }
+        }
+        }).bind('sortStart', function(){
+          $("#topOrdersTable > tbody > tr").removeClass("odd even");
+        }).bind('sortEnd', function(){
+            $("#topOrdersTable > tbody > tr").each(function(index) {
+                if(index % 2 == 0){
+                  $(this).addClass("even");
+                } else {
+                  $(this).addClass("odd");
+                }
+
+            });
+        });
+      });
+      </script>
+
+      <script language="JavaScript" type="text/javascript">
+      dojo.addOnLoad(function() {
+        var isRetailCustomer = false;
+        if(typeof window.isRetailCustomer != "undefined"){ 
+          isRetailCustomer = window.isRetailCustomer;
+          }
+        if(!isRetailCustomer) {
+          dojo.query("#snapshotChart .lock-image").style("display","inline");
+        } else {
+          dojo.query("#snapshotChart .lock-image").style("display","none");
+        }
+      });
+      dojo.addOnLoad(function() {
+        if (dojo.byId('mostActiveFilter') != null) {
+          dojo.byId('mostActiveFilter').style.display="inline";
+          layerSwap1(4);
+        }
+      });
+      </script>
+
+      <script type="text/javascript" >var _cf = _cf || [];  _cf.push(['_setFsp', true]);  _cf.push(['_setBm', true]);  _cf.push(['_setAu', '/staticweb/99e55dcd9f8ti219b79768ff60d35cba9']); </script><script type="text/javascript"  src="/staticweb/99e55dcd9f8ti219b79768ff60d35cba9"></script></body>
+      </html>
+
+    expected_header: "As of market close 03/29/21"
+    expected_orders: |
+      ,Symbol,Buy / Sell Ratio,Price Change,Company,# Buy Orders,# Sell Orders,Latest News
+      0,TSLA,"71% Buys, 29% Sells",+8.29 (+1.3561%),TESLA INC,"16,267","6,675",BRIEF-Tesla Building New Tesla Semi Production Line At New Building Near Its Gigafactory Nevada Plant - Electrek
+      1,GME,"65% Buys, 35% Sells",+15.58 (+8.5935%),GAMESTOP CORP,"8,441","4,621",GameStop appoints Amazon executive as chief growth officer
+      2,HGEN,"49% Buys, 51% Sells",+0.63 (+2.9153%),HUMANIGEN INC,"6,072","6,427",BRIEF-Humanigen Inc Says Drew Initial $25.0 Million Term Loan Pursuant To Its Loan And Security Agreement With Hercules Capital Inc
+      3,VIAC,"71% Buys, 29% Sells",+0.92 (+2.044%),VIACOMCBS INC,"8,277","3,313",Credit Suisse in firing line after Archegos losses
+      4,PLTR,"83% Buys, 17% Sells",-0.06 (-0.2761%),PALANTIR TECHNOLOGIES INC,"8,051","1,615",Aviation startup Lilium to float in US via $3.3 bln SPAC deal
+      5,SEAC,"49% Buys, 51% Sells",-0.6459 (-31.0529%),SEACHANGE INTERNATIONAL INC,"4,412","4,630",BRIEF-Seachange International Prices $19.1 Million Underwritten Public Offering Of Common Stock
+      6,AAPL,"55% Buys, 45% Sells",-1.795 (-1.4787%),APPLE INC,"4,905","4,070","Google, U.S. government tangle over pre-trial document production"
+      7,NIO,"69% Buys, 31% Sells",+1.79 (+5.0408%),NIO INC,"6,103","2,780",Form  6-K        NIO Inc.                  For: Mar 26
+      8,AMC,"67% Buys, 33% Sells",-0.125 (-1.2077%),AMC ENTERTAINMENT HOLDINGS INC,"4,736","2,345","National CineMedia, Inc. Appoints Mark Zoradi to Its Board of Directors"
+      9,HOFV,"49% Buys, 51% Sells",-1.191 (-17.6444%),HALL OF FAME RESORT & ENTERTAINMENT CO,"3,179","3,364","Hall of Fame Resort & Entertainment Company Unveils Cities, Team Names and Logos for the Hall Of Fantasy League"
+      10,BIDU,"62% Buys, 38% Sells",+10.7843 (+5.2683%),BAIDU INC,"3,442","2,144","Form  6-K        Baidu, Inc.               For: Mar 30"
+      11,BA,"54% Buys, 46% Sells",+1.3479 (+0.538%),BOEING CO,"2,740","2,340",US STOCKS-Wall St drops as tech stocks hit by spike in yields
+      12,TQQQ,"53% Buys, 47% Sells",-2.18 (-2.4605%),PROSHARES ULTRAPRO QQQ,"2,632","2,373",Traders chase sky-high returns in leveraged exchange traded products
+      13,UPC,"53% Buys, 47% Sells",-1.12 (-19.9643%),UNIVERSE PHARMACEUTICALS INC,"2,611","2,346",Form  6-K        Universe Pharmaceuticals  For: Mar 25
+      14,CCIV,"80% Buys, 20% Sells",+1.38 (+6.4637%),CHURCHILL CAPITAL IV CORP,"3,896",944,BRIEF-Lucid Motors Says Michael Bell Joining As Senior Vice President Of Digital
+      15,RKT,"41% Buys, 59% Sells",+0.035 (+0.1471%),ROCKET COMPANIES INC,"1,954","2,810","Form  10-K       Rocket Companies, Inc.    For: Dec 31"
+      16,ARKK,"75% Buys, 25% Sells",+2.16 (+1.943%),ARK INNOVATION ETF,"3,384","1,149",Cathie Wood's Ark expects Tesla stock to reach $3000 by 2025
+      17,AMZN,"53% Buys, 47% Sells",-26.40 (-0.8583%),AMAZONCOM INC,"2,392","2,137",Arm Ltd debuts new chip technology aimed at overtaking data centers
+      18,RIOT,"53% Buys, 47% Sells",+1.931 (+4.0322%),RIOT BLOCKCHAIN INC,"2,209","1,933",Web Based Education Solutions to Remain Vital Post-Pandemic
+      19,DKNG,"76% Buys, 24% Sells",+2.13 (+3.6598%),DRAFTKINGS INC,"3,131","1,006","BRIEF-Draftkings Acquires Vsin, Multi-Platform Sports Betting Broadcast And Content Company"
+      20,TME,"65% Buys, 35% Sells",+0.558 (+2.7434%),TENCENT MUSIC ENTERTAINMENT GROUP,"2,612","1,418",Credit Suisse in firing line after Archegos losses
+      21,SPY,"67% Buys, 33% Sells",-1.545 (-0.3904%),SPDR S&P 500 ETF TRUST,"2,619","1,285",Analysis: Debacle at Archegos throws excessive risk-taking into spotlight
+      22,SQ,"76% Buys, 24% Sells",+3.41 (+1.6459%),SQUARE INC,"2,881",888,"Form  4          Square, Inc.              For: Mar 23  Filed by: Ahuja Amrita"
+      23,HCMC,"81% Buys, 19% Sells",-0.0001 (-8.333333%),HEALTHIER CHOICES MANAGEMENT CORP,"3,046",723,Healthier Choices Management Corp. Announces Re-Launching of its Vitamins and Supplements Online Store at TheVitaminStore.com
+      24,AMD,"60% Buys, 40% Sells",-1.425 (-1.8473%),ADVANCED MICRO DEVICES INC,"2,143","1,439",Arm Ltd debuts new chip technology aimed at overtaking data centers
+      25,DISCA,"77% Buys, 23% Sells",+1.67 (+4.0504%),DISCOVERY INC,"2,712",830,Credit Suisse in firing line after Archegos losses
+      26,FB,"52% Buys, 48% Sells",-1.23 (-0.4229%),FACEBOOK INC,"1,818","1,684",Facebook's chief revenue officer to leave later this year
+      27,MSFT,"65% Buys, 35% Sells",-3.48 (-1.4793%),MICROSOFT CORP,"2,242","1,218","Google, U.S. government tangle over pre-trial document production"
+      28,MRNA,"72% Buys, 28% Sells",-5.83 (-4.7237%),MODERNA INC,"2,477",957,U.S. administers 147.6 mln doses of COVID-19 vaccines - CDC
+      29,QQQ,"64% Buys, 36% Sells",-2.63 (-0.8325%),INVESCO QQQ TRUST SERIES 1,"2,167","1,221","Form  N-CEN      INVESCO QQQ TRUST, SERIE  For: Dec 31"
