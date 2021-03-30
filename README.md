@@ -214,6 +214,15 @@ If you run into trouble with poetry and the advice above did not help, your best
 
 7. Submit a ticket on github
 
+### ModuleNotFoundError
+In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
+install the missing package via pip.  
+
+If you get the error that `statsmodels` is not found, you would run
+* `pip install statsmodels`
+
+Then please submit an issue so that we can address why that was not imported.
+
 ### API Keys
 
 The project is build around several different API calls, whether it is to access historical data or financials.

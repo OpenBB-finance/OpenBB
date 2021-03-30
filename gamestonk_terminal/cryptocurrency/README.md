@@ -9,7 +9,6 @@ Current functionality is aimed to be similar to loading a stock ticker.
 
 * [load](#load)
 * [view](#view)
-* [clear](#clear)
 
 ## load  <a name="load"></a>
 Load a given coin vs a given currency:
