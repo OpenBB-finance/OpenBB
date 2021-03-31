@@ -51,6 +51,7 @@ jobs:
       - name: Install fbprophet with conda
         shell: bash -l {0}
         run: |
+          conda install numpy=1.19.5
           conda install -c conda-forge fbprophet=0.6
           conda install spyder
           conda install gensim=3.8.3
