@@ -2564,6 +2564,17 @@ notebook = ["ipywidgets (>=6)"]
 telegram = ["requests"]
 
 [[package]]
+name = "tradingview-ta"
+version = "3.2.3"
+description = "Unofficial TradingView technical analysis API wrapper."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
 name = "traitlets"
 version = "4.3.3"
 description = "Traitlets Python config system"
@@ -2786,7 +2797,7 @@ prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "t
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "d0abec748e4bb0fcc0bb22409e4bfdcb6802f2ca9b1849a77941d5a4a954ccc2"
+content-hash = "8da71f1b0a97846160dd96f9cf7ce86ed79a1ab3963499736af600df64d4f2b3"
 
 [metadata.files]
 absl-py = [
@@ -4571,6 +4582,10 @@ tornado = [
 tqdm = [
     {file = "tqdm-4.59.0-py2.py3-none-any.whl", hash = "sha256:9fdf349068d047d4cfbe24862c425883af1db29bcddf4b0eeb2524f6fbdb23c7"},
     {file = "tqdm-4.59.0.tar.gz", hash = "sha256:d666ae29164da3e517fcf125e41d4fe96e5bb375cd87ff9763f6b38b5592fe33"},
+]
+tradingview-ta = [
+    {file = "tradingview_ta-3.2.3-py3-none-any.whl", hash = "sha256:5f6101239f452044d8c9421e80c7591befd717f159a562fb0fe66a306d63807e"},
+    {file = "tradingview_ta-3.2.3.tar.gz", hash = "sha256:68f130e7cb822f3eaae29092a6f523960de27690165be57c9ba9fa7cae0f9225"},
 ]
 traitlets = [
     {file = "traitlets-4.3.3-py2.py3-none-any.whl", hash = "sha256:70b4c6a1d9019d7b4f6846832288f86998aa3b9207c6821f3578a6a6a467fe44"},
