@@ -26,6 +26,7 @@ api_map = {
     "usdcad": "DEXCAUS",
     "unemp": "UNRATE",
 }
+
 title_map = {
     "gdp": "Gross Domestic Product",
     "t10": "10-Year Treasury Constant Maturity Rate",
@@ -47,8 +48,8 @@ def get_fred_data(l_args, choice):
         add_help=False,
         prog="Custom",
         description="""
-                        Custom Data
-                    """,
+            Custom Data
+        """,
     )
 
     parser.add_argument(
