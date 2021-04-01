@@ -1,4 +1,8 @@
+""" Fred View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -26,6 +30,7 @@ api_map = {
     "usdcad": "DEXCAUS",
     "unemp": "UNRATE",
 }
+
 title_map = {
     "gdp": "Gross Domestic Product",
     "t10": "10-Year Treasury Constant Maturity Rate",
@@ -40,15 +45,26 @@ title_map = {
 }
 
 
-def get_fred_data(l_args, choice):
+def get_fred_data(other_args: List[str], choice: str):
+    """Displace Fred data and graph for a selected chosen data series
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    choice : str
+        Fred data series: "gdp","unemp", "t1", "t5", "t10", "t30", "mort30",
+        "fedrate", "moodAAA", "usdcad",
+    """
+
     fred = Fred(api_key=API_FRED_KEY)
 
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="Custom",
         description="""
-                        Custom Data
-                    """,
+            Custom Data
+        """,
     )
 
     parser.add_argument(
@@ -77,7 +93,7 @@ def get_fred_data(l_args, choice):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -115,7 +131,14 @@ def get_fred_data(l_args, choice):
         return
 
 
-def custom_data(l_args):
+def custom_data(other_args: List[str]):
+    """Displace Fred data for a custom series request
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    """
     fred = Fred(api_key=API_FRED_KEY)
 
     parser = argparse.ArgumentParser(
@@ -155,7 +178,7 @@ def custom_data(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
