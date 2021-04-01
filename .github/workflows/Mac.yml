@@ -45,6 +45,7 @@ jobs:
       - name: Install gensim with conda
         shell: bash -l {0}
         run: |
+          conda install numpy=1.19.5
           conda install gensim=3.8.3
 
       - name: Install dependencies (Bash)
