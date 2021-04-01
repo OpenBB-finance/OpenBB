@@ -8,10 +8,10 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.fred import fred_api
+from gamestonk_terminal.fred import fred_view
 
 
-class FredCotroller:
+class FredController:
     """ Fred Controller """
 
     # Command choices
@@ -110,36 +110,19 @@ class FredCotroller:
 
     def call_fred_api(self, other_args: List[str], cmd: str):
         """Process Fred Data call"""
-        fred_api.get_fred_data(other_args, cmd)
+        fred_view.get_fred_data(other_args, cmd)
 
     def call_cust(self, other_args: List[str]):
         """Process cust call"""
-        fred_api.custom_data(other_args)
+        fred_view.custom_data(other_args)
 
 
 def menu():
     """Fred Menu"""
 
-    fred_controller = FredCotroller()
+    fred_controller = FredController()
 
     plt.close("all")
-    # fred_parser = argparse.ArgumentParser(prog="fred", add_help=False)
-    # defined_choices = [
-    #     "gdp",
-    #     "unemp",
-    #     "t1",
-    #     "t5",
-    #     "t10",
-    #     "t30",
-    #     "mort30",
-    #     "fedrate",
-    #     "moodAAA",
-    #     "usdcad",
-    # ]
-    # choices = ["help", "q", "quit", "cust"] + defined_choices
-
-    # fred_parser.add_argument("cmd", choices=choices)
-    # completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
     fred_controller.print_help()
 
@@ -166,24 +149,3 @@ def menu():
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
-        # except SystemExit:
-        #     print("The command selected doesn't exist\n")
-        #     continue
-
-        # if ns_known_args.cmd == "help":
-        #     should_print_help = True
-
-        # elif ns_known_args.cmd == "q":
-        #     # Leave the fred menu
-        #     return False
-
-        # elif ns_known_args.cmd == "quit":
-        #     # Abandon the program
-        #     return True
-
-        # elif ns_known_args.cmd in defined_choices:
-        #     fred_api.get_fred_data(l_args, ns_known_args.cmd)
-
-        # elif ns_known_args.cmd == "cust":
-        #     fred_api.custom_data(l_args)
