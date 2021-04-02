@@ -18,6 +18,7 @@
 * [Options](#Options)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
+* [Screener](#Screener)
 
 ## Additional
 
@@ -34,10 +35,11 @@
 
 * [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
 * [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
+* [ ] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier)
 
 ### Long term
 
-* [ ] Add screeners (@didier)
+
 
 ---
 
@@ -133,6 +135,8 @@
 * [x] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
 * [x] Add multi-ticker financials comparison (@didier) - [PR #237](https://github.com/DidierRLopes/GamestonkTerminal/pull/237)
 * [x] Add multi-ticker sentiment comparison (@didier) - [PR #250](https://github.com/DidierRLopes/GamestonkTerminal/pull/250)
+* [ ] Get similar companies from Finviz based on Industry and Sector (and possibly country) from Finviz (@didier)
+* [ ] Perform quick screening across similar companies based on key metrics (overview, performance, financial, valuation) from Finviz (@didier)
 
 ### Long term
 
@@ -219,6 +223,19 @@
 * [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pulls)
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add crypto charts
+
+### Long term
+
+---
+
+## Screener
+
+### Short term
+
+* [ ] Add Screener menu with overview, valuation, financial, ownership, performance, technical commands based on filter presets from Finviz (@didier)
+* [ ] Add README with explanation of how presets are stored and can be added by experienced users. (@didier)
+* [ ] Analyse sectors performance, overview and valuation from Finviz (@didier)
+* [ ] Analyse industry performance, overview and valuation from Finviz (@didier)
 
 ### Long term
 
