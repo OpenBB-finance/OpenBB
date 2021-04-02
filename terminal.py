@@ -26,7 +26,7 @@ from gamestonk_terminal.technical_analysis import ta_controller
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.options import op_controller
-from gamestonk_terminal.fred import fred_menu as fm
+from gamestonk_terminal.fred import fred_controller
 from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
@@ -231,7 +231,7 @@ def main():
             b_quit = op_controller.menu(s_ticker)
 
         elif ns_known_args.opt == "fred":
-            b_quit = fm.fred_menu()
+            b_quit = fred_controller.menu()
 
         elif ns_known_args.opt == "pa":
             b_quit = port_controller.menu()
