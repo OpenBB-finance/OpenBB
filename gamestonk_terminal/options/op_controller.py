@@ -139,8 +139,14 @@ class OptionsController:
 def menu(ticker: str):
     """Options info Menu."""
 
-    op_controller = OptionsController(ticker)
-    op_controller.call_help(None)
+    try:
+        op_controller = OptionsController(ticker)
+        op_controller.call_help(None)
+    except IndexError:
+        print("No options found for " + ticker)
+        print("")
+        process_input = False
+        return process_input
 
     while True:
         # Get input command from user
