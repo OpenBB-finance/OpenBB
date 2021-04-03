@@ -1,7 +1,7 @@
 import argparse
 import warnings
 import pandas as pd
-from prawcore.exceptions import ResponseException, OAuthException
+from prawcore.exceptions import ResponseException
 from requests import HTTPError
 from psaw import PushshiftAPI
 import praw
