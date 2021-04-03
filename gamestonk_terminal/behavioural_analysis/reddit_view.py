@@ -1,7 +1,7 @@
 import argparse
 import warnings
 import pandas as pd
-from prawcore.exceptions import ResponseException
+from prawcore.exceptions import ResponseException, OAuthException
 from requests import HTTPError
 from psaw import PushshiftAPI
 import praw
@@ -358,6 +358,9 @@ def popular_tickers(l_args):
             "Received a response from Reddit with an authorization error. check your token.\n"
         )
         return
+
+    except Exception as e:
+        print(e, "\n")
 
 
 def spac_community(l_args):
