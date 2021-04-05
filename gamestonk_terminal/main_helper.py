@@ -87,7 +87,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print(
             "   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
         )
-        print("   op          options info,            \t e.g.: volume and open interest")
+        print(
+            "   op          options info,            \t e.g.: volume and open interest"
+        )
     print("")
 
 
