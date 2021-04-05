@@ -80,8 +80,7 @@ def get_screener_data(
         Dataframe with loaded filtered stocks
     """
     preset_filter = configparser.RawConfigParser()
-    # type: ignore
-    preset_filter.optionxform = str
+    preset_filter.optionxform = str  # type: ignore
     preset_filter.read("gamestonk_terminal/screener/presets/" + preset_loaded + ".ini")
 
     d_general = preset_filter["General"]
