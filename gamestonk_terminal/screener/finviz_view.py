@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import requests
 import os
 import configparser
 import pandas as pd
@@ -17,10 +16,8 @@ from finvizfinance.screener import (
 )
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
-    patch_pandas_text_adjustment,
     check_positive,
 )
-from gamestonk_terminal import feature_flags as gtff
 
 d_signals = {
     "top_gainers": "Top Gainers",
