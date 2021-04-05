@@ -4,8 +4,8 @@ This menu aims to discover new stocks, and the usage of the following commands a
 
 * [map](#map)
   * S&P500 index stocks map [Finviz]
-* [sectors](#sectors)
-  * show sectors performance [Alpha Vantage]
+* [rtp_sectors](#rtp_sectors)
+  * real-time performance sectors [Alpha Vantage]
 * [gainers](#gainers)
   * show latest top gainers [Yahoo Finance]
 * [losers](#losers)
@@ -52,10 +52,10 @@ Performance index stocks map categorized by sectors and industries. Size represe
 
 ![map_filter](https://user-images.githubusercontent.com/25267873/108570986-032a4800-7307-11eb-8c8d-f62409c11e06.png)
 
-## sectors <a name="sectors"></a>
+## rtp_sectors <a name="rtp_sectors"></a>
 
 ```shell
-usage: sectors
+usage: rtp_sectors
 ```
 
 Real-time and historical sector performances calculated from S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
@@ -187,11 +187,15 @@ Good website for SPACs research. [Source: www.unusualwhales.com]
 usage: sector_valuation
 ```
 
+<img width="1020" alt="sec_val" src="https://user-images.githubusercontent.com/25267873/113639076-4b5fb880-9670-11eb-8434-9ed61563ba54.png">
+
 ## sector_performance <a name="sector_performance"></a>
 
 ```shell
 usage: sector_performance
 ```
+
+<img width="969" alt="sec_per" src="https://user-images.githubusercontent.com/25267873/113639075-4b5fb880-9670-11eb-95f7-4b1e1c2ae291.png">
 
 ## sector_spectrum <a name="sector_spectrum"></a>
 
@@ -199,11 +203,15 @@ usage: sector_performance
 usage: sector_spectrum
 ```
 
+![sec_spec](https://user-images.githubusercontent.com/25267873/113639073-4ac72200-9670-11eb-871d-becfe0efb718.png)
+
 ## industry_valuation <a name="industry_valuation"></a>
 
 ```shell
 usage: industry_valuation
 ```
+
+<img width="1080" alt="ind_val" src="https://user-images.githubusercontent.com/25267873/113639072-4ac72200-9670-11eb-9a11-ef70d9ebddff.png">
 
 ## industry_performance <a name="industry_performance"></a>
 
@@ -211,11 +219,15 @@ usage: industry_valuation
 usage: industry_performance
 ```
 
+<img width="1034" alt="ind_per" src="https://user-images.githubusercontent.com/25267873/113639071-4a2e8b80-9670-11eb-8332-8743242341df.png">
+
 ## industry_spectrum <a name="industry_spectrum"></a>
 
 ```shell
 usage: industry_spectrum
 ```
+
+<img width="949" alt="ind_spec" src="https://user-images.githubusercontent.com/25267873/113639068-4995f500-9670-11eb-88ca-1d29b600dabb.png">
  
 ## country_valuation <a name="country_valuation"></a>
 
@@ -223,15 +235,23 @@ usage: industry_spectrum
 usage: country_valuation
 ```
 
+<img width="1027" alt="coun_val" src="https://user-images.githubusercontent.com/25267873/113639065-4864c800-9670-11eb-891c-1bcaa3a74297.png">
+
 ## country_performance <a name="country_performance"></a>
 
 ```shell
 usage: country_performance
 ```
 
+<img width="1025" alt="cou_per" src="https://user-images.githubusercontent.com/25267873/113639070-4995f500-9670-11eb-89df-3634f02946c6.png">
+
 ## country_spectrum <a name="country_spectrum"></a>
 
 ```shell
 usage: country_spectrum
 ```
+
+![country_spectrum](https://user-images.githubusercontent.com/25267873/113639067-48fd5e80-9670-11eb-95cf-0931845ddd12.png)
+
+
 
