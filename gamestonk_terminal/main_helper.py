@@ -49,16 +49,19 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print(
         "   disc        discover trending stocks, \t e.g. map, sectors, high short interest"
     )
+    print(
+        "   scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
+    )
     print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print(
         "   fred        economic data, \t\t\t from: Federal Reserve Bank of St. Louis "
     )
-    print("   pa          portfolio analysis, \t\t Currently Supported: Robinhood ")
-    print("   crypto      cryptocurrencies, \t\t coingecko api")
+    print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
+    print("   crypto      cryptocurrencies, \t\t uses coingecko api")
 
     if s_ticker:
         print(
-            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter"
+            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
         )
         print(
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
@@ -84,7 +87,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print(
             "   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
         )
-        print("   op          options info,            \t e.g.: volume")
+        print(
+            "   op          options info,            \t e.g.: volume and open interest"
+        )
     print("")
 
 

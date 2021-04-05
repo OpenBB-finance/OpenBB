@@ -27,6 +27,7 @@ defusedxml==0.7.1; python_version >= "3.6" and python_full_version < "3.0.0" or 
 detecta==0.0.5
 entrypoints==0.3; python_version >= "3.6"
 finviz==1.3.4
+finvizfinance==0.9.3
 fredapi==0.4.3
 fundamentalanalysis==0.2.6
 hijri-converter==2.1.1; python_version >= "3.6"
@@ -137,4 +138,3 @@ widgetsnbextension==3.5.1
 yarl==1.6.3; python_version >= "3.6"
 yfinance==0.1.55
 zipp==3.4.1; python_version < "3.8" and python_version >= "3.6"
-
