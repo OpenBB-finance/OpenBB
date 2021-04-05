@@ -144,6 +144,11 @@ ownership, performance, technical. Note that when the signal parameter (-s) is s
 
 ### signal oversold <a name="signal-oversold"></a>
 
+Example:
+```text
+technical -s oversold
+```
+
 <img width="1007" alt="technical_oversold flag" src="https://user-images.githubusercontent.com/25267873/113618975-48ed6680-9650-11eb-805f-00a656f97e9a.png">
 
 
