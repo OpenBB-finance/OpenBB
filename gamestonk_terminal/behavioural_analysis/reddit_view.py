@@ -359,6 +359,9 @@ def popular_tickers(l_args):
         )
         return
 
+    except Exception as e:
+        print(e, "\n")
+
 
 def spac_community(l_args):
     parser = argparse.ArgumentParser(
