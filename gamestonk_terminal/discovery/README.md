@@ -27,6 +27,18 @@ This menu aims to discover new stocks, and the usage of the following commands a
 * [uwhales](#uwhales)
   * good website for SPACs research [UnusualWhales]
 
+Finviz:
+* [sector_valuation](#sector_valuation)
+* [sector_performance](#sector_performance)
+* [sector_spectrum](#sector_spectrum)
+* [industry_valuation](#industry_valuation)
+* [industry_performance](#industry_performance)
+* [industry_spectrum](#industry_spectrum)
+* [country_valuation](#country_valuation)
+* [country_performance](#country_performance)
+* [country_spectrum](#country_spectrum)
+
+
 ## map <a name="map"></a>
 
 ```shell
@@ -167,3 +179,59 @@ usage: uwhales
 Good website for SPACs research. [Source: www.unusualwhales.com]
 
 <img width="1247" alt="Captura de ecrã 2021-02-20, às 11 38 54" src="https://user-images.githubusercontent.com/25267873/108594176-47056780-7370-11eb-8f2d-5972c8634974.png">
+
+
+## sector_valuation <a name="sector_valuation"></a>
+
+```shell
+usage: sector_valuation
+```
+
+## sector_performance <a name="sector_performance"></a>
+
+```shell
+usage: sector_performance
+```
+
+## sector_spectrum <a name="sector_spectrum"></a>
+
+```shell
+usage: sector_spectrum
+```
+
+## industry_valuation <a name="industry_valuation"></a>
+
+```shell
+usage: industry_valuation
+```
+
+## industry_performance <a name="industry_performance"></a>
+
+```shell
+usage: industry_performance
+```
+
+## industry_spectrum <a name="industry_spectrum"></a>
+
+```shell
+usage: industry_spectrum
+```
+ 
+## country_valuation <a name="country_valuation"></a>
+
+```shell
+usage: country_valuation
+```
+
+## country_performance <a name="country_performance"></a>
+
+```shell
+usage: country_performance
+```
+
+## country_spectrum <a name="country_spectrum"></a>
+
+```shell
+usage: country_spectrum
+```
+
