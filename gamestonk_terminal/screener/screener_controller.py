@@ -4,15 +4,12 @@ __docformat__ = "numpy"
 import os
 import argparse
 from typing import List
-from datetime import datetime
-
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
-    patch_pandas_text_adjustment,
 )
 from gamestonk_terminal.screener import finviz_view
 
@@ -49,7 +46,7 @@ class ScreenerController:
     def print_help(self):
         """Print help"""
 
-        print("\Screener:")
+        print("\nScreener:")
         print("   help          show this screener menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
