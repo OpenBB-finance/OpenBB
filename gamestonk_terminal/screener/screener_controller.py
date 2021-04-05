@@ -33,7 +33,7 @@ class ScreenerController:
         "ownership",
         "performance",
         "technical",
-        "signals"
+        "signals",
     ]
 
     def __init__(self):
@@ -83,24 +83,29 @@ class ScreenerController:
             if not ns_parser:
                 return
 
-            presets = [preset.split('.')[0] for preset in os.listdir('gamestonk_terminal/screener/presets')]
+            presets = [
+                preset.split(".")[0]
+                for preset in os.listdir("gamestonk_terminal/screener/presets")
+            ]
 
             for preset in presets:
-                with open('gamestonk_terminal/screener/presets/' + preset + '.ini', encoding='utf8') as f:
+                with open(
+                    "gamestonk_terminal/screener/presets/" + preset + ".ini",
+                    encoding="utf8",
+                ) as f:
                     description = ""
                     for line in f:
                         if "[General]" == line.strip():
                             break
                         description += line.strip()
                 print(f"\nPRESET: {preset}")
-                print(description.split('Description: ')[1].replace('#',''))
+                print(description.split("Description: ")[1].replace("#", ""))
 
         except Exception as e:
             print(e)
 
         print("")
         return
-
 
     @staticmethod
     def set_preset(self, other_args: List[str]):
@@ -118,7 +123,10 @@ class ScreenerController:
             type=str,
             default="template",
             help="Filter presets",
-            choices=[preset.split('.')[0] for preset in os.listdir('gamestonk_terminal/screener/presets')],
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir("gamestonk_terminal/screener/presets")
+            ],
         )
 
         try:
@@ -137,7 +145,6 @@ class ScreenerController:
 
         print("")
         return
-
 
     def switch(self, an_input: str):
         """Process and dispatch input
