@@ -18,7 +18,7 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
   * performance information [Finviz]
 * [technical](#technical)
   * technical information [Finviz]
-  * [technical information when oversold (-s) signal](#signal-oversold)
+  * contains [Oversold (-s) signal example](#signal-oversold)
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
 
@@ -139,7 +139,8 @@ ownership, performance, technical. Note that when the signal parameter (-s) is s
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
 
-<img width="1024" alt="technical" src="https://user-images.githubusercontent.com/25267873/113618976-4985fd00-9650-11eb-84d1-3b7717903cd6.png">
+<img width="749" alt="technical" src="https://user-images.githubusercontent.com/25267873/113619656-2b6ccc80-9651-11eb-92c2-87d7e51ef22d.png">
+
 
 ### signal oversold <a name="signal-oversold"></a>
 
