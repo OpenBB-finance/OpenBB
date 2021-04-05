@@ -168,7 +168,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         choices=[
             preset.split(".")[0]
             for preset in os.listdir("gamestonk_terminal/screener/presets")
-            if preset[-4:] == '.ini'
+            if preset[-4:] == ".ini"
         ],
     )
     parser.add_argument(

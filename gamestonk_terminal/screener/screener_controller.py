@@ -83,7 +83,7 @@ class ScreenerController:
             presets = [
                 preset.split(".")[0]
                 for preset in os.listdir("gamestonk_terminal/screener/presets")
-                if preset[-4:] == '.ini'
+                if preset[-4:] == ".ini"
             ]
 
             for preset in presets:
@@ -124,7 +124,7 @@ class ScreenerController:
             choices=[
                 preset.split(".")[0]
                 for preset in os.listdir("gamestonk_terminal/screener/presets")
-                if preset[-4:] == '.ini'
+                if preset[-4:] == ".ini"
             ],
         )
 
