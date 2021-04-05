@@ -90,7 +90,7 @@ def get_screener_data(
         **preset_filter["Technical"],
     }
 
-    d_filters = dict((k, v) for k, v in d_filters.items() if v)
+    d_filters = {k: v for k, v in d_filters.items() if v}
 
     if data_type == "overview":
         screen = overview.Overview()
