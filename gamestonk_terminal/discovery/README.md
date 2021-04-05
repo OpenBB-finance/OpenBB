@@ -28,15 +28,15 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * good website for SPACs research [UnusualWhales]
 
 Finviz:
-* [sector_valuation](#sector_valuation)
-* [sector_performance](#sector_performance)
-* [sector_spectrum](#sector_spectrum)
-* [industry_valuation](#industry_valuation)
-* [industry_performance](#industry_performance)
-* [industry_spectrum](#industry_spectrum)
-* [country_valuation](#country_valuation)
-* [country_performance](#country_performance)
-* [country_spectrum](#country_spectrum)
+* [sec_val](#sec_val)
+* [sec_perf](#sec_perf)
+* [sec_spec](#sec_spec)
+* [ind_val](#ind_val)
+* [ind_perf](#ind_perf)
+* [ind_spec](#ind_spec)
+* [cntry_val](#cntry_val)
+* [cntry_perf](#cntry_perf)
+* [cntry_spec](#cntry_spec)
 
 
 ## map <a name="map"></a>
@@ -181,77 +181,92 @@ Good website for SPACs research. [Source: www.unusualwhales.com]
 <img width="1247" alt="Captura de ecrã 2021-02-20, às 11 38 54" src="https://user-images.githubusercontent.com/25267873/108594176-47056780-7370-11eb-8f2d-5972c8634974.png">
 
 
-## sector_valuation <a name="sector_valuation"></a>
+## sec_val <a name="sec_val"></a>
 
 ```shell
-usage: sector_valuation
+usage: sec_val
 ```
+
+Sector valuation. [Source: Finviz]
 
 <img width="1020" alt="sec_val" src="https://user-images.githubusercontent.com/25267873/113639076-4b5fb880-9670-11eb-8434-9ed61563ba54.png">
 
-## sector_performance <a name="sector_performance"></a>
+## sec_perf <a name="sec_perf"></a>
 
 ```shell
-usage: sector_performance
+usage: sec_perf
 ```
+
+Sector performance. [Source: Finviz]
 
 <img width="969" alt="sec_per" src="https://user-images.githubusercontent.com/25267873/113639075-4b5fb880-9670-11eb-95f7-4b1e1c2ae291.png">
 
-## sector_spectrum <a name="sector_spectrum"></a>
+## sec_spec <a name="sec_spec"></a>
 
 ```shell
-usage: sector_spectrum
+usage: sec_spec
 ```
+
+Sector spectrum. [Source: Finviz]
 
 ![sec_spec](https://user-images.githubusercontent.com/25267873/113639073-4ac72200-9670-11eb-871d-becfe0efb718.png)
 
-## industry_valuation <a name="industry_valuation"></a>
+## ind_val <a name="ind_val"></a>
 
 ```shell
-usage: industry_valuation
+usage: ind_val
 ```
+
+Industry valuation. [Source: Finviz]
 
 <img width="1080" alt="ind_val" src="https://user-images.githubusercontent.com/25267873/113639072-4ac72200-9670-11eb-9a11-ef70d9ebddff.png">
 
-## industry_performance <a name="industry_performance"></a>
+## ind_perf <a name="ind_perf"></a>
 
 ```shell
-usage: industry_performance
+usage: ind_perf
 ```
+
+Industry performance. [Source: Finviz]
 
 <img width="1034" alt="ind_per" src="https://user-images.githubusercontent.com/25267873/113639071-4a2e8b80-9670-11eb-8332-8743242341df.png">
 
-## industry_spectrum <a name="industry_spectrum"></a>
+## ind_spec <a name="ind_spec"></a>
 
 ```shell
-usage: industry_spectrum
+usage: ind_spec
 ```
+
+Industry spectrum. [Source: Finviz]
 
 <img width="949" alt="ind_spec" src="https://user-images.githubusercontent.com/25267873/113639068-4995f500-9670-11eb-88ca-1d29b600dabb.png">
- 
-## country_valuation <a name="country_valuation"></a>
+
+## cntry_val <a name="cntry_val"></a>
 
 ```shell
-usage: country_valuation
+usage: cntry_val
 ```
+
+Country valuation. [Source: Finviz]
 
 <img width="1027" alt="coun_val" src="https://user-images.githubusercontent.com/25267873/113639065-4864c800-9670-11eb-891c-1bcaa3a74297.png">
 
-## country_performance <a name="country_performance"></a>
+## cntry_perf <a name="cntry_perf"></a>
 
 ```shell
-usage: country_performance
+usage: cntry_perf
 ```
+
+Country performance. [Source: Finviz]
 
 <img width="1025" alt="cou_per" src="https://user-images.githubusercontent.com/25267873/113639070-4995f500-9670-11eb-89df-3634f02946c6.png">
 
-## country_spectrum <a name="country_spectrum"></a>
+## cntry_spec <a name="cntry_spec"></a>
 
 ```shell
-usage: country_spectrum
+usage: cntry_spec
 ```
 
-![country_spectrum](https://user-images.githubusercontent.com/25267873/113639067-48fd5e80-9670-11eb-95cf-0931845ddd12.png)
+Country spectrum. [Source: Finviz]
 
-
-
+![cntry_spec](https://user-images.githubusercontent.com/25267873/113639067-48fd5e80-9670-11eb-95cf-0931845ddd12.png)
