@@ -35,7 +35,7 @@
 
 * [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
 * [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
-* [ ] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier)
+* [ ] Analyse sectors/industry performance, overview and valuation from Finviz (@didier)
 
 ### Long term
 
@@ -220,7 +220,7 @@
 
 ### Short term
 
-* [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pulls)
+* [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add crypto charts
 
@@ -232,10 +232,9 @@
 
 ### Short term
 
-* [ ] Add Screener menu with overview, valuation, financial, ownership, performance, technical commands based on filter presets from Finviz (@didier)
-* [ ] Add README with explanation of how presets are stored and can be added by experienced users. (@didier)
-* [ ] Analyse sectors performance, overview and valuation from Finviz (@didier)
-* [ ] Analyse industry performance, overview and valuation from Finviz (@didier)
+* [x] Add Screener menu with overview, valuation, financial, ownership, performance, technical commands based on filter presets from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
+* [x] Add README with explanation of how presets are stored and can be added by experienced users. (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
+* [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 
 ### Long term
 
