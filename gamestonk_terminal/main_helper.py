@@ -49,6 +49,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print(
         "   disc        discover trending stocks, \t e.g. map, sectors, high short interest"
     )
+    print(
+        "   scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
+    )
     print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print(
         "   fred        economic data, \t\t\t from: Federal Reserve Bank of St. Louis "
