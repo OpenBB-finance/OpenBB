@@ -18,6 +18,7 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
   * performance information [Finviz]
 * [technical](#technical)
   * technical information [Finviz]
+  * [technical information when oversold (-s) signal](#signal-oversold)
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
 
@@ -50,13 +51,14 @@ Set preset from under presets folder.
 usage: overview [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial,
-ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
-* -s : Signal type. Defaul: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
 
 
 ## valuation <a name="valuation"></a>
@@ -65,13 +67,14 @@ ownership, performance, technical. Note that when the signal parameter (-s) is s
 usage: valuation [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial,
-ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
-* -s : Signal type. Defaul: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+
+<img width="989" alt="valuation" src="https://user-images.githubusercontent.com/25267873/113618970-47bc3980-9650-11eb-8f3d-1b3609bb71ef.png">
 
 
 ## financial <a name="financial"></a>
@@ -80,13 +83,14 @@ ownership, performance, technical. Note that when the signal parameter (-s) is s
 usage: financial [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial,
-ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
-* -s : Signal type. Defaul: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+
+<img width="995" alt="financial" src="https://user-images.githubusercontent.com/25267873/113618977-4985fd00-9650-11eb-976c-913232f5eb2f.png">
 
 
 ## ownership <a name="ownership"></a>
@@ -95,13 +99,30 @@ ownership, performance, technical. Note that when the signal parameter (-s) is s
 usage: ownership [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial,
-ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
-* -s : Signal type. Defaul: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+
+<img width="1017" alt="ownership" src="https://user-images.githubusercontent.com/25267873/113618974-48ed6680-9650-11eb-99ec-fe584ebfa274.png">
+
+
+## performance <a name="performance"></a>
+
+```text
+usage: performance [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+```
+
+Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+
+* -p : Filter presets. Default: one pre-loaded in screener menu.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* -l : Limit of stocks to output. Default: 200.
+* -a : Set order of stocks shown to Ascended. Default: Descended.
+
+<img width="1016" alt="performance" src="https://user-images.githubusercontent.com/25267873/113618973-48ed6680-9650-11eb-8894-0c9ace262bfa.png">
 
 
 ## technical <a name="technical"></a>
@@ -114,9 +135,15 @@ Prints screener data of the companies that meet the pre-set filtering. The field
 ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
-* -s : Signal type. Defaul: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+
+<img width="1024" alt="technical" src="https://user-images.githubusercontent.com/25267873/113618976-4985fd00-9650-11eb-84d1-3b7717903cd6.png">
+
+### signal oversold <a name="signal-oversold"></a>
+
+<img width="1007" alt="technical_oversold flag" src="https://user-images.githubusercontent.com/25267873/113618975-48ed6680-9650-11eb-805f-00a656f97e9a.png">
 
 
 ## signals <a name="signals"></a>
