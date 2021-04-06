@@ -180,6 +180,7 @@
 * [x] Add Screener menu with overview, valuation, financial, ownership, performance, technical commands based on filter presets from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Add README with explanation of how presets are stored and can be added by experienced users. (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
+* [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
 
 **NEXT**
 
