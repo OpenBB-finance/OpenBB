@@ -1,4 +1,8 @@
+""" pycoingecko_api """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -11,8 +15,15 @@ register_matplotlib_converters()
 # pylint: disable=inconsistent-return-statements
 
 
-def load(l_args):
+def load(l_args: List[str]):
+    """Load selected Cryptocurrency
 
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse arguments
+
+    """
     cg = CoinGeckoAPI()
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -81,8 +92,19 @@ def load(l_args):
         return [None, pd.DataFrame()]
 
 
-def view(coin, prices, l_args):
+def view(coin, prices, l_args: List[str]):
+    """Plots loaded cryptocurrency
 
+    Parameters
+    ----------
+    coin : str
+        Cryptocurrency
+    prices : pandas.DataFrame
+        Dataframe containing prices and dates for selected coin
+    other_args : List[str]
+        argparse arguments
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="Crypto",
