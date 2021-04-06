@@ -42,22 +42,14 @@ class DiscoveryController:
         "simply_wallst",
         "spachero",
         "uwhales",
-        "sec_val",
-        "sec_perf",
-        "sec_spec",
-        "ind_val",
-        "ind_perf",
-        "ind_spec",
-        "cntry_val",
-        "cntry_perf",
-        "cntry_spec",
+        "valuation",
+        "performance",
+        "spectrum",
     ]
 
     def __init__(self):
         """Constructor"""
-        self.delete_sector_spectrum = False
-        self.delete_industry_spectrum = False
-        self.delete_country_spectrum = False
+        self.spectrum_img_to_delete = ""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
         self.disc_parser.add_argument(
             "cmd",
@@ -91,17 +83,9 @@ class DiscoveryController:
         print("   simply_wallst  Simply Wall St. research data [Simply Wall St.]")
         print("   spachero       great website for SPACs research [SpacHero]")
         print("   uwhales        good website for SPACs research [UnusualWhales]")
-        print("")
-        print("Finviz:")
-        print("   sec_val        sector valuation")
-        print("   sec_perf       sector performance")
-        print("   sec_spec       sector spectrum")
-        print("   ind_val        industry valuation")
-        print("   ind_perf       industry performance")
-        print("   ind_spec       industry spectrum")
-        print("   cntry_val      country valuation")
-        print("   cntry_perf     country performance")
-        print("   cntry_spec     country spectrum")
+        print("   valuation      valuation of sectors, industry, country [Finviz]")
+        print("   performance    performance of sectors, industry, country [Finviz]")
+        print("   spectrum       spectrum of sectors, industry, country [Finviz]")
         print("")
 
     def switch(self, an_input: str):
@@ -118,15 +102,9 @@ class DiscoveryController:
 
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
-        if self.delete_sector_spectrum:
-            os.remove("Sector.jpg")
-            self.delete_sector_spectrum = False
-        elif self.delete_industry_spectrum:
-            os.remove("Industry.jpg")
-            self.delete_industry_spectrum = False
-        elif self.delete_country_spectrum:
-            os.remove("Country (U.S. listed stocks only).jpg")
-            self.delete_country_spectrum = False
+        if self.spectrum_img_to_delete:
+            os.remove(self.spectrum_img_to_delete + ".jpg")
+            self.spectrum_img_to_delete = ""
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -192,50 +170,19 @@ class DiscoveryController:
         """Process uwhales command"""
         unusual_whales_view.unusual_whales_view(other_args)
 
-    def call_sec_val(self, other_args: List[str]):
-        """Process sec_val command"""
-        finviz_view.view_group_data(other_args, "Sector", "valuation")
+    def call_valuation(self, other_args: List[str]):
+        """Process valuation command"""
+        finviz_view.view_group_data(other_args, "valuation")
 
-    def call_sec_perf(self, other_args: List[str]):
-        """Process sec_perf command"""
-        finviz_view.view_group_data(other_args, "Sector", "performance")
+    def call_performance(self, other_args: List[str]):
+        """Process performance command"""
+        finviz_view.view_group_data(other_args, "performance")
 
-    def call_sec_spec(self, other_args: List[str]):
-        """Process sec_spec command"""
-        finviz_view.view_group_data(other_args, "Sector", "spectrum")
-        self.delete_sector_spectrum = True
-
-    def call_ind_val(self, other_args: List[str]):
-        """Process ind_val command"""
-        finviz_view.view_group_data(other_args, "Industry", "valuation")
-
-    def call_ind_perf(self, other_args: List[str]):
-        """Process ind_perf command"""
-        finviz_view.view_group_data(other_args, "Industry", "performance")
-
-    def call_ind_spec(self, other_args: List[str]):
-        """Process ind_spec command"""
-        finviz_view.view_group_data(other_args, "Industry", "spectrum")
-        self.delete_industry_spectrum = True
-
-    def call_cntry_val(self, other_args: List[str]):
-        """Process cntry_val command"""
-        finviz_view.view_group_data(
-            other_args, "Country (U.S. listed stocks only)", "valuation"
+    def call_spectrum(self, other_args: List[str]):
+        """Process spectrum command"""
+        self.spectrum_img_to_delete = finviz_view.view_group_data(
+            other_args, "spectrum"
         )
-
-    def call_cntry_perf(self, other_args: List[str]):
-        """Process cntry_perf command"""
-        finviz_view.view_group_data(
-            other_args, "Country (U.S. listed stocks only)", "performance"
-        )
-
-    def call_cntry_spec(self, other_args: List[str]):
-        """Process cntry_spec command"""
-        finviz_view.view_group_data(
-            other_args, "Country (U.S. listed stocks only)", "spectrum"
-        )
-        self.delete_country_spectrum = True
 
 
 def menu():
