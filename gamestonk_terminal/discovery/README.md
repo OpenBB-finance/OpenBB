@@ -26,17 +26,12 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * great website for SPACs research [SpacHero]
 * [uwhales](#uwhales)
   * good website for SPACs research [UnusualWhales]
-
-Finviz:
-* [sec_val](#sec_val)
-* [sec_perf](#sec_perf)
-* [sec_spec](#sec_spec)
-* [ind_val](#ind_val)
-* [ind_perf](#ind_perf)
-* [ind_spec](#ind_spec)
-* [cntry_val](#cntry_val)
-* [cntry_perf](#cntry_perf)
-* [cntry_spec](#cntry_spec)
+* [valuation](#valuation)
+  * valuation of sectors, industry, country [Finviz]
+* [performance](#performance)
+  * performance of sectors, industry, country [Finviz]
+* [spectrum](#spectrum)
+  * spectrum of sectors, industry, country [Finviz]
 
 
 ## map <a name="map"></a>
@@ -180,93 +175,45 @@ Good website for SPACs research. [Source: www.unusualwhales.com]
 
 <img width="1247" alt="Captura de ecrã 2021-02-20, às 11 38 54" src="https://user-images.githubusercontent.com/25267873/108594176-47056780-7370-11eb-8f2d-5972c8634974.png">
 
-
-## sec_val <a name="sec_val"></a>
+## valuation <a name="valuation"></a>
 
 ```shell
-usage: sec_val
+usage: valuation [-g Sector,Industry,Industry (Basic Materials),Industry (Communication Services),
+Industry (Consumer Cyclical),Industry (Consumer Defensive),Industry (Energy),Industry (Financial),
+Industry (Healthcare),Industry (Industrials),Industry (Real Estate),Industry (Technology),
+Industry (Utilities),Country (U.S. listed stocks only),Capitalization]
 ```
 
-Sector valuation. [Source: Finviz]
+valuation of sectors, industry, country. [Source: Finviz]
+* -g : Data group (sector, industry or country). Default: Sector.
 
 <img width="1020" alt="sec_val" src="https://user-images.githubusercontent.com/25267873/113639076-4b5fb880-9670-11eb-8434-9ed61563ba54.png">
 
-## sec_perf <a name="sec_perf"></a>
+
+## performance <a name="performance"></a>
 
 ```shell
-usage: sec_perf
+usage: performance [-g Sector,Industry,Industry (Basic Materials),Industry (Communication Services),
+Industry (Consumer Cyclical),Industry (Consumer Defensive),Industry (Energy),Industry (Financial),
+Industry (Healthcare),Industry (Industrials),Industry (Real Estate),Industry (Technology),
+Industry (Utilities),Country (U.S. listed stocks only),Capitalization]
 ```
 
-Sector performance. [Source: Finviz]
-
-<img width="969" alt="sec_per" src="https://user-images.githubusercontent.com/25267873/113639075-4b5fb880-9670-11eb-95f7-4b1e1c2ae291.png">
-
-## sec_spec <a name="sec_spec"></a>
-
-```shell
-usage: sec_spec
-```
-
-Sector spectrum. [Source: Finviz]
-
-![sec_spec](https://user-images.githubusercontent.com/25267873/113639073-4ac72200-9670-11eb-871d-becfe0efb718.png)
-
-## ind_val <a name="ind_val"></a>
-
-```shell
-usage: ind_val
-```
-
-Industry valuation. [Source: Finviz]
-
-<img width="1080" alt="ind_val" src="https://user-images.githubusercontent.com/25267873/113639072-4ac72200-9670-11eb-9a11-ef70d9ebddff.png">
-
-## ind_perf <a name="ind_perf"></a>
-
-```shell
-usage: ind_perf
-```
-
-Industry performance. [Source: Finviz]
+performance of sectors, industry, country. [Source: Finviz]
+* -g : Data group (sector, industry or country). Default: Sector.
 
 <img width="1034" alt="ind_per" src="https://user-images.githubusercontent.com/25267873/113639071-4a2e8b80-9670-11eb-8332-8743242341df.png">
 
-## ind_spec <a name="ind_spec"></a>
+## spectrum <a name="spectrum"></a>
 
-```shell
-usage: ind_spec
+```
+usage: spectrum [-g Sector,Industry,Industry (Basic Materials),Industry (Communication Services),
+Industry (Consumer Cyclical),Industry (Consumer Defensive),Industry (Energy),Industry (Financial),
+Industry (Healthcare),Industry (Industrials),Industry (Real Estate),Industry (Technology),
+Industry (Utilities),Country (U.S. listed stocks only),Capitalization]
 ```
 
-Industry spectrum. [Source: Finviz]
-
-<img width="949" alt="ind_spec" src="https://user-images.githubusercontent.com/25267873/113639068-4995f500-9670-11eb-88ca-1d29b600dabb.png">
-
-## cntry_val <a name="cntry_val"></a>
-
-```shell
-usage: cntry_val
-```
-
-Country valuation. [Source: Finviz]
-
-<img width="1027" alt="coun_val" src="https://user-images.githubusercontent.com/25267873/113639065-4864c800-9670-11eb-891c-1bcaa3a74297.png">
-
-## cntry_perf <a name="cntry_perf"></a>
-
-```shell
-usage: cntry_perf
-```
-
-Country performance. [Source: Finviz]
-
-<img width="1025" alt="cou_per" src="https://user-images.githubusercontent.com/25267873/113639070-4995f500-9670-11eb-89df-3634f02946c6.png">
-
-## cntry_spec <a name="cntry_spec"></a>
-
-```shell
-usage: cntry_spec
-```
-
-Country spectrum. [Source: Finviz]
+Spectrum of sectors, industry, country. [Source: Finviz]
+* -g : Data group (sector, industry or country). Default: Sector.
 
 ![cntry_spec](https://user-images.githubusercontent.com/25267873/113639067-48fd5e80-9670-11eb-95cf-0931845ddd12.png)
