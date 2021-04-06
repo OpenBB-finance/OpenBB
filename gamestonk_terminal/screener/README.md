@@ -6,6 +6,8 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
   * view available presets
 * [set](#set)
   * set one of the available presets
+* [historical](#historical)
+  * view historical price [Yahoo Finance]
 * [overview](#overview)
   * overview information [Finviz]
 * [valuation](#valuation)
@@ -43,6 +45,23 @@ usage: set [-p {template,sexy_year,...}]
 Set preset from under presets folder.
 
 * -p : Filter presets
+
+
+## historical <a name="historical"></a>
+
+```text
+usage: historical [-t {o,h,l,c,a}] [-s {top_gainers,top_losers,...}] [--start START] 
+```
+
+View historical price of stocks. [Source: Yahoo Finance]
+
+* -t : Type of candle: Default 'a' for adjusted close.
+* -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
+* --start : Start time with format "%Y-%m-%d". Default 6 months earlier.
+
+![screener_view](https://user-images.githubusercontent.com/25267873/113784557-8bd13c00-972d-11eb-9776-0e192bb83515.png)
+
+![top_gainers](https://user-images.githubusercontent.com/25267873/113784834-f97d6800-972d-11eb-8112-6c80f4e2cf5e.png)
 
 
 ## overview <a name="overview"></a>
