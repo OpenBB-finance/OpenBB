@@ -187,7 +187,7 @@ Industry (Utilities),Country (U.S. listed stocks only),Capitalization]
 valuation of sectors, industry, country. [Source: Finviz]
 * -g : Data group (sector, industry or country). Default: Sector.
 
-<img width="1020" alt="sec_val" src="https://user-images.githubusercontent.com/25267873/113639076-4b5fb880-9670-11eb-8434-9ed61563ba54.png">
+<img width="1020" alt="sec_val" src="https://user-images.githubusercontent.com/25267873/113647490-d2b62780-9682-11eb-8346-089bd0499ba9.png">
 
 
 ## performance <a name="performance"></a>
@@ -202,7 +202,8 @@ Industry (Utilities),Country (U.S. listed stocks only),Capitalization]
 performance of sectors, industry, country. [Source: Finviz]
 * -g : Data group (sector, industry or country). Default: Sector.
 
-<img width="1034" alt="ind_per" src="https://user-images.githubusercontent.com/25267873/113639071-4a2e8b80-9670-11eb-8332-8743242341df.png">
+<img width="1034" alt="ind_per" src="https://user-images.githubusercontent.com/25267873/113647513-dba6f900-9682-11eb-9b43-c1055af85536.png">
+
 
 ## spectrum <a name="spectrum"></a>
 
