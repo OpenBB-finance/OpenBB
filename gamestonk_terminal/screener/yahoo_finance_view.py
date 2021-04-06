@@ -159,7 +159,9 @@ def historical(other_args: List[str], preset_loaded: str):
                 l_stocks.remove(parsed_stock)
 
         if ns_parser.signal:
-            plt.title(f"Screener Historical Price using {finviz_view.d_signals[ns_parser.signal]} signal")
+            plt.title(
+                f"Screener Historical Price using {finviz_view.d_signals[ns_parser.signal]} signal"
+            )
         else:
             plt.title(f"Screener Historical Price using {preset_loaded} preset")
 
