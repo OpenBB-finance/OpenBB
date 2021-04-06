@@ -58,7 +58,7 @@ class ScreenerController:
         print("")
         print(f"PRESET: {self.preset}")
         print("")
-        print("   historical     view historical price of stocks that meet preset")
+        print("   historical     view historical price")
         print("   overview       overview information")
         print("   valuation      valuation information")
         print("   financial      financial information")
