@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import argparse
 from typing import List
+import matplotlib.pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -12,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.screener import finviz_view
+from gamestonk_terminal.screener import yahoo_finance_view
 
 
 class ScreenerController:
@@ -24,6 +26,7 @@ class ScreenerController:
         "quit",
         "view",
         "set",
+        "historical",
         "overview",
         "valuation",
         "financial",
@@ -56,6 +59,7 @@ class ScreenerController:
         print("")
         print(f"PRESET: {self.preset}")
         print("")
+        print("   historical     view historical price")
         print("   overview       overview information")
         print("   valuation      valuation information")
         print("   financial      financial information")
@@ -181,6 +185,10 @@ class ScreenerController:
         """Process overview command"""
         self.set_preset(self, other_args)
 
+    def call_historical(self, other_args: List[str]):
+        """Process historical command"""
+        yahoo_finance_view.historical(other_args, self.preset)
+
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         finviz_view.screener(other_args, self.preset, "overview")
@@ -230,6 +238,8 @@ def menu():
             an_input = input(f"{get_flair()} (scr)> ")
 
         try:
+            plt.close("all")
+
             process_input = scr_controller.switch(an_input)
 
             if process_input is not None:
