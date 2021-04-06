@@ -12,6 +12,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.screener import finviz_view
+from gamestonk_terminal.screener import yahoo_finance_view
 
 
 class ScreenerController:
@@ -24,6 +25,7 @@ class ScreenerController:
         "quit",
         "view",
         "set",
+        "historical",
         "overview",
         "valuation",
         "financial",
@@ -56,6 +58,7 @@ class ScreenerController:
         print("")
         print(f"PRESET: {self.preset}")
         print("")
+        print("   historical     view historical price of stocks that meet preset")
         print("   overview       overview information")
         print("   valuation      valuation information")
         print("   financial      financial information")
@@ -180,6 +183,10 @@ class ScreenerController:
     def call_set(self, other_args: List[str]):
         """Process overview command"""
         self.set_preset(self, other_args)
+
+    def call_historical(self, other_args: List[str]):
+        """Process historical command"""
+        yahoo_finance_view.historical(other_args, self.preset)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
