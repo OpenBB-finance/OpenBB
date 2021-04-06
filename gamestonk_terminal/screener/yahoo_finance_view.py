@@ -7,7 +7,7 @@ import configparser
 import yfinance as yf
 from finvizfinance.screener import ticker
 from gamestonk_terminal.screener import finviz_view
-
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
@@ -173,6 +173,10 @@ def historical(other_args: List[str], preset_loaded: str):
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         # ensures that the historical data starts from same datapoint
         plt.xlim([max(l_min), df_similar_stock.index[-1]])
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
         print("")
 

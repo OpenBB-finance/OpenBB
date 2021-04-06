@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 import argparse
 from typing import List
+import matplotlib.pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -237,6 +238,8 @@ def menu():
             an_input = input(f"{get_flair()} (scr)> ")
 
         try:
+            plt.close("all")
+
             process_input = scr_controller.switch(an_input)
 
             if process_input is not None:
