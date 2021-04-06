@@ -1,13 +1,10 @@
 import argparse
 from typing import List
-import numpy as np
-import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import datetime
 import configparser
 import yfinance as yf
-import seaborn as sns
 from finvizfinance.screener import ticker
 from gamestonk_terminal.screener import finviz_view
 
@@ -60,9 +57,7 @@ def historical(other_args: List[str], preset_loaded: str):
     parser.add_argument(
         "--start",
         type=valid_date,
-        default=datetime.datetime.strftime(
-            datetime.datetime.now() - datetime.timedelta(days=6 * 30), "%Y-%m-%d"
-        ),
+        default=datetime.datetime.now() - datetime.timedelta(days=6 * 30),
         dest="start",
         help="The starting date (format YYYY-MM-DD) of the historical price to plot",
     )
@@ -109,7 +104,7 @@ def historical(other_args: List[str], preset_loaded: str):
         screen = ticker.Ticker()
 
         if ns_parser.signal:
-            screen.set_filter(signal=d_signals[ns_parser.signal])
+            screen.set_filter(signal=finviz_view.d_signals[ns_parser.signal])
         else:
             if d_general["Signal"]:
                 screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
@@ -134,7 +129,10 @@ def historical(other_args: List[str], preset_loaded: str):
             for symbol in l_stocks:
                 try:
                     df_similar_stock = yf.download(
-                        symbol, start=ns_parser.start, progress=False, threads=False
+                        symbol,
+                        start=datetime.datetime.strftime(ns_parser.start, "%Y-%m-%d"),
+                        progress=False,
+                        threads=False,
                     )
                     if not df_similar_stock.empty:
                         plt.plot(
