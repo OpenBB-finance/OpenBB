@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -31,7 +31,7 @@ class DiscoveryController:
         "q",
         "quit",
         "map",
-        "sectors",
+        "rtp_sectors",
         "gainers",
         "losers",
         "orders",
@@ -42,10 +42,14 @@ class DiscoveryController:
         "simply_wallst",
         "spachero",
         "uwhales",
+        "valuation",
+        "performance",
+        "spectrum",
     ]
 
     def __init__(self):
         """Constructor"""
+        self.spectrum_img_to_delete = ""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
         self.disc_parser.add_argument(
             "cmd",
@@ -57,26 +61,31 @@ class DiscoveryController:
         """ Print help """
 
         print("\nDiscovery Mode:")
-        print("   help          show this discovery menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
+        print("   help           show this discovery menu again")
+        print("   q              quit this menu, and shows back to main menu")
+        print("   quit           quit to abandon program")
         print("")
-        print("   map           S&P500 index stocks map [Finviz]")
-        print("   sectors       show sectors performance [Alpha Vantage]")
-        print("   gainers       show latest top gainers [Yahoo Finance]")
-        print("   losers        show latest top losers [Yahoo Finance]")
-        print("   orders        orders by Fidelity Customers [Fidelity]")
-        print("   ark_orders    orders by ARK Investment Management LLC")
-        print("   up_earnings   upcoming earnings release dates [Seeking Alpha]")
+        print("   map            S&P500 index stocks map [Finviz]")
+        print("   rtp_sectors    real-time performance sectors [Alpha Vantage]")
+        print("   gainers        show latest top gainers [Yahoo Finance]")
+        print("   losers         show latest top losers [Yahoo Finance]")
+        print("   orders         orders by Fidelity Customers [Fidelity]")
         print(
-            "   high_short    show top high short interest stocks of over 20% ratio [www.highshortinterest.com]"
+            "   ark_orders     orders by ARK Investment Management LLC [www.cathiesark.com]"
+        )
+        print("   up_earnings    upcoming earnings release dates [Seeking Alpha]")
+        print(
+            "   high_short     show top high short interest stocks of over 20% ratio [www.highshortinterest.com]"
         )
         print(
-            "   low_float     show low float stocks under 10M shares float [www.lowfloat.com]"
+            "   low_float      show low float stocks under 10M shares float [www.lowfloat.com]"
         )
-        print("   simply_wallst Simply Wall St. research data [Simply Wall St.]")
-        print("   spachero      great website for SPACs research [SpacHero]")
-        print("   uwhales       good website for SPACs research [UnusualWhales]")
+        print("   simply_wallst  Simply Wall St. research data [Simply Wall St.]")
+        print("   spachero       great website for SPACs research [SpacHero]")
+        print("   uwhales        good website for SPACs research [UnusualWhales]")
+        print("   valuation      valuation of sectors, industry, country [Finviz]")
+        print("   performance    performance of sectors, industry, country [Finviz]")
+        print("   spectrum       spectrum of sectors, industry, country [Finviz]")
         print("")
 
     def switch(self, an_input: str):
@@ -90,6 +99,12 @@ class DiscoveryController:
             None - continue in the menu
         """
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
+
+        # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+        # after saving it and displaying it to the user
+        if self.spectrum_img_to_delete:
+            os.remove(self.spectrum_img_to_delete + ".jpg")
+            self.spectrum_img_to_delete = ""
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -111,8 +126,8 @@ class DiscoveryController:
         """Process map command"""
         finviz_view.map_sp500_view(other_args)
 
-    def call_sectors(self, other_args: List[str]):
-        """Process sectors command"""
+    def call_rtp_sectors(self, other_args: List[str]):
+        """Process rtp_sectors command"""
         alpha_vantage_view.sectors_view(other_args)
 
     def call_gainers(self, other_args: List[str]):
@@ -154,6 +169,20 @@ class DiscoveryController:
     def call_uwhales(self, other_args: List[str]):
         """Process uwhales command"""
         unusual_whales_view.unusual_whales_view(other_args)
+
+    def call_valuation(self, other_args: List[str]):
+        """Process valuation command"""
+        finviz_view.view_group_data(other_args, "valuation")
+
+    def call_performance(self, other_args: List[str]):
+        """Process performance command"""
+        finviz_view.view_group_data(other_args, "performance")
+
+    def call_spectrum(self, other_args: List[str]):
+        """Process spectrum command"""
+        self.spectrum_img_to_delete = finviz_view.view_group_data(
+            other_args, "spectrum"
+        )
 
 
 def menu():
