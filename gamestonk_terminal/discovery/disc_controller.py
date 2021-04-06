@@ -103,8 +103,10 @@ class DiscoveryController:
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
         # after saving it and displaying it to the user
         if self.spectrum_img_to_delete:
-            os.remove(self.spectrum_img_to_delete + ".jpg")
-            self.spectrum_img_to_delete = ""
+            # Confirm that file exists
+            if os.path.isfile(self.spectrum_img_to_delete + ".jpg"):
+                os.remove(self.spectrum_img_to_delete + ".jpg")
+                self.spectrum_img_to_delete = ""
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
