@@ -87,7 +87,7 @@ class ResidualsController:
             print("   normality     normality test (Kurtosis,Skewness,...)")
             print("   goodness      goodness of fit test (Kolmogorov-Smirnov)")
             print("   arch          autoregressive conditional heteroscedasticity")
-            print("   unitroot      Unit root test / stationarity (ADF, KPSS)")
+            print("   unitroot      unit root test / stationarity (ADF, KPSS)")
             print(
                 "   independence  tests independent and identically distributed (BDS)"
             )

@@ -9,17 +9,17 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
 * [historical](#historical)
   * view historical price [Yahoo Finance]
 * [overview](#overview)
-  * overview information [Finviz]
+  * overview (e.g. Sector, Industry, Market Cap, Volume) [Finviz]
 * [valuation](#valuation)
-  * valuation information [Finviz]
+  * valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y) [Finviz]
 * [financial](#financial)
-  * financial information [Finviz]
+  * financial (e.g. Dividend, ROA, ROE, ROI, Earnings) [Finviz]
 * [ownership](#ownership)
-  * ownership information [Finviz]
+  * ownership (e.g. Float, Insider Own, Short Ratio) [Finviz]
 * [performance](#performance)
-  * performance information [Finviz]
+  * performance (e.g. Perf Week, Perf YTD, Volatility M) [Finviz]
 * [technical](#technical)
-  * technical information [Finviz]
+  * technical (e.g. Beta, SMA50, 52W Low, RSI, Change) [Finviz]
   * contains [Oversold (-s) signal example](#signal-oversold)
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
@@ -50,7 +50,7 @@ Set preset from under presets folder.
 ## historical <a name="historical"></a>
 
 ```text
-usage: historical [-t {o,h,l,c,a}] [-s {top_gainers,top_losers,...}] [--start START] 
+usage: historical [-t {o,h,l,c,a}] [-s {top_gainers,top_losers,...}] [--start START]
 ```
 
 View historical price of stocks. [Source: Yahoo Finance]
@@ -67,10 +67,10 @@ View historical price of stocks. [Source: Yahoo Finance]
 ## overview <a name="overview"></a>
 
 ```text
-usage: overview [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+usage: overview [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Sector, Industry, Market Cap, Volume. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
@@ -83,10 +83,10 @@ Prints screener data of the companies that meet the pre-set filtering. The field
 ## valuation <a name="valuation"></a>
 
 ```text
-usage: valuation [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+usage: valuation [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: P/E, PEG, P/S, P/B, EPS this Y. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
@@ -99,10 +99,10 @@ Prints screener data of the companies that meet the pre-set filtering. The field
 ## financial <a name="financial"></a>
 
 ```text
-usage: financial [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+usage: financial [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Dividend, ROA, ROE, ROI, Earnings. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
@@ -115,10 +115,10 @@ Prints screener data of the companies that meet the pre-set filtering. The field
 ## ownership <a name="ownership"></a>
 
 ```text
-usage: ownership [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+usage: ownership [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Float, Insider Own, Short Ratio. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
@@ -131,10 +131,10 @@ Prints screener data of the companies that meet the pre-set filtering. The field
 ## performance <a name="performance"></a>
 
 ```text
-usage: performance [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+usage: performance [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial, ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Perf Week, Perf YTD, Volatility M. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
@@ -147,11 +147,10 @@ Prints screener data of the companies that meet the pre-set filtering. The field
 ## technical <a name="technical"></a>
 
 ```text
-usage: technical [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a] 
+usage: technical [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
 ```
 
-Prints screener data of the companies that meet the pre-set filtering. The fields shown correspond to the type of function called, i.e.: overview, valuation, financial,
-ownership, performance, technical. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
+Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Beta, SMA50, 52W Low, RSI, Change. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
 
 * -p : Filter presets. Default: one pre-loaded in screener menu.
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
@@ -180,7 +179,4 @@ usage: signals
 Prints list of available signals. [Source: Finviz]
 
 <img width="937" alt="Captura de ecrã 2021-04-05, às 20 25 13" src="https://user-images.githubusercontent.com/25267873/113616495-0ece9580-964d-11eb-97af-4150f928a170.png">
-
-
-
 

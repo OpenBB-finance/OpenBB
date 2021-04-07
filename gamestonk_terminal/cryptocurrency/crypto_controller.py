@@ -29,7 +29,7 @@ class CryptoController:
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print(f"\nCurrent Coin : {current_coin}")
+        print(f"\nCurrent Coin: {current_coin}")
         print("")
         print("   load          load cryptocurrency data")
         print("   view          load and view cryptocurrency data")

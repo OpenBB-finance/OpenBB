@@ -45,31 +45,32 @@ class PortfolioController:
     def print_help(broker_list):
 
         """ Print help """
+        print("\nBrokers Supported: rh   - Robinhood")
+        print("                   alp  - Alpaca")
+        print("                   ally - Ally Invest")
         print("\nPortfolio:")
         print("   help          show this menu again")
         print(
             "   q             quit this menu, and shows back to main menu, logs out of brokers"
         )
         print("   quit          quit to abandon program, logs out of brokers")
-        print("   login         login to your brokers")
+
         print(
-            f"\nCurrent Brokers : {('None', ', '.join(broker_list))[bool(broker_list)]}"
+            f"\nCurrent Broker: {('None', ', '.join(broker_list))[bool(broker_list)]}"
         )
-        print("\nCurrently Supported :")
-        print("   rh             Robinhood")
-        print("   alp            Alpaca")
-        print("   ally           Ally Invest")
-        print("\nCommands (login required):")
+        print("")
+        print("   login         login to your brokers")
+
         print("\nRobinhood:")
-        print("   rhhold         view rh holdings")
-        print("   rhhist         plot rh portfolio history")
-        print("\nAlpaca:")
-        print("   alphold        view alp holdings")
-        print("   alphist        view alp portfolio history")
-        print("\nAlly:")
-        print("   allyhold       view ally holdings")
+        print("   rhhold        view rh holdings")
+        print("   rhhist        plot rh portfolio history")
+        print("Alpaca:")
+        print("   alphold       view alp holdings")
+        print("   alphist       view alp portfolio history")
+        print("Ally:")
+        print("   allyhold      view ally holdings")
         print("\nMerge:")
-        print("   hold           view net holdings across all logins")
+        print("   hold          view net holdings across all logins")
         print("")
 
     def print_portfolio_menu(self):
