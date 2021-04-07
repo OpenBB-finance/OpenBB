@@ -320,16 +320,16 @@ Command|Description|Source
 ## Screener [»](screener/README.md)
 Command|Description|Source
 ------ | --------|----
-view           |view available presets
+view           |view available presets | [presets]((screener/presets/README.md))
 set            |set one of the available presets
 historical     |view historical price |[Yahoo Finance](https://finance.yahoo.com/)
 [Finviz](https://finviz.com/screener.ashx) |
-overview       |overview information
-valuation      |valuation information
-financial      |financial information
-ownership      |ownership information
-performance    |performance information
-technical      |technical information
+overview       |overview (e.g. Sector, Industry, Market Cap, Volume)
+valuation      |valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
+financial      |financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
+ownership      |ownership (e.g. Float, Insider Own, Short Ratio)
+performance    |performance (e.g. Perf Week, Perf YTD, Volatility M)
+technical      |technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
 signals        |view filter signals (e.g. -s top_gainers)
 
 
