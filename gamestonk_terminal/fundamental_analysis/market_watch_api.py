@@ -154,12 +154,14 @@ def cash(l_args, s_ticker):
             Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries,
             Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities,
             and Net Operating Cash Flow Growth.
+
             Prints either yearly or quarterly cash flow investing activities of the company.
             The following fields are expected: Capital Expenditures, Capital Expenditures Growth,
             Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures
             (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses,
             Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments,
             Other Uses, Other Sources, Net Investing Cash Flow Growth.
+
             Prints either yearly or quarterly cash flow financing activities of the company.
             The following fields are expected: Cash Dividends Paid - Total, Common Dividends,
             Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk.,
