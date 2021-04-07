@@ -15,7 +15,7 @@ from gamestonk_terminal.discovery.ark_model import get_ark_orders, add_order_tot
 assertions = unittest.TestCase("__init__")
 
 
-class TestDiscoveryFidelityModel:
+class TestDiscoveryArkModel:
     @mock.patch("gamestonk_terminal.discovery.ark_model.requests")
     @parameterize_from_file(
         "test_get_ark_orders",
