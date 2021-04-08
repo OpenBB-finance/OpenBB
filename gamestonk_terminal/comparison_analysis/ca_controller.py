@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
 from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
+from gamestonk_terminal.comparison_analysis import finviz_view
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
@@ -35,6 +36,12 @@ class ComparisonAnalysisController:
         "cashflow",
         "sentiment",
         "scorr",
+        "overview",
+        "valuation",
+        "financial",
+        "ownership",
+        "performance",
+        "technical",
     ]
 
     def __init__(
@@ -82,18 +89,23 @@ class ComparisonAnalysisController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-        print("   get           get similar companies [Polygon API]")
+        print("   get           get similar companies")
         print("   select        select similar companies")
         print("")
         print("   historical    historical price data comparison")
         print("   hcorr         historical price correlation")
-        print("")
         print("   income        income financials comparison")
         print("   balance       balance financials comparison")
         print("   cashflow      cashflow comparison")
-        print("")
         print("   sentiment     sentiment analysis comparison")
         print("   scorr         sentiment correlation")
+        print("")
+        print("   overview      brief overview comparison")
+        print("   valuation     brief valuation comparison")
+        print("   financial     brief financial comparison")
+        print("   ownership     brief ownership comparison")
+        print("   performance   brief performance comparison")
+        print("   technical     brief technical comparison")
         print("")
         return
 
@@ -273,6 +285,30 @@ class ComparisonAnalysisController:
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
         f_api.sentiment_correlation(other_args, self.ticker, self.similar)
+
+    def call_overview(self, other_args: List[str]):
+        """Process overview command"""
+        finviz_view.screener(other_args, "overview", self.ticker, self.similar)
+
+    def call_valuation(self, other_args: List[str]):
+        """Process valuation command"""
+        finviz_view.screener(other_args, "valuation", self.ticker, self.similar)
+
+    def call_financial(self, other_args: List[str]):
+        """Process financial command"""
+        finviz_view.screener(other_args, "financial", self.ticker, self.similar)
+
+    def call_ownership(self, other_args: List[str]):
+        """Process ownership command"""
+        finviz_view.screener(other_args, "ownership", self.ticker, self.similar)
+
+    def call_performance(self, other_args: List[str]):
+        """Process performance command"""
+        finviz_view.screener(other_args, "performance", self.ticker, self.similar)
+
+    def call_technical(self, other_args: List[str]):
+        """Process technical command"""
+        finviz_view.screener(other_args, "technical", self.ticker, self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):

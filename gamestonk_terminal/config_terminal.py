@@ -19,7 +19,7 @@ API_REDDIT_USER_AGENT = os.getenv("GT_API_REDDIT_USER_AGENT") or "REPLACE_ME"
 API_REDDIT_PASSWORD = os.getenv("GT_API_REDDIT_PASSWORD") or "REPLACE_ME"
 
 # https://polygon.io
-API_POLYGON_KEY = os.getenv("GT_API_POLYGON_KEY") or "REPLACE_ME"
+API_POLYGON_KEY = os.getenv("GT_API_POLYGON_KEY") or "pTx4m2fILimhK7YpR49Oa0DAec2bpnSG"
 
 # https://developer.twitter.com
 API_TWITTER_KEY = os.getenv("GT_API_TWITTER_KEY") or "REPLACE_ME"
