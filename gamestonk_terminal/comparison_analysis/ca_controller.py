@@ -74,7 +74,7 @@ class ComparisonAnalysisController:
 
         if self.similar:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
-        #else:
+        # else:
         #    print(f"No similar companies [{self.user}]")
 
         print("\nComparison Analysis Mode:")
@@ -117,7 +117,7 @@ class ComparisonAnalysisController:
         # If polygon source not selected, the user may want to get
         # similar companies based on Industry and Sector only, and not
         # on the fact that they are based on the same country
-        if '-p' not in other_args and '--polygon' not in other_args:
+        if "-p" not in other_args and "--polygon" not in other_args:
             parser.add_argument(
                 "--nocountry",
                 action="store_true",
@@ -144,20 +144,26 @@ class ComparisonAnalysisController:
 
             else:
                 if ns_parser.b_no_country:
-                    compare_list = ['Sector', 'Industry']
+                    compare_list = ["Sector", "Industry"]
                 else:
-                    compare_list = ['Sector', 'Industry', 'Country']
+                    compare_list = ["Sector", "Industry", "Country"]
 
-                self.similar = Overview().compare(self.ticker, compare_list, verbose=0)['Ticker'].to_list()
+                self.similar = (
+                    Overview()
+                    .compare(self.ticker, compare_list, verbose=0)["Ticker"]
+                    .to_list()
+                )
                 self.user = "Finviz"
 
             if self.similar:
                 print(f"\n[{self.user}] Similar Companies: {', '.join(self.similar)}")
 
             if len(self.similar) > 10:
-                print("\nThe limit of stocks to compare with are 10. Hence, the similar stocks list will be:")
+                print(
+                    "\nThe limit of stocks to compare with are 10. Hence, the similar stocks list will be:"
+                )
                 self.similar = self.similar[:10]
-                print(', '.join(self.similar))
+                print(", ".join(self.similar))
 
         except Exception as e:
             print(e)

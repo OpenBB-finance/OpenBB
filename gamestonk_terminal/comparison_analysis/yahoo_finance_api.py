@@ -81,7 +81,9 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
             plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.title(f"Similar companies to {s_ticker}")
-            df_stock = yf.download(s_ticker, start=s_start, progress=False, threads=False)
+            df_stock = yf.download(
+                s_ticker, start=s_start, progress=False, threads=False
+            )
             plt.plot(
                 df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
             )
@@ -95,11 +97,15 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
                 l_parsed_stocks = list()
                 for symbol in l_stocks:
                     try:
-                        df_similar_stock = yf.download(symbol, start=s_start, progress=False, threads=False)
+                        df_similar_stock = yf.download(
+                            symbol, start=s_start, progress=False, threads=False
+                        )
                         if not df_similar_stock.empty:
                             plt.plot(
                                 df_similar_stock.index,
-                                df_similar_stock[d_candle_types[ns_parser.type_candle]].values,
+                                df_similar_stock[
+                                    d_candle_types[ns_parser.type_candle]
+                                ].values,
                             )
                             l_min.append(df_similar_stock.index[0])
                             l_leg.append(symbol)
