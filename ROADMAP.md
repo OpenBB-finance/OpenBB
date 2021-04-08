@@ -108,9 +108,10 @@
 * [x] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
 * [x] Add multi-ticker financials comparison (@didier) - [PR #237](https://github.com/DidierRLopes/GamestonkTerminal/pull/237)
 * [x] Add multi-ticker sentiment comparison (@didier) - [PR #250](https://github.com/DidierRLopes/GamestonkTerminal/pull/250)
+* [x] Get similar companies from Finviz based on Industry and Sector (and possibly country) from Finviz (@didier) - [PR #321](https://github.com/DidierRLopes/GamestonkTerminal/pull/321)
 
 **NEXT**
-* [ ] Get similar companies from Finviz based on Industry and Sector (and possibly country) from Finviz (@didier)
+
 * [ ] Perform quick screening across similar companies based on key metrics (overview, performance, financial, valuation) from Finviz (@didier)
 
 ---

@@ -3,7 +3,7 @@
 This menu aims to compare a pre-loaded stock with similar companies, and the usage of the following commands along with an example will be exploited below.
 
 * [get](#get)
-  * get similar companies [Polygon]
+  * get similar companies [Finviz or Polygon]
 * [select](#select)
   * select similar companies
 * [historical](#historical)
@@ -25,11 +25,13 @@ This menu aims to compare a pre-loaded stock with similar companies, and the usa
 ## get <a name="get"></a>
 
 ```text
-get
+get [-p] [--nocountry]
 ```
 
-Get similar companies to compare with. [Source: Polygon]
+Get similar companies to compare with. [Source: Finviz by default]
 
+* -p : get similar companies using polygon source. Default False, i.e. using Finviz source.
+* --nocountry : when getting similar companies from Finviz, we filter by same Industry, Sector and Country. However, if we don't want to filter by same country we can set this flag. For this flag to work, the `-p` flag can't be selected
 
 ## select <a name="select"></a>
 

@@ -81,22 +81,43 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
 
             plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.title(f"Similar companies to {s_ticker}")
-            df_stock = yf.download(s_ticker, start=s_start, progress=False)
+            df_stock = yf.download(s_ticker, start=s_start, progress=False, threads=False)
             plt.plot(
                 df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
             )
             # plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=2)
             l_min = [df_stock.index[0]]
             l_leg = [s_ticker]
-            for symbol in similar:
-                df_similar_stock = yf.download(symbol, start=s_start, progress=False)
-                if not df_similar_stock.empty:
-                    plt.plot(
-                        df_similar_stock.index,
-                        df_similar_stock[d_candle_types[ns_parser.type_candle]].values,
-                    )
-                    l_min.append(df_similar_stock.index[0])
-                    l_leg.append(symbol)
+
+            l_stocks = similar[:]
+
+            while l_stocks:
+                l_parsed_stocks = list()
+                for symbol in l_stocks:
+                    try:
+                        df_similar_stock = yf.download(symbol, start=s_start, progress=False, threads=False)
+                        if not df_similar_stock.empty:
+                            plt.plot(
+                                df_similar_stock.index,
+                                df_similar_stock[d_candle_types[ns_parser.type_candle]].values,
+                            )
+                            l_min.append(df_similar_stock.index[0])
+                            l_leg.append(symbol)
+
+                        l_parsed_stocks.append(symbol)
+                    except Exception as e:
+                        print("")
+                        print(e)
+                        print(
+                            "Disregard previous error, which is due to API Rate limits from Yahoo Finance."
+                        )
+                        print(
+                            f"Because we like '{symbol}', and we won't leave without getting data from it."
+                        )
+
+                for parsed_stock in l_parsed_stocks:
+                    l_stocks.remove(parsed_stock)
+
             plt.xlabel("Time")
             plt.ylabel("Share Price ($)")
             plt.legend(l_leg)

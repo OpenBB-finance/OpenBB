@@ -9,6 +9,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal as cfg
+from finvizfinance.screener.overview import Overview
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
@@ -47,7 +48,7 @@ class ComparisonAnalysisController:
     ):
         """Constructor"""
         self.similar = similar
-        self.user = user
+        self.user = ""
         self.stock = stock
         self.ticker = ticker
         self.start = start
@@ -71,12 +72,10 @@ class ComparisonAnalysisController:
         else:
             print(f"\n{s_intraday} Stock: {self.ticker}")
 
-        s_similar_source = ("Polygon API", "User")[self.user]
-
         if self.similar:
-            print(f"[{s_similar_source}] Similar Companies: {', '.join(self.similar)}")
-        else:
-            print(f"No similar companies [{s_similar_source}]")
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+        #else:
+        #    print(f"No similar companies [{self.user}]")
 
         print("\nComparison Analysis Mode:")
         print("   help          show this comparison analysis menu again")
@@ -106,22 +105,59 @@ class ComparisonAnalysisController:
             prog="get",
             description="""Get similar companies to compare with.""",
         )
+        parser.add_argument(
+            "-p",
+            "--polygon",
+            action="store_true",
+            default=False,
+            dest="b_polygon",
+            help="Polygon data source flag.",
+        )
+
+        # If polygon source not selected, the user may want to get
+        # similar companies based on Industry and Sector only, and not
+        # on the fact that they are based on the same country
+        if '-p' not in other_args and '--polygon' not in other_args:
+            parser.add_argument(
+                "--nocountry",
+                action="store_true",
+                default=False,
+                dest="b_no_country",
+                help="Similar stocks from finviz using only Industry and Sector.",
+            )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            result = requests.get(
-                f"https://api.polygon.io/v1/meta/symbols/{self.ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
-            )
+            if ns_parser.b_polygon:
+                result = requests.get(
+                    f"https://api.polygon.io/v1/meta/symbols/{self.ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
+                )
 
-            if result.status_code == 200:
-                self.similar = result.json()["similar"]
-                print(f"[Polygon API] Similar Companies: {', '.join(self.similar)}")
-                self.user = False
+                if result.status_code == 200:
+                    self.similar = result.json()["similar"]
+                    self.user = "Polygon"
+                else:
+                    print(result.json()["error"])
+
             else:
-                print(result.json()["error"])
+                if ns_parser.b_no_country:
+                    compare_list = ['Sector', 'Industry']
+                else:
+                    compare_list = ['Sector', 'Industry', 'Country']
+
+                self.similar = Overview().compare(self.ticker, compare_list, verbose=0)['Ticker'].to_list()
+                self.user = "Finviz"
+
+            if self.similar:
+                print(f"\n[{self.user}] Similar Companies: {', '.join(self.similar)}")
+
+            if len(self.similar) > 10:
+                print("\nThe limit of stocks to compare with are 10. Hence, the similar stocks list will be:")
+                self.similar = self.similar[:10]
+                print(', '.join(self.similar))
 
         except Exception as e:
             print(e)
@@ -157,7 +193,7 @@ class ComparisonAnalysisController:
                 return
 
             self.similar = ns_parser.l_similar
-            self.user = True
+            self.user = "User"
 
         except Exception as e:
             print(e)
