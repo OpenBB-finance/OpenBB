@@ -14,7 +14,7 @@ from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
 from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
-from gamestonk_terminal.comparison_analysis import finviz_view
+from gamestonk_terminal.comparison_analysis import finviz_compare_view
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
@@ -288,27 +288,27 @@ class ComparisonAnalysisController:
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        finviz_view.screener(other_args, "overview", self.ticker, self.similar)
+        finviz_compare_view.screener(other_args, "overview", self.ticker, self.similar)
 
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
-        finviz_view.screener(other_args, "valuation", self.ticker, self.similar)
+        finviz_compare_view.screener(other_args, "valuation", self.ticker, self.similar)
 
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
-        finviz_view.screener(other_args, "financial", self.ticker, self.similar)
+        finviz_compare_view.screener(other_args, "financial", self.ticker, self.similar)
 
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
-        finviz_view.screener(other_args, "ownership", self.ticker, self.similar)
+        finviz_compare_view.screener(other_args, "ownership", self.ticker, self.similar)
 
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
-        finviz_view.screener(other_args, "performance", self.ticker, self.similar)
+        finviz_compare_view.screener(other_args, "performance", self.ticker, self.similar)
 
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
-        finviz_view.screener(other_args, "technical", self.ticker, self.similar)
+        finviz_compare_view.screener(other_args, "technical", self.ticker, self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
