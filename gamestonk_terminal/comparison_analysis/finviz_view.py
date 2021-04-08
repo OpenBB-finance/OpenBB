@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import os
-import configparser
 import pandas as pd
 from finvizfinance.screener import (
     technical,
@@ -16,7 +14,6 @@ from finvizfinance.screener import (
 )
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
-    check_positive,
 )
 
 
