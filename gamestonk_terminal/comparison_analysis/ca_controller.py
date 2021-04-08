@@ -304,7 +304,9 @@ class ComparisonAnalysisController:
 
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
-        finviz_compare_view.screener(other_args, "performance", self.ticker, self.similar)
+        finviz_compare_view.screener(
+            other_args, "performance", self.ticker, self.similar
+        )
 
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
