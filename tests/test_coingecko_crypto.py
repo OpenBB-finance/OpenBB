@@ -26,7 +26,7 @@ class TestCoinGeckoAPI(TestCase):
         self.assertTrue(mock_return.shape == (722, 2))
 
     def test_coin(self):
-        """Test that pycoingecko retreives the major coins"""
+        """Test that pycoingecko retrieves the major coins"""
 
         coins = CoinGeckoAPI().get_coins()
         coin_list = [coin["id"] for coin in coins]
