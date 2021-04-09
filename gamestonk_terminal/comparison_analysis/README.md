@@ -3,7 +3,7 @@
 This menu aims to compare a pre-loaded stock with similar companies, and the usage of the following commands along with an example will be exploited below.
 
 * [get](#get)
-  * get similar companies [Polygon]
+  * get similar companies [Finviz or Polygon]
 * [select](#select)
   * select similar companies
 * [historical](#historical)
@@ -18,18 +18,32 @@ This menu aims to compare a pre-loaded stock with similar companies, and the usa
   * cashflow financials comparison [Market Watch]
 * [sentiment](#sentiment)
   * sentiment analysis comparison [FinBrain]
-* [scorr](#corr)
+* [scorr](#scorr)
   * sentiment correlation between similar companies [FinBrain]
+* [overview](#overview)
+  * brief overview (e.g. Sector, Industry, Market Cap, Volume) [Finviz]
+* [valuation](#valuation)
+  * brief valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y) [Finviz]
+* [financial](#financial)
+  * brief financial (e.g. Dividend, ROA, ROE, ROI, Earnings) [Finviz]
+* [ownership](#ownership)
+  * brief ownership (e.g. Float, Insider Own, Short Ratio) [Finviz]
+* [performance](#performance)
+  * brief performance (e.g. Perf Week, Perf YTD, Volatility M) [Finviz]
+* [technical](#technical)
+  * brief technical (e.g. Beta, SMA50, 52W Low, RSI, Change) [Finviz]
 
 
 ## get <a name="get"></a>
 
 ```text
-get
+get [-p] [--nocountry]
 ```
 
-Get similar companies to compare with. [Source: Polygon]
+Get similar companies to compare with. [Source: Finviz by default]
 
+* -p : get similar companies using polygon source. Default False, i.e. using Finviz source.
+* --nocountry : when getting similar companies from Finviz, we filter by same Industry, Sector and Country. However, if we don't want to filter by same country we can set this flag. For this flag to work, the `-p` flag can't be selected
 
 ## select <a name="select"></a>
 
@@ -146,3 +160,85 @@ Sentiment correlation between similar companies [Source: FinBrain]
 <img width="282" alt="Captura de ecrã 2021-03-20, às 15 57 01" src="https://user-images.githubusercontent.com/25267873/111920499-4521e780-8a87-11eb-9533-6844ba92f8f0.png">
 
 
+## overview <a name="overview"></a>
+
+```text
+usage: overview [-s L_SIMILAR] [-a L_ALSO]
+```
+
+Prints screener data of similar companies. Some of the fields shown are: Sector, Industry, Market Cap, Volume. [Source: Finviz]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+
+<img width="1060" alt="overview" src="https://user-images.githubusercontent.com/25267873/114103686-7a209d80-98c1-11eb-9d6a-592f42dccbf1.png">
+
+
+## valuation <a name="valuation"></a>
+
+```text
+usage: valuation [-s L_SIMILAR] [-a L_ALSO]
+```
+
+Prints screener data of similar companies. Some of the fields shown are: P/E, PEG, P/S, P/B, EPS this Y. [Source: Finviz]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+
+<img width="1067" alt="valuation" src="https://user-images.githubusercontent.com/25267873/114103689-7ab93400-98c1-11eb-95ed-8ceab347a8b4.png">
+
+
+## financial <a name="financial"></a>
+
+```text
+usage: financial [-s L_SIMILAR] [-a L_ALSO]
+```
+
+Prints screener data of similar companies. Some of the fields shown are: Dividend, ROA, ROE, ROI, Earnings. [Source: Finviz]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+
+<img width="1049" alt="financial" src="https://user-images.githubusercontent.com/25267873/114103690-7ab93400-98c1-11eb-8f20-767ee23e1b37.png">
+
+
+## ownership <a name="ownership"></a>
+
+```text
+usage: ownership [-s L_SIMILAR] [-a L_ALSO]
+```
+
+Prints screener data of similar companies. Some of the fields shown are: Float, Insider Own, Short Ratio. [Source: Finviz]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+
+<img width="1064" alt="ownership" src="https://user-images.githubusercontent.com/25267873/114103694-7bea6100-98c1-11eb-8261-49cca9b8a34c.png">
+
+
+## performance <a name="performance"></a>
+
+```text
+usage: performance [-s L_SIMILAR] [-a L_ALSO]
+```
+
+Prints screener data of similar companies. Some of the fields shown are: Perf Week, Perf YTD, Volatility M. [Source: Finviz]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+
+<img width="1064" alt="performance" src="https://user-images.githubusercontent.com/25267873/114103691-7b51ca80-98c1-11eb-87d1-c816cda569bd.png">
+
+
+## technical <a name="technical"></a>
+
+```text
+usage: technical [-s L_SIMILAR] [-a L_ALSO]
+```
+
+Prints screener data of similar companies. Some of the fields shown are: Beta, SMA50, 52W Low, RSI, Change. [Source: Finviz]
+
+* -s : similar companies to compare with. Default pre-loaded ones.
+* -a : apart from loaded similar companies also compare with.
+
+<img width="1058" alt="technical" src="https://user-images.githubusercontent.com/25267873/114103696-7bea6100-98c1-11eb-93d9-66c732559c75.png">
