@@ -52,7 +52,8 @@ def list_orders(accountID, state="ALL", count="50"):
         "state": state,
         "count": count
     }
-    request = orders.OrderList(accountID, parameters) response = client.request(request)
+    request = orders.OrderList(accountID, parameters) 
+    response = client.request(request)
     for i in range(0, int(count), 1):
         try:
             order_id = response["orders"][i]["id"]
