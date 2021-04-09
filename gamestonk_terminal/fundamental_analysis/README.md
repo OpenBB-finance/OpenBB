@@ -11,16 +11,10 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
 
 * [income](#income)
   * income statement of the company
-* [assets](#assets)
-  * assets of the company
-* [liabilities](#liabilities)
-  * liabilities and shareholders equity of the company
-* [operating](#operating)
-  * cash flow operating activities of the company
-* [investing](#investing)
-  * cash flow investing activities of the company
-* [financing](#financing)
-  * cash flow financing activities of the company
+* [balance](#balance)
+  * balance sheet of the company
+* [cash](#cash)
+  * cash flow statement of the company
 
 [YAHOO FINANCE](#YAHOO_FINANCE)
 
@@ -99,55 +93,32 @@ Prints either yearly or quarterly income statement the company. The following fi
 
 * q : Quarter fundamental data flag. Default False.
 
-### assets <a name="assets"></a>
+### balance <a name="balance"></a>
 
 ```text
 usage: assets [-q]
 ```
 
-Prints either yearly or quarterly assets from balance sheet of the company. The following fields are expected: Cash & Short Term Investments, Cash & Short Term Investments Growth, Cash Only, Short-Term Investments, Cash & ST Investments / Total Assets, Total Accounts Receivable, Total Accounts Receivable Growth, Accounts Receivables, Net, Accounts Receivables, Gross,  Bad Debt/Doubtful Accounts, Other Receivable, Accounts Receivable Turnover, Inventories, Finished Goods, Work in Progress, Raw Materials, Progress Payments & Other, Other Current Assets, Miscellaneous Current Assets, Net Property, Plant & Equipment, Property, Plant & Equipment - Gross, Buildings, Land & Improvements, Computer Software and Equipment, Other Property, Plant & Equipment, Accumulated Depreciation, Total Investments and Advances, Other Long-Term Investments, Long-Term Note Receivables, Intangible Assets, Net Goodwill, Net Other Intangibles, Other Assets. [Source: Market Watch]
+Prints either yearly or quarterly assets from balance sheet of the company. The following fields are expected: Cash & Short Term Investments, Cash & Short Term Investments Growth, Cash Only, Short-Term Investments, Cash & ST Investments / Total Assets, Total Accounts Receivable, Total Accounts Receivable Growth, Accounts Receivables, Net, Accounts Receivables, Gross, Bad Debt/Doubtful Accounts, Other Receivable, Accounts Receivable Turnover, Inventories, Finished Goods, Work in Progress, Raw Materials, Progress Payments & Other, Other Current Assets, Miscellaneous Current Assets, Net Property, Plant & Equipment, Property, Plant & Equipment - Gross, Buildings, Land & Improvements, Computer Software and Equipment, Other Property, Plant & Equipment, Accumulated Depreciation, Total Investments and Advances, Other Long-Term Investments, Long-Term Note Receivables, Intangible Assets, Net Goodwill, Net Other Intangibles, Other Assets.
+
+Prints either yearly or quarterly liabilities and shareholders' equity from balance sheet of the company. The following fields are expected: ST Debt & Current Portion LT Debt, Short Term Debt, Current Portion of Long Term Debt, Accounts Payable, Accounts Payable Growth, Income Tax Payable, Other Current Liabilities, Dividends Payable, Accrued Payroll, Miscellaneous Current Liabilities, Long-Term Debt, Long-Term Debt excl. Capitalized Leases, Non-Convertible Debt, Convertible Debt, Capitalized Lease Obligations, Provision for Risks & Charges, Deferred Taxes, Deferred Taxes - Credits, Deferred Taxes - Debit, Other Liabilities, Other Liabilities (excl. Deferred Income), Deferred Income, Non-Equity Reserves, Total Liabilities / Total Assets, Preferred Stock (Carrying Value), Redeemable Preferred Stock, Non-Redeemable Preferred Stock, Common Equity (Total), Common Equity/Total Assets, Common Stock Par/Carry Value, Retained Earnings, ESOP Debt Guarantee, Cumulative Translation Adjustment/Unrealized For. Exch. Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, Treasury Stock, Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, Accumulated Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current Liabilities, Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market Watch]
 
 * q : Quarter fundamental data flag. Default False.
 
-### liabilities <a name="liabilities"></a>
+### cash <a name="cash"></a>
 
 ```text
-usage: liabilities [-q]
+usage: cash [-q]
 ```
 
-Prints either yearly or quarterly liablities and shareholders' equity from balance sheet of the company. The following fields are expected: ST Debt & Current Portion LT Debt, Short Term Debt, Current Portion of Long Term Debt, Accounts Payable, Accounts Payable Growth, Income Tax Payable, Other Current Liabilities, Dividends Payable, Accrued Payroll, Miscellaneous Current Liabilities, Long-Term Debt, Long-Term Debt excl. Capitalized Leases, Non-Convertible Debt, Convertible Debt, Capitalized Lease Obligations, Provision for Risks & Charges, Deferred Taxes, Deferred Taxes - Credits, Deferred Taxes - Debit, Other Liabilities, Other Liabilities (excl. Deferred Income), Deferred Income, Non-Equity Reserves, Total Liabilities / Total Assets, Preferred Stock (Carrying Value), Redeemable Preferred Stock, Non-Redeemable Preferred Stock, Common Equity (Total), Common Equity/Total Assets, Common Stock Par/Carry Value, Retained Earnings, ESOP Debt Guarantee, Cumulative Translation Adjustment/Unrealized For. Exch. Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, Treasury Stock, Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, Accumulated Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current Liabilities, Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market Watch]
+Prints either yearly or quarterly cash flow operating activities of the company. The following fields are expected: Net Income before Extraordinaries, Net Income Growth, Depreciation, Depletion & Amortization, Depreciation and Depletion, Amortization of Intangible Assets, Deferred Taxes & Investment Tax Credit, Deferred Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries, Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities, and Net Operating Cash Flow Growth.
+            
+Prints either yearly or quarterly cash flow investing activities of the company. The following fields are expected: Capital Expenditures, Capital Expenditures Growth, Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses, Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments, Other Uses, Other Sources, Net Investing Cash Flow Growth.
+            
+Prints either yearly or quarterly cash flow financing activities of the company. The following fields are expected: Cash Dividends Paid - Total, Common Dividends, Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk., Sale of Common & Preferred Stock, Proceeds from Stock Options, Other Proceeds from Sale of Stock, Issuance/Reduction of Debt, Net, Change in Current Debt, Change in Long-Term Debt, Issuance of Long-Term Debt, Reduction in Long-Term Debt, Other Funds, Other Uses, Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net Financing Cash Flow. [Source: Market Watch]
 
 * q : Quarter fundamental data flag. Default False.
 
-### operating <a name="operating"></a>
-
-```text
-usage: operating [-q]
-```
-
-Prints either yearly or quarterly cash flow operating activities of the company. The following fields are expected: Net Income before Extraordinaries, Net Income Growth, Depreciation, Depletion & Amortization, Depreciation and Depletion, Amortization of Intangible Assets, Deferred Taxes & Investment Tax Credit, Deferred Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries, Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities, and Net Operating Cash Flow Growth. [Source: Market Watch]
-
-* q : Quarter fundamental data flag. Default False.
-
-### investing <a name="investing"></a>
-
-```text
-usage: investing [-q]
-```
-
-Prints either yearly or quarterly cash flow investing activities of the company. The following fields are expected: Capital Expenditures, Capital Expenditures Growth, Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses, Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments, Other Uses, Other Sources, Net Investing Cash Flow Growth. [Source: Market Watch]
-
-* q : Quarter fundamental data flag. Default False.
-
-### financing <a name="financing"></a>
-
-```text
-usage: financing [-q]
-```
-
-Prints either yearly or quarterly cash flow financing activities of the company. The following fields are expected: Cash Dividends Paid - Total, Common Dividends, Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk., Sale of Common & Preferred Stock, Proceeds from Stock Options, Other Proceeds from Sale of Stock, Issuance/Reduction of Debt, Net, Change in Current Debt, Change in Long-Term Debt, Issuance of Long-Term Debt, Reduction in Long-Term Debt, Other Funds, Other Uses, Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net Financing Cash Flow [Source: Market Watch]
-
-* q : Quarter fundamental data flag. Default False.
 
 ## YAHOO FINANCE <a name="YAHOO_FINANCE"></a>
 

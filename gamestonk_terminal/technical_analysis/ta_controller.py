@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 import pandas as pd
 from typing import List
 from datetime import datetime
@@ -16,6 +17,7 @@ from gamestonk_terminal.technical_analysis import volatility as ta_volatility
 from gamestonk_terminal.technical_analysis import volume as ta_volume
 from gamestonk_terminal.technical_analysis import finbrain_view
 from gamestonk_terminal.technical_analysis import tradingview_view
+from gamestonk_terminal.technical_analysis import finviz_view
 from prompt_toolkit.completion import NestedCompleter
 
 
@@ -27,6 +29,7 @@ class TechnicalAnalysisController:
         "help",
         "q",
         "quit",
+        "view",
         "summary",
         "recom",
         "ema",
@@ -55,6 +58,7 @@ class TechnicalAnalysisController:
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.delete_img = False
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
             "cmd",
@@ -79,6 +83,7 @@ class TechnicalAnalysisController:
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
         print("")
+        print("   view        view historical data and trendlines [Finviz]")
         print("   summary     technical summary report [FinBrain API]")
         print(
             "   recom       recommendation based on Technical Indicators [Tradingview API]"
@@ -115,6 +120,14 @@ class TechnicalAnalysisController:
         """
         (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
 
+        # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+        # after saving it and displaying it to the user
+        if self.delete_img:
+            # Confirm that file exists
+            if os.path.isfile(self.ticker + ".jpg"):
+                os.remove(self.ticker + ".jpg")
+                self.delete_img = False
+
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
@@ -130,6 +143,11 @@ class TechnicalAnalysisController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_view(self, other_args: List[str]):
+        """Process view command"""
+        finviz_view.view(other_args, self.ticker)
+        self.delete_img = True
 
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
