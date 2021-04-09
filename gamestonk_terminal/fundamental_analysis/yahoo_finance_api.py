@@ -125,7 +125,7 @@ def shareholders(l_args, s_ticker):
         ].apply(lambda x: long_number_format(x))
         df_institutional_shareholders["Stake"] = df_institutional_shareholders[
             "Stake"
-        ].apply(lambda x: str("{:.2f}".format(100 * x)) + " %")
+        ].apply(lambda x: str(f"{100 * x:.2f}") + " %")
         print(df_institutional_shareholders.to_string(index=False))
         print("")
 
@@ -142,7 +142,7 @@ def shareholders(l_args, s_ticker):
             lambda x: long_number_format(x)
         )
         df_mutualfund_shareholders["Stake"] = df_mutualfund_shareholders["Stake"].apply(
-            lambda x: str("{:.2f}".format(100 * x)) + " %"
+            lambda x: str(f"{100 * x:.2f}") + " %"
         )
         print(df_mutualfund_shareholders.to_string(index=False))
 
