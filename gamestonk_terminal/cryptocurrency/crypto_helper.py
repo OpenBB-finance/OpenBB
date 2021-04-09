@@ -1,5 +1,9 @@
-from pycoingecko import CoinGeckoAPI
+"""
+Helper script that generates a dictionary to convert between symbols and IDs.
+This allows the user to input (for example) "btc" instead of the expected "bitcoin"
 
+"""
+from pycoingecko import CoinGeckoAPI
 
 cg = CoinGeckoAPI()
 coins = cg.get_coins()
