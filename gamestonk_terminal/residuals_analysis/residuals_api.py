@@ -559,11 +559,11 @@ def independence(
 
         result = bds(residuals, max_dim=6)
         print("BDS Test")
-        print("Dim 2: z-static {:.4f} Prob {:.4f}".format(result[0][0], result[1][0]))
-        print("Dim 3: z-static {:.4f} Prob {:.4f}".format(result[0][1], result[1][1]))
-        print("Dim 4: z-static {:.4f} Prob {:.4f}".format(result[0][2], result[1][2]))
-        print("Dim 5: z-static {:.4f} Prob {:.4f}".format(result[0][3], result[1][3]))
-        print("Dim 6: z-static {:.4f} Prob {:.4f}".format(result[0][4], result[1][4]))
+        print(f"Dim 2: z-static {result[0][0]:.4f} Prob {result[1][0]:.4f}")
+        print(f"Dim 3: z-static {result[0][1]:.4f} Prob {result[1][1]:.4f}")
+        print(f"Dim 4: z-static {result[0][2]:.4f} Prob {result[1][2]:.4f}")
+        print(f"Dim 5: z-static {result[0][3]:.4f} Prob {result[1][3]:.4f}")
+        print(f"Dim 6: z-static {result[0][4]:.4f} Prob {result[1][4]:.4f}")
 
         print("")
 
