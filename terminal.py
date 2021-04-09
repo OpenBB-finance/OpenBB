@@ -30,6 +30,8 @@ from gamestonk_terminal.fred import fred_controller
 from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
+from gamestonk_terminal.oanda import oanda_controller
+
 
 # import warnings
 # warnings.simplefilter("always")
@@ -86,6 +88,7 @@ def main():
         "pa",
         "crypto",
         "ra",
+        "fx",
     ]
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
@@ -200,6 +203,9 @@ def main():
 
         elif ns_known_args.opt == "fa":
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "fx":
+            b_quit = oanda_controller.menu()
 
         elif ns_known_args.opt == "ta":
             b_quit = ta_controller.menu(df_stock, s_ticker, s_start, s_interval)
