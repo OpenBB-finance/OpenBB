@@ -23,7 +23,7 @@ The main menu allows the following commands:
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 ```
-   * Load stock ticker to perform analysis on
+   * Load stock ticker to perform analysis on. To load an Indian ticker use `.NS` at the end, e.g. `SBIN.NS`.
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
 
