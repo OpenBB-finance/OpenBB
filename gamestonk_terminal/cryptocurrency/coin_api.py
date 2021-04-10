@@ -1,4 +1,8 @@
+""" pycoingecko_api """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -11,8 +15,15 @@ register_matplotlib_converters()
 # pylint: disable=inconsistent-return-statements
 
 
-def load(l_args):
+def load(other_args: List[str]):
+    """Load selected Cryptocurrency
 
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse arguments
+
+    """
     cg = CoinGeckoAPI()
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -40,11 +51,11 @@ def load(l_args):
     )
 
     try:
-        if l_args:
-            if "-" not in l_args[0]:
-                l_args.insert(0, "-c")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-c")
 
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -57,7 +68,7 @@ def load(l_args):
             except KeyError:
                 print(f"Could not find coin with the id: {ns_parser.coin}")
                 print("")
-                return [None, pd.DataFrame]
+                return [None, pd.DataFrame()]
 
         prices = cg.get_coin_market_chart_by_id(
             coin, vs_currency=ns_parser.vs, days=ns_parser.days
@@ -81,8 +92,19 @@ def load(l_args):
         return [None, pd.DataFrame()]
 
 
-def view(coin, prices, l_args):
+def view(coin: str, prices: pd.DataFrame, other_args: List[str]):
+    """Plots loaded cryptocurrency
 
+    Parameters
+    ----------
+    coin : str
+        Cryptocurrency
+    prices : pandas.DataFrame
+        Dataframe containing prices and dates for selected coin
+    other_args : List[str]
+        argparse arguments
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="Crypto",
@@ -91,7 +113,7 @@ def view(coin, prices, l_args):
                         """,
     )
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
