@@ -30,6 +30,7 @@ from gamestonk_terminal.fred import fred_controller
 from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
+from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.oanda import oanda_controller
 
 
@@ -74,6 +75,7 @@ def main():
         "view",
         "export",
         "disc",
+        "scr",
         "mill",
         "ba",
         "res",
@@ -295,6 +297,9 @@ def main():
 
         elif ns_known_args.opt == "ra":
             b_quit = ra_controller.menu(df_stock, s_ticker, s_start, s_interval)
+
+        elif ns_known_args.opt == "scr":
+            b_quit = screener_controller.menu()
 
         else:
             print("Shouldn't see this command!")

@@ -10,6 +10,12 @@
 * [Prediction Techniques](#Prediction-Techniques-)
 * [Portfolio Analysis](#Portfolio-Analysis-)
 * [Cryptocurrencies](#Cryptocurrencies-)
+* [Comparison Analysis](#Comparison-Analysis-)
+* [Exploratory Data Analysis](#Exploratory-Data-Analysis-)
+* [Residual Analysis](#Residual-Analysis-)
+* [FRED](#FRED-)
+* [Options](#Options-)
+* [Screener](#Screener-)
 
 ## Main
 
@@ -56,21 +62,28 @@ export -f GNUS_data -F csv
 Command|Description|Source
 ---|---|---
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
-`sectors`       |show sectors performance |[Alpha Vantage](www.alphavantage.co)
+`rtp_sectors`   |real-time performance sectors |[Alpha Vantage](www.alphavantage.co)
 `gainers`       |show latest top gainers |[Yahoo Finance](https://finance.yahoo.com/)
+`losers`        |show latest top losers |[Yahoo Finance](https://finance.yahoo.com/)
 `orders`        |orders by Fidelity Customers |[Fidelity](https://www.fidelity.com/)
+`ark_orders`    |orders by ARK Investment Management LLC | [Cathiesark](https://www.cathiesark.com)
 `up_earnings`   |upcoming earnings release dates |[Seeking Alpha](https://seekingalpha.com/)
 `high_short`    |show top high short interest stocks of over 20% ratio |[High Short Interest](https://www.highshortinterest.com/)
 `low_float`     |show low float stocks under 10M shares float |[Low Float](https://www.lowfloat.com/)
 `simply_wallst` |Simply Wall St. research data |[Simply Wall St.](https://simplywall.st/about)
 `spachero`      |great website for SPACs research |[SpacHero](https://www.spachero.com/)
 `uwhales`       |good website for SPACs research |[UnusualWhales](https://unusualwhales.com/)
+`valuation`     |valuation of sectors, industry, country |[Finviz](https://finviz.com)
+`performance`   |performance of sectors, industry, country |[Finviz](https://finviz.com)
+`spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
 
 &nbsp;
 
 ## Behavioural Analysis [»](behavioural_analysis/README.md)
 Command|Description
 ----|----
+[FinBrain](https://finbrain.tech)|
+`finbrain`      |sentiment from 15+ major news headlines
 [Reddit](https://reddit.com)|
 `wsb`           |show what WSB gang is up to in subreddit wallstreetbets
 `watchlist`     |show other users watchlist
@@ -113,6 +126,7 @@ Command|Website
 `zacks`             |www.zacks.com
 `macrotrends`       |www.macrotrends.net
 `newsfilter`        |www.newsfilter.io
+`stockanalysis`     |www.stockanalysis.com
 `resources`         |www.tradinganalysisresources.com
 
 &nbsp;
@@ -125,11 +139,8 @@ Command|Description
 `mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
 [Market Watch API](https://markets.businessinsider.com/) |
 `income`        |income statement of the company
-`assets`        |assets of the company
-`liabilities`   |liabilities and shareholders equity of the company
-`operating`     |cash flow operating activities of the company
-`investing`     |cash flow investing activities of the company
-`financing`     |cash flow financing activities of the company
+`balance`       |balance sheet of the company
+`cash`          |cash flow statement of the company
 [Yahoo Finance API](https://finance.yahoo.com/) |
 `info`          |information scope of the company
 `shrs`          |shareholders of the company
@@ -146,9 +157,9 @@ Command|Description
 `quote`         |quote of the company
 `enterprise`    |enterprise value of the company over time
 `dcf`           |discounted cash flow of the company over time
-`inc`           |income statements of the company
-`bal`           |balance sheet of the company
-`cashf`         |cash flow of the company
+`income`        |income statements of the company
+`balance`       |balance sheet of the company
+`cash`          |cash flow of the company
 `metrics`       |key metrics of the company
 `ratios`        |financial ratios of the company
 `growth`        |financial statement growth of the company
@@ -158,6 +169,9 @@ Command|Description
 ## Technical Analysis [»](technical_analysis/README.md)
 Command | Description | Sources
 ------ | ------ | ------
+`view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
+`summary`      | technical summary report| [FinBrain](https://finbrain.tech)
+`recom`        | recommendation based on Technical Indicators| [Tradingview](https://uk.tradingview.com/widget/technical-analysis/)
 [overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
 `ema`         | exponential moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [Investopedia](https://www.investopedia.com/terms/e/ema.asp)
 `sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
@@ -179,7 +193,7 @@ Command | Description | Sources
 &nbsp;
 
 ## Due Diligence [»](due_diligence/README.md)
-Command|Explanation|Source
+Command|Description|Source
 ------ | --------|----
 `news`          |latest news of the company |[Finviz](https://finviz.com/)
 `red`           |gets due diligence from another user's post |[Reddit](https://reddit.com)
@@ -213,20 +227,110 @@ Command|Technique|Sources
 &nbsp;
 ## Portfolio Analysis [»](portfolio/README.md)
 
-Command|Description
------- | ------------
-`login`| login to desired brokers
-`rhhold`| look at robinhood holdings
-`rhhist`| look at robinhood portfolio history
-`alphold`| look at alpaca holdings
-`alphist`| look at alpaca portfolio history
-`allyhold`| look at ally holdings
-`hold`| look at holdings across all brokers for which you have logged in
+Command|Description|Brokers
+------ | ------------|---
+`login`   | login to your brokers
+`rhhold`  | view robinhood holdings | [Robinhood](https://robinhood.com/us/en/)
+`rhhist`  | plot robinhood portfolio history | [Robinhood](https://robinhood.com/us/en/)
+`alphold` | view alpaca holdings | [Alpaca](https://app.alpaca.markets/login)
+`alphist` | view alpaca portfolio history | [Alpaca](https://app.alpaca.markets/login)
+`allyhold`| view ally holdings | [Ally](https://www.ally.com/invest/)
+`hold`    | view net holdings across all logins
 
 &nbsp;
 ## Cryptocurrency [»](cryptocurrency/README.md)
 
 Command|Description
 ------ | ------------
-`load`| load coin data vs specified currency
-`view`| plot the loaded coin data
+`load`| load cryptocurrency data
+`view`| load and view cryptocurrency data
+
+&nbsp;
+## Comparison Analysis [»](comparison_analysis/README.md)
+Command|Description|Source
+------ | --------|----
+`get`           |get similar companies |[Polygon](https://polygon.io)
+`select`        |select similar companies
+`historical`    |historical price data comparison |[Yahoo Finance](https://finance.yahoo.com/)
+`hcorr`         |historical price correlation |[Yahoo Finance](https://finance.yahoo.com/)
+`income`        |income financials comparison |[MarketWatch](https://www.marketwatch.com/)
+`balance`       |balance financials comparison |[MarketWatch](https://www.marketwatch.com/)
+`cashflow`      |cashflow comparison |[MarketWatch](https://www.marketwatch.com/)
+`sentiment`     |sentiment analysis comparison |[FinBrain](https://finbrain.tech)
+`scorr`         |sentiment correlation |[FinBrain](https://finbrain.tech)
+
+&nbsp;
+
+## Exploratory Data Analysis [»](exploratory_data_analysis/README.md)
+Command|Description|Source
+------ | --------|----
+`get`           |get similar companies |[Polygon](https://polygon.io)
+`select`        |select similar companies
+`historical`    |historical price data comparison |[Yahoo Finance](https://finance.yahoo.com/)
+`hcorr`         |historical price correlation |[Yahoo Finance](https://finance.yahoo.com/)
+`income`        |income financials comparison |[MarketWatch](https://www.marketwatch.com/)
+`balance`       |balance financials comparison |[MarketWatch](https://www.marketwatch.com/)
+`cashflow`      |cashflow comparison |[MarketWatch](https://www.marketwatch.com/)
+`sentiment`     |sentiment analysis comparison |[FinBrain](https://finbrain.tech)
+`scorr`         |sentiment correlation |[FinBrain](https://finbrain.tech)
+
+&nbsp;
+
+## Residual Analysis [»](residual_analysis/README.md)
+Command|Description|Source
+------ | --------|----
+`pick`          |pick one of the model fitting | Supports [ARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Naive](https://en.wikipedia.org/wiki/Forecasting#Naïve_approach)
+`fit`           |show model fit against stock | [Wikipedia](https://en.wikipedia.org/wiki/Curve_fitting)
+`res`           |show residuals | [Wikipedia](https://en.wikipedia.org/wiki/Errors_and_residuals)
+`hist`          |histogram and density plot | [Wikipedia](https://en.wikipedia.org/wiki/Histogram)
+`qqplot`        |residuals against standard normal curve | [Wikipedia](https://en.wikipedia.org/wiki/Q–Q_plot)
+`acf`           |(partial) auto-correlation function | [Wikipedia](https://en.wikipedia.org/wiki/Autocorrelation)
+`normality`     |normality test (Kurtosis,Skewness,...) | [Wikipedia](https://en.wikipedia.org/wiki/Normality_test)
+`goodness`      |goodness of fit test (Kolmogorov-Smirnov) | [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit)
+`arch`          |autoregressive conditional heteroscedasticity | [Wikipedia](https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity)
+`unitroot`      |unit root test / stationarity (ADF, KPSS) | [Wikipedia](https://en.wikipedia.org/wiki/Unit_root_test)
+`independence`  |tests independent and identically distributed (BDS) | [Wikipedia](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Testing_for_statistical_independence)
+
+&nbsp;
+## FRED [»](fred/README.md)
+Command|Description
+------ | --------
+`gdp`           | GDP
+`unemp`         | Unemployment Rate
+`t1`            | 1-Year Treasury Constant Maturity Rate
+`t5`            | 5-Year Treasury Constant Maturity Rate
+`t10`           | 10-Year Treasury Constant Maturity Rate
+`t30`           | 30-Year Treasury Constant Maturity Rate
+`mort30`        | 30-Year Fixed Rate Mortgage Average
+`fedrate`       | Effective Federal Funds Rate
+`moodAAA`       | Moody's Seasoned AAA Corporate Bond Yield
+`usdcad`        | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+`cust`          | User Specified FRED Data - Please Specify --id
+
+&nbsp;
+
+## Options [»](options/README.md)
+Command|Description|Source
+------ | --------|----
+`exp`           | see/set expiry date
+`volume`        | plot options trading volume / open interest |[Yahoo Finance](https://finance.yahoo.com/)
+
+&nbsp;
+
+## Screener [»](screener/README.md)
+Command|Description|Source
+------ | --------|----
+view           |view available presets | [presets]((screener/presets/README.md))
+set            |set one of the available presets
+historical     |view historical price |[Yahoo Finance](https://finance.yahoo.com/)
+[Finviz](https://finviz.com/screener.ashx) |
+overview       |overview (e.g. Sector, Industry, Market Cap, Volume)
+valuation      |valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
+financial      |financial (e.g. Dividend, ROA, ROE, ROI, Earnings)
+ownership      |ownership (e.g. Float, Insider Own, Short Ratio)
+performance    |performance (e.g. Perf Week, Perf YTD, Volatility M)
+technical      |technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
+signals        |view filter signals (e.g. -s top_gainers)
+
+
+&nbsp;
