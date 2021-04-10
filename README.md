@@ -58,6 +58,9 @@
       <ul>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
+        <li><a href="#other-issues">Other Issues</a></li>
+        <li><a href="#modulenotfounderror">ModuleNotFoundError</a></li>
+        <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
         <li><a href="#usage">Usage</a></li>
       </ul>
@@ -120,6 +123,14 @@ Navigate into the folder with: `cd GamestonkTerminal/`
 conda install poetry
 ```
 
+5.5. If installing python 3.8
+```
+conda deactivate
+conda activate gst
+```
+*The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
+
+
 6. Install poetry dependencies
 ```
 poetry install
@@ -130,21 +141,6 @@ This is a library for package management, and ensures a smoother experience than
 
 ```
 python terminal.py
-```
-
-### Advanced User Install - Python 3.8
-
-*Note that the `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
-
-```
-conda create -n gst python=3.8.8
-conda activate gst
-conda install poetry
-conda deactivate
-conda activate gst
-poetry install
-conda install -c conda-forge fbprophet numpy=1.19.5 hdf5=1.10.5
-poetry install -E prediction
 ```
 
 ### Advanced User Install - Machine Learning
@@ -185,7 +181,7 @@ Note: The problem with docker is that it won't output matplotlib figures.
 * `pip install pystan --upgrade`
 * `poetry update --lock`
 
-### Other issues
+### Other Issues
 
 If you run into trouble with poetry and the advice above did not help, your best bet is to try
 
@@ -215,6 +211,7 @@ If you run into trouble with poetry and the advice above did not help, your best
 7. Submit a ticket on github
 
 ### ModuleNotFoundError
+
 In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
 install the missing package via pip.  
 
@@ -222,6 +219,31 @@ If you get the error that `statsmodels` is not found, you would run
 * `pip install statsmodels`
 
 Then please submit an issue so that we can address why that was not imported.
+
+### Update Terminal
+
+The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be updaate, you can run:
+```
+git pull
+```
+to get the latest changes.
+
+If this fails due to the fact that you had modified some python files, and there's a conflict with the updates, you can use:
+```
+git stash
+```
+
+Then, re-run `poetry install` in order to install latest packages if there are new ones.
+```
+poetry install
+```
+
+Once installation is finished, you're ready to gamestonk.
+
+If you `stashed` your changes previously, you can un-stash them with:
+```
+git stash pop
+```
 
 ### API Keys
 
