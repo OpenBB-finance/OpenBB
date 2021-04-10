@@ -178,7 +178,7 @@ def main():
             else:
                 print(
                     "No ticker selected. Use 'load ticker' to load the ticker you want to look at.",
-                    "\n"
+                    "\n",
                 )
             main_cmd = True
 
