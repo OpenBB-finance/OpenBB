@@ -9,17 +9,17 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
 * [historical](#historical)
   * view historical price [Yahoo Finance]
 * [overview](#overview)
-  * overview (e.g. Sector, Industry, Market Cap, Volume) [Finviz]
+  * overview data (e.g. Sector, Industry, Market Cap, Volume) [Finviz]
 * [valuation](#valuation)
-  * valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y) [Finviz]
+  * valuation data (e.g. P/E, PEG, P/S, P/B, EPS this Y) [Finviz]
 * [financial](#financial)
-  * financial (e.g. Dividend, ROA, ROE, ROI, Earnings) [Finviz]
+  * financial data (e.g. Dividend, ROA, ROE, ROI, Earnings) [Finviz]
 * [ownership](#ownership)
-  * ownership (e.g. Float, Insider Own, Short Ratio) [Finviz]
+  * ownership data (e.g. Float, Insider Own, Short Ratio) [Finviz]
 * [performance](#performance)
-  * performance (e.g. Perf Week, Perf YTD, Volatility M) [Finviz]
+  * performance data (e.g. Perf Week, Perf YTD, Volatility M) [Finviz]
 * [technical](#technical)
-  * technical (e.g. Beta, SMA50, 52W Low, RSI, Change) [Finviz]
+  * technical data (e.g. Beta, SMA50, 52W Low, RSI, Change) [Finviz]
   * contains [Oversold (-s) signal example](#signal-oversold)
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
