@@ -369,24 +369,6 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
     type_candles = lett_to_num(ns_parser.type)
 
-    try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-        # Daily
-        if s_interval == "1440min":
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
-        # Intraday
-        else:
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_intraday(
-                symbol=s_ticker, outputsize="full", interval=s_interval
-            )
-
-    except Exception as e:
-        print(e)
-        print("Either the ticker or the API_KEY are invalids. Try again!")
-        return
-
     df_stock.sort_index(ascending=True, inplace=True)
 
     # Slice dataframe from the starting date YYYY-MM-DD selected
