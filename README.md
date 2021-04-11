@@ -227,7 +227,8 @@ Then please submit an issue so that we can address why that was not imported.
 Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`
 
 ### Updating
-From the GamestonkTerminal directory, you can run `git pull` to pull the most recent version.
+From the GamestonkTerminal directory, you can run `git pull` in the terminal to pull the most recent version.  Since new
+packages may be required for updates, be sure to run `poetry install` or `pip install -r requirements.txt` to get any new dependencies.
 
 ### API Keys
 
