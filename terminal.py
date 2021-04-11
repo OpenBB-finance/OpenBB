@@ -31,6 +31,7 @@ from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
+from gamestonk_terminal.portfolio_optimization import port_optimization_controller as po_controller
 
 # import warnings
 # warnings.simplefilter("always")
@@ -88,7 +89,9 @@ def main():
         "pa",
         "crypto",
         "ra",
+        "po"
     ]
+
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
@@ -241,6 +244,9 @@ def main():
 
         elif ns_known_args.opt == "crypto":
             b_quit = crypto_controller.menu()
+
+        elif ns_known_args.opt == "po":
+            b_quit = po_controller.menu([s_ticker])
 
         elif ns_known_args.opt == "pred":
 
