@@ -58,6 +58,7 @@
       <ul>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
+        <li><a href="#update">Updating</a></li>
         <li><a href="#api-keys">API Keys</a></li>
         <li><a href="#usage">Usage</a></li>
       </ul>
@@ -222,6 +223,11 @@ If you get the error that `statsmodels` is not found, you would run
 * `pip install statsmodels`
 
 Then please submit an issue so that we can address why that was not imported.
+
+Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`
+
+### Updating
+From the GamestonkTerminal directory, you can run `git pull` to pull the most recent version.
 
 ### API Keys
 
