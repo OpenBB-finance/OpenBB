@@ -220,6 +220,8 @@ If you get the error that `statsmodels` is not found, you would run
 
 Then please submit an issue so that we can address why that was not imported.
 
+Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`.
+
 ### Update Terminal
 
 The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be updaate, you can run:
@@ -233,10 +235,7 @@ If this fails due to the fact that you had modified some python files, and there
 git stash
 ```
 
-Then, re-run `poetry install` in order to install latest packages if there are new ones.
-```
-poetry install
-```
+Then, re-run `poetry install` or  `pip install -r requirements.txt` to get any new dependencies.
 
 Once installation is finished, you're ready to gamestonk.
 
