@@ -224,7 +224,7 @@ Please note that the package `pmdarima` needs to installed through `pip install`
 
 ### Update Terminal
 
-The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be updaate, you can run:
+The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update, you can run:
 ```
 git pull
 ```
