@@ -5,11 +5,14 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Set
 from datetime import datetime
-
+import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import port_opt_api as po_api
+from gamestonk_terminal.comparison_analysis import ca_controller
+from gamestonk_terminal.screener import screener_controller
+
 from prompt_toolkit.completion import NestedCompleter
 
 class PortfolioOptimization:
@@ -17,6 +20,8 @@ class PortfolioOptimization:
     CHOICES  = ["help",
                 "q",
                 "quit",
+                "ca",
+                "scr",
                 "select",
                 "add",
                 "equal_weight",
@@ -32,6 +37,9 @@ class PortfolioOptimization:
         self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
         self.po_parser.add_argument("cmd", choices=self.CHOICES )
         self.tickers = set(tickers)
+        # These will allow the ca menu to be re-access
+        self.ca_ticker = None
+        self.ca_similar = None
 
     @staticmethod
     def print_help(tickers: Set[str]):
@@ -42,6 +50,8 @@ class PortfolioOptimization:
             "   q             quit this menu, and shows back to main menu"
         )
         print("   quit          quit to abandon program")
+        print("   > ca          comparison analysis menu")
+        print("   > scr         screener menu")
         print(
             f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
         )
@@ -83,9 +93,15 @@ class PortfolioOptimization:
         """Process Quit command - quit the program"""
         return True
 
+    def call_ca(self, other_args:List[str]):
+
+        return ca_controller.menu(pd.DataFrame(), self.ca_ticker, "", "1440min")
+
+    def call_scr(self, _):
+        return screener_controller.menu()
+
     def call_add(self, other_args:List[str]):
         self.add_stocks(self, other_args)
-
 
     def call_equal_weight(self, other_args:List[str]):
         weights = po_api.equal_weight(self.tickers, other_args)
@@ -142,6 +158,41 @@ class PortfolioOptimization:
             print(e)
 
         print("")
+
+    @classmethod
+    def from_ca_menu(cls, ticker: str, similar: List[str]):
+        return cls(set([ticker] + similar))
+
+
+def menu_from_ca(ticker:str, similar:List[str]):
+    """Portfolio Optimization Menu from ca menu that allows for jumping between"""
+    po_controller = PortfolioOptimization.from_ca_menu(ticker,similar)
+    po_controller.ca_ticker = ticker
+    po_controller.ca_similar = similar
+    po_controller.call_help([ticker]+ similar)
+
+    while True:
+        # Get input command from user
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            completer = NestedCompleter.from_nested_dict(
+                {c: None for c in po_controller.CHOICES}
+            )
+            an_input = session.prompt(
+                f"{get_flair()} (po)> ",
+                completer=completer,
+            )
+        else:
+            an_input = input(f"{get_flair()} (po)> ")
+
+        try:
+            process_input = po_controller.switch(an_input)
+
+            if process_input is not None:
+                return process_input
+
+        except SystemExit:
+            print("The command selected doesn't exist\n")
+            continue
 
 
 def menu(tickers:List[str]):
