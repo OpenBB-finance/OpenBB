@@ -119,7 +119,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="load",
-        description=""" Load a stock in order to perform analysis. To load an Indian ticker use '.NS' at the end, e.g. 'SBIN.NS'. """,
+        description=""" Load a stock in order to perform analysis.
+                        To load an Indian ticker use '.NS' at the end, e.g. 'SBIN.NS'. """,
     )
     parser.add_argument(
         "-t",
