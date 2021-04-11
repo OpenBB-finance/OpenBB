@@ -86,11 +86,7 @@ class PortfolioOptimization:
     def call_add(self, other_args:List[str]):
         self.add_stocks(self, other_args)
 
-    def call_optimize(self, other_args:List[str]):
-        weights = po_api.optimize(self.tickers, other_args)
-        print("Optimal Weights for Equal Weighting:")
-        print(weights)
-        print("")
+
     def call_equal_weight(self, other_args:List[str]):
         weights = po_api.equal_weight(self.tickers, other_args)
         print("Optimal Weights for Equal Weighting:")
@@ -98,9 +94,14 @@ class PortfolioOptimization:
         print("")
 
     def call_mkt_cap(self,other_args:List[str]):
-        print("TODO")
+        weights = po_api.market_cap_weighting(self.tickers, other_args)
+        print("Market Cap Weighting Weights:")
+        print(weights)
+        print("")
+
     def call_select(self,other_args:List[str]):
-        print("TODO")
+        self.tickers = set([])
+        self.add_stocks(self, other_args)
 
     @staticmethod
     def add_stocks(self, other_args: List[str]):
