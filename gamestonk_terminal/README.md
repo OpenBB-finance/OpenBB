@@ -23,7 +23,7 @@ The main menu allows the following commands:
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 ```
-   * Load stock ticker to perform analysis on. To load an Indian ticker use '.NS' at the end, e.g. 'SBIN.NS'
+   * Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
      * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'

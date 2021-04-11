@@ -119,8 +119,9 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="load",
-        description=""" Load a stock in order to perform analysis.
-                        To load an Indian ticker use '.NS' at the end, e.g. 'SBIN.NS'. """,
+        description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+                    " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+                    " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
     )
     parser.add_argument(
         "-t",
