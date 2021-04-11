@@ -1,12 +1,12 @@
 import argparse
 from sys import stdout
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
-from datetime import datetime, timedelta
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
