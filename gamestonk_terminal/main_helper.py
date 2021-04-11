@@ -5,6 +5,8 @@ import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
+import pytz
+from datetime import datetime, timedelta
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -117,7 +119,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="load",
-        description=""" Load a stock in order to perform analysis.""",
+        description=""" Load a stock in order to perform analysis. To load an Indian ticker use '.NS' at the end, e.g. 'SBIN.NS'. """,
     )
     parser.add_argument(
         "-t",
@@ -151,8 +153,15 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         dest="source",
         type=check_sources,
         default="yf",
-        help="Source of historical data. Intraday: Only 'av' available."
-        "Daily: 'yf' and 'av' available.",
+        help="Source of historical data. 'yf' and 'av' available.",
+    )
+    parser.add_argument(
+        "-p",
+        "--prepost",
+        action="store_true",
+        default=False,
+        dest="b_prepost",
+        help="Pre/After market hours. Only works for 'yf' source, and intraday data",
     )
 
     try:
@@ -229,9 +238,54 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock = df_stock[ns_parser.s_start_date :]
 
             elif ns_parser.source == "yf":
-                print(
-                    "Unfortunately, yahoo finance historical data doesn't contain intraday prices"
+                s_int = s_interval[:-2]
+
+                d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+
+                s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+                s_date_start = s_start_dt.strftime("%Y-%m-%d")
+
+                s_start = pytz.utc.localize(s_start_dt)
+
+                if s_start_dt > ns_parser.s_start_date:
+                    print(
+                        f"Using Yahoo Finance with granularity {s_int} the starting date is set to: {s_date_start}\n"
+                    )
+
+                    df_stock = yf.download(
+                        ns_parser.s_ticker,
+                        start=s_date_start,
+                        progress=False,
+                        interval=s_int,
+                        prepost=ns_parser.b_prepost,
+                    )
+
+                else:
+                    df_stock = yf.download(
+                        ns_parser.s_ticker,
+                        start=ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                        progress=False,
+                        interval=s_int,
+                        prepost=ns_parser.b_prepost,
+                    )
+
+                # Check that a stock was successfully retrieved
+                if df_stock.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock = df_stock.rename(
+                    columns={
+                        "Open": "1. open",
+                        "High": "2. high",
+                        "Low": "3. low",
+                        "Close": "4. close",
+                        "Adj Close": "5. adjusted close",
+                        "Volume": "6. volume",
+                    }
                 )
+                df_stock.index.name = "date"
+
                 return [s_ticker, s_start, s_interval, df_stock]
 
     except Exception as e:
