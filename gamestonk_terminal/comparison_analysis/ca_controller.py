@@ -15,7 +15,7 @@ from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
 from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
 from gamestonk_terminal.comparison_analysis import finviz_compare_view
-from gamestonk_terminal.portfolio_optimization import port_optimization_controller
+from gamestonk_terminal.portfolio_optimization import port_optimization_controller as po_controller
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
@@ -109,7 +109,7 @@ class ComparisonAnalysisController:
         print("   performance   brief performance comparison")
         print("   technical     brief technical comparison")
         print("")
-        print("   po            portfolio optimzation from selected tickers")
+        print("   >po           portfolio optimzation from selected tickers")
         print("")
         return
 
@@ -318,7 +318,7 @@ class ComparisonAnalysisController:
 
     def call_po(self, _):
         """Open Portfolio Optimization menu with ticker and similar"""
-        port_optimization_controller.menu([self.ticker] + self.similar)
+        return po_controller.menu([self.ticker] + self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):

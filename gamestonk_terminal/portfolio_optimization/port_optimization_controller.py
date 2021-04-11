@@ -17,9 +17,10 @@ class PortfolioOptimization:
     CHOICES  = ["help",
                 "q",
                 "quit",
-                "clear",
+                "select",
                 "add",
-                "optimize"]
+                "equal_weight",
+                "mkt_cap"]
 
     def __init__(self,
                  tickers:Set[str] = None
@@ -46,7 +47,11 @@ class PortfolioOptimization:
         )
         print("")
         print("   add          add ticker to optimize")
-        print("   optimize     run optimization")
+        print("   select       overwrite current tickers with new tickers")
+        print("")
+        print("Optimization:")
+        print("   equal_weight   equally weighted portfolio")
+        print("   mkt_cap        marketcap weighted portfolio")
         print("")
 
 
@@ -86,6 +91,16 @@ class PortfolioOptimization:
         print("Optimal Weights for Equal Weighting:")
         print(weights)
         print("")
+    def call_equal_weight(self, other_args:List[str]):
+        weights = po_api.equal_weight(self.tickers, other_args)
+        print("Optimal Weights for Equal Weighting:")
+        print(weights)
+        print("")
+
+    def call_mkt_cap(self,other_args:List[str]):
+        print("TODO")
+    def call_select(self,other_args:List[str]):
+        print("TODO")
 
     @staticmethod
     def add_stocks(self, other_args: List[str]):
@@ -105,7 +120,7 @@ class PortfolioOptimization:
             help="add tickers to optimzation.",
         )
         try:
-            # For the case where a user uses: 'select NIO,XPEV,LI'
+
             if other_args:
                 if "-" not in other_args[0]:
                     other_args.insert(0, "-t")

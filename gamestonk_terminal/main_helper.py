@@ -60,7 +60,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     )
     print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
     print("   crypto      cryptocurrencies, \t\t uses coingecko api")
-    print("   po          portfolio analysis, \t\t UPDATE ME BEFORE PR")
+    print("   po          portfolio analysis, \t\t menu to explore portfolio optimizations")
 
     if s_ticker:
         print(
