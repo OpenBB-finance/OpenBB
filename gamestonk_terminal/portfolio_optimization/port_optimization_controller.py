@@ -36,7 +36,7 @@ class PortfolioOptimization:
         "yolo",
     ]
 
-    def __init__(self, tickers: Set[str] = None):
+    def __init__(self, tickers: List[str] = None):
         """
         Construct Portfolio Optimization
         """
@@ -49,7 +49,7 @@ class PortfolioOptimization:
         self.ca_similar = None
 
     @staticmethod
-    def print_help(tickers: Set[str]):
+    def print_help(tickers: List[str]):
         """Print help"""
         print("\nPortfolio Optimization:")
         print("   help          show this menu again")
