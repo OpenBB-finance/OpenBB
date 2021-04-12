@@ -15,27 +15,30 @@ from gamestonk_terminal.screener import screener_controller
 
 from prompt_toolkit.completion import NestedCompleter
 
+
 class PortfolioOptimization:
 
-    CHOICES  = ["help",
-                "q",
-                "quit",
-                "ca",
-                "scr",
-                "select",
-                "add",
-                "equal_weight",
-                "mkt_cap"]
+    CHOICES = [
+        "help",
+        "q",
+        "quit",
+        "ca",
+        "scr",
+        "select",
+        "add",
+        "equal_weight",
+        "mkt_cap",
+        "div_yield",
+        "max_sharpe",
+    ]
 
-    def __init__(self,
-                 tickers:Set[str] = None
-                 ):
+    def __init__(self, tickers: Set[str] = None):
         """
         Construct Portfolio Optimization
         """
 
         self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
-        self.po_parser.add_argument("cmd", choices=self.CHOICES )
+        self.po_parser.add_argument("cmd", choices=self.CHOICES)
         self.tickers = set(tickers)
         # These will allow the ca menu to be re-access
         self.ca_ticker = None
@@ -46,15 +49,11 @@ class PortfolioOptimization:
         """Print help"""
         print("\nPortfolio Optimization:")
         print("   help          show this menu again")
-        print(
-            "   q             quit this menu, and shows back to main menu"
-        )
+        print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("   > ca          comparison analysis menu")
         print("   > scr         screener menu")
-        print(
-            f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
-        )
+        print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
         print("")
         print("   add          add ticker to optimize")
         print("   select       overwrite current tickers with new tickers")
@@ -64,9 +63,9 @@ class PortfolioOptimization:
         print("   Property weighted:")
         print("       equal_weight   equally weighted portfolio")
         print("       mkt_cap        marketcap weighted portfolio")
-        print("   Mean Variance Optimization")
-        print("        max_sharpe    portfolio with maximum sharpe ratio")
-
+        print("       div_yield      dividend weighted portfolio\n")
+        print("   Mean Variance Optimization :")
+        print("        max_sharpe    portfolio with maximum sharpe ratio\n")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -96,31 +95,43 @@ class PortfolioOptimization:
         """Process Quit command - quit the program"""
         return True
 
-    def call_ca(self, other_args:List[str]):
+    def call_ca(self, other_args: List[str]):
 
         return ca_controller.menu(pd.DataFrame(), self.ca_ticker, "", "1440min")
 
     def call_scr(self, _):
         return screener_controller.menu()
 
-    def call_add(self, other_args:List[str]):
+    def call_add(self, other_args: List[str]):
         self.add_stocks(self, other_args)
 
-    def call_equal_weight(self, other_args:List[str]):
+    def call_select(self, other_args: List[str]):
+        self.tickers = set([])
+        self.add_stocks(self, other_args)
+
+    def call_equal_weight(self, other_args: List[str]):
         weights = po_api.equal_weight(self.tickers, other_args)
         print("Optimal Weights for Equal Weighting:")
         print(weights)
         print("")
 
-    def call_mkt_cap(self,other_args:List[str]):
-        weights = po_api.market_cap_weighting(self.tickers, other_args)
+    def call_mkt_cap(self, other_args: List[str]):
+        weights = po_api.property_weighting(self.tickers, "marketCap", other_args)
         print("Market Cap Weighting Weights:")
         print(weights)
         print("")
 
-    def call_select(self,other_args:List[str]):
-        self.tickers = set([])
-        self.add_stocks(self, other_args)
+    def call_div_yield(self, other_args: List[str]):
+        weights = po_api.property_weighting(self.tickers, "dividendYield", other_args)
+        print("Dividend Weighed Weights:")
+        print(weights)
+        print("")
+
+    def call_max_sharpe(self, other_args: List[str]):
+        weights = po_api.max_sharpe(self.tickers, other_args)
+        print("Maximum Sharpe Weights:")
+        print(weights)
+        print("")
 
     @staticmethod
     def add_stocks(self, other_args: List[str]):
@@ -152,7 +163,6 @@ class PortfolioOptimization:
             for ticker in ns_parser.add_tickers:
                 self.tickers.add(ticker)
 
-
             print(
                 f"\nCurrent Tickers: {('None', ', '.join(self.tickers))[bool(self.tickers)]}"
             )
@@ -167,12 +177,12 @@ class PortfolioOptimization:
         return cls(set([ticker] + similar))
 
 
-def menu_from_ca(ticker:str, similar:List[str]):
+def menu_from_ca(ticker: str, similar: List[str]):
     """Portfolio Optimization Menu from ca menu that allows for jumping between"""
-    po_controller = PortfolioOptimization.from_ca_menu(ticker,similar)
+    po_controller = PortfolioOptimization.from_ca_menu(ticker, similar)
     po_controller.ca_ticker = ticker
     po_controller.ca_similar = similar
-    po_controller.call_help([ticker]+ similar)
+    po_controller.call_help([ticker] + similar)
 
     while True:
         # Get input command from user
@@ -198,9 +208,9 @@ def menu_from_ca(ticker:str, similar:List[str]):
             continue
 
 
-def menu(tickers:List[str]):
+def menu(tickers: List[str]):
     """Portfolio Optimization Menu"""
-    if tickers == ['']:
+    if tickers == [""]:
         tickers = []
     po_controller = PortfolioOptimization(tickers)
     po_controller.call_help(tickers)
@@ -227,4 +237,3 @@ def menu(tickers:List[str]):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
