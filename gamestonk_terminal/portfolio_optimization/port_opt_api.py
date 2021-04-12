@@ -80,7 +80,7 @@ def equal_weight(list_of_stocks: List[str], other_args: List[str]):
         print("")
 
 
-def property_weighting(list_of_stocks: List[str], property_type: str, _):
+def property_weighting(list_of_stocks: List[str], property_type: str, other_args:List[str]):
     """
     Property weighted portfolio where each weight is the relative fraction.  Examples
     Parameters
@@ -96,18 +96,41 @@ def property_weighting(list_of_stocks: List[str], property_type: str, _):
     weights: dict
         Dictionary of weights where keys are the tickers
     """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="market_cap_weighted",
+        description="Return portfolio weights/values that are weighted by marketcap",
+    )
+
+    parser.add_argument(
+        "-v",
+        "--value",
+        default=1,
+        type=float,
+        dest="value",
+        help="Portfolio amount to determine amount spent on each",
+    )
     weights = {}
     prop = {}
     prop_sum = 0
 
-    for stock in list_of_stocks:
-        stock_prop = yf.Ticker(stock).info[property_type]
-        prop[stock] = stock_prop
-        prop_sum += stock_prop
-    for k, v in prop.items():
-        weights[k] = round(v / prop_sum, 5)
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        for stock in list_of_stocks:
+            stock_prop = yf.Ticker(stock).info[property_type]
+            prop[stock] = stock_prop
+            prop_sum += stock_prop
+        for k, v in prop.items():
+            weights[k] = round(v / prop_sum, 5) * ns_parser.value
 
-    return weights
+        return weights
+
+    except Exception as e:
+        print(e)
+        print("")
+        return
 
 
 def show_ef(list_of_stocks: List[str], other_args: List[str]):

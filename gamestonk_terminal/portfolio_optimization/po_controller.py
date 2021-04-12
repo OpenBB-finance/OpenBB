@@ -11,6 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import port_opt_api as po_api
+from gamestonk_terminal.portfolio_optimization.port_opt_helper import display_weights
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.screener import screener_controller
 
@@ -109,43 +110,43 @@ class PortfolioOptimization:
     def call_equal_weight(self, other_args: List[str]):
         weights = po_api.equal_weight(self.tickers, other_args)
         print("Optimal Weights for Equal Weighting:")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_mkt_cap(self, other_args: List[str]):
         weights = po_api.property_weighting(self.tickers, "marketCap", other_args)
         print("Market Cap Weighting Weights:")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_div_yield(self, other_args: List[str]):
         weights = po_api.property_weighting(self.tickers, "dividendYield", other_args)
         print("Dividend Weighed Weights:")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_max_sharpe(self, other_args: List[str]):
         weights = po_api.ef_portfolio(self.tickers, "max_sharpe", other_args)
         print("Maximum Sharpe Weights:")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_min_vol(self, other_args: List[str]):
         weights = po_api.ef_portfolio(self.tickers, "min_volatility", other_args)
         print("Minimum volatility Weights:")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_eff_risk(self, other_args: List[str]):
         weights = po_api.ef_portfolio(self.tickers, "eff_risk", other_args)
         print("Weights for max returns at risk level")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_eff_ret(self, other_args: List[str]):
         weights = po_api.ef_portfolio(self.tickers, "eff_ret", other_args)
         print("Weights for min risk at target returns")
-        print(weights)
+        display_weights(weights)
         print("")
 
     def call_show_ef(self, other_args):
@@ -183,9 +184,10 @@ class PortfolioOptimization:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-
+            tickers = set(self.tickers)
             for ticker in ns_parser.add_tickers:
-                self.tickers.add(ticker)
+                tickers.add(ticker)
+            self.tickers = list(tickers)
 
             print(
                 f"\nCurrent Tickers: {('None', ', '.join(self.tickers))[bool(self.tickers)]}"

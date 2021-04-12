@@ -49,3 +49,16 @@ def prepare_efficient_frontier(stock_prices: pd.DataFrame):
     S = risk_models.sample_cov(stock_prices)
     ef = EfficientFrontier(mu, S)
     return ef
+
+
+def display_weights(weights: dict):
+    """
+    Print weights in a nice format
+    Parameters
+    ----------
+    weights: dict
+        weights to display.  Keys are stocks.  Values are either weights or values if -v specified
+    """
+
+    weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
+    print(weight_df)
