@@ -33,7 +33,7 @@ period_choices = [
 ]
 
 
-def equal_weight(list_of_stocks: List[str], _):
+def equal_weight(list_of_stocks: List[str], other_args: List[str]):
     """
     Equally weighted portfolio, where weight = 1/# of stocks
 
@@ -48,12 +48,36 @@ def equal_weight(list_of_stocks: List[str], _):
         Dictionary of weights where keys are the tickers
 
     """
-    weights = {}
-    n_stocks = len(list_of_stocks)
-    for stock in list_of_stocks:
-        weights[stock] = round(1 / n_stocks, 5)
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="equal_weight",
+        description="Return equally weighted portfolio holdings",
+    )
 
-    return weights
+    parser.add_argument(
+        "-v",
+        "--value",
+        default=1,
+        type=float,
+        dest="value",
+        help="Portfolio amount to determine amount spent on each",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        weights = {}
+        values = {}
+        n_stocks = len(list_of_stocks)
+        for stock in list_of_stocks:
+            weights[stock] = round(1 / n_stocks, 5)
+            values[stock] = ns_parser.value * round(1 / n_stocks, 5)
+
+        return values
+
+    except Exception as e:
+        print(e)
+        print("")
 
 
 def property_weighting(list_of_stocks: List[str], property_type: str, _):

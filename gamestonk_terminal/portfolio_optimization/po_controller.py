@@ -34,14 +34,14 @@ class PortfolioOptimization:
         "yolo",
     ]
 
-    def __init__(self, tickers: List[str] = None):
+    def __init__(self, tickers: List[str] = []):
         """
         Construct Portfolio Optimization
         """
 
         self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
         self.po_parser.add_argument("cmd", choices=self.CHOICES)
-        self.tickers = set(tickers)
+        self.tickers = list(set(tickers))
         # These will allow the ca menu to be re-access
         self.ca_ticker = None
         self.ca_similar = None
@@ -103,7 +103,7 @@ class PortfolioOptimization:
         self.add_stocks(self, other_args)
 
     def call_select(self, other_args: List[str]):
-        self.tickers = set([])
+        self.tickers = []
         self.add_stocks(self, other_args)
 
     def call_equal_weight(self, other_args: List[str]):

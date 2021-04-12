@@ -31,9 +31,7 @@ from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
-from gamestonk_terminal.portfolio_optimization import (
-    port_optimization_controller as po_controller,
-)
+from gamestonk_terminal.portfolio_optimization import po_controller
 
 # import warnings
 # warnings.simplefilter("always")
