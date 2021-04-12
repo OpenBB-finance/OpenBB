@@ -1,10 +1,24 @@
+""" Due Diligence Controller """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import FundamentalAnalysis as fa  # Financial Modeling Prep
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
-def rating(l_args, s_ticker):
+def rating(other_args: List[str], ticker: str):
+    """Display ratings for a given ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Stock ticker
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="rating",
@@ -16,18 +30,18 @@ def rating(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_fa = fa.rating(s_ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.rating(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
         print(df_fa)
 
         print("")
 
     except KeyError:
         print(
-            f"Financialmodelingprep.com is returning empty response the ticker {s_ticker}."
+            f"Financialmodelingprep.com is returning empty response the ticker {ticker}."
         )
         print("")
         return

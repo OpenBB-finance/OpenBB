@@ -7,7 +7,7 @@ from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.due_diligence import business_insider_view as bi_view
-from gamestonk_terminal.due_diligence import financial_modeling_prep_api as fmp_api
+from gamestonk_terminal.due_diligence import financial_modeling_prep_view as fmp_view
 from gamestonk_terminal.due_diligence import finviz_api as fvz_api
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
 from gamestonk_terminal.due_diligence import quandl_api as q_api
@@ -161,7 +161,7 @@ class DueDiligenceController:
 
     def call_rating(self, other_args: List[str]):
         """ Process rating command """
-        fmp_api.rating(other_args, self.ticker)
+        fmp_view.rating(other_args, self.ticker)
 
     def call_warnings(self, other_args: List[str]):
         """ Process rating command """

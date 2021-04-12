@@ -25,7 +25,7 @@ register_matplotlib_converters()
 def price_target_from_analysts(
     other_args: List[str], stock: DataFrame, ticker: str, start: str, interval: str
 ):
-    """Print analysts' price targets for a given stock
+    """Display analysts' price targets for a given stock
 
     Parameters
     ----------
@@ -143,7 +143,7 @@ def price_target_from_analysts(
 
 
 def estimates(other_args: List[str], ticker: str):
-    """Print analysts' estimates for a given ticker
+    """Display analysts' estimates for a given ticker
 
     Parameters
     ----------
@@ -314,7 +314,7 @@ def estimates(other_args: List[str], ticker: str):
 def insider_activity(
     other_args: List[str], stock: DataFrame, ticker: str, start: str, interval: str
 ):
-    """Print insider activity
+    """Display insider activity
 
     Parameters
     ----------
