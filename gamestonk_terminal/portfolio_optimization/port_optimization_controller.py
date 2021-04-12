@@ -60,9 +60,12 @@ class PortfolioOptimization:
         print("   select       overwrite current tickers with new tickers")
         print("")
         print("Optimization:")
-        print("   equal_weight   equally weighted portfolio")
-        print("   mkt_cap        marketcap weighted portfolio")
         print("")
+        print("   Property weighted:")
+        print("       equal_weight   equally weighted portfolio")
+        print("       mkt_cap        marketcap weighted portfolio")
+        print("   Mean Variance Optimization")
+        print("        max_sharpe    portfolio with maximum sharpe ratio")
 
 
     def switch(self, an_input: str):

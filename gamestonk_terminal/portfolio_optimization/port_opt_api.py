@@ -4,6 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import yfinance as yf
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
 
 def equal_weight(list_of_stocks:List[str], other_args:List[str]):
     """
