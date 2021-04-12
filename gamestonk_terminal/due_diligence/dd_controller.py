@@ -12,7 +12,7 @@ from gamestonk_terminal.due_diligence import finviz_view as fvz_view
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
 from gamestonk_terminal.due_diligence import quandl_api as q_api
 from gamestonk_terminal.due_diligence import reddit_api as r_api
-from gamestonk_terminal.due_diligence import news_api
+from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -137,7 +137,7 @@ class DueDiligenceController:
 
     def call_news(self, other_args: List[str]):
         """ Process news command """
-        news_api.news(other_args, self.ticker)
+        news_view.news(other_args, self.ticker)
 
     def call_analyst(self, other_args: List[str]):
         """ Process analyst command """
