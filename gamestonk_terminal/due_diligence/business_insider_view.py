@@ -1,6 +1,11 @@
+""" Due Diligence Controller """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import json
 import re
+from pandas.core.frame import DataFrame
 import requests
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -12,11 +17,30 @@ from gamestonk_terminal.helper_funcs import (
     get_user_agent,
     parse_known_args_and_warn,
 )
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
 
-def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
+def price_target_from_analysts(
+    other_args: List[str], stock: DataFrame, ticker: str, start: str, interval: str
+):
+    """Print analysts' price targets for a given stock
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    stock : DataFrame
+        Due diligence stock dataframe
+    ticker : str
+        Due diligence ticker symbol
+    start : str
+        Start date of the stock data
+    interval : str
+        Stock data interval
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="pt",
@@ -34,12 +58,12 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
+            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
             requests.get(
@@ -73,17 +97,17 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         df_analyst_data = df_analyst_data.set_index("Date")
 
         # Slice start of ratings
-        if s_start:
-            df_analyst_data = df_analyst_data[s_start:]
+        if start:
+            df_analyst_data = df_analyst_data[start:]
 
-        if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=3)
+        if interval == "1440min":
+            plt.plot(stock.index, stock["5. adjusted close"].values, lw=3)
         # Intraday
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, lw=3)
+            plt.plot(stock.index, stock["4. close"].values, lw=3)
 
-        if s_start:
-            plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[s_start:])
+        if start:
+            plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])
         else:
             plt.plot(df_analyst_data.groupby(by=["Date"]).mean())
 
@@ -91,13 +115,17 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
 
         plt.legend(["Closing Price", "Average Price Target", "Price Target"])
 
-        plt.title(f"{s_ticker} (Time Series) and Price Target")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.title(f"{ticker} (Time Series) and Price Target")
+        plt.xlim(stock.index[0], stock.index[-1])
         plt.xlabel("Time")
         plt.ylabel("Share Price ($)")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
         print("")
 
@@ -115,7 +143,17 @@ def price_target_from_analysts(l_args, df_stock, s_ticker, s_start, s_interval):
         return
 
 
-def estimates(l_args, s_ticker):
+def estimates(other_args: List[str], ticker: str):
+    """Print analysts' estimates for a given ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Due diligence ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="est",
@@ -123,12 +161,12 @@ def estimates(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
+            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
             requests.get(
@@ -274,7 +312,24 @@ def estimates(l_args, s_ticker):
         return
 
 
-def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
+def insider_activity(
+    other_args: List[str], stock: DataFrame, ticker: str, start: str, interval: str
+):
+    """Print insider activity
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    stock : DataFrame
+        Due diligence stock dataframe
+    ticker : str
+        Due diligence ticker symbol
+    start : str
+        Start date of the stock data
+    interval : str
+        Stock data interval
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="ins",
@@ -291,12 +346,12 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
+            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
             requests.get(
@@ -334,17 +389,17 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         df_insider = df_insider.set_index("Date")
         df_insider = df_insider.sort_index(ascending=True)
 
-        if s_start:
-            df_insider = df_insider[s_start:]
+        if start:
+            df_insider = df_insider[start:]
 
         _, ax = plt.subplots()
 
-        if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=3)
+        if interval == "1440min":
+            plt.plot(stock.index, stock["5. adjusted close"].values, lw=3)
         else:  # Intraday
-            plt.plot(df_stock.index, df_stock["4. close"].values, lw=3)
+            plt.plot(stock.index, stock["4. close"].values, lw=3)
 
-        plt.title(f"{s_ticker.upper()} (Time Series) and Price Target")
+        plt.title(f"{ticker.upper()} (Time Series) and Price Target")
 
         plt.xlabel("Time")
         plt.ylabel("Share Price ($)")
@@ -354,7 +409,7 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
             * float(row["Shares Traded"].replace(",", "")),
             axis=1,
         )
-        plt.xlim(df_insider.index[0], df_stock.index[-1])
+        plt.xlim(df_insider.index[0], stock.index[-1])
         min_price, max_price = ax.get_ylim()
 
         price_range = max_price - min_price
@@ -373,16 +428,16 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         for ind in (
             df_insider[df_insider["Type"] == "Sell"].groupby(by=["Date"]).sum().index
         ):
-            if ind in df_stock.index:
+            if ind in stock.index:
                 ind_dt = ind
             else:
                 ind_dt = get_next_stock_market_days(ind, 1)[0]
 
             n_stock_price = 0
-            if s_interval == "1440min":
-                n_stock_price = df_stock["5. adjusted close"][ind_dt]
+            if interval == "1440min":
+                n_stock_price = stock["5. adjusted close"][ind_dt]
             else:
-                n_stock_price = df_stock["4. close"][ind_dt]
+                n_stock_price = stock["4. close"][ind_dt]
 
             plt.vlines(
                 x=ind_dt,
@@ -402,16 +457,16 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         for ind in (
             df_insider[df_insider["Type"] == "Buy"].groupby(by=["Date"]).sum().index
         ):
-            if ind in df_stock.index:
+            if ind in stock.index:
                 ind_dt = ind
             else:
                 ind_dt = get_next_stock_market_days(ind, 1)[0]
 
             n_stock_price = 0
-            if s_interval == "1440min":
-                n_stock_price = df_stock["5. adjusted close"][ind_dt]
+            if interval == "1440min":
+                n_stock_price = stock["5. adjusted close"][ind_dt]
             else:
-                n_stock_price = df_stock["4. close"][ind_dt]
+                n_stock_price = stock["4. close"][ind_dt]
 
             plt.vlines(
                 x=ind_dt,
@@ -431,6 +486,10 @@ def insider_activity(l_args, df_stock, s_ticker, s_start, s_interval):
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
         l_names = list()

@@ -6,7 +6,7 @@ from typing import List
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.due_diligence import business_insider_api as bi_api
+from gamestonk_terminal.due_diligence import business_insider_view as bi_view
 from gamestonk_terminal.due_diligence import financial_modeling_prep_api as fmp_api
 from gamestonk_terminal.due_diligence import finviz_api as fvz_api
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
@@ -145,17 +145,17 @@ class DueDiligenceController:
 
     def call_pt(self, other_args: List[str]):
         """ Process pt command """
-        bi_api.price_target_from_analysts(
+        bi_view.price_target_from_analysts(
             other_args, self.stock, self.ticker, self.start, self.interval
         )
 
     def call_est(self, other_args: List[str]):
         """ Process est command """
-        bi_api.estimates(other_args, self.ticker)
+        bi_view.estimates(other_args, self.ticker)
 
     def call_ins(self, other_args: List[str]):
         """ Process ins command """
-        bi_api.insider_activity(
+        bi_view.insider_activity(
             other_args, self.stock, self.ticker, self.start, self.interval
         )
 
