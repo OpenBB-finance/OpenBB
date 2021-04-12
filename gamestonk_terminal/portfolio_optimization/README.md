@@ -74,7 +74,7 @@ Where S is the covariance matrix between stocks and R is the expected returns.  
 just implies that you want to have a net long portfolio (with no margin).  
 A long-short portfolio can have negative weights and usually wants to have everything add up to 0 for a market-neutral strategy.
 
-Currently, we do not allow for changing risk models or adding constraints.  If there is something spefic, please submit a feature request, or if you can
+Currently, we do not allow for changing risk models or adding constraints.  If there is something specific, please submit a feature request, or if you can
 write it, feel free to add a PR!
 
 All of our current implementations use the [PyPortFolioOpt](#https://pyportfolioopt.readthedocs.io/en/latest/index.html) package.
@@ -88,7 +88,7 @@ The usage is:
 ````
 max_sharpe [-p PERIOD] 
 ````
-* -p/--period Amount of time to retreive data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defualts to 3mo.
+* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 
 ### min_vol
 This portfolio minimizes the total volatility, which also means it has the smallest returns among the efficient frontier.
@@ -96,7 +96,7 @@ The usage is:
 ````
 min_vol [-p PERIOD] 
 ````
-* -p/--period Amount of time to retreive data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defualts to 3mo.
+* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 
 ### eff_risk
 This portfolio maximizes the returns at a given risk tolerance
@@ -104,7 +104,7 @@ The usage is:
 ````
 eff_risk [-p PERIOD] [-r --risk RISK_LEVEL]
 ````
-* -p/--period Amount of time to retreive data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defualts to 3mo.
+* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 * -r/--risk Risk tolerance.  5% is 0.05.
 
 ### eff_ret
@@ -113,7 +113,7 @@ The usage is:
 ````
 eff_ret [-p PERIOD] [-r --return]
 ````
-* -p/--period Amount of time to retreive data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defualts to 3mo.
+* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 * -r/--return.  Desired return.  5% is 0.05.
 
 ### show_eff
@@ -122,5 +122,5 @@ The usage is:
 ````
 show_eff [-p PERIOD]  [-n N_PORTFOLIOS]
 ````
-* -p/--period Amount of time to retreive data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defualts to 3mo.
+* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 * -n Number of portfolios to simulate.
