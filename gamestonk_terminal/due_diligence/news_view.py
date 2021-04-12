@@ -1,4 +1,8 @@
+""" News View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 from datetime import datetime, timedelta
 import requests
 from gamestonk_terminal import config_terminal as cfg
@@ -8,7 +12,17 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def news(l_args, s_ticker):
+def news(other_args: List[str], ticker: str):
+    """Display news for a given ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    ticker : str
+        Stock ticker
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="news",
@@ -28,14 +42,14 @@ def news(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         s_from = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
 
         response = requests.get(
-            f"https://newsapi.org/v2/everything?q={s_ticker}&from={s_from}"
+            f"https://newsapi.org/v2/everything?q={ticker}&from={s_from}"
             f"&sortBy=publishedAt&language=en&apiKey={cfg.API_NEWS_TOKEN}",
         )
 
@@ -45,7 +59,7 @@ def news(l_args, s_ticker):
 
         else:
             print(
-                f"{response.json()['totalResults']} news articles from {s_ticker} were found since {s_from}\n"
+                f"{response.json()['totalResults']} news articles from {ticker} were found since {s_from}\n"
             )
 
             for idx, article in enumerate(response.json()["articles"]):

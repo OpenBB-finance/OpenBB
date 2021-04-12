@@ -15,7 +15,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_controller
-from gamestonk_terminal.due_diligence import dd_menu as ddm
+from gamestonk_terminal.due_diligence import dd_controller
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
@@ -208,7 +208,7 @@ def main():
             b_quit = ta_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "dd":
-            b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = dd_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "eda":
             if s_interval == "1440min":
