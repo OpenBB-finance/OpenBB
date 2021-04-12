@@ -83,8 +83,7 @@ def price_target_from_analysts(
                 d_analyst_data = json.loads(s_analyst_data)
                 break
 
-        # type: ignore
-        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])
+        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
         df_analyst_data = df_analyst_data[
             ["DateLabel", "Company", "InternalRating", "PriceTarget"]
         ]
@@ -98,8 +97,7 @@ def price_target_from_analysts(
 
         # Slice start of ratings
         if start:
-            # type: ignore
-            df_analyst_data = df_analyst_data[start:]
+            df_analyst_data = df_analyst_data[start:]  # type: ignore
 
         if interval == "1440min":
             plt.plot(stock.index, stock["5. adjusted close"].values, lw=3)
@@ -108,8 +106,7 @@ def price_target_from_analysts(
             plt.plot(stock.index, stock["4. close"].values, lw=3)
 
         if start:
-            # type: ignore
-            plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])
+            plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
         else:
             plt.plot(df_analyst_data.groupby(by=["Date"]).mean())
 
@@ -392,8 +389,7 @@ def insider_activity(
         df_insider = df_insider.sort_index(ascending=True)
 
         if start:
-            # type: ignore
-            df_insider = df_insider[start:]
+            df_insider = df_insider[start:]  # type: ignore
 
         _, ax = plt.subplots()
 
