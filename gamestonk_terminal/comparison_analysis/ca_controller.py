@@ -15,9 +15,7 @@ from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
 from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
 from gamestonk_terminal.comparison_analysis import finviz_compare_view
-from gamestonk_terminal.portfolio_optimization import (
-    po_controller as po_controller,
-)
+from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
