@@ -8,7 +8,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.due_diligence import business_insider_view as bi_view
 from gamestonk_terminal.due_diligence import financial_modeling_prep_view as fmp_view
-from gamestonk_terminal.due_diligence import finviz_api as fvz_api
+from gamestonk_terminal.due_diligence import finviz_view as fvz_view
 from gamestonk_terminal.due_diligence import market_watch_api as mw_api
 from gamestonk_terminal.due_diligence import quandl_api as q_api
 from gamestonk_terminal.due_diligence import reddit_api as r_api
@@ -133,7 +133,7 @@ class DueDiligenceController:
 
     def call_insider(self, other_args: List[str]):
         """ Process insider command """
-        fvz_api.insider(other_args, self.ticker)
+        fvz_view.insider(other_args, self.ticker)
 
     def call_news(self, other_args: List[str]):
         """ Process news command """
@@ -141,7 +141,7 @@ class DueDiligenceController:
 
     def call_analyst(self, other_args: List[str]):
         """ Process analyst command """
-        fvz_api.analyst(other_args, self.ticker)
+        fvz_view.analyst(other_args, self.ticker)
 
     def call_pt(self, other_args: List[str]):
         """ Process pt command """
