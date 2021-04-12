@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -209,6 +210,8 @@ def menu():
             an_input = input(f"{get_flair()} (disc)> ")
 
         try:
+            plt.close("all")
+
             process_input = disc_controller.switch(an_input)
 
             if process_input is not None:
