@@ -67,7 +67,7 @@ def short_interest(other_args: List[str], ticker: str, start: str):
         else:
             df_short_interest = quandl.get(f"FINRA/FNSQ_{ticker}")
 
-        df_short_interest = df_short_interest[start:]
+        df_short_interest = df_short_interest[start:]  # type: ignore
         df_short_interest.columns = [
             "".join(
                 " " + char if char.isupper() else char.strip() for char in idx
@@ -95,7 +95,7 @@ def short_interest(other_args: List[str], ticker: str, start: str):
 
         if start:
             ax.set_title(
-                f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {ticker} from {start.date()}"
+                f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {ticker} from {start.date()}"  # type: ignore
             )
         else:
             ax.set_title(

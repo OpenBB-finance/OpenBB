@@ -99,7 +99,7 @@ def due_diligence(other_args: List[str], ticker: str):
         submissions = psaw_api.search_submissions(
             after=int(n_ts_after), subreddit=l_sub_reddits, q=ticker, filter=["id"]
         )
-        d_submission = {}
+        d_submission = {}  # type: ignore
         n_flair_posts_found = 0
         while True:
             submission = next(submissions, None)
