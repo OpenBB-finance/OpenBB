@@ -1,4 +1,4 @@
-""" Due Diligence Controller """
+""" Business Insider View """
 __docformat__ = "numpy"
 
 import argparse

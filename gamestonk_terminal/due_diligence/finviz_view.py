@@ -1,4 +1,4 @@
-""" Due Diligence Controller """
+""" FinViz View """
 __docformat__ = "numpy"
 
 import argparse

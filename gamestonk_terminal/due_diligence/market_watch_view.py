@@ -1,4 +1,4 @@
-""" Due Diligence Controller """
+""" Market Watch View """
 __docformat__ = "numpy"
 
 import argparse
