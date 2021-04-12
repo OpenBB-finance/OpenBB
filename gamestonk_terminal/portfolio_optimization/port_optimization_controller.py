@@ -21,8 +21,6 @@ class PortfolioOptimization:
         "help",
         "q",
         "quit",
-        "ca",
-        "scr",
         "select",
         "add",
         "equal_weight",
@@ -55,8 +53,6 @@ class PortfolioOptimization:
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print("   > ca          comparison analysis menu")
-        print("   > scr         screener menu")
         print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
         print("")
         print("   add          add ticker to optimize")
@@ -64,16 +60,14 @@ class PortfolioOptimization:
         print("")
         print("Optimization:")
         print("")
-        print("   Property weighted:")
-        print("       equal_weight   equally weighted portfolio")
-        print("       mkt_cap        marketcap weighted portfolio")
-        print("       div_yield      dividend weighted portfolio\n")
-        print("   Mean Variance Optimization :")
-        print("        max_sharpe    portfolio with maximum sharpe ratio")
-        print("        min_vol       portfolio with minimum volatility")
-        print("        eff_risk      portfolio that maximizes returns at given risk")
-        print("        eff_ret       portfolio that minimizes risk at given return")
-        print("        show_ef       show the efficient frontier")
+        print("   equal_weight   equally weighted portfolio")
+        print("   mkt_cap        marketcap weighted portfolio")
+        print("   div_yield      dividend weighted portfolio")
+        print("   max_sharpe     portfolio with maximum sharpe ratio")
+        print("   min_vol        portfolio with minimum volatility")
+        print("   eff_risk       portfolio that maximizes returns at given risk")
+        print("   eff_ret        portfolio that minimizes risk at given return")
+        print("   show_ef        show the efficient frontier")
         print("")
         plt.close("all")
 
@@ -104,13 +98,6 @@ class PortfolioOptimization:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
-
-    def call_ca(self, _):
-
-        return ca_controller.menu(pd.DataFrame(), self.ca_ticker, "", "1440min")
-
-    def call_scr(self, _):
-        return screener_controller.menu()
 
     def call_add(self, other_args: List[str]):
         self.add_stocks(self, other_args)
@@ -173,7 +160,6 @@ class PortfolioOptimization:
 
     @staticmethod
     def add_stocks(self, other_args: List[str]):
-
         """ Add ticker to current list for optimization"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -209,41 +195,6 @@ class PortfolioOptimization:
             print(e)
 
         print("")
-
-    @classmethod
-    def from_ca_menu(cls, ticker: str, similar: List[str]):
-        return cls(set([ticker] + similar))
-
-
-def menu_from_ca(ticker: str, similar: List[str]):
-    """Portfolio Optimization Menu from ca menu that allows for jumping between"""
-    po_controller = PortfolioOptimization.from_ca_menu(ticker, similar)
-    po_controller.ca_ticker = ticker
-    po_controller.ca_similar = similar
-    po_controller.call_help([ticker] + similar)
-
-    while True:
-        # Get input command from user
-        if session and gtff.USE_PROMPT_TOOLKIT:
-            completer = NestedCompleter.from_nested_dict(
-                {c: None for c in po_controller.CHOICES}
-            )
-            an_input = session.prompt(
-                f"{get_flair()} (po)> ",
-                completer=completer,
-            )
-        else:
-            an_input = input(f"{get_flair()} (po)> ")
-
-        try:
-            process_input = po_controller.switch(an_input)
-
-            if process_input is not None:
-                return process_input
-
-        except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
 
 
 def menu(tickers: List[str]):

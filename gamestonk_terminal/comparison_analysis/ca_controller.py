@@ -320,7 +320,7 @@ class ComparisonAnalysisController:
 
     def call_po(self, _):
         """Open Portfolio Optimization menu with ticker and similar"""
-        return po_controller.menu_from_ca(self.ticker, self.similar)
+        return po_controller.menu([self.ticker] + self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
