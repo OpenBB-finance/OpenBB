@@ -9,9 +9,9 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.due_diligence import business_insider_view as bi_view
 from gamestonk_terminal.due_diligence import financial_modeling_prep_view as fmp_view
 from gamestonk_terminal.due_diligence import finviz_view as fvz_view
-from gamestonk_terminal.due_diligence import market_watch_api as mw_api
-from gamestonk_terminal.due_diligence import quandl_api as q_api
-from gamestonk_terminal.due_diligence import reddit_api as r_api
+from gamestonk_terminal.due_diligence import market_watch_view as mw_view
+from gamestonk_terminal.due_diligence import quandl_view as q_view
+from gamestonk_terminal.due_diligence import reddit_view as r_view
 from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -129,7 +129,7 @@ class DueDiligenceController:
 
     def call_red(self, other_args: List[str]):
         """ Process red command """
-        r_api.due_diligence(other_args, self.ticker)
+        r_view.due_diligence(other_args, self.ticker)
 
     def call_insider(self, other_args: List[str]):
         """ Process insider command """
@@ -165,15 +165,15 @@ class DueDiligenceController:
 
     def call_warnings(self, other_args: List[str]):
         """ Process rating command """
-        mw_api.sean_seah_warnings(other_args, self.ticker)
+        mw_view.sean_seah_warnings(other_args, self.ticker)
 
     def call_sec(self, other_args: List[str]):
         """ Process sec command """
-        mw_api.sec_fillings(other_args, self.ticker)
+        mw_view.sec_fillings(other_args, self.ticker)
 
     def call_short(self, other_args: List[str]):
         """ Process short command """
-        q_api.short_interest(other_args, self.ticker, self.start)
+        q_view.short_interest(other_args, self.ticker, self.start)
 
 
 def menu(stock: DataFrame, ticker: str, start: str, interval: str):

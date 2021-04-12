@@ -1,4 +1,8 @@
+""" Reddit View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 from datetime import datetime, timedelta
 from psaw import PushshiftAPI
 import praw
@@ -7,7 +11,17 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.reddit_helpers import print_and_record_reddit_post
 
 
-def due_diligence(l_args, s_ticker):
+def due_diligence(other_args: List[str], ticker: str):
+    """Display Reddit due diligence data for a given ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-l", "5"]
+    ticker : str
+        Stock ticker
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="red",
@@ -47,7 +61,7 @@ def due_diligence(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -83,7 +97,7 @@ def due_diligence(l_args, s_ticker):
         ]
 
         submissions = psaw_api.search_submissions(
-            after=int(n_ts_after), subreddit=l_sub_reddits, q=s_ticker, filter=["id"]
+            after=int(n_ts_after), subreddit=l_sub_reddits, q=ticker, filter=["id"]
         )
         d_submission = {}
         n_flair_posts_found = 0
