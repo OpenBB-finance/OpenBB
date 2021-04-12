@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 
 import argparse
-from typing import List, Set
+from typing import List
 import matplotlib.pyplot as plt
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
