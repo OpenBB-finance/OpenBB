@@ -5,13 +5,16 @@ import argparse
 from typing import List
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import yfinance as yf
 from pypfopt import plotting
 from pypfopt import risk_models
 from pypfopt import expected_returns
+from pypfopt import EfficientFrontier
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
-from gamestonk_terminal.portfolio_optimization.port_opt_helper import *
+from gamestonk_terminal.portfolio_optimization.port_opt_helper import (
+    process_stocks,
+    prepare_efficient_frontier,
+)
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
@@ -30,7 +33,7 @@ period_choices = [
 ]
 
 
-def equal_weight(list_of_stocks: List[str], other_args: List[str]):
+def equal_weight(list_of_stocks: List[str], _):
     """
     Equally weighted portfolio, where weight = 1/# of stocks
 
@@ -53,9 +56,7 @@ def equal_weight(list_of_stocks: List[str], other_args: List[str]):
     return weights
 
 
-def property_weighting(
-    list_of_stocks: List[str], property_type: str, other_args: List[str]
-):
+def property_weighting(list_of_stocks: List[str], property_type: str, _):
     """
     Property weighted portfolio where each weight is the relative fraction.  Examples
     Parameters
@@ -76,7 +77,7 @@ def property_weighting(
     prop_sum = 0
 
     for stock in list_of_stocks:
-        stock_prop = yf.Ticker(stock).info["marketCap"]
+        stock_prop = yf.Ticker(stock).info[property_type]
         prop[stock] = stock_prop
         prop_sum += stock_prop
     for k, v in prop.items():
@@ -184,6 +185,8 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
         except Exception as e:
             print(e)
             print("")
+            return {}
+
     elif port_type == "min_volatility":
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -198,6 +201,7 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             ef.portfolio_performance(verbose=True)
             print("")
             return weights
+
         except Exception as e:
             print(e)
             print("")
@@ -223,6 +227,7 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             print(e)
             print("")
             return {}
+
     elif port_type == "eff_ret":
 
         parser.add_argument(
@@ -247,4 +252,3 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
 
     else:
         raise ValueError("EF Method not found")
-        return {}

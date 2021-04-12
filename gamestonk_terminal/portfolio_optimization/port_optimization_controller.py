@@ -6,14 +6,13 @@ import argparse
 from typing import List, Set
 import matplotlib.pyplot as plt
 import pandas as pd
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import port_opt_api as po_api
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.screener import screener_controller
-
-from prompt_toolkit.completion import NestedCompleter
 
 
 class PortfolioOptimization:
@@ -106,7 +105,7 @@ class PortfolioOptimization:
         """Process Quit command - quit the program"""
         return True
 
-    def call_ca(self, other_args: List[str]):
+    def call_ca(self, _):
 
         return ca_controller.menu(pd.DataFrame(), self.ca_ticker, "", "1440min")
 
