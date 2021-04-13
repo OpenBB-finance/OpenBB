@@ -72,16 +72,12 @@ def display_weights(weights: dict):
 
 def pie_chart_weights(weights: dict):
     """
-    Print weights in a nice format
+    Show a pie chart of holdings
     Parameters
     ----------
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values if -v specified
     """
-
-    def pie_label(label_input):
-        """Function for autopct"""
-        return f"{label_input:.2f}"
 
     if not weights:
         return
