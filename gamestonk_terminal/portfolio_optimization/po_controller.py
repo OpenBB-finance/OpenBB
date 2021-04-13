@@ -5,15 +5,12 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import matplotlib.pyplot as plt
-import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import port_opt_api as po_api
 from gamestonk_terminal.portfolio_optimization.port_opt_helper import display_weights
-from gamestonk_terminal.comparison_analysis import ca_controller
-from gamestonk_terminal.screener import screener_controller
 
 
 class PortfolioOptimization:

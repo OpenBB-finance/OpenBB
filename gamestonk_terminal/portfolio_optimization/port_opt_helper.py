@@ -2,11 +2,16 @@
 __docformat__ = "numpy"
 
 from typing import List
+import math
 import pandas as pd
+import matplotlib.pyplot as plt
 import yfinance as yf
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import risk_models
 from pypfopt import expected_returns
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
 
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
@@ -59,6 +64,53 @@ def display_weights(weights: dict):
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values if -v specified
     """
-
+    if not weights:
+        return
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
     print(weight_df)
+
+
+def pie_chart_weights(weights: dict):
+    """
+    Print weights in a nice format
+    Parameters
+    ----------
+    weights: dict
+        weights to display.  Keys are stocks.  Values are either weights or values if -v specified
+    """
+
+    def pie_label(label_input):
+        """Function for autopct"""
+        return f"{label_input:.2f}"
+
+    if not weights:
+        return
+    stocks = list(weights.keys())
+    sizes = list(weights.values())
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if math.isclose(sum(sizes), 1, rel_tol=0.1):
+        wedges, texts, autotexts = ax.pie(
+            sizes, labels=stocks, autopct="%1.1f%%", textprops=dict(color="w")
+        )
+    else:
+        wedges, texts, autotexts = ax.pie(
+            sizes, labels=stocks, autopct="", textprops=dict(color="w")
+        )
+        for i, a in enumerate(autotexts):
+            a.set_text("{}".format(sizes[i]))
+
+    ax.axis("equal")
+    ax.legend(
+        wedges,
+        stocks,
+        title="Stocks",
+        loc="center left",
+        bbox_to_anchor=(0.85, 0, 0.5, 1),
+    )
+
+    plt.setp(autotexts, size=8, weight="bold")
+    ax.set_title("Portfolio Holdings")
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    print("")

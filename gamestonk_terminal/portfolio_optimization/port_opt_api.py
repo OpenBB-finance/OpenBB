@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_auto
 from gamestonk_terminal.portfolio_optimization.port_opt_helper import (
     process_stocks,
     prepare_efficient_frontier,
+    pie_chart_weights,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
@@ -62,6 +63,13 @@ def equal_weight(list_of_stocks: List[str], other_args: List[str]):
         dest="value",
         help="Portfolio amount to determine amount spent on each",
     )
+    parser.add_argument(
+        "--pie",
+        action="store_true",
+        dest="pie",
+        default=False,
+        help="Display a pie chart for weights",
+    )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -72,7 +80,8 @@ def equal_weight(list_of_stocks: List[str], other_args: List[str]):
         for stock in list_of_stocks:
             weights[stock] = round(1 / n_stocks, 5)
             values[stock] = ns_parser.value * round(1 / n_stocks, 5)
-
+        if ns_parser.pie:
+            pie_chart_weights(values)
         return values
 
     except Exception as e:
@@ -80,7 +89,9 @@ def equal_weight(list_of_stocks: List[str], other_args: List[str]):
         print("")
 
 
-def property_weighting(list_of_stocks: List[str], property_type: str, other_args:List[str]):
+def property_weighting(
+    list_of_stocks: List[str], property_type: str, other_args: List[str]
+):
     """
     Property weighted portfolio where each weight is the relative fraction.  Examples
     Parameters
@@ -110,6 +121,13 @@ def property_weighting(list_of_stocks: List[str], property_type: str, other_args
         dest="value",
         help="Portfolio amount to determine amount spent on each",
     )
+    parser.add_argument(
+        "--pie",
+        action="store_true",
+        dest="pie",
+        default=False,
+        help="Display a pie chart for weights",
+    )
     weights = {}
     prop = {}
     prop_sum = 0
@@ -124,7 +142,8 @@ def property_weighting(list_of_stocks: List[str], property_type: str, other_args
             prop_sum += stock_prop
         for k, v in prop.items():
             weights[k] = round(v / prop_sum, 5) * ns_parser.value
-
+        if ns_parser.pie:
+            pie_chart_weights(weights)
         return weights
 
     except Exception as e:
@@ -147,6 +166,7 @@ def show_ef(list_of_stocks: List[str], other_args: List[str]):
     parser.add_argument(
         "-n", default=300, dest="n_port", help="number of portfolios to simulate"
     )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -215,6 +235,21 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
         choices=period_choices,
     )
 
+    parser.add_argument(
+        "-v",
+        "--value",
+        dest="value",
+        help="Portfolio amount to determine amount spent on each",
+        type=float,
+        default=1.0,
+    )
+    parser.add_argument(
+        "--pie",
+        action="store_true",
+        dest="pie",
+        default=False,
+        help="Display a pie chart for weights",
+    )
     if port_type == "max_sharpe":
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -225,6 +260,8 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             ef = prepare_efficient_frontier(stock_prices)
             ef_sharpe = dict(ef.max_sharpe())
             weights = {key: round(value, 5) for key, value in ef_sharpe.items()}
+            if ns_parser.pie:
+                pie_chart_weights(weights)
             print("")
             ef.portfolio_performance(verbose=True)
             print("")
@@ -244,6 +281,8 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             ef = prepare_efficient_frontier(stock_prices)
             ef_min_vol = dict(ef.min_volatility())
             weights = {key: round(value, 5) for key, value in ef_min_vol.items()}
+            if ns_parser.pie:
+                pie_chart_weights(weights)
             print("")
             ef.portfolio_performance(verbose=True)
             print("")
@@ -261,11 +300,14 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-
+            if len(list_of_stocks) == 0:
+                return {}
             stock_prices = process_stocks(list_of_stocks, ns_parser.period)
             ef = prepare_efficient_frontier(stock_prices)
             ef_eff_risk = dict(ef.efficient_risk(ns_parser.risk_level))
             weights = {key: round(value, 5) for key, value in ef_eff_risk.items()}
+            if ns_parser.pie:
+                pie_chart_weights(weights)
             print("")
             ef.portfolio_performance(verbose=True)
             print("")
@@ -288,10 +330,13 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             ef = prepare_efficient_frontier(stock_prices)
             ef_eff_risk = dict(ef.efficient_return(ns_parser.target_return))
             weights = {key: round(value, 5) for key, value in ef_eff_risk.items()}
+            if ns_parser.pie:
+                pie_chart_weights(weights)
             print("")
             ef.portfolio_performance(verbose=True)
             print("")
             return weights
+
         except Exception as e:
             print(e)
             print("")
