@@ -138,6 +138,8 @@ def property_weighting(
             return
         for stock in list_of_stocks:
             stock_prop = yf.Ticker(stock).info[property_type]
+            if stock_prop is None:
+                stock_prop = 0
             prop[stock] = stock_prop
             prop_sum += stock_prop
         for k, v in prop.items():
