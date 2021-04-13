@@ -42,20 +42,28 @@ Once your stocks are listed, you can select one of the options.
 * market cap weighted
 * dividend yield weighted
 ### equal weights
+Returns an equally weighted portfolio where the weights are 1/number of stocks.
 ````
-equal_weight
+equal_weight [-v --value VALUE] [--pie] 
 ````
-Returns `{"Ticker" : 1/# of tickers}`
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
+
 ### market cap weighted
+Returns portfolio values that are weighted by their relative Market Cap.
 ````
-mkt_cap
+mkt_cap [-v --value VALUE] [--pie]
 ````
-Returns a dictionary where each weight is given as (Company Market Cap)/(Sum all included market caps)
-###dividened yield weighted
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
+
+###dividend yield weighted
+Returns portfolio values that are weighted by relative Dividend Yield.
 ````
-div_yield
+div_yield [-v --value VALUE] [--pie]
 ````
-Returns weights based on relative divident yield.
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
 
 ## Mean Variance Optimization<a name="eff_front"></a>
 
@@ -86,35 +94,43 @@ The sharpe ratio is defined as
 
 The usage is:
 ````
-max_sharpe [-p PERIOD] 
+max_sharpe [-p PERIOD] [-v --value VALUE] [--pie] 
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
 
 ### min_vol
 This portfolio minimizes the total volatility, which also means it has the smallest returns among the efficient frontier.
 The usage is:
 ````
-min_vol [-p PERIOD] 
+min_vol [-p PERIOD] [-v --value VALUE] [--pie]
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
 
 ### eff_risk
 This portfolio maximizes the returns at a given risk tolerance
 The usage is:
 ````
-eff_risk [-p PERIOD] [-r --risk RISK_LEVEL]
+eff_risk [-p PERIOD] [-r --risk RISK_LEVEL] [-v --value VALUE] [--pie]
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 * -r/--risk Risk tolerance.  5% is 0.05.
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
 
 ### eff_ret
 This portfolio minimizes the risk at a given return level
 The usage is:
 ````
-eff_ret [-p PERIOD] [-r --return]
+eff_ret [-p PERIOD] [-r --return] [-v --value VALUE] [--pie]
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 * -r/--return.  Desired return.  5% is 0.05.
+* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie Flag that displays a pie chart of the allocations.
 
 ### show_eff
 This function plots random portfolios basd on their risk and returns and shows the efficient frontier.
