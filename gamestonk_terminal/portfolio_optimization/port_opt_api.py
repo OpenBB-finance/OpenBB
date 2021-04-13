@@ -259,7 +259,10 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             stock_prices = process_stocks(list_of_stocks, period)
             ef = prepare_efficient_frontier(stock_prices)
             ef_sharpe = dict(ef.max_sharpe())
-            weights = {key: round(value, 5) for key, value in ef_sharpe.items()}
+            weights = {
+                key: ns_parser.value * round(value, 5)
+                for key, value in ef_sharpe.items()
+            }
             if ns_parser.pie:
                 pie_chart_weights(weights)
             print("")
@@ -280,7 +283,10 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             stock_prices = process_stocks(list_of_stocks, period)
             ef = prepare_efficient_frontier(stock_prices)
             ef_min_vol = dict(ef.min_volatility())
-            weights = {key: round(value, 5) for key, value in ef_min_vol.items()}
+            weights = {
+                key: ns_parser.value * round(value, 5)
+                for key, value in ef_min_vol.items()
+            }
             if ns_parser.pie:
                 pie_chart_weights(weights)
             print("")
@@ -305,7 +311,10 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             stock_prices = process_stocks(list_of_stocks, ns_parser.period)
             ef = prepare_efficient_frontier(stock_prices)
             ef_eff_risk = dict(ef.efficient_risk(ns_parser.risk_level))
-            weights = {key: round(value, 5) for key, value in ef_eff_risk.items()}
+            weights = {
+                key: ns_parser.value * round(value, 5)
+                for key, value in ef_eff_risk.items()
+            }
             if ns_parser.pie:
                 pie_chart_weights(weights)
             print("")
@@ -329,7 +338,10 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
             stock_prices = process_stocks(list_of_stocks, ns_parser.period)
             ef = prepare_efficient_frontier(stock_prices)
             ef_eff_risk = dict(ef.efficient_return(ns_parser.target_return))
-            weights = {key: round(value, 5) for key, value in ef_eff_risk.items()}
+            weights = {
+                key: ns_parser.value * round(value, 5)
+                for key, value in ef_eff_risk.items()
+            }
             if ns_parser.pie:
                 pie_chart_weights(weights)
             print("")
