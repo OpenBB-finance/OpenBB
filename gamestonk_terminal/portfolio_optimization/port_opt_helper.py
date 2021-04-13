@@ -93,7 +93,7 @@ def pie_chart_weights(weights: dict):
             sizes, labels=stocks, autopct="", textprops=dict(color="w")
         )
         for i, a in enumerate(autotexts):
-            a.set_text("{}".format(sizes[i]))
+            a.set_text(f"{sizes[i]}")
 
     ax.axis("equal")
     ax.legend(
