@@ -174,7 +174,7 @@ class ComparisonAnalysisController:
             if len(self.similar) > 10:
                 print(
                     "\nThe limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.",
-                    "\nThe selected list will be:"
+                    "\nThe selected list will be:",
                 )
                 random.shuffle(self.similar)
                 self.similar = sorted(self.similar[:10])
