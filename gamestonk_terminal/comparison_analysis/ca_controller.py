@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import requests
+import random
 from typing import List
 from datetime import datetime
 import pandas as pd
@@ -172,9 +173,11 @@ class ComparisonAnalysisController:
 
             if len(self.similar) > 10:
                 print(
-                    "\nThe limit of stocks to compare with are 10. Hence, the similar stocks list will be:"
+                    "\nThe limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.",
+                    "\nThe selected list will be:"
                 )
-                self.similar = self.similar[:10]
+                random.shuffle(self.similar)
+                self.similar = sorted(self.similar[:10])
                 print(", ".join(self.similar))
 
         except Exception as e:
