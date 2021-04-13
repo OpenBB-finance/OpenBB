@@ -222,6 +222,7 @@ class ScreenerController:
         finviz_view.view_signals(other_args)
 
     def call_po(self, other_args: List[str]):
+        """Call the portfolio optimization menu"""
         return po_controller.menu(other_args)
 
 

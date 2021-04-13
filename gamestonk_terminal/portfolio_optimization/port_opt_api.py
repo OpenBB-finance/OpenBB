@@ -61,7 +61,7 @@ def equal_weight(list_of_stocks: List[str], other_args: List[str]):
         default=1,
         type=float,
         dest="value",
-        help="Portfolio amount to determine amount spent on each",
+        help="Amount to allocate to portfolio",
     )
     parser.add_argument(
         "--pie",
@@ -93,7 +93,7 @@ def property_weighting(
     list_of_stocks: List[str], property_type: str, other_args: List[str]
 ):
     """
-    Property weighted portfolio where each weight is the relative fraction.  Examples
+    Property weighted portfolio where each weight is the relative fraction.
     Parameters
     ----------
     list_of_stocks: List[str]
@@ -119,7 +119,7 @@ def property_weighting(
         default=1,
         type=float,
         dest="value",
-        help="Portfolio amount to determine amount spent on each",
+        help="Amount to allocate to portfolio",
     )
     parser.add_argument(
         "--pie",
@@ -213,7 +213,7 @@ def show_ef(list_of_stocks: List[str], other_args: List[str]):
 
 def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str]):
     """
-    Return a portfolio based on condition in port_type  Currently defaulting to 3m of historical data
+    Return a portfolio based on condition in port_type  Defaults to 3m of historical data
     Parameters
     ----------
     list_of_stocks: List[str]
@@ -241,7 +241,7 @@ def ef_portfolio(list_of_stocks: List[str], port_type: str, other_args: List[str
         "-v",
         "--value",
         dest="value",
-        help="Portfolio amount to determine amount spent on each",
+        help="Amount to allocate to portfolio",
         type=float,
         default=1.0,
     )
