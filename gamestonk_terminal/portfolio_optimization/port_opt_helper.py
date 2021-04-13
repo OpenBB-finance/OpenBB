@@ -31,7 +31,6 @@ def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFra
     """
     stock_prices = yf.download(list_of_stocks, period=period, group_by="ticker")
     stock_closes = pd.DataFrame(index=stock_prices.index)
-    # process df
     for stock in list_of_stocks:
         stock_closes[stock] = stock_prices[stock]["Adj Close"]
     return stock_closes
@@ -81,15 +80,16 @@ def pie_chart_weights(weights: dict):
 
     if not weights:
         return
+
     stocks = list(weights.keys())
     sizes = list(weights.values())
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
-        wedges, texts, autotexts = ax.pie(
+        wedges, _, autotexts = ax.pie(
             sizes, labels=stocks, autopct="%1.1f%%", textprops=dict(color="w")
         )
     else:
-        wedges, texts, autotexts = ax.pie(
+        wedges, _, autotexts = ax.pie(
             sizes, labels=stocks, autopct="", textprops=dict(color="w")
         )
         for i, a in enumerate(autotexts):
