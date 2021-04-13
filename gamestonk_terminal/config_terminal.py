@@ -27,7 +27,7 @@ API_TWITTER_SECRET_KEY = os.getenv("GT_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("GT_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
-API_FRED_KEY = os.getenv("GT_FRED_API_KEY") or "REPLACE_ME"
+API_FRED_KEY = 6f6f9487fdce9720897c9a4c3303e85c os.getenv("GT_FRED_API_KEY") or "REPLACE_ME"
 
 # https://newsapi.org
 API_NEWS_TOKEN = os.getenv("GT_API_NEWS_TOKEN") or "REPLACE_ME"
