@@ -252,7 +252,7 @@ def main():
 
             try:
                 # pylint: disable=import-outside-toplevel
-                from gamestonk_terminal.prediction_techniques import pred_menu as pm
+                from gamestonk_terminal.prediction_techniques import pred_controller
             except ModuleNotFoundError as e:
                 print("One of the optional packages seems to be missing")
                 print("Optional packages need to be installed")
@@ -265,7 +265,7 @@ def main():
                 continue
 
             if s_interval == "1440min":
-                b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
+                b_quit = pred_controller.menu(df_stock, s_ticker, s_start, s_interval)
             # If stock data is intradaily, we need to get data again as prediction
             # techniques work on daily adjusted data. By default we load data from
             # Alpha Vantage because the historical data loaded gives a larger
@@ -282,7 +282,7 @@ def main():
                     # pylint: disable=no-member
                     df_stock_pred = df_stock_pred.sort_index(ascending=True)
                     df_stock_pred = df_stock_pred[s_start:]
-                    b_quit = pm.pred_menu(
+                    b_quit = pred_controller.menu(
                         df_stock_pred, s_ticker, s_start, s_interval="1440min"
                     )
                 except Exception as e:
