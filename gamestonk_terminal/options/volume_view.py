@@ -335,12 +335,12 @@ def plot_calls_volume_open_interest(
         )
 
         if ns_parser.min_sp == -1:
-            min_strike = np.percentile(df_calls["strike"], 25)
+            min_strike = 0.75 * last_adj_close_price
         else:
             min_strike = ns_parser.min_sp
 
         if ns_parser.max_sp == -1:
-            max_strike = np.percentile(df_calls["strike"], 75)
+            max_strike = 1.25 * last_adj_close_price
         else:
             max_strike = ns_parser.max_sp
 
@@ -427,12 +427,12 @@ def plot_puts_volume_open_interest(
         )
 
         if ns_parser.min_sp == -1:
-            min_strike = np.percentile(df_puts["strike"], 25)
+            min_strike = 0.75 * last_adj_close_price
         else:
             min_strike = ns_parser.min_sp
 
         if ns_parser.max_sp == -1:
-            max_strike = np.percentile(df_puts["strike"], 75)
+            max_strike = 1.25 * last_adj_close_price
         else:
             max_strike = ns_parser.max_sp
 
