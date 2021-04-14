@@ -231,7 +231,9 @@ def main():
                 b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "op":
-            b_quit = op_controller.menu(s_ticker)
+            b_quit = op_controller.menu(
+                s_ticker, df_stock["5. adjusted close"].values[-1]
+            )
 
         elif ns_known_args.opt == "fred":
             b_quit = fred_controller.menu()
