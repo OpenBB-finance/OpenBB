@@ -8,7 +8,6 @@ import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import yfinance
 
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
