@@ -170,10 +170,10 @@ poetry install -E prediction
 
 *If you would like to set up a docker image:*
 
-* Build the docker: `docker build .`
+* Build the docker: `docker build .`-t gamestonkterminal:dev `
 * Run it: `docker run -it gamestonkterminal:dev `
 
-Note: The problem with docker is that it won't output matplotlib figures.
+Note: The docker image does not output matplotlib figures.
 
 *Commands that may help you in case of an error:
 
