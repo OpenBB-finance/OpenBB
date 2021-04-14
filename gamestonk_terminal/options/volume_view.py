@@ -18,7 +18,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
 
 
-def volume_open_interest_graph(
+def plot_volume_open_interest(
     other_args: List[str],
     ticker: str,
     exp_date: str,
@@ -235,38 +235,169 @@ def get_calls_puts_maxpain(
     float
         Max pain
     """
-    # Process Calls Data
-    df_calls = op_calls.pivot_table(
-        index="strike", values=["volume", "openInterest"], aggfunc="sum"
-    ).reindex()
-    df_calls["strike"] = df_calls.index
-    df_calls["type"] = "calls"
-    df_calls["openInterest"] = df_calls["openInterest"]
-    df_calls["volume"] = df_calls["volume"]
-    df_calls["oi+v"] = df_calls["openInterest"] + df_calls["volume"]
-    df_calls["spot"] = round(last_adj_close_price, 2)
-    df_calls["dv"] = last_adj_close_price - df_calls.index
-    df_calls["dv"] = df_calls["dv"].apply(lambda x: max(0, x))
-    df_calls["dv"] = abs(df_calls["dv"] * df_calls["volume"])
+    df_calls = pd.DataFrame()
+    df_puts = pd.DataFrame()
+    max_pain = 0
 
-    # Process Puts Data
-    df_puts = op_puts.pivot_table(
-        index="strike", values=["volume", "openInterest"], aggfunc="sum"
-    ).reindex()
-    df_puts["strike"] = df_puts.index
-    df_puts["type"] = "puts"
-    df_puts["openInterest"] = df_puts["openInterest"]
-    df_puts["volume"] = -df_puts["volume"]
-    df_puts["openInterest"] = -df_puts["openInterest"]
-    df_puts["oi+v"] = df_puts["openInterest"] + df_puts["volume"]
-    df_puts["spot"] = round(last_adj_close_price, 2)
-    df_puts["dv"] = df_puts.index - last_adj_close_price
-    df_puts["dv"] = df_puts["dv"].apply(lambda x: max(0, x))
-    df_puts["dv"] = abs(df_puts["dv"] * df_puts["volume"])
+    if not op_calls.empty:
+        # Process Calls Data
+        df_calls = op_calls.pivot_table(
+            index="strike", values=["volume", "openInterest"], aggfunc="sum"
+        ).reindex()
+        df_calls["strike"] = df_calls.index
+        df_calls["type"] = "calls"
+        df_calls["openInterest"] = df_calls["openInterest"]
+        df_calls["volume"] = df_calls["volume"]
+        df_calls["oi+v"] = df_calls["openInterest"] + df_calls["volume"]
+        df_calls["spot"] = round(last_adj_close_price, 2)
+        df_calls["dv"] = last_adj_close_price - df_calls.index
+        df_calls["dv"] = df_calls["dv"].apply(lambda x: max(0, x))
+        df_calls["dv"] = abs(df_calls["dv"] * df_calls["volume"])
 
-    # Get max pain
-    df_opt = pd.merge(df_calls, df_puts, left_index=True, right_index=True)
-    df_opt["dv"] = round(df_opt["dv_x"] + df_opt["dv_y"], 2)
-    max_pain = df_opt["dv"].idxmax()
+    if not op_puts.empty:
+        # Process Puts Data
+        df_puts = op_puts.pivot_table(
+            index="strike", values=["volume", "openInterest"], aggfunc="sum"
+        ).reindex()
+        df_puts["strike"] = df_puts.index
+        df_puts["type"] = "puts"
+        df_puts["openInterest"] = df_puts["openInterest"]
+        df_puts["volume"] = -df_puts["volume"]
+        df_puts["openInterest"] = -df_puts["openInterest"]
+        df_puts["oi+v"] = df_puts["openInterest"] + df_puts["volume"]
+        df_puts["spot"] = round(last_adj_close_price, 2)
+        df_puts["dv"] = df_puts.index - last_adj_close_price
+        df_puts["dv"] = df_puts["dv"].apply(lambda x: max(0, x))
+        df_puts["dv"] = abs(df_puts["dv"] * df_puts["volume"])
+
+    if not op_calls.empty and not op_puts.empty:
+        # Get max pain
+        df_opt = pd.merge(df_calls, df_puts, left_index=True, right_index=True)
+        df_opt["dv"] = round(df_opt["dv_x"] + df_opt["dv_y"], 2)
+        max_pain = df_opt["dv"].idxmax()
 
     return df_calls, df_puts, max_pain
+
+
+def plot_calls_volume_open_interest(
+    other_args: List[str],
+    ticker: str,
+    last_adj_close_price: float,
+    op_calls: pd.DataFrame,
+):
+    """Options volume and open interest
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker : str
+        Main ticker to compare income
+    last_adj_close_price: float
+        Last adjusted closing price
+    op_calls: pd.DataFrame
+        Option data calls
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="vcalls",
+        description="""
+            Plots Calls Volume + Open Interest. [Source: Yahoo Finance]
+        """,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_calls, _, _ = get_calls_puts_maxpain(
+            op_calls, pd.DataFrame(), last_adj_close_price
+        )
+
+        plt.figure(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
+        plt.axvline(last_adj_close_price, lw=2)
+        plt.bar(
+            df_calls["strike"],
+            df_calls["volume"] + df_calls["openInterest"],
+            color="lightgreen",
+        )
+        plt.bar(df_calls["strike"], df_calls["volume"], color="green")
+
+        plt.title("Calls Volume")
+        plt.legend(["Stock Price", "Open Interest", "Volume"])
+        plt.xlabel("Strike Price")
+        plt.ylabel("Volume")
+
+        if gtff.USE_ION:
+            plt.ion()
+        plt.show()
+
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+        return
+
+
+def plot_puts_volume_open_interest(
+    other_args: List[str],
+    ticker: str,
+    last_adj_close_price: float,
+    op_puts: pd.DataFrame,
+):
+    """Options volume and open interest
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker : str
+        Main ticker to compare income
+    last_adj_close_price: float
+        Last adjusted closing price
+    op_puts: pd.DataFrame
+        Option data puts
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="vputs",
+        description="""
+            Plots Puts Volume + Open Interest. [Source: Yahoo Finance]
+        """,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        _, df_puts, _ = get_calls_puts_maxpain(
+            pd.DataFrame(), op_puts, last_adj_close_price
+        )
+
+        plt.figure(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+
+        plt.axvline(last_adj_close_price, lw=2)
+        plt.bar(
+            df_puts["strike"],
+            -df_puts["volume"] - df_puts["openInterest"],
+            color="pink",
+        )
+        plt.bar(df_puts["strike"], -df_puts["volume"], color="red")
+
+        plt.title("Puts Volume")
+        plt.legend(["Stock Price", "Open Interest", "Volume"])
+        plt.xlabel("Strike Price")
+        plt.ylabel("Volume")
+
+        if gtff.USE_ION:
+            plt.ion()
+        plt.show()
+
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+        return

@@ -17,7 +17,7 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = ["help", "q", "quit", "exp", "voi"]
+    CHOICES = ["help", "q", "quit", "exp", "voi", "vcalls", "vputs"]
 
     def __init__(self, ticker: str, last_adj_close_price: float):
         """Construct data."""
@@ -90,6 +90,8 @@ class OptionsController:
         print("")
         print("   exp           see/set expiry date")
         print("   voi           volume + open interest options trading plot")
+        print("   vcalls        calls volume + open interest plot")
+        print("   vputs         puts volume + open interest plot")
         print("")
         return
 
@@ -121,9 +123,13 @@ class OptionsController:
         """Process Quit command - quit the program."""
         return True
 
+    def call_exp(self, other_args: List[str]):
+        """Process exp command."""
+        self.expiry_dates(self, other_args)
+
     def call_voi(self, other_args: List[str]):
         """Process voi command."""
-        volume_view.volume_open_interest_graph(
+        volume_view.plot_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -132,9 +138,23 @@ class OptionsController:
             self.options.puts,
         )
 
-    def call_exp(self, other_args: List[str]):
-        """Process exp command."""
-        self.expiry_dates(self, other_args)
+    def call_vcalls(self, other_args: List[str]):
+        """Process vcalls command."""
+        volume_view.plot_calls_volume_open_interest(
+            other_args,
+            self.ticker,
+            self.last_adj_close_price,
+            self.options.calls,
+        )
+
+    def call_vputs(self, other_args: List[str]):
+        """Process vcalls command."""
+        volume_view.plot_puts_volume_open_interest(
+            other_args,
+            self.ticker,
+            self.last_adj_close_price,
+            self.options.puts,
+        )
 
 
 def menu(ticker: str, last_adj_close_price: float):
