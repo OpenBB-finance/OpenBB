@@ -180,7 +180,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         Dictionary of weights where keys are the tickers.
     """
 
-    parser = argparse.ArgumentParser(add_help=False, prog="port_type")
+    parser = argparse.ArgumentParser(add_help=False, prog=port_type)
 
     parser.add_argument(
         "-p",
