@@ -97,7 +97,7 @@ def my_autopct(x):
         return ""
 
 
-def pie_chart_weights(weights: dict, optimizer: str, value: Optional[float]):
+def pie_chart_weights(weights: dict, optimizer: str, value: float):
     """
     Show a pie chart of holdings
     Parameters

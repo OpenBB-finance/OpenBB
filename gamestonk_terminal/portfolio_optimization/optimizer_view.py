@@ -81,7 +81,7 @@ def equal_weight(stocks: List[str], other_args: List[str]):
         for stock in stocks:
             values[stock] = ns_parser.value * round(1 / n_stocks, 5)
         if ns_parser.pie:
-            pie_chart_weights(values, "equal", None)
+            pie_chart_weights(values, "equal", 0)
         if n_stocks >= 1:
             print("Equal Weight Portfolio: ")
             display_weights(values)
@@ -147,7 +147,7 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
             weights[k] = round(v / prop_sum, 5) * ns_parser.value
 
         if ns_parser.pie:
-            pie_chart_weights(weights, property_type, None)
+            pie_chart_weights(weights, property_type, 0)
 
         if property_type == "marketCap":
             print("Market Cap Weighted Portfolio: ")
@@ -225,7 +225,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 key: ns_parser.value * round(value, 5)
                 for key, value in ef_sharpe.items()
             }
-            val = None
+            val = 0
             print("Weights that maximize Sharpe Ratio:")
 
         elif port_type == "min_volatility":
@@ -235,7 +235,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 key: ns_parser.value * round(value, 5)
                 for key, value in ef_min_vol.items()
             }
-            val = None
+            val = 0
             print("Weights that minimize volatility")
 
         elif port_type == "eff_risk":
