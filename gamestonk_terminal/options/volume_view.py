@@ -282,6 +282,7 @@ def get_calls_puts_maxpain(
 def plot_calls_volume_open_interest(
     other_args: List[str],
     ticker: str,
+    exp_date: str,
     last_adj_close_price: float,
     op_calls: pd.DataFrame,
 ):
@@ -293,6 +294,8 @@ def plot_calls_volume_open_interest(
         Command line arguments to be processed with argparse
     ticker : str
         Main ticker to compare income
+    exp_date : str
+        Expiry date of the option
     last_adj_close_price: float
         Last adjusted closing price
     op_calls: pd.DataFrame
@@ -305,6 +308,22 @@ def plot_calls_volume_open_interest(
             Plots Calls Volume + Open Interest. [Source: Yahoo Finance]
         """,
     )
+    parser.add_argument(
+        "-m",
+        "--min",
+        dest="min_sp",
+        type=check_non_negative,
+        default=-1,
+        help="minimum strike price to consider in the plot.",
+    )
+    parser.add_argument(
+        "-M",
+        "--max",
+        dest="max_sp",
+        type=check_non_negative,
+        default=-1,
+        help="maximum strike price to consider in the plot.",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -314,6 +333,16 @@ def plot_calls_volume_open_interest(
         df_calls, _, _ = get_calls_puts_maxpain(
             op_calls, pd.DataFrame(), last_adj_close_price
         )
+
+        if ns_parser.min_sp == -1:
+            min_strike = np.percentile(df_calls["strike"], 25)
+        else:
+            min_strike = ns_parser.min_sp
+
+        if ns_parser.max_sp == -1:
+            max_strike = np.percentile(df_calls["strike"], 75)
+        else:
+            max_strike = ns_parser.max_sp
 
         plt.figure(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
@@ -325,10 +354,11 @@ def plot_calls_volume_open_interest(
         )
         plt.bar(df_calls["strike"], df_calls["volume"], color="green")
 
-        plt.title("Calls Volume")
+        plt.title(f"{ticker} calls volumes for {exp_date} ")
         plt.legend(["Stock Price", "Open Interest", "Volume"])
         plt.xlabel("Strike Price")
         plt.ylabel("Volume")
+        plt.xlim([min_strike, max_strike])
 
         if gtff.USE_ION:
             plt.ion()
@@ -344,6 +374,7 @@ def plot_calls_volume_open_interest(
 def plot_puts_volume_open_interest(
     other_args: List[str],
     ticker: str,
+    exp_date: str,
     last_adj_close_price: float,
     op_puts: pd.DataFrame,
 ):
@@ -355,6 +386,8 @@ def plot_puts_volume_open_interest(
         Command line arguments to be processed with argparse
     ticker : str
         Main ticker to compare income
+    exp_date : str
+        Expiry date of the option
     last_adj_close_price: float
         Last adjusted closing price
     op_puts: pd.DataFrame
@@ -367,6 +400,22 @@ def plot_puts_volume_open_interest(
             Plots Puts Volume + Open Interest. [Source: Yahoo Finance]
         """,
     )
+    parser.add_argument(
+        "-m",
+        "--min",
+        dest="min_sp",
+        type=check_non_negative,
+        default=-1,
+        help="minimum strike price to consider in the plot.",
+    )
+    parser.add_argument(
+        "-M",
+        "--max",
+        dest="max_sp",
+        type=check_non_negative,
+        default=-1,
+        help="maximum strike price to consider in the plot.",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -376,6 +425,16 @@ def plot_puts_volume_open_interest(
         _, df_puts, _ = get_calls_puts_maxpain(
             pd.DataFrame(), op_puts, last_adj_close_price
         )
+
+        if ns_parser.min_sp == -1:
+            min_strike = np.percentile(df_puts["strike"], 25)
+        else:
+            min_strike = ns_parser.min_sp
+
+        if ns_parser.max_sp == -1:
+            max_strike = np.percentile(df_puts["strike"], 75)
+        else:
+            max_strike = ns_parser.max_sp
 
         plt.figure(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
@@ -387,10 +446,11 @@ def plot_puts_volume_open_interest(
         )
         plt.bar(df_puts["strike"], -df_puts["volume"], color="red")
 
-        plt.title("Puts Volume")
+        plt.title(f"{ticker} puts volumes for {exp_date} ")
         plt.legend(["Stock Price", "Open Interest", "Volume"])
         plt.xlabel("Strike Price")
         plt.ylabel("Volume")
+        plt.xlim([min_strike, max_strike])
 
         if gtff.USE_ION:
             plt.ion()

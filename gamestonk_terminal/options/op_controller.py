@@ -143,6 +143,7 @@ class OptionsController:
         volume_view.plot_calls_volume_open_interest(
             other_args,
             self.ticker,
+            self.expiry_date,
             self.last_adj_close_price,
             self.options.calls,
         )
@@ -152,6 +153,7 @@ class OptionsController:
         volume_view.plot_puts_volume_open_interest(
             other_args,
             self.ticker,
+            self.expiry_date,
             self.last_adj_close_price,
             self.options.puts,
         )
