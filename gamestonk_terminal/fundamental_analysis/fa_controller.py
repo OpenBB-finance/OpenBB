@@ -14,7 +14,7 @@ from gamestonk_terminal.fundamental_analysis import finviz_api as fvz_api
 from gamestonk_terminal.fundamental_analysis import market_watch_api as mw_api
 from gamestonk_terminal.fundamental_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
+from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
 
