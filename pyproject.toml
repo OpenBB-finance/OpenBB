@@ -54,6 +54,7 @@ detecta = "^0.0.5"
 tradingview-ta = "^3.2.3"
 finvizfinance = "^0.9.3"
 Pillow = "^8.2.0"
+pyportfolioopt = "^1.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

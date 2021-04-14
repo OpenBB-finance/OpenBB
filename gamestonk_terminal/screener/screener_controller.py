@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.screener import finviz_view
 from gamestonk_terminal.screener import yahoo_finance_view
+from gamestonk_terminal.portfolio_optimization import po_controller
 
 
 class ScreenerController:
@@ -34,6 +35,7 @@ class ScreenerController:
         "performance",
         "technical",
         "signals",
+        "po",
     ]
 
     def __init__(self):
@@ -68,6 +70,8 @@ class ScreenerController:
         print("   technical      technical (e.g. Beta, SMA50, 52W Low, RSI, Change)")
         print("")
         print("   signals        view filter signals (e.g. -s top_gainers)")
+        print("")
+        print("   > po           go to the portfolio optimization menu")
         print("")
 
     @staticmethod
@@ -216,6 +220,10 @@ class ScreenerController:
     def call_signals(self, other_args: List[str]):
         """Process signals command"""
         finviz_view.view_signals(other_args)
+
+    def call_po(self, other_args: List[str]):
+        """Call the portfolio optimization menu"""
+        return po_controller.menu(other_args)
 
 
 def menu():

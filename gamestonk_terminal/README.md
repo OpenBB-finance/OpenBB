@@ -241,6 +241,21 @@ Command|Description|Brokers
 `hold`    | view net holdings across all logins
 
 &nbsp;
+## Portfolio Optimization [»](portfolio_optimization/README.md)
+command|desciription
+------|------
+`equal_weight`|Returns equal weights for all selected stocks
+`mkt_cap`| Returns weights that are weighted by market cap
+`div_yield`|Returns weights that are weighted by dividend yield
+`max_sharpe`| Returns portfolio of Efficient Frontier with maximum sharpe ratio
+`min_vol`| Returns portfolio on Efficient Frontier with minimum volatility
+`eff_risk`| Returns portfolio on Efficient Frontier that maximizes returns at a given risk
+`eff_ret`| Returns portfolio on Efficient Frontier that minimizes risk at a given return level
+`show_eff`|Plots random portfolios and shows the Efficient Frontier
+
+&nbsp;
+
+
 ## Cryptocurrency [»](cryptocurrency/README.md)
 
 Command|Description
