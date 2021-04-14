@@ -123,7 +123,7 @@ def pie_chart_weights(weights: dict, optimizer: str, value: Optional[float]):
         f"{str(a)}: {str(round(100*b/total_size,3))[:4]}%"
         for a, b in zip(stocks, sizes)
     ]
-
+    fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         wedges, _, autotexts = plt.pie(
             sizes,

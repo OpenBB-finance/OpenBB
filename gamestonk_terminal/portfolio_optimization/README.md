@@ -153,7 +153,7 @@ Current Tickers: GE, GM, AMZN, AAPL, F, MSFT
 ````
 To perform the optimization, we will set a target return of 25% (.25).  Given how stocks performed during COVID,
 there is a lot of volatility, so many optimizations may not get low volatility.  The module also returns annualized volatility,
-so the number is your portfolio volatility * `sqrt(252`.  Ths optimization will be (including a pie chart!).  Note we could also supply a different
+so the number is your portfolio volatility * `sqrt(252`.  This optimization will be (including a pie chart!).  Note we could also supply a different
 time period, which changes the expected returns and historical volatility, which changes the optimization.  We could also specify a dollar
 amount that you wish to allocate using the `-v` flag.
 ````
@@ -166,4 +166,4 @@ And the pie chart:
 
 ![yummypie](https://user-images.githubusercontent.com/18151143/114740289-b9167f00-9d17-11eb-9c29-470785b21d09.png)
 
-Note that since `AAPL` had zero allocation, it was ommitted from the chart.
+Note that since `AAPL` had zero allocation, it was omitted from the chart.
