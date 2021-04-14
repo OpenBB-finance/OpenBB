@@ -111,19 +111,22 @@ def pie_chart_weights(weights: dict, optimizer: str, value: Optional[float]):
     if not weights:
         return
 
-    stocks = np.array(list(weights.keys()))
-    sizes = np.array(list(weights.values()))
+    init_stocks = list(weights.keys())
+    init_sizes = list(weights.values())
+    stocks = []
+    sizes = []
+    for stock, size in zip(init_stocks, init_sizes):
+        if size > 0:
+            stocks.append(stock)
+            sizes.append(size)
 
-    to_not_include = sizes == 0
-
-    stocks, sizes = stocks[to_not_include == False], sizes[to_not_include == False]
     total_size = np.sum(sizes)
 
     leg_labels = [
         f"{str(a)}: {str(round(100*b/total_size,3))[:4]}%"
         for a, b in zip(stocks, sizes)
     ]
-    fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         wedges, _, autotexts = plt.pie(
             sizes,
