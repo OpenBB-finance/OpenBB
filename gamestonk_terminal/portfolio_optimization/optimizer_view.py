@@ -81,7 +81,7 @@ def equal_weight(stocks: List[str], other_args: List[str]):
         for stock in stocks:
             values[stock] = ns_parser.value * round(1 / n_stocks, 5)
         if ns_parser.pie:
-            pie_chart_weights(values)
+            pie_chart_weights(values, "equal", None)
         if n_stocks >= 1:
             print("Equal Weight Portfolio: ")
             display_weights(values)
@@ -147,7 +147,7 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
             weights[k] = round(v / prop_sum, 5) * ns_parser.value
 
         if ns_parser.pie:
-            pie_chart_weights(weights)
+            pie_chart_weights(weights, property_type, None)
 
         if property_type == "marketCap":
             print("Market Cap Weighted Portfolio: ")
@@ -225,6 +225,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 key: ns_parser.value * round(value, 5)
                 for key, value in ef_sharpe.items()
             }
+            val = None
             print("Weights that maximize Sharpe Ratio:")
 
         elif port_type == "min_volatility":
@@ -234,6 +235,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 key: ns_parser.value * round(value, 5)
                 for key, value in ef_min_vol.items()
             }
+            val = None
             print("Weights that minimize volatility")
 
         elif port_type == "eff_risk":
@@ -243,7 +245,8 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 key: ns_parser.value * round(value, 5)
                 for key, value in ef_eff_risk.items()
             }
-            print("Weights for maximizing returns at your risk level:")
+            val = ns_parser.risk_level
+            print(f"Weights for maximizing returns at risk = {100*val:.1f} %")
 
         elif port_type == "eff_ret":
 
@@ -252,13 +255,14 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 key: ns_parser.value * round(value, 5)
                 for key, value in ef_eff_risk.items()
             }
-            print("Weights for minimizing risk at your return:")
+            val = ns_parser.target_return
+            print(f"Weights for minimizing risk at target return = {100*val:.1f} %")
 
         else:
             raise ValueError("EF Method not found")
 
         if ns_parser.pie:
-            pie_chart_weights(weights, port_type)
+            pie_chart_weights(weights, port_type, val)
 
         print("")
         ef.portfolio_performance(verbose=True)

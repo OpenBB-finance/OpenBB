@@ -117,7 +117,7 @@ The usage is:
 eff_risk [-p PERIOD] [-r --risk RISK_LEVEL] [-v --value VALUE] [--pie]
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -r/--risk Risk tolerance.  5% is 0.05.
+* -r/--risk Risk tolerance.  Default is 0.1 (10%)
 * -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
 * --pie Flag that displays a pie chart of the allocations.
 
@@ -128,15 +128,42 @@ The usage is:
 eff_ret [-p PERIOD] [-r --return] [-v --value VALUE] [--pie]
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -r/--return.  Desired return.  5% is 0.05.
+* -r/--return.  Desired return.  Default is 0.1 (10%)
 * -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
 * --pie Flag that displays a pie chart of the allocations.
 
 ### show_eff
-This function plots random portfolios basd on their risk and returns and shows the efficient frontier.
+This function plots random portfolios based on their risk and returns and shows the efficient frontier.
 The usage is:
 ````
 show_eff [-p PERIOD]  [-n N_PORTFOLIOS]
 ````
 * -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 * -n Number of portfolios to simulate.
+
+##Sample Usage
+In this example, we generate weights for a list of 6 stocks using the eff_ret command.  This optimization looks to maximize returns 
+at a given risk level.  We start by adding the stocks we want to analyze:
+````
+select aapl,amzn,msft,f,gm,ge
+````
+Which shows:
+````
+Current Tickers: GE, GM, AMZN, AAPL, F, MSFT
+````
+To perform the optimization, we will set a target return of 25% (.25).  Given how stocks performed during COVID,
+there is a lot of volatility, so many optimizations may not get low volatility.  The module also returns annualized volatility,
+so the number is your portfolio volatility * `sqrt(252`.  Ths optimization will be (including a pie chart!).  Note we could also supply a different
+time period, which changes the expected returns and historical volatility, which changes the optimization.  We could also specify a dollar
+amount that you wish to allocate using the `-v` flag.
+````
+eff_ret -r .25 --pie
+````
+The console will show (numbers will vary based on when this is done).
+![console](https://user-images.githubusercontent.com/18151143/114740311-bd429c80-9d17-11eb-90e2-97430781431a.png)
+
+And the pie chart:
+
+![yummypie](https://user-images.githubusercontent.com/18151143/114740289-b9167f00-9d17-11eb-9c29-470785b21d09.png)
+
+Note that since `AAPL` had zero allocation, it was ommitted from the chart.

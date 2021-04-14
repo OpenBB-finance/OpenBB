@@ -10,7 +10,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import optimizer_view as po_api
-from gamestonk_terminal.portfolio_optimization.optimizer_helper import display_weights
 
 
 class PortfolioOptimization:
@@ -179,6 +178,7 @@ def menu(tickers: List[str]):
     """Portfolio Optimization Menu"""
     if tickers == [""]:
         tickers = []
+    plt.close("all")
     po_controller = PortfolioOptimization(tickers)
     po_controller.call_help(tickers)
 

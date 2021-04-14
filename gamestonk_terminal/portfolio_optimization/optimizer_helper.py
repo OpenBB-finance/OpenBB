@@ -2,9 +2,10 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Optional
 import math
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
 from pypfopt.efficient_frontier import EfficientFrontier
@@ -14,7 +15,15 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import plot_autoscale, parse_known_args_and_warn
 
-title_maps = {}
+title_maps = {
+    "max_sharpe": "Maximum Sharpe Portfolio",
+    "min_volatility": "Minimum Volatility Portfolio",
+    "eff_risk": "Maximum Return Portfolio at Risk = {:1f} %",
+    "eff_ret": "Minimum Volatility Portfolio at Target Return = {:.1f} %",
+    "equal": "Equally Weighted Portfolio",
+    "marketCap": "MarketCap Weighted Portfolio",
+    "dividendYield": "Dividend Yield Weighted Portfolio",
+}
 
 
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
@@ -71,11 +80,24 @@ def display_weights(weights: dict):
     if not weights:
         return
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
-    weight_df["weight"] = (weight_df["value"] * 100).astype(str) + " %"
-    print(weight_df["weight"])
+    if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
+        weight_df["weight"] = (weight_df["value"] * 100).astype(str).apply(
+            lambda s: s[:6]
+        ) + " %"
+        print(pd.DataFrame(weight_df["weight"]))
+    else:
+        print(weight_df)
 
 
-def pie_chart_weights(weights: dict, optimizer: str):
+def my_autopct(x):
+    """Function for autopct of plt.pie.  This results in values not being printed in the pie if they are 'too small'"""
+    if x > 4:
+        return f"{x:.2f} %"
+    else:
+        return ""
+
+
+def pie_chart_weights(weights: dict, optimizer: str, value: Optional[float]):
     """
     Show a pie chart of holdings
     Parameters
@@ -83,43 +105,71 @@ def pie_chart_weights(weights: dict, optimizer: str):
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values if -v specified
     optimzer: str
-        Optmization technique used
+        Optimization technique used for title
     """
-
+    plt.close("all")
     if not weights:
         return
 
-    stocks = list(weights.keys())
-    sizes = list(weights.values())
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    stocks = np.array(list(weights.keys()))
+    sizes = np.array(list(weights.values()))
+
+    to_not_include = sizes == 0
+
+    stocks, sizes = stocks[to_not_include == False], sizes[to_not_include == False]
+    total_size = np.sum(sizes)
+
+    leg_labels = [
+        f"{str(a)}: {str(round(100*b/total_size,3))[:4]}%"
+        for a, b in zip(stocks, sizes)
+    ]
+
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
-        wedges, _, autotexts = ax.pie(
+        wedges, _, autotexts = plt.pie(
             sizes,
             labels=stocks,
-            autopct="%1.1f%%",
+            autopct=my_autopct,
             textprops=dict(color="k"),
-            labeldistance=5,
+            explode=[s / (5 * total_size) for s in sizes],
+            normalize=True,
+            shadow=True,
         )
     else:
-        wedges, _, autotexts = ax.pie(
-            sizes, labels=stocks, autopct="", textprops=dict(color="k"), labeldistance=5
+        wedges, _, autotexts = plt.pie(
+            sizes,
+            labels=stocks,
+            autopct="",
+            textprops=dict(color="k"),
+            explode=[s / (5 * total_size) for s in sizes],
+            normalize=True,
+            shadow=True,
         )
         for i, a in enumerate(autotexts):
-            a.set_text(f"{sizes[i]}")
+            if sizes[i] / total_size > 0.05:
+                a.set_text(f"{sizes[i]:.2f}")
+            else:
+                a.set_text("")
 
-    ax.axis("equal")
-    ax.legend(
+    plt.axis("equal")
+
+    plt.legend(
         wedges,
-        stocks,
+        leg_labels,
         title="Stocks",
         loc="center left",
         bbox_to_anchor=(0.85, 0, 0.5, 1),
     )
 
     plt.setp(autotexts, size=8, weight="bold")
-    ax.set_title("Portfolio Holdings")
+
+    if optimizer in ["eff_ret", "eff_risk"]:
+        plt.title(title_maps[optimizer].format(100 * value))
+    else:
+        plt.title(title_maps[optimizer])
+
     if gtff.USE_ION:
         plt.ion()
+
     plt.show()
     print("")
 
