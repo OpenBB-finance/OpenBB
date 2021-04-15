@@ -7,7 +7,6 @@ import requests
 
 from alpha_vantage.fundamentaldata import FundamentalData
 import pandas as pd
-from pandas.io.json import json_normalize
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.dataframe_helpers import clean_df_index
@@ -19,6 +18,16 @@ from gamestonk_terminal.helper_funcs import (
 
 
 def overview(other_args: List[str], ticker: str):
+    """Alpha Vantage stock ticker overview
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="overview",
@@ -51,7 +60,7 @@ def overview(other_args: List[str], ticker: str):
         # If the returned data was successful
         if result.status_code == 200:
             # Parse json data to dataframe
-            df_fa = json_normalize(result.json())
+            df_fa = pd.json_normalize(result.json())
             # Keep json data sorting in dataframe
             df_fa = df_fa[list(result.json().keys())].T
             df_fa = df_fa.applymap(lambda x: long_number_format(x))
@@ -95,6 +104,16 @@ def overview(other_args: List[str], ticker: str):
 
 
 def key(other_args: List[str], ticker: str):
+    """Alpha Vantage key metrics
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="key",
@@ -118,7 +137,7 @@ def key(other_args: List[str], ticker: str):
 
         # If the returned data was successful
         if result.status_code == 200:
-            df_fa = json_normalize(result.json())
+            df_fa = pd.json_normalize(result.json())
             df_fa = df_fa[list(result.json().keys())].T
             df_fa = df_fa.applymap(lambda x: long_number_format(x))
             clean_df_index(df_fa)
@@ -161,6 +180,16 @@ def key(other_args: List[str], ticker: str):
 
 
 def income_statement(other_args: List[str], ticker: str):
+    """Alpha Vantage income statement
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="income",
@@ -223,6 +252,16 @@ def income_statement(other_args: List[str], ticker: str):
 
 
 def balance_sheet(other_args: List[str], ticker: str):
+    """Alpha Vantage balance sheet
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="balance",
@@ -293,6 +332,16 @@ def balance_sheet(other_args: List[str], ticker: str):
 
 
 def cash_flow(other_args: List[str], ticker: str):
+    """Alpha Vantage cash flow
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="cash",
@@ -359,6 +408,16 @@ def cash_flow(other_args: List[str], ticker: str):
 
 
 def earnings(other_args: List[str], ticker: str):
+    """Alpha Vantage earnings
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="earnings",
@@ -405,7 +464,7 @@ def earnings(other_args: List[str], ticker: str):
 
         # If the returned data was successful
         if result.status_code == 200:
-            df_fa = json_normalize(result.json())
+            df_fa = pd.json_normalize(result.json())
             if ns_parser.b_quarter:
                 df_fa = pd.DataFrame(df_fa["quarterlyEarnings"][0])
                 df_fa = df_fa[

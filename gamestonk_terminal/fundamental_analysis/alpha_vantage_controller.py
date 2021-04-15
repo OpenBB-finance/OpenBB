@@ -20,6 +20,7 @@ class AlphaVantageController:
         "q",
         "quit",
         "overview",
+        "key",
         "income",
         "balance",
         "cash",
@@ -66,6 +67,7 @@ class AlphaVantageController:
         print("   quit          quit to abandon program")
         print("")
         print("   overview      overview of the company")
+        print("   key           company key metrics")
         print("   income        income statements of the company")
         print("   balance       balance sheet of the company")
         print("   cash          cash flow of the company")
@@ -103,6 +105,10 @@ class AlphaVantageController:
     def call_overview(self, other_args: List[str]):
         """ Process overview command """
         avv.overview(other_args, self.ticker)
+
+    def call_key(self, other_args: List[str]):
+        """ Process overview command """
+        avv.key(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
         """ Process income command """
