@@ -27,7 +27,7 @@ title_maps = {
 
 
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
-    """
+    """Get adjusted closing price for each stock in the list
 
     Parameters
     ----------
@@ -51,8 +51,8 @@ def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFra
 
 
 def prepare_efficient_frontier(stock_prices: pd.DataFrame):
-    """
-    Take in a dataframe of prices and return an efficient frontier object
+    """Take in a dataframe of prices and return an efficient frontier object
+
     Parameters
     ----------
     stock_prices : DataFrame
@@ -82,11 +82,11 @@ def display_weights(weights: dict):
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
     if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
         weight_df["weight"] = (weight_df["value"] * 100).astype(str).apply(
-            lambda s: s[:6]
+            lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5]
         ) + " %"
-        print(pd.DataFrame(weight_df["weight"]))
+        print(pd.DataFrame(weight_df["weight"]).to_string(header=False))
     else:
-        print(weight_df)
+        print(weight_df.to_string(header=False))
 
 
 def my_autopct(x):
@@ -107,7 +107,6 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
     optimzer: str
         Optimization technique used for title
     """
-    plt.close("all")
     if not weights:
         return
 
@@ -122,31 +121,28 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
 
     total_size = np.sum(sizes)
 
-    leg_labels = [
-        f"{str(a)}: {str(round(100*b/total_size,3))[:4]}%"
-        for a, b in zip(stocks, sizes)
-    ]
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         wedges, _, autotexts = plt.pie(
             sizes,
             labels=stocks,
             autopct=my_autopct,
             textprops=dict(color="k"),
-            explode=[s / (5 * total_size) for s in sizes],
+            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
             normalize=True,
-            shadow=True,
         )
+        plt.setp(autotexts, color="white", fontweight="bold")
     else:
         wedges, _, autotexts = plt.pie(
             sizes,
             labels=stocks,
             autopct="",
             textprops=dict(color="k"),
-            explode=[s / (5 * total_size) for s in sizes],
+            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
             normalize=True,
-            shadow=True,
         )
+        plt.setp(autotexts, color="white", fontweight="bold")
         for i, a in enumerate(autotexts):
             if sizes[i] / total_size > 0.05:
                 a.set_text(f"{sizes[i]:.2f}")
@@ -155,23 +151,40 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
 
     plt.axis("equal")
 
-    plt.legend(
+    leg1 = plt.legend(
         wedges,
-        leg_labels,
-        title="Stocks",
-        loc="center left",
-        bbox_to_anchor=(0.85, 0, 0.5, 1),
+        [str(s) for s in stocks],
+        title="  Ticker",
+        loc="upper left",
+        bbox_to_anchor=(0.80, 0, 0.5, 1),
+        frameon=False,
     )
+    leg2 = plt.legend(
+        wedges,
+        [
+            f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
+            for s in sizes
+        ],
+        title=" ",
+        loc="upper left",
+        handlelength=0,
+        bbox_to_anchor=(0.91, 0, 0.5, 1),
+        frameon=False,
+    )
+    plt.gca().add_artist(leg1)
+    plt.gca().add_artist(leg2)
 
     plt.setp(autotexts, size=8, weight="bold")
 
     if optimizer in ["eff_ret", "eff_risk"]:
-        plt.title(title_maps[optimizer].format(100 * value))
+        plt.gca().set_title(title_maps[optimizer].format(100 * value), pad=20)
     else:
-        plt.title(title_maps[optimizer])
+        plt.gca().set_title(title_maps[optimizer], pad=20)
 
     if gtff.USE_ION:
         plt.ion()
+
+    plt.tight_layout()
 
     plt.show()
     print("")

@@ -9,7 +9,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio_optimization import optimizer_view as po_api
+from gamestonk_terminal.portfolio_optimization import optimizer_view
 
 
 class PortfolioOptimization:
@@ -20,14 +20,14 @@ class PortfolioOptimization:
         "quit",
         "select",
         "add",
-        "equal_weight",
-        "mkt_cap",
-        "div_yield",
-        "max_sharpe",
-        "min_vol",
-        "eff_risk",
-        "eff_ret",
-        "show_ef",
+        "equal",
+        "mktcap",
+        "dividend",
+        "maxsharpe",
+        "minvol",
+        "maxret",
+        "minrisk",
+        "ef",
         "yolo",
     ]
 
@@ -52,21 +52,19 @@ class PortfolioOptimization:
         print("   quit          quit to abandon program")
         print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
         print("")
-        print("   add          add ticker to optimize")
-        print("   select       overwrite current tickers with new tickers")
+        print("   add           add ticker to optimize")
+        print("   select        overwrite current tickers with new tickers")
         print("")
         print("Optimization:")
+        print("   equal         equally weighted")
+        print("   mktcap        market cap weighted")
+        print("   dividend      dividend weighted")
+        print("   maxsharpe     maximum sharpe ratio")
+        print("   minvol        minimum volatility")
+        print("   maxret        maximizes returns at given risk")
+        print("   minrisk       minimizes risk at given return")
+        print("   ef            show the efficient frontier")
         print("")
-        print("   equal_weight   equally weighted portfolio")
-        print("   mkt_cap        marketcap weighted portfolio")
-        print("   div_yield      dividend weighted portfolio")
-        print("   max_sharpe     portfolio with maximum sharpe ratio")
-        print("   min_vol        portfolio with minimum volatility")
-        print("   eff_risk       portfolio that maximizes returns at given risk")
-        print("   eff_ret        portfolio that minimizes risk at given return")
-        print("   show_ef        show the efficient frontier")
-        print("")
-        plt.close("all")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -97,36 +95,45 @@ class PortfolioOptimization:
         return True
 
     def call_add(self, other_args: List[str]):
+        """Process add command"""
         self.add_stocks(self, other_args)
 
     def call_select(self, other_args: List[str]):
+        """Process select command"""
         self.tickers = []
         self.add_stocks(self, other_args)
 
-    def call_equal_weight(self, other_args: List[str]):
-        po_api.equal_weight(self.tickers, other_args)
+    def call_equal(self, other_args: List[str]):
+        """Process equal command"""
+        optimizer_view.equal_weight(self.tickers, other_args)
 
-    def call_mkt_cap(self, other_args: List[str]):
-        po_api.property_weighting(self.tickers, "marketCap", other_args)
+    def call_mktcap(self, other_args: List[str]):
+        """Process mktcap command"""
+        optimizer_view.property_weighting(self.tickers, "marketCap", other_args)
 
-    def call_div_yield(self, other_args: List[str]):
-        po_api.property_weighting(self.tickers, "dividendYield", other_args)
+    def call_dividend(self, other_args: List[str]):
+        """Process dividend command"""
+        optimizer_view.property_weighting(self.tickers, "dividendYield", other_args)
 
-    def call_max_sharpe(self, other_args: List[str]):
-        po_api.ef_portfolio(self.tickers, "max_sharpe", other_args)
+    def call_maxsharpe(self, other_args: List[str]):
+        """Process maxsharpe command"""
+        optimizer_view.ef_portfolio(self.tickers, "max_sharpe", other_args)
 
-    def call_min_vol(self, other_args: List[str]):
-        po_api.ef_portfolio(self.tickers, "min_volatility", other_args)
+    def call_minvol(self, other_args: List[str]):
+        """Process minvol command"""
+        optimizer_view.ef_portfolio(self.tickers, "min_volatility", other_args)
 
-    def call_eff_risk(self, other_args: List[str]):
-        po_api.ef_portfolio(self.tickers, "eff_risk", other_args)
+    def call_maxret(self, other_args: List[str]):
+        """Process maxret command"""
+        optimizer_view.ef_portfolio(self.tickers, "eff_risk", other_args)
 
-    def call_eff_ret(self, other_args: List[str]):
-        po_api.ef_portfolio(self.tickers, "eff_ret", other_args)
+    def call_minrisk(self, other_args: List[str]):
+        """Process minrisk command"""
+        optimizer_view.ef_portfolio(self.tickers, "eff_ret", other_args)
 
-    def call_show_ef(self, other_args):
-        po_api.show_ef(self.tickers, other_args)
-        print("")
+    def call_ef(self, other_args):
+        """Process ef command"""
+        optimizer_view.show_ef(self.tickers, other_args)
 
     def call_yolo(self, _):
         # Easter egg :)
@@ -162,12 +169,14 @@ class PortfolioOptimization:
             tickers = set(self.tickers)
             for ticker in ns_parser.add_tickers:
                 tickers.add(ticker)
+
+            if self.tickers:
+                print(
+                    f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
+                )
+
             self.tickers = list(tickers)
 
-            print(
-                f"\nCurrent Tickers: {('None', ', '.join(self.tickers))[bool(self.tickers)]}"
-            )
-            print("")
         except Exception as e:
             print(e)
 
@@ -196,6 +205,8 @@ def menu(tickers: List[str]):
             an_input = input(f"{get_flair()} (po)> ")
 
         try:
+            plt.close("all")
+
             process_input = po_controller.switch(an_input)
 
             if process_input is not None:

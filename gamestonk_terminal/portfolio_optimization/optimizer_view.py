@@ -76,14 +76,15 @@ def equal_weight(stocks: List[str], other_args: List[str]):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+        if len(stocks) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
         values = {}
-        n_stocks = len(stocks)
         for stock in stocks:
-            values[stock] = ns_parser.value * round(1 / n_stocks, 5)
+            values[stock] = ns_parser.value * round(1 / len(stocks), 5)
         if ns_parser.pie:
             pie_chart_weights(values, "equal", 0)
-        if n_stocks >= 1:
-            print("Equal Weight Portfolio: ")
+        else:
             display_weights(values)
             print("")
 
@@ -137,6 +138,9 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+        if len(stocks) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
         for stock in stocks:
             stock_prop = yf.Ticker(stock).info[property_type]
             if stock_prop is None:
@@ -148,14 +152,7 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
 
         if ns_parser.pie:
             pie_chart_weights(weights, property_type, 0)
-
-        if property_type == "marketCap":
-            print("Market Cap Weighted Portfolio: ")
-
-        elif property_type == "dividendYield":
-            print("Dividend Yield Weighted Portfolio: ")
-
-        if len(stocks) >= 1:
+        else:
             display_weights(weights)
             print("")
 
@@ -296,7 +293,7 @@ def show_ef(stocks: List[str], other_args: List[str]):
         if not ns_parser:
             return
         if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            print("Please have at least 2 loaded tickers to calculate weights.")
             return
 
         stock_prices = process_stocks(stocks, ns_parser.period)
