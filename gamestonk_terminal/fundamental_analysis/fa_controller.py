@@ -6,7 +6,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.fundamental_analysis import alpha_vantage_controller as avc
-from gamestonk_terminal.fundamental_analysis import business_insider_api as bi_api
+from gamestonk_terminal.fundamental_analysis import business_insider_view as biw
 from gamestonk_terminal.fundamental_analysis import (
     financial_modeling_prep_api as fmp_api,
 )
@@ -131,7 +131,7 @@ class FundamentalAnalysisController:
 
     def call_mgmt(self, other_args: List[str]):
         """ Process mgmt command """
-        bi_api.management(other_args, self.ticker)
+        biw.management(other_args, self.ticker)
 
     def call_screener(self, other_args: List[str]):
         """ Process screener command """
