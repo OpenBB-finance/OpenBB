@@ -40,6 +40,18 @@ class FundamentalAnalysisController:
     ]
 
     def __init__(self, ticker: str, start: str, interval: str):
+        """Constructor
+
+        Parameters
+        ----------
+        ticker : str
+            Fundamental analysis ticker symbol
+        start : str
+            Stat date of the stock data
+        interval : str
+            Stock data interval
+        """
+
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -98,6 +110,7 @@ class FundamentalAnalysisController:
             True - quit the program
             None - continue in the menu
         """
+
         (known_args, other_args) = self.fa_parser.parse_known_args(an_input.split())
 
         return getattr(
@@ -152,6 +165,7 @@ class FundamentalAnalysisController:
         """ Process cal command """
         yf_api.calendar_earnings(other_args, self.ticker)
 
+    # pylint: disable=unused-argument
     def call_av(self, other_args: List[str]):
         """ Process av command """
         ret = av_api.menu(self.ticker, self.start, self.interval)
@@ -159,6 +173,7 @@ class FundamentalAnalysisController:
         if ret is not True:
             self.print_help()
 
+    # pylint: disable=unused-argument
     def call_fmp(self, other_args: List[str]):
         """ Process fmp command """
         ret = fmp_api.menu(self.ticker, self.start, self.interval)
@@ -167,7 +182,7 @@ class FundamentalAnalysisController:
             self.print_help()
 
 
-def key_metrics_explained(l_args):
+def key_metrics_explained(other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="info",
@@ -178,7 +193,7 @@ def key_metrics_explained(l_args):
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(l_args)
+        (_, l_unknown_args) = parser.parse_known_args(other_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}")
@@ -197,8 +212,18 @@ def key_metrics_explained(l_args):
         return
 
 
-# pylint: disable=too-many-branches
 def menu(ticker: str, start: str, interval: str):
+    """Fundamental Analysis menu
+
+    Parameters
+    ----------
+    ticker : str
+        Fundamental analysis ticker symbol
+    start : str
+        Start date of the stock data
+    interval : str
+        Stock data interval
+    """
 
     fa_controller = FundamentalAnalysisController(ticker, start, interval)
     fa_controller.call_help(None)
@@ -226,91 +251,3 @@ def menu(ticker: str, start: str, interval: str):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
-    # should_print_help = True
-
-    # # Loop forever and ever
-    # while True:
-    #     if should_print_help:
-    #         print_fundamental_analysis(s_ticker, s_start, s_interval)
-    #         should_print_help = False
-
-    #     # Get input command from user
-    #     if session and gtff.USE_PROMPT_TOOLKIT:
-    #         as_input = session.prompt(
-    #             f"{get_flair()} (fa)> ",
-    #             completer=completer,
-    #         )
-    #     else:
-    #         as_input = input(f"{get_flair()} (fa)> ")
-
-    #     # Parse fundamental analysis command of the list of possible commands
-    #     try:
-    #         (ns_known_args, l_args) = fa_parser.parse_known_args(as_input.split())
-
-    #     except SystemExit:
-    #         print("The command selected doesn't exist\n")
-    #         continue
-
-    #     if ns_known_args.cmd == "help":
-    #         should_print_help = True
-
-    #     elif ns_known_args.cmd == "q":
-    #         # Just leave the FA menu
-    #         return False
-
-    #     elif ns_known_args.cmd == "quit":
-    #         # Abandon the program
-    #         return True
-
-    #     # BUSINESS INSIDER API
-    #     elif ns_known_args.cmd == "mgmt":
-    #         bi_api.management(l_args, s_ticker)
-
-    #     # FINVIZ API
-    #     elif ns_known_args.cmd == "screener":
-    #         fvz_api.screener(l_args, s_ticker)
-
-    #     # MARKET WATCH API
-    #     elif ns_known_args.cmd == "income":
-    #         mw_api.income(l_args, s_ticker)
-
-    #     elif ns_known_args.cmd == "balance":
-    #         mw_api.balance(l_args, s_ticker)
-
-    #     elif ns_known_args.cmd == "cash":
-    #         mw_api.cash(l_args, s_ticker)
-
-    #     # YAHOO FINANCE API
-    #     elif ns_known_args.cmd == "info":
-    #         yf_api.info(l_args, s_ticker)
-
-    #     elif ns_known_args.cmd == "shrs":
-    #         yf_api.shareholders(l_args, s_ticker)
-
-    #     elif ns_known_args.cmd == "sust":
-    #         yf_api.sustainability(l_args, s_ticker)
-
-    #     elif ns_known_args.cmd == "cal":
-    #         yf_api.calendar_earnings(l_args, s_ticker)
-
-    #     # ALPHA VANTAGE API
-    #     elif ns_known_args.cmd == "av":
-    #         b_quit = av_api.menu(s_ticker, s_start, s_interval)
-
-    #         if b_quit:
-    #             return True
-    #         else:
-    #             should_print_help = True
-
-    #     # FINANCIAL MODELING PREP API
-    #     elif ns_known_args.cmd == "fmp":
-    #         b_quit = fmp_api.menu(s_ticker, s_start, s_interval)
-
-    #         if b_quit:
-    #             return True
-    #         else:
-    #             should_print_help = True
-
-    #     else:
-    #         print("Command not recognized!")
