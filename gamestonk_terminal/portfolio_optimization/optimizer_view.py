@@ -16,7 +16,7 @@ from gamestonk_terminal.portfolio_optimization.optimizer_helper import (
     prepare_efficient_frontier,
     pie_chart_weights,
     display_weights,
-    parse_from_port_type,
+    check_valid_property_type,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
@@ -34,6 +34,20 @@ period_choices = [
     "ytd",
     "max",
 ]
+
+d_period = {
+    "1d": "[1 Day]",
+    "5d": "[5 Days]",
+    "1mo": "[1 Month]",
+    "3mo": "[3 Months]",
+    "6mo": "[6 Months]",
+    "1y": "[1 Year]",
+    "2y": "[2 Years]",
+    "5y": "[5 Years]",
+    "10y": "[10 Years]",
+    "ytd": "[Year-to-Date]",
+    "max": "[All-time]",
+}
 
 
 def equal_weight(stocks: List[str], other_args: List[str]):
@@ -53,8 +67,8 @@ def equal_weight(stocks: List[str], other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="equal_weight",
-        description="Return equally weighted portfolio holdings",
+        prog="equal",
+        description="Returns an equally weighted portfolio",
     )
 
     parser.add_argument(
@@ -83,7 +97,7 @@ def equal_weight(stocks: List[str], other_args: List[str]):
         for stock in stocks:
             values[stock] = ns_parser.value * round(1 / len(stocks), 5)
         if ns_parser.pie:
-            pie_chart_weights(values, "equal", 0)
+            pie_chart_weights(values, "Equally Weighted Portfolio")
         else:
             display_weights(values)
             print("")
@@ -93,16 +107,15 @@ def equal_weight(stocks: List[str], other_args: List[str]):
         print("")
 
 
-def property_weighting(stocks: List[str], property_type: str, other_args: List[str]):
-    """
-    Property weighted portfolio where each weight is the relative fraction.
+def property_weighting(stocks: List[str], other_args: List[str]):
+    """Weighted portfolio where each weight is the relative fraction of a specified info property.
+
     Parameters
     ----------
     stocks: List[str]
         List of tickers to be included in optimization
-    property_type: str
-        Property to weight by.  Can be anything in yfinance.Ticker().info.  Examples:
-            "marketCap", "dividendYield", etc
+    other_args : List[str]
+        Command line arguments to be processed with argparse
 
     Returns
     -------
@@ -111,10 +124,32 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="market_cap_weighted",
-        description="Return portfolio weights/values that are weighted by marketcap",
+        prog="property",
+        description="Returns a portfolio that is weighted based on a selected property info",
     )
-
+    parser.add_argument(
+        "-p",
+        "--property",
+        required=True,
+        type=check_valid_property_type,
+        dest="property",
+        help="""Property info to weigh. Use one of:
+        previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield,
+        payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets,
+        regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days,
+        expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow,
+        priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap,
+        volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize,
+        volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield,
+        bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year, profitMargins, enterpriseToEbitda,
+        52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth, sharesOutstanding, fundInceptionDate,
+        annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily, lastFiscalYearEnd,
+        heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook,
+        heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue,
+        threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating,
+        earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth,
+        impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.""",
+    )
     parser.add_argument(
         "-v",
         "--value",
@@ -130,19 +165,24 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
         default=False,
         help="Display a pie chart for weights",
     )
-    weights = {}
-    prop = {}
-    prop_sum = 0
 
     try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
             return
+
+        weights = {}
+        prop = {}
+        prop_sum = 0
         for stock in stocks:
-            stock_prop = yf.Ticker(stock).info[property_type]
+            stock_prop = yf.Ticker(stock).info[ns_parser.property]
             if stock_prop is None:
                 stock_prop = 0
             prop[stock] = stock_prop
@@ -151,7 +191,9 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
             weights[k] = round(v / prop_sum, 5) * ns_parser.value
 
         if ns_parser.pie:
-            pie_chart_weights(weights, property_type, 0)
+            pie_chart_weights(
+                weights, "Weighted Portfolio based on " + ns_parser.property
+            )
         else:
             display_weights(weights)
             print("")
@@ -165,20 +207,37 @@ def property_weighting(stocks: List[str], property_type: str, other_args: List[s
 def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
     """
     Return a portfolio based on condition in port_type  Defaults to 3m of historical data
+
     Parameters
     ----------
     stocks: List[str]
         List of the stocks to be included in the weights
     port_type: str
-        Method to be used on ef object (example: max_sharpe, min_volatility)
+        Method to be used on ef object (example: max_sharpe, min_volatility, eff_risk, eff_ret)
+
     Returns
     -------
     weights: dict
         Dictionary of weights where keys are the tickers.
     """
 
-    parser = argparse.ArgumentParser(add_help=False, prog=port_type)
+    d_descriptions = {
+        "max_sharpe": """Maximise the Sharpe Ratio. The result is also referred to as the tangency portfolio,
+        as it is the portfolio for which the capital market line is tangent to the efficient frontier.
 
+        This is a convex optimization problem after making a certain variable substitution. See
+        Cornuejols and Tutuncu (2006) <http://web.math.ku.dk/~rolf/CT_FinOpt.pdf> for more.""",
+        "min_volatility": "optimizes for minimum volatility",
+        "max_quadratic_utility": "maximises the quadratic utility, given some risk aversion",
+        "efficient_risk": """Maximise return for a target risk. The resulting portfolio will have
+        a volatility less than the target (but not guaranteed to be equal).""",
+        "efficient_return": "Calculate the 'Markowitz portfolio', minimising volatility for a given target return.",
+        "max_quadratic_utility": "Maximise the given quadratic utility, i.e: max_w w^T \mu - \frac \delta 2 w^T \Sigma w",
+    }
+
+    parser = argparse.ArgumentParser(
+        add_help=False, prog=port_type, description=d_descriptions[port_type]
+    )
     parser.add_argument(
         "-p",
         "--period",
@@ -187,7 +246,6 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         help="period to get yfinance data from",
         choices=period_choices,
     )
-
     parser.add_argument(
         "-v",
         "--value",
@@ -204,67 +262,143 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         help="Display a pie chart for weights",
     )
 
+    if port_type == "max_sharpe":
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-r")
+        parser.add_argument(
+            "-r",
+            "--risk_free_rate",
+            type=float,
+            dest="risk_free_rate",
+            default=0.02,
+            help="""Risk-free rate of borrowing/lending. The period of the risk-free rate
+                    should correspond to the frequency of expected returns.""",
+        )
+
+    elif port_type == "efficient_risk":
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
+        parser.add_argument(
+            "-t",
+            "--target_volatility",
+            type=float,
+            dest="target_volatility",
+            default=0.1,
+            help="The desired maximum volatility of the resulting portfolio",
+        )
+        parser.add_argument(
+            "-n",
+            "--market_neutral",
+            action="store_true",
+            default=False,
+            dest="market_neutral",
+            help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
+            Requires negative lower weight bound.""",
+        )
+
+    elif port_type == "efficient_return":
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
+        parser.add_argument(
+            "-t",
+            "--target_return",
+            type=float,
+            dest="target_return",
+            default=0.1,
+            help="the desired return of the resulting portfolio",
+        )
+        parser.add_argument(
+            "-n",
+            "--market_neutral",
+            action="store_true",
+            default=False,
+            dest="market_neutral",
+            help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
+            Requires negative lower weight bound.""",
+        )
+
+    elif port_type == "max_quadratic_utility":
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-r")
+        parser.add_argument(
+            "-r",
+            "--risk_aversion",
+            type=float,
+            dest="risk_aversion",
+            default=1,
+            help="risk aversion parameter",
+        )
+        parser.add_argument(
+            "-n",
+            "--market_neutral",
+            action="store_true",
+            default=False,
+            dest="market_neutral",
+            help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
+            Requires negative lower weight bound.""",
+        )
+
     try:
-        ns_parser = parse_from_port_type(parser, port_type, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return None
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
             return
+
         period = ns_parser.period
         stock_prices = process_stocks(stocks, period)
         ef = prepare_efficient_frontier(stock_prices)
 
-        if port_type == "max_sharpe":
+        sp = d_period[ns_parser.period]
 
-            ef_sharpe = dict(ef.max_sharpe())
-            weights = {
-                key: ns_parser.value * round(value, 5)
-                for key, value in ef_sharpe.items()
-            }
-            val = 0
-            print("Weights that maximize Sharpe Ratio:")
+        if port_type == "max_sharpe":
+            ef_opt = dict(ef.max_sharpe(ns_parser.risk_free_rate))
+            s_title = f"{sp} Weights that maximize Sharpe ration with risk free level of {ns_parser.risk_free_rate}"
 
         elif port_type == "min_volatility":
+            ef_opt = dict(ef.min_volatility())
+            s_title = f"{sp} Weights that minimize volatility"
 
-            ef_min_vol = dict(ef.min_volatility())
-            weights = {
-                key: ns_parser.value * round(value, 5)
-                for key, value in ef_min_vol.items()
-            }
-            val = 0
-            print("Weights that minimize volatility")
+        elif port_type == "efficient_risk":
+            ef_opt = dict(
+                ef.efficient_risk(ns_parser.target_volatility, ns_parser.market_neutral)
+            )
+            s_title = f"{sp} Weights that maximize return with a maximum volatility of {ns_parser.target_volatility}"
 
-        elif port_type == "eff_risk":
+        elif port_type == "efficient_return":
+            ef_opt = dict(
+                ef.efficient_return(ns_parser.target_return, ns_parser.market_neutral)
+            )
+            s_title = f"{sp} Weights that minimise volatility for a given target return of {ns_parser.target_return}"
 
-            ef_eff_risk = dict(ef.efficient_risk(ns_parser.risk_level))
-            weights = {
-                key: ns_parser.value * round(value, 5)
-                for key, value in ef_eff_risk.items()
-            }
-            val = ns_parser.risk_level
-            print(f"Weights for maximizing returns at risk = {100*val:.1f} %")
-
-        elif port_type == "eff_ret":
-
-            ef_eff_risk = dict(ef.efficient_return(ns_parser.target_return))
-            weights = {
-                key: ns_parser.value * round(value, 5)
-                for key, value in ef_eff_risk.items()
-            }
-            val = ns_parser.target_return
-            print(f"Weights for minimizing risk at target return = {100*val:.1f} %")
+        elif port_type == "max_quadratic_utility":
+            ef_opt = dict(
+                ef.max_quadratic_utility(
+                    ns_parser.risk_aversion, ns_parser.market_neutral
+                )
+            )
+            s_title = f"{sp} Weights that maximise the quadratic utility with risk aversion of {ns_parser.risk_aversion}"
 
         else:
             raise ValueError("EF Method not found")
 
-        if ns_parser.pie:
-            pie_chart_weights(weights, port_type, val)
+        weights = {
+            key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
+        }
 
-        print("")
+        if ns_parser.pie:
+            pie_chart_weights(weights, s_title)
+        else:
+            print(s_title)
+            display_weights(weights)
+            print("")
+
         ef.portfolio_performance(verbose=True)
-        print("")
-        display_weights(weights)
         print("")
 
     except Exception as e:

@@ -21,12 +21,12 @@ class PortfolioOptimization:
         "select",
         "add",
         "equal",
-        "mktcap",
-        "dividend",
+        "property",
         "maxsharpe",
         "minvol",
-        "maxret",
-        "minrisk",
+        "effret",
+        "effrisk",
+        "maxquadutil",
         "ef",
         "yolo",
     ]
@@ -57,12 +57,20 @@ class PortfolioOptimization:
         print("")
         print("Optimization:")
         print("   equal         equally weighted")
-        print("   mktcap        market cap weighted")
-        print("   dividend      dividend weighted")
-        print("   maxsharpe     maximum sharpe ratio")
-        print("   minvol        minimum volatility")
-        print("   maxret        maximizes returns at given risk")
-        print("   minrisk       minimizes risk at given return")
+        print(
+            "   property      weight according to selected info property (e.g. marketCap)"
+        )
+        print("")
+        print(
+            "   maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)"
+        )
+        print("   minvol        optimizes for minimum volatility")
+        print(
+            "   maxquadutil   maximises the quadratic utility, given some risk aversion"
+        )
+        print("   effret        maximises return for a given target risk")
+        print("   effrisk       minimises risk for a given target return")
+        print("")
         print("   ef            show the efficient frontier")
         print("")
 
@@ -107,13 +115,9 @@ class PortfolioOptimization:
         """Process equal command"""
         optimizer_view.equal_weight(self.tickers, other_args)
 
-    def call_mktcap(self, other_args: List[str]):
-        """Process mktcap command"""
-        optimizer_view.property_weighting(self.tickers, "marketCap", other_args)
-
-    def call_dividend(self, other_args: List[str]):
-        """Process dividend command"""
-        optimizer_view.property_weighting(self.tickers, "dividendYield", other_args)
+    def call_property(self, other_args: List[str]):
+        """Process property command"""
+        optimizer_view.property_weighting(self.tickers, other_args)
 
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
@@ -123,13 +127,17 @@ class PortfolioOptimization:
         """Process minvol command"""
         optimizer_view.ef_portfolio(self.tickers, "min_volatility", other_args)
 
-    def call_maxret(self, other_args: List[str]):
-        """Process maxret command"""
-        optimizer_view.ef_portfolio(self.tickers, "eff_risk", other_args)
+    def call_maxquadutil(self, other_args: List[str]):
+        """Process maxquadutil command"""
+        optimizer_view.ef_portfolio(self.tickers, "max_quadratic_utility", other_args)
 
-    def call_minrisk(self, other_args: List[str]):
-        """Process minrisk command"""
-        optimizer_view.ef_portfolio(self.tickers, "eff_ret", other_args)
+    def call_effrisk(self, other_args: List[str]):
+        """Process effrisk command"""
+        optimizer_view.ef_portfolio(self.tickers, "efficient_risk", other_args)
+
+    def call_effret(self, other_args: List[str]):
+        """Process effret command"""
+        optimizer_view.ef_portfolio(self.tickers, "efficient_return", other_args)
 
     def call_ef(self, other_args):
         """Process ef command"""
@@ -158,7 +166,6 @@ class PortfolioOptimization:
             help="add tickers to optimzation.",
         )
         try:
-
             if other_args:
                 if "-" not in other_args[0]:
                     other_args.insert(0, "-t")

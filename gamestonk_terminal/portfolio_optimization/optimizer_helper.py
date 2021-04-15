@@ -15,15 +15,107 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import plot_autoscale, parse_known_args_and_warn
 
-title_maps = {
-    "max_sharpe": "Maximum Sharpe Portfolio",
-    "min_volatility": "Minimum Volatility Portfolio",
-    "eff_risk": "Maximum Return Portfolio at Risk = {:1f} %",
-    "eff_ret": "Minimum Volatility Portfolio at Target Return = {:.1f} %",
-    "equal": "Equally Weighted Portfolio",
-    "marketCap": "MarketCap Weighted Portfolio",
-    "dividendYield": "Dividend Yield Weighted Portfolio",
-}
+l_valid_property_infos = [
+    "previousClose",
+    "regularMarketOpen",
+    "twoHundredDayAverage",
+    "trailingAnnualDividendYield",
+    "payoutRatio",
+    "volume24Hr",
+    "regularMarketDayHigh",
+    "navPrice",
+    "averageDailyVolume10Day",
+    "totalAssets",
+    "regularMarketPreviousClose",
+    "fiftyDayAverage",
+    "trailingAnnualDividendRate",
+    "open",
+    "toCurrency",
+    "averageVolume10days",
+    "expireDate",
+    "yield",
+    "algorithm",
+    "dividendRate",
+    "exDividendDate",
+    "beta",
+    "circulatingSupply",
+    "regularMarketDayLow",
+    "priceHint",
+    "currency",
+    "trailingPE",
+    "regularMarketVolume",
+    "lastMarket",
+    "maxSupply",
+    "openInterest",
+    "marketCap",
+    "volumeAllCurrencies",
+    "strikePrice",
+    "averageVolume",
+    "priceToSalesTrailing12Months",
+    "dayLow",
+    "ask",
+    "ytdReturn",
+    "askSize",
+    "volume",
+    "fiftyTwoWeekHigh",
+    "forwardPE",
+    "fromCurrency",
+    "fiveYearAvgDividendYield",
+    "fiftyTwoWeekLow",
+    "bid",
+    "dividendYield",
+    "bidSize",
+    "dayHigh",
+    "annualHoldingsTurnover",
+    "enterpriseToRevenue",
+    "beta3Year",
+    "profitMargins",
+    "enterpriseToEbitda",
+    "52WeekChange",
+    "morningStarRiskRating",
+    "forwardEps",
+    "revenueQuarterlyGrowth",
+    "sharesOutstanding",
+    "fundInceptionDate",
+    "annualReportExpenseRatio",
+    "bookValue",
+    "sharesShort",
+    "sharesPercentSharesOut",
+    "fundFamily",
+    "lastFiscalYearEnd",
+    "heldPercentInstitutions",
+    "netIncomeToCommon",
+    "trailingEps",
+    "lastDividendValue",
+    "SandP52WeekChange",
+    "priceToBook",
+    "heldPercentInsiders",
+    "shortRatio",
+    "sharesShortPreviousMonthDate",
+    "floatShares",
+    "enterpriseValue",
+    "threeYearAverageReturn",
+    "lastSplitFactor",
+    "legalType",
+    "lastDividendDate",
+    "morningStarOverallRating",
+    "earningsQuarterlyGrowth",
+    "pegRatio",
+    "lastCapGain",
+    "shortPercentOfFloat",
+    "sharesShortPriorMonth",
+    "impliedSharesOutstanding",
+    "fiveYearAverageReturn",
+    "regularMarketPrice",
+]
+
+
+def check_valid_property_type(property: str) -> str:
+    """ Check that the property selected is valid """
+    if property in l_valid_property_infos:
+        return property
+    else:
+        raise argparse.ArgumentTypeError(f"{property} is not a valid info")
 
 
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
@@ -97,15 +189,15 @@ def my_autopct(x):
         return ""
 
 
-def pie_chart_weights(weights: dict, optimizer: str, value: float):
-    """
-    Show a pie chart of holdings
+def pie_chart_weights(weights: dict, title_opt: str):
+    """Show a pie chart of holdings
+
     Parameters
     ----------
     weights: dict
-        weights to display.  Keys are stocks.  Values are either weights or values if -v specified
-    optimzer: str
-        Optimization technique used for title
+        Weights to display, where keys are tickers, and values are either weights or values if -v specified
+    title: str
+        Title to be used on the plot title
     """
     if not weights:
         return
@@ -176,10 +268,7 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
 
     plt.setp(autotexts, size=8, weight="bold")
 
-    if optimizer in ["eff_ret", "eff_risk"]:
-        plt.gca().set_title(title_maps[optimizer].format(100 * value), pad=20)
-    else:
-        plt.gca().set_title(title_maps[optimizer], pad=20)
+    plt.gca().set_title(title_opt, pad=20)
 
     if gtff.USE_ION:
         plt.ion()
@@ -188,52 +277,3 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
 
     plt.show()
     print("")
-
-
-def parse_from_port_type(
-    parser_in: argparse.ArgumentParser, port_type: str, other_args: List[str]
-):
-    """
-
-    Parameters
-    ----------
-    parser_in: ArgumentParser
-        parser to get data from
-    port_type: str
-        Type of optimization that will be done.  One of ["max_sharpe","min_vol", "eff_risk", "eff_ret"]
-    other_args: List[str]
-        Arguments passed to function
-    Returns
-    -------
-
-    ns_parser:
-        Parsed arguments
-    """
-
-    if port_type in ["max_sharpe", "min_volatility"]:
-        ns_parser = parse_known_args_and_warn(parser_in, other_args)
-        if not ns_parser:
-            return None
-        return ns_parser
-
-    elif port_type == "eff_risk":
-        parser_in.add_argument(
-            "-r", "--risk", type=float, dest="risk_level", default=0.1
-        )
-        ns_parser = parse_known_args_and_warn(parser_in, other_args)
-        if not ns_parser:
-            return None
-        return ns_parser
-
-    elif port_type == "eff_ret":
-        parser_in.add_argument(
-            "-r", "--return", type=float, dest="target_return", default=0.1
-        )
-
-        ns_parser = parse_known_args_and_warn(parser_in, other_args)
-        if not ns_parser:
-            return None
-        return ns_parser
-    else:
-        print("Incorrect portfolio optimizer type\n")
-        return None
