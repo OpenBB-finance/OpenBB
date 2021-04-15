@@ -320,7 +320,7 @@ class ComparisonAnalysisController:
         finviz_compare_view.screener(other_args, "technical", self.ticker, self.similar)
 
     def call_po(self, _):
-        """Open Portfolio Optimization menu with ticker and similar"""
+        """Call the portfolio optimization menu with selected tickers"""
         return po_controller.menu([self.ticker] + self.similar)
 
 
