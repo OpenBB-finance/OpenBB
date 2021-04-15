@@ -5,7 +5,7 @@ import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.fundamental_analysis import alpha_vantage_api as av_api
+from gamestonk_terminal.fundamental_analysis import alpha_vantage_controller as avc
 from gamestonk_terminal.fundamental_analysis import business_insider_api as bi_api
 from gamestonk_terminal.fundamental_analysis import (
     financial_modeling_prep_api as fmp_api,
@@ -168,7 +168,7 @@ class FundamentalAnalysisController:
     # pylint: disable=unused-argument
     def call_av(self, other_args: List[str]):
         """ Process av command """
-        ret = av_api.menu(self.ticker, self.start, self.interval)
+        ret = avc.menu(self.ticker, self.start, self.interval)
 
         if ret is not True:
             self.print_help()
