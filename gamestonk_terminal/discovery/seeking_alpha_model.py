@@ -129,7 +129,6 @@ def get_article_list(num: int) -> List[dict]:
                     "publishedAt": datetime.strptime(
                         item_row["data-last-date"], "%Y-%m-%d %H:%M:%S %z"
                     )
-                    .time()
                     .strftime("%Y-%m-%d %H:%M:%S"),
                     "url": "https://seekingalpha.com" + article_url,
                     "id": article_id,
