@@ -10,7 +10,11 @@ from pypfopt import plotting
 from pypfopt import risk_models
 from pypfopt import expected_returns
 from pypfopt import EfficientFrontier
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    plot_autoscale,
+    check_non_negative,
+)
 from gamestonk_terminal.portfolio_optimization.optimizer_helper import (
     process_stocks,
     prepare_efficient_frontier,
@@ -130,7 +134,7 @@ def property_weighting(stocks: List[str], other_args: List[str]):
     parser.add_argument(
         "-p",
         "--property",
-        required=True,
+        required=True if "-h" not in other_args else False,
         type=check_valid_property_type,
         dest="property",
         help="""Property info to weigh. Use one of:
@@ -267,7 +271,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 other_args.insert(0, "-r")
         parser.add_argument(
             "-r",
-            "--risk_free_rate",
+            "--risk-free-rate",
             type=float,
             dest="risk_free_rate",
             default=0.02,
@@ -281,7 +285,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 other_args.insert(0, "-t")
         parser.add_argument(
             "-t",
-            "--target_volatility",
+            "--target-volatility",
             type=float,
             dest="target_volatility",
             default=0.1,
@@ -289,7 +293,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         )
         parser.add_argument(
             "-n",
-            "--market_neutral",
+            "--market-neutral",
             action="store_true",
             default=False,
             dest="market_neutral",
@@ -303,7 +307,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 other_args.insert(0, "-t")
         parser.add_argument(
             "-t",
-            "--target_return",
+            "--target-return",
             type=float,
             dest="target_return",
             default=0.1,
@@ -311,7 +315,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         )
         parser.add_argument(
             "-n",
-            "--market_neutral",
+            "--market-neutral",
             action="store_true",
             default=False,
             dest="market_neutral",
@@ -325,7 +329,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
                 other_args.insert(0, "-r")
         parser.add_argument(
             "-r",
-            "--risk_aversion",
+            "--risk-aversion",
             type=float,
             dest="risk_aversion",
             default=1,
@@ -333,7 +337,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         )
         parser.add_argument(
             "-n",
-            "--market_neutral",
+            "--market-neutral",
             action="store_true",
             default=False,
             dest="market_neutral",
@@ -357,7 +361,7 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
 
         if port_type == "max_sharpe":
             ef_opt = dict(ef.max_sharpe(ns_parser.risk_free_rate))
-            s_title = f"{sp} Weights that maximize Sharpe ration with risk free level of {ns_parser.risk_free_rate}"
+            s_title = f"{sp} Weights that maximize Sharpe ratio with risk free level of {ns_parser.risk_free_rate}"
 
         elif port_type == "min_volatility":
             ef_opt = dict(ef.min_volatility())
@@ -407,7 +411,12 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
 
 
 def show_ef(stocks: List[str], other_args: List[str]):
-    parser = argparse.ArgumentParser(add_help=False, prog="ef")
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="ef",
+        description="""This function plots random portfolios based
+                                     on their risk and returns and shows the efficient frontier.""",
+    )
 
     parser.add_argument(
         "-p",
@@ -418,15 +427,23 @@ def show_ef(stocks: List[str], other_args: List[str]):
         choices=period_choices,
     )
     parser.add_argument(
-        "-n", default=300, dest="n_port", help="number of portfolios to simulate"
+        "-n",
+        "--number-portfolios",
+        default=300,
+        type=check_non_negative,
+        dest="n_port",
+        help="number of portfolios to simulate",
     )
 
     try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
         if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.")
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
             return
 
         stock_prices = process_stocks(stocks, ns_parser.period)
@@ -449,7 +466,7 @@ def show_ef(stocks: List[str], other_args: List[str]):
         ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
         ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
 
-        ax.set_title("Efficient Frontier")
+        ax.set_title(f"Efficient Frontier simulating {ns_parser.n_port} portfolios")
         ax.legend()
         plt.tight_layout()
         plt.grid(b=True, which="major", color="#666666", linestyle="-")

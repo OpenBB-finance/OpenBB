@@ -61,6 +61,7 @@ class PortfolioOptimization:
             "   property      weight according to selected info property (e.g. marketCap)"
         )
         print("")
+        print("Mean Variance Optimization:")
         print(
             "   maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)"
         )
@@ -151,11 +152,11 @@ class PortfolioOptimization:
 
     @staticmethod
     def add_stocks(self, other_args: List[str]):
-        """ Add ticker to current list for optimization"""
+        """ Add ticker or Select tickes for portfolio to be optimized """
         parser = argparse.ArgumentParser(
             add_help=False,
-            prog="add",
-            description="""Add tickers for optimizing.""",
+            prog="add/select",
+            description="""Add/Select tickers for portfolio to be optimized.""",
         )
         parser.add_argument(
             "-t",
@@ -163,7 +164,7 @@ class PortfolioOptimization:
             dest="add_tickers",
             type=lambda s: [str(item).upper() for item in s.split(",")],
             default=[],
-            help="add tickers to optimzation.",
+            help="tickers to be used in the portfolio to optimize.",
         )
         try:
             if other_args:
