@@ -192,7 +192,8 @@ def get_article_data(article_id: int) -> dict:
 
     article = {
         'title': jdata['data']['attributes']['title'],
-        'date': jdata['data']['attributes']['lastModified'],
+        'publishedAt': jdata['data']['attributes']['lastModified'],
+        'url': "https://seekingalpha.com"+jdata['data']['links']['self'],
         'content': content
     }
 

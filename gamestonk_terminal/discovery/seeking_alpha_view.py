@@ -189,5 +189,7 @@ def news_article_view(other_args: List[str]):
         return
 
     article = seeking_alpha_model.get_article_data(ns_parser.n_id)
-    print(article['date'], article['title'])
+    print(article['publishedAt'], " ", article['title'])
+    print(article["url"])
+    print("")
     print(article['content'])
