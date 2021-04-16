@@ -46,7 +46,7 @@ class DiscoveryController:
         "valuation",
         "performance",
         "spectrum",
-        "market_news",
+        "latest",
         "news_article"
     ]
 
@@ -89,7 +89,7 @@ class DiscoveryController:
         print("   valuation      valuation of sectors, industry, country [Finviz]")
         print("   performance    performance of sectors, industry, country [Finviz]")
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
-        print("   market_news    latest news [SeekingAlpha]")
+        print("   latest         latest news [SeekingAlpha]")
         print("   news_article   news article [SeekingAlpha]")
         print("")
 
@@ -191,9 +191,9 @@ class DiscoveryController:
             other_args, "spectrum"
         )
 
-    def call_market_news(self, other_args: List[str]):
-        """Process market_news command"""
-        seeking_alpha_view.articles_list_view(other_args)
+    def call_latest(self, other_args: List[str]):
+        """Process latest command"""
+        seeking_alpha_view.latest_news_view(other_args)
 
     def call_news_article(self, other_args: List[str]):
         """Process news_article command"""

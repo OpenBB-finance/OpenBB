@@ -67,38 +67,49 @@ def earnings_release_dates_view(other_args: List[str]):
         print("")
 
 
-def articles_list_view(other_args: List[str]):
-    """Prints a news article list
+def latest_news_view(other_args: List[str]):
+    """Prints the latest news article list
 
     Parameters
     ----------
     other_args : List[str]
-        argparse other args - ["-p", "20", "-n", "5"]
+        argparse other args - ["-n", "5"]
     """
 
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="up_articles",
-        description="""Latest articles. [Source: Seeking Alpha]""",
+        prog="latest",
+        description="""Latest news articles. [Source: Seeking Alpha]""",
     )
 
     parser.add_argument(
-        "-p",
-        "--pages",
+        "-n",
+        "--num",
         action="store",
-        dest="n_pages",
+        dest="n_num",
         type=check_positive,
-        default=1,
-        help="Number of pages from Seeking Alpha website.",
+        default=10,
+        help="number of latest articles being printed.",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
-    articles = seeking_alpha_model.get_article_list(ns_parser.n_pages)
-    for article in articles:
-        print(article['id'], '-', article['title'], '(', article['url'], ')')
+    articles = seeking_alpha_model.get_article_list(ns_parser.n_num)
+    for idx, article in enumerate(articles):
+        print(
+            article["publishedAt"].replace("T", " ").replace("Z", ""),
+            "-",
+            article['id'],
+            "-",
+            article["title"],
+        )
+        print(article["url"])
+        print("")
+
+        if idx >= ns_parser.n_num - 1:
+            break
 
 
 def news_article_view(other_args: List[str]):

@@ -89,13 +89,13 @@ def get_articles_html(url_articles: str) -> str:
     return articles_html
 
 
-def get_article_list(pages: int) -> list:
-    """Returns a list of recent articles
+def get_article_list(num: int) -> list:
+    """Returns a list of latest articles
 
     Parameters
     ----------
     pages : int
-        Number of pages
+        Number of articles
 
     Returns
     -------
@@ -104,8 +104,9 @@ def get_article_list(pages: int) -> list:
     """
 
     articles = list()
-    url_articles = "https://seekingalpha.com/market-news"
-    for idx in range(0, pages):
+    page = 1
+    url_articles = f"https://seekingalpha.com/market-news/{page}"
+    while len(articles) < num:
         text_soup_articles = BeautifulSoup(
             get_articles_html(url_articles),
             "lxml",
@@ -121,14 +122,13 @@ def get_article_list(pages: int) -> list:
             article_id = article_url.split('/')[2].split('-')[0]
             articles.append({
                 'title': item.text,
-                'date': item_row['data-last-date'],
+                'publishedAt': item_row['data-last-date'],
                 'url': "https://seekingalpha.com"+article_url,
                 'id': article_id
             })
 
-        url_articles = (
-            f"https://seekingalpha.com/market-news/{idx+1}"
-        )
+        page += 1
+        url_articles = f"https://seekingalpha.com/market-news/{page}"
 
     return articles
 
