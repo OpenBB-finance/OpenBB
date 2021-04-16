@@ -13,7 +13,7 @@ from pypfopt import risk_models
 from pypfopt import expected_returns
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import plot_autoscale, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
 l_valid_property_infos = [
     "previousClose",

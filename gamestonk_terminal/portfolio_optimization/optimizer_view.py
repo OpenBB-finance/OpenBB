@@ -232,7 +232,6 @@ def ef_portfolio(stocks: List[str], port_type: str, other_args: List[str]):
         "efficient_risk": """Maximise return for a target risk. The resulting portfolio will have
         a volatility less than the target (but not guaranteed to be equal).""",
         "efficient_return": "Calculate the 'Markowitz portfolio', minimising volatility for a given target return.",
-        "max_quadratic_utility": "Maximise the given quadratic utility, i.e: max_w w^T \mu - \frac \delta 2 w^T \Sigma w",
     }
 
     parser = argparse.ArgumentParser(
