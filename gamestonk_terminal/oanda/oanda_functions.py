@@ -12,8 +12,8 @@ from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 import pandas as pd
-import matplotlib.pyplot as plt
 import mplfinance as mpf
+from datetime import datetime
 
 
 client = API(access_token=cfg.OANDA_TOKEN, environment="live")
@@ -82,40 +82,18 @@ def list_orders(accountID, other_args: List[str]):
 
     request = orders.OrderList(accountID, parameters)
     response = client.request(request)
-    for i in range(0, int(ns_parser.count), 1):
-        try:
-            order_id = response["orders"][i]["id"]
-            instrument = response["orders"][i]["instrument"]
-            units = response["orders"][i]["units"]
-            order_state = response["orders"][i]["state"]
-            order_type = response["orders"][i]["type"]
-
-            print(f"Order id: {order_id}")
-            print(f"Instrument: {instrument}")
-            print(f"Units: {units}")
-            print(f"Order State: {order_state}")
-            print(f"Order Type: {order_type}")
-            print("-" * 30)
-        except KeyError:
-            continue
-        except IndexError:
-            break
+    df = pd.DataFrame.from_dict(response["orders"])
+    df = df[["id", "instrument", "units", "price", "state", "type"]]
+    print(df)
 
 
 def get_order_book(instrument):
     try:
         request = instruments.InstrumentsOrderBook(instrument=instrument)
         response = client.request(request)
-        for i in range(len(response["orderBook"]["buckets"])):
-            order_instrument = response["orderBook"]["instrument"]
-            price = response["orderBook"]["buckets"][i]["price"]
-            short_count_percent = response["orderBook"]["buckets"][i]["shortCountPercent"]
-            long_count_percent = response["orderBook"]["buckets"][i]["longCountPercent"]
-            print(f"Instrument: {order_instrument}")
-            print(f"Price: {price}")
-            print(f"Short count percent: {short_count_percent}")
-            print(f"Long count percent: {long_count_percent}")
-            print("-" * 30)
+        df = pd.DataFrame.from_dict(response["orderBook"]["buckets"])
+        pd.set_option("display.max_rows", None)
+        print(df)
     except V20Error as e:
         print(e)
 
@@ -124,16 +102,9 @@ def get_position_book(instrument):
     try:
         request = instruments.InstrumentsPositionBook(instrument=instrument)
         response = client.request(request)
-        for i in range(len(response["positionBook"]["buckets"])):
-            order_instrument = response["positionBook"]["instrument"]
-            price = response["positionBook"]["buckets"][i]["price"]
-            short_count_percent = response["positionBook"]["buckets"][i][ "shortCountPercent" ]
-            long_count_percent = response["positionBook"]["buckets"][i]["longCountPercent"]
-            print(f"Instrument: {order_instrument}")
-            print(f"Price: {price}")
-            print(f"Short count percent: {short_count_percent}")
-            print(f"Long count percent: {long_count_percent}")
-            print("-" * 30)
+        df = pd.DataFrame.from_dict(response["positionBook"]["buckets"])
+        pd.set_option("display.max_rows", None)
+        print(df)
     except V20Error as e:
         print(e)
 
@@ -230,47 +201,34 @@ def get_pending_orders(accountID):
 def get_open_positions(accountID):
     request = positions.OpenPositions(accountID)
     response = client.request(request)
-    for i in range(0, 100, 1):
-        try:
-            instrument = response["positions"][i]["instrument"]
-            long_units = response["positions"][i]["long"]["units"]
-            long_pl = response["positions"][i]["long"]["pl"]
-            long_upl = response["positions"][i]["long"]["unrealizedPL"]
-            short_units = response["positions"][i]["short"]["units"]
-            short_pl = response["positions"][i]["short"]["pl"]
-            short_upl = response["positions"][i]["short"]["unrealizedPL"]
-            print(f"Instrument: {instrument}\n")
-            print(f"Long Units: {long_units}")
-            print(f"Total Long P/L: {long_pl}")
-            print(f"Long Unrealized P/L: {long_upl}\n")
-            print(f"Short Units: {short_units}")
-            print(f"Total Short P/L: {short_pl}")
-            print(f"Short Unrealized P/L: {short_upl}")
-            print("-" * 30 + "\n")
-        except IndexError:
-            break
+    for i in range(len(response["positions"])):
+        instrument = response["positions"][i]["instrument"]
+        long_units = response["positions"][i]["long"]["units"]
+        long_pl = response["positions"][i]["long"]["pl"]
+        long_upl = response["positions"][i]["long"]["unrealizedPL"]
+        short_units = response["positions"][i]["short"]["units"]
+        short_pl = response["positions"][i]["short"]["pl"]
+        short_upl = response["positions"][i]["short"]["unrealizedPL"]
+        print(f"Instrument: {instrument}\n")
+        print(f"Long Units: {long_units}")
+        print(f"Total Long P/L: {long_pl}")
+        print(f"Long Unrealized P/L: {long_upl}\n")
+        print(f"Short Units: {short_units}")
+        print(f"Total Short P/L: {short_pl}")
+        print(f"Short Unrealized P/L: {short_upl}")
+        print("-" * 30 + "\n")
 
 
 def get_open_trades(accountID):
     request = trades.OpenTrades(accountID)
     response = client.request(request)
-    for i in range(len(response["trades"])):
-        try:
-            order_id = response["trades"][i]["id"]
-            instrument = response["trades"][i]["instrument"]
-            initial_units = response["trades"][i]["initialUnits"]
-            current_units = response["trades"][i]["currentUnits"]
-            price = response["trades"][i]["price"]
-            unrealized_pl = response["trades"][i]["unrealizedPL"]
-            print(f"Order ID: {order_id}")
-            print(f"Instrument: {instrument}")
-            print(f"Initial Units: {initial_units}")
-            print(f"Current Units: {current_units}")
-            print(f"Entry Price: {price}")
-            print(f"Unrealized P/L: {unrealized_pl}")
-            print("-" * 30 + "\n")
-        except IndexError:
-            break
+    df = pd.DataFrame.from_dict(response["trades"])
+    df = df[["id", "instrument", "initialUnits", "currentUnits", "price",
+             "unrealizedPL"]]
+    df = df.rename(columns={"id":"ID", "instrument":"Instrument",
+                            "initialUnits": "Initial Units", "currentUnits":
+                            "Current Units", "price": "Entry Price"})
+    print(df)
 
 
 def close_trade(accountID, other_args: List[str]):
@@ -344,7 +302,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
     try:
         request = instruments.InstrumentsCandles(instrument, params=parameters)
         response = client.request(request)
-        process_response(response)
+        process_candle_response(response)
         oanda_fix_date(".temp_candles.csv")
         df = pd.read_csv(".candles.csv", index_col=0)
         df.index = pd.to_datetime(df.index)
@@ -357,7 +315,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
         print(e)
 
 
-def process_response(response):
+def process_candle_response(response):
     with open(".temp_candles.csv", 'w') as out:
         for i in range(len(response["candles"])):
             time = response["candles"][i]["time"]
@@ -379,21 +337,49 @@ def oanda_fix_date(file):
                 output.write(line[:10] + " " + line[11:19] + line[30:])
 
 
-def calendar(instrument):
+def calendar(instrument, other_args: List[str]):
+    parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="calendar",
+            description="Show Calendar Data",
+        )
+    parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            action="store",
+            type=int,
+            default=7,
+            required=False,
+        )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     parameters = {
         "instrument": instrument,
-        "period": "604800"
+        "period": str(ns_parser.days * 86400 * -1)
     }
     request = labs.Calendar(params=parameters)
     response = client.request(request)
-#     print(response)
     for i in range(len(response)):
         if "title" in response[i]:
             title = response[i]["title"]
             print(f"Title: {title}")
+        if "timestamp" in response[i]:
+            timestamp = response[i]["timestamp"]
+            time = datetime.fromtimestamp(timestamp)
+            print(f"Time: {time}")
         if "impact" in response[i]:
             impact = response[i]["impact"]
             print(f"Impact: {impact}")
+        if "forecast" in response[i]:
+            forecast = response[i]["forecast"]
+            unit = response[i]["unit"]
+            if unit != "Index":
+                print(f"Forecast: {forecast}{unit}")
+            else:
+                print(f"Forecast: {forecast}")
         if "market" in response[i]:
             market = response[i]["market"]
             unit = response[i]["unit"]
