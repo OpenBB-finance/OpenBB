@@ -1,6 +1,7 @@
 """ Seeking Alpha Model """
 __docformat__ = "numpy"
 
+from typing import List
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -89,7 +90,7 @@ def get_articles_html(url_articles: str) -> str:
     return articles_html
 
 
-def get_article_list(num: int) -> list:
+def get_article_list(num: int) -> List[dict]:
     """Returns a list of latest articles
 
     Parameters
@@ -103,7 +104,7 @@ def get_article_list(num: int) -> list:
         Latest articles list
     """
 
-    articles = list()
+    articles: List[dict] = []
     page = 1
     url_articles = f"https://seekingalpha.com/market-news/{page}"
     while len(articles) < num:
@@ -116,16 +117,18 @@ def get_article_list(num: int) -> list:
             item = item_row.find("a", {"class": "add-source-assigned"})
             if item is None:
                 continue
-            article_url = item['href']
-            if not article_url.startswith('/news/'):
+            article_url = item["href"]
+            if not article_url.startswith("/news/"):
                 continue
-            article_id = article_url.split('/')[2].split('-')[0]
-            articles.append({
-                'title': item.text,
-                'publishedAt': item_row['data-last-date'],
-                'url': "https://seekingalpha.com"+article_url,
-                'id': article_id
-            })
+            article_id = article_url.split("/")[2].split("-")[0]
+            articles.append(
+                {
+                    "title": item.text,
+                    "publishedAt": item_row["data-last-date"],
+                    "url": "https://seekingalpha.com" + article_url,
+                    "id": article_id,
+                }
+            )
 
         page += 1
         url_articles = f"https://seekingalpha.com/market-news/{page}"
@@ -156,16 +159,18 @@ def get_trending_list(num: int) -> list:
         print("Invalid response\n")
     else:
         for item in response.json():
-            article_url = item['uri']
-            if not article_url.startswith('/news/'):
+            article_url = item["uri"]
+            if not article_url.startswith("/news/"):
                 continue
-            article_id = article_url.split('/')[2].split('-')[0]
-            articles.append({
-                'title': item['title'],
-                'publishedAt': item['publish_on'],
-                'url': "https://seekingalpha.com"+article_url,
-                'id': article_id
-            })
+            article_id = article_url.split("/")[2].split("-")[0]
+            articles.append(
+                {
+                    "title": item["title"],
+                    "publishedAt": item["publish_on"],
+                    "url": "https://seekingalpha.com" + article_url,
+                    "id": article_id,
+                }
+            )
 
     return articles
 
@@ -187,14 +192,14 @@ def get_article_data(article_id: int) -> dict:
     article_url = f"https://seekingalpha.com/api/v3/news/{article_id}"
     response = requests.get(article_url, headers={"User-Agent": get_user_agent()})
     jdata = response.json()
-    content = jdata['data']['attributes']['content'].replace('</li>', '</li>\n')
+    content = jdata["data"]["attributes"]["content"].replace("</li>", "</li>\n")
     content = BeautifulSoup(content, features="html.parser").get_text()
 
     article = {
-        'title': jdata['data']['attributes']['title'],
-        'publishedAt': jdata['data']['attributes']['lastModified'],
-        'url': "https://seekingalpha.com"+jdata['data']['links']['self'],
-        'content': content
+        "title": jdata["data"]["attributes"]["title"],
+        "publishedAt": jdata["data"]["attributes"]["lastModified"],
+        "url": "https://seekingalpha.com" + jdata["data"]["links"]["self"],
+        "content": content,
     }
 
     return article

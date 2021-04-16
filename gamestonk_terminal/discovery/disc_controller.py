@@ -48,7 +48,7 @@ class DiscoveryController:
         "spectrum",
         "latest",
         "trending",
-        "news_article"
+        "news_article",
     ]
 
     def __init__(self):

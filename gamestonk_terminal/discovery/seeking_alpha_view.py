@@ -89,7 +89,7 @@ def latest_news_view(other_args: List[str]):
         dest="n_num",
         type=check_positive,
         default=10,
-        help="number of latest articles being printed.",
+        help="number of latest articles being printed",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -101,7 +101,7 @@ def latest_news_view(other_args: List[str]):
         print(
             article["publishedAt"].replace("T", " ").replace("Z", ""),
             "-",
-            article['id'],
+            article["id"],
             "-",
             article["title"],
         )
@@ -134,7 +134,7 @@ def trending_news_view(other_args: List[str]):
         dest="n_num",
         type=check_positive,
         default=10,
-        help="number of trending articles being printed.",
+        help="number of trending articles being printed",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -146,7 +146,7 @@ def trending_news_view(other_args: List[str]):
         print(
             article["publishedAt"].replace("T", " ").replace("Z", ""),
             "-",
-            article['id'],
+            article["id"],
             "-",
             article["title"],
         )
@@ -179,7 +179,7 @@ def news_article_view(other_args: List[str]):
         dest="n_id",
         type=check_positive,
         default=-1,
-        help="Article number found on Seeking Alpha website.",
+        help="article number found on Seeking Alpha website",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -189,7 +189,7 @@ def news_article_view(other_args: List[str]):
         return
 
     article = seeking_alpha_model.get_article_data(ns_parser.n_id)
-    print(article['publishedAt'], " ", article['title'])
+    print(article["publishedAt"], " ", article["title"])
     print(article["url"])
     print("")
-    print(article['content'])
+    print(article["content"])
