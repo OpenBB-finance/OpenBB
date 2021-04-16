@@ -5,11 +5,13 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import matplotlib.pyplot as plt
+from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import optimizer_view
+from gamestonk_terminal.comparison_analysis import ca_controller
 
 
 class PortfolioOptimization:
@@ -28,6 +30,7 @@ class PortfolioOptimization:
         "effrisk",
         "maxquadutil",
         "ef",
+        "ca",
         "yolo",
     ]
 
@@ -74,6 +77,9 @@ class PortfolioOptimization:
         print("")
         print("   ef            show the efficient frontier")
         print("")
+        if tickers:
+            print("   > ca          comparison analysis for selected tickers")
+            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -122,23 +128,23 @@ class PortfolioOptimization:
 
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
-        optimizer_view.ef_portfolio(self.tickers, "max_sharpe", other_args)
+        optimizer_view.max_sharpe(self.tickers, other_args)
 
     def call_minvol(self, other_args: List[str]):
         """Process minvol command"""
-        optimizer_view.ef_portfolio(self.tickers, "min_volatility", other_args)
+        optimizer_view.min_volatility(self.tickers, other_args)
 
     def call_maxquadutil(self, other_args: List[str]):
         """Process maxquadutil command"""
-        optimizer_view.ef_portfolio(self.tickers, "max_quadratic_utility", other_args)
+        optimizer_view.max_quadratic_utility(self.tickers, other_args)
 
     def call_effrisk(self, other_args: List[str]):
         """Process effrisk command"""
-        optimizer_view.ef_portfolio(self.tickers, "efficient_risk", other_args)
+        optimizer_view.efficient_risk(self.tickers, other_args)
 
     def call_effret(self, other_args: List[str]):
         """Process effret command"""
-        optimizer_view.ef_portfolio(self.tickers, "efficient_return", other_args)
+        optimizer_view.efficient_return(self.tickers, other_args)
 
     def call_ef(self, other_args):
         """Process ef command"""
