@@ -5,7 +5,6 @@ import argparse
 import requests
 import random
 from typing import List
-from datetime import datetime
 import pandas as pd
 from matplotlib import pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
