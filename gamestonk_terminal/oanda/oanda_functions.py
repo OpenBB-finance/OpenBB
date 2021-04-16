@@ -7,42 +7,29 @@ import oandapyV20.endpoints.orders as orders
 import oandapyV20.endpoints.instruments as instruments
 import oandapyV20.endpoints.positions as positions
 import oandapyV20.endpoints.trades as trades
+import oandapyV20.endpoints.forexlabs as labs
 from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 import pandas as pd
 import matplotlib.pyplot as plt
 import mplfinance as mpf
-import matplotlib.dates as mdates
+
 
 client = API(access_token=cfg.OANDA_TOKEN, environment="live")
 account = cfg.OANDA_ACCOUNT
 
 
-def get_fx_price(accountID, other_args: List[str]):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="getfxprice",
-        description="Get price for forex",
-    )
-    parser.add_argument(
-        "-i", "--instrument", dest="instrument", action="store", required=True
-    )
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
+def get_fx_price(accountID, instrument):
     try:
-        parameters = {"instruments": ns_parser.instrument}
+        parameters = {"instruments": instrument}
         request = pricing.PricingInfo(accountID=accountID, params=parameters)
         response = client.request(request)
         bid = response["prices"][0]["bids"][0]["price"]
         ask = response["prices"][0]["asks"][0]["price"]
-        print(ns_parser.instrument + " Bid: " + bid)
-        print(ns_parser.instrument + " Ask: " + ask)
+        print(instrument + " Bid: " + bid)
+        print(instrument + " Ask: " + ask)
     except V20Error as e:
-        print(e)
-    except NameError as e:
         print(e)
 
 
@@ -65,8 +52,8 @@ def get_account_summary(accountID):
     print(f"Unrealized P/L:  {unrealized_pl}")
     print(f"Total P/L: {total_pl}")
     print(f"Open Trade Count: {open_trade_count}")
-    print(f"Margin Available:  {margin_available}")
-    print(f"Margin Used: {margin_used}")
+    print(f"Margin Available:  ${margin_available}")
+    print(f"Margin Used: ${margin_used}")
     print(f"Margin Closeout {margin_closeout}")
     print(f"Margin Closeout Percent: {margin_closeout_percent}")
     print(f"Margin Closeout Position Value: {margin_closeout_position_value}")
@@ -89,13 +76,9 @@ def list_orders(accountID, other_args: List[str]):
         return
 
     parameters = {
-        #         "state": ns_parser.state,
-        #         "count": ns_parser.count,
     }
-    if ns_parser.state is not None:
-        parameters["state"] = ns_parser.state
-    if ns_parser.count is not None:
-        parameters["count"] = ns_parser.count
+    parameters["state"] = ns_parser.state
+    parameters["count"] = ns_parser.count
 
     request = orders.OrderList(accountID, parameters)
     response = client.request(request)
@@ -119,74 +102,47 @@ def list_orders(accountID, other_args: List[str]):
             break
 
 
-def get_order_book(other_args: List[str]):
+def get_order_book(instrument):
+    try:
+        request = instruments.InstrumentsOrderBook(instrument=instrument)
+        response = client.request(request)
+        for i in range(len(response["orderBook"]["buckets"])):
+            order_instrument = response["orderBook"]["instrument"]
+            price = response["orderBook"]["buckets"][i]["price"]
+            short_count_percent = response["orderBook"]["buckets"][i]["shortCountPercent"]
+            long_count_percent = response["orderBook"]["buckets"][i]["longCountPercent"]
+            print(f"Instrument: {order_instrument}")
+            print(f"Price: {price}")
+            print(f"Short count percent: {short_count_percent}")
+            print(f"Long count percent: {long_count_percent}")
+            print("-" * 30)
+    except V20Error as e:
+        print(e)
+
+
+def get_position_book(instrument):
+    try:
+        request = instruments.InstrumentsPositionBook(instrument=instrument)
+        response = client.request(request)
+        for i in range(len(response["positionBook"]["buckets"])):
+            order_instrument = response["positionBook"]["instrument"]
+            price = response["positionBook"]["buckets"][i]["price"]
+            short_count_percent = response["positionBook"]["buckets"][i][ "shortCountPercent" ]
+            long_count_percent = response["positionBook"]["buckets"][i]["longCountPercent"]
+            print(f"Instrument: {order_instrument}")
+            print(f"Price: {price}")
+            print(f"Short count percent: {short_count_percent}")
+            print(f"Long count percent: {long_count_percent}")
+            print("-" * 30)
+    except V20Error as e:
+        print(e)
+
+
+def create_order(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="get_order_book",
-        description="Get Order book",
-    )
-    parser.add_argument(
-        "-i", "--instrument", dest="instrument", action="store", required=True
-    )
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
-    parameters = {"bucketWidth": 0.1}
-    request = instruments.InstrumentsOrderBook(
-        instrument=ns_parser.instrument, params=parameters
-    )
-    response = client.request(request)
-
-    for i in range(400, 700, 1):
-        order_instrument = response["orderBook"]["instrument"]
-        price = response["orderBook"]["buckets"][i]["price"]
-        short_count_percent = response["orderBook"]["buckets"][i]["shortCountPercent"]
-        long_count_percent = response["orderBook"]["buckets"][i]["longCountPercent"]
-        print(f"Instrument: {order_instrument}")
-        print(f"Price: {price}")
-        print(f"Short count percent: {short_count_percent}")
-        print(f"Long count percent: {long_count_percent}")
-        print("-" * 30)
-
-
-def get_position_book(other_args: List[str]):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="get_position_book ",
-        description="Get Position Book",
-    )
-    parser.add_argument(
-        "-i", "--instrument", dest="instrument", action="store", required=True
-    )
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-    parameters = {"bucketWidth": 0.1}
-    request = instruments.InstrumentsPositionBook(
-        instrument=ns_parser.instrument, params=parameters
-    )
-    response = client.request(request)
-
-    for i in range(200, 400, 1):
-        order_instrument = response["positionBook"]["instrument"]
-        price = response["positionBook"]["buckets"][i]["price"]
-        short_count_percent = response["positionBook"]["buckets"][i][
-            "shortCountPercent"
-        ]
-        long_count_percent = response["positionBook"]["buckets"][i]["longCountPercent"]
-        print(f"Instrument: {order_instrument}")
-        print(f"Price: {price}")
-        print(f"Short count percent: {short_count_percent}")
-        print(f"Long count percent: {long_count_percent}")
-        print("-" * 30)
-
-
-def create_limit_order(accountID, other_args: List[str]):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="create_limit_order",
-        description="Create limit order",
+        prog="create_order",
+        description="Create order",
     )
     parser.add_argument(
         "-u",
@@ -205,12 +161,6 @@ def create_limit_order(accountID, other_args: List[str]):
         type=float,
         required=True,
     )
-    parser.add_argument(
-    "-i",
-    "--instrument",
-    dest="instrument",
-    action="store",
-    required=True)
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -219,7 +169,7 @@ def create_limit_order(accountID, other_args: List[str]):
     data = {
         "order": {
             "price": ns_parser.price,
-            "instrument": ns_parser.instrument,
+            "instrument": instrument,
             "units": ns_parser.units,
             "type": "LIMIT",
             "timeInForce": "GTC",
@@ -312,7 +262,7 @@ def get_open_trades(accountID):
             current_units = response["trades"][i]["currentUnits"]
             price = response["trades"][i]["price"]
             unrealized_pl = response["trades"][i]["unrealizedPL"]
-            print(f"Order ID: {order_id}\n")
+            print(f"Order ID: {order_id}")
             print(f"Instrument: {instrument}")
             print(f"Initial Units: {initial_units}")
             print(f"Current Units: {current_units}")
@@ -358,34 +308,52 @@ def close_trade(accountID, other_args: List[str]):
         print(e)
 
 
-def show_candles(accountID):
+def show_candles(accountID, instrument, other_args: List[str]):
+    parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="show_candles",
+            description="Display Candle Data",
+        )
+    parser.add_argument(
+            "-g",
+            "--granularity",
+            dest="granularity",
+            action="store",
+            type=str,
+            default="D",
+            required=False,
+        )
+    parser.add_argument(
+        "-c",
+        "--count",
+        dest="candlecount",
+        action="store",
+        default=180,
+        type=int,
+        required=False,
+        )
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     parameters = {
-        "granularity": "D"
     }
+    parameters["granularity"] = ns_parser.granularity
+    parameters["count"] = ns_parser.candlecount
     try:
-        request = instruments.InstrumentsCandles("EUR_USD", params=parameters)
+        request = instruments.InstrumentsCandles(instrument, params=parameters)
         response = client.request(request)
         process_response(response)
         oanda_fix_date(".temp_candles.csv")
-        df = pd.read_csv(".candles.csv")
-        df["Datetime"] = pd.to_datetime(df["Datetime"])
-        df.set_index(pd.DatetimeIndex(df["Datetime"]), inplace=True)
-        print(df)
-#         dvalues = df[["Open", "High", "Low", "Close"]].values.tolist()
-#         pdates = mdates.date2num(data.index)
-#         ohlc = [ ppdates[i] + dvalues[i] for i in range(len(pdates))]
-#         plt.style.use("fivethirtyeight")
-#         fix, ax = plt.subplots(figsize = (12, 6))
-#         mpf.candlestick_ohlc(ax, ohlc[-50:], width=0.4)
-#         ax.set_xlabel("Date")
-#         ax.set_ylabel("Price")
-#         ax.set_title("Chart for EUR_USD")
-#         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
-#         fig.autofmt_xdate()
-        mpf.plot(df, type="candlestick")
-#         plt.show()
-
+        df = pd.read_csv(".candles.csv", index_col=0)
+        df.index = pd.to_datetime(df.index)
+        df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+        mpf.plot(df, type="candle", style="charles", volume=True,
+                 title=f"{instrument} {ns_parser.granularity}")
     except Exception as e:
+        print(e)
+    except NameError as e:
         print(e)
 
 
@@ -393,18 +361,95 @@ def process_response(response):
     with open(".temp_candles.csv", 'w') as out:
         for i in range(len(response["candles"])):
             time = response["candles"][i]["time"]
+            volume = response["candles"][i]["volume"]
             o = response["candles"][i]["mid"]["o"]
             h = response["candles"][i]["mid"]["h"]
             l = response["candles"][i]["mid"]["l"]
             c = response["candles"][i]["mid"]["c"]
-            out.write(str(time) + "," + str(o) + "," + str(h) + "," + str(l) + "," + str(c) + "\n")
+            out.write(str(time) + "," + str(o) + "," + str(h) + "," + str(l) + "," + str(c) + "," + str(volume) + "\n")
 
 
 def oanda_fix_date(file):
     with open(file, 'r') as candle_file:
         lines = candle_file.readlines()
         with open(".candles.csv", 'w') as out:
-            out.write("Datetime, Open, High, Low, Close\n")
+            out.write("Datetime, Open, High, Low, Close, Volume\n")
         for line in lines:
             with open(".candles.csv", "a") as output:
                 output.write(line[:10] + " " + line[11:19] + line[30:])
+
+
+def calendar(instrument):
+    parameters = {
+        "instrument": instrument,
+        "period": "604800"
+    }
+    request = labs.Calendar(params=parameters)
+    response = client.request(request)
+#     print(response)
+    for i in range(len(response)):
+        if "title" in response[i]:
+            title = response[i]["title"]
+            print(f"Title: {title}")
+        if "impact" in response[i]:
+            impact = response[i]["impact"]
+            print(f"Impact: {impact}")
+        if "market" in response[i]:
+            market = response[i]["market"]
+            unit = response[i]["unit"]
+            if unit != "Index":
+                print(f"Market Forecast: {market}{unit}")
+            else:
+                print(f"Market Forecast: {market}")
+        if "currency" in response[i]:
+            currency = response[i]["currency"]
+            print(f"Currency: {currency}")
+        if "region" in response[i]:
+            region = response[i]["region"]
+            print(f"Region: {region}")
+        if "actual" in response[i]:
+            actual = response[i]["actual"]
+            unit = response[i]["unit"]
+            if unit != "Index":
+                print(f"Actual: {actual}{unit}")
+            else:
+                print(f"Actual: {actual}")
+        if "previous" in response[i]:
+            previous = response[i]["previous"]
+            unit = response[i]["unit"]
+            if unit != "Index":
+                print(f"Previous: {previous}{unit}")
+            else:
+                print(f"Previous: {previous}")
+        print("-"*30)
+
+
+def load(other_args: List[str]):
+    """Load a forex instrument to use"""
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="Forex",
+        description = "Forex using oanda",
+    )
+
+    parser.add_argument(
+    "-i",
+    "--instrument",
+    required=True,
+    type=str,
+    dest="instrument",
+    help="Instrument to use for function calls"
+    )
+
+    try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-i")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+        return ns_parser.instrument.upper()
+    except Exception as e:
+        print(e)

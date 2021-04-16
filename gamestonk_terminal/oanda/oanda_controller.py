@@ -22,24 +22,25 @@ class OandaController:
         "list",
         "orderbook",
         "positionbook",
-        "limitorder",
+        "order",
+        "load",
         "cancel",
         "positions",
         "closetrade",
         "trades",
         "candles",
         "pending",
+        "calendar",
     ]
 
-    def __init__(
-        self,
-    ):
+    def __init__( self):
         """Construct Data"""
         self.oanda_parser = argparse.ArgumentParser(add_help=False, prog="fx")
         self.oanda_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
+        self.instrument = None
 
     @staticmethod
     def print_help():
@@ -50,18 +51,20 @@ class OandaController:
         print("q \t quit this menu and goes back to main menu")
         print("quit \t quit to abandon program")
         print("")
+        print("load \t Load an instrument to use")
         print("price \t shows price for selected instrument")
         print("summary  shows account summary")
         print("list \t list order history")
         print("trades \t list open trades")
         print("orderbook \t print orderbook")
         print("positionbook \t print positionbook")
-        print("limitorder \t place limit order -u # of units -p price")
+        print("order \t place limit order -u # of units -p price")
         print("cancel \t cancel a pending order by ID -i order ID")
         print("pending \t get information on pending orders")
         print("positions \t Get open positions")
         print("closetrade \t Close a trade by id")
         print("candles \t show candles")
+        print("calendar \t show calendar")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -90,29 +93,32 @@ class OandaController:
         """Process Quit command - exit the program"""
         return True
 
-    def call_price(self, other_args: List[str]):
+    def call_price(self, _):
         """Process Price Command"""
-        oanda_functions.get_fx_price(account, other_args)
+        oanda_functions.get_fx_price(account, self.instrument)
+
+    def call_load(self, other_args):
+        self.instrument = oanda_functions.load(other_args)
 
     def call_summary(self, _):
         """Process account summary command"""
         oanda_functions.get_account_summary(account)
 
-    def call_orderbook(self, other_args: List[str]):
+    def call_orderbook(self, _):
         """Process Oanda Order Book"""
-        oanda_functions.get_order_book(other_args)
+        oanda_functions.get_order_book(self.instrument)
 
-    def call_positionbook(self, other_args: List[str]):
+    def call_positionbook(self, _):
         """Process Oanda Position Book"""
-        oanda_functions.get_position_book(other_args)
+        oanda_functions.get_position_book(self.instrument)
 
     def call_list(self, other_args: List[str]):
         """Process list orders command"""
         oanda_functions.list_orders(account, other_args)
 
-    def call_limitorder(self, other_args: List[str]):
+    def call_order(self, other_args: List[str]):
         """Place limit order"""
-        oanda_functions.create_limit_order(account, other_args)
+        oanda_functions.create_order(account, self.instrument, other_args)
 
     def call_cancel(self, other_args: List[str]):
         """Cancel pending order by ID"""
@@ -130,12 +136,17 @@ class OandaController:
         """Close a trade by id"""
         oanda_functions.close_trade(account, other_args)
 
-    def call_candles(self, _):
-        oanda_functions.show_candles(account)
+    def call_candles(self, other_args: List[str]):
+        oanda_functions.show_candles(account, self.instrument, other_args)
 
     def call_trades(self, _):
         """List open trades"""
         oanda_functions.get_open_trades(account)
+
+
+    def call_calendar(self, _):
+        """Call calendar"""
+        oanda_functions.calendar(self.instrument)
 
 
 def menu():
