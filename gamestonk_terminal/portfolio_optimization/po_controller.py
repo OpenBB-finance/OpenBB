@@ -23,6 +23,8 @@ class PortfolioOptimization:
         "select",
         "add",
         "equal",
+        "mktcap",
+        "dividend",
         "property",
         "maxsharpe",
         "minvol",
@@ -60,6 +62,10 @@ class PortfolioOptimization:
         print("")
         print("Optimization:")
         print("   equal         equally weighted")
+        print("   mktcap        weighted according to market cap (property marketCap)")
+        print(
+            "   dividend      weighted according to dividend yield (property dividendYield)"
+        )
         print(
             "   property      weight according to selected info property (e.g. marketCap)"
         )
@@ -121,6 +127,16 @@ class PortfolioOptimization:
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
         optimizer_view.equal_weight(self.tickers, other_args)
+
+    def call_mktcap(self, other_args: List[str]):
+        """Process mktcap command"""
+        other_args.insert(0, "marketCap")
+        optimizer_view.property_weighting(self.tickers, other_args)
+
+    def call_dividend(self, other_args: List[str]):
+        """Process dividend command"""
+        other_args.insert(0, "dividendYield")
+        optimizer_view.property_weighting(self.tickers, other_args)
 
     def call_property(self, other_args: List[str]):
         """Process property command"""

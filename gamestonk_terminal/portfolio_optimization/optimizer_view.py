@@ -193,6 +193,12 @@ def property_weighting(stocks: List[str], other_args: List[str]):
                 stock_prop = 0
             prop[stock] = stock_prop
             prop_sum += stock_prop
+
+        if prop_sum == 0:
+            print(f"No {ns_parser.property} was found on list of tickers provided")
+            print("")
+            return
+
         for k, v in prop.items():
             weights[k] = round(v / prop_sum, 5) * ns_parser.value
 
