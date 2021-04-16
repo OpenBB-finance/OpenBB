@@ -91,16 +91,9 @@ def get_order_book(instrument):
     try:
         request = instruments.InstrumentsOrderBook(instrument=instrument)
         response = client.request(request)
-        for i in range(len(response["orderBook"]["buckets"])):
-            order_instrument = response["orderBook"]["instrument"]
-            price = response["orderBook"]["buckets"][i]["price"]
-            short_count_percent = response["orderBook"]["buckets"][i]["shortCountPercent"]
-            long_count_percent = response["orderBook"]["buckets"][i]["longCountPercent"]
-            print(f"Instrument: {order_instrument}")
-            print(f"Price: {price}")
-            print(f"Short count percent: {short_count_percent}")
-            print(f"Long count percent: {long_count_percent}")
-            print("-" * 30)
+        df = pd.DataFrame.from_dict(response["orderBook"]["buckets"])
+        pd.set_option("display.max_rows", None)
+        print(df)
     except V20Error as e:
         print(e)
 
@@ -369,10 +362,6 @@ def calendar(instrument, other_args: List[str]):
     }
     request = labs.Calendar(params=parameters)
     response = client.request(request)
-    df = pd.DataFrame.from_dict(response)
-    df = df[["title", "timestamp", "impact" , "forecast", "unit", "market",
-             "region", "previous", "currency" ]]
-    print(df)
     for i in range(len(response)):
         if "title" in response[i]:
             title = response[i]["title"]
