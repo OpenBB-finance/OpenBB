@@ -1,4 +1,8 @@
+""" FinViz View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 from colorama import Fore, Style
 import finviz
 import pandas as pd
@@ -11,6 +15,19 @@ from gamestonk_terminal.helper_funcs import (
 
 
 def category_color_red_green(val: str) -> str:
+    """Add color to analyst rating
+
+    Parameters
+    ----------
+    val : str
+        Analyst rating - Upgrade/Downgrade
+
+    Returns
+    -------
+    str
+        Analyst rating with color
+    """
+
     if val == "Upgrade":
         return Fore.GREEN + val + Style.RESET_ALL
     if val == "Downgrade":
@@ -18,7 +35,16 @@ def category_color_red_green(val: str) -> str:
     return val
 
 
-def insider(l_args, s_ticker):
+def insider(other_args: List[str], ticker: str):
+    """Display insider activity for a given stock ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    ticker : str
+        Stock ticker
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="insider",
@@ -39,11 +65,11 @@ def insider(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        d_finviz_insider = finviz.get_insider(s_ticker)
+        d_finviz_insider = finviz.get_insider(ticker)
         df_fa = pd.DataFrame.from_dict(d_finviz_insider)
         df_fa.set_index("Date", inplace=True)
         df_fa = df_fa[
@@ -68,7 +94,17 @@ def insider(l_args, s_ticker):
         return
 
 
-def news(l_args, s_ticker):
+def news(other_args: List[str], ticker: str):
+    """Display news for a given stock ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-n", "10"]
+    ticker : str
+        Stock ticker
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="news",
@@ -88,11 +124,11 @@ def news(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        d_finviz_news = finviz.get_news(s_ticker)
+        d_finviz_news = finviz.get_news(ticker)
         i = 0
         for s_news_title, s_news_link in {*d_finviz_news}:
             print(f"-> {s_news_title}")
@@ -110,9 +146,22 @@ def news(l_args, s_ticker):
         return
 
 
-def analyst_df(s_ticker: str) -> DataFrame:
+def analyst_df(ticker: str) -> DataFrame:
+    """[summary]
+
+    Parameters
+    ----------
+    ticker : str
+        Stock ticker
+
+    Returns
+    -------
+    DataFrame
+        [description]
+    """
+
     try:
-        d_finviz_analyst_price = finviz.get_analyst_price_targets(s_ticker)
+        d_finviz_analyst_price = finviz.get_analyst_price_targets(ticker)
         df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
         df_fa.set_index("date", inplace=True)
     except Exception as e:
@@ -122,7 +171,17 @@ def analyst_df(s_ticker: str) -> DataFrame:
     return df_fa
 
 
-def analyst(l_args, s_ticker):
+def analyst(other_args, ticker):
+    """Display analyst ratings
+
+    Parameters
+    ----------
+    other_args : [type]
+        argparse other args
+    ticker : [type]
+        Stock ticker
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="analyst",
@@ -144,11 +203,11 @@ def analyst(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_fa = analyst_df(s_ticker)
+        df_fa = analyst_df(ticker)
 
         if ns_parser.n_color == 1:
             df_fa["category"] = df_fa["category"].apply(category_color_red_green)

@@ -15,7 +15,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_controller
-from gamestonk_terminal.due_diligence import dd_menu as ddm
+from gamestonk_terminal.due_diligence import dd_controller
 from gamestonk_terminal.fundamental_analysis import fa_menu as fam
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
@@ -32,7 +32,7 @@ from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.oanda import oanda_controller
-
+from gamestonk_terminal.portfolio_optimization import po_controller
 
 # import warnings
 # warnings.simplefilter("always")
@@ -91,7 +91,9 @@ def main():
         "crypto",
         "ra",
         "fx",
+        "po",
     ]
+
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
@@ -180,7 +182,8 @@ def main():
 
             else:
                 print(
-                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at."
+                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at.",
+                    "\n",
                 )
             main_cmd = True
 
@@ -213,7 +216,7 @@ def main():
             b_quit = ta_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "dd":
-            b_quit = ddm.dd_menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = dd_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "eda":
             if s_interval == "1440min":
@@ -236,7 +239,9 @@ def main():
                 b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "op":
-            b_quit = op_controller.menu(s_ticker)
+            b_quit = op_controller.menu(
+                s_ticker, df_stock["5. adjusted close"].values[-1]
+            )
 
         elif ns_known_args.opt == "fred":
             b_quit = fred_controller.menu()
@@ -246,6 +251,9 @@ def main():
 
         elif ns_known_args.opt == "crypto":
             b_quit = crypto_controller.menu()
+
+        elif ns_known_args.opt == "po":
+            b_quit = po_controller.menu([s_ticker])
 
         elif ns_known_args.opt == "pred":
 
@@ -257,7 +265,7 @@ def main():
 
             try:
                 # pylint: disable=import-outside-toplevel
-                from gamestonk_terminal.prediction_techniques import pred_menu as pm
+                from gamestonk_terminal.prediction_techniques import pred_controller
             except ModuleNotFoundError as e:
                 print("One of the optional packages seems to be missing")
                 print("Optional packages need to be installed")
@@ -270,7 +278,7 @@ def main():
                 continue
 
             if s_interval == "1440min":
-                b_quit = pm.pred_menu(df_stock, s_ticker, s_start, s_interval)
+                b_quit = pred_controller.menu(df_stock, s_ticker, s_start, s_interval)
             # If stock data is intradaily, we need to get data again as prediction
             # techniques work on daily adjusted data. By default we load data from
             # Alpha Vantage because the historical data loaded gives a larger
@@ -287,7 +295,7 @@ def main():
                     # pylint: disable=no-member
                     df_stock_pred = df_stock_pred.sort_index(ascending=True)
                     df_stock_pred = df_stock_pred[s_start:]
-                    b_quit = pm.pred_menu(
+                    b_quit = pred_controller.menu(
                         df_stock_pred, s_ticker, s_start, s_interval="1440min"
                     )
                 except Exception as e:

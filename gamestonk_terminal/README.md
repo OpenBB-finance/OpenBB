@@ -23,9 +23,11 @@ The main menu allows the following commands:
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 ```
-   * Load stock ticker to perform analysis on
+   * Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
      * -s : The starting date (format YYYY-MM-DD) of the stock
      * -i : Intraday stock minutes
+     * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
+     * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
 
 **Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
@@ -33,6 +35,7 @@ load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 clear
 ```
    * Clear previously loaded stock ticker.
+
 ```
 view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 ```
@@ -238,6 +241,21 @@ Command|Description|Brokers
 `hold`    | view net holdings across all logins
 
 &nbsp;
+## Portfolio Optimization [»](portfolio_optimization/README.md)
+command|desciription
+------|------
+`equal_weight`|Returns equal weights for all selected stocks
+`mkt_cap`| Returns weights that are weighted by market cap
+`div_yield`|Returns weights that are weighted by dividend yield
+`max_sharpe`| Returns portfolio of Efficient Frontier with maximum sharpe ratio
+`min_vol`| Returns portfolio on Efficient Frontier with minimum volatility
+`eff_risk`| Returns portfolio on Efficient Frontier that maximizes returns at a given risk
+`eff_ret`| Returns portfolio on Efficient Frontier that minimizes risk at a given return level
+`show_eff`|Plots random portfolios and shows the Efficient Frontier
+
+&nbsp;
+
+
 ## Cryptocurrency [»](cryptocurrency/README.md)
 
 Command|Description
