@@ -10,6 +10,9 @@ This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of th
   * equally weighted
 * [property](#property)
   * weight according to selected info property (e.g. marketCap)
+
+[Mean Variance Optimization](#Mean_Variance_Optimization)
+
 * [maxsharpe](#maxsharpe)
   * optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)
 * [minvol](#minvol)
@@ -24,7 +27,7 @@ This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of th
   * show the efficient frontier
 
 
-## add <a name="add"></a>
+### add <a name="add"></a>
 
 ```text
 add [-t ADD_TICKERS]
@@ -32,10 +35,10 @@ add [-t ADD_TICKERS]
 
 Add/Select tickers for portfolio to be optimized.
 
-* -t : tickers to be used in the portfolio to optimize
+* -t : Tickers to be used in the portfolio to optimize
 * 
 
-## select <a name="select"></a>
+### select <a name="select"></a>
 
 ```text
 select [-t ADD_TICKERS]
@@ -43,10 +46,10 @@ select [-t ADD_TICKERS]
 
 Add/Select tickers for portfolio to be optimized.
 
-* -t : tickers to be used in the portfolio to optimize
+* -t : Tickers to be used in the portfolio to optimize
 
 
-## equal <a name="equal"></a>
+### equal <a name="equal"></a>
 
 ```text
 equal [-v VALUE] [--pie]
@@ -54,11 +57,11 @@ equal [-v VALUE] [--pie]
 
 Returns an equally weighted portfolio
 
-* -v : Amount to allocate to portfolio.
-* --pie :  Display a pie chart for weights
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
 
 
-## property <a name="property"></a>
+### property <a name="property"></a>
 
 ```text
 property [-p PROPERTY] [-v VALUE] [--pie]
@@ -67,122 +70,111 @@ property [-p PROPERTY] [-v VALUE] [--pie]
 Returns a portfolio that is weighted based on a selected property info
 
 * -p : Property info to weigh. Use one of: previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield, payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets, regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days, expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow, priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap, volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize, volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield, bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year, profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth, sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily, lastFiscalYearEnd, heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook, heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue, threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating, earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth, impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.
-* -v : Amount to allocate to portfolio.
-* --pie :  Display a pie chart for weights
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
 
 
-
-### ca menu
-From the ca menu, the loaded ticker and the selected similar tickers can be loaded by entering the `> po` menu.
-
-From this `po` menu, you can return to `ca` using `ca`, which will keep your loaded stock, but reset the selected stocks from that menu.
-
-Once your stocks are listed, you can select one of the options.
-## Property weighted <a name="weighting"></a>
-* equal weights
-* market cap weighted
-* dividend yield weighted
-### equal weights
-Returns an equally weighted portfolio where the weights are 1/number of stocks.
-````
-equal_weight [-v --value VALUE] [--pie] 
-````
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
-
-### market cap weighted
-Returns portfolio values that are weighted by their relative Market Cap.
-````
-mkt_cap [-v --value VALUE] [--pie]
-````
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
-
-###dividend yield weighted
-Returns portfolio values that are weighted by relative Dividend Yield.
-````
-div_yield [-v --value VALUE] [--pie]
-````
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
-
-## Mean Variance Optimization<a name="eff_front"></a>
+## Mean Variance Optimization <a name="Mean_Variance_Optimization"></a>
 
 These approaches are based off of the efficient frontier approach, which is meant to solve the following optimization problem.
 
-<img src="https://latex.codecogs.com/svg.image?w^TS&space;w" title="w^TS w" />
+Minimize: <img src="https://latex.codecogs.com/svg.image?w^TS&space;w" title="w^TS w" />
 
-With constraints:
+Subject to: <img src="https://latex.codecogs.com/svg.image?w^TR&space;>&space;R^*" title="w^TR > R^*" />, and <img src="https://latex.codecogs.com/svg.image?w_1&plus;w_2&plus;...w_n&space;=&space;1" title="w_1+w_2+...w_n = 1" />
 
-<img src="https://latex.codecogs.com/svg.image?w^TR&space;>&space;R^*" title="w^TR > R^*" />
+* Where S is the covariance matrix between stocks and R is the expected returns.  
+* The condition that all weights add up to 1 just implies that you want to have a net long portfolio (with no margin).  
+* A long-short portfolio can have negative weights and usually wants to have everything add up to 0 for a market-neutral strategy.
 
-\
-<img src="https://latex.codecogs.com/svg.image?w_1&plus;w_2&plus;...w_n&space;=&space;1" title="w_1+w_2+...w_n = 1" />
+Currently, we do not allow for changing risk models or adding constraints.  
+If there is something specific, please submit a feature request, or if you can write it, feel free to add a PR!
+All of these commands use [PyPortFolioOpt](#https://pyportfolioopt.readthedocs.io/en/latest/index.html) package.
 
-Where S is the covariance matrix between stocks and R is the expected returns.  The condition that all weights add up to 1
-just implies that you want to have a net long portfolio (with no margin).  
-A long-short portfolio can have negative weights and usually wants to have everything add up to 0 for a market-neutral strategy.
+### maxsharpe <a name="maxhsarpe"></a>
 
-Currently, we do not allow for changing risk models or adding constraints.  If there is something specific, please submit a feature request, or if you can
-write it, feel free to add a PR!
-
-All of our current implementations use the [PyPortFolioOpt](#https://pyportfolioopt.readthedocs.io/en/latest/index.html) package.
-
-### max_sharpe
-The sharpe ratio is defined as 
-
-(Mean Returns - Risk Free Rate)/(Standard Deviation of Returns)
-
-The usage is:
 ````
-max_sharpe [-p PERIOD] [-v --value VALUE] [--pie] 
+usage: max_sharpe [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-r RISK_FREE_RATE]
 ````
-* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
 
-### min_vol
+Maximise the Sharpe Ratio. The result is also referred to as the tangency portfolio, as it is the portfolio for which the capital market line is tangent to the efficient frontier. This is a convex optimization problem after making a certain variable substitution. See Cornuejols and Tutuncu (2006) <http://web.math.ku.dk/~rolf/CT_FinOpt.pdf> for more. The sharpe ratio is defined as (Mean Returns - Risk Free Rate)/(Standard Deviation of Returns).
+
+* -p : Amount of time to retrieve data from yfinance. Default: 3mo.
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
+
+
+### minvol <a name="minvol"></a>
+
+````
+usage: minvol [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie]
+````
+
 This portfolio minimizes the total volatility, which also means it has the smallest returns among the efficient frontier.
-The usage is:
-````
-min_vol [-p PERIOD] [-v --value VALUE] [--pie]
-````
-* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
 
-### eff_risk
-This portfolio maximizes the returns at a given risk tolerance
-The usage is:
-````
-eff_risk [-p PERIOD] [-r --risk RISK_LEVEL] [-v --value VALUE] [--pie]
-````
-* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -r/--risk Risk tolerance.  Default is 0.1 (10%)
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
+* -p : Amount of time to retrieve data from yfinance. Default: 3mo.
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
 
-### eff_ret
-This portfolio minimizes the risk at a given return level
-The usage is:
-````
-eff_ret [-p PERIOD] [-r --return] [-v --value VALUE] [--pie]
-````
-* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -r/--return.  Desired return.  Default is 0.1 (10%)
-* -v/--value If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
-* --pie Flag that displays a pie chart of the allocations.
 
-### show_eff
+### maxquadutil <a name="maxquadutil"></a>
+
+````
+usage: maxquadutil [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-r RISK_AVERSION] [-n]
+````
+
+Maximises the quadratic utility, given some risk aversion.
+
+* -p : Amount of time to retrieve data from yfinance. Default: 3mo.
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
+* -r : Risk aversion parameter
+* -n : Whether the portfolio should be market neutral (weights sum to zero). Defaults: False.
+
+
+### effret <a name="effret"></a>
+
+````
+usage: effret [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-t TARGET_RETURN] [-n]
+````
+
+Calculate the 'Markowitz portfolio', minimising volatility for a given target return.
+
+* -p : Amount of time to retrieve data from yfinance. Default: 3mo.
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
+* -t : The desired return of the resulting portfolio
+* -n : Whether the portfolio should be market neutral (weights sum to zero). Defaults: False.
+
+
+### effrisk <a name="effrisk"></a>
+
+````
+usage: effrisk [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-v VALUE] [--pie] [-t TARGET_VOLATILITY] [-n]
+````
+
+Maximise return for a target risk. The resulting portfolio will have a volatility less than the target (but not guaranteed to be equal).
+
+* -p : Amount of time to retrieve data from yfinance. Default: 3mo.
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
+* -t : The desired maximum volatility of the resultingportfolio
+* -n : Whether the portfolio should be market neutral (weights sum to zero). Defaults: False.
+
+
+### ef
+
+````
+usage: ef [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-n N_PORT] 
+````
+
 This function plots random portfolios based on their risk and returns and shows the efficient frontier.
-The usage is:
-````
-show_eff [-p PERIOD]  [-n N_PORTFOLIOS]
-````
-* -p/--period Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
-* -n Number of portfolios to simulate.
+     
+* -n : Number of portfolios to simulate. Default 300.
+* -p : Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 
-##Sample Usage
+
+
+## Sample Usage
 In this example, we generate weights for a list of 6 stocks using the eff_ret command.  This optimization looks to maximize returns 
 at a given risk level.  We start by adding the stocks we want to analyze:
 ````
