@@ -349,7 +349,8 @@ def show_candles(accountID, instrument, other_args: List[str]):
         df = pd.read_csv(".candles.csv", index_col=0)
         df.index = pd.to_datetime(df.index)
         df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
-        mpf.plot(df, type="candle", style="charles", volume=True)
+        mpf.plot(df, type="candle", style="charles", volume=True,
+                 title=f"{instrument} {ns_parser.granularity}")
     except Exception as e:
         print(e)
     except NameError as e:
