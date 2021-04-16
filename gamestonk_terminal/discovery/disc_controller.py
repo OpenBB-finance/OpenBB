@@ -47,6 +47,7 @@ class DiscoveryController:
         "performance",
         "spectrum",
         "latest",
+        "trending",
         "news_article"
     ]
 
@@ -90,6 +91,7 @@ class DiscoveryController:
         print("   performance    performance of sectors, industry, country [Finviz]")
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
         print("   latest         latest news [SeekingAlpha]")
+        print("   trending       trending news [SeekingAlpha]")
         print("   news_article   news article [SeekingAlpha]")
         print("")
 
@@ -194,6 +196,10 @@ class DiscoveryController:
     def call_latest(self, other_args: List[str]):
         """Process latest command"""
         seeking_alpha_view.latest_news_view(other_args)
+
+    def call_trending(self, other_args: List[str]):
+        """Process trending command"""
+        seeking_alpha_view.trending_news_view(other_args)
 
     def call_news_article(self, other_args: List[str]):
         """Process news_article command"""

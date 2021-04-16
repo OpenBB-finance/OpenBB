@@ -133,6 +133,43 @@ def get_article_list(num: int) -> list:
     return articles
 
 
+def get_trending_list(num: int) -> list:
+    """Returns a list of trending articles
+
+    Parameters
+    ----------
+    pages : int
+        Number of articles
+
+    Returns
+    -------
+    list
+        Trending articles list
+    """
+
+    articles = list()
+    url_articles = "https://seekingalpha.com/news/trending_news"
+    response = requests.get(url_articles, headers={"User-Agent": get_user_agent()})
+
+    # Check that the API response was successful
+    if response.status_code != 200:
+        print("Invalid response\n")
+    else:
+        for item in response.json():
+            article_url = item['uri']
+            if not article_url.startswith('/news/'):
+                continue
+            article_id = article_url.split('/')[2].split('-')[0]
+            articles.append({
+                'title': item['title'],
+                'publishedAt': item['publish_on'],
+                'url': "https://seekingalpha.com"+article_url,
+                'id': article_id
+            })
+
+    return articles
+
+
 def get_article_data(article_id: int) -> dict:
     """Returns an article
 
