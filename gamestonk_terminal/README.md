@@ -9,6 +9,7 @@
 * [Due Diligence](#Due-Diligence-)
 * [Prediction Techniques](#Prediction-Techniques-)
 * [Portfolio Analysis](#Portfolio-Analysis-)
+* [Portfolio Optimization](#Portfolio-Optimization-)
 * [Cryptocurrencies](#Cryptocurrencies-)
 * [Comparison Analysis](#Comparison-Analysis-)
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis-)
@@ -242,16 +243,19 @@ Command|Description|Brokers
 
 &nbsp;
 ## Portfolio Optimization [»](portfolio_optimization/README.md)
-command|desciription
+
+Command|Description
 ------|------
-`equal_weight`|Returns equal weights for all selected stocks
-`mkt_cap`| Returns weights that are weighted by market cap
-`div_yield`|Returns weights that are weighted by dividend yield
-`max_sharpe`| Returns portfolio of Efficient Frontier with maximum sharpe ratio
-`min_vol`| Returns portfolio on Efficient Frontier with minimum volatility
-`eff_risk`| Returns portfolio on Efficient Frontier that maximizes returns at a given risk
-`eff_ret`| Returns portfolio on Efficient Frontier that minimizes risk at a given return level
-`show_eff`|Plots random portfolios and shows the Efficient Frontier
+`add`| add ticker to optimize
+`select`| overwrite current tickers with new tickers
+`equal`| equally weighted
+`property`| weight according to selected info property (e.g. marketCap)
+`maxsharpe`| optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)
+`minvol`| optimizes for minimum volatility
+`maxquadutil`| maximises the quadratic utility, given some risk aversion
+`effret`| maximises return for a given target risk
+`effrisk`| minimises risk for a given target return
+`ef`| show the efficient frontier
 
 &nbsp;
 
@@ -331,7 +335,9 @@ Command|Description
 Command|Description|Source
 ------ | --------|----
 `exp`           | see/set expiry date
-`volume`        | plot options trading volume / open interest |[Yahoo Finance](https://finance.yahoo.com/)
+`volume`        | volume + open interest options trading plot |[Yahoo Finance](https://finance.yahoo.com/)
+`vcalls`        | calls volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
+`vputs`         | puts volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
 
 &nbsp;
 
