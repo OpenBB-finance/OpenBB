@@ -23,7 +23,8 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
   * contains [Oversold (-s) signal example](#signal-oversold)
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
-
+* [po](#port_opt)
+  * go to the portfolio optimization menu
 
 ## view <a name="view"></a>
 
@@ -180,3 +181,13 @@ Prints list of available signals. [Source: Finviz]
 
 <img width="937" alt="Captura de ecrã 2021-04-05, às 20 25 13" src="https://user-images.githubusercontent.com/25267873/113616495-0ece9580-964d-11eb-97af-4150f928a170.png">
 
+## po <a name="port_opt"></a>
+Goes to the portfolio menu with list of passed stocks. In order to pass the stocks, just type the tickers of interest, no commas.
+
+```
+usage: po ticker1 ticker2 ... 
+```
+
+````
+example: po aapl msft tsla gme
+````

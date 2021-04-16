@@ -99,7 +99,7 @@ def regions(l_args, s_ticker):
         plt.bar(df_interest_region.index, df_interest_region[s_ticker], width=0.8)
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.ylabel("Interest [%]")
-        plt.xlabel("Time")
+        plt.xlabel("Region")
         plt.show()
         print("")
 

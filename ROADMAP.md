@@ -142,8 +142,13 @@
 * [ ] Add Brokers (td, webull, etc) (@jmaslek)
 * [ ] Refactoring
 * [ ] Summaries / tear sheets (@jmaslek)
-* [ ] Portfolio Optimization (@jmaslek)
+___  
+##Portfolio Optimization
+* [x] Basic Optimization through PyPortFolioOpt(@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
 
+**NEXT**
+* [ ] Decide what features should be present
+* [ ] Allow for more custom optimization constrains
 ---
 
 ## FRED

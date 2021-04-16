@@ -92,6 +92,7 @@ pycparser==2.20; python_version >= "3.5" and python_full_version < "3.0.0" or py
 pygments==2.8.1; python_version >= "3.6"
 pymeeus==0.5.9; python_version >= "3.5"
 pyparsing==2.4.7; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
+pyportfolioopt==1.4.1
 pyrsistent==0.17.3; python_version >= "3.6"
 pysocks==1.7.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 python-dateutil==2.8.1; python_full_version >= "3.6.1" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0")

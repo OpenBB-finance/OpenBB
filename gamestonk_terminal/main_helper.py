@@ -1,10 +1,12 @@
 import argparse
 from sys import stdout
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
+import pytz
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -58,6 +60,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     )
     print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
     print("   crypto      cryptocurrencies, \t\t uses coingecko api")
+    print(
+        "   po          portfolio optimization, \t\t optimal portfolio weights from pyportfolioopt"
+    )
 
     if s_ticker:
         print(
@@ -117,7 +122,9 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="load",
-        description=""" Load a stock in order to perform analysis.""",
+        description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+        " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+        " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
     )
     parser.add_argument(
         "-t",
@@ -151,8 +158,15 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         dest="source",
         type=check_sources,
         default="yf",
-        help="Source of historical data. Intraday: Only 'av' available."
-        "Daily: 'yf' and 'av' available.",
+        help="Source of historical data. 'yf' and 'av' available.",
+    )
+    parser.add_argument(
+        "-p",
+        "--prepost",
+        action="store_true",
+        default=False,
+        dest="b_prepost",
+        help="Pre/After market hours. Only works for 'yf' source, and intraday data",
     )
 
     try:
@@ -229,9 +243,54 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock = df_stock[ns_parser.s_start_date :]
 
             elif ns_parser.source == "yf":
-                print(
-                    "Unfortunately, yahoo finance historical data doesn't contain intraday prices"
+                s_int = s_interval[:-2]
+
+                d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+
+                s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+                s_date_start = s_start_dt.strftime("%Y-%m-%d")
+
+                s_start = pytz.utc.localize(s_start_dt)
+
+                if s_start_dt > ns_parser.s_start_date:
+                    print(
+                        f"Using Yahoo Finance with granularity {s_int} the starting date is set to: {s_date_start}\n"
+                    )
+
+                    df_stock = yf.download(
+                        ns_parser.s_ticker,
+                        start=s_date_start,
+                        progress=False,
+                        interval=s_int,
+                        prepost=ns_parser.b_prepost,
+                    )
+
+                else:
+                    df_stock = yf.download(
+                        ns_parser.s_ticker,
+                        start=ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                        progress=False,
+                        interval=s_int,
+                        prepost=ns_parser.b_prepost,
+                    )
+
+                # Check that a stock was successfully retrieved
+                if df_stock.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock = df_stock.rename(
+                    columns={
+                        "Open": "1. open",
+                        "High": "2. high",
+                        "Low": "3. low",
+                        "Close": "4. close",
+                        "Adj Close": "5. adjusted close",
+                        "Volume": "6. volume",
+                    }
                 )
+                df_stock.index.name = "date"
+
                 return [s_ticker, s_start, s_interval, df_stock]
 
     except Exception as e:
@@ -368,24 +427,6 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         s_interval = str(ns_parser.n_interval) + "min"
 
     type_candles = lett_to_num(ns_parser.type)
-
-    try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-        # Daily
-        if s_interval == "1440min":
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
-        # Intraday
-        else:
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_intraday(
-                symbol=s_ticker, outputsize="full", interval=s_interval
-            )
-
-    except Exception as e:
-        print(e)
-        print("Either the ticker or the API_KEY are invalids. Try again!")
-        return
 
     df_stock.sort_index(ascending=True, inplace=True)
 

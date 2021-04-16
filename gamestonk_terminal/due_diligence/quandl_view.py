@@ -1,7 +1,11 @@
+""" Quandl View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import quandl
 from matplotlib import pyplot as plt
-import matplotlib.ticker as ticker
+import matplotlib.ticker
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -11,7 +15,19 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal import config_terminal as cfg
 
 
-def short_interest(l_args, s_ticker, s_start):
+def short_interest(other_args: List[str], ticker: str, start: str):
+    """Display short interest for a given ticker and a given start date
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-d", "10"]
+    ticker : str
+        Stock ticker
+    start : str
+        Start date of the stock data
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="short",
@@ -40,18 +56,18 @@ def short_interest(l_args, s_ticker, s_start):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         quandl.ApiConfig.api_key = cfg.API_KEY_QUANDL
 
         if ns_parser.b_nyse:
-            df_short_interest = quandl.get(f"FINRA/FNYX_{s_ticker}")
+            df_short_interest = quandl.get(f"FINRA/FNYX_{ticker}")
         else:
-            df_short_interest = quandl.get(f"FINRA/FNSQ_{s_ticker}")
+            df_short_interest = quandl.get(f"FINRA/FNSQ_{ticker}")
 
-        df_short_interest = df_short_interest[s_start:]
+        df_short_interest = df_short_interest[start:]  # type: ignore
         df_short_interest.columns = [
             "".join(
                 " " + char if char.isupper() else char.strip() for char in idx
@@ -77,18 +93,18 @@ def short_interest(l_args, s_ticker, s_start):
         ax.set_ylabel("Shares")
         ax.set_xlabel("Date")
 
-        if s_start:
+        if start:
             ax.set_title(
-                f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker} from {s_start.date()}"
+                f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {ticker} from {start.date()}"  # type: ignore
             )
         else:
             ax.set_title(
-                f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {s_ticker}"
+                f"{('NASDAQ', 'NYSE')[ns_parser.b_nyse]} Short Interest on {ticker}"
             )
 
         ax.legend(labels=["Short Volume", "Total Volume"])
         ax.tick_params(axis="both", which="major")
-        ax.yaxis.set_major_formatter(ticker.EngFormatter())
+        ax.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
         ax_twin = ax.twinx()
         ax_twin.tick_params(axis="y", colors="green")
         ax_twin.set_ylabel("Percentage of Volume Shorted", color="green")
@@ -98,7 +114,9 @@ def short_interest(l_args, s_ticker, s_start):
             color="green",
         )
         ax_twin.tick_params(axis="y", which="major", color="green")
-        ax_twin.yaxis.set_major_formatter(ticker.FormatStrFormatter("%.0f%%"))
+        ax_twin.yaxis.set_major_formatter(
+            matplotlib.ticker.FormatStrFormatter("%.0f%%")
+        )
         plt.xlim([df_short_interest.index[0], df_short_interest.index[-1]])
 
         df_short_interest["% of Volume Shorted"] = df_short_interest[
