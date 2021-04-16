@@ -114,9 +114,9 @@ Returns a portfolio that is weighted based on a selected property info
 
 These approaches are based off of the efficient frontier approach, which is meant to solve the following optimization problem.
 
-Minimize: <img src="https://latex.codecogs.com/svg.image?w^TS&space;w" title="w^TS w" />
-
-Subject to: <img src="https://latex.codecogs.com/svg.image?w^TR&space;>&space;R^*" title="w^TR > R^*" />, and <img src="https://latex.codecogs.com/svg.image?w_1&plus;w_2&plus;...w_n&space;=&space;1" title="w_1+w_2+...w_n = 1" />
+<p align="center">
+<img width="200" height="90" src="https://user-images.githubusercontent.com/25267873/115084918-73b5a580-9f01-11eb-8438-6dd427727e7b.png">
+</p>
 
 * Where S is the covariance matrix between stocks and R is the expected returns.  
 * The condition that all weights add up to 1 just implies that you want to have a net long portfolio (with no margin).  
