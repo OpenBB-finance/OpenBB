@@ -424,6 +424,6 @@ def load(other_args: List[str]):
 
         if not ns_parser:
             return
-        return ns_parser.instrument
+        return ns_parser.instrument.upper()
     except Exception as e:
         print(e)
