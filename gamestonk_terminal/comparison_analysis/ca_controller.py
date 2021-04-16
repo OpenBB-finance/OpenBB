@@ -84,8 +84,6 @@ class ComparisonAnalysisController:
 
         if self.similar:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
-        # else:
-        #    print(f"No similar companies [{self.user}]")
 
         print("\nComparison Analysis Mode:")
         print("   help          show this comparison analysis menu again")
@@ -110,8 +108,9 @@ class ComparisonAnalysisController:
         print("   performance   brief performance comparison")
         print("   technical     brief technical comparison")
         print("")
-        print("   > po          portfolio optimization for selected tickers")
-        print("")
+        if self.similar:
+            print("   > po          portfolio optimization for selected tickers")
+            print("")
         return
 
     @staticmethod
