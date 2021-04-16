@@ -8,8 +8,12 @@ This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of th
   * overwrite current tickers with new tickers
 * [equal](#equal)
   * equally weighted
+* [mktcap](#mktcap)
+  * weighted according to market cap (property marketCap)
+* [dividend](#dividend)
+  * weighted according to dividend yield (property dividendYield)
 * [property](#property)
-  * weight according to selected info property (e.g. marketCap)
+  * weight according to selected info property
 
 [Mean Variance Optimization](#Mean_Variance_Optimization)
 
@@ -61,6 +65,34 @@ Returns an equally weighted portfolio
 * --pie : Display a pie chart for weights
 
 ![equal](https://user-images.githubusercontent.com/25267873/114958292-9771e080-9e5a-11eb-9de6-1c2dfbe1e27b.png)
+
+
+### mktcap <a name="mktcap"></a>
+
+```text
+property -p marketCap [-v VALUE] [--pie]
+```
+
+Returns a portfolio that is weighted based on market cap info
+
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
+
+![mktCap](https://user-images.githubusercontent.com/25267873/115084151-57fdcf80-9f00-11eb-885c-bfe93de0eb6b.png)
+
+
+### dividend <a name="dividend"></a>
+
+```text
+property -p dividend [-v VALUE] [--pie]
+```
+
+Returns a portfolio that is weighted based on dividend yield info
+
+* -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
+* --pie : Display a pie chart for weights
+
+<img width="990" alt="Captura de ecrã 2021-04-16, às 22 11 41" src="https://user-images.githubusercontent.com/25267873/115084405-c5a9fb80-9f00-11eb-8feb-a5076fab9896.png">
 
 
 ### property <a name="property"></a>
