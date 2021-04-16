@@ -1,35 +1,76 @@
 # Portfolio Optimization
 
-This menu aims to discover optimal portfolios for selected stocks.
+This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of the following commands along with an example will be exploited below.
 
-Currently we support two methods:
+* [add](#add)
+  * add ticker to optimize
+* [select](#select)
+  * overwrite current tickers with new tickers
+* [equal](#equal)
+  * equally weighted
+* [property](#property)
+  * weight according to selected info property (e.g. marketCap)
+* [maxsharpe](#maxsharpe)
+  * optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)
+* [minvol](#minvol)
+  * optimizes for minimum volatility
+* [maxquadutil](#maxquadutil)
+  * maximises the quadratic utility, given some risk aversion
+* [effret](#effret)
+  * maximises return for a given target risk
+* [effrisk](#effrisk)
+  * minimises risk for a given target return
+* [ef](#ef)
+  * show the efficient frontier
 
-* [Property Weighting](#weighting)
-    * Equal Weights
-    * Market Cap Weighting
-    * Divident Yield Weighting
-* [Mean-Variance-Optimization](#eff_front)
-    * Max sharpe ratio
-    * Minimum volatility
-    * Maximum returns at given risk level
-    * Minimum risk level at a given return 
 
-## Procedure
-There are three ways to load stocks to be analyzed. 
-* add
-* select
-* from ca menu
-###add
-Adds selected tickers to the menu to be considered
+## add <a name="add"></a>
 
-````
-usage: add ticker1,ticker2,ticker3,...
-````
-###select
-Clears current list and loads selected ticker
-````
-usage: select ticker1,ticker2,ticker3,...
-````
+```text
+add [-t ADD_TICKERS]
+```
+
+Add/Select tickers for portfolio to be optimized.
+
+* -t : tickers to be used in the portfolio to optimize
+* 
+
+## select <a name="select"></a>
+
+```text
+select [-t ADD_TICKERS]
+```
+
+Add/Select tickers for portfolio to be optimized.
+
+* -t : tickers to be used in the portfolio to optimize
+
+
+## equal <a name="equal"></a>
+
+```text
+equal [-v VALUE] [--pie]
+```
+
+Returns an equally weighted portfolio
+
+* -v : Amount to allocate to portfolio.
+* --pie :  Display a pie chart for weights
+
+
+## property <a name="property"></a>
+
+```text
+property [-p PROPERTY] [-v VALUE] [--pie]
+```
+
+Returns a portfolio that is weighted based on a selected property info
+
+* -p : Property info to weigh. Use one of: previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield, payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets, regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days, expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow, priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap, volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize, volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield, bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year, profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth, sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily, lastFiscalYearEnd, heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook, heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue, threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating, earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth, impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.
+* -v : Amount to allocate to portfolio.
+* --pie :  Display a pie chart for weights
+
+
 
 ### ca menu
 From the ca menu, the loaded ticker and the selected similar tickers can be loaded by entering the `> po` menu.
