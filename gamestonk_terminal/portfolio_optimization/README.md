@@ -60,6 +60,8 @@ Returns an equally weighted portfolio
 * -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
 * --pie : Display a pie chart for weights
 
+![equal](https://user-images.githubusercontent.com/25267873/114958292-9771e080-9e5a-11eb-9de6-1c2dfbe1e27b.png)
+
 
 ### property <a name="property"></a>
 
@@ -72,6 +74,8 @@ Returns a portfolio that is weighted based on a selected property info
 * -p : Property info to weigh. Use one of: previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield, payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets, regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days, expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow, priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap, volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize, volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield, bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year, profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth, sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily, lastFiscalYearEnd, heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook, heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue, threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating, earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth, impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.
 * -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
 * --pie : Display a pie chart for weights
+
+![marketCap](https://user-images.githubusercontent.com/25267873/114958294-980a7700-9e5a-11eb-9db4-d06e6a1e8981.png)
 
 
 ## Mean Variance Optimization <a name="Mean_Variance_Optimization"></a>
@@ -90,6 +94,7 @@ Currently, we do not allow for changing risk models or adding constraints.
 If there is something specific, please submit a feature request, or if you can write it, feel free to add a PR!
 All of these commands use [PyPortFolioOpt](#https://pyportfolioopt.readthedocs.io/en/latest/index.html) package.
 
+
 ### maxsharpe <a name="maxhsarpe"></a>
 
 ````
@@ -101,6 +106,8 @@ Maximise the Sharpe Ratio. The result is also referred to as the tangency portfo
 * -p : Amount of time to retrieve data from yfinance. Default: 3mo.
 * -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
 * --pie : Display a pie chart for weights
+
+<img width="997" alt="maxsharpe" src="https://user-images.githubusercontent.com/25267873/114958291-9771e080-9e5a-11eb-824d-f9d1e5b22444.png">
 
 
 ### minvol <a name="minvol"></a>
@@ -114,6 +121,9 @@ This portfolio minimizes the total volatility, which also means it has the small
 * -p : Amount of time to retrieve data from yfinance. Default: 3mo.
 * -v : If provided, this represents an actual allocation amount for the portfolio.  Defaults to 1, which just returns the weights.
 * --pie : Display a pie chart for weights
+
+![min_vol](https://user-images.githubusercontent.com/25267873/114958290-96d94a00-9e5a-11eb-9b7c-deba8a8e7249.png)
+<img width="995" alt="min_vol2" src="https://user-images.githubusercontent.com/25267873/114958289-96d94a00-9e5a-11eb-8c50-c4f834f0d8e1.png">
 
 
 ### maxquadutil <a name="maxquadutil"></a>
@@ -130,6 +140,8 @@ Maximises the quadratic utility, given some risk aversion.
 * -r : Risk aversion parameter
 * -n : Whether the portfolio should be market neutral (weights sum to zero). Defaults: False.
 
+<img width="1004" alt="maxquadutil" src="https://user-images.githubusercontent.com/25267873/114958288-9640b380-9e5a-11eb-8b4e-ac61b11db638.png">
+
 
 ### effret <a name="effret"></a>
 
@@ -144,6 +156,8 @@ Calculate the 'Markowitz portfolio', minimising volatility for a given target re
 * --pie : Display a pie chart for weights
 * -t : The desired return of the resulting portfolio
 * -n : Whether the portfolio should be market neutral (weights sum to zero). Defaults: False.
+
+<img width="990" alt="effret" src="https://user-images.githubusercontent.com/25267873/114958286-9640b380-9e5a-11eb-986a-0ddf359121ae.png">
 
 
 ### effrisk <a name="effrisk"></a>
@@ -160,6 +174,9 @@ Maximise return for a target risk. The resulting portfolio will have a volatilit
 * -t : The desired maximum volatility of the resultingportfolio
 * -n : Whether the portfolio should be market neutral (weights sum to zero). Defaults: False.
 
+![effrisk](https://user-images.githubusercontent.com/25267873/114958284-95a81d00-9e5a-11eb-8626-988505db8890.png)
+<img width="1002" alt="effrisk2" src="https://user-images.githubusercontent.com/25267873/114958277-92ad2c80-9e5a-11eb-9e7e-ba60a4ec698e.png">
+
 
 ### ef
 
@@ -172,31 +189,4 @@ This function plots random portfolios based on their risk and returns and shows 
 * -n : Number of portfolios to simulate. Default 300.
 * -p : Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 
-
-
-## Sample Usage
-In this example, we generate weights for a list of 6 stocks using the eff_ret command.  This optimization looks to maximize returns 
-at a given risk level.  We start by adding the stocks we want to analyze:
-````
-select aapl,amzn,msft,f,gm,ge
-````
-Which shows:
-````
-Current Tickers: GE, GM, AMZN, AAPL, F, MSFT
-````
-To perform the optimization, we will set a target return of 25% (.25).  Given how stocks performed during COVID,
-there is a lot of volatility, so many optimizations may not get low volatility.  The module also returns annualized volatility,
-so the number is your portfolio volatility * `sqrt(252`.  This optimization will be (including a pie chart!).  Note we could also supply a different
-time period, which changes the expected returns and historical volatility, which changes the optimization.  We could also specify a dollar
-amount that you wish to allocate using the `-v` flag.
-````
-eff_ret -r .25 --pie
-````
-The console will show (numbers will vary based on when this is done).
-![console](https://user-images.githubusercontent.com/18151143/114740311-bd429c80-9d17-11eb-90e2-97430781431a.png)
-
-And the pie chart:
-
-![yummypie](https://user-images.githubusercontent.com/18151143/114740289-b9167f00-9d17-11eb-9c29-470785b21d09.png)
-
-Note that since `AAPL` had zero allocation, it was omitted from the chart.
+![ef](https://user-images.githubusercontent.com/25267873/114958281-93de5980-9e5a-11eb-967b-d37ddd4f3e73.png)
