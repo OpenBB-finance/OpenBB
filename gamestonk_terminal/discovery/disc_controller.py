@@ -20,6 +20,7 @@ from gamestonk_terminal.discovery import (
     spachero_view,
     unusual_whales_view,
     yahoo_finance_view,
+    marketbeat_view,
 )
 
 
@@ -46,6 +47,7 @@ class DiscoveryController:
         "valuation",
         "performance",
         "spectrum",
+        "ratings",
     ]
 
     def __init__(self):
@@ -87,6 +89,7 @@ class DiscoveryController:
         print("   valuation      valuation of sectors, industry, country [Finviz]")
         print("   performance    performance of sectors, industry, country [Finviz]")
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
+        print("   ratings        latest ratings [MarketBeat]")
         print("")
 
     def switch(self, an_input: str):
@@ -186,6 +189,10 @@ class DiscoveryController:
         self.spectrum_img_to_delete = finviz_view.view_group_data(
             other_args, "spectrum"
         )
+
+    def call_ratings(self, other_args: List[str]):
+        """Process ratings command"""
+        marketbeat_view.ratings_view(other_args)
 
 
 def menu():
