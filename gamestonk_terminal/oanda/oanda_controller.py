@@ -1,5 +1,5 @@
 import argparse
-# import matplotlib.pyplot as plt
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
@@ -17,21 +17,28 @@ class OandaController:
         "help",
         "q",
         "quit",
-        "hist",
         "price",
         "summary",
-        "list"]
+        "list",
+        "orderbook",
+        "positionbook",
+        "limitorder",
+        "cancel",
+        "positions",
+        "closetrade",
+        "trades",
+        "candles",
+        "pending",
+    ]
 
     def __init__(
         self,
-#         instrument:str,
-        ):
+    ):
         """Construct Data"""
-#         self.instrument = instrument
         self.oanda_parser = argparse.ArgumentParser(add_help=False, prog="fx")
         self.oanda_parser.add_argument(
-        "cmd",
-        choices=self.CHOICES,
+            "cmd",
+            choices=self.CHOICES,
         )
 
     @staticmethod
@@ -39,13 +46,22 @@ class OandaController:
         """Print help"""
 
         print("\nForex Mode:")
-        print("\t help \t show this menu again")
-        print("\t q \t quit this menu and goes back to main menu")
-        print("\t quit \t quit to abandon program")
+        print("help \t show this menu again")
+        print("q \t quit this menu and goes back to main menu")
+        print("quit \t quit to abandon program")
         print("")
-        print("\t price \t shows price for selected instrument")
-        print("\t summary  shows account summary")
-        print("\t list \t list orders")
+        print("price \t shows price for selected instrument")
+        print("summary  shows account summary")
+        print("list \t list order history")
+        print("trades \t list open trades")
+        print("orderbook \t print orderbook")
+        print("positionbook \t print positionbook")
+        print("limitorder \t place limit order -u # of units -p price")
+        print("cancel \t cancel a pending order by ID -i order ID")
+        print("pending \t get information on pending orders")
+        print("positions \t Get open positions")
+        print("closetrade \t Close a trade by id")
+        print("candles \t show candles")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -58,7 +74,9 @@ class OandaController:
         """
         (known_args, other_args) = self.oanda_parser.parse_known_args(an_input.split())
 
-        return getattr(self, "call_" + known_args.cmd, lambda: "command not recognized!")(other_args)
+        return getattr(
+            self, "call_" + known_args.cmd, lambda: "command not recognized!"
+        )(other_args)
 
     def call_help(self, _):
         """Process Help Command"""
@@ -72,46 +90,77 @@ class OandaController:
         """Process Quit command - exit the program"""
         return True
 
-    def call_price(self, _):
+    def call_price(self, other_args: List[str]):
         """Process Price Command"""
-        try:
-            oanda_functions.get_fx_price(account, instrument)
-        except NameError as e:
-            print(e)
+        oanda_functions.get_fx_price(account, other_args)
 
     def call_summary(self, _):
         """Process account summary command"""
         oanda_functions.get_account_summary(account)
 
-    def call_list(self, _):
+    def call_orderbook(self, other_args: List[str]):
+        """Process Oanda Order Book"""
+        oanda_functions.get_order_book(other_args)
+
+    def call_positionbook(self, other_args: List[str]):
+        """Process Oanda Position Book"""
+        oanda_functions.get_position_book(other_args)
+
+    def call_list(self, other_args: List[str]):
         """Process list orders command"""
-        oanda_functions.list_orders(account)
+        oanda_functions.list_orders(account, other_args)
+
+    def call_limitorder(self, other_args: List[str]):
+        """Place limit order"""
+        oanda_functions.create_limit_order(account, other_args)
+
+    def call_cancel(self, other_args: List[str]):
+        """Cancel pending order by ID"""
+        oanda_functions.cancel_pending_order(account, other_args)
+
+    def call_positions(self, _):
+        """Get Open Positions"""
+        oanda_functions.get_open_positions(account)
+
+    def call_pending(self, _):
+        """See up to 25 pending orders"""
+        oanda_functions.get_pending_orders(account)
+
+    def call_closetrade(self, other_args: List[str]):
+        """Close a trade by id"""
+        oanda_functions.close_trade(account, other_args)
+
+    def call_candles(self, _):
+        oanda_functions.show_candles(account)
+
+    def call_trades(self, _):
+        """List open trades"""
+        oanda_functions.get_open_trades(account)
 
 
 def menu():
-        """Oanda Menu"""
-        oanda_controller = OandaController()
-        oanda_controller.call_help(None)
-        while True:
-            if session and gtff.USE_PROMPT_TOOLKIT:
-                completer = NestedCompleter.from_nested_dict(
-                    {c: None for c in oanda_controller.CHOICES}
-                )
+    """Oanda Menu"""
+    oanda_controller = OandaController()
+    oanda_controller.call_help(None)
+    while True:
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            completer = NestedCompleter.from_nested_dict(
+                {c: None for c in oanda_controller.CHOICES}
+            )
 
-                an_input = session.prompt(
+            an_input = session.prompt(
                 f"{get_flair()} (fx)> ",
                 completer=completer,
-                )
-            else:
-                an_input = input(f"{get_flair()} (fx)> ")
+            )
+        else:
+            an_input = input(f"{get_flair()} (fx)> ")
 
-            try:
-                process_input = oanda_controller.switch(an_input)
+        try:
+            process_input = oanda_controller.switch(an_input)
 
-                if process_input is not None:
-                    return process_input
+            if process_input is not None:
+                return process_input
 
-            except SystemExit:
-                print("The command selected doesn't exit\n")
-                continue
-
+        except SystemExit:
+            print("The command selected doesn't exit\n")
+            continue
