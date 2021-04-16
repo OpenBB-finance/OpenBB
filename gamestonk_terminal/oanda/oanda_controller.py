@@ -136,8 +136,8 @@ class OandaController:
         """Close a trade by id"""
         oanda_functions.close_trade(account, other_args)
 
-    def call_candles(self, _):
-        oanda_functions.show_candles(account, self.instrument)
+    def call_candles(self, other_args: List[str]):
+        oanda_functions.show_candles(account, self.instrument, other_args)
 
     def call_trades(self, _):
         """List open trades"""

@@ -77,10 +77,8 @@ def list_orders(accountID, other_args: List[str]):
 
     parameters = {
     }
-    if ns_parser.state is not None:
-        parameters["state"] = ns_parser.state
-    if ns_parser.count is not None:
-        parameters["count"] = ns_parser.count
+    parameters["state"] = ns_parser.state
+    parameters["count"] = ns_parser.count
 
     request = orders.OrderList(accountID, parameters)
     response = client.request(request)
@@ -310,12 +308,39 @@ def close_trade(accountID, other_args: List[str]):
         print(e)
 
 
-def show_candles(accountID, instrument):
-    #TODO Add switches for granularity and count
+def show_candles(accountID, instrument, other_args: List[str]):
+    parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="show_candles",
+            description="Display Candle Data",
+        )
+    parser.add_argument(
+            "-g",
+            "--granularity",
+            dest="granularity",
+            action="store",
+            type=str,
+            default="D",
+            required=False,
+        )
+    parser.add_argument(
+        "-c",
+        "--count",
+        dest="candlecount",
+        action="store",
+        default=180,
+        type=int,
+        required=False,
+        )
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     parameters = {
-        "granularity": "D",
-        "count":"180"
     }
+    parameters["granularity"] = ns_parser.granularity
+    parameters["count"] = ns_parser.candlecount
     try:
         request = instruments.InstrumentsCandles(instrument, params=parameters)
         response = client.request(request)
