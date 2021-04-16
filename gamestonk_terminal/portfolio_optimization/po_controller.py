@@ -66,9 +66,7 @@ class PortfolioOptimization:
         print(
             "   dividend      weighted according to dividend yield (property dividendYield)"
         )
-        print(
-            "   property      weight according to selected info property (e.g. marketCap)"
-        )
+        print("   property      weight according to selected info property")
         print("")
         print("Mean Variance Optimization:")
         print(
