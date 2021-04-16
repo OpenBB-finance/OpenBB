@@ -10,7 +10,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio_optimization import optimizer_view
-from gamestonk_terminal.comparison_analysis import ca_controller
 
 
 class PortfolioOptimization:
