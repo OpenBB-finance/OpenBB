@@ -144,9 +144,9 @@ class OandaController:
         oanda_functions.get_open_trades(account)
 
 
-    def call_calendar(self, _):
+    def call_calendar(self, other_args: List[str]):
         """Call calendar"""
-        oanda_functions.calendar(self.instrument)
+        oanda_functions.calendar(self.instrument, other_args)
 
 
 def menu():
