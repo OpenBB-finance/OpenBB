@@ -4,9 +4,11 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import pandas as pd
+from datetime import datetime
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
+    valid_date,
 )
 
 from gamestonk_terminal.discovery import seeking_alpha_model
@@ -87,7 +89,7 @@ def latest_news_view(other_args: List[str]):
         dest="n_id",
         type=check_positive,
         default=-1,
-        help="article number found on Seeking Alpha website",
+        help="article ID number",
     )
     parser.add_argument(
         "-n",
@@ -96,7 +98,16 @@ def latest_news_view(other_args: List[str]):
         dest="n_num",
         type=check_positive,
         default=10,
-        help="number of latest articles being printed",
+        help="number of articles being printed",
+    )
+    parser.add_argument(
+        "-d",
+        "--date",
+        action="store",
+        dest="n_date",
+        type=valid_date,
+        default=datetime.now().strftime("%Y-%m-%d"),
+        help="starting date",
     )
 
     if other_args:
@@ -109,7 +120,9 @@ def latest_news_view(other_args: List[str]):
 
     # User wants to see all latest news
     if ns_parser.n_id == -1:
-        articles = seeking_alpha_model.get_article_list(ns_parser.n_num)
+        articles = seeking_alpha_model.get_article_list(
+            ns_parser.n_date, ns_parser.n_num
+        )
         for idx, article in enumerate(articles):
             print(
                 article["publishedAt"].replace("T", " ").replace("Z", ""),
@@ -159,7 +172,7 @@ def trending_news_view(other_args: List[str]):
         dest="n_id",
         type=check_positive,
         default=-1,
-        help="article number found on Seeking Alpha website",
+        help="article ID number",
     )
     parser.add_argument(
         "-n",
@@ -168,7 +181,7 @@ def trending_news_view(other_args: List[str]):
         dest="n_num",
         type=check_positive,
         default=10,
-        help="number of trending articles being printed",
+        help="number of articles being printed",
     )
 
     if other_args:
