@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_auto
 import pandas as pd
 import mplfinance as mpf
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import seaborn as sns
 from datetime import datetime
 
@@ -483,6 +484,7 @@ def book_plot(df, instrument, book_type):
     ax.invert_yaxis()
     plt.title(f"{instrument} {book_type}")
     sns.despine(left=True, bottom=True)
+    ax.yaxis.set_major_locator(mticker.MultipleLocator(5))
     if gtff.USE_ION:
         plt.ion()
     plt.show()
