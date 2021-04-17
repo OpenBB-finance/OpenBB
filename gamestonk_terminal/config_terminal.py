@@ -39,3 +39,6 @@ RH_PASSWORD = os.getenv("GT_RH_PASSWORD") or "REPLACE_ME"
 # Oanda
 OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE ME"
 OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE ME"
+
+# https://tradier.com/products/market-data-api
+TRADIER_TOKEN = os.getenv("GT_TRADIER_TOKEN") or "REPLACE_ME"
