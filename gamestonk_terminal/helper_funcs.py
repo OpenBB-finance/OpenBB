@@ -347,7 +347,7 @@ def patch_pandas_text_adjustment():
 
 def parse_known_args_and_warn(parser, l_args):
     parser.add_argument(
-        "-h", "--help", action="store_true", dest="help", help="show this help message"
+        "-h", "--help", action="store_true", help="show this help message"
     )
 
     (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
