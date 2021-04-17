@@ -10,9 +10,13 @@ import oandapyV20.endpoints.trades as trades
 import oandapyV20.endpoints.forexlabs as labs
 from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal import config_plot as cfgPlot
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 import pandas as pd
 import mplfinance as mpf
+import matplotlib.pyplot as plt
+import seaborn as sns
 from datetime import datetime
 
 
@@ -88,12 +92,14 @@ def list_orders(accountID, other_args: List[str]):
 
 
 def get_order_book(instrument):
+    parameters = {"bucketWidth":"1"}
     try:
-        request = instruments.InstrumentsOrderBook(instrument=instrument)
+        request = instruments.InstrumentsOrderBook(instrument=instrument, params = parameters)
         response = client.request(request)
         df = pd.DataFrame.from_dict(response["orderBook"]["buckets"])
         pd.set_option("display.max_rows", None)
-        print(df)
+        df = df.take(range(527,727,1))
+        book_plot(df, instrument, "Order Book")
     except V20Error as e:
         print(e)
 
@@ -104,7 +110,8 @@ def get_position_book(instrument):
         response = client.request(request)
         df = pd.DataFrame.from_dict(response["positionBook"]["buckets"])
         pd.set_option("display.max_rows", None)
-        print(df)
+        df = df.take(range(219,415,1))
+        book_plot(df, instrument, "Position Book")
     except V20Error as e:
         print(e)
 
@@ -199,24 +206,27 @@ def get_pending_orders(accountID):
 
 
 def get_open_positions(accountID):
-    request = positions.OpenPositions(accountID)
-    response = client.request(request)
-    for i in range(len(response["positions"])):
-        instrument = response["positions"][i]["instrument"]
-        long_units = response["positions"][i]["long"]["units"]
-        long_pl = response["positions"][i]["long"]["pl"]
-        long_upl = response["positions"][i]["long"]["unrealizedPL"]
-        short_units = response["positions"][i]["short"]["units"]
-        short_pl = response["positions"][i]["short"]["pl"]
-        short_upl = response["positions"][i]["short"]["unrealizedPL"]
-        print(f"Instrument: {instrument}\n")
-        print(f"Long Units: {long_units}")
-        print(f"Total Long P/L: {long_pl}")
-        print(f"Long Unrealized P/L: {long_upl}\n")
-        print(f"Short Units: {short_units}")
-        print(f"Total Short P/L: {short_pl}")
-        print(f"Short Unrealized P/L: {short_upl}")
-        print("-" * 30 + "\n")
+    try:
+        request = positions.OpenPositions(accountID)
+        response = client.request(request)
+        for i in range(len(response["positions"])):
+            instrument = response["positions"][i]["instrument"]
+            long_units = response["positions"][i]["long"]["units"]
+            long_pl = response["positions"][i]["long"]["pl"]
+            long_upl = response["positions"][i]["long"]["unrealizedPL"]
+            short_units = response["positions"][i]["short"]["units"]
+            short_pl = response["positions"][i]["short"]["pl"]
+            short_upl = response["positions"][i]["short"]["unrealizedPL"]
+            print(f"Instrument: {instrument}\n")
+            print(f"Long Units: {long_units}")
+            print(f"Total Long P/L: {long_pl}")
+            print(f"Long Unrealized P/L: {long_upl}\n")
+            print(f"Short Units: {short_units}")
+            print(f"Total Short P/L: {short_pl}")
+            print(f"Short Unrealized P/L: {short_upl}")
+            print("-" * 30 + "\n")
+    except V20Error as e:
+        print(e)
 
 
 def get_open_trades(accountID):
@@ -307,6 +317,8 @@ def show_candles(accountID, instrument, other_args: List[str]):
         df = pd.read_csv(".candles.csv", index_col=0)
         df.index = pd.to_datetime(df.index)
         df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+        if gtff.USE_ION:
+            plt.ion()
         mpf.plot(df, type="candle", style="charles", volume=True,
                  title=f"{instrument} {ns_parser.granularity}")
     except Exception as e:
@@ -439,3 +451,38 @@ def load(other_args: List[str]):
         return ns_parser.instrument.upper()
     except Exception as e:
         print(e)
+
+
+def book_plot(df, instrument, book_type):
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    df = df.apply(pd.to_numeric)
+    df["shortCountPercent"] = df["shortCountPercent"] * -1
+    axis_origin = max(abs(max(df["longCountPercent"])), abs(max(df["shortCountPercent"])))
+    ax.set_xlim(-axis_origin, +axis_origin)
+
+    sns.set_style(style="darkgrid")
+
+    g = sns.barplot(
+    x="longCountPercent",
+    y="price",
+    data = df,
+    label = "Count Percent",
+    color="green",
+    orient="h",
+    )
+
+    g = sns.barplot(
+    x="shortCountPercent",
+    y="price",
+    data=df,
+    label="Prices",
+    color="red",
+    orient="h",
+    )
+
+    ax.invert_yaxis()
+    plt.title(f"{instrument} {book_type}")
+    sns.despine(left=True, bottom=True)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()

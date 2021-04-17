@@ -47,24 +47,24 @@ class OandaController:
         """Print help"""
 
         print("\nForex Mode:")
-        print("help \t show this menu again")
-        print("q \t quit this menu and goes back to main menu")
-        print("quit \t quit to abandon program")
+        print("    help          Show this menu again")
+        print("    q             Quit this menu and goes back to main menu")
+        print("    quit          Quit to abandon program")
         print("")
-        print("load \t Load an instrument to use")
-        print("price \t shows price for selected instrument")
-        print("summary  shows account summary")
-        print("list \t list order history")
-        print("trades \t list open trades")
-        print("orderbook \t print orderbook")
-        print("positionbook \t print positionbook")
-        print("order \t place limit order -u # of units -p price")
-        print("cancel \t cancel a pending order by ID -i order ID")
-        print("pending \t get information on pending orders")
-        print("positions \t Get open positions")
-        print("closetrade \t Close a trade by id")
-        print("candles \t show candles")
-        print("calendar \t show calendar")
+        print("    cancel        Cancel a pending order by ID -i order ID")
+        print("    candles       Show candles")
+        print("    calendar      Show calendar")
+        print("    closetrade    Close a trade by id")
+        print("    list          List order history")
+        print("    load          Load an instrument to use")
+        print("    order         Place limit order -u # of units -p price")
+        print("    orderbook     Print orderbook")
+        print("    pending       Get information on pending orders")
+        print("    positionbook  Print positionbook")
+        print("    positions     Get open positions")
+        print("    price         Shows price for selected instrument")
+        print("    summary       Shows account summary")
+        print("    trades        List open trades")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -142,7 +142,6 @@ class OandaController:
     def call_trades(self, _):
         """List open trades"""
         oanda_functions.get_open_trades(account)
-
 
     def call_calendar(self, other_args: List[str]):
         """Call calendar"""
