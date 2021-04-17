@@ -20,6 +20,7 @@ from gamestonk_terminal.discovery import (
     spachero_view,
     unusual_whales_view,
     yahoo_finance_view,
+    marketbeat_view,
 )
 
 
@@ -46,6 +47,7 @@ class DiscoveryController:
         "valuation",
         "performance",
         "spectrum",
+        "ratings",
         "latest",
         "trending",
     ]
@@ -91,6 +93,7 @@ class DiscoveryController:
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
+        print("   ratings        top ratings updates [MarketBeat]")
         print("")
 
     def switch(self, an_input: str):
@@ -198,6 +201,10 @@ class DiscoveryController:
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         seeking_alpha_view.trending_news_view(other_args)
+
+    def call_ratings(self, other_args: List[str]):
+        """Process ratings command"""
+        marketbeat_view.ratings_view(other_args)
 
 
 def menu():

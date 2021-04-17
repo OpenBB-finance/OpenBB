@@ -36,6 +36,8 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * latest news [Seeking Alpha]
 * [trending](#trending)
   * trending news [Seeking Alpha]
+* [ratings](#ratings)
+  * top ratings updates [MarketBeat]
 
 
 ## map <a name="map"></a>
@@ -248,4 +250,17 @@ Trending news articles. [Source: Seeking Alpha]
 * -n : number of trending articles being printed. Default 10.
 
 <img width="1213" alt="trending" src="https://user-images.githubusercontent.com/25267873/115089640-96988780-9f0a-11eb-9ca7-70a245fa3960.png">
+
+
+## ratings <a name="ratings"></a>
+
+```
+usage: ratings [-t N_THRESHOLD]
+```
+
+Top ratings updates. [Source: MarketBeat]
+
+* -t : Minimum threshold in percentage change between current and target price to show ratings. Default: 100.
+
+<img width="963" alt="ratings" src="https://user-images.githubusercontent.com/25267873/115095983-4544c400-9f1b-11eb-8869-8ec8a0f8eae0.png">
 
