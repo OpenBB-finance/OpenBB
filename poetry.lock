@@ -1708,7 +1708,7 @@ name = "pmdarima"
 version = "1.8.0"
 description = "Python's forecast::auto.arima equivalent"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
