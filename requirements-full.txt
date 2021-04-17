@@ -100,6 +100,7 @@ nest-asyncio==1.5.1; python_full_version >= "3.6.1" and python_version >= "3.6"
 networkx==2.5; python_version >= "3.6"
 notebook==6.2.0; python_version >= "3.5"
 numpy==1.19.5; python_version >= "3.6" and python_full_version >= "3.6.2" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.2.0" and python_version >= "3.6")
+oandapyV20==0.6.3; python_version >= "3.6"
 oauthlib==3.1.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 opt-einsum==3.3.0; python_version >= "3.5"
 overrides==3.1.0; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
