@@ -2460,7 +2460,7 @@ name = "tabulate"
 version = "0.8.9"
 description = "Pretty-print tabular data"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.extras]
@@ -2918,7 +2918,7 @@ prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "t
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "b328b5fa451201792194e1919c729e3e0105b613ad2900405f65280f6afdb3aa"
+content-hash = "623e5809320b1fb71c692bdd6cdcb9ea3419f3a5b3592e6c755816bd493769bc"
 
 [metadata.files]
 absl-py = [
