@@ -14,7 +14,7 @@ from gamestonk_terminal.discovery import marketbeat_model
 
 
 def ratings_view(other_args: List[str]):
-    """Prints a list with ratings
+    """Prints top ratings updates
 
     Parameters
     ----------
@@ -24,7 +24,7 @@ def ratings_view(other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="ratings",
-        description="""Latest ratings. [Source: MarketBeat]""",
+        description="""Top ratings updates. [Source: MarketBeat]""",
     )
     parser.add_argument(
         "-t",
@@ -33,7 +33,7 @@ def ratings_view(other_args: List[str]):
         dest="n_threshold",
         type=check_positive,
         default=100,
-        help="threshold to show latest ratings that show a drastic increase",
+        help="Minimum threshold in percentage change between current and target price to show ratings",
     )
 
     if other_args:
