@@ -30,7 +30,7 @@ papermill = "^2.3.2"
 torch = {version = "1.7.1", optional = true}
 transformers = {version = "3.5.1", optional = true}
 fbprophet = {version = "0.6", optional = true}
-pmdarima = {version = "1.8.0", optional = true}
+pmdarima = {version = "1.8.0", optional = false}
 tensorflow = {version = "2.4.1", optional = true}
 flair = {version = "0.7", optional = true}
 holidays = "^0.10"
