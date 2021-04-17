@@ -367,7 +367,7 @@ def process_candle_response(response):
 
 
 def oanda_fix_date(file):
-    with open(file, "r") as candle_file:
+    with open(file) as candle_file:
         lines = candle_file.readlines()
         with open(".candles.csv", "w") as out:
             out.write("Datetime, Open, High, Low, Close, Volume\n")
