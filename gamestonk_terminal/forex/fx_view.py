@@ -46,7 +46,9 @@ def get_account_summary(accountID):
         margin_available = response["account"]["marginAvailable"]
         margin_closeout = response["account"]["marginCloseoutNAV"]
         margin_closeout_percent = response["account"]["marginCloseoutPercent"]
-        margin_closeout_position_value = response["account"]["marginCloseoutPositionValue"]
+        margin_closeout_position_value = response["account"][
+            "marginCloseoutPositionValue"
+        ]
         margin_used = response["account"]["marginUsed"]
         net_asset_value = response["account"]["NAV"]
         open_trade_count = response["account"]["openTradeCount"]
@@ -249,7 +251,14 @@ def get_open_trades(accountID):
         response = client.request(request)
         df = pd.DataFrame.from_dict(response["trades"])
         df = df[
-            ["id", "instrument", "initialUnits", "currentUnits", "price", "unrealizedPL"]
+            [
+                "id",
+                "instrument",
+                "initialUnits",
+                "currentUnits",
+                "price",
+                "unrealizedPL",
+            ]
         ]
         df = df.rename(
             columns={
