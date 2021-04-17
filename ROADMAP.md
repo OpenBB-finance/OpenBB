@@ -14,6 +14,7 @@
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis)
 * [Residual Analysis](#Residual-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
+* [Portfolio Optimization](#Portfolio-Optimization)
 * [FRED](#FRED)
 * [Options](#Options)
 * [Credit Analysis](#Credit-Analysis)
@@ -33,7 +34,8 @@
 * [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
 * [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
 * [x] Analyse sectors/industry performance, overview and valuation from Finviz (@didier) - [PR #315](https://github.com/DidierRLopes/GamestonkTerminal/pull/315)
-* [x] Add top ratings updates (@hinxx) - [PR #350](https://github.com/DidierRLopes/GamestonkTerminal/pull/350)
+* [x] Add latest and trending news commands (@hinxx) - [PR #347](https://github.com/DidierRLopes/GamestonkTerminal/pull/347)
+* [x] Add top ratings updates (@hinxx) - [PR #357](https://github.com/DidierRLopes/GamestonkTerminal/pull/357)
 
 **NEXT**
 
@@ -111,6 +113,7 @@
 * [x] Add multi-ticker sentiment comparison (@didier) - [PR #250](https://github.com/DidierRLopes/GamestonkTerminal/pull/250)
 * [x] Get similar companies from Finviz based on Industry and Sector (and possibly country) from Finviz (@didier) - [PR #323](https://github.com/DidierRLopes/GamestonkTerminal/pull/323)
 * [x] Output brief screen  (overview, performance, financial, valuation) across similar companies (@didier) - [PR #323](https://github.com/DidierRLopes/GamestonkTerminal/pull/323)
+* [x] Add command to take tickers to portfolio optimization (@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
 
 **NEXT**
 
@@ -143,13 +146,17 @@
 * [ ] Add Brokers (td, webull, etc) (@jmaslek)
 * [ ] Refactoring
 * [ ] Summaries / tear sheets (@jmaslek)
+
 ___  
-##Portfolio Optimization
+
+## Portfolio Optimization
 * [x] Basic Optimization through PyPortFolioOpt(@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
+* [x] Add command to maximise the quadratic utility(@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
 
 **NEXT**
-* [ ] Decide what features should be present
 * [ ] Allow for more custom optimization constrains
+
+
 ---
 
 ## FRED
@@ -190,6 +197,7 @@ ___
 * [x] Add README with explanation of how presets are stored and can be added by experienced users. (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
+* [x] Add command to take tickers to portfolio optimization (@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
 
 **NEXT**
 

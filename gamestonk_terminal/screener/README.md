@@ -23,8 +23,8 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
   * contains [Oversold (-s) signal example](#signal-oversold)
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
-* [po](#port_opt)
-  * go to the portfolio optimization menu
+* [> po](portfolio_optimization/README.md)
+  * portfolio optimization for last screened tickers
 
 ## view <a name="view"></a>
 

@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 from bisect import bisect_left
-import seaborn as sns
 from typing import List
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
