@@ -80,8 +80,7 @@ def list_orders(accountID, other_args: List[str]):
     if not ns_parser:
         return
 
-    parameters = {
-    }
+    parameters = {}
     parameters["state"] = ns_parser.state
     parameters["count"] = ns_parser.count
 
@@ -93,13 +92,15 @@ def list_orders(accountID, other_args: List[str]):
 
 
 def get_order_book(instrument):
-    parameters = {"bucketWidth":"1"}
+    parameters = {"bucketWidth": "1"}
     try:
-        request = instruments.InstrumentsOrderBook(instrument=instrument, params = parameters)
+        request = instruments.InstrumentsOrderBook(
+            instrument=instrument, params=parameters
+        )
         response = client.request(request)
         df = pd.DataFrame.from_dict(response["orderBook"]["buckets"])
         pd.set_option("display.max_rows", None)
-        df = df.take(range(527,727,1))
+        df = df.take(range(527, 727, 1))
         book_plot(df, instrument, "Order Book")
     except V20Error as e:
         print(e)
@@ -111,7 +112,7 @@ def get_position_book(instrument):
         response = client.request(request)
         df = pd.DataFrame.from_dict(response["positionBook"]["buckets"])
         pd.set_option("display.max_rows", None)
-        df = df.take(range(219,415,1))
+        df = df.take(range(219, 415, 1))
         book_plot(df, instrument, "Position Book")
     except V20Error as e:
         print(e)
@@ -234,16 +235,23 @@ def get_open_trades(accountID):
     request = trades.OpenTrades(accountID)
     response = client.request(request)
     df = pd.DataFrame.from_dict(response["trades"])
-    df = df[["id", "instrument", "initialUnits", "currentUnits", "price",
-             "unrealizedPL"]]
-    df = df.rename(columns={"id":"ID", "instrument":"Instrument",
-                            "initialUnits": "Initial Units", "currentUnits":
-                            "Current Units", "price": "Entry Price"})
+    df = df[
+        ["id", "instrument", "initialUnits", "currentUnits", "price", "unrealizedPL"]
+    ]
+    df = df.rename(
+        columns={
+            "id": "ID",
+            "instrument": "Instrument",
+            "initialUnits": "Initial Units",
+            "currentUnits": "Current Units",
+            "price": "Entry Price",
+        }
+    )
     print(df)
 
 
 def close_trade(accountID, other_args: List[str]):
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         add_help=False,
         prog="close_trade",
         description="close a trade",
@@ -273,25 +281,26 @@ def close_trade(accountID, other_args: List[str]):
     try:
         request = trades.TradeClose(accountID, ns_parser.orderID, data)
         response = client.request(request)
+        print(response)
     except V20Error as e:
         print(e)
 
 
 def show_candles(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="show_candles",
-            description="Display Candle Data",
-        )
+        add_help=False,
+        prog="show_candles",
+        description="Display Candle Data",
+    )
     parser.add_argument(
-            "-g",
-            "--granularity",
-            dest="granularity",
-            action="store",
-            type=str,
-            default="D",
-            required=False,
-        )
+        "-g",
+        "--granularity",
+        dest="granularity",
+        action="store",
+        type=str,
+        default="D",
+        required=False,
+    )
     parser.add_argument(
         "-c",
         "--count",
@@ -300,14 +309,13 @@ def show_candles(accountID, instrument, other_args: List[str]):
         default=180,
         type=int,
         required=False,
-        )
+    )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
-    parameters = {
-    }
+    parameters = {}
     parameters["granularity"] = ns_parser.granularity
     parameters["count"] = ns_parser.candlecount
     try:
@@ -317,11 +325,16 @@ def show_candles(accountID, instrument, other_args: List[str]):
         oanda_fix_date(".temp_candles.csv")
         df = pd.read_csv(".candles.csv", index_col=0)
         df.index = pd.to_datetime(df.index)
-        df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+        df.columns = ["Open", "High", "Low", "Close", "Volume"]
         if gtff.USE_ION:
             plt.ion()
-        mpf.plot(df, type="candle", style="charles", volume=True,
-                 title=f"{instrument} {ns_parser.granularity}")
+        mpf.plot(
+            df,
+            type="candle",
+            style="charles",
+            volume=True,
+            title=f"{instrument} {ns_parser.granularity}",
+        )
     except Exception as e:
         print(e)
     except NameError as e:
@@ -329,21 +342,34 @@ def show_candles(accountID, instrument, other_args: List[str]):
 
 
 def process_candle_response(response):
-    with open(".temp_candles.csv", 'w') as out:
+    with open(".temp_candles.csv", "w") as out:
         for i in range(len(response["candles"])):
             time = response["candles"][i]["time"]
             volume = response["candles"][i]["volume"]
             o = response["candles"][i]["mid"]["o"]
             h = response["candles"][i]["mid"]["h"]
-            l = response["candles"][i]["mid"]["l"]
+            low = response["candles"][i]["mid"]["l"]
             c = response["candles"][i]["mid"]["c"]
-            out.write(str(time) + "," + str(o) + "," + str(h) + "," + str(l) + "," + str(c) + "," + str(volume) + "\n")
+            out.write(
+                str(time)
+                + ","
+                + str(o)
+                + ","
+                + str(h)
+                + ","
+                + str(low)
+                + ","
+                + str(c)
+                + ","
+                + str(volume)
+                + "\n"
+            )
 
 
 def oanda_fix_date(file):
-    with open(file, 'r') as candle_file:
+    with open(file, "r") as candle_file:
         lines = candle_file.readlines()
-        with open(".candles.csv", 'w') as out:
+        with open(".candles.csv", "w") as out:
             out.write("Datetime, Open, High, Low, Close, Volume\n")
         for line in lines:
             with open(".candles.csv", "a") as output:
@@ -352,27 +378,24 @@ def oanda_fix_date(file):
 
 def calendar(instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="calendar",
-            description="Show Calendar Data",
-        )
+        add_help=False,
+        prog="calendar",
+        description="Show Calendar Data",
+    )
     parser.add_argument(
-            "-d",
-            "--days",
-            dest="days",
-            action="store",
-            type=int,
-            default=7,
-            required=False,
-        )
+        "-d",
+        "--days",
+        dest="days",
+        action="store",
+        type=int,
+        default=7,
+        required=False,
+    )
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
 
-    parameters = {
-        "instrument": instrument,
-        "period": str(ns_parser.days * 86400 * -1)
-    }
+    parameters = {"instrument": instrument, "period": str(ns_parser.days * 86400 * -1)}
     request = labs.Calendar(params=parameters)
     response = client.request(request)
     for i in range(len(response)):
@@ -420,7 +443,7 @@ def calendar(instrument, other_args: List[str]):
                 print(f"Previous: {previous}{unit}")
             else:
                 print(f"Previous: {previous}")
-        print("-"*30)
+        print("-" * 30)
 
 
 def load(other_args: List[str]):
@@ -428,16 +451,16 @@ def load(other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="Forex",
-        description = "Forex using oanda",
+        description="Forex using oanda",
     )
 
     parser.add_argument(
-    "-i",
-    "--instrument",
-    required=True,
-    type=str,
-    dest="instrument",
-    help="Instrument to use for function calls"
+        "-i",
+        "--instrument",
+        required=True,
+        type=str,
+        dest="instrument",
+        help="Instrument to use for function calls",
     )
 
     try:
@@ -458,31 +481,35 @@ def book_plot(df, instrument, book_type):
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
     df = df.apply(pd.to_numeric)
     df["shortCountPercent"] = df["shortCountPercent"] * -1
-    axis_origin = max(abs(max(df["longCountPercent"])), abs(max(df["shortCountPercent"])))
+    axis_origin = max(
+        abs(max(df["longCountPercent"])), abs(max(df["shortCountPercent"]))
+    )
     ax.set_xlim(-axis_origin, +axis_origin)
 
     sns.set_style(style="darkgrid")
 
-    g = sns.barplot(
-    x="longCountPercent",
-    y="price",
-    data = df,
-    label = "Count Percent",
-    color="green",
-    orient="h",
+    sns.barplot(
+        x="longCountPercent",
+        y="price",
+        data=df,
+        label="Count Percent",
+        color="green",
+        orient="h",
     )
 
-    g = sns.barplot(
-    x="shortCountPercent",
-    y="price",
-    data=df,
-    label="Prices",
-    color="red",
-    orient="h",
+    sns.barplot(
+        x="shortCountPercent",
+        y="price",
+        data=df,
+        label="Prices",
+        color="red",
+        orient="h",
     )
 
     ax.invert_yaxis()
     plt.title(f"{instrument} {book_type}")
+    plt.xlabel("Count Percent")
+    plt.ylabel("Price")
     sns.despine(left=True, bottom=True)
     ax.yaxis.set_major_locator(mticker.MultipleLocator(5))
     if gtff.USE_ION:

@@ -1,7 +1,7 @@
 import argparse
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.oanda import oanda_functions
@@ -33,7 +33,7 @@ class OandaController:
         "calendar",
     ]
 
-    def __init__( self):
+    def __init__(self):
         """Construct Data"""
         self.oanda_parser = argparse.ArgumentParser(add_help=False, prog="fx")
         self.oanda_parser.add_argument(
