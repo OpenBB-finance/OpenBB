@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from pandas.core.frame import DataFrame
+from datetime import datetime
 
 from gamestonk_terminal.helper_funcs import get_user_agent
 
@@ -121,10 +122,13 @@ def get_article_list(num: int) -> List[dict]:
             if not article_url.startswith("/news/"):
                 continue
             article_id = article_url.split("/")[2].split("-")[0]
+
             articles.append(
                 {
                     "title": item.text,
-                    "publishedAt": item_row["data-last-date"],
+                    "publishedAt": datetime.strptime(
+                        item_row["data-last-date"], "%Y-%m-%d %H:%M:%S %z"
+                    ).strftime("%Y-%m-%d %H:%M:%S"),
                     "url": "https://seekingalpha.com" + article_url,
                     "id": article_id,
                 }
@@ -166,7 +170,7 @@ def get_trending_list(num: int) -> list:
             articles.append(
                 {
                     "title": item["title"],
-                    "publishedAt": item["publish_on"],
+                    "publishedAt": item["publish_on"][: item["publish_on"].rfind(".")],
                     "url": "https://seekingalpha.com" + article_url,
                     "id": article_id,
                 }

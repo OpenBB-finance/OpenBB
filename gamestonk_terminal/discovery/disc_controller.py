@@ -48,7 +48,6 @@ class DiscoveryController:
         "spectrum",
         "latest",
         "trending",
-        "news_article",
     ]
 
     def __init__(self):
@@ -90,9 +89,8 @@ class DiscoveryController:
         print("   valuation      valuation of sectors, industry, country [Finviz]")
         print("   performance    performance of sectors, industry, country [Finviz]")
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
-        print("   latest         latest news [SeekingAlpha]")
-        print("   trending       trending news [SeekingAlpha]")
-        print("   news_article   news article [SeekingAlpha]")
+        print("   latest         latest news [Seeking Alpha]")
+        print("   trending       trending news [Seeking Alpha]")
         print("")
 
     def switch(self, an_input: str):
@@ -200,10 +198,6 @@ class DiscoveryController:
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         seeking_alpha_view.trending_news_view(other_args)
-
-    def call_news_article(self, other_args: List[str]):
-        """Process news_article command"""
-        seeking_alpha_view.news_article_view(other_args)
 
 
 def menu():
