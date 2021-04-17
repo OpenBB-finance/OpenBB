@@ -32,6 +32,8 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * performance of sectors, industry, country [Finviz]
 * [spectrum](#spectrum)
   * spectrum of sectors, industry, country [Finviz]
+* [ratings](#ratings)
+  * top ratings updates [MarketBeat]
 
 
 ## map <a name="map"></a>
@@ -218,3 +220,18 @@ Spectrum of sectors, industry, country. [Source: Finviz]
 * -g : Data group (sector, industry or country). Default: Sector.
 
 ![cntry_spec](https://user-images.githubusercontent.com/25267873/113639067-48fd5e80-9670-11eb-95cf-0931845ddd12.png)
+
+
+## ratings <a name="ratings"></a>
+
+```
+usage: ratings [-t N_THRESHOLD]
+```
+
+Top ratings updates. [Source: MarketBeat]
+
+* -t : Minimum threshold in percentage change between current and target price to show ratings. Default: 100.
+
+<img width="963" alt="ratings" src="https://user-images.githubusercontent.com/25267873/115095983-4544c400-9f1b-11eb-8869-8ec8a0f8eae0.png">
+
+
