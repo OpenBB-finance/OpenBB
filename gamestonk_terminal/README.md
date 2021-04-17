@@ -79,6 +79,7 @@ Command|Description|Source
 `valuation`     |valuation of sectors, industry, country |[Finviz](https://finviz.com)
 `performance`   |performance of sectors, industry, country |[Finviz](https://finviz.com)
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
+`ratings `      |top ratings updates |[MarketBeat](https://marketbeat.com)
 
 &nbsp;
 
