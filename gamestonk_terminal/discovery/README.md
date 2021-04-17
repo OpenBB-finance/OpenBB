@@ -32,6 +32,10 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * performance of sectors, industry, country [Finviz]
 * [spectrum](#spectrum)
   * spectrum of sectors, industry, country [Finviz]
+* [latest](#latest)
+  * latest news [Seeking Alpha]
+* [trending](#trending)
+  * trending news [Seeking Alpha]
 * [ratings](#ratings)
   * top ratings updates [MarketBeat]
 
@@ -222,6 +226,32 @@ Spectrum of sectors, industry, country. [Source: Finviz]
 ![cntry_spec](https://user-images.githubusercontent.com/25267873/113639067-48fd5e80-9670-11eb-95cf-0931845ddd12.png)
 
 
+## latest <a name="latest"></a>
+
+```
+usage: latest [-i N_ID] [-n N_NUM]
+```
+
+Latest news articles. [Source: Seeking Alpha]
+* -i : article number found on Seeking Alpha website
+* -n : number of latest articles being printed. Default 10.
+
+<img width="1208" alt="latest" src="https://user-images.githubusercontent.com/25267873/115089633-926c6a00-9f0a-11eb-9d0e-1eedfd8ba7ce.png">
+
+
+## trending <a name="trending"></a>
+
+```
+usage: trending [-i N_ID] [-n N_NUM]
+```
+
+Trending news articles. [Source: Seeking Alpha]
+* -i : article number found on Seeking Alpha website
+* -n : number of trending articles being printed. Default 10.
+
+<img width="1213" alt="trending" src="https://user-images.githubusercontent.com/25267873/115089640-96988780-9f0a-11eb-9ca7-70a245fa3960.png">
+
+
 ## ratings <a name="ratings"></a>
 
 ```
@@ -233,5 +263,4 @@ Top ratings updates. [Source: MarketBeat]
 * -t : Minimum threshold in percentage change between current and target price to show ratings. Default: 100.
 
 <img width="963" alt="ratings" src="https://user-images.githubusercontent.com/25267873/115095983-4544c400-9f1b-11eb-8869-8ec8a0f8eae0.png">
-
 

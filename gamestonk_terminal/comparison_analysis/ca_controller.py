@@ -84,8 +84,6 @@ class ComparisonAnalysisController:
 
         if self.similar:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
-        # else:
-        #    print(f"No similar companies [{self.user}]")
 
         print("\nComparison Analysis Mode:")
         print("   help          show this comparison analysis menu again")
@@ -110,8 +108,9 @@ class ComparisonAnalysisController:
         print("   performance   brief performance comparison")
         print("   technical     brief technical comparison")
         print("")
-        print("   > po          portfolio optimization for selected tickers")
-        print("")
+        if self.similar:
+            print("   > po          portfolio optimization for selected tickers")
+            print("")
         return
 
     @staticmethod
@@ -320,7 +319,7 @@ class ComparisonAnalysisController:
         finviz_compare_view.screener(other_args, "technical", self.ticker, self.similar)
 
     def call_po(self, _):
-        """Open Portfolio Optimization menu with ticker and similar"""
+        """Call the portfolio optimization menu with selected tickers"""
         return po_controller.menu([self.ticker] + self.similar)
 
 
