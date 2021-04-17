@@ -3,6 +3,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.oanda import oanda_functions
 from gamestonk_terminal import config_terminal as cfg
@@ -26,6 +27,7 @@ class OandaController:
         "load",
         "cancel",
         "positions",
+        "news",
         "closetrade",
         "trades",
         "candles",
@@ -57,6 +59,7 @@ class OandaController:
         print("    closetrade    Close a trade by id")
         print("    list          List order history")
         print("    load          Load an instrument to use")
+        print("    news          Call news")
         print("    order         Place limit order -u # of units -p price")
         print("    orderbook     Print orderbook")
         print("    pending       Get information on pending orders")
@@ -146,6 +149,10 @@ class OandaController:
     def call_calendar(self, other_args: List[str]):
         """Call calendar"""
         oanda_functions.calendar(self.instrument, other_args)
+
+    def call_news(self, _):
+        """Call News"""
+        news_view.news("", self.instrument)
 
 
 def menu():
