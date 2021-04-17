@@ -33,6 +33,7 @@
 * [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
 * [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
 * [x] Analyse sectors/industry performance, overview and valuation from Finviz (@didier) - [PR #315](https://github.com/DidierRLopes/GamestonkTerminal/pull/315)
+* [x] Add top ratings updates (@hinxx) - [PR #350](https://github.com/DidierRLopes/GamestonkTerminal/pull/350)
 
 **NEXT**
 
