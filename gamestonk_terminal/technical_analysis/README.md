@@ -43,7 +43,7 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
   * [obv](#obv)
     - on balance volume
 
-**S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let me know if there's any that you would like. Personally I use mostly these ones, hence why I didn't add more._
+**S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let us know if there's any other that you would like._
 
 ## view  <a name="view"></a>
 ```

@@ -47,6 +47,8 @@ class DiscoveryController:
         "valuation",
         "performance",
         "spectrum",
+        "latest",
+        "trending",
         "ratings",
     ]
 
@@ -89,6 +91,8 @@ class DiscoveryController:
         print("   valuation      valuation of sectors, industry, country [Finviz]")
         print("   performance    performance of sectors, industry, country [Finviz]")
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
+        print("   latest         latest news [Seeking Alpha]")
+        print("   trending       trending news [Seeking Alpha]")
         print("   ratings        latest ratings [MarketBeat]")
         print("")
 
@@ -189,7 +193,15 @@ class DiscoveryController:
         self.spectrum_img_to_delete = finviz_view.view_group_data(
             other_args, "spectrum"
         )
+        
+    def call_latest(self, other_args: List[str]):
+        """Process latest command"""
+        seeking_alpha_view.latest_news_view(other_args)
 
+    def call_trending(self, other_args: List[str]):
+        """Process trending command"""
+        seeking_alpha_view.trending_news_view(other_args)
+  
     def call_ratings(self, other_args: List[str]):
         """Process ratings command"""
         marketbeat_view.ratings_view(other_args)

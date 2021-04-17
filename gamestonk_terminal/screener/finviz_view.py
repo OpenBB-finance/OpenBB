@@ -214,12 +214,16 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
 
         if isinstance(df_screen, pd.DataFrame):
             print(df_screen.to_string())
-        print("")
+            print("")
+            return list(df_screen["Ticker"].values)
+        else:
+            print("")
+            return []
 
     except Exception as e:
         print(e)
         print("")
-        return
+        return []
 
 
 def view_signals(other_args: List[str]):

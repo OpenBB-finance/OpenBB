@@ -65,3 +65,147 @@ def earnings_release_dates_view(other_args: List[str]):
             ].to_string(index=False, header=False)
         )
         print("")
+
+
+def latest_news_view(other_args: List[str]):
+    """Prints the latest news article list
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["-i", "123123", "-n", "5"]
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="latest",
+        description="""Latest news articles. [Source: Seeking Alpha]""",
+    )
+    parser.add_argument(
+        "-i",
+        "--id",
+        action="store",
+        dest="n_id",
+        type=check_positive,
+        default=-1,
+        help="article number found on Seeking Alpha website",
+    )
+    parser.add_argument(
+        "-n",
+        "--num",
+        action="store",
+        dest="n_num",
+        type=check_positive,
+        default=10,
+        help="number of latest articles being printed",
+    )
+
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-i")
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
+    # User wants to see all latest news
+    if ns_parser.n_id == -1:
+        articles = seeking_alpha_model.get_article_list(ns_parser.n_num)
+        for idx, article in enumerate(articles):
+            print(
+                article["publishedAt"].replace("T", " ").replace("Z", ""),
+                "-",
+                article["id"],
+                "-",
+                article["title"],
+            )
+            print(article["url"])
+            print("")
+
+            if idx >= ns_parser.n_num - 1:
+                break
+
+    # User wants to access specific article
+    else:
+        article = seeking_alpha_model.get_article_data(ns_parser.n_id)
+        print(
+            article["publishedAt"][: article["publishedAt"].rfind(":") - 3].replace(
+                "T", " "
+            ),
+            " ",
+            article["title"],
+        )
+        print(article["url"])
+        print("")
+        print(article["content"])
+
+
+def trending_news_view(other_args: List[str]):
+    """Prints the trending news article list
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args - ["i", "123123", "-n", "5"]
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="trending",
+        description="""Trending news articles. [Source: Seeking Alpha]""",
+    )
+    parser.add_argument(
+        "-i",
+        "--id",
+        action="store",
+        dest="n_id",
+        type=check_positive,
+        default=-1,
+        help="article number found on Seeking Alpha website",
+    )
+    parser.add_argument(
+        "-n",
+        "--num",
+        action="store",
+        dest="n_num",
+        type=check_positive,
+        default=10,
+        help="number of trending articles being printed",
+    )
+
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-i")
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
+    # User wants to see all trending articles
+    if ns_parser.n_id == -1:
+        articles = seeking_alpha_model.get_trending_list(ns_parser.n_num)
+        for idx, article in enumerate(articles):
+            print(
+                article["publishedAt"].replace("T", " ").replace("Z", ""),
+                "-",
+                article["id"],
+                "-",
+                article["title"],
+            )
+            print(article["url"])
+            print("")
+
+            if idx >= ns_parser.n_num - 1:
+                break
+
+    # User wants to access specific article
+    else:
+        article = seeking_alpha_model.get_article_data(ns_parser.n_id)
+        print(
+            article["publishedAt"][: article["publishedAt"].rfind(":") - 3].replace(
+                "T", " "
+            ),
+            " ",
+            article["title"],
+        )
+        print(article["url"])
+        print("")
+        print(article["content"])
