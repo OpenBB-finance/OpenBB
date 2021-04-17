@@ -89,7 +89,7 @@ def latest_news_view(other_args: List[str]):
         dest="n_id",
         type=check_positive,
         default=-1,
-        help="article number found on Seeking Alpha website",
+        help="article ID number",
     )
     parser.add_argument(
         "-n",
@@ -98,7 +98,7 @@ def latest_news_view(other_args: List[str]):
         dest="n_num",
         type=check_positive,
         default=10,
-        help="number of latest articles being printed",
+        help="number of articles being printed",
     )
     parser.add_argument(
         "-d",
@@ -107,7 +107,7 @@ def latest_news_view(other_args: List[str]):
         dest="n_date",
         type=valid_date,
         default=datetime.now().strftime("%Y-%m-%d"),
-        help="starting date of latest articles being printed",
+        help="starting date",
     )
 
     if other_args:
@@ -172,7 +172,7 @@ def trending_news_view(other_args: List[str]):
         dest="n_id",
         type=check_positive,
         default=-1,
-        help="article number found on Seeking Alpha website",
+        help="article ID number",
     )
     parser.add_argument(
         "-n",
@@ -181,7 +181,7 @@ def trending_news_view(other_args: List[str]):
         dest="n_num",
         type=check_positive,
         default=10,
-        help="number of trending articles being printed",
+        help="number of articles being printed",
     )
 
     if other_args:
