@@ -32,7 +32,7 @@ from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
-from gamestonk_terminal.oanda import oanda_controller
+from gamestonk_terminal.forex import fx_controller
 
 
 # import warnings
@@ -211,7 +211,7 @@ def main():
             b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fx":
-            b_quit = oanda_controller.menu()
+            b_quit = fx_controller.menu()
 
         elif ns_known_args.opt == "ta":
             b_quit = ta_controller.menu(df_stock, s_ticker, s_start, s_interval)
