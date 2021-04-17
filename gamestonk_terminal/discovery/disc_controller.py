@@ -89,7 +89,7 @@ class DiscoveryController:
         print("   valuation      valuation of sectors, industry, country [Finviz]")
         print("   performance    performance of sectors, industry, country [Finviz]")
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
-        print("   ratings        latest ratings [MarketBeat]")
+        print("   ratings        top ratings updates [MarketBeat]")
         print("")
 
     def switch(self, an_input: str):
