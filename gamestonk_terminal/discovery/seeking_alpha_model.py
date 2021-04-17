@@ -91,12 +91,14 @@ def get_articles_html(url_articles: str) -> str:
     return articles_html
 
 
-def get_article_list(num: int) -> List[dict]:
+def get_article_list(start_date: datetime, num: int) -> List[dict]:
     """Returns a list of latest articles
 
     Parameters
     ----------
-    pages : int
+    start_date : datetime
+        Starting date
+    num : int
         Number of articles
 
     Returns
@@ -122,13 +124,15 @@ def get_article_list(num: int) -> List[dict]:
             if not article_url.startswith("/news/"):
                 continue
             article_id = article_url.split("/")[2].split("-")[0]
-
+            article_date = datetime.strptime(
+                item_row["data-last-date"], "%Y-%m-%d %H:%M:%S %z"
+            )
+            if start_date.date() < article_date.date():
+                continue
             articles.append(
                 {
                     "title": item.text,
-                    "publishedAt": datetime.strptime(
-                        item_row["data-last-date"], "%Y-%m-%d %H:%M:%S %z"
-                    ).strftime("%Y-%m-%d %H:%M:%S"),
+                    "publishedAt": article_date.strftime("%Y-%m-%d %H:%M:%S"),
                     "url": "https://seekingalpha.com" + article_url,
                     "id": article_id,
                 }

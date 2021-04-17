@@ -4,9 +4,11 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import pandas as pd
+from datetime import datetime
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
+    valid_date,
 )
 
 from gamestonk_terminal.discovery import seeking_alpha_model
@@ -98,6 +100,15 @@ def latest_news_view(other_args: List[str]):
         default=10,
         help="number of latest articles being printed",
     )
+    parser.add_argument(
+        "-d",
+        "--date",
+        action="store",
+        dest="n_date",
+        type=valid_date,
+        default=datetime.now().strftime("%Y-%m-%d"),
+        help="starting date of latest articles being printed",
+    )
 
     if other_args:
         if "-" not in other_args[0]:
@@ -109,7 +120,9 @@ def latest_news_view(other_args: List[str]):
 
     # User wants to see all latest news
     if ns_parser.n_id == -1:
-        articles = seeking_alpha_model.get_article_list(ns_parser.n_num)
+        articles = seeking_alpha_model.get_article_list(
+            ns_parser.n_date, ns_parser.n_num
+        )
         for idx, article in enumerate(articles):
             print(
                 article["publishedAt"].replace("T", " ").replace("Z", ""),
