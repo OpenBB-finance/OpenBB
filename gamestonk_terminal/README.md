@@ -80,6 +80,9 @@ Command|Description|Source
 `valuation`     |valuation of sectors, industry, country |[Finviz](https://finviz.com)
 `performance`   |performance of sectors, industry, country |[Finviz](https://finviz.com)
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
+`latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
+`trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
+`ratings `      |top ratings updates |[MarketBeat](https://marketbeat.com)
 
 &nbsp;
 
