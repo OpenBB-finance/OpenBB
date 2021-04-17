@@ -73,7 +73,7 @@ class OandaController:
         True, False, or None
         False - quit the menu
         True - quit the program
-        None - contiue in the menu
+        None - continue in the menu
         """
         (known_args, other_args) = self.oanda_parser.parse_known_args(an_input.split())
 
