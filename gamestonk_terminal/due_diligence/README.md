@@ -26,6 +26,8 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * company warnings according to Sean Seah book [Market Watch]
 * [dp](#dp)
   * dark pools (ATS) vs OTC data [FINRA]
+* [ftd](#ftd)
+  * fails-to-deliver data [SEC]
 
 ## news <a name="news"></a>
 
@@ -170,4 +172,14 @@ Display barchart of dark pool (ATS) and OTC (Non ATS) data
 
 ![dp](https://user-images.githubusercontent.com/25267873/115130908-7987b580-9feb-11eb-8bca-1999174178d0.png)
 
+## ftd <a name="ftd"></a>
 
+```text
+usage: ftd [-n]
+```
+
+The fails-to-deliver data collected by SEC. Fails to deliver on a given day are a cumulative number of all fails outstanding until that day, plus new fails that occur that day, less fails that settle that day. See <https://www.sec.gov/data/foiadocsfailsdatahtm>. [Source: SEC]
+
+* -n : number of latest fails-to-deliver being printed. Default 10.
+
+<img width="927" alt="ftd" src="TODO">
