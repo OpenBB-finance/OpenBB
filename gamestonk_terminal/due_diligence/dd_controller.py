@@ -14,6 +14,7 @@ from gamestonk_terminal.due_diligence import quandl_view as q_view
 from gamestonk_terminal.due_diligence import reddit_view as r_view
 from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal.due_diligence import finra_view
+from gamestonk_terminal.due_diligence import sec_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -39,6 +40,7 @@ class DueDiligenceController:
         "warnings",
         "sec",
         "dp",
+        "ftd",
     ]
 
     def __init__(self, stock: DataFrame, ticker: str, start: str, interval: str):
@@ -100,6 +102,7 @@ class DueDiligenceController:
             "   warnings      company warnings according to Sean Seah book [Market Watch]"
         )
         print("   dp            dark pools (ATS) vs OTC data [FINRA]")
+        print("   ftd           fails-to-deliver data [SEC]")
         print("")
 
     def switch(self, an_input: str):
@@ -181,6 +184,10 @@ class DueDiligenceController:
     def call_dp(self, other_args: List[str]):
         """ Process dp command """
         finra_view.dark_pool(other_args, self.ticker)
+
+    def call_ftd(self, other_args: List[str]):
+        """ Process ftd command """
+        sec_view.fails_to_deliver(other_args, self.ticker)
 
 
 def menu(stock: DataFrame, ticker: str, start: str, interval: str):
