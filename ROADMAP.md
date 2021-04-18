@@ -79,6 +79,7 @@
 ---
 
 ## Due Diligence
+* [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
 
 **NEXT**
 
