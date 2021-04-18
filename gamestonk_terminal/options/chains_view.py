@@ -88,7 +88,9 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
 def display_chains(symbol: str, expiry: str, other_args: List[str]):
 
     parser = argparse.ArgumentParser(
-        prog="chains", add_help=False, description="Display options chains"
+        prog="chains",
+        add_help=False,
+        description="Display option chains [Source: Tradier]",
     )
 
     parser.add_argument(

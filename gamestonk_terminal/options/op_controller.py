@@ -38,7 +38,7 @@ class OptionsController:
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="exp",
-            description="""See expiry dates.""",
+            description="""See/set expiry dates. [Source: Yahoo Finance]""",
         )
         parser.add_argument(
             "-d",
