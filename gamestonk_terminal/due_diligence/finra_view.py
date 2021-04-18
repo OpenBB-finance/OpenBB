@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Tuple
 import requests
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -57,7 +57,7 @@ def getFINRAweeks(tier, is_ats) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> [int, List]:
+def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> Tuple[int, List]:
     """Get FINRA data
 
     Parameters
@@ -130,7 +130,7 @@ def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> [int, List]:
     )
 
 
-def getTickerFINRAdata(ticker) -> [pd.DataFrame, pd.DataFrame]:
+def getTickerFINRAdata(ticker) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get all FINRA data associated with a ticker
 
     Parameters
