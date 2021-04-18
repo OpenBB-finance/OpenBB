@@ -80,6 +80,7 @@
 
 ## Due Diligence
 * [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
+* [x] Add failure to deliver command (@hinxx) - [PR #366](#https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
 
 **NEXT**
 
@@ -148,7 +149,7 @@
 * [ ] Refactoring
 * [ ] Summaries / tear sheets (@jmaslek)
 
-___  
+___
 
 ## Portfolio Optimization
 * [x] Basic Optimization through PyPortFolioOpt(@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
