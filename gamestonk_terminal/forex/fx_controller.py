@@ -6,9 +6,10 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.due_diligence import news_view
+from gamestonk_terminal.behavioural_analysis import stocktwits_view
 
 account = cfg.OANDA_ACCOUNT
-
 
 class ForexController:
     """Oanda Controller class"""
@@ -31,6 +32,9 @@ class ForexController:
         "candles",
         "pending",
         "calendar",
+        "news",
+        "bullbear",
+        "messages",
     ]
 
     def __init__(self):
@@ -51,12 +55,14 @@ class ForexController:
         print("    q             Quit this menu and goes back to main menu")
         print("    quit          Quit to abandon program")
         print("")
+        print("    bullbear      Call bullbear from stocktwits")
         print("    cancel        Cancel a pending order by ID -i order ID")
         print("    candles       Show candles")
         print("    calendar      Show calendar")
         print("    closetrade    Close a trade by id")
         print("    list          List order history")
         print("    load          Load an instrument to use")
+        print("    news          Get news")
         print("    order         Place limit order -u # of units -p price")
         print("    orderbook     Print orderbook")
         print("    pending       Get information on pending orders")
@@ -147,6 +153,24 @@ class ForexController:
     def call_calendar(self, other_args: List[str]):
         """Call calendar"""
         fx_view.calendar(self.instrument, other_args)
+
+    def call_news(self, other_args: List[str]):
+        news_view.news(other_args, self.instrument)
+
+    def call_bullbear(self, other_args: List[str]):
+        instrument = remove_underscore(self.instrument)
+        stocktwits_view.bullbear(other_args, instrument)
+
+    def call_messages(self, other_args: List[str]):
+        instrument = remove_underscore(self.instrument)
+        stocktwits_view.messages(other_args, instrument)
+
+
+def remove_underscore(instrument):
+    instrument_list = list(instrument)
+    instrument_list.pop(3)
+    adjusted_instrument = "".join(map(str, instrument_list))
+    return adjusted_instrument
 
 
 def menu():
