@@ -6,7 +6,6 @@ from typing import List
 import requests
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib.dates as mdates
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
