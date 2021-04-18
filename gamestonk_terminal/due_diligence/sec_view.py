@@ -80,7 +80,7 @@ def fails_to_deliver(other_args: List[str], ticker: str):
             link_idx += 1
 
         # clip away extra rows
-        ftds_data = ftds_data.sort_values("SETTLEMENT DATE")[-ns_parser.n_num:]
+        ftds_data = ftds_data.sort_values("SETTLEMENT DATE")[-ns_parser.n_num :]
         ftds_data["SETTLEMENT DATE"] = ftds_data["SETTLEMENT DATE"].apply(
             lambda x: datetime.strptime(str(x), "%Y%m%d").strftime("%Y-%m-%d")
         )
