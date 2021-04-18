@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Any
+from typing import List
 import requests
 import pandas as pd
 from matplotlib import pyplot as plt
