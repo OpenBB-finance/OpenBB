@@ -24,6 +24,8 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * short interest [Quandl]
 * [warnings](#warnings)
   * company warnings according to Sean Seah book [Market Watch]
+* [dp](#dp)
+  * dark pools (ATS) vs OTC data [FINRA]
 
 ## news <a name="news"></a>
 
@@ -157,3 +159,15 @@ Sean Seah warnings. Check: Consistent historical earnings per share; Consistentl
 * -d : print insights into warnings calculation. Default False.
 
 <img width="927" alt="warnings" src="https://user-images.githubusercontent.com/25267873/108609497-2ec03780-73c6-11eb-8577-d5da80dae213.png">
+
+## dp <a name="dp"></a>
+
+```text
+usage: dp
+```
+
+Display barchart of dark pool (ATS) and OTC (Non ATS) data
+
+![dp](https://user-images.githubusercontent.com/25267873/115130908-7987b580-9feb-11eb-8bca-1999174178d0.png)
+
+
