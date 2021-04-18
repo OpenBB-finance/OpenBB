@@ -201,6 +201,7 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
                 floatfmt=".2f",
             )
         )
+        print("")
 
     except Exception as e:
         print(e)
