@@ -99,7 +99,7 @@ class DueDiligenceController:
         print(
             "   warnings      company warnings according to Sean Seah book [Market Watch]"
         )
-        print("   dp            dark pools vs OTC data [FINRA]")
+        print("   dp            dark pools (ATS) vs OTC data [FINRA]")
         print("")
 
     def switch(self, an_input: str):
