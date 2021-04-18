@@ -8,7 +8,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from matplotlib import pyplot as plt
-from gamestonk_terminal.config_plot import PLOT_DPI
+import matplotlib.dates as mdates
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_user_agent,
@@ -82,15 +82,18 @@ def fails_to_deliver(other_args: List[str], ticker: str):
         # clip away extra rows
         ftds_data = ftds_data.sort_values("SETTLEMENT DATE")[-ns_parser.n_num :]
         ftds_data["SETTLEMENT DATE"] = ftds_data["SETTLEMENT DATE"].apply(
-            lambda x: datetime.strptime(str(x), "%Y%m%d").strftime("%Y-%m-%d")
+            lambda x: datetime.strptime(str(x), "%Y%m%d")
         )
 
         plt.bar(
             ftds_data["SETTLEMENT DATE"],
-            ftds_data["QUANTITY (FAILS)"],
+            ftds_data["QUANTITY (FAILS)"] / 1000,
         )
-        plt.ylabel("Number of shares")
+        plt.ylabel("Shares [K]")
         plt.title(f"Fails-to-deliver Data for {ticker}")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=7))
         plt.gcf().autofmt_xdate()
         plt.xlabel("Days")
 
