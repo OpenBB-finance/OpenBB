@@ -318,101 +318,32 @@ def show_candles(accountID, instrument, other_args: List[str]):
         description="Display Candle Data",
     )
     parser.add_argument(
-        "-a",
-        "--aroon",
-        dest="aroon",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-b",
-        "--bollinger-bands",
-        dest="bbands",
-        action="store_true",
-    )
-    parser.add_argument(
         "-c",
         "--count",
         dest="candlecount",
         action="store",
         default=180,
-        type=int,
-        required=False,
-    )
-    parser.add_argument(
-        "-d",
-        "--ad",
-        dest="ad",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-e",
-        "--ema",
-        dest="ema",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-f",
-        "--fwma",
-        dest="fwma",
-        action="store_true",
     )
     parser.add_argument(
         "-g",
         "--granularity",
         dest="granularity",
         action="store",
-        type=str,
         default="D",
-        required=False,
     )
-    parser.add_argument(
-        "-i",
-        "--cci",
-        dest="cci",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-m",
-        "--macd",
-        dest="macd",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-o",
-        "--obv",
-        dest="obv",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-r",
-        "--rsi",
-        dest="rsi",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-s",
-        "--sma",
-        dest="sma",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-t",
-        "--stoch",
-        dest="stoch",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-v",
-        "--vwap",
-        dest="vwap",
-        action="store_true",
-    )
-    parser.add_argument(
-        "-x",
-        "--adx",
-        dest="adx",
-        action="store_true",
-    )
+    parser.add_argument("-a", "--ad", dest="ad", action="store_true")
+    parser.add_argument("-A", "--adx", dest="adx", action="store_true")
+    parser.add_argument("-b", "--bollinger-bands", dest="bbands", action="store_true")
+    parser.add_argument("-C", "--cci", dest="cci", action="store_true")
+    parser.add_argument("-e", "--ema", dest="ema", action="store_true")
+    parser.add_argument("-f", "--fwma", dest="fwma", action="store_true")
+    parser.add_argument("-m", "--macd", dest="macd", action="store_true")
+    parser.add_argument("-o", "--obv", dest="obv", action="store_true")
+    parser.add_argument("-r", "--rsi", dest="rsi", action="store_true")
+    parser.add_argument("-R", "--aroon", dest="aroon", action="store_true")
+    parser.add_argument("-s", "--sma", dest="sma", action="store_true")
+    parser.add_argument("-S", "--stoch", dest="stoch", action="store_true")
+    parser.add_argument("-v", "--vwap", dest="vwap", action="store_true")
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
