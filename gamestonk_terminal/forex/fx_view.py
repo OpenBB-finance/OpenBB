@@ -14,6 +14,7 @@ from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 import pandas as pd
+import pandas_ta as ta
 import mplfinance as mpf
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -317,13 +318,16 @@ def show_candles(accountID, instrument, other_args: List[str]):
         description="Display Candle Data",
     )
     parser.add_argument(
-        "-g",
-        "--granularity",
-        dest="granularity",
-        action="store",
-        type=str,
-        default="D",
-        required=False,
+        "-a",
+        "--aroon",
+        dest="aroon",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-b",
+        "--bollinger-bands",
+        dest="bbands",
+        action="store_true",
     )
     parser.add_argument(
         "-c",
@@ -333,6 +337,76 @@ def show_candles(accountID, instrument, other_args: List[str]):
         default=180,
         type=int,
         required=False,
+    )
+    parser.add_argument("-d", "--ad", dest="ad", action="store_true",)
+    parser.add_argument(
+        "-e",
+        "--ema",
+        dest="ema",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-f",
+        "--fwma",
+        dest="fwma",
+        action="store_true"
+    )
+    parser.add_argument(
+        "-g",
+        "--granularity",
+        dest="granularity",
+        action="store",
+        type=str,
+        default="D",
+        required=False,
+    )
+    parser.add_argument(
+        "-i",
+        "--cci",
+        dest="cci",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-m",
+        "--macd",
+        dest="macd",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-o",
+        "--obv",
+        dest="obv",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-r",
+        "--rsi",
+        dest="rsi",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-s",
+        "--sma",
+        dest="sma",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-t",
+        "--stoch",
+        dest="stoch",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-v",
+        "--vwap",
+        dest="vwap",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-x",
+        "--adx",
+        dest="adx",
+        action="store_true",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -350,14 +424,73 @@ def show_candles(accountID, instrument, other_args: List[str]):
         df = pd.read_csv(".candles.csv", index_col=0)
         df.index = pd.to_datetime(df.index)
         df.columns = ["Open", "High", "Low", "Close", "Volume"]
+
+        plots_to_add = []
+
+        if ns_parser.ad:
+            ad = ta.ad(df["High"], df["Low"], df["Close"], df["Volume"])
+            ad_plot = mpf.make_addplot(ad, panel=3)
+            plots_to_add.append(ad_plot)
+        if ns_parser.adx:
+            adx = ta.adx(df["High"], df["Low"], df["Close"])
+            adx_plot = mpf.make_addplot(adx, panel=3)
+            plots_to_add.append(adx_plot)
+        if ns_parser.aroon:
+            aroon = ta.aroon(df["High"], df["Low"])
+            aroon_plot = mpf.make_addplot(aroon, panel=3)
+            plots_to_add.append(aroon_plot)
+        if ns_parser.cci:
+            cci = ta.cci(df["High"], df["Low"], df["Close"], length=20)
+            cci_plot = mpf.make_addplot(cci, panel=3)
+            plots_to_add.append(cci_plot)
+        if ns_parser.bbands:
+            bbands = ta.bbands(df["Close"])
+            bbands = bbands.drop("BBB_5_2.0", axis=1)
+            bbands_plot = mpf.make_addplot(bbands, panel=0)
+            plots_to_add.append(bbands_plot)
+        if ns_parser.ema:
+            ema = ta.ema(df["Close"])
+            ema_plot = mpf.make_addplot(ema, panel=0)
+            plots_to_add.append(ema_plot)
+        if ns_parser.fwma:
+            fwma = ta.fwma(df["Close"])
+            fwma_plot = mpf.make_addplot(fwma, panel=0)
+            plots_to_add.append(fwma_plot)
+        if ns_parser.rsi:
+            rsi = ta.rsi(df["Close"], length=14)
+            rsi_plot = mpf.make_addplot(rsi, panel=2)
+            plots_to_add.append(rsi_plot)
+        if ns_parser.macd:
+            macd = ta.macd(df["Close"], fast=12, slow=26, signal=9)
+            macd_plot = mpf.make_addplot(macd, panel=3)
+            plots_to_add.append(macd_plot)
+        if ns_parser.obv:
+            obv = ta.obv(df["Close"], df["Volume"])
+            obv_plot = mpf.make_addplot(obv, panel=3)
+            plots_to_add.append(obv_plot)
+        if ns_parser.sma:
+            sma = ta.sma(df["Close"])
+            sma_plot = mpf.make_addplot(sma, panel=0)
+            plots_to_add.append(sma_plot)
+        if ns_parser.stoch:
+            stoch = ta.stoch(df["High"], df["Low"], df["Close"])
+            stoch_plot = mpf.make_addplot(stoch, panel=0)
+            plots_to_add.append(stoch_plot)
+        if ns_parser.vwap:
+            vwap = ta.vwap(df["High"], df["Low"], df["Close"], df["Volume"])
+            vwap_plot = mpf.make_addplot(vwap, panel=0)
+            plots_to_add.append(vwap_plot)
+
         if gtff.USE_ION:
             plt.ion()
+
         mpf.plot(
             df,
             type="candle",
             style="charles",
             volume=True,
             title=f"{instrument} {ns_parser.granularity}",
+            addplot=plots_to_add,
         )
     except Exception as e:
         print(e)

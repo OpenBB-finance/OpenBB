@@ -8,6 +8,8 @@ from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal.behavioural_analysis import stocktwits_view
+from gamestonk_terminal.exploratory_data_analysis import eda_api
+import pandas as pd
 
 account = cfg.OANDA_ACCOUNT
 
@@ -35,6 +37,7 @@ class ForexController:
         "news",
         "bullbear",
         "messages",
+        "edasummary",
     ]
 
     def __init__(self):
@@ -62,6 +65,7 @@ class ForexController:
         print("    closetrade    Close a trade by id")
         print("    list          List order history")
         print("    load          Load an instrument to use")
+        print("    messages      Get messages from stocktwits")
         print("    news          Get news")
         print("    order         Place limit order -u # of units -p price")
         print("    orderbook     Print orderbook")
@@ -164,6 +168,10 @@ class ForexController:
     def call_messages(self, other_args: List[str]):
         instrument = remove_underscore(self.instrument)
         stocktwits_view.messages(other_args, instrument)
+
+    def call_edasummary(self, other_args: List[str]):
+        df = pd.read_csv(".candles.csv")
+        eda_api.summary(other_args, df)
 
 
 def remove_underscore(instrument):
