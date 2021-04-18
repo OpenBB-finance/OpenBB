@@ -24,6 +24,8 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * short interest [Quandl]
 * [warnings](#warnings)
   * company warnings according to Sean Seah book [Market Watch]
+* [ftd](#ftd)
+  * fails-to-deliver data [SEC]
 
 ## news <a name="news"></a>
 
@@ -157,3 +159,15 @@ Sean Seah warnings. Check: Consistent historical earnings per share; Consistentl
 * -d : print insights into warnings calculation. Default False.
 
 <img width="927" alt="warnings" src="https://user-images.githubusercontent.com/25267873/108609497-2ec03780-73c6-11eb-8577-d5da80dae213.png">
+
+## ftd <a name="ftd"></a>
+
+```text
+usage: ftd [-n]
+```
+
+The fails-to-deliver data collected by SEC. Fails to deliver on a given day are a cumulative number of all fails outstanding until that day, plus new fails that occur that day, less fails that settle that day. See <https://www.sec.gov/data/foiadocsfailsdatahtm>. [Source: SEC]
+
+* -n : number of latest fails-to-deliver being printed. Default 10.
+
+<img width="927" alt="ftd" src="TODO">
