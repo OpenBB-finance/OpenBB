@@ -229,12 +229,13 @@ Spectrum of sectors, industry, country. [Source: Finviz]
 ## latest <a name="latest"></a>
 
 ```
-usage: latest [-i N_ID] [-n N_NUM]
+usage: latest [-i N_ID] [-n N_NUM] [-d DATE]
 ```
 
 Latest news articles. [Source: Seeking Alpha]
-* -i : article number found on Seeking Alpha website
-* -n : number of latest articles being printed. Default 10.
+* -i : Article ID number.
+* -n : Number of articles being printed. Default 10.
+* -d : Date of news article.
 
 <img width="1208" alt="latest" src="https://user-images.githubusercontent.com/25267873/115089633-926c6a00-9f0a-11eb-9d0e-1eedfd8ba7ce.png">
 
@@ -246,8 +247,8 @@ usage: trending [-i N_ID] [-n N_NUM]
 ```
 
 Trending news articles. [Source: Seeking Alpha]
-* -i : article number found on Seeking Alpha website
-* -n : number of trending articles being printed. Default 10.
+* -i : Article ID number.
+* -n : Number of articles being printed. Default 10.
 
 <img width="1213" alt="trending" src="https://user-images.githubusercontent.com/25267873/115089640-96988780-9f0a-11eb-9ca7-70a245fa3960.png">
 
