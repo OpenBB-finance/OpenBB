@@ -213,6 +213,7 @@ Command|Description|Source
 `sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
 `short`         |short interest |[Quandl](https://www.quandl.com/)
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
+`dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
 
 &nbsp;
 
