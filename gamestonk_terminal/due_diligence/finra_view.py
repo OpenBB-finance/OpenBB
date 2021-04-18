@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Any
 import requests
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -57,7 +57,7 @@ def getFINRAweeks(tier, is_ats) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> List:
+def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> [int, List]:
     """Get FINRA data
 
     Parameters
@@ -130,7 +130,7 @@ def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> List:
     )
 
 
-def getTickerFINRAdata(ticker):
+def getTickerFINRAdata(ticker) -> [pd.DataFrame, pd.DataFrame]:
     """Get all FINRA data associated with a ticker
 
     Parameters
@@ -162,8 +162,9 @@ def getTickerFINRAdata(ticker):
                     break
 
     df_ats = pd.DataFrame(l_data)
-    df_ats = df_ats.sort_values("weekStartDate")
-    df_ats = df_ats.set_index("weekStartDate")
+    if not df_ats.empty:
+        df_ats = df_ats.sort_values("weekStartDate")
+        df_ats = df_ats.set_index("weekStartDate")
 
     l_data = list()
     for tier in tiers:
@@ -180,8 +181,9 @@ def getTickerFINRAdata(ticker):
                     break
 
     df_otc = pd.DataFrame(l_data)
-    df_otc = df_otc.sort_values("weekStartDate")
-    df_otc = df_otc.set_index("weekStartDate")
+    if not df_otc.empty:
+        df_otc = df_otc.sort_values("weekStartDate")
+        df_otc = df_otc.set_index("weekStartDate")
 
     return df_ats, df_otc
 
@@ -201,31 +203,62 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     _, axData = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     plt.subplot(3, 1, (1, 2))
-    plt.bar(
-        ats.index,
-        (ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]) / 1_000_000,
-        color="tab:orange",
-    )
-    plt.bar(otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color="tab:blue")
+    if not ats.empty and not otc.empty:
+        plt.bar(
+            ats.index,
+            (ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"])
+            / 1_000_000,
+            color="tab:orange",
+        )
+        plt.bar(
+            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color="tab:blue"
+        )
+        plt.legend(["ATS", "OTC"])
+
+    elif not ats.empty:
+        plt.bar(
+            ats.index,
+            ats["totalWeeklyShareQuantity"] / 1_000_000,
+            color="tab:orange",
+        )
+        plt.legend(["ATS"])
+
+    elif not otc.empty:
+        plt.bar(
+            otc.index, otc["totalWeeklyShareQuantity"] / 1_000_000, color="tab:blue"
+        )
+        plt.legend(["OTC"])
+
     plt.ylabel("Total Weekly Shares [Million]")
-    plt.legend(["ATS", "OTC"])
     plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
     plt.title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}")
 
-    # _ = axData.twinx()
     plt.subplot(313)
-    plt.plot(
-        ats.index,
-        ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
-        color="tab:orange",
-    )
-    plt.plot(
-        otc.index,
-        otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
-        color="tab:blue",
-    )
+    if not ats.empty:
+        plt.plot(
+            ats.index,
+            ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
+            color="tab:orange",
+        )
+        plt.legend(["ATS"])
+
+        if not otc.empty:
+            plt.plot(
+                otc.index,
+                otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
+                color="tab:blue",
+            )
+            plt.legend(["ATS", "OTC"])
+
+    else:
+        plt.plot(
+            otc.index,
+            otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
+            color="tab:blue",
+        )
+        plt.legend(["OTC"])
+
     plt.ylabel("Shares per Trade")
-    plt.legend(["ATS", "OTC"])
     plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
     plt.gcf().autofmt_xdate()
     plt.xlabel("Weeks")
@@ -258,6 +291,9 @@ def dark_pool(other_args: List[str], ticker: str):
             return
 
         df_ats, df_otc = getTickerFINRAdata(ticker)
+
+        if df_ats.empty and df_otc.empty:
+            print("No ticker data found!")
 
         plot_dark_pools(ticker, df_ats, df_otc)
 
