@@ -338,7 +338,12 @@ def show_candles(accountID, instrument, other_args: List[str]):
         type=int,
         required=False,
     )
-    parser.add_argument("-d", "--ad", dest="ad", action="store_true",)
+    parser.add_argument(
+        "-d",
+        "--ad",
+        dest="ad",
+        action="store_true",
+    )
     parser.add_argument(
         "-e",
         "--ema",
@@ -349,7 +354,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
         "-f",
         "--fwma",
         dest="fwma",
-        action="store_true"
+        action="store_true",
     )
     parser.add_argument(
         "-g",

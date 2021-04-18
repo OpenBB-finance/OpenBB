@@ -13,6 +13,7 @@ import pandas as pd
 
 account = cfg.OANDA_ACCOUNT
 
+
 class ForexController:
     """Oanda Controller class"""
 
