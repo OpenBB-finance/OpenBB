@@ -130,7 +130,9 @@ jobs:
           pytest tests/
 
       - name: Start Terminal and exit
-        run: python terminal.py
+        run: |
+          source $VENV
+          python terminal.py
   tests-conda:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
