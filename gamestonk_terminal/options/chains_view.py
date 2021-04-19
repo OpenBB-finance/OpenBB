@@ -129,7 +129,9 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
 
     default_columns = [
         "mid_iv",
+        "vega",
         "delta",
+        "gamma",
         "volume",
         "open_interest",
         "bid",
