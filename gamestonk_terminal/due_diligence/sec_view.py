@@ -102,5 +102,7 @@ def fails_to_deliver(other_args: List[str], ticker: str):
 
         plt.show()
 
+        print("")
+
     except Exception as e:
         print(e, "\n")
