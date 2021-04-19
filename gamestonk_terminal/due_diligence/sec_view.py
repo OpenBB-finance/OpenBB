@@ -93,7 +93,7 @@ def fails_to_deliver(other_args: List[str], ticker: str):
         plt.title(f"Fails-to-deliver Data for {ticker}")
         plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=7))
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=3))
         plt.gcf().autofmt_xdate()
         plt.xlabel("Days")
 
