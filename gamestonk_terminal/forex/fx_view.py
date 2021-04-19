@@ -479,8 +479,7 @@ def close_trade(accountID, other_args: List[str]):
         print("")
 
     except Exception as e:
-        d_error = eval(e.msg)
-        print(d_error["errorMessage"], "\n")
+        print(e, "\n")
     except V20Error as e:
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
