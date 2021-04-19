@@ -51,6 +51,8 @@ class ForexController:
         print("    q             Quit this menu and goes back to main menu")
         print("    quit          Quit to abandon program")
         print("")
+        if self.instrument is not None:
+            print("Currently loaded instrument " + self.instrument)
         print("    load          Load an instrument to use")
         print("    summary       Shows account summary")
         print("    calendar      Show calendar")
