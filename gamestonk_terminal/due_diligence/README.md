@@ -175,11 +175,12 @@ Display barchart of dark pool (ATS) and OTC (Non ATS) data
 ## ftd <a name="ftd"></a>
 
 ```text
-usage: ftd [-n]
+usage: ftd [-n N_NUM]
 ```
 
 The fails-to-deliver data collected by SEC. Fails to deliver on a given day are a cumulative number of all fails outstanding until that day, plus new fails that occur that day, less fails that settle that day. See <https://www.sec.gov/data/foiadocsfailsdatahtm>. [Source: SEC]
 
-* -n : number of latest fails-to-deliver being printed. Default 10.
+* -n : number of latest fails-to-deliver being printed. Default 20.
 
-<img width="927" alt="ftd" src="TODO">
+![ftd](https://user-images.githubusercontent.com/25267873/115201750-93a9bc80-a0ed-11eb-8f13-68508749259e.png)
+
