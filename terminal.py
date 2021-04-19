@@ -329,7 +329,7 @@ def main():
                         df_stock_pred,
                         s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
                         s_start,
-                        s_interval="1440min",
+                        interval="1440min",
                     )
                 except Exception as e:
                     print(e)

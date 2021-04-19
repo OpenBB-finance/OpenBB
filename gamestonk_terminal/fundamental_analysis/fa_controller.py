@@ -8,7 +8,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.fundamental_analysis import alpha_vantage_controller as avc
 from gamestonk_terminal.fundamental_analysis import business_insider_view as biw
 from gamestonk_terminal.fundamental_analysis import (
-    financial_modeling_prep_api as fmp_api,
+    financial_modeling_prep_controller as fmpc,
 )
 from gamestonk_terminal.fundamental_analysis import finviz_api as fvz_api
 from gamestonk_terminal.fundamental_analysis import market_watch_api as mw_api
@@ -176,7 +176,7 @@ class FundamentalAnalysisController:
     # pylint: disable=unused-argument
     def call_fmp(self, other_args: List[str]):
         """ Process fmp command """
-        ret = fmp_api.menu(self.ticker, self.start, self.interval)
+        ret = fmpc.menu(self.ticker, self.start, self.interval)
 
         if ret is not True:
             self.print_help()
