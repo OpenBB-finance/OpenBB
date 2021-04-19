@@ -363,6 +363,9 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 [Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+
+Feel free to share loss porn, memes or any questions at https://discord.gg/FmKjHKMn
+
 ## Acknowledgments
 
 * [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)

@@ -39,7 +39,7 @@ def fails_to_deliver(other_args: List[str], ticker: str):
         action="store",
         dest="n_num",
         type=check_positive,
-        default=10,
+        default=20,
         help="number of latest fails-to-deliver being printed",
     )
 
@@ -101,6 +101,8 @@ def fails_to_deliver(other_args: List[str], ticker: str):
             plt.ion()
 
         plt.show()
+
+        print("")
 
     except Exception as e:
         print(e, "\n")

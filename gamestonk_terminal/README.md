@@ -214,6 +214,7 @@ Command|Description|Source
 `short`         |short interest |[Quandl](https://www.quandl.com/)
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
 `dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
+`ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
 
 &nbsp;
 
