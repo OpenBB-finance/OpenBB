@@ -118,6 +118,10 @@ jobs:
       - name: Install Package
         run: poetry install --no-interaction
 
+      - name: List installed packages
+        shell: bash -l {0}
+        run: pip list
+
       - name: Run tests
         env:
           MPLBACKEND: Agg
@@ -182,14 +186,18 @@ jobs:
         shell: cmd /C CALL {0}
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
           conda info
           pip install --user --requirement requirements.txt
+
       - name: List installed packages (Bash)
         shell: bash -l {0}
-        run: conda list
+        run: |
+          conda list
+          pip list
 
       - name: Run tests (Bash)
         shell: bash -l {0}
