@@ -219,4 +219,3 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
         print(e)
         print("")
         return
-
