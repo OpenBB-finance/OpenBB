@@ -43,7 +43,7 @@ class ForexController:
         self.instrument = None
 
     @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
 
         print("\nForex Mode:")
@@ -51,21 +51,23 @@ class ForexController:
         print("    q             Quit this menu and goes back to main menu")
         print("    quit          Quit to abandon program")
         print("")
-        print("    cancel        Cancel a pending order by ID -i order ID")
-        print("    candles       Show candles")
-        print("    calendar      Show calendar")
-        print("    closetrade    Close a trade by id")
-        print("    list          List order history")
         print("    load          Load an instrument to use")
-        print("    order         Place limit order -u # of units -p price")
-        print("    orderbook     Print orderbook")
-        print("    pending       Get information on pending orders")
-        print("    positionbook  Print positionbook")
-        print("    positions     Get open positions")
-        print("    price         Shows price for selected instrument")
         print("    summary       Shows account summary")
+        print("    calendar      Show calendar")
+        print("    list          List order history")
+        print("    pending       Get information on pending orders")
+        print("    cancel        Cancel a pending order by ID -i order ID")
+        print("    positions     Get open positions")
         print("    trades        List open trades")
+        print("    closetrade    Close a trade by id")
         print("")
+        if self.instrument is not None:
+            print("    candles       Show candles")
+            print("    price         Shows price for selected instrument")
+            print("    order         Place limit order -u # of units -p price")
+            print("    orderbook     Print orderbook")
+            print("    positionbook  Print positionbook")
+            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -84,7 +86,7 @@ class ForexController:
 
     def call_help(self, _):
         """Process Help Command"""
-        self.print_help()
+        self.print_help(self)
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -94,24 +96,24 @@ class ForexController:
         """Process Quit command - exit the program"""
         return True
 
-    def call_price(self, _):
+    def call_price(self, other_args):
         """Process Price Command"""
-        fx_view.get_fx_price(account, self.instrument)
+        fx_view.get_fx_price(account, self.instrument, other_args)
 
     def call_load(self, other_args):
         self.instrument = fx_view.load(other_args)
 
-    def call_summary(self, _):
+    def call_summary(self, other_args):
         """Process account summary command"""
-        fx_view.get_account_summary(account)
+        fx_view.get_account_summary(account, other_args)
 
-    def call_orderbook(self, _):
+    def call_orderbook(self, other_args):
         """Process Oanda Order Book"""
-        fx_view.get_order_book(self.instrument)
+        fx_view.get_order_book(self.instrument, other_args)
 
-    def call_positionbook(self, _):
+    def call_positionbook(self, other_args):
         """Process Oanda Position Book"""
-        fx_view.get_position_book(self.instrument)
+        fx_view.get_position_book(self.instrument, other_args)
 
     def call_list(self, other_args: List[str]):
         """Process list orders command"""
@@ -125,13 +127,13 @@ class ForexController:
         """Cancel pending order by ID"""
         fx_view.cancel_pending_order(account, other_args)
 
-    def call_positions(self, _):
+    def call_positions(self, other_args):
         """Get Open Positions"""
-        fx_view.get_open_positions(account)
+        fx_view.get_open_positions(account, other_args)
 
-    def call_pending(self, _):
+    def call_pending(self, other_args):
         """See up to 25 pending orders"""
-        fx_view.get_pending_orders(account)
+        fx_view.get_pending_orders(account, other_args)
 
     def call_closetrade(self, other_args: List[str]):
         """Close a trade by id"""
@@ -140,9 +142,9 @@ class ForexController:
     def call_candles(self, other_args: List[str]):
         fx_view.show_candles(account, self.instrument, other_args)
 
-    def call_trades(self, _):
+    def call_trades(self, other_args):
         """List open trades"""
-        fx_view.get_open_trades(account)
+        fx_view.get_open_trades(account, other_args)
 
     def call_calendar(self, other_args: List[str]):
         """Call calendar"""

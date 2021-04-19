@@ -25,7 +25,16 @@ client = API(access_token=cfg.OANDA_TOKEN, environment="live")
 account = cfg.OANDA_ACCOUNT
 
 
-def get_fx_price(accountID, instrument):
+def get_fx_price(accountID, instrument, other_args: List[str]):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="price",
+        description="Get price for selected instrument.",
+    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     try:
         parameters = {"instruments": instrument}
         request = pricing.PricingInfo(accountID=accountID, params=parameters)
@@ -34,11 +43,24 @@ def get_fx_price(accountID, instrument):
         ask = response["prices"][0]["asks"][0]["price"]
         print(instrument + " Bid: " + bid)
         print(instrument + " Ask: " + ask)
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
-def get_account_summary(accountID):
+def get_account_summary(accountID, other_args: List[str]):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="summary",
+        description="Print some information about your account.",
+    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     try:
         request = accounts.AccountSummary(accountID=accountID)
         response = client.request(request)
@@ -65,21 +87,37 @@ def get_account_summary(accountID):
         print(f"Margin Closeout {margin_closeout}")
         print(f"Margin Closeout Percent: {margin_closeout_percent}")
         print(f"Margin Closeout Position Value: {margin_closeout_position_value}")
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
 def list_orders(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="listorders",
+        prog="list",
         description="List order history",
     )
     parser.add_argument(
-        "-s", "--state", dest="state", action="store", default="ALL", required=False
+        "-s",
+        "--state",
+        dest="state",
+        action="store",
+        default="ALL",
+        required=False,
+        help="Select state for order list. ",
     )
     parser.add_argument(
-        "-c", "--count", dest="count", action="store", default=50, required=False
+        "-c",
+        "--count",
+        dest="count",
+        action="store",
+        default=50,
+        required=False,
+        help="the number of orders to retrive ",
     )
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -92,14 +130,31 @@ def list_orders(accountID, other_args: List[str]):
     try:
         request = orders.OrderList(accountID, parameters)
         response = client.request(request)
-        df = pd.DataFrame.from_dict(response["orders"])
-        df = df[["id", "instrument", "units", "price", "state", "type"]]
-        print(df)
+        try:
+            df = pd.DataFrame.from_dict(response["orders"])
+            df = df[["id", "instrument", "units", "price", "state", "type"]]
+            print(df)
+            print("")
+        except KeyError:
+            print("No orders were found")
+            print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
-def get_order_book(instrument):
+def get_order_book(instrument, other_args):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="orderbook",
+        description="Plot the orderbook for the instrument if Oanda provides one.",
+    )
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
     parameters = {"bucketWidth": "1"}
     try:
         request = instruments.InstrumentsOrderBook(
@@ -110,11 +165,24 @@ def get_order_book(instrument):
         pd.set_option("display.max_rows", None)
         df = df.take(range(527, 727, 1))
         book_plot(df, instrument, "Order Book")
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
-def get_position_book(instrument):
+def get_position_book(instrument, other_args):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="positionbook",
+        description="Plot the positionbook for the instrument if Oanda provides one.",
+    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     try:
         request = instruments.InstrumentsPositionBook(instrument=instrument)
         response = client.request(request)
@@ -122,14 +190,18 @@ def get_position_book(instrument):
         pd.set_option("display.max_rows", None)
         df = df.take(range(219, 415, 1))
         book_plot(df, instrument, "Position Book")
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
 def create_order(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="create_order",
+        prog="order",
         description="Create order",
     )
     parser.add_argument(
@@ -140,6 +212,8 @@ def create_order(accountID, instrument, other_args: List[str]):
         type=int,
         default=0,
         required=True,
+        help="The number of units to place in the order request. Positive for "
+        + "a long position and negative for a short position ",
     )
     parser.add_argument(
         "-p",
@@ -148,6 +222,7 @@ def create_order(accountID, instrument, other_args: List[str]):
         action="store",
         type=float,
         required=True,
+        help="The price to set for the limit order. ",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -167,16 +242,52 @@ def create_order(accountID, instrument, other_args: List[str]):
     try:
         request = orders.OrderCreate(accountID, data)
         response = client.request(request)
-        print(response)
+        try:
+            if "orderFillTransaction" in response["orderCreateTransaction"]:
+                order_id = response["orderCreateTransaction"]["orderFillTransaction"][
+                    "id"
+                ]
+                order_instrument = response["orderCreateTransaction"][
+                    "orderFillTransaction"
+                ]["instrument"]
+                units = response["orderCreateTransaction"]["orderFillTransaction"][
+                    "units"
+                ]
+                price = response["orderCreateTransaction"]["orderFillTransaction"][
+                    "price"
+                ]
+                print("Order Filled:")
+                print(f"ID: {order_id}")
+                print(f"Instrument: {order_instrument}")
+                print(f"Units: {units}")
+                print(f"Price: {price}")
+                print("")
+            else:
+                order_creation_id = response["orderCreateTransaction"]["id"]
+                order_instrument = response["orderCreateTransaction"]["instrument"]
+                units = response["orderCreateTransaction"]["units"]
+                price = response["orderCreateTransaction"]["price"]
+                print("Order created:")
+                print(f"ID: {order_creation_id}")
+                print(f"Instrument: {order_instrument}")
+                print(f"Units: {units}")
+                print(f"Price: {price}")
+                print("")
+
+        except Exception as e:
+            print(e)
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
 def cancel_pending_order(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="cancelpendingorder",
-        description="Cancel Pending Order",
+        prog="pending",
+        description="Cancel Pending Order ",
     )
     parser.add_argument(
         "-i",
@@ -184,19 +295,37 @@ def cancel_pending_order(accountID, other_args: List[str]):
         dest="orderID",
         action="store",
         type=str,
-        required=True,
+        help="The pending order ID to cancel ",
     )
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-i")
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
     try:
         request = orders.OrderCancel(accountID, ns_parser.orderID)
-        client.request(request)
+        response = client.request(request)
+        order_id = response["orderCancelTransaction"]["orderID"]
+        print(f"Order {order_id} canceled.")
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
-def get_pending_orders(accountID):
+def get_pending_orders(accountID, other_args):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="pending",
+        description="Gets information about pending orders.",
+    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     try:
         request = orders.OrdersPending(accountID)
         response = client.request(request)
@@ -217,11 +346,23 @@ def get_pending_orders(accountID):
                 print("-" * 30)
             except IndexError:
                 break
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
-def get_open_positions(accountID):
+def get_open_positions(accountID, other_args):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="positions",
+        description="Gets information about open positions.",
+    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
     try:
         request = positions.OpenPositions(accountID)
         response = client.request(request)
@@ -241,44 +382,65 @@ def get_open_positions(accountID):
             print(f"Total Short P/L: {short_pl}")
             print(f"Short Unrealized P/L: {short_upl}")
             print("-" * 30 + "\n")
+        print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
-def get_open_trades(accountID):
+def get_open_trades(accountID, other_args):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="trades",
+        description="Gets information about open trades.",
+    )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     try:
         request = trades.OpenTrades(accountID)
         response = client.request(request)
-        df = pd.DataFrame.from_dict(response["trades"])
-        df = df[
-            [
-                "id",
-                "instrument",
-                "initialUnits",
-                "currentUnits",
-                "price",
-                "unrealizedPL",
+        try:
+            df = pd.DataFrame.from_dict(response["trades"])
+            df = df[
+                [
+                    "id",
+                    "instrument",
+                    "initialUnits",
+                    "currentUnits",
+                    "price",
+                    "unrealizedPL",
+                ]
             ]
-        ]
-        df = df.rename(
-            columns={
-                "id": "ID",
-                "instrument": "Instrument",
-                "initialUnits": "Initial Units",
-                "currentUnits": "Current Units",
-                "price": "Entry Price",
-            }
-        )
-        print(df)
+            df = df.rename(
+                columns={
+                    "id": "ID",
+                    "instrument": "Instrument",
+                    "initialUnits": "Initial Units",
+                    "currentUnits": "Current Units",
+                    "price": "Entry Price",
+                }
+            )
+            print(df)
+            print("")
+        except KeyError:
+            print("No trades were found")
+            print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
 def close_trade(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="close_trade",
-        description="close a trade",
+        prog="closetrade",
+        description="Close a trade by id.",
     )
     parser.add_argument(
         "-i",
@@ -287,6 +449,7 @@ def close_trade(accountID, other_args: List[str]):
         action="store",
         type=str,
         required=True,
+        help="The Trade ID to close. ",
     )
     parser.add_argument(
         "-u",
@@ -295,25 +458,55 @@ def close_trade(accountID, other_args: List[str]):
         action="store",
         type=str,
         required=False,
+        help="The number of units on the trade to close. If not set it "
+        + "defaults to all units. ",
     )
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-i")
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
-    data = {
-        "units": ns_parser.units,
-    }
+    data = {}
+    if ns_parser.units is not None:
+        data["units"] = (ns_parser.units,)
     try:
         request = trades.TradeClose(accountID, ns_parser.orderID, data)
         response = client.request(request)
-        print(response)
+        try:
+            order_id = response["orderCreateTransaction"]["tradeClose"]["tradeID"]
+            order_instrument = response["orderFillTransaction"]["instrument"]
+            units = response["orderCreateTransaction"]["units"]
+            price = response["orderFillTransaction"]["price"]
+            pl = response["orderFillTransaction"]["pl"]
+            print("Order closed:")
+            print(f"ID: {order_id}")
+            print(f"Instrument: {order_instrument}")
+            print(f"Units: {units}")
+            print(f"Price: {price}")
+            print(f"P/L: {pl}")
+            print("")
+        except Exception as e:
+            print(e)
+            print("")
+
     except V20Error as e:
-        print(e)
+        if "orderRejectTransaction" in e.msg:
+            msg_length = len(e.msg)
+            order_id = e.msg[355 : msg_length - 149]
+            print(f"Order ID {order_id} doesn't exist")
+            print("")
+        else:
+            msg_length = len(e.msg)
+            msg = e.msg[17 : msg_length - 2]
+            print(msg)
+            print("")
 
 
 def show_candles(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="show_candles",
+        prog="candles",
         description="Display Candle Data",
     )
     parser.add_argument(
@@ -324,6 +517,9 @@ def show_candles(accountID, instrument, other_args: List[str]):
         type=str,
         default="D",
         required=False,
+        help="The timeframe to get for the candle chart (Seconds: S5, S10, S15, S30 "
+        + "Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12 "
+        + "Day (default): D, Wee: W Month: M",
     )
     parser.add_argument(
         "-c",
@@ -333,6 +529,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
         default=180,
         type=int,
         required=False,
+        help="The number of candles to retrieve. Default:180 ",
     )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -359,10 +556,12 @@ def show_candles(accountID, instrument, other_args: List[str]):
             volume=True,
             title=f"{instrument} {ns_parser.granularity}",
         )
-    except Exception as e:
-        print(e)
-    except NameError as e:
-        print(e)
+        print("")
+    except V20Error as e:
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
 
 
 def process_candle_response(response):
@@ -414,6 +613,8 @@ def calendar(instrument, other_args: List[str]):
         type=int,
         default=7,
         required=False,
+        help="The number of days to search for, up to 30 forward or backward "
+        + "use negative numbers to search back. ",
     )
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -469,15 +670,20 @@ def calendar(instrument, other_args: List[str]):
                 else:
                     print(f"Previous: {previous}")
             print("-" * 30)
+            print("")
     except V20Error as e:
-        print(e)
+        msg_length = len(e.msg)
+        msg = e.msg[17 : msg_length - 2]
+        print(msg)
+        print("")
+    print("")
 
 
 def load(other_args: List[str]):
     """Load a forex instrument to use"""
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="Forex",
+        prog="load",
         description="Forex using oanda",
     )
 
@@ -487,7 +693,7 @@ def load(other_args: List[str]):
         required=True,
         type=str,
         dest="instrument",
-        help="Instrument to use for function calls",
+        help="Forex pair to use. ",
     )
 
     try:
