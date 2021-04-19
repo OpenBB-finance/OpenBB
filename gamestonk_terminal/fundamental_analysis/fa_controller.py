@@ -10,9 +10,9 @@ from gamestonk_terminal.fundamental_analysis import business_insider_view as biw
 from gamestonk_terminal.fundamental_analysis import (
     financial_modeling_prep_controller as fmpc,
 )
-from gamestonk_terminal.fundamental_analysis import finviz_api as fvz_api
-from gamestonk_terminal.fundamental_analysis import market_watch_api as mw_api
-from gamestonk_terminal.fundamental_analysis import yahoo_finance_api as yf_api
+from gamestonk_terminal.fundamental_analysis import finviz_view
+from gamestonk_terminal.fundamental_analysis import market_watch_view
+from gamestonk_terminal.fundamental_analysis import yahoo_finance_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -135,35 +135,35 @@ class FundamentalAnalysisController:
 
     def call_screener(self, other_args: List[str]):
         """ Process screener command """
-        fvz_api.screener(other_args, self.ticker)
+        finviz_view.screener(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
         """ Process income command """
-        mw_api.income(other_args, self.ticker)
+        market_watch_view.income(other_args, self.ticker)
 
     def call_balance(self, other_args: List[str]):
         """ Process balance command """
-        mw_api.balance(other_args, self.ticker)
+        market_watch_view.balance(other_args, self.ticker)
 
     def call_cash(self, other_args: List[str]):
         """ Process cash command """
-        mw_api.cash(other_args, self.ticker)
+        market_watch_view.cash(other_args, self.ticker)
 
     def call_info(self, other_args: List[str]):
         """ Process info command """
-        yf_api.info(other_args, self.ticker)
+        yahoo_finance_view.info(other_args, self.ticker)
 
     def call_shrs(self, other_args: List[str]):
         """ Process shrs command """
-        yf_api.shareholders(other_args, self.ticker)
+        yahoo_finance_view.shareholders(other_args, self.ticker)
 
     def call_sust(self, other_args: List[str]):
         """ Process sust command """
-        yf_api.sustainability(other_args, self.ticker)
+        yahoo_finance_view.sustainability(other_args, self.ticker)
 
     def call_cal(self, other_args: List[str]):
         """ Process cal command """
-        yf_api.calendar_earnings(other_args, self.ticker)
+        yahoo_finance_view.calendar_earnings(other_args, self.ticker)
 
     # pylint: disable=unused-argument
     def call_av(self, other_args: List[str]):
