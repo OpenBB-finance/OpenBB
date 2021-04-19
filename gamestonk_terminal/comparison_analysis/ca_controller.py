@@ -16,6 +16,7 @@ from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
 from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
 from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
 from gamestonk_terminal.comparison_analysis import finviz_compare_view
+from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
 
@@ -43,6 +44,7 @@ class ComparisonAnalysisController:
         "ownership",
         "performance",
         "technical",
+        "po",
     ]
 
     def __init__(
@@ -82,8 +84,6 @@ class ComparisonAnalysisController:
 
         if self.similar:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
-        # else:
-        #    print(f"No similar companies [{self.user}]")
 
         print("\nComparison Analysis Mode:")
         print("   help          show this comparison analysis menu again")
@@ -108,6 +108,9 @@ class ComparisonAnalysisController:
         print("   performance   brief performance comparison")
         print("   technical     brief technical comparison")
         print("")
+        if self.similar:
+            print("   > po          portfolio optimization for selected tickers")
+            print("")
         return
 
     @staticmethod
@@ -314,6 +317,10 @@ class ComparisonAnalysisController:
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         finviz_compare_view.screener(other_args, "technical", self.ticker, self.similar)
+
+    def call_po(self, _):
+        """Call the portfolio optimization menu with selected tickers"""
+        return po_controller.menu([self.ticker] + self.similar)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):

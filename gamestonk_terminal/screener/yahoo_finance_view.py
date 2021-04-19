@@ -1,5 +1,6 @@
 import argparse
 from typing import List
+import random
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import datetime
@@ -119,10 +120,12 @@ def historical(other_args: List[str], preset_loaded: str):
 
         if len(l_stocks) > 10:
             print(
-                "We limit stocks shown to 10, as after this the plot becomes too noisy. "
-                "Also, we ran out of different colors."
+                "\nThe limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.",
+                "\nThe selected list will be:",
             )
-            l_stocks = l_stocks[:10]
+            random.shuffle(l_stocks)
+            l_stocks = sorted(l_stocks[:10])
+            print(", ".join(l_stocks))
 
         while l_stocks:
             l_parsed_stocks = list()
@@ -179,8 +182,11 @@ def historical(other_args: List[str], preset_loaded: str):
 
         plt.show()
         print("")
+        return l_parsed_stocks
 
     except SystemExit:
         print("Similar companies need to be provided", "\n")
+        return []
     except Exception as e:
         print(e, "\n")
+        return []

@@ -14,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.screener import finviz_view
 from gamestonk_terminal.screener import yahoo_finance_view
+from gamestonk_terminal.portfolio_optimization import po_controller
 
 
 class ScreenerController:
@@ -34,11 +35,13 @@ class ScreenerController:
         "performance",
         "technical",
         "signals",
+        "po",
     ]
 
     def __init__(self):
         """Constructor"""
         self.preset = "template"
+        self.screen_tickers = []
         self.scr_parser = argparse.ArgumentParser(add_help=False, prog="scr")
         self.scr_parser.add_argument(
             "cmd",
@@ -69,6 +72,11 @@ class ScreenerController:
         print("")
         print("   signals        view filter signals (e.g. -s top_gainers)")
         print("")
+        if self.screen_tickers:
+            print(f"Last screened tickers: {', '.join(self.screen_tickers)}")
+            print("")
+            print("   > po           portfolio optimization for last screened tickers")
+            print("")
 
     @staticmethod
     def view_available_presets(other_args: List[str]):
@@ -187,35 +195,41 @@ class ScreenerController:
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        yahoo_finance_view.historical(other_args, self.preset)
+        self.screen_tickers = yahoo_finance_view.historical(other_args, self.preset)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        finviz_view.screener(other_args, self.preset, "overview")
+        self.screen_tickers = finviz_view.screener(other_args, self.preset, "overview")
 
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
-        finviz_view.screener(other_args, self.preset, "valuation")
+        self.screen_tickers = finviz_view.screener(other_args, self.preset, "valuation")
 
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
-        finviz_view.screener(other_args, self.preset, "financial")
+        self.screen_tickers = finviz_view.screener(other_args, self.preset, "financial")
 
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
-        finviz_view.screener(other_args, self.preset, "ownership")
+        self.screen_tickers = finviz_view.screener(other_args, self.preset, "ownership")
 
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
-        finviz_view.screener(other_args, self.preset, "performance")
+        self.screen_tickers = finviz_view.screener(
+            other_args, self.preset, "performance"
+        )
 
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
-        finviz_view.screener(other_args, self.preset, "technical")
+        self.screen_tickers = finviz_view.screener(other_args, self.preset, "technical")
 
     def call_signals(self, other_args: List[str]):
         """Process signals command"""
         finviz_view.view_signals(other_args)
+
+    def call_po(self, other_args: List[str]):
+        """Call the portfolio optimization menu with selected tickers"""
+        return po_controller.menu(self.screen_tickers)
 
 
 def menu():
