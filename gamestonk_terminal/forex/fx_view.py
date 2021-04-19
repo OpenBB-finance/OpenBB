@@ -117,7 +117,7 @@ def list_orders(accountID, other_args: List[str]):
         action="store",
         default=50,
         required=False,
-        help="the number of orders to retrive ",
+        help="the number of orders to retrieve ",
     )
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -519,7 +519,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
         required=False,
         help="The timeframe to get for the candle chart (Seconds: S5, S10, S15, S30 "
         + "Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12 "
-        + "Day (default): D, Wee: W Month: M",
+        + "Day (default): D, Week: W Month: M",
     )
     parser.add_argument(
         "-c",
