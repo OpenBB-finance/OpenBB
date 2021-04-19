@@ -44,11 +44,10 @@ def get_fx_price(accountID, instrument, other_args: List[str]):
         print(instrument + " Bid: " + bid)
         print(instrument + " Ask: " + ask)
         print("")
+
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["message"], "\n")
 
 
 def get_account_summary(accountID, other_args: List[str]):
@@ -64,35 +63,46 @@ def get_account_summary(accountID, other_args: List[str]):
     try:
         request = accounts.AccountSummary(accountID=accountID)
         response = client.request(request)
-        balance = response["account"]["balance"]
-        margin_available = response["account"]["marginAvailable"]
-        margin_closeout = response["account"]["marginCloseoutNAV"]
-        margin_closeout_percent = response["account"]["marginCloseoutPercent"]
-        margin_closeout_position_value = response["account"][
-            "marginCloseoutPositionValue"
-        ]
-        margin_used = response["account"]["marginUsed"]
-        net_asset_value = response["account"]["NAV"]
-        open_trade_count = response["account"]["openTradeCount"]
-        total_pl = response["account"]["pl"]
-        unrealized_pl = response["account"]["unrealizedPL"]
 
-        print(f"Balance: {balance}")
-        print(f"NAV: {net_asset_value}")
-        print(f"Unrealized P/L:  {unrealized_pl}")
-        print(f"Total P/L: {total_pl}")
-        print(f"Open Trade Count: {open_trade_count}")
-        print(f"Margin Available:  ${margin_available}")
-        print(f"Margin Used: ${margin_used}")
-        print(f"Margin Closeout {margin_closeout}")
-        print(f"Margin Closeout Percent: {margin_closeout_percent}")
-        print(f"Margin Closeout Position Value: {margin_closeout_position_value}")
+        df_summary = pd.DataFrame(
+            [
+                {"Type": "Balance", "Value": response["account"]["balance"]},
+                {"Type": "NAV", "Value": response["account"]["NAV"]},
+                {
+                    "Type": "Unrealized P/L",
+                    "Value": response["account"]["unrealizedPL"],
+                },
+                {"Type": "Total P/L", "Value": response["account"]["pl"]},
+                {
+                    "Type": "Open Trade Count",
+                    "Value": response["account"]["openTradeCount"],
+                },
+                {
+                    "Type": "Margin Available",
+                    "Value": response["account"]["marginAvailable"],
+                },
+                {"Type": "Margin Used", "Value": response["account"]["marginUsed"]},
+                {
+                    "Type": "Margin Closeout",
+                    "Value": response["account"]["marginCloseoutNAV"],
+                },
+                {
+                    "Type": "Margin Closeout Percent",
+                    "Value": response["account"]["marginCloseoutPercent"],
+                },
+                {
+                    "Type": "Margin Closeout Position Value",
+                    "Value": response["account"]["marginCloseoutPositionValue"],
+                },
+            ]
+        )
+
+        print(df_summary.to_string(index=False, header=False))
+
         print("")
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def list_orders(accountID, other_args: List[str]):
@@ -130,19 +140,17 @@ def list_orders(accountID, other_args: List[str]):
     try:
         request = orders.OrderList(accountID, parameters)
         response = client.request(request)
-        try:
-            df = pd.DataFrame.from_dict(response["orders"])
-            df = df[["id", "instrument", "units", "price", "state", "type"]]
-            print(df)
-            print("")
-        except KeyError:
-            print("No orders were found")
-            print("")
-    except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
+
+        df = pd.DataFrame.from_dict(response["orders"])
+        df = df[["id", "instrument", "units", "price", "state", "type"]]
+        print(df)
         print("")
+
+    except KeyError:
+        print("No orders were found\n")
+    except V20Error as e:
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def get_order_book(instrument, other_args):
@@ -166,11 +174,10 @@ def get_order_book(instrument, other_args):
         df = df.take(range(527, 727, 1))
         book_plot(df, instrument, "Order Book")
         print("")
+
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def get_position_book(instrument, other_args):
@@ -191,11 +198,10 @@ def get_position_book(instrument, other_args):
         df = df.take(range(219, 415, 1))
         book_plot(df, instrument, "Position Book")
         print("")
+
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def create_order(accountID, instrument, other_args: List[str]):
@@ -242,45 +248,37 @@ def create_order(accountID, instrument, other_args: List[str]):
     try:
         request = orders.OrderCreate(accountID, data)
         response = client.request(request)
-        try:
-            if "orderFillTransaction" in response["orderCreateTransaction"]:
-                order_id = response["orderCreateTransaction"]["orderFillTransaction"][
-                    "id"
-                ]
-                order_instrument = response["orderCreateTransaction"][
-                    "orderFillTransaction"
-                ]["instrument"]
-                units = response["orderCreateTransaction"]["orderFillTransaction"][
-                    "units"
-                ]
-                price = response["orderCreateTransaction"]["orderFillTransaction"][
-                    "price"
-                ]
-                print("Order Filled:")
-                print(f"ID: {order_id}")
-                print(f"Instrument: {order_instrument}")
-                print(f"Units: {units}")
-                print(f"Price: {price}")
-                print("")
-            else:
-                order_creation_id = response["orderCreateTransaction"]["id"]
-                order_instrument = response["orderCreateTransaction"]["instrument"]
-                units = response["orderCreateTransaction"]["units"]
-                price = response["orderCreateTransaction"]["price"]
-                print("Order created:")
-                print(f"ID: {order_creation_id}")
-                print(f"Instrument: {order_instrument}")
-                print(f"Units: {units}")
-                print(f"Price: {price}")
-                print("")
 
-        except Exception as e:
-            print(e)
+        if "orderFillTransaction" in response["orderCreateTransaction"]:
+            order_id = response["orderCreateTransaction"]["orderFillTransaction"]["id"]
+            order_instrument = response["orderCreateTransaction"][
+                "orderFillTransaction"
+            ]["instrument"]
+            units = response["orderCreateTransaction"]["orderFillTransaction"]["units"]
+            price = response["orderCreateTransaction"]["orderFillTransaction"]["price"]
+            print("Order Filled:")
+            print(f"ID: {order_id}")
+            print(f"Instrument: {order_instrument}")
+            print(f"Units: {units}")
+            print(f"Price: {price}")
+            print("")
+        else:
+            order_creation_id = response["orderCreateTransaction"]["id"]
+            order_instrument = response["orderCreateTransaction"]["instrument"]
+            units = response["orderCreateTransaction"]["units"]
+            price = response["orderCreateTransaction"]["price"]
+            print("Order created:")
+            print(f"ID: {order_creation_id}")
+            print(f"Instrument: {order_instrument}")
+            print(f"Units: {units}")
+            print(f"Price: {price}")
+            print("")
+
+    except Exception as e:
+        print(e)
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["message"], "\n")
 
 
 def cancel_pending_order(accountID, other_args: List[str]):
@@ -310,10 +308,8 @@ def cancel_pending_order(accountID, other_args: List[str]):
         print(f"Order {order_id} canceled.")
         print("")
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def get_pending_orders(accountID, other_args):
@@ -330,28 +326,23 @@ def get_pending_orders(accountID, other_args):
         request = orders.OrdersPending(accountID)
         response = client.request(request)
         for i in range(len(response["orders"])):
-            try:
-                order_id = response["orders"][i]["id"]
-                instrument = response["orders"][i]["instrument"]
-                price = response["orders"][i]["price"]
-                units = response["orders"][i]["units"]
-                create_time = response["orders"][i]["createTime"]
-                time_in_force = response["orders"][i]["timeInForce"]
-                print(f"Order ID: {order_id}")
-                print(f"Instrument: {instrument}")
-                print(f"Price: {price}")
-                print(f"Units: {units}")
-                print(f"Time created: {create_time}")
-                print(f"Time in force: {time_in_force}")
-                print("-" * 30)
-            except IndexError:
-                break
+            order_id = response["orders"][i]["id"]
+            instrument = response["orders"][i]["instrument"]
+            price = response["orders"][i]["price"]
+            units = response["orders"][i]["units"]
+            create_time = response["orders"][i]["createTime"]
+            time_in_force = response["orders"][i]["timeInForce"]
+            print(f"Order ID: {order_id}")
+            print(f"Instrument: {instrument}")
+            print(f"Price: {price}")
+            print(f"Units: {units}")
+            print(f"Time created: {create_time}")
+            print(f"Time in force: {time_in_force}")
+            print("-" * 30)
         print("")
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def get_open_positions(accountID, other_args):
@@ -383,11 +374,10 @@ def get_open_positions(accountID, other_args):
             print(f"Short Unrealized P/L: {short_upl}")
             print("-" * 30 + "\n")
         print("")
+
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def get_open_trades(accountID, other_args):
@@ -467,40 +457,33 @@ def close_trade(accountID, other_args: List[str]):
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
+
     data = {}
     if ns_parser.units is not None:
         data["units"] = (ns_parser.units,)
     try:
         request = trades.TradeClose(accountID, ns_parser.orderID, data)
         response = client.request(request)
-        try:
-            order_id = response["orderCreateTransaction"]["tradeClose"]["tradeID"]
-            order_instrument = response["orderFillTransaction"]["instrument"]
-            units = response["orderCreateTransaction"]["units"]
-            price = response["orderFillTransaction"]["price"]
-            pl = response["orderFillTransaction"]["pl"]
-            print("Order closed:")
-            print(f"ID: {order_id}")
-            print(f"Instrument: {order_instrument}")
-            print(f"Units: {units}")
-            print(f"Price: {price}")
-            print(f"P/L: {pl}")
-            print("")
-        except Exception as e:
-            print(e)
-            print("")
 
+        order_id = response["orderCreateTransaction"]["tradeClose"]["tradeID"]
+        order_instrument = response["orderFillTransaction"]["instrument"]
+        units = response["orderCreateTransaction"]["units"]
+        price = response["orderFillTransaction"]["price"]
+        pl = response["orderFillTransaction"]["pl"]
+        print("Order closed:")
+        print(f"ID: {order_id}")
+        print(f"Instrument: {order_instrument}")
+        print(f"Units: {units}")
+        print(f"Price: {price}")
+        print(f"P/L: {pl}")
+        print("")
+
+    except Exception as e:
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
     except V20Error as e:
-        if "orderRejectTransaction" in e.msg:
-            msg_length = len(e.msg)
-            order_id = e.msg[355 : msg_length - 149]
-            print(f"Order ID {order_id} doesn't exist")
-            print("")
-        else:
-            msg_length = len(e.msg)
-            msg = e.msg[17 : msg_length - 2]
-            print(msg)
-            print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def show_candles(accountID, instrument, other_args: List[str]):
@@ -558,10 +541,8 @@ def show_candles(accountID, instrument, other_args: List[str]):
         )
         print("")
     except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
-        print("")
+        d_error = eval(e.msg)
+        print(d_error["errorMessage"], "\n")
 
 
 def process_candle_response(response):
@@ -624,59 +605,57 @@ def calendar(instrument, other_args: List[str]):
     try:
         request = labs.Calendar(params=parameters)
         response = client.request(request)
+
+        l_data = []
         for i in range(len(response)):
-            if "title" in response[i]:
-                title = response[i]["title"]
-                print(f"Title: {title}")
-            if "timestamp" in response[i]:
-                timestamp = response[i]["timestamp"]
-                time = datetime.fromtimestamp(timestamp)
-                print(f"Time: {time}")
-            if "impact" in response[i]:
-                impact = response[i]["impact"]
-                print(f"Impact: {impact}")
             if "forecast" in response[i]:
                 forecast = response[i]["forecast"]
-                unit = response[i]["unit"]
-                if unit != "Index":
-                    print(f"Forecast: {forecast}{unit}")
-                else:
-                    print(f"Forecast: {forecast}")
+                if response[i]["unit"] != "Index":
+                    forecast += response[i]["unit"]
+            else:
+                forecast = ""
+
             if "market" in response[i]:
                 market = response[i]["market"]
-                unit = response[i]["unit"]
-                if unit != "Index":
-                    print(f"Market Forecast: {market}{unit}")
-                else:
-                    print(f"Market Forecast: {market}")
-            if "currency" in response[i]:
-                currency = response[i]["currency"]
-                print(f"Currency: {currency}")
-            if "region" in response[i]:
-                region = response[i]["region"]
-                print(f"Region: {region}")
+                if response[i]["unit"] != "Index":
+                    market += response[i]["unit"]
+            else:
+                market = ""
+
             if "actual" in response[i]:
                 actual = response[i]["actual"]
-                unit = response[i]["unit"]
-                if unit != "Index":
-                    print(f"Actual: {actual}{unit}")
-                else:
-                    print(f"Actual: {actual}")
+                if response[i]["unit"] != "Index":
+                    actual += response[i]["unit"]
+            else:
+                actual = ""
+
             if "previous" in response[i]:
                 previous = response[i]["previous"]
-                unit = response[i]["unit"]
-                if unit != "Index":
-                    print(f"Previous: {previous}{unit}")
-                else:
-                    print(f"Previous: {previous}")
-            print("-" * 30)
-            print("")
-    except V20Error as e:
-        msg_length = len(e.msg)
-        msg = e.msg[17 : msg_length - 2]
-        print(msg)
+                if response[i]["unit"] != "Index":
+                    previous += response[i]["unit"]
+            else:
+                previous = ""
+
+            l_data.append(
+                {
+                    "Title": response[i]["title"],
+                    "Time": datetime.fromtimestamp(response[i]["timestamp"]),
+                    "Impact": response[i]["impact"],
+                    "Forecast": forecast,
+                    "Market Forecast": market,
+                    "Currency": response[i]["currency"],
+                    "Region": response[i]["region"],
+                    "Actual": actual,
+                    "Previous": previous,
+                }
+            )
+
+        print(pd.DataFrame(l_data).to_string(index=False))
         print("")
-    print("")
+
+    except V20Error as e:
+        d_error = eval(e.msg)
+        print(d_error["message"], "\n")
 
 
 def load(other_args: List[str]):
@@ -702,12 +681,15 @@ def load(other_args: List[str]):
                 other_args.insert(0, "-i")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
-
         if not ns_parser:
             return
+
+        print("")
         return ns_parser.instrument.upper()
+
     except Exception as e:
-        print(e)
+        print(e, "\n")
+        return None
 
 
 def book_plot(df, instrument, book_type):
