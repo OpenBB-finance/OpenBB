@@ -40,7 +40,7 @@ default_columns = [
 ]
 
 
-def check_valid_option_chains_headers(headers: str) -> str:
+def check_valid_option_chains_headers(headers: List[str]) -> str:
     columns = [str(item) for item in headers.split(",")]
 
     for header in columns:
