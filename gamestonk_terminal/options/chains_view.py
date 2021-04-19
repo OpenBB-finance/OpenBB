@@ -29,6 +29,9 @@ column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 
 default_columns = [
     "mid_iv",
+    "vega",
+    "theta",
+    "gamma",
     "delta",
     "volume",
     "open_interest",
