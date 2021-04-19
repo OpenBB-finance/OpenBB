@@ -132,6 +132,7 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
         "vega",
         "delta",
         "gamma",
+        "theta",
         "volume",
         "open_interest",
         "bid",
