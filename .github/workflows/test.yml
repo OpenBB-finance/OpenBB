@@ -75,7 +75,9 @@ jobs:
           pytest tests/
 
       - name: Start Terminal and exit
-        run: python terminal.py
+        run: |
+          source $VENV
+          python terminal.py
   tests-python:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -120,7 +122,9 @@ jobs:
 
       - name: List installed packages
         shell: bash -l {0}
-        run: pip list
+        run: |
+          source $VENV
+          pip list
 
       - name: Run tests
         env:
