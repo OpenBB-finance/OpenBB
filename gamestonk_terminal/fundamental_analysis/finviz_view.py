@@ -1,10 +1,25 @@
+""" FinViz View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import finviz
 import pandas as pd
+
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
-def screener(l_args, s_ticker):
+def screener(other_args: List[str], ticker: str):
+    """FinViz ticker screener
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="screener",
@@ -24,11 +39,11 @@ def screener(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        d_finviz_stock = finviz.get_stock(s_ticker)
+        d_finviz_stock = finviz.get_stock(ticker)
         df_fa = pd.DataFrame.from_dict(
             d_finviz_stock, orient="index", columns=["Values"]
         )

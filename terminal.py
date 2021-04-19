@@ -16,7 +16,7 @@ from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_controller
 from gamestonk_terminal.due_diligence import dd_controller
-from gamestonk_terminal.fundamental_analysis import fa_menu as fam
+from gamestonk_terminal.fundamental_analysis import fa_controller
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
@@ -211,7 +211,7 @@ def main():
             b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
-            b_quit = fam.fa_menu(
+            b_quit = fa_controller.menu(
                 s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
                 s_start,
                 s_interval,
@@ -329,7 +329,7 @@ def main():
                         df_stock_pred,
                         s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
                         s_start,
-                        s_interval="1440min",
+                        interval="1440min",
                     )
                 except Exception as e:
                     print(e)

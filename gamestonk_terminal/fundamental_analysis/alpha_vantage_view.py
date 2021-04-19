@@ -1,112 +1,33 @@
+""" Alpha Vantage View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import requests
+
 from alpha_vantage.fundamentaldata import FundamentalData
 import pandas as pd
-from pandas.io.json import json_normalize
+
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.dataframe_helpers import clean_df_index
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     long_number_format,
     parse_known_args_and_warn,
-    get_flair,
 )
-from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
 
 
-def print_menu(s_ticker, s_start, s_interval):
-    """ Print help """
+def overview(other_args: List[str], ticker: str):
+    """Alpha Vantage stock ticker overview
 
-    s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
 
-    if s_start:
-        print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
-    else:
-        print(f"\n{s_intraday} Stock: {s_ticker}")
-
-    print("\nAlpha Vantage:")
-    print("   help          show this alpha vantage menu again")
-    print("   q             quit this menu, and shows back to main menu")
-    print("   quit          quit to abandon program")
-    print("")
-    print("   overview      overview of the company")
-    print("   income        income statements of the company")
-    print("   balance       balance sheet of the company")
-    print("   cash          cash flow of the company")
-    print("   earnings      earnings dates and reported EPS")
-    print("")
-
-
-def menu(s_ticker, s_start, s_interval):
-
-    # Add list of arguments that the fundamental analysis parser accepts
-    av_parser = argparse.ArgumentParser(prog="av", add_help=False)
-    choices = [
-        "help",
-        "q",
-        "quit",
-        "overview",
-        "income",
-        "balance",
-        "cash",
-        "earnings",
-    ]
-    av_parser.add_argument("cmd", choices=choices)
-    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
-
-    print_menu(s_ticker, s_start, s_interval)
-
-    # Loop forever and ever
-    while True:
-        # Get input command from user
-        if session:
-            as_input = session.prompt(
-                f"{get_flair()} (fa)>(av)> ",
-                completer=completer,
-            )
-        else:
-            as_input = input(f"{get_flair()} (fa)>(av)> ")
-
-        # Parse alpha vantage command of the list of possible commands
-        try:
-            (ns_known_args, l_args) = av_parser.parse_known_args(as_input.split())
-
-        except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
-
-        if ns_known_args.cmd == "help":
-            print_menu(s_ticker, s_start, s_interval)
-
-        elif ns_known_args.cmd == "q":
-            # Just leave the menu
-            return False
-
-        elif ns_known_args.cmd == "quit":
-            # Abandon the program
-            return True
-
-        elif ns_known_args.cmd == "overview":
-            overview(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "income":
-            income_statement(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "balance":
-            balance_sheet(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "cash":
-            cash_flow(l_args, s_ticker)
-
-        elif ns_known_args.cmd == "earnings":
-            earnings(l_args, s_ticker)
-
-        else:
-            print("Command not recognized!")
-
-
-def overview(l_args, s_ticker):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="overview",
@@ -128,18 +49,18 @@ def overview(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         # Request OVERVIEW data from Alpha Vantage API
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
         result = requests.get(s_req, stream=True)
 
         # If the returned data was successful
         if result.status_code == 200:
             # Parse json data to dataframe
-            df_fa = json_normalize(result.json())
+            df_fa = pd.json_normalize(result.json())
             # Keep json data sorting in dataframe
             df_fa = df_fa[list(result.json().keys())].T
             df_fa = df_fa.applymap(lambda x: long_number_format(x))
@@ -182,7 +103,17 @@ def overview(l_args, s_ticker):
         return
 
 
-def key(l_args, s_ticker):
+def key(other_args: List[str], ticker: str):
+    """Alpha Vantage key metrics
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="key",
@@ -196,17 +127,17 @@ def key(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         # Request OVERVIEW data
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
         result = requests.get(s_req, stream=True)
 
         # If the returned data was successful
         if result.status_code == 200:
-            df_fa = json_normalize(result.json())
+            df_fa = pd.json_normalize(result.json())
             df_fa = df_fa[list(result.json().keys())].T
             df_fa = df_fa.applymap(lambda x: long_number_format(x))
             clean_df_index(df_fa)
@@ -248,10 +179,20 @@ def key(l_args, s_ticker):
         return
 
 
-def income_statement(l_args, s_ticker):
+def income_statement(other_args: List[str], ticker: str):
+    """Alpha Vantage income statement
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="incom",
+        prog="income",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
             The following fields are expected: Accepted date, Cost and expenses, Cost of revenue,
@@ -283,7 +224,7 @@ def income_statement(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -295,10 +236,10 @@ def income_statement(l_args, s_ticker):
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
             # pylint: disable=unbalanced-tuple-unpacking
-            df_fa, _ = fd.get_income_statement_quarterly(symbol=s_ticker)
+            df_fa, _ = fd.get_income_statement_quarterly(symbol=ticker)
         else:
             # pylint: disable=unbalanced-tuple-unpacking
-            df_fa, _ = fd.get_income_statement_annual(symbol=s_ticker)
+            df_fa, _ = fd.get_income_statement_annual(symbol=ticker)
 
         df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
         print(df_fa)
@@ -310,7 +251,17 @@ def income_statement(l_args, s_ticker):
         return
 
 
-def balance_sheet(l_args, s_ticker):
+def balance_sheet(other_args: List[str], ticker: str):
+    """Alpha Vantage balance sheet
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="balance",
@@ -351,7 +302,7 @@ def balance_sheet(l_args, s_ticker):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
         if l_unknown_args:
             print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
@@ -365,10 +316,10 @@ def balance_sheet(l_args, s_ticker):
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
             # pylint: disable=unbalanced-tuple-unpacking
-            df_fa, _ = fd.get_balance_sheet_quarterly(symbol=s_ticker)
+            df_fa, _ = fd.get_balance_sheet_quarterly(symbol=ticker)
         else:
             # pylint: disable=unbalanced-tuple-unpacking
-            df_fa, _ = fd.get_balance_sheet_annual(symbol=s_ticker)
+            df_fa, _ = fd.get_balance_sheet_annual(symbol=ticker)
 
         df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
         print(df_fa)
@@ -380,7 +331,17 @@ def balance_sheet(l_args, s_ticker):
         return
 
 
-def cash_flow(l_args, s_ticker):
+def cash_flow(other_args: List[str], ticker: str):
+    """Alpha Vantage cash flow
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="cash",
@@ -419,7 +380,7 @@ def cash_flow(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -431,10 +392,10 @@ def cash_flow(l_args, s_ticker):
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         if ns_parser.b_quarter:
             # pylint: disable=unbalanced-tuple-unpacking
-            df_fa, _ = fd.get_cash_flow_quarterly(symbol=s_ticker)
+            df_fa, _ = fd.get_cash_flow_quarterly(symbol=ticker)
         else:
             # pylint: disable=unbalanced-tuple-unpacking
-            df_fa, _ = fd.get_cash_flow_annual(symbol=s_ticker)
+            df_fa, _ = fd.get_cash_flow_annual(symbol=ticker)
 
         df_fa = clean_fundamentals_df(df_fa, num=ns_parser.n_num)
         print(df_fa)
@@ -446,7 +407,17 @@ def cash_flow(l_args, s_ticker):
         return
 
 
-def earnings(l_args, s_ticker):
+def earnings(other_args: List[str], ticker: str):
+    """Alpha Vantage earnings
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="earnings",
@@ -475,7 +446,7 @@ def earnings(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -487,13 +458,13 @@ def earnings(l_args, s_ticker):
         # Request EARNINGS data from Alpha Vantage API
         s_req = (
             "https://www.alphavantage.co/query?function=EARNINGS&"
-            f"symbol={s_ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+            f"symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
         )
         result = requests.get(s_req, stream=True)
 
         # If the returned data was successful
         if result.status_code == 200:
-            df_fa = json_normalize(result.json())
+            df_fa = pd.json_normalize(result.json())
             if ns_parser.b_quarter:
                 df_fa = pd.DataFrame(df_fa["quarterlyEarnings"][0])
                 df_fa = df_fa[
