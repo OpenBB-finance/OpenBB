@@ -2,6 +2,7 @@ name: Mac OS X Full Clean Build with ML
 env:
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
+  GTFF_ENABLE_QUICK_EXIT: true
 on:
   push:
     branches:
@@ -63,3 +64,7 @@ jobs:
       - name: Run tests (Bash)
         shell: bash -l {0}
         run: pytest tests/
+
+      - name: Start Terminal and exit
+        shell: bash -l {0}
+        run: python terminal.py

@@ -2,6 +2,7 @@ name: Tests
 env:
     GTFF_USE_PROMPT_TOOLKIT: false
     GTFF_USE_ION: false
+    GTFF_ENABLE_QUICK_EXIT: true
 on: [pull_request, push]
 jobs:
   linting:
@@ -72,6 +73,9 @@ jobs:
         run: |
           source $VENV
           pytest tests/
+
+      - name: Start Terminal and exit
+        run: python terminal.py
   tests-python:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -120,6 +124,9 @@ jobs:
         run: |
           source $VENV
           pytest tests/
+
+      - name: Start Terminal and exit
+        run: python terminal.py
   tests-conda:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -187,3 +194,7 @@ jobs:
       - name: Run tests (Bash)
         shell: bash -l {0}
         run: pytest tests/
+
+      - name: Start Terminal and exit
+        shell: bash -l {0}
+        run: python terminal.py

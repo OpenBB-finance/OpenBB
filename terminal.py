@@ -115,6 +115,10 @@ def main():
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
 
+        if gtff.ENABLE_QUICK_EXIT:
+            print("Quick exit enabled")
+            break
+
         # Get input command from stdin or user
         if not parsed_stdin and len(sys.argv) > 1:
             as_input = " ".join(sys.argv[1:])
