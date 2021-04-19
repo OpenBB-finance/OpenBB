@@ -84,17 +84,7 @@ Display options chains. [Source: Tradier]
 * --puts : Flag to show puts only
 * -m : Minimum strike price to consider.
 * -M : Maximum strike price to consider.
-* -d       : Columns to display.  Should be comma separated.  Must be in `['bid', 'ask', 'strike', 'bidsize', 'asksize', 'volume', 'open_interest',
-        'delta', 'gamma', 'theta', 'vega', 'ask_iv', 'bid_iv','mid_iv']`
+* -d : Columns to display.  Should be comma separated.  Must be in * -d : Columns to display from the following selection: bid, ask, strike, bidsize, asksize, volume, open_interest, delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv. Default: mid_iv,vega_theta_gamma,delta,volume,open_interest,bid,ask. Note that they are separated by comma.
 
 
 <img width="948" alt="chains" src="https://user-images.githubusercontent.com/25267873/115161876-f708ff80-a097-11eb-8073-195979862a45.png">
-
-To change what columns are displayed, one can use the `-d` flag.  To show the same as above, but only the ask, ask size 
-delta and theta variables, we would do:
-````
-chains -m 129 -M 135 -d ask,ask_size,delta,theta
-````
-Which outputs 
-![im2](https://user-images.githubusercontent.com/18151143/115276719-640cab80-a111-11eb-84a2-4dc6a1685946.png)
-
