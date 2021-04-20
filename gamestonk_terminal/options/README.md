@@ -14,6 +14,9 @@ This menu aims to give insight on options. Options can cause significant share p
   * Puts volume + open interest plot [Yahoo Finance]
 * [chains](#chains)
   * Display option chains [Source: Tradier]
+* [info](#info)
+  * _**This requires selenium webdriver installed**_
+  * Display option information [Source: Barchart.com]
 
 
 ## exp <a name="exp"></a>
@@ -88,3 +91,18 @@ Display options chains. [Source: Tradier]
 
 
 <img width="948" alt="chains" src="https://user-images.githubusercontent.com/25267873/115161876-f708ff80-a097-11eb-8073-195979862a45.png">
+
+
+## info <a name="info"></a>
+This scrapes the options information from barchart.com/stocks overview.  This includes information such as Historical Volatility and IV Rank.
+
+In order to run, the selenium webdriver must be installed.  
+Currently, this runs on either Chrome or Firefox.  The path to the driver should be defined in [config_terminal.py](#config_terminal.py).
+
+Note this may take more time than other commands to process.
+````
+usage: info [-d DRIVER]
+````
+* -d/--driver : One of {chrome, firefox}.  This indicates which driver you have installed.
+
+![im](https://user-images.githubusercontent.com/18151143/115454584-efa83a00-a1ee-11eb-9d0f-2558ffa31579.png)
