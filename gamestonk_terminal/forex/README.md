@@ -2,33 +2,33 @@
 
 This menu utilizes oanda to enable support for trading forex.
 
-* [summary] (#summary)
+* [summary](#summary)
 	* Display a summary of your account
-* [calendar] (#calendar)
+* [calendar](#calendar)
 	* Get information about past or upcoming events which may impact the price
-* [list] (#list)
+* [list](#list)
 	* List your order history
-* [pending] (#pending)
+* [pending](#pending)
 	* Get information about pending orders
-* [cancel] (#cancel)
+* [cancel](#cancel)
 	* Cancel a pending order by ID
-* [positions] (#positions)
+* [positions](#positions)
 	* Get information about your positions
-* [trades] (#trades)
+* [trades](#trades)
 	* See a list of open trades
-* [closetrade] (#closetrade)
+* [closetrade](#closetrade)
 	* Close a trade by ID
-* [load] (#load)
+* [load](#load)
 	* Specify an instrument to use
-* [candles] (#candles)
+* [candles](#candles)
 	* Get a candlestick chart for the forex instrument
-* [price] (#price)
+* [price](#price)
 	* Show the current price for the forex instrument
-* [order] (#order)
+* [order](#order)
 	* Place a limit order
-* [orderbook] (#orderbook)
+* [orderbook](#orderbook)
 	* Display the orderbook if Oanda provides one for the forex instrument
-* [positionbook] (#positionbook)
+* [positionbook](#positionbook)
  * Display the positionbook if Oanda provides one for the forex instrument
 
 ## summary <a name ="summary"></a>
