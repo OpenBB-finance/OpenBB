@@ -125,7 +125,7 @@ def list_orders(accountID, other_args: List[str]):
         "--count",
         dest="count",
         action="store",
-        default=50,
+        default=20,
         required=False,
         help="the number of orders to retrieve ",
     )
@@ -134,7 +134,7 @@ def list_orders(accountID, other_args: List[str]):
         return
 
     parameters = {}
-    parameters["state"] = ns_parser.state
+    parameters["state"] = ns_parser.state.upper()
     parameters["count"] = ns_parser.count
 
     try:
@@ -165,6 +165,7 @@ def get_order_book(instrument, other_args):
         return
     parameters = {"bucketWidth": "1"}
     try:
+        instrument = format_instrument(instrument, "_")
         request = instruments.InstrumentsOrderBook(
             instrument=instrument, params=parameters
         )
@@ -191,6 +192,7 @@ def get_position_book(instrument, other_args):
         return
 
     try:
+        instrument = format_instrument(instrument, "_")
         request = instruments.InstrumentsPositionBook(instrument=instrument)
         response = client.request(request)
         df = pd.DataFrame.from_dict(response["positionBook"]["buckets"])
@@ -284,7 +286,7 @@ def create_order(accountID, instrument, other_args: List[str]):
 def cancel_pending_order(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="pending",
+        prog="cancel",
         description="Cancel Pending Order ",
     )
     parser.add_argument(
@@ -412,6 +414,7 @@ def get_open_trades(accountID, other_args):
                     "initialUnits": "Initial Units",
                     "currentUnits": "Current Units",
                     "price": "Entry Price",
+                    "unrealizedPL": "Unrealized P/L",
                 }
             )
             print(df)
@@ -438,7 +441,7 @@ def close_trade(accountID, other_args: List[str]):
         dest="orderID",
         action="store",
         type=str,
-        required=True,
+        required=False,
         help="The Trade ID to close. ",
     )
     parser.add_argument(
@@ -446,13 +449,12 @@ def close_trade(accountID, other_args: List[str]):
         "--units",
         dest="units",
         action="store",
-        type=str,
         required=False,
         help="The number of units on the trade to close. If not set it "
         + "defaults to all units. ",
     )
     if other_args:
-        if "-" not in other_args[0]:
+        if "-i" not in other_args[0]:
             other_args.insert(0, "-i")
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -460,7 +462,7 @@ def close_trade(accountID, other_args: List[str]):
 
     data = {}
     if ns_parser.units is not None:
-        data["units"] = (ns_parser.units,)
+        data["units"] = ns_parser.units
     try:
         request = trades.TradeClose(accountID, ns_parser.orderID, data)
         response = client.request(request)
@@ -522,6 +524,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
     parameters["granularity"] = ns_parser.granularity
     parameters["count"] = ns_parser.candlecount
     try:
+        instrument = format_instrument(instrument, "_")
         request = instruments.InstrumentsCandles(instrument, params=parameters)
         response = client.request(request)
         process_candle_response(response)
@@ -635,11 +638,16 @@ def calendar(instrument, other_args: List[str]):
             else:
                 previous = ""
 
+            if "impact" in response[i]:
+                impact = response[i]["impact"]
+            else:
+                impact = ""
+
             l_data.append(
                 {
                     "Title": response[i]["title"],
                     "Time": datetime.fromtimestamp(response[i]["timestamp"]),
-                    "Impact": response[i]["impact"],
+                    "Impact": impact,
                     "Forecast": forecast,
                     "Market Forecast": market,
                     "Currency": response[i]["currency"],
@@ -729,3 +737,12 @@ def book_plot(df, instrument, book_type):
     if gtff.USE_ION:
         plt.ion()
     plt.show()
+
+
+def format_instrument(instrument, char):
+    if char not in instrument:
+        instrument_list = list(instrument)
+        instrument_list.pop(3)
+        instrument_list.insert(3, char)
+        instrument = "".join(map(str, instrument_list))
+    return instrument
