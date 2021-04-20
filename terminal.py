@@ -95,6 +95,10 @@ def main():
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
+    if os.name == "nt":
+        sys.stdin.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")
+
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
