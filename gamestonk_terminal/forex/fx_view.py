@@ -532,12 +532,43 @@ def calendar(instrument, other_args: List[str]):
                     print(f"Actual: {actual}")
             if "previous" in response[i]:
                 previous = response[i]["previous"]
+<<<<<<< Updated upstream
                 unit = response[i]["unit"]
                 if unit != "Index":
                     print(f"Previous: {previous}{unit}")
                 else:
                     print(f"Previous: {previous}")
             print("-" * 30)
+=======
+                if response[i]["unit"] != "Index":
+                    previous += response[i]["unit"]
+            else:
+                previous = ""
+
+            if "impact" in response[i]:
+                impact = response[i]["impact"]
+            else:
+                impact = ""
+
+
+            l_data.append(
+                {
+                    "Title": response[i]["title"],
+                    "Time": datetime.fromtimestamp(response[i]["timestamp"]),
+                    "Impact": impact,
+                    "Forecast": forecast,
+                    "Market Forecast": market,
+                    "Currency": response[i]["currency"],
+                    "Region": response[i]["region"],
+                    "Actual": actual,
+                    "Previous": previous,
+                }
+            )
+
+        print(pd.DataFrame(l_data).to_string(index=False))
+        print("")
+
+>>>>>>> Stashed changes
     except V20Error as e:
         print(e)
 
@@ -611,3 +642,7 @@ def book_plot(df, instrument, book_type):
     if gtff.USE_ION:
         plt.ion()
     plt.show()
+
+def format_instrument(instrument, char):
+    if char not in instrument:
+
