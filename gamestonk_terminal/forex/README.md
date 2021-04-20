@@ -19,7 +19,7 @@ This menu utilizes oanda to enable support for trading forex.
 * [closetrade] (#closetrade)
 	* Close a trade by ID
 * [load] (#load)
-	*Specify an instrument to use
+	* Specify an instrument to use
 * [candles] (#candles)
 	* Get a candlestick chart for the forex instrument
 * [price] (#price)
