@@ -197,6 +197,8 @@ jobs:
         shell: bash -l {0}
         run: |
           conda info
+          conda install numpy=1.19.5
+          conda install -c conda-forge cvxpy
           pip install --user --requirement requirements.txt
 
       - name: List installed packages (Bash)

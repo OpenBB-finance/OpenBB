@@ -56,8 +56,7 @@ finvizfinance = "^0.9.3"
 Pillow = "^8.2.0"
 statsmodels = "^0.12.2"
 tabulate = "^0.8.9"
-cvxpy = "1.1.7"
-pyportfolioopt = "1.3.1"
+pyportfolioopt = "^1.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
