@@ -38,3 +38,6 @@ API_NEWS_TOKEN = os.getenv("GT_API_NEWS_TOKEN") or "REPLACE_ME"
 # Robinhood
 RH_USERNAME = os.getenv("GT_RH_USERNAME") or "REPLACE_ME"
 RH_PASSWORD = os.getenv("GT_RH_PASSWORD") or "REPLACE_ME"
+
+# https://tradier.com/products/market-data-api
+TRADIER_TOKEN = os.getenv("GT_TRADIER_TOKEN") or "REPLACE_ME"

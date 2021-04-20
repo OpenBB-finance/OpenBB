@@ -13,21 +13,113 @@ from pypfopt import risk_models
 from pypfopt import expected_returns
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import plot_autoscale, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
-title_maps = {
-    "max_sharpe": "Maximum Sharpe Portfolio",
-    "min_volatility": "Minimum Volatility Portfolio",
-    "eff_risk": "Maximum Return Portfolio at Risk = {:1f} %",
-    "eff_ret": "Minimum Volatility Portfolio at Target Return = {:.1f} %",
-    "equal": "Equally Weighted Portfolio",
-    "marketCap": "MarketCap Weighted Portfolio",
-    "dividendYield": "Dividend Yield Weighted Portfolio",
-}
+l_valid_property_infos = [
+    "previousClose",
+    "regularMarketOpen",
+    "twoHundredDayAverage",
+    "trailingAnnualDividendYield",
+    "payoutRatio",
+    "volume24Hr",
+    "regularMarketDayHigh",
+    "navPrice",
+    "averageDailyVolume10Day",
+    "totalAssets",
+    "regularMarketPreviousClose",
+    "fiftyDayAverage",
+    "trailingAnnualDividendRate",
+    "open",
+    "toCurrency",
+    "averageVolume10days",
+    "expireDate",
+    "yield",
+    "algorithm",
+    "dividendRate",
+    "exDividendDate",
+    "beta",
+    "circulatingSupply",
+    "regularMarketDayLow",
+    "priceHint",
+    "currency",
+    "trailingPE",
+    "regularMarketVolume",
+    "lastMarket",
+    "maxSupply",
+    "openInterest",
+    "marketCap",
+    "volumeAllCurrencies",
+    "strikePrice",
+    "averageVolume",
+    "priceToSalesTrailing12Months",
+    "dayLow",
+    "ask",
+    "ytdReturn",
+    "askSize",
+    "volume",
+    "fiftyTwoWeekHigh",
+    "forwardPE",
+    "fromCurrency",
+    "fiveYearAvgDividendYield",
+    "fiftyTwoWeekLow",
+    "bid",
+    "dividendYield",
+    "bidSize",
+    "dayHigh",
+    "annualHoldingsTurnover",
+    "enterpriseToRevenue",
+    "beta3Year",
+    "profitMargins",
+    "enterpriseToEbitda",
+    "52WeekChange",
+    "morningStarRiskRating",
+    "forwardEps",
+    "revenueQuarterlyGrowth",
+    "sharesOutstanding",
+    "fundInceptionDate",
+    "annualReportExpenseRatio",
+    "bookValue",
+    "sharesShort",
+    "sharesPercentSharesOut",
+    "fundFamily",
+    "lastFiscalYearEnd",
+    "heldPercentInstitutions",
+    "netIncomeToCommon",
+    "trailingEps",
+    "lastDividendValue",
+    "SandP52WeekChange",
+    "priceToBook",
+    "heldPercentInsiders",
+    "shortRatio",
+    "sharesShortPreviousMonthDate",
+    "floatShares",
+    "enterpriseValue",
+    "threeYearAverageReturn",
+    "lastSplitFactor",
+    "legalType",
+    "lastDividendDate",
+    "morningStarOverallRating",
+    "earningsQuarterlyGrowth",
+    "pegRatio",
+    "lastCapGain",
+    "shortPercentOfFloat",
+    "sharesShortPriorMonth",
+    "impliedSharesOutstanding",
+    "fiveYearAverageReturn",
+    "regularMarketPrice",
+]
+
+
+def check_valid_property_type(property: str) -> str:
+    """ Check that the property selected is valid """
+    if property in l_valid_property_infos:
+        return property
+    else:
+        raise argparse.ArgumentTypeError(f"{property} is not a valid info")
 
 
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
-    """
+    """Get adjusted closing price for each stock in the list
 
     Parameters
     ----------
@@ -51,8 +143,8 @@ def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFra
 
 
 def prepare_efficient_frontier(stock_prices: pd.DataFrame):
-    """
-    Take in a dataframe of prices and return an efficient frontier object
+    """Take in a dataframe of prices and return an efficient frontier object
+
     Parameters
     ----------
     stock_prices : DataFrame
@@ -82,11 +174,11 @@ def display_weights(weights: dict):
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
     if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
         weight_df["weight"] = (weight_df["value"] * 100).astype(str).apply(
-            lambda s: s[:6]
+            lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5]
         ) + " %"
-        print(pd.DataFrame(weight_df["weight"]))
+        print(pd.DataFrame(weight_df["weight"]).to_string(header=False))
     else:
-        print(weight_df)
+        print(weight_df.to_string(header=False))
 
 
 def my_autopct(x):
@@ -97,17 +189,16 @@ def my_autopct(x):
         return ""
 
 
-def pie_chart_weights(weights: dict, optimizer: str, value: float):
-    """
-    Show a pie chart of holdings
+def pie_chart_weights(weights: dict, title_opt: str):
+    """Show a pie chart of holdings
+
     Parameters
     ----------
     weights: dict
-        weights to display.  Keys are stocks.  Values are either weights or values if -v specified
-    optimzer: str
-        Optimization technique used for title
+        Weights to display, where keys are tickers, and values are either weights or values if -v specified
+    title: str
+        Title to be used on the plot title
     """
-    plt.close("all")
     if not weights:
         return
 
@@ -122,31 +213,28 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
 
     total_size = np.sum(sizes)
 
-    leg_labels = [
-        f"{str(a)}: {str(round(100*b/total_size,3))[:4]}%"
-        for a, b in zip(stocks, sizes)
-    ]
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         wedges, _, autotexts = plt.pie(
             sizes,
             labels=stocks,
             autopct=my_autopct,
             textprops=dict(color="k"),
-            explode=[s / (5 * total_size) for s in sizes],
+            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
             normalize=True,
-            shadow=True,
         )
+        plt.setp(autotexts, color="white", fontweight="bold")
     else:
         wedges, _, autotexts = plt.pie(
             sizes,
             labels=stocks,
             autopct="",
             textprops=dict(color="k"),
-            explode=[s / (5 * total_size) for s in sizes],
+            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
             normalize=True,
-            shadow=True,
         )
+        plt.setp(autotexts, color="white", fontweight="bold")
         for i, a in enumerate(autotexts):
             if sizes[i] / total_size > 0.05:
                 a.set_text(f"{sizes[i]:.2f}")
@@ -155,72 +243,37 @@ def pie_chart_weights(weights: dict, optimizer: str, value: float):
 
     plt.axis("equal")
 
-    plt.legend(
+    leg1 = plt.legend(
         wedges,
-        leg_labels,
-        title="Stocks",
-        loc="center left",
-        bbox_to_anchor=(0.85, 0, 0.5, 1),
+        [str(s) for s in stocks],
+        title="  Ticker",
+        loc="upper left",
+        bbox_to_anchor=(0.80, 0, 0.5, 1),
+        frameon=False,
     )
+    leg2 = plt.legend(
+        wedges,
+        [
+            f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
+            for s in sizes
+        ],
+        title=" ",
+        loc="upper left",
+        handlelength=0,
+        bbox_to_anchor=(0.91, 0, 0.5, 1),
+        frameon=False,
+    )
+    plt.gca().add_artist(leg1)
+    plt.gca().add_artist(leg2)
 
     plt.setp(autotexts, size=8, weight="bold")
 
-    if optimizer in ["eff_ret", "eff_risk"]:
-        plt.title(title_maps[optimizer].format(100 * value))
-    else:
-        plt.title(title_maps[optimizer])
+    plt.gca().set_title(title_opt, pad=20)
 
     if gtff.USE_ION:
         plt.ion()
 
+    plt.tight_layout()
+
     plt.show()
     print("")
-
-
-def parse_from_port_type(
-    parser_in: argparse.ArgumentParser, port_type: str, other_args: List[str]
-):
-    """
-
-    Parameters
-    ----------
-    parser_in: ArgumentParser
-        parser to get data from
-    port_type: str
-        Type of optimization that will be done.  One of ["max_sharpe","min_vol", "eff_risk", "eff_ret"]
-    other_args: List[str]
-        Arguments passed to function
-    Returns
-    -------
-
-    ns_parser:
-        Parsed arguments
-    """
-
-    if port_type in ["max_sharpe", "min_volatility"]:
-        ns_parser = parse_known_args_and_warn(parser_in, other_args)
-        if not ns_parser:
-            return None
-        return ns_parser
-
-    elif port_type == "eff_risk":
-        parser_in.add_argument(
-            "-r", "--risk", type=float, dest="risk_level", default=0.1
-        )
-        ns_parser = parse_known_args_and_warn(parser_in, other_args)
-        if not ns_parser:
-            return None
-        return ns_parser
-
-    elif port_type == "eff_ret":
-        parser_in.add_argument(
-            "-r", "--return", type=float, dest="target_return", default=0.1
-        )
-
-        ns_parser = parse_known_args_and_warn(parser_in, other_args)
-        if not ns_parser:
-            return None
-        return ns_parser
-    else:
-        print("Incorrect portfolio optimizer type\n")
-        return None

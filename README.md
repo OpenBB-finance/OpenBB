@@ -257,10 +257,14 @@ These are the ones where a key is necessary:
   * Financial Modeling Prep: https://financialmodelingprep.com/developer
   * FRED: https://fred.stlouisfed.org/docs/api/api_key.html
   * News API: https://newsapi.org
+  * Tradier: https://developer.tradier.com/getting_started
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN.
+Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, 
+GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME,
+GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY,
+GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_TRADIER_TOKEN .
 
 Example:
 ```
@@ -359,6 +363,9 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 [Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+
+Feel free to share loss porn, memes or any questions at https://discord.gg/cC2KNt4B
+
 ## Acknowledgments
 
 * [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)

@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 from bisect import bisect_left
-import seaborn as sns
 from typing import List
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
@@ -351,8 +351,9 @@ def plot_calls_volume_open_interest(
             df_calls["strike"],
             df_calls["volume"] + df_calls["openInterest"],
             color="lightgreen",
+            width=0.45,
         )
-        plt.bar(df_calls["strike"], df_calls["volume"], color="green")
+        plt.bar(df_calls["strike"], df_calls["volume"], color="green", width=0.45)
 
         plt.title(f"{ticker} calls volumes for {exp_date} ")
         plt.legend(["Stock Price", "Open Interest", "Volume"])
@@ -443,8 +444,9 @@ def plot_puts_volume_open_interest(
             df_puts["strike"],
             -df_puts["volume"] - df_puts["openInterest"],
             color="pink",
+            width=0.45,
         )
-        plt.bar(df_puts["strike"], -df_puts["volume"], color="red")
+        plt.bar(df_puts["strike"], -df_puts["volume"], color="red", width=0.45)
 
         plt.title(f"{ticker} puts volumes for {exp_date} ")
         plt.legend(["Stock Price", "Open Interest", "Volume"])
