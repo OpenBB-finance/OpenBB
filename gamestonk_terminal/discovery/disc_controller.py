@@ -21,6 +21,7 @@ from gamestonk_terminal.discovery import (
     unusual_whales_view,
     yahoo_finance_view,
     marketbeat_view,
+    finra_ats_view,
 )
 
 
@@ -50,6 +51,7 @@ class DiscoveryController:
         "ratings",
         "latest",
         "trending",
+        "darkpool",
     ]
 
     def __init__(self):
@@ -94,6 +96,7 @@ class DiscoveryController:
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
         print("   ratings        top ratings updates [MarketBeat]")
+        print("   darkpool       dark pool tickers with growing activity [FINRA]")
         print("")
 
     def switch(self, an_input: str):
@@ -205,6 +208,10 @@ class DiscoveryController:
     def call_ratings(self, other_args: List[str]):
         """Process ratings command"""
         marketbeat_view.ratings_view(other_args)
+
+    def call_darkpool(self, other_args: List[str]):
+        """Process darkpool command"""
+        finra_ats_view.dark_pool(other_args)
 
 
 def menu():
