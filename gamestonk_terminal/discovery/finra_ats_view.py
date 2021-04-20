@@ -7,7 +7,6 @@ import requests
 from scipy import stats
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib.dates as mdates
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -179,7 +178,7 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
 
 
 def plot_dark_pools(ats: pd.DataFrame, top_ats_tickers: List):
-    """Plots ATS and NON-ATS data
+    """Plots promising tickers based on growing ATS data
 
     Parameters
     ----------
@@ -202,7 +201,7 @@ def plot_dark_pools(ats: pd.DataFrame, top_ats_tickers: List):
     plt.legend(top_ats_tickers)
     plt.ylabel("Total Weekly Shares [Million]")
     plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
-    plt.title(f"Dark Pools (ATS)")
+    plt.title("Dark Pool (ATS) growing tickers")
     plt.gcf().autofmt_xdate()
     plt.xlabel("Weeks")
 
@@ -222,7 +221,7 @@ def dark_pool(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="dp",
+        prog="darkpool",
         description="Display dark pool (ATS) data of tickers with growing trades activity",
     )
     parser.add_argument(
