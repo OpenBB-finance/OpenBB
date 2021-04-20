@@ -73,21 +73,21 @@ Cancel a pending order by its order ID.
 
 * -i : Specify the order ID. You don't need to include this, simply include the order number.
 
-##positions <a name="positions"></a>
+## positions <a name="positions"></a>
 ```text
 usage: positions
 ```
 
 Lists your open positions. The information includes the instrument, the current number of long units, the total profit/loss from long positions for the account, the unrealized profit/loss from long positions, the current number of short units, the total profit/loss from short positions for the account, and the unrealized profit/loss from short positions.
 
-##trades <a name="trades"></a>
+## trades <a name="trades"></a>
 ```text
 usage: trades
 ```
 
 Lists the current open trades for your account. The information includes the ID, the instrument, the initial units opened for the trade, the current number of units open for the trade, it's entry price, and the unrealized profit/loss for the trade.
 
-##closetrade <a name="closetrade"></a>
+## closetrade <a name="closetrade"></a>
 ```text
 usage: closetrade [-i ORDERID] [-u UNITS]
 ```
@@ -97,7 +97,7 @@ Closes a trade by ID. Displays the order ID closed, the instrument, the number o
 * -i : Specify the order ID. You don't need to include this, simply include the order number.
 * -u : Specify the number of units to close for that trade. (default=all)
 
-##load <a name="load"></a>
+## load <a name="load"></a>
 ```text
 usage: load [-i INSTRUMENT]
 ```
@@ -106,7 +106,7 @@ Specify the instrument to use in the format EUR_USD
 
 * -i : Specify the instrument. You don't need to include this, simply include the instrument.
 
-##candles <a name="candles"></a>
+## candles <a name="candles"></a>
 ```text
 usage: candles [-g GRANULARITY] [-c CANDLECOUNT]
 ```
@@ -116,14 +116,14 @@ Retrieve a candlestick chart for the currently loaded instrument. Not a live cha
 * -g : Specify the granularity, which is the timeframe each candle represents. The available granularities are Seconds: S5, S10, S15, S30 Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12 Day: D, Week: W Month: M. (default=D)
 * -c : Specify the number of candles to retrieve. (default=180)
 
-##price <a name="price"></a>
+## price <a name="price"></a>
 ```text
 usage: price
 ```
 
 Gets the current price for the currently loaded instrument
 
-##order <a name="order"></a>
+## order <a name="order"></a>
 ```text
 usage: order -u UNITS -p PRICE
 ```
@@ -133,13 +133,13 @@ Places a limit order for the specified number of units at the specified price. B
 * -u : Specify the number of units for the order.
 * -p : Specify the price for the limit order.
 
-##orderbook <a name="orderbook"></a>
+## orderbook <a name="orderbook"></a>
 ```text
 usage: orderbook
 ```
 Plots the current orderbook for loaded instrument if one is provided by Oanda. Not a live chart.
 
-##positionbook <a name="positionbook"></a>
+## positionbook <a name="positionbook"></a>
 ```text
 usage: positionbook
 ```
