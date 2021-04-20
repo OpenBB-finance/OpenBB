@@ -2,23 +2,24 @@
 __docformat__ = "numpy"
 
 import argparse
-import requests
 import random
 from typing import List
 from datetime import datetime
+import requests
 import pandas as pd
 from matplotlib import pyplot as plt
+from finvizfinance.screener.overview import Overview
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal as cfg
-from finvizfinance.screener.overview import Overview
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
-from gamestonk_terminal.comparison_analysis import yahoo_finance_api as yf_api
-from gamestonk_terminal.comparison_analysis import market_watch_api as mw_api
-from gamestonk_terminal.comparison_analysis import finbrain_api as f_api
+from gamestonk_terminal.comparison_analysis import yahoo_finance_view
+from gamestonk_terminal.comparison_analysis import market_watch_view
+from gamestonk_terminal.comparison_analysis import finbrain_view
 from gamestonk_terminal.comparison_analysis import finviz_compare_view
 from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
 
 
 class ComparisonAnalysisController:
@@ -54,9 +55,23 @@ class ComparisonAnalysisController:
         start: datetime,
         interval: str,
         similar: List[str],
-        user: bool,
     ):
-        """Constructor"""
+        """Constructor
+
+        Parameters
+        ----------
+        stock : pd.DataFrame
+            Stock data
+        ticker : str
+            Stock ticker
+        start : datetime
+            Start time
+        interval : str
+            Time interval
+        similar : List[str]
+            List of similar tickers
+        """
+
         self.similar = similar
         self.user = ""
         self.stock = stock
@@ -69,7 +84,6 @@ class ComparisonAnalysisController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """Print help"""
 
@@ -108,14 +122,21 @@ class ComparisonAnalysisController:
         print("   performance   brief performance comparison")
         print("   technical     brief technical comparison")
         print("")
+
         if self.similar:
             print("   > po          portfolio optimization for selected tickers")
             print("")
         return
 
-    @staticmethod
     def get_similar_companies(self, other_args: List[str]):
-        """ Get similar companies. [Source: Polygon API] """
+        """Get similar companies. [Source: Polygon API]
+
+        Parameters
+        ----------
+        other_args : List[str]
+            argparse other args
+        """
+
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="get",
@@ -189,9 +210,15 @@ class ComparisonAnalysisController:
         print("")
         return
 
-    @staticmethod
     def select_similar_companies(self, other_args: List[str]):
-        """ Select similar companies, e.g. NIO,XPEV,LI"""
+        """Select similar companies, e.g. NIO,XPEV,LI
+
+        Parameters
+        ----------
+        other_args : List[str]
+            argparse other args
+        """
+
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="select",
@@ -242,7 +269,7 @@ class ComparisonAnalysisController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -254,43 +281,43 @@ class ComparisonAnalysisController:
 
     def call_get(self, other_args: List[str]):
         """Process get command"""
-        self.get_similar_companies(self, other_args)
+        self.get_similar_companies(other_args)
 
     def call_select(self, other_args: List[str]):
         """Process select command"""
-        self.select_similar_companies(self, other_args)
+        self.select_similar_companies(other_args)
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        yf_api.historical(
+        yahoo_finance_view.historical(
             other_args, self.stock, self.ticker, self.start, self.interval, self.similar
         )
 
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
-        yf_api.correlation(
+        yahoo_finance_view.correlation(
             other_args, self.stock, self.ticker, self.start, self.interval, self.similar
         )
 
     def call_income(self, other_args: List[str]):
         """Process income command"""
-        mw_api.compare_income(other_args, self.ticker, self.similar)
+        market_watch_view.compare_income(other_args, self.ticker, self.similar)
 
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
-        mw_api.compare_balance(other_args, self.ticker, self.similar)
+        market_watch_view.compare_balance(other_args, self.ticker, self.similar)
 
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
-        mw_api.compare_cashflow(other_args, self.ticker, self.similar)
+        market_watch_view.compare_cashflow(other_args, self.ticker, self.similar)
 
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
-        f_api.sentiment_compare(other_args, self.ticker, self.similar)
+        finbrain_view.sentiment_compare(other_args, self.ticker, self.similar)
 
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
-        f_api.sentiment_correlation(other_args, self.ticker, self.similar)
+        finbrain_view.sentiment_correlation(other_args, self.ticker, self.similar)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -324,11 +351,21 @@ class ComparisonAnalysisController:
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
-    """Comparison Analysis Menu"""
+    """Comparison Analysis Menu
 
-    ca_controller = ComparisonAnalysisController(
-        stock, ticker, start, interval, [], False
-    )
+    Parameters
+    ----------
+    stock : pd.DataFrame
+        Stock data
+    ticker : str
+        Stock ticker
+    start : datetime
+        Time start
+    interval : str
+        Time interval
+    """
+
+    ca_controller = ComparisonAnalysisController(stock, ticker, start, interval, [])
     ca_controller.call_help(None)
 
     while True:
