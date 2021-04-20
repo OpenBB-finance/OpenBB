@@ -364,7 +364,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
 
-Feel free to share loss porn, memes or any questions at https://discord.gg/FmKjHKMn
+Feel free to share loss porn, memes or any questions at https://discord.gg/cC2KNt4B
 
 ## Acknowledgments
 
