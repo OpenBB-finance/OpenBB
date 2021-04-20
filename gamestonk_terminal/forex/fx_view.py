@@ -47,7 +47,7 @@ def get_fx_price(accountID, instrument, other_args: List[str]):
 
     except V20Error as e:
         d_error = eval(e.msg)
-        print(d_error["message"], "\n")
+        print(d_error["errorMessage"], "\n")
 
 
 def get_account_summary(accountID, other_args: List[str]):
