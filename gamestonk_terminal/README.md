@@ -83,6 +83,7 @@ Command|Description|Source
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
 `ratings `      |top ratings updates |[MarketBeat](https://marketbeat.com)
+`darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
 
 &nbsp;
 
