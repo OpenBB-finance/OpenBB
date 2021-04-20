@@ -47,17 +47,14 @@ def print_options_data(stock: str, other_args: List[str]):
         dest="browser",
         help="selenium webdriver to use",
         choices=browsers,
-        default=None,
+        default=web,
     )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+
         if ns_parser.browser:
             browser = ns_parser.browser
-        else:
-            browser = web
 
     except Exception as e:
         print(e)
