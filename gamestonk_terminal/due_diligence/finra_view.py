@@ -285,7 +285,7 @@ def dark_pool(other_args: List[str], ticker: str):
         description="Display barchart of dark pool (ATS) and OTC (Non ATS) data [Source: FINRA]",
     )
 
-    if 1:
+    try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -296,12 +296,9 @@ def dark_pool(other_args: List[str], ticker: str):
             print("No ticker data found!")
 
         plot_dark_pools(ticker, df_ats, df_otc)
-
         print("")
 
-    """
     except Exception as e:
         print(e)
         print("")
         return
-    """
