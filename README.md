@@ -271,6 +271,11 @@ Example:
 export GT_API_REDDIT_USERNAME=SexyYear
 ```
 
+Environment variables can also be set in a `.env` file at the top of the repo. This file is ignored by git so your API keys will stay secret. The above example stored in `.env` would be:
+```
+GT_API_REDDIT_USERNAME=SexyYear
+```
+
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ### Usage

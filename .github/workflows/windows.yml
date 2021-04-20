@@ -2,6 +2,7 @@ name: Windows 10 Full Clean Build with ML
 env:
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
+  GTFF_ENABLE_QUICK_EXIT: true
 on:
   push:
     branches:
@@ -55,6 +56,7 @@ jobs:
           conda install -c conda-forge fbprophet=0.6
           conda install spyder
           conda install gensim=3.8.3
+          conda install -c conda-forge cvxpy
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}
@@ -72,3 +74,6 @@ jobs:
         shell: bash -l {0}
         run: pytest tests/
 
+      - name: Start Terminal and exit
+        shell: bash -l {0}
+        run: python terminal.py
