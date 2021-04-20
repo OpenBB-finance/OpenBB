@@ -172,6 +172,7 @@ screeninfo==0.6.7
 scs==2.1.3; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.5"
 seaborn==0.11.1; python_version >= "3.6"
 segtok==1.5.10; python_version >= "3.6"
+selenium==3.141.0
 send2trash==1.5.0; python_version >= "3.6"
 sentencepiece==0.1.91; python_full_version >= "3.6.0" and python_version >= "3.6"
 setuptools-git==1.2
