@@ -173,6 +173,7 @@ ___
 ## Options
 * [x] Add Volume graph (@lolrenx) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
 * [x] Add Open Interest graph (@lolrenx) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
+* [x] Add options information data (IV rank, etc) (@jmaslek) - [PR #375](https://github.com/DidierRLopes/GamestonkTerminal/pull/375)
 
 **NEXT**
 * [ ] Add max pain graph (@lolrenx)
@@ -193,7 +194,8 @@ ___
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add crypto charts
-
+* [ ] Add binance 
+* [ ] Add top altcoin lists
 ---
 
 ## Screener
