@@ -33,7 +33,7 @@ jobs:
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          find . -name '*.py' -exec pylint {} \;
+          pylint terminal.py gamestonk_terminal tests
   test:
     name: ubuntu-latest - Python 3.8
     needs: linting
