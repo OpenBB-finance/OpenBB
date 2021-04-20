@@ -29,7 +29,7 @@ This menu utilizes oanda to enable support for trading forex.
 * [orderbook](#orderbook)
 	* Display the orderbook if Oanda provides one for the forex instrument
 * [positionbook](#positionbook)
- * Display the positionbook if Oanda provides one for the forex instrument
+	* Display the positionbook if Oanda provides one for the forex instrument
 
 ## summary <a name ="summary"></a>
  ```text
@@ -38,7 +38,7 @@ This menu utilizes oanda to enable support for trading forex.
 
  Displays current balance, net asset value, unrealized P/L, total P/L, count of open trades, how much margin is available, how much margin you've used, the margin call value, the percent of margin until closeout, and the total position value.
 
-## calendar <a name="calenar"></a>
+## calendar <a name="calendar"></a>
 
 ```text
 usage: calendar [-d DAYS]
