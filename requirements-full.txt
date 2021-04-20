@@ -159,6 +159,7 @@ scikit-learn==0.24.1; python_version >= "3.6"
 scipy==1.5.4; python_version >= "3.6"
 seaborn==0.11.1; python_version >= "3.6"
 segtok==1.5.10; python_version >= "3.6"
+selenium==3.141.0
 send2trash==1.5.0; python_version >= "3.5"
 sentencepiece==0.1.91; python_full_version >= "3.6.0" and python_version >= "3.6"
 setuptools-git==1.2

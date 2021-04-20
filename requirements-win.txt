@@ -111,6 +111,7 @@ sacremoses==0.0.43; python_full_version >= "3.6.0" and python_version >= "3.6"
 scikit-learn==0.24.1; python_version >= "3.6"
 scipy==1.6.1; python_version >= "3.6"
 segtok==1.5.10; python_version >= "3.6"
+selenium==3.141.0
 sentencepiece==0.1.91; python_full_version >= "3.6.0" and python_version >= "3.6"
 setuptools-git==1.2
 six==1.15.0; python_full_version >= "3.6.0" and python_version >= "3.6" and python_version < "4.0" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")
