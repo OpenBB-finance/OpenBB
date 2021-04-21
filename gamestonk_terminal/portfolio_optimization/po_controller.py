@@ -1,6 +1,5 @@
-"""Portfolio Optimization Controller Module"""
+""" Portfolio Optimization Controller Module """
 __docformat__ = "numpy"
-
 
 import argparse
 from typing import List
@@ -34,6 +33,7 @@ class PortfolioOptimization:
         "yolo",
     ]
 
+    # pylint: disable=dangerous-default-value
     def __init__(self, tickers: List[str] = []):
         """
         Construct Portfolio Optimization
@@ -113,12 +113,12 @@ class PortfolioOptimization:
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
-        self.add_stocks(self, other_args)
+        self.add_stocks(other_args)
 
     def call_select(self, other_args: List[str]):
         """Process select command"""
         self.tickers = []
-        self.add_stocks(self, other_args)
+        self.add_stocks(other_args)
 
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
@@ -168,7 +168,6 @@ class PortfolioOptimization:
         print({"GME": 200})
         print("")
 
-    @staticmethod
     def add_stocks(self, other_args: List[str]):
         """ Add ticker or Select tickes for portfolio to be optimized """
         parser = argparse.ArgumentParser(

@@ -408,27 +408,6 @@ def _plot_and_print_results(
         )
         plt.plot(df_pred.index, df_pred[df_pred.columns[0]], lw=2, c="tab:green")
     else:
-        """
-        # Looks too noisy to output all loops predictions
-        for idx_loop in range(ns_parser.n_loops):
-            plt.plot(
-                [df_stock.index[-1], df_pred.index[0]],
-                [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_pred[df_pred.columns[idx_loop]].values[0],
-                ],
-                lw=0.5,
-                c="tab:green",
-                linestyle="--",
-            )
-            plt.plot(
-                df_pred.index,
-                df_pred[df_pred.columns[idx_loop]],
-                lw=1,
-                ls="--",
-                c="tab:green",
-            )
-        """
         df_quantiles = pd.DataFrame()
         df_quantiles["Quantile 10%"] = df_pred.quantile(0.1, axis=1)
         df_quantiles["Median"] = df_pred.quantile(0.5, axis=1)

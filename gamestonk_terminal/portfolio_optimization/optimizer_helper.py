@@ -1,4 +1,4 @@
-""" Portfolio Optimization Helper Functions"""
+""" Portfolio Optimization Helper Functions """
 __docformat__ = "numpy"
 
 import argparse
@@ -110,12 +110,12 @@ l_valid_property_infos = [
 ]
 
 
-def check_valid_property_type(property: str) -> str:
+def check_valid_property_type(aproperty: str) -> str:
     """ Check that the property selected is valid """
-    if property in l_valid_property_infos:
-        return property
-    else:
-        raise argparse.ArgumentTypeError(f"{property} is not a valid info")
+    if aproperty in l_valid_property_infos:
+        return aproperty
+
+    raise argparse.ArgumentTypeError(f"{aproperty} is not a valid info")
 
 
 def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
@@ -133,6 +133,7 @@ def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFra
     stock_closes: DataFrame
         DataFrame containing daily (adjusted) close prices for each stock in list
     """
+
     stock_prices = yf.download(
         list_of_stocks, period=period, progress=False, group_by="ticker"
     )
@@ -155,6 +156,7 @@ def prepare_efficient_frontier(stock_prices: pd.DataFrame):
     ef: EfficientFrontier
         EfficientFrontier object
     """
+
     mu = expected_returns.mean_historical_return(stock_prices)
     S = risk_models.sample_cov(stock_prices)
     ef = EfficientFrontier(mu, S)
@@ -162,13 +164,14 @@ def prepare_efficient_frontier(stock_prices: pd.DataFrame):
 
 
 def display_weights(weights: dict):
-    """
-    Print weights in a nice format
+    """Print weights in a nice format
+
     Parameters
     ----------
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values if -v specified
     """
+
     if not weights:
         return
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
@@ -185,8 +188,8 @@ def my_autopct(x):
     """Function for autopct of plt.pie.  This results in values not being printed in the pie if they are 'too small'"""
     if x > 4:
         return f"{x:.2f} %"
-    else:
-        return ""
+
+    return ""
 
 
 def pie_chart_weights(weights: dict, title_opt: str):

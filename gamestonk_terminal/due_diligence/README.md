@@ -24,6 +24,10 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * short interest [Quandl]
 * [warnings](#warnings)
   * company warnings according to Sean Seah book [Market Watch]
+* [dp](#dp)
+  * dark pools (ATS) vs OTC data [FINRA]
+* [ftd](#ftd)
+  * fails-to-deliver data [SEC]
 
 ## news <a name="news"></a>
 
@@ -157,3 +161,26 @@ Sean Seah warnings. Check: Consistent historical earnings per share; Consistentl
 * -d : print insights into warnings calculation. Default False.
 
 <img width="927" alt="warnings" src="https://user-images.githubusercontent.com/25267873/108609497-2ec03780-73c6-11eb-8577-d5da80dae213.png">
+
+## dp <a name="dp"></a>
+
+```text
+usage: dp
+```
+
+Display barchart of dark pool (ATS) and OTC (Non ATS) data
+
+![dp](https://user-images.githubusercontent.com/25267873/115130908-7987b580-9feb-11eb-8bca-1999174178d0.png)
+
+## ftd <a name="ftd"></a>
+
+```text
+usage: ftd [-n N_NUM]
+```
+
+The fails-to-deliver data collected by SEC. Fails to deliver on a given day are a cumulative number of all fails outstanding until that day, plus new fails that occur that day, less fails that settle that day. See <https://www.sec.gov/data/foiadocsfailsdatahtm>. [Source: SEC]
+
+* -n : number of latest fails-to-deliver being printed. Default 20.
+
+![ftd](https://user-images.githubusercontent.com/25267873/115201750-93a9bc80-a0ed-11eb-8f13-68508749259e.png)
+

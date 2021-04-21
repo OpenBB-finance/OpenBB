@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from finvizfinance.quote import finvizfinance
 from PIL import Image
+
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
 def view(other_args: List[str], ticker: str):

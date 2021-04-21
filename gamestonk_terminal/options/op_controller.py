@@ -9,7 +9,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.options import volume_view, chains_view
+from gamestonk_terminal.options import volume_view, chains_view, op_scrape_view
 from gamestonk_terminal.menu import session
 
 
@@ -17,7 +17,7 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = ["help", "q", "quit", "exp", "voi", "vcalls", "vputs", "chains"]
+    CHOICES = ["help", "q", "quit", "exp", "voi", "vcalls", "vputs", "chains", "info"]
 
     def __init__(self, ticker: str, last_adj_close_price: float):
         """Construct data."""
@@ -38,7 +38,7 @@ class OptionsController:
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="exp",
-            description="""See expiry dates.""",
+            description="""See/set expiry dates. [Source: Yahoo Finance]""",
         )
         parser.add_argument(
             "-d",
@@ -94,6 +94,7 @@ class OptionsController:
         print("   vputs         puts volume + open interest plot")
         print("")
         print("   chains        display option chains")
+        print("   info          display option information (volatility, IV rank etc)")
         print("")
         return
 
@@ -162,6 +163,9 @@ class OptionsController:
 
     def call_chains(self, other_args):
         chains_view.display_chains(self.ticker, self.expiry_date, other_args)
+
+    def call_info(self, other_args):
+        op_scrape_view.print_options_data(self.ticker, other_args)
 
 
 def menu(ticker: str, last_adj_close_price: float):

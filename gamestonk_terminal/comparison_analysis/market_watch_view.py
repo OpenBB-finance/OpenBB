@@ -27,6 +27,7 @@ def compare_income(other_args: List[str], ticker: str, similar: List[str]):
     similar : List[str]
         Similar companies to compare income with
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="income",
@@ -132,6 +133,7 @@ def compare_balance(other_args: List[str], ticker: str, similar: List[str]):
     similar : List[str]
         Similar companies to compare income with
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="compare_balance",
@@ -237,6 +239,7 @@ def compare_cashflow(other_args: List[str], ticker: str, similar: List[str]):
     similar : List[str]
         Similar companies to compare income with
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="compare_cashflow",

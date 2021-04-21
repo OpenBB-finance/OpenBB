@@ -1,4 +1,9 @@
+""" Comparison Analysis Yahoo Finance View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
+from datetime import datetime
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -21,18 +26,56 @@ d_candle_types = {
 
 
 def check_one_of_ohlca(type_candles: str) -> str:
-    if (
-        type_candles == "o"
-        or type_candles == "h"
-        or type_candles == "l"
-        or type_candles == "c"
-        or type_candles == "a"
-    ):
+    """Convert a candle type
+
+    Parameters
+    ----------
+    type_candles : str
+        OHLCA candle type
+
+    Returns
+    -------
+    str
+        Converted candle type
+
+    Raises
+    ------
+    argparse.ArgumentTypeError
+        Unknown candle type
+    """
+
+    if type_candles in ("o", "h", "l", "c", "a"):
         return type_candles
+
     raise argparse.ArgumentTypeError("The type of candles specified is not recognized")
 
 
-def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
+def historical(
+    other_args: List[str],
+    df_stock: pd.DataFrame,
+    ticker: str,
+    start: datetime,
+    interval: str,
+    similar: List[str],
+):
+    """Display historical data from Yahoo Finance
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    df_stock : pd.DataFrame
+        Stock data
+    ticker : str
+        Ticker symbol
+    start : datetime
+        Time start
+    interval : str
+        Time interval
+    similar : List[str]
+        List of similar tickers
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="historical",
@@ -66,11 +109,11 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
     )
 
     try:
-        if s_interval != "1440min":
+        if interval != "1440min":
             print("Intraday historical data analysis comparison is not yet available.")
             # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
         else:
-            ns_parser = parse_known_args_and_warn(parser, l_args)
+            ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
@@ -80,16 +123,14 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
             similar += ns_parser.l_also
 
             plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.title(f"Similar companies to {s_ticker}")
-            df_stock = yf.download(
-                s_ticker, start=s_start, progress=False, threads=False
-            )
+            plt.title(f"Similar companies to {ticker}")
+            df_stock = yf.download(ticker, start=start, progress=False, threads=False)
             plt.plot(
                 df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
             )
             # plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=2)
             l_min = [df_stock.index[0]]
-            l_leg = [s_ticker]
+            l_leg = [ticker]
 
             l_stocks = similar[:]
 
@@ -98,7 +139,7 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
                 for symbol in l_stocks:
                     try:
                         df_similar_stock = yf.download(
-                            symbol, start=s_start, progress=False, threads=False
+                            symbol, start=start, progress=False, threads=False
                         )
                         if not df_similar_stock.empty:
                             plt.plot(
@@ -141,7 +182,25 @@ def historical(l_args, df_stock, s_ticker, s_start, s_interval, similar):
         print(e, "\n")
 
 
-def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
+def correlation(other_args, df_stock, ticker, start, interval, similar):
+    """[summary]
+
+    Parameters
+    ----------
+    other_args : [type]
+        Command line arguments to be processed with argparse
+    df_stock : pd.DataFrame
+        Stock data
+    ticker : str
+        Ticker symbol
+    start : datetime
+        Time start
+    interval : str
+        Time interval
+    similar : [type]
+        List of similar tickers
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="corr",
@@ -176,11 +235,11 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
     )
 
     try:
-        if s_interval != "1440min":
+        if interval != "1440min":
             print("Intraday historical data analysis comparison is not yet available.")
             # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
         else:
-            ns_parser = parse_known_args_and_warn(parser, l_args)
+            ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
@@ -193,21 +252,21 @@ def correlation(l_args, df_stock, s_ticker, s_start, s_interval, similar):
                 print("Provide at least a similar company for correlation")
             else:
                 d_stock = {}
-                d_stock[s_ticker] = yf.download(s_ticker, start=s_start, progress=False)
-                l_min = [d_stock[s_ticker].index[0]]
+                d_stock[ticker] = yf.download(ticker, start=start, progress=False)
+                l_min = [d_stock[ticker].index[0]]
 
                 for symbol in similar:
-                    d_stock[symbol] = yf.download(symbol, start=s_start, progress=False)
+                    d_stock[symbol] = yf.download(symbol, start=start, progress=False)
                     if not d_stock[symbol].empty:
                         l_min.append(d_stock[symbol].index[0])
 
                 min_start_date = max(l_min)
 
-                df_stock = d_stock[s_ticker][
+                df_stock = d_stock[ticker][
                     d_candle_types[ns_parser.type_candle]
-                ].rename(s_ticker)
+                ].rename(ticker)
                 for symbol in d_stock:
-                    if symbol != s_ticker:
+                    if symbol != ticker:
                         if not d_stock[symbol].empty:
                             df_stock = pd.concat(
                                 [
