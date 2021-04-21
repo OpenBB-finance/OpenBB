@@ -1,7 +1,7 @@
 from unittest import mock, TestCase
 import json
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.coin_api import load
+from gamestonk_terminal.cryptocurrency.pycoingecko_view import load
 
 # pylint: disable=unused-import
 

@@ -146,6 +146,7 @@ pyportfolioopt==1.4.1; python_full_version >= "3.6.1" and python_full_version < 
 pyrsistent==0.14.11
 pysocks==1.7.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 pystan==2.19.1.1
+python-coinmarketcap==0.2
 python-dateutil==2.8.1; python_full_version >= "3.6.1" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "2.7" and python_full_version < "3.0.0" and python_version < "4" or python_version >= "2.7" and python_version < "4" and python_full_version >= "3.3.0")
 python-dotenv==0.17.0; python_version >= "3"
 pytrends==4.7.3
