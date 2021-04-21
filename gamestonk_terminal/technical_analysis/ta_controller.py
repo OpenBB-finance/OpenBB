@@ -3,10 +3,12 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-import pandas as pd
 from typing import List
 from datetime import datetime
+import pandas as pd
 import matplotlib.pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -18,7 +20,6 @@ from gamestonk_terminal.technical_analysis import volume as ta_volume
 from gamestonk_terminal.technical_analysis import finbrain_view
 from gamestonk_terminal.technical_analysis import tradingview_view
 from gamestonk_terminal.technical_analysis import finviz_view
-from prompt_toolkit.completion import NestedCompleter
 
 
 class TechnicalAnalysisController:
@@ -65,7 +66,6 @@ class TechnicalAnalysisController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """Print help"""
 
@@ -106,7 +106,6 @@ class TechnicalAnalysisController:
         print("   ad          chaikin accumulation/distribution line values")
         print("   obv         on balance volume")
         print("")
-        return
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -118,6 +117,7 @@ class TechnicalAnalysisController:
             True - quit the program
             None - continue in the menu
         """
+
         (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
 
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
@@ -134,7 +134,7 @@ class TechnicalAnalysisController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""

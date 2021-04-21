@@ -32,7 +32,8 @@ jobs:
       - run: mypy --ignore-missing-imports .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
-      - run: pylint **/*.py
+      - run: |
+          pylint terminal.py gamestonk_terminal tests
   test:
     name: ubuntu-latest - Python 3.8
     needs: linting

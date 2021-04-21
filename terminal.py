@@ -33,13 +33,8 @@ from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
 
-# import warnings
-# warnings.simplefilter("always")
 
-
-# pylint: disable=too-many-branches
-
-
+# pylint: disable=too-many-statements,too-many-branches
 def main():
     """
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
@@ -361,9 +356,9 @@ def main():
 
         if b_quit:
             break
-        else:
-            if not main_cmd:
-                should_print_help = True
+
+        if not main_cmd:
+            should_print_help = True
 
     print(
         "Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n"

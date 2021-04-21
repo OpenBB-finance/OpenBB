@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -18,19 +19,18 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     price_prediction_backtesting_color,
     print_prediction_kpis,
 )
-
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-trend = "Ad"  # Additive damped, A Additive, N None
-seasonal = "N"  # None, A Additive, M Multiplicative
-seasonal_periods = 5
+# trend = "Ad"  # Additive damped, A Additive, N None
+# seasonal = "N"  # None, A Additive, M Multiplicative
+# seasonal_periods = 5
 
 
 def check_valid_trend(trend: str) -> str:
-    if trend == "N" or trend == "A" or trend == "Ad":
+    if trend in ("N", "A", "Ad"):
         return trend
     raise argparse.ArgumentTypeError(
         "Invalid trend selected. Choose between 'N', 'A', and 'Ad'"
@@ -38,7 +38,7 @@ def check_valid_trend(trend: str) -> str:
 
 
 def check_valid_seasonal(seasonal: str) -> str:
-    if seasonal == "N" or seasonal == "A" or seasonal == "M":
+    if seasonal in ("N", "A", "M"):
         return seasonal
     raise argparse.ArgumentTypeError(
         "Invalid seasonal selected. Choose between 'N', 'A', and 'M'"

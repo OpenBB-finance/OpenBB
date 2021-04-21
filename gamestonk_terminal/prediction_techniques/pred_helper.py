@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
 from colorama import Fore, Style
-from gamestonk_terminal import feature_flags as gtff
 from sklearn.metrics import (
     mean_absolute_error,
     r2_score,
     mean_squared_error,
 )
+
+from gamestonk_terminal import feature_flags as gtff
 
 
 def price_prediction_color(val: float, last_val: float) -> str:
