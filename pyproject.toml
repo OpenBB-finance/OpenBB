@@ -59,6 +59,7 @@ tabulate = "^0.8.9"
 pyportfolioopt = "^1.4.1"
 selenium = "^3.141.0"
 python-coinmarketcap = "^0.2"
+oandapyV20 = "^0.6.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

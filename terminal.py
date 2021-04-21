@@ -32,6 +32,7 @@ from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
+from gamestonk_terminal.forex import fx_controller
 
 
 # pylint: disable=too-many-statements,too-many-branches
@@ -85,6 +86,7 @@ def main():
         "crypto",
         "ra",
         "po",
+        "fx",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
@@ -219,6 +221,9 @@ def main():
                 s_start,
                 s_interval,
             )
+
+        elif ns_known_args.opt == "fx":
+            b_quit = fx_controller.menu()
 
         elif ns_known_args.opt == "ta":
             b_quit = ta_controller.menu(
