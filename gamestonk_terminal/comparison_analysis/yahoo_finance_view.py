@@ -44,14 +44,9 @@ def check_one_of_ohlca(type_candles: str) -> str:
         Unknown candle type
     """
 
-    if (
-        type_candles == "o"
-        or type_candles == "h"
-        or type_candles == "l"
-        or type_candles == "c"
-        or type_candles == "a"
-    ):
+    if type_candles in ("o", "h", "l", "c", "a"):
         return type_candles
+
     raise argparse.ArgumentTypeError("The type of candles specified is not recognized")
 
 

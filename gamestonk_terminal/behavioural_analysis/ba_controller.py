@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime
+from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -14,7 +15,6 @@ from gamestonk_terminal.behavioural_analysis import (
     stocktwits_view,
     finbrain_view,
 )
-from prompt_toolkit.completion import NestedCompleter
 
 
 class BehaviouralAnalysisController:
