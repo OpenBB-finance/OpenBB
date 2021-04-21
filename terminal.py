@@ -35,7 +35,6 @@ from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.forex import fx_controller
 
 
-
 # pylint: disable=too-many-statements,too-many-branches
 def main():
     """
