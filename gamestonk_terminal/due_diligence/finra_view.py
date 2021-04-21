@@ -200,7 +200,8 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     otc : pd.DataFrame
         OTC (Non-ATS) Data
     """
-    _, axData = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     plt.subplot(3, 1, (1, 2))
     if not ats.empty and not otc.empty:
