@@ -41,3 +41,7 @@ RH_PASSWORD = os.getenv("GT_RH_PASSWORD") or "REPLACE_ME"
 
 # https://tradier.com/products/market-data-api
 TRADIER_TOKEN = os.getenv("GT_TRADIER_TOKEN") or "REPLACE_ME"
+
+# Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
+WEBDRIVER_TO_USE = "chrome"
+PATH_TO_SELENIUM_DRIVER = None  # Replace with "PATH"

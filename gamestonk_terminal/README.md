@@ -344,6 +344,8 @@ Command|Description|Source
 `volume`        | volume + open interest options trading plot |[Yahoo Finance](https://finance.yahoo.com/)
 `vcalls`        | calls volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
 `vputs`         | puts volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
+`chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
+`info`          | display option information | [Barchart](https://barchart.com/)
 
 &nbsp;
 
