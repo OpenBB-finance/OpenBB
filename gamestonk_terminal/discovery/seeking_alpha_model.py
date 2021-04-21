@@ -2,11 +2,11 @@
 __docformat__ = "numpy"
 
 from typing import List
+from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from pandas.core.frame import DataFrame
-from datetime import datetime
 
 from gamestonk_terminal.helper_funcs import get_user_agent
 
@@ -180,7 +180,7 @@ def get_trending_list(num: int) -> list:
                 }
             )
 
-    return articles
+    return articles[:num]
 
 
 def get_article_data(article_id: int) -> dict:

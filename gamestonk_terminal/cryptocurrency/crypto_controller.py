@@ -7,12 +7,13 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency import coin_api
+from gamestonk_terminal.cryptocurrency import pycoingecko_view
+from gamestonk_terminal.cryptocurrency import coinmarketcap_view as cmc_view
 
 
 class CryptoController:
 
-    CHOICES = ["help", "q", "quit", "load", "view"]
+    CHOICES = ["help", "q", "quit", "load", "view", "top"]
 
     def __init__(self):
         """ CONSTRUCTOR """
@@ -33,6 +34,8 @@ class CryptoController:
         print("")
         print("   load          load cryptocurrency data")
         print("   view          load and view cryptocurrency data")
+        print("")
+        print("   top           view top coins from coinmarketcap")
         print("")
 
     def switch(self, an_input: str):
@@ -64,15 +67,18 @@ class CryptoController:
         return True
 
     def call_load(self, other_args):
-        self.current_coin, self.current_df = coin_api.load(other_args)
+        self.current_coin, self.current_df = pycoingecko_view.load(other_args)
 
     def call_view(self, other_args):
         if self.current_coin:
-            coin_api.view(self.current_coin, self.current_df, other_args)
+            pycoingecko_view.view(self.current_coin, self.current_df, other_args)
 
         else:
             print("No coin selected. Use 'load' to load the coin you want to look at.")
             print("")
+
+    def call_top(self, other_args):
+        cmc_view.get_cmc_top_n(other_args)
 
 
 def menu():

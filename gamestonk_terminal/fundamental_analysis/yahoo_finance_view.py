@@ -1,7 +1,12 @@
+""" Yahoo Finance View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 from datetime import datetime
 import yfinance as yf
 import pandas as pd
+
 from gamestonk_terminal.dataframe_helpers import clean_df_index
 from gamestonk_terminal.helper_funcs import (
     long_number_format,
@@ -9,7 +14,17 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def info(l_args, s_ticker):
+def info(other_args: List[str], ticker: str):
+    """Yahoo Finance ticker info
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="info",
@@ -36,11 +51,11 @@ def info(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        stock = yf.Ticker(s_ticker)
+        stock = yf.Ticker(ticker)
         df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
         df_info = df_info.set_index("Metric")
 
@@ -86,7 +101,17 @@ def info(l_args, s_ticker):
         return
 
 
-def shareholders(l_args, s_ticker):
+def shareholders(other_args: List[str], ticker: str):
+    """Yahoo Finance ticker shareholders
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="shrs",
@@ -95,11 +120,11 @@ def shareholders(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        stock = yf.Ticker(s_ticker)
+        stock = yf.Ticker(ticker)
         pd.set_option("display.max_colwidth", None)
 
         # Major holders
@@ -154,7 +179,17 @@ def shareholders(l_args, s_ticker):
         return
 
 
-def sustainability(l_args, s_ticker):
+def sustainability(other_args: List[str], ticker: str):
+    """Yahoo Finance ticker sustainability
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="sust",
@@ -169,17 +204,17 @@ def sustainability(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        stock = yf.Ticker(s_ticker)
+        stock = yf.Ticker(ticker)
         pd.set_option("display.max_colwidth", None)
 
         df_sustainability = stock.sustainability
 
         if not df_sustainability:
-            print(f"No sustainability information in Yahoo for {s_ticker}")
+            print(f"No sustainability information in Yahoo for {ticker}")
             print("")
             return
 
@@ -209,7 +244,17 @@ def sustainability(l_args, s_ticker):
         return
 
 
-def calendar_earnings(l_args, s_ticker):
+def calendar_earnings(other_args: List[str], ticker: str):
+    """Yahoo Finance ticker calendar earnings
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="cal",
@@ -220,15 +265,15 @@ def calendar_earnings(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        stock = yf.Ticker(s_ticker)
+        stock = yf.Ticker(ticker)
         df_calendar = stock.calendar
 
         if df_calendar.empty:
-            print(f"No earnings calendar information in Yahoo for {s_ticker}")
+            print(f"No earnings calendar information in Yahoo for {ticker}")
             print("")
             return
 

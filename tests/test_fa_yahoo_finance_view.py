@@ -2,7 +2,7 @@
 import unittest
 
 # pylint: disable=unused-import
-from gamestonk_terminal.fundamental_analysis.yahoo_finance_api import (  # noqa: F401
+from gamestonk_terminal.fundamental_analysis.yahoo_finance_view import (  # noqa: F401
     info,
     sustainability,
     calendar_earnings,

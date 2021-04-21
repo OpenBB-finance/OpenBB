@@ -95,6 +95,7 @@ pyparsing==2.4.7; python_full_version >= "3.6.0" and python_version >= "3.6"
 pyportfolioopt==1.4.1
 pysocks==1.7.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 pystan==2.19.1.1
+python-coinmarketcap==0.2
 python-dateutil==2.8.1; python_full_version >= "3.6.1" and python_version >= "3.5" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "2.7" and python_full_version < "3.0.0" and python_version < "4" or python_version >= "2.7" and python_version < "4" and python_full_version >= "3.3.0")
 pytest==6.2.2; python_version >= "3.6"
 pytrends==4.7.3
@@ -111,6 +112,7 @@ sacremoses==0.0.43; python_full_version >= "3.6.0" and python_version >= "3.6"
 scikit-learn==0.24.1; python_version >= "3.6"
 scipy==1.6.1; python_version >= "3.6"
 segtok==1.5.10; python_version >= "3.6"
+selenium==3.141.0
 sentencepiece==0.1.91; python_full_version >= "3.6.0" and python_version >= "3.6"
 setuptools-git==1.2
 six==1.15.0; python_full_version >= "3.6.0" and python_version >= "3.6" and python_version < "4.0" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")

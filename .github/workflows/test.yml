@@ -2,6 +2,7 @@ name: Tests
 env:
     GTFF_USE_PROMPT_TOOLKIT: false
     GTFF_USE_ION: false
+    GTFF_ENABLE_QUICK_EXIT: true
 on: [pull_request, push]
 jobs:
   linting:
@@ -31,7 +32,8 @@ jobs:
       - run: mypy --ignore-missing-imports .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
-      - run: pylint **/*.py
+      - run: |
+          pylint terminal.py gamestonk_terminal tests
   test:
     name: ubuntu-latest - Python 3.8
     needs: linting
@@ -72,6 +74,11 @@ jobs:
         run: |
           source $VENV
           pytest tests/
+
+      - name: Start Terminal and exit
+        run: |
+          source $VENV
+          python terminal.py
   tests-python:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -114,12 +121,23 @@ jobs:
       - name: Install Package
         run: poetry install --no-interaction
 
+      - name: List installed packages
+        shell: bash -l {0}
+        run: |
+          source $VENV
+          pip list
+
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
           pytest tests/
+
+      - name: Start Terminal and exit
+        run: |
+          source $VENV
+          python terminal.py
   tests-conda:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -175,15 +193,25 @@ jobs:
         shell: cmd /C CALL {0}
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
           conda info
+          conda install numpy=1.19.5
+          conda install -c conda-forge cvxpy
           pip install --user --requirement requirements.txt
+
       - name: List installed packages (Bash)
         shell: bash -l {0}
-        run: conda list
+        run: |
+          conda list
+          pip list
 
       - name: Run tests (Bash)
         shell: bash -l {0}
         run: pytest tests/
+
+      - name: Start Terminal and exit
+        shell: bash -l {0}
+        run: python terminal.py

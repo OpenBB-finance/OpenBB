@@ -269,6 +269,11 @@ Example:
 export GT_API_REDDIT_USERNAME=SexyYear
 ```
 
+Environment variables can also be set in a `.env` file at the top of the repo. This file is ignored by git so your API keys will stay secret. The above example stored in `.env` would be:
+```
+GT_API_REDDIT_USERNAME=SexyYear
+```
+
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ### Usage
@@ -361,6 +366,9 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 [Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+
+Feel free to share loss porn, memes or any questions at https://discord.gg/Up2QGbMKHY
+
 ## Acknowledgments
 
 * [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)

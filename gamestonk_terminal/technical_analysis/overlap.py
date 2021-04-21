@@ -69,7 +69,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        _, axPrice = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.title(f"{ns_parser.n_length} EMA on {s_ticker}")
         if s_interval == "1440min":
             plt.plot(
