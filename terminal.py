@@ -32,14 +32,10 @@ from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
-
-# import warnings
-# warnings.simplefilter("always")
+from gamestonk_terminal.forex import fx_controller
 
 
-# pylint: disable=too-many-branches
-
-
+# pylint: disable=too-many-statements,too-many-branches
 def main():
     """
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
@@ -90,10 +86,15 @@ def main():
         "crypto",
         "ra",
         "po",
+        "fx",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
+
+    if os.name == "nt":
+        sys.stdin.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")
 
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
@@ -114,6 +115,10 @@ def main():
         if should_print_help:
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
+
+        if gtff.ENABLE_QUICK_EXIT:
+            print("Quick exit enabled")
+            break
 
         # Get input command from stdin or user
         if not parsed_stdin and len(sys.argv) > 1:
@@ -216,6 +221,9 @@ def main():
                 s_start,
                 s_interval,
             )
+
+        elif ns_known_args.opt == "fx":
+            b_quit = fx_controller.menu()
 
         elif ns_known_args.opt == "ta":
             b_quit = ta_controller.menu(
@@ -353,9 +361,9 @@ def main():
 
         if b_quit:
             break
-        else:
-            if not main_cmd:
-                should_print_help = True
+
+        if not main_cmd:
+            should_print_help = True
 
     print(
         "Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n"

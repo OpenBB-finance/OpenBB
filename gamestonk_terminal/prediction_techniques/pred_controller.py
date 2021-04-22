@@ -1,8 +1,10 @@
 import argparse
 from typing import List
-import pandas as pd
 from datetime import datetime
+import pandas as pd
 import matplotlib.pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -14,7 +16,6 @@ from gamestonk_terminal.prediction_techniques import (
     regression,
     sma,
 )
-from prompt_toolkit.completion import NestedCompleter
 
 
 class PredictionTechniquesController:
@@ -59,7 +60,6 @@ class PredictionTechniquesController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """ Print help """
 
@@ -110,7 +110,7 @@ class PredictionTechniquesController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -170,6 +170,7 @@ class PredictionTechniquesController:
 
         def call_prophet(self, other_args: List[str]):
             """Process prophet command"""
+            # pylint: disable=import-outside-toplevel
             from gamestonk_terminal.prediction_techniques import fbprophet
 
             fbprophet.fbprophet(other_args, self.ticker, self.stock)

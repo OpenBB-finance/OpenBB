@@ -200,7 +200,8 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     otc : pd.DataFrame
         OTC (Non-ATS) Data
     """
-    _, axData = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     plt.subplot(3, 1, (1, 2))
     if not ats.empty and not otc.empty:
@@ -285,7 +286,7 @@ def dark_pool(other_args: List[str], ticker: str):
         description="Display barchart of dark pool (ATS) and OTC (Non ATS) data [Source: FINRA]",
     )
 
-    if 1:
+    try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -296,12 +297,9 @@ def dark_pool(other_args: List[str], ticker: str):
             print("No ticker data found!")
 
         plot_dark_pools(ticker, df_ats, df_otc)
-
         print("")
 
-    """
     except Exception as e:
         print(e)
         print("")
         return
-    """

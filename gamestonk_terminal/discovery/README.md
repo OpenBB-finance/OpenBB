@@ -38,6 +38,8 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * trending news [Seeking Alpha]
 * [ratings](#ratings)
   * top ratings updates [MarketBeat]
+* [darkpool](#darkpool)
+  * dark pool tickers with growing activity [FINRA]
 
 
 ## map <a name="map"></a>
@@ -264,4 +266,19 @@ Top ratings updates. [Source: MarketBeat]
 * -t : Minimum threshold in percentage change between current and target price to show ratings. Default: 100.
 
 <img width="963" alt="ratings" src="https://user-images.githubusercontent.com/25267873/115095983-4544c400-9f1b-11eb-8869-8ec8a0f8eae0.png">
+
+
+## darkpool <a name="darkpool"></a>
+
+```
+usage: darkpool [-n N_NUM] [-t N_TOP]
+```
+
+Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
+
+* -n : Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity. Default: 1000.
+* -t : List of tickers from most promising with better linear regression slope. Default: 5.
+
+![darkpool](https://user-images.githubusercontent.com/25267873/115323195-8d642080-a17f-11eb-9ef8-d456ce769ab7.png)
+
 
