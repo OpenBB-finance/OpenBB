@@ -6,20 +6,7 @@ degiro = degiroapi.DeGiro()
 
 
 def login():
-    while True:
-        login_prefr = input("Do you have 2FA activated? - y/n> ")
-        if login_prefr == "q":
-            break
-        elif login_prefr == "y":
-            topt = input("Enter TOPT> ")
-            degiro.login(user, pw, topt)
-            break
-        elif login_prefr == "n":
-            degiro.login(user, pw)
-            break
-        else:
-            print("Invalid input. Try again.")
-            input("Press enter to continue...")
+    degiro.login(user, pw)
 
 
 def logout():

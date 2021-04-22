@@ -75,7 +75,7 @@ class PortfolioController:
         print("Ally:")
         print("   allyhold      view ally holdings")
         print("Degiro:")
-        print("   dghold      view dg holdings")
+        print("   dghold        view dg holdings")
         print("\nMerge:")
         print("   hold          view net holdings across all logins")
         print("")
