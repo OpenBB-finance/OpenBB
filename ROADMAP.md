@@ -192,6 +192,7 @@ ___
 
 ## Cryptocurrencies
 * [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
 
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
