@@ -145,6 +145,7 @@ Command|Description
 ----- | ---------
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
 `mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
+`score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
 [Market Watch API](https://markets.businessinsider.com/) |
 `income`        |income statement of the company
 `balance`       |balance sheet of the company
@@ -272,6 +273,7 @@ Command|Description
 ------ | ------------
 `load`| load cryptocurrency data
 `view`| load and view cryptocurrency data
+`top` | view top coins from coinmarketcap
 
 &nbsp;
 ## Comparison Analysis [»](comparison_analysis/README.md)
