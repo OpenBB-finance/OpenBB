@@ -30,27 +30,30 @@ def show_holdings():
     # Fetch current portfolio
     portfolio = degiro.getdata(degiroapi.Data.Type.PORTFOLIO, True)
 
-    stock_info = []
+    print("")
+    print(
+        "PositionType\t Stonk\t Size\t last price \t prev close \t breakeven \t % Change"
+    )
+    print("")
+
     # Loop to get stock info based on id provided in portfolio
+    # showcase portfolio
     for stock in portfolio:
         if stock["positionType"] == "PRODUCT":
-            stock_info.append(
-                degiro.real_time_price(stock["id"], degiroapi.Interval.Type.One_Day)
+            pos_type = stock["positionType"]
+            size = stock["size"]
+            break_even = stock["breakEvenPrice"]
+            real_time_info = degiro.real_time_price(
+                stock["id"], degiroapi.Interval.Type.One_Day
             )
+            stonk = real_time_info[0]["data"]["alfa"]
+            last_price = real_time_info[0]["data"]["lastPrice"]
+            prev_close = real_time_info[0]["data"]["previousClosePrice"]
+            pct_change = round((last_price - prev_close) / prev_close, 3)
 
-    # showcase portfolio
-    print("")
-    print("Stonk\t last price \t prev close \t equity \t % Change")
-    print("")
-    for info in stock_info:
-        stonk = info[0]["data"]["alfa"]
-        last_price = info[0]["data"]["lastPrice"]
-        prev_close = info[0]["data"]["previousClosePrice"]
-        eq = "N/A"
-        pct_change = round((last_price - prev_close) / prev_close, 3)
-        to_print = f"{stonk}\t {last_price}\t\t {prev_close}\t\t {eq}\t\t {pct_change}"
-        if last_price >= prev_close:
-            print(colored(to_print, "green"))
-        else:
-            print(colored(to_print, "red"))
-    print("")
+            to_pr = f"{pos_type}\t\t {stonk}\t {size}\t {last_price}\t\t {prev_close}\t\t {break_even}\t\t {pct_change}"
+            if last_price >= prev_close:
+                print(colored(to_pr, "green"))
+            else:
+                print(colored(to_pr, "red"))
+            print("")
