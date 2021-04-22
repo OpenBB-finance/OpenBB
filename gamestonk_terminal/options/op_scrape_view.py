@@ -63,14 +63,16 @@ def print_options_data(stock: str, other_args: List[str]):
 
     try:
         if browser == "chrome":
-            options = cOpts()
-            options.headless = True
-            driver = webdriver.Chrome(options=options, executable_path=path_to_driver)
+            # commenting this because it breaks when in usage
+            # the downside is that the browser will pop up to get the data
+            driver = webdriver.Chrome(executable_path=path_to_driver)
 
         elif browser == "firefox":
-            options = fOpts()
-            options.headless = True
-            driver = webdriver.Firefox(options=options, executable_path=path_to_driver)
+            # commenting this because it breaks when in usage
+            # the downside is that the browser will pop up to get the data
+            #options = fOpts()
+            #options.headless = True
+            driver = webdriver.Firefox(executable_path=path_to_driver)
 
         page = f"https://www.barchart.com/stocks/quotes/{stock}/overview"
         driver.get(page)
