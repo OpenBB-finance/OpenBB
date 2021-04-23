@@ -49,8 +49,9 @@ jobs:
           architecture: x64
 
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@v1.1.4
         with:
+          version: 1.1.6
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -102,8 +103,9 @@ jobs:
           architecture: x64
 
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@v1.1.4
         with:
+          version: 1.1.6
           virtualenvs-create: true
           virtualenvs-in-project: true
 

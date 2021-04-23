@@ -5,6 +5,7 @@ import argparse
 from typing import List
 from datetime import datetime
 import pandas as pd
+import valinvest
 import FundamentalAnalysis as fa  # Financial Modeling Prep
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.dataframe_helpers import clean_df_index
@@ -13,6 +14,40 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
 )
+
+
+def valinvest_score(other_args: List[str], ticker: str):
+    """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="score",
+        description="""
+            Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
+        """,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        valstock = valinvest.Fundamental(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        score = 100 * (valstock.fscore() / 9)
+        print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+        return
 
 
 def profile(other_args: List[str], ticker: str):
