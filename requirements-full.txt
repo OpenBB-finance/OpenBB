@@ -158,6 +158,7 @@ typing-extensions==3.7.4.3; python_version < "3.8" and python_version >= "3.6"
 update-checker==0.18.0; python_version >= "3.6" and python_version < "4.0"
 urllib3==1.26.4; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version < "4" and python_version >= "3.6"
 user-agent==0.1.9
+valinvest==0.0.2; python_version >= "3.6"
 wcwidth==0.2.5; python_version >= "3.6" and python_full_version >= "3.6.1"
 webencodings==0.5.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 websocket-client==0.58.0; python_version >= "3.6" and python_full_version < "3.0.0" and python_version < "4.0" or python_version >= "3.6" and python_version < "4.0" and python_full_version >= "3.4.0"
