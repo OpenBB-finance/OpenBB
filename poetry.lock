@@ -1312,7 +1312,7 @@ python-versions = "*"
 
 [[package]]
 name = "mplfinance"
-version = "0.12.7a12"
+version = "0.12.7a17"
 description = "Utilities for the visualization, and visual analysis, of financial data"
 category = "main"
 optional = false
@@ -3841,8 +3841,8 @@ mpld3 = [
     {file = "mpld3-0.3.tar.gz", hash = "sha256:4d455884a211bf99b37ecc760759435c7bb6a5955de47d8daf4967e301878ab7"},
 ]
 mplfinance = [
-    {file = "mplfinance-0.12.7a12-py3-none-any.whl", hash = "sha256:e1ae6e763b9ea5c7b74037c04f5e85af42272053d938592b5b54a610fc16ab6c"},
-    {file = "mplfinance-0.12.7a12.tar.gz", hash = "sha256:5e48d4eab079457c025cfae37ae95a8693b5f3a2ba64e7a08104fbaf1462a400"},
+    {file = "mplfinance-0.12.7a17-py3-none-any.whl", hash = "sha256:9a0aadf5c027ccf87a061ee3e76a21cda6a1c5203ba82e58839879167da9e488"},
+    {file = "mplfinance-0.12.7a17.tar.gz", hash = "sha256:0331fb99ca10fe59e8870c477603ef21365f8975f0d7288701a32c02d010db24"},
 ]
 msgpack = [
     {file = "msgpack-1.0.2-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:b6d9e2dae081aa35c44af9c4298de4ee72991305503442a5c74656d82b581fe9"},
