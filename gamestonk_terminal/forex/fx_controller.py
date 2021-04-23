@@ -6,10 +6,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.due_diligence import news_view
-from gamestonk_terminal.behavioural_analysis import stocktwits_view
-from gamestonk_terminal.exploratory_data_analysis import eda_api
-import pandas as pd
 
 account = cfg.OANDA_ACCOUNT
 
@@ -35,10 +31,6 @@ class ForexController:
         "candles",
         "pending",
         "calendar",
-        "news",
-        "bullbear",
-        "messages",
-        "edasummary",
     ]
 
     def __init__(self):
@@ -51,31 +43,32 @@ class ForexController:
         self.instrument = None
 
     @staticmethod
-    def print_help():
+    def print_help(self):
         """Print help"""
 
         print("\nForex Mode:")
-        print("    help          Show this menu again")
-        print("    q             Quit this menu and goes back to main menu")
-        print("    quit          Quit to abandon program")
+        print("    help          show this menu again")
+        print("    q             quit this menu and goes back to main menu")
+        print("    quit          quit to abandon program")
         print("")
-        print("    bullbear      Call bullbear from stocktwits")
-        print("    cancel        Cancel a pending order by ID -i order ID")
-        print("    candles       Show candles")
-        print("    calendar      Show calendar")
-        print("    closetrade    Close a trade by id")
-        print("    list          List order history")
-        print("    load          Load an instrument to use")
-        print("    messages      Get messages from stocktwits")
-        print("    news          Get news")
-        print("    order         Place limit order -u # of units -p price")
-        print("    orderbook     Print orderbook")
-        print("    pending       Get information on pending orders")
-        print("    positionbook  Print positionbook")
-        print("    positions     Get open positions")
-        print("    price         Shows price for selected instrument")
-        print("    summary       Shows account summary")
-        print("    trades        List open trades")
+        print("    summary       shows account summary")
+        print("    calendar      show calendar")
+        print("    list          list order history")
+        print("    pending       get information on pending orders")
+        print("    cancel        cancel a pending order by ID -i order ID")
+        print("    positions     get open positions")
+        print("    trades        list open trades")
+        print("    closetrade    close a trade by id")
+        print("")
+        print(f"Loaded instrument: {self.instrument if self.instrument else ''}")
+        print("")
+        print("    load          load an instrument to use")
+        if self.instrument:
+            print("    candles       show candles")
+            print("    price         shows price for selected instrument")
+            print("    order         place limit order -u # of units -p price")
+            print("    orderbook     print orderbook")
+            print("    positionbook  print positionbook")
         print("")
 
     def switch(self, an_input: str):
@@ -95,7 +88,7 @@ class ForexController:
 
     def call_help(self, _):
         """Process Help Command"""
-        self.print_help()
+        self.print_help(self)
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -105,24 +98,24 @@ class ForexController:
         """Process Quit command - exit the program"""
         return True
 
-    def call_price(self, _):
+    def call_price(self, other_args):
         """Process Price Command"""
-        fx_view.get_fx_price(account, self.instrument)
+        fx_view.get_fx_price(account, self.instrument, other_args)
 
     def call_load(self, other_args):
         self.instrument = fx_view.load(other_args)
 
-    def call_summary(self, _):
+    def call_summary(self, other_args):
         """Process account summary command"""
-        fx_view.get_account_summary(account)
+        fx_view.get_account_summary(account, other_args)
 
-    def call_orderbook(self, _):
+    def call_orderbook(self, other_args):
         """Process Oanda Order Book"""
-        fx_view.get_order_book(self.instrument)
+        fx_view.get_order_book(self.instrument, other_args)
 
-    def call_positionbook(self, _):
+    def call_positionbook(self, other_args):
         """Process Oanda Position Book"""
-        fx_view.get_position_book(self.instrument)
+        fx_view.get_position_book(self.instrument, other_args)
 
     def call_list(self, other_args: List[str]):
         """Process list orders command"""
@@ -136,13 +129,13 @@ class ForexController:
         """Cancel pending order by ID"""
         fx_view.cancel_pending_order(account, other_args)
 
-    def call_positions(self, _):
+    def call_positions(self, other_args):
         """Get Open Positions"""
-        fx_view.get_open_positions(account)
+        fx_view.get_open_positions(account, other_args)
 
-    def call_pending(self, _):
+    def call_pending(self, other_args):
         """See up to 25 pending orders"""
-        fx_view.get_pending_orders(account)
+        fx_view.get_pending_orders(account, other_args)
 
     def call_closetrade(self, other_args: List[str]):
         """Close a trade by id"""
@@ -151,35 +144,13 @@ class ForexController:
     def call_candles(self, other_args: List[str]):
         fx_view.show_candles(account, self.instrument, other_args)
 
-    def call_trades(self, _):
+    def call_trades(self, other_args):
         """List open trades"""
-        fx_view.get_open_trades(account)
+        fx_view.get_open_trades(account, other_args)
 
     def call_calendar(self, other_args: List[str]):
         """Call calendar"""
         fx_view.calendar(self.instrument, other_args)
-
-    def call_news(self, other_args: List[str]):
-        news_view.news(other_args, self.instrument)
-
-    def call_bullbear(self, other_args: List[str]):
-        instrument = remove_underscore(self.instrument)
-        stocktwits_view.bullbear(other_args, instrument)
-
-    def call_messages(self, other_args: List[str]):
-        instrument = remove_underscore(self.instrument)
-        stocktwits_view.messages(other_args, instrument)
-
-    def call_edasummary(self, other_args: List[str]):
-        df = pd.read_csv(".candles.csv")
-        eda_api.summary(other_args, df)
-
-
-def remove_underscore(instrument):
-    instrument_list = list(instrument)
-    instrument_list.pop(3)
-    adjusted_instrument = "".join(map(str, instrument_list))
-    return adjusted_instrument
 
 
 def menu():
