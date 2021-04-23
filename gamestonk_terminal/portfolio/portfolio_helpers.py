@@ -66,14 +66,16 @@ def rh_positions_to_df(holds: dict):
 def dg_positions_to_df(holds):
     df = pd.DataFrame(columns=["Symbol", "MarketValue", "Quantity", "CostBasis"])
     sym = []
+    mv = []
     qty = []
     cb = []
     for stonk in holds:
         sym.append(stonk["id"])
         qty.append(stonk["size"])
+        mv.append(stonk["marketValue"])
         cb.append(stonk["breakEvenPrice"])
     df["Symbol"] = sym
-    df["MarketValue"] = 0
+    df["MarketValue"] = mv
     df["Quantity"] = qty
     df["CostBasis"] = cb
     df["Broker"] = "dg"

@@ -1,5 +1,6 @@
 import degiroapi
 import pandas as pd
+import yfinance as yf
 from termcolor import colored
 from gamestonk_terminal.config_terminal import DG_USERNAME as user, DG_PASSWORD as pw
 from gamestonk_terminal.portfolio.portfolio_helpers import dg_positions_to_df
@@ -52,6 +53,10 @@ def return_holdings() -> pd.DataFrame:
     for stock in portfolio:
         if stock["positionType"] == "PRODUCT":
             stock_info = degiro.product_info(stock["id"])
+            yf_data = yf.Ticker(stock_info["symbol"])
             stock["id"] = stock_info["symbol"]
+            stock["marketValue"] = (
+                yf_data.info["previousClose"] * yf_data.info["sharesOutstanding"]
+            )
             holds.append(stock)
     return dg_positions_to_df(holds)
