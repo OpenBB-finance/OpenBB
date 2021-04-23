@@ -242,5 +242,3 @@ Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
 * -t : threshold. Default (MAX-min)/40.
 * -d : drift. Default (MAX-min)/80.
-=======
-Plots the current positionbook for the loaded instrument if one is provided by Oanda. Not a live chart.
