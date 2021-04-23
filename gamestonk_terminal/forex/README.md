@@ -108,13 +108,21 @@ Specify the instrument to use in the format EUR_USD
 
 ## candles <a name="candles"></a>
 ```text
-usage: candles [-g GRANULARITY] [-c CANDLECOUNT]
+usage: candles [-g GRANULARITY] [-c CANDLECOUNT] [-abcCeorsv]
 ```
 
 Retrieve a candlestick chart for the currently loaded instrument. Not a live chart.
 
 * -g : Specify the granularity, which is the timeframe each candle represents. The available granularities are Seconds: S5, S10, S15, S30 Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12 Day: D, Week: W Month: M. (default=D)
 * -c : Specify the number of candles to retrieve. (default=180)
+* -a : Adds AD (Accumulation/Distribution Index) to the chart. AD is a cumulative indicator that uses volume and price to assess whether a stock is being accumulated or distributed. This provides insight into how strong a trend is. [Investopedia](#https://www.investopedia.com/terms/a/accumulationdistribution.asp)
+* -b : Adds Bollinger Bands to the chart. Bollinger bands are a set of trendlines plotted two standard deviations (positively and negatively) away from a simple moving average of a security's price. [Investopedia](#https://www.investopedia.com/terms/b/bollingerbands.asp)
+* -C : Adds CCI (Commodity Channel Index) to the chart. CCI is a momentum-based oscillator used to help determine when an investment vehicle is reaching a condition of being overbought or oversold. [Investopedia](#https://www.investopedia.com/terms/c/commoditychannelindex.asp)
+* -e : Adds EMA (Exponential Moving Average) to the chart. EMA is a moving average that places a greater weight and significance on the most recent data points. [Investopedia](#https://www.investopedia.com/terms/e/ema.asp)
+* -o : Adds OBV (On Balance Volume) to the chart. OBV is a momentum indicator that uses volume flow to predict changes in price. [Investopedia](#https://www.investopedia.com/terms/o/onbalancevolume.asp)
+* -r : Adds RSI (Relative Strength Index) to the chart. RSI is a momentum indicator that measures the magnitude of recent price changes to evaluate overbought or oversold conditions. [Investopedia](#https://www.investopedia.com/terms/r/rsi.asp)
+* -s : Adds SMA (Simple Moving Average) to the chart. SMA calculates the average of a selected range of prices, usually closing prices, by the number of periods in that range. [Investopedia](#https://www.investopedia.com/terms/s/sma.asp)
+* -v : Adds VWAP (Volume Weighted Average Price) to the chart. VWAP gives the average price a security has traded at throughout the day, based on both volume and price. [Investopedia](#https://www.investopedia.com/terms/v/vwap.asp)
 
 ## price <a name="price"></a>
 ```text

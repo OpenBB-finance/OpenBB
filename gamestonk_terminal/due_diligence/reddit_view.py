@@ -85,6 +85,10 @@ def due_diligence(other_args: List[str], ticker: str):
             "News",
             "Advice",
             "Chart",
+            "Charts and Setups",
+            "Fundamental Analysis",
+            "forex",
+            "Trade Idea",
         ]
         l_sub_reddits = [
             "pennystocks",
@@ -94,6 +98,9 @@ def due_diligence(other_args: List[str], ticker: str):
             "stocks",
             "investing",
             "wallstreetbets",
+            "forex",
+            "Daytrading",
+            "Forexstrategy",
         ]
 
         submissions = psaw_api.search_submissions(
