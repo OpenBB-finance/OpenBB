@@ -82,13 +82,25 @@ class ForexController:
             print("    orderbook     print orderbook")
             print("    positionbook  print positionbook")
             print("    news          print news [News API]")
-            print("    bullbear      estimate quick sentiment from last 30 messages on stocktwits")
-            print("    messages      output up to the 30 last messages on the stocktwits board")
-            print("    reddit        search reddit for posts about the loaded instrument")
-            print("    edasummary    brief summary statistics using exploratory data analysis")
+            print(
+                "    bullbear      estimate quick sentiment from last 30 messages on stocktwits"
+            )
+            print(
+                "    messages      output up to the 30 last messages on the stocktwits board"
+            )
+            print(
+                "    reddit        search reddit for posts about the loaded instrument"
+            )
+            print(
+                "    edasummary    brief summary statistics using exploratory data analysis"
+            )
             print("    edarolling    rolling mean and std deviation")
-            print("    edadecompose  decomposition in cyclic-trend, season, and residuals")
-            print("    edacusum      detects abrupt changes using cumulative sum algorithm")
+            print(
+                "    edadecompose  decomposition in cyclic-trend, season, and residuals"
+            )
+            print(
+                "    edacusum      detects abrupt changes using cumulative sum algorithm"
+            )
         print("")
 
     def switch(self, an_input: str):

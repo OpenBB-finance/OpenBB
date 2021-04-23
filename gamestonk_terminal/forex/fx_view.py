@@ -324,11 +324,11 @@ def get_pending_orders(accountID, other_args):
                     "Instrument": response["orders"][i]["instrument"],
                     "Price": response["orders"][i]["price"],
                     "Units": response["orders"][i]["units"],
-                    "Time Created": response["orders"][i]["units"],
-                    "Time Created": response["orders"][i]["units"],
+                    "Time Created": response["orders"][i]["createTime"][:10]
+                    + " "
+                    + response["orders"][i]["createTime"][11:19],
                     "Time In Force": response["orders"][i]["timeInForce"],
                 }
-
             )
 
         df = pd.DataFrame.from_dict(pending_data)
@@ -357,15 +357,19 @@ def get_open_positions(accountID, other_args):
         position_data = []
         for i in range(len(response["positions"])):
             position_data.append(
-            {
-                "Instrument": response["positions"][i]["instrument"],
-                "Long Units": response["positions"][i]["long"]["units"],
-                "Total Long P/L": response["positions"][i]["long"]["units"],
-                "Unrealized Long P/L": response["positions"][i]["long"]["unrealizedPL"],
-                "Short Units": response["positions"][i]["short"]["units"],
-                "Total Short P/L": response["positions"][i]["short"]["pl"],
-                "Short Unrealized P/L": response["positions"][i]["short"]["unrealizedPL"],
-            }
+                {
+                    "Instrument": response["positions"][i]["instrument"],
+                    "Long Units": response["positions"][i]["long"]["units"],
+                    "Total Long P/L": response["positions"][i]["long"]["units"],
+                    "Unrealized Long P/L": response["positions"][i]["long"][
+                        "unrealizedPL"
+                    ],
+                    "Short Units": response["positions"][i]["short"]["units"],
+                    "Total Short P/L": response["positions"][i]["short"]["pl"],
+                    "Short Unrealized P/L": response["positions"][i]["short"][
+                        "unrealizedPL"
+                    ],
+                }
             )
 
         df = pd.DataFrame.from_dict(position_data)
@@ -464,14 +468,14 @@ def close_trade(accountID, other_args: List[str]):
 
         close_data = []
         close_data.append(
-                {
-                    "OrderID": response["orderCreateTransaction"]["tradeClose"]["tradeID"],
-                    "Instrument": response["orderFillTransaction"]["instrument"],
-                    "Units": response["orderCreateTransaction"]["units"],
-                    "Price": response["orderFillTransaction"]["price"],
-                    "P/L": response["orderFillTransaction"]["pl"],
-                }
-            )
+            {
+                "OrderID": response["orderCreateTransaction"]["tradeClose"]["tradeID"],
+                "Instrument": response["orderFillTransaction"]["instrument"],
+                "Units": response["orderCreateTransaction"]["units"],
+                "Price": response["orderFillTransaction"]["price"],
+                "P/L": response["orderFillTransaction"]["pl"],
+            }
+        )
         df = pd.DataFrame.from_dict(close_data)
         print(df.to_string(index=False))
         print("")
@@ -511,22 +515,62 @@ def show_candles(accountID, instrument, other_args: List[str]):
         required=False,
         help="The number of candles to retrieve. Default:180 ",
     )
-    parser.add_argument("-a", "--ad", dest="ad", action="store_true",
-                        help="Adds ad (Accumulation/Distribution Indicator) to the chart")
-    parser.add_argument("-b", "--bbands", dest="bbands",
-                        action="store_true", help="Adds Bollinger Bands to the chart")
-    parser.add_argument("-C", "--cci", dest="cci", action="store_true",
-                        help="Adds cci (Commodity Channel Index) to the chart")
-    parser.add_argument("-e", "--ema", dest="ema", action="store_true",
-                        help="Adds ema (Exponential Moving Average) to the chart")
-    parser.add_argument("-o", "--obv", dest="obv", action="store_true",
-                        help="Adds obv (On Balance Volume) to the chart")
-    parser.add_argument("-r", "--rsi", dest="rsi", action="store_true",
-                        help="Adds rsi (Relative Strength Index) to the chart")
-    parser.add_argument("-s", "--sma", dest="sma", action="store_true",
-                        help="Adds sma (Simple Moving Average) to the chart")
-    parser.add_argument("-v", "--vwap", dest="vwap", action="store_true",
-                        help="Adds vwap (Volume Weighted Average Price) to the chart")
+    parser.add_argument(
+        "-a",
+        "--ad",
+        dest="ad",
+        action="store_true",
+        help="Adds ad (Accumulation/Distribution Indicator) to the chart",
+    )
+    parser.add_argument(
+        "-b",
+        "--bbands",
+        dest="bbands",
+        action="store_true",
+        help="Adds Bollinger Bands to the chart",
+    )
+    parser.add_argument(
+        "-C",
+        "--cci",
+        dest="cci",
+        action="store_true",
+        help="Adds cci (Commodity Channel Index) to the chart",
+    )
+    parser.add_argument(
+        "-e",
+        "--ema",
+        dest="ema",
+        action="store_true",
+        help="Adds ema (Exponential Moving Average) to the chart",
+    )
+    parser.add_argument(
+        "-o",
+        "--obv",
+        dest="obv",
+        action="store_true",
+        help="Adds obv (On Balance Volume) to the chart",
+    )
+    parser.add_argument(
+        "-r",
+        "--rsi",
+        dest="rsi",
+        action="store_true",
+        help="Adds rsi (Relative Strength Index) to the chart",
+    )
+    parser.add_argument(
+        "-s",
+        "--sma",
+        dest="sma",
+        action="store_true",
+        help="Adds sma (Simple Moving Average) to the chart",
+    )
+    parser.add_argument(
+        "-v",
+        "--vwap",
+        dest="vwap",
+        action="store_true",
+        help="Adds vwap (Volume Weighted Average Price) to the chart",
+    )
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -556,7 +600,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
         ax[0].set_title(f"{instrument} {ns_parser.granularity}")
         ax[0].legend(legends)
         for i in range(0, len(subplot_legends), 2):
-            ax[subplot_legends[i]].legend(subplot_legends[i+1])
+            ax[subplot_legends[i]].legend(subplot_legends[i + 1])
         print("")
     except V20Error as e:
         d_error = eval(e.msg)
@@ -575,8 +619,8 @@ def add_plots(df, ns_parser):
         ad = ta.ad(df["High"], df["Low"], df["Close"], df["Volume"])
         ad_plot = mpf.make_addplot(ad, panel=panel_number)
         plots_to_add.append(ad_plot)
-        subplot_legends.extend([panel_number*2, ["AD"]])
-        panel_number +=1
+        subplot_legends.extend([panel_number * 2, ["AD"]])
+        panel_number += 1
 
     if ns_parser.bbands:
         bbands = ta.bbands(df["Close"])
@@ -589,7 +633,7 @@ def add_plots(df, ns_parser):
         cci = ta.cci(df["High"], df["Low"], df["Close"])
         cci_plot = mpf.make_addplot(cci, panel=panel_number)
         plots_to_add.append(cci_plot)
-        subplot_legends.extend([panel_number*2, ["CCI"]])
+        subplot_legends.extend([panel_number * 2, ["CCI"]])
         panel_number += 1
 
     if ns_parser.ema:
@@ -602,14 +646,14 @@ def add_plots(df, ns_parser):
         rsi = ta.rsi(df["Close"])
         rsi_plot = mpf.make_addplot(rsi, panel=panel_number)
         plots_to_add.append(rsi_plot)
-        subplot_legends.extend([panel_number*2, ["RSI"]])
+        subplot_legends.extend([panel_number * 2, ["RSI"]])
         panel_number += 1
 
     if ns_parser.obv:
         obv = ta.obv(df["Close"], df["Volume"])
         obv_plot = mpf.make_addplot(obv, panel=panel_number)
         plots_to_add.append(obv_plot)
-        subplot_legends.extend([panel_number*2, ["OBV"]])
+        subplot_legends.extend([panel_number * 2, ["OBV"]])
         panel_number += 1
 
     if ns_parser.sma:
@@ -721,11 +765,13 @@ def get_candles_dataframe(accountID, instrument, parameters):
     try:
         request = instruments.InstrumentsCandles(instrument, params=parameters)
         response = client.request(request)
-        candles_data=[]
+        candles_data = []
         for i in range(len(response["candles"])):
             candles_data.append(
                 {
-                    "Date": response["candles"][i]["time"][:10] + " " + response["candles"][i]["time"][11:19],
+                    "Date": response["candles"][i]["time"][:10]
+                    + " "
+                    + response["candles"][i]["time"][11:19],
                     "Open": float(response["candles"][i]["mid"]["o"]),
                     "High": float(response["candles"][i]["mid"]["h"]),
                     "Low": float(response["candles"][i]["mid"]["l"]),
