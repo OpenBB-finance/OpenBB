@@ -1,12 +1,12 @@
-""" Fundamental Analysis Market Watch API """
+""" Fundamental Analysis Market Watch View """
 __docformat__ = "numpy"
 
 import argparse
-import requests
+from typing import List
 import pandas as pd
-from bs4 import BeautifulSoup
+
+from gamestonk_terminal.fundamental_analysis import market_watch_model as mwm
 from gamestonk_terminal.helper_funcs import (
-    get_user_agent,
     parse_known_args_and_warn,
     patch_pandas_text_adjustment,
     financials_colored_values,
@@ -14,7 +14,17 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal import feature_flags as gtff
 
 
-def income(l_args, s_ticker):
+def income(other_args: List[str], ticker: str):
+    """Market Watch ticker income statement
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="income",
@@ -50,11 +60,11 @@ def income(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_financials = prepare_df_financials(s_ticker, "income", ns_parser.b_quarter)
+        df_financials = mwm.prepare_df_financials(ticker, "income", ns_parser.b_quarter)
 
         if gtff.USE_COLOR:
             df_financials = df_financials.applymap(financials_colored_values)
@@ -72,7 +82,17 @@ def income(l_args, s_ticker):
         return
 
 
-def balance(l_args, s_ticker):
+def balance(other_args: List[str], ticker: str):
+    """Market Watch ticker balance statement
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="balance",
@@ -120,11 +140,13 @@ def balance(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_financials = prepare_df_financials(s_ticker, "balance", ns_parser.b_quarter)
+        df_financials = mwm.prepare_df_financials(
+            ticker, "balance", ns_parser.b_quarter
+        )
 
         if gtff.USE_COLOR:
             df_financials = df_financials.applymap(financials_colored_values)
@@ -142,7 +164,17 @@ def balance(l_args, s_ticker):
         return
 
 
-def cash(l_args, s_ticker):
+def cash(other_args: List[str], ticker: str):
+    """Market Watch ticker cash flow statement
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="cash_flow",
@@ -186,11 +218,13 @@ def cash(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df_financials = prepare_df_financials(s_ticker, "cashflow", ns_parser.b_quarter)
+        df_financials = mwm.prepare_df_financials(
+            ticker, "cashflow", ns_parser.b_quarter
+        )
 
         if gtff.USE_COLOR:
             df_financials = df_financials.applymap(financials_colored_values)
@@ -206,104 +240,3 @@ def cash(l_args, s_ticker):
         print(e)
         print("")
         return
-
-
-def prepare_df_financials(
-    ticker: str, statement: str, quarter: bool = False
-) -> pd.DataFrame:
-    """Builds a DataFrame with financial statements for a given company
-
-    Parameters
-    ----------
-    ticker : str
-        Company's stock ticker
-    statement : str
-        Either income, balance or cashflow
-    quarter : bool, optional
-        Return quarterly financial statements instead of annual, by default False
-
-    Returns
-    -------
-    pd.DataFrame
-        A DataFrame with financial info
-
-    Raises
-    ------
-    ValueError
-        If statement is not income, balance or cashflow
-    """
-    financial_urls = {
-        "income": {
-            "quarter": "https://www.marketwatch.com/investing/stock/{}/financials/income/quarter",
-            "annual": "https://www.marketwatch.com/investing/stock/{}/financials/income",
-        },
-        "balance": {
-            "quarter": "https://www.marketwatch.com/investing/stock/{}/financials/balance-sheet/quarter",
-            "annual": "https://www.marketwatch.com/investing/stock/{}/financials/balance-sheet",
-        },
-        "cashflow": {
-            "quarter": "https://www.marketwatch.com/investing/stock/{}/financials/cash-flow/quarter",
-            "annual": "https://www.marketwatch.com/investing/stock/{}/financials/cash-flow",
-        },
-    }
-
-    if statement not in financial_urls.keys():
-        raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
-
-    if quarter:
-        period = "quarter"
-    else:
-        period = "annual"
-
-    text_soup_financials = BeautifulSoup(
-        requests.get(
-            financial_urls[statement][period].format(ticker),
-            headers={"User-Agent": get_user_agent()},
-        ).text,
-        "lxml",
-    )
-
-    # Define financials columns
-    a_financials_header = list()
-    for financials_header in text_soup_financials.findAll(
-        "th", {"class": "overflow__heading"}
-    ):
-        a_financials_header.append(financials_header.text.strip("\n").split("\n")[0])
-
-    s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
-    df_financials = pd.DataFrame(
-        columns=a_financials_header[0 : a_financials_header.index(s_header_end_trend)]
-    )
-
-    find_table = text_soup_financials.findAll(
-        "div", {"class": "element element--table table--fixed financials"}
-    )
-
-    if not find_table:
-        return df_financials
-
-    financials_rows = find_table[0].findAll(
-        "tr", {"class": ["table__row is-highlighted", "table__row"]}
-    )
-
-    for a_row in financials_rows:
-        constructed_row = list()
-        financial_columns = a_row.findAll(
-            "td", {"class": ["overflow__cell", "overflow__cell fixed--column"]}
-        )
-
-        if not financial_columns:
-            continue
-
-        for a_column in financial_columns:
-            column_to_text = a_column.text.strip()
-            if "\n" in column_to_text:
-                column_to_text = column_to_text.split("\n")[0]
-
-            if column_to_text == "":
-                continue
-            constructed_row.append(column_to_text)
-
-        df_financials.loc[len(df_financials)] = constructed_row
-
-    return df_financials

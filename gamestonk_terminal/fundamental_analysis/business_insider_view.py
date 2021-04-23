@@ -1,4 +1,8 @@
+""" Business Insider View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -6,7 +10,17 @@ from rapidfuzz import fuzz
 from gamestonk_terminal.helper_funcs import get_user_agent, parse_known_args_and_warn
 
 
-def management(l_args, s_ticker):
+def management(other_args: List[str], ticker: str):
+    """Display company's managers
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Stock ticker
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="mgmt",
@@ -17,12 +31,12 @@ def management(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{s_ticker.lower()}-stock"
+            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
         )
         text_soup_market_business_insider = BeautifulSoup(
             requests.get(
@@ -42,7 +56,7 @@ def management(l_args, s_ticker):
                 found_h2s[next_h2.text] = next_table
 
         if found_h2s.get("Management") is None:
-            print(f"No management information in Business Insider for {s_ticker}")
+            print(f"No management information in Business Insider for {ticker}")
             print("")
             return
 
@@ -73,7 +87,7 @@ def management(l_args, s_ticker):
         for s_name in df_management.index:
             df_management.loc[s_name][
                 "Info"
-            ] = f"http://www.google.com/search?q={s_name} {s_ticker.upper()}".replace(
+            ] = f"http://www.google.com/search?q={s_name} {ticker.upper()}".replace(
                 " ", "%20"
             )
 

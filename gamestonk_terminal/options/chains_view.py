@@ -27,6 +27,28 @@ greek_columns = ["delta", "gamma", "theta", "vega", "ask_iv", "bid_iv", "mid_iv"
 df_columns = option_columns + greek_columns
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 
+default_columns = [
+    "mid_iv",
+    "vega",
+    "delta",
+    "gamma",
+    "theta",
+    "volume",
+    "open_interest",
+    "bid",
+    "ask",
+]
+
+
+def check_valid_option_chains_headers(headers: str) -> List[str]:
+    columns = [str(item) for item in headers.split(",")]
+
+    for header in columns:
+        if header not in df_columns:
+            raise argparse.ArgumentTypeError("Invalid option chains header selected!")
+
+    return columns
+
 
 def process_chains(response: requests.models.Response) -> pd.DataFrame:
     """
@@ -88,7 +110,9 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
 def display_chains(symbol: str, expiry: str, other_args: List[str]):
 
     parser = argparse.ArgumentParser(
-        prog="chains", add_help=False, description="Display options chains"
+        prog="chains",
+        add_help=False,
+        description="Display option chains [Source: Tradier]",
     )
 
     parser.add_argument(
@@ -122,25 +146,24 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
         default=-1,
         help="maximum strike price to consider.",
     )
+    parser.add_argument(
+        "-d",
+        "--display",
+        dest="to_display",
+        default=default_columns,
+        type=check_valid_option_chains_headers,
+        help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, delta, "
+        "gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
+    )
 
     chains_df = get_option_chains(symbol, expiry)
-
-    default_columns = [
-        "mid_iv",
-        "delta",
-        "volume",
-        "open_interest",
-        "bid",
-        "ask",
-        "strike",
-        "option_type",
-    ]
-    chains_df = chains_df[default_columns].rename(columns=column_map)
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+        columns = ns_parser.to_display + ["strike", "option_type"]
+        chains_df = chains_df[columns].rename(columns=column_map)
         if ns_parser.max_sp == -1 and ns_parser.min_sp == -1:
             min_strike = np.percentile(chains_df["strike"], 25)
             max_strike = np.percentile(chains_df["strike"], 75)
@@ -201,6 +224,7 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
                 floatfmt=".2f",
             )
         )
+        print("")
 
     except Exception as e:
         print(e)

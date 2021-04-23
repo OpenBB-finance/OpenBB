@@ -122,12 +122,8 @@ def property_weighting(stocks: List[str], other_args: List[str]):
         List of tickers to be included in optimization
     other_args : List[str]
         Command line arguments to be processed with argparse
-
-    Returns
-    -------
-    weights: dict
-        Dictionary of weights where keys are the tickers
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="property",
@@ -136,7 +132,7 @@ def property_weighting(stocks: List[str], other_args: List[str]):
     parser.add_argument(
         "-p",
         "--property",
-        required=True if "-h" not in other_args else False,
+        required=bool("-h" not in other_args),
         type=check_valid_property_type,
         dest="property",
         help="""Property info to weigh. Use one of:
@@ -217,19 +213,16 @@ def property_weighting(stocks: List[str], other_args: List[str]):
 
 
 def max_sharpe(stocks: List[str], other_args: List[str]):
-    """
-    Return a portfolio that maximises the Sharpe Ratio
+    """Return a portfolio that maximises the Sharpe Ratio
 
     Parameters
     ----------
-    stocks: List[str]
+    stocks : List[str]
         List of the stocks to be included in the weights
-
-    Returns
-    -------
-    weights: dict
-        Dictionary of weights where keys are the tickers.
+    other_args : List[str]
+        argparse other args
     """
+
     parser = argparse.ArgumentParser(
         add_help=False, prog="maxsharpe", description="Maximise the Sharpe Ratio"
     )
@@ -273,7 +266,7 @@ def max_sharpe(stocks: List[str], other_args: List[str]):
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return None
+            return
 
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
@@ -309,19 +302,16 @@ def max_sharpe(stocks: List[str], other_args: List[str]):
 
 
 def min_volatility(stocks: List[str], other_args: List[str]):
-    """
-    Return a portfolio that optimizes for minimum volatility
+    """Return a portfolio that optimizes for minimum volatility
 
     Parameters
     ----------
-    stocks: List[str]
+    stocks : List[str]
         List of the stocks to be included in the weights
-
-    Returns
-    -------
-    weights: dict
-        Dictionary of weights where keys are the tickers.
+    other_args : List[str]
+        argparse other args
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="min_volatility",
@@ -354,7 +344,7 @@ def min_volatility(stocks: List[str], other_args: List[str]):
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return None
+            return
 
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
@@ -390,19 +380,16 @@ def min_volatility(stocks: List[str], other_args: List[str]):
 
 
 def max_quadratic_utility(stocks: List[str], other_args: List[str]):
-    """
-    Return a portfolio that maximises the quadratic utility, given some risk aversion
+    """Return a portfolio that maximises the quadratic utility, given some risk aversion
 
     Parameters
     ----------
-    stocks: List[str]
+    stocks : List[str]
         List of the stocks to be included in the weights
-
-    Returns
-    -------
-    weights: dict
-        Dictionary of weights where keys are the tickers.
+    other_args : List[str]
+        argparse other args
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="max_quadratic_utility",
@@ -458,7 +445,7 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return None
+            return
 
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
@@ -499,20 +486,15 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
 
 
 def efficient_risk(stocks: List[str], other_args: List[str]):
-    """
-    Return a portfolio that maximises return for a target risk. The resulting portfolio will have
-        a volatility less than the target (but not guaranteed to be equal)
+    """Return a portfolio that maximises return for a target risk. The resulting portfolio will have
+    a volatility less than the target (but not guaranteed to be equal)
 
-    Parameters
-    ----------
-    stocks: List[str]
+    stocks : List[str]
         List of the stocks to be included in the weights
-
-    Returns
-    -------
-    weights: dict
-        Dictionary of weights where keys are the tickers.
+    other_args : List[str]
+        argparse other args
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="effrisk",
@@ -568,7 +550,7 @@ def efficient_risk(stocks: List[str], other_args: List[str]):
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return None
+            return
 
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
@@ -609,19 +591,16 @@ def efficient_risk(stocks: List[str], other_args: List[str]):
 
 
 def efficient_return(stocks: List[str], other_args: List[str]):
-    """
-    Return a portfolio that minimises volatility for a given target return ('Markowitz portfolio')
+    """Displays a portfolio that minimises volatility for a given target return ('Markowitz portfolio')
 
     Parameters
     ----------
-    stocks: List[str]
+    stocks : List[str]
         List of the stocks to be included in the weights
-
-    Returns
-    -------
-    weights: dict
-        Dictionary of weights where keys are the tickers.
+    other_args : List[str]
+        argparse other args
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="effret",
@@ -676,7 +655,7 @@ def efficient_return(stocks: List[str], other_args: List[str]):
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return None
+            return
 
         if len(stocks) < 2:
             print("Please have at least 2 loaded tickers to calculate weights.\n")
@@ -717,6 +696,16 @@ def efficient_return(stocks: List[str], other_args: List[str]):
 
 
 def show_ef(stocks: List[str], other_args: List[str]):
+    """Display efficient frontier
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of the stocks to be included in the weights
+    other_args : List[str]
+        argparse other args
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="ef",
@@ -756,7 +745,7 @@ def show_ef(stocks: List[str], other_args: List[str]):
         mu = expected_returns.mean_historical_return(stock_prices)
         S = risk_models.sample_cov(stock_prices)
         ef = EfficientFrontier(mu, S)
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         # Generate random portfolios
         n_samples = ns_parser.n_port

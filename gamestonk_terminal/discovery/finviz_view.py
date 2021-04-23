@@ -4,9 +4,10 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import webbrowser
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from finvizfinance.group import valuation, performance, spectrum
 from PIL import Image
+
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 l_GROUPS = [
     "Sector",
@@ -97,6 +98,7 @@ def get_valuation_performance_data(group: str, data_type: str):
     pd.DataFrame
         dataframe with valuation/performance data
     """
+
     if data_type == "valuation":
         df_group = valuation.Valuation().ScreenerView(group=group)
     elif data_type == "performance":
@@ -117,6 +119,7 @@ def get_spectrum_data(group: str):
     data_type : str
         select data type to see data between valuation or performance
     """
+
     spectrum.Spectrum().ScreenerView(group=group)
 
 
@@ -130,6 +133,7 @@ def view_group_data(other_args: List[str], data_type: str):
     data_type : str
         select data type to see data between valuation, performance and spectrum
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="group_data",
@@ -156,12 +160,12 @@ def view_group_data(other_args: List[str], data_type: str):
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return None
 
         if isinstance(ns_parser.group, List):
             ns_parser.group = ns_parser.group[0]
 
-        if data_type == "valuation" or data_type == "performance":
+        if data_type in ("valuation", "performance"):
             df_group = get_valuation_performance_data(ns_parser.group, data_type)
             print(df_group.to_string())
 
@@ -172,7 +176,7 @@ def view_group_data(other_args: List[str], data_type: str):
             img.show()
 
             print("")
-            return ns_parser.group
+            return img
 
         else:
             print(
@@ -180,7 +184,8 @@ def view_group_data(other_args: List[str], data_type: str):
             )
 
         print("")
-        return ""
+        return None
 
     except SystemExit:
         print("")
+        return None

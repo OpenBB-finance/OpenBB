@@ -9,13 +9,14 @@ import matplotlib.dates as mdates
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import numpy as np
+from colorama import Fore, Style
+
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
-from colorama import Fore, Style
 
 
 register_matplotlib_converters()

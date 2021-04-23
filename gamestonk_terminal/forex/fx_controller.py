@@ -101,6 +101,7 @@ class ForexController:
             print(
                 "    edacusum      detects abrupt changes using cumulative sum algorithm"
             )
+
         print("")
 
     def switch(self, an_input: str):
