@@ -392,17 +392,6 @@ def get_open_trades(accountID, other_args):
     if not ns_parser:
         return
 
-
-def get_open_trades(accountID, other_args):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="trades",
-        description="Gets information about open trades.",
-    )
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
     try:
         request = trades.OpenTrades(accountID)
         response = client.request(request)
