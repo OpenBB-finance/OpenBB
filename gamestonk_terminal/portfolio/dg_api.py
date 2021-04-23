@@ -20,9 +20,7 @@ def show_holdings():
     portfolio = degiro.getdata(degiroapi.Data.Type.PORTFOLIO, True)
 
     print("")
-    print(
-        "Stonk\t Size\t last price \t prev close \t breakeven \t % Change"
-    )
+    print("Stonk\t Size\t last price \t prev close \t breakeven \t % Change")
     print("")
 
     # Loop to get stock info based on id provided in portfolio
