@@ -30,6 +30,21 @@ This menu utilizes oanda to enable support for trading forex.
 	* Display the orderbook if Oanda provides one for the forex instrument
 * [positionbook](#positionbook)
 	* Display the positionbook if Oanda provides one for the forex instrument
+* [news](#news)
+	* Latest news of the currency provided by [News API]
+* [bullbear](#bullbear)
+	* Estimate quick sentiment from last 30 messages on board
+* [messages](#messages)
+	* Output up to the 30 last messages on the board
+* [reddit](#reddit)
+	* Gets due diligence from another user's post [Reddit]
+* [edasummary](#edasummary)
+	* Brief summary statistics using exploratory data analysis
+* [edarolling](#edarolling)
+	* Rolling mean and std deviation
+* [edadecompose](#edadecompose)
+	* decomposition in cyclic-trend, season, and residuald
+* [edacusum](#detects abrupt changes using cumulative sum algorithm)
 
 ## summary <a name ="summary"></a>
  ```text
@@ -151,4 +166,80 @@ Plots the current orderbook for loaded instrument if one is provided by Oanda. N
 ```text
 usage: positionbook
 ```
+Plots the current positionbook for the loaded instrument if one is provided by Oanda. Not a live chart.
+
+## news <a name="news"></a>
+
+```text
+news [-n N_NUM]
+```
+
+Prints latest news about currency, including date, title and web link. [Source: News API]
+
+* -n : Number of latest news being printed. Default 10.
+
+## bullbear <a name="bullbear"></a>
+```
+usage: bullbear [-t S_TICKER]
+```
+Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
+  * -t : ticker to gather sentiment from.
+
+## messages <a name="messages"></a>
+```
+usage: messages [-t S_TICKER] [-l N_LIM]
+```
+Print up to 30 of the last messages on the board. [Source: Stocktwits]
+  * -t : get board messages from this ticker. Default pre-loaded.
+  * -l : limit messages shown. Default 30.
+
+## reddit <a name="reddit"></a>
+
+```text
+usage: red [-l N_LIMIT] [-d N_DAYS] [-a]
+```
+
+Print top stock's due diligence from other users. [Source: Reddit]
+
+* -l : limit of posts to retrieve
+* -d : number of prior days to look for
+* -a : "search through all flairs (apart from Yolo and Meme). Default False (i.e. use flairs: DD, technical analysis, Catalyst, News, Advice, Chart, Charts and Setups, Fundamental Analysis, Forex, Trade Idea)
+
+## edasummary <a name="edasummary"></a>
+
+```text
+usage: edasummary
+```
+Summary statistics
+
+## edarolling <a name="edarolling"></a>
+
+```text
+usage: edarolling [-w ROLLING_WINDOW]
+```
+Rolling mean and std deviation
+
+* -w : rolling window. Default 100.
+
+## edadecompose <a name="edadecompose"></a>
+
+```text
+usage: edadecompose [-m]
+```
+Decompose time series as:
+ - Additive Time Series = Level + CyclicTrend + Residual + Seasonality
+ - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
+
+* -m : multiplicative model. Default additive.
+
+## edacusum <a name="edacusum"></a>
+
+```text
+usage: edacusum [-t THRESHOLD] [-d DRIFT]
+```
+Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+
+* -t : threshold. Default (MAX-min)/40.
+* -d : drift. Default (MAX-min)/80.
+=======
 Plots the current positionbook for the loaded instrument if one is provided by Oanda. Not a live chart.
