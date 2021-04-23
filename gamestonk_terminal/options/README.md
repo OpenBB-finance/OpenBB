@@ -100,9 +100,10 @@ In order to run, the selenium webdriver must be installed.
 Currently, this runs on either Chrome or Firefox.  The path to the driver should be defined in [config_terminal.py](#config_terminal.py).
 
 Note this may take more time than other commands to process.
+
 ````
 usage: info [-d DRIVER]
 ````
 * -d/--driver : One of {chrome, firefox}.  This indicates which driver you have installed.
 
-![im](https://user-images.githubusercontent.com/18151143/115454584-efa83a00-a1ee-11eb-9d0f-2558ffa31579.png)
+<img width="989" alt="opinfo" src="https://user-images.githubusercontent.com/25267873/115787028-80cb0c80-a3b9-11eb-97a4-ca208aed3be8.png">

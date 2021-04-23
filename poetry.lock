@@ -2849,6 +2849,14 @@ python-versions = "*"
 six = "*"
 
 [[package]]
+name = "valinvest"
+version = "0.0.2"
+description = "A value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "wcwidth"
 version = "0.2.5"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -3309,51 +3317,30 @@ entrypoints = [
 ]
 ephem = [
     {file = "ephem-3.7.7.1-cp27-cp27m-macosx_10_6_intel.whl", hash = "sha256:0a6d6ed003383f702695094399728052981c567d423b25aa7163b3fd40de3d5a"},
-    {file = "ephem-3.7.7.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:3cbc4f643329c4f64de63584e636625fa9f11b50209386ed99cbf508abe19488"},
     {file = "ephem-3.7.7.1-cp27-cp27m-manylinux2010_i686.whl", hash = "sha256:e73b9997d7b844fabff988d7f66c3bad4e76ec8975ec9c60ec988037bb5c04b1"},
     {file = "ephem-3.7.7.1-cp27-cp27m-manylinux2010_x86_64.whl", hash = "sha256:7619297a1103f6b3dac0c609bfa7c31e17678fb1a02653347ec030487e412031"},
-    {file = "ephem-3.7.7.1-cp27-cp27m-win32.whl", hash = "sha256:7756218a8b72ca50ee4f290b80828073412e7d7023389df5ead5d14839175bda"},
-    {file = "ephem-3.7.7.1-cp27-cp27m-win_amd64.whl", hash = "sha256:b8f9fb5b4184523b98f6629c6c927aeeba80d61df21f07af2844cdae45e1a294"},
     {file = "ephem-3.7.7.1-cp27-cp27mu-manylinux2010_i686.whl", hash = "sha256:37fd1abbebb821381d2865064a6fa9484ffdcd2161cf92193da8d42da79aa7db"},
     {file = "ephem-3.7.7.1-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:ff4e1584cc232d8bc4aea405346eeb8a24b0fbe84c6331d4edb5d4456d19f1c3"},
     {file = "ephem-3.7.7.1-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:c6081a9791e9de6511cddbeb9529bd5550fdb6f9e2a8dc9c2ec85911d67c6d11"},
-    {file = "ephem-3.7.7.1-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:d1d1ac8dc9be47dc6c7ec62800ca6557d03e8be3716c2a10ea0c8f1198c0a701"},
     {file = "ephem-3.7.7.1-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:7f781d73e49caf7989c503a948471f1c8c1f738a450d557413999fb732f4dba3"},
     {file = "ephem-3.7.7.1-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:f0959882bf73c8fe1cb801f42b0989e0ecb9d84b99eb8b8f70d61d16767a1e8a"},
-    {file = "ephem-3.7.7.1-cp35-cp35m-manylinux2014_aarch64.whl", hash = "sha256:06029db6b26f1764ed009360de8530f6cd759411232b3001df1b69ba6afa871d"},
-    {file = "ephem-3.7.7.1-cp35-cp35m-manylinux2014_s390x.whl", hash = "sha256:562baaeb3a46cf2248f97d2ad80092d747024e5dea62ebe50386a04b8e506c10"},
     {file = "ephem-3.7.7.1-cp35-cp35m-win32.whl", hash = "sha256:2bcd953cced045e4232bcb71d60f6ba237f7944c880e83e74cc959449b192dee"},
     {file = "ephem-3.7.7.1-cp35-cp35m-win_amd64.whl", hash = "sha256:fd0b922387df1ad8721f2fafd5dca51ce7105238f968e1532a177b781b8cae0e"},
     {file = "ephem-3.7.7.1-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:e10c2c8afbb9e927d46d9bf3562441da2173ff196790a75ad0e5c5ee920d5922"},
-    {file = "ephem-3.7.7.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:592264e512b5658402e93903343eb26502c6f327df8a71847f3dcaea73908f32"},
     {file = "ephem-3.7.7.1-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:8d586d970c42d62b1fc757a1c7c10679416a43e9e4a77391a05907159ce346f8"},
     {file = "ephem-3.7.7.1-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:1a8ea6a045ff669011f8ecdeffadfc5eaa519fb56ab8dd40508910e9db5ec7b0"},
-    {file = "ephem-3.7.7.1-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:c25993d6554820ff11fdd8f2ddb75bf99e70db01327f09700bf8811201e9daef"},
-    {file = "ephem-3.7.7.1-cp36-cp36m-manylinux2014_s390x.whl", hash = "sha256:9180d953ff4cbe89fc9ccc78aea73f290c0166b8ddb01e9c837b4639a7492ec8"},
     {file = "ephem-3.7.7.1-cp36-cp36m-win32.whl", hash = "sha256:72fdb72c813fc9780726aa732eb2193bbe1663549265ca5a746899215ecfbffd"},
     {file = "ephem-3.7.7.1-cp36-cp36m-win_amd64.whl", hash = "sha256:f5af029f8814aa8617e73b2ddcad2bd1c682ca13c31ee3b6f5825dd5cb43e777"},
     {file = "ephem-3.7.7.1-cp37-cp37m-macosx_10_6_intel.whl", hash = "sha256:e61c68f1c7d304a130bb6b88c1fca6600bbc1a1df6ca9a109b6eba4c6cbd3376"},
-    {file = "ephem-3.7.7.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:fdf5f3ed8bd46ce2bf1145b26aec65a2c08ea7c97cf42b6b439af6e7bc6dc94d"},
     {file = "ephem-3.7.7.1-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:31e2a17ca6f8d6bd44832574fea5461938ba034e52bf551e15e1a4c8f8c6c4fb"},
     {file = "ephem-3.7.7.1-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:1ff5abefa230d5ab40846f1cb27d4f5583d46044fecf10e17bfb559bdc766a47"},
-    {file = "ephem-3.7.7.1-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:5ef34e3cfea0683998e867d7b8de642081e8821fafbd5e1d2dcab503c119c4a2"},
-    {file = "ephem-3.7.7.1-cp37-cp37m-manylinux2014_s390x.whl", hash = "sha256:e2aca9edb59ee2bb3c8c36f17177966bc762da04af994450c8ad61a20fb6acdd"},
     {file = "ephem-3.7.7.1-cp37-cp37m-win32.whl", hash = "sha256:71ea3935c658ee184575fd4cc2aa3e7fd6d6bac4a1ccff9ee5549cee67ff0385"},
     {file = "ephem-3.7.7.1-cp37-cp37m-win_amd64.whl", hash = "sha256:34fd228105b89fefd20608420861a75a184db1edeaf0056cf2f85d2a2f768aee"},
     {file = "ephem-3.7.7.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:189fcaeacb44dc5a1684ad489542f126d99d4a85e87d2fe73864c902f0bc2c71"},
     {file = "ephem-3.7.7.1-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:a5ddf46ced515e4b81dfd22e6408fd06a329c31c6abb10af48d392641c490b0e"},
     {file = "ephem-3.7.7.1-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:3530bee3eb7458d86d4c399f51f5b73ad7ea0441f0b2fb03de41d623789935af"},
-    {file = "ephem-3.7.7.1-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:77193de077e5fff453756144dee978e5fd6978c5c03ce3f67a09bb237e78f9d4"},
-    {file = "ephem-3.7.7.1-cp38-cp38-manylinux2014_s390x.whl", hash = "sha256:095ad42e8df6a5c91e0aeb5a68d76c0800b0283f72fc5f76e6df370ae1fb5537"},
     {file = "ephem-3.7.7.1-cp38-cp38-win32.whl", hash = "sha256:33ad1a71b204aff123250b04e0ff2d5c3b8e9c6c814bf2c675d7752ce5896c02"},
     {file = "ephem-3.7.7.1-cp38-cp38-win_amd64.whl", hash = "sha256:4bc5140cc7218a53ee6d949110f6ed413b8e3165294100515cd0fb29aa8e3637"},
-    {file = "ephem-3.7.7.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:7aa88d2a6d216c2044be2a3b3cb184e9c8a5022f12464220694017ea9d75209d"},
-    {file = "ephem-3.7.7.1-cp39-cp39-manylinux2010_i686.whl", hash = "sha256:1a9822bde93205c67fd3399b26868204b67d9e4442af21a764307e51ea6dc672"},
-    {file = "ephem-3.7.7.1-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:15dd3dbb3864fb853388e39ac3c915c72873507f54ee6b3ede0033b03465d8ba"},
-    {file = "ephem-3.7.7.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:5763919cdf38cd0488172711da504c3be003b7c104ccd2516cc496ff05f146ae"},
-    {file = "ephem-3.7.7.1-cp39-cp39-manylinux2014_s390x.whl", hash = "sha256:cdea23a7caa1178b322e6e76484d40bd021672446ff51b512f35581e0f1b32b7"},
-    {file = "ephem-3.7.7.1-cp39-cp39-win32.whl", hash = "sha256:c3cbc973b334892972445cec3deb99aafd0c57cb4e50679d5f12fc8c51b4e65f"},
-    {file = "ephem-3.7.7.1-cp39-cp39-win_amd64.whl", hash = "sha256:1af920c382980fe3566a31f36bd712973e1ca6049cbe07b4624214d5e1f144bc"},
     {file = "ephem-3.7.7.1.tar.gz", hash = "sha256:36b51a8dc7cfdeb456dd6b8ab811accab8341b2d562ee3c6f4c86f6d3dbb984e"},
 ]
 fbprophet = [
@@ -4959,6 +4946,10 @@ urllib3 = [
 ]
 user-agent = [
     {file = "user_agent-0.1.9.tar.gz", hash = "sha256:8f1ad46cc4aef9f99515ea1c74bb8cacc43e23074c335b2ba2db7735ebe9c0d5"},
+]
+valinvest = [
+    {file = "valinvest-0.0.2-py3-none-any.whl", hash = "sha256:37fadaf30c69e0487fed8d9cc93bb792ca8cf36fed0839e0e755a84738166ab9"},
+    {file = "valinvest-0.0.2.tar.gz", hash = "sha256:9614aaf8019e015c20ea48867ede8a6ea10e1c6410e787314066d7b2e5aeb7dc"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},

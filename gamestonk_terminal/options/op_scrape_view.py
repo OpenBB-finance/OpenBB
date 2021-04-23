@@ -5,8 +5,9 @@ import argparse
 from typing import List
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from selenium.webdriver.chrome.options import Options as cOpts
-from selenium.webdriver.firefox.options import Options as fOpts
+
+# from selenium.webdriver.chrome.options import Options as cOpts
+# from selenium.webdriver.firefox.options import Options as fOpts
 import pandas as pd
 from tabulate import tabulate
 from gamestonk_terminal.config_terminal import (
@@ -63,14 +64,18 @@ def print_options_data(stock: str, other_args: List[str]):
 
     try:
         if browser == "chrome":
-            options = cOpts()
-            options.headless = True
-            driver = webdriver.Chrome(options=options, executable_path=path_to_driver)
+            # commenting this because it breaks when in usage
+            # the downside is that the browser will pop up to get the data
+            # options = cOpts()
+            # options.headless = True
+            driver = webdriver.Chrome(executable_path=path_to_driver)
 
         elif browser == "firefox":
-            options = fOpts()
-            options.headless = True
-            driver = webdriver.Firefox(options=options, executable_path=path_to_driver)
+            # commenting this because it breaks when in usage
+            # the downside is that the browser will pop up to get the data
+            # options = fOpts()
+            # options.headless = True
+            driver = webdriver.Firefox(executable_path=path_to_driver)
 
         page = f"https://www.barchart.com/stocks/quotes/{stock}/overview"
         driver.get(page)

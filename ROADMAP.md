@@ -20,6 +20,7 @@
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
 * [Screener](#Screener)
+* [Forex](#Forex)
 
 ## Additional
 
@@ -63,6 +64,7 @@
 
 ## Fundamental Analysis
 * [x] Rearrange FA menu to have AV and FMP as submenus (@didier) - [PR #166](https://github.com/DidierRLopes/GamestonkTerminal/pull/166)
+* [x] Add Fundamental Analysis score (@didier) - [PR #383](https://github.com/DidierRLopes/GamestonkTerminal/pull/383)
 
 **NEXT**
 * [ ] Add Treasury Yield Curve data (@aia) - [PR #281](https://github.com/DidierRLopes/GamestonkTerminal/pull/281)
@@ -190,6 +192,7 @@ ___
 
 ## Cryptocurrencies
 * [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
 
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
@@ -204,6 +207,13 @@ ___
 * [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
 * [x] Add command to take tickers to portfolio optimization (@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
+
+**NEXT**
+
+---
+
+## Forex
+* [x] Add entire forex menu through Oanda (@alokan) - [PR #360](https://github.com/DidierRLopes/GamestonkTerminal/pull/360)
 
 **NEXT**
 
