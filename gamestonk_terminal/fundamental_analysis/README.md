@@ -6,7 +6,9 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * screen info about the company [Finviz]
 * [mgmt](#mgmt)
   * management team of the company [Business Insider]
-
+* [score](#score)
+  * investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
+         
 [MARKET WATCH](#MARKET_WATCH)
 
 * [income](#income)
@@ -323,3 +325,12 @@ Prints the growth of several financial statement items and ratios over time. Thi
 
 * n : Number of latest years/quarters. Default 1.
 * q : Quarter fundamental data flag. Default False.
+
+
+### score <a name="score"></a>
+
+```text
+usage: score
+```
+
+Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: Financial Modeling Prep]

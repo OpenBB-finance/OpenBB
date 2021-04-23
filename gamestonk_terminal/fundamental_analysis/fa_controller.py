@@ -9,6 +9,7 @@ from gamestonk_terminal.fundamental_analysis import alpha_vantage_controller as 
 from gamestonk_terminal.fundamental_analysis import business_insider_view as biw
 from gamestonk_terminal.fundamental_analysis import (
     financial_modeling_prep_controller as fmpc,
+    financial_modeling_prep_view as fmpv,
 )
 from gamestonk_terminal.fundamental_analysis import finviz_view
 from gamestonk_terminal.fundamental_analysis import market_watch_view
@@ -26,6 +27,7 @@ class FundamentalAnalysisController:
         "help",
         "q",
         "quit",
+        "score",
         "screener",
         "income",
         "balance",
@@ -83,6 +85,9 @@ class FundamentalAnalysisController:
         print("")
         print("   screener      screen info about the company [Finviz]")
         print("   mgmt          management team of the company [Business Insider]")
+        print(
+            "   score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]"
+        )
         print("")
         print("Market Watch API")
         print("   income        income statement of the company")
@@ -136,6 +141,10 @@ class FundamentalAnalysisController:
     def call_screener(self, other_args: List[str]):
         """ Process screener command """
         finviz_view.screener(other_args, self.ticker)
+
+    def call_score(self, other_args: List[str]):
+        """ Process score command """
+        fmpv.valinvest_score(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
         """ Process income command """
