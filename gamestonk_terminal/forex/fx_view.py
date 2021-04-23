@@ -61,17 +61,6 @@ def get_account_summary(accountID, other_args: List[str]):
     if not ns_parser:
         return
 
-<
-def get_account_summary(accountID, other_args: List[str]):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="summary",
-        description="Print some information about your account.",
-    )
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
-
     try:
         request = accounts.AccountSummary(accountID=accountID)
         response = client.request(request)
@@ -281,7 +270,7 @@ def create_order(accountID, instrument, other_args: List[str]):
         print(d_error["errorMessage"], "\n")
     except Exception as e:
         print(e)
- 
+
 
 def cancel_pending_order(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
@@ -348,7 +337,7 @@ def get_pending_orders(accountID, other_args):
         else:
             print(df.to_string(index=False))
         print("")
-        
+
     except V20Error as e:
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
@@ -442,7 +431,7 @@ def get_open_trades(accountID, other_args):
 
             print(df.to_string(index=False))
             print("")
-            
+
         except KeyError:
             print("No trades were found")
             print("")
@@ -510,7 +499,6 @@ def close_trade(accountID, other_args: List[str]):
         print(d_error["errorMessage"], "\n")
     except Exception as e:
         print(e, "\n")
-
 
 
 def show_candles(accountID, instrument, other_args: List[str]):
@@ -623,19 +611,18 @@ def show_candles(accountID, instrument, other_args: List[str]):
             returnfig=True,
             addplot=plots_to_add,
         )
-        
+
         ax[0].set_title(f"{instrument} {ns_parser.granularity}")
         ax[0].legend(legends)
         for i in range(0, len(subplot_legends), 2):
             ax[subplot_legends[i]].legend(subplot_legends[i + 1])
-            
+
         print("")
     except V20Error as e:
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
     except TypeError as e:
         print(e)
-
 
 
 def add_plots(df, ns_parser):
@@ -817,7 +804,6 @@ def get_candles_dataframe(accountID, instrument, parameters):
         print(d_error["errorMessage"], "\n")
 
 
-
 def load(other_args: List[str]):
     """Load a forex instrument to use"""
     parser = argparse.ArgumentParser(
@@ -906,4 +892,3 @@ def format_instrument(instrument, char):
     except TypeError:
         print("Please load an instrument")
         print("")
-
