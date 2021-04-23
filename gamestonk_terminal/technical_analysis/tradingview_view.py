@@ -2,8 +2,9 @@ import argparse
 from typing import List
 import requests
 import pandas as pd
-from gamestonk_terminal import config_terminal as cfg
 from tradingview_ta import TA_Handler
+
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )

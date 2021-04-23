@@ -17,6 +17,7 @@
 * [FRED](#FRED-)
 * [Options](#Options-)
 * [Screener](#Screener-)
+* [Forex](#Forex-)
 
 ## Main
 
@@ -83,6 +84,7 @@ Command|Description|Source
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
 `ratings `      |top ratings updates |[MarketBeat](https://marketbeat.com)
+`darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
 
 &nbsp;
 
@@ -144,6 +146,7 @@ Command|Description
 ----- | ---------
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
 `mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
+`score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
 [Market Watch API](https://markets.businessinsider.com/) |
 `income`        |income statement of the company
 `balance`       |balance sheet of the company
@@ -213,6 +216,8 @@ Command|Description|Source
 `sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
 `short`         |short interest |[Quandl](https://www.quandl.com/)
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
+`dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
+`ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
 
 &nbsp;
 
@@ -269,6 +274,7 @@ Command|Description
 ------ | ------------
 `load`| load cryptocurrency data
 `view`| load and view cryptocurrency data
+`top` | view top coins from coinmarketcap
 
 &nbsp;
 ## Comparison Analysis [»](comparison_analysis/README.md)
@@ -341,6 +347,8 @@ Command|Description|Source
 `volume`        | volume + open interest options trading plot |[Yahoo Finance](https://finance.yahoo.com/)
 `vcalls`        | calls volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
 `vputs`         | puts volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
+`chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
+`info`          | display option information | [Barchart](https://barchart.com/)
 
 &nbsp;
 
@@ -358,6 +366,27 @@ ownership      |ownership (e.g. Float, Insider Own, Short Ratio)
 performance    |performance (e.g. Perf Week, Perf YTD, Volatility M)
 technical      |technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
 signals        |view filter signals (e.g. -s top_gainers)
+
+&nbsp;
+
+
+## Forex [»](forex/README.md)
+Command|Description
+------ | --------
+summary      |display a summary of your account
+calendar     |get information about past or upcoming events which may impact the price
+list         |list your order history
+pending      |get information about pending orders
+cancel       |cancel a pending order by ID
+positions    |get information about your positions
+trades       |see a list of open trades
+closetrade   |close a trade by ID
+load         |specify an instrument to use
+candles      |get a candlestick chart for the forex instrument
+price        |show the current price for the forex instrument
+order        |place a limit order
+orderbook    |display the orderbook if Oanda provides one for the forex instrument
+positionbook |display the positionbook if Oanda provides one for the forex instrument
 
 
 &nbsp;

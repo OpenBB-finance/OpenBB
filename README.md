@@ -260,11 +260,18 @@ These are the ones where a key is necessary:
   * Tradier: https://developer.tradier.com/getting_started
   * Oanda API: https://developer.oanda.com
 
+When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
+
 Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN.
 
 Example:
 ```
 export GT_API_REDDIT_USERNAME=SexyYear
+```
+
+Environment variables can also be set in a `.env` file at the top of the repo. This file is ignored by git so your API keys will stay secret. The above example stored in `.env` would be:
+```
+GT_API_REDDIT_USERNAME=SexyYear
 ```
 
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
@@ -359,6 +366,9 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 [Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+
+Feel free to share loss porn, memes or any questions at https://discord.gg/Up2QGbMKHY
+
 ## Acknowledgments
 
 * [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)

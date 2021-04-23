@@ -16,7 +16,7 @@ from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_controller
 from gamestonk_terminal.due_diligence import dd_controller
-from gamestonk_terminal.fundamental_analysis import fa_menu as fam
+from gamestonk_terminal.fundamental_analysis import fa_controller
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
 from gamestonk_terminal.menu import session
@@ -35,13 +35,7 @@ from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.forex import fx_controller
 
 
-# import warnings
-# warnings.simplefilter("always")
-
-
-# pylint: disable=too-many-branches
-
-
+# pylint: disable=too-many-statements,too-many-branches
 def main():
     """
     Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
@@ -98,6 +92,10 @@ def main():
     menu_parser.add_argument("opt", choices=choices)
     completer = NestedCompleter.from_nested_dict({c: None for c in choices})
 
+    if os.name == "nt":
+        sys.stdin.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")
+
     # Print first welcome message and help
     print("\nWelcome to Gamestonk Terminal 🚀\n")
     should_print_help = True
@@ -117,6 +115,10 @@ def main():
         if should_print_help:
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
             should_print_help = False
+
+        if gtff.ENABLE_QUICK_EXIT:
+            print("Quick exit enabled")
+            break
 
         # Get input command from stdin or user
         if not parsed_stdin and len(sys.argv) > 1:
@@ -199,29 +201,54 @@ def main():
             b_quit = mill.papermill_menu()
 
         elif ns_known_args.opt == "ba":
-            b_quit = ba_controller.menu(s_ticker, s_start)
+            b_quit = ba_controller.menu(
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
+            )
 
         elif ns_known_args.opt == "res":
-            b_quit = rm.res_menu(s_ticker, s_start, s_interval)
+            b_quit = rm.res_menu(
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                s_start,
+                s_interval,
+            )
 
         elif ns_known_args.opt == "ca":
             b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
 
         elif ns_known_args.opt == "fa":
-            b_quit = fam.fa_menu(s_ticker, s_start, s_interval)
+            b_quit = fa_controller.menu(
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                s_start,
+                s_interval,
+            )
 
         elif ns_known_args.opt == "fx":
             b_quit = fx_controller.menu()
 
         elif ns_known_args.opt == "ta":
-            b_quit = ta_controller.menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = ta_controller.menu(
+                df_stock,
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                s_start,
+                s_interval,
+            )
 
         elif ns_known_args.opt == "dd":
-            b_quit = dd_controller.menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = dd_controller.menu(
+                df_stock,
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                s_start,
+                s_interval,
+            )
 
         elif ns_known_args.opt == "eda":
             if s_interval == "1440min":
-                b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
+                b_quit = eda_controller.menu(
+                    df_stock,
+                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                    s_start,
+                    s_interval,
+                )
             else:
                 df_stock = yf.download(s_ticker, start=s_start, progress=False)
                 df_stock = df_stock.rename(
@@ -237,7 +264,12 @@ def main():
                 df_stock.index.name = "date"
                 s_interval = "1440min"
 
-                b_quit = eda_controller.menu(df_stock, s_ticker, s_start, s_interval)
+                b_quit = eda_controller.menu(
+                    df_stock,
+                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                    s_start,
+                    s_interval,
+                )
 
         elif ns_known_args.opt == "op":
             b_quit = op_controller.menu(
@@ -279,7 +311,12 @@ def main():
                 continue
 
             if s_interval == "1440min":
-                b_quit = pred_controller.menu(df_stock, s_ticker, s_start, s_interval)
+                b_quit = pred_controller.menu(
+                    df_stock,
+                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                    s_start,
+                    s_interval,
+                )
             # If stock data is intradaily, we need to get data again as prediction
             # techniques work on daily adjusted data. By default we load data from
             # Alpha Vantage because the historical data loaded gives a larger
@@ -297,7 +334,10 @@ def main():
                     df_stock_pred = df_stock_pred.sort_index(ascending=True)
                     df_stock_pred = df_stock_pred[s_start:]
                     b_quit = pred_controller.menu(
-                        df_stock_pred, s_ticker, s_start, s_interval="1440min"
+                        df_stock_pred,
+                        s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                        s_start,
+                        interval="1440min",
                     )
                 except Exception as e:
                     print(e)
@@ -305,7 +345,12 @@ def main():
                     return
 
         elif ns_known_args.opt == "ra":
-            b_quit = ra_controller.menu(df_stock, s_ticker, s_start, s_interval)
+            b_quit = ra_controller.menu(
+                df_stock,
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                s_start,
+                s_interval,
+            )
 
         elif ns_known_args.opt == "scr":
             b_quit = screener_controller.menu()
@@ -316,9 +361,9 @@ def main():
 
         if b_quit:
             break
-        else:
-            if not main_cmd:
-                should_print_help = True
+
+        if not main_cmd:
+            should_print_help = True
 
     print(
         "Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n"
