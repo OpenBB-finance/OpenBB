@@ -44,7 +44,8 @@ This menu utilizes oanda to enable support for trading forex.
 	* Rolling mean and std deviation
 * [edadecompose](#edadecompose)
 	* decomposition in cyclic-trend, season, and residuald
-* [edacusum](#detects abrupt changes using cumulative sum algorithm)
+* [edacusum](#edacusum)
+	* detects abrupt changes using cumulative sum algorithm
 
 ## summary <a name ="summary"></a>
  ```text
