@@ -229,7 +229,7 @@ def create_order(accountID, instrument, other_args: List[str]):
         "--price",
         dest="price",
         action="store",
-        type=float,
+        type=str,
         required=True,
         help="The price to set for the limit order. ",
     )
@@ -251,37 +251,25 @@ def create_order(accountID, instrument, other_args: List[str]):
     try:
         request = orders.OrderCreate(accountID, data)
         response = client.request(request)
+        order_data = []
+        order_data.append(
+            {
+                "Order ID": response["orderCreateTransaction"]["id"],
+                "Instrument": response["orderCreateTransaction"]["instrument"],
+                "Price": response["orderCreateTransaction"]["price"],
+                "Units": response["orderCreateTransaction"]["units"],
+            }
+        )
 
-        if "orderFillTransaction" in response["orderCreateTransaction"]:
-            order_id = response["orderCreateTransaction"]["orderFillTransaction"]["id"]
-            order_instrument = response["orderCreateTransaction"][
-                "orderFillTransaction"
-            ]["instrument"]
-            units = response["orderCreateTransaction"]["orderFillTransaction"]["units"]
-            price = response["orderCreateTransaction"]["orderFillTransaction"]["price"]
-            print("Order Filled:")
-            print(f"ID: {order_id}")
-            print(f"Instrument: {order_instrument}")
-            print(f"Units: {units}")
-            print(f"Price: {price}")
-            print("")
-        else:
-            order_creation_id = response["orderCreateTransaction"]["id"]
-            order_instrument = response["orderCreateTransaction"]["instrument"]
-            units = response["orderCreateTransaction"]["units"]
-            price = response["orderCreateTransaction"]["price"]
-            print("Order created:")
-            print(f"ID: {order_creation_id}")
-            print(f"Instrument: {order_instrument}")
-            print(f"Units: {units}")
-            print(f"Price: {price}")
-            print("")
+        df = pd.DataFrame.from_dict(order_data)
+        print(df.to_string(index=False))
+        print("")
 
-    except Exception as e:
-        print(e)
     except V20Error as e:
         d_error = eval(e.msg)
-        print(d_error["message"], "\n")
+        print(d_error["errorMessage"], "\n")
+    except Exception as e:
+        print(e)
 
 
 def cancel_pending_order(accountID, other_args: List[str]):
@@ -328,20 +316,26 @@ def get_pending_orders(accountID, other_args):
     try:
         request = orders.OrdersPending(accountID)
         response = client.request(request)
+        pending_data = []
         for i in range(len(response["orders"])):
-            order_id = response["orders"][i]["id"]
-            instrument = response["orders"][i]["instrument"]
-            price = response["orders"][i]["price"]
-            units = response["orders"][i]["units"]
-            create_time = response["orders"][i]["createTime"]
-            time_in_force = response["orders"][i]["timeInForce"]
-            print(f"Order ID: {order_id}")
-            print(f"Instrument: {instrument}")
-            print(f"Price: {price}")
-            print(f"Units: {units}")
-            print(f"Time created: {create_time}")
-            print(f"Time in force: {time_in_force}")
-            print("-" * 30)
+            pending_data.append(
+                {
+                    "Order ID": response["orders"][i]["id"],
+                    "Instrument": response["orders"][i]["instrument"],
+                    "Price": response["orders"][i]["price"],
+                    "Units": response["orders"][i]["units"],
+                    "Time Created": response["orders"][i]["units"],
+                    "Time Created": response["orders"][i]["units"],
+                    "Time In Force": response["orders"][i]["timeInForce"],
+                }
+
+            )
+
+        df = pd.DataFrame.from_dict(pending_data)
+        if not pending_data:
+            print("No pending orders")
+        else:
+            print(df.to_string(index=False))
         print("")
     except V20Error as e:
         d_error = eval(e.msg)
@@ -360,22 +354,22 @@ def get_open_positions(accountID, other_args):
     try:
         request = positions.OpenPositions(accountID)
         response = client.request(request)
+        position_data = []
         for i in range(len(response["positions"])):
-            instrument = response["positions"][i]["instrument"]
-            long_units = response["positions"][i]["long"]["units"]
-            long_pl = response["positions"][i]["long"]["pl"]
-            long_upl = response["positions"][i]["long"]["unrealizedPL"]
-            short_units = response["positions"][i]["short"]["units"]
-            short_pl = response["positions"][i]["short"]["pl"]
-            short_upl = response["positions"][i]["short"]["unrealizedPL"]
-            print(f"Instrument: {instrument}\n")
-            print(f"Long Units: {long_units}")
-            print(f"Total Long P/L: {long_pl}")
-            print(f"Long Unrealized P/L: {long_upl}\n")
-            print(f"Short Units: {short_units}")
-            print(f"Total Short P/L: {short_pl}")
-            print(f"Short Unrealized P/L: {short_upl}")
-            print("-" * 30 + "\n")
+            position_data.append(
+            {
+                "Instrument": response["positions"][i]["instrument"],
+                "Long Units": response["positions"][i]["long"]["units"],
+                "Total Long P/L": response["positions"][i]["long"]["units"],
+                "Unrealized Long P/L": response["positions"][i]["long"]["unrealizedPL"],
+                "Short Units": response["positions"][i]["short"]["units"],
+                "Total Short P/L": response["positions"][i]["short"]["pl"],
+                "Short Unrealized P/L": response["positions"][i]["short"]["unrealizedPL"],
+            }
+            )
+
+        df = pd.DataFrame.from_dict(position_data)
+        print(df.to_string(index=False))
         print("")
 
     except V20Error as e:
@@ -418,7 +412,7 @@ def get_open_trades(accountID, other_args):
                     "unrealizedPL": "Unrealized P/L",
                 }
             )
-            print(df)
+            print(df.to_string(index=False))
             print("")
         except KeyError:
             print("No trades were found")
@@ -468,24 +462,25 @@ def close_trade(accountID, other_args: List[str]):
         request = trades.TradeClose(accountID, ns_parser.orderID, data)
         response = client.request(request)
 
-        order_id = response["orderCreateTransaction"]["tradeClose"]["tradeID"]
-        order_instrument = response["orderFillTransaction"]["instrument"]
-        units = response["orderCreateTransaction"]["units"]
-        price = response["orderFillTransaction"]["price"]
-        pl = response["orderFillTransaction"]["pl"]
-        print("Order closed:")
-        print(f"ID: {order_id}")
-        print(f"Instrument: {order_instrument}")
-        print(f"Units: {units}")
-        print(f"Price: {price}")
-        print(f"P/L: {pl}")
+        close_data = []
+        close_data.append(
+                {
+                    "OrderID": response["orderCreateTransaction"]["tradeClose"]["tradeID"],
+                    "Instrument": response["orderFillTransaction"]["instrument"],
+                    "Units": response["orderCreateTransaction"]["units"],
+                    "Price": response["orderFillTransaction"]["price"],
+                    "P/L": response["orderFillTransaction"]["pl"],
+                }
+            )
+        df = pd.DataFrame.from_dict(close_data)
+        print(df.to_string(index=False))
         print("")
 
-    except Exception as e:
-        print(e, "\n")
     except V20Error as e:
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
+    except Exception as e:
+        print(e, "\n")
 
 
 def show_candles(accountID, instrument, other_args: List[str]):
@@ -518,26 +513,18 @@ def show_candles(accountID, instrument, other_args: List[str]):
     )
     parser.add_argument("-a", "--ad", dest="ad", action="store_true",
                         help="Adds ad (Accumulation/Distribution Indicator) to the chart")
-    parser.add_argument("-A", "--adx", dest="adx", action="store_true",
-                        help="Adds adx (Average Directional Index) the the chart")
     parser.add_argument("-b", "--bbands", dest="bbands",
                         action="store_true", help="Adds Bollinger Bands to the chart")
     parser.add_argument("-C", "--cci", dest="cci", action="store_true",
                         help="Adds cci (Commodity Channel Index) to the chart")
     parser.add_argument("-e", "--ema", dest="ema", action="store_true",
                         help="Adds ema (Exponential Moving Average) to the chart")
-    parser.add_argument("-m", "--macd", dest="macd", action="store_true",
-                        help="Adds macd (Moving Average Convergence Divergence) to the chart")
     parser.add_argument("-o", "--obv", dest="obv", action="store_true",
                         help="Adds obv (On Balance Volume) to the chart")
     parser.add_argument("-r", "--rsi", dest="rsi", action="store_true",
                         help="Adds rsi (Relative Strength Index) to the chart")
-    parser.add_argument("-R", "--aroon", dest="aroon", action="store_true",
-                        help="Adds Aroon to the chart.")
     parser.add_argument("-s", "--sma", dest="sma", action="store_true",
                         help="Adds sma (Simple Moving Average) to the chart")
-    parser.add_argument("-t", "--stoch", dest="stoch", action="store_true",
-                        help="Adds stochastic oscillator to the chart")
     parser.add_argument("-v", "--vwap", dest="vwap", action="store_true",
                         help="Adds vwap (Volume Weighted Average Price) to the chart")
 
@@ -546,13 +533,13 @@ def show_candles(accountID, instrument, other_args: List[str]):
         return
 
     parameters = {}
-    parameters["granularity"] = ns_parser.granularity
+    parameters["granularity"] = ns_parser.granularity.upper()
     parameters["count"] = ns_parser.candlecount
     try:
         instrument = format_instrument(instrument, "_")
         df = get_candles_dataframe(accountID, instrument, parameters)
 
-        plots_to_add, legends, subplots = add_plots(df, ns_parser)
+        plots_to_add, legends, subplot_legends = add_plots(df, ns_parser)
 
         if gtff.USE_ION:
             plt.ion()
@@ -567,10 +554,9 @@ def show_candles(accountID, instrument, other_args: List[str]):
             addplot=plots_to_add,
         )
         ax[0].set_title(f"{instrument} {ns_parser.granularity}")
-        print(legends)
         ax[0].legend(legends)
-        for i in range(0, len(subplots), 2):
-            ax[subplots.pop(0)].legend(subplots.pop(0))
+        for i in range(0, len(subplot_legends), 2):
+            ax[subplot_legends[i]].legend(subplot_legends[i+1])
         print("")
     except V20Error as e:
         d_error = eval(e.msg)
@@ -583,28 +569,14 @@ def add_plots(df, ns_parser):
     panel_number = 2
     plots_to_add = []
     legends = []
-    subplots = []
+    subplot_legends = []
 
     if ns_parser.ad:
         ad = ta.ad(df["High"], df["Low"], df["Close"], df["Volume"])
         ad_plot = mpf.make_addplot(ad, panel=panel_number)
         plots_to_add.append(ad_plot)
-        subplots.extend([panel_number*2, ["AD"]])
+        subplot_legends.extend([panel_number*2, ["AD"]])
         panel_number +=1
-
-    if ns_parser.adx:
-        adx = ta.adx(df["High"], df["Low"], df["Close"])
-        adx_plot = mpf.make_addplot(adx, panel=panel_number)
-        plots_to_add.append(adx_plot)
-        subplots.extend([panel_number*2, ["ADX"]])
-        panel_number +=1
-
-    if ns_parser.aroon:
-        aroon = ta.aroon(df["High"], df["Low"])
-        aroon_plot = mpf.make_addplot(aroon, panel=panel_number)
-        plots_to_add.append(aroon_plot)
-        subplots.extend([panel_number*2, ["Aroon"]])
-        panel_number += 1
 
     if ns_parser.bbands:
         bbands = ta.bbands(df["Close"])
@@ -617,7 +589,7 @@ def add_plots(df, ns_parser):
         cci = ta.cci(df["High"], df["Low"], df["Close"])
         cci_plot = mpf.make_addplot(cci, panel=panel_number)
         plots_to_add.append(cci_plot)
-        subplots.extend([panel_number*2, ["CCI"]])
+        subplot_legends.extend([panel_number*2, ["CCI"]])
         panel_number += 1
 
     if ns_parser.ema:
@@ -630,39 +602,23 @@ def add_plots(df, ns_parser):
         rsi = ta.rsi(df["Close"])
         rsi_plot = mpf.make_addplot(rsi, panel=panel_number)
         plots_to_add.append(rsi_plot)
-        subplots.extend([panel_number*2, ["RSI"]])
-        panel_number += 1
-
-    if ns_parser.macd:
-        macd = ta.macd(df["Close"])
-        macd_plot = mpf.make_addplot(macd, panel=panel_number)
-        plots_to_add.append(macd_plot)
-        subplots.append(panel_number*2)
-        subplots.append(["Fast","Slow","Signal"])
-        print(subplots)
+        subplot_legends.extend([panel_number*2, ["RSI"]])
         panel_number += 1
 
     if ns_parser.obv:
         obv = ta.obv(df["Close"], df["Volume"])
         obv_plot = mpf.make_addplot(obv, panel=panel_number)
         plots_to_add.append(obv_plot)
-        subplots.extend([panel_number*2, ["OBV"]])
+        subplot_legends.extend([panel_number*2, ["OBV"]])
         panel_number += 1
 
     if ns_parser.sma:
-        sma_length = [20,50]
+        sma_length = [20, 50]
         for length in sma_length:
             sma = ta.sma(df["Close"], length=length)
             sma_plot = mpf.make_addplot(sma, panel=0)
             plots_to_add.append(sma_plot)
             legends.append(f"{length} SMA")
-
-    if ns_parser.stoch:
-        stoch = ta.stoch(df["High"], df["Low"], df["Close"])
-        stoch_plot = mpf.make_addplot(stoch, panel=panel_number)
-        plots_to_add.append(stoch_plot)
-        subplots.extend([panel_number*2, ["Stoch"]])
-        panel_number += 1
 
     if ns_parser.vwap:
         vwap = ta.vwap(df["High"], df["Low"], df["Close"], df["Volume"])
@@ -670,7 +626,7 @@ def add_plots(df, ns_parser):
         plots_to_add.append(vwap_plot)
         legends.append("vwap")
 
-    return plots_to_add, legends, subplots
+    return plots_to_add, legends, subplot_legends
 
 
 def calendar(instrument, other_args: List[str]):
@@ -865,8 +821,11 @@ def format_instrument(instrument, char):
         if char not in instrument:
             instrument_list = list(instrument)
             instrument_list.pop(3)
-            instrument_list.insert(3, char)
-            instrument = "".join(map(str, instrument_list))
+            if char == " ":
+                instrument = "".join(map(str, instrument_list))
+            else:
+                instrument_list.insert(3, char)
+                instrument = "".join(map(str, instrument_list))
         return instrument
     except TypeError:
         print("Please load an instrument")
