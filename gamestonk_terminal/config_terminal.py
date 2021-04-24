@@ -48,7 +48,7 @@ TRADIER_TOKEN = os.getenv("GT_TRADIER_TOKEN") or "REPLACE_ME"
 
 # Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
 WEBDRIVER_TO_USE = "chrome"
-PATH_TO_SELENIUM_DRIVER = "/Users/Jamie/Downloads/chromedriver"  # Replace with "PATH"
+PATH_TO_SELENIUM_DRIVER = None # Replace with "PATH"
 
 # https://coinmarketcap.com/api/
 COINMARKETCAP_KEY = os.getenv("GT_CMC_API_KEY") or "REPLACE_ME"

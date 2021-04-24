@@ -81,7 +81,7 @@ class BacktestingController:
         bt_view.ema_cross(self.ticker, self.start, other_args)
 
     def call_rsi(self, other_args: List[str]):
-        bt_view.rsi(self.ticker, self.start, other_args)
+        bt_view.rsi_strat(self.ticker, self.start, other_args)
 
 
 def menu(ticker: str, start: Union[str, datetime]):
