@@ -44,7 +44,7 @@ usage: ema_cross [-l] [-s] [--spy] [--no_bench] [--no_short]
 im
 ### RSI <a name="RSI"></a>
 This strategy goes long when the RSI is "oversold" - defined as the low parameter.  It goes short when
-the RSI is "overbought" - defined as the high (upper) paramter
+the RSI is "overbought" - defined as the high (upper) parameter
 ````
 usage: rsi [-u] [-l] [-p] [--spy] [--no_bench] [--no_short] 
 ````

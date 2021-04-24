@@ -1,7 +1,7 @@
 """bt view module"""
 __docformat__ = "numpy"
 import argparse
-from typing import List
+from typing import List, Union
 from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -13,7 +13,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.backtesting.bt_helper import buy_and_hold
 
 
-def simple_ema(ticker: str, start_date: datetime, other_args: List[str]):
+def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[str]):
 
     parser = argparse.ArgumentParser(add_help=False, prog="ema")
     parser.add_argument(
@@ -87,7 +87,7 @@ def simple_ema(ticker: str, start_date: datetime, other_args: List[str]):
         return
 
 
-def ema_cross(ticker: str, start_date: datetime, other_args: List[str]):
+def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[str]):
     parser = argparse.ArgumentParser(add_help=False, prog="ema_cross")
     parser.add_argument(
         "-l", "--long", default=50, dest="long", type=int, help="Long EMA period"
@@ -185,7 +185,7 @@ def ema_cross(ticker: str, start_date: datetime, other_args: List[str]):
         return
 
 
-def rsi_strat(ticker: str, start_date: datetime, other_args: List[str]):
+def rsi_strat(ticker: str, start_date: Union[datetime, str], other_args: List[str]):
     parser = argparse.ArgumentParser(add_help=False, prog="rsi_strat")
     parser.add_argument(
         "-p",
@@ -240,7 +240,7 @@ def rsi_strat(ticker: str, start_date: datetime, other_args: List[str]):
         rsi = pd.DataFrame(ta.rsi(prices[ticker], ns_parser.periods))
         rsi.columns = [ticker]
 
-        signal = 0*rsi.copy()
+        signal = 0 * rsi.copy()
         signal[rsi > ns_parser.high] = -1
         signal[rsi < ns_parser.low] = 1
         signal[rsi.isnull()] = 0
