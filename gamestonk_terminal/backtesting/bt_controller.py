@@ -1,0 +1,116 @@
+"""Backtesting Controller Module"""
+__docformat__ = "numpy"
+
+import argparse
+import os
+from typing import List, Union
+from datetime import datetime
+import pandas as pd
+import matplotlib.pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.backtesting import bt_view
+
+
+class BacktestingController:
+    """Backtesting Class """
+
+    CHOICES = ["help", "q", "quit", "ema", "ema_cross", "rsi"]
+
+    def __init__(
+        self,
+        ticker: str,
+        start: Union[datetime, str],
+    ):
+        self.ticker = ticker
+        self.start = start
+        self.bt_parser = argparse.ArgumentParser(add_help=False, prog="bt")
+        self.bt_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+
+    def print_help(self):
+        """Print help"""
+
+        print("Back Testing Menu\n")
+        print("   help        show this backtesting menu again")
+        print("   q           quit this menu, and shows back to main menu")
+        print("   quit        quit to abandon program")
+        print("")
+        print("   ema         buy when price exceeds EMA(l)")
+        print("   ema_cross   buy when EMA(short) > EMA(long) ")
+        print("   rsi         buy when RSI < low and sell when RSI > high")
+        print("")
+
+    def switch(self, an_input: str):
+        """Process and dispatch input
+
+        Returns
+        -------
+        True, False or None
+            False - quit the menu
+            True - quit the program
+            None - continue in the menu
+        """
+
+        (known_args, other_args) = self.bt_parser.parse_known_args(an_input.split())
+
+        return getattr(
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        )(other_args)
+
+    def call_help(self, _):
+        """Process Help command"""
+        self.print_help()
+
+    def call_q(self, _):
+        """Process Q command - quit the menu"""
+        return False
+
+    def call_quit(self, _):
+        """Process Quit command - quit the program"""
+        return True
+
+    def call_ema(self, other_args: List[str]):
+        bt_view.simple_ema(self.ticker, self.start, other_args)
+
+    def call_ema_cross(self, other_args: List[str]):
+        bt_view.ema_cross(self.ticker, self.start, other_args)
+
+    def call_rsi(self, other_args: List[str]):
+        bt_view.rsi(self.ticker, self.start, other_args)
+
+
+def menu(ticker: str, start: Union[str, datetime]):
+    """Technical Analysis Menu"""
+
+    bt_controller = BacktestingController(ticker, start)
+    bt_controller.call_help(None)
+
+    while True:
+        # Get input command from user
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            completer = NestedCompleter.from_nested_dict(
+                {c: None for c in bt_controller.CHOICES}
+            )
+            an_input = session.prompt(
+                f"{get_flair()} (ta)> ",
+                completer=completer,
+            )
+        else:
+            an_input = input(f"{get_flair()} (bt)> ")
+
+        try:
+            plt.close("all")
+
+            process_input = bt_controller.switch(an_input)
+
+            if process_input is not None:
+                return process_input
+
+        except SystemExit:
+            print("The command selected doesn't exist\n")
+            continue

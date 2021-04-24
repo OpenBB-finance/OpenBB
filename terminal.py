@@ -33,6 +33,7 @@ from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.forex import fx_controller
+from gamestonk_terminal.backtesting import bt_controller
 
 
 # pylint: disable=too-many-statements,too-many-branches
@@ -76,6 +77,7 @@ def main():
         "res",
         "fa",
         "ta",
+        "bt",
         "dd",
         "eda",
         "pred",
@@ -357,6 +359,11 @@ def main():
 
         elif ns_known_args.opt == "scr":
             b_quit = screener_controller.menu()
+
+        elif ns_known_args.opt == "bt":
+            b_quit = bt_controller.menu(
+                s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
+            )
 
         else:
             print("Shouldn't see this command!")
