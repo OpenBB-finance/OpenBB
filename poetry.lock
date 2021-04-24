@@ -250,6 +250,21 @@ python-versions = "*"
 beautifulsoup4 = "*"
 
 [[package]]
+name = "bt"
+version = "0.2.9"
+description = "A flexible backtesting framework for Python"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+
+[package.dependencies]
+ffn = ">=0.3.5"
+pyprind = ">=2.11"
+
+[package.extras]
+dev = ["black (>=20.8b1)", "codecov", "coverage", "cython (>=0.25)", "flake8", "flake8-black", "future", "mock", "nose", "numpy (>=1)", "pandas (>=0.19)", "matplotlib (>=2)", "ffn (>=0.3.5)", "pyprind (>=2.11)"]
+
+[[package]]
 name = "cachetools"
 version = "4.2.1"
 description = "Extensible memoizing collections and decorators"
@@ -521,6 +536,28 @@ python-dateutil = ">=2.8.0"
 setuptools-git = ">=1.2"
 
 [[package]]
+name = "ffn"
+version = "0.3.6"
+description = "Financial functions for Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+decorator = ">=4"
+future = ">=0.15"
+matplotlib = ">=1"
+numpy = ">=1.5"
+pandas = ">=0.19"
+pandas-datareader = ">=0.2"
+scikit-learn = ">=0.15"
+scipy = ">=0.15"
+tabulate = ">=0.7.5"
+
+[package.extras]
+dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "future", "mock", "nose"]
+
+[[package]]
 name = "filelock"
 version = "3.0.12"
 description = "A platform independent file lock."
@@ -654,7 +691,7 @@ name = "future"
 version = "0.18.2"
 description = "Clean single-source support for Python 3 and 2"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
@@ -1581,6 +1618,19 @@ pytz = ">=2017.2"
 test = ["pytest (>=4.0.2)", "pytest-xdist", "hypothesis (>=3.58)"]
 
 [[package]]
+name = "pandas-datareader"
+version = "0.9.0"
+description = "Data readers extracted from the pandas codebase,should be compatible with recent pandas versions"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+lxml = "*"
+pandas = ">=0.23"
+requests = ">=2.19.0"
+
+[[package]]
 name = "pandas-ta"
 version = "0.2.45b"
 description = "An easy to use Python 3 Pandas Extension with 130+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
@@ -2000,6 +2050,14 @@ scipy = ">=1.3,<2.0"
 
 [package.extras]
 optionals = ["cvxopt (>=1.2,!=1.2.5.post1,<2.0)", "scikit-learn (>=0.24.1,<0.25.0)", "matplotlib (>=3.2.0,<4.0.0)"]
+
+[[package]]
+name = "pyprind"
+version = "2.11.3"
+description = "Python Progress Bar and Percent Indicator Utility"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pyrsistent"
@@ -2970,7 +3028,7 @@ prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "t
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "2088d5cb7d1789cabe8d0f0f211ec599f56e630b4997527b9838d3ecf517f04c"
+content-hash = "d97a86dcbb2519f58212f7d3f75384be251904975529aae55cdb33cdfc7dcb93"
 
 [metadata.files]
 absl-py = [
@@ -3102,6 +3160,17 @@ bpemb = [
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
+]
+bt = [
+    {file = "bt-0.2.9-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:5654e5639ffd0778714d567ae14fb06d485e43becb720a0dc5a38b405251485e"},
+    {file = "bt-0.2.9-cp36-cp36m-win_amd64.whl", hash = "sha256:5d6dd92fd6aa1efbade3efee980add709fc591a8b007643016f2e0cbf7372daf"},
+    {file = "bt-0.2.9-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:637fd917f57d0302b17968025650be7d8b2b6da32c2c7daea9ae48f6a66cbb8c"},
+    {file = "bt-0.2.9-cp37-cp37m-win_amd64.whl", hash = "sha256:55a9cf1ca3aa2c425a48fc1e8d324cd5959d4d189e221f7744c1c6e30149c61b"},
+    {file = "bt-0.2.9-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:5dbf1ced108a6f2086b927dcf17ecd1deff7d98266d7f52ab3ff43be4a349ec3"},
+    {file = "bt-0.2.9-cp38-cp38-win_amd64.whl", hash = "sha256:e77a56adc7bcac285df2c70e714b8724fc92fa1beb8de4b1fd991ab3862f84b0"},
+    {file = "bt-0.2.9-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:a1aed6e0ee3fa3b6f5bcef1f26d29e2a96c8329ea54894362014e20012de053b"},
+    {file = "bt-0.2.9-cp39-cp39-win_amd64.whl", hash = "sha256:399bedbf48026899e85536ea8cbd21459461346638ae20f439a09bc75fa131e9"},
+    {file = "bt-0.2.9.tar.gz", hash = "sha256:d162d71aaaaf7265a848d1fc0040f503add32dac2f9f3127bece0d74c22efb9b"},
 ]
 cachetools = [
     {file = "cachetools-4.2.1-py3-none-any.whl", hash = "sha256:1d9d5f567be80f7c07d765e21b814326d78c61eb0c3a637dffc0e5d1796cb2e2"},
@@ -3331,6 +3400,10 @@ ephem = [
 ]
 fbprophet = [
     {file = "fbprophet-0.6.tar.gz", hash = "sha256:de7eaa16500e4dba69a0706906775cbe96668a6fe48354ee2fff820d9e6a899b"},
+]
+ffn = [
+    {file = "ffn-0.3.6-py2.py3-none-any.whl", hash = "sha256:1e55e8caf6b63dce2f164cc4d3b8a02b678be7ed12990cafb2006b818a9a09e7"},
+    {file = "ffn-0.3.6.tar.gz", hash = "sha256:4a79e72e06ff328e333ffe97010b1ce110bcd694fcd03be7351bf5065cd273e8"},
 ]
 filelock = [
     {file = "filelock-3.0.12-py3-none-any.whl", hash = "sha256:929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"},
@@ -4038,6 +4111,10 @@ pandas = [
     {file = "pandas-1.1.5-cp39-cp39-win_amd64.whl", hash = "sha256:edda9bacc3843dfbeebaf7a701763e68e741b08fccb889c003b0a52f0ee95782"},
     {file = "pandas-1.1.5.tar.gz", hash = "sha256:f10fc41ee3c75a474d3bdf68d396f10782d013d7f67db99c0efbfd0acb99701b"},
 ]
+pandas-datareader = [
+    {file = "pandas-datareader-0.9.0.tar.gz", hash = "sha256:b2cbc1e16a6ab9ff1ed167ae2ea92839beab9a20823bd00bdfb78155fa04f891"},
+    {file = "pandas_datareader-0.9.0-py3-none-any.whl", hash = "sha256:fd9ce1238114dd199c32662a9d788271032580960bcf029e64b814d33d17477c"},
+]
 pandas-ta = [
     {file = "pandas_ta-0.2.45b.tar.gz", hash = "sha256:2adde7d3ecec5d96b032b6d80491fb2c9b7952626a3c2cf01fe7ca78f35ebe38"},
 ]
@@ -4267,6 +4344,10 @@ pyparsing = [
 pyportfolioopt = [
     {file = "PyPortfolioOpt-1.4.1-py3-none-any.whl", hash = "sha256:73f0b4ac2a5d879879a7a91af038b4d7ff82e9998fb2cad7c249302294e8c09e"},
     {file = "PyPortfolioOpt-1.4.1.tar.gz", hash = "sha256:e6c8e983db92cd13caf41d87fb4dcd945d37053f28b75dd19b5be699b6b1d19e"},
+]
+pyprind = [
+    {file = "PyPrind-2.11.3-py2.py3-none-any.whl", hash = "sha256:cc8edb66aabb18f25f7a3cce65312b3bc64b49992ddc93ba4cf511e5e25c1be3"},
+    {file = "PyPrind-2.11.3.tar.gz", hash = "sha256:e37dcab6e1a9c8e0a7f0fce65fde7a79e2deda1c75aa015910a49e2137b54cbf"},
 ]
 pyrsistent = [
     {file = "pyrsistent-0.14.11.tar.gz", hash = "sha256:3ca82748918eb65e2d89f222b702277099aca77e34843c5eb9d52451173970e2"},
@@ -4582,7 +4663,6 @@ scikit-learn = [
     {file = "scikit_learn-0.24.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:c658432d8a20e95398f6bb95ff9731ce9dfa343fdf21eea7ec6a7edfacd4b4d9"},
     {file = "scikit_learn-0.24.1-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:9dfa564ef27e8e674aa1cc74378416d580ac4ede1136c13dd555a87996e13422"},
     {file = "scikit_learn-0.24.1-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:9c6097b6a9b2bafc5e0f31f659e6ab5e131383209c30c9e978c5b8abdac5ed2a"},
-    {file = "scikit_learn-0.24.1-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:5580eba7345a4d3b097be2f067cc71a306c44bab19e8717a30361f279c929bea"},
     {file = "scikit_learn-0.24.1-cp36-cp36m-win32.whl", hash = "sha256:7b04691eb2f41d2c68dbda8d1bd3cb4ef421bdc43aaa56aeb6c762224552dfb6"},
     {file = "scikit_learn-0.24.1-cp36-cp36m-win_amd64.whl", hash = "sha256:1adf483e91007a87171d7ce58c34b058eb5dab01b5fee6052f15841778a8ecd8"},
     {file = "scikit_learn-0.24.1-cp37-cp37m-macosx_10_13_x86_64.whl", hash = "sha256:ddb52d088889f5596bc4d1de981f2eca106b58243b6679e4782f3ba5096fd645"},
@@ -4590,7 +4670,6 @@ scikit-learn = [
     {file = "scikit_learn-0.24.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:0567a2d29ad08af98653300c623bd8477b448fe66ced7198bef4ed195925f082"},
     {file = "scikit_learn-0.24.1-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:99349d77f54e11f962d608d94dfda08f0c9e5720d97132233ebdf35be2858b2d"},
     {file = "scikit_learn-0.24.1-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:83b21ff053b1ff1c018a2d24db6dd3ea339b1acfbaa4d9c881731f43748d8b3b"},
-    {file = "scikit_learn-0.24.1-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:abe835a851610f87201819cb315f8d554e1a3e8128912783a31e87264ba5ffb7"},
     {file = "scikit_learn-0.24.1-cp37-cp37m-win32.whl", hash = "sha256:c3deb3b19dd9806acf00cf0d400e84562c227723013c33abefbbc3cf906596e9"},
     {file = "scikit_learn-0.24.1-cp37-cp37m-win_amd64.whl", hash = "sha256:d54dbaadeb1425b7d6a66bf44bee2bb2b899fe3e8850b8e94cfb9c904dcb46d0"},
     {file = "scikit_learn-0.24.1-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:3c4f07f47c04e81b134424d53c3f5e16dfd7f494e44fd7584ba9ce9de2c5e6c1"},
@@ -4598,7 +4677,6 @@ scikit-learn = [
     {file = "scikit_learn-0.24.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:4ddd2b6f7449a5d539ff754fa92d75da22de261fd8fdcfb3596799fadf255101"},
     {file = "scikit_learn-0.24.1-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:826b92bf45b8ad80444814e5f4ac032156dd481e48d7da33d611f8fe96d5f08b"},
     {file = "scikit_learn-0.24.1-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:259ec35201e82e2db1ae2496f229e63f46d7f1695ae68eef9350b00dc74ba52f"},
-    {file = "scikit_learn-0.24.1-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:9599a3f3bf33f73fed0fe06d1dfa4e6081365a58c1c807acb07271be0dce9733"},
     {file = "scikit_learn-0.24.1-cp38-cp38-win32.whl", hash = "sha256:8772b99d683be8f67fcc04789032f1b949022a0e6880ee7b75a7ec97dbbb5d0b"},
     {file = "scikit_learn-0.24.1-cp38-cp38-win_amd64.whl", hash = "sha256:ed9d65594948678827f4ff0e7ae23344e2f2b4cabbca057ccaed3118fdc392ca"},
     {file = "scikit_learn-0.24.1-cp39-cp39-macosx_10_13_x86_64.whl", hash = "sha256:8aa1b3ac46b80eaa552b637eeadbbce3be5931e4b5002b964698e33a1b589e1e"},
@@ -4606,7 +4684,6 @@ scikit-learn = [
     {file = "scikit_learn-0.24.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:087dfede39efb06ab30618f9ab55a0397f29c38d63cd0ab88d12b500b7d65fd7"},
     {file = "scikit_learn-0.24.1-cp39-cp39-manylinux2010_i686.whl", hash = "sha256:895dbf2030aa7337649e36a83a007df3c9811396b4e2fa672a851160f36ce90c"},
     {file = "scikit_learn-0.24.1-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:9a24d1ccec2a34d4cd3f2a1f86409f3f5954cc23d4d2270ba0d03cf018aa4780"},
-    {file = "scikit_learn-0.24.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:54be0a60a5a35005ad69c75902e0f5c9f699db4547ead427e97ef881c3242e6f"},
     {file = "scikit_learn-0.24.1-cp39-cp39-win32.whl", hash = "sha256:fab31f48282ebf54dd69f6663cd2d9800096bad1bb67bbc9c9ac84eb77b41972"},
     {file = "scikit_learn-0.24.1-cp39-cp39-win_amd64.whl", hash = "sha256:4562dcf4793e61c5d0f89836d07bc37521c3a1889da8f651e2c326463c4bd697"},
 ]
