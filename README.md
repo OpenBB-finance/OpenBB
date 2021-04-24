@@ -19,6 +19,7 @@
 [![GitHub release](https://img.shields.io/github/release/DidierRLopes/GamestonkTerminal.svg?maxAge=3600)](https://github.com/DidierRLopes/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
 
 
 <!-- PROJECT LOGO -->
