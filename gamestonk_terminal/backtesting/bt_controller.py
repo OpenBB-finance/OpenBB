@@ -2,10 +2,8 @@
 __docformat__ = "numpy"
 
 import argparse
-import os
 from typing import List, Union
 from datetime import datetime
-import pandas as pd
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
