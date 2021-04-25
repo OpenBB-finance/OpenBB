@@ -12,7 +12,11 @@ from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale, check_non_negative
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    plot_autoscale,
+    check_non_negative,
+)
 import pandas as pd
 import pandas_ta as ta
 import mplfinance as mpf

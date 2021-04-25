@@ -193,6 +193,7 @@ class ForexController:
         s_start = pd.to_datetime(df.index.values[0])
         ba_controller.menu(instrument, s_start)
 
+
 def menu():
     """Oanda Menu"""
     fx_controller = ForexController()
