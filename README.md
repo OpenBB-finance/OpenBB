@@ -59,8 +59,6 @@
       <ul>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
-        <li><a href="#other-issues">Other Issues</a></li>
-        <li><a href="#modulenotfounderror">ModuleNotFoundError</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
         <li><a href="#usage">Usage</a></li>
@@ -140,7 +138,6 @@ conda activate gst
 ```
 *The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
 
-
 8. Install poetry dependencies
 ```
 poetry install
@@ -154,6 +151,8 @@ python terminal.py
 ```
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
+
+**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/DidierRLopes/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
 
