@@ -154,6 +154,9 @@ This is a library for package management, and ensures a smoother experience than
 ```
 python terminal.py
 ```
+10. (Windows - Optional) Speeding up opening process in the future
+
+After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
