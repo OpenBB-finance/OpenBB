@@ -38,6 +38,10 @@ This menu utilizes oanda to enable support for trading forex.
 	* Output up to the 30 last messages on the board
 * [reddit](#reddit)
 	* Gets due diligence from another user's post [Reddit]
+* [infer](#infer)
+	* Infer about stock's sentiment from latest tweets
+* [sentiment](#sentiment)
+	* In-depth sentiment prediction from tweets over time
 * [edasummary](#edasummary)
 	* Brief summary statistics using exploratory data analysis
 * [edarolling](#edarolling)
@@ -205,6 +209,23 @@ Print top stock's due diligence from other users. [Source: Reddit]
 * -l : limit of posts to retrieve
 * -d : number of prior days to look for
 * -a : "search through all flairs (apart from Yolo and Meme). Default False (i.e. use flairs: DD, technical analysis, Catalyst, News, Advice, Chart, Charts and Setups, Fundamental Analysis, Forex, Trade Idea)
+
+## infer <a name="infer"></a>
+```
+usage: infer [-n N_NUM]
+```
+Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled version of the powerful BERT transformer model. Not only time period of these, but also frequency. Inspired by https://towardsdatascience.com/sentiment-analysis-for-stock-price-prediction-in-python-bed40c65d178. [Source: Twitter]
+
+* -n : num of latest tweets to infer from. Default 100.
+
+## sentiment <a name="sentiment"></a>
+```
+usage: sentiment [-n N_NUM] [-d N_DAYS_PAST]
+```
+Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled version of the powerful BERT transformer model. Note that a big num of tweets extracted per hour in conjunction with a high number of days in the past, will make the algorithm take a long period of time to estimate sentiment. Inspired by https://towardsdatascience.com/sentiment-analysis-for-stock-price-prediction-in-python-bed40c65d178. [Source: Twitter]
+
+* -n : num of tweets to extract per hour. Default 100.
+* -d : num of days in the past to extract tweets. Default 7.
 
 ## edasummary <a name="edasummary"></a>
 

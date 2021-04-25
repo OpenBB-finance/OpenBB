@@ -7,7 +7,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.due_diligence import news_view, reddit_view
-from gamestonk_terminal.behavioural_analysis import stocktwits_view
+from gamestonk_terminal.behavioural_analysis import stocktwits_view, twitter_view
 from gamestonk_terminal.exploratory_data_analysis import eda_api
 
 account = cfg.OANDA_ACCOUNT
@@ -37,12 +37,14 @@ class ForexController:
         "news",
         "bullbear",
         "messages",
+        "reddit",
+        "infer",
+        "sentiment",
         "edasummary",
         "edarolling",
         "edadecompose",
         "edacusum",
         "edahist",
-        "reddit",
     ]
 
     def __init__(self):
@@ -221,6 +223,12 @@ class ForexController:
     def call_reddit(self, other_args: List[str]):
         instrument = fx_view.format_instrument(self.instrument, " ")
         reddit_view.due_diligence(other_args, instrument)
+
+    def call_infer(self, other_args: List[str]):
+        twitter_view.inference(other_args, self.instrument)
+
+    def call_sentiment(self, other_args: List[str]):
+        twitter_view.sentiment(other_args, self.instrument)
 
 
 def menu():

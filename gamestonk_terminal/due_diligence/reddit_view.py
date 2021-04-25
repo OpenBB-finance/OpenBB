@@ -99,7 +99,6 @@ def due_diligence(other_args: List[str], ticker: str):
             "investing",
             "wallstreetbets",
             "forex",
-            "Daytrading",
             "Forexstrategy",
         ]
 
