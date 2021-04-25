@@ -4,10 +4,10 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime
-from gamestonk_terminal import config_terminal as cfg
 import os
 import webbrowser
 import papermill as pm
+from gamestonk_terminal import config_terminal as cfg
 
 
 def econ_data(other_args: List[str]):
