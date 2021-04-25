@@ -156,15 +156,7 @@ python terminal.py
 ```
 10. (Optional) Speeding up opening process in the future
 
-To speed up the opening process, open up a notepad, and input this code:
-```
-call <Anaconda Dir>/Scripts/activate.bat
-call conda activate gst
-cd "<Gamestonk Dir>\GamestonkTerminal"
-call python terminal.py
-pause
-```
-replacing <Anaconda Dir> and <Gamestonk Dir> with their respective file locations. Once you've done this, save the file as a .bat file. In the future, you can use this file to instantly open the Gamestonk Terminal
+After you've installed Gamestonk Terminal, you'll find a file named Gamestonk Terminal.bat. You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
