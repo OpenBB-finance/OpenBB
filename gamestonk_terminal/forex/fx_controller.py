@@ -7,7 +7,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.due_diligence import news_view, reddit_view
-from gamestonk_terminal.behavioural_analysis import, ba_controller
+from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.exploratory_data_analysis import eda_controller
 import pandas as pd
 
