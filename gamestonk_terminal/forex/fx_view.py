@@ -12,7 +12,7 @@ from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale, check_non_negative
 import pandas as pd
 import pandas_ta as ta
 import mplfinance as mpf
@@ -229,7 +229,7 @@ def create_order(accountID, instrument, other_args: List[str]):
         "--price",
         dest="price",
         action="store",
-        type=str,
+        type=float,
         required=True,
         help="The price to set for the limit order. ",
     )
@@ -237,6 +237,11 @@ def create_order(accountID, instrument, other_args: List[str]):
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
+    if "JPY" or "THB" or "HUF" in instrument:
+        ns_parser.price = round(ns_parser.price, 3)
+    else:
+        ns_parser.price = round(ns_parser.price, 5)
+    check_non_negative(ns_parser.price)
 
     data = {
         "order": {

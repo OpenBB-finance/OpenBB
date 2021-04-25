@@ -32,14 +32,12 @@ This menu utilizes oanda to enable support for trading forex.
 	* Display the positionbook if Oanda provides one for the forex instrument
 * [news](#news)
 	* Latest news of the currency provided by [News API]
-* [bullbear](#bullbear)
-	* Estimate quick sentiment from last 30 messages on board
-* [messages](#messages)
-	* Output up to the 30 last messages on the board
 * [reddit](#reddit)
 	* Gets due diligence from another user's post [Reddit]
 * [eda](#eda)
 	* This menu aims to perform exploratory data analysis on a pre-loaded forex instrument.
+* [ba](#ba)
+	* This menu aims to extrapolate behavioural analysis regarding a pre-loaded forex instrument.
 
 ## summary <a name ="summary"></a>
  ```text
@@ -173,21 +171,6 @@ Prints latest news about currency, including date, title and web link. [Source: 
 
 * -n : Number of latest news being printed. Default 10.
 
-## bullbear <a name="bullbear"></a>
-```
-usage: bullbear [-t S_TICKER]
-```
-Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
-  * -t : ticker to gather sentiment from.
-
-## messages <a name="messages"></a>
-```
-usage: messages [-t S_TICKER] [-l N_LIM]
-```
-Print up to 30 of the last messages on the board. [Source: Stocktwits]
-  * -t : get board messages from this ticker. Default pre-loaded.
-  * -l : limit messages shown. Default 30.
-
 ## reddit <a name="reddit"></a>
 
 ```text
@@ -206,3 +189,9 @@ usage: eda
 ```
 
 Access the exploratory data analysis menu.
+
+## ba <a name="ba"></a>
+```text
+usage: ba
+```
+Access the behavioural analysis menu.
