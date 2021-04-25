@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime, timedelta, time as Time
+import os
 import random
 import re
 import sys
@@ -349,6 +350,9 @@ def parse_known_args_and_warn(parser, l_args):
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
+
+    if gtff.USE_CLEAR_AFTER_CMD:
+        os.system("cls||clear")
 
     (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
