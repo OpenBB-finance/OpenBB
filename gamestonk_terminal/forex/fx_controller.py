@@ -7,8 +7,10 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.due_diligence import news_view, reddit_view
-from gamestonk_terminal.behavioural_analysis import stocktwits_view, twitter_view
-from gamestonk_terminal.exploratory_data_analysis import eda_api
+from gamestonk_terminal.behavioural_analysis import stocktwits_view
+from gamestonk_terminal.exploratory_data_analysis import eda_controller
+import pandas as pd
+
 
 account = cfg.OANDA_ACCOUNT
 
@@ -38,13 +40,7 @@ class ForexController:
         "bullbear",
         "messages",
         "reddit",
-        "infer",
-        "sentiment",
-        "edasummary",
-        "edarolling",
-        "edadecompose",
-        "edacusum",
-        "edahist",
+        "eda",
     ]
 
     def __init__(self):
@@ -94,16 +90,8 @@ class ForexController:
                 "    reddit        search reddit for posts about the loaded instrument"
             )
             print(
-                "    edasummary    brief summary statistics using exploratory data analysis"
+                "    eda           exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
             )
-            print("    edarolling    rolling mean and std deviation")
-            print(
-                "    edadecompose  decomposition in cyclic-trend, season, and residuals"
-            )
-            print(
-                "    edacusum      detects abrupt changes using cumulative sum algorithm"
-            )
-
         print("")
 
     def switch(self, an_input: str):
@@ -191,44 +179,27 @@ class ForexController:
         """Call news [News API]"""
         news_view.news(other_args, self.instrument)
 
-    def call_bullbear(self, other_args):
+    def call_bullbear(self, other_args: List[str]):
         """Call bullbear fom stocktwits"""
         instrument = fx_view.format_instrument(self.instrument, " ")
         stocktwits_view.bullbear(other_args, instrument)
 
-    def call_messages(self, other_args):
+    def call_messages(self, other_args: List[str]):
         """Call messages from stocktwits"""
         instrument = fx_view.format_instrument(self.instrument, " ")
         stocktwits_view.messages(other_args, instrument)
-
-    def call_edasummary(self, other_args: List[str]):
-        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-        eda_api.summary(other_args, df)
-
-    def call_edarolling(self, other_args: List[str]):
-        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-        df.columns = ["Open", "Low", "High", "5. adjusted close", "Volume"]
-        eda_api.rolling(other_args, self.instrument, df)
-
-    def call_edadecompose(self, other_args: List[str]):
-        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-        df.columns = ["Open", "Low", "High", "5. adjusted close", "Volume"]
-        eda_api.decompose(other_args, self.instrument, df)
-
-    def call_edacusum(self, other_args: List[str]):
-        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-        df.columns = ["Open", "Low", "High", "5. adjusted close", "Volume"]
-        eda_api.cusum(other_args, self.instrument, df)
 
     def call_reddit(self, other_args: List[str]):
         instrument = fx_view.format_instrument(self.instrument, " ")
         reddit_view.due_diligence(other_args, instrument)
 
-    def call_infer(self, other_args: List[str]):
-        twitter_view.inference(other_args, self.instrument)
-
-    def call_sentiment(self, other_args: List[str]):
-        twitter_view.sentiment(other_args, self.instrument)
+    def call_eda(self, other_args):
+        df = fx_view.get_candles_dataframe(account, self.instrument, None)
+        df = df.rename(columns={"Close": "5. adjusted close"})
+        instrument = self.instrument
+        s_start = pd.to_datetime(df.index.values[0])
+        s_interval = "1440min"
+        eda_controller.menu(df, instrument, s_start, s_interval)
 
 
 def menu():
