@@ -645,7 +645,7 @@ def add_plots(df, ns_parser):
         ema = ta.ema(df["Close"])
         ema_plot = mpf.make_addplot(ema, panel=0)
         plots_to_add.append(ema_plot)
-        legends.append("20 EMA")
+        legends.append("10 EMA")
 
     if ns_parser.rsi:
         rsi = ta.rsi(df["Close"])
