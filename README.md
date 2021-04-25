@@ -110,26 +110,30 @@ conda create -n gst python=3.6.8
 ```
 conda activate gst
 ```
-Note: At the end, you can deactivate it with: `conda deactivate`
+Note: At the end, you can deactivate it with: `conda deactivate`.
 
 4. Install git
 ```
 conda install -c anaconda git
 ````
 
-5. Fork the Project
+5. Clone the Project
 
 - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
 - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
 
-Navigate into the folder with: `cd GamestonkTerminal/`
+6. Navigate into the project's folder
 
-6. Install poetry
+```
+cd GamestonkTerminal/
+```
+
+7. Install poetry
 ```
 conda install poetry
 ```
 
-6.5. If installing python 3.8
+7.5. If installing python 3.8
 ```
 conda deactivate
 conda activate gst
@@ -137,17 +141,19 @@ conda activate gst
 *The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
 
 
-7. Install poetry dependencies
+8. Install poetry dependencies
 ```
 poetry install
 ```
 This is a library for package management, and ensures a smoother experience than: ``pip install -r requirements.txt``
 
-8.  You're ready to Gamestonk it!
+9.  You're ready to Gamestonk it!
 
 ```
 python terminal.py
 ```
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
 ### Advanced User Install - Machine Learning
 
@@ -166,13 +172,6 @@ ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 poetry install -E prediction
 ```
-*If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:*
-
-```
-conda install -c conda-forge fbprophet numpy=1.19.5 hdf5=1.10.5
-poetry install
-poetry install -E prediction
-```
 
 *If you would like to set up a docker image:*
 
@@ -180,53 +179,6 @@ poetry install -E prediction
 * Run it: `docker run -it gamestonkterminal:dev `
 
 Note: The problem with docker is that it won't output matplotlib figures.
-
-*Commands that may help you in case of an error:
-
-* `python -m pip install --upgrade pip`
-* `pip install pystan --upgrade`
-* `poetry update --lock`
-
-### Other Issues
-
-If you run into trouble with poetry and the advice above did not help, your best bet is to try
-
-1. `poetry update --lock`
-
-2. `conda deactivate` -> `conda activate gst`, then try again
-
-3. Delete the poetry cache, then try again
-
-   | Platform | Location                        |
-   | -------- | ------------------------------- |
-   | Linux    | "~/.cache/pypoetry"             |
-   | Mac      | "~/Library/Caches/pypoetry"     |
-   | Windows  | "%localappdata%/pypoetry/cache" |
-
-4. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
-
-   | Platform  | Location                                     |
-   | --------- | -------------------------------------------- |
-   | Linux/Mac | "~/anaconda3/envs" or "~/opt/anaconda3/envs" |
-   | Windows   | "%userprofile%/anaconda3/envs"               |
-
-5. Completely nuke your conda environment folder and make a new environment from scratch
-
-6. Reboot your computer and try again
-
-7. Submit a ticket on github
-
-### ModuleNotFoundError
-
-In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
-install the missing package via pip.
-
-If you get the error that `statsmodels` is not found, you would run
-* `pip install statsmodels`
-
-Then please submit an issue so that we can address why that was not imported.
-
-Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`.
 
 ### Update Terminal
 
