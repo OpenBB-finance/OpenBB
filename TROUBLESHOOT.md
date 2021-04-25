@@ -9,7 +9,7 @@ Since the start of the project we've come across different types of issues exper
 <li>
   <a href="#">Standard Install Troubles</a>
   <ul>
-    <li><a href="#Microsoft-Visual-C++">Microsoft Visual C++</a></li>
+    <li><a href="#microsoft-visual-v++">Microsoft Visual C++</a></li>
     <li><a href="#wheel">Wheel</a></li>
     <li><a href="#cvxpy">Cvxpy</a></li>
     <li><a href="#numpy">Numpy</a></li>
@@ -89,7 +89,7 @@ pip install pyally
 ```
 
 
-## Machine Learning Trouble
+### Machine Learning Troubles
 
 If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:
 
