@@ -239,6 +239,7 @@ Environment variables can also be set in a `.env` file at the top of the repo. T
 GT_API_REDDIT_USERNAME=SexyYear
 ```
 
+Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ### Usage
