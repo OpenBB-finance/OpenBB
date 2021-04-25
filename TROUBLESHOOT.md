@@ -7,7 +7,7 @@ Since the start of the project we've come across different types of issues exper
 
 <ol>
 <li>
-  <a href="#">Standard Install Troubles:</a>
+  <a href="#">Standard Install Troubles</a>
   <ul>
     <li><a href="#Microsoft-Visual-C++">Microsoft Visual C++</a></li>
     <li><a href="#wheel">Wheel</a></li>
@@ -16,7 +16,7 @@ Since the start of the project we've come across different types of issues exper
   </ul>
 </li>
 <li>
-  <a href="#">ModuleNotFoundError Trouble:</a>
+  <a href="#">ModuleNotFoundError Trouble</a>
   <ul>
     <li><a href="#general">General</a></li>
     <li><a href="#pypfopt">pypfopt</a></li>
@@ -25,16 +25,10 @@ Since the start of the project we've come across different types of issues exper
   </ul>
 </li>
 <li>
-  <a href="#">Machine Learning Troubles:</a>
-  <ul>
-    <li><a href="#general">General</a></li>
-  </ul>
+  <a href="#machine-learning-troubles">Machine Learning Troubles</a>
 </li>
 <li>
-  <a href="#">Other Troubles:</a>
-  <ul>
-    <li><a href="#general">General</a></li>
-  </ul>
+  <a href="#other-issues">Other Issues</a>
 </li>
 </ol>
 
@@ -95,9 +89,7 @@ pip install pyally
 ```
 
 
-## Machine Learning Troubles
-
-### General
+## Machine Learning Trouble
 
 If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:
 
@@ -114,9 +106,7 @@ poetry install -E prediction
 * `poetry update --lock`
 
 
-## Other Issues
-
-### General
+### Other Issues
 
 If you run into trouble with poetry and the advice above did not help, your best bet is to try
 
