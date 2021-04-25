@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime
+from gamestonk_terminal import config_terminal as cfg
 import os
 import webbrowser
 import papermill as pm
@@ -54,5 +55,7 @@ def econ_data(other_args: List[str]):
         print("")
         return
 
-    webbrowser.open(f"http://localhost:8888/notebooks/{analysis_notebook}")
+    webbrowser.open(
+        f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
+    )
     print("")
