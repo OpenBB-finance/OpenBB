@@ -17,7 +17,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
-clear = lambda: os.system("cls||clear")
 
 
 def check_non_negative(value) -> int:
@@ -353,7 +352,7 @@ def parse_known_args_and_warn(parser, l_args):
     )
 
     if gtff.USE_CLEAR_AFTER_CMD:
-        clear()
+        os.system("cls||clear")
 
     (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
