@@ -119,6 +119,7 @@ class EconController:
         fred_view.get_fred_data(other_args, cmd)
 
     def call_VIX(self, other_args: List[str], cmd: str):
+        """Process a VIX Call."""
         if cmd == "view":
             vix_view.view_vix(other_args)
         else:

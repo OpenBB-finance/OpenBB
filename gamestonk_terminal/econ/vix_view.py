@@ -18,7 +18,16 @@ register_matplotlib_converters()
 
 
 def view_vix(other_args: List[str]):
-
+    """
+    Plot vix from a starting date using yfinance
+    Parameters
+    ----------
+    other_args: List[str]
+        List of argparse arguments
+    Returns
+    -------
+    Plots VIX historical data
+    """
     parser = argparse.ArgumentParser(prog="vix_plot", add_help=False)
     parser.add_argument(
         "-s",
