@@ -11,7 +11,21 @@ from gamestonk_terminal.backtesting.bt_helper import buy_and_hold, plot_bt
 
 
 def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[str]):
+    """
+    Strategy where stock is bought when Price > EMA(l)
+    Parameters
+    ----------
+    ticker: str
+        Stock to test
+    start: Union[str, datetime]
+        Backtest start date.  Can be either string or datetime
+    other_args: List[str]
+        List of argparse arguments
 
+    Returns
+    -------
+    Plot and a printout of backtest
+    """
     parser = argparse.ArgumentParser(add_help=False, prog="ema")
     parser.add_argument(
         "-l", default=20, dest="length", type=int, help="EMA period to consider"
@@ -77,6 +91,21 @@ def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[s
 
 
 def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[str]):
+    """
+    Strategy where we go long/short when EMA(short) is greater than/less than EMA(short)
+    Parameters
+    ----------
+    ticker: str
+        Stock to test
+    start: Union[str, datetime]
+        Backtest start date.  Can be either string or datetime
+    other_args: List[str]
+        List of argparse arguments
+
+    Returns
+    -------
+    Plot and a printout of backtest
+    """
     parser = argparse.ArgumentParser(add_help=False, prog="ema_cross")
     parser.add_argument(
         "-l", "--long", default=50, dest="long", type=int, help="Long EMA period"
@@ -164,6 +193,21 @@ def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[st
 
 
 def rsi_strat(ticker: str, start_date: Union[datetime, str], other_args: List[str]):
+    """
+    Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
+    Parameters
+    ----------
+    ticker: str
+        Stock to test
+    start: Union[str, datetime]
+        Backtest start date.  Can be either string or datetime
+    other_args: List[str]
+        List of argparse arguments
+
+    Returns
+    -------
+    Plot and a printout of backtest
+    """
     parser = argparse.ArgumentParser(add_help=False, prog="rsi_strat")
     parser.add_argument(
         "-p",

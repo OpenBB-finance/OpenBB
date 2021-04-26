@@ -73,18 +73,21 @@ class BacktestingController:
         return True
 
     def call_ema(self, other_args: List[str]):
+        """Call EMA strategy"""
         bt_view.simple_ema(self.ticker, self.start, other_args)
 
     def call_ema_cross(self, other_args: List[str]):
+        """Call EMA Cross startegy"""
         bt_view.ema_cross(self.ticker, self.start, other_args)
 
     def call_rsi(self, other_args: List[str]):
+        """Call RSI Strategy"""
         bt_view.rsi_strat(self.ticker, self.start, other_args)
 
 
 def menu(ticker: str, start: Union[str, datetime]):
     """Technical Analysis Menu"""
-
+    plt.close("all")
     bt_controller = BacktestingController(ticker, start)
     bt_controller.call_help(None)
 
