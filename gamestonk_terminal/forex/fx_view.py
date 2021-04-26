@@ -233,7 +233,7 @@ def create_order(accountID, instrument, other_args: List[str]):
         "--price",
         dest="price",
         action="store",
-        type=float,
+        type=check_non_negative,
         required=True,
         help="The price to set for the limit order. ",
     )
