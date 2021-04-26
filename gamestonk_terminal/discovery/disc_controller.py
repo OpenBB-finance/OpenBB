@@ -26,7 +26,7 @@ from gamestonk_terminal.discovery import (
 
 
 class DiscoveryController:
-    """ Discovery Controller """
+    """Discovery Controller"""
 
     # Command choices
     CHOICES = [
@@ -65,7 +65,7 @@ class DiscoveryController:
 
     @staticmethod
     def print_help():
-        """ Print help """
+        """Print help"""
 
         print("\nDiscovery Mode:")
         print("   help           show this discovery menu again")

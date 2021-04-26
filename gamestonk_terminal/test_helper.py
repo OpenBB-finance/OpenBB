@@ -53,7 +53,7 @@ def parameterize_from_file(test_namespace: str, parameter_file: str) -> Callable
 
 
 def pytest_generate_tests(metafunc):
-    """ https://docs.pytest.org/en/stable/parametrize.html#pytest-generate-tests """
+    """https://docs.pytest.org/en/stable/parametrize.html#pytest-generate-tests"""
     if getattr(metafunc.function, "test_params_names", None):
         metafunc.parametrize(
             metafunc.function.test_params_names,

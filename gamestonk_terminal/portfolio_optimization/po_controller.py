@@ -169,7 +169,7 @@ class PortfolioOptimization:
         print("")
 
     def add_stocks(self, other_args: List[str]):
-        """ Add ticker or Select tickes for portfolio to be optimized """
+        """Add ticker or Select tickes for portfolio to be optimized"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="add/select",

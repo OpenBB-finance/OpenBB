@@ -323,7 +323,7 @@ Command|Description|Source
 `independence`  |tests independent and identically distributed (BDS) | [Wikipedia](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Testing_for_statistical_independence)
 
 &nbsp;
-## FRED [»](fred/README.md)
+## FRED [»](econ/README.md)
 Command|Description
 ------ | --------
 `gdp`           | GDP

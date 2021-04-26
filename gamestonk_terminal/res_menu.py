@@ -3,7 +3,7 @@ import webbrowser
 
 
 def print_research(s_ticker, s_start, s_interval):
-    """ Print help """
+    """Print help"""
 
     s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
 

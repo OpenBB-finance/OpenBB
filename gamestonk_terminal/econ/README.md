@@ -1,4 +1,4 @@
-# FRED
+# ECON
 
 https://fred.stlouisfed.org
 
