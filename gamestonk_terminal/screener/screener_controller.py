@@ -80,7 +80,7 @@ class ScreenerController:
 
     @staticmethod
     def view_available_presets(other_args: List[str]):
-        """ View available presets. """
+        """View available presets."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="view",
@@ -119,7 +119,7 @@ class ScreenerController:
 
     @staticmethod
     def set_preset(self, other_args: List[str]):
-        """ Set preset """
+        """Set preset"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="set",

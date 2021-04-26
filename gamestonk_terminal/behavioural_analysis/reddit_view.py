@@ -36,6 +36,7 @@ def watchlist(l_args):
             return
 
         l_sub_reddits = [
+            "Superstonk",
             "pennystocks",
             "RobinHoodPennyStocks",
             "Daytrading",
@@ -206,6 +207,7 @@ def popular_tickers(l_args):
                 l_sub_reddits = [ns_parser.s_subreddit]
         else:
             l_sub_reddits = [
+                "Superstonk",
                 "pennystocks",
                 "RobinHoodPennyStocks",
                 "Daytrading",
@@ -514,6 +516,7 @@ def spac(l_args):
         #    (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
         # )
         l_sub_reddits = [
+            "Superstonk",
             "pennystocks",
             "RobinHoodPennyStocks",
             "Daytrading",

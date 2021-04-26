@@ -20,7 +20,7 @@ from gamestonk_terminal.menu import session
 
 
 class FundamentalAnalysisController:
-    """ Fundamental Analysis Controller """
+    """Fundamental Analysis Controller"""
 
     # Command choices
     CHOICES = [
@@ -65,7 +65,7 @@ class FundamentalAnalysisController:
         )
 
     def print_help(self):
-        """ Print help """
+        """Print help"""
 
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
@@ -135,48 +135,48 @@ class FundamentalAnalysisController:
         return True
 
     def call_mgmt(self, other_args: List[str]):
-        """ Process mgmt command """
+        """Process mgmt command"""
         biw.management(other_args, self.ticker)
 
     def call_screener(self, other_args: List[str]):
-        """ Process screener command """
+        """Process screener command"""
         finviz_view.screener(other_args, self.ticker)
 
     def call_score(self, other_args: List[str]):
-        """ Process score command """
+        """Process score command"""
         fmpv.valinvest_score(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
-        """ Process income command """
+        """Process income command"""
         market_watch_view.income(other_args, self.ticker)
 
     def call_balance(self, other_args: List[str]):
-        """ Process balance command """
+        """Process balance command"""
         market_watch_view.balance(other_args, self.ticker)
 
     def call_cash(self, other_args: List[str]):
-        """ Process cash command """
+        """Process cash command"""
         market_watch_view.cash(other_args, self.ticker)
 
     def call_info(self, other_args: List[str]):
-        """ Process info command """
+        """Process info command"""
         yahoo_finance_view.info(other_args, self.ticker)
 
     def call_shrs(self, other_args: List[str]):
-        """ Process shrs command """
+        """Process shrs command"""
         yahoo_finance_view.shareholders(other_args, self.ticker)
 
     def call_sust(self, other_args: List[str]):
-        """ Process sust command """
+        """Process sust command"""
         yahoo_finance_view.sustainability(other_args, self.ticker)
 
     def call_cal(self, other_args: List[str]):
-        """ Process cal command """
+        """Process cal command"""
         yahoo_finance_view.calendar_earnings(other_args, self.ticker)
 
     # pylint: disable=unused-argument
     def call_av(self, other_args: List[str]):
-        """ Process av command """
+        """Process av command"""
         ret = avc.menu(self.ticker, self.start, self.interval)
 
         if ret is not True:
@@ -184,7 +184,7 @@ class FundamentalAnalysisController:
 
     # pylint: disable=unused-argument
     def call_fmp(self, other_args: List[str]):
-        """ Process fmp command """
+        """Process fmp command"""
         ret = fmpc.menu(self.ticker, self.start, self.interval)
 
         if ret is not True:

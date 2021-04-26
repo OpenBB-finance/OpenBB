@@ -342,7 +342,7 @@ def _preprocess_split(df_stock, ns_parser):
 
 
 def _rescale_data(df_stock, ns_parser, scaler, yhat, idx_loop):
-    """Re-scale the data back and return the prediction dataframe. """
+    """Re-scale the data back and return the prediction dataframe."""
     if (ns_parser.s_preprocessing == "standardization") or (
         ns_parser.s_preprocessing == "normalization"
     ):
@@ -362,7 +362,7 @@ def _rescale_data(df_stock, ns_parser, scaler, yhat, idx_loop):
 def _plot_and_print_results(
     df_stock, ns_parser, df_future, df_pred, model_name, s_ticker
 ):
-    """Plot and print the results. """
+    """Plot and print the results."""
     # Plotting
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)

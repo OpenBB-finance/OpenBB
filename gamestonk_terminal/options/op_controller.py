@@ -169,7 +169,7 @@ class OptionsController:
 
 
 def menu(ticker: str, last_adj_close_price: float):
-    """ Options Menu. """
+    """Options Menu."""
 
     try:
         op_controller = OptionsController(ticker, last_adj_close_price)

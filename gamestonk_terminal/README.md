@@ -14,7 +14,7 @@
 * [Comparison Analysis](#Comparison-Analysis-)
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis-)
 * [Residual Analysis](#Residual-Analysis-)
-* [FRED](#FRED-)
+* [Economic Data](#Econ-)
 * [Options](#Options-)
 * [Screener](#Screener-)
 * [Forex](#Forex-)
@@ -323,9 +323,10 @@ Command|Description|Source
 `independence`  |tests independent and identically distributed (BDS) | [Wikipedia](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Testing_for_statistical_independence)
 
 &nbsp;
-## FRED [»](fred/README.md)
+## ECON [»](econ/README.md)
 Command|Description
 ------ | --------
+FRED Data     |
 `gdp`           | GDP
 `unemp`         | Unemployment Rate
 `t1`            | 1-Year Treasury Constant Maturity Rate
@@ -337,7 +338,8 @@ Command|Description
 `moodAAA`       | Moody's Seasoned AAA Corporate Bond Yield
 `usdcad`        | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
 `cust`          | User Specified FRED Data - Please Specify --id
-
+VIX Data        |
+`view`          | Plots VIX Historical Data
 &nbsp;
 
 ## Options [»](options/README.md)

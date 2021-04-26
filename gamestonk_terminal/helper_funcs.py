@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime, timedelta, time as Time
+import os
 import random
 import re
 import sys
@@ -130,7 +131,7 @@ def us_market_holidays(years) -> list:
 
 
 def b_is_stock_market_open() -> bool:
-    """ checks if the stock market is open """
+    """checks if the stock market is open"""
     # Get current US time
     now = datetime.now(timezone("US/Eastern"))
     # Check if it is a weekend
@@ -349,6 +350,9 @@ def parse_known_args_and_warn(parser, l_args):
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
+
+    if gtff.USE_CLEAR_AFTER_CMD:
+        os.system("cls||clear")
 
     (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
