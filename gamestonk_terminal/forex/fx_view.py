@@ -245,7 +245,6 @@ def create_order(accountID, instrument, other_args: List[str]):
         ns_parser.price = round(ns_parser.price, 3)
     else:
         ns_parser.price = round(ns_parser.price, 5)
-    check_non_negative(ns_parser.price)
 
     data = {
         "order": {
