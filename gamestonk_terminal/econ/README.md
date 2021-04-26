@@ -1,5 +1,7 @@
 # ECON
 
+## FRED
+
 https://fred.stlouisfed.org
 
 The purpose of fred is to have the ability to look at economic data.  This page offers 2 options:
@@ -122,3 +124,11 @@ Date
 ````
 
 Note the NaN on 2-15, which corresponds to President's Day.
+
+## VIX
+
+This command pulls historical VIX data from yfinance module.
+````
+usage: view [-s START_DATE]
+````
+* -s Start date to plot historical VIX data

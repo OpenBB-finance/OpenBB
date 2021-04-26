@@ -50,9 +50,10 @@ class EconController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print(" ")
-        print("VIX:\n")
+        print("VIX:")
         print("   view          plot VIX")
-        print("FRED:\n")
+        print(" ")
+        print("FRED:")
         print("   gdp           GDP")
         print("   unemp         Unemployment Rate")
         print("   t1            1-Year Treasury Constant Maturity Rate")
@@ -95,9 +96,6 @@ class EconController:
         if known_args.cmd in fred_data_list:
             return getattr(self, "call_fred_api")(other_args, known_args.cmd)
 
-        if known_args.cmd in vix_command_list:
-            return getattr(self, "call_VIX")(other_args, known_args.cmd)
-
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
@@ -118,12 +116,9 @@ class EconController:
         """Process Fred Data call"""
         fred_view.get_fred_data(other_args, cmd)
 
-    def call_VIX(self, other_args: List[str], cmd: str):
-        """Process a VIX Call."""
-        if cmd == "view":
-            vix_view.view_vix(other_args)
-        else:
-            print("The command selected doesn't exist\n")
+    def call_view(self, other_args: List[str]):
+        """Process view for VIX Data."""
+        vix_view.view_vix(other_args)
 
     def call_cust(self, other_args: List[str]):
         """Process cust call"""
@@ -134,9 +129,7 @@ def menu():
     """Econ Menu"""
 
     econ_controller = EconController()
-
     plt.close("all")
-
     econ_controller.print_help()
 
     # Loop forever and ever
