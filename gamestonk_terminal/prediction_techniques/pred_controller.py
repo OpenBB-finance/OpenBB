@@ -61,7 +61,7 @@ class PredictionTechniquesController:
         )
 
     def print_help(self):
-        """ Print help """
+        """Print help"""
 
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 

@@ -15,7 +15,7 @@ register_matplotlib_converters()
 
 
 def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
-    """ Generates a backtest object for the given ticker"""
+    """Generates a backtest object for the given ticker"""
     prices = bt.get(ticker, start=start)
     bt_strategy = bt.Strategy(
         name,

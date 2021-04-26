@@ -13,7 +13,7 @@ from gamestonk_terminal.backtesting import bt_view
 
 
 class BacktestingController:
-    """Backtesting Class """
+    """Backtesting Class"""
 
     CHOICES = ["help", "q", "quit", "ema", "ema_cross", "rsi"]
 

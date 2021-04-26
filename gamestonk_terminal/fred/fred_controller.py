@@ -12,7 +12,7 @@ from gamestonk_terminal.fred import fred_view
 
 
 class FredController:
-    """ Fred Controller """
+    """Fred Controller"""
 
     # Command choices
     CHOICES = [
@@ -42,7 +42,7 @@ class FredController:
 
     @staticmethod
     def print_help():
-        """ Print help """
+        """Print help"""
 
         print("\nFred Economic Data:")
         print("   help          show this menu again")

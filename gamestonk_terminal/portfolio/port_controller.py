@@ -16,7 +16,7 @@ from gamestonk_terminal.portfolio.portfolio_helpers import (
 
 
 class PortfolioController:
-    """ Portfolio Controller """
+    """Portfolio Controller"""
 
     CHOICES = [
         "help",
@@ -46,7 +46,7 @@ class PortfolioController:
     @staticmethod
     def print_help(broker_list):
 
-        """ Print help """
+        """Print help"""
         print("\nBrokers Supported: rh   - Robinhood")
         print("                   alp  - Alpaca")
         print("                   ally - Ally Invest")

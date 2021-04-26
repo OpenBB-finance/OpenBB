@@ -11,10 +11,10 @@ from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 class ThoughtOfTheDay:
-    """ ThoughtOfTheDay class """
+    """ThoughtOfTheDay class"""
 
     def __init__(self, urls: Dict[str, str] = None):
-        """ Constructor """
+        """Constructor"""
 
         self.metadata = {}  # type: Dict
 
@@ -34,7 +34,7 @@ class ThoughtOfTheDay:
         self.urls = urls
 
     def get_urls(self) -> dict:
-        """ Getter method for URLs """
+        """Getter method for URLs"""
         return self.urls
 
     def get_metadata(self, author: str) -> dict:

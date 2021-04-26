@@ -111,7 +111,7 @@ l_valid_property_infos = [
 
 
 def check_valid_property_type(aproperty: str) -> str:
-    """ Check that the property selected is valid """
+    """Check that the property selected is valid"""
     if aproperty in l_valid_property_infos:
         return aproperty
 

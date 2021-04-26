@@ -12,7 +12,7 @@ from gamestonk_terminal.menu import session
 
 
 class AlphaVantageController:
-    """ Alpha Vantage Controller """
+    """Alpha Vantage Controller"""
 
     # Command choices
     CHOICES = [
@@ -50,7 +50,7 @@ class AlphaVantageController:
         )
 
     def print_help(self):
-        """ Print help """
+        """Print help"""
 
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
@@ -103,27 +103,27 @@ class AlphaVantageController:
         return True
 
     def call_overview(self, other_args: List[str]):
-        """ Process overview command """
+        """Process overview command"""
         avv.overview(other_args, self.ticker)
 
     def call_key(self, other_args: List[str]):
-        """ Process overview command """
+        """Process overview command"""
         avv.key(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
-        """ Process income command """
+        """Process income command"""
         avv.income_statement(other_args, self.ticker)
 
     def call_balance(self, other_args: List[str]):
-        """ Process balance command """
+        """Process balance command"""
         avv.balance_sheet(other_args, self.ticker)
 
     def call_cash(self, other_args: List[str]):
-        """ Process cash command """
+        """Process cash command"""
         avv.cash_flow(other_args, self.ticker)
 
     def call_earnings(self, other_args: List[str]):
-        """ Process earnings command """
+        """Process earnings command"""
         avv.earnings(other_args, self.ticker)
 
 

@@ -130,7 +130,7 @@ def us_market_holidays(years) -> list:
 
 
 def b_is_stock_market_open() -> bool:
-    """ checks if the stock market is open """
+    """checks if the stock market is open"""
     # Get current US time
     now = datetime.now(timezone("US/Eastern"))
     # Check if it is a weekend
