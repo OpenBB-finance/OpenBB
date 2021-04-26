@@ -3,14 +3,11 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Union
 from datetime import datetime
-import matplotlib.pyplot as plt
 import pandas as pd
 import bt
 import pandas_ta as ta
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.backtesting.bt_helper import buy_and_hold
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.backtesting.bt_helper import buy_and_hold, plot_bt
 
 
 def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[str]):
@@ -68,15 +65,7 @@ def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[s
                 stock_bt = buy_and_hold(ticker, start_date, ticker.upper() + " Hold")
                 res = bt.run(bt_backtest, stock_bt)
 
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        res.plot(title=f"Equity for EMA({ns_parser.length})", ax=ax)
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
+        plot_bt(res, f"Equity for EMA({ns_parser.length})")
 
         print(res.display())
         print("")
@@ -164,18 +153,7 @@ def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[st
                 stock_bt = buy_and_hold(ticker, start_date, ticker.upper() + " Hold")
                 res = bt.run(bt_backtest, stock_bt)
 
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        res.plot(
-            title=f"EMA Cross for EMA({ns_parser.short})/EMA({ns_parser.long})", ax=ax
-        )
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
-
+        plot_bt(res, f"EMA Cross for EMA({ns_parser.short})/EMA({ns_parser.long})")
         print(res.display())
         print("")
 
@@ -267,18 +245,7 @@ def rsi_strat(ticker: str, start_date: Union[datetime, str], other_args: List[st
                 stock_bt = buy_and_hold(ticker, start_date, ticker.upper() + " Hold")
                 res = bt.run(bt_backtest, stock_bt)
 
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        res.plot(
-            title=f"RSI Strategy between ({ns_parser.low}, {ns_parser.high})", ax=ax
-        )
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-
-        if gtff.USE_ION:
-            plt.ion()
-        plt.show()
-
+        plot_bt(res, f"RSI Strategy between ({ns_parser.low}, {ns_parser.high})")
         print(res.display())
         print("")
 

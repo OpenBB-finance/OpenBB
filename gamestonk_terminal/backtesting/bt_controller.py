@@ -95,7 +95,7 @@ def menu(ticker: str, start: Union[str, datetime]):
                 {c: None for c in bt_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (ta)> ",
+                f"{get_flair()} (bt)> ",
                 completer=completer,
             )
         else:

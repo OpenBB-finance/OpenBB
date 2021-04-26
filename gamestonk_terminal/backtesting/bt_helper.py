@@ -1,10 +1,21 @@
+"""Helper functions for backtesting"""
+__docformat__ = "numpy"
+
+
 from datetime import datetime
 from typing import Union
+from matplotlib import pyplot as plt
+from pandas.plotting import register_matplotlib_converters
 import bt
+from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal import feature_flags as gtff
+
+register_matplotlib_converters()
 
 
 def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
-
+    """ Generates a backtest object for the given ticker"""
     prices = bt.get(ticker, start=start)
     bt_strategy = bt.Strategy(
         name,
@@ -16,3 +27,25 @@ def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
         ],
     )
     return bt.Backtest(bt_strategy, prices)
+
+
+def plot_bt(res: bt.backtest.Result, plot_title: str):
+    """
+    Plot the bt result
+    Parameters
+    ----------
+    res: bt.backtest.Result
+        Result after a bt backtest is run
+    plot_title: str
+        Title of plot
+
+    """
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    res.plot(title=plot_title, ax=ax)
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
