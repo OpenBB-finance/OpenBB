@@ -92,7 +92,7 @@ class EconController:
             "moodAAA",
             "usdcad",
         ]
-        vix_command_list = ["view"]
+
         if known_args.cmd in fred_data_list:
             return getattr(self, "call_fred_api")(other_args, known_args.cmd)
 
