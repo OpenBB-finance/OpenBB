@@ -19,6 +19,7 @@
 [![GitHub release](https://img.shields.io/github/release/DidierRLopes/GamestonkTerminal.svg?maxAge=3600)](https://github.com/DidierRLopes/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
 
 
 <!-- PROJECT LOGO -->
@@ -58,8 +59,6 @@
       <ul>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
-        <li><a href="#other-issues">Other Issues</a></li>
-        <li><a href="#modulenotfounderror">ModuleNotFoundError</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
         <li><a href="#usage">Usage</a></li>
@@ -93,6 +92,11 @@ This project was originally written and tested with Python 3.6.8. It should now 
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
 
+0. Star the project
+
+<img width="1272" alt="Captura de ecrã 2021-04-25, às 01 13 30" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+
+
 1. Install Anaconda
 
 Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
@@ -109,44 +113,54 @@ conda create -n gst python=3.6.8
 ```
 conda activate gst
 ```
-Note: At the end, you can deactivate it with: `conda deactivate`
+Note: At the end, you can deactivate it with: `conda deactivate`.
 
 4. Install git
 ```
 conda install -c anaconda git
 ````
 
-5. Fork the Project
+5. Clone the Project
 
 - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
 - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
 
-Navigate into the folder with: `cd GamestonkTerminal/`
+6. Navigate into the project's folder
 
-6. Install poetry
+```
+cd GamestonkTerminal/
+```
+
+7. Install poetry
 ```
 conda install poetry
 ```
 
-6.5. If installing python 3.8
+7.5. If installing python 3.8
 ```
 conda deactivate
 conda activate gst
 ```
 *The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
 
-
-7. Install poetry dependencies
+8. Install poetry dependencies
 ```
 poetry install
 ```
 This is a library for package management, and ensures a smoother experience than: ``pip install -r requirements.txt``
 
-8.  You're ready to Gamestonk it!
+9.  You're ready to Gamestonk it!
 
 ```
 python terminal.py
 ```
+10. (Windows - Optional) Speeding up opening process in the future
+
+After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
+
+**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/DidierRLopes/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
 
@@ -165,13 +179,6 @@ ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 poetry install -E prediction
 ```
-*If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:*
-
-```
-conda install -c conda-forge fbprophet numpy=1.19.5 hdf5=1.10.5
-poetry install
-poetry install -E prediction
-```
 
 *If you would like to set up a docker image:*
 
@@ -179,53 +186,6 @@ poetry install -E prediction
 * Run it: `docker run -it gamestonkterminal:dev `
 
 Note: The problem with docker is that it won't output matplotlib figures.
-
-*Commands that may help you in case of an error:
-
-* `python -m pip install --upgrade pip`
-* `pip install pystan --upgrade`
-* `poetry update --lock`
-
-### Other Issues
-
-If you run into trouble with poetry and the advice above did not help, your best bet is to try
-
-1. `poetry update --lock`
-
-2. `conda deactivate` -> `conda activate gst`, then try again
-
-3. Delete the poetry cache, then try again
-
-   | Platform | Location                        |
-   | -------- | ------------------------------- |
-   | Linux    | "~/.cache/pypoetry"             |
-   | Mac      | "~/Library/Caches/pypoetry"     |
-   | Windows  | "%localappdata%/pypoetry/cache" |
-
-4. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
-
-   | Platform  | Location                                     |
-   | --------- | -------------------------------------------- |
-   | Linux/Mac | "~/anaconda3/envs" or "~/opt/anaconda3/envs" |
-   | Windows   | "%userprofile%/anaconda3/envs"               |
-
-5. Completely nuke your conda environment folder and make a new environment from scratch
-
-6. Reboot your computer and try again
-
-7. Submit a ticket on github
-
-### ModuleNotFoundError
-
-In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
-install the missing package via pip.
-
-If you get the error that `statsmodels` is not found, you would run
-* `pip install statsmodels`
-
-Then please submit an issue so that we can address why that was not imported.
-
-Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`.
 
 ### Update Terminal
 
@@ -279,6 +239,7 @@ Environment variables can also be set in a `.env` file at the top of the repo. T
 GT_API_REDDIT_USERNAME=SexyYear
 ```
 
+Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ### Usage
@@ -373,7 +334,10 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
 
-Feel free to share loss porn, memes or any questions at https://discord.gg/Up2QGbMKHY
+Feel free to share loss porn, memes or any questions:
+
+![Discord Banner 2](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=banner2)
+
 
 ## Acknowledgments
 
