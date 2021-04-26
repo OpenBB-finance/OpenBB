@@ -14,7 +14,7 @@ from gamestonk_terminal.menu import session
 
 
 class FinancialModelingPrepController:
-    """ Financial Modeling Prep Controller """
+    """Financial Modeling Prep Controller"""
 
     # Command choices
     CHOICES = [
@@ -56,7 +56,7 @@ class FinancialModelingPrepController:
         )
 
     def print_help(self):
-        """ Print help """
+        """Print help"""
 
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
@@ -113,43 +113,43 @@ class FinancialModelingPrepController:
         return True
 
     def call_profile(self, other_args: List[str]):
-        """ Process profile command """
+        """Process profile command"""
         fmpv.profile(other_args, self.ticker)
 
     def call_quote(self, other_args: List[str]):
-        """ Process quote command """
+        """Process quote command"""
         fmpv.quote(other_args, self.ticker)
 
     def call_enterprise(self, other_args: List[str]):
-        """ Process income command """
+        """Process income command"""
         fmpv.enterprise(other_args, self.ticker)
 
     def call_dcf(self, other_args: List[str]):
-        """ Process dcf command """
+        """Process dcf command"""
         fmpv.discounted_cash_flow(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
-        """ Process income command """
+        """Process income command"""
         fmpv.income_statement(other_args, self.ticker)
 
     def call_balance(self, other_args: List[str]):
-        """ Process balance command """
+        """Process balance command"""
         fmpv.balance_sheet(other_args, self.ticker)
 
     def call_cash(self, other_args: List[str]):
-        """ Process cash command """
+        """Process cash command"""
         fmpv.cash_flow(other_args, self.ticker)
 
     def call_metrics(self, other_args: List[str]):
-        """ Process metrics command """
+        """Process metrics command"""
         fmpv.key_metrics(other_args, self.ticker)
 
     def call_ratios(self, other_args: List[str]):
-        """ Process cash command """
+        """Process cash command"""
         fmpv.financial_ratios(other_args, self.ticker)
 
     def call_growth(self, other_args: List[str]):
-        """ Process cash command """
+        """Process cash command"""
         fmpv.financial_statement_growth(other_args, self.ticker)
 
 

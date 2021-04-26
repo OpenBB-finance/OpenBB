@@ -21,7 +21,7 @@ from gamestonk_terminal.menu import session
 
 
 class DueDiligenceController:
-    """ Due Diligence Controller """
+    """Due Diligence Controller"""
 
     # Command choices
     CHOICES = [
@@ -68,7 +68,7 @@ class DueDiligenceController:
         )
 
     def print_help(self):
-        """ Print help """
+        """Print help"""
 
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
@@ -134,59 +134,59 @@ class DueDiligenceController:
         return True
 
     def call_red(self, other_args: List[str]):
-        """ Process red command """
+        """Process red command"""
         r_view.due_diligence(other_args, self.ticker)
 
     def call_insider(self, other_args: List[str]):
-        """ Process insider command """
+        """Process insider command"""
         fvz_view.insider(other_args, self.ticker)
 
     def call_news(self, other_args: List[str]):
-        """ Process news command """
+        """Process news command"""
         news_view.news(other_args, self.ticker)
 
     def call_analyst(self, other_args: List[str]):
-        """ Process analyst command """
+        """Process analyst command"""
         fvz_view.analyst(other_args, self.ticker)
 
     def call_pt(self, other_args: List[str]):
-        """ Process pt command """
+        """Process pt command"""
         bi_view.price_target_from_analysts(
             other_args, self.stock, self.ticker, self.start, self.interval
         )
 
     def call_est(self, other_args: List[str]):
-        """ Process est command """
+        """Process est command"""
         bi_view.estimates(other_args, self.ticker)
 
     def call_ins(self, other_args: List[str]):
-        """ Process ins command """
+        """Process ins command"""
         bi_view.insider_activity(
             other_args, self.stock, self.ticker, self.start, self.interval
         )
 
     def call_rating(self, other_args: List[str]):
-        """ Process rating command """
+        """Process rating command"""
         fmp_view.rating(other_args, self.ticker)
 
     def call_warnings(self, other_args: List[str]):
-        """ Process rating command """
+        """Process rating command"""
         mw_view.sean_seah_warnings(other_args, self.ticker)
 
     def call_sec(self, other_args: List[str]):
-        """ Process sec command """
+        """Process sec command"""
         mw_view.sec_fillings(other_args, self.ticker)
 
     def call_short(self, other_args: List[str]):
-        """ Process short command """
+        """Process short command"""
         q_view.short_interest(other_args, self.ticker, self.start)
 
     def call_dp(self, other_args: List[str]):
-        """ Process dp command """
+        """Process dp command"""
         finra_view.dark_pool(other_args, self.ticker)
 
     def call_ftd(self, other_args: List[str]):
-        """ Process ftd command """
+        """Process ftd command"""
         sec_view.fails_to_deliver(other_args, self.ticker)
 
 
