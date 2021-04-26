@@ -27,9 +27,7 @@ account = cfg.OANDA_ACCOUNT
 
 def get_fx_price(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="price",
-        description="Get price for selected instrument.",
+        add_help=False, prog="price", description="Get price for selected instrument."
     )
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -107,9 +105,7 @@ def get_account_summary(accountID, other_args: List[str]):
 
 def list_orders(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="list",
-        description="List order history",
+        add_help=False, prog="list", description="List order history"
     )
     parser.add_argument(
         "-s",
@@ -208,9 +204,7 @@ def get_position_book(instrument, other_args):
 
 def create_order(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="order",
-        description="Create order",
+        add_help=False, prog="order", description="Create order"
     )
     parser.add_argument(
         "-u",
@@ -285,9 +279,7 @@ def create_order(accountID, instrument, other_args: List[str]):
 
 def cancel_pending_order(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="cancel",
-        description="Cancel Pending Order ",
+        add_help=False, prog="cancel", description="Cancel Pending Order "
     )
     parser.add_argument(
         "-i",
@@ -384,9 +376,7 @@ def get_open_positions(accountID, other_args):
 
 def get_open_trades(accountID, other_args):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="trades",
-        description="Gets information about open trades.",
+        add_help=False, prog="trades", description="Gets information about open trades."
     )
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
@@ -431,9 +421,7 @@ def get_open_trades(accountID, other_args):
 
 def close_trade(accountID, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="closetrade",
-        description="Close a trade by id.",
+        add_help=False, prog="closetrade", description="Close a trade by id."
     )
     parser.add_argument(
         "-i",
@@ -489,9 +477,7 @@ def close_trade(accountID, other_args: List[str]):
 
 def show_candles(accountID, instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="candles",
-        description="Display Candle Data",
+        add_help=False, prog="candles", description="Display Candle Data"
     )
     parser.add_argument(
         "-g",
@@ -584,9 +570,7 @@ def oanda_fix_date(file):
 
 def calendar(instrument, other_args: List[str]):
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="calendar",
-        description="Show Calendar Data",
+        add_help=False, prog="calendar", description="Show Calendar Data"
     )
     parser.add_argument(
         "-d",
@@ -668,9 +652,7 @@ def calendar(instrument, other_args: List[str]):
 def load(other_args: List[str]):
     """Load a forex instrument to use"""
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="load",
-        description="Forex using oanda",
+        add_help=False, prog="load", description="Forex using oanda"
     )
 
     parser.add_argument(

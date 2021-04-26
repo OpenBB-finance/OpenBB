@@ -9,10 +9,7 @@ import numpy as np
 
 from robin_stocks import robinhood
 from termcolor import colored
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    plot_autoscale,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import RH_USERNAME as user, RH_PASSWORD as pw
 from gamestonk_terminal.portfolio.portfolio_helpers import rh_positions_to_df
@@ -154,10 +151,7 @@ def plot_historical(l_args):
             title=f"Portfolio for {span_title_dict[ns_parser.span]}",
             ylabel="Equity ($)",
             figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0,
-                candle_width=0.8,
-            ),
+            update_width_config=dict(candle_linewidth=1.0, candle_width=0.8),
         )
         if gtff.USE_ION:
             plt.ion()

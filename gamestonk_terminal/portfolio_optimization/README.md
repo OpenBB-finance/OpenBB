@@ -40,7 +40,7 @@ add [-t ADD_TICKERS]
 Add/Select tickers for portfolio to be optimized.
 
 * -t : Tickers to be used in the portfolio to optimize
-* 
+*
 
 ### select <a name="select"></a>
 
@@ -118,11 +118,11 @@ These approaches are based off of the efficient frontier approach, which is mean
 <img width="200" height="90" src="https://user-images.githubusercontent.com/25267873/115084918-73b5a580-9f01-11eb-8438-6dd427727e7b.png">
 </p>
 
-* Where S is the covariance matrix between stocks and R is the expected returns.  
-* The condition that all weights add up to 1 just implies that you want to have a net long portfolio (with no margin).  
+* Where S is the covariance matrix between stocks and R is the expected returns.
+* The condition that all weights add up to 1 just implies that you want to have a net long portfolio (with no margin).
 * A long-short portfolio can have negative weights and usually wants to have everything add up to 0 for a market-neutral strategy.
 
-Currently, we do not allow for changing risk models or adding constraints.  
+Currently, we do not allow for changing risk models or adding constraints.
 If there is something specific, please submit a feature request, or if you can write it, feel free to add a PR!
 All of these commands use [PyPortFolioOpt](#https://pyportfolioopt.readthedocs.io/en/latest/index.html) package.
 
@@ -213,11 +213,11 @@ Maximise return for a target risk. The resulting portfolio will have a volatilit
 ### ef
 
 ````
-usage: ef [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-n N_PORT] 
+usage: ef [-p {1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max}] [-n N_PORT]
 ````
 
 This function plots random portfolios based on their risk and returns and shows the efficient frontier.
-     
+
 * -n : Number of portfolios to simulate. Default 300.
 * -p : Amount of time to retrieve data from yfinance. Options are: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max and it defaults to 3mo.
 

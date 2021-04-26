@@ -100,20 +100,20 @@ test_get_orders:
       <!-- begin_nav -->
           <link rel="stylesheet" href="https://www.fidelity.com/bin-public/060_www_fidelity_com/css/nav-07.18.min.css" type="text/css">
                     <div class="mboxDefault">
-      <!--[if lte IE 7 ]>    
-      <div id="pgnb" class="pgnb ie ie7" data-nav-ver="12" data-tmsId="526-79240-64"> 
+      <!--[if lte IE 7 ]>
+      <div id="pgnb" class="pgnb ie ie7" data-nav-ver="12" data-tmsId="526-79240-64">
       <![endif]-->
       <!--[if IE 8 ]>
-      <div id="pgnb" class="pgnb ie ie8  bm" data-nav-ver="12" data-tmsId="526-79240-64"> 
+      <div id="pgnb" class="pgnb ie ie8  bm" data-nav-ver="12" data-tmsId="526-79240-64">
       <![endif]-->
       <!--[if IE 9 ]>
-      <div id="pgnb" class="pgnb ie ie9  bm" data-nav-ver="12" data-tmsId="526-79240-64"> 
+      <div id="pgnb" class="pgnb ie ie9  bm" data-nav-ver="12" data-tmsId="526-79240-64">
       <![endif]-->
       <!--[if (gt IE 9)|!(IE)]><!-->
       <div id="pgnb" class="pgnb bm" data-nav-ver="12" data-tmsId="526-79240-64">
       <!--<![endif]-->
           <div class="pbn" role="banner">
-              <div class="pnsn"><a href="#piNavSkipToContent" class="pnsl" id="pnsl">Skip to Main Content.</a></div> 
+              <div class="pnsn"><a href="#piNavSkipToContent" class="pnsl" id="pnsl">Skip to Main Content.</a></div>
               <a id="pnt" class="pnt" href="javascript:void(0)"><span class="pntstrp"><span class="off-screen">Site navigation</span></span></a>
                    <div class="pnld"><a target="_top" href="https://www.fidelity.com/?bar=p"><span class="screen-reader-only">Fidelity.com Home</span></a></div>
               <div class="pntlt">
@@ -444,13 +444,13 @@ test_get_orders:
       var PIGlobalNav_RESEARCHTOOLS_HOST ="https://researchtools.fidelity.com";
       var PGNBProperties = {
       fadeInTime : 4000 ,
-      menuDelayTime : 400 
+      menuDelayTime : 400
       }
       </script>
       <script src="https://www.fidelity.com/bin-public/060_www_fidelity_com/js/nav-07.18.min.js" type="text/javascript"></script>
       <!-- end_nav -->
 
-      <div class="spacing-div_8X0"></div>	
+      <div class="spacing-div_8X0"></div>
 
       <div class="breadcrumb layout-outer-table-width">
         <div class="right-align">
@@ -543,7 +543,7 @@ test_get_orders:
         }*/
 
         //if(window.opener && !window.opener.closed){
-        if(topOpenerWin && !topOpenerWin.closed){	
+        if(topOpenerWin && !topOpenerWin.closed){
           //window.opener.focus();
           topOpenerWin.focus();
         } else {
@@ -577,7 +577,7 @@ test_get_orders:
           <span class="offScreen"><label for="rRDDom">View this information for the company or symbol</label></span>
           <select id="rRDDom" class="dd" title="Snapshot" onchange="javascript:this.title=this.options[this.selectedIndex].title;">
             <option title="Snapshot" value="https://eresearch.fidelity.com/eresearch/evaluate/snapshot.jhtml" >Snapshot</option>
-            <option title="Detailed Quote" value="https://eresearch.fidelity.com/eresearch/evaluate/quote.jhtml" >Detailed Quote</option>		
+            <option title="Detailed Quote" value="https://eresearch.fidelity.com/eresearch/evaluate/quote.jhtml" >Detailed Quote</option>
             <option title="Advanced Chart & Technical Analysis" value="https://eresearch.fidelity.com/eresearch/gotoBL/evaluate/chart/chartAdvanced.jhtml" >Adv Chart & Technical..</option>
             <option title="News & Events" value="https://eresearch.fidelity.com/eresearch/evaluate/news/basicNews.jhtml" >News & Events</option>
             <option title="Compare" value="https://eresearch.fidelity.com/eresearch/compare/main.jhtml" >Compare</option>
@@ -585,7 +585,7 @@ test_get_orders:
             <option title="Research Reports" value="https://eresearch.fidelity.com/eresearch/evaluate/analystsOpinionsReport.jhtml">Research Reports</option>
             <option title="Key Statistics" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/valuation.jhtml?stockspage=keyStatistics" >Key Statistics</option>
             <option title="Earnings" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/earnings.jhtml?stockspage=earnings" >Earnings</option>
-            <option title="Dividends" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/dividends.jhtml?stockspage=dividends" >Dividends</option>		
+            <option title="Dividends" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/dividends.jhtml?stockspage=dividends" >Dividends</option>
             <option title="Ownership & Insiders" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/ownership.jhtml?stockspage=ownership" >Ownership & Insiders</option>
             <option title="Financial Statements" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/financials.jhtml?stockspage=financials" >Financial Statements</option>
             <option title="SEC Filings" value="https://eresearch.fidelity.com/eresearch/evaluate/fundamentals/secFilings.jhtml?stockspage=secFilings" >SEC Filings</option>
@@ -595,7 +595,7 @@ test_get_orders:
           <span class="offScreen"><label for="rRDIntl">View this information for the company or symbol</label></span>
           <select id="rRDIntl" class="dd" title="Snapshot" onchange="javascript:this.title=this.options[this.selectedIndex].title;">
             <option title="Snapshot" value="/eresearch/evaluate/snapshot.jhtml" >Snapshot</option>
-            <option title="Detailed Quote" value="/eresearch/evaluate/quote.jhtml" >Detailed Quote</option>		
+            <option title="Detailed Quote" value="/eresearch/evaluate/quote.jhtml" >Detailed Quote</option>
             <option title="Advanced Chart" value="/eresearch/gotoBL/evaluate/chart/chartAdvanced.jhtml" >Advanced Chart</option>
             <option title="News" value="/eresearch/evaluate/news/basicNews.jhtml" >News</option>
             <option title="Analyst Reports" value="/eresearch/international/analystReports.jhtml" >Analyst Reports</option>
@@ -626,7 +626,7 @@ test_get_orders:
         <h3>Screen & Filter</h3>
         <ul>
           <li id="toc-stocksearch-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/screeners/commonstock/index.asp?page=landing.asp">Stock Screeners</a></li>
-          <li id="toc-expertstrategies-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/screeners/stock/frameset.asp?page=screenlibrary.asp">Preset Expert Strategies<span class="auto-padlock"></span></a></li>		
+          <li id="toc-expertstrategies-id"><a  target="_top" href="https://research2.fidelity.com/fidelity/screeners/stock/frameset.asp?page=screenlibrary.asp">Preset Expert Strategies<span class="auto-padlock"></span></a></li>
         </ul>
         <h3>News & Insights</h3>
         <ul>
@@ -646,7 +646,7 @@ test_get_orders:
 
       <div class="stock-links-bricklet">
       <h3>RELATED RESOURCES</h3>
-      <ul>	
+      <ul>
         <li><a href="javascript:openWinTOC('https://www.fidelity.com/learning-center?bar=p');">Fidelity Learning Center <img src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/popup.gif" alt="Opens in New Window"></img></a></li>
         <li><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/markets_sectors/landing.jhtml?linkpage=usmarkets#usMarketAnchor">U.S. Markets</a></li>
         <li><a  target="_top" href="https://eresearch.fidelity.com/eresearch/goto/markets_sectors/global/landing.jhtml?viewType=map">Global Markets</a></li>
@@ -704,7 +704,7 @@ test_get_orders:
           <a class="contextual-help-close-link" href="javascript:hidePopupDiv('agr_hlp');">
             <img align="right" alt="Close" src="https://www.fidelity.com/webcontent/ap002388-eresearch-content/21.03.0/images/close_small.gif" />
           </a>
-        </div> 
+        </div>
         <div class="contextual-help-placeholder">
         </div>
       </div>
@@ -715,7 +715,7 @@ test_get_orders:
       <div class="spacing-div_26X0"></div>
 
       <div class="header-with-border">
-      <span class="bold">Top Buys and Sells</span> 
+      <span class="bold">Top Buys and Sells</span>
 
       <span class="source">as of market close 03/29/21</span>
 
@@ -1928,7 +1928,7 @@ test_get_orders:
       <sup>&Dagger;</sup><span class="footnote">Rank is based on the total of buy and sell orders for the security</span>
       </div>
       <script type="text/javascript">
-      if(top.document.title == null || top.document.title == '') 
+      if(top.document.title == null || top.document.title == '')
         top.document.title = 'Stocks Research - Fidelity Investments';
       </script>
           <td class="layout-spacer-10"></td>
@@ -2275,13 +2275,13 @@ test_get_orders:
 
         <li><a class="links" href="http://www.fidelity.com/terms-of-use"
           target="_top">Terms of Use</a><span class="pipe">|</span></li>
-        <li><a class="links" 
+        <li><a class="links"
           href="http://www.fidelity.com/privacy-policy"
           target="_top">Privacy</a><span class="pipe">|</span></li>
-        <li><a class="links" 
+        <li><a class="links"
           href="http://www.fidelity.com/security/overview"
           target="_top">Security</a><span class="pipe">|</span></li>
-        <li><a class="links" 
+        <li><a class="links"
           href="http://www.fidelity.com/sitemap/overview"
           target="_top">Site Map</a>&nbsp;</li>
       </ul>
@@ -2322,7 +2322,7 @@ test_get_orders:
 
       <script type="text/javascript">
           var personal_server = "https://www.fidelity.com";
-          var ac_domain = "https://www.fidelity.com";        
+          var ac_domain = "https://www.fidelity.com";
           var aq_domain = "https://fastquote.fidelity.com";
           var pl_domain = "https://www.fidelity.com";
           var wsod_domain = "https://research2.fidelity.com";
@@ -2333,7 +2333,7 @@ test_get_orders:
           var er_domain = "";
           var symbolTextBoxClicked = false;
           var embeddedQuotesConfig = {};
-          var fmrProductid="eresearch"; 
+          var fmrProductid="eresearch";
       </script>
 
 
@@ -2347,16 +2347,16 @@ test_get_orders:
 
 
       <script>
-      dojo.addOnLoad(function(){ 
-        dojo.query("table.indexgrid a").forEach ( function (inputElement) { 
+      dojo.addOnLoad(function(){
+        dojo.query("table.indexgrid a").forEach ( function (inputElement) {
           var minisnapNode = dojo.doc.createElement('span');
           minisnapNode.setAttribute("fmr-attach-component", "fmr.qnr.components.snapshot.Mini");
           minisnapNode.setAttribute("fmr-param-symbol", inputElement.innerHTML);
           var minisnapParent = inputElement.parentNode;
           inputElement.parentNode.removeChild(inputElement);
           minisnapNode.appendChild(inputElement);
-          minisnapParent.appendChild(minisnapNode); 
-        }); 
+          minisnapParent.appendChild(minisnapNode);
+        });
       });
       </script>
 
@@ -2386,7 +2386,7 @@ test_get_orders:
 
 
       <script type="text/javascript">
-      $(document).ready(function(){ 
+      $(document).ready(function(){
       $("#topOrdersTable:has(tbody tr)").tablesorter({
         sortList: [[0,0]],
         headers:{
@@ -2411,7 +2411,7 @@ test_get_orders:
       <script language="JavaScript" type="text/javascript">
       dojo.addOnLoad(function() {
         var isRetailCustomer = false;
-        if(typeof window.isRetailCustomer != "undefined"){ 
+        if(typeof window.isRetailCustomer != "undefined"){
           isRetailCustomer = window.isRetailCustomer;
           }
         if(!isRetailCustomer) {

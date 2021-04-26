@@ -44,10 +44,7 @@ def get_ratings() -> List[dict]:
     ratings = list()
     url_ratings = "https://www.marketbeat.com/ratings/"
 
-    text_soup_ratings = BeautifulSoup(
-        get_ratings_html(url_ratings),
-        "lxml",
-    )
+    text_soup_ratings = BeautifulSoup(get_ratings_html(url_ratings), "lxml")
 
     for stock_rows in text_soup_ratings.findAll("tr"):
         tds = stock_rows.findAll("td")

@@ -12,9 +12,7 @@ from finvizfinance.screener import (
     ownership,
     performance,
 )
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
 def get_comparison_data(data_type: str, similar: List[str]):

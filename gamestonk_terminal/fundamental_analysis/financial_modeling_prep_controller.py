@@ -7,9 +7,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.fundamental_analysis import financial_modeling_prep_view as fmpv
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    get_flair,
-)
+from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
 
@@ -50,10 +48,7 @@ class FinancialModelingPrepController:
         self.start = start
         self.interval = interval
         self.fmp_parser = argparse.ArgumentParser(add_help=False, prog="fmp")
-        self.fmp_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.fmp_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """ Print help """
@@ -177,8 +172,7 @@ def menu(ticker: str, start: str, interval: str):
             )
 
             an_input = session.prompt(
-                f"{get_flair()} (fa)>(fmp)> ",
-                completer=completer,
+                f"{get_flair()} (fa)>(fmp)> ", completer=completer
             )
         else:
             an_input = input(f"{get_flair()} (fa)>(fmp)> ")

@@ -62,10 +62,7 @@ def find_trendline(df_data: DataFrame, y_key: str, high_low: str = "high") -> Da
     for iteration in [3, 4, 5, 6, 7]:
         df_temp = df_data.copy()
         while len(df_temp) > iteration:
-            reg = linregress(
-                x=df_temp["date_id"],
-                y=df_temp[y_key],
-            )
+            reg = linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
             if high_low == "high":
                 df_temp = df_temp.loc[
@@ -82,10 +79,7 @@ def find_trendline(df_data: DataFrame, y_key: str, high_low: str = "high") -> Da
     if len(df_temp) == 1:
         return df_data
 
-    reg = linregress(
-        x=df_temp["date_id"],
-        y=df_temp[y_key],
-    )
+    reg = linregress(x=df_temp["date_id"], y=df_temp[y_key])
 
     df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
 

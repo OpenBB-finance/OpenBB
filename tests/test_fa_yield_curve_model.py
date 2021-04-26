@@ -24,8 +24,7 @@ class TestFaYieldCurveModel:
         "gamestonk_terminal.fundamental_analysis.yield_curve_model.get_yield_curve_year"
     )
     @parameterize_from_file(
-        "test_get_yield_curve",
-        "../tests/data/fa_yield_curve_model.yaml",
+        "test_get_yield_curve", "../tests/data/fa_yield_curve_model.yaml"
     )
     # pylint: disable=too-many-arguments
     def test_get_yield_curve(
@@ -45,8 +44,7 @@ class TestFaYieldCurveModel:
 
         mock_get_yield_curve_year.side_effect = rets
         df = get_yield_curve(
-            datetime.strptime(start, "%m/%d/%y"),
-            datetime.strptime(end, "%m/%d/%y"),
+            datetime.strptime(start, "%m/%d/%y"), datetime.strptime(end, "%m/%d/%y")
         )
 
         assertions.assertEqual(
@@ -55,8 +53,7 @@ class TestFaYieldCurveModel:
 
     @mock.patch("gamestonk_terminal.fundamental_analysis.yield_curve_model.requests")
     @parameterize_from_file(
-        "test_get_yield_curve_year",
-        "../tests/data/fa_yield_curve_model.yaml",
+        "test_get_yield_curve_year", "../tests/data/fa_yield_curve_model.yaml"
     )
     def test_get_yield_curve_year(
         self, mock_request_get, year, mock_yield_curve_page, expected_result

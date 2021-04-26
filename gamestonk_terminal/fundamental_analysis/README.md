@@ -8,7 +8,7 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * management team of the company [Business Insider]
 * [score](#score)
   * investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-         
+
 [MARKET WATCH](#MARKET_WATCH)
 
 * [income](#income)
@@ -114,9 +114,9 @@ usage: cash [-q]
 ```
 
 Prints either yearly or quarterly cash flow operating activities of the company. The following fields are expected: Net Income before Extraordinaries, Net Income Growth, Depreciation, Depletion & Amortization, Depreciation and Depletion, Amortization of Intangible Assets, Deferred Taxes & Investment Tax Credit, Deferred Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries, Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities, and Net Operating Cash Flow Growth.
-            
+
 Prints either yearly or quarterly cash flow investing activities of the company. The following fields are expected: Capital Expenditures, Capital Expenditures Growth, Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses, Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments, Other Uses, Other Sources, Net Investing Cash Flow Growth.
-            
+
 Prints either yearly or quarterly cash flow financing activities of the company. The following fields are expected: Cash Dividends Paid - Total, Common Dividends, Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk., Sale of Common & Preferred Stock, Proceeds from Stock Options, Other Proceeds from Sale of Stock, Issuance/Reduction of Debt, Net, Change in Current Debt, Change in Long-Term Debt, Issuance of Long-Term Debt, Reduction in Long-Term Debt, Other Funds, Other Uses, Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net Financing Cash Flow. [Source: Market Watch]
 
 * q : Quarter fundamental data flag. Default False.

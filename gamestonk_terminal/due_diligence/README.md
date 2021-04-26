@@ -183,4 +183,3 @@ The fails-to-deliver data collected by SEC. Fails to deliver on a given day are 
 * -n : number of latest fails-to-deliver being printed. Default 20.
 
 ![ftd](https://user-images.githubusercontent.com/25267873/115201750-93a9bc80-a0ed-11eb-8f13-68508749259e.png)
-

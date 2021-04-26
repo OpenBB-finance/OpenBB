@@ -31,11 +31,7 @@ class PortfolioController:
         "hold",
     ]
 
-    BROKERS = [
-        "rh",
-        "alp",
-        "ally",
-    ]
+    BROKERS = ["rh", "alp", "ally"]
 
     def __init__(self):
         self.port_parser = argparse.ArgumentParser(add_help=False, prog="port")
@@ -202,10 +198,7 @@ def menu():
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in port_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (pa)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (pa)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (pa)> ")
 

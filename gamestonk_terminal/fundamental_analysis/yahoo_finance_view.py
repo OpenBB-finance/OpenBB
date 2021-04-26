@@ -139,8 +139,8 @@ def shareholders(other_args: List[str], ticker: str):
         # Institutional holders
         print("Institutional holders")
         df_institutional_shareholders = stock.institutional_holders
-        df_institutional_shareholders.columns = (
-            df_institutional_shareholders.columns.str.replace("% Out", "Stake")
+        df_institutional_shareholders.columns = df_institutional_shareholders.columns.str.replace(
+            "% Out", "Stake"
         )
         df_institutional_shareholders["Shares"] = df_institutional_shareholders[
             "Shares"
@@ -157,8 +157,8 @@ def shareholders(other_args: List[str], ticker: str):
         # Mutualfunds holders
         print("Mutualfunds holders")
         df_mutualfund_shareholders = stock.mutualfund_holders
-        df_mutualfund_shareholders.columns = (
-            df_mutualfund_shareholders.columns.str.replace("% Out", "Stake")
+        df_mutualfund_shareholders.columns = df_mutualfund_shareholders.columns.str.replace(
+            "% Out", "Stake"
         )
         df_mutualfund_shareholders["Shares"] = df_mutualfund_shareholders[
             "Shares"

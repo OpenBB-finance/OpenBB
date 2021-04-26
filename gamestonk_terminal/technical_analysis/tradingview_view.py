@@ -5,9 +5,7 @@ import pandas as pd
 from tradingview_ta import TA_Handler
 
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 INTERVALS = {
     "1m": "1 min",
@@ -55,10 +53,7 @@ def get_tradingview_recommendation(
             # If the returned data was successful
             if result.status_code == 200:
                 stock_recommendation = TA_Handler(
-                    symbol=ticker,
-                    screener=screener,
-                    exchange=exchange,
-                    interval=interv,
+                    symbol=ticker, screener=screener, exchange=exchange, interval=interv
                 )
                 d_recommendation = stock_recommendation.get_analysis().summary
                 df_recommendation = df_recommendation.append(

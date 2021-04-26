@@ -14,7 +14,7 @@ A clear description of what you are lacking, or why you need this additional fea
 A description of what you think would be the best solution for this. From user inputs, to an output.
 
 **Describe alternatives you've considered**
-If there are other alternatives (worth considering) to your solution, list them here. 
+If there are other alternatives (worth considering) to your solution, list them here.
 
 **Additional information**
 Add any other information or screenshots about the feature request here.

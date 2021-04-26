@@ -52,8 +52,7 @@ class ThoughtOfTheDay:
         """
         quotes_page = BeautifulSoup(
             requests.get(
-                self.urls[author],
-                headers={"User-Agent": get_user_agent()},
+                self.urls[author], headers={"User-Agent": get_user_agent()}
             ).text,
             "lxml",
         )

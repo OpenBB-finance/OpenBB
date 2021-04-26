@@ -43,11 +43,7 @@ class PredictionTechniquesController:
         CHOICES.append("prophet")
 
     def __init__(
-        self,
-        stock: pd.DataFrame,
-        ticker: str,
-        start: datetime,
-        interval: str,
+        self, stock: pd.DataFrame, ticker: str, start: datetime, interval: str
     ):
         """Constructor"""
         self.stock = stock
@@ -55,10 +51,7 @@ class PredictionTechniquesController:
         self.start = start
         self.interval = interval
         self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
-        self.pred_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.pred_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """ Print help """
@@ -188,10 +181,7 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in pred_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (pred)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (pred)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (pred)> ")
 

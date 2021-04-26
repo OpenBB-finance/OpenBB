@@ -35,11 +35,7 @@ def getFINRAweeks(tier, is_ats) -> List:
                 "fieldName": "summaryTypeCode",
                 "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
             },
-            {
-                "compareType": "EQUAL",
-                "fieldName": "tierIdentifier",
-                "fieldValue": tier,
-            },
+            {"compareType": "EQUAL", "fieldName": "tierIdentifier", "fieldValue": tier},
         ],
         "delimiter": "|",
         "fields": ["weekStartDate"],
@@ -218,9 +214,7 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
 
     elif not ats.empty:
         plt.bar(
-            ats.index,
-            ats["totalWeeklyShareQuantity"] / 1_000_000,
-            color="tab:orange",
+            ats.index, ats["totalWeeklyShareQuantity"] / 1_000_000, color="tab:orange"
         )
         plt.legend(["ATS"])
 

@@ -36,10 +36,7 @@ class ForexController:
     def __init__(self):
         """Construct Data"""
         self.fx_parser = argparse.ArgumentParser(add_help=False, prog="fx")
-        self.fx_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.fx_parser.add_argument("cmd", choices=self.CHOICES)
         self.instrument = None
 
     @staticmethod
@@ -163,10 +160,7 @@ def menu():
                 {c: None for c in fx_controller.CHOICES}
             )
 
-            an_input = session.prompt(
-                f"{get_flair()} (fx)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (fx)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (fx)> ")
 

@@ -32,7 +32,7 @@ This menu aims to perform residual analysis on a pre-loaded stock in order to do
 usage: pick [-m MODEL]
 ```
 
-Pick model to fit to stock data. 
+Pick model to fit to stock data.
 Currently supported: **Naive**, **ARIMA**
 
 

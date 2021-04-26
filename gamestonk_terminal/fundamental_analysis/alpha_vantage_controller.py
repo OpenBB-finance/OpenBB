@@ -44,10 +44,7 @@ class AlphaVantageController:
         self.start = start
         self.interval = interval
         self.av_parser = argparse.ArgumentParser(add_help=False, prog="av")
-        self.av_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.av_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """ Print help """
@@ -150,10 +147,7 @@ def menu(ticker: str, start: str, interval: str):
                 {c: None for c in av_controller.CHOICES}
             )
 
-            an_input = session.prompt(
-                f"{get_flair()} (fa)>(av)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (fa)>(av)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (fa)>(av)> ")
 

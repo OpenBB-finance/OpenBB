@@ -91,10 +91,7 @@ def menu():
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in crypto_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (crypto)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (crypto)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (crypto)> ")
 

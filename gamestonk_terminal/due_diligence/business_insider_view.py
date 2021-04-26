@@ -83,7 +83,9 @@ def price_target_from_analysts(
                 d_analyst_data = json.loads(s_analyst_data)
                 break
 
-        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
+        df_analyst_data = pd.DataFrame.from_dict(
+            d_analyst_data["Markers"]
+        )  # type: ignore
         df_analyst_data = df_analyst_data[
             ["DateLabel", "Company", "InternalRating", "PriceTarget"]
         ]
@@ -106,7 +108,9 @@ def price_target_from_analysts(
             plt.plot(stock.index, stock["4. close"].values, lw=3)
 
         if start:
-            plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
+            plt.plot(
+                df_analyst_data.groupby(by=["Date"]).mean()[start:]
+            )  # type: ignore
         else:
             plt.plot(df_analyst_data.groupby(by=["Date"]).mean())
 

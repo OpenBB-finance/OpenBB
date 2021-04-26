@@ -287,10 +287,13 @@ def _setup_backtesting(df_stock, ns_parser):
                 "Backtesting not allowed, since End Date is older than Start Date of historical data"
             )
 
-        if ns_parser.s_end_date < get_next_stock_market_days(
-            last_stock_day=df_stock.index[0],
-            n_next_days=ns_parser.n_inputs + ns_parser.n_days,
-        )[-1]:
+        if (
+            ns_parser.s_end_date
+            < get_next_stock_market_days(
+                last_stock_day=df_stock.index[0],
+                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
+            )[-1]
+        ):
             raise Exception(
                 "Backtesting not allowed, since End Date is too close to Start Date to train model"
             )
@@ -454,11 +457,7 @@ def _plot_and_print_results(
     # BACKTESTING
     if ns_parser.s_end_date:
         plt.plot(
-            df_future.index,
-            df_future["5. adjusted close"],
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            df_future.index, df_future["5. adjusted close"], lw=2, c="tab:blue", ls="--"
         )
         plt.plot(
             [df_stock.index[-1], df_future.index[0]],
@@ -481,11 +480,7 @@ def _plot_and_print_results(
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.subplot(211)
         plt.plot(
-            df_future.index,
-            df_future["5. adjusted close"],
-            lw=2,
-            c="tab:blue",
-            ls="--",
+            df_future.index, df_future["5. adjusted close"], lw=2, c="tab:blue", ls="--"
         )
         if ns_parser.n_loops == 1:
             plt.plot(df_pred.index, df_pred, lw=2, c="green")

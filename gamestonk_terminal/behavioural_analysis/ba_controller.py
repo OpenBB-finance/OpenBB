@@ -48,10 +48,7 @@ class BehaviouralAnalysisController:
         self.ticker = ticker
         self.start = start
         self.ba_parser = argparse.ArgumentParser(add_help=False, prog="ba")
-        self.ba_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.ba_parser.add_argument("cmd", choices=self.CHOICES)
 
     @staticmethod
     def print_help():
@@ -231,10 +228,7 @@ def menu(ticker: str, start: datetime):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in ba_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (ba)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (ba)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (ba)> ")
 

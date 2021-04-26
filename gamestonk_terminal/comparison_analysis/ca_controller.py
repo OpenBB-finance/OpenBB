@@ -79,10 +79,7 @@ class ComparisonAnalysisController:
         self.start = start
         self.interval = interval
         self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
-        self.ca_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.ca_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """Print help"""
@@ -374,10 +371,7 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in ca_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (ca)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (ca)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (ca)> ")
 

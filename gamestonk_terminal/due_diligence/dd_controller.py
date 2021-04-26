@@ -62,10 +62,7 @@ class DueDiligenceController:
         self.start = start
         self.interval = interval
         self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
-        self.dd_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.dd_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """ Print help """
@@ -215,10 +212,7 @@ def menu(stock: DataFrame, ticker: str, start: str, interval: str):
                 {c: None for c in dd_controller.CHOICES}
             )
 
-            an_input = session.prompt(
-                f"{get_flair()} (dd)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (dd)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (dd)> ")
 

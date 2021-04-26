@@ -74,7 +74,9 @@ def sec_fillings(other_args: List[str], ticker: str):
                 l_financials_info.extend(a_financials[5:-1])
                 l_financials_info.append(financials_info.a["href"])
                 # Append data values to financials
-                df_financials.loc[len(df_financials.index)] = l_financials_info  # type: ignore
+                df_financials.loc[
+                    len(df_financials.index)
+                ] = l_financials_info  # type: ignore
 
             if "Filing Date" in a_financials:
                 l_financials_header = [a_financials[2]]

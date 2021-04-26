@@ -1,6 +1,6 @@
 # OPTIONS
 
-This menu aims to give insight on options. 
+This menu aims to give insight on options.
 
 This menu aims to give insight on options. Options can cause significant share price movement, and option pricing gives info about market sentiment for a ticker. The usage of the following commands along with an example will be exploited below:
 
@@ -96,7 +96,7 @@ Display options chains. [Source: Tradier]
 ## info <a name="info"></a>
 This scrapes the options information from barchart.com/stocks overview.  This includes information such as Historical Volatility and IV Rank.
 
-In order to run, the selenium webdriver must be installed.  
+In order to run, the selenium webdriver must be installed.
 Currently, this runs on either Chrome or Firefox.  The path to the driver should be defined in [config_terminal.py](#config_terminal.py).
 
 Note this may take more time than other commands to process.

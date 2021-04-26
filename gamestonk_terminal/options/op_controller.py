@@ -27,10 +27,7 @@ class OptionsController:
         self.options = self.yf_ticker_data.option_chain(self.expiry_date)
         self.last_adj_close_price = last_adj_close_price
         self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-        self.op_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.op_parser.add_argument("cmd", choices=self.CHOICES)
 
     @staticmethod
     def expiry_dates(self, other_args: List[str]):
@@ -186,10 +183,7 @@ def menu(ticker: str, last_adj_close_price: float):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in op_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (op)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (op)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (op)> ")
 

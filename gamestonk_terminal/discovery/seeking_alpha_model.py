@@ -49,10 +49,7 @@ def get_next_earnings(pages: int) -> DataFrame:
     url_next_earnings = "https://seekingalpha.com/earnings/earnings-calendar"
 
     for idx in range(0, pages):
-        text_soup_earnings = BeautifulSoup(
-            get_earnings_html(url_next_earnings),
-            "lxml",
-        )
+        text_soup_earnings = BeautifulSoup(get_earnings_html(url_next_earnings), "lxml")
 
         for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
             stocks = list()
@@ -111,10 +108,7 @@ def get_article_list(start_date: datetime, num: int) -> List[dict]:
     page = 1
     url_articles = f"https://seekingalpha.com/market-news/{page}"
     while len(articles) < num:
-        text_soup_articles = BeautifulSoup(
-            get_articles_html(url_articles),
-            "lxml",
-        )
+        text_soup_articles = BeautifulSoup(get_articles_html(url_articles), "lxml")
 
         for item_row in text_soup_articles.findAll("li", {"class": "item"}):
             item = item_row.find("a", {"class": "add-source-assigned"})

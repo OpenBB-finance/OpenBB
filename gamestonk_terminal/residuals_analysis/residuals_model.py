@@ -9,10 +9,7 @@ from statsmodels.tsa.arima.model import ARIMA
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
-def naive(
-    other_args: List[str],
-    stock: pd.Series,
-):
+def naive(other_args: List[str], stock: pd.Series):
     """Naive model
 
     Parameters
@@ -57,10 +54,7 @@ def naive(
         return "", None, list()
 
 
-def arima(
-    other_args: List[str],
-    stock: pd.Series,
-):
+def arima(other_args: List[str], stock: pd.Series):
     """Arima model
 
     Parameters

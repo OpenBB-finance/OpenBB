@@ -18,13 +18,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
 
-d_candle_types = {
-    "o": "Open",
-    "h": "High",
-    "l": "Low",
-    "c": "Close",
-    "a": "Adj Close",
-}
+d_candle_types = {"o": "Open", "h": "High", "l": "Low", "c": "Close", "a": "Adj Close"}
 
 
 def check_one_of_ohlca(type_candles: str) -> str:

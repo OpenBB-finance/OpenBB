@@ -7,9 +7,7 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 import requests
 
-from gamestonk_terminal.helper_funcs import (
-    get_user_agent,
-)
+from gamestonk_terminal.helper_funcs import get_user_agent
 
 
 def get_yield_curve(start: datetime, end: datetime) -> DataFrame:
@@ -64,8 +62,7 @@ def get_yield_curve_year(year: str) -> DataFrame:
     yield_curve_url = "https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yieldYear&year={}"  # noqa: E501
     text_soup_yield_curve = BeautifulSoup(
         requests.get(
-            yield_curve_url.format(year),
-            headers={"User-Agent": get_user_agent()},
+            yield_curve_url.format(year), headers={"User-Agent": get_user_agent()}
         ).text,
         "lxml",
     )

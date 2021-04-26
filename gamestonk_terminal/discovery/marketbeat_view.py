@@ -6,10 +6,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 from gamestonk_terminal.discovery import marketbeat_model
 
 

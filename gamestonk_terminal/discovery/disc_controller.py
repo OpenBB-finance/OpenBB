@@ -58,10 +58,7 @@ class DiscoveryController:
         """Constructor"""
         self.spectrum_img_to_delete = ""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
-        self.disc_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.disc_parser.add_argument("cmd", choices=self.CHOICES)
 
     @staticmethod
     def print_help():
@@ -228,10 +225,7 @@ def menu():
                 {c: None for c in disc_controller.CHOICES}
             )
 
-            an_input = session.prompt(
-                f"{get_flair()} (disc)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (disc)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (disc)> ")
 

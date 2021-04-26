@@ -280,5 +280,3 @@ Display dark pool (ATS) data of tickers with growing trades activity. [Source: F
 * -t : List of tickers from most promising with better linear regression slope. Default: 5.
 
 ![darkpool](https://user-images.githubusercontent.com/25267873/115323195-8d642080-a17f-11eb-9ef8-d456ce769ab7.png)
-
-

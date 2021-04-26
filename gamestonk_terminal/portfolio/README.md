@@ -8,12 +8,12 @@ Current brokers:
 * Ally
 
 
-Once this screen is accessed, the first command to be run is 
+Once this screen is accessed, the first command to be run is
 ````
 login [brokers]
 ````
 
-The brokers should just be your brokers from the list shown on the first menu.  To login to Robinhood, the command is 
+The brokers should just be your brokers from the list shown on the first menu.  To login to Robinhood, the command is
 ````
 login rh
 ````
@@ -30,7 +30,7 @@ Your  login information should be stored as environment variables in [config fil
     * Look at current (stock only) holdings
 * [rhhist](#rhhist)
     * Get and plot historical portfolio
-  
+
 [ALPACA](#ALPACA)
 * [alphold](#alphold)
     * Look at current (stock only) holdings
@@ -44,7 +44,7 @@ Your  login information should be stored as environment variables in [config fil
 [Merge](#Merge)
 * [hold](#hold)
   * View holdings across all brokers
-  
+
 
 ## ROBINHOOD <a name="ROBINHOOD"></a>
 Robinhood has Two Factor Authentication, so you will likely be prompted to enter a code that is texted/emailed to you.
@@ -77,7 +77,7 @@ usage: rhhist [-s --span] [-i --interval]
     * [day, week, month, 3month, year, 5year, all]
 * -i/--interval: Data resolution. Defaults to 10minute intervals. Options:
     * [5minute, 10minute, hour, day, week]
-    
+
 Example Default Output:
 
 ![rhhist](https://user-images.githubusercontent.com/18151143/111718919-36da8e00-8831-11eb-99e1-957c8eccb583.png)
@@ -89,10 +89,10 @@ Alpaca has a nicely maintained python API that is used here.  To login, the best
 * "APCA_API_KEY_ID"
 * "APCA_API_SECRET_KEY"
 
-If these are defined, then the login command does not explicitly need to be run, but the login command verifies all those keys are defined. 
+If these are defined, then the login command does not explicitly need to be run, but the login command verifies all those keys are defined.
 
 Note that alpaca does support paper trading, so if your base_url is "https://paper-api.alpaca.markets", then this will be importing
-your paper trading account.  
+your paper trading account.
 
 ### alphold <a name="alphold"></a>
 
@@ -120,7 +120,7 @@ usage: alphist [-p --period] [-t --timeframe]
 
 ## ALLY <a name="ALLY"></a>
 
-In order to access your Ally Invest account through the API, you must first acquire a key from 
+In order to access your Ally Invest account through the API, you must first acquire a key from
 [your Ally Invest Account](#https://www.ally.com/api/invest/documentation/getting-started/).
 
 Once you have this, you want to load in the following environment variables (similar to alpaca, the api will access these

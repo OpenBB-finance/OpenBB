@@ -1,9 +1,7 @@
 import argparse
 from typing import List
 import requests
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
 def get_technical_summary_report(ticker: str) -> str:

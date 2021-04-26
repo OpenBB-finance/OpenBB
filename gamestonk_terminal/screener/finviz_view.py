@@ -14,10 +14,7 @@ from finvizfinance.screener import (
     ownership,
     performance,
 )
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
 
 d_signals = {
     "top_gainers": "Top Gainers",
@@ -119,9 +116,7 @@ def get_screener_data(
     if d_general["Order"]:
         if limit > 0:
             df_screen = screen.ScreenerView(
-                order=d_general["Order"],
-                limit=limit,
-                ascend=ascend,
+                order=d_general["Order"], limit=limit, ascend=ascend
             )
         else:
             df_screen = screen.ScreenerView(order=d_general["Order"], ascend=ascend)

@@ -40,11 +40,7 @@ def getFINRAweeks(tier, is_ats) -> List:
                 "fieldName": "summaryTypeCode",
                 "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
             },
-            {
-                "compareType": "EQUAL",
-                "fieldName": "tierIdentifier",
-                "fieldValue": tier,
-            },
+            {"compareType": "EQUAL", "fieldName": "tierIdentifier", "fieldValue": tier},
         ],
         "delimiter": "|",
         "fields": ["weekStartDate"],

@@ -33,11 +33,7 @@ class EdaController:
     ]
 
     def __init__(
-        self,
-        stock: pd.DataFrame,
-        ticker: str,
-        start: datetime,
-        interval: str,
+        self, stock: pd.DataFrame, ticker: str, start: datetime, interval: str
     ):
         """Constructor"""
         self.stock = stock
@@ -45,10 +41,7 @@ class EdaController:
         self.start = start
         self.interval = interval
         self.stats_parser = argparse.ArgumentParser(add_help=False, prog="stats")
-        self.stats_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.stats_parser.add_argument("cmd", choices=self.CHOICES)
 
     @staticmethod
     def print_help(self):
@@ -157,10 +150,7 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in eda_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (eda)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (eda)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (eda)> ")
 

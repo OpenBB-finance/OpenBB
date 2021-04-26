@@ -35,10 +35,7 @@ class FredController:
     def __init__(self):
         """Constructor"""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="fred")
-        self.disc_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.disc_parser.add_argument("cmd", choices=self.CHOICES)
 
     @staticmethod
     def print_help():
@@ -134,10 +131,7 @@ def menu():
                 {c: None for c in fred_controller.CHOICES}
             )
 
-            an_input = session.prompt(
-                f"{get_flair()} (fred)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (fred)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (fred)> ")
         try:

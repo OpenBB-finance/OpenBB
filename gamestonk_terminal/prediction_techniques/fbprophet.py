@@ -161,10 +161,7 @@ def fbprophet(l_args, s_ticker, df_stock):
             )
             plt.plot(
                 [df_stock["ds"].values[-1], df_future.index[0]],
-                [
-                    df_stock["y"].values[-1],
-                    df_future["5. adjusted close"].values[0],
-                ],
+                [df_stock["y"].values[-1], df_future["5. adjusted close"].values[0]],
                 lw=1,
                 c="tab:blue",
                 linestyle="--",
@@ -190,17 +187,11 @@ def fbprophet(l_args, s_ticker, df_stock):
             )
             plt.plot(df_pred.index, df_pred, lw=2, c="green")
             plt.scatter(
-                df_future.index,
-                df_future["5. adjusted close"],
-                c="tab:blue",
-                lw=3,
+                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
             )
             plt.plot(
                 [df_stock["ds"].values[-1], df_future.index[0]],
-                [
-                    df_stock["y"].values[-1],
-                    df_future["5. adjusted close"].values[0],
-                ],
+                [df_stock["y"].values[-1], df_future["5. adjusted close"].values[0]],
                 lw=2,
                 c="tab:blue",
                 ls="--",

@@ -18,8 +18,7 @@ assertions = unittest.TestCase("__init__")
 class TestFaMarketWatchApiUnit:
     @mock.patch("gamestonk_terminal.fundamental_analysis.market_watch_model.requests")
     @parameterize_from_file(
-        "test_prepare_df_financials",
-        "../tests/data/fa_market_watch_model.yaml",
+        "test_prepare_df_financials", "../tests/data/fa_market_watch_model.yaml"
     )
     # pylint: disable=too-many-arguments
     def test_prepare_df_financials(
@@ -30,6 +29,5 @@ class TestFaMarketWatchApiUnit:
 
         assertions.assertEqual.__self__.maxDiff = None
         assertions.assertEqual(
-            ret.to_csv().replace("\r\n", "\n"),
-            expected_result.replace("\r\n", "\n"),
+            ret.to_csv().replace("\r\n", "\n"), expected_result.replace("\r\n", "\n")
         )

@@ -18,15 +18,11 @@ assertions = unittest.TestCase("__init__")
 class TestDiscoveryArkModel:
     @mock.patch("gamestonk_terminal.discovery.ark_model.requests")
     @parameterize_from_file(
-        "test_get_ark_orders",
-        "../tests/data/discovery_ark_model.yaml",
+        "test_get_ark_orders", "../tests/data/discovery_ark_model.yaml"
     )
     # pylint: disable=unused-argument
     def test_get_ark_orders(
-        self,
-        mock_requests_get,
-        mock_ark_orders_html,
-        expected_orders,
+        self, mock_requests_get, mock_ark_orders_html, expected_orders
     ):
         mock_requests_get.get().text = mock_ark_orders_html
         ret = get_ark_orders()
@@ -38,8 +34,7 @@ class TestDiscoveryArkModel:
 
     @mock.patch("gamestonk_terminal.discovery.ark_model.yf.download")
     @parameterize_from_file(
-        "test_add_order_total",
-        "../tests/data/discovery_ark_model.yaml",
+        "test_add_order_total", "../tests/data/discovery_ark_model.yaml"
     )
     # pylint: disable=unused-argument
     def test_add_order_total(

@@ -97,7 +97,7 @@ test_prepare_df_financials:
                 if ("PerformancePaintTiming" in window){observer.observe({entryTypes: ['paint', 'mark', 'measure']});}
                 else {observer.observe({entryTypes: ['mark', 'measure']});}
             }
-            
+
             // from https://github.dowjones.net/wsjdn-tesla/dj.svc.end_user_monitor/blob/master/lib/page_perf_monitor.js#L161-L195
             if (window.PerformanceObserver) {
               // Holds current CLS score, as changes over time.
@@ -157,7 +157,7 @@ test_prepare_df_financials:
               window.__mwads.gptEnabled = true;
               window.__mwads.prebidEnabled = true;
               window.__mwads.moatEnabled = true;
-              window.__mwads.mpuId = 'ad-display-ad'; 
+              window.__mwads.mpuId = 'ad-display-ad';
                   window.__mwads.curatedMap = { A: 1088448, B: 1088449, C: 1091804, D: 1091805 };
 
               (function() {
@@ -166,7 +166,7 @@ test_prepare_df_financials:
                               googletag.pubads().setTargeting('keywords', ['sector_']);
                               googletag.pubads().setTargeting('sym', ['aapl']);
                               googletag.pubads().setTargeting('pagetype', ['quotes']);
-                      
+
 
                           googletag.pubads().setTargeting('usertype', ['nonsubscriber']);
 
@@ -178,7 +178,7 @@ test_prepare_df_financials:
                       }
                   });
               })();
-          </script>            
+          </script>
               <script async src="https://segment-data.zqtk.net/dowjones-d8s23j?url=https%3A%2F%2Fwww.marketwatch.com"></script>
               <!-- MarketWatch is all y'all -->
       </head>
@@ -262,7 +262,7 @@ test_prepare_df_financials:
                       <div id="cx-header"></div>
                   </div>
 
-                  
+
 
                   <div class="profile logged-out">
                       <input class="hidden toggle--profile" type="checkbox" id="toggle--profile" />
@@ -314,7 +314,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
                   <template id="bulletinTemplate">
@@ -363,7 +363,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
                       <div class="element element--cx side-menu">
@@ -561,13 +561,13 @@ test_prepare_df_financials:
                           </div>
 
                           <ul class="list list--profile">
-                              
+
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/my">Profile Settings</a></li>
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/newsletters">Email &amp; Alerts</a></li>
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/watchlist">Watchlist</a></li>
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/game">Games</a></li>
-                              
-                              
+
+
                           </ul>
                       </div>
 
@@ -577,9 +577,9 @@ test_prepare_df_financials:
           </div>
 
           <div class="region region--full masthead-elements">
-              
+
               <div class="column column--full max-markets">
-                  
+
 
 
 
@@ -963,7 +963,7 @@ test_prepare_df_financials:
                                           <a class="latestNews__headline" href="https://www.marketwatch.com/articles/how-cathie-woods-3-000-tesla-price-target-compares-with-the-street-51616515590?mod=mw_latestnews">
                                               <time class="latestNews__time" datetime="03/23/2021 16:06:00" pubdate>12:06p</time>
                                               <span class="headline">
-                                                  How Cathie Wood&#x27;s $3,000 Tesla Price Target Compares With the Street 
+                                                  How Cathie Wood&#x27;s $3,000 Tesla Price Target Compares With the Street
                                               </span>
                                           </a>
                                       </li>
@@ -988,7 +988,7 @@ test_prepare_df_financials:
                       </h3>
                   </li>
               </template>
-      </div>            
+      </div>
               </div>
           </div>
       </section>
@@ -1009,7 +1009,7 @@ test_prepare_df_financials:
                   <div class="region region--full">
 
 
-      <div class="group group--brokers">        
+      <div class="group group--brokers">
 
 
                   <div class="element element--ad is-loading">
@@ -1040,7 +1040,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -1072,7 +1072,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -1104,7 +1104,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -1136,7 +1136,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -1262,7 +1262,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
                   </span>
               </div>
@@ -1344,7 +1344,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
               </div>
           </div>
@@ -1467,9 +1467,9 @@ test_prepare_df_financials:
                                       } else {
                                           window.uacQueue.push(options);
                                       }
-                                  }();                            
+                                  }();
                               </script>
-                          </div>         
+                          </div>
                       </div>
 
 
@@ -1522,7 +1522,7 @@ test_prepare_df_financials:
                       </tr>
                   </thead>
                   <tbody class="j-watchlist-list">
-                                          
+
                   </tbody>
               </table>
               <template class="ticker__template">
@@ -1647,25 +1647,25 @@ test_prepare_df_financials:
               <div class="list list--subnav horizontal">
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" href="https://www.marketwatch.com/investing/stock/aapl?mod=mw_quote_tab">Overview</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="company-profile" href="https://www.marketwatch.com/investing/stock/aapl/company-profile?mod=mw_quote_tab">Profile</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="charts" href="https://www.marketwatch.com/investing/stock/aapl/charts?mod=mw_quote_tab">Charts</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item is-selected">
                                   <a class="link" instrument-target="financials" href="https://www.marketwatch.com/investing/stock/aapl/financials?mod=mw_quote_tab">Financials</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="download-data" href="https://www.marketwatch.com/investing/stock/aapl/download-data?mod=mw_quote_tab">Historical Quotes</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="analystestimates" href="https://www.marketwatch.com/investing/stock/aapl/analystestimates?mod=mw_quote_tab">Analyst Estimates</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="options" href="https://www.marketwatch.com/investing/stock/aapl/options?mod=mw_quote_tab">Options</a>
-                              </li> 
+                              </li>
               </div>
                   </div>
                   </div>
@@ -1711,7 +1711,7 @@ test_prepare_df_financials:
 
 
                       <div class="element element--table table--fixed financials">
-                          
+
                           <div class="element__body fixed-column">
                               <div class="overflow--table">
                                   <table class="table table--overflow align--right">
@@ -2492,7 +2492,7 @@ test_prepare_df_financials:
       <script>
       var utag_data = {
       "page_access":"free","page_content_source":"MarketWatch","page_site":"MarketWatch","page_site_product":"MW","page_content_type":"ResearchTools","page_content_type_detail":"quote","page_section":"Company Research","page_name":"Company Financials - Income","page_subsection":"Company Financials - Income","reengagement_refresh":"off","user_type":"nonsubscriber","user_tags":"","page_ad_zone":"investing/quotes/stock/financials","quote_ticker":"AAPL","quote_company_name":"Apple Inc.","quote_exchange":"U.S.: Nasdaq","quote_instrument_type":"Stock"};
-      var utag_dataOriginal = {}; 
+      var utag_dataOriginal = {};
       (function () {
           for (var prop in utag_data) {
               utag_dataOriginal[prop] = utag_data[prop];
@@ -2507,7 +2507,7 @@ test_prepare_df_financials:
       };
       </script>
 
-          
+
 
 
 
@@ -2564,8 +2564,8 @@ test_prepare_df_financials:
                               By using this site you agree to the
                               <a class="link" href="https://www.marketwatch.com/site/subscriber-agreement" target="_blank">Subscriber Agreement &amp; Terms of Use</a>,
                               <br class="l-show t-hide" />
-                              <a class="link" href="https://www.dowjones.com/privacy-notice?mod=mw" target="_blank">Privacy Notice</a>, and 
-                              <a class="link" href="https://www.dowjones.com/cookie-notice?mod=mw" target="_blank">Cookie Notice</a><span class="j-hidden" id="manage-cookies"> (<a class="link"></a>)</span>.                        
+                              <a class="link" href="https://www.dowjones.com/privacy-notice?mod=mw" target="_blank">Privacy Notice</a>, and
+                              <a class="link" href="https://www.dowjones.com/cookie-notice?mod=mw" target="_blank">Cookie Notice</a><span class="j-hidden" id="manage-cookies"> (<a class="link"></a>)</span>.
                           </p>
                               <p class="ccpa"><a class="link" href="https://www.dowjones.com/notice-ca-residents/?mod=MW" target="_blank">Do Not Sell My Personal Information</a>.</p>
                       </div>
@@ -2621,10 +2621,10 @@ test_prepare_df_financials:
           <div id="cx-scrim"></div>
           <div id="cx-notification"></div>
       </footer>
-          
-          
 
-              <div data-track-query=".toggle--trending" class="container container--trending fixed "> 
+
+
+              <div data-track-query=".toggle--trending" class="container container--trending fixed ">
                   <input type="checkbox" class="toggle toggle--trending" data-track-code="trending_minimize" id="trending-tickers">
                   <label class="icon--close" for="trending-tickers"></label>
                   <section class="region region--full">
@@ -2770,22 +2770,22 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
                       </div>
                   </section>
               </div>
-          
+
           <script>
               var blueGrass2SilentTest = {
                   enabled: false,
                   endpoint: 'https://mw-silent.bluegrass.mktdata.dowjones.io/bg2'
               };
           </script>
-          
+
               <script>window.__mwads=window.__mwads||{slots:{}},function(){if(window.__mwads.gptEnabled){googletag.cmd.push((function(){googletag.pubads().addEventListener("slotRequested",(function(e){performance.getEntriesByName("gpt-slotRequested").length||performance.mark("gpt-slotRequested"),e.slot.getSlotElementId()!==window.__mwads.mpuId||performance.getEntriesByName("gpt-mpuRequested").length||performance.mark("gpt-mpuRequested")})),googletag.pubads().addEventListener("slotRenderEnded",(function(e){performance.getEntriesByName("gpt-slotRenderEnded").length||performance.mark("gpt-slotRenderEnded"),e.slot.getSlotElementId()!==window.__mwads.mpuId||performance.getEntriesByName("gpt-mpuRenderEnded").length||performance.mark("gpt-mpuRenderEnded");var t=document.getElementById(e.slot.getSlotElementId());t&&(t.parentElement.classList.remove("is-loading"),t.parentElement.classList.add("is-loaded"))})),googletag.pubads().addEventListener("slotOnload",(function(e){performance.getEntriesByName("gpt-slotOnload").length||performance.mark("gpt-slotOnload"),e.slot.getSlotElementId()!==window.__mwads.mpuId||performance.getEntriesByName("gpt-mpuOnLoad").length||performance.mark("gpt-mpuOnLoad")}))}));googletag.cmd.push((function(){if(void 0!==window.pxSegmentIDs&&window.adslots){var e=window.pxSegmentIDs.split(",");(t=window.adslots,Object.keys(t).map((function(e){return t[e]}))).forEach((function(t){t&&t.adTargeting&&(t.adTargeting.psg=e,t.slot&&t.slot.setTargeting("psg",e))}))}var t})),googletag.cmd.push((function(){var e=/curated--(A|B|C|D)/i;document.querySelectorAll(".component--curated").forEach((function(t){var n=t.querySelector(".is-native .j-ad");if(n){var a=n.getAttribute("id");if(a&&window.adslots&&window.adslots.hasOwnProperty(a)&&window.adslots[a].slot){var o=e.exec(t.className);o&&o.length>1&&(window.adslots[a].slot.setTargeting("ntvPlacement",window.__mwads.curatedMap[o[1]]),window.adslots[a].slot.setTargeting("pagetemplate","layout"+o[1]))}}}))})),window.addEventListener("curatedUpdate",(function(){document.querySelector(".component--curated .is-native")&&"undefined"!=typeof PostRelease&&"function"==typeof PostRelease.Start&&MarketWatch&&MarketWatch.Settings&&MarketWatch.Settings.snare&&PostRelease.Start({ptd:MarketWatch.Settings.snare.nativeIds})})),window.addEventListener("viewModeChanged",(function(){googletag.cmd.push((function(){if(window.adslots){for(var e=Object.keys(window.adslots),t=[],n=0;n<e.length;n++)window.adslots[e[n]]&&window.adslots[e[n]].adAlreadyRequested&&window.adslots[e[n]].slot&&t.push(window.adslots[e[n]].slot);googletag.pubads().refresh(t)}}))}))}}(),function(e,t){var n=function(e,t){"use strict";if(t.getElementsByClassName){var n,a=t.documentElement,o=e.HTMLPictureElement&&"sizes"in t.createElement("img"),s="addEventListener",i="getAttribute",r=e[s],d=e.setTimeout,l=e.requestAnimationFrame||d,c=/^picture$/i,u=["load","error","lazyincluded","_lazyloaded"],f={},g=Array.prototype.forEach,m=function(e,t){return f[t]||(f[t]=new RegExp("(\\s|^)"+t+"(\\s|$)")),f[t].test(e[i]("class")||"")&&f[t]},p=function(e,t){m(e,t)||e.setAttribute("class",(e[i]("class")||"").trim()+" "+t)},w=function(e,t){var n;(n=m(e,t))&&e.setAttribute("class",(e[i]("class")||"").replace(n," "))},v=function(e,t,n){var a=n?s:"removeEventListener";n&&v(e,t),u.forEach((function(n){e[a](n,t)}))},h=function(e,n,a,o,s){var i=t.createEvent("CustomEvent");return i.initCustomEvent(n,!o,!s,a||{}),e.dispatchEvent(i),i},y=function(t,a){var s;!o&&(s=e.picturefill||n.pf)?s({reevaluate:!0,elements:[t]}):a&&a.src&&(t.src=a.src)},z=function(e,t){return(getComputedStyle(e,null)||{})[t]},E=function(e,t,a){for(a=a||e.offsetWidth;a<n.minSize&&t&&!e._lazysizesWidth;)a=t.offsetWidth,t=t.parentNode;return a},b=function(t){var n,a=0,o=e.Date,s=function(){n=!1,a=o.now(),t()},i=function(){d(s)},r=function(){l(i)};return function(){if(!n){var e=125-(o.now()-a);n=!0,6>e&&(e=6),d(r,e)}}},C=function(){var o,u,f,E,C,_,N,S,M,R,k,B,L,W,x,I=/^img$/i,O=/^iframe$/i,T="onscroll"in e&&!/glebot/.test(navigator.userAgent),q=0,P=0,D=0,F=function(e){P--,e&&e.target&&v(e.target,F),(!e||0>P||!e.target)&&(P=0)},$=function(e,n){var o,s=e,i="hidden"==z(t.body,"visibility")||"hidden"!=z(e,"visibility");for(M-=n,B+=n,R-=n,k+=n;i&&(s=s.offsetParent)&&s!=t.body&&s!=a;)(i=(z(s,"opacity")||1)>0)&&"visible"!=z(s,"overflow")&&(o=s.getBoundingClientRect(),i=k>o.left&&R<o.right&&B>o.top-1&&M<o.bottom+1);return i},j=function(){var e,t,s,r,d,l,c,g,m;if((C=n.loadMode)&&8>P&&(e=o.length)){t=0,D++,null==W&&("expand"in n||(n.expand=a.clientHeight>600?a.clientWidth>860?500:410:359),L=n.expand,W=L*n.expFactor),W>q&&1>P&&D>3&&C>2?(q=W,D=0):q=C>1&&D>2&&6>P?L:0;for(;e>t;t++)if(o[t]&&!o[t]._lazyRace)if(T)if((g=o[t][i]("data-expand"))&&(l=1*g)||(l=q),m!==l&&(N=innerWidth+l*x,S=innerHeight+l,c=-1*l,m=l),s=o[t].getBoundingClientRect(),(B=s.bottom)>=c&&(M=s.top)<=S&&(k=s.right)>=c*x&&(R=s.left)<=N&&(B||k||R||M)&&(f&&3>P&&!g&&(3>C||4>D)||$(o[t],l))){if(K(o[t]),d=!0,P>9)break}else!d&&f&&!r&&4>P&&4>D&&C>2&&(u[0]||n.preloadAfterLoad)&&(u[0]||!g&&(B||k||R||M||"auto"!=o[t][i](n.sizesAttr)))&&(r=u[0]||o[t]);else K(o[t]);r&&!d&&K(r)}},H=b(j),U=function(e){p(e.target,n.loadedClass),w(e.target,n.loadingClass),v(e.target,U)},G=function(e){var t,a,o=e[i](n.srcsetAttr);(t=n.customMedia[e[i]("data-media")||e[i]("media")])&&e.setAttribute("media",t),o&&e.setAttribute("srcset",o),t&&((a=e.parentNode).insertBefore(e.cloneNode(),e),a.removeChild(e))},J=function(){var e,t=[],n=function(){for(;t.length;)t.shift()();e=!1};return function(a){t.push(a),e||(e=!0,l(n))}}(),K=function(e){var t,a,o,s,r,l,u,z=I.test(e.nodeName),b=z&&(e[i](n.sizesAttr)||e[i]("sizes")),C="auto"==b;(!C&&f||!z||!e.src&&!e.srcset||e.complete||m(e,n.errorClass))&&(C&&(u=e.offsetWidth),e._lazyRace=!0,P++,J((function(){e._lazyRace&&delete e._lazyRace,(r=h(e,"lazybeforeunveil")).defaultPrevented||(b&&(C?(A.updateElem(e,!0,u),p(e,n.autosizesClass)):e.setAttribute("sizes",b)),a=e[i](n.srcsetAttr),t=e[i](n.srcAttr),z&&(o=e.parentNode,s=o&&c.test(o.nodeName||"")),l=r.detail.firesLoad||"src"in e&&(a||t||s),r={target:e},l&&(v(e,F,!0),clearTimeout(E),E=d(F,2500),p(e,n.loadingClass),v(e,U,!0)),s&&g.call(o.getElementsByTagName("source"),G),a?e.setAttribute("srcset",a):t&&!s&&(O.test(e.nodeName)?function(e,t){try{e.contentWindow.location.replace(t)}catch(n){e.src=t}}(e,t):e.src=t),(a||s)&&y(e,{src:t})),w(e,n.lazyClass),(!l||e.complete)&&(l?F(r):P--,U(r))})))},Q=function(){if(!f){if(Date.now()-_<999)return void d(Q,999);var e,t=function(){n.loadMode=3,H()};f=!0,n.loadMode=3,P||(D?H():d(j)),r("scroll",(function(){3==n.loadMode&&(n.loadMode=2),clearTimeout(e),e=d(t,99)}),!0)}};return{_:function(){_=Date.now(),o=t.getElementsByClassName(n.lazyClass),u=t.getElementsByClassName(n.lazyClass+" "+n.preloadClass),x=n.hFac,r("scroll",H,!0),r("resize",H,!0),e.MutationObserver?new MutationObserver(H).observe(a,{childList:!0,subtree:!0,attributes:!0}):(a[s]("DOMNodeInserted",H,!0),a[s]("DOMAttrModified",H,!0),setInterval(H,999)),r("hashchange",H,!0),["focus","mouseover","click","load","transitionend","animationend","webkitAnimationEnd"].forEach((function(e){t[s](e,H,!0)})),/d$|^c/.test(t.readyState)?Q():(r("load",Q),t[s]("DOMContentLoaded",H),d(Q,2e4)),H(o.length>0)},checkElems:H,unveil:K}}(),A=function(){var e,a=function(e,t,n){var a,o,s,i,r=e.parentNode;if(r&&(n=E(e,r,n),!(i=h(e,"lazybeforesizes",{width:n,dataAttr:!!t})).defaultPrevented&&((n=i.detail.width)&&n!==e._lazysizesWidth))){if(e._lazysizesWidth=n,n+="px",e.setAttribute("sizes",n),c.test(r.nodeName||""))for(o=0,s=(a=r.getElementsByTagName("source")).length;s>o;o++)a[o].setAttribute("sizes",n);i.detail.dataAttr||y(e,i.detail)}},o=b((function(){var t,n=e.length;if(n)for(t=0;n>t;t++)a(e[t])}));return{_:function(){e=t.getElementsByClassName(n.autosizesClass),r("resize",o)},checkElems:o,updateElem:a}}(),_=function(){_.i||(_.i=!0,A._(),C._())};return function(){var t,a={lazyClass:"lazyload",loadedClass:"lazyloaded",loadingClass:"lazyloading",preloadClass:"lazypreload",errorClass:"lazyerror",autosizesClass:"lazyautosizes",srcAttr:"data-src",srcsetAttr:"data-srcset",sizesAttr:"data-sizes",minSize:40,customMedia:{},init:!0,expFactor:1.7,hFac:.8,loadMode:2};for(t in n=e.lazySizesConfig||e.lazysizesConfig||{},a)t in n||(n[t]=a[t]);e.lazySizesConfig=n,d((function(){n.init&&_()}))}(),{cfg:n,autoSizer:A,loader:C,init:_,uP:y,aC:p,rC:w,hC:m,fire:h,gW:E}}}(e,e.document);e.lazySizes=n,"object"==typeof module&&module.exports?module.exports=n:"function"==typeof define&&define.amd&&define(n)}(window);</script>
-          
-          
+
+
 
 
       <div class="region region--lightbox search j-search" data-source="search">
@@ -2835,7 +2835,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
               </div>
               <div class="search__results j-search-results"></div>
@@ -2931,7 +2931,7 @@ test_prepare_df_financials:
         </div>
       </div>
               <script defer async src="https://sts3.wsj.net/bucket-a/maggie/static/js/scripts-06959db9b8.min.js"></script>
-          
+
           <div class="region region--lightbox j-lightbox j-browserUpgradeMessage">
             <div class="lightbox lightbox--template">
               <div class="column column--full j-content">
@@ -2957,7 +2957,7 @@ test_prepare_df_financials:
               </div>
             </div>
           </div>
-          
+
               <!-- Tealium -->
               <script type="text/javascript">
                   (function() {
@@ -2973,16 +2973,16 @@ test_prepare_df_financials:
                           window.djcmp('onReady', function() {
                               loadTealiumScript();
                           });
-                      } 
+                      }
                       else {
                           loadTealiumScript();
                       }
                   })();
               </script>
-              
+
               <script async defer src="https://sts3.wsj.net/bucket-a/maggie/static/js/thirdparty-feafc62343.min.js"></script>
-                      
-          
+
+
       </body>
       </html>
     expected_result: |
@@ -3142,7 +3142,7 @@ test_prepare_df_financials:
                 if ("PerformancePaintTiming" in window){observer.observe({entryTypes: ['paint', 'mark', 'measure']});}
                 else {observer.observe({entryTypes: ['mark', 'measure']});}
             }
-            
+
             // from https://github.dowjones.net/wsjdn-tesla/dj.svc.end_user_monitor/blob/master/lib/page_perf_monitor.js#L161-L195
             if (window.PerformanceObserver) {
               // Holds current CLS score, as changes over time.
@@ -3202,7 +3202,7 @@ test_prepare_df_financials:
               window.__mwads.gptEnabled = true;
               window.__mwads.prebidEnabled = true;
               window.__mwads.moatEnabled = true;
-              window.__mwads.mpuId = 'ad-display-ad'; 
+              window.__mwads.mpuId = 'ad-display-ad';
                   window.__mwads.curatedMap = { A: 1088448, B: 1088449, C: 1091804, D: 1091805 };
 
               (function() {
@@ -3211,7 +3211,7 @@ test_prepare_df_financials:
                               googletag.pubads().setTargeting('keywords', ['sector_']);
                               googletag.pubads().setTargeting('sym', ['aapl']);
                               googletag.pubads().setTargeting('pagetype', ['quotes']);
-                      
+
 
                           googletag.pubads().setTargeting('usertype', ['nonsubscriber']);
 
@@ -3223,7 +3223,7 @@ test_prepare_df_financials:
                       }
                   });
               })();
-          </script>            
+          </script>
               <script async src="https://segment-data.zqtk.net/dowjones-d8s23j?url=https%3A%2F%2Fwww.marketwatch.com"></script>
               <!-- MarketWatch is all y'all -->
       </head>
@@ -3307,7 +3307,7 @@ test_prepare_df_financials:
                       <div id="cx-header"></div>
                   </div>
 
-                  
+
 
                   <div class="profile logged-out">
                       <input class="hidden toggle--profile" type="checkbox" id="toggle--profile" />
@@ -3359,7 +3359,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
                   <template id="bulletinTemplate">
@@ -3408,7 +3408,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
                       <div class="element element--cx side-menu">
@@ -3606,13 +3606,13 @@ test_prepare_df_financials:
                           </div>
 
                           <ul class="list list--profile">
-                              
+
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/my">Profile Settings</a></li>
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/newsletters">Email &amp; Alerts</a></li>
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/watchlist">Watchlist</a></li>
                                   <li class="list__item" data-click-through="side_nav"><a class="link" href="https://www.marketwatch.com/game">Games</a></li>
-                              
-                              
+
+
                           </ul>
                       </div>
 
@@ -3622,9 +3622,9 @@ test_prepare_df_financials:
           </div>
 
           <div class="region region--full masthead-elements">
-              
+
               <div class="column column--full max-markets">
-                  
+
 
 
 
@@ -4033,7 +4033,7 @@ test_prepare_df_financials:
                       </h3>
                   </li>
               </template>
-      </div>            
+      </div>
               </div>
           </div>
       </section>
@@ -4054,7 +4054,7 @@ test_prepare_df_financials:
                   <div class="region region--full">
 
 
-      <div class="group group--brokers">        
+      <div class="group group--brokers">
 
 
                   <div class="element element--ad is-loading">
@@ -4085,7 +4085,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -4117,7 +4117,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -4149,7 +4149,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -4181,7 +4181,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -4307,7 +4307,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
                   </span>
               </div>
@@ -4389,7 +4389,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
               </div>
           </div>
@@ -4512,9 +4512,9 @@ test_prepare_df_financials:
                                       } else {
                                           window.uacQueue.push(options);
                                       }
-                                  }();                            
+                                  }();
                               </script>
-                          </div>         
+                          </div>
                       </div>
 
 
@@ -4567,7 +4567,7 @@ test_prepare_df_financials:
                       </tr>
                   </thead>
                   <tbody class="j-watchlist-list">
-                                          
+
                   </tbody>
               </table>
               <template class="ticker__template">
@@ -4692,25 +4692,25 @@ test_prepare_df_financials:
               <div class="list list--subnav horizontal">
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" href="https://www.marketwatch.com/investing/stock/aapl?mod=mw_quote_tab">Overview</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="company-profile" href="https://www.marketwatch.com/investing/stock/aapl/company-profile?mod=mw_quote_tab">Profile</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="charts" href="https://www.marketwatch.com/investing/stock/aapl/charts?mod=mw_quote_tab">Charts</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item is-selected">
                                   <a class="link" instrument-target="financials" href="https://www.marketwatch.com/investing/stock/aapl/financials?mod=mw_quote_tab">Financials</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="download-data" href="https://www.marketwatch.com/investing/stock/aapl/download-data?mod=mw_quote_tab">Historical Quotes</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="analystestimates" href="https://www.marketwatch.com/investing/stock/aapl/analystestimates?mod=mw_quote_tab">Analyst Estimates</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="options" href="https://www.marketwatch.com/investing/stock/aapl/options?mod=mw_quote_tab">Options</a>
-                              </li> 
+                              </li>
               </div>
                   </div>
                   </div>
@@ -5836,7 +5836,7 @@ test_prepare_df_financials:
       <script>
       var utag_data = {
       "page_access":"free","page_content_source":"MarketWatch","page_site":"MarketWatch","page_site_product":"MW","page_content_type":"ResearchTools","page_content_type_detail":"quote","page_section":"Company Research","page_name":"Company Balance Sheet","page_subsection":"Company Balance Sheet","reengagement_refresh":"off","user_type":"nonsubscriber","user_tags":"","page_ad_zone":"investing/quotes/stock/financials","quote_ticker":"AAPL","quote_company_name":"Apple Inc.","quote_exchange":"U.S.: Nasdaq","quote_instrument_type":"Stock"};
-      var utag_dataOriginal = {}; 
+      var utag_dataOriginal = {};
       (function () {
           for (var prop in utag_data) {
               utag_dataOriginal[prop] = utag_data[prop];
@@ -5851,7 +5851,7 @@ test_prepare_df_financials:
       };
       </script>
 
-          
+
 
 
 
@@ -5908,8 +5908,8 @@ test_prepare_df_financials:
                               By using this site you agree to the
                               <a class="link" href="https://www.marketwatch.com/site/subscriber-agreement" target="_blank">Subscriber Agreement &amp; Terms of Use</a>,
                               <br class="l-show t-hide" />
-                              <a class="link" href="https://www.dowjones.com/privacy-notice?mod=mw" target="_blank">Privacy Notice</a>, and 
-                              <a class="link" href="https://www.dowjones.com/cookie-notice?mod=mw" target="_blank">Cookie Notice</a><span class="j-hidden" id="manage-cookies"> (<a class="link"></a>)</span>.                        
+                              <a class="link" href="https://www.dowjones.com/privacy-notice?mod=mw" target="_blank">Privacy Notice</a>, and
+                              <a class="link" href="https://www.dowjones.com/cookie-notice?mod=mw" target="_blank">Cookie Notice</a><span class="j-hidden" id="manage-cookies"> (<a class="link"></a>)</span>.
                           </p>
                               <p class="ccpa"><a class="link" href="https://www.dowjones.com/notice-ca-residents/?mod=MW" target="_blank">Do Not Sell My Personal Information</a>.</p>
                       </div>
@@ -5965,10 +5965,10 @@ test_prepare_df_financials:
           <div id="cx-scrim"></div>
           <div id="cx-notification"></div>
       </footer>
-          
-          
 
-              <div data-track-query=".toggle--trending" class="container container--trending fixed "> 
+
+
+              <div data-track-query=".toggle--trending" class="container container--trending fixed ">
                   <input type="checkbox" class="toggle toggle--trending" data-track-code="trending_minimize" id="trending-tickers">
                   <label class="icon--close" for="trending-tickers"></label>
                   <section class="region region--full">
@@ -6114,22 +6114,22 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
                       </div>
                   </section>
               </div>
-          
+
           <script>
               var blueGrass2SilentTest = {
                   enabled: false,
                   endpoint: 'https://mw-silent.bluegrass.mktdata.dowjones.io/bg2'
               };
           </script>
-          
+
               <script>window.__mwads=window.__mwads||{slots:{}},function(){if(window.__mwads.gptEnabled){googletag.cmd.push((function(){googletag.pubads().addEventListener("slotRequested",(function(e){performance.getEntriesByName("gpt-slotRequested").length||performance.mark("gpt-slotRequested"),e.slot.getSlotElementId()!==window.__mwads.mpuId||performance.getEntriesByName("gpt-mpuRequested").length||performance.mark("gpt-mpuRequested")})),googletag.pubads().addEventListener("slotRenderEnded",(function(e){performance.getEntriesByName("gpt-slotRenderEnded").length||performance.mark("gpt-slotRenderEnded"),e.slot.getSlotElementId()!==window.__mwads.mpuId||performance.getEntriesByName("gpt-mpuRenderEnded").length||performance.mark("gpt-mpuRenderEnded");var t=document.getElementById(e.slot.getSlotElementId());t&&(t.parentElement.classList.remove("is-loading"),t.parentElement.classList.add("is-loaded"))})),googletag.pubads().addEventListener("slotOnload",(function(e){performance.getEntriesByName("gpt-slotOnload").length||performance.mark("gpt-slotOnload"),e.slot.getSlotElementId()!==window.__mwads.mpuId||performance.getEntriesByName("gpt-mpuOnLoad").length||performance.mark("gpt-mpuOnLoad")}))}));googletag.cmd.push((function(){if(void 0!==window.pxSegmentIDs&&window.adslots){var e=window.pxSegmentIDs.split(",");(t=window.adslots,Object.keys(t).map((function(e){return t[e]}))).forEach((function(t){t&&t.adTargeting&&(t.adTargeting.psg=e,t.slot&&t.slot.setTargeting("psg",e))}))}var t})),googletag.cmd.push((function(){var e=/curated--(A|B|C|D)/i;document.querySelectorAll(".component--curated").forEach((function(t){var n=t.querySelector(".is-native .j-ad");if(n){var a=n.getAttribute("id");if(a&&window.adslots&&window.adslots.hasOwnProperty(a)&&window.adslots[a].slot){var o=e.exec(t.className);o&&o.length>1&&(window.adslots[a].slot.setTargeting("ntvPlacement",window.__mwads.curatedMap[o[1]]),window.adslots[a].slot.setTargeting("pagetemplate","layout"+o[1]))}}}))})),window.addEventListener("curatedUpdate",(function(){document.querySelector(".component--curated .is-native")&&"undefined"!=typeof PostRelease&&"function"==typeof PostRelease.Start&&MarketWatch&&MarketWatch.Settings&&MarketWatch.Settings.snare&&PostRelease.Start({ptd:MarketWatch.Settings.snare.nativeIds})})),window.addEventListener("viewModeChanged",(function(){googletag.cmd.push((function(){if(window.adslots){for(var e=Object.keys(window.adslots),t=[],n=0;n<e.length;n++)window.adslots[e[n]]&&window.adslots[e[n]].adAlreadyRequested&&window.adslots[e[n]].slot&&t.push(window.adslots[e[n]].slot);googletag.pubads().refresh(t)}}))}))}}(),function(e,t){var n=function(e,t){"use strict";if(t.getElementsByClassName){var n,a=t.documentElement,o=e.HTMLPictureElement&&"sizes"in t.createElement("img"),s="addEventListener",i="getAttribute",r=e[s],d=e.setTimeout,l=e.requestAnimationFrame||d,c=/^picture$/i,u=["load","error","lazyincluded","_lazyloaded"],f={},g=Array.prototype.forEach,m=function(e,t){return f[t]||(f[t]=new RegExp("(\\s|^)"+t+"(\\s|$)")),f[t].test(e[i]("class")||"")&&f[t]},p=function(e,t){m(e,t)||e.setAttribute("class",(e[i]("class")||"").trim()+" "+t)},w=function(e,t){var n;(n=m(e,t))&&e.setAttribute("class",(e[i]("class")||"").replace(n," "))},v=function(e,t,n){var a=n?s:"removeEventListener";n&&v(e,t),u.forEach((function(n){e[a](n,t)}))},h=function(e,n,a,o,s){var i=t.createEvent("CustomEvent");return i.initCustomEvent(n,!o,!s,a||{}),e.dispatchEvent(i),i},y=function(t,a){var s;!o&&(s=e.picturefill||n.pf)?s({reevaluate:!0,elements:[t]}):a&&a.src&&(t.src=a.src)},z=function(e,t){return(getComputedStyle(e,null)||{})[t]},E=function(e,t,a){for(a=a||e.offsetWidth;a<n.minSize&&t&&!e._lazysizesWidth;)a=t.offsetWidth,t=t.parentNode;return a},b=function(t){var n,a=0,o=e.Date,s=function(){n=!1,a=o.now(),t()},i=function(){d(s)},r=function(){l(i)};return function(){if(!n){var e=125-(o.now()-a);n=!0,6>e&&(e=6),d(r,e)}}},C=function(){var o,u,f,E,C,_,N,S,M,R,k,B,L,W,x,I=/^img$/i,O=/^iframe$/i,T="onscroll"in e&&!/glebot/.test(navigator.userAgent),q=0,P=0,D=0,F=function(e){P--,e&&e.target&&v(e.target,F),(!e||0>P||!e.target)&&(P=0)},$=function(e,n){var o,s=e,i="hidden"==z(t.body,"visibility")||"hidden"!=z(e,"visibility");for(M-=n,B+=n,R-=n,k+=n;i&&(s=s.offsetParent)&&s!=t.body&&s!=a;)(i=(z(s,"opacity")||1)>0)&&"visible"!=z(s,"overflow")&&(o=s.getBoundingClientRect(),i=k>o.left&&R<o.right&&B>o.top-1&&M<o.bottom+1);return i},j=function(){var e,t,s,r,d,l,c,g,m;if((C=n.loadMode)&&8>P&&(e=o.length)){t=0,D++,null==W&&("expand"in n||(n.expand=a.clientHeight>600?a.clientWidth>860?500:410:359),L=n.expand,W=L*n.expFactor),W>q&&1>P&&D>3&&C>2?(q=W,D=0):q=C>1&&D>2&&6>P?L:0;for(;e>t;t++)if(o[t]&&!o[t]._lazyRace)if(T)if((g=o[t][i]("data-expand"))&&(l=1*g)||(l=q),m!==l&&(N=innerWidth+l*x,S=innerHeight+l,c=-1*l,m=l),s=o[t].getBoundingClientRect(),(B=s.bottom)>=c&&(M=s.top)<=S&&(k=s.right)>=c*x&&(R=s.left)<=N&&(B||k||R||M)&&(f&&3>P&&!g&&(3>C||4>D)||$(o[t],l))){if(K(o[t]),d=!0,P>9)break}else!d&&f&&!r&&4>P&&4>D&&C>2&&(u[0]||n.preloadAfterLoad)&&(u[0]||!g&&(B||k||R||M||"auto"!=o[t][i](n.sizesAttr)))&&(r=u[0]||o[t]);else K(o[t]);r&&!d&&K(r)}},H=b(j),U=function(e){p(e.target,n.loadedClass),w(e.target,n.loadingClass),v(e.target,U)},G=function(e){var t,a,o=e[i](n.srcsetAttr);(t=n.customMedia[e[i]("data-media")||e[i]("media")])&&e.setAttribute("media",t),o&&e.setAttribute("srcset",o),t&&((a=e.parentNode).insertBefore(e.cloneNode(),e),a.removeChild(e))},J=function(){var e,t=[],n=function(){for(;t.length;)t.shift()();e=!1};return function(a){t.push(a),e||(e=!0,l(n))}}(),K=function(e){var t,a,o,s,r,l,u,z=I.test(e.nodeName),b=z&&(e[i](n.sizesAttr)||e[i]("sizes")),C="auto"==b;(!C&&f||!z||!e.src&&!e.srcset||e.complete||m(e,n.errorClass))&&(C&&(u=e.offsetWidth),e._lazyRace=!0,P++,J((function(){e._lazyRace&&delete e._lazyRace,(r=h(e,"lazybeforeunveil")).defaultPrevented||(b&&(C?(A.updateElem(e,!0,u),p(e,n.autosizesClass)):e.setAttribute("sizes",b)),a=e[i](n.srcsetAttr),t=e[i](n.srcAttr),z&&(o=e.parentNode,s=o&&c.test(o.nodeName||"")),l=r.detail.firesLoad||"src"in e&&(a||t||s),r={target:e},l&&(v(e,F,!0),clearTimeout(E),E=d(F,2500),p(e,n.loadingClass),v(e,U,!0)),s&&g.call(o.getElementsByTagName("source"),G),a?e.setAttribute("srcset",a):t&&!s&&(O.test(e.nodeName)?function(e,t){try{e.contentWindow.location.replace(t)}catch(n){e.src=t}}(e,t):e.src=t),(a||s)&&y(e,{src:t})),w(e,n.lazyClass),(!l||e.complete)&&(l?F(r):P--,U(r))})))},Q=function(){if(!f){if(Date.now()-_<999)return void d(Q,999);var e,t=function(){n.loadMode=3,H()};f=!0,n.loadMode=3,P||(D?H():d(j)),r("scroll",(function(){3==n.loadMode&&(n.loadMode=2),clearTimeout(e),e=d(t,99)}),!0)}};return{_:function(){_=Date.now(),o=t.getElementsByClassName(n.lazyClass),u=t.getElementsByClassName(n.lazyClass+" "+n.preloadClass),x=n.hFac,r("scroll",H,!0),r("resize",H,!0),e.MutationObserver?new MutationObserver(H).observe(a,{childList:!0,subtree:!0,attributes:!0}):(a[s]("DOMNodeInserted",H,!0),a[s]("DOMAttrModified",H,!0),setInterval(H,999)),r("hashchange",H,!0),["focus","mouseover","click","load","transitionend","animationend","webkitAnimationEnd"].forEach((function(e){t[s](e,H,!0)})),/d$|^c/.test(t.readyState)?Q():(r("load",Q),t[s]("DOMContentLoaded",H),d(Q,2e4)),H(o.length>0)},checkElems:H,unveil:K}}(),A=function(){var e,a=function(e,t,n){var a,o,s,i,r=e.parentNode;if(r&&(n=E(e,r,n),!(i=h(e,"lazybeforesizes",{width:n,dataAttr:!!t})).defaultPrevented&&((n=i.detail.width)&&n!==e._lazysizesWidth))){if(e._lazysizesWidth=n,n+="px",e.setAttribute("sizes",n),c.test(r.nodeName||""))for(o=0,s=(a=r.getElementsByTagName("source")).length;s>o;o++)a[o].setAttribute("sizes",n);i.detail.dataAttr||y(e,i.detail)}},o=b((function(){var t,n=e.length;if(n)for(t=0;n>t;t++)a(e[t])}));return{_:function(){e=t.getElementsByClassName(n.autosizesClass),r("resize",o)},checkElems:o,updateElem:a}}(),_=function(){_.i||(_.i=!0,A._(),C._())};return function(){var t,a={lazyClass:"lazyload",loadedClass:"lazyloaded",loadingClass:"lazyloading",preloadClass:"lazypreload",errorClass:"lazyerror",autosizesClass:"lazyautosizes",srcAttr:"data-src",srcsetAttr:"data-srcset",sizesAttr:"data-sizes",minSize:40,customMedia:{},init:!0,expFactor:1.7,hFac:.8,loadMode:2};for(t in n=e.lazySizesConfig||e.lazysizesConfig||{},a)t in n||(n[t]=a[t]);e.lazySizesConfig=n,d((function(){n.init&&_()}))}(),{cfg:n,autoSizer:A,loader:C,init:_,uP:y,aC:p,rC:w,hC:m,fire:h,gW:E}}}(e,e.document);e.lazySizes=n,"object"==typeof module&&module.exports?module.exports=n:"function"==typeof define&&define.amd&&define(n)}(window);</script>
-          
-          
+
+
 
 
       <div class="region region--lightbox search j-search" data-source="search">
@@ -6243,7 +6243,7 @@ test_prepare_df_financials:
         </div>
       </div>
               <script defer async src="https://sts3.wsj.net/bucket-a/maggie/static/js/scripts-06959db9b8.min.js"></script>
-          
+
           <div class="region region--lightbox j-lightbox j-browserUpgradeMessage">
             <div class="lightbox lightbox--template">
               <div class="column column--full j-content">
@@ -6269,7 +6269,7 @@ test_prepare_df_financials:
               </div>
             </div>
           </div>
-          
+
               <!-- Tealium -->
               <script type="text/javascript">
                   (function() {
@@ -6285,16 +6285,16 @@ test_prepare_df_financials:
                           window.djcmp('onReady', function() {
                               loadTealiumScript();
                           });
-                      } 
+                      }
                       else {
                           loadTealiumScript();
                       }
                   })();
               </script>
-              
+
               <script async defer src="https://sts3.wsj.net/bucket-a/maggie/static/js/thirdparty-feafc62343.min.js"></script>
-                      
-          
+
+
       </body>
       </html>
     expected_result: |
@@ -6339,7 +6339,7 @@ test_prepare_df_financials:
     ticker: "AAPL"
     statement: "cashflow"
     mock_market_watch: |
-      
+
 
 
       <!DOCTYPE html>
@@ -6496,7 +6496,7 @@ test_prepare_df_financials:
               window.__mwads.gptEnabled = true;
               window.__mwads.prebidEnabled = true;
               window.__mwads.moatEnabled = true;
-              window.__mwads.mpuId = 'ad-display-ad'; 
+              window.__mwads.mpuId = 'ad-display-ad';
                   window.__mwads.curatedMap = { A: 1088448, B: 1088449, C: 1091804, D: 1091805 };
 
               (function() {
@@ -6517,7 +6517,7 @@ test_prepare_df_financials:
                       }
                   });
               })();
-          </script>            
+          </script>
               <script async src="https://segment-data.zqtk.net/dowjones-d8s23j?url=https%3A%2F%2Fwww.marketwatch.com"></script>
               <!-- MarketWatch is all y'all -->
       </head>
@@ -6653,7 +6653,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
                   <template id="bulletinTemplate">
@@ -6702,7 +6702,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
                       <div class="element element--cx side-menu">
@@ -7326,7 +7326,7 @@ test_prepare_df_financials:
                       </h3>
                   </li>
               </template>
-      </div>            
+      </div>
               </div>
           </div>
       </section>
@@ -7347,7 +7347,7 @@ test_prepare_df_financials:
                   <div class="region region--full">
 
 
-      <div class="group group--brokers">        
+      <div class="group group--brokers">
 
 
                   <div class="element element--ad is-loading">
@@ -7378,7 +7378,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -7410,7 +7410,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -7442,7 +7442,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -7474,7 +7474,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
 
 
@@ -7600,7 +7600,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
                   </span>
               </div>
@@ -7682,7 +7682,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
               </div>
           </div>
@@ -7805,9 +7805,9 @@ test_prepare_df_financials:
                                       } else {
                                           window.uacQueue.push(options);
                                       }
-                                  }();                            
+                                  }();
                               </script>
-                          </div>         
+                          </div>
                       </div>
 
 
@@ -7985,25 +7985,25 @@ test_prepare_df_financials:
               <div class="list list--subnav horizontal">
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" href="https://www.marketwatch.com/investing/stock/aapl?mod=mw_quote_tab">Overview</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="company-profile" href="https://www.marketwatch.com/investing/stock/aapl/company-profile?mod=mw_quote_tab">Profile</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="charts" href="https://www.marketwatch.com/investing/stock/aapl/charts?mod=mw_quote_tab">Charts</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item is-selected">
                                   <a class="link" instrument-target="financials" href="https://www.marketwatch.com/investing/stock/aapl/financials?mod=mw_quote_tab">Financials</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="download-data" href="https://www.marketwatch.com/investing/stock/aapl/download-data?mod=mw_quote_tab">Historical Quotes</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="analystestimates" href="https://www.marketwatch.com/investing/stock/aapl/analystestimates?mod=mw_quote_tab">Analyst Estimates</a>
-                              </li> 
+                              </li>
                               <li data-click-through="mw_quote_tab" class="subnav__item ">
                                   <a class="link" instrument-target="options" href="https://www.marketwatch.com/investing/stock/aapl/options?mod=mw_quote_tab">Options</a>
-                              </li> 
+                              </li>
               </div>
                   </div>
                   </div>
@@ -8907,7 +8907,7 @@ test_prepare_df_financials:
       <script>
       var utag_data = {
       "page_access":"free","page_content_source":"MarketWatch","page_site":"MarketWatch","page_site_product":"MW","page_content_type":"ResearchTools","page_content_type_detail":"quote","page_section":"Company Research","page_name":"Company Cash Flow","page_subsection":"Company Cash Flow","reengagement_refresh":"off","user_type":"nonsubscriber","user_tags":"","page_ad_zone":"investing/quotes/stock/financials","quote_ticker":"AAPL","quote_company_name":"Apple Inc.","quote_exchange":"U.S.: Nasdaq","quote_instrument_type":"Stock"};
-      var utag_dataOriginal = {}; 
+      var utag_dataOriginal = {};
       (function () {
           for (var prop in utag_data) {
               utag_dataOriginal[prop] = utag_data[prop];
@@ -8979,8 +8979,8 @@ test_prepare_df_financials:
                               By using this site you agree to the
                               <a class="link" href="https://www.marketwatch.com/site/subscriber-agreement" target="_blank">Subscriber Agreement &amp; Terms of Use</a>,
                               <br class="l-show t-hide" />
-                              <a class="link" href="https://www.dowjones.com/privacy-notice?mod=mw" target="_blank">Privacy Notice</a>, and 
-                              <a class="link" href="https://www.dowjones.com/cookie-notice?mod=mw" target="_blank">Cookie Notice</a><span class="j-hidden" id="manage-cookies"> (<a class="link"></a>)</span>.                        
+                              <a class="link" href="https://www.dowjones.com/privacy-notice?mod=mw" target="_blank">Privacy Notice</a>, and
+                              <a class="link" href="https://www.dowjones.com/cookie-notice?mod=mw" target="_blank">Cookie Notice</a><span class="j-hidden" id="manage-cookies"> (<a class="link"></a>)</span>.
                           </p>
                               <p class="ccpa"><a class="link" href="https://www.dowjones.com/notice-ca-residents/?mod=MW" target="_blank">Do Not Sell My Personal Information</a>.</p>
                       </div>
@@ -9039,7 +9039,7 @@ test_prepare_df_financials:
 
 
 
-              <div data-track-query=".toggle--trending" class="container container--trending fixed "> 
+              <div data-track-query=".toggle--trending" class="container container--trending fixed ">
                   <input type="checkbox" class="toggle toggle--trending" data-track-code="trending_minimize" id="trending-tickers">
                   <label class="icon--close" for="trending-tickers"></label>
                   <section class="region region--full">
@@ -9185,7 +9185,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
                       </div>
                   </section>
@@ -9250,7 +9250,7 @@ test_prepare_df_financials:
                                   }
                               }();
                           </script>
-                      </div>             
+                      </div>
                   </div>
               </div>
               <div class="search__results j-search-results"></div>
@@ -9388,7 +9388,7 @@ test_prepare_df_financials:
                           window.djcmp('onReady', function() {
                               loadTealiumScript();
                           });
-                      } 
+                      }
                       else {
                           loadTealiumScript();
                       }

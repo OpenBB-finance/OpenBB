@@ -48,11 +48,7 @@ class TechnicalAnalysisController:
     ]
 
     def __init__(
-        self,
-        stock: pd.DataFrame,
-        ticker: str,
-        start: datetime,
-        interval: str,
+        self, stock: pd.DataFrame, ticker: str, start: datetime, interval: str
     ):
         """Constructor"""
         self.stock = stock
@@ -61,10 +57,7 @@ class TechnicalAnalysisController:
         self.interval = interval
         self.delete_img = False
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
-        self.ta_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.ta_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """Print help"""
@@ -223,10 +216,7 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in ta_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (ta)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (ta)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (ta)> ")
 

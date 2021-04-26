@@ -73,9 +73,7 @@ def plot_view_stock(df, symbol):
 
 def us_market_holidays(years) -> list:
     if isinstance(years, int):
-        years = [
-            years,
-        ]
+        years = [years]
     # https://www.nyse.com/markets/hours-calendars
     marketHolidays = [
         "Martin Luther King Jr. Day",

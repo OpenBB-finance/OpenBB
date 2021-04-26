@@ -396,10 +396,7 @@ def get_exponential_smoothing_model(data, trend, seasonal, seasonal_periods):
         if seasonal == "N":  # None
             title = "Trend='N',  Seasonal='N': Simple Exponential Smoothing"
             ETS = ExponentialSmoothing(
-                data,
-                trend=None,
-                damped_trend=False,
-                seasonal=None,
+                data, trend=None, damped_trend=False, seasonal=None
             )
             model = ETS.fit(
                 smoothing_level=None, smoothing_trend=None, damping_trend=None
@@ -431,10 +428,7 @@ def get_exponential_smoothing_model(data, trend, seasonal, seasonal_periods):
         if seasonal == "N":  # None
             title = "Trend='A',  Seasonal='N': Holt’s linear method"
             ETS = ExponentialSmoothing(
-                data,
-                trend="add",
-                damped_trend=False,
-                seasonal=None,
+                data, trend="add", damped_trend=False, seasonal=None
             )
             model = ETS.fit(
                 smoothing_level=None, smoothing_trend=None, damping_trend=None
@@ -470,10 +464,7 @@ def get_exponential_smoothing_model(data, trend, seasonal, seasonal_periods):
         if seasonal == "N":  # None
             title = "Trend='Ad', Seasonal='N': Additive damped trend method"
             ETS = ExponentialSmoothing(
-                data,
-                trend="add",
-                damped_trend=True,
-                seasonal=None,
+                data, trend="add", damped_trend=True, seasonal=None
             )
             model = ETS.fit(
                 smoothing_level=None, smoothing_trend=None, damping_trend=None

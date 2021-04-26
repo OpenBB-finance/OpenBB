@@ -59,10 +59,7 @@ class FundamentalAnalysisController:
         self.interval = interval
 
         self.fa_parser = argparse.ArgumentParser(add_help=False, prog="fa")
-        self.fa_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.fa_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
         """ Print help """
@@ -244,10 +241,7 @@ def menu(ticker: str, start: str, interval: str):
                 {c: None for c in fa_controller.CHOICES}
             )
 
-            an_input = session.prompt(
-                f"{get_flair()} (fa)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (fa)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (fa)> ")
 

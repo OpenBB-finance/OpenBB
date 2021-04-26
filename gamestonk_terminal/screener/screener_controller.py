@@ -9,9 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.screener import finviz_view
 from gamestonk_terminal.screener import yahoo_finance_view
 from gamestonk_terminal.portfolio_optimization import po_controller
@@ -43,10 +41,7 @@ class ScreenerController:
         self.preset = "template"
         self.screen_tickers = []
         self.scr_parser = argparse.ArgumentParser(add_help=False, prog="scr")
-        self.scr_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        self.scr_parser.add_argument("cmd", choices=self.CHOICES)
 
     @staticmethod
     def print_help(self):
@@ -244,10 +239,7 @@ def menu():
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in scr_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (scr)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (scr)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (scr)> ")
 

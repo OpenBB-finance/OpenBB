@@ -13,10 +13,10 @@ dnsutils \
 git \
 gnupg \
 unzip \
-bzip2 \ 
-libsm6 \ 
-libxt6 \ 
-libgl1-mesa-glx \ 
+bzip2 \
+libsm6 \
+libxt6 \
+libgl1-mesa-glx \
 libpng16-16 \
 python3-tk && \
 apt-get -y autoremove && \

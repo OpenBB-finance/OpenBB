@@ -8,10 +8,7 @@ import praw
 import finviz
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.reddit_helpers import (
-    print_and_record_reddit_post,
-    find_tickers,
-)
+from gamestonk_terminal.reddit_helpers import print_and_record_reddit_post, find_tickers
 
 
 def watchlist(l_args):

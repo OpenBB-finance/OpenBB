@@ -526,7 +526,7 @@ def combine_similar_financials(
             compare_financials[symbol] = financials[symbol][report_quarter_date]
 
         compare_financials.columns = pd.MultiIndex.from_tuples(
-            zip(earnings_dates, compare_financials.columns),
+            zip(earnings_dates, compare_financials.columns)
         )
 
     else:

@@ -1,11 +1,7 @@
 import numpy as np
 import pandas as pd
 from colorama import Fore, Style
-from sklearn.metrics import (
-    mean_absolute_error,
-    r2_score,
-    mean_squared_error,
-)
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 
 from gamestonk_terminal import feature_flags as gtff
 

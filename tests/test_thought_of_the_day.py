@@ -13,10 +13,7 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestThoughtOfTheDay:
-    @parameterize_from_file(
-        "test_get_urls",
-        "../tests/data/thought_of_the_day.yaml",
-    )
+    @parameterize_from_file("test_get_urls", "../tests/data/thought_of_the_day.yaml")
     def test_get_urls(self, urls):
         a_totd = thought_of_the_day.ThoughtOfTheDay(urls)
 
@@ -24,8 +21,7 @@ class TestThoughtOfTheDay:
 
     @mock.patch("gamestonk_terminal.thought_of_the_day.requests")
     @parameterize_from_file(
-        "test_get_metadata",
-        "../tests/data/thought_of_the_day.yaml",
+        "test_get_metadata", "../tests/data/thought_of_the_day.yaml"
     )
     def test_get_metadata(
         self, mock_request_get, urls, mock_goodreads_page, expected_result

@@ -73,14 +73,10 @@ def draw_graph(
     ap0 = []
 
     if "OC_High_trend" in df_stock.columns and high_trend:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
-        )
+        ap0.append(mpf.make_addplot(df_stock["OC_High_trend"], color="g"))
 
     if "OC_Low_trend" in df_stock.columns and low_trend:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
-        )
+        ap0.append(mpf.make_addplot(df_stock["OC_Low_trend"], color="b"))
 
     mpf.plot(
         df_stock,

@@ -85,10 +85,7 @@ def fails_to_deliver(other_args: List[str], ticker: str):
             lambda x: datetime.strptime(str(x), "%Y%m%d")
         )
 
-        plt.bar(
-            ftds_data["SETTLEMENT DATE"],
-            ftds_data["QUANTITY (FAILS)"] / 1000,
-        )
+        plt.bar(ftds_data["SETTLEMENT DATE"], ftds_data["QUANTITY (FAILS)"] / 1000)
         plt.ylabel("Shares [K]")
         plt.title(f"Fails-to-deliver Data for {ticker}")
         plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)

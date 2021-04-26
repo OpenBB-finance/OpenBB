@@ -6,10 +6,7 @@ import matplotlib.pyplot as plt
 import alpaca_trade_api as alp_api
 from termcolor import colored
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    plot_autoscale,
-)
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio.portfolio_helpers import alpaca_positions_to_df
 

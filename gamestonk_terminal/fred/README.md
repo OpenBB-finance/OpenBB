@@ -7,7 +7,7 @@ The purpose of fred is to have the ability to look at economic data.  This page 
 * [predefined](#gdp)
     * Get predefined data
 * [cust](#cust)
-    * Get custom fred data  
+    * Get custom fred data
 
 The current predefined options are
 * GDP
@@ -42,7 +42,7 @@ gdp -s 2016-01-01 --noplot
 Output:
 ````
                   GDP
-Date                 
+Date
 2016-01-01  18470.156
 2016-04-01  18656.207
 2016-07-01  18821.359
@@ -78,18 +78,18 @@ usage: cust [-i --id] [-s START_DATE] [--noplot] [--hidedata]
 * --noplot : Flag to suppress output plot.
 * --hidedata : Flag to suppress data output
 
-An example of custom data could be the USD/EURO exchange rate.  
+An example of custom data could be the USD/EURO exchange rate.
 According to https://fred.stlouisfed.org/series/DEXUSEU , the series ID is DEXUSEU.  So to plot this from the start of February 2021 to now (3/17)
 
 ````
-cust --id DEXUSEU -s 2021-02-01 
+cust --id DEXUSEU -s 2021-02-01
 ````
 This will plot and display:
 ![cust](https://user-images.githubusercontent.com/18151143/111521481-92bcee00-872f-11eb-8a02-e7346e56e462.png)
 
 ````
             DEXUSEU
-Date               
+Date
 2021-02-01   1.2070
 2021-02-02   1.2020
 2021-02-03   1.2025

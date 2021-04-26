@@ -143,12 +143,7 @@ def res(
         return
 
 
-def hist(
-    other_args: List[str],
-    ticker: str,
-    model_name: str,
-    residuals: List[float],
-):
+def hist(other_args: List[str], ticker: str, model_name: str, residuals: List[float]):
     """Histogram and density curve
 
     Parameters
@@ -205,10 +200,7 @@ def hist(
 
 
 def plot_qqplot(
-    other_args: List[str],
-    ticker: str,
-    model_name: str,
-    residuals: List[float],
+    other_args: List[str], ticker: str, model_name: str, residuals: List[float]
 ):
     """Qqplot time series against a standard normal curve
 
@@ -255,12 +247,7 @@ def plot_qqplot(
         return
 
 
-def acf(
-    other_args: List[str],
-    ticker: str,
-    model_name: str,
-    residuals: List[float],
-):
+def acf(other_args: List[str], ticker: str, model_name: str, residuals: List[float]):
     """Plot (partial) auto-correlation function
 
     Parameters
@@ -324,10 +311,7 @@ def acf(
         return
 
 
-def normality(
-    other_args: List[str],
-    residuals: List[float],
-):
+def normality(other_args: List[str], residuals: List[float]):
     """Normality tests
 
     Parameters
@@ -391,10 +375,7 @@ def normality(
         return
 
 
-def goodness(
-    other_args: List[str],
-    residuals: List[float],
-):
+def goodness(other_args: List[str], residuals: List[float]):
     """Goodness of fit tests
 
     Parameters
@@ -428,10 +409,7 @@ def goodness(
         return
 
 
-def arch(
-    other_args: List[str],
-    residuals: List[float],
-):
+def arch(other_args: List[str], residuals: List[float]):
     """Autoregressive conditional heteroscedasticity with Engle's test
 
     Parameters
@@ -469,10 +447,7 @@ def arch(
         return
 
 
-def unitroot(
-    other_args: List[str],
-    residuals: List[float],
-):
+def unitroot(other_args: List[str], residuals: List[float]):
     """Unit root test / stationarity (ADF, KPSS)
 
     Parameters
@@ -532,10 +507,7 @@ def unitroot(
         return
 
 
-def independence(
-    other_args: List[str],
-    residuals: List[float],
-):
+def independence(other_args: List[str], residuals: List[float]):
     """Tests independent and identically distributed (i.i.d.) time series (BDS)
 
     Parameters

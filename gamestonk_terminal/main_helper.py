@@ -326,14 +326,10 @@ def candle(s_ticker: str, s_start: str):
     ap0 = []
 
     if "OC_High_trend" in df_stock.columns:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
-        )
+        ap0.append(mpf.make_addplot(df_stock["OC_High_trend"], color="g"))
 
     if "OC_Low_trend" in df_stock.columns:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
-        )
+        ap0.append(mpf.make_addplot(df_stock["OC_Low_trend"], color="b"))
 
     if gtff.USE_ION:
         plt.ion()

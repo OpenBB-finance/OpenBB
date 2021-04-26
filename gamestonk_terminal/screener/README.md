@@ -185,7 +185,7 @@ Prints list of available signals. [Source: Finviz]
 Goes to the portfolio menu with list of passed stocks. In order to pass the stocks, just type the tickers of interest, no commas.
 
 ```
-usage: po ticker1 ticker2 ... 
+usage: po ticker1 ticker2 ...
 ```
 
 ````

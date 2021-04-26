@@ -19,8 +19,7 @@ class PapermillController:
             add_help=False, prog="papermill"
         )
         self.papermill_parser.add_argument(
-            "cmd",
-            choices=["help", "q", "quit", "dd", "econ"],
+            "cmd", choices=["help", "q", "quit", "dd", "econ"]
         )
 
     def switch(self, an_input: str):

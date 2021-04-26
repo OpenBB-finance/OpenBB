@@ -6,10 +6,7 @@ from typing import List
 from datetime import datetime, timedelta
 import requests
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 
 def news(other_args: List[str], ticker: str):
@@ -50,7 +47,7 @@ def news(other_args: List[str], ticker: str):
 
         response = requests.get(
             f"https://newsapi.org/v2/everything?q={ticker}&from={s_from}"
-            f"&sortBy=publishedAt&language=en&apiKey={cfg.API_NEWS_TOKEN}",
+            f"&sortBy=publishedAt&language=en&apiKey={cfg.API_NEWS_TOKEN}"
         )
 
         # Check that the API response was successful

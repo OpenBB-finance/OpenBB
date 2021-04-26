@@ -222,10 +222,7 @@ def menu(tickers: List[str]):
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in po_controller.CHOICES}
             )
-            an_input = session.prompt(
-                f"{get_flair()} (po)> ",
-                completer=completer,
-            )
+            an_input = session.prompt(f"{get_flair()} (po)> ", completer=completer)
         else:
             an_input = input(f"{get_flair()} (po)> ")
 

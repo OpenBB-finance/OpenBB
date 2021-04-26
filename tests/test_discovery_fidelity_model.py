@@ -16,8 +16,7 @@ assertions = unittest.TestCase("__init__")
 class TestDiscoveryFidelityModel:
     @mock.patch("gamestonk_terminal.discovery.fidelity_model.requests")
     @parameterize_from_file(
-        "test_get_orders",
-        "../tests/data/discovery_fidelity_model.yaml",
+        "test_get_orders", "../tests/data/discovery_fidelity_model.yaml"
     )
     # pylint: disable=unused-argument
     def test_get_orders(
