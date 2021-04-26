@@ -50,11 +50,9 @@ class EconController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print(" ")
-        print("Vix\n")
+        print("VIX:\n")
         print("   view          plot VIX")
-
-        print("")
-        print("Fred:\n")
+        print("FRED:\n")
         print("   gdp           GDP")
         print("   unemp         Unemployment Rate")
         print("   t1            1-Year Treasury Constant Maturity Rate")
