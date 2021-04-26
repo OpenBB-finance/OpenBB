@@ -1,11 +1,11 @@
-""" fred/fred_view.py tests """
+""" econ/fred_view.py tests """
 import unittest
 from unittest import mock
 from io import StringIO
 import pandas as pd
 
 # pylint: disable=unused-import
-from gamestonk_terminal.fred.fred_view import get_fred_data  # noqa: F401
+from gamestonk_terminal.econ.fred_view import get_fred_data  # noqa: F401
 
 fred_data_mock = """
 ,GDP
@@ -21,7 +21,7 @@ fred_data_mock = """
 
 
 class TestFredFredView(unittest.TestCase):
-    @mock.patch("gamestonk_terminal.fred.fred_view.Fred.get_series")
+    @mock.patch("gamestonk_terminal.econ.fred_view.Fred.get_series")
     def test_get_fred_data(self, mock_get_series):
         fred_data = pd.read_csv(StringIO(fred_data_mock), header=0, index_col=0)
 

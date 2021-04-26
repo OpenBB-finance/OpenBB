@@ -6,6 +6,11 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.due_diligence import news_view, reddit_view
+from gamestonk_terminal.behavioural_analysis import ba_controller
+from gamestonk_terminal.exploratory_data_analysis import eda_controller
+import pandas as pd
+
 
 account = cfg.OANDA_ACCOUNT
 
@@ -31,6 +36,10 @@ class ForexController:
         "candles",
         "pending",
         "calendar",
+        "news",
+        "reddit",
+        "eda",
+        "ba",
     ]
 
     def __init__(self):
@@ -69,6 +78,16 @@ class ForexController:
             print("    order         place limit order -u # of units -p price")
             print("    orderbook     print orderbook")
             print("    positionbook  print positionbook")
+            print("    news          print news [News API]")
+            print(
+                "    reddit        search reddit for posts about the loaded instrument"
+            )
+            print(
+                "    eda >         exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
+            )
+            print(
+                "    ba >          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
+            )
         print("")
 
     def switch(self, an_input: str):
@@ -151,6 +170,28 @@ class ForexController:
     def call_calendar(self, other_args: List[str]):
         """Call calendar"""
         fx_view.calendar(self.instrument, other_args)
+
+    def call_news(self, other_args: List[str]):
+        """Call news [News API]"""
+        news_view.news(other_args, self.instrument)
+
+    def call_reddit(self, other_args: List[str]):
+        instrument = fx_view.format_instrument(self.instrument, " ")
+        reddit_view.due_diligence(other_args, instrument)
+
+    def call_eda(self, other_args):
+        df = fx_view.get_candles_dataframe(account, self.instrument, None)
+        df = df.rename(columns={"Close": "5. adjusted close"})
+        instrument = self.instrument
+        s_start = pd.to_datetime(df.index.values[0])
+        s_interval = "1440min"
+        eda_controller.menu(df, instrument, s_start, s_interval)
+
+    def call_ba(self, other_args: List[str]):
+        instrument = fx_view.format_instrument(self.instrument, " ")
+        df = fx_view.get_candles_dataframe(account, self.instrument, None)
+        s_start = pd.to_datetime(df.index.values[0])
+        ba_controller.menu(instrument, s_start)
 
 
 def menu():

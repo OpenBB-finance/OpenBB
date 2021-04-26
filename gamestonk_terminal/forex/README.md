@@ -30,6 +30,14 @@ This menu utilizes oanda to enable support for trading forex.
 	* Display the orderbook if Oanda provides one for the forex instrument
 * [positionbook](#positionbook)
 	* Display the positionbook if Oanda provides one for the forex instrument
+* [news](#news)
+	* Latest news of the currency provided by [News API]
+* [reddit](#reddit)
+	* Gets due diligence from another user's post [Reddit]
+* [eda](#eda)
+	* This menu aims to perform exploratory data analysis on a pre-loaded forex instrument.
+* [ba](#ba)
+	* This menu aims to extrapolate behavioural analysis regarding a pre-loaded forex instrument.
 
 ## summary <a name ="summary"></a>
  ```text
@@ -108,13 +116,21 @@ Specify the instrument to use in the format EUR_USD
 
 ## candles <a name="candles"></a>
 ```text
-usage: candles [-g GRANULARITY] [-c CANDLECOUNT]
+usage: candles [-g GRANULARITY] [-c CANDLECOUNT] [-abcCeorsv]
 ```
 
 Retrieve a candlestick chart for the currently loaded instrument. Not a live chart.
 
 * -g : Specify the granularity, which is the timeframe each candle represents. The available granularities are Seconds: S5, S10, S15, S30 Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12 Day: D, Week: W Month: M. (default=D)
 * -c : Specify the number of candles to retrieve. (default=180)
+* -a : Adds AD (Accumulation/Distribution Index) to the chart. AD is a cumulative indicator that uses volume and price to assess whether a stock is being accumulated or distributed. This provides insight into how strong a trend is. [Investopedia](#https://www.investopedia.com/terms/a/accumulationdistribution.asp)
+* -b : Adds Bollinger Bands to the chart. Bollinger bands are a set of trendlines plotted two standard deviations (positively and negatively) away from a simple moving average of a security's price. [Investopedia](#https://www.investopedia.com/terms/b/bollingerbands.asp)
+* -C : Adds CCI (Commodity Channel Index) to the chart. CCI is a momentum-based oscillator used to help determine when an investment vehicle is reaching a condition of being overbought or oversold. (default=14) [Investopedia](#https://www.investopedia.com/terms/c/commoditychannelindex.asp)
+* -e : Adds EMA (Exponential Moving Average) to the chart. EMA is a moving average that places a greater weight and significance on the most recent data points. (default=10) [Investopedia](#https://www.investopedia.com/terms/e/ema.asp)
+* -o : Adds OBV (On Balance Volume) to the chart. OBV is a momentum indicator that uses volume flow to predict changes in price. [Investopedia](#https://www.investopedia.com/terms/o/onbalancevolume.asp)
+* -r : Adds RSI (Relative Strength Index) to the chart. RSI is a momentum indicator that measures the magnitude of recent price changes to evaluate overbought or oversold conditions. (default=14) [Investopedia](#https://www.investopedia.com/terms/r/rsi.asp)
+* -s : Adds SMA (Simple Moving Average) to the chart. SMA calculates the average of a selected range of prices, usually closing prices, by the number of periods in that range. (defaults= 20, 50) [Investopedia](#https://www.investopedia.com/terms/s/sma.asp)
+* -v : Adds VWAP (Volume Weighted Average Price) to the chart. VWAP gives the average price a security has traded at throughout the day, based on both volume and price. [Investopedia](#https://www.investopedia.com/terms/v/vwap.asp)
 
 ## price <a name="price"></a>
 ```text
@@ -144,3 +160,38 @@ Plots the current orderbook for loaded instrument if one is provided by Oanda. N
 usage: positionbook
 ```
 Plots the current positionbook for the loaded instrument if one is provided by Oanda. Not a live chart.
+
+## news <a name="news"></a>
+
+```text
+news [-n N_NUM]
+```
+
+Prints latest news about currency, including date, title and web link. [Source: News API]
+
+* -n : Number of latest news being printed. Default 10.
+
+## reddit <a name="reddit"></a>
+
+```text
+usage: red [-l N_LIMIT] [-d N_DAYS] [-a]
+```
+
+Print top stock's due diligence from other users. [Source: Reddit]
+
+* -l : limit of posts to retrieve
+* -d : number of prior days to look for
+* -a : "search through all flairs (apart from Yolo and Meme). Default False (i.e. use flairs: DD, technical analysis, Catalyst, News, Advice, Chart, Charts and Setups, Fundamental Analysis, Forex, Trade Idea)
+
+## eda <a name="eda"></a>
+```text
+usage: eda
+```
+
+Access the exploratory data analysis menu.
+
+## ba <a name="ba"></a>
+```text
+usage: ba
+```
+Access the behavioural analysis menu.
