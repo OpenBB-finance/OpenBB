@@ -1,18 +1,13 @@
 PLOT_DPI = 100
 
-# Backend to use for plotting.  After using the bt library, which somehow changes the
-# backend to 'agg' it raises an error.  Set this to avoid.
-"""
-More information:
-https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
-
-Common ones:
-module://backend_interagg   : This is what pycharm defaults to in Scientific Mode
-MacOSX   : Mac default.  Does not work with backtesting
-tkAgg : This uses the tkinter library.
-Qt5Agg  : This requires the PyQt5 package is installed
-"""
-backend = None
+# Backend to use for plotting
+backend = "tkAgg"
+# Examples:
+# "module://backend_interagg" - This is what pycharm defaults to in Scientific Mode
+# "MacOSX" - Mac default.  Does not work with backtesting
+# "tkAgg" - This uses the tkinter library.
+# "Qt5Agg" - This requires the PyQt5 package is installed
+# See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
 
 # Used when USE_PLOT_AUTOSCALING is set to False
 PLOT_HEIGHT = 500
