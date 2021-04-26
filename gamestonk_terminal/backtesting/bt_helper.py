@@ -35,7 +35,7 @@ def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
     start: Union[str, datetime]
         Backtest start date.  Can be either string or datetime
     name:
-        Name of teh backtest (for labeling purposes)
+        Name of the backtest (for labeling purposes)
 
     Returns
     -------

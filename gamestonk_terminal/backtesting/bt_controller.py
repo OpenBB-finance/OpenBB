@@ -77,7 +77,7 @@ class BacktestingController:
         bt_view.simple_ema(self.ticker, self.start, other_args)
 
     def call_ema_cross(self, other_args: List[str]):
-        """Call EMA Cross startegy"""
+        """Call EMA Cross strategy"""
         bt_view.ema_cross(self.ticker, self.start, other_args)
 
     def call_rsi(self, other_args: List[str]):
