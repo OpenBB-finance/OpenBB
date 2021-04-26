@@ -1,0 +1,16 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/psf/black
+    rev: 19.3b0
+    hooks:
+    -   id: black
+-   repo: https://github.com/pycqa/flake8
+    rev: 3.9.1  # pick a git hash / tag to point to
+    hooks:
+    -   id: flake8
+        entry: flake8 --max-line-length=122 --ignore=E203,W503
