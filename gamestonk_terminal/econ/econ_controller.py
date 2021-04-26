@@ -131,7 +131,7 @@ class EconController:
 
 
 def menu():
-    """Fred Menu"""
+    """Econ Menu"""
 
     econ_controller = EconController()
 
