@@ -1,7 +1,7 @@
 PLOT_DPI = 100
 
 # Backend to use for plotting
-backend = "tkAgg"
+backend = None
 # Examples:
 # "module://backend_interagg" - This is what pycharm defaults to in Scientific Mode
 # "MacOSX" - Mac default.  Does not work with backtesting
