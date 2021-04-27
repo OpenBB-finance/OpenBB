@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 
 
 class PapermillController:
-    """ Papermill Controller class"""
+    """Papermill Controller class"""
 
     def __init__(self):
         """Constructor"""

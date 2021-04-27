@@ -16,7 +16,7 @@ class CryptoController:
     CHOICES = ["help", "q", "quit", "load", "view", "top"]
 
     def __init__(self):
-        """ CONSTRUCTOR """
+        """CONSTRUCTOR"""
 
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
         self.crypto_parser.add_argument("cmd", choices=self.CHOICES)
@@ -25,7 +25,7 @@ class CryptoController:
 
     @staticmethod
     def print_help(current_coin):
-        """ Print help """
+        """Print help"""
         print("\nCryptocurrency:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
