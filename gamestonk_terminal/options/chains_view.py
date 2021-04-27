@@ -56,7 +56,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
     Parameters
     ----------
     response: requests.models.Response
-        This is the respnose from tradier api.
+        This is the response from tradier api.
 
     Returns
     -------
