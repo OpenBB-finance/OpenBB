@@ -73,7 +73,10 @@ def income(other_args: List[str], ticker: str):
             pd.set_option("display.max_colwidth", None)
             pd.set_option("display.max_rows", None)
 
-        print(df_financials.to_string(index=False))
+        if df_financials.empty:
+            print("Marketwatch does not yet provide financials for this ticker")
+        else:
+            print(df_financials.to_string(index=False))
         print("")
 
     except Exception as e:
@@ -155,7 +158,10 @@ def balance(other_args: List[str], ticker: str):
             pd.set_option("display.max_colwidth", None)
             pd.set_option("display.max_rows", None)
 
-        print(df_financials.to_string(index=False))
+        if df_financials.empty:
+            print("Marketwatch does not yet provide financials for this ticker")
+        else:
+            print(df_financials.to_string(index=False))
         print("")
 
     except Exception as e:
@@ -233,7 +239,10 @@ def cash(other_args: List[str], ticker: str):
             pd.set_option("display.max_colwidth", None)
             pd.set_option("display.max_rows", None)
 
-        print(df_financials.to_string(index=False))
+        if df_financials.empty:
+            print("Marketwatch does not yet provide financials for this ticker")
+        else:
+            print(df_financials.to_string(index=False))
         print("")
 
     except Exception as e:
