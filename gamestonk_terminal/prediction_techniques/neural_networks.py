@@ -287,13 +287,10 @@ def _setup_backtesting(df_stock, ns_parser):
                 "Backtesting not allowed, since End Date is older than Start Date of historical data"
             )
 
-        if (
-            ns_parser.s_end_date
-            < get_next_stock_market_days(
-                last_stock_day=df_stock.index[0],
-                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
-            )[-1]
-        ):
+        if ns_parser.s_end_date < get_next_stock_market_days(
+            last_stock_day=df_stock.index[0],
+            n_next_days=ns_parser.n_inputs + ns_parser.n_days,
+        )[-1]:
             raise Exception(
                 "Backtesting not allowed, since End Date is too close to Start Date to train model"
             )
