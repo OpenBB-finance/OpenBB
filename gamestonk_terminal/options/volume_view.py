@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.options.volume_helper import get_max_pain
 
 
 def plot_volume_open_interest(
@@ -250,9 +251,6 @@ def get_calls_puts_maxpain(
         df_calls["volume"] = df_calls["volume"]
         df_calls["oi+v"] = df_calls["openInterest"] + df_calls["volume"]
         df_calls["spot"] = round(last_adj_close_price, 2)
-        df_calls["dv"] = last_adj_close_price - df_calls.index
-        df_calls["dv"] = df_calls["dv"].apply(lambda x: max(0, x))
-        df_calls["dv"] = abs(df_calls["dv"] * df_calls["volume"])
 
     if not op_puts.empty:
         # Process Puts Data
@@ -266,15 +264,14 @@ def get_calls_puts_maxpain(
         df_puts["openInterest"] = -df_puts["openInterest"]
         df_puts["oi+v"] = df_puts["openInterest"] + df_puts["volume"]
         df_puts["spot"] = round(last_adj_close_price, 2)
-        df_puts["dv"] = df_puts.index - last_adj_close_price
-        df_puts["dv"] = df_puts["dv"].apply(lambda x: max(0, x))
-        df_puts["dv"] = abs(df_puts["dv"] * df_puts["volume"])
 
     if not op_calls.empty and not op_puts.empty:
         # Get max pain
         df_opt = pd.merge(df_calls, df_puts, left_index=True, right_index=True)
-        df_opt["dv"] = round(df_opt["dv_x"] + df_opt["dv_y"], 2)
-        max_pain = df_opt["dv"].idxmax()
+        df_opt = df_opt[["openInterest_x", "openInterest_y"]].rename(
+            columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
+        )
+        max_pain = get_max_pain(df_opt)
 
     return df_calls, df_puts, max_pain
 

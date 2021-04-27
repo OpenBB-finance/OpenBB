@@ -42,7 +42,10 @@ def get_orders() -> Tuple[str, DataFrame]:
             if not an_order:
                 l_orders_vals.append("")
             else:
-                l_orders_vals.append(an_order.contents[1])
+                try:
+                    l_orders_vals.append(an_order.contents[1])
+                except IndexError:
+                    l_orders_vals.append("0")
         elif (idx + 1) % 5 == 0:
             s_orders = str(an_order)
             l_orders_vals.append(
