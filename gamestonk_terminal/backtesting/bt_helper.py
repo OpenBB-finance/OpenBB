@@ -65,7 +65,6 @@ def plot_bt(res: bt.backtest.Result, plot_title: str):
         Title of plot
 
     """
-    matplotlib.use("TkAgg")
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     res.plot(title=plot_title, ax=ax)
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
