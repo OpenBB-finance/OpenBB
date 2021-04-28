@@ -1,6 +1,6 @@
 # Roadmap 📍
 
-### Table of contents
+## Table of contents
 
 * [Discovery](#Discovery)
 * [Behavioral Analysis](#Behavioral-Analysis)
@@ -12,9 +12,18 @@
 * [Reports](#Reports)
 * [Comparison Analysis](#Comparison-Analysis)
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis)
+* [Residual Analysis](#Residual-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
+* [Portfolio Optimization](#Portfolio-Optimization)
+* [FRED](#FRED)
+* [Options](#Options)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
+* [Screener](#Screener)
+* [Forex](#Forex)
+
+## Additional
+
 * [Backend](#Backend)
 * [Frontend](#Frontend)
 * [Developer Experience](#Developer-Experience)
@@ -23,147 +32,198 @@
 ---
 
 ## Discovery
+* [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
+* [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
+* [x] Analyse sectors/industry performance, overview and valuation from Finviz (@didier) - [PR #315](https://github.com/DidierRLopes/GamestonkTerminal/pull/315)
+* [x] Add latest and trending news commands (@hinxx) - [PR #347](https://github.com/DidierRLopes/GamestonkTerminal/pull/347)
+* [x] Add top ratings updates (@hinxx) - [PR #357](https://github.com/DidierRLopes/GamestonkTerminal/pull/357)
+* [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
 
-### Short term
 
-- [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
-- [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
+**NEXT**
 
-### Long term
-
-- [ ] Add screeners (@didier)
 
 ---
 
 ## Behavioral Analysis
+* [x] Add FinBrain sentiment from news (@didier) - [PR #223](https://github.com/DidierRLopes/GamestonkTerminal/pull/223)
 
-### Short term
-
-- [ ] Implement a better Twitter client (@aia)
-
-### Long term
-
-- [ ] Add Stocktwits (@aia)
+**NEXT**
+* [ ] Implement a better Twitter client (@aia)
+* [ ] Add Stocktwits (@aia)
 
 ---
 
 ## Sell-side Equity Research
+* [x] Add stockanalysis to research menu - [PR #185](https://github.com/DidierRLopes/GamestonkTerminal/pull/185)
 
-### Short term
-
-### Long term
-
-- [ ] Add logic to Equity pull data from Bank of America, Charles Schwab
+**NEXT**
+* [ ] Add logic to Equity pull data from Bank of America, Charles Schwab
 
 ---
 
 ## Fundamental Analysis
+* [x] Rearrange FA menu to have AV and FMP as submenus (@didier) - [PR #166](https://github.com/DidierRLopes/GamestonkTerminal/pull/166)
+* [x] Add Fundamental Analysis score (@didier) - [PR #383](https://github.com/DidierRLopes/GamestonkTerminal/pull/383)
 
-### Short term
-
-- [x] Rearrange FA menu to have AV and FMP as submenus (@didier) - [PR #166](https://github.com/DidierRLopes/GamestonkTerminal/pull/166)
-
-### Long term
+**NEXT**
+* [ ] Add Treasury Yield Curve data (@aia) - [PR #281](https://github.com/DidierRLopes/GamestonkTerminal/pull/281)
 
 ---
 
 ## Technical Analysis
+* [x] Add initial implementation of trendline analysis (@aia) - [PR #173](https://github.com/DidierRLopes/GamestonkTerminal/pull/173)
+* [x] Add technical summary report provided by FinBrain (@didier) - [PR #294](https://github.com/DidierRLopes/GamestonkTerminal/pull/294)
+* [x] Add recommendation based on technical indicators from Tradingview (@didier) - [PR #301](https://github.com/DidierRLopes/GamestonkTerminal/pull/301)
+* [x] Add view of stock historical price with trendlines (support, resistance) by Finviz (@didier) - [PR #317](https://github.com/DidierRLopes/GamestonkTerminal/pull/317)
 
-### Short term
-
-- [ ] Add auto-recognition of major TA patterns (@didier)
-
-### Long term
+**NEXT**
+* [ ] Add auto-recognition of major TA patterns (@didier)
 
 ---
 
 ## Due Diligence
+* [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
+* [x] Add failure to deliver command (@hinxx) - [PR #366](#https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
 
-### Short term
-
-### Long term
+**NEXT**
 
 ---
 
 ## Prediction Techniques
+* [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
+* [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
+* [x] Add averaging around multiple predictions (@didier) - [PR #252](https://github.com/DidierRLopes/GamestonkTerminal/pull/252)
 
-### Short term
-
-- [x] Add several exponential smoothing techniques [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
-
-### Long term
+**NEXT**
+* [ ] CNN 1D (@didier)
+* [ ] Combine Sentiment Analysis with Chart data - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
+* [ ] Cross-Validation methods (Forward Chaining, K-Fold, Group K-Fold) (@didier)
 
 ---
 
 ## Reports
+* [x] Add Economy analysis report (@aia) - [PR #205](https://github.com/DidierRLopes/GamestonkTerminal/pull/205)
 
-### Short term
-
+**NEXT**
 * [ ] Expand Due Diligence report (@aia)
 * [ ] Add multi-ticker comparison report (@aia)
-
-### Long term
+* [ ] Add interest rate analysis to Economy report (@aia)
+* [ ] Add a report for major business categories - growth vs value, cyclicals, small-cap vs large-caps (@aia)
 
 ---
 
 ## Comparison Analysis
-
-### Short term
-
 * [x] Add multi-ticker historical data comparison (@didier) - [PR #141](https://github.com/DidierRLopes/GamestonkTerminal/pull/141)
-* [ ] Add multi-ticker financials comparison (@didier)
+* [x] Add multi-ticker financials comparison (@didier) - [PR #237](https://github.com/DidierRLopes/GamestonkTerminal/pull/237)
+* [x] Add multi-ticker sentiment comparison (@didier) - [PR #250](https://github.com/DidierRLopes/GamestonkTerminal/pull/250)
+* [x] Get similar companies from Finviz based on Industry and Sector (and possibly country) from Finviz (@didier) - [PR #323](https://github.com/DidierRLopes/GamestonkTerminal/pull/323)
+* [x] Output brief screen  (overview, performance, financial, valuation) across similar companies (@didier) - [PR #323](https://github.com/DidierRLopes/GamestonkTerminal/pull/323)
+* [x] Add command to take tickers to portfolio optimization (@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
 
-### Long term
+**NEXT**
+
+
 
 ---
 
 ## Exploratory Data Analysis
+* [x] Summary statistics, cdf, histogram, box-whiskers, cusum, decompose (@didier) - [PR #289](https://github.com/DidierRLopes/GamestonkTerminal/pull/289)
 
-### Short term
+**NEXT**
 
-* [ ] Statistical techniques applied to a stock share price (e.g. decompose seasonality, trend, level, auto-correlation, cusum, ...) (@didier)
-* [ ] Hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF, ...) (@didier)
+---
 
-### Long term
+## Residual Analysis
+* [x] Residuals analysis menu with histogram, qqplot, acf, hypothesis tests (e.g. Kurtosis, Jarques-Bera, ARCH, ADF) (@didier) - [PR #292](https://github.com/DidierRLopes/GamestonkTerminal/pull/292)
+
+**NEXT**
 
 ---
 
 ## Portfolio Analysis
+* [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
+* [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
+* [x] Add Ally Invest (@jmaslek) - [PR #267](https://github.com/DidierRLopes/GamestonkTerminal/pull/267)
 
-### Short term
+**NEXT**
+* [ ] Merge data from different brokers (@jmaslek)
+* [ ] Add more options around merged portfolios
+* [ ] Add Brokers (td, webull, etc) (@jmaslek)
+* [ ] Refactoring
+* [ ] Summaries / tear sheets (@jmaslek)
 
-### Long term
+___
+
+## Portfolio Optimization
+* [x] Basic Optimization through PyPortFolioOpt(@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
+* [x] Add command to maximise the quadratic utility(@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
+
+**NEXT**
+* [ ] Allow for more custom optimization constrains
+
+
+---
+
+## FRED
+* [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
+
+**NEXT**
+
+---
+
+## Options
+* [x] Add Volume graph (@lolrenx) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
+* [x] Add Open Interest graph (@lolrenx) - [PR #209](https://github.com/DidierRLopes/GamestonkTerminal/pull/209)
+* [x] Add options information data (IV rank, etc) (@jmaslek) - [PR #375](https://github.com/DidierRLopes/GamestonkTerminal/pull/375)
+
+**NEXT**
+* [ ] Add max pain graph (@lolrenx)
 
 ---
 
 ## Credit Analysis
 
-### Short term
-
-### Long term
-
-- [ ] Add FINRA
-- [ ] Moodies data
+**NEXT**
+* [ ] Add FINRA
+* [ ] Moodies data
 
 ---
 
 ## Cryptocurrencies
+* [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
 
-### Short term
+**NEXT**
+* [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
+* [ ] Add crypto charts
+* [ ] Add binance 
+* [ ] Add top altcoin lists
+---
 
-- [ ] Add Coingecko
-- [ ] Add crypto charts
+## Screener
+* [x] Add Screener menu with overview, valuation, financial, ownership, performance, technical commands based on filter presets from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
+* [x] Add README with explanation of how presets are stored and can be added by experienced users. (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
+* [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
+* [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
+* [x] Add command to take tickers to portfolio optimization (@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
 
-### Long term
+**NEXT**
+
+---
+
+## Forex
+* [x] Add entire forex menu through Oanda (@alokan) - [PR #360](https://github.com/DidierRLopes/GamestonkTerminal/pull/360)
+
+**NEXT**
 
 ---
 
 ## Backend
 
-### Short term
-
-### Long term
-
+**NEXT**
+* [ ] Logging (@aia)
+* [ ] Secure storage of credentials (@aia)
 * [ ] Add caching
 * [ ] APIs
 * [ ] GraphQL
@@ -171,35 +231,34 @@
 ---
 
 ## Frontend
+* [x] Add terminal flair (@aia) - [PR #131](https://github.com/DidierRLopes/GamestonkTerminal/pull/131)
+* [x] Prompt-toolkit (@ricleal) - [PR #142](https://github.com/DidierRLopes/GamestonkTerminal/pull/142)
+* [x] Add thought of the day (@aia) - [PR #233](https://github.com/DidierRLopes/GamestonkTerminal/pull/233)
 
-### Short term
-
-- [x] Add terminal flair (@aia) - [PR #131](https://github.com/DidierRLopes/GamestonkTerminal/pull/131)
-- [x] Prompt-toolkit (@ricleal) - [PR #142](https://github.com/DidierRLopes/GamestonkTerminal/pull/142)
-
-### Long term
+**NEXT**
 
 ---
 
 ## Developer Experience
+* [x] Add Windows CI (@aia) - [PR #151](https://github.com/DidierRLopes/GamestonkTerminal/pull/151)
+* [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
+* [x] Add ad-hoc builds (@aia) - [PR #192](https://github.com/DidierRLopes/GamestonkTerminal/pull/192)
+* [x] Add test generators and test parametrization helpers (@aia) - [PR #264](https://github.com/DidierRLopes/GamestonkTerminal/pull/264)
 
-### Short term
-
-- [x] Add Windows CI (@aia) - [PR #151](https://github.com/DidierRLopes/GamestonkTerminal/pull/151)
-- [ ] Write a developer guide
-- [ ] Add a docker CI
-- [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
-
-### Long term
+**NEXT**
+* [ ] Write a developer guide
+* [ ] Add a docker CI
+* [ ] Reorganize tests to separate Unit and Integration
+* [ ] Versioning
 
 ---
 
 ## User Experience
 
-### Short term
+**NEXT**
+* [ ] Publish Docker
+* [ ] Most commands to have export flag to save output into csv/txt file
+* [ ] Most commands to have save flag to save image into png/jpg file
+* [ ] Add a WHL installation
 
-- [ ] Publish Docker
-
-### Long term
-
-- [ ] Add a WHL installation
+---

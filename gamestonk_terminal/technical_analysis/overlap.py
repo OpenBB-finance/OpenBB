@@ -2,7 +2,12 @@ import argparse
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    parse_known_args_and_warn,
+    plot_autoscale,
+)
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -64,7 +69,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        _, axPrice = plt.subplots()
+        _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.title(f"{ns_parser.n_length} EMA on {s_ticker}")
         if s_interval == "1440min":
             plt.plot(
@@ -82,18 +87,16 @@ def ema(l_args, s_ticker, s_interval, df_stock):
             plt.xlim(df_stock["4. close"].index[0], df_stock["4. close"].index[-1])
         plt.xlabel("Time")
         plt.ylabel(f"Share Price of {s_ticker} ($)")
-        axTa = axPrice.twinx()
-        plt.plot(df_ta.index, df_ta.values)
+        plt.plot(df_ta.index, df_ta.values, c="tab:blue")
+        l_legend = list()
+        l_legend.append(s_ticker)
         # Pandas series
         if len(df_ta.shape) == 1:
-            l_legend = [f"{ns_parser.n_length} EMA"]
+            l_legend.append(f"{ns_parser.n_length} EMA")
         # Pandas dataframe
         else:
-            l_legend = df_ta.columns.tolist()
+            l_legend.append(df_ta.columns.tolist())
         plt.legend(l_legend)
-        axTa.set_ylabel("{ns_parser.n_length} EMA", color="tab:blue")
-        axTa.spines["right"].set_color("tab:blue")
-        axTa.tick_params(axis="y", colors="tab:blue")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
@@ -147,7 +150,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         if not ns_parser:
             return
 
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
         else:
@@ -232,7 +235,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             )
 
-        _, axPrice = plt.subplots()
+        _, axPrice = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
         else:

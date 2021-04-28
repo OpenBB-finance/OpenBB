@@ -19,6 +19,7 @@
 [![GitHub release](https://img.shields.io/github/release/DidierRLopes/GamestonkTerminal.svg?maxAge=3600)](https://github.com/DidierRLopes/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
 
 
 <!-- PROJECT LOGO -->
@@ -58,6 +59,7 @@
       <ul>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
+        <li><a href="#update-terminal">Update Terminal</a></li>
         <li><a href="#api-keys">API Keys</a></li>
         <li><a href="#usage">Usage</a></li>
       </ul>
@@ -65,18 +67,22 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#disclaimer">Disclaimer</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contacts">Contacts</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
 ## About The Project
 
-How it started:
-"Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌."
+**How it started:**
 
-How it's going:
-u/schoen: _(...) I think people have upvoted this so much because it's an initial version of a single person's passion project that manages to put a whole bunch of financial information at your fingertips. With an active community, it could easily grow and grow and grow in functionality._
+Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
+
+**How it's going:**
+
+Gamestonk Terminal provides a modern Python-based integrated environment for investment research, that allows the average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
+
+As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup, and numerous third-party APIs).
 
 
 ## Getting Started
@@ -85,6 +91,11 @@ u/schoen: _(...) I think people have upvoted this so much because it's an initia
 This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
+
+0. Star the project
+
+<img width="1272" alt="Captura de ecrã 2021-04-25, às 01 13 30" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
+
 
 1. Install Anaconda
 
@@ -102,31 +113,54 @@ conda create -n gst python=3.6.8
 ```
 conda activate gst
 ```
-Note: At the end, you can deactivate it with: `conda deactivate`
+Note: At the end, you can deactivate it with: `conda deactivate`.
 
-4. Fork the Project
+4. Install git
+```
+conda install -c anaconda git
+````
+
+5. Clone the Project
 
 - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
 - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
 
-Navigate into the folder with: `cd GamestonkTerminal/`
+6. Navigate into the project's folder
 
-5. Install poetry
+```
+cd GamestonkTerminal/
+```
+
+7. Install poetry
 ```
 conda install poetry
 ```
 
-6. Install poetry dependencies
+7.5. If installing python 3.8
+```
+conda deactivate
+conda activate gst
+```
+*The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
+
+8. Install poetry dependencies
 ```
 poetry install
 ```
 This is a library for package management, and ensures a smoother experience than: ``pip install -r requirements.txt``
 
-7.  You're ready to Gamestonk it!
+9.  You're ready to Gamestonk it!
 
 ```
 python terminal.py
 ```
+10. (Windows - Optional) Speeding up opening process in the future
+
+After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
+
+**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/DidierRLopes/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
 
@@ -141,7 +175,7 @@ Note: The libraries specified in the [requirements.txt](/requirements.txt) file 
 ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 
-* Install optional ML features dependencies collection with poetry:
+* Install optional ML features dependencies:
 ```
 poetry install -E prediction
 ```
@@ -153,10 +187,27 @@ poetry install -E prediction
 
 Note: The problem with docker is that it won't output matplotlib figures.
 
-*Commands that may help you in case of an error:*
-* `conda install -c conda-forge fbprophet -y`
-* `python -m pip install --upgrade pip`
-* `pip install pystan --upgrade`
+### Update Terminal
+
+The terminal is constantly being updated with new features and bug fixes, hence, for your terminal to be update, you can run:
+```
+git pull
+```
+to get the latest changes.
+
+If this fails due to the fact that you had modified some python files, and there's a conflict with the updates, you can use:
+```
+git stash
+```
+
+Then, re-run `poetry install` or  `pip install -r requirements.txt` to get any new dependencies.
+
+Once installation is finished, you're ready to gamestonk.
+
+If you `stashed` your changes previously, you can un-stash them with:
+```
+git stash pop
+```
 
 ### API Keys
 
@@ -169,16 +220,26 @@ These are the ones where a key is necessary:
   * Twitter: https://developer.twitter.com
   * Polygon: https://polygon.io
   * Financial Modeling Prep: https://financialmodelingprep.com/developer
+  * FRED: https://fred.stlouisfed.org/docs/api/api_key.html
+  * News API: https://newsapi.org
+  * Tradier: https://developer.tradier.com/getting_started
+  * Oanda API: https://developer.oanda.com
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY.
+Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN.
 
 Example:
 ```
 export GT_API_REDDIT_USERNAME=SexyYear
 ```
 
+Environment variables can also be set in a `.env` file at the top of the repo. This file is ignored by git so your API keys will stay secret. The above example stored in `.env` would be:
+```
+GT_API_REDDIT_USERNAME=SexyYear
+```
+
+Note that the `GT_API_REDDIT_USER_AGENT` is the name of the script that you set when obtained the Reddit API key.
 Note that it is not necessary to have a valid Alpha Vantage key to get daily OHLC values.
 
 ### Usage
@@ -231,8 +292,11 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to your Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+4. Appease the linters and commit again if needed
+   1. Install and run `black` for every change you've made
+   2. Install and run `flake8` for every change you've made. `flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics`
+5. Push to your Branch (`git push origin feature/AmazingFeature`)
+6. Open a Pull Request
 
 
 **Become a Karen 🤷**
@@ -252,24 +316,36 @@ Welcome to the club, and feel free to support the developers behind this amazing
 
 <a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
+OR, if you prefer a coinbase crypto wallet: **3Pfx7NwGgmZsk7hQJxzHdp5rGBftUHVTiM**
 
 ## License
 
 Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes/GamestonkTerminal/blob/main/LICENSE) for more information.
 
 ## Disclaimer
+
 "A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
 
-## Contact
+## Contacts
 
 [Didier Rodrigues Lopes](https://www.linkedin.com/in/didier-lopes/) - dro.lopes@campus.fct.unl.pt
+
+[Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
+
+[James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+
+Feel free to share loss porn, memes or any questions:
+
+![Discord Banner 2](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=banner2)
+
 
 ## Acknowledgments
 
 * [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
 * [Daily Fintech article](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
 * [HackerNews](https://news.ycombinator.com/item?id=26258773)
-* [Reddit](https://www.reddit.com/r/algotrading/comments/lrndzi/cant_afford_the_bloomberg_terminal_no_worries_i/)
+* [Reddit r/algotrading](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
+* [Reddit r/Python](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

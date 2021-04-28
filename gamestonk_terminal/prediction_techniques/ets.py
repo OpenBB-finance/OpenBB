@@ -5,30 +5,32 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     valid_date,
     patch_pandas_text_adjustment,
     get_next_stock_market_days,
+    plot_autoscale,
 )
 from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction,
     price_prediction_backtesting_color,
     print_prediction_kpis,
 )
-
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-trend = "Ad"  # Additive damped, A Additive, N None
-seasonal = "N"  # None, A Additive, M Multiplicative
-seasonal_periods = 5
+# trend = "Ad"  # Additive damped, A Additive, N None
+# seasonal = "N"  # None, A Additive, M Multiplicative
+# seasonal_periods = 5
 
 
 def check_valid_trend(trend: str) -> str:
-    if trend == "N" or trend == "A" or trend == "Ad":
+    if trend in ("N", "A", "Ad"):
         return trend
     raise argparse.ArgumentTypeError(
         "Invalid trend selected. Choose between 'N', 'A', and 'Ad'"
@@ -36,7 +38,7 @@ def check_valid_trend(trend: str) -> str:
 
 
 def check_valid_seasonal(seasonal: str) -> str:
-    if seasonal == "N" or seasonal == "A" or seasonal == "M":
+    if seasonal in ("N", "A", "M"):
         return seasonal
     raise argparse.ArgumentTypeError(
         "Invalid seasonal selected. Choose between 'N', 'A', and 'M'"
@@ -179,7 +181,7 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
                 print(f"SSE: {round(model.sse, 2)}\n")
 
                 # Plotting
-                plt.figure()
+                plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
                 plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
                 # BACKTESTING
                 if ns_parser.s_end_date:
@@ -249,7 +251,7 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
 
                 # BACKTESTING
                 if ns_parser.s_end_date:
-                    plt.figure()
+                    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
                     plt.subplot(211)
                     plt.plot(
                         df_future.index,

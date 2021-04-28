@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime, timedelta, time as Time
+import os
 import random
 import re
 import sys
@@ -11,7 +12,9 @@ from colorama import Fore, Style
 import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
+from screeninfo import get_monitors
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
 
@@ -34,12 +37,21 @@ def valid_date(s: str) -> datetime:
     try:
         return datetime.strptime(s, "%Y-%m-%d")
     except ValueError as value_error:
-        raise argparse.ArgumentTypeError("Not a valid date: {s}") from value_error
+        raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
 def plot_view_stock(df, symbol):
     df.sort_index(ascending=True, inplace=True)
-    _, axVolume = plt.subplots()
+
+    try:
+        _, axVolume = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    except Exception as e:
+        print(e)
+        print(
+            "Encountered an error trying to open a chart window. Check your X server configuration."
+        )
+        return
+
     plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
     plt.ylabel("Volume")
     _ = axVolume.twinx()
@@ -60,15 +72,73 @@ def plot_view_stock(df, symbol):
     print("")
 
 
+def us_market_holidays(years) -> list:
+    if isinstance(years, int):
+        years = [
+            years,
+        ]
+    # https://www.nyse.com/markets/hours-calendars
+    marketHolidays = [
+        "Martin Luther King Jr. Day",
+        "Washington's Birthday",
+        "Memorial Day",
+        "Independence Day",
+        "Labor Day",
+        "Thanksgiving",
+        "Christmas Day",
+    ]
+    #   http://www.maa.clell.de/StarDate/publ_holidays.html
+    goodFridays = {
+        2010: "2010-04-02",
+        2011: "2011-04-22",
+        2012: "2012-04-06",
+        2013: "2013-03-29",
+        2014: "2014-04-18",
+        2015: "2015-04-03",
+        2016: "2016-03-25",
+        2017: "2017-04-14",
+        2018: "2018-03-30",
+        2019: "2019-04-19",
+        2020: "2020-04-10",
+        2021: "2021-04-02",
+        2022: "2022-04-15",
+        2023: "2023-04-07",
+        2024: "2024-03-29",
+        2025: "2025-04-18",
+        2026: "2026-04-03",
+        2027: "2027-03-26",
+        2028: "2028-04-14",
+        2029: "2029-03-30",
+        2030: "2030-04-19",
+    }
+    marketHolidays_and_obsrvd = marketHolidays + [
+        holiday + " (Observed)" for holiday in marketHolidays
+    ]
+    allHolidays = holidaysUS(years=years)
+    validHolidays = []
+    for date in list(allHolidays):
+        if allHolidays[date] in marketHolidays_and_obsrvd:
+            validHolidays.append(date)
+    for year in years:
+        new_Year = datetime.strptime(f"{year}-01-01", "%Y-%m-%d")
+        if new_Year.weekday() != 5:  # ignore saturday
+            validHolidays.append(new_Year.date())
+        if new_Year.weekday() == 6:  # add monday for Sunday
+            validHolidays.append(new_Year.date() + timedelta(1))
+    for year in years:
+        validHolidays.append(datetime.strptime(goodFridays[year], "%Y-%m-%d").date())
+    return validHolidays
+
+
 def b_is_stock_market_open() -> bool:
-    """ checks if the stock market is open """
+    """checks if the stock market is open"""
     # Get current US time
     now = datetime.now(timezone("US/Eastern"))
     # Check if it is a weekend
     if now.date().weekday() > 4:
         return False
     # Check if it is a holiday
-    if now.strftime("%Y-%m-%d") in holidaysUS():
+    if now.strftime("%Y-%m-%d") in us_market_holidays(now.year):
         return False
     # Check if it hasn't open already
     if now.time() < Time(hour=9, minute=30, second=0):
@@ -141,15 +211,19 @@ def divide_chunks(data, n):
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     n_days = 0
     l_pred_days = list()
+    years: list = []
+    holidays: list = []
     while n_days < n_next_days:
-
         last_stock_day += timedelta(hours=24)
-
+        year = last_stock_day.date().year
+        if year not in years:
+            years.append(year)
+            holidays = holidays + us_market_holidays(year)
         # Check if it is a weekend
         if last_stock_day.date().weekday() > 4:
             continue
         # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidaysUS():
+        if last_stock_day.strftime("%Y-%m-%d") in holidays:
             continue
         # Otherwise stock market is open
         n_days += 1
@@ -274,8 +348,11 @@ def patch_pandas_text_adjustment():
 
 def parse_known_args_and_warn(parser, l_args):
     parser.add_argument(
-        "-h", "--help", action="store_true", dest="help", help="show this help message"
+        "-h", "--help", action="store_true", help="show this help message"
     )
+
+    if gtff.USE_CLEAR_AFTER_CMD:
+        os.system("cls||clear")
 
     (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
 
@@ -291,7 +368,9 @@ def parse_known_args_and_warn(parser, l_args):
 
 
 def financials_colored_values(val: str) -> str:
-    if sum(c.isalpha() for c in val) < 2:
+    if val == "N/A" or str(val) == "nan":
+        val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
+    elif sum(c.isalpha() for c in val) < 2:
         if "%" in val:
             if "-" in val:
                 val = f"{Fore.RED}{val}{Style.RESET_ALL}"
@@ -299,6 +378,7 @@ def financials_colored_values(val: str) -> str:
                 val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
         elif "(" in val:
             val = f"{Fore.RED}{val}{Style.RESET_ALL}"
+
     return val
 
 
@@ -353,3 +433,41 @@ def get_flair() -> str:
         return flair[gtff.USE_FLAIR]
 
     return ""
+
+
+def str_to_bool(value):
+    if isinstance(value, bool):
+        return value
+    if value.lower() in {"false", "f", "0", "no", "n"}:
+        return False
+    if value.lower() in {"true", "t", "1", "yes", "y"}:
+        return True
+    raise ValueError(f"{value} is not a valid boolean value")
+
+
+def get_screeninfo():
+    screens = get_monitors()  # Get all available monitors
+    if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
+        monitor = 0
+        print(f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor.")
+    else:
+        monitor = cfgPlot.MONITOR
+    main_screen = screens[monitor]  # Choose what monitor to get
+
+    return (main_screen.width, main_screen.height)
+
+
+def plot_autoscale():
+
+    if gtff.USE_PLOT_AUTOSCALING:
+        x, y = get_screeninfo()  # Get screen size
+        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10 ** -2) / (
+            cfgPlot.PLOT_DPI
+        )  # Calculate width
+        if cfgPlot.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
+            y = y - 60  # Remove the height of window toolbar
+        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10 ** -2) / (cfgPlot.PLOT_DPI)
+    else:  # If not autoscale, use size defined in config_plot.py
+        x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
+        y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
+    return x, y

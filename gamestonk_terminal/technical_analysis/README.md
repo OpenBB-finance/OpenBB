@@ -2,8 +2,15 @@
 
 This menu aims to perform a technical analysis on a pre-loaded ticker chart, and the usage of the following commands along with an example will be exploited below.
 
+ * [view](#view)
+    - view historical data and trendlines [Finviz]
+ * [summary](#summary)
+    - technical summary report [FinBrain API]
+ * [recom](#recom)
+    - recommendation based on Technical Indicators [Tradingview API]
+
 [OVERLAP](#OVERLAP)
-  * [ema](#ema)       
+  * [ema](#ema)
     - exponential moving average
   * [sma](#sma)
     - simple moving average
@@ -12,7 +19,7 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
 
 [MOMENTUM](#MOMENTUM)
   * [cci](#cci)
-    - commodity channel index 
+    - commodity channel index
   * [macd](#macd)
     - moving average convergence/divergence
   * [rsi](#rsi)
@@ -36,7 +43,41 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
   * [obv](#obv)
     - on balance volume
 
-**S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let me know if there's any that you would like. Personally I use mostly these ones, hence why I didn't add more._
+**S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let us know if there's any other that you would like._
+
+## view  <a name="view"></a>
+```
+usage: view
+```
+
+View historical price with trendlines. [Source: Finviz]
+
+![aapl](https://user-images.githubusercontent.com/25267873/113757843-02107700-970b-11eb-99ab-eb9b1312547f.png)
+
+
+## summary  <a name="summary"></a>
+```
+usage: summary
+```
+
+Technical summary report provided by FinBrain's API. FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world. [Source: https://finbrain.tech]
+
+<img width="976" alt="Captura de ecrã 2021-03-29, às 00 31 29" src="https://user-images.githubusercontent.com/25267873/112772089-db758080-9026-11eb-93d5-9fd7a4b40380.png">
+
+
+## recom  <a name="recom"></a>
+```
+usage: recom [-s {crypto,forex,cfd}] [-e EXCHANGE] [-i {1M,1W,1d,4h,1h,15m,5m,1m}]
+```
+
+Print tradingview recommendation based on technical indicators. [Source: https://pypi.org/project/tradingview-ta/]
+
+* -s : screener. Default america.
+* -e : exchange, e.g. NASDAQ, NYSE. Default uses Alpha Vantage to get this information from ticker
+* -i : interval. Default is showing all of different intervals.
+
+<img width="977" alt="Captura de ecrã 2021-03-31, às 00 14 41" src="https://user-images.githubusercontent.com/25267873/113069531-76ea2b00-91b8-11eb-8934-9f693d3b4ffa.png">
+
 
 # OVERLAP <a name="OVERLAP"></a>
 

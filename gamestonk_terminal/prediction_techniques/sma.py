@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     patch_pandas_text_adjustment,
     get_next_stock_market_days,
+    plot_autoscale,
 )
 
 from gamestonk_terminal.prediction_techniques.pred_helper import (
@@ -19,7 +20,7 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_prediction_kpis,
 )
 
-
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -125,7 +126,7 @@ def simple_moving_average(l_args, s_ticker, df_stock):
         df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
         # Plotting
-        plt.figure()
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
         # BACKTESTING
         if ns_parser.s_end_date:
@@ -189,7 +190,7 @@ def simple_moving_average(l_args, s_ticker, df_stock):
 
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.figure()
+            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
             plt.subplot(211)
             plt.plot(
                 df_future.index,

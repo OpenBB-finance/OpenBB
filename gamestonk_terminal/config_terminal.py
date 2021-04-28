@@ -1,4 +1,10 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# By default the jupyter notebook will be run on port 8888
+PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
@@ -25,3 +31,31 @@ API_POLYGON_KEY = os.getenv("GT_API_POLYGON_KEY") or "REPLACE_ME"
 API_TWITTER_KEY = os.getenv("GT_API_TWITTER_KEY") or "REPLACE_ME"
 API_TWITTER_SECRET_KEY = os.getenv("GT_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("GT_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
+
+# https://fred.stlouisfed.org/docs/api/api_key.html
+API_FRED_KEY = os.getenv("GT_FRED_API_KEY") or "REPLACE_ME"
+
+# https://newsapi.org
+API_NEWS_TOKEN = os.getenv("GT_API_NEWS_TOKEN") or "REPLACE_ME"
+
+# Robinhood
+RH_USERNAME = os.getenv("GT_RH_USERNAME") or "REPLACE_ME"
+RH_PASSWORD = os.getenv("GT_RH_PASSWORD") or "REPLACE_ME"
+
+# Degiro
+DG_USERNAME = os.getenv("GT_DG_USERNAME") or "REPLACE_ME"
+DG_PASSWORD = os.getenv("GT_DG_PASSWORD") or "REPLACE_ME"
+
+# https://developer.oanda.com
+OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE ME"
+OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE ME"
+
+# https://tradier.com/products/market-data-api
+TRADIER_TOKEN = os.getenv("GT_TRADIER_TOKEN") or "REPLACE_ME"
+
+# Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
+WEBDRIVER_TO_USE = "chrome"
+PATH_TO_SELENIUM_DRIVER = None  # Replace with "PATH"
+
+# https://coinmarketcap.com/api/
+COINMARKETCAP_KEY = os.getenv("GT_CMC_API_KEY") or "REPLACE_ME"

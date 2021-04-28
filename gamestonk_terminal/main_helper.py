@@ -1,10 +1,12 @@
 import argparse
 from sys import stdout
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
+import pytz
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -13,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     check_ohlc,
     lett_to_num,
     check_sources,
+    plot_autoscale,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -48,11 +51,22 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print(
         "   disc        discover trending stocks, \t e.g. map, sectors, high short interest"
     )
-    print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print(
-        "   sen         sentiment of the market, \t from: reddit, stocktwits, twitter"
+        "   scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
     )
+    print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
+    print("   econ        economic data, \t\t\t from: FRED, VIX")
+    print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
+    print("   crypto      cryptocurrencies, \t\t uses coingecko api")
+    print(
+        "   po          portfolio optimization, \t\t optimal portfolio weights from pyportfolioopt"
+    )
+    print("   fx          forex menu, \t\t\t forex support through Oanda")
+
     if s_ticker:
+        print(
+            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
+        )
         print(
             "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
         )
@@ -69,7 +83,16 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             "   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
         )
         print(
+            "   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
+        )
+        print(
             "   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
+        )
+        print(
+            "   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
+        )
+        print(
+            "   op          options info,            \t e.g.: volume and open interest"
         )
     print("")
 
@@ -98,7 +121,9 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="load",
-        description=""" Load a stock in order to perform analysis.""",
+        description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
+        " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
+        " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
     )
     parser.add_argument(
         "-t",
@@ -112,6 +137,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         "-s",
         "--start",
         type=valid_date,
+        default="2015-01-01",
         dest="s_start_date",
         help="The starting date (format YYYY-MM-DD) of the stock",
     )
@@ -131,8 +157,15 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         dest="source",
         type=check_sources,
         default="yf",
-        help="Source of historical data. Intraday: Only 'av' available."
-        "Daily: 'yf' and 'av' available.",
+        help="Source of historical data. 'yf' and 'av' available.",
+    )
+    parser.add_argument(
+        "-p",
+        "--prepost",
+        action="store_true",
+        default=False,
+        dest="b_prepost",
+        help="Pre/After market hours. Only works for 'yf' source, and intraday data",
     )
 
     try:
@@ -150,7 +183,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         return [s_ticker, s_start, s_interval, df_stock]
 
     # Update values:
-    s_ticker = ns_parser.s_ticker
+    s_ticker = ns_parser.s_ticker.upper()
     s_start = ns_parser.s_start_date
     s_interval = str(ns_parser.n_interval) + "min"
 
@@ -164,6 +197,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock, _ = ts.get_daily_adjusted(
                     symbol=ns_parser.s_ticker, outputsize="full"
                 )
+                # pylint: disable=no-member
                 df_stock.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
@@ -190,6 +224,9 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 )
                 df_stock.index.name = "date"
 
+                if df_stock.index[0] > s_start:
+                    s_start = df_stock.index[0]
+
         # Intraday
         else:
             if ns_parser.source == "av":
@@ -198,15 +235,61 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                 df_stock, _ = ts.get_intraday(
                     symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
                 )
+                # pylint: disable=no-member
                 df_stock.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
                 df_stock = df_stock[ns_parser.s_start_date :]
 
             elif ns_parser.source == "yf":
-                print(
-                    "Unfortunately, yahoo finance historical data doesn't contain intraday prices"
+                s_int = s_interval[:-2]
+
+                d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+
+                s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+                s_date_start = s_start_dt.strftime("%Y-%m-%d")
+
+                s_start = pytz.utc.localize(s_start_dt)
+
+                if s_start_dt > ns_parser.s_start_date:
+                    print(
+                        f"Using Yahoo Finance with granularity {s_int} the starting date is set to: {s_date_start}\n"
+                    )
+
+                    df_stock = yf.download(
+                        ns_parser.s_ticker,
+                        start=s_date_start,
+                        progress=False,
+                        interval=s_int,
+                        prepost=ns_parser.b_prepost,
+                    )
+
+                else:
+                    df_stock = yf.download(
+                        ns_parser.s_ticker,
+                        start=ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                        progress=False,
+                        interval=s_int,
+                        prepost=ns_parser.b_prepost,
+                    )
+
+                # Check that a stock was successfully retrieved
+                if df_stock.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock = df_stock.rename(
+                    columns={
+                        "Open": "1. open",
+                        "High": "2. high",
+                        "Low": "3. low",
+                        "Close": "4. close",
+                        "Adj Close": "5. adjusted close",
+                        "Volume": "6. volume",
+                    }
                 )
+                df_stock.index.name = "date"
+
                 return [s_ticker, s_start, s_interval, df_stock]
 
     except Exception as e:
@@ -264,10 +347,12 @@ def candle(s_ticker: str, s_start: str):
         style=s,
         figratio=(10, 7),
         figscale=1.10,
+        figsize=(plot_autoscale()),
         update_width_config=dict(
             candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
         ),
     )
+    print("")
 
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
@@ -341,24 +426,6 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
         s_interval = str(ns_parser.n_interval) + "min"
 
     type_candles = lett_to_num(ns_parser.type)
-
-    try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-        # Daily
-        if s_interval == "1440min":
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_daily_adjusted(symbol=s_ticker, outputsize="full")
-        # Intraday
-        else:
-            # pylint: disable=unbalanced-tuple-unpacking
-            df_stock, _ = ts.get_intraday(
-                symbol=s_ticker, outputsize="full", interval=s_interval
-            )
-
-    except Exception as e:
-        print(e)
-        print("Either the ticker or the API_KEY are invalids. Try again!")
-        return
 
     df_stock.sort_index(ascending=True, inplace=True)
 
