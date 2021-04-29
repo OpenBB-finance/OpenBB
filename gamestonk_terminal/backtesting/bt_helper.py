@@ -68,7 +68,7 @@ def plot_bt(res: bt.backtest.Result, plot_title: str):
     DISPLAY_FLAG = False
     if "DISPLAY" not in os.environ:
         DISPLAY_FLAG = True
-        os.environ["DISPLAY"] = -1
+        os.environ["DISPLAY"] = "-1"
 
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     res.plot(title=plot_title, ax=ax)
