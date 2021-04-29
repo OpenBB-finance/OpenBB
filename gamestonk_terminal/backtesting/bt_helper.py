@@ -14,16 +14,6 @@ from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-# if backend is not None:
-#    print(f"Setting matplotlib backend to {backend}")
-#    matplotlib.use(backend)
-
-# if matplotlib.get_backend() in ["Agg", "MacOSX"]:
-#    print(
-#        "You may encounter errors due to your MatplotLib backend. "
-#        " Please configure in config_plot.py."
-#    )
-
 
 def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
     """
