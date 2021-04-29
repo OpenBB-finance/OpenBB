@@ -3,26 +3,26 @@ __docformat__ = "numpy"
 
 
 from datetime import datetime
+import os
 from typing import Union
-import matplotlib
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 import bt
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.config_plot import PLOT_DPI, backend
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-if backend is not None:
-    print(f"Setting matplotlib backend to {backend}")
-    matplotlib.use(backend)
+# if backend is not None:
+#    print(f"Setting matplotlib backend to {backend}")
+#    matplotlib.use(backend)
 
-if matplotlib.get_backend() in ["Agg", "MacOSX"]:
-    print(
-        "You may encounter errors due to your MatplotLib backend. "
-        " Please configure in config_plot.py."
-    )
+# if matplotlib.get_backend() in ["Agg", "MacOSX"]:
+#    print(
+#        "You may encounter errors due to your MatplotLib backend. "
+#        " Please configure in config_plot.py."
+#    )
 
 
 def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
@@ -65,6 +65,11 @@ def plot_bt(res: bt.backtest.Result, plot_title: str):
         Title of plot
 
     """
+    DISPLAY_FLAG = False
+    if "DISPLAY" not in os.environ:
+        DISPLAY_FLAG = True
+        os.environ["DISPLAY"] = -1
+
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     res.plot(title=plot_title, ax=ax)
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -74,3 +79,5 @@ def plot_bt(res: bt.backtest.Result, plot_title: str):
     if gtff.USE_ION:
         plt.ion()
     plt.show()
+    if DISPLAY_FLAG:
+        del os.environ["DISPLAY"]
