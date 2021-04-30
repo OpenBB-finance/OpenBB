@@ -68,7 +68,7 @@ View historical price of stocks. [Source: Yahoo Finance]
 ## overview <a name="overview"></a>
 
 ```text
-usage: overview [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
+usage: overview [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-aem]
 ```
 
 Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Sector, Industry, Market Cap, Volume. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
@@ -77,6 +77,8 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
 
 <img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
 
@@ -84,7 +86,7 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 ## valuation <a name="valuation"></a>
 
 ```text
-usage: valuation [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
+usage: valuation [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-aem]
 ```
 
 Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: P/E, PEG, P/S, P/B, EPS this Y. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
@@ -93,6 +95,11 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
+
 
 <img width="989" alt="valuation" src="https://user-images.githubusercontent.com/25267873/113618970-47bc3980-9650-11eb-8f3d-1b3609bb71ef.png">
 
@@ -100,7 +107,7 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 ## financial <a name="financial"></a>
 
 ```text
-usage: financial [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
+usage: financial [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-aem]
 ```
 
 Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Dividend, ROA, ROE, ROI, Earnings. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
@@ -109,6 +116,11 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
+
 
 <img width="995" alt="financial" src="https://user-images.githubusercontent.com/25267873/113618977-4985fd00-9650-11eb-976c-913232f5eb2f.png">
 
@@ -116,7 +128,7 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 ## ownership <a name="ownership"></a>
 
 ```text
-usage: ownership [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
+usage: ownership [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-aem]
 ```
 
 Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Float, Insider Own, Short Ratio. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
@@ -125,6 +137,11 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
+
 
 <img width="1017" alt="ownership" src="https://user-images.githubusercontent.com/25267873/113618974-48ed6680-9650-11eb-99ec-fe584ebfa274.png">
 
@@ -132,7 +149,7 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 ## performance <a name="performance"></a>
 
 ```text
-usage: performance [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
+usage: performance [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-aem]
 ```
 
 Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Perf Week, Perf YTD, Volatility M. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
@@ -141,6 +158,11 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
+
 
 <img width="1016" alt="performance" src="https://user-images.githubusercontent.com/25267873/113618973-48ed6680-9650-11eb-8894-0c9ace262bfa.png">
 
@@ -148,7 +170,7 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 ## technical <a name="technical"></a>
 
 ```text
-usage: technical [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-a]
+usage: technical [-p {template,sexy_year,...}] [-s {top_gainers,top_losers,...}] [-l LIMIT] [-aem]
 ```
 
 Prints screener data of the companies that meet the pre-set filtering. Some of the fields shown are: Beta, SMA50, 52W Low, RSI, Change. Note that when the signal parameter (-s) is specified, the preset is disregarded. [Source: Finviz]
@@ -157,6 +179,11 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 * -s : Signal type. Default: None. When specified (see list available in [signals](#signals)), the preset is disregarded.
 * -l : Limit of stocks to output. Default: 200.
 * -a : Set order of stocks shown to Ascended. Default: Descended.
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
+
 
 <img width="749" alt="technical" src="https://user-images.githubusercontent.com/25267873/113619656-2b6ccc80-9651-11eb-92c2-87d7e51ef22d.png">
 
@@ -165,8 +192,13 @@ Prints screener data of the companies that meet the pre-set filtering. Some of t
 
 Example:
 ```text
-technical -s oversold
+technical -s oversold [-em]
 ```
+
+* -e : Export list to a file.
+* -m : Run papermill dd on the tickers in the returned list.
+
+<img width="934" alt="overview" src="https://user-images.githubusercontent.com/25267873/113618972-4854d000-9650-11eb-9482-d1054a7d0451.png">
 
 <img width="1007" alt="technical_oversold flag" src="https://user-images.githubusercontent.com/25267873/113618975-48ed6680-9650-11eb-805f-00a656f97e9a.png">
 

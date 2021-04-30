@@ -10,7 +10,7 @@ import papermill as pm
 from gamestonk_terminal import config_terminal as cfg
 
 
-def due_diligence(other_args: List[str]):
+def due_diligence(other_args: List[str], show=True):
     """Due Diligence report
 
     Parameters
@@ -35,12 +35,15 @@ def due_diligence(other_args: List[str]):
         help="Stock ticker",
     )
 
+    if other_args:
+        if "-" not in other_args[0]:
+            other_args.insert(0, "-t")
+
     try:
         (ns_parser, unknown_args) = parser.parse_known_args(other_args)
     except SystemExit:
         print("")
         return
-
     if unknown_args:
         print(f"The following args couldn't be interpreted: {unknown_args}")
 
@@ -66,7 +69,8 @@ def due_diligence(other_args: List[str]):
         print("")
         return
 
-    webbrowser.open(
-        f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
-    )
+    if show:
+        webbrowser.open(
+            f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
+        )
     print("")
