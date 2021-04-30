@@ -11,10 +11,14 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
+# This code below aims to fix an issue with the fnn module, used by bt module
+# which forces matplotlib backend to be 'agg' which doesn't allow to plot
+# Save current matplotlib backend
 default_backend = mpl.get_backend()
 # pylint: disable=wrong-import-position
 from gamestonk_terminal.backtesting import bt_view  # noqa: E402
 
+# Restore backend matplotlib used
 mpl.use(default_backend)
 
 

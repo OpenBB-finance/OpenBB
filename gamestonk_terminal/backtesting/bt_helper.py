@@ -9,20 +9,10 @@ from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 import bt
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.config_plot import PLOT_DPI, backend
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
-
-if backend is not None:
-    print(f"Setting matplotlib backend to {backend}")
-    matplotlib.use(backend)
-
-if matplotlib.get_backend() in ["Agg", "MacOSX"]:
-    print(
-        "You may encounter errors due to your MatplotLib backend. "
-        " Please configure in config_plot.py."
-    )
 
 
 def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):

@@ -6,6 +6,7 @@ import re
 import sys
 from pytz import timezone
 import iso8601
+import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as holidaysUS
 from colorama import Fore, Style
@@ -17,6 +18,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
+if cfgPlot.BACKEND is not None:
+    matplotlib.use(cfgPlot.BACKEND)
 
 
 def check_non_negative(value) -> int:
