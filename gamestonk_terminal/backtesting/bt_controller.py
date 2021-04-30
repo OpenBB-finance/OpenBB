@@ -13,7 +13,7 @@ from gamestonk_terminal.menu import session
 
 default_backend = mpl.get_backend()
 # pylint: disable=wrong-import-position
-from gamestonk_terminal.backtesting import bt_view #noqa: E402
+from gamestonk_terminal.backtesting import bt_view  # noqa: E402
 
 mpl.use(default_backend)
 
