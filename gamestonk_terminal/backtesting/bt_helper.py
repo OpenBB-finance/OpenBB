@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 from datetime import datetime
 from typing import Union
+import matplotlib
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 import bt
