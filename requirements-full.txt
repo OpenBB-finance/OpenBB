@@ -16,6 +16,7 @@ black==20.8b1; python_version >= "3.6"
 bleach==3.3.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 bpemb==0.3.3; python_version >= "3.6"
 bs4==0.0.1
+bt==0.2.9
 cachetools==4.2.1; python_version >= "3.5" and python_version < "4.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")
 certifi==2020.12.5; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 cffi==1.14.5; implementation_name == "pypy" and python_version >= "3.6"

@@ -80,6 +80,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             "   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv"
         )
         print(
+            "   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies"
+        )
+        print(
             "   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
         )
         print(

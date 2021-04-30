@@ -62,6 +62,7 @@ python-coinmarketcap = "^0.2"
 oandapyV20 = "^0.6.3"
 degiroapi = "^0.9.5"
 valinvest = "^0.0.2"
+bt = "^0.2.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

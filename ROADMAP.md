@@ -21,6 +21,7 @@
 * [Cryptocurrencies](#Cryptocurrencies)
 * [Screener](#Screener)
 * [Forex](#Forex)
+* [Backtesting](#Backtesting)
 
 ## Additional
 
@@ -214,6 +215,11 @@ ___
 
 ## Forex
 * [x] Add entire forex menu through Oanda (@alokan) - [PR #360](https://github.com/DidierRLopes/GamestonkTerminal/pull/360)
+
+**NEXT**
+
+## Backtesting
+* [x] Add simple backtest menu with simple strategies and benchmarks (@jmaslek) [PR #415](https://github.com/DidierRLopes/GamestonkTerminal/pull/415)
 
 **NEXT**
 
