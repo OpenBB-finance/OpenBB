@@ -6,6 +6,8 @@ from typing import List
 import os
 import configparser
 import pandas as pd
+from datetime import datetime
+from gamestonk_terminal.papermill import due_diligence_view
 from finvizfinance.screener import (
     technical,
     overview,
@@ -198,6 +200,20 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         dest="ascend",
         help="Set order to Ascend, the default is Descend",
     )
+    parser.add_argument(
+        "-e",
+        "--export",
+        action="store_true",
+        dest="exportFile",
+        help="Save list as a text file",
+    )
+    parser.add_argument(
+        "-m",
+        "--mill",
+        action="store_true",
+        dest="mill",
+        help="Run papermill on list",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -215,6 +231,19 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         if isinstance(df_screen, pd.DataFrame):
             print(df_screen.to_string())
             print("")
+            if ns_parser.exportFile:
+                now = datetime.now()
+                if not os.path.exists("reports/screener"):
+                    os.makedirs("reports/screener")
+                with open(
+                    f"reports/screener/{ns_parser.signal}-{now.strftime('%Y-%m-%d_%H:%M:%S')}",
+                    "w",
+                ) as file:
+                    file.write(df_screen.to_string(index=False) + "\n")
+            if ns_parser.mill:
+                for i in range(len(df_screen)):
+                    ticker = [df_screen.iat[i, 0]]
+                    due_diligence_view.due_diligence(ticker, show=False)
             return list(df_screen["Ticker"].values)
         else:
             print("")
