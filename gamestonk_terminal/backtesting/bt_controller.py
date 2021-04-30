@@ -4,12 +4,18 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Union
 from datetime import datetime
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
+
+default_backend = mpl.get_backend()
+# pylint: disable=wrong-import-position
 from gamestonk_terminal.backtesting import bt_view
+
+mpl.use(default_backend)
 
 
 class BacktestingController:
@@ -86,7 +92,7 @@ class BacktestingController:
 
 
 def menu(ticker: str, start: Union[str, datetime]):
-    """Technical Analysis Menu"""
+    """Backtesting Menu"""
     plt.close("all")
     bt_controller = BacktestingController(ticker, start)
     bt_controller.call_help(None)
@@ -106,9 +112,7 @@ def menu(ticker: str, start: Union[str, datetime]):
 
         try:
             plt.close("all")
-
             process_input = bt_controller.switch(an_input)
-
             if process_input is not None:
                 return process_input
 
