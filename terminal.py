@@ -47,7 +47,7 @@ def main():
         os.system("")
 
     s_ticker = ""
-    s_start = ""
+    s_start = "2015-01-01"
     df_stock = pd.DataFrame()
     s_interval = "1440min"
 
