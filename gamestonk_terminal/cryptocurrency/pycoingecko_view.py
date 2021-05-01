@@ -9,10 +9,20 @@ import matplotlib.pyplot as plt
 from tabulate import tabulate
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
-from gamestonk_terminal.cryptocurrency.crypto_helper import coin_symbol_to_id, coin_ids
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
+
+# Generate a list of valid coins to be checked against later
+cg_api = CoinGeckoAPI()
+coins = cg_api.get_coins()
+coin_symbol_to_id = {}
+coin_ids = []
+
+for single_coin in coins:
+    coin_symbol_to_id[single_coin["symbol"]] = single_coin["id"]
+    coin_ids.append(single_coin["id"])
+
 # pylint: disable=inconsistent-return-statements
 
 

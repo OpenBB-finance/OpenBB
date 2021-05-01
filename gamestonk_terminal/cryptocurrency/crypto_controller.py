@@ -38,6 +38,7 @@ class CryptoController:
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
         self.crypto_parser.add_argument("cmd", choices=self.CHOICES)
         self.current_coin = None
+        self.current_currency = None
         self.current_df = pd.DataFrame()
 
     @staticmethod
@@ -115,11 +116,11 @@ class CryptoController:
 
     def call_book(self, other_args):
         """Book command - get order book from binance"""
-        binance_model.order_book(self.current_coin, other_args)
+        binance_model.order_book(self.current_coin + self.current_currency, other_args)
 
     def call_candle(self, other_args):
         """Candle command - show candle chart from binance"""
-        binance_model.candles(self.current_coin, other_args)
+        binance_model.candles(self.current_coin + self.current_currency, other_args)
 
     def call_balance(self, other_args):
         """Balance command - check current holdings of coin in binance"""
@@ -127,9 +128,12 @@ class CryptoController:
 
     def call_add(self, other_args):
         """Add command - set current coin for binance operations"""
-        self.current_coin = binance_model.add_binance_coin(other_args)
-        print(f"{self.current_coin} loaded")
+        self.current_coin, self.current_currency = binance_model.add_binance_coin(
+            other_args
+        )
+        print(f"{self.current_coin} loaded vs {self.current_currency}")
         print("")
+
 
 def menu():
     crypto_controller = CryptoController()

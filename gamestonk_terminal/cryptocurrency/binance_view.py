@@ -26,7 +26,6 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str):
     -------
 
     """
-
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
@@ -76,3 +75,4 @@ def plot_candles(candles_df: pd.DataFrame, coin: str):
     if ion:
         plt.ion()
     plt.show()
+    print("")
