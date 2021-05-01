@@ -26,7 +26,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/DidierRLopes/GamestonkTerminal">
-    <img src="images/GamestonkLogo.png" alt="Logo" width="400" height="350">
+    <img src="images/gst_logo.png" alt="Logo" width="400" height="350">
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
