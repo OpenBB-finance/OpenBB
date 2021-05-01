@@ -1,24 +1,30 @@
-# ECON
+# ECONONMY
 
-## FRED
+This menu aims to assess economy data, and the usage of the following commands along with an example will be exploited below.
 
-https://fred.stlouisfed.org
+* [fred](#fred)
+    * Get customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org.  
+* [gdp](#gdp)
+    * Gross domestic product
+* [vix](#vix)
+    * Volatility index 
+* [t1](#t1)
+    * 1-Year Treasury Constant Maturity Rate
+* [t5](#t5)
+    * 5-Year Treasury Constant Maturity Rate
+* [t10](#t10)
+    * 10-Year Treasury Constant Maturity Rate
+* [t30](#t30)
+    * 30-Year Treasury Constant Maturity Rate
+* [mort30](#mort30)
+    * 30-Year Fixed Rate Mortgage Average
+* [fedrate](#fedrate)
+    * Effective Federal Funds Rate
+* [moodAAA](#moodAAA)
+    * Moody's Seasoned AAA Corporate Bond Yield
+* [usdcad](#usdcad)
+    * Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
 
-The purpose of fred is to have the ability to look at economic data.  This page offers 2 options:
-
-* [predefined](#gdp)
-    * Get predefined data
-* [cust](#cust)
-    * Get custom fred data  
-
-The current predefined options are
-* GDP
-* 1,5,10,30 Year Treasury Rates
-* 30 Year Mortgage Rates
-* Unemployment Rate
-* Effective Federal Funds rate
-* Moody's AAA Corporate Bond
-* CAD to USD Conversion.
 
 ## predefined <a name="predefined"></a>
 ```text
