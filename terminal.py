@@ -13,7 +13,6 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import thought_of_the_day as thought
-from gamestonk_terminal import res_menu as rm
 from gamestonk_terminal.discovery import disc_controller
 from gamestonk_terminal.due_diligence import dd_controller
 from gamestonk_terminal.fundamental_analysis import fa_controller
@@ -42,6 +41,8 @@ from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.forex import fx_controller
 from gamestonk_terminal.backtesting import bt_controller
+from gamestonk_terminal.resource_collection import rc_controller
+from gamestonk_terminal.research import res_controller
 
 
 # pylint: disable=too-many-statements,too-many-branches
@@ -97,6 +98,7 @@ def main():
         "ra",
         "po",
         "fx",
+        "rc",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
@@ -219,7 +221,7 @@ def main():
             )
 
         elif ns_known_args.opt == "res":
-            b_quit = rm.res_menu(
+            b_quit = res_controller.menu(
                 s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
                 s_start,
                 s_interval,
@@ -372,6 +374,9 @@ def main():
             b_quit = bt_controller.menu(
                 s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
             )
+
+        elif ns_known_args.opt == "rc":
+            b_quit = rc_controller.menu()
 
         else:
             print("Shouldn't see this command!")

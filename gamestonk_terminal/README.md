@@ -3,7 +3,7 @@
 ### Table of contents
 * [Discover Stocks](#Discover-Stocks-)
 * [Behavioural Analysis](#Behavioural-Analysis-)
-* [Research Web pages](#Research-Web-pages)
+* [Research](#Research-)
 * [Fundamental Analysis](#Fundamental-Analysis-)
 * [Technical Analysis](#Technical-Analysis-)
 * [Due Diligence](#Due-Diligence-)
@@ -19,6 +19,7 @@
 * [Screener](#Screener-)
 * [Forex](#Forex-)
 * [Backtesting](#Backtesting-)
+* [Resource Collection](#Resource-Collection-)
 
 ## Main
 
@@ -116,7 +117,7 @@ Command|Description
 
 &nbsp;
 
-## Research Web pages
+## Research [»](research/README.md)
 Command|Website
 ----|----
 `macroaxis`         |www.macroaxis.com
@@ -137,11 +138,10 @@ Command|Website
 `macrotrends`       |www.macrotrends.net
 `newsfilter`        |www.newsfilter.io
 `stockanalysis`     |www.stockanalysis.com
-`resources`         |www.tradinganalysisresources.com
 
 &nbsp;
 
-### Fundamental Analysis [»](fundamental_analysis/README.md)
+## Fundamental Analysis [»](fundamental_analysis/README.md)
 
 Command|Description
 ----- | ---------
@@ -399,3 +399,15 @@ Command|Description
 `ema`           | buy when price exceeds EMA(l)
 `ema_cross`     | buy when EMA(short) > EMA(long) 
 `rsi`           | buy when RSI < low and sell when RSI > high
+
+
+
+## Resource Collection [»](resource_collection/README.md)
+Command|Website
+----|----
+`hfletters`         |https://miltonfmr.com/hedge-fund-letters/
+`learn`             |https://moongangcapital.com/free-stock-market-resources/
+
+&nbsp;
+
+

@@ -22,6 +22,7 @@
 * [Screener](#Screener)
 * [Forex](#Forex)
 * [Backtesting](#Backtesting)
+* [Resource Collection](#Resource-Collection)
 
 ## Additional
 
@@ -221,6 +222,17 @@ ___
 * [x] Add EDA menu, Behavioural Analysis menu, Due Diligence from other users in Reddit, and latest news regarding currency provided. (@alokan) - [PR #387](https://github.com/DidierRLopes/GamestonkTerminal/pull/387)
 
 **NEXT**
+
+
+---
+
+## Resource Collection
+* [x] Add hfletters and learn commands to resource collection (@didier) - [PR #427](https://github.com/DidierRLopes/GamestonkTerminal/pull/427)
+
+
+**NEXT**
+
+---
 
 ## Backtesting
 * [x] Add simple backtest menu with simple strategies and benchmarks (@jmaslek) [PR #415](https://github.com/DidierRLopes/GamestonkTerminal/pull/415)
