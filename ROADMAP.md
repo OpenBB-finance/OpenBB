@@ -15,7 +15,7 @@
 * [Residual Analysis](#Residual-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
 * [Portfolio Optimization](#Portfolio-Optimization)
-* [FRED](#FRED)
+* [Economy](#Economy)
 * [Options](#Options)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
@@ -146,6 +146,7 @@
 * [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add Ally Invest (@jmaslek) - [PR #267](https://github.com/DidierRLopes/GamestonkTerminal/pull/267)
+* [x] Degiro support (@deel) - [PR #381](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
 
 **NEXT**
 * [ ] Merge data from different brokers (@jmaslek)
@@ -166,8 +167,9 @@ ___
 
 ---
 
-## FRED
+## Economy
 * [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
+* [x] Refactor FRED to ECON menu and add VIX view (@jmaslek) - [PR #405](https://github.com/DidierRLopes/GamestonkTerminal/pull/405)
 
 **NEXT**
 
@@ -208,6 +210,7 @@ ___
 * [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
 * [x] Add command to take tickers to portfolio optimization (@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
+* [x] Add flags to save screeners and run papermill on returned tickers (@alokan) - [PR #414](https://github.com/DidierRLopes/GamestonkTerminal/pull/414)
 
 **NEXT**
 
@@ -215,6 +218,7 @@ ___
 
 ## Forex
 * [x] Add entire forex menu through Oanda (@alokan) - [PR #360](https://github.com/DidierRLopes/GamestonkTerminal/pull/360)
+* [x] Add EDA menu, Behavioural Analysis menu, Due Diligence from other users in Reddit, and latest news regarding currency provided. (@alokan) - [PR #387](https://github.com/DidierRLopes/GamestonkTerminal/pull/387)
 
 **NEXT**
 
@@ -250,6 +254,7 @@ ___
 * [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
 * [x] Add ad-hoc builds (@aia) - [PR #192](https://github.com/DidierRLopes/GamestonkTerminal/pull/192)
 * [x] Add test generators and test parametrization helpers (@aia) - [PR #264](https://github.com/DidierRLopes/GamestonkTerminal/pull/264)
+* [x] Sphinx documentation https://gamestonk-terminal.readthedocs.io/en/latest/index.html (@piiq) - [PR #413](https://github.com/DidierRLopes/GamestonkTerminal/pull/413)
 
 **NEXT**
 * [ ] Write a developer guide

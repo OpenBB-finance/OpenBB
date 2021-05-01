@@ -18,7 +18,15 @@ from gamestonk_terminal.discovery import disc_controller
 from gamestonk_terminal.due_diligence import dd_controller
 from gamestonk_terminal.fundamental_analysis import fa_controller
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
-from gamestonk_terminal.main_helper import clear, export, load, print_help, view, candle
+from gamestonk_terminal.main_helper import (
+    clear,
+    export,
+    load,
+    print_help,
+    view,
+    candle,
+    print_goodbye,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
@@ -47,7 +55,7 @@ def main():
         os.system("")
 
     s_ticker = ""
-    s_start = ""
+    s_start = "2015-01-01"
     df_stock = pd.DataFrame()
     s_interval = "1440min"
 
@@ -102,7 +110,7 @@ def main():
         print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal 🚀\n")
+    print("\nWelcome to Gamestonk Terminal Ape.\n")
     should_print_help = True
     parsed_stdin = False
 
@@ -375,9 +383,7 @@ def main():
         if not main_cmd:
             should_print_help = True
 
-    print(
-        "Hope you enjoyed the terminal. Remember that stonks only go up. Diamond hands.\n"
-    )
+    print_goodbye()
 
 
 if __name__ == "__main__":
