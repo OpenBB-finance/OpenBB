@@ -41,7 +41,7 @@ from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
 from gamestonk_terminal.forex import fx_controller
 from gamestonk_terminal.backtesting import bt_controller
-from gamestonk_terminal.resources import rsrc_controller
+from gamestonk_terminal.resource_collection import rc_controller
 from gamestonk_terminal.research import res_controller
 
 
@@ -98,7 +98,7 @@ def main():
         "ra",
         "po",
         "fx",
-        "rsrc",
+        "rc",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
@@ -375,8 +375,8 @@ def main():
                 s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
             )
 
-        elif ns_known_args.opt == "rsrc":
-            b_quit = rsrc_controller.menu()
+        elif ns_known_args.opt == "rc":
+            b_quit = rc_controller.menu()
 
         else:
             print("Shouldn't see this command!")

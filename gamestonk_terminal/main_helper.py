@@ -64,7 +64,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
     )
     print("   > fx          forex menu, \t\t\t forex support through Oanda")
-    print("   > rsrc        resources menu, \t\t e.g. hf letters")
+    print("   > rc          resource collection, \t\t e.g. hf letters")
 
     if s_ticker:
         print(
@@ -98,7 +98,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             "   > ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
         )
         print(
-            "   > op          options info,            \t e.g.: volume and open interest"
+            "   > op          options info ,            \t e.g.: volume and open interest"
         )
     print("")
 
