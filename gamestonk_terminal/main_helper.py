@@ -57,7 +57,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
     print("   econ        economic data, \t\t\t from: FRED, VIX")
     print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
-    print("   crypto      cryptocurrencies, \t\t uses coingecko api")
+    print("   crypto      cryptocurrencies, \t\t coingecko, coinmarketcap and binance")
     print(
         "   po          portfolio optimization, \t\t optimal portfolio weights from pyportfolioopt"
     )

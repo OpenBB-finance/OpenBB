@@ -84,23 +84,25 @@ def order_book(coin: str, other_args: List[str]):
 
     """
     limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-    parser = argparse.ArgumentParser(prog = "book",
-                                     add_help = False,
-                                     description="Get the order book for selected coin")
-    parser.add_argument("-l",
-                        "--limit",
-                        dest="limit",
-                        help="Limit parameter.  Adjusts the weight",
-                        default = 100,
-                        type = int,
-                        choices=limit_list)
+    parser = argparse.ArgumentParser(
+        prog="book", add_help=False, description="Get the order book for selected coin"
+    )
+    parser.add_argument(
+        "-l",
+        "--limit",
+        dest="limit",
+        help="Limit parameter.  Adjusts the weight",
+        default=100,
+        type=int,
+        choices=limit_list,
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
         client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
-        order_book = client.get_order_book(symbol=coin, limit = ns_parser.limit)
+        order_book = client.get_order_book(symbol=coin, limit=ns_parser.limit)
         bids = np.asarray(order_book["bids"], dtype=float)
         asks = np.asarray(order_book["asks"], dtype=float)
         bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
@@ -215,15 +217,13 @@ def candles(coin: str, other_args: List[str]):
         print("")
 
 
-def balance(coin: str, other_args: List[str]):
+def balance(coin: str):
     """
     Get account holdings for asset
     Parameters
     ----------
     coin: str
         Coin to get holdings of
-    other_args : List[str]
-        Argparse arguments
 
     Returns
     -------
@@ -231,7 +231,15 @@ def balance(coin: str, other_args: List[str]):
     """
     client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
     try:
-        client.get_asset_balance(asset=coin)
+        balance = client.get_asset_balance(asset=coin)
+        if balance is None:
+            print("Check loaded coin")
+            return
+        print("")
+        print(f"You currently have {balance['free']} free and {balance['locked']} locked")
+        print("")
+        return
     except Exception as e:
         print(e)
         print("")
+        return

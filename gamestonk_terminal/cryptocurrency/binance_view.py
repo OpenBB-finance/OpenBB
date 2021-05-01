@@ -44,15 +44,15 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str):
     print("")
 
 
-def plot_candles(candles_df: pd.DataFrame, coin: str):
+def plot_candles(candles_df: pd.DataFrame, title: str):
     """
     Plot candle chart from dataframe
     Parameters
     ----------
     candles_df: pd.DataFrame
         Dataframe containing time and OHLVC
-    coin: str
-        Coin plotting for
+    title: str
+        title of graph
 
     Returns
     -------
@@ -62,8 +62,8 @@ def plot_candles(candles_df: pd.DataFrame, coin: str):
         candles_df,
         type="candle",
         volume=True,
-        title=f"{coin}",
-        xrotation=10,
+        title=f"{title}",
+        xrotation=20,
         style="binance",
         figratio=(10, 7),
         figscale=1.10,
