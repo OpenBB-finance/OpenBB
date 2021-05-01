@@ -4,7 +4,6 @@ import argparse
 
 import sys
 import os
-import random
 from datetime import datetime, timedelta
 import pandas as pd
 import yfinance as yf

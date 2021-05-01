@@ -318,7 +318,8 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         s_intraday = (f"Intraday {s_interval}", "Daily")[ns_parser.n_interval == 1440]
 
         print(
-            f"Loading {s_intraday} {ns_parser.s_ticker.upper()} stock with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
+            f"Loading {s_intraday} {ns_parser.s_ticker.upper()} stock "
+            f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
         )
 
         return [
