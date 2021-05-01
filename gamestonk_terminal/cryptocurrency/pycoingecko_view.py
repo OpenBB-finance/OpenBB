@@ -6,6 +6,7 @@ from typing import List
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 from gamestonk_terminal.cryptocurrency.crypto_helper import coin_symbol_to_id, coin_ids
@@ -135,3 +136,23 @@ def view(coin: str, prices: pd.DataFrame, other_args: List[str]):
     except Exception as e:
         print(e)
         print("")
+
+def trend():
+    """Prints top 7 coins from pycoingecko"""
+    cg = CoinGeckoAPI()
+    trending = cg.get_search_trending()["coins"]
+    name, symbol, price, rank = [], [], [], []
+    for coin in trending:
+        name.append( coin["item"]["name"] )
+        symbol.append( coin["item"]["symbol"] )
+        coin_id = coin["item"]["id"]
+        price.append( cg.get_price(coin_id, vs_currencies="USD")[coin_id]["usd"])
+        rank.append( coin["item"]["market_cap_rank"] )
+
+    df = pd.DataFrame()
+    df["name"]= name
+    df["symbol"] = symbol
+    df["last_price"] = price
+    df["market_cap_rank"] = rank
+    print( tabulate(df, headers=df.columns, floatfmt = ".2f", showindex=False, tablefmt="fancy_grid"))
+    print("")

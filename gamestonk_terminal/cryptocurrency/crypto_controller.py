@@ -1,3 +1,4 @@
+"""Cryptocurrency Controller"""
 __docformat__ = "numpy"
 
 import argparse
@@ -7,13 +8,28 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency import pycoingecko_view
-from gamestonk_terminal.cryptocurrency import coinmarketcap_view as cmc_view
+from gamestonk_terminal.cryptocurrency import (
+    binance_model,
+    pycoingecko_view,
+    coinmarketcap_view as cmc_view,
+)
 
 
 class CryptoController:
 
-    CHOICES = ["help", "q", "quit", "load", "view", "top"]
+    CHOICES = [
+        "help",
+        "q",
+        "quit",
+        "load",
+        "view",
+        "top",
+        "trend",
+        "book",
+        "trades",
+        "candle",
+        "balance",
+    ]
 
     def __init__(self):
         """CONSTRUCTOR"""
@@ -24,18 +40,27 @@ class CryptoController:
         self.current_df = pd.DataFrame()
 
     @staticmethod
-    def print_help(current_coin):
+    def print_help(self):
         """Print help"""
         print("\nCryptocurrency:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print(f"\nCurrent Coin: {current_coin}")
+        print(f"\nCurrent Coin: {self.current_coin}")
         print("")
+        print("Coingecko:")
         print("   load          load cryptocurrency data")
         print("   view          load and view cryptocurrency data")
+        print("   trend         show top 7 trending coins")
         print("")
+        print("CoinMarketCap:")
         print("   top           view top coins from coinmarketcap")
+        print("")
+        print("Binance:")
+        print("   book          get order book")
+        print("   trades        get recent trades")
+        print("   candle        get klines/candles and plot")
+        print("   balance       show coin balance")
         print("")
 
     def switch(self, an_input: str):
@@ -56,7 +81,7 @@ class CryptoController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self.current_coin)
+        self.print_help(self)
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -77,13 +102,18 @@ class CryptoController:
             print("No coin selected. Use 'load' to load the coin you want to look at.")
             print("")
 
+    def call_trend(self, _):
+        pycoingecko_view.trend()
+
     def call_top(self, other_args):
         cmc_view.get_cmc_top_n(other_args)
 
+    def call_book(self,other_args):
+        binance_model.order_book(other_args)
 
 def menu():
     crypto_controller = CryptoController()
-    crypto_controller.print_help(crypto_controller.current_coin)
+    crypto_controller.print_help(crypto_controller)
     plt.close("all")
     while True:
         # Get input command from user

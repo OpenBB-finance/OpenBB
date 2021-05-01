@@ -59,3 +59,7 @@ PATH_TO_SELENIUM_DRIVER = None  # Replace with "PATH"
 
 # https://coinmarketcap.com/api/
 COINMARKETCAP_KEY = os.getenv("GT_CMC_API_KEY") or "REPLACE_ME"
+
+# https://www.binance.com/en/
+BINANCE_API_KEY = os.getenv("GT_BINANCE_API_KEY") or "REPLACE_ME"
+BINANCE_SECRET_KEY = os.getenv("GT_BINANCE_SECRET_KEY") or "REPLACE_ME"
