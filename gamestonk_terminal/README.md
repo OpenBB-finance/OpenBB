@@ -14,7 +14,7 @@
 * [Comparison Analysis](#Comparison-Analysis-)
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis-)
 * [Residual Analysis](#Residual-Analysis-)
-* [Economic Data](#Econ-)
+* [Economy](#Economy)
 * [Options](#Options-)
 * [Screener](#Screener-)
 * [Forex](#Forex-)
@@ -237,6 +237,7 @@ Command|Technique|Sources
 `lstm`        |Long Short-Term Memory  | [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory), [Details](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
 
 &nbsp;
+
 ## Portfolio Analysis [»](portfolio/README.md)
 
 Command|Description|Brokers
@@ -250,6 +251,7 @@ Command|Description|Brokers
 `hold`    | view net holdings across all logins
 
 &nbsp;
+
 ## Portfolio Optimization [»](portfolio_optimization/README.md)
 
 Command|Description
@@ -267,7 +269,6 @@ Command|Description
 
 &nbsp;
 
-
 ## Cryptocurrency [»](cryptocurrency/README.md)
 
 Command|Description
@@ -277,6 +278,7 @@ Command|Description
 `top` | view top coins from coinmarketcap
 
 &nbsp;
+
 ## Comparison Analysis [»](comparison_analysis/README.md)
 Command|Description|Source
 ------ | --------|----
@@ -323,23 +325,22 @@ Command|Description|Source
 `independence`  |tests independent and identically distributed (BDS) | [Wikipedia](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Testing_for_statistical_independence)
 
 &nbsp;
-## ECON [»](econ/README.md)
+
+## Economy [»](econ/README.md)
 Command|Description
 ------ | --------
-FRED Data     |
-`gdp`           | GDP
-`unemp`         | Unemployment Rate
-`t1`            | 1-Year Treasury Constant Maturity Rate
-`t5`            | 5-Year Treasury Constant Maturity Rate
-`t10`           | 10-Year Treasury Constant Maturity Rate
-`t30`           | 30-Year Treasury Constant Maturity Rate
-`mort30`        | 30-Year Fixed Rate Mortgage Average
-`fedrate`       | Effective Federal Funds Rate
-`moodAAA`       | Moody's Seasoned AAA Corporate Bond Yield
-`usdcad`        | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
-`cust`          | User Specified FRED Data - Please Specify --id
-VIX Data        |
-`view`          | Plots VIX Historical Data
+`vixcls`        | Volatility Index
+`gdp`           | Gross Domestic Product
+`unrate`        | Unemployment Rate
+`dgs1`          | 1-Year Treasury Constant Maturity Rate
+`dgs5`          | 5-Year Treasury Constant Maturity Rate
+`dgs10`         | 10-Year Treasury Constant Maturity Rate
+`dgs30`         | 30-Year Treasury Constant Maturity Rate
+`mortgage30us`  | 30-Year Fixed Rate Mortgage Average
+`fedfunds`      | Effective Federal Funds Rate
+`aaa`           | Moody's Seasoned AAA Corporate Bond Yield
+`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+
 &nbsp;
 
 ## Options [»](options/README.md)
@@ -371,7 +372,6 @@ signals        |view filter signals (e.g. -s top_gainers)
 
 &nbsp;
 
-
 ## Forex [»](forex/README.md)
 Command|Description
 ------ | --------
@@ -389,6 +389,5 @@ price        |show the current price for the forex instrument
 order        |place a limit order
 orderbook    |display the orderbook if Oanda provides one for the forex instrument
 positionbook |display the positionbook if Oanda provides one for the forex instrument
-
 
 &nbsp;
