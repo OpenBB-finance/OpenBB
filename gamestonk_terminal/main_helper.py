@@ -64,6 +64,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
     )
     print("   > fx          forex menu, \t\t\t forex support through Oanda")
+    print("   > rsrc        resources menu, \t\t e.g. hf letters")
 
     if s_ticker:
         print(
