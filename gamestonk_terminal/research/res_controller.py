@@ -3,10 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import webbrowser
-from typing import List
 from datetime import datetime
-import pandas as pd
-from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
