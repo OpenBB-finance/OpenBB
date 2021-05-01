@@ -136,12 +136,14 @@ cd GamestonkTerminal/
 conda install poetry
 ```
 
-7.5. If installing python 3.8
+7.1. If installing python 3.8
 ```
 conda deactivate
 conda activate gst
 ```
 *The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
+
+7.2. If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 8. Install poetry dependencies
 ```
