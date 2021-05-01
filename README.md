@@ -225,10 +225,14 @@ These are the ones where a key is necessary:
   * Tradier: https://developer.tradier.com/getting_started
   * Oanda API: https://developer.oanda.com
   * CoinMarketCap API: https://coinmarketcap.com/api/
+  * Binance: https://binance.us
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN, GT_CMC_API_KEY.
+Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, 
+GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, 
+GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, 
+GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN, GT_CMC_API_KEY, GT_BINANCE_API_KEY, GT_BINANCE_SECRET_KEY.
 
 Example:
 ```

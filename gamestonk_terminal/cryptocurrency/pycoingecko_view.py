@@ -137,22 +137,31 @@ def view(coin: str, prices: pd.DataFrame, other_args: List[str]):
         print(e)
         print("")
 
+
 def trend():
     """Prints top 7 coins from pycoingecko"""
     cg = CoinGeckoAPI()
     trending = cg.get_search_trending()["coins"]
     name, symbol, price, rank = [], [], [], []
     for coin in trending:
-        name.append( coin["item"]["name"] )
-        symbol.append( coin["item"]["symbol"] )
+        name.append(coin["item"]["name"])
+        symbol.append(coin["item"]["symbol"])
         coin_id = coin["item"]["id"]
-        price.append( cg.get_price(coin_id, vs_currencies="USD")[coin_id]["usd"])
-        rank.append( coin["item"]["market_cap_rank"] )
+        price.append(cg.get_price(coin_id, vs_currencies="USD")[coin_id]["usd"])
+        rank.append(coin["item"]["market_cap_rank"])
 
     df = pd.DataFrame()
-    df["name"]= name
+    df["name"] = name
     df["symbol"] = symbol
     df["last_price"] = price
     df["market_cap_rank"] = rank
-    print( tabulate(df, headers=df.columns, floatfmt = ".2f", showindex=False, tablefmt="fancy_grid"))
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        )
+    )
     print("")

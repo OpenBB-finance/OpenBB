@@ -29,6 +29,7 @@ class CryptoController:
         "trades",
         "candle",
         "balance",
+        "add",
     ]
 
     def __init__(self):
@@ -57,6 +58,7 @@ class CryptoController:
         print("   top           view top coins from coinmarketcap")
         print("")
         print("Binance:")
+        print("   add           add coin as current")
         print("   book          get order book")
         print("   trades        get recent trades")
         print("   candle        get klines/candles and plot")
@@ -92,9 +94,11 @@ class CryptoController:
         return True
 
     def call_load(self, other_args):
+        """Load command - get df from gecko"""
         self.current_coin, self.current_df = pycoingecko_view.load(other_args)
 
     def call_view(self, other_args):
+        """View command - plot loaded coin"""
         if self.current_coin:
             pycoingecko_view.view(self.current_coin, self.current_df, other_args)
 
@@ -103,13 +107,32 @@ class CryptoController:
             print("")
 
     def call_trend(self, _):
+        """Trend command - show top 7 gecko coins"""
         pycoingecko_view.trend()
 
     def call_top(self, other_args):
+        """Top command - get top n coins from coinmarketcap"""
         cmc_view.get_cmc_top_n(other_args)
 
-    def call_book(self,other_args):
-        binance_model.order_book(other_args)
+    def call_book(self, other_args):
+        """Book command - get order book from binance"""
+        binance_model.order_book(self.current_coin, other_args)
+
+    def call_trades(self, other_args):
+        """Trades command - get recent trades from binance"""
+        binance_model.recent_trades(self.current_coin, other_args)
+
+    def call_candle(self, other_args):
+        """Candle command - show candle chart from binance"""
+        binance_model.candles(self.current_coin, other_args)
+
+    def call_balance(self, other_args):
+        """Balance command - check current holdings of coin in binance"""
+        binance_model.balance(self.current_coin, other_args)
+
+    def call_add(self, _):
+        self.current_coin = input("Coin?").upper()
+
 
 def menu():
     crypto_controller = CryptoController()
