@@ -1,5 +1,6 @@
 import argparse
 from sys import stdout
+import random
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -45,57 +46,58 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print(f"\n{s_intraday} Stock: {s_ticker}")
     else:
         print("\nStock: ?")
-    print(f"Market {('CLOSED', 'OPEN')[b_is_market_open]}.")
+    print(f"Market {('CLOSED', 'OPEN')[b_is_market_open]}.\n")
 
-    print("\nMenus:")
     print(
-        "   disc        discover trending stocks, \t e.g. map, sectors, high short interest"
+        "   > disc        discover trending stocks, \t e.g. map, sectors, high short interest"
     )
     print(
-        "   scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
+        "   > scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
     )
-    print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
-    print("   econ        economic data, \t\t\t from: FRED, VIX")
-    print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
-    print("   crypto      cryptocurrencies, \t\t uses coingecko api")
+    print("   > mill        papermill menu, \t\t menu to generate notebook reports")
+    print("   > econ        economic data, \t\t from: FRED, VIX")
     print(
-        "   po          portfolio optimization, \t\t optimal portfolio weights from pyportfolioopt"
+        "   > pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally "
     )
-    print("   fx          forex menu, \t\t\t forex support through Oanda")
+    print("   > crypto      cryptocurrencies, \t\t uses coingecko api")
+    print(
+        "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
+    )
+    print("   > fx          forex menu, \t\t\t forex support through Oanda")
 
     if s_ticker:
         print(
-            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
+            "   > ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
         )
         print(
-            "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
+            "   > res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
         )
         print(
-            "   ca          comparison analysis,     \t e.g.: historical, correlation, financials"
+            "   > ca          comparison analysis,     \t e.g.: historical, correlation, financials"
         )
         print(
-            "   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings"
+            "   > fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings"
         )
         print(
-            "   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv"
+            "   > ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv"
         )
         print(
-            "   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies"
+            "   > bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies"
         )
         print(
-            "   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
+            "   > dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
         )
         print(
-            "   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
+            "   > eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
         )
         print(
-            "   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
+            "   > pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
         )
         print(
-            "   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
+            "   > ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
         )
         print(
-            "   op          options info,            \t e.g.: volume and open interest"
+            "   > op          options info,            \t e.g.: volume and open interest"
         )
     print("")
 
@@ -535,3 +537,29 @@ def export(l_args, df_stock):
         df_stock.to_clipboard()
 
     print("")
+
+
+def print_goodbye():
+    goodbye_msg = [
+        "An informed ape, is a strong ape. ",
+        "Remember that stonks only go up. ",
+        "Diamond hands. ",
+        "Apes together strong. ",
+        "This is our way. ",
+        "Keep the spacesuit ape, we haven't reached the moon yet. ",
+        "I am not a cat. I'm an ape. ",
+    ]
+
+    goodbye_hr = datetime.now().hour
+    if goodbye_hr < 5:
+        goodbye_msg_time = "Go get some rest soldier!"
+    elif goodbye_hr < 11:
+        goodbye_msg_time = "Rise and shine baby!"
+    elif goodbye_hr < 17:
+        goodbye_msg_time = "Enjoy your day!"
+    elif goodbye_hr < 23:
+        goodbye_msg_time = "Tomorrow's another day!"
+    else:
+        goodbye_msg_time = "Go get some rest soldier!"
+
+    print(goodbye_msg[random.randint(0, len(goodbye_msg))] + goodbye_msg_time + "\n")
