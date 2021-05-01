@@ -3,6 +3,8 @@ __docformat__ = "numpy"
 
 import numpy as np
 import matplotlib.pyplot as plt
+import mplfinance as mpf
+import pandas as pd
 from gamestonk_terminal.main_helper import plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.feature_flags import USE_ION as ion
@@ -37,7 +39,40 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str):
     plt.xlabel("Price")
     plt.ylabel("Size (Coins) ")
     plt.title(f"Order Book for {coin}")
-    # if ion:
-    #    plt.ion()
+    if ion:
+        plt.ion()
     plt.show()
     print("")
+
+
+def plot_candles(candles_df: pd.DataFrame, coin: str):
+    """
+    Plot candle chart from dataframe
+    Parameters
+    ----------
+    candles_df: pd.DataFrame
+        Dataframe containing time and OHLVC
+    coin: str
+        Coin plotting for
+
+    Returns
+    -------
+
+    """
+    mpf.plot(
+        candles_df,
+        type="candle",
+        volume=True,
+        title=f"{coin}",
+        xrotation=10,
+        style="binance",
+        figratio=(10, 7),
+        figscale=1.10,
+        figsize=(plot_autoscale()),
+        update_width_config=dict(
+            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+        ),
+    )
+    if ion:
+        plt.ion()
+    plt.show()

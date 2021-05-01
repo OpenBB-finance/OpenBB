@@ -59,8 +59,7 @@ class CryptoController:
         print("")
         print("Binance:")
         print("   add           add coin as current")
-        print("   book          get order book")
-        print("   trades        get recent trades")
+        print("   book          show order book")
         print("   candle        get klines/candles and plot")
         print("   balance       show coin balance")
         print("")
@@ -118,10 +117,6 @@ class CryptoController:
         """Book command - get order book from binance"""
         binance_model.order_book(self.current_coin, other_args)
 
-    def call_trades(self, other_args):
-        """Trades command - get recent trades from binance"""
-        binance_model.recent_trades(self.current_coin, other_args)
-
     def call_candle(self, other_args):
         """Candle command - show candle chart from binance"""
         binance_model.candles(self.current_coin, other_args)
@@ -130,9 +125,11 @@ class CryptoController:
         """Balance command - check current holdings of coin in binance"""
         binance_model.balance(self.current_coin, other_args)
 
-    def call_add(self, _):
-        self.current_coin = input("Coin?").upper()
-
+    def call_add(self, other_args):
+        """Add command - set current coin for binance operations"""
+        self.current_coin = binance_model.add_binance_coin(other_args)
+        print(f"{self.current_coin} loaded")
+        print("")
 
 def menu():
     crypto_controller = CryptoController()
