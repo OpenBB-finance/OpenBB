@@ -42,7 +42,7 @@ def display_fred(other_args: List[str], choice: str):
     other_args : List[str]
         argparse other args
     choice : str
-        Fred data series: "VIX", "GDP", "DGS1", "DGS5", "DGS10", "DGS30", "MORTGAGE30US", "FEDFUNDS",
+        Fred data series: "VIXCLS", "GDP", "DGS1", "DGS5", "DGS10", "DGS30", "MORTGAGE30US", "FEDFUNDS",
         "AAA", "DEXCAUS", "UNRATE",
     """
 
