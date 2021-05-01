@@ -14,12 +14,7 @@ class ResourcesController:
     """Resources Controller class"""
 
     # Command choices
-    CHOICES = [
-        "help",
-        "q",
-        "quit",
-        "hfletters",
-    ]
+    CHOICES = ["help", "q", "quit", "hfletters", "learn"]
 
     def __init__(self):
         """Constructor"""
@@ -39,6 +34,7 @@ class ResourcesController:
         print("   quit          quit to abandon program")
         print("")
         print("   hfletters     hedge fund letters or reports")
+        print("   learn         trading analysis, tips and resources")
         print("")
 
     def switch(self, an_input: str):
@@ -52,6 +48,9 @@ class ResourcesController:
             None - continue in the menu
         """
         (known_args, other_args) = self.rsrc_parser.parse_known_args(an_input.split())
+
+        if other_args:
+            print(f"The following args were unexpected: {other_args}")
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -71,9 +70,12 @@ class ResourcesController:
 
     def call_hfletters(self, other_args: List[str]):
         """Process hfletters command"""
-        if other_args:
-            print(f"The following args were unexpected: {other_args}")
         webbrowser.open(f"https://miltonfmr.com/hedge-fund-letters/")
+        print("")
+
+    def call_learn(self, other_args: List[str]):
+        """Process learn command"""
+        webbrowser.open("https://moongangcapital.com/free-stock-market-resources/")
         print("")
 
 
