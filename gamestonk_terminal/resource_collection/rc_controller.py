@@ -70,7 +70,7 @@ class ResourceCollectionController:
 
     def call_hfletters(self, other_args: List[str]):
         """Process hfletters command"""
-        webbrowser.open(f"https://miltonfmr.com/hedge-fund-letters/")
+        webbrowser.open("https://miltonfmr.com/hedge-fund-letters/")
         print("")
 
     def call_learn(self, other_args: List[str]):
