@@ -3,7 +3,7 @@
 ### Table of contents
 * [Discover Stocks](#Discover-Stocks-)
 * [Behavioural Analysis](#Behavioural-Analysis-)
-* [Research](#Research)
+* [Research](#Research-)
 * [Fundamental Analysis](#Fundamental-Analysis-)
 * [Technical Analysis](#Technical-Analysis-)
 * [Due Diligence](#Due-Diligence-)
