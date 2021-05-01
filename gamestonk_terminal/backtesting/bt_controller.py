@@ -43,7 +43,7 @@ class BacktestingController:
     def print_help(self):
         """Print help"""
 
-        print("Back Testing Menu\n")
+        print("\nBacktesting:")
         print("   help        show this backtesting menu again")
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
