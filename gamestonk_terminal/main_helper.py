@@ -564,4 +564,6 @@ def print_goodbye():
     else:
         goodbye_msg_time = "Go get some rest soldier!"
 
-    print(goodbye_msg[random.randint(0, len(goodbye_msg)-1)] + goodbye_msg_time + "\n")
+    print(
+        goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
+    )
