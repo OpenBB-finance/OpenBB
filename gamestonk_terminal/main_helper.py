@@ -549,6 +549,7 @@ def print_goodbye():
         "This is our way. ",
         "Keep the spacesuit ape, we haven't reached the moon yet. ",
         "I am not a cat. I'm an ape. ",
+        "We like the terminal. ",
     ]
 
     goodbye_hr = datetime.now().hour
@@ -563,4 +564,4 @@ def print_goodbye():
     else:
         goodbye_msg_time = "Go get some rest soldier!"
 
-    print(goodbye_msg[random.randint(0, len(goodbye_msg))] + goodbye_msg_time + "\n")
+    print(goodbye_msg[random.randint(0, len(goodbye_msg)-1)] + goodbye_msg_time + "\n")
