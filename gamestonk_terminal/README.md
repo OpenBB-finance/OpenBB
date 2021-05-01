@@ -18,6 +18,7 @@
 * [Options](#Options-)
 * [Screener](#Screener-)
 * [Forex](#Forex-)
+* [Backtesting](#Backtesting-)
 
 ## Main
 
@@ -391,3 +392,10 @@ orderbook    |display the orderbook if Oanda provides one for the forex instrume
 positionbook |display the positionbook if Oanda provides one for the forex instrument
 
 &nbsp;
+
+## Backtesting [»](backtesting/README.md)
+Command|Description
+------ | --------
+`ema`           | buy when price exceeds EMA(l)
+`ema_cross`     | buy when EMA(short) > EMA(long) 
+`rsi`           | buy when RSI < low and sell when RSI > high
