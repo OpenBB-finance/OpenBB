@@ -42,13 +42,13 @@ class CryptoController:
         self.current_df = pd.DataFrame()
 
     @staticmethod
-    def print_help(self):
+    def print_help(cont):
         """Print help"""
         print("\nCryptocurrency:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print(f"\nCurrent Coin: {self.current_coin}")
+        print(f"\nCurrent Coin: {cont.current_coin}")
         print("")
         print("Coingecko:")
         print("   load          load cryptocurrency data")
