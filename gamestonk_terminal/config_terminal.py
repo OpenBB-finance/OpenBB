@@ -59,3 +59,6 @@ PATH_TO_SELENIUM_DRIVER = None  # Replace with "PATH"
 
 # https://coinmarketcap.com/api/
 COINMARKETCAP_KEY = os.getenv("GT_CMC_API_KEY") or "REPLACE_ME"
+
+# https://finnhub.io
+API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
