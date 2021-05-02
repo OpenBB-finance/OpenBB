@@ -53,58 +53,46 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
 
     l_segments = list()
     for i in pattern:
+        a_part = ("", "")
         if "aprice" in pattern[i]:
             if pattern[i]["aprice"] != 0 and not math.isnan(pattern[i]["aprice"]):
                 a_part = (
                     datetime.utcfromtimestamp(pattern[i]["atime"]).strftime("%Y-%m-%d"),
                     pattern[i]["aprice"],
                 )
-            else:
-                a_part = ""
-        else:
-            a_part = ""
 
+        b_part = ("", "")
         if "bprice" in pattern[i]:
             if pattern[i]["bprice"] != 0 and not math.isnan(pattern[i]["bprice"]):
                 b_part = (
                     datetime.utcfromtimestamp(pattern[i]["btime"]).strftime("%Y-%m-%d"),
                     pattern[i]["bprice"],
                 )
-            else:
-                b_part = ""
-        else:
-            b_part = ""
 
+        c_part = ("", "")
         if "cprice" in pattern[i]:
             if pattern[i]["cprice"] != 0 and not math.isnan(pattern[i]["cprice"]):
                 c_part = (
                     datetime.utcfromtimestamp(pattern[i]["ctime"]).strftime("%Y-%m-%d"),
                     pattern[i]["cprice"],
                 )
-            else:
-                c_part = ""
-        else:
-            c_part = ""
 
+        d_part = ("", "")
         if "dprice" in pattern[i]:
             if pattern[i]["dprice"] != 0 and not math.isnan(pattern[i]["dprice"]):
                 d_part = (
                     datetime.utcfromtimestamp(pattern[i]["dtime"]).strftime("%Y-%m-%d"),
                     pattern[i]["dprice"],
                 )
-            else:
-                d_part = ""
-        else:
-            d_part = ""
 
         segment = (a_part, b_part, c_part, d_part)
 
         l_segment = list(segment)
-        while "" in l_segment:
-            l_segment.remove("")
-        segment = tuple(l_segment)
+        while ("", "") in l_segment:
+            l_segment.remove(("", ""))
+        segm = tuple(l_segment)
 
-        l_segments.append(segment)
+        l_segments.append(segm)
 
     start_time = 999999999999
     for i in pattern:
