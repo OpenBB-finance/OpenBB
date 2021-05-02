@@ -136,6 +136,7 @@ class CryptoController:
         print(f"{self.current_coin} loaded vs {self.current_currency}")
         print("")
 
+
 def menu():
     crypto_controller = CryptoController()
     crypto_controller.print_help(crypto_controller)

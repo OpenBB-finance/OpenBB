@@ -198,7 +198,7 @@ ___
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add crypto charts
-* [ ] Add binance 
+* [x] Add binance (@jmaslek)
 * [ ] Add top altcoin lists
 ---
 
