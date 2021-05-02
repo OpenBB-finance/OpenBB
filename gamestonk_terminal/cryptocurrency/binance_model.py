@@ -242,6 +242,10 @@ def balance(coin: str):
             print("Check loaded coin")
             return
         print("")
+        amounts = [current_balance["free"], current_balance["locked"]]
+        df.columns = ["Amount"]
+        df.index = ["Free", "Locked"]
+        df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
         print(
             f"You currently have {current_balance['free']} free and {current_balance['locked']} locked"
         )
