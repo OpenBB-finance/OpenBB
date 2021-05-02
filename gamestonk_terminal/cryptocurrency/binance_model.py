@@ -18,8 +18,13 @@ def check_valid_binance_str(symbol: str):
     try:
         client.get_avg_price(symbol=symbol.upper())
         return symbol.upper()
-    except BinanceAPIException:
-        raise argparse.ArgumentTypeError(f"{symbol} is not a valid binance symbol")
+    except BinanceAPIException as e:
+        raise argparse.ArgumentTypeError(
+            f"{symbol} is not a valid binance symbol"
+        ) from e
+
+
+# pylint: disable=inconsistent-return-statements
 
 
 def add_binance_coin(other_args: List[str]):
