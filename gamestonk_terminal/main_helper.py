@@ -1,5 +1,6 @@
 import argparse
 from sys import stdout
+import random
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -45,57 +46,59 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         print(f"\n{s_intraday} Stock: {s_ticker}")
     else:
         print("\nStock: ?")
-    print(f"Market {('CLOSED', 'OPEN')[b_is_market_open]}.")
+    print(f"Market {('CLOSED', 'OPEN')[b_is_market_open]}.\n")
 
-    print("\nMenus:")
     print(
-        "   disc        discover trending stocks, \t e.g. map, sectors, high short interest"
+        "   > disc        discover trending stocks, \t e.g. map, sectors, high short interest"
     )
     print(
-        "   scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
+        "   > scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
     )
-    print("   mill        papermill menu, \t\t\t menu to generate notebook reports")
-    print("   econ        economic data, \t\t\t from: FRED, VIX")
-    print("   pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally ")
-    print("   crypto      cryptocurrencies, \t\t coingecko, coinmarketcap and binance")
+    print("   > mill        papermill menu, \t\t menu to generate notebook reports")
+    print("   > econ        economic data, \t\t from: FRED, VIX")
     print(
-        "   po          portfolio optimization, \t\t optimal portfolio weights from pyportfolioopt"
+        "   > pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally "
     )
-    print("   fx          forex menu, \t\t\t forex support through Oanda")
+    print("   > crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance")
+    print(
+        "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
+    )
+    print("   > fx          forex menu, \t\t\t forex support through Oanda")
+    print("   > rc          resource collection, \t\t e.g. hf letters")
 
     if s_ticker:
         print(
-            "   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
+            "   > ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
         )
         print(
-            "   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
+            "   > res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
         )
         print(
-            "   ca          comparison analysis,     \t e.g.: historical, correlation, financials"
+            "   > ca          comparison analysis,     \t e.g.: historical, correlation, financials"
         )
         print(
-            "   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings"
+            "   > fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings"
         )
         print(
-            "   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv"
+            "   > ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv"
         )
         print(
-            "   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies"
+            "   > bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies"
         )
         print(
-            "   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
+            "   > dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
         )
         print(
-            "   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
+            "   > eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
         )
         print(
-            "   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
+            "   > pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
         )
         print(
-            "   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
+            "   > ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
         )
         print(
-            "   op          options info,            \t e.g.: volume and open interest"
+            "   > op          options info ,            \t e.g.: volume and open interest"
         )
     print("")
 
@@ -181,41 +184,40 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         if not ns_parser:
             return [s_ticker, s_start, s_interval, df_stock]
 
-    except SystemExit:
-        print("")
-        return [s_ticker, s_start, s_interval, df_stock]
-
-    # Update values:
-    s_ticker = ns_parser.s_ticker.upper()
-    s_start = ns_parser.s_start_date
-    s_interval = str(ns_parser.n_interval) + "min"
-
-    try:
         # Daily
-        if s_interval == "1440min":
+        if ns_parser.n_interval == 1440:
 
+            # Alpha Vantage Source
             if ns_parser.source == "av":
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
                 # pylint: disable=unbalanced-tuple-unpacking
-                df_stock, _ = ts.get_daily_adjusted(
+                df_stock_candidate, _ = ts.get_daily_adjusted(
                     symbol=ns_parser.s_ticker, outputsize="full"
                 )
-                # pylint: disable=no-member
-                df_stock.sort_index(ascending=True, inplace=True)
 
-                # Slice dataframe from the starting date YYYY-MM-DD selected
-                df_stock = df_stock[ns_parser.s_start_date :]
-
-            elif ns_parser.source == "yf":
-                df_stock = yf.download(
-                    ns_parser.s_ticker, start=ns_parser.s_start_date, progress=False
-                )
-                # Check that a stock was successfully retrieved
-                if df_stock.empty:
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
 
-                df_stock = df_stock.rename(
+                # pylint: disable=no-member
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+
+            # Yahoo Finance Source
+            elif ns_parser.source == "yf":
+                df_stock_candidate = yf.download(
+                    ns_parser.s_ticker, start=ns_parser.s_start_date, progress=False
+                )
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock_candidate = df_stock_candidate.rename(
                     columns={
                         "Open": "1. open",
                         "High": "2. high",
@@ -225,41 +227,57 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                         "Volume": "6. volume",
                     }
                 )
-                df_stock.index.name = "date"
+                df_stock_candidate.index.name = "date"
 
-                if df_stock.index[0] > s_start:
-                    s_start = df_stock.index[0]
+            # Check if start time from dataframe is more recent than specified
+            if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
+                s_start = df_stock_candidate.index[0]
+            else:
+                s_start = ns_parser.s_start_date
 
         # Intraday
         else:
+
+            # Alpha Vantage Source
             if ns_parser.source == "av":
                 ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
                 # pylint: disable=unbalanced-tuple-unpacking
-                df_stock, _ = ts.get_intraday(
-                    symbol=ns_parser.s_ticker, outputsize="full", interval=s_interval
+                df_stock_candidate, _ = ts.get_intraday(
+                    symbol=ns_parser.s_ticker,
+                    outputsize="full",
+                    interval=str(ns_parser.n_interval) + "min",
                 )
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
                 # pylint: disable=no-member
-                df_stock.sort_index(ascending=True, inplace=True)
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
 
                 # Slice dataframe from the starting date YYYY-MM-DD selected
-                df_stock = df_stock[ns_parser.s_start_date :]
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
 
+                # Check if start time from dataframe is more recent than specified
+                if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
+                    s_start = df_stock_candidate.index[0]
+                else:
+                    s_start = ns_parser.s_start_date
+
+            # Yahoo Finance Source
             elif ns_parser.source == "yf":
-                s_int = s_interval[:-2]
+                s_int = str(ns_parser.n_interval) + "m"
 
                 d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
                 s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
                 s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
-                s_start = pytz.utc.localize(s_start_dt)
-
                 if s_start_dt > ns_parser.s_start_date:
-                    print(
-                        f"Using Yahoo Finance with granularity {s_int} the starting date is set to: {s_date_start}\n"
-                    )
+                    # Using Yahoo Finance with granularity {s_int} the starting date is set to: {s_date_start}
 
-                    df_stock = yf.download(
+                    df_stock_candidate = yf.download(
                         ns_parser.s_ticker,
                         start=s_date_start,
                         progress=False,
@@ -268,7 +286,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                     )
 
                 else:
-                    df_stock = yf.download(
+                    df_stock_candidate = yf.download(
                         ns_parser.s_ticker,
                         start=ns_parser.s_start_date.strftime("%Y-%m-%d"),
                         progress=False,
@@ -276,12 +294,17 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                         prepost=ns_parser.b_prepost,
                     )
 
-                # Check that a stock was successfully retrieved
-                if df_stock.empty:
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
 
-                df_stock = df_stock.rename(
+                if s_start_dt > ns_parser.s_start_date:
+                    s_start = pytz.utc.localize(s_start_dt)
+                else:
+                    s_start = ns_parser.s_start_date
+
+                df_stock_candidate = df_stock_candidate.rename(
                     columns={
                         "Open": "1. open",
                         "High": "2. high",
@@ -291,26 +314,29 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                         "Volume": "6. volume",
                     }
                 )
-                df_stock.index.name = "date"
+                df_stock_candidate.index.name = "date"
 
-                return [s_ticker, s_start, s_interval, df_stock]
+        s_intraday = (f"Intraday {s_interval}", "Daily")[ns_parser.n_interval == 1440]
+
+        print(
+            f"Loading {s_intraday} {ns_parser.s_ticker.upper()} stock "
+            f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.\n"
+        )
+
+        return [
+            ns_parser.s_ticker.upper(),
+            s_start,
+            str(ns_parser.n_interval) + "min",
+            df_stock_candidate,
+        ]
 
     except Exception as e:
-        print(e)
-        print("Either the ticker or the API_KEY are invalids. Try again!\n")
+        print(e, "\nEither the ticker or the API_KEY are invalids. Try again!\n")
         return [s_ticker, s_start, s_interval, df_stock]
 
-    s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
-
-    if s_start:
-        print(
-            f"Loading {s_intraday} {s_ticker} stock with starting period {s_start.strftime('%Y-%m-%d')} for analysis."
-        )
-    else:
-        print(f"Loading {s_intraday} {s_ticker} stock for analysis.")
-
-    print("")
-    return [s_ticker, s_start, s_interval, df_stock]
+    except SystemExit:
+        print("")
+        return [s_ticker, s_start, s_interval, df_stock]
 
 
 def candle(s_ticker: str, s_start: str):
@@ -513,3 +539,32 @@ def export(l_args, df_stock):
         df_stock.to_clipboard()
 
     print("")
+
+
+def print_goodbye():
+    goodbye_msg = [
+        "An informed ape, is a strong ape. ",
+        "Remember that stonks only go up. ",
+        "Diamond hands. ",
+        "Apes together strong. ",
+        "This is our way. ",
+        "Keep the spacesuit ape, we haven't reached the moon yet. ",
+        "I am not a cat. I'm an ape. ",
+        "We like the terminal. ",
+    ]
+
+    goodbye_hr = datetime.now().hour
+    if goodbye_hr < 5:
+        goodbye_msg_time = "Go get some rest soldier!"
+    elif goodbye_hr < 11:
+        goodbye_msg_time = "Rise and shine baby!"
+    elif goodbye_hr < 17:
+        goodbye_msg_time = "Enjoy your day!"
+    elif goodbye_hr < 23:
+        goodbye_msg_time = "Tomorrow's another day!"
+    else:
+        goodbye_msg_time = "Go get some rest soldier!"
+
+    print(
+        goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
+    )

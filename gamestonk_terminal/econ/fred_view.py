@@ -18,138 +18,50 @@ from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-api_map = {
-    "gdp": "GDP",
-    "t10": "DGS10",
-    "t1": "DGS1",
-    "t5": "DGS5",
-    "t30": "DGS30",
-    "mort30": "MORTGAGE30US",
-    "fedrate": "FEDFUNDS",
-    "moodAAA": "AAA",
-    "usdcad": "DEXCAUS",
-    "unemp": "UNRATE",
-}
 
-title_map = {
-    "gdp": "Gross Domestic Product",
-    "t10": "10-Year Treasury Constant Maturity Rate",
-    "t1": "1-Year Treasury Constant Maturity Rate",
-    "t5": "5-Year Treasury Constant Maturity Rate",
-    "t30": "30-Year Treasury Constant Maturity Rate",
-    "mort30": "30-Year Mortgage Rate",
-    "fedrate": "Effective Federal Funds Rate",
-    "moodAAA": "Moody's Seasoned AAA Corporate Bond Yield",
-    "usdcad": "Canada / U.S. Foreign Exchange Rate",
-    "unemp": "Unemployment Rate",
+fred_series_description = {
+    "VIXCLS": "Volatility Index",
+    "GDP": "Gross Domestic Product",
+    "UNRATE": "Unemployment Rate",
+    "DGS1": "1-Year Treasury Constant Maturity Rate",
+    "DGS5": "5-Year Treasury Constant Maturity Rate",
+    "DGS10": "10-Year Treasury Constant Maturity Rate",
+    "DGS30": "30-Year Treasury Constant Maturity Rate",
+    "MORTGAGE30US": "30-Year Mortgage Rate",
+    "FEDFUNDS": "Effective Federal Funds Rate",
+    "AAA": "Moody's Seasoned AAA Corporate Bond Yield",
+    "DEXCAUS": "Canada / U.S. Foreign Exchange Rate",
 }
 
 
-def get_fred_data(other_args: List[str], choice: str):
-    """Displace Fred data and graph for a selected chosen data series
+def display_fred(other_args: List[str], choice: str):
+    """Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org.
 
     Parameters
     ----------
     other_args : List[str]
         argparse other args
     choice : str
-        Fred data series: "gdp","unemp", "t1", "t5", "t10", "t30", "mort30",
-        "fedrate", "moodAAA", "usdcad",
+        Fred data series: "VIXCLS", "GDP", "DGS1", "DGS5", "DGS10", "DGS30", "MORTGAGE30US", "FEDFUNDS",
+        "AAA", "DEXCAUS", "UNRATE",
     """
-
-    fred = Fred(api_key=API_FRED_KEY)
 
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="Custom",
+        prog=choice if choice else "fred",
         description="""
-            Custom Data
+            Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org.
         """,
     )
 
     parser.add_argument(
-        "-s",
-        dest="start_date",
-        type=valid_date,
-        default="2019-01-01",
-        required=False,
-        help="Starting date (YYYY-MM-DD) of data",
-    )
-
-    parser.add_argument(
-        "--noplot",
-        action="store_false",
-        default=True,
-        dest="noplot",
-        help="Suppress output plot",
-    )
-
-    parser.add_argument(
-        "--hidedata",
-        action="store_false",
-        default=True,
-        dest="hidedata",
-        help="Suppress data display plot",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        string_to_get = api_map[choice]
-        title = title_map[choice]
-        data = fred.get_series(string_to_get, ns_parser.start_date)
-
-        data = pd.DataFrame(data, columns=[f"{string_to_get}"])
-        data.index.name = "Date"
-        if ns_parser.hidedata:
-            print(data)
-            print("")
-        if ns_parser.noplot:
-            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.plot(data.index, data.iloc[:, 0], "-ok")
-            plt.xlabel("Time")
-            plt.xlim(data.index[0], data.index[-1])
-            plt.ylabel(f"{string_to_get}")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.title(title)
-            plt.show()
-            print("")
-
-            if gtff.USE_ION:
-                plt.ion()
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e)
-        print("")
-        return
-
-
-def custom_data(other_args: List[str]):
-    """Displace Fred data for a custom series request
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    """
-    fred = Fred(api_key=API_FRED_KEY)
-
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="Custom",
-        description="""
-                    Custom Data
-                """,
-    )
-    parser.add_argument(
-        "-i", "--id", dest="series_id", required=True, type=str, help="FRED Series ID"
+        "-i",
+        "--id",
+        dest="series_id",
+        required=bool(choice),
+        type=str,
+        default=choice.upper(),
+        help="FRED Series ID from https://fred.stlouisfed.org",
     )
 
     parser.add_argument(
@@ -157,58 +69,55 @@ def custom_data(other_args: List[str]):
         dest="start_date",
         type=valid_date,
         default="2019-01-01",
-        required=False,
         help="Starting date (YYYY-MM-DD) of data",
     )
 
     parser.add_argument(
-        "--noplot",
-        action="store_false",
-        default=True,
-        dest="noplot",
-        help="Suppress output plot",
-    )
-
-    parser.add_argument(
-        "--hidedata",
-        action="store_false",
-        default=True,
-        dest="hidedata",
-        help="Suppress data display plot",
+        "-t",
+        "--text",
+        action="store_true",
+        dest="text",
+        help="Only output text data",
     )
 
     try:
+        if not choice:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
 
-        data = fred.get_series(ns_parser.series_id, ns_parser.start_date)
+        fred = Fred(api_key=API_FRED_KEY)
+        d_data = fred.get_series(ns_parser.series_id, ns_parser.start_date)
 
-        data = pd.DataFrame(data, columns=[f"{ns_parser.series_id}"])
-        data.index.name = "Date"
-        if ns_parser.hidedata:
-            print(data)
-            print("")
-        if ns_parser.noplot:
+        df_fred = pd.DataFrame(d_data, columns=[f"{ns_parser.series_id}"])
+        df_fred.index.name = "Date"
+
+        if ns_parser.text:
+            print(df_fred.to_string())
+
+        else:
             plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.plot(data.index, data.iloc[:, 0], "-ok")
+            plt.plot(df_fred.index, df_fred.iloc[:, 0])
             plt.xlabel("Time")
-            plt.xlim(data.index[0], data.index[-1])
-            plt.ylabel(f"{ns_parser.series_id}")
+            plt.xlim(df_fred.index[0], df_fred.index[-1])
+            plt.ylabel(f"{ns_parser.series_id.upper()}")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
             plt.minorticks_on()
             plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.title(f"FRED {ns_parser.series_id} Series")
-            plt.show()
-            print("")
-
+            if choice:
+                plt.title(fred_series_description[ns_parser.series_id])
             if gtff.USE_ION:
                 plt.ion()
+            plt.show()
+
+        print("")
 
     except SystemExit:
         print("")
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return

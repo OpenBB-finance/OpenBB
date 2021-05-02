@@ -5,7 +5,7 @@ from io import StringIO
 import pandas as pd
 
 # pylint: disable=unused-import
-from gamestonk_terminal.econ.fred_view import get_fred_data  # noqa: F401
+from gamestonk_terminal.econ.fred_view import display_fred  # noqa: F401
 
 fred_data_mock = """
 ,GDP
@@ -17,14 +17,15 @@ fred_data_mock = """
 2020-04-01,19520.114
 2020-07-01,21170.252
 2020-10-01,21494.731
+2021-01-01,22048.894
 """
 
 
 class TestFredFredView(unittest.TestCase):
     @mock.patch("gamestonk_terminal.econ.fred_view.Fred.get_series")
-    def test_get_fred_data(self, mock_get_series):
+    def test_display_fred(self, mock_get_series):
         fred_data = pd.read_csv(StringIO(fred_data_mock), header=0, index_col=0)
 
         mock_get_series.return_value = fred_data
 
-        get_fred_data(["--noplot"], "gdp")
+        display_fred(["-t"], "gdp")

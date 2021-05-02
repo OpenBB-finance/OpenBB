@@ -213,7 +213,7 @@ def sustainability(other_args: List[str], ticker: str):
 
         df_sustainability = stock.sustainability
 
-        if not df_sustainability:
+        if df_sustainability.empty:
             print(f"No sustainability information in Yahoo for {ticker}")
             print("")
             return
