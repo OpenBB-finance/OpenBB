@@ -1,5 +1,5 @@
 import argparse
-from typing import List
+from typing import List, Any
 import requests
 import yfinance as yf
 import mplfinance as mpf
@@ -40,7 +40,7 @@ def get_pattern_recognition(ticker: str, resolution: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame, segments: List):
+def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
     """Plot pattern recognition signal
 
     Parameters
@@ -49,9 +49,50 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame, segments: List)
         Ticker to display pattern recognition on top of the data
     pattern : pd.DataFrame
         Pattern recognition signal data
-    segments : List
-        Segment lines that indicates some pattern signal in data
     """
+
+    l_segments = list()
+    for i in pattern:
+        a_part = ""
+        if "aprice" in pattern[i]:
+            if pattern[i]["aprice"] != 0 and not math.isnan(pattern[i]["aprice"]):
+                a_part = (
+                    datetime.utcfromtimestamp(pattern[i]["atime"]).strftime("%Y-%m-%d"),
+                    pattern[i]["aprice"],
+                )
+
+        b_part = ""
+        if "bprice" in pattern[i]:
+            if pattern[i]["bprice"] != 0 and not math.isnan(pattern[i]["bprice"]):
+                b_part = (
+                    datetime.utcfromtimestamp(pattern[i]["btime"]).strftime("%Y-%m-%d"),
+                    pattern[i]["bprice"],
+                )
+
+        c_part = ""
+        if "cprice" in pattern[i]:
+            if pattern[i]["cprice"] != 0 and not math.isnan(pattern[i]["cprice"]):
+                c_part = (
+                    datetime.utcfromtimestamp(pattern[i]["ctime"]).strftime("%Y-%m-%d"),
+                    pattern[i]["cprice"],
+                )
+
+        d_part = ""
+        if "dprice" in pattern[i]:
+            if pattern[i]["dprice"] != 0 and not math.isnan(pattern[i]["dprice"]):
+                d_part = (
+                    datetime.utcfromtimestamp(pattern[i]["dtime"]).strftime("%Y-%m-%d"),
+                    pattern[i]["dprice"],
+                )
+
+        segment = (a_part, b_part, c_part, d_part)
+
+        l_segment = list(segment)
+        while "" in l_segment:
+            l_segment.remove("")
+        segment = tuple(l_segment)
+
+        l_segments.append(segment)
 
     start_time = 999999999999
     for i in pattern:
@@ -83,7 +124,7 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame, segments: List)
         type="candle",
         volume=False,
         title=f"\n{ticker}",
-        alines=segments,
+        alines=l_segments,
         xrotation=10,
         style=s,
         figratio=(10, 7),
@@ -93,6 +134,11 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame, segments: List)
             candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
         ),
     )
+
+    for ix in range(len(pattern.columns)):
+        print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")
+        print(f"Pattern: {pattern[0]['patternname']} ({pattern[0]['patterntype']})")
+        print("")
 
 
 def pattern_recognition_view(other_args: List[str], ticker: str):
@@ -134,73 +180,7 @@ def pattern_recognition_view(other_args: List[str], ticker: str):
             print("No pattern identified in this data", "\n")
             return
 
-        l_segments = list()
-        for i in df_pattern:
-            a_part = ""
-            if "aprice" in df_pattern[i]:
-                if df_pattern[i]["aprice"] != 0 and not math.isnan(
-                    df_pattern[i]["aprice"]
-                ):
-                    a_part = (
-                        datetime.utcfromtimestamp(df_pattern[i]["atime"]).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        df_pattern[i]["aprice"],
-                    )
-
-            b_part = ""
-            if "bprice" in df_pattern[i]:
-                if df_pattern[i]["bprice"] != 0 and not math.isnan(
-                    df_pattern[i]["bprice"]
-                ):
-                    b_part = (
-                        datetime.utcfromtimestamp(df_pattern[i]["btime"]).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        df_pattern[i]["bprice"],
-                    )
-
-            c_part = ""
-            if "cprice" in df_pattern[i]:
-                if df_pattern[i]["cprice"] != 0 and not math.isnan(
-                    df_pattern[i]["cprice"]
-                ):
-                    c_part = (
-                        datetime.utcfromtimestamp(df_pattern[i]["ctime"]).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        df_pattern[i]["cprice"],
-                    )
-
-            d_part = ""
-            if "dprice" in df_pattern[i]:
-                if df_pattern[i]["dprice"] != 0 and not math.isnan(
-                    df_pattern[i]["dprice"]
-                ):
-                    d_part = (
-                        datetime.utcfromtimestamp(df_pattern[i]["dtime"]).strftime(
-                            "%Y-%m-%d"
-                        ),
-                        df_pattern[i]["dprice"],
-                    )
-
-            segment = (a_part, b_part, c_part, d_part)
-
-            l_segment = list(segment)
-            while "" in l_segment:
-                l_segment.remove("")
-            segment = tuple(l_segment)
-
-            l_segments.append(segment)
-
-        plot_pattern_recognition(ticker, df_pattern, l_segments)
-
-        for ix in range(len(df_pattern.columns)):
-            print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")
-            print(
-                f"Pattern: {df_pattern[0]['patternname']} ({df_pattern[0]['patterntype']})"
-            )
-            print("")
+        plot_pattern_recognition(ticker, df_pattern)
 
     except Exception as e:
         print(e, "\n")
