@@ -282,9 +282,9 @@ Command|Description
 `top` | view top coins from coinmarketcap
 [binance](#http://binance.us)|
 `add` | add binance ticker
-`book`| get and show order book for symbol
-`candle`| show candlechart for symbol
-`balance`| look at current binance holdings for loaded coin
+`book`| show order book
+`candle`| get klines/candles and plot
+`balance`| show coin balance
 
 &nbsp;
 

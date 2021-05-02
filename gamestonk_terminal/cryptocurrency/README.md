@@ -2,26 +2,29 @@
 
 This menu aims to explore crypto world, and the usage of the following commands along with an example will be exploited below.
 
+[COINGECKO](#COINGECKO)
 * [load](#load)
   * load a given coin vs a given currency [CoinGecko]
 * [view](#view)
   * plot the loaded crypto data
 * [trend](#trend)
-  * show the top 7 coins from coingecko
+  * show top 7 trending coins
+  
+[COINMARKETCAP](#COINMARKETCAP)
 * [top](#top)
   * view top coins from coinmarketcap [coinmarketcap.com] 
-* [select](#select)
-  * select a coin/currency pair for Binance
-  
-* [book](#book)
-  * get and show market (order) book 
-  
-* [candle](#candle)
-  * show candle plot of selected coin/currency
-  
-* [balance](#balance)
-  * show current holdings in your account for given coin
 
+[BINANCE](#BINANCE)
+* [select](#select)
+  * select coin/currency to use
+* [book](#book)
+  * show order book
+* [candle](#candle)
+  * get klines/candles and plot
+* [balance](#balance)
+  * show coin balance
+
+# COINGECKO <a name="COINGECKO"></a>
 ## load  <a name="load"></a>
 
 ````
@@ -53,6 +56,7 @@ usage: trend
 ````
 Print the top 7 trending coins from coingecko
 
+# COINMARKETCAP <a name="COINMARKETCAP"></a>
 
 ## top <a name="top"></a>
 
@@ -68,6 +72,7 @@ This command displays the top n cryptocurrencies from coinmarketcap.com.
 
 <img width="990" alt="crypto" src="https://user-images.githubusercontent.com/25267873/115787544-4746d100-a3ba-11eb-9433-b7cb9142404a.png">
 
+# BINANCE <a name="BINANCE"></a>
 ## select  <a name="select"></a>
 
 ````
