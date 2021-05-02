@@ -63,3 +63,6 @@ API_CMC_KEY = os.getenv("GT_API_CMC_KEY") or "REPLACE_ME"
 # https://www.binance.com/en/
 API_BINANCE_KEY = os.getenv("GT_API_BINANCE_KEY") or "REPLACE_ME"
 API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"
+
+# https://finnhub.io
+API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
