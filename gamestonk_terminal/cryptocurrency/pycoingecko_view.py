@@ -24,6 +24,8 @@ for single_coin in coins:
     coin_ids.append(single_coin["id"])
 
 # pylint: disable=inconsistent-return-statements
+
+
 def load(other_args: List[str]):
     """Load selected Cryptocurrency
 
