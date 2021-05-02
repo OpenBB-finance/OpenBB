@@ -1,5 +1,5 @@
 import argparse
-from typing import List, Any
+from typing import List
 import requests
 import yfinance as yf
 import mplfinance as mpf
