@@ -41,14 +41,13 @@ class CryptoController:
         self.current_currency = None
         self.current_df = pd.DataFrame()
 
-    @staticmethod
-    def print_help(cont):
+    def print_help(self):
         """Print help"""
         print("\nCryptocurrency:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print(f"\nCurrent Coin: {cont.current_coin}")
+        print(f"\nCurrent Coin: {self.current_coin}")
         print("")
         print("Coingecko:")
         print("   load          load cryptocurrency data")
@@ -83,7 +82,7 @@ class CryptoController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -138,7 +137,7 @@ class CryptoController:
 
 def menu():
     crypto_controller = CryptoController()
-    crypto_controller.print_help(None)
+    crypto_controller.print_help()
     plt.close("all")
     while True:
         # Get input command from user

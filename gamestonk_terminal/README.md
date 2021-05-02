@@ -274,10 +274,13 @@ Command|Description
 
 Command|Description
 ------ | ------------
-`load`| load cryptocurrency data from coingecko
-`view`| view loaded cryptocurrency data
-`trend`| view top 7 coins from coingecko
+[coingecko](#https://www.coingecko.com/en)|
+`load`| load cryptocurrency data 
+`view`| view loaded cryptocurrency data 
+`trend`| view top 7 coins 
+[coinmarketcap](#http://coinmarketcap.com)|
 `top` | view top coins from coinmarketcap
+[binance](#http://binance.us)|
 `add` | add binance ticker
 `book`| get and show order book for symbol
 `candle`| show candlechart for symbol
