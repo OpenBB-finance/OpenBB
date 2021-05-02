@@ -9,7 +9,7 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
  * [recom](#recom)
     - recommendation based on Technical Indicators [Tradingview API]
   * [pr](#pr)
-    - pattern recognition [Finhub]
+    - pattern recognition [Finnhub]
 
 [OVERLAP](#OVERLAP)
   * [ema](#ema)

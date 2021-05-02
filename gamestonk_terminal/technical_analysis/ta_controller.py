@@ -20,7 +20,7 @@ from gamestonk_terminal.technical_analysis import volume as ta_volume
 from gamestonk_terminal.technical_analysis import finbrain_view
 from gamestonk_terminal.technical_analysis import tradingview_view
 from gamestonk_terminal.technical_analysis import finviz_view
-from gamestonk_terminal.technical_analysis import finhub_view
+from gamestonk_terminal.technical_analysis import finnhub_view
 
 
 class TechnicalAnalysisController:
@@ -90,7 +90,7 @@ class TechnicalAnalysisController:
         print(
             "   recom       recommendation based on Technical Indicators [Tradingview API]"
         )
-        print("   pr          pattern recognition [Finhub]")
+        print("   pr          pattern recognition [Finnhub]")
         print("")
         print("overlap:")
         print("   ema         exponential moving average")
@@ -163,7 +163,7 @@ class TechnicalAnalysisController:
 
     def call_pr(self, other_args: List[str]):
         """Process pr command"""
-        finhub_view.pattern_recognition_view(other_args, self.ticker)
+        finnhub_view.pattern_recognition_view(other_args, self.ticker)
 
     # OVERLAP
     def call_ema(self, other_args: List[str]):
