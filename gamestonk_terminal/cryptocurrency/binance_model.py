@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
+form tabulate import tabulate
 from gamestonk_terminal.main_helper import parse_known_args_and_warn
 from gamestonk_terminal.config_terminal import API_BINANCE_KEY, API_BINANCE_SECRET
 from gamestonk_terminal.cryptocurrency.binance_view import plot_order_book, plot_candles
@@ -242,13 +243,13 @@ def balance(coin: str):
             print("Check loaded coin")
             return
         print("")
-        amounts = [current_balance["free"], current_balance["locked"]]
+        amounts = [float(current_balance["free"]), float(current_balance["locked"])]
+        total = amounts.sum()
         df.columns = ["Amount"]
         df.index = ["Free", "Locked"]
         df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
-        print(
-            f"You currently have {current_balance['free']} free and {current_balance['locked']} locked"
-        )
+        print(f"You currently have {total} coins and the breakdown is:")
+        print(tabulate(df, showindex=True, tablefmt="fancy_grid"))
         print("")
         return
     except Exception as e:
