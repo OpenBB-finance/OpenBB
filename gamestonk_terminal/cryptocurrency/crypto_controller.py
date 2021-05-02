@@ -120,7 +120,9 @@ class CryptoController:
 
     def call_candle(self, other_args):
         """Candle command - show candle chart from binance"""
-        binance_model.candles(self.current_coin + self.current_currency, other_args)
+        binance_model.show_candles(
+            self.current_coin + self.current_currency, other_args
+        )
 
     def call_balance(self, _):
         """Balance command - check current holdings of coin in binance"""
@@ -133,7 +135,6 @@ class CryptoController:
         )
         print(f"{self.current_coin} loaded vs {self.current_currency}")
         print("")
-
 
 def menu():
     crypto_controller = CryptoController()

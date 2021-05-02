@@ -102,18 +102,19 @@ def order_book(coin: str, other_args: List[str]):
         if not ns_parser:
             return
         client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
-        order_book = client.get_order_book(symbol=coin, limit=ns_parser.limit)
-        bids = np.asarray(order_book["bids"], dtype=float)
-        asks = np.asarray(order_book["asks"], dtype=float)
+        market_book = client.get_order_book(symbol=coin, limit=ns_parser.limit)
+        bids = np.asarray(market_book["bids"], dtype=float)
+        asks = np.asarray(market_book["asks"], dtype=float)
         bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
         asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
         plot_order_book(bids, asks, coin)
+
     except Exception as e:
         print(e)
         print("")
 
 
-def candles(coin: str, other_args: List[str]):
+def show_candles(coin: str, other_args: List[str]):
     """
     Get klines/candles for coin
     Parameters
@@ -164,7 +165,7 @@ def candles(coin: str, other_args: List[str]):
     )
 
     parser.add_argument(
-        "-l", "--limit", dest="limit", default=200, help="Number to get", type=int
+        "-l", "--limit", dest="limit", default=100, help="Number to get", type=int
     )
 
     try:
@@ -231,12 +232,14 @@ def balance(coin: str):
     """
     client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
     try:
-        balance = client.get_asset_balance(asset=coin)
-        if balance is None:
+        current_balance = client.get_asset_balance(asset=coin)
+        if current_balance is None:
             print("Check loaded coin")
             return
         print("")
-        print(f"You currently have {balance['free']} free and {balance['locked']} locked")
+        print(
+            f"You currently have {current_balance['free']} free and {current_balance['locked']} locked"
+        )
         print("")
         return
     except Exception as e:
