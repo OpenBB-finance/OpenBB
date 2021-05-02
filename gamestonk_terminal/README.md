@@ -329,19 +329,21 @@ Command|Description|Source
 &nbsp;
 
 ## Economy [»](econ/README.md)
-Command|Description
------- | --------
-`vixcls`        | Volatility Index
-`gdp`           | Gross Domestic Product
-`unrate`        | Unemployment Rate
-`dgs1`          | 1-Year Treasury Constant Maturity Rate
-`dgs5`          | 5-Year Treasury Constant Maturity Rate
-`dgs10`         | 10-Year Treasury Constant Maturity Rate
-`dgs30`         | 30-Year Treasury Constant Maturity Rate
-`mortgage30us`  | 30-Year Fixed Rate Mortgage Average
-`fedfunds`      | Effective Federal Funds Rate
-`aaa`           | Moody's Seasoned AAA Corporate Bond Yield
-`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+Command|Description|Source
+------ | -------- | -------- 
+`events`        | economic impact events | https://finnhub.io
+`fred`          | display customized FRED data | https://fred.stlouisfed.org
+`vixcls`        | Volatility Index | https://fred.stlouisfed.org
+`gdp`           | Gross Domestic Product | https://fred.stlouisfed.org
+`unrate`        | Unemployment Rate | https://fred.stlouisfed.org
+`dgs1`          | 1-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`dgs5`          | 5-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`dgs10`         | 10-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`dgs30`         | 30-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`mortgage30us`  | 30-Year Fixed Rate Mortgage Average | https://fred.stlouisfed.org
+`fedfunds`      | Effective Federal Funds Rate | https://fred.stlouisfed.org
+`aaa`           | Moody's Seasoned AAA Corporate Bond Yield | https://fred.stlouisfed.org
+`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | https://fred.stlouisfed.org
 
 &nbsp;
 
