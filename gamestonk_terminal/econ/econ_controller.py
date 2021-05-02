@@ -9,6 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.econ import fred_view
+from gamestonk_terminal.econ import finnhub_view
 
 
 class EconController:
@@ -19,6 +20,7 @@ class EconController:
         "help",
         "q",
         "quit",
+        "events",
         "fred",
         "vixcls",
         "gdp",
@@ -50,6 +52,7 @@ class EconController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print(" ")
+        print("   events        economic impact events [Finnhub]")
         print(
             "   fred          display customized FRED data from https://fred.stlouisfed.org"
         )
@@ -94,6 +97,10 @@ class EconController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_events(self, other_args: List[str]):
+        """Process events command"""
+        finnhub_view.economy_calendar_events(other_args)
 
     def call_fred(self, other_args: List[str]):
         """Process fred command"""

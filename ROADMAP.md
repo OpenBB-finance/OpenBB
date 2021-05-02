@@ -78,9 +78,10 @@
 * [x] Add technical summary report provided by FinBrain (@didier) - [PR #294](https://github.com/DidierRLopes/GamestonkTerminal/pull/294)
 * [x] Add recommendation based on technical indicators from Tradingview (@didier) - [PR #301](https://github.com/DidierRLopes/GamestonkTerminal/pull/301)
 * [x] Add view of stock historical price with trendlines (support, resistance) by Finviz (@didier) - [PR #317](https://github.com/DidierRLopes/GamestonkTerminal/pull/317)
+* [x] Add auto-recognition of major TA patterns (@didier) - [PR #429](https://github.com/DidierRLopes/GamestonkTerminal/pull/429)
 
 **NEXT**
-* [ ] Add auto-recognition of major TA patterns (@didier)
+
 
 ---
 
@@ -171,6 +172,7 @@ ___
 ## Economy
 * [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
 * [x] Refactor FRED to ECON menu and add VIX view (@jmaslek) - [PR #405](https://github.com/DidierRLopes/GamestonkTerminal/pull/405)
+* [x] Output economic impact events calendar (@didier) - [PR #430](https://github.com/DidierRLopes/GamestonkTerminal/pull/430)
 
 **NEXT**
 

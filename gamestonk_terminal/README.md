@@ -183,6 +183,7 @@ Command | Description | Sources
 `view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
 `summary`      | technical summary report| [FinBrain](https://finbrain.tech)
 `recom`        | recommendation based on Technical Indicators| [Tradingview](https://uk.tradingview.com/widget/technical-analysis/)
+`pr`           | pattern recognition| [Finnhub](https://finnhub.io)
 [overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
 `ema`         | exponential moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [Investopedia](https://www.investopedia.com/terms/e/ema.asp)
 `sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
@@ -336,19 +337,21 @@ Command|Description|Source
 &nbsp;
 
 ## Economy [»](econ/README.md)
-Command|Description
------- | --------
-`vixcls`        | Volatility Index
-`gdp`           | Gross Domestic Product
-`unrate`        | Unemployment Rate
-`dgs1`          | 1-Year Treasury Constant Maturity Rate
-`dgs5`          | 5-Year Treasury Constant Maturity Rate
-`dgs10`         | 10-Year Treasury Constant Maturity Rate
-`dgs30`         | 30-Year Treasury Constant Maturity Rate
-`mortgage30us`  | 30-Year Fixed Rate Mortgage Average
-`fedfunds`      | Effective Federal Funds Rate
-`aaa`           | Moody's Seasoned AAA Corporate Bond Yield
-`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+Command|Description|Source
+------ | -------- | -------- 
+`events`        | economic impact events | https://finnhub.io
+`fred`          | display customized FRED data | https://fred.stlouisfed.org
+`vixcls`        | Volatility Index | https://fred.stlouisfed.org
+`gdp`           | Gross Domestic Product | https://fred.stlouisfed.org
+`unrate`        | Unemployment Rate | https://fred.stlouisfed.org
+`dgs1`          | 1-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`dgs5`          | 5-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`dgs10`         | 10-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`dgs30`         | 30-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
+`mortgage30us`  | 30-Year Fixed Rate Mortgage Average | https://fred.stlouisfed.org
+`fedfunds`      | Effective Federal Funds Rate | https://fred.stlouisfed.org
+`aaa`           | Moody's Seasoned AAA Corporate Bond Yield | https://fred.stlouisfed.org
+`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | https://fred.stlouisfed.org
 
 &nbsp;
 
@@ -405,7 +408,7 @@ positionbook |display the positionbook if Oanda provides one for the forex instr
 Command|Description
 ------ | --------
 `ema`           | buy when price exceeds EMA(l)
-`ema_cross`     | buy when EMA(short) > EMA(long) 
+`ema_cross`     | buy when EMA(short) > EMA(long)
 `rsi`           | buy when RSI < low and sell when RSI > high
 
 

@@ -55,7 +55,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   > scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
     )
     print("   > mill        papermill menu, \t\t menu to generate notebook reports")
-    print("   > econ        economic data, \t\t from: FRED, VIX")
+    print("   > econ        economic data, \t\t e.g.: FRED, events")
     print(
         "   > pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally "
     )

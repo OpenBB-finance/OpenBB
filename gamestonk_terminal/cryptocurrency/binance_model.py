@@ -13,7 +13,7 @@ from gamestonk_terminal.config_terminal import API_BINANCE_KEY, API_BINANCE_SECR
 from gamestonk_terminal.cryptocurrency.binance_view import plot_order_book, plot_candles
 
 
-def check_valid_binance_str(symbol: str) -> str :
+def check_valid_binance_str(symbol: str) -> str:
     """Check if symbol is in defined binance"""
     client = Client(API_BINANCE_KEY, API_BINANCE_SECRET)
     try:
@@ -249,7 +249,7 @@ def balance(coin: str):
         df.index = ["Free", "Locked"]
         df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
         print(f"You currently have {total} coins and the breakdown is:")
-        print(tabulate(df, headers = df.columns, showindex=True, tablefmt="fancy_grid"))
+        print(tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"))
         print("")
         return
     except Exception as e:

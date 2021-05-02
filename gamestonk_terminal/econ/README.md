@@ -1,7 +1,9 @@
-# ECONONMY
+# ECONOMY
 
 This menu aims to assess economy data, and the usage of the following commands along with an example will be exploited below.
 
+* [events](#events)
+    * economic impact events [Finnhub]
 * [fred](#fred)
     * display customized FRED from https://fred.stlouisfed.org
 * [vixcls](#vixcls)
@@ -26,6 +28,20 @@ This menu aims to assess economy data, and the usage of the following commands a
     * Moody's Seasoned AAA Corporate Bond Yield
 * [dexcaus](#dexcaus)
     * Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+
+
+## events <a name="events"></a>
+```text
+usage: events [-c {NZ,AU,ERL,CA,EU,US,JP,CN,GB,CH}] [-i {low,medium,high,all}] [-n NUM]
+```
+
+Output economy impact calendar impact events. [Source: https://finnhub.io]
+
+* -c : Country from where to get economy calendar impact events, between NZ,AU,ERL,CA,EU,US,JP,CN,GB,CH. Default: US.
+* -i : Impact of the economy event, between low,medium,high,all. Default: all.
+* -n : Number economy calendar impact events to display. Default: 10.
+
+<img width="1055" alt="Captura de ecrã 2021-05-02, às 19 51 47" src="https://user-images.githubusercontent.com/25267873/116824200-def9ab80-ab80-11eb-948a-48a94f662b53.png">
 
 
 ## fred <a name="fred"></a>
