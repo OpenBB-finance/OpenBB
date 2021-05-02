@@ -59,7 +59,9 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print(
         "   > pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally "
     )
-    print("   > crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance")
+    print(
+        "   > crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance"
+    )
     print(
         "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
     )
