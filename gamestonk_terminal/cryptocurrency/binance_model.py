@@ -8,13 +8,13 @@ import numpy as np
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 from gamestonk_terminal.main_helper import parse_known_args_and_warn
-from gamestonk_terminal.config_terminal import BINANCE_API_KEY, BINANCE_SECRET_KEY
+from gamestonk_terminal.config_terminal import API_BINANCE_KEY, API_BINANCE_SECRET
 from gamestonk_terminal.cryptocurrency.binance_view import plot_order_book, plot_candles
 
 
-def check_valid_binance_str(symbol: str):
+def check_valid_binance_str(symbol: str) -> str :
     """Check if symbol is in defined binance"""
-    client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
+    client = Client(API_BINANCE_KEY, API_BINANCE_SECRET)
     try:
         client.get_avg_price(symbol=symbol.upper())
         return symbol.upper()
@@ -106,7 +106,7 @@ def order_book(coin: str, other_args: List[str]):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-        client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
+        client = Client(API_BINANCE_KEY, API_BINANCE_SECRET)
         market_book = client.get_order_book(symbol=coin, limit=ns_parser.limit)
         bids = np.asarray(market_book["bids"], dtype=float)
         asks = np.asarray(market_book["asks"], dtype=float)
@@ -133,7 +133,7 @@ def show_candles(coin: str, other_args: List[str]):
     -------
 
     """
-    client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
+    client = Client(API_BINANCE_KEY, API_BINANCE_SECRET)
 
     interval_map = {
         "1day": client.KLINE_INTERVAL_1DAY,
@@ -235,7 +235,7 @@ def balance(coin: str):
     -------
 
     """
-    client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
+    client = Client(API_BINANCE_KEY, API_BINANCE_SECRET)
     try:
         current_balance = client.get_asset_balance(asset=coin)
         if current_balance is None:
