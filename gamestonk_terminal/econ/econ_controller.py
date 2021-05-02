@@ -52,7 +52,7 @@ class EconController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print(" ")
-        print("   events        economic events [Finnhub]")
+        print("   events        economic impact events [Finnhub]")
         print(
             "   fred          display customized FRED data from https://fred.stlouisfed.org"
         )

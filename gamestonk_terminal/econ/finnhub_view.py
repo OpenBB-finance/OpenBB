@@ -34,7 +34,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
 
 
 def economy_calendar_events(other_args: List[str]):
-    """Output economy calendar events
+    """Output economy calendar impact events
 
     Parameters
     ----------
@@ -45,7 +45,7 @@ def economy_calendar_events(other_args: List[str]):
         add_help=False,
         prog="events",
         description="""
-            Output economy calendar events. [Source: https://finnhub.io]
+            Output economy impact calendar impact events. [Source: https://finnhub.io]
         """,
     )
     parser.add_argument(
@@ -56,7 +56,7 @@ def economy_calendar_events(other_args: List[str]):
         type=str,
         default="US",
         choices=["NZ", "AU", "ERL", "CA", "EU", "US", "JP", "CN", "GB", "CH"],
-        help="Country from where to get economic calendar events",
+        help="Country from where to get economy calendar impact events",
     )
     parser.add_argument(
         "-n",
@@ -65,7 +65,7 @@ def economy_calendar_events(other_args: List[str]):
         dest="num",
         type=check_positive,
         default=10,
-        help="Number economic calendar events to display",
+        help="Number economy calendar impact events to display",
     )
     parser.add_argument(
         "-i",
@@ -75,7 +75,7 @@ def economy_calendar_events(other_args: List[str]):
         type=str,
         default="all",
         choices=["low", "medium", "high", "all"],
-        help="Country from where to get economic calendar events",
+        help="Impact of the economy event",
     )
 
     try:
