@@ -183,6 +183,7 @@ Command | Description | Sources
 `view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
 `summary`      | technical summary report| [FinBrain](https://finbrain.tech)
 `recom`        | recommendation based on Technical Indicators| [Tradingview](https://uk.tradingview.com/widget/technical-analysis/)
+`pr`           | pattern recognition| [Finnhub](https://finnhub.io)
 [overlap](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/overlap) |
 `ema`         | exponential moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average), [Investopedia](https://www.investopedia.com/terms/e/ema.asp)
 `sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average_(boxcar_filter)), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
@@ -397,7 +398,7 @@ positionbook |display the positionbook if Oanda provides one for the forex instr
 Command|Description
 ------ | --------
 `ema`           | buy when price exceeds EMA(l)
-`ema_cross`     | buy when EMA(short) > EMA(long) 
+`ema_cross`     | buy when EMA(short) > EMA(long)
 `rsi`           | buy when RSI < low and sell when RSI > high
 
 
