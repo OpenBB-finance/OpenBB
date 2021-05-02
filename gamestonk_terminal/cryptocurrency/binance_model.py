@@ -25,11 +25,10 @@ def check_valid_binance_str(symbol: str) -> str :
 
 
 # pylint: disable=inconsistent-return-statements
-
-
-def add_binance_coin(other_args: List[str]):
+def select_binance_coin(other_args: List[str]):
     """
     Define current_coin from binance
+
     Parameters
     ----------
     other_args: List[str]
@@ -41,7 +40,7 @@ def add_binance_coin(other_args: List[str]):
         Coin that is defined on binance
     """
     parser = argparse.ArgumentParser(
-        prog="add_coin",
+        prog="select",
         add_help=False,
         description="Define the coin to be used from binance",
     )
@@ -66,17 +65,18 @@ def add_binance_coin(other_args: List[str]):
 
         coin = ns_parser.coin + ns_parser.quote
         if check_valid_binance_str(coin):
+            print(f"{ns_parser.coin.upper()} loaded vs {ns_parser.quote.upper()}")
             return ns_parser.coin.upper(), ns_parser.quote.upper()
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return None, None
 
 
 def order_book(coin: str, other_args: List[str]):
     """
     Get order book for currency
+
     Parameters
     ----------
     coin: str
@@ -115,13 +115,13 @@ def order_book(coin: str, other_args: List[str]):
         plot_order_book(bids, asks, coin)
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def show_candles(coin: str, other_args: List[str]):
     """
     Get klines/candles for coin
+
     Parameters
     ----------
     coin: str
@@ -219,13 +219,13 @@ def show_candles(coin: str, other_args: List[str]):
         )
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def balance(coin: str):
     """
     Get account holdings for asset
+
     Parameters
     ----------
     coin: str
@@ -248,6 +248,5 @@ def balance(coin: str):
         print("")
         return
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return

@@ -29,7 +29,7 @@ class CryptoController:
         "trades",
         "candle",
         "balance",
-        "add",
+        "select",
     ]
 
     def __init__(self):
@@ -59,7 +59,7 @@ class CryptoController:
         print("   top           view top coins from coinmarketcap")
         print("")
         print("Binance:")
-        print("   add           add coin as current")
+        print("   select        select coin/currency to use")
         print("   book          show order book")
         print("   candle        get klines/candles and plot")
         print("   balance       show coin balance")
@@ -94,11 +94,11 @@ class CryptoController:
         return True
 
     def call_load(self, other_args):
-        """Load command - get df from gecko"""
+        """Process load command"""
         self.current_coin, self.current_df = pycoingecko_view.load(other_args)
 
     def call_view(self, other_args):
-        """View command - plot loaded coin"""
+        """Process view command"""
         if self.current_coin:
             pycoingecko_view.view(self.current_coin, self.current_df, other_args)
 
@@ -107,39 +107,38 @@ class CryptoController:
             print("")
 
     def call_trend(self, _):
-        """Trend command - show top 7 gecko coins"""
+        """Process trend command"""
         pycoingecko_view.trend()
 
     def call_top(self, other_args):
-        """Top command - get top n coins from coinmarketcap"""
+        """Process top command"""
         cmc_view.get_cmc_top_n(other_args)
 
     def call_book(self, other_args):
-        """Book command - get order book from binance"""
+        """Process book command"""
         binance_model.order_book(self.current_coin + self.current_currency, other_args)
 
     def call_candle(self, other_args):
-        """Candle command - show candle chart from binance"""
+        """Process candle command"""
         binance_model.show_candles(
             self.current_coin + self.current_currency, other_args
         )
 
     def call_balance(self, _):
-        """Balance command - check current holdings of coin in binance"""
+        """Process balance command"""
         binance_model.balance(self.current_coin)
 
-    def call_add(self, other_args):
-        """Add command - set current coin for binance operations"""
-        self.current_coin, self.current_currency = binance_model.add_binance_coin(
+    def call_select(self, other_args):
+        """Process select command"""
+        self.current_coin, self.current_currency = binance_model.select_binance_coin(
             other_args
         )
-        print(f"{self.current_coin} loaded vs {self.current_currency}")
         print("")
 
 
 def menu():
     crypto_controller = CryptoController()
-    crypto_controller.print_help(crypto_controller)
+    crypto_controller.print_help(None)
     plt.close("all")
     while True:
         # Get input command from user

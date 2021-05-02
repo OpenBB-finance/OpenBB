@@ -10,8 +10,8 @@ This menu aims to explore crypto world, and the usage of the following commands 
   * show the top 7 coins from coingecko
 * [top](#top)
   * view top coins from coinmarketcap [coinmarketcap.com] 
-* [add](#add)
-  * add a coin/currency pair for Binance
+* [select](#select)
+  * select a coin/currency pair for Binance
   
 * [book](#book)
   * get and show market (order) book 
@@ -68,17 +68,17 @@ This command displays the top n cryptocurrencies from coinmarketcap.com.
 
 <img width="990" alt="crypto" src="https://user-images.githubusercontent.com/25267873/115787544-4746d100-a3ba-11eb-9433-b7cb9142404a.png">
 
-## add  <a name="add"></a>
-Add a coin/currency to the current object.  Note that in binance, the exchange "ticker" is usually COINCURR, such as BTCEUR
+## select  <a name="select"></a>
+Select a coin/currency to the current object.  Note that in binance, the exchange "ticker" is usually COINCURR, such as BTCEUR
 for BTC to EURO.  There is no USD, but it uses a coin tethered to the USD (USDT), which is the default.  Some symbols
 are a combination of coins, as `ETHBTC` is a valid symbol
 ````
-usage: add [-c --coin] [-q --quote]
+usage: select [-c --coin] [-q --quote]
 ````
 * -c/--coin Coin to load. If not specified, BTC will be loaded to prevent errors later.
 * -q/--quote  Quote currency.  Defaults to `USDT` (which is 1-to-1 with USD)
 
-Note that the usage `load btc` will also work, as it will add `-c` if not detected.
+Note that the usage `select btc` will also work, as it will add `-c` if not detected.
 
 ## book  <a name="book"></a>
 Gets and shows the order book for the given coin/currency.  Shows the cumulative amount of orders.
