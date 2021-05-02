@@ -8,6 +8,8 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
     - technical summary report [FinBrain API]
  * [recom](#recom)
     - recommendation based on Technical Indicators [Tradingview API]
+  * [pr](#pr)
+    - pattern recognition [Finhub]
 
 [OVERLAP](#OVERLAP)
   * [ema](#ema)
@@ -77,6 +79,19 @@ Print tradingview recommendation based on technical indicators. [Source: https:/
 * -i : interval. Default is showing all of different intervals.
 
 <img width="977" alt="Captura de ecrã 2021-03-31, às 00 14 41" src="https://user-images.githubusercontent.com/25267873/113069531-76ea2b00-91b8-11eb-8934-9f693d3b4ffa.png">
+
+
+## pr  <a name="pr"></a>
+```
+usage: pr [-r {1,5,15,30,60,D,W,M}]
+```
+Display pattern recognition signals on the data. [Source: https://finnhub.io]
+
+* -r : Plot resolution to look for pattern signals. Default 'D'.
+
+![pr](https://user-images.githubusercontent.com/25267873/116812520-06338700-ab47-11eb-8db4-8f5e940507ed.png)
+
+<img width="985" alt="Captura de ecrã 2021-05-02, às 02 27 10" src="https://user-images.githubusercontent.com/25267873/116812505-f6b43e00-ab46-11eb-9776-fa469dc3d3f0.png">
 
 
 # OVERLAP <a name="OVERLAP"></a>
