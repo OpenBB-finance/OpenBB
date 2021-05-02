@@ -245,6 +245,7 @@ def balance(coin: str):
         print("")
         amounts = [float(current_balance["free"]), float(current_balance["locked"])]
         total = np.sum(amounts)
+        df = pd.DataFrame(amounts)
         df.columns = ["Amount"]
         df.index = ["Free", "Locked"]
         df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)

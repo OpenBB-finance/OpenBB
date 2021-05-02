@@ -24,8 +24,6 @@ for single_coin in coins:
     coin_ids.append(single_coin["id"])
 
 # pylint: disable=inconsistent-return-statements
-
-
 def load(other_args: List[str]):
     """Load selected Cryptocurrency
 
@@ -150,6 +148,7 @@ def view(coin: str, prices: pd.DataFrame, other_args: List[str]):
 
 def trend():
     """Prints top 7 coins from pycoingecko"""
+
     cg = CoinGeckoAPI()
     trending = cg.get_search_trending()["coins"]
     name, symbol, price, rank = [], [], [], []

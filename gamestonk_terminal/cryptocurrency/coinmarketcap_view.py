@@ -62,7 +62,7 @@ def get_cmc_top_n(other_args: List[str]):
         if not ns_parser:
             return
 
-        cmc = CoinMarketCapAPI(COINMARKETCAP_KEY)
+        cmc = CoinMarketCapAPI(API_CMC_KEY)
         ratings = cmc.cryptocurrency_listings_latest().data
 
         symbol, rank, price, pchange1d, mkt_cap = [], [], [], [], []
