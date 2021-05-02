@@ -272,9 +272,14 @@ Command|Description
 
 Command|Description
 ------ | ------------
-`load`| load cryptocurrency data
-`view`| load and view cryptocurrency data
+`load`| load cryptocurrency data from coingecko
+`view`| view loaded cryptocurrency data
+`trend`| view top 7 coins from coingecko
 `top` | view top coins from coinmarketcap
+`add` | add binance ticker
+`book`| get and show order book for symbol
+`candle`| show candlechart for symbol
+`balance`| look at current binance holdings for loaded coin
 
 &nbsp;
 ## Comparison Analysis [»](comparison_analysis/README.md)
