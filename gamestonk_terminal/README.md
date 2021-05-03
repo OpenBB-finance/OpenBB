@@ -68,6 +68,7 @@ export -f GNUS_data -F csv
 ## Discover Stocks [»](discovery/README.md)
 Command|Description|Source
 ---|---|---
+`ipo`           |past and future IPOs |[Finnhub](https://finnhub.io)
 `map`           |S&P500 index stocks map |[Finviz](https://finviz.com)
 `rtp_sectors`   |real-time performance sectors |[Alpha Vantage](www.alphavantage.co)
 `gainers`       |show latest top gainers |[Yahoo Finance](https://finance.yahoo.com/)
