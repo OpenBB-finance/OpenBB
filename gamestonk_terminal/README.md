@@ -95,6 +95,7 @@ Command|Description
 ----|----
 [FinBrain](https://finbrain.tech)|
 `finbrain`      |sentiment from 15+ major news headlines
+`stats`         |sentiment stats including comparison with sector
 [Reddit](https://reddit.com)|
 `wsb`           |show what WSB gang is up to in subreddit wallstreetbets
 `watchlist`     |show other users watchlist
