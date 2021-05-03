@@ -26,7 +26,13 @@ repos:
       - id: mypy
         args: [ --ignore-missing-imports ]
   - repo: https://github.com/pre-commit/mirrors-pylint
-    rev:  'v3.0.0a3'
+    rev: 'v3.0.0a3'
     hooks:
       - id: pylint
         entry: pylint terminal.py gamestonk_terminal tests
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.1.0
+    hooks:
+      - id: detect-secrets
+        args: [ '--baseline', '.secrets.baseline' ]
+        exclude: package.lock.json
