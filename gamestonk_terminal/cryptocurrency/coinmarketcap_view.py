@@ -6,7 +6,7 @@ from typing import List
 import pandas as pd
 from tabulate import tabulate
 from coinmarketcapapi import CoinMarketCapAPI
-import  gamestonk_terminal.config_terminal as cfg
+import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 sort_options = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
