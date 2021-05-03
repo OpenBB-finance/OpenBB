@@ -27,8 +27,7 @@ def check_valid_binance_str(symbol: str) -> str:
 
 # pylint: disable=inconsistent-return-statements
 def select_binance_coin(other_args: List[str]):
-    """
-    Define current_coin from binance
+    """Define current_coin from binance
 
     Parameters
     ----------
@@ -74,20 +73,17 @@ def select_binance_coin(other_args: List[str]):
         return None, None
 
 
-def order_book(coin: str, other_args: List[str]):
-    """
-    Get order book for currency
+def order_book(other_args: List[str], coin: str, currency: str):
+    """Get order book for currency
 
     Parameters
     ----------
-    coin: str
-        Coin to get order book for
     other_args: List[str]
         Argparse arguments
-
-    Returns
-    -------
-
+    coin: str
+        Coin to get symbol of
+    currency : str
+        Currency against which to check symbol
     """
     limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
     parser = argparse.ArgumentParser(
@@ -104,6 +100,12 @@ def order_book(coin: str, other_args: List[str]):
     )
 
     try:
+        if not coin or not currency:
+            print("Coin needs to be selected prior to this command\n")
+            return
+
+        coin += currency
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -119,20 +121,17 @@ def order_book(coin: str, other_args: List[str]):
         print(e, "\n")
 
 
-def show_candles(coin: str, other_args: List[str]):
-    """
-    Get klines/candles for coin
+def show_candles(other_args: List[str], coin: str, currency: str):
+    """Get klines/candles for coin
 
     Parameters
     ----------
-    coin: str
-        Coin to get symbol of
     other_args: List[str]
         Argparse arguments
-
-    Returns
-    -------
-
+    coin: str
+        Coin to get symbol of
+    currency : str
+        Currency against which to check symbol
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
 
@@ -175,9 +174,16 @@ def show_candles(coin: str, other_args: List[str]):
     )
 
     try:
+        if not coin or not currency:
+            print("Coin needs to be selected prior to this command\n")
+            return
+
+        coin += currency
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         candles = client.get_klines(
             symbol=coin,
             interval=interval_map[ns_parser.interval],
@@ -224,17 +230,12 @@ def show_candles(coin: str, other_args: List[str]):
 
 
 def balance(coin: str):
-    """
-    Get account holdings for asset
+    """Get account holdings for asset
 
     Parameters
     ----------
     coin: str
         Coin to get holdings of
-
-    Returns
-    -------
-
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     try:

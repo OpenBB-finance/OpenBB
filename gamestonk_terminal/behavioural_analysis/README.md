@@ -3,6 +3,9 @@
 This menu aims to extrapolate behavioural analysis regarding a pre-loaded ticker, and the usage of the following commands along with an example will be exploited below.
 
   * [finbrain](#finbrain)
+     - sentiment from 15+ major news headlines
+  * [stats](#stats)
+     - sentiment stats including comparison with sector
 
 [REDDIT](#REDDIT)
   * [wsb](#wsb)
@@ -52,6 +55,15 @@ FinBrain collects the news headlines from 15+ major financial news sources on a 
 ![finbrain2](https://user-images.githubusercontent.com/25267873/111629515-49c97000-87e9-11eb-92a6-a9eebb4b4bd9.png)
 
 <img width="986" alt="Captura de ecrã 2021-03-18, às 12 53 31" src="https://user-images.githubusercontent.com/25267873/111629542-4fbf5100-87e9-11eb-8d5d-96faa8d3fca4.png">
+
+
+## stats <a name="stats"></a>
+```
+usage: stats
+```
+Sentiment stats which displays buzz, news score, articles last week, articles weekly average, bullish vs bearish percentages, sector average bullish percentage, and sector average news score. [Source: https://finnhub.io]
+
+<img width="1003" alt="Captura de ecrã 2021-05-03, às 15 26 09" src="https://user-images.githubusercontent.com/25267873/116888922-e9b94c80-ac23-11eb-959e-be24c79488a3.png">
 
 
 # REDDIT <a name="REDDIT"></a>
