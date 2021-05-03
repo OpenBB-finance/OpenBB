@@ -27,8 +27,7 @@ def check_valid_binance_str(symbol: str) -> str:
 
 # pylint: disable=inconsistent-return-statements
 def select_binance_coin(other_args: List[str]):
-    """
-    Define current_coin from binance
+    """Define current_coin from binance
 
     Parameters
     ----------
@@ -75,8 +74,7 @@ def select_binance_coin(other_args: List[str]):
 
 
 def order_book(coin: str, other_args: List[str]):
-    """
-    Get order book for currency
+    """Get order book for currency
 
     Parameters
     ----------
@@ -84,10 +82,6 @@ def order_book(coin: str, other_args: List[str]):
         Coin to get order book for
     other_args: List[str]
         Argparse arguments
-
-    Returns
-    -------
-
     """
     limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
     parser = argparse.ArgumentParser(
@@ -120,8 +114,7 @@ def order_book(coin: str, other_args: List[str]):
 
 
 def show_candles(coin: str, other_args: List[str]):
-    """
-    Get klines/candles for coin
+    """Get klines/candles for coin
 
     Parameters
     ----------
@@ -129,9 +122,6 @@ def show_candles(coin: str, other_args: List[str]):
         Coin to get symbol of
     other_args: List[str]
         Argparse arguments
-
-    Returns
-    -------
 
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
@@ -224,17 +214,12 @@ def show_candles(coin: str, other_args: List[str]):
 
 
 def balance(coin: str):
-    """
-    Get account holdings for asset
+    """Get account holdings for asset
 
     Parameters
     ----------
     coin: str
         Coin to get holdings of
-
-    Returns
-    -------
-
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     try:
