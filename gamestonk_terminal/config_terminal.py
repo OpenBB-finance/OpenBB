@@ -33,7 +33,7 @@ API_TWITTER_SECRET_KEY = os.getenv("GT_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("GT_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
-API_FRED_KEY = os.getenv("GT_FRED_API_KEY") or "b98e15f1fde39212bce9213f2e3e5afb"
+API_FRED_KEY = os.getenv("GT_FRED_API_KEY") or "REPLACE_ME"
 
 # https://newsapi.org
 API_NEWS_TOKEN = os.getenv("GT_API_NEWS_TOKEN") or "REPLACE_ME"
@@ -61,4 +61,4 @@ PATH_TO_SELENIUM_DRIVER = None  # Replace with "PATH"
 COINMARKETCAP_KEY = os.getenv("GT_CMC_API_KEY") or "REPLACE_ME"
 
 # https://finnhub.io
-API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "c23k26qad3ieeb1lftug"
+API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
