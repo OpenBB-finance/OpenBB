@@ -1,8 +1,8 @@
 import argparse
 from typing import List
+from datetime import datetime, timedelta
 import requests
 import pandas as pd
-from datetime import datetime, timedelta
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
