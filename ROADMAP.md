@@ -40,6 +40,7 @@
 * [x] Add latest and trending news commands (@hinxx) - [PR #347](https://github.com/DidierRLopes/GamestonkTerminal/pull/347)
 * [x] Add top ratings updates (@hinxx) - [PR #357](https://github.com/DidierRLopes/GamestonkTerminal/pull/357)
 * [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
+* [x] Past and future IPOs calendar (@didier) - [PR #432](https://github.com/DidierRLopes/GamestonkTerminal/pull/432)
 
 
 **NEXT**
