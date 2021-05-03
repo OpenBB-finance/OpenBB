@@ -160,7 +160,7 @@ python terminal.py
 ```
 10. (Windows - Optional) Speeding up opening process in the future
 
-After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
+After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing.
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
@@ -299,9 +299,9 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Appease the linters and commit again if needed
-   1. Install and run `black` for every change you've made
-   2. Install and run `flake8` for every change you've made. `flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics`
+4. Install the pre-commit hooks by running:
+      ```pre-commit install```.
+   Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
