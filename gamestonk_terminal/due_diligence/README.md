@@ -12,6 +12,8 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * rating of the company from strong sell to strong buy [FMP]
 * [pt](#pt)
   * price targets over time [Business Insider]
+* [rot](#rot)
+  * ratings over time [Finnhub]
 * [est](#est)
   * quarter and year analysts earnings estimates [Business Insider]
 * [ins](#ins)
@@ -88,6 +90,18 @@ Prints price target from analysts. [Source: Business Insider]
 ![pt](https://user-images.githubusercontent.com/25267873/108609888-fec66380-73c8-11eb-8c2f-04ceaac6f3f5.png)
 
 <img width="940" alt="pt2" src="https://user-images.githubusercontent.com/25267873/108609914-3af9c400-73c9-11eb-8820-0abfa9e57119.png">
+
+
+## rot <a name="rot"></a>
+
+```text
+usage: rot
+```
+
+Plots ratings over time. [Source: Finnhub]
+
+![rot](https://user-images.githubusercontent.com/25267873/116864981-ad282980-ac00-11eb-9e86-7163782a8ef6.png)
+
 
 ## est <a name="est"></a>
 
