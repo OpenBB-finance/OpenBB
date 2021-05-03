@@ -6,7 +6,7 @@ from typing import List
 import pandas as pd
 from tabulate import tabulate
 from coinmarketcapapi import CoinMarketCapAPI
-from gamestonk_terminal.config_terminal import API_CMC_KEY
+import  gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 sort_options = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
@@ -62,7 +62,7 @@ def get_cmc_top_n(other_args: List[str]):
         if not ns_parser:
             return
 
-        cmc = CoinMarketCapAPI(API_CMC_KEY)
+        cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
         ratings = cmc.cryptocurrency_listings_latest().data
 
         symbol, rank, price, pchange1d, mkt_cap = [], [], [], [], []

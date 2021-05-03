@@ -282,7 +282,7 @@ Command|Description
 [coinmarketcap](#http://coinmarketcap.com)|
 `top` | view top coins from coinmarketcap
 [binance](#http://binance.us)|
-`add` | add binance ticker
+`select` | Select a coin/currency
 `book`| show order book
 `candle`| get klines/candles and plot
 `balance`| show coin balance

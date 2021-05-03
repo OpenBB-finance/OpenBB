@@ -78,34 +78,34 @@ This command displays the top n cryptocurrencies from coinmarketcap.com.
 ````
 usage: select [-c --coin] [-q --quote]
 ````
-* -c/--coin Coin to load. If not specified, BTC will be loaded to prevent errors later.
-* -q/--quote  Quote currency.  Defaults to `USDT` (which is 1-to-1 with USD)
-
 Select a coin/currency to the current object.  Note that in binance, the exchange "ticker" is usually COINCURR, such as BTCEUR
 for BTC to EURO.  There is no USD, but it uses a coin tethered to the USD (USDT), which is the default.  Some symbols
 are a combination of coins, as `ETHBTC` is a valid symbol
 
+* -c/--coin Coin to load. If not specified, BTC will be loaded to prevent errors later.
+* -q/--quote  Quote currency.  Defaults to `USDT` (which is 1-to-1 with USD)
 
-Note that the usage `select btc` will also work, as it will add `-c` if not detected.
+*Note that the usage `select btc` will also work, as it will add `-c` if not detected.
 
 ## book  <a name="book"></a>
 ````
 usage: book -l/--limit 
 ````
-* -l/--limit Number of orders to get on each side.  One of [5,10,20,50,100,500,1000,5000].  Defaults to 100.
-
 Gets and shows the order book for the given coin/currency.  Shows the cumulative amount of orders.
+
+* -l/--limit Number of orders to get on each side.  One of [5,10,20,50,100,500,1000,5000].  Defaults to 100.
 
 ## candle  <a name="candle"></a>
 ````
 usage: candle [-i --interval] [-l --limit]
 ````
+Show candle chart for loaded coin/currency.  (Terminal will quit if coin is not defined).
+
 * -i/--interval. Interval for candles.  One of [1day,3day,1hour,2hour,4hour,6hour,8hour,12hour,1week,1min,3min,5min,15min,30min,1month].
   Defaults to 1day.
 * -l/--limit.  Number of candles to get.  Defaults to 100.
 Example output (using 3day interval and 50 candles)
   
-Show candle chart for loaded coin/currency.  (Terminal will quit if coin is not defined).
 
 ![im](https://user-images.githubusercontent.com/18151143/116797645-f455d380-aab5-11eb-8dbb-df257425302d.png)
 
