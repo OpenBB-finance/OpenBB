@@ -103,8 +103,8 @@ def order_book(other_args: List[str], coin: str, currency: str):
         if not coin or not currency:
             print("Coin needs to be selected prior to this command\n")
             return
-        else:
-            coin += currency
+
+        coin += currency
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -177,8 +177,8 @@ def show_candles(other_args: List[str], coin: str, currency: str):
         if not coin or not currency:
             print("Coin needs to be selected prior to this command\n")
             return
-        else:
-            coin += currency
+
+        coin += currency
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:

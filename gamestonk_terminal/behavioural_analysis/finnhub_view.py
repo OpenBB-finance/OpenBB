@@ -30,7 +30,7 @@ def get_sentiment_stats(ticker: str) -> Dict:
 
 
 def sentiment_stats(other_args: List[str], ticker: str):
-    """Sentiment stats
+    """Sentiment stats which displays buzz, news score, articles last week, articles weekly average, bullish vs bearish percentages, sector average bullish percentage, and sector average news score
 
     Parameters
     ----------
@@ -43,7 +43,7 @@ def sentiment_stats(other_args: List[str], ticker: str):
         add_help=False,
         prog="stats",
         description="""
-            Sentiment stats. [Source: https://finnhub.io]
+            Sentiment stats which displays buzz, news score, articles last week, articles weekly average, bullish vs bearish percentages, sector average bullish percentage, and sector average news score. [Source: https://finnhub.io]
         """,
     )
 
@@ -59,7 +59,7 @@ def sentiment_stats(other_args: List[str], ticker: str):
             print(f"News Score: {round(100*d_stats['companyNewsScore'],2)} %")
             print("")
             print(f"Articles Last Week: {d_stats['buzz']['articlesInLastWeek']}")
-            print(f"Articles Weekly Week: {d_stats['buzz']['weeklyAverage']}")
+            print(f"Articles Weekly Average: {d_stats['buzz']['weeklyAverage']}")
             print("")
             print(f"Bullish: {round(100*d_stats['sentiment']['bullishPercent'],2)} %")
             print(f"Bearish: {round(100*d_stats['sentiment']['bearishPercent'],2)} %")
