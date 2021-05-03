@@ -88,6 +88,8 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 ## Getting Started
 ### Install
 
+If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.twitch.tv/videos/1008414642).
+
 This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
@@ -142,6 +144,8 @@ conda deactivate
 conda activate gst
 ```
 *The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
+
+7.2. If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 8. Install poetry dependencies
 ```
@@ -224,6 +228,9 @@ These are the ones where a key is necessary:
   * News API: https://newsapi.org
   * Tradier: https://developer.tradier.com/getting_started
   * Oanda API: https://developer.oanda.com
+  * CoinMarketCap API: https://coinmarketcap.com/api/
+  * Finhub API: https://finnhub.io
+  * Binance: https://binance.us (US) / https://binance.com (Outside US)
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
@@ -325,6 +332,8 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 ## Disclaimer
 
 "A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
+
+Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in financial instrument you should be fully informed of the risks and costs associated with trading the financial markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
 
 ## Contacts
 
