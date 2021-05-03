@@ -87,7 +87,8 @@
 
 ## Due Diligence
 * [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
-* [x] Add failure to deliver command (@hinxx) - [PR #366](#https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
+* [x] Add failure to deliver command (@hinxx) - [PR #366](https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
+* [x] Ratings over time (@didier) - [PR #431](https://github.com/DidierRLopes/GamestonkTerminal/pull/431)
 
 **NEXT**
 
@@ -197,7 +198,7 @@ ___
 ---
 
 ## Cryptocurrencies
-* [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] Add Coingecko (@jmaslek) - [PR #283](https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
 * [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
 * [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 

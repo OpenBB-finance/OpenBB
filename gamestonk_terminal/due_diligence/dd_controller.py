@@ -15,6 +15,7 @@ from gamestonk_terminal.due_diligence import reddit_view as r_view
 from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal.due_diligence import finra_view
 from gamestonk_terminal.due_diligence import sec_view
+from gamestonk_terminal.due_diligence import finnhub_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -32,6 +33,7 @@ class DueDiligenceController:
         "short",
         "rating",
         "pt",
+        "rot",
         "est",
         "ins",
         "insider",
@@ -91,6 +93,9 @@ class DueDiligenceController:
             "   rating        rating of the company from strong sell to strong buy [FMP]"
         )
         print("   pt            price targets over time [Business Insider]")
+        print(
+            "   rot           rating over timefrom strong sell to strong buy [Finnhub]"
+        )
         print(
             "   est           quarter and year analysts earnings estimates [Business Insider]"
         )
@@ -154,6 +159,10 @@ class DueDiligenceController:
         bi_view.price_target_from_analysts(
             other_args, self.stock, self.ticker, self.start, self.interval
         )
+
+    def call_rot(self, other_args: List[str]):
+        """Process rot command"""
+        finnhub_view.rating_over_time(other_args, self.ticker)
 
     def call_est(self, other_args: List[str]):
         """Process est command"""

@@ -212,6 +212,7 @@ Command|Description|Source
 `analyst`       |analyst prices and ratings of the company |[Finviz](https://finviz.com/)
 `rating`        |rating of the company from strong sell to strong buy | [FMP](https://financialmodelingprep.com/)
 `pt`            |price targets over time |[Business Insider](https://www.businessinsider.com/)
+`rot`           |ratings over time |[Finnhub](https://finnhub.io)
 `est`           |quarter and year analysts earnings estimates |[Business Insider](https://www.businessinsider.com/)
 `ins`           |insider activity over time |[Business Insider](https://www.businessinsider.com/)
 `insider`       |insider trading of the company |[Finviz](https://finviz.com/)
