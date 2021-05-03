@@ -200,11 +200,11 @@ ___
 ## Cryptocurrencies
 * [x] Add Coingecko (@jmaslek) - [PR #283](https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
 * [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
+* [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add crypto charts
-* [ ] Add binance 
 * [ ] Add top altcoin lists
 ---
 
