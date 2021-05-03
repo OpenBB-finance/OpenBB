@@ -115,13 +115,11 @@ class CryptoController:
 
     def call_book(self, other_args):
         """Process book command"""
-        binance_model.order_book(self.current_coin + self.current_currency, other_args)
+        binance_model.order_book(other_args, self.current_coin, self.current_currency)
 
     def call_candle(self, other_args):
         """Process candle command"""
-        binance_model.show_candles(
-            self.current_coin + self.current_currency, other_args
-        )
+        binance_model.show_candles(other_args, self.current_coin, self.current_currency)
 
     def call_balance(self, _):
         """Process balance command"""
