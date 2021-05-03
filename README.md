@@ -88,8 +88,6 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 ## Getting Started
 ### Install
 
-If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.twitch.tv/videos/1008414642).
-
 This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
@@ -145,8 +143,6 @@ conda activate gst
 ```
 *The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
 
-7.2. If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
-
 8. Install poetry dependencies
 ```
 poetry install
@@ -160,7 +156,7 @@ python terminal.py
 ```
 10. (Windows - Optional) Speeding up opening process in the future
 
-After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
+After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing.
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
@@ -228,9 +224,6 @@ These are the ones where a key is necessary:
   * News API: https://newsapi.org
   * Tradier: https://developer.tradier.com/getting_started
   * Oanda API: https://developer.oanda.com
-  * CoinMarketCap API: https://coinmarketcap.com/api/
-  * Finhub API: https://finnhub.io
-  * Binance: https://binance.us (US) / https://binance.com (Outside US)
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
@@ -299,9 +292,9 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Appease the linters and commit again if needed
-   1. Install and run `black` for every change you've made
-   2. Install and run `flake8` for every change you've made. `flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics`
+4. Install the pre-commit hooks by running:
+      ```pre-commit install```.
+   Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
@@ -332,8 +325,6 @@ Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes
 ## Disclaimer
 
 "A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
-
-Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in financial instrument you should be fully informed of the risks and costs associated with trading the financial markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
 
 ## Contacts
 
