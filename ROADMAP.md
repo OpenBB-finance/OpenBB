@@ -49,6 +49,7 @@
 
 ## Behavioral Analysis
 * [x] Add FinBrain sentiment from news (@didier) - [PR #223](https://github.com/DidierRLopes/GamestonkTerminal/pull/223)
+* [x] Sentiment stats from Finnhub (@didier) - [PR #433](https://github.com/DidierRLopes/GamestonkTerminal/pull/433)
 
 **NEXT**
 * [ ] Implement a better Twitter client (@aia)
