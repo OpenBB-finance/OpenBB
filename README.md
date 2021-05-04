@@ -20,7 +20,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
-
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/gamestonkt.svg?style=social&label=Follow%20%40gamestonkt)](https://twitter.com/gamestonkt)
 
 <!-- PROJECT LOGO -->
 <br />
