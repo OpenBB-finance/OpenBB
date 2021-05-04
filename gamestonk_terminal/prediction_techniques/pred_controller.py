@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.prediction_techniques import (
     arima_view,
-    ets,
+    ets_view,
     knn,
     neural_networks,
     regression,
@@ -129,7 +129,7 @@ class PredictionTechniquesController:
 
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
-        ets.exponential_smoothing(other_args, self.ticker, self.stock)
+        ets_view.exponential_smoothing(other_args, self.ticker, self.stock)
 
     def call_knn(self, other_args: List[str]):
         """Process knn command"""

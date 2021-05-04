@@ -1,4 +1,4 @@
-""" Due Diligence Controller """
+""" ARIMA Model View """
 __docformat__ = "numpy"
 
 import argparse

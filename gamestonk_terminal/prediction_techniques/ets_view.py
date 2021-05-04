@@ -1,4 +1,8 @@
+""" ets model view """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import datetime
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,7 +49,22 @@ def check_valid_seasonal(seasonal: str) -> str:
     )
 
 
-def exponential_smoothing(l_args, s_ticker, df_stock):
+def exponential_smoothing(other_args:List[str], s_ticker:str, df_stock:pd.DataFrame):
+    """
+    Perform exponential smoothing forecasting
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Loaded ticker
+    df_stock: pd.DataFrame
+        Loaded stock dataframe
+
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="ets",
@@ -61,7 +80,6 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
             Trend='Ad', Seasonal='N': Additive damped trend method
             Trend='Ad', Seasonal='A': Exponential Smoothing
             Trend='Ad', Seasonal='M': Holt-Winters’ damped method
-
             Trend component: N: None, A: Additive, Ad: Additive Damped
             Seasonality component: N: None, A: Additive, M: Multiplicative
         """,
@@ -114,7 +132,7 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -391,7 +409,28 @@ def exponential_smoothing(l_args, s_ticker, df_stock):
         print("")
 
 
-def get_exponential_smoothing_model(data, trend, seasonal, seasonal_periods):
+def get_exponential_smoothing_model(data:pd.Series, trend, seasonal, seasonal_periods):
+    """
+    Perform exponential smoothing
+    Parameters
+    ----------
+    data: pd.Series
+        Series of closing values
+    trend: str
+        Trend component.  One of [N, A, Ad]
+    seasonal: str
+        Seasonal component.  One of [N, A, M]
+    seasonal_periods: int
+        Number of seaosnal periods in a year
+
+
+    Returns
+    -------
+    model:
+        Exponential smoothing model
+    title: str
+        String describing selected model
+    """
     if trend == "N":  # None
         if seasonal == "N":  # None
             title = "Trend='N',  Seasonal='N': Simple Exponential Smoothing"
