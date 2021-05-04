@@ -133,7 +133,7 @@ Auto-Regressive Integrated Moving Average:
   * -i : information criteria - used if auto_arima library is invoked. Default aic.
   * -s : weekly seasonality flag. Default False.
   * -r : results about ARIMA summary flag. Default False.
-  * -o : arima model order. If the model order is defined, auto_arima is not invoked, deeming information criteria useless. <br />Example: -o 514, where:
+  * -o : arima model order. If the model order is defined, auto_arima is not invoked, deeming information criteria useless. <br />Example: `-o 5,1,4` where:
     * p = 5 : order (number of time lags) of the autoregressive model.
     * d = 1 : degree of differencing (the number of times the data have had past values subtracted).
     * q = 4 : order of the moving-average model.

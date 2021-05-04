@@ -14,10 +14,10 @@ USE_FLAIR = os.getenv("GTFF_USE_FLAIR") or "stars"
 USE_ION = strtobool(os.getenv("GTFF_USE_ION", "True"))
 
 # Enable Prompt Toolkit
-USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "False"))
+USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "True"))
 
 # Enable Prediction features
-ENABLE_PREDICT = strtobool(os.getenv("GTFF_ENABLE_PREDICT", "False"))
+ENABLE_PREDICT = strtobool(os.getenv("GTFF_ENABLE_PREDICT", "True"))
 
 # Enable FB Prophet
 ENABLE_FBPROPHET = strtobool(os.getenv("GTFF_ENABLE_FBPROPHET", "False"))

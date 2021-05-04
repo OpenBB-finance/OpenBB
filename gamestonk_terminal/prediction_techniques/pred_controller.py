@@ -1,3 +1,6 @@
+""" Due Diligence Controller """
+__docformat__ = "numpy"
+
 import argparse
 from typing import List
 from datetime import datetime
@@ -9,7 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.prediction_techniques import (
-    arima,
+    arima_view,
     ets,
     knn,
     neural_networks,
@@ -152,7 +155,7 @@ class PredictionTechniquesController:
 
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
-        arima.arima(other_args, self.ticker, self.stock)
+        arima_view.arima(other_args, self.ticker, self.stock)
 
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""

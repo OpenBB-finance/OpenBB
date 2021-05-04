@@ -1,4 +1,8 @@
+""" Due Diligence Controller """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -25,7 +29,22 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def arima(l_args, s_ticker, df_stock):
+def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    ARIMA prediction
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        ticker
+    df_stock: pd.DataFrame
+        Dataframe of prices
+
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="arima",
@@ -74,7 +93,7 @@ def arima(l_args, s_ticker, df_stock):
         action="store",
         dest="s_order",
         type=str,
-        help="arima model order (p,d,q) in format: pdq.",
+        help="arima model order (p,d,q) in format: p,d,q.",
     )
     parser.add_argument(
         "-r",
@@ -95,7 +114,7 @@ def arima(l_args, s_ticker, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -134,7 +153,7 @@ def arima(l_args, s_ticker, df_stock):
 
         # Machine Learning model
         if ns_parser.s_order:
-            t_order = tuple([int(ord) for ord in list(ns_parser.s_order)])
+            t_order = tuple([int(ord) for ord in ns_parser.s_order.split(",")])
             model = ARIMA(df_stock["5. adjusted close"].values, order=t_order).fit()
             l_predictions = model.predict(
                 start=len(df_stock["5. adjusted close"]) + 1,
@@ -362,5 +381,4 @@ def arima(l_args, s_ticker, df_stock):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
