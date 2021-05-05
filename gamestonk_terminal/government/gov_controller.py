@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from datetime import datetime
-import pandas as pd
 from matplotlib import pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair

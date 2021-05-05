@@ -164,7 +164,8 @@ def buy_congress(other_args: List[str]):
         df_congress = df_congress.sort_values("TransactionDate", ascending=True)
 
         print(
-            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} months in the worst case scenario"
+            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} "
+            "months in the worst case scenario"
         )
         print(
             df_congress.groupby("Ticker")["lower"]
@@ -260,7 +261,8 @@ def sell_congress(other_args: List[str]):
         df_congress = df_congress.sort_values("TransactionDate", ascending=True)
 
         print(
-            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} months in the worst case scenario"
+            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} "
+            "months in the worst case scenario"
         )
         print(
             df_congress.groupby("Ticker")["upper"]
