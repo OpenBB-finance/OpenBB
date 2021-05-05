@@ -1,4 +1,8 @@
+""" Neural Networks View"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List, Any
 import datetime
 import os
 import traceback
@@ -8,7 +12,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from TimeSeriesCrossValidation import splitTrain
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
 
@@ -44,7 +48,9 @@ ORIGINAL_TF_XLA_FLAGS = os.environ.get("TF_XLA_FLAGS")
 ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH = os.environ.get("TF_FORCE_GPU_ALLOW_GROWTH")
 
 
-def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
+def build_neural_network_model(
+    Recurrent_Neural_Network: List[Any], n_inputs: int, n_days: int
+):
     model = Sequential()
 
     for idx_layer, d_layer in enumerate(Recurrent_Neural_Network):
@@ -91,9 +97,24 @@ def build_neural_network_model(Recurrent_Neural_Network, n_inputs, n_days):
     return model
 
 
-def _parse_args(prog, description, l_args):
-    """Create an argparser and parse l_args. Will print help if user requests it.
-    :return: ns_parser"""
+def _parse_args(prog: str, description: str, other_args: List[str]):
+    """
+    Create an argparser and parse other_args. Will print help if user requests it.
+    Parameters
+    ----------
+    prog: str
+        Program for argparser
+    description: str
+        Description for argparser
+    other_args
+        Argparse arguments to pass
+    Returns
+    -------
+    ns_parser: argparse.Namespace
+
+        Parsed argument parser
+    """
+
     parser = argparse.ArgumentParser(
         prog=prog,
         description=description,
@@ -140,8 +161,8 @@ def _parse_args(prog, description, l_args):
         "--pp",
         action="store",
         dest="s_preprocessing",
-        default="normalization",
-        choices=["normalization", "standardization", "none"],
+        default="minmax",
+        choices=["normalization", "standardization", "minmax", "none"],
         help="pre-processing data.",
     )
     parser.add_argument(
@@ -233,7 +254,7 @@ def _parse_args(prog, description, l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return None
 
@@ -276,10 +297,27 @@ def _restore_env():
     restore("TF_FORCE_GPU_ALLOW_GROWTH", ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH)
 
 
-def _setup_backtesting(df_stock, ns_parser):
-    """Set up backtesting if enabled
-    :return: (df_stock, df_future), where df_future is None if s_end_date is not set.
-    :raises Exception: if configuration is invalid"""
+def _setup_backtesting(df_stock: pd.DataFrame, ns_parser: argparse.Namespace):
+    """
+    Setup backtesting when end data is specified
+    Parameters
+    ----------
+    df_stock: pd.DataFrame
+        Stock data
+    ns_parser: argparse.Namespace
+        Parsed arguments
+    Returns
+    -------
+    df_stock: pd.DataFrame
+        Data before end date
+    df_future: pd.DataFrame
+        Data after end date
+    Raises
+    -------
+    Exception
+        If configuration is invalid
+    """
+
     df_future = None
     if ns_parser.s_end_date:
         if ns_parser.s_end_date < df_stock.index[0]:
@@ -319,8 +357,13 @@ def _preprocess_split(df_stock, ns_parser):
         stock_train_data = scaler.fit_transform(
             np.array(df_stock["5. adjusted close"].values.reshape(-1, 1))
         )
-    elif ns_parser.s_preprocessing == "normalization":
+    elif ns_parser.s_preprocessing == "minmax":
         scaler = MinMaxScaler()
+        stock_train_data = scaler.fit_transform(
+            np.array(df_stock["5. adjusted close"].values.reshape(-1, 1))
+        )
+    elif ns_parser.s_preprocessing == "normalization":
+        scaler = Normalizer()
         stock_train_data = scaler.fit_transform(
             np.array(df_stock["5. adjusted close"].values.reshape(-1, 1))
         )
@@ -343,8 +386,10 @@ def _preprocess_split(df_stock, ns_parser):
 
 def _rescale_data(df_stock, ns_parser, scaler, yhat, idx_loop):
     """Re-scale the data back and return the prediction dataframe."""
-    if (ns_parser.s_preprocessing == "standardization") or (
-        ns_parser.s_preprocessing == "normalization"
+    if (
+        (ns_parser.s_preprocessing == "standardization")
+        or (ns_parser.s_preprocessing == "normalization")
+        or (ns_parser.s_preprocessing == "minmax")
     ):
         y_pred_test_t = scaler.inverse_transform(yhat.tolist())
     else:
@@ -699,10 +744,25 @@ def _plot_and_print_results(
             print("")
 
 
-def mlp(l_args, s_ticker, df_stock):
+def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    Train a multi-layer perceptron model
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse Arguments
+    s_ticker: str
+        Ticker
+    df_stock: pd.DataFrame
+        Loaded stock dataframe
+
+    Returns
+    -------
+
+    """
     try:
         ns_parser = _parse_args(
-            prog="mlp", description="""Multilayer Perceptron. """, l_args=l_args
+            prog="mlp", description="""Multilayer Perceptron. """, other_args=other_args
         )
         if not ns_parser:
             return
@@ -768,10 +828,12 @@ def mlp(l_args, s_ticker, df_stock):
         _restore_env()
 
 
-def rnn(l_args, s_ticker, df_stock):
+def rnn(other_args: List[str], s_ticker, df_stock):
     try:
         ns_parser = _parse_args(
-            prog="rnn", description="""Recurrent Neural Network. """, l_args=l_args
+            prog="rnn",
+            description="""Recurrent Neural Network. """,
+            other_args=other_args,
         )
         if not ns_parser:
             return
@@ -839,10 +901,12 @@ def rnn(l_args, s_ticker, df_stock):
         _restore_env()
 
 
-def lstm(l_args, s_ticker, df_stock):
+def lstm(other_args: List[str], s_ticker, df_stock):
     try:
         ns_parser = _parse_args(
-            prog="lstm", description="""Long-Short Term Memory. """, l_args=l_args
+            prog="lstm",
+            description="""Long-Short Term Memory. """,
+            other_args=other_args,
         )
         if not ns_parser:
             return

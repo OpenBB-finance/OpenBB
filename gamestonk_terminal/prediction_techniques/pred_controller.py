@@ -15,7 +15,7 @@ from gamestonk_terminal.prediction_techniques import (
     arima_view,
     ets_view,
     knn,
-    neural_networks,
+    neural_networks_view,
     regression,
     sma,
 )
@@ -159,15 +159,15 @@ class PredictionTechniquesController:
 
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
-        neural_networks.mlp(other_args, self.ticker, self.stock)
+        neural_networks_view.mlp(other_args, self.ticker, self.stock)
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
-        neural_networks.rnn(other_args, self.ticker, self.stock)
+        neural_networks_view.rnn(other_args, self.ticker, self.stock)
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
-        neural_networks.lstm(other_args, self.ticker, self.stock)
+        neural_networks_view.lstm(other_args, self.ticker, self.stock)
 
     if gtff.ENABLE_FBPROPHET:
 

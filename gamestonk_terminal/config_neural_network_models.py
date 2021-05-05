@@ -23,7 +23,7 @@ MultiLayer_Perceptron = [
     {"Dense": {"units": 100, "activation": "relu"}},
     {"Dense": {"units": 80, "activation": "relu"}},
     {"Dense": {"units": 30, "activation": "relu"}},
-    {"Dense": {"activation": "linear"}},
+    {"Dense": {"activation": "relu"}},
 ]
 
 Recurrent_Neural_Network = [
@@ -31,11 +31,11 @@ Recurrent_Neural_Network = [
     {"SimpleRNN": {"units": 50, "activation": "linear", "return_sequences": True}},
     {"Dropout": {"rate": 0.2}},
     {"SimpleRNN": {"units": 21, "activation": "linear", "return_sequences": False}},
-    {"Dense": {"activation": "linear"}},
+    {"Dense": {"activation": "relu"}},
 ]
 
 Long_Short_Term_Memory = [
     {"LSTM": {"units": 25, "activation": "tanh", "return_sequences": True}},
     {"LSTM": {"units": 15, "activation": "tanh", "return_sequences": False}},
-    {"Dense": {"activation": "linear"}},
+    {"Dense": {"activation": "relu"}},
 ]

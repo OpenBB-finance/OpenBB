@@ -1,3 +1,6 @@
+""" Prediction helper functions """
+__docformat__ = "numpy"
+
 import numpy as np
 import pandas as pd
 from colorama import Fore, Style
@@ -11,6 +14,7 @@ from gamestonk_terminal import feature_flags as gtff
 
 
 def price_prediction_color(val: float, last_val: float) -> str:
+    """Set prediction to be a colored string"""
     if float(val) > last_val:
         color = Fore.GREEN
     else:
@@ -19,6 +23,7 @@ def price_prediction_color(val: float, last_val: float) -> str:
 
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
+    """Print predictions"""
     if gtff.USE_COLOR:
         print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
         print("Prediction:")
@@ -44,12 +49,14 @@ def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
         print(df_pred.to_string())
 
 
-def mean_absolute_percentage_error(y_true, y_pred):
+def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np.number:
+    """Calculate mean absolute percent error"""
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
 
-def print_prediction_kpis(real, pred):
+def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
+    """Print prediction statistics"""
     print("KPIs")
     print(f"MAPE: {mean_absolute_percentage_error(real, pred):.3f} %")
     print(f"R2: {r2_score(real, pred):.3f}")
@@ -59,6 +66,7 @@ def print_prediction_kpis(real, pred):
 
 
 def price_prediction_backtesting_color(val: list) -> str:
+    """Add color to backtest data"""
     err_pct = 100 * (val[0] - val[1]) / val[1]
     if val[0] > val[1]:
         s_err_pct = f"       {Fore.GREEN} +{err_pct:.2f} %"

@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Union
 import datetime
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,7 +49,7 @@ def check_valid_seasonal(seasonal: str) -> str:
     )
 
 
-def exponential_smoothing(other_args:List[str], s_ticker:str, df_stock:pd.DataFrame):
+def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
     """
     Perform exponential smoothing forecasting
     Parameters
@@ -409,12 +409,14 @@ def exponential_smoothing(other_args:List[str], s_ticker:str, df_stock:pd.DataFr
         print("")
 
 
-def get_exponential_smoothing_model(data:pd.Series, trend, seasonal, seasonal_periods):
+def get_exponential_smoothing_model(
+    data: Union[pd.Series, np.ndarray], trend, seasonal, seasonal_periods
+):
     """
     Perform exponential smoothing
     Parameters
     ----------
-    data: pd.Series
+    data: Union[pd.Series, np.ndarray]
         Series of closing values
     trend: str
         Trend component.  One of [N, A, Ad]

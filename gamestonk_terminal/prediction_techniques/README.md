@@ -153,7 +153,7 @@ Facebook's Prophet:
 
 ## mlp <a name="mlp"></a>
 ```
-usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
+usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {minmax, normalization,standardization,none}]
 [-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
 ```
 MulitLayer Perceptron:
@@ -161,7 +161,7 @@ MulitLayer Perceptron:
   * -i : number of days to use for prediction. Default 40.
   * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default normalization.
+  * -p : pre-processing data. Default minmax.
   * -o : optimization technique. Default adam.
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
@@ -183,7 +183,7 @@ MultiLayer_Perceptron \
         {'Dense':
                 {'units':30, 'activation':'relu'} },
         {'Dense':
-                {'activation':'linear'} }]
+                {'activation':'relu'} }]
 ```
 
 ![mlp](https://user-images.githubusercontent.com/25267873/108604944-d2025400-73a8-11eb-9ab6-52972160cd2a.png)
@@ -220,7 +220,7 @@ Recurrent_Neural_Network \
         {'SimpleRNN':
                 {'units':21, 'activation':'linear', 'return_sequences':False} },
         {'Dense':
-                {'activation':'linear'} }]
+                {'activation':'relu'} }]
 ```
 
 ![rnn](https://user-images.githubusercontent.com/25267873/108604940-d0d12700-73a8-11eb-837e-a5aa128942d9.png)
@@ -260,7 +260,7 @@ Long_Short_Term_Memory \
         {'LSTM':
                 {'units':15, 'activation':'tanh', 'return_sequences':False} },
         {'Dense':
-                {'activation':'linear'} }]
+                {'activation':'relu'} }]
 ```
 
 ![lstm](https://user-images.githubusercontent.com/25267873/108604943-d2025400-73a8-11eb-83c5-edb4a2121cba.png)
