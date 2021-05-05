@@ -451,6 +451,7 @@ def _rescale_data(
     df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name=column_name)
     return df_pred
 
+
 def _plot_and_print_results(
     df_stock: pd.DataFrame,
     ns_parser: argparse.Namespace,

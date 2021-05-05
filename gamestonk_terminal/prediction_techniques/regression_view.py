@@ -1,9 +1,16 @@
+""" Regression View"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import datetime
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+from TimeSeriesCrossValidation import splitTrain
+from sklearn import linear_model
+from sklearn import pipeline
+from sklearn import preprocessing
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -25,31 +32,51 @@ from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
+USER_INPUT = 0
+LINEAR = 1
+QUADRATIC = 2
+CUBIC = 3
 
-# pylint: disable=unused-argument
-def simple_moving_average(l_args, s_ticker, df_stock):
+
+def regression(
+    other_args: List[str], s_ticker: str, df_stock: pd.DataFrame, polynomial: int
+):
+    """
+    Train a regression model
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Stock ticker
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    polynomial: int
+        Order of polynomial
+
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="sma",
+        prog="regression",
         description="""
-            Moving Averages are used to smooth the data in an array to
-            help eliminate noise and identify trends. The Simple Moving Average is literally
-            the simplest form of a moving average. Each output value is the average of the
-            previous n values. In a Simple Moving Average, each value in the time period carries
-            equal weight, and values outside of the time period are not included in the average.
-            This makes it less responsive to recent changes in the data, which can be useful for
-            filtering out those changes.
+            Regression attempts to model the relationship between
+            two variables by fitting a linear/quadratic/cubic/other equation to
+            observed data. One variable is considered to be an explanatory variable,
+            and the other is considered to be a dependent variable.
         """,
     )
 
     parser.add_argument(
-        "-l",
-        "--length",
+        "-i",
+        "--input",
         action="store",
-        dest="n_length",
+        dest="n_inputs",
         type=check_positive,
-        default=20,
-        help="length of SMA window.",
+        default=40,
+        help="number of days to use for prediction.",
     )
     parser.add_argument(
         "-d",
@@ -61,6 +88,15 @@ def simple_moving_average(l_args, s_ticker, df_stock):
         help="prediction days.",
     )
     parser.add_argument(
+        "-j",
+        "--jumps",
+        action="store",
+        dest="n_jumps",
+        type=check_positive,
+        default=1,
+        help="number of jumps in training data.",
+    )
+    parser.add_argument(
         "-e",
         "--end",
         action="store",
@@ -70,26 +106,34 @@ def simple_moving_average(l_args, s_ticker, df_stock):
         help="The end date (format YYYY-MM-DD) to select - Backtesting",
     )
 
+    if polynomial == USER_INPUT:
+        parser.add_argument(
+            "-p",
+            "--polynomial",
+            action="store",
+            dest="n_polynomial",
+            type=check_positive,
+            required=True,
+            help="polynomial associated with regression.",
+        )
+
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         # BACKTESTING
         if ns_parser.s_end_date:
-
             if ns_parser.s_end_date < df_stock.index[0]:
                 print(
                     "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                 )
                 return
 
-            if (
-                ns_parser.s_end_date
-                < get_next_stock_market_days(
-                    last_stock_day=df_stock.index[0], n_next_days=5 + ns_parser.n_days
-                )[-1]
-            ):
+            if ns_parser.s_end_date < get_next_stock_market_days(
+                last_stock_day=df_stock.index[0],
+                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
+            )[-1]:
                 print(
                     "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                 )
@@ -108,17 +152,34 @@ def simple_moving_average(l_args, s_ticker, df_stock):
             df_future = df_stock[future_index[0] : future_index[-1]]
             df_stock = df_stock[: ns_parser.s_end_date]
 
-        # Prediction data
-        l_predictions = list()
-        for pred_day in range(ns_parser.n_days):
-            if pred_day < ns_parser.n_length:
-                l_ma_stock = df_stock["5. adjusted close"].values[
-                    -ns_parser.n_length + pred_day :
-                ]
-            else:
-                l_ma_stock = list()
-            l_predictions.append(np.mean(np.append(l_ma_stock, l_predictions)))
+        # Split training data
+        stock_x, stock_y = splitTrain.split_train(
+            df_stock["5. adjusted close"].values,
+            ns_parser.n_inputs,
+            ns_parser.n_days,
+            ns_parser.n_jumps,
+        )
 
+        if not stock_x:
+            print("Given the model parameters more training data is needed.\n")
+            return
+
+        # Machine Learning model
+        if polynomial == LINEAR:
+            model = linear_model.LinearRegression(n_jobs=-1)
+        else:
+            if polynomial == USER_INPUT:
+                polynomial = ns_parser.n_polynomial
+            model = pipeline.make_pipeline(
+                preprocessing.PolynomialFeatures(polynomial), linear_model.Ridge()
+            )
+
+        model.fit(stock_x, stock_y)
+        l_predictions = model.predict(
+            df_stock["5. adjusted close"].values[-ns_parser.n_inputs :].reshape(1, -1)
+        )[0]
+
+        # Prediction data
         l_pred_days = get_next_stock_market_days(
             last_stock_day=df_stock["5. adjusted close"].index[-1],
             n_next_days=ns_parser.n_days,
@@ -131,11 +192,11 @@ def simple_moving_average(l_args, s_ticker, df_stock):
         # BACKTESTING
         if ns_parser.s_end_date:
             plt.title(
-                f"BACKTESTING: {ns_parser.n_length} Moving Average on {s_ticker} - {ns_parser.n_days} days prediction"
+                f"BACKTESTING: Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
             )
         else:
             plt.title(
-                f"{ns_parser.n_length} Moving Average on {s_ticker} - {ns_parser.n_days} days prediction"
+                f"Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
             )
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
@@ -145,8 +206,6 @@ def simple_moving_average(l_args, s_ticker, df_stock):
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        df_ma = df_stock["5. adjusted close"].rolling(window=ns_parser.n_length).mean()
-        plt.plot(df_ma.index, df_ma, lw=2, linestyle="--", c="tab:orange")
         plt.plot(
             [df_stock.index[-1], df_pred.index[0]],
             [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
@@ -308,6 +367,8 @@ def simple_moving_average(l_args, s_ticker, df_stock):
             print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
+    except SystemExit:
+        print("")
     except Exception as e:
         print(e)
         print("")

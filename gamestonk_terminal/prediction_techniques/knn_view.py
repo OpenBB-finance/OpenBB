@@ -1,13 +1,14 @@
+""" K Nearest Neighbors View"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+from sklearn import neighbors
 from TimeSeriesCrossValidation import splitTrain
-from sklearn import linear_model
-from sklearn import pipeline
-from sklearn import preprocessing
-
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -16,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
     get_next_stock_market_days,
     plot_autoscale,
 )
-
 from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction,
     price_prediction_backtesting_color,
@@ -28,21 +28,30 @@ from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-USER_INPUT = 0
-LINEAR = 1
-QUADRATIC = 2
-CUBIC = 3
 
+def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    Train KNN model
+    Parameters
+    ----------
+    other_args: List[str]
+        List of argparse arguments
+    s_ticker: str
+        Ticker
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
 
-def regression(l_args, s_ticker, df_stock, polynomial):
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="regression",
+        prog="knn",
         description="""
-            Regression attempts to model the relationship between
-            two variables by fitting a linear/quadratic/cubic/other equation to
-            observed data. One variable is considered to be an explanatory variable,
-            and the other is considered to be a dependent variable.
+            K nearest neighbors is a simple algorithm that stores all
+            available cases and predict the numerical target based on a similarity measure
+            (e.g. distance functions).
         """,
     )
 
@@ -74,6 +83,15 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         help="number of jumps in training data.",
     )
     parser.add_argument(
+        "-n",
+        "--neighbors",
+        action="store",
+        dest="n_neighbors",
+        type=check_positive,
+        default=20,
+        help="number of neighbors to use on the algorithm.",
+    )
+    parser.add_argument(
         "-e",
         "--end",
         action="store",
@@ -83,19 +101,8 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         help="The end date (format YYYY-MM-DD) to select - Backtesting",
     )
 
-    if polynomial == USER_INPUT:
-        parser.add_argument(
-            "-p",
-            "--polynomial",
-            action="store",
-            dest="n_polynomial",
-            type=check_positive,
-            required=True,
-            help="polynomial associated with regression.",
-        )
-
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -142,21 +149,13 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             return
 
         # Machine Learning model
-        if polynomial == LINEAR:
-            model = linear_model.LinearRegression(n_jobs=-1)
-        else:
-            if polynomial == USER_INPUT:
-                polynomial = ns_parser.n_polynomial
-            model = pipeline.make_pipeline(
-                preprocessing.PolynomialFeatures(polynomial), linear_model.Ridge()
-            )
-
-        model.fit(stock_x, stock_y)
-        l_predictions = model.predict(
-            df_stock["5. adjusted close"].values[-ns_parser.n_inputs :].reshape(1, -1)
-        )[0]
+        knn = neighbors.KNeighborsRegressor(n_neighbors=ns_parser.n_neighbors)
+        knn.fit(stock_x, stock_y)
 
         # Prediction data
+        l_predictions = knn.predict(
+            df_stock["5. adjusted close"].values[-ns_parser.n_inputs :].reshape(1, -1)
+        )[0]
         l_pred_days = get_next_stock_market_days(
             last_stock_day=df_stock["5. adjusted close"].index[-1],
             n_next_days=ns_parser.n_days,
@@ -166,15 +165,12 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         # Plotting
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
+        s_knn = f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker}"
         # BACKTESTING
         if ns_parser.s_end_date:
-            plt.title(
-                f"BACKTESTING: Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
-            )
+            plt.title(f"BACKTESTING: {s_knn} - {ns_parser.n_days} days prediction")
         else:
-            plt.title(
-                f"Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
-            )
+            plt.title(f"{s_knn} - {ns_parser.n_days} days prediction")
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
         )
@@ -260,8 +256,7 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             plt.title("BACKTESTING: Real data price versus Prediction")
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
             plt.xticks(
-                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
-                visible=True,
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
             )
             plt.ylabel("Share Price ($)")
             plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -303,8 +298,7 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             )
             plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
             plt.xticks(
-                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
-                visible=True,
+                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
             )
             plt.xlabel("Time")
             plt.ylabel("Prediction Error (%)")
@@ -324,7 +318,6 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             df_pred["Real"] = df_future["5. adjusted close"]
 
             if gtff.USE_COLOR:
-
                 patch_pandas_text_adjustment()
 
                 print("Time         Real [$]  x  Prediction [$]")
@@ -344,8 +337,6 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
-    except SystemExit:
-        print("")
     except Exception as e:
         print(e)
         print("")

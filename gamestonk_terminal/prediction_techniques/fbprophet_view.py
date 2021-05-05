@@ -1,4 +1,8 @@
+""" FB Prophet View"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import datetime
 import warnings
 import matplotlib.pyplot as plt
@@ -26,7 +30,22 @@ register_matplotlib_converters()
 warnings.simplefilter("ignore")
 
 
-def fbprophet(l_args, s_ticker, df_stock):
+def fbprophet(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    Run FB Prophet model
+    Parameters
+    ----------
+    other_args: List[str]:
+        List of argparse argumenst
+    s_ticker: str
+        Stock ticker
+    df_stock: pd.DataFrame
+        Dataframe of prices
+
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="fbprophet",
@@ -58,7 +77,7 @@ def fbprophet(l_args, s_ticker, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
