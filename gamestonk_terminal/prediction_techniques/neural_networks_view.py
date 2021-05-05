@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List, Any
+from typing import List, Any, Union
 import datetime
 import os
 import traceback
@@ -111,7 +111,6 @@ def _parse_args(prog: str, description: str, other_args: List[str]):
     Returns
     -------
     ns_parser: argparse.Namespace
-
         Parsed argument parser
     """
 
@@ -347,10 +346,32 @@ def _setup_backtesting(df_stock: pd.DataFrame, ns_parser: argparse.Namespace):
     return df_stock, df_future
 
 
-def _preprocess_split(df_stock, ns_parser):
-    """Preprocess and split training data.
-    :return: (scaler, stock_train_data, stock_x, stock_y)
-    :raises Exception: if more training data is needed."""
+def _preprocess_split(df_stock: pd.DataFrame, ns_parser: argparse.Namespace):
+    """
+    Preprocess and split dstock data
+    Parameters
+    ----------
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    ns_parser: argparse.Namespace
+        Parsed argparse arguments
+
+    Returns
+    -------
+    scaler: Union[MinMaxScaler, StandardScaler, Normalizer]
+        sklearn scaler used
+    stock_train_data: np.ndarray
+        All training data
+    stock_x: np.ndarray
+        Inputs for model
+    stock_y: np.ndarray
+        Outputs for model
+    Raises
+    -------
+    Exception
+        Not enough training data is provided
+    """
+
     # Pre-process data
     if ns_parser.s_preprocessing == "standardization":
         scaler = StandardScaler()
@@ -379,13 +400,40 @@ def _preprocess_split(df_stock, ns_parser):
     )
     if not stock_x:
         raise Exception("Given the model parameters more training data is needed.")
+
     stock_x = np.array(stock_x)
     stock_y = np.array(stock_y)
+
     return scaler, stock_train_data, stock_x, stock_y
 
 
-def _rescale_data(df_stock, ns_parser, scaler, yhat, idx_loop):
-    """Re-scale the data back and return the prediction dataframe."""
+def _rescale_data(
+    df_stock: pd.DataFrame,
+    ns_parser: argparse.Namespace,
+    scaler: Union[MinMaxScaler, StandardScaler, Normalizer],
+    yhat: np.ndarray,
+    idx_loop: int,
+):
+    """
+    Re-scale the data back and return the prediction dataframe.
+    Parameters
+    ----------
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    ns_parser: argparse.Namespace
+        Parsed argument parser
+    scaler:
+        One of the predefined sklearn scalers
+    yhat: np.ndarry
+        Predicted values
+    idx_loop: int
+        Loop index
+
+    Returns
+    -------
+    df_pred: pd.Series
+        Series of resclaled predictions
+    """
     if (
         (ns_parser.s_preprocessing == "standardization")
         or (ns_parser.s_preprocessing == "normalization")
@@ -403,11 +451,36 @@ def _rescale_data(df_stock, ns_parser, scaler, yhat, idx_loop):
     df_pred = pd.Series(y_pred_test_t[0].tolist(), index=l_pred_days, name=column_name)
     return df_pred
 
-
 def _plot_and_print_results(
-    df_stock, ns_parser, df_future, df_pred, model_name, s_ticker
+    df_stock: pd.DataFrame,
+    ns_parser: argparse.Namespace,
+    df_future: pd.DataFrame,
+    df_pred: pd.DataFrame,
+    model_name: str,
+    s_ticker: str,
 ):
-    """Plot and print the results."""
+    """
+    Plot and print results
+    Parameters
+    ----------
+    df_stock: pd.DataFrame:
+        Dataframe of stock prices
+    ns_parser: argparse.Namespace
+        Parsed argument parser
+    df_future: pd.DataFrame
+        Dataframe of future prices
+    df_pred: pd.DataFrame
+        Dataframe of predicted prices
+    model_name: str
+        Model Name
+    s_ticker: str
+        Ticker
+
+    Returns
+    -------
+
+    """
+
     # Plotting
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=3)
@@ -828,7 +901,22 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         _restore_env()
 
 
-def rnn(other_args: List[str], s_ticker, df_stock):
+def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    Train a Recurrent Neural Network (rnn)
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Stock ticker
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+
+    Returns
+    -------
+
+    """
     try:
         ns_parser = _parse_args(
             prog="rnn",
@@ -901,7 +989,22 @@ def rnn(other_args: List[str], s_ticker, df_stock):
         _restore_env()
 
 
-def lstm(other_args: List[str], s_ticker, df_stock):
+def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    Train a Long-Short-Term-Memory Neural Net (lstm)
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Stock ticker
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+
+    Returns
+    -------
+
+    """
     try:
         ns_parser = _parse_args(
             prog="lstm",
