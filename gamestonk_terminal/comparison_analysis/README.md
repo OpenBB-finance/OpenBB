@@ -33,7 +33,7 @@ This menu aims to compare a pre-loaded stock with similar companies, and the usa
 * [technical](#technical)
   * brief technical (e.g. Beta, SMA50, 52W Low, RSI, Change) [Finviz]
 * [> po](portfolio_optimization/README.md)
-  * portfolio optimization for selected tickers
+  * **portfolio optimization for selected tickers**
 
 
 ## get <a name="get"></a>
