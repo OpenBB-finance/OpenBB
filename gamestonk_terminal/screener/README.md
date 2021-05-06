@@ -24,7 +24,7 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
 * [> po](portfolio_optimization/README.md)
-  * portfolio optimization for last screened tickers
+  * **portfolio optimization for last screened tickers**
 
 ## view <a name="view"></a>
 
