@@ -20,6 +20,7 @@
 * [Forex](#Forex-)
 * [Backtesting](#Backtesting-)
 * [Resource Collection](#Resource-Collection-)
+* [Government](#Government-)
 
 ## Main
 
@@ -424,4 +425,15 @@ Command|Website
 
 &nbsp;
 
+
+## Government [»](government/README.md)
+Command|Website
+----|----
+`last_congress`         |last congress trading
+`buy_congress`          |top buy congress tickers
+`sell_congress`         |top sell congress tickers
+with ticker provided    |
+`congress`              | congress trades on the ticker
+
+&nbsp;
 
