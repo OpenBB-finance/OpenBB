@@ -21,6 +21,7 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction,
     price_prediction_backtesting_color,
     print_prediction_kpis,
+    get_backtesting_data,
 )
 
 from gamestonk_terminal.config_plot import PLOT_DPI
@@ -108,33 +109,11 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
 
         # BACKTESTING
         if ns_parser.s_end_date:
-            if ns_parser.s_end_date < df_stock.index[0]:
-                print(
-                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                )
-                return
-
-            if ns_parser.s_end_date < get_next_stock_market_days(
-                last_stock_day=df_stock.index[0],
-                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
-            )[-1]:
-                print(
-                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                )
-                return
-
-            future_index = get_next_stock_market_days(
-                last_stock_day=ns_parser.s_end_date, n_next_days=ns_parser.n_days
+            df_future, df_stock, bt_flag = get_backtesting_data(
+                df_stock, ns_parser.s_end_date, ns_parser.n_days
             )
-
-            if future_index[-1] > datetime.datetime.now():
-                print(
-                    "Backtesting not allowed, since End Date + Prediction days is in the future\n"
-                )
+            if not bt_flag:
                 return
-
-            df_future = df_stock[future_index[0] : future_index[-1]]
-            df_stock = df_stock[: ns_parser.s_end_date]
 
         # Split training data
         stock_x, stock_y = splitTrain.split_train(

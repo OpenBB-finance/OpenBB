@@ -13,6 +13,8 @@ from sklearn.metrics import (
     r2_score,
     mean_squared_error,
 )
+from sklearn.model_selection import train_test_split
+
 from gamestonk_terminal.helper_funcs import (
     get_next_stock_market_days,
     patch_pandas_text_adjustment,
@@ -22,6 +24,51 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
+
+
+def prepare_test_train_valid(
+    df_stock, parsed_end_date, n_input_days, n_predict_days, test_size
+):
+
+    dates = df_stock.index
+    prices = df_stock["5. adjusted close"].values
+
+    input_dates = []
+    input_prices = []
+    next_n_day_prices = []
+    next_n_day_dates = []
+
+    for idx in range(len(prices) - n_input_days - n_predict_days):
+        input_prices.append(prices[idx : idx + n_input_days])
+        input_dates.append(dates[idx : idx + n_input_days])
+        next_n_day_prices.append(
+            prices[idx + n_input_days : idx + n_input_days + n_predict_days]
+        )
+        next_n_day_dates.append(
+            dates[idx + n_input_days : idx + n_input_days + n_predict_days]
+        )
+
+    input_dates = np.asarray(input_dates)
+    input_prices = np.asarray(input_prices)
+    next_n_day_prices = np.asarray(next_n_day_prices)
+    next_n_day_dates = np.asarray(next_n_day_dates)
+
+    (
+        X_train,
+        X_test,
+        y_train,
+        y_test,
+        X_dates_train,
+        X_dates_test,
+        y_dates_train,
+        y_dates_test,
+    ) = train_test_split(
+        input_prices,
+        next_n_day_prices,
+        input_dates,
+        next_n_day_dates,
+        test_size=test_size,
+    )
 
 
 def get_backtesting_data(
@@ -84,19 +131,12 @@ def plot_pred(
     df_stock: pd.DataFrame,
     df_future: pd.DataFrame,
     df_pred: pd.DataFrame,
+    title: str,
     bt_flag: bool,
 ):
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
-    # BACKTESTING
-    if ns_parser.s_end_date:
-        plt.title(
-            f"BACKTESTING: {ns_parser.n_length} Moving Average on {s_ticker} - {ns_parser.n_days} days prediction"
-        )
-    else:
-        plt.title(
-            f"{ns_parser.n_length} Moving Average on {s_ticker} - {ns_parser.n_days} days prediction"
-        )
+    plt.title(title)
     plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
     plt.xlabel("Time")
     plt.ylabel("Share Price ($)")

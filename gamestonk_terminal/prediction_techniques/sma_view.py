@@ -139,8 +139,8 @@ def simple_moving_average(other_args: List[str], s_ticker: str, df_stock: pd.Dat
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        df_ma = df_stock["5. adjusted close"].rolling(window=ns_parser.n_length).mean()
-        plt.plot(df_ma.index, df_ma, lw=2, linestyle="--", c="tab:orange")
+        # df_ma = df_stock["5. adjusted close"].rolling(window=ns_parser.n_length).mean()
+        # plt.plot(df_ma.index, df_ma, lw=2, linestyle="--", c="tab:orange")
         plt.plot(
             [df_stock.index[-1], df_pred.index[0]],
             [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
