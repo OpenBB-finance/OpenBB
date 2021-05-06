@@ -123,7 +123,7 @@ class ScreenerController:
                 for filter_header in filters_headers:
                     print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
-                    d_filters = dict((k, v) for k, v in d_filters.items() if v)
+                    d_filters = {k: v for k, v in d_filters.items() if v}
                     if d_filters:
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
