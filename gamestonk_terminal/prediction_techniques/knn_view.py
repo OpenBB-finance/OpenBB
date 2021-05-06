@@ -63,7 +63,7 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         dest="n_inputs",
         type=check_positive,
         default=40,
-        help="number of days to use for prediction.",
+        help="number of days to use as input for prediction.",
     )
     parser.add_argument(
         "-d",
@@ -99,7 +99,16 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         type=valid_date,
         dest="s_end_date",
         default=None,
-        help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        help="The end date (format YYYY-MM-DD) to select for testing",
+    )
+
+    parser.add_argument(
+        "-t",
+        "--test_size",
+        default = .2,
+        dest="test_size",
+        type = float,
+        help = "Percentage of data to validate in sample"
     )
 
     try:

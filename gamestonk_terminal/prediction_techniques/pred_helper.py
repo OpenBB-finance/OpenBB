@@ -26,10 +26,12 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 register_matplotlib_converters()
 
 
-def prepare_test_train_valid(
+def prepare_train_valid_test(
     df_stock, parsed_end_date, n_input_days, n_predict_days, test_size
 ):
 
+    df_test = df_stock[df_stock.index >= parsed_end_date]
+    df_stock = df_stock[df_stock.index < parsed_end_date]
     dates = df_stock.index
     prices = df_stock["5. adjusted close"].values
 
@@ -38,7 +40,12 @@ def prepare_test_train_valid(
     next_n_day_prices = []
     next_n_day_dates = []
 
+    test_days = []
+    test_inputs = []
+    test_next_n_days = []
+
     for idx in range(len(prices) - n_input_days - n_predict_days):
+
         input_prices.append(prices[idx : idx + n_input_days])
         input_dates.append(dates[idx : idx + n_input_days])
         next_n_day_prices.append(
@@ -55,19 +62,29 @@ def prepare_test_train_valid(
 
     (
         X_train,
-        X_test,
+        X_valid,
         y_train,
-        y_test,
+        y_valid,
         X_dates_train,
-        X_dates_test,
+        X_dates_valid,
         y_dates_train,
-        y_dates_test,
+        y_dates_valid,
     ) = train_test_split(
         input_prices,
         next_n_day_prices,
         input_dates,
         next_n_day_dates,
         test_size=test_size,
+    )
+    return (
+        X_train,
+        X_valid,
+        y_train,
+        y_valid,
+        X_dates_train,
+        X_dates_valid,
+        y_dates_train,
+        y_dates_valid,
     )
 
 
