@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from gamestonk_terminal.government import quiverquant_model
 from matplotlib import pyplot as plt
+import matplotlib.dates as mdates
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
@@ -302,6 +303,8 @@ def plot_congress(congress: pd.DataFrame, ticker: str):
     plt.title(f"Congress trading on {ticker}")
     plt.xlabel("Date")
     plt.ylabel("Amount [1k $]")
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+    plt.gcf().autofmt_xdate()
 
     if gtff.USE_ION:
         plt.ion()
