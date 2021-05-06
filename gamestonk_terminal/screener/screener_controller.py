@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import argparse
+import configparser
 from typing import List
 import matplotlib.pyplot as plt
 from gamestonk_terminal import feature_flags as gtff
@@ -86,36 +87,72 @@ class ScreenerController:
             prog="view",
             description="""View available presets under presets folder.""",
         )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            help="View specific preset",
+            default="",
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir("gamestonk_terminal/screener/presets")
+                if preset[-4:] == ".ini"
+            ],
+        )
 
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            presets = [
-                preset.split(".")[0]
-                for preset in os.listdir("gamestonk_terminal/screener/presets")
-                if preset[-4:] == ".ini"
-            ]
+            if ns_parser.preset:
+                preset_filter = configparser.RawConfigParser()
+                preset_filter.optionxform = str  # type: ignore
+                preset_filter.read(
+                    "gamestonk_terminal/screener/presets/" + ns_parser.preset + ".ini"
+                )
 
-            for preset in presets:
-                with open(
-                    "gamestonk_terminal/screener/presets/" + preset + ".ini",
-                    encoding="utf8",
-                ) as f:
-                    description = ""
-                    for line in f:
-                        if "[General]" == line.strip():
-                            break
-                        description += line.strip()
-                print(f"\nPRESET: {preset}")
-                print(description.split("Description: ")[1].replace("#", ""))
+                filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
+
+                print("")
+                for filter_header in filters_headers:
+                    print(f" - {filter_header} -")
+                    d_filters = {**preset_filter[filter_header]}
+                    d_filters = dict((k, v) for k, v in d_filters.items() if v)
+                    if d_filters:
+                        max_len = len(max(d_filters, key=len))
+                        for key, value in d_filters.items():
+                            print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    print("")
+
+            else:
+                presets = [
+                    preset.split(".")[0]
+                    for preset in os.listdir("gamestonk_terminal/screener/presets")
+                    if preset[-4:] == ".ini"
+                ]
+
+                for preset in presets:
+                    with open(
+                        "gamestonk_terminal/screener/presets/" + preset + ".ini",
+                        encoding="utf8",
+                    ) as f:
+                        description = ""
+                        for line in f:
+                            if "[General]" == line.strip():
+                                break
+                            description += line.strip()
+                    print(f"\nPRESET: {preset}")
+                    print(description.split("Description: ")[1].replace("#", ""))
+                    print("")
 
         except Exception as e:
             print(e)
-
-        print("")
-        return
 
     @staticmethod
     def set_preset(self, other_args: List[str]):
