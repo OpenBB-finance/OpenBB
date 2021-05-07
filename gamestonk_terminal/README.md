@@ -1,6 +1,7 @@
 # Features 📈
 
 ### Table of contents
+
 * [Discover Stocks](#Discover-Stocks-)
 * [Behavioural Analysis](#Behavioural-Analysis-)
 * [Research](#Research-)
@@ -24,48 +25,54 @@
 ## Main
 
 The main menu allows the following commands:
+
 ```
 load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 ```
-   * Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
-     * -s : The starting date (format YYYY-MM-DD) of the stock
-     * -i : Intraday stock minutes
-     * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
-     * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
+
+* Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
+  * -s : The starting date (format YYYY-MM-DD) of the stock
+  * -i : Intraday stock minutes
+  * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
+  * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
 
 **Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ```
 clear
 ```
-   * Clear previously loaded stock ticker.
+
+* Clear previously loaded stock ticker.
 
 ```
 view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
 ```
-   * Visualise historical data of a stock. An alpha_vantage key is necessary.
-     * -s : The starting date (format YYYY-MM-DD) of the stock
-     * -i : Intraday stock minutes
-     * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
+
+* Visualise historical data of a stock. An alpha_vantage key is necessary.
+  * -s : The starting date (format YYYY-MM-DD) of the stock
+  * -i : Intraday stock minutes
+  * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
 
 ![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
 
 ```
 candle
 ```
-  * Visualize candles historical data from the past 6 months, with support and resistance bars, and moving averages of 20 and 50
+
+* Visualize candles historical data from the past 6 months, with support and resistance bars, and moving averages of 20 and 50
 
 ![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
 
 ```
 export -f GNUS_data -F csv
 ```
-   * Exports the historical data from this ticker to a file or stdout.
-     * -f : Name of file to save the historical data exported (stdout if unspecified). Default: stdout.
-     * -F : Export historical data into following formats: csv, json, excel, clipboard. Default: csv.
 
+* Exports the historical data from this ticker to a file or stdout.
+  * -f : Name of file to save the historical data exported (stdout if unspecified). Default: stdout.
+  * -F : Export historical data into following formats: csv, json, excel, clipboard. Default: csv.
 
 ## Discover Stocks [»](discovery/README.md)
+
 Command|Description|Source
 ---|---|---
 `ipo`           |past and future IPOs |[Finnhub](https://finnhub.io)
@@ -86,12 +93,13 @@ Command|Description|Source
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`ratings `      |top ratings updates |[MarketBeat](https://marketbeat.com)
+`ratings`      |top ratings updates |[MarketBeat](https://marketbeat.com)
 `darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
 
 &nbsp;
 
 ## Behavioural Analysis [»](behavioural_analysis/README.md)
+
 Command|Description
 ----|----
 [FinBrain](https://finbrain.tech)|
@@ -120,26 +128,27 @@ Command|Description
 &nbsp;
 
 ## Research [»](research/README.md)
+
 Command|Website
 ----|----
-`macroaxis`         |www.macroaxis.com
-`yahoo`             |www.finance.yahoo.com
-`finviz`            |www.finviz.com
-`marketwatch`       |www.marketwatch.com
-`fool`              |www.fool.com
-`businessinsider`   |www.markets.businessinsider.com
-`fmp`               |www.financialmodelingprep.com
-`fidelity`          |www.eresearch.fidelity.com
-`tradingview`       |www.tradingview.com
-`marketchameleon`   |www.marketchameleon.com
-`stockrow`          |www.stockrow.com
-`barchart`          |www.barchart.com
-`grufity`           |www.grufity.com
-`fintel`            |www.fintel.com
-`zacks`             |www.zacks.com
-`macrotrends`       |www.macrotrends.net
-`newsfilter`        |www.newsfilter.io
-`stockanalysis`     |www.stockanalysis.com
+`macroaxis`         |<https://www.macroaxis.com>
+`yahoo`             |<https://www.finance.yahoo.com>
+`finviz`            |<https://www.finviz.com>
+`marketwatch`       |<https://www.marketwatch.com>
+`fool`              |<https://www.fool.com>
+`businessinsider`   |<https://www.markets.businessinsider.com>
+`fmp`               |<https://www.financialmodelingprep.com>
+`fidelity`          |<https://www.eresearch.fidelity.com>
+`tradingview`       |<https://www.tradingview.com>
+`marketchameleon`   |<https://www.marketchameleon.com>
+`stockrow`          |<https://www.stockrow.com>
+`barchart`          |<https://www.barchart.com>
+`grufity`           |<https://www.grufity.com>
+`fintel`            |<https://www.fintel.com>
+`zacks`             |<https://www.zacks.com>
+`macrotrends`       |<https://www.macrotrends.net>
+`newsfilter`        |<https://www.newsfilter.io>
+`stockanalysis`     |<https://www.stockanalysis.com>
 
 &nbsp;
 
@@ -180,6 +189,7 @@ Command|Description
 &nbsp;
 
 ## Technical Analysis [»](technical_analysis/README.md)
+
 Command | Description | Sources
 ------ | ------ | ------
 `view`         | view historical data and trendlines| [Finviz](https://finviz.com/quote.ashx?t=tsla)
@@ -207,6 +217,7 @@ Command | Description | Sources
 &nbsp;
 
 ## Due Diligence [»](due_diligence/README.md)
+
 Command|Description|Source
 ------ | --------|----
 `news`          |latest news of the company |[Finviz](https://finviz.com/)
@@ -227,6 +238,7 @@ Command|Description|Source
 &nbsp;
 
 ## Prediction Techniques [»](prediction_techniques/README.md)
+
 Command|Technique|Sources
 ------ | ------------|---
 `sma`         |simple moving average | [Wikipedia](https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average), [Investopedia](https://www.investopedia.com/terms/s/sma.asp)
@@ -279,9 +291,9 @@ Command|Description
 Command|Description
 ------ | ------------
 [coingecko](#https://www.coingecko.com/en)|
-`load`| load cryptocurrency data 
-`view`| view loaded cryptocurrency data 
-`trend`| view top 7 coins 
+`load`| load cryptocurrency data
+`view`| view loaded cryptocurrency data
+`trend`| view top 7 coins
 [coinmarketcap](#http://coinmarketcap.com)|
 `top` | view top coins from coinmarketcap
 [binance](#http://binance.us)|
@@ -293,6 +305,7 @@ Command|Description
 &nbsp;
 
 ## Comparison Analysis [»](comparison_analysis/README.md)
+
 Command|Description|Source
 ------ | --------|----
 `get`           |get similar companies |[Polygon](https://polygon.io)
@@ -308,6 +321,7 @@ Command|Description|Source
 &nbsp;
 
 ## Exploratory Data Analysis [»](exploratory_data_analysis/README.md)
+
 Command|Description|Source
 ------ | --------|----
 `get`           |get similar companies |[Polygon](https://polygon.io)
@@ -322,7 +336,8 @@ Command|Description|Source
 
 &nbsp;
 
-## Residual Analysis [»](residual_analysis/README.md)
+## Residual Analysis [»](residuals_analysis/README.md)
+
 Command|Description|Source
 ------ | --------|----
 `pick`          |pick one of the model fitting | Supports [ARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Naive](https://en.wikipedia.org/wiki/Forecasting#Naïve_approach)
@@ -340,25 +355,27 @@ Command|Description|Source
 &nbsp;
 
 ## Economy [»](econ/README.md)
+
 Command|Description|Source
------- | -------- | -------- 
-`events`        | economic impact events | https://finnhub.io
-`fred`          | display customized FRED data | https://fred.stlouisfed.org
-`vixcls`        | Volatility Index | https://fred.stlouisfed.org
-`gdp`           | Gross Domestic Product | https://fred.stlouisfed.org
-`unrate`        | Unemployment Rate | https://fred.stlouisfed.org
-`dgs1`          | 1-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
-`dgs5`          | 5-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
-`dgs10`         | 10-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
-`dgs30`         | 30-Year Treasury Constant Maturity Rate | https://fred.stlouisfed.org
-`mortgage30us`  | 30-Year Fixed Rate Mortgage Average | https://fred.stlouisfed.org
-`fedfunds`      | Effective Federal Funds Rate | https://fred.stlouisfed.org
-`aaa`           | Moody's Seasoned AAA Corporate Bond Yield | https://fred.stlouisfed.org
-`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | https://fred.stlouisfed.org
+------ | -------- | --------
+`events`        | economic impact events | <https://finnhub.io>
+`fred`          | display customized FRED data | <https://fred.stlouisfed.org>
+`vixcls`        | Volatility Index | <https://fred.stlouisfed.org>
+`gdp`           | Gross Domestic Product | <https://fred.stlouisfed.org>
+`unrate`        | Unemployment Rate | <https://fred.stlouisfed.org>
+`dgs1`          | 1-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
+`dgs5`          | 5-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
+`dgs10`         | 10-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
+`dgs30`         | 30-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
+`mortgage30us`  | 30-Year Fixed Rate Mortgage Average | <https://fred.stlouisfed.org>
+`fedfunds`      | Effective Federal Funds Rate | <https://fred.stlouisfed.org>
+`aaa`           | Moody's Seasoned AAA Corporate Bond Yield | <https://fred.stlouisfed.org>
+`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | <https://fred.stlouisfed.org>
 
 &nbsp;
 
 ## Options [»](options/README.md)
+
 Command|Description|Source
 ------ | --------|----
 `exp`           | see/set expiry date
@@ -371,6 +388,7 @@ Command|Description|Source
 &nbsp;
 
 ## Screener [»](screener/README.md)
+
 Command|Description|Source
 ------ | --------|----
 view           |view available presets | [presets]((screener/presets/README.md))
@@ -388,6 +406,7 @@ signals        |view filter signals (e.g. -s top_gainers)
 &nbsp;
 
 ## Forex [»](forex/README.md)
+
 Command|Description
 ------ | --------
 summary      |display a summary of your account
@@ -408,20 +427,18 @@ positionbook |display the positionbook if Oanda provides one for the forex instr
 &nbsp;
 
 ## Backtesting [»](backtesting/README.md)
+
 Command|Description
 ------ | --------
 `ema`           | buy when price exceeds EMA(l)
 `ema_cross`     | buy when EMA(short) > EMA(long)
 `rsi`           | buy when RSI < low and sell when RSI > high
 
-
-
 ## Resource Collection [»](resource_collection/README.md)
+
 Command|Website
 ----|----
-`hfletters`         |https://miltonfmr.com/hedge-fund-letters/
-`learn`             |https://moongangcapital.com/free-stock-market-resources/
+`hfletters`         |<https://miltonfmr.com/hedge-fund-letters/>
+`learn`             |<https://moongangcapital.com/free-stock-market-resources/>
 
 &nbsp;
-
-
