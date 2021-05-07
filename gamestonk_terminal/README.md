@@ -439,8 +439,12 @@ Command|Description
 
 Command|Website
 ----|----
-`hfletters`         |<https://miltonfmr.com/hedge-fund-letters/>
-`learn`             |<https://moongangcapital.com/free-stock-market-resources/>
+`hfletters`     |<https://miltonfmr.com/hedge-fund-letters/>
+`arxiv`         |<https://arxiv.org>
+`finra`         |<https://www.finra.org/#/>
+`edgar`         |<https://www.sec.gov/edgar.shtml>
+`fred`          |<https://fred.stlouisfed.org>
+`learn`         |<https://moongangcapital.com/free-stock-market-resources/>
 
 &nbsp;
 
