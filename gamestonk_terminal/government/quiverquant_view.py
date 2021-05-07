@@ -35,8 +35,17 @@ def last_congress(other_args: List[str]):
         action="store",
         dest="past_transactions_days",
         type=check_positive,
-        default=3,
+        default=5,
         help="Past transaction days",
+    )
+    parser.add_argument(
+        "-r",
+        "--representative",
+        action="store",
+        dest="representative",
+        type=str,
+        default="",
+        help="Congress representative",
     )
 
     try:
@@ -78,7 +87,21 @@ def last_congress(other_args: List[str]):
             columns={"TransactionDate": "Transaction Date", "ReportDate": "Report Date"}
         )
 
-        print(df_congress.to_string(index=False))
+        if ns_parser.representative:
+            df_congress_rep = df_congress[
+                df_congress["Representative"].str.split().str[0]
+                == ns_parser.representative
+            ]
+
+            if df_congress_rep.empty:
+                print(
+                    f"No representative {ns_parser.representative} found in the past {ns_parser.past_transactions_days}"
+                    f" days. The following are available: {', '.join(df_congress['Representative'].str.split().str[0].unique())}"
+                )
+            else:
+                print(df_congress_rep.to_string(index=False))
+        else:
+            print(df_congress.to_string(index=False))
         print("")
 
     except Exception as e:
@@ -164,18 +187,21 @@ def buy_congress(other_args: List[str]):
 
         df_congress = df_congress.sort_values("TransactionDate", ascending=True)
 
-        print(
-            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} "
-            "months in the worst case scenario"
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        df_congress.groupby("Ticker")["upper"].sum().sort_values(ascending=False).head(
+            n=ns_parser.top_num
+        ).plot(kind="bar", rot=0)
+        plt.ylabel("Amount [$]")
+        plt.title(
+            f"Top {ns_parser.top_num} most bought stocks since last {ns_parser.past_transactions_months} "
+            "months (upper bound)"
         )
-        print(
-            df_congress.groupby("Ticker")["lower"]
-            .sum()
-            .sort_values()
-            .abs()
-            .head(n=ns_parser.top_num)
-            .to_string(header=False)
-        )
+        plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
         print("")
 
     except Exception as e:
@@ -261,17 +287,22 @@ def sell_congress(other_args: List[str]):
 
         df_congress = df_congress.sort_values("TransactionDate", ascending=True)
 
-        print(
-            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} "
-            "months in the worst case scenario"
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        df_congress.groupby("Ticker")["lower"].sum().sort_values().abs().head(
+            n=ns_parser.top_num
+        ).plot(kind="bar", rot=0)
+        plt.ylabel("Amount [$]")
+        plt.title(
+            f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} months"
+            " (upper bound)"
         )
-        print(
-            df_congress.groupby("Ticker")["upper"]
-            .sum()
-            .sort_values(ascending=False)
-            .head(n=ns_parser.top_num)
-            .to_string(header=False)
-        )
+        plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+
         print("")
 
     except Exception as e:
