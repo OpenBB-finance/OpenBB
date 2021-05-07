@@ -24,17 +24,19 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
 * [signals](#signals)
   * view filter signals (e.g. -s top_gainers) [Finviz]
 * [> po](portfolio_optimization/README.md)
-  * portfolio optimization for last screened tickers
+  * **portfolio optimization for last screened tickers**
 
 ## view <a name="view"></a>
 
 ```text
-view
+usage: view [-p {template,sexy_year}]
 ```
-
 View available presets under presets folder.
 
-<img width="938" alt="Captura de ecrã 2021-04-05, às 20 13 28" src="https://user-images.githubusercontent.com/25267873/113615237-856a9380-964b-11eb-9e39-a65f0291746d.png">
+* -p : View specific preset filters.
+
+<img width="1203" alt="Captura de ecrã 2021-05-06, às 20 46 41" src="https://user-images.githubusercontent.com/25267873/117356901-30b97300-aeac-11eb-91fe-ed6495db6614.png">
+
 
 
 ## set <a name="set"></a>

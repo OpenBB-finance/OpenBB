@@ -21,6 +21,7 @@
 * [Forex](#Forex-)
 * [Backtesting](#Backtesting-)
 * [Resource Collection](#Resource-Collection-)
+* [Government](#Government-)
 
 ## Main
 
@@ -438,7 +439,24 @@ Command|Description
 
 Command|Website
 ----|----
-`hfletters`         |<https://miltonfmr.com/hedge-fund-letters/>
-`learn`             |<https://moongangcapital.com/free-stock-market-resources/>
+`hfletters`     |<https://miltonfmr.com/hedge-fund-letters/>
+`arxiv`         |<https://arxiv.org>
+`finra`         |<https://www.finra.org/#/>
+`edgar`         |<https://www.sec.gov/edgar.shtml>
+`fred`          |<https://fred.stlouisfed.org>
+`learn`         |<https://moongangcapital.com/free-stock-market-resources/>
 
 &nbsp;
+
+
+## Government [»](government/README.md)
+Command|Website
+----|----
+`last_congress`         |last congress trading
+`buy_congress`          |top buy congress tickers
+`sell_congress`         |top sell congress tickers
+with ticker provided    |
+`congress`              | congress trades on the ticker
+
+&nbsp;
+
