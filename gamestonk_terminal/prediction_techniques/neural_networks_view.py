@@ -29,6 +29,7 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction_nn,
     price_prediction_backtesting_color,
     print_prediction_kpis,
+    prepare_scale_train_valid_test,
 )
 
 from gamestonk_terminal import feature_flags as gtff
@@ -143,7 +144,7 @@ def _parse_args(prog: str, description: str, other_args: List[str]):
         action="store",
         dest="n_epochs",
         type=check_positive,
-        default=200,
+        default=50,
         help="number of training epochs.",
     )
     parser.add_argument(
@@ -250,6 +251,14 @@ def _parse_args(prog: str, description: str, other_args: List[str]):
         type=check_positive,
         default=1,
         help="number of loops to iterate and train models",
+    )
+    parser.add_argument(
+        "-v",
+        "--valid",
+        type=float,
+        dest="valid_split",
+        default=0.1,
+        help="Validation data split fraction",
     )
 
     try:
@@ -1016,58 +1025,79 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             return
 
         # Setup backtesting
-        df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
+        # df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
 
         # Pre-process data
-        scaler, stock_train_data, stock_x, stock_y = _preprocess_split(
-            df_stock, ns_parser
-        )
-        stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
-        stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
+        # scaler, stock_train_data, stock_x, stock_y = _preprocess_split(
+        #    df_stock, ns_parser
+        # )
+        # stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
+        # stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
 
+        (
+            X_train,
+            X_test,
+            y_train,
+            y_test,
+            X_dates_train,
+            X_dates_test,
+            y_dates_train,
+            y_dates_test,
+            test_data,
+            dates_test,
+            scaler,
+        ) = prepare_scale_train_valid_test(df_stock, ns_parser)
         # Build Neural Network model
         model = build_neural_network_model(
             cfg_nn_models.Long_Short_Term_Memory, ns_parser.n_inputs, ns_parser.n_days
         )
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
-
-        for idx_loop in range(ns_parser.n_loops):
-            # Train our model
-            model.fit(
-                stock_x,
-                stock_y,
-                epochs=ns_parser.n_epochs,
-                batch_size=ns_parser.n_batch_size,
-                verbose=1,
-            )
-            print("")
-
-            print(model.summary())
-            print("")
-
-            # Prediction
-            yhat = model.predict(
-                stock_train_data[-ns_parser.n_inputs :].reshape(
-                    1, ns_parser.n_inputs, 1
-                ),
-                verbose=0,
-            )
-
-            if idx_loop == 0:
-                # Re-scale the data back, plot, and print the results
-                df_pred = _rescale_data(
-                    df_stock, ns_parser, scaler, yhat, idx_loop
-                ).to_frame()
-            else:
-                df_pred = df_pred.join(
-                    _rescale_data(
-                        df_stock, ns_parser, scaler, yhat, idx_loop
-                    ).to_frame()
-                )
-
-        _plot_and_print_results(
-            df_stock, ns_parser, df_future, df_pred, "LSTM", s_ticker
+        print(X_train.shape, X_test.shape)
+        model.fit(
+            X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
+            y_train,
+            epochs=ns_parser.n_epochs,
+            verbose=True,
+            validation_data=(X_test, y_test),
         )
+
+        # for idx_loop in range(ns_parser.n_loops):
+        # Train our model
+        #    model.fit(
+        #        stock_x,
+        #        stock_y,
+        #        epochs=ns_parser.n_epochs,
+        #        batch_size=ns_parser.n_batch_size,
+        #        verbose=1,
+        #    )
+        #    print("")
+
+        #    print(model.summary())
+        #    print("")
+
+        #    # Prediction
+        #    yhat = model.predict(
+        #        stock_train_data[-ns_parser.n_inputs :].reshape(
+        #            1, ns_parser.n_inputs, 1
+        #        ),
+        #        verbose=0,
+        #    )
+
+        #    if idx_loop == 0:
+        # Re-scale the data back, plot, and print the results
+        #        df_pred = _rescale_data(
+        #            df_stock, ns_parser, scaler, yhat, idx_loop
+        #        ).to_frame()
+        #    else:
+        #        df_pred = df_pred.join(
+        #            _rescale_data(
+        #                df_stock, ns_parser, scaler, yhat, idx_loop
+        #            ).to_frame()
+        #        )
+
+        # _plot_and_print_results(
+        #    df_stock, ns_parser, df_future, df_pred, "LSTM", s_ticker
+        # )
 
     except Exception as e:
         print(e)

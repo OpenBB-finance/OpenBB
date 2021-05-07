@@ -1,8 +1,9 @@
 """ Prediction helper functions """
 __docformat__ = "numpy"
 
+import argparse
 from typing import Tuple
-from datetime import datetime
+from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -14,7 +15,7 @@ from sklearn.metrics import (
     mean_squared_error,
 )
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
 from gamestonk_terminal.helper_funcs import (
     get_next_stock_market_days,
     patch_pandas_text_adjustment,
@@ -26,26 +27,72 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 register_matplotlib_converters()
 
 
-def prepare_train_valid_test(
-    df_stock, parsed_end_date, n_input_days, n_predict_days, test_size
+def prepare_scale_train_valid_test(
+    df_stock: pd.DataFrame, ns_parser: argparse.Namespace
 ):
+    """
+    Prepare and scale train, validate and test data.
+    Parameters
+    ----------
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    ns_parser: argparse.Namespace
+        Parsed arguments
+    Returns
+    -------
+    X_train: np.ndarray
+        Array of training data.  Shape (# samples, n_inputs, 1)
+    X_test: np.ndarray
+        Array of validation data.  Shape (#samples, n_inputs, 1)
+    y_train: np.ndarray
+        Array of training outputs.  Shape (#samples, n_days)
+    y_test: np.ndarray
+        Array of validation outputs.  Shape (#samples, n_days)
+    X_dates_train: np.ndarray
+        Array of dates for X_train
+    X_dates_test: np.ndarray
+        Array of dates for X_test
+    y_dates_train: np.ndarray
+        Array of dates for y_train
+    y_dates_test: np.ndarray
+        Array of dates for y)test
+    test_data: np.ndarray
+        Array of prices after the specified end date
+    dates_test: np.ndarray
+        Array of dates after specified end date
+    scaler:
+        Fitted preprocesser
+    """
+    parsed_end_date = ns_parser.s_end_date or df_stock.index[-1]-timedelta(days=3)
+    n_input_days = ns_parser.n_inputs
+    n_predict_days = ns_parser.n_days
+    test_size = ns_parser.valid_split
 
-    df_test = df_stock[df_stock.index >= parsed_end_date]
-    df_stock = df_stock[df_stock.index < parsed_end_date]
-    dates = df_stock.index
-    prices = df_stock["5. adjusted close"].values
+    # Pre-process data
+    if ns_parser.s_preprocessing == "standardization":
+        scaler = StandardScaler()
+
+    elif ns_parser.s_preprocessing == "minmax":
+        scaler = MinMaxScaler()
+
+    elif ns_parser.s_preprocessing == "normalization":
+        scaler = Normalizer()
+
+    test_data = df_stock[df_stock.index > parsed_end_date]
+    train_data = df_stock[df_stock.index < parsed_end_date]
+    dates = train_data.index
+    dates_test = test_data.index
+    scaler = scaler
+    train_data = scaler.fit_transform(train_data.values.reshape(-1, 1))
+    test_data = scaler.transform(test_data.values.reshape(-1, 1))
+    prices = train_data
 
     input_dates = []
     input_prices = []
     next_n_day_prices = []
     next_n_day_dates = []
 
-    test_days = []
-    test_inputs = []
-    test_next_n_days = []
-
     for idx in range(len(prices) - n_input_days - n_predict_days):
-
         input_prices.append(prices[idx : idx + n_input_days])
         input_dates.append(dates[idx : idx + n_input_days])
         next_n_day_prices.append(
@@ -55,20 +102,20 @@ def prepare_train_valid_test(
             dates[idx + n_input_days : idx + n_input_days + n_predict_days]
         )
 
-    input_dates = np.asarray(input_dates)
-    input_prices = np.asarray(input_prices)
-    next_n_day_prices = np.asarray(next_n_day_prices)
-    next_n_day_dates = np.asarray(next_n_day_dates)
+    input_dates = np.array(input_dates)
+    input_prices = np.array(input_prices)
+    next_n_day_prices = np.array(next_n_day_prices)
+    next_n_day_dates = np.array(next_n_day_dates)
 
     (
         X_train,
-        X_valid,
+        X_test,
         y_train,
-        y_valid,
+        y_test,
         X_dates_train,
-        X_dates_valid,
+        X_dates_test,
         y_dates_train,
-        y_dates_valid,
+        y_dates_test,
     ) = train_test_split(
         input_prices,
         next_n_day_prices,
@@ -76,15 +123,19 @@ def prepare_train_valid_test(
         next_n_day_dates,
         test_size=test_size,
     )
+
     return (
         X_train,
-        X_valid,
+        X_test,
         y_train,
-        y_valid,
+        y_test,
         X_dates_train,
-        X_dates_valid,
+        X_dates_test,
         y_dates_train,
-        y_dates_valid,
+        y_dates_test,
+        test_data,
+        dates_test,
+        scaler,
     )
 
 
@@ -142,132 +193,6 @@ def get_backtesting_data(
     df_future = df_stock[future_index[0] : future_index[-1]]
     df_stock = df_stock[:parsed_end_date]
     return df_future, df_stock, True
-
-
-def plot_pred(
-    df_stock: pd.DataFrame,
-    df_future: pd.DataFrame,
-    df_pred: pd.DataFrame,
-    title: str,
-    bt_flag: bool,
-):
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
-    plt.title(title)
-    plt.xlim(df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1])
-    plt.xlabel("Time")
-    plt.ylabel("Share Price ($)")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    df_ma = df_stock["5. adjusted close"].rolling(window=ns_parser.n_length).mean()
-    plt.plot(df_ma.index, df_ma, lw=2, linestyle="--", c="tab:orange")
-    plt.plot(
-        [df_stock.index[-1], df_pred.index[0]],
-        [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
-        lw=1,
-        c="tab:green",
-        linestyle="--",
-    )
-    plt.plot(df_pred.index, df_pred, lw=2, c="tab:green")
-    plt.axvspan(
-        df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
-    )
-    _, _, ymin, ymax = plt.axis()
-    plt.vlines(df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k")
-
-    if bt_flag:
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.subplot(211)
-        plt.plot(
-            df_future.index,
-            df_future["5. adjusted close"],
-            lw=2,
-            c="tab:blue",
-            ls="--",
-        )
-        plt.plot(df_pred.index, df_pred, lw=2, c="green")
-        plt.scatter(df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3)
-        plt.plot(
-            [df_stock.index[-1], df_future.index[0]],
-            [
-                df_stock["5. adjusted close"].values[-1],
-                df_future["5. adjusted close"].values[0],
-            ],
-            lw=2,
-            c="tab:blue",
-            ls="--",
-        )
-        plt.scatter(df_pred.index, df_pred, c="green", lw=3)
-        plt.plot(
-            [df_stock.index[-1], df_pred.index[0]],
-            [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
-            lw=2,
-            c="green",
-            ls="--",
-        )
-        plt.title("BACKTESTING: Real data price versus Prediction")
-        plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-        plt.xticks(
-            [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
-            visible=True,
-        )
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.legend(["Real data", "Prediction data"])
-        plt.xticks([])
-
-        plt.subplot(212)
-        plt.axhline(y=0, color="k", linestyle="--", linewidth=2)
-        plt.plot(
-            df_future.index,
-            100
-            * (df_pred.values - df_future["5. adjusted close"].values)
-            / df_future["5. adjusted close"].values,
-            lw=2,
-            c="red",
-        )
-        plt.scatter(
-            df_future.index,
-            100
-            * (df_pred.values - df_future["5. adjusted close"].values)
-            / df_future["5. adjusted close"].values,
-            c="red",
-            lw=5,
-        )
-        plt.title("BACKTESTING: Error between Real data and Prediction [%]")
-        plt.plot(
-            [df_stock.index[-1], df_future.index[0]],
-            [
-                0,
-                100
-                * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
-                / df_future["5. adjusted close"].values[0],
-            ],
-            lw=2,
-            ls="--",
-            c="red",
-        )
-        plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-        plt.xticks(
-            [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)],
-            visible=True,
-        )
-        plt.xlabel("Time")
-        plt.ylabel("Prediction Error (%)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.legend(["Real data", "Prediction data"])
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
-
-    pass
 
 
 def price_prediction_color(val: float, last_val: float) -> str:

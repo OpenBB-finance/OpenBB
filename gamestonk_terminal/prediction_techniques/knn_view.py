@@ -105,10 +105,10 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
     parser.add_argument(
         "-t",
         "--test_size",
-        default = .2,
+        default=0.2,
         dest="test_size",
-        type = float,
-        help = "Percentage of data to validate in sample"
+        type=float,
+        help="Percentage of data to validate in sample",
     )
 
     try:
