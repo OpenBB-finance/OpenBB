@@ -102,10 +102,10 @@ def prepare_scale_train_valid_test(
             dates[idx + n_input_days : idx + n_input_days + n_predict_days]
         )
 
-    input_dates = np.array(input_dates)
+    input_dates = np.asarray(input_dates)
     input_prices = np.array(input_prices)
     next_n_day_prices = np.array(next_n_day_prices)
-    next_n_day_dates = np.array(next_n_day_dates)
+    next_n_day_dates = np.asarray(next_n_day_dates)
 
     (
         X_train,
@@ -123,7 +123,6 @@ def prepare_scale_train_valid_test(
         next_n_day_dates,
         test_size=test_size,
     )
-
     return (
         X_train,
         X_test,

@@ -1023,7 +1023,6 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         )
         if not ns_parser:
             return
-
         # Setup backtesting
         # df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
 
@@ -1046,7 +1045,7 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             test_data,
             dates_test,
             scaler,
-        ) = prepare_scale_train_valid_test(df_stock, ns_parser)
+        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
         # Build Neural Network model
         model = build_neural_network_model(
             cfg_nn_models.Long_Short_Term_Memory, ns_parser.n_inputs, ns_parser.n_days
@@ -1061,6 +1060,13 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             validation_data=(X_test, y_test),
         )
 
+        preds = model.predict(X_test.reshape(X_test.shape[0], X_test.shape[1], 1))
+
+        plt.scatter(df_stock.index, df_stock["5. adjusted close"].values, s= 3)
+        for i in range(len(y_test)):
+            plt.plot(y_dates_test[i], scaler.inverse_transform(preds[i].reshape(-1,1)), "r", lw=3)
+            plt.fill_between(y_dates_test[i])
+        plt.show()
         # for idx_loop in range(ns_parser.n_loops):
         # Train our model
         #    model.fit(
