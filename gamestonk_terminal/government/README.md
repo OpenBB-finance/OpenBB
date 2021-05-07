@@ -22,7 +22,8 @@ usage: last_congress [-p PAST_TRANSACTIONS_DAYS]
 ```
 Last congress trading. [Source: www.quiverquant.com]
 
-* -p : Past transaction days. Default: 3.
+* -p : Past transaction days. Default: 5.
+* -r : Congress representative.
 
 <img width="1013" alt="last_congress" src="https://user-images.githubusercontent.com/25267873/117346752-16799800-aea0-11eb-9b82-c28e712694d1.png">
 
@@ -36,7 +37,7 @@ Top buy congress trading. [Source: www.quiverquant.com]
 * -p : Past transaction months. Default: 6.
 * -t : Number of top tickers. Default: 10.
 
-<img width="1006" alt="buy_congress" src="https://user-images.githubusercontent.com/25267873/117346660-f4801580-ae9f-11eb-845b-7d403bffacc6.png">
+![buy](https://user-images.githubusercontent.com/25267873/117505803-8b220480-af7c-11eb-91cb-f51d2b585a17.png)
 
 
 ## sell_congress <a name="sell_congress"></a>
@@ -48,7 +49,7 @@ Top sell congress trading. [Source: www.quiverquant.com]
 * -p : Past transaction months. Default: 6.
 * -t : Number of top tickers. Default: 10.
 
-<img width="1010" alt="sell_congress" src="https://user-images.githubusercontent.com/25267873/117346669-f77b0600-ae9f-11eb-8d81-7aa366c596b3.png">
+![sold](https://user-images.githubusercontent.com/25267873/117505806-8c533180-af7c-11eb-8223-f11b08c72675.png)
 
 
 ## congress <a name="congress"></a>
