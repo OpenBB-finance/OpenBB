@@ -355,6 +355,14 @@ Feel free to share loss porn, memes or any questions at:
 * Discord: https://discord.gg/Up2QGbMKHY
 * Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
 
+
+#### Shoutout to:
+* **alokan** : Responsible by developing `Forex` menu
+* **pll_llq** and **hinxx** : Working towards a GUI using Qt. 
+  * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
+* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonk.vercel.app. 
+  * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
+
 ## Acknowledgments
 
 * [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
