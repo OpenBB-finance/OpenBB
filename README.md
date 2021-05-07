@@ -20,13 +20,13 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
-
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/gamestonkt.svg?style=social&label=Follow%20%40gamestonkt)](https://twitter.com/gamestonkt)
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/DidierRLopes/GamestonkTerminal">
-    <img src="images/gst_logo_rGreen.png" alt="Logo" width="400" height="400">
+    <img src="images/gst_logo_lockup_rGreen_with_letters.png" alt="Logo" width="800" height="276">
   </a>
 
   <h3 align="center">Gamestonk Terminal 🚀</h3>
@@ -87,6 +87,8 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Getting Started
 ### Install
+
+If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.twitch.tv/videos/1008414642).
 
 This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
 
@@ -158,7 +160,7 @@ python terminal.py
 ```
 10. (Windows - Optional) Speeding up opening process in the future
 
-After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing. 
+After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing.
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
@@ -227,10 +229,12 @@ These are the ones where a key is necessary:
   * Tradier: https://developer.tradier.com/getting_started
   * Oanda API: https://developer.oanda.com
   * CoinMarketCap API: https://coinmarketcap.com/api/
+  * Finhub API: https://finnhub.io
+  * Binance: https://binance.us (US) / https://binance.com (Outside US)
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN, GT_CMC_API_KEY.
+Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN, GT_CMC_API_KEY, GT_CMC_API_KEY, API_FINNHUB_KEY, GT_API_BINANCE_KEY, GT_API_BINANCE_SECRET.
 
 Example:
 ```
@@ -295,9 +299,9 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Appease the linters and commit again if needed
-   1. Install and run `black` for every change you've made
-   2. Install and run `flake8` for every change you've made. `flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics`
+4. Install the pre-commit hooks by running:
+      ```pre-commit install```.
+   Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
@@ -339,15 +343,18 @@ Trading in financial instruments involves high risks including the risk of losin
 
 [James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
 
-Feel free to share loss porn, memes or any questions: https://discord.gg/Up2QGbMKHY
+Feel free to share loss porn, memes or any questions at:
+* Discord: https://discord.gg/Up2QGbMKHY
+* Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
 
 ## Acknowledgments
 
-* [VICE article](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
-* [Daily Fintech article](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
-* [HackerNews](https://news.ycombinator.com/item?id=26258773)
-* [Reddit r/algotrading](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
-* [Reddit r/Python](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
+* [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
+* [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
+* [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing ](https://news.ycombinator.com/item?id=26258773)
+* [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
+* [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
+* [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

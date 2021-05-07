@@ -14,6 +14,7 @@ from gamestonk_terminal.behavioural_analysis import (
     reddit_view,
     stocktwits_view,
     finbrain_view,
+    finnhub_view,
 )
 
 
@@ -41,6 +42,7 @@ class BehaviouralAnalysisController:
         "queries",
         "rise",
         "finbrain",
+        "stats",
     ]
 
     def __init__(self, ticker: str, start: datetime):
@@ -63,6 +65,7 @@ class BehaviouralAnalysisController:
         print("   quit          quit to abandon program")
         print("")
         print("   finbrain      sentiment from 15+ major news headlines")
+        print("   stats         sentiment stats including comparison with sector")
         print("")
         print("Reddit:")
         print(
@@ -217,6 +220,10 @@ class BehaviouralAnalysisController:
     def call_finbrain(self, other_args: List[str]):
         """Process finbrain command"""
         finbrain_view.sentiment_analysis(other_args, self.ticker)
+
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        finnhub_view.sentiment_stats(other_args, self.ticker)
 
 
 def menu(ticker: str, start: datetime):

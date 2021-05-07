@@ -55,11 +55,13 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   > scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
     )
     print("   > mill        papermill menu, \t\t menu to generate notebook reports")
-    print("   > econ        economic data, \t\t from: FRED, VIX")
+    print("   > econ        economic data, \t\t e.g.: FRED, events")
     print(
         "   > pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally "
     )
-    print("   > crypto      cryptocurrencies, \t\t uses coingecko api")
+    print(
+        "   > crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance"
+    )
     print(
         "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
     )

@@ -40,6 +40,7 @@
 * [x] Add latest and trending news commands (@hinxx) - [PR #347](https://github.com/DidierRLopes/GamestonkTerminal/pull/347)
 * [x] Add top ratings updates (@hinxx) - [PR #357](https://github.com/DidierRLopes/GamestonkTerminal/pull/357)
 * [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
+* [x] Past and future IPOs calendar (@didier) - [PR #432](https://github.com/DidierRLopes/GamestonkTerminal/pull/432)
 
 
 **NEXT**
@@ -49,6 +50,7 @@
 
 ## Behavioral Analysis
 * [x] Add FinBrain sentiment from news (@didier) - [PR #223](https://github.com/DidierRLopes/GamestonkTerminal/pull/223)
+* [x] Sentiment stats from Finnhub (@didier) - [PR #433](https://github.com/DidierRLopes/GamestonkTerminal/pull/433)
 
 **NEXT**
 * [ ] Implement a better Twitter client (@aia)
@@ -78,15 +80,17 @@
 * [x] Add technical summary report provided by FinBrain (@didier) - [PR #294](https://github.com/DidierRLopes/GamestonkTerminal/pull/294)
 * [x] Add recommendation based on technical indicators from Tradingview (@didier) - [PR #301](https://github.com/DidierRLopes/GamestonkTerminal/pull/301)
 * [x] Add view of stock historical price with trendlines (support, resistance) by Finviz (@didier) - [PR #317](https://github.com/DidierRLopes/GamestonkTerminal/pull/317)
+* [x] Add auto-recognition of major TA patterns (@didier) - [PR #429](https://github.com/DidierRLopes/GamestonkTerminal/pull/429)
 
 **NEXT**
-* [ ] Add auto-recognition of major TA patterns (@didier)
+
 
 ---
 
 ## Due Diligence
 * [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
-* [x] Add failure to deliver command (@hinxx) - [PR #366](#https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
+* [x] Add failure to deliver command (@hinxx) - [PR #366](https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
+* [x] Ratings over time (@didier) - [PR #431](https://github.com/DidierRLopes/GamestonkTerminal/pull/431)
 
 **NEXT**
 
@@ -171,6 +175,7 @@ ___
 ## Economy
 * [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
 * [x] Refactor FRED to ECON menu and add VIX view (@jmaslek) - [PR #405](https://github.com/DidierRLopes/GamestonkTerminal/pull/405)
+* [x] Output economic impact events calendar (@didier) - [PR #430](https://github.com/DidierRLopes/GamestonkTerminal/pull/430)
 
 **NEXT**
 
@@ -195,13 +200,13 @@ ___
 ---
 
 ## Cryptocurrencies
-* [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] Add Coingecko (@jmaslek) - [PR #283](https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
 * [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
+* [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add crypto charts
-* [ ] Add binance 
 * [ ] Add top altcoin lists
 ---
 

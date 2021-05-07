@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: 21.4b2
+    hooks:
+      - id: black
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.1
+    hooks:
+      - id: flake8
+        entry: flake8 --max-line-length=122 --ignore=E203,W503
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.0.0
+    hooks:
+      - id: codespell
+        entry: codespell
+        args: [ '--ignore-words-list="mape","ba","hist"', '--quiet-level=2', '--skip=".git,*.yaml,*.json,./tests"' ]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'v0.812'
+    hooks:
+      - id: mypy
+        args: [ --ignore-missing-imports ]
+  - repo: https://github.com/pre-commit/mirrors-pylint
+    rev: 'v3.0.0a3'
+    hooks:
+      - id: pylint
+        entry: pylint terminal.py gamestonk_terminal tests
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.1.0
+    hooks:
+      - id: detect-secrets
+        args: [ '--baseline', '.secrets.baseline' ]
+        exclude: package.lock.json
