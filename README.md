@@ -93,7 +93,7 @@ Lately, some developers have been helping me in this endeavour. As you can proba
 
 There are many ways to help support GST. If technical development or support are one of your strengths, join our [discord](https://discord.gg/Up2QGbMKHY). Otherwise, you could certainly help us by providing a donation to our coinbase crypto wallet: **3Pfx7NwGgmZsk7hQJxzHdp5rGBftUHVTiM**.
 
-Thanks in advance ape.
+Sharing the terminal with friends and family would also go a long way. Thanks in advance ape.
 
 
 ## Getting Started
