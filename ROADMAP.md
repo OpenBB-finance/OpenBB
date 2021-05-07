@@ -234,6 +234,7 @@ ___
 
 ## Resource Collection
 * [x] Add hfletters and learn commands to resource collection (@didier) - [PR #427](https://github.com/DidierRLopes/GamestonkTerminal/pull/427)
+* [x] Add arxiv, finra, edgar, fred (@didier) - [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
 
 
 **NEXT**
