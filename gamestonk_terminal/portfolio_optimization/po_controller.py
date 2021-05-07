@@ -79,7 +79,7 @@ class PortfolioOptimization:
         print("")
         print("   ef            show the efficient frontier")
         print("")
-        if tickers:
+        if len(tickers) > 1:
             print("   > ca          comparison analysis for selected tickers")
             print("")
 

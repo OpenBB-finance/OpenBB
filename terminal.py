@@ -43,6 +43,7 @@ from gamestonk_terminal.forex import fx_controller
 from gamestonk_terminal.backtesting import bt_controller
 from gamestonk_terminal.resource_collection import rc_controller
 from gamestonk_terminal.research import res_controller
+from gamestonk_terminal.government import gov_controller
 
 
 # pylint: disable=too-many-statements,too-many-branches
@@ -99,6 +100,7 @@ def main():
         "po",
         "fx",
         "rc",
+        "gov",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
@@ -377,6 +379,9 @@ def main():
 
         elif ns_known_args.opt == "rc":
             b_quit = rc_controller.menu()
+
+        elif ns_known_args.opt == "gov":
+            b_quit = gov_controller.menu(s_ticker)
 
         else:
             print("Shouldn't see this command!")

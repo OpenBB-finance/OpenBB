@@ -14,7 +14,17 @@ class ResourceCollectionController:
     """Resources Controller class"""
 
     # Command choices
-    CHOICES = ["help", "q", "quit", "hfletters", "learn"]
+    CHOICES = [
+        "help",
+        "q",
+        "quit",
+        "hfletters",
+        "arxiv",
+        "finra",
+        "edgar",
+        "fred",
+        "learn",
+    ]
 
     def __init__(self):
         """Constructor"""
@@ -34,6 +44,10 @@ class ResourceCollectionController:
         print("   quit          quit to abandon program")
         print("")
         print("   hfletters     hedge fund letters or reports")
+        print("   arxiv         open-access archive for academic articles")
+        print("   finra         self-regulatory organization")
+        print("   edgar         online public database from SEC")
+        print("   fred          economic research data")
         print("   learn         trading analysis, tips and resources")
         print("")
 
@@ -71,6 +85,26 @@ class ResourceCollectionController:
     def call_hfletters(self, other_args: List[str]):
         """Process hfletters command"""
         webbrowser.open("https://miltonfmr.com/hedge-fund-letters/")
+        print("")
+
+    def call_arxiv(self, other_args: List[str]):
+        """Process arxiv command"""
+        webbrowser.open("https://arxiv.org")
+        print("")
+
+    def call_finra(self, other_args: List[str]):
+        """Process finra command"""
+        webbrowser.open("https://www.finra.org/#/")
+        print("")
+
+    def call_edgar(self, other_args: List[str]):
+        """Process edgar command"""
+        webbrowser.open("https://www.sec.gov/edgar.shtml")
+        print("")
+
+    def call_fred(self, other_args: List[str]):
+        """Process fred command"""
+        webbrowser.open("https://fred.stlouisfed.org")
         print("")
 
     def call_learn(self, other_args: List[str]):
