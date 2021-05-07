@@ -58,7 +58,7 @@ def display_fred(other_args: List[str], choice: str):
         "-i",
         "--id",
         dest="series_id",
-        required=bool(choice),
+        required=not bool(choice),
         type=str,
         default=choice.upper(),
         help="FRED Series ID from https://fred.stlouisfed.org",
