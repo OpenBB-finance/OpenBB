@@ -96,7 +96,8 @@ def last_congress(other_args: List[str]):
             if df_congress_rep.empty:
                 print(
                     f"No representative {ns_parser.representative} found in the past {ns_parser.past_transactions_days}"
-                    f" days. The following are available: {', '.join(df_congress['Representative'].str.split().str[0].unique())}"
+                    f" days. The following are available: "
+                    f"{', '.join(df_congress['Representative'].str.split().str[0].unique())}"
                 )
             else:
                 print(df_congress_rep.to_string(index=False))
