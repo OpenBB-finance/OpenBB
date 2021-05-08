@@ -63,9 +63,10 @@ def prepare_scale_train_valid_test(
     scaler:
         Fitted preprocesser
     """
-    parsed_end_date = ns_parser.s_end_date or df_stock.index[-1]-timedelta(days=3)
+
     n_input_days = ns_parser.n_inputs
     n_predict_days = ns_parser.n_days
+    parsed_end_date = (ns_parser.s_end_date or df_stock.index[-1]) - timedelta(days= n_input_days)
     test_size = ns_parser.valid_split
 
     # Pre-process data
@@ -78,6 +79,7 @@ def prepare_scale_train_valid_test(
     elif ns_parser.s_preprocessing == "normalization":
         scaler = Normalizer()
 
+    forecast_input = 1
     test_data = df_stock[df_stock.index > parsed_end_date]
     train_data = df_stock[df_stock.index < parsed_end_date]
     dates = train_data.index
@@ -109,13 +111,13 @@ def prepare_scale_train_valid_test(
 
     (
         X_train,
-        X_test,
+        X_valid,
         y_train,
-        y_test,
+        y_valid,
         X_dates_train,
-        X_dates_test,
+        X_dates_valid,
         y_dates_train,
-        y_dates_test,
+        y_dates_valid,
     ) = train_test_split(
         input_prices,
         next_n_day_prices,
@@ -125,13 +127,13 @@ def prepare_scale_train_valid_test(
     )
     return (
         X_train,
-        X_test,
+        X_valid,
         y_train,
-        y_test,
+        y_valid,
         X_dates_train,
-        X_dates_test,
+        X_dates_valid,
         y_dates_train,
-        y_dates_test,
+        y_dates_valid,
         test_data,
         dates_test,
         scaler,

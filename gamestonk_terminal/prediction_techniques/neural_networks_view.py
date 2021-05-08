@@ -1023,27 +1023,17 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         )
         if not ns_parser:
             return
-        # Setup backtesting
-        # df_stock, df_future = _setup_backtesting(df_stock, ns_parser)
-
-        # Pre-process data
-        # scaler, stock_train_data, stock_x, stock_y = _preprocess_split(
-        #    df_stock, ns_parser
-        # )
-        # stock_x = np.reshape(stock_x, (stock_x.shape[0], stock_x.shape[1], 1))
-        # stock_y = np.reshape(stock_y, (stock_y.shape[0], stock_y.shape[1], 1))
-
         (
             X_train,
-            X_test,
+            X_valid,
             y_train,
-            y_test,
+            y_valid,
             X_dates_train,
-            X_dates_test,
+            X_dates_valid,
             y_dates_train,
-            y_dates_test,
-            test_data,
-            dates_test,
+            y_dates_valid,
+            forecast_data,
+            dates_valid,
             scaler,
         ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
         # Build Neural Network model
@@ -1051,21 +1041,22 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             cfg_nn_models.Long_Short_Term_Memory, ns_parser.n_inputs, ns_parser.n_days
         )
         model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
-        print(X_train.shape, X_test.shape)
+        print(X_train.shape, X_valid.shape)
         model.fit(
             X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
             y_train,
             epochs=ns_parser.n_epochs,
             verbose=True,
-            validation_data=(X_test, y_test),
+            validation_data=(X_valid, y_valid),
         )
 
-        preds = model.predict(X_test.reshape(X_test.shape[0], X_test.shape[1], 1))
+        preds = model.predict(X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1))
 
         plt.scatter(df_stock.index, df_stock["5. adjusted close"].values, s= 3)
-        for i in range(len(y_test)):
-            plt.plot(y_dates_test[i], scaler.inverse_transform(preds[i].reshape(-1,1)), "r", lw=3)
-            plt.fill_between(y_dates_test[i])
+        for i in range(len(y_valid)):
+            plt.plot(y_dates_valid[i], scaler.inverse_transform(preds[i].reshape(-1,1)), "r", lw=3)
+            plt.fill_between(y_dates_valid[i], scaler.inverse_transform(preds[i].reshape(-1,1)),
+                             scaler.inverse_transform(y_valid[i].reshape(-1,1)))
         plt.show()
         # for idx_loop in range(ns_parser.n_loops):
         # Train our model
