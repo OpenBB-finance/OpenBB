@@ -588,48 +588,40 @@ def sha256sum(filename):
 
 
 def update_terminal():
-    completed_process = completed_process = subprocess.run(
-        "git stash", shell=True, check=False
-    )
-    if completed_process != 0:
+    completed_process = subprocess.run("git stash", shell=True, check=False)
+    if completed_process.returncode != 0:
         print("Error stashing your changes!")
-        return completed_process
+        return completed_process.returncode
     print("Changes stashed successfuly.")
 
     poetry_hash = sha256sum("poetry.lock")
 
-    completed_process = completed_process = subprocess.run(
-        "git pull", shell=True, check=False
-    )
-    if completed_process != 0:
+    completed_process = subprocess.run("git pull", shell=True, check=False)
+    if completed_process.returncode != 0:
         print("Error pulling latest changes from remote!")
-        return completed_process
+        return completed_process.returncode
     print("Latest changes from remote pulled successfuly.")
 
-    completed_process = completed_process = subprocess.run(
-        "git stash pop", shell=True, check=False
-    )
-    if completed_process != 0:
+    completed_process = subprocess.run("git stash pop", shell=True, check=False)
+    if completed_process.returncode != 0:
         print("Error popping your changes!")
-        return completed_process
+        return completed_process.returncode
     print("Changes popped successfuly.")
 
     new_poetry_hash = sha256sum("poetry.lock")
 
     if poetry_hash == new_poetry_hash:
         print("Great, seems like poetry hasn't been updated!")
-        return completed_process
+        return completed_process.returncode
     else:
         print(
             "Seems like more modules have been added, grab a coke, this may take a while."
         )
 
-    completed_process = completed_process = subprocess.run(
-        "poetry install", shell=True, check=False
-    )
-    if completed_process != 0:
+    completed_process = subprocess.run("poetry install", shell=True, check=False)
+    if completed_process.returncode != 0:
         print("Error while running 'poetry install'!")
-        return completed_process
+        return completed_process.returncode
 
     print("Poetry installation was a success.")
     return 0
