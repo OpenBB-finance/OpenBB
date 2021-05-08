@@ -592,9 +592,7 @@ def update_terminal():
 
     completed_process = subprocess.run("git pull", shell=True, check=False)
     if completed_process.returncode != 0:
-        print("Error pulling latest changes from remote!")
         return completed_process.returncode
-    print("Latest changes from remote pulled successfully.")
 
     new_poetry_hash = sha256sum("poetry.lock")
 
@@ -607,8 +605,6 @@ def update_terminal():
 
     completed_process = subprocess.run("poetry install", shell=True, check=False)
     if completed_process.returncode != 0:
-        print("Error while running 'poetry install'!")
         return completed_process.returncode
 
-    print("Poetry installation was a success.")
     return 0
