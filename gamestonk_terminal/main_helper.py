@@ -592,7 +592,7 @@ def update_terminal():
     if completed_process.returncode != 0:
         print("Error stashing your changes!")
         return completed_process.returncode
-    print("Changes stashed successfuly.")
+    print("Changes stashed successfully.")
 
     poetry_hash = sha256sum("poetry.lock")
 
@@ -600,13 +600,13 @@ def update_terminal():
     if completed_process.returncode != 0:
         print("Error pulling latest changes from remote!")
         return completed_process.returncode
-    print("Latest changes from remote pulled successfuly.")
+    print("Latest changes from remote pulled successfully.")
 
     completed_process = subprocess.run("git stash pop", shell=True, check=False)
     if completed_process.returncode != 0:
         print("Error popping your changes!")
         return completed_process.returncode
-    print("Changes popped successfuly.")
+    print("Changes popped successfully.")
 
     new_poetry_hash = sha256sum("poetry.lock")
 
