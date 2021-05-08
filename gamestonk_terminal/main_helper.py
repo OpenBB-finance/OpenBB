@@ -2,14 +2,14 @@ import argparse
 from sys import stdout
 import random
 from datetime import datetime, timedelta
+import subprocess
+import hashlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
-import subprocess
-import hashlib
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -615,10 +615,9 @@ def update_terminal():
     if poetry_hash == new_poetry_hash:
         print("Great, seems like poetry hasn't been updated!")
         return completed_process.returncode
-    else:
-        print(
-            "Seems like more modules have been added, grab a coke, this may take a while."
-        )
+    print(
+        "Seems like more modules have been added, grab a coke, this may take a while."
+    )
 
     completed_process = subprocess.run("poetry install", shell=True, check=False)
     if completed_process.returncode != 0:
