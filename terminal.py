@@ -4,6 +4,7 @@ import argparse
 
 import sys
 import os
+import subprocess
 from datetime import datetime, timedelta
 import pandas as pd
 import yfinance as yf
@@ -75,6 +76,7 @@ def main():
         "help",
         "quit",
         "q",
+        "reset",
         "clear",
         "load",
         "candle",
@@ -164,7 +166,11 @@ def main():
         if ns_known_args.opt == "help":
             should_print_help = True
 
-        elif (ns_known_args.opt == "quit") or (ns_known_args.opt == "q"):
+        elif (
+            (ns_known_args.opt == "quit")
+            or (ns_known_args.opt == "q")
+            or (ns_known_args.opt == "reset")
+        ):
             break
 
         elif ns_known_args.opt == "clear":
@@ -393,7 +399,22 @@ def main():
         if not main_cmd:
             should_print_help = True
 
-    print_goodbye()
+    if not gtff.ENABLE_QUICK_EXIT:
+        if ns_known_args.opt == "reset":
+            print("resetting...")
+
+            completed_process = subprocess.run(
+                "python terminal.py", shell=True, check=False
+            )
+            if completed_process.returncode != 0:
+                completed_process = subprocess.run(
+                    "python3 terminal.py", shell=True, check=False
+                )
+                if completed_process.returncode != 0:
+                    print("Unfortunately, resetting wasn't possible!\n")
+                    print_goodbye()
+        else:
+            print_goodbye()
 
 
 if __name__ == "__main__":
