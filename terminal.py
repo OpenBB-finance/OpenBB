@@ -399,21 +399,22 @@ def main():
         if not main_cmd:
             should_print_help = True
 
-    if ns_known_args.opt == "reset":
-        print("resetting...")
+    if not gtff.ENABLE_QUICK_EXIT:
+        if ns_known_args.opt == "reset":
+            print("resetting...")
 
-        completed_process = subprocess.run(
-            "python terminal.py", shell=True, check=False
-        )
-        if completed_process.returncode != 0:
             completed_process = subprocess.run(
-                "python3 terminal.py", shell=True, check=False
+                "python terminal.py", shell=True, check=False
             )
             if completed_process.returncode != 0:
-                print("Unfortunately, resetting wasn't possible!\n")
-                print_goodbye()
-    else:
-        print_goodbye()
+                completed_process = subprocess.run(
+                    "python3 terminal.py", shell=True, check=False
+                )
+                if completed_process.returncode != 0:
+                    print("Unfortunately, resetting wasn't possible!\n")
+                    print_goodbye()
+        else:
+            print_goodbye()
 
 
 if __name__ == "__main__":
