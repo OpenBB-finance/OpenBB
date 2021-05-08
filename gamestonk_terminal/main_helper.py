@@ -588,7 +588,7 @@ def sha256sum(filename):
 
 
 def update_terminal():
-    completed_process = completed_process = subprocess.run(
+    completed_process = subprocess.run(
         "git stash", shell=True, check=False
     )
     if completed_process.returncode != 0:
