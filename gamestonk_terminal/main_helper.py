@@ -2,6 +2,8 @@ import argparse
 from sys import stdout
 import random
 from datetime import datetime, timedelta
+import subprocess
+import hashlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
@@ -28,6 +30,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     """Print help"""
     print("What do you want to do?")
     print("   help        help to see this menu again")
+    print("   update      update terminal from remote")
     print("   reset       reset terminal and reload configs")
     print("   quit        to abandon the program")
     print("")
@@ -572,3 +575,36 @@ def print_goodbye():
     print(
         goodbye_msg[random.randint(0, len(goodbye_msg) - 1)] + goodbye_msg_time + "\n"
     )
+
+
+def sha256sum(filename):
+    h = hashlib.sha256()
+    b = bytearray(128 * 1024)
+    mv = memoryview(b)
+    with open(filename, "rb", buffering=0) as f:
+        for n in iter(lambda: f.readinto(mv), 0):
+            h.update(mv[:n])
+    return h.hexdigest()
+
+
+def update_terminal():
+    poetry_hash = sha256sum("poetry.lock")
+
+    completed_process = subprocess.run("git pull", shell=True, check=False)
+    if completed_process.returncode != 0:
+        return completed_process.returncode
+
+    new_poetry_hash = sha256sum("poetry.lock")
+
+    if poetry_hash == new_poetry_hash:
+        print("Great, seems like poetry hasn't been updated!")
+        return completed_process.returncode
+    print(
+        "Seems like more modules have been added, grab a coke, this may take a while."
+    )
+
+    completed_process = subprocess.run("poetry install", shell=True, check=False)
+    if completed_process.returncode != 0:
+        return completed_process.returncode
+
+    return 0

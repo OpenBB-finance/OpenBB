@@ -292,6 +292,9 @@ ___
 
 ## User Experience
 
+* [x] Add reset command to allow update API keys (@didier) - [PR #440](https://github.com/DidierRLopes/GamestonkTerminal/pull/440)
+* [x] Add update command to automatically update terminal (@didier) - [PR #441](https://github.com/DidierRLopes/GamestonkTerminal/pull/441)
+
 **NEXT**
 * [ ] Publish Docker
 * [ ] Most commands to have export flag to save output into csv/txt file

@@ -26,6 +26,7 @@ from gamestonk_terminal.main_helper import (
     view,
     candle,
     print_goodbye,
+    update_terminal,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
@@ -62,6 +63,8 @@ def main():
     df_stock = pd.DataFrame()
     s_interval = "1440min"
 
+    update_succcess = False
+
     # Set stock by default to speed up testing
     # s_ticker = "BB"
     # ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
@@ -77,6 +80,7 @@ def main():
         "quit",
         "q",
         "reset",
+        "update",
         "clear",
         "load",
         "candle",
@@ -389,6 +393,10 @@ def main():
         elif ns_known_args.opt == "gov":
             b_quit = gov_controller.menu(s_ticker)
 
+        elif ns_known_args.opt == "update":
+            update_succcess = not update_terminal()
+            break
+
         else:
             print("Shouldn't see this command!")
             continue
@@ -400,7 +408,7 @@ def main():
             should_print_help = True
 
     if not gtff.ENABLE_QUICK_EXIT:
-        if ns_known_args.opt == "reset":
+        if ns_known_args.opt == "reset" or update_succcess:
             print("resetting...")
 
             completed_process = subprocess.run(
