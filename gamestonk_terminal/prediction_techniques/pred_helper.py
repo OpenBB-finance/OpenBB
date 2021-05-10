@@ -83,9 +83,11 @@ def prepare_scale_train_valid_test(
 
     if ns_parser.s_end_date:
         df_stock = df_stock[df_stock.index <= ns_parser.s_end_date]
-        if n_input_days + n_predict_days < df_stock.shape[0]:
-            print("Cannot train enough input days to predict with loaded dataframe")
-            return
+        print(df_stock.shape)
+        print(n_input_days + n_predict_days)
+        if n_input_days + n_predict_days > df_stock.shape[0]:
+            print("Cannot train enough input days to predict with loaded dataframe\n")
+            return None,None,None,None,None,None,None,None,None,None,None,True
 
     test_data = df_stock.iloc[-n_input_days:]
     train_data = df_stock.iloc[:-n_input_days]
@@ -144,6 +146,7 @@ def prepare_scale_train_valid_test(
         test_data,
         dates_test,
         scaler,
+        False
     )
 
 
@@ -159,7 +162,7 @@ def forecast(input_values, future_dates, model, scaler):
 
 
 def plot_data_predictions(
-    df_stock, preds, y_valid, y_dates_valid, scaler, title, forecast_data
+    df_stock, preds, y_valid, y_dates_valid, scaler, title, forecast_data, n_loops
 ):
 
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -172,19 +175,34 @@ def plot_data_predictions(
         label="Prices",
     )
     for i in range(len(y_valid) - 1):
+
+        y_pred = scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel()
+        y_act = scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel()
+
         plt.plot(
             y_dates_valid[i],
-            scaler.inverse_transform(preds[i].reshape(-1, 1)),
+            y_pred,
             "r",
             lw=3,
         )
         plt.fill_between(
             y_dates_valid[i],
-            scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel(),
-            scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel(),
-            color="k",
+            y_pred,
+            y_act,
+            where=(y_pred < y_act),
+            color="r",
             alpha=0.2,
         )
+        plt.fill_between(
+            y_dates_valid[i],
+            y_pred,
+            y_act,
+            where=(y_pred > y_act),
+            color="g",
+            alpha=0.2,
+        )
+
+    # Leave this one out of the loop so that the legend doesnt get overpopulated with "Predictions"
     plt.plot(
         y_dates_valid[-1],
         scaler.inverse_transform(preds[-1].reshape(-1, 1)),
@@ -200,11 +218,11 @@ def plot_data_predictions(
         alpha=0.2,
     )
     plt.axvspan(
-        df_stock.index[-1], forecast_data.index[-1], facecolor="tab:orange", alpha=0.2
+        forecast_data.index[0]-timedelta(days=1), forecast_data.index[-1], facecolor="tab:orange", alpha=0.2
     )
     _, _, ymin, ymax = plt.axis()
     plt.vlines(
-        df_stock.index[-1],
+        forecast_data.index[0]-timedelta(days=1),
         ymin,
         ymax,
         colors="k",
@@ -212,7 +230,15 @@ def plot_data_predictions(
         linestyle="--",
         color="k",
     )
-    plt.plot(forecast_data.index, forecast_data.values, "-ok", ms=5)
+    if n_loops == 1:
+        plt.plot(forecast_data.index, forecast_data.values, "-ok", ms=5, label="Forecast")
+    else:
+        plt.plot(forecast_data.index, forecast_data.median(axis=1).values, "-ok", ms=5, label="Forecast")
+        plt.fill_between(forecast_data.index,
+                         forecast_data.quantile(.25,axis=1).values,
+                         forecast_data.quantile(.75,axis=1).values,
+                         color="c",
+                         alpha = .3)
     plt.legend(loc=0)
     plt.xlim(df_stock.index[0], forecast_data.index[-1] + timedelta(days=1))
     plt.xlabel("Time")
@@ -226,7 +252,7 @@ def plot_data_predictions(
     plt.show()
     print("")
 
-
+# Deprecated
 def get_backtesting_data(
     df_stock: pd.DataFrame, parsed_end_date: datetime, pred_days: int
 ) -> Tuple[pd.DataFrame, pd.DataFrame, bool]:

@@ -1054,7 +1054,10 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             forecast_data_input,
             dates_forecast_input,
             scaler,
+            is_error
         ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        if is_error:
+            return
         print(
             f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation."
             f" {ns_parser.n_loops} loops"
@@ -1094,12 +1097,13 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         print(forecast_data_df)
         plot_data_predictions(
             df_stock,
-            preds.median(axis=0),
+            np.median(preds,axis=0),
             y_valid,
             y_dates_valid,
             scaler,
             f"LSTM Model on {s_ticker}",
             forecast_data_df,
+            ns_parser.n_loops
         )
         print("")
 
