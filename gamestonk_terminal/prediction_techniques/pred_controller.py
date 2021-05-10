@@ -177,6 +177,10 @@ class PredictionTechniquesController:
         """Process lstm command"""
         neural_networks_view.lstm(other_args, self.ticker, self.stock)
 
+    def call_conv1d(self, other_args: List[str]):
+        """Process conv1d command"""
+        neural_networks_view.conv1d(other_args, self.ticker, self.stock)
+
     if gtff.ENABLE_FBPROPHET:
 
         def call_prophet(self, other_args: List[str]):

@@ -45,5 +45,6 @@ Convolutional = [
     {"MaxPool1D": {"pool_size": 2}},
     {"Conv1D": {"filters": 10, "kernel_size": 5, "activation": "relu"}},
     {"MaxPool1D": {"pool_size": 2}},
+    {"Flatten": {}},
     {"Dense": {"activation": "relu"}},
 ]

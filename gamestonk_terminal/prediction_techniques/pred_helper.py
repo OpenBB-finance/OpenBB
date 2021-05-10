@@ -2,8 +2,10 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import Tuple
-from datetime import datetime, timedelta
+from typing import List
+import os
+from warnings import simplefilter
+from datetime import timedelta
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -17,14 +19,232 @@ from sklearn.metrics import (
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
 from gamestonk_terminal.helper_funcs import (
-    get_next_stock_market_days,
-    patch_pandas_text_adjustment,
+    check_positive,
+    parse_known_args_and_warn,
+    valid_date,
     plot_autoscale,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 
+def get_backtesting_data():
+    pass
 register_matplotlib_converters()
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+
+simplefilter(action="ignore", category=FutureWarning)
+
+# store the user's TensorFlow environment variables
+ORIGINAL_TF_XLA_FLAGS = os.environ.get("TF_XLA_FLAGS")
+ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH = os.environ.get("TF_FORCE_GPU_ALLOW_GROWTH")
+
+
+def restore_env():
+    """Restore environment variables to original values"""
+
+    def restore(key, value):
+        if value is None:
+            if key in os.environ:
+                del os.environ[key]
+        else:
+            os.environ[key] = value
+
+    restore("TF_XLA_FLAGS", ORIGINAL_TF_XLA_FLAGS)
+    restore("TF_FORCE_GPU_ALLOW_GROWTH", ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH)
+
+
+def parse_args(prog: str, description: str, other_args: List[str]):
+    """
+    Create an argparser and parse other_args. Will print help if user requests it.
+    Parameters
+    ----------
+    prog: str
+        Program for argparser
+    description: str
+        Description for argparser
+    other_args
+        Argparse arguments to pass
+    Returns
+    -------
+    ns_parser: argparse.Namespace
+        Parsed argument parser
+    """
+
+    parser = argparse.ArgumentParser(
+        prog=prog,
+        description=description,
+        add_help=False,
+        formatter_class=argparse.RawTextHelpFormatter,  # enable multiline help messages
+    )
+    parser.add_argument(
+        "-d",
+        "--days",
+        action="store",
+        dest="n_days",
+        type=check_positive,
+        default=5,
+        help="prediction days.",
+    )
+    parser.add_argument(
+        "-i",
+        "--input",
+        action="store",
+        dest="n_inputs",
+        type=check_positive,
+        default=40,
+        help="number of days to use for prediction.",
+    )
+    parser.add_argument(
+        "--epochs",
+        action="store",
+        dest="n_epochs",
+        type=check_positive,
+        default=50,
+        help="number of training epochs.",
+    )
+    parser.add_argument(
+        "-j",
+        "--jumps",
+        action="store",
+        dest="n_jumps",
+        type=check_positive,
+        default=1,
+        help="number of jumps in training data.",
+    )
+    parser.add_argument(
+        "-p",
+        "--pp",
+        action="store",
+        dest="s_preprocessing",
+        default="minmax",
+        choices=["normalization", "standardization", "minmax", "none"],
+        help="pre-processing data.",
+    )
+    parser.add_argument(
+        "-o",
+        "--optimizer",
+        action="store",
+        dest="s_optimizer",
+        default="adam",
+        choices=[
+            "adam",
+            "adagrad",
+            "adadelta",
+            "adamax",
+            "ftrl",
+            "nadam",
+            "rmsprop",
+            "sgd",
+        ],
+        help="optimization technique (see https://www.tensorflow.org/api_docs/python/tf/keras/optimizers)",
+    )
+    parser.add_argument(
+        "-l",
+        "--loss",
+        action="store",
+        dest="s_loss",
+        default="mae",
+        choices=[
+            "mae",
+            "mape",
+            "mse",
+            "msle",
+            "poisson",
+            "logcosh",
+            "kld",
+            "hinge",
+            "squared_hinge",
+            "huber",
+        ],
+        help="loss function (see https://www.tensorflow.org/api_docs/python/tf/keras/losses)",
+    )
+    parser.add_argument(
+        "-e",
+        "--end",
+        action="store",
+        type=valid_date,
+        dest="s_end_date",
+        default=None,
+        help="The end date (format YYYY-MM-DD) to select - Backtesting",
+    )
+    parser.add_argument(
+        "--batch_size",
+        action="store",
+        dest="n_batch_size",
+        type=check_positive,
+        default=None,
+        help="batch size for model fitting (use a power of 2)",
+    )
+    parser.add_argument(
+        "--xla_cpu",
+        action="store_true",
+        dest="b_xla_cpu",
+        default=False,
+        help="enable XLA for CPU (see https://www.tensorflow.org/xla)",
+    )
+    parser.add_argument(
+        "--xla_gpu",
+        action="store_true",
+        dest="b_xla_gpu",
+        default=False,
+        help="enable XLA for GPU (see https://www.tensorflow.org/xla)",
+    )
+    parser.add_argument(
+        "--force_gpu_allow_growth",
+        action="store",
+        dest="s_force_gpu_allow_growth",
+        default="true",
+        choices=["true", "false", "default"],
+        help="true: GPU memory will grow as needed. \n"
+        "false: TensorFlow will allocate 100%% of GPU memory. \n"
+        "default: usually the same as false, uses env/TensorFlow default",
+    )
+    parser.add_argument(
+        "--loops",
+        action="store",
+        dest="n_loops",
+        type=check_positive,
+        default=1,
+        help="number of loops to iterate and train models",
+    )
+    parser.add_argument(
+        "-v",
+        "--valid",
+        type=float,
+        dest="valid_split",
+        default=0.1,
+        help="Validation data split fraction",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return None
+
+        # set xla flags if requested
+        xla_flags = (
+            set(ORIGINAL_TF_XLA_FLAGS.split(" ")) if ORIGINAL_TF_XLA_FLAGS else set()
+        )
+        if ns_parser.b_xla_cpu or ns_parser.b_xla_gpu:
+            xla_flags.add("--tf_xla_enable_xla_devices")
+            if ns_parser.b_xla_cpu:
+                xla_flags.add("--tf_xla_cpu_global_jit")
+            if ns_parser.b_xla_gpu:
+                xla_flags.add("--tf_xla_auto_jit=2")
+        os.environ["TF_XLA_FLAGS"] = " ".join(xla_flags)
+
+        # set GPU memory growth flag
+        if ns_parser.s_force_gpu_allow_growth == "true":
+            os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+        elif ns_parser.s_force_gpu_allow_growth == "false":
+            os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "false"
+
+        return ns_parser
+
+    except SystemExit:
+        print("")
+        return None
 
 
 def prepare_scale_train_valid_test(
@@ -78,7 +298,7 @@ def prepare_scale_train_valid_test(
     elif ns_parser.s_preprocessing == "normalization":
         scaler = Normalizer()
 
-    # Test data is used for forcasting.  Takes the last n_input_days data points.
+    # Test data is used for forecasting.  Takes the last n_input_days data points.
     # These points are not fed into training
 
     if ns_parser.s_end_date:
@@ -87,13 +307,25 @@ def prepare_scale_train_valid_test(
         print(n_input_days + n_predict_days)
         if n_input_days + n_predict_days > df_stock.shape[0]:
             print("Cannot train enough input days to predict with loaded dataframe\n")
-            return None,None,None,None,None,None,None,None,None,None,None,True
+            return (
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                True,
+            )
 
     test_data = df_stock.iloc[-n_input_days:]
     train_data = df_stock.iloc[:-n_input_days]
     dates = train_data.index
     dates_test = test_data.index
-    scaler = scaler
     train_data = scaler.fit_transform(train_data.values.reshape(-1, 1))
     test_data = scaler.transform(test_data.values.reshape(-1, 1))
     prices = train_data
@@ -146,12 +378,29 @@ def prepare_scale_train_valid_test(
         test_data,
         dates_test,
         scaler,
-        False
+        False,
     )
 
 
-def forecast(input_values, future_dates, model, scaler):
+def forecast(input_values:np.ndarray, future_dates:List, model, scaler)-> pd.DataFrame:
+    """
+    Forecast the stock movement over future days and rescale
+    Parameters
+    ----------
+    input_values: np.ndarray
+        Array of values to be fed into the model
+    future_dates: List
+        List of future dates
+    model: keras sequential
+        Pretrained model
+    scaler:
+        Fit scaler to be used to 'unscale' the data
 
+    Returns
+    -------
+    df_future: pd.DataFrame
+        Dataframe of predicted values
+    """
     future_values = scaler.inverse_transform(
         model.predict(input_values.reshape(1, -1, 1)).reshape(-1, 1)
     )
@@ -183,7 +432,7 @@ def plot_data_predictions(
             y_dates_valid[i],
             y_pred,
             "r",
-            lw=3,
+            lw=1,
         )
         plt.fill_between(
             y_dates_valid[i],
@@ -207,7 +456,7 @@ def plot_data_predictions(
         y_dates_valid[-1],
         scaler.inverse_transform(preds[-1].reshape(-1, 1)),
         "r",
-        lw=3,
+        lw=2,
         label="Predicions",
     )
     plt.fill_between(
@@ -218,11 +467,14 @@ def plot_data_predictions(
         alpha=0.2,
     )
     plt.axvspan(
-        forecast_data.index[0]-timedelta(days=1), forecast_data.index[-1], facecolor="tab:orange", alpha=0.2
+        forecast_data.index[0] - timedelta(days=1),
+        forecast_data.index[-1],
+        facecolor="tab:orange",
+        alpha=0.2,
     )
     _, _, ymin, ymax = plt.axis()
     plt.vlines(
-        forecast_data.index[0]-timedelta(days=1),
+        forecast_data.index[0] - timedelta(days=1),
         ymin,
         ymax,
         colors="k",
@@ -231,14 +483,24 @@ def plot_data_predictions(
         color="k",
     )
     if n_loops == 1:
-        plt.plot(forecast_data.index, forecast_data.values, "-ok", ms=5, label="Forecast")
+        plt.plot(
+            forecast_data.index, forecast_data.values, "-ok", ms=5, label="Forecast"
+        )
     else:
-        plt.plot(forecast_data.index, forecast_data.median(axis=1).values, "-ok", ms=5, label="Forecast")
-        plt.fill_between(forecast_data.index,
-                         forecast_data.quantile(.25,axis=1).values,
-                         forecast_data.quantile(.75,axis=1).values,
-                         color="c",
-                         alpha = .3)
+        plt.plot(
+            forecast_data.index,
+            forecast_data.median(axis=1).values,
+            "-ok",
+            ms=5,
+            label="Forecast",
+        )
+        plt.fill_between(
+            forecast_data.index,
+            forecast_data.quantile(0.25, axis=1).values,
+            forecast_data.quantile(0.75, axis=1).values,
+            color="c",
+            alpha=0.3,
+        )
     plt.legend(loc=0)
     plt.xlim(df_stock.index[0], forecast_data.index[-1] + timedelta(days=1))
     plt.xlabel("Time")
@@ -251,62 +513,6 @@ def plot_data_predictions(
         plt.ion()
     plt.show()
     print("")
-
-# Deprecated
-def get_backtesting_data(
-    df_stock: pd.DataFrame, parsed_end_date: datetime, pred_days: int
-) -> Tuple[pd.DataFrame, pd.DataFrame, bool]:
-    """
-
-    Parameters
-    ----------
-    df_stock: pd.DataFrame
-        Dataframe of stock prices
-    parsed_end_date: datetime
-        Date that separates test from prediction
-    pred_days: int
-        Number of days to predict
-
-    Returns
-    -------
-    df_future: pd.DataFrame
-        Dataframe of future prices
-    df_stock: pd.DataFrame
-        Dataframe of past prices
-    Flag: bool
-        Returns True if backtesting meets requirements, False if there are errors
-
-    """
-    if parsed_end_date < df_stock.index[0]:
-        print(
-            "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-        )
-        return pd.DataFrame(), pd.DataFrame(), False
-
-    if (
-        parsed_end_date
-        < get_next_stock_market_days(
-            last_stock_day=df_stock.index[0], n_next_days=5 + pred_days
-        )[-1]
-    ):
-        print(
-            "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-        )
-        return pd.DataFrame(), pd.DataFrame(), False
-
-    future_index = get_next_stock_market_days(
-        last_stock_day=parsed_end_date, n_next_days=pred_days
-    )
-
-    if future_index[-1] > datetime.now():
-        print(
-            "Backtesting not allowed, since End Date + Prediction days is in the future\n"
-        )
-        return pd.DataFrame(), pd.DataFrame(), False
-
-    df_future = df_stock[future_index[0] : future_index[-1]]
-    df_stock = df_stock[:parsed_end_date]
-    return df_future, df_stock, True
 
 
 def price_prediction_color(val: float, last_val: float) -> str:
