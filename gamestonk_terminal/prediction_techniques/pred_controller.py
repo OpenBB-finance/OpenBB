@@ -40,6 +40,7 @@ class PredictionTechniquesController:
         "mlp",
         "rnn",
         "lstm",
+        "conv1d",
     ]
 
     if gtff.ENABLE_FBPROPHET:
@@ -91,6 +92,7 @@ class PredictionTechniquesController:
         print("   mlp         MultiLayer Perceptron")
         print("   rnn         Recurrent Neural Network")
         print("   lstm        Long-Short Term Memory")
+        print("   conv1d      1D Convolutional Neural Network")
         if gtff.ENABLE_FBPROPHET:
             print("   prophet     Facebook's prophet prediction")
         print("")

@@ -14,7 +14,15 @@ from pandas.plotting import register_matplotlib_converters
 from TimeSeriesCrossValidation import splitTrain
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, SimpleRNN, Dense, Dropout
+from tensorflow.keras.layers import (
+    LSTM,
+    SimpleRNN,
+    Dense,
+    Dropout,
+    Conv1D,
+    MaxPool1D,
+    AvgPool1D,
+)
 
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -90,6 +98,18 @@ def build_neural_network_model(
             else:
                 model.add(Dense(**d_layer["Dense"]))
 
+        # Conv1D Layer
+        elif str(*d_layer) == "Conv1D":
+            if idx_layer == 0:
+                model.add(Conv1D(**d_layer["Conv1D"], input_shape=(n_inputs, 1)))
+            else:
+                model.add(Conv1D(**d_layer["Conv1D"]))
+        # Max Pooling Layer for after Conv Layer
+        elif str(*d_layer) == "MaxPool1D":
+            model.add(MaxPool1D(**d_layer["MaxPool1D"]))
+        # Allow for if user wants to do average pooling
+        elif str(*d_layer) == "AvgPool1D":
+            model.add(MaxPool1D(**d_layer["AvgPool1D"]))
         # Dropout (Regularization)
         elif str(*d_layer) == "Dropout":
             model.add(Dropout(**d_layer["Dropout"]))
@@ -1013,9 +1033,6 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
     df_stock: pd.DataFrame
         Dataframe of stock prices
 
-    Returns
-    -------
-
     """
     try:
         ns_parser = _parse_args(
@@ -1039,7 +1056,8 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             scaler,
         ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
         print(
-            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation. {ns_parser.n_loops} loops"
+            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation."
+            f" {ns_parser.n_loops} loops"
         )
         future_dates = get_next_stock_market_days(
             dates_forecast_input[-1], n_next_days=ns_parser.n_days
@@ -1092,3 +1110,18 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
 
     finally:
         _restore_env()
+
+
+def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    Train a Long-Short-Term-Memory Neural Net (lstm)
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Stock ticker
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    """
+    pass

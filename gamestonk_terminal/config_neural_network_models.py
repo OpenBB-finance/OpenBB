@@ -39,3 +39,11 @@ Long_Short_Term_Memory = [
     {"LSTM": {"units": 15, "activation": "tanh", "return_sequences": False}},
     {"Dense": {"activation": "relu"}},
 ]
+
+Convolutional = [
+    {"Conv1D": {"filters": 20, "kernel_size": 10, "activation": "relu"}},
+    {"MaxPool1D": {"pool_size": 2}},
+    {"Conv1D": {"filters": 10, "kernel_size": 5, "activation": "relu"}},
+    {"MaxPool1D": {"pool_size": 2}},
+    {"Dense": {"activation": "relu"}},
+]
