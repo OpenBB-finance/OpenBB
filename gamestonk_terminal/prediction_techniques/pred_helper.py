@@ -66,7 +66,6 @@ def prepare_scale_train_valid_test(
 
     n_input_days = ns_parser.n_inputs
     n_predict_days = ns_parser.n_days
-    parsed_end_date = (ns_parser.s_end_date or df_stock.index[-1]) - timedelta(days= n_input_days)
     test_size = ns_parser.valid_split
 
     # Pre-process data
@@ -79,9 +78,17 @@ def prepare_scale_train_valid_test(
     elif ns_parser.s_preprocessing == "normalization":
         scaler = Normalizer()
 
-    forecast_input = 1
-    test_data = df_stock[df_stock.index > parsed_end_date]
-    train_data = df_stock[df_stock.index < parsed_end_date]
+    # Test data is used for forcasting.  Takes the last n_input_days data points.
+    # These points are not fed into training
+
+    if ns_parser.s_end_date:
+        df_stock = df_stock[df_stock.index <= ns_parser.s_end_date]
+        if n_input_days + n_predict_days < df_stock.shape[0]:
+            print("Cannot train enough input days to predict with loaded dataframe")
+            return
+
+    test_data = df_stock.iloc[-n_input_days:]
+    train_data = df_stock.iloc[:-n_input_days]
     dates = train_data.index
     dates_test = test_data.index
     scaler = scaler
@@ -140,6 +147,86 @@ def prepare_scale_train_valid_test(
     )
 
 
+def forecast(input_values, future_dates, model, scaler):
+
+    future_values = scaler.inverse_transform(
+        model.predict(input_values.reshape(1, -1, 1)).reshape(-1, 1)
+    )
+    df_future = pd.DataFrame(
+        future_values, index=future_dates, columns=["Predicted Price"]
+    )
+    return df_future
+
+
+def plot_data_predictions(
+    df_stock, preds, y_valid, y_dates_valid, scaler, title, forecast_data
+):
+
+    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    plt.plot(
+        df_stock.index,
+        df_stock["5. adjusted close"].values,
+        "-ob",
+        lw=1,
+        ms=2,
+        label="Prices",
+    )
+    for i in range(len(y_valid) - 1):
+        plt.plot(
+            y_dates_valid[i],
+            scaler.inverse_transform(preds[i].reshape(-1, 1)),
+            "r",
+            lw=3,
+        )
+        plt.fill_between(
+            y_dates_valid[i],
+            scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel(),
+            scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel(),
+            color="k",
+            alpha=0.2,
+        )
+    plt.plot(
+        y_dates_valid[-1],
+        scaler.inverse_transform(preds[-1].reshape(-1, 1)),
+        "r",
+        lw=3,
+        label="Predicions",
+    )
+    plt.fill_between(
+        y_dates_valid[-1],
+        scaler.inverse_transform(preds[-1].reshape(-1, 1)).ravel(),
+        scaler.inverse_transform(y_valid[-1].reshape(-1, 1)).ravel(),
+        color="k",
+        alpha=0.2,
+    )
+    plt.axvspan(
+        df_stock.index[-1], forecast_data.index[-1], facecolor="tab:orange", alpha=0.2
+    )
+    _, _, ymin, ymax = plt.axis()
+    plt.vlines(
+        df_stock.index[-1],
+        ymin,
+        ymax,
+        colors="k",
+        linewidth=3,
+        linestyle="--",
+        color="k",
+    )
+    plt.plot(forecast_data.index, forecast_data.values, "-ok", ms=5)
+    plt.legend(loc=0)
+    plt.xlim(df_stock.index[0], forecast_data.index[-1] + timedelta(days=1))
+    plt.xlabel("Time")
+    plt.ylabel("Share Price ($)")
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    plt.title(title)
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
+    print("")
+
+
 def get_backtesting_data(
     df_stock: pd.DataFrame, parsed_end_date: datetime, pred_days: int
 ) -> Tuple[pd.DataFrame, pd.DataFrame, bool]:
@@ -150,7 +237,7 @@ def get_backtesting_data(
     df_stock: pd.DataFrame
         Dataframe of stock prices
     parsed_end_date: datetime
-        Date that seperates test from prediction
+        Date that separates test from prediction
     pred_days: int
         Number of days to predict
 

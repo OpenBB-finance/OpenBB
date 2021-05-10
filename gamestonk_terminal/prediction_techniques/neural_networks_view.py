@@ -30,6 +30,8 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     price_prediction_backtesting_color,
     print_prediction_kpis,
     prepare_scale_train_valid_test,
+    forecast,
+    plot_data_predictions,
 )
 
 from gamestonk_terminal import feature_flags as gtff
@@ -1032,69 +1034,56 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             X_dates_valid,
             y_dates_train,
             y_dates_valid,
-            forecast_data,
-            dates_valid,
+            forecast_data_input,
+            dates_forecast_input,
             scaler,
         ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
-        # Build Neural Network model
-        model = build_neural_network_model(
-            cfg_nn_models.Long_Short_Term_Memory, ns_parser.n_inputs, ns_parser.n_days
+        print(
+            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation. {ns_parser.n_loops} loops"
         )
-        model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
-        print(X_train.shape, X_valid.shape)
-        model.fit(
-            X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
-            y_train,
-            epochs=ns_parser.n_epochs,
-            verbose=True,
-            validation_data=(X_valid, y_valid),
+        future_dates = get_next_stock_market_days(
+            dates_forecast_input[-1], n_next_days=ns_parser.n_days
         )
 
-        preds = model.predict(X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1))
+        preds = np.zeros((ns_parser.n_loops, X_valid.shape[0], ns_parser.n_days))
+        forecast_data = np.zeros((ns_parser.n_loops, ns_parser.n_days))
+        for i in range(ns_parser.n_loops):
+            # Build Neural Network model
+            model = build_neural_network_model(
+                cfg_nn_models.Long_Short_Term_Memory,
+                ns_parser.n_inputs,
+                ns_parser.n_days,
+            )
+            model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
-        plt.scatter(df_stock.index, df_stock["5. adjusted close"].values, s= 3)
-        for i in range(len(y_valid)):
-            plt.plot(y_dates_valid[i], scaler.inverse_transform(preds[i].reshape(-1,1)), "r", lw=3)
-            plt.fill_between(y_dates_valid[i], scaler.inverse_transform(preds[i].reshape(-1,1)),
-                             scaler.inverse_transform(y_valid[i].reshape(-1,1)))
-        plt.show()
-        # for idx_loop in range(ns_parser.n_loops):
-        # Train our model
-        #    model.fit(
-        #        stock_x,
-        #        stock_y,
-        #        epochs=ns_parser.n_epochs,
-        #        batch_size=ns_parser.n_batch_size,
-        #        verbose=1,
-        #    )
-        #    print("")
+            model.fit(
+                X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
+                y_train,
+                epochs=ns_parser.n_epochs,
+                verbose=True,
+                batch_size=ns_parser.n_batch_size,
+                validation_data=(X_valid, y_valid),
+            )
 
-        #    print(model.summary())
-        #    print("")
+            preds[i] = model.predict(
+                X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1)
+            ).reshape(X_valid.shape[0], ns_parser.n_days)
+            forecast_data[i] = forecast(
+                forecast_data_input, future_dates, model, scaler
+            ).values.flat
 
-        #    # Prediction
-        #    yhat = model.predict(
-        #        stock_train_data[-ns_parser.n_inputs :].reshape(
-        #            1, ns_parser.n_inputs, 1
-        #        ),
-        #        verbose=0,
-        #    )
-
-        #    if idx_loop == 0:
-        # Re-scale the data back, plot, and print the results
-        #        df_pred = _rescale_data(
-        #            df_stock, ns_parser, scaler, yhat, idx_loop
-        #        ).to_frame()
-        #    else:
-        #        df_pred = df_pred.join(
-        #            _rescale_data(
-        #                df_stock, ns_parser, scaler, yhat, idx_loop
-        #            ).to_frame()
-        #        )
-
-        # _plot_and_print_results(
-        #    df_stock, ns_parser, df_future, df_pred, "LSTM", s_ticker
-        # )
+        forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
+        print(forecast_data_df)
+        plot_data_predictions(
+            df_stock,
+            preds.median(axis=0),
+            y_valid,
+            y_dates_valid,
+            scaler,
+            f"LSTM Model on {s_ticker}",
+            forecast_data_df,
+        )
+        print("")
 
     except Exception as e:
         print(e)
