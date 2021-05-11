@@ -18,6 +18,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
+from keras.models import Sequential
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -214,10 +215,18 @@ def parse_args(prog: str, description: str, other_args: List[str]):
     parser.add_argument(
         "-v",
         "--valid",
-        type=float,
+        type=check_positive,
         dest="valid_split",
         default=0.1,
         help="Validation data split fraction",
+    )
+
+    parser.add_argument(
+        "--lr",
+        type = check_positive,
+        dest = "lr",
+        default=None,
+        help="Specify learning rate for optimizer."
     )
 
     try:
@@ -385,7 +394,7 @@ def prepare_scale_train_valid_test(
 
 
 def forecast(
-    input_values: np.ndarray, future_dates: List, model, scaler
+    input_values: np.ndarray, future_dates: List, model:Sequential, scaler
 ) -> pd.DataFrame:
     """
     Forecast the stock movement over future days and rescale
@@ -395,7 +404,7 @@ def forecast(
         Array of values to be fed into the model
     future_dates: List
         List of future dates
-    model: keras sequential
+    model: Sequential
         Pretrained model
     scaler:
         Fit scaler to be used to 'unscale' the data

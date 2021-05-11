@@ -36,7 +36,7 @@ else:
 
 def build_neural_network_model(
     Recurrent_Neural_Network: List[Any], n_inputs: int, n_days: int
-):
+)->Sequential:
     """
     Builds neural net from config_neural_network_models.py
     Parameters
@@ -50,7 +50,7 @@ def build_neural_network_model(
 
     Returns
     -------
-    model:
+    model: Sequential
         Keras sequential model with layers from the file
 
     """

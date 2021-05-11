@@ -50,4 +50,5 @@ Convolutional = [
 ]
 
 # Add early stopping to save time training when validation is plateaued
+# Can be set to large number or None to ignore
 Early_Stop_Patience = 10
