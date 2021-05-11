@@ -27,8 +27,11 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 
+
 def get_backtesting_data():
     pass
+
+
 register_matplotlib_converters()
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -303,8 +306,6 @@ def prepare_scale_train_valid_test(
 
     if ns_parser.s_end_date:
         df_stock = df_stock[df_stock.index <= ns_parser.s_end_date]
-        print(df_stock.shape)
-        print(n_input_days + n_predict_days)
         if n_input_days + n_predict_days > df_stock.shape[0]:
             print("Cannot train enough input days to predict with loaded dataframe\n")
             return (
@@ -324,9 +325,10 @@ def prepare_scale_train_valid_test(
 
     test_data = df_stock.iloc[-n_input_days:]
     train_data = df_stock.iloc[:-n_input_days]
-    dates = train_data.index
+
+    dates = df_stock.index
     dates_test = test_data.index
-    train_data = scaler.fit_transform(train_data.values.reshape(-1, 1))
+    train_data = scaler.fit_transform(df_stock.values.reshape(-1, 1))
     test_data = scaler.transform(test_data.values.reshape(-1, 1))
     prices = train_data
 
@@ -382,7 +384,9 @@ def prepare_scale_train_valid_test(
     )
 
 
-def forecast(input_values:np.ndarray, future_dates:List, model, scaler)-> pd.DataFrame:
+def forecast(
+    input_values: np.ndarray, future_dates: List, model, scaler
+) -> pd.DataFrame:
     """
     Forecast the stock movement over future days and rescale
     Parameters
@@ -457,7 +461,7 @@ def plot_data_predictions(
         scaler.inverse_transform(preds[-1].reshape(-1, 1)),
         "r",
         lw=2,
-        label="Predicions",
+        label="Predictions",
     )
     plt.fill_between(
         y_dates_valid[-1],
@@ -484,14 +488,18 @@ def plot_data_predictions(
     )
     if n_loops == 1:
         plt.plot(
-            forecast_data.index, forecast_data.values, "-ok", ms=5, label="Forecast"
+            forecast_data.index,
+            forecast_data.values,
+            "-ok",
+            ms=3,
+            label="Forecast",
         )
     else:
         plt.plot(
             forecast_data.index,
             forecast_data.median(axis=1).values,
             "-ok",
-            ms=5,
+            ms=3,
             label="Forecast",
         )
         plt.fill_between(

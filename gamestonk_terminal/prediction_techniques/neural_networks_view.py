@@ -24,16 +24,18 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     plot_data_predictions,
     parse_args,
     restore_env,
+    print_pretty_prediction,
 )
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
 
 es = EarlyStopping(monitor="val_loss", patience=10)
 
+
 def build_neural_network_model(
     Recurrent_Neural_Network: List[Any], n_inputs: int, n_days: int
 ):
     """
-    Builds neural netfrom config_neural_network_models.py
+    Builds neural net from config_neural_network_models.py
     Parameters
     ----------
     Recurrent_Neural_Network: List[Any]
@@ -171,7 +173,10 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 epochs=ns_parser.n_epochs,
                 verbose=True,
                 batch_size=ns_parser.n_batch_size,
-                validation_data=(X_valid, y_valid),
+                validation_data=(
+                    X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1),
+                    y_valid,
+                ),
                 callbacks=[es],
             )
 
@@ -183,7 +188,15 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             ).values.flat
 
         forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
-        print(forecast_data_df)
+        if ns_parser.n_loops > 1:
+            forecast_data_df["Median"] = forecast_data_df.median(axis=1)
+            print_pretty_prediction(
+                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+            )
+        else:
+            print_pretty_prediction(
+                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+            )
         plot_data_predictions(
             df_stock,
             np.median(preds, axis=0),
@@ -267,7 +280,10 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 epochs=ns_parser.n_epochs,
                 verbose=True,
                 batch_size=ns_parser.n_batch_size,
-                validation_data=(X_valid, y_valid),
+                validation_data=(
+                    X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1),
+                    y_valid,
+                ),
                 callbacks=[es],
             )
 
@@ -279,7 +295,15 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             ).values.flat
 
         forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
-        print(forecast_data_df)
+        if ns_parser.n_loops > 1:
+            forecast_data_df["Median"] = forecast_data_df.median(axis=1)
+            print_pretty_prediction(
+                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+            )
+        else:
+            print_pretty_prediction(
+                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+            )
         plot_data_predictions(
             df_stock,
             np.median(preds, axis=0),
@@ -361,7 +385,10 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 epochs=ns_parser.n_epochs,
                 verbose=True,
                 batch_size=ns_parser.n_batch_size,
-                validation_data=(X_valid, y_valid),
+                validation_data=(
+                    X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1),
+                    y_valid,
+                ),
                 callbacks=[es],
             )
 
@@ -374,7 +401,15 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             ).values.flat
 
         forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
-        print(forecast_data_df)
+        if ns_parser.n_loops > 1:
+            forecast_data_df["Median"] = forecast_data_df.median(axis=1)
+            print_pretty_prediction(
+                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+            )
+        else:
+            print_pretty_prediction(
+                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+            )
         plot_data_predictions(
             df_stock,
             np.median(preds, axis=0),
@@ -457,8 +492,11 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 epochs=ns_parser.n_epochs,
                 verbose=True,
                 batch_size=ns_parser.n_batch_size,
-                validation_data=(X_valid, y_valid),
-                callbacks = [es]
+                validation_data=(
+                    X_valid.reshape(X_valid.shape[0], X_valid.shape[1], 1),
+                    y_valid,
+                ),
+                callbacks=[es],
             )
 
             preds[i] = model.predict(
@@ -469,7 +507,15 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             ).values.flat
 
         forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
-        print(forecast_data_df)
+        if ns_parser.n_loops > 1:
+            forecast_data_df["Median"] = forecast_data_df.median(axis=1)
+            print_pretty_prediction(
+                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+            )
+        else:
+            print_pretty_prediction(
+                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+            )
         plot_data_predictions(
             df_stock,
             np.median(preds, axis=0),
