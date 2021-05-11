@@ -48,3 +48,6 @@ Convolutional = [
     {"Flatten": {}},
     {"Dense": {"activation": "relu"}},
 ]
+
+# Add early stopping to save time training when validation is plateaued
+Early_Stop_Patience = 10

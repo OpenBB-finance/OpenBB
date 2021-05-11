@@ -28,8 +28,11 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
 )
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
 
-es = EarlyStopping(monitor="val_loss", patience=10)
-
+if cfg_nn_models.Early_Stop_Patience:
+    es = EarlyStopping(monitor="val_loss", patience=cfg_nn_models.Early_Stop_Patience)
+else:
+    #Set patience to very long value
+    es = EarlyStopping(monitor="val_loss", patience=1000)
 
 def build_neural_network_model(
     Recurrent_Neural_Network: List[Any], n_inputs: int, n_days: int
