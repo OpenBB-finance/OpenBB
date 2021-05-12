@@ -54,6 +54,7 @@
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
     <li> <a href="#about-the-project">About The Project</a> </li>
+    <li><a href="#donation">Donation</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -84,11 +85,21 @@ Gamestonk Terminal provides a modern Python-based integrated environment for inv
 
 As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup, and numerous third-party APIs).
 
+## Donation
+
+GST is a completely free open-source terminal. My personal goal has always been to keep this terminal available for everyone to use at zero cost. 
+
+Lately, some developers have been helping me in this endeavour. As you can probably tell from the git history, the terminal has been increasing in features/robustness at a really fast pace. Since none of us are getting paid to do so, and we all have 9-5 jobs, it's hard to onbard people to work towards the cause. On a personal level, I stopped investing since the repository was made public, since I spend all my spare time working on it, and don't have time left for DD. 
+
+There are many ways to help support GST. If technical development or support are one of your strengths, join our [discord](https://discord.gg/Up2QGbMKHY). Otherwise, you could certainly help us by providing a donation to our coinbase crypto wallet: **3Pfx7NwGgmZsk7hQJxzHdp5rGBftUHVTiM**.
+
+Sharing the terminal with friends and family would also go a long way. Thanks in advance ape.
+
 
 ## Getting Started
 ### Install
 
-If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.twitch.tv/videos/1008414642).
+If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.twitch.tv/videos/1013768299).
 
 This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
 
@@ -321,9 +332,6 @@ If red is your favourite color, and you never sell for a loss.
 
 Welcome to the club, and feel free to support the developers behind this amazing open-source project.
 
-<a href="https://www.buymeacoffee.com/didierlopes" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
-OR, if you prefer a coinbase crypto wallet: **3Pfx7NwGgmZsk7hQJxzHdp5rGBftUHVTiM**
 
 ## License
 
@@ -346,6 +354,14 @@ Trading in financial instruments involves high risks including the risk of losin
 Feel free to share loss porn, memes or any questions at:
 * Discord: https://discord.gg/Up2QGbMKHY
 * Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
+
+
+#### Shoutout to:
+* **alokan** : Responsible by developing `Forex` menu
+* **pll_llq** and **hinxx** : Working towards a GUI using Qt. 
+  * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
+* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app. 
+  * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
 
 ## Acknowledgments
 

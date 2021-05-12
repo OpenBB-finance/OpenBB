@@ -1,4 +1,4 @@
-# Portfolio Optimization
+# PORTFOLIO OPTIMIZATION
 
 This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of the following commands along with an example will be exploited below.
 
@@ -6,6 +6,9 @@ This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of th
   * add ticker to optimize
 * [select](#select)
   * overwrite current tickers with new tickers
+
+[Optimization](#Optimization)
+
 * [equal](#equal)
   * equally weighted
 * [mktcap](#mktcap)
@@ -30,6 +33,10 @@ This menu aims to optimize a portfolio of pre-loaded stocks, and the usage of th
 * [ef](#ef)
   * show the efficient frontier
 
+&nbsp;
+* [> ca](comparison_analysis/README.md)
+  * **comparison analysis for selected tickers**
+
 
 ### add <a name="add"></a>
 
@@ -52,6 +59,8 @@ Add/Select tickers for portfolio to be optimized.
 
 * -t : Tickers to be used in the portfolio to optimize
 
+
+## Optimization <a name="Optimization"></a>
 
 ### equal <a name="equal"></a>
 
