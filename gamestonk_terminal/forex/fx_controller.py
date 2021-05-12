@@ -181,18 +181,24 @@ class ForexController:
         reddit_view.due_diligence(other_args, instrument)
 
     def call_eda(self, other_args):
-        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-        df = df.rename(columns={"Close": "5. adjusted close"})
-        instrument = self.instrument
-        s_start = pd.to_datetime(df.index.values[0])
-        s_interval = "1440min"
-        eda_controller.menu(df, instrument, s_start, s_interval)
+        try:
+            df = fx_view.get_candles_dataframe(account, self.instrument, None)
+            df = df.rename(columns={"Close": "5. adjusted close"})
+            instrument = self.instrument
+            s_start = pd.to_datetime(df.index.values[0])
+            s_interval = "1440min"
+            eda_controller.menu(df, instrument, s_start, s_interval)
+        except AttributeError:
+            print("No data found, do you have your oanda API keys set?")
 
     def call_ba(self, other_args: List[str]):
         instrument = fx_view.format_instrument(self.instrument, " ")
-        df = fx_view.get_candles_dataframe(account, self.instrument, None)
-        s_start = pd.to_datetime(df.index.values[0])
-        ba_controller.menu(instrument, s_start)
+        try:
+            df = fx_view.get_candles_dataframe(account, self.instrument, None)
+            s_start = pd.to_datetime(df.index.values[0])
+            ba_controller.menu(instrument, s_start)
+        except AttributeError:
+            print("No data found, do you have your oanda API keys set?")
 
 
 def menu():
