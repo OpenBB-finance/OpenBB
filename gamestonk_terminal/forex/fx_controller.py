@@ -1,5 +1,4 @@
 import argparse
-from oandapyV20.exceptions import V20Error
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair
@@ -189,7 +188,7 @@ class ForexController:
             s_start = pd.to_datetime(df.index.values[0])
             s_interval = "1440min"
             eda_controller.menu(df, instrument, s_start, s_interval)
-        except:
+        except AttributeError:
             print("No data found, do you have your oanda API keys set?")
 
     def call_ba(self, other_args: List[str]):
@@ -198,7 +197,7 @@ class ForexController:
             df = fx_view.get_candles_dataframe(account, self.instrument, None)
             s_start = pd.to_datetime(df.index.values[0])
             ba_controller.menu(instrument, s_start)
-        except:
+        except AttributeError:
             print("No data found, do you have your oanda API keys set?")
 
 
