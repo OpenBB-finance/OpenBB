@@ -23,6 +23,7 @@
 * [Forex](#Forex)
 * [Backtesting](#Backtesting)
 * [Resource Collection](#Resource-Collection)
+* [Government](#Government)
 
 ## Additional
 
@@ -233,6 +234,7 @@ ___
 
 ## Resource Collection
 * [x] Add hfletters and learn commands to resource collection (@didier) - [PR #427](https://github.com/DidierRLopes/GamestonkTerminal/pull/427)
+* [x] Add arxiv, finra, edgar, fred (@didier) - [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
 
 
 **NEXT**
@@ -241,6 +243,13 @@ ___
 
 ## Backtesting
 * [x] Add simple backtest menu with simple strategies and benchmarks (@jmaslek) [PR #415](https://github.com/DidierRLopes/GamestonkTerminal/pull/415)
+
+**NEXT**
+
+---
+
+## Government
+* [x] Add congress data (@didier) [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
 
 **NEXT**
 
@@ -282,6 +291,9 @@ ___
 ---
 
 ## User Experience
+
+* [x] Add reset command to allow update API keys (@didier) - [PR #440](https://github.com/DidierRLopes/GamestonkTerminal/pull/440)
+* [x] Add update command to automatically update terminal (@didier) - [PR #441](https://github.com/DidierRLopes/GamestonkTerminal/pull/441)
 
 **NEXT**
 * [ ] Publish Docker
