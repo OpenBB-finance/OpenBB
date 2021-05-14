@@ -41,9 +41,6 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
     df_stock: pd.DataFrame
         Dataframe of prices
 
-    Returns
-    -------
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,

@@ -29,10 +29,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 
 
-def get_backtesting_data():
-    pass
-
-
 register_matplotlib_converters()
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"

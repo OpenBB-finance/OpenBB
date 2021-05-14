@@ -61,9 +61,6 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
     df_stock: pd.DataFrame
         Loaded stock dataframe
 
-    Returns
-    -------
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,

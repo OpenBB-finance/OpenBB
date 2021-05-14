@@ -54,9 +54,6 @@ def regression(
     polynomial: int
         Order of polynomial
 
-    Returns
-    -------
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,

@@ -17,7 +17,6 @@ from gamestonk_terminal.prediction_techniques import (
     knn_view,
     neural_networks_view,
     regression_view,
-    sma_view,
 )
 
 
@@ -29,7 +28,6 @@ class PredictionTechniquesController:
         "help",
         "q",
         "quit",
-        "sma",
         "ets",
         "knn",
         "linear",
@@ -81,7 +79,6 @@ class PredictionTechniquesController:
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
         print("")
-        print("   sma         simple moving average")
         print("   ets         exponential smoothing (e.g. Holt-Winters)")
         print("   knn         k-Nearest Neighbors")
         print("   linear      linear regression (polynomial 1)")
@@ -124,10 +121,6 @@ class PredictionTechniquesController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
-
-    def call_sma(self, other_args: List[str]):
-        """Process sma command"""
-        sma_view.simple_moving_average(other_args, self.ticker, self.stock)
 
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
