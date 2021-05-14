@@ -42,10 +42,11 @@ ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH = os.environ.get("TF_FORCE_GPU_ALLOW_GROWTH")
 
 def check_valid_frac(num) -> float:
 
-    if (num > 0) and (num <1):
+    if (num > 0) and (num < 1):
         return num
     else:
         raise argparse.ArgumentTypeError(f"{num} is an invalid percentage")
+
 
 def restore_env():
     """Restore environment variables to original values"""

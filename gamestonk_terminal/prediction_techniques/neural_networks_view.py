@@ -191,8 +191,10 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
-            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                          loss=ns_parser.s_loss)
+            model.compile(
+                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                loss=ns_parser.s_loss,
+            )
 
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
@@ -299,8 +301,10 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
-            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                          loss=ns_parser.s_loss)
+            model.compile(
+                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                loss=ns_parser.s_loss,
+            )
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
                 y_train,
@@ -404,8 +408,10 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
-            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                          loss=ns_parser.s_loss)
+            model.compile(
+                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                loss=ns_parser.s_loss,
+            )
 
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
@@ -513,8 +519,10 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_days,
             )
 
-            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                          loss=ns_parser.s_loss)
+            model.compile(
+                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                loss=ns_parser.s_loss,
+            )
 
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
