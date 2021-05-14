@@ -49,6 +49,10 @@ Convolutional = [
     {"Dense": {"activation": "relu"}},
 ]
 
+# Optimizers :  https://www.tensorflow.org/api_docs/python/tf/keras/optimizers
+# Adam, Adagrad, Adadelta, Adamax,Ftrl, Nadam, Rmsprop, Sgd
+Optimizer = "Adam"
+
 # Add early stopping to save time training when validation is plateaued
 # Can be set to large number or None to ignore
 Early_Stop_Patience = 10

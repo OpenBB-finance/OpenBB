@@ -17,6 +17,16 @@ from tensorflow.keras.layers import (
     AvgPool1D,
     Flatten,
 )
+from tensorflow.keras.optimizers import (
+    Adam,
+    Adamax,
+    Adagrad,
+    Adadelta,
+    Ftrl,
+    Nadam,
+    RMSprop,
+    SGD,
+)
 from gamestonk_terminal.helper_funcs import get_next_stock_market_days
 from gamestonk_terminal.prediction_techniques.pred_helper import (
     prepare_scale_train_valid_test,
@@ -27,6 +37,18 @@ from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction,
 )
 from gamestonk_terminal import config_neural_network_models as cfg_nn_models
+
+optimizers = {
+    "Adam": Adam,
+    "Adagrad": Adagrad,
+    "Adadelta": Adadelta,
+    "Adamax": Adamax,
+    "Ftrl": Ftrl,
+    "Nadam": Nadam,
+    "Rmsprop": RMSprop,
+    "Ggd": SGD,
+}
+
 
 if cfg_nn_models.Early_Stop_Patience:
     es = EarlyStopping(monitor="val_loss", patience=cfg_nn_models.Early_Stop_Patience)
@@ -169,7 +191,8 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
-            model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
+            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                          loss=ns_parser.s_loss)
 
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
@@ -276,8 +299,8 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
-            model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
-
+            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                          loss=ns_parser.s_loss)
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
                 y_train,
@@ -381,7 +404,8 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
-            model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
+            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                          loss=ns_parser.s_loss)
 
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
@@ -489,7 +513,8 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_days,
             )
 
-            model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
+            model.compile(optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                          loss=ns_parser.s_loss)
 
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),

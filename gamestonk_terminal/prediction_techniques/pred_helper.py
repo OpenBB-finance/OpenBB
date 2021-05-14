@@ -40,6 +40,13 @@ ORIGINAL_TF_XLA_FLAGS = os.environ.get("TF_XLA_FLAGS")
 ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH = os.environ.get("TF_FORCE_GPU_ALLOW_GROWTH")
 
 
+def check_valid_frac(num) -> float:
+
+    if (num > 0) and (num <1):
+        return num
+    else:
+        raise argparse.ArgumentTypeError(f"{num} is an invalid percentage")
+
 def restore_env():
     """Restore environment variables to original values"""
 
@@ -122,24 +129,6 @@ def parse_args(prog: str, description: str, other_args: List[str]):
         help="pre-processing data.",
     )
     parser.add_argument(
-        "-o",
-        "--optimizer",
-        action="store",
-        dest="s_optimizer",
-        default="adam",
-        choices=[
-            "adam",
-            "adagrad",
-            "adadelta",
-            "adamax",
-            "ftrl",
-            "nadam",
-            "rmsprop",
-            "sgd",
-        ],
-        help="optimization technique (see https://www.tensorflow.org/api_docs/python/tf/keras/optimizers)",
-    )
-    parser.add_argument(
         "-l",
         "--loss",
         action="store",
@@ -211,7 +200,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
     parser.add_argument(
         "-v",
         "--valid",
-        type=float,
+        type=check_valid_frac,
         dest="valid_split",
         default=0.1,
         help="Validation data split fraction",
@@ -221,7 +210,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
         "--lr",
         type=check_positive,
         dest="lr",
-        default=None,
+        default=0.01,
         help="Specify learning rate for optimizer.",
     )
 
