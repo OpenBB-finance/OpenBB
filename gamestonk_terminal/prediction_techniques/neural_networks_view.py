@@ -5,7 +5,7 @@ from typing import List, Any
 import traceback
 import numpy as np
 import pandas as pd
-from keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import (
     LSTM,
@@ -31,12 +31,13 @@ from gamestonk_terminal import config_neural_network_models as cfg_nn_models
 if cfg_nn_models.Early_Stop_Patience:
     es = EarlyStopping(monitor="val_loss", patience=cfg_nn_models.Early_Stop_Patience)
 else:
-    #Set patience to very long value
+    # Set patience to very long value
     es = EarlyStopping(monitor="val_loss", patience=1000)
+
 
 def build_neural_network_model(
     Recurrent_Neural_Network: List[Any], n_inputs: int, n_days: int
-)->Sequential:
+) -> Sequential:
     """
     Builds neural net from config_neural_network_models.py
     Parameters
@@ -152,8 +153,8 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if is_error:
             return
         print(
-            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation."
-            f" {ns_parser.n_loops} loops"
+            f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
+            f" of length {X_valid.shape[1]} for validation. Model will run {ns_parser.n_loops} loops"
         )
         future_dates = get_next_stock_market_days(
             dates_forecast_input[-1], n_next_days=ns_parser.n_days
@@ -259,8 +260,8 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if is_error:
             return
         print(
-            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation."
-            f" {ns_parser.n_loops} loops"
+            f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
+            f" of length {X_valid.shape[1]} for validation. Model will run {ns_parser.n_loops} loops"
         )
         future_dates = get_next_stock_market_days(
             dates_forecast_input[-1], n_next_days=ns_parser.n_days
@@ -364,8 +365,8 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if is_error:
             return
         print(
-            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation."
-            f" {ns_parser.n_loops} loops"
+            f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
+            f" of length {X_valid.shape[1]} for validation. Model will run {ns_parser.n_loops} loops"
         )
         future_dates = get_next_stock_market_days(
             dates_forecast_input[-1], n_next_days=ns_parser.n_days
@@ -471,8 +472,8 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if is_error:
             return
         print(
-            f"Training on {X_train.shape[0]} samples.  Using {X_valid.shape[0]} samples for validation."
-            f" {ns_parser.n_loops} loops"
+            f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
+            f" of length {X_valid.shape[1]} for validation. Model will run {ns_parser.n_loops} loops"
         )
         future_dates = get_next_stock_market_days(
             dates_forecast_input[-1], n_next_days=ns_parser.n_days
@@ -487,6 +488,7 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_inputs,
                 ns_parser.n_days,
             )
+
             model.compile(optimizer=ns_parser.s_optimizer, loss=ns_parser.s_loss)
 
             model.fit(

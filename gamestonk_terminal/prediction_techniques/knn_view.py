@@ -3,29 +3,20 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import datetime
-import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from sklearn import neighbors
-from TimeSeriesCrossValidation import splitTrain
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     valid_date,
-    patch_pandas_text_adjustment,
     get_next_stock_market_days,
-    plot_autoscale,
 )
 from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction,
-    price_prediction_backtesting_color,
-    print_prediction_kpis,
-    get_backtesting_data,
+    prepare_scale_train_valid_test,
+    plot_data_predictions,
 )
-
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -106,9 +97,18 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         "-t",
         "--test_size",
         default=0.2,
-        dest="test_size",
+        dest="valid_split",
         type=float,
         help="Percentage of data to validate in sample",
+    )
+    parser.add_argument(
+        "-p",
+        "--pp",
+        action="store",
+        dest="s_preprocessing",
+        default="none",
+        choices=["normalization", "standardization", "minmax", "none"],
+        help="pre-processing data.",
     )
 
     try:
@@ -116,214 +116,55 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         if not ns_parser:
             return
 
-        # BACKTESTING
-        if ns_parser.s_end_date:
-            df_future, df_stock, bt_flag = get_backtesting_data(
-                df_stock, ns_parser.s_end_date, ns_parser.n_days
-            )
-            if not bt_flag:
-                return
-
-        # Split training data
-        stock_x, stock_y = splitTrain.split_train(
-            df_stock["5. adjusted close"].values,
-            ns_parser.n_inputs,
-            ns_parser.n_days,
-            ns_parser.n_jumps,
-        )
-
-        if not stock_x:
-            print("Given the model parameters more training data is needed.\n")
+        (
+            X_train,
+            X_valid,
+            y_train,
+            y_valid,
+            _,
+            _,
+            _,
+            y_dates_valid,
+            forecast_data_input,
+            dates_forecast_input,
+            scaler,
+            is_error,
+        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        if is_error:
+            print("Error preparing data")
             return
+        print(
+            f"Training on {X_train.shape[0]} sequences of length {X_train.shape[1]}.  Using {X_valid.shape[0]} sequences "
+            f" of length {X_valid.shape[1]} for validation"
+        )
+        future_dates = get_next_stock_market_days(
+            dates_forecast_input[-1], n_next_days=ns_parser.n_days
+        )
 
         # Machine Learning model
         knn = neighbors.KNeighborsRegressor(n_neighbors=ns_parser.n_neighbors)
-        knn.fit(stock_x, stock_y)
-
-        # Prediction data
-        l_predictions = knn.predict(
-            df_stock["5. adjusted close"].values[-ns_parser.n_inputs :].reshape(1, -1)
-        )[0]
-        l_pred_days = get_next_stock_market_days(
-            last_stock_day=df_stock["5. adjusted close"].index[-1],
-            n_next_days=ns_parser.n_days,
-        )
-        df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
-
-        # Plotting
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
-        s_knn = f"{ns_parser.n_neighbors}-Nearest Neighbors on {s_ticker}"
-        # BACKTESTING
-        if ns_parser.s_end_date:
-            plt.title(f"BACKTESTING: {s_knn} - {ns_parser.n_days} days prediction")
-        else:
-            plt.title(f"{s_knn} - {ns_parser.n_days} days prediction")
-        plt.xlim(
-            df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
-        )
-        plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.plot(
-            [df_stock.index[-1], df_pred.index[0]],
-            [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
-            lw=1,
-            c="tab:green",
-            linestyle="--",
-        )
-        plt.plot(df_pred.index, df_pred, lw=2, c="tab:green")
-        plt.axvspan(
-            df_stock.index[-1], df_pred.index[-1], facecolor="tab:orange", alpha=0.2
-        )
-        _, _, ymin, ymax = plt.axis()
-        plt.vlines(
-            df_stock.index[-1], ymin, ymax, linewidth=1, linestyle="--", color="k"
+        knn.fit(
+            X_train.reshape(X_train.shape[0], X_train.shape[1]),
+            y_train.reshape(y_train.shape[0], y_train.shape[1]),
         )
 
-        # BACKTESTING
-        if ns_parser.s_end_date:
-            plt.plot(
-                df_future.index,
-                df_future["5. adjusted close"],
-                lw=2,
-                c="tab:blue",
-                ls="--",
-            )
-            plt.plot(
-                [df_stock.index[-1], df_future.index[0]],
-                [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_future["5. adjusted close"].values[0],
-                ],
-                lw=1,
-                c="tab:blue",
-                linestyle="--",
-            )
+        preds = knn.predict(X_valid.reshape(X_valid.shape[0], X_valid.shape[1]))
+        forecast_data = knn.predict(forecast_data_input.reshape(1, -1))
 
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
-
-        # BACKTESTING
-        if ns_parser.s_end_date:
-            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.subplot(211)
-            plt.plot(
-                df_future.index,
-                df_future["5. adjusted close"],
-                lw=2,
-                c="tab:blue",
-                ls="--",
-            )
-            plt.plot(df_pred.index, df_pred, lw=2, c="green")
-            plt.scatter(
-                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
-            )
-            plt.plot(
-                [df_stock.index[-1], df_future.index[0]],
-                [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_future["5. adjusted close"].values[0],
-                ],
-                lw=2,
-                c="tab:blue",
-                ls="--",
-            )
-            plt.scatter(df_pred.index, df_pred, c="green", lw=3)
-            plt.plot(
-                [df_stock.index[-1], df_pred.index[0]],
-                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
-                lw=2,
-                c="green",
-                ls="--",
-            )
-            plt.title("BACKTESTING: Real data price versus Prediction")
-            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks(
-                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
-            )
-            plt.ylabel("Share Price ($)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.legend(["Real data", "Prediction data"])
-            plt.xticks([])
-
-            plt.subplot(212)
-            plt.axhline(y=0, color="k", linestyle="--", linewidth=2)
-            plt.plot(
-                df_future.index,
-                100
-                * (df_pred.values - df_future["5. adjusted close"].values)
-                / df_future["5. adjusted close"].values,
-                lw=2,
-                c="red",
-            )
-            plt.scatter(
-                df_future.index,
-                100
-                * (df_pred.values - df_future["5. adjusted close"].values)
-                / df_future["5. adjusted close"].values,
-                c="red",
-                lw=5,
-            )
-            plt.title("BACKTESTING: Error between Real data and Prediction [%]")
-            plt.plot(
-                [df_stock.index[-1], df_future.index[0]],
-                [
-                    0,
-                    100
-                    * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
-                    / df_future["5. adjusted close"].values[0],
-                ],
-                lw=2,
-                ls="--",
-                c="red",
-            )
-            plt.xlim(df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1))
-            plt.xticks(
-                [df_stock.index[-1], df_pred.index[-1] + datetime.timedelta(days=1)]
-            )
-            plt.xlabel("Time")
-            plt.ylabel("Prediction Error (%)")
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.legend(["Real data", "Prediction data"])
-
-            if gtff.USE_ION:
-                plt.ion()
-
-            plt.show()
-
-            # Refactor prediction dataframe for backtesting print
-            df_pred.name = "Prediction"
-            df_pred = df_pred.to_frame()
-            df_pred["Real"] = df_future["5. adjusted close"]
-
-            if gtff.USE_COLOR:
-                patch_pandas_text_adjustment()
-
-                print("Time         Real [$]  x  Prediction [$]")
-                print(
-                    df_pred.apply(
-                        price_prediction_backtesting_color, axis=1
-                    ).to_string()
-                )
-            else:
-                print(df_pred[["Real", "Prediction"]].round(2).to_string())
-
-            print("")
-            print_prediction_kpis(df_pred["Real"].values, df_pred["Prediction"].values)
-
-        else:
-            # Print prediction data
-            print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
-        print("")
+        forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
+        print_pretty_prediction(
+            forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+        )
+        plot_data_predictions(
+            df_stock,
+            preds,
+            y_valid,
+            y_dates_valid,
+            scaler,
+            f"KNN Model with {ns_parser.n_neighbors} Neighbors on {s_ticker}",
+            forecast_data_df,
+            1,
+        )
 
     except Exception as e:
         print(e)

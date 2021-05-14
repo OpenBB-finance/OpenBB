@@ -18,7 +18,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
-from keras.models import Sequential
+from tensorflow.keras.models import Sequential
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -215,7 +215,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
     parser.add_argument(
         "-v",
         "--valid",
-        type=check_positive,
+        type=float,
         dest="valid_split",
         default=0.1,
         help="Validation data split fraction",
@@ -223,10 +223,18 @@ def parse_args(prog: str, description: str, other_args: List[str]):
 
     parser.add_argument(
         "--lr",
-        type = check_positive,
-        dest = "lr",
+        type=check_positive,
+        dest="lr",
         default=None,
-        help="Specify learning rate for optimizer."
+        help="Specify learning rate for optimizer.",
+    )
+
+    parser.add_argument(
+        "--no_shuffle",
+        action="store_false",
+        dest="no_shuffle",
+        default=True,
+        help="Specify if shuffling validation inputs.",
     )
 
     try:
@@ -275,11 +283,11 @@ def prepare_scale_train_valid_test(
     X_train: np.ndarray
         Array of training data.  Shape (# samples, n_inputs, 1)
     X_test: np.ndarray
-        Array of validation data.  Shape (#samples, n_inputs, 1)
+        Array of validation data.  Shape (totoal sequences - #samples, n_inputs, 1)
     y_train: np.ndarray
         Array of training outputs.  Shape (#samples, n_days)
     y_test: np.ndarray
-        Array of validation outputs.  Shape (#samples, n_days)
+        Array of validation outputs.  Shape (total sequences -#samples, n_days)
     X_dates_train: np.ndarray
         Array of dates for X_train
     X_dates_test: np.ndarray
@@ -287,7 +295,7 @@ def prepare_scale_train_valid_test(
     y_dates_train: np.ndarray
         Array of dates for y_train
     y_dates_test: np.ndarray
-        Array of dates for y)test
+        Array of dates for y_test
     test_data: np.ndarray
         Array of prices after the specified end date
     dates_test: np.ndarray
@@ -310,6 +318,8 @@ def prepare_scale_train_valid_test(
     elif ns_parser.s_preprocessing == "normalization":
         scaler = Normalizer()
 
+    elif ns_parser.s_preprocessing == "none":
+        scaler = None
     # Test data is used for forecasting.  Takes the last n_input_days data points.
     # These points are not fed into training
 
@@ -337,8 +347,13 @@ def prepare_scale_train_valid_test(
 
     dates = df_stock.index
     dates_test = test_data.index
-    train_data = scaler.fit_transform(df_stock.values.reshape(-1, 1))
-    test_data = scaler.transform(test_data.values.reshape(-1, 1))
+    if scaler:
+        train_data = scaler.fit_transform(df_stock.values.reshape(-1, 1))
+        test_data = scaler.transform(test_data.values.reshape(-1, 1))
+    else:
+        train_data = df_stock.values.reshape(-1, 1)
+        test_data = test_data.values.reshape(-1, 1)
+
     prices = train_data
 
     input_dates = []
@@ -376,6 +391,7 @@ def prepare_scale_train_valid_test(
         input_dates,
         next_n_day_dates,
         test_size=test_size,
+        shuffle=ns_parser.no_shuffle,
     )
     return (
         X_train,
@@ -394,7 +410,7 @@ def prepare_scale_train_valid_test(
 
 
 def forecast(
-    input_values: np.ndarray, future_dates: List, model:Sequential, scaler
+    input_values: np.ndarray, future_dates: List, model: Sequential, scaler
 ) -> pd.DataFrame:
     """
     Forecast the stock movement over future days and rescale
@@ -414,9 +430,13 @@ def forecast(
     df_future: pd.DataFrame
         Dataframe of predicted values
     """
-    future_values = scaler.inverse_transform(
-        model.predict(input_values.reshape(1, -1, 1)).reshape(-1, 1)
-    )
+    if scaler:
+        future_values = scaler.inverse_transform(
+            model.predict(input_values.reshape(1, -1, 1)).reshape(-1, 1)
+        )
+    else:
+        future_values = model.predict(input_values.reshape(1, -1, 1)).reshape(-1, 1)
+
     df_future = pd.DataFrame(
         future_values, index=future_dates, columns=["Predicted Price"]
     )
@@ -438,9 +458,12 @@ def plot_data_predictions(
     )
     for i in range(len(y_valid) - 1):
 
-        y_pred = scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel()
-        y_act = scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel()
-
+        if scaler:
+            y_pred = scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel()
+            y_act = scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel()
+        else:
+            y_pred = preds[i].ravel()
+            y_act = y_valid[i].ravel()
         plt.plot(
             y_dates_valid[i],
             y_pred,
@@ -465,17 +488,23 @@ def plot_data_predictions(
         )
 
     # Leave this one out of the loop so that the legend doesnt get overpopulated with "Predictions"
+    if scaler:
+        final_pred = scaler.inverse_transform(preds[-1].reshape(-1, 1)).ravel()
+        final_valid = scaler.inverse_transform(y_valid[-1].reshape(-1, 1)).ravel()
+    else:
+        final_pred = preds[-1].reshape(-1, 1).ravel()
+        final_valid = y_valid[-1].reshape(-1, 1).ravel()
     plt.plot(
         y_dates_valid[-1],
-        scaler.inverse_transform(preds[-1].reshape(-1, 1)),
+        final_pred,
         "r",
         lw=2,
         label="Predictions",
     )
     plt.fill_between(
         y_dates_valid[-1],
-        scaler.inverse_transform(preds[-1].reshape(-1, 1)).ravel(),
-        scaler.inverse_transform(y_valid[-1].reshape(-1, 1)).ravel(),
+        final_pred,
+        final_valid,
         color="k",
         alpha=0.2,
     )
