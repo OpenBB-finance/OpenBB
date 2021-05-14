@@ -473,7 +473,7 @@ def plot_data_predictions(
             alpha=0.2,
         )
 
-    # Leave this one out of the loop so that the legend doesnt get overpopulated with "Predictions"
+    # Leave this one out of the loop so that the legend doesn't get overpopulated with "Predictions"
     if scaler:
         final_pred = scaler.inverse_transform(preds[-1].reshape(-1, 1)).ravel()
         final_valid = scaler.inverse_transform(y_valid[-1].reshape(-1, 1)).ravel()

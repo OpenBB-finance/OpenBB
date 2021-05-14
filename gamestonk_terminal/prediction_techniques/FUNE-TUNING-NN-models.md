@@ -23,7 +23,7 @@ To this end, we allow users to specify how much validation data to use and if it
 into 10% validation data with a random shuffle.  This will allow the user to see how the model performs at various times in your sequence.
 
 ```
--v/--valid : validation split of data.  Deafult 0.1 (10%)
+-v/--valid : validation split of data.  Default 0.1 (10%)
 --no_shuffle : Flag that will order the validation data so that the last (-v) percent of data is the validation.
 ```
 To try "backtesting" to a certain data, you can specify the end date.  This will forecast and compare the true data from that time.
@@ -103,7 +103,7 @@ This model is set in [config_neural_network_models.py](/config_neural_network_mo
 
 **Optimizer technique**:Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
 
-The optimizer selection has been moved to teh config_neural_network_models.py file and the new argument is the learning rate.
+The optimizer selection has been moved to the config_neural_network_models.py file and the new argument is the learning rate.
 This tells your model how "fast" to train by adjusting the factor that gets multiplied to the loss function for updating weights
 ```
 --lr : learning rate. Default 0.01.
