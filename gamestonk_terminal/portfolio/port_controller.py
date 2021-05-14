@@ -29,6 +29,11 @@ class PortfolioController:
         "alphist",
         "allyhold",
         "dghold",
+        "dgtopnews",
+        "dglastnews",
+        "dgcompanynews",
+        "dglookup",
+        "dgpending",
         "hold",
     ]
 
@@ -76,6 +81,11 @@ class PortfolioController:
         print("   allyhold      view ally holdings")
         print("Degiro:")
         print("   dghold        view dg holdings")
+        print("   dgtopnews     view top news preview")
+        print("   dglastnews    view latest news")
+        print("   dgcompanynews view news about a company with it's isin")
+        print("   dglookup      view search for a product by name")
+        print("   dgpending     view pending orders")
         print("\nMerge:")
         print("   hold          view net holdings across all logins")
         print("")
@@ -86,17 +96,22 @@ class PortfolioController:
             f"\nCurrent Brokers : {('None', ', '.join(self.broker_list))[bool(self.broker_list)]}"
         )
         print("\nRobinhood:")
-        print("   rhhold      check holdings")
-        print("   rhhist      plot historical RH portfolio")
-        print("\nAlpaca:")
-        print("   alphold     view alpaca holdings")
-        print("   alphist     plot historical alpaca portfolio")
-        print("\nAlly:")
-        print("   allyhold    view ally holdings")
-        print("\nDegiro:")
-        print("   dghold      view dg holdings")
+        print("   rhhold        check holdings")
+        print("   rhhist        plot historical RH portfolio")
+        print("\nAlpaca:")  
+        print("   alphold       view alpaca holdings")
+        print("   alphist       plot historical alpaca portfolio")
+        print("\nAlly:")  
+        print("   allyhold      view ally holdings")
+        print("\nDegiro:")  
+        print("   dghold        view dg holdings")
+        print("   dgtopnews     view top news preview")
+        print("   dglastnews    view latest news")
+        print("   dgcompanynews view news about a company with it's isin")
+        print("   dglookup      view search for a product by name")
+        print("   dgpending     view pending orders")
         print("\nMerge:")
-        print("   hold        view net holdings across all logins")
+        print("   hold          view net holdings across all logins")
         print("")
 
     def switch(self, an_input: str):
@@ -184,6 +199,42 @@ class PortfolioController:
     def call_dghold(self, _):
         try:
             dg_api.show_holdings()
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_dgtopnews(self, _):
+        try:
+            dg_api.top_news_preview()
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_dglastnews(self, _):
+        try:
+            dg_api.latest_news()
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_dgcompanynews(self, isin_list: List[str]):
+        try:
+            dg_api.news_by_company(isin_list[0])
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_dglookup(self, search_text_list: List[str]):
+        try:
+            search_text = ' '.join(search_text_list)
+            dg_api.product_lookup(search_text=search_text)
+        except Exception as e:
+            print(e)
+            print("")
+
+    def call_dgpending(self, _):
+        try:
+            dg_api.pending_orders()
         except Exception as e:
             print(e)
             print("")

@@ -3,9 +3,10 @@
 This page shows the available brokers for loading in data.  If yours is not listed, please submit a new issue and we will look at adding it.
 
 Current brokers:
-* Robinhood
-* Alpaca
-* Ally
+* rh : Robinhood 
+* alp : Alpaca
+* ally: Ally
+* dg : Degiro
 
 
 Once this screen is accessed, the first command to be run is 
@@ -40,6 +41,24 @@ Your  login information should be stored as environment variables in [config fil
 [ALLY](#ALLY)
 * [allyhold](#allyhold)
   * Look at Ally Invest Holdings
+
+[DEGIRO](#DEGIRO)
+* [Credentials](#Credentials)
+    * How to setup credentials ?
+* [2FA](#2FA)
+    * How to setup 2FA credentials ?
+* [dghold](#dghold)
+    * Command to look at current holdings
+* [dgtopnews](#dgtopnews)
+    * Command to get top news preview
+* [dglastnews](#dglastnews)
+    * Command to get latest news
+* [dgcompanynews](#dgcompanynews)
+    * Command to get news about a company with it's isin
+* [dglookup](#dglookup)
+    * Command to search for a product by name
+* [dgpending](#dgpending)
+    * Command to list pending orders
 
 [Merge](#Merge)
 * [hold](#hold)
@@ -139,6 +158,93 @@ Show all Ally Invest holdings:
 usage : allyhold
 ````
 No additional flags.
+
+## DEGIRO <a name="DEGIRO"></a>
+
+### Credentials <a name="Credentials"></a>
+In order to login you need to provide the following credentials :
+
+| Parameter | Description |
+| :--- | :--- |
+| DG_USERNAME | Username used to log into Degiro's website. |
+| DG_PASSWORD | Password used to log into Degiro's website. |
+
+### 2FA <a name="2FA"></a>
+In order to use 2FA you need to provide one of these parameters :
+
+| Parameter | Description |
+| :--- | :--- |
+| DG_TOTP | This is your one time password. |
+| DG_TOTP_SECRET | This secret key will let Gamestonk generate the DG_TOTP for you. |
+
+If you choose to use `DG_TOTP` : you will have to provide a temporary password at each connection to Degiro.
+
+If you provide your `DG_TOTP_SECRET` : you won't have to type your DG_TOTP, Gamestonk will generate it for you at each connection.
+
+`DG_TOTP_SECRET` is the text representation of the `QRCODE` that Degiro's provide you when you enable 2FA.
+
+More information on 2FA credentials, in the documentation of this library :
+
+https://github.com/Chavithra/degiro-connector
+
+### dghold <a name="dghold"></a>
+
+Displays current holdings to the console:
+````
+usage: dghold
+````
+
+### dgtopnews <a name="dgtopnews"></a>
+
+Usage :
+````
+usage: dgtopnews
+````
+
+### dglastnews <a name="dglastnews"></a>
+
+Usage :
+````
+usage: dglastnews
+````
+
+### dgcompanynews <a name="dgcompanynews"></a>
+You need to provide the `ISIN` number of the company.
+You can get this `ISIN` using the `dglookup` command for instance.
+
+Usage :
+````
+usage: dgcompanynews NL0000235190
+````
+
+### dglookup <a name="dglookup"></a>
+
+Usage :
+````
+usage: dglookup TESLA
+````
+
+It will display a result like this :
+```
+                           name          isin        symbol productType currency  closePrice closePriceDate
+0                         Tesla  US88160R1014          TSLA       STOCK      USD     571.690     2021-05-13
+1                     Tesla Inc  US88160R1014           TL0       STOCK      EUR     478.000     2021-05-13
+2                     Tesla Inc  US88160R1014           TL0       STOCK      EUR     467.650     2021-05-13
+3     TurboC O.End Tesla 535,04  DE000VQ1S3R3          None     WARRANT      EUR       3.740     2021-05-13
+4      TurboC O.End Tesla 591,4  DE000VQ5R6T9          None     WARRANT      EUR       0.001     2021-05-13
+5     TurboP O.End Tesla 685,29  DE000VQ7HWU6          None     WARRANT      EUR       9.870     2021-05-13
+6     TurboC O.End Tesla 448,63  DE000VQ1KYG8          None     WARRANT      EUR      10.890     2021-05-13
+7       Call 17.12.21 Tesla 392  DE000VP53547  DE000VP53547     WARRANT      EUR       8.960     2021-05-13
+8       Call 20.01.23 Tesla 720  DE000VQ68691          None     WARRANT      EUR       1.160     2021-05-13
+9  Leverage Shares 1x Tesla ETP  IE00BKT6ZH01          STSL         ETF      GBX     135.550     2021-05-13
+```
+
+### dgpending <a name="dgpending"></a>
+
+Usage :
+````
+usage: dgpending
+````
 
 ## Merge <a name="Merge"></a>
 

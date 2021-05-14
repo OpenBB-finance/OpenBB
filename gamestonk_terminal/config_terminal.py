@@ -45,6 +45,8 @@ RH_PASSWORD = os.getenv("GT_RH_PASSWORD") or "REPLACE_ME"
 # Degiro
 DG_USERNAME = os.getenv("GT_DG_USERNAME") or "REPLACE_ME"
 DG_PASSWORD = os.getenv("GT_DG_PASSWORD") or "REPLACE_ME"
+DG_TOTP = os.getenv("GT_DG_TOTP") or None
+DG_TOTP_SECRET = os.getenv("GT_DG_TOTP_SECRET") or None
 
 # https://developer.oanda.com
 OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE ME"
