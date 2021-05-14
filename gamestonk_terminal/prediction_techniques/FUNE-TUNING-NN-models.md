@@ -16,7 +16,17 @@ load MSFT -s 2014-01-01
 
 3. **Out of this training data, select which part will be used for validation**
 
-Since this is a timeseries, and the data has a sequence, the data at the end of the timeseries is the one to be used for validation. As a rule of thumb I usually try to "steal" the least amount of data from the training set, since the more recent the data the more important it is for training. Hence, one could set the end date of training data to be the current day - days of predictions.
+Anyone reading this, note this is quite a discussion between the devs.  Since this is a time series, there is an inherent
+ordering of the data.  However, since returns are random, it is hard to predict, and ordering data may not have any meaning.
+
+To this end, we allow users to specify how much validation data to use and if it should be shuffled.  By default, we will split 
+into 10% validation data with a random shuffle.  This will allow the user to see how the model performs at various times in your sequence.
+
+```
+-v/--valid : validation split of data.  Deafult 0.1 (10%)
+--no_shuffle : Flag that will order the validation data so that the last (-v) percent of data is the validation.
+```
+To try "backtesting" to a certain data, you can specify the end date.  This will forecast and compare the true data from that time.
 ```
 -e/--end : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 ```
@@ -25,7 +35,7 @@ Since this is a timeseries, and the data has a sequence, the data at the end of 
 
 Decide whether you want to pre-process your share price data or not. I.e. do you want to use these values between 18 and 245, or perhaps normalize these between 0 and 1? The later may improve performance.
 ```
--p/--pp : pre-processing data. Default normalization.
+-p/--pp : pre-processing data. Default minmax.
 ```
 
 5. **Select input, prediction days and jumps in training data**
@@ -91,14 +101,20 @@ This model is set in [config_neural_network_models.py](/config_neural_network_mo
 -l/--loss : loss function. Default mae.
 ```
 
-**Optimizer technique**: Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
+**Optimizer technique**:Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
+
+The optimizer selection has been moved to teh config_neural_network_models.py file and the new argument is the learning rate.
+This tells your model how "fast" to train by adjusting the factor that gets multiplied to the loss function for updating weights
 ```
--o/--optimizer : optimization technique. Default adam.
+--lr : learning rate. Default 0.01.
 ```
 
 9. **Training epochs**
 
 Select the number of epochs to train your model. The bigger number of epochs, the longer the training will take, and also increase chances of overfitting.
+
+An early stopping has been implemented that will (if desired) stop training once the validation loss has plateaued.  the patience (number of 
+epochs with no improvement) can be found in the config file.
 ```
 --epochs : number of training epochs. Default 200.
 ```

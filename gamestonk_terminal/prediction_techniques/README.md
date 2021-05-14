@@ -2,8 +2,6 @@
 
 This menu aims to predict the share price of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below. See [How to fune-tuning a NN model](FUNE-TUNING-NN-models.md).
 
-  * [sma](#sma)
-    - simple moving average
   * [ets](#ets)
     - Exponential Smoothing (e.g. Holt-Winters)
   * [knn](#knn)
@@ -28,23 +26,14 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
   * [lstm](#lstm)
     - Long-Short Term Memory
     - Contains a [backtesting example](#backtesting)
+  * [conv1d](#conv1d)
+    - 1D Convolutional Neural Net
 
 **Note:** _Use this at your own discretion. All of these prediciton techniques rely solely on the closing price of the stock. This means that there are several factors that the models aren't aware of at the time of prediction, and may - drastically - move the price up or down. Examples are: news, analyst price targets, reddit post, tweets from Elon Musk, and so on._
 
 **Note 2:** _[Enabling GPU acceleration for TensorFlow requires CUDA setup](README-gpu-accel.md) and will probably not provide any speedup unless you are building large custom models._
 
 
-
-## sma <a name="sma"></a>
-```
-usage: sma [-l N_LENGTH] [-d N_DAYS]
-```
-Simple Moving Average:
-  * -l : length of SMA window. Default 20.
-  * -d : prediciton days. Default 5.
-  * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
-
-![sma](https://user-images.githubusercontent.com/25267873/108604945-d29aea80-73a8-11eb-8dac-6a545b9c52b9.png)
 
 ## ets <a name="ets"></a>
 ```
@@ -154,7 +143,7 @@ Facebook's Prophet:
 ## mlp <a name="mlp"></a>
 ```
 usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {minmax, normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
+ [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
 ```
 MulitLayer Perceptron:
   * -d : prediciton days. Default 5.
@@ -162,14 +151,16 @@ MulitLayer Perceptron:
   * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
   * -p : pre-processing data. Default minmax.
-  * -o : optimization technique. Default adam.
+  * -v : validation split.  Default 0.1
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --lr : learning rate for optimizer
   * --loops: number of loops to iterate and train models. Default 1.
+  * --no_shuffle : split validation data in time_ordered way instead of random.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -191,7 +182,7 @@ MultiLayer_Perceptron \
 ## rnn <a name="rnn"></a>
 ```
 usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
+ [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
 ```
 Recurrent Neural Network:
   * -d : prediciton days. Default 5.
@@ -199,7 +190,7 @@ Recurrent Neural Network:
   * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
   * -p : pre-processing data. Default normalization.
-  * -o : optimization technique. Default adam.
+  * -v : validation split.  Default 0.1
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
@@ -207,6 +198,8 @@ Recurrent Neural Network:
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
   * --loops: number of loops to iterate and train models. Default 1.
+  * --lr : learning rate for optimizer
+  * --no_shuffle : split validation data in time_ordered way instead of random.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -235,7 +228,7 @@ Recurrent_Neural_Network \
 ## lstm <a name="lstm"></a>
 ```
 usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
+ [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
 ```
 Long-Short Term Memory:
   * -d : prediciton days. Default 5.
@@ -243,14 +236,16 @@ Long-Short Term Memory:
   * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
   * -p : pre-processing data. Default normalization.
-  * -o : optimization technique. Default adam.
+  * -v : validation split.  Default 0.1
   * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
-  * --loops: number of loops to iterate and train models. Default 1.
+  * --loops: number of loops to iterate and train models. Default 1
+  * --lr : learning rate for optimizer
+  * --no_shuffle : split validation data in time_ordered way instead of random.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.py](/config_neural_network_models.py)
 ```
@@ -273,3 +268,24 @@ Long_Short_Term_Memory \
 
 <img width="992" alt="Captura de ecrã 2021-03-14, às 00 06 51" src="https://user-images.githubusercontent.com/25267873/111053158-420c7300-8459-11eb-993b-6d9c26f98af9.png">
 
+## conv1d <a name="conv1d"></a>
+```
+usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,minmax,none}]
+ [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
+```
+1D Convolutional Neural Net:
+  * -d : prediction days. Default 5.
+  * -i : number of days to use for prediction. Default 40.
+  * -j : number of jumps in training data. Default 1.
+  * --epochs : number of training epochs. Default 50.
+  * -p : pre-processing data. Default minmax.
+  * -v : validation split.  Default 0.1
+  * -l : loss function. Default mae.
+  * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
+  * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
+  * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
+  * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
+  * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --loops: number of loops to iterate and train models. Default 1.
+  * --lr : learning rate for optimizer
+  * --no_shuffle : split validation data in time_ordered way instead of random.
