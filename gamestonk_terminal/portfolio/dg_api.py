@@ -37,12 +37,15 @@ def fetch_additional_information(
         - symbol
         - ...
 
-    Args:
-        positions (pd.DataFrame):
-            Positions from which we want extra fields.
+    Parameters
+    ----------
+    positions : pd.DataFrame
+        Positions from which we want extra fields.
 
-    Returns:
-        pd.DataFrame: Positions with additional data.
+    Returns
+    -------
+    pd.DataFrame
+        Positions with additional data.
     """
 
     # EXTRACT POSITIONS IDS
@@ -93,12 +96,15 @@ def filter_current_positions(
 ) -> pd.DataFrame:
     """Filter the positions in order to keep only held ones.
 
-    Args:
-        portfolio (Update.Portfolio):
-            Portfolio returned from the API.
+    Parameters
+    ----------
+    portfolio : Update.Portfolio
+        Portfolio returned from the API.
 
-    Returns:
-        pd.DataFrame: Filtered portfolio.
+    Returns
+    -------
+    pd.DataFrame
+        Filtered portfolio.
     """
 
     # CONVERT TO DATAFRAME
@@ -117,9 +123,7 @@ def filter_current_positions(
 
 
 def login():
-    """
-    Connect to Degiro's API.
-    """
+    """Connect to Degiro's API."""
 
     # CONNECT
     trading_api.connect()
@@ -136,17 +140,13 @@ def login():
 
 
 def logout():
-    """
-    Log out from Degiro's API.
-    """
+    """Log out from Degiro's API."""
 
     trading_api.logout()
 
 
 def show_holdings():
-    """
-    Display held products.
-    """
+    """Display held products."""
 
     # FETCH HELD PRODUCTS
     positions = fetch_current_positions()
@@ -203,9 +203,7 @@ def return_holdings() -> pd.DataFrame:
 
 
 def top_news_preview():
-    """
-    Display pending orders.
-    """
+    """ Display pending orders."""
 
     # FETCH DATA
     news = trading_api.get_top_news_preview(raw=True)
@@ -221,6 +219,7 @@ def top_news_preview():
 
 
 def product_lookup(search_text: str):
+    """ Search for products by their name."""
     # SETUP REQUEST
     request_lookup = ProductSearch.RequestLookup(
         search_text=search_text,
@@ -252,6 +251,7 @@ def product_lookup(search_text: str):
 
 
 def latest_news():
+    """ Display latest news."""
     # SETUP REQUEST
     request = LatestNews.Request(
         offset=0,
@@ -271,6 +271,7 @@ def latest_news():
 
 
 def news_by_company(isin: str):
+    """ Display news related to a company using its ISIN."""
     request = NewsByCompany.Request(
         isin=isin,
         limit=10,
@@ -294,6 +295,7 @@ def news_by_company(isin: str):
 
 
 def pending_orders():
+    """ Display pending orders."""
     request_list = Update.RequestList()
     request_list.values.extend(
         [
