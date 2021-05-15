@@ -1,8 +1,7 @@
-import gamestonk_terminal.config_terminal as config
+# IMPORTATION EXTERNAL
 import pandas as pd
 import quotecast.helpers.pb_handler as pb_handler
 
-from quotecast.api import API as QuotecastAPI
 from trading.api import API as TradingAPI
 from trading.pb.trading_pb2 import (
     Credentials,
@@ -12,6 +11,9 @@ from trading.pb.trading_pb2 import (
     ProductSearch,
     Update,
 )
+
+# IMPORTATION INTERNAL
+import gamestonk_terminal.config_terminal as config
 
 # SETUP CREDENTIALS
 credentials = Credentials(
@@ -24,9 +26,6 @@ credentials = Credentials(
 
 # SETUP TRADING API
 trading_api = TradingAPI(credentials=credentials)
-
-# DEFINE QUOTECAST API
-quotecast_api = None
 
 
 def fetch_additional_information(
@@ -130,11 +129,10 @@ def login():
 
     # EXTRACT OPTIONAL CREDENTIALS
     int_account = client_details_table["data"]["intAccount"]
-    user_token = client_details_table["data"]["id"]
+    # user_token = client_details_table["data"]["id"]
 
     # SETUP OPTIONAL CREDENTIALS
     trading_api.credentials.int_account = int_account
-    quotecast_api = QuotecastAPI(user_token=user_token)  # noqa: F841
 
 
 def logout():
@@ -210,10 +208,10 @@ def top_news_preview():
     """
 
     # FETCH DATA
-    top_news_preview = trading_api.get_top_news_preview(raw=True)
+    news = trading_api.get_top_news_preview(raw=True)
 
     # DISPLAY DATA
-    for article in top_news_preview["data"]["items"]:
+    for article in news["data"]["items"]:
         print("date", article["date"])
         print("lastUpdated", article["lastUpdated"])
         print("category", article["category"])
@@ -262,10 +260,10 @@ def latest_news():
     )
 
     # FETCH DATA
-    latest_news = trading_api.get_latest_news(request=request, raw=True)
+    news = trading_api.get_latest_news(request=request, raw=True)
 
     # DISPLAY DATA
-    for article in latest_news["data"]["items"]:
+    for article in news["data"]["items"]:
         print("date", article["date"])
         print("title", article["title"])
         print("content", article["content"])
@@ -281,13 +279,13 @@ def news_by_company(isin: str):
     )
 
     # FETCH DATA
-    news_by_company = trading_api.get_news_by_company(
+    news = trading_api.get_news_by_company(
         request=request,
         raw=True,
     )
 
     # DISPLAY DATA
-    for article in news_by_company["data"]["items"]:
+    for article in news["data"]["items"]:
         print("date", article["date"])
         print("title", article["title"])
         print("content", article["content"])
