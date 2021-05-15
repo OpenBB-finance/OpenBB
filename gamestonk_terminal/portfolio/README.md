@@ -43,10 +43,6 @@ Your  login information should be stored as environment variables in [config fil
   * Look at Ally Invest Holdings
 
 [DEGIRO](#DEGIRO)
-* [Credentials](#Credentials)
-    * How to setup credentials ?
-* [2FA](#2FA)
-    * How to setup 2FA credentials ?
 * [dghold](#dghold)
     * Command to look at current holdings
 * [dgtopnews](#dgtopnews)
@@ -161,7 +157,8 @@ No additional flags.
 
 ## DEGIRO <a name="DEGIRO"></a>
 
-### Credentials <a name="Credentials"></a>
+**Credentials**
+
 In order to login you need to provide the following credentials :
 
 | Parameter | Description |
@@ -169,7 +166,9 @@ In order to login you need to provide the following credentials :
 | DG_USERNAME | Username used to log into Degiro's website. |
 | DG_PASSWORD | Password used to log into Degiro's website. |
 
-### 2FA <a name="2FA"></a>
+
+**2FA**
+
 In order to use 2FA you need to provide one of these parameters :
 
 | Parameter | Description |
@@ -188,38 +187,32 @@ More information on 2FA credentials, in the documentation of this library :
 https://github.com/Chavithra/degiro-connector
 
 ### dghold <a name="dghold"></a>
-
-Displays current holdings to the console:
 ````
 usage: dghold
 ````
 
-### dgtopnews <a name="dgtopnews"></a>
+Displays current holdings to the console.
 
-Usage :
+### dgtopnews <a name="dgtopnews"></a>
 ````
 usage: dgtopnews
 ````
 
 ### dglastnews <a name="dglastnews"></a>
-
-Usage :
 ````
 usage: dglastnews
 ````
 
 ### dgcompanynews <a name="dgcompanynews"></a>
-You need to provide the `ISIN` number of the company.
-You can get this `ISIN` using the `dglookup` command for instance.
-
-Usage :
 ````
 usage: dgcompanynews NL0000235190
 ````
 
-### dglookup <a name="dglookup"></a>
+You need to provide the `ISIN` number of the company.
+You can get this `ISIN` using the `dglookup` command for instance.
 
-Usage :
+
+### dglookup <a name="dglookup"></a>
 ````
 usage: dglookup TESLA
 ````
@@ -240,8 +233,6 @@ It will display a result like this :
 ```
 
 ### dgpending <a name="dgpending"></a>
-
-Usage :
 ````
 usage: dgpending
 ````
