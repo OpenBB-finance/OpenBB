@@ -98,12 +98,12 @@ class PortfolioController:
         print("\nRobinhood:")
         print("   rhhold        check holdings")
         print("   rhhist        plot historical RH portfolio")
-        print("\nAlpaca:")  
+        print("\nAlpaca:")
         print("   alphold       view alpaca holdings")
         print("   alphist       plot historical alpaca portfolio")
-        print("\nAlly:")  
+        print("\nAlly:")
         print("   allyhold      view ally holdings")
-        print("\nDegiro:")  
+        print("\nDegiro:")
         print("   dghold        view dg holdings")
         print("   dgtopnews     view top news preview")
         print("   dglastnews    view latest news")
@@ -226,7 +226,7 @@ class PortfolioController:
 
     def call_dglookup(self, search_text_list: List[str]):
         try:
-            search_text = ' '.join(search_text_list)
+            search_text = " ".join(search_text_list)
             dg_api.product_lookup(search_text=search_text)
         except Exception as e:
             print(e)
