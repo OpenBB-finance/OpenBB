@@ -197,6 +197,7 @@ class PortfolioController:
             print("")
 
     def call_dghold(self, _):
+        """"Process dghold command."""
         try:
             dg_api.show_holdings()
         except Exception as e:
@@ -204,6 +205,7 @@ class PortfolioController:
             print("")
 
     def call_dgtopnews(self, _):
+        """"Process dgtopnews command."""
         try:
             dg_api.top_news_preview()
         except Exception as e:
@@ -211,6 +213,7 @@ class PortfolioController:
             print("")
 
     def call_dglastnews(self, _):
+        """" Process dglastnews command. """
         try:
             dg_api.latest_news()
         except Exception as e:
@@ -218,6 +221,7 @@ class PortfolioController:
             print("")
 
     def call_dgcompanynews(self, isin_list: List[str]):
+        """"Process dgcompanynews command."""
         try:
             dg_api.news_by_company(isin_list[0])
         except Exception as e:
@@ -225,6 +229,7 @@ class PortfolioController:
             print("")
 
     def call_dglookup(self, search_text_list: List[str]):
+        """"Process dglookup command."""
         try:
             search_text = " ".join(search_text_list)
             dg_api.product_lookup(search_text=search_text)
@@ -233,6 +238,7 @@ class PortfolioController:
             print("")
 
     def call_dgpending(self, _):
+        """"Process dgpending command."""
         try:
             dg_api.pending_orders()
         except Exception as e:
