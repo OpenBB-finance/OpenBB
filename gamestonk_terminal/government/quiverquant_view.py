@@ -1,10 +1,10 @@
 import argparse
 from typing import List
-import pandas as pd
 from datetime import datetime, timedelta
-from gamestonk_terminal.government import quiverquant_model
+import pandas as pd
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
+from gamestonk_terminal.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
@@ -14,20 +14,20 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
 
-def last_government(other_args: List[str], type: str):
+def last_government(other_args: List[str], gov_type: str):
     """Last government trading
 
     Parameters
     ----------
     other_args : List[str]
         Command line arguments to be processed with argparse
-    type: str
+    gov_type: str
         Type of government data between: congress, senate and house
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="last_" + type,
-        description=f"Last {type} trading. [Source: www.quiverquant.com]",
+        prog="last_" + gov_type,
+        description=f"Last {gov_type} trading. [Source: www.quiverquant.com]",
     )
     parser.add_argument(
         "-p",
@@ -57,10 +57,10 @@ def last_government(other_args: List[str], type: str):
         if not ns_parser:
             return
 
-        df_gov = quiverquant_model.get_government_trading(type)
+        df_gov = quiverquant_model.get_government_trading(gov_type)
 
         if df_gov.empty:
-            print(f"No {type} trading data found\n")
+            print(f"No {gov_type} trading data found\n")
             return
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -71,7 +71,7 @@ def last_government(other_args: List[str], type: str):
             )
         ]
 
-        if type == "congress":
+        if gov_type == "congress":
             df_gov = df_gov[
                 [
                     "TransactionDate",
@@ -120,20 +120,20 @@ def last_government(other_args: List[str], type: str):
         print(e, "\n")
 
 
-def buy_government(other_args: List[str], type: str):
+def buy_government(other_args: List[str], gov_type: str):
     """Top buy government trading
 
     Parameters
     ----------
     other_args : List[str]
         Command line arguments to be processed with argparse
-    type: str
+    gov_type: str
         Type of government data between: congress, senate and house
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="buy_" + type,
-        description=f"Top buy {type} trading. [Source: www.quiverquant.com]",
+        prog="buy_" + gov_type,
+        description=f"Top buy {gov_type} trading. [Source: www.quiverquant.com]",
     )
     parser.add_argument(
         "-p",
@@ -159,10 +159,10 @@ def buy_government(other_args: List[str], type: str):
         if not ns_parser:
             return
 
-        df_gov = quiverquant_model.get_government_trading(type)
+        df_gov = quiverquant_model.get_government_trading(gov_type)
 
         if df_gov.empty:
-            print(f"No {type} trading data found\n")
+            print(f"No {gov_type} trading data found\n")
             return
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -220,20 +220,20 @@ def buy_government(other_args: List[str], type: str):
         print(e, "\n")
 
 
-def sell_government(other_args: List[str], type: str):
+def sell_government(other_args: List[str], gov_type: str):
     """Top sell government trading
 
     Parameters
     ----------
     other_args : List[str]
         Command line arguments to be processed with argparse
-    type: str
+    gov_type: str
         Type of government data between: congress, senate and house
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="sell_" + type,
-        description=f"Top sell {type} trading. [Source: www.quiverquant.com]",
+        prog="sell_" + gov_type,
+        description=f"Top sell {gov_type} trading. [Source: www.quiverquant.com]",
     )
     parser.add_argument(
         "-p",
@@ -259,10 +259,10 @@ def sell_government(other_args: List[str], type: str):
         if not ns_parser:
             return
 
-        df_gov = quiverquant_model.get_government_trading(type)
+        df_gov = quiverquant_model.get_government_trading(gov_type)
 
         if df_gov.empty:
-            print(f"No {type} trading data found\n")
+            print(f"No {gov_type} trading data found\n")
             return
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -321,7 +321,7 @@ def sell_government(other_args: List[str], type: str):
         print(e, "\n")
 
 
-def plot_government(government: pd.DataFrame, ticker: str, type: str):
+def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
     """Plot government trading
 
     Parameters
@@ -330,7 +330,7 @@ def plot_government(government: pd.DataFrame, ticker: str, type: str):
         Command line arguments to be processed with argparse
     ticker: str
         Ticker to plot government trading
-    type: str
+    gov_type: str
         Type of government data between: congress, senate and house
     """
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -348,7 +348,7 @@ def plot_government(government: pd.DataFrame, ticker: str, type: str):
         ]
     )
     plt.grid()
-    plt.title(f"{type.capitalize()} trading on {ticker}")
+    plt.title(f"{gov_type.capitalize()} trading on {ticker}")
     plt.xlabel("Date")
     plt.ylabel("Amount [1k $]")
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
@@ -360,7 +360,7 @@ def plot_government(government: pd.DataFrame, ticker: str, type: str):
     plt.show()
 
 
-def government(other_args: List[str], ticker: str, type: str):
+def government_trading(other_args: List[str], ticker: str, gov_type: str):
     """Government trading
 
     Parameters
@@ -369,13 +369,13 @@ def government(other_args: List[str], ticker: str, type: str):
         Command line arguments to be processed with argparse
     ticker: str
         Ticker to get congress trading data from
-    type: str
+    gov_type: str
         Type of government data between: congress, senate and house
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog=type,
-        description=f"{type} trading. [Source: www.quiverquant.com]",
+        prog=gov_type,
+        description=f"{gov_type} trading. [Source: www.quiverquant.com]",
     )
     parser.add_argument(
         "-p",
@@ -397,10 +397,10 @@ def government(other_args: List[str], ticker: str, type: str):
         if not ns_parser:
             return
 
-        df_gov = quiverquant_model.get_government_trading(type, ticker)
+        df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
 
         if df_gov.empty:
-            print(f"No {type} trading data found\n")
+            print(f"No {gov_type} trading data found\n")
             return
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=False)
@@ -437,8 +437,74 @@ def government(other_args: List[str], ticker: str, type: str):
 
         df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
-        plot_government(df_gov, ticker, type)
+        plot_government(df_gov, ticker, gov_type)
 
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def raw_government(other_args: List[str], ticker: str, gov_type: str):
+    """Raw government trading
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker: str
+        Ticker to get congress trading data from
+    gov_type: str
+        Type of government data between: congress, senate and house
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog=gov_type,
+        description=f"{gov_type} trading. [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-p",
+        "--past_transactions_days",
+        action="store",
+        dest="past_transactions_days",
+        type=check_positive,
+        default=10,
+        help="Past transaction days",
+    )
+
+    try:
+
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
+
+        if df_gov.empty:
+            print(f"No {gov_type} trading data found\n")
+            return
+
+        df_gov = df_gov.sort_values("TransactionDate", ascending=False)
+        if gov_type == "congress":
+            df_gov = df_gov[
+                ["TransactionDate", "Representative", "House", "Transaction", "Range"]
+            ]
+        else:
+            df_gov = df_gov[
+                ["TransactionDate", "Representative", "Transaction", "Range"]
+            ]
+
+        df_gov = df_gov[
+            df_gov["TransactionDate"].isin(
+                df_gov["TransactionDate"].unique()[: ns_parser.past_transactions_days]
+            )
+        ]
+
+        print(df_gov.to_string(index=False))
         print("")
 
     except Exception as e:
