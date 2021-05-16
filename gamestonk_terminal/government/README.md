@@ -150,3 +150,24 @@ Congress trading. [Source: www.quiverquant.com]
 
 ![congress](https://user-images.githubusercontent.com/25267873/117347548-280f6f80-aea1-11eb-8ee7-b511cdf863e1.png)
 
+
+## senate <a name="senate"></a>
+```text
+usage: senate [-p PAST_TRANSACTIONS_MONTHS]
+```
+Senate trading. [Source: www.quiverquant.com]
+
+* -p : Past transaction months. Default: 6.
+
+![senate](https://user-images.githubusercontent.com/25267873/118394689-187ced00-b63e-11eb-8943-4bd32466ff47.png)
+
+
+## house <a name="house"></a>
+```text
+usage: house [-p PAST_TRANSACTIONS_MONTHS]
+```
+House trading. [Source: www.quiverquant.com]
+
+* -p : Past transaction months. Default: 6.
+
+![house](https://user-images.githubusercontent.com/25267873/118394690-19158380-b63e-11eb-85ba-87fc2fd7df15.png)
