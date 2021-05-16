@@ -460,7 +460,7 @@ def raw_government(other_args: List[str], ticker: str, gov_type: str):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog=gov_type,
-        description=f"{gov_type} trading. [Source: www.quiverquant.com]",
+        description=f"Raw {gov_type} trading. [Source: www.quiverquant.com]",
     )
     parser.add_argument(
         "-p",
@@ -502,7 +502,11 @@ def raw_government(other_args: List[str], ticker: str, gov_type: str):
             df_gov["TransactionDate"].isin(
                 df_gov["TransactionDate"].unique()[: ns_parser.past_transactions_days]
             )
-        ]
+        ].rename(
+            columns={
+                "TransactionDate": "Transaction Date",
+            }
+        )
 
         print(df_gov.to_string(index=False))
         print("")
