@@ -191,9 +191,9 @@ def return_holdings() -> pd.DataFrame:
     ]
     formatted_columns = [
         "Symbol",
-        "MarketValue",
         "Quantity",
-        "CostBasis",
+        "MarketValue",  # price
+        "CostBasis",  # breakEvenPrice
     ]
     fmt_positions = positions[selected_columns].copy(deep=True)
     fmt_positions.columns = formatted_columns
