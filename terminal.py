@@ -114,7 +114,9 @@ def main():
 
     try:
         if os.name == "nt":
+            # pylint: disable=E1101
             sys.stdin.reconfigure(encoding="utf-8")
+            # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
         print(e, "\n")
