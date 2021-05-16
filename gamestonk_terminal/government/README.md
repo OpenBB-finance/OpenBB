@@ -24,10 +24,16 @@ This data has been provided by [quiverquant](https://www.quiverquant.com).
 
 #### WITH TICKER PROVIDED
 
+* [raw_congress](#raw_congress)
+  * raw congress trades on the ticker
 * [congress](#congress)
   * congress trades on the ticker
+* [raw_senate](#raw_senate)
+  * raw senate trades on the ticke
 * [senate](#senate)
   * senate trades on the ticker
+* [raw_house](#raw_house)
+  * raw house trades on the ticker
 * [house](#house)
   * house trades on the ticker
 
@@ -140,6 +146,17 @@ Top sell house trading. [Source: www.quiverquant.com]
 ![sell_house](https://user-images.githubusercontent.com/25267873/118394645-c5a33580-b63d-11eb-8dbe-a9b9d948df24.png)
 
 
+## raw_congress <a name="raw_congress"></a>
+```text
+usage: raw_congress [-p PAST_TRANSACTIONS_DAYS]
+```
+Raw congress trading. [Source: www.quiverquant.com]
+
+* -p : Past transaction days. Default: 10.
+
+<img width="994" alt="raw_congress" src="https://user-images.githubusercontent.com/25267873/118398326-00ae6480-b650-11eb-804e-3194824c3685.png">
+
+
 ## congress <a name="congress"></a>
 ```text
 usage: congress [-p PAST_TRANSACTIONS_MONTHS]
@@ -151,6 +168,17 @@ Congress trading. [Source: www.quiverquant.com]
 ![congress](https://user-images.githubusercontent.com/25267873/117347548-280f6f80-aea1-11eb-8ee7-b511cdf863e1.png)
 
 
+## raw_senate <a name="raw_senate"></a>
+```text
+usage: raw_senate [-p PAST_TRANSACTIONS_DAYS]
+```
+Raw senate trading. [Source: www.quiverquant.com]
+
+* -p : Past transaction days. Default: 10.
+
+<img width="990" alt="raw_senate" src="https://user-images.githubusercontent.com/25267873/118398320-f8562980-b64f-11eb-9ad9-c64c12f9a3cf.png">
+
+
 ## senate <a name="senate"></a>
 ```text
 usage: senate [-p PAST_TRANSACTIONS_MONTHS]
@@ -160,6 +188,17 @@ Senate trading. [Source: www.quiverquant.com]
 * -p : Past transaction months. Default: 6.
 
 ![senate](https://user-images.githubusercontent.com/25267873/118394689-187ced00-b63e-11eb-8943-4bd32466ff47.png)
+
+
+## raw_house <a name="raw_house"></a>
+```text
+usage: raw_house [-p PAST_TRANSACTIONS_DAYS]
+```
+Raw house trading. [Source: www.quiverquant.com]
+
+* -p : Past transaction days. Default: 10.
+
+<img width="990" alt="raw_house" src="https://user-images.githubusercontent.com/25267873/118398317-f68c6600-b64f-11eb-898a-1d1d46c8f5c3.png">
 
 
 ## house <a name="house"></a>
