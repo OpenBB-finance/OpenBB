@@ -462,8 +462,11 @@ Command|Website
 `buy_house`             |top buy house tickers
 `sell_house`            |top sell house tickers
 with ticker provided    |
+`raw_congress`          | raw congress trades on the ticker
 `congress`              | congress trades on the ticker
+`raw_senate`            | raw senate trades on the ticker
 `senate`                | senate trades on the ticker
+`raw_house`             | raw house trades on the ticker
 `house`                 | house trades on the ticker
 
 &nbsp;
