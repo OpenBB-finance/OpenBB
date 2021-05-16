@@ -229,23 +229,41 @@ git stash pop
 The project is build around several different API calls, whether it is to access historical data or financials.
 
 These are the ones where a key is necessary:
-  * Alpha Vantage: https://www.alphavantage.co
-  * Quandl: https://www.quandl.com/tools/api
-  * Reddit: https://www.reddit.com/prefs/apps
-  * Twitter: https://developer.twitter.com
-  * Polygon: https://polygon.io
-  * Financial Modeling Prep: https://financialmodelingprep.com/developer
-  * FRED: https://fred.stlouisfed.org/docs/api/api_key.html
-  * News API: https://newsapi.org
-  * Tradier: https://developer.tradier.com/getting_started
-  * Oanda API: https://developer.oanda.com
-  * CoinMarketCap API: https://coinmarketcap.com/api/
-  * Finhub API: https://finnhub.io
-  * Binance: https://binance.us (US) / https://binance.com (Outside US)
+* Alpha Vantage: https://www.alphavantage.co
+* Binance: https://binance.us (US) / https://binance.com (Outside US)
+* CoinMarketCap API: https://coinmarketcap.com/api
+* Degiro API : https://www.degiro.fr
+* FRED: https://fred.stlouisfed.org/docs/api/api_key.html
+* Financial Modeling Prep: https://financialmodelingprep.com/developer
+* Finhub API: https://finnhub.io
+* News API: https://newsapi.org
+* Oanda API: https://developer.oanda.com
+* Polygon: https://polygon.io
+* Quandl: https://www.quandl.com/tools/api
+* Reddit: https://www.reddit.com/prefs/apps
+* Tradier: https://developer.tradier.com/getting_started
+* Twitter: https://developer.twitter.com
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN, GT_CMC_API_KEY, GT_CMC_API_KEY, API_FINNHUB_KEY, GT_API_BINANCE_KEY, GT_API_BINANCE_SECRET.
+Alternatively, you can also set them to the following environment variables:
+
+| Company | Variables |
+| :--- | :--- |
+| Alpha Vantage | GT_API_KEY_ALPHAVANTAGE |
+| Binance | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
+| CoinMarketCap | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
+| DEGIRO | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP <br/> DG_TOTP_SECRET |
+| FRED | GT_FRED_API_KEY |
+| Financial Modeling Prep | GT_API_KEY_FINANCIALMODELINGPREP |
+| Finhub API | API_FINNHUB_KEY |
+| News API | GT_API_NEWS_TOKEN |
+| Oanda API | GT_OANDA_TOKEN, GT_OANDA_ACCOUNT |
+| Polygon | GT_API_POLYGON_KEY |
+| Quandl | GT_API_KEY_QUANDL |
+| Reddit | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD|
+| Tradier | GT_TRADIER_TOKEN |
+| Twitter | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
 
 Example:
 ```
