@@ -1,7 +1,11 @@
-# IMPORTATION EXTERNAL
+# IMPORTATION STANDARD
+import argparse
+
+# IMPORTATION THIRDPARTY
 import pandas as pd
 import quotecast.helpers.pb_handler as pb_handler
 
+from prompt_toolkit.completion import NestedCompleter
 from trading.api import API as TradingAPI
 from trading.pb.trading_pb2 import (
     Credentials,
@@ -13,7 +17,6 @@ from trading.pb.trading_pb2 import (
 )
 
 # IMPORTATION INTERNAL
-import argparse
 import gamestonk_terminal.config_terminal as config
 
 from gamestonk_terminal import feature_flags as gtff
@@ -22,7 +25,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
 
 
 class DegiroController:
@@ -438,6 +440,8 @@ class DegiroController:
         except Exception as e:
             print(e)
             print("")
+
+            return None
 
 
 def menu():
