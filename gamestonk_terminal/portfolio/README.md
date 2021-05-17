@@ -181,19 +181,15 @@ In order to login you need to provide the following credentials :
 | DG_USERNAME | Username used to log into Degiro's website. |
 | DG_PASSWORD | Password used to log into Degiro's website. |
 
-
 **2FA**
 
 In order to use 2FA you need to provide one of these parameters :
 
 | Parameter | Description |
 | :--- | :--- |
-| DG_TOTP | This is your one time password. |
-| DG_TOTP_SECRET | This secret key will let Gamestonk generate the DG_TOTP for you. |
+| DG_TOTP_SECRET | This secret key will let Gamestonk generate the `OneTimePassword` for you. |
 
-If you choose to use `DG_TOTP` : you will have to provide a temporary password at each connection to Degiro.
-
-If you provide your `DG_TOTP_SECRET` : you won't have to type your DG_TOTP, Gamestonk will generate it for you at each connection.
+If you provide your `DG_TOTP_SECRET` : you won't have to type your `OneTimePassword`, Gamestonk will generate it for you at each connection.
 
 `DG_TOTP_SECRET` is the text representation of the `QRCODE` that Degiro's provide you when you enable 2FA.
 
@@ -203,7 +199,17 @@ https://github.com/Chavithra/degiro-connector
 
 ### login <a name="login"></a>
 ````
-usage: login
+usage: login [-u USERNAME] [-p PASSWORD] [-o OTP] [-s TOPT_SECRET] [-h]
+
+optional arguments:
+  -u USERNAME, --username USERNAME
+                        Username in Degiro's account.
+  -p PASSWORD, --password PASSWORD
+                        Password in Degiro's account.
+  -o OTP, --otp OTP     One time password (2FA).
+  -s TOPT_SECRET, --topt-secret TOPT_SECRET
+                        TOTP SECRET (2FA).
+  -h, --help            show this help message
 ````
 
 ### hold <a name="hold"></a>

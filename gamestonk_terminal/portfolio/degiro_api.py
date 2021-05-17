@@ -73,6 +73,7 @@ class DegiroController:
         return positions
 
     def __init__(self, credentials: Credentials):
+        self.__default_credentials = credentials
         self.__trading_api = TradingAPI(credentials=credentials)
 
         self.__degiro_parser = argparse.ArgumentParser(
@@ -172,26 +173,78 @@ class DegiroController:
     def help(self):
         message = (
             "Degiro:\n"
-            "    companynews view news about a company with it's isin\n"
-            "    hold        view holdings\n"
-            "    lastnews    view latest news\n"
-            "    login       connect to degiro api\n"
-            "    lookup      view search for a product by name\n"
-            "    pending     view pending orders\n"
-            "    topnews     view top news preview\n"
+            "   companynews view news about a company with it's isin\n"
+            "   hold        view holdings\n"
+            "   lastnews    view latest news\n"
+            "   login       connect to degiro's api\n"
+            "   logout      disconnect from degiro's api\n"
+            "   lookup      view search for a product by name\n"
+            "   pending     view pending orders\n"
+            "   topnews     view top news preview\n"
         )
 
         print(message)
 
-    def login(self, _):
+    def login(self, l_args):
         """Connect to Degiro's API."""
 
-        trading_api = self.__trading_api
+        # PARSING ARGS
+        default_credentials = self.__default_credentials
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="login",
+        )
+        parser.add_argument(
+            "-u",
+            "--username",
+            dest="username",
+            type=str,
+            default=default_credentials.username,
+            help="Username in Degiro's account.",
+        )
+        parser.add_argument(
+            "-p",
+            "--password",
+            dest="password",
+            type=str,
+            default=default_credentials.password,
+            help="Password in Degiro's account.",
+        )
+        parser.add_argument(
+            "-o",
+            "--otp",
+            dest="otp",
+            type=int,
+            default=None,
+            help="One time password (2FA).",
+        )
+        parser.add_argument(
+            "-s",
+            "--topt-secret",
+            dest="topt_secret",
+            type=str,
+            default=None,
+            help="TOTP SECRET (2FA).",
+        )
+        ns_parser = parse_known_args_and_warn(parser, l_args)
 
-        trading_api.connect()
-        self.setup_extra_credentials()
+        if ns_parser:
+            credentials = Credentials()
+            credentials.CopyFrom(default_credentials)
+            credentials.username = ns_parser.username
+            credentials.password = ns_parser.password
 
-        print("You are now logged in !")
+            if ns_parser.otp is not None:
+                credentials.one_time_password = ns_parser.otp
+            if ns_parser.topt_secret is not None:
+                credentials.totp_secret_key = ns_parser.topt_secret
+
+            self.__trading_api = TradingAPI(credentials=credentials)
+
+            self.__trading_api.connect()
+            self.setup_extra_credentials()
+
+            print("You are now logged in !")
 
     def logout(self, _):
         """Log out from Degiro's API."""
@@ -452,7 +505,7 @@ def menu():
         int_account=None,
         username=config.DG_USERNAME,
         password=config.DG_PASSWORD,
-        one_time_password=config.DG_TOTP,
+        one_time_password=None,
         totp_secret_key=config.DG_TOTP_SECRET,
     )
 
@@ -467,11 +520,11 @@ def menu():
                 {c: None for c in degiro_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (pa) > (degiro)> ",
+                f"{get_flair()} (pa)>(degiro)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (pa) > (degiro)> ")
+            an_input = input(f"{get_flair()} (pa)>(degiro)> ")
 
         try:
             process_input = degiro_controller.switch(an_input)
