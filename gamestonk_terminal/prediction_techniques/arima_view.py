@@ -1,13 +1,14 @@
+""" ARIMA Model View """
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
 import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from TimeSeriesCrossValidation import splitTrain
-from sklearn import linear_model
-from sklearn import pipeline
-from sklearn import preprocessing
-
+import pmdarima
+from statsmodels.tsa.arima.model import ARIMA
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -16,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
     get_next_stock_market_days,
     plot_autoscale,
 )
-
 from gamestonk_terminal.prediction_techniques.pred_helper import (
     print_pretty_prediction,
     price_prediction_backtesting_color,
@@ -28,33 +28,35 @@ from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
-USER_INPUT = 0
-LINEAR = 1
-QUADRATIC = 2
-CUBIC = 3
 
+def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
+    """
+    ARIMA prediction
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        ticker
+    df_stock: pd.DataFrame
+        Dataframe of prices
 
-def regression(l_args, s_ticker, df_stock, polynomial):
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="regression",
+        prog="arima",
         description="""
-            Regression attempts to model the relationship between
-            two variables by fitting a linear/quadratic/cubic/other equation to
-            observed data. One variable is considered to be an explanatory variable,
-            and the other is considered to be a dependent variable.
+            In statistics and econometrics, and in particular in time series analysis, an
+            autoregressive integrated moving average (ARIMA) model is a generalization of an
+            autoregressive moving average (ARMA) model. Both of these models are fitted to time
+            series data either to better understand the data or to predict future points in the
+            series (forecasting). ARIMA(p,d,q) where parameters p, d, and q are non-negative
+            integers, p is the order (number of time lags) of the autoregressive model, d is the
+            degree of differencing (the number of times the data have had past values subtracted),
+            and q is the order of the moving-average model.
         """,
     )
 
-    parser.add_argument(
-        "-i",
-        "--input",
-        action="store",
-        dest="n_inputs",
-        type=check_positive,
-        default=40,
-        help="number of days to use for prediction.",
-    )
     parser.add_argument(
         "-d",
         "--days",
@@ -65,13 +67,38 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         help="prediction days.",
     )
     parser.add_argument(
-        "-j",
-        "--jumps",
+        "-i",
+        "--ic",
         action="store",
-        dest="n_jumps",
-        type=check_positive,
-        default=1,
-        help="number of jumps in training data.",
+        dest="s_ic",
+        type=str,
+        default="aic",
+        choices=["aic", "aicc", "bic", "hqic", "oob"],
+        help="information criteria.",
+    )
+    parser.add_argument(
+        "-s",
+        "--seasonal",
+        action="store_true",
+        default=False,
+        dest="b_seasonal",
+        help="Use weekly seasonal data.",
+    )
+    parser.add_argument(
+        "-o",
+        "--order",
+        action="store",
+        dest="s_order",
+        type=str,
+        help="arima model order (p,d,q) in format: p,d,q.",
+    )
+    parser.add_argument(
+        "-r",
+        "--results",
+        action="store_true",
+        dest="b_results",
+        default=False,
+        help="results about ARIMA summary flag.",
     )
     parser.add_argument(
         "-e",
@@ -83,34 +110,26 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         help="The end date (format YYYY-MM-DD) to select - Backtesting",
     )
 
-    if polynomial == USER_INPUT:
-        parser.add_argument(
-            "-p",
-            "--polynomial",
-            action="store",
-            dest="n_polynomial",
-            type=check_positive,
-            required=True,
-            help="polynomial associated with regression.",
-        )
-
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         # BACKTESTING
         if ns_parser.s_end_date:
+
             if ns_parser.s_end_date < df_stock.index[0]:
                 print(
                     "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
                 )
                 return
 
-            if ns_parser.s_end_date < get_next_stock_market_days(
-                last_stock_day=df_stock.index[0],
-                n_next_days=ns_parser.n_inputs + ns_parser.n_days,
-            )[-1]:
+            if (
+                ns_parser.s_end_date
+                < get_next_stock_market_days(
+                    last_stock_day=df_stock.index[0], n_next_days=5 + ns_parser.n_days
+                )[-1]
+            ):
                 print(
                     "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
                 )
@@ -129,32 +148,31 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             df_future = df_stock[future_index[0] : future_index[-1]]
             df_stock = df_stock[: ns_parser.s_end_date]
 
-        # Split training data
-        stock_x, stock_y = splitTrain.split_train(
-            df_stock["5. adjusted close"].values,
-            ns_parser.n_inputs,
-            ns_parser.n_days,
-            ns_parser.n_jumps,
-        )
-
-        if not stock_x:
-            print("Given the model parameters more training data is needed.\n")
-            return
-
         # Machine Learning model
-        if polynomial == LINEAR:
-            model = linear_model.LinearRegression(n_jobs=-1)
-        else:
-            if polynomial == USER_INPUT:
-                polynomial = ns_parser.n_polynomial
-            model = pipeline.make_pipeline(
-                preprocessing.PolynomialFeatures(polynomial), linear_model.Ridge()
+        if ns_parser.s_order:
+            t_order = tuple([int(ord) for ord in ns_parser.s_order.split(",")])
+            model = ARIMA(df_stock["5. adjusted close"].values, order=t_order).fit()
+            l_predictions = model.predict(
+                start=len(df_stock["5. adjusted close"]) + 1,
+                end=len(df_stock["5. adjusted close"]) + ns_parser.n_days,
             )
-
-        model.fit(stock_x, stock_y)
-        l_predictions = model.predict(
-            df_stock["5. adjusted close"].values[-ns_parser.n_inputs :].reshape(1, -1)
-        )[0]
+        else:
+            if ns_parser.b_seasonal:
+                model = pmdarima.auto_arima(
+                    df_stock["5. adjusted close"].values,
+                    error_action="ignore",
+                    seasonal=True,
+                    m=5,
+                    information_criteria=ns_parser.s_ic,
+                )
+            else:
+                model = pmdarima.auto_arima(
+                    df_stock["5. adjusted close"].values,
+                    error_action="ignore",
+                    seasonal=False,
+                    information_criteria=ns_parser.s_ic,
+                )
+            l_predictions = model.predict(n_periods=ns_parser.n_days)
 
         # Prediction data
         l_pred_days = get_next_stock_market_days(
@@ -163,18 +181,33 @@ def regression(l_args, s_ticker, df_stock, polynomial):
         )
         df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
+        if ns_parser.b_results:
+            print(model.summary())
+            print("")
+
         # Plotting
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
-        # BACKTESTING
-        if ns_parser.s_end_date:
-            plt.title(
-                f"BACKTESTING: Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
-            )
+        if ns_parser.s_order:
+            # BACKTESTING
+            if ns_parser.s_end_date:
+                plt.title(
+                    f"BACKTESTING: ARIMA {str(t_order)} on {s_ticker} - {ns_parser.n_days} days prediction"
+                )
+            else:
+                plt.title(
+                    f"ARIMA {str(t_order)} on {s_ticker} - {ns_parser.n_days} days prediction"
+                )
         else:
-            plt.title(
-                f"Regression (polynomial {polynomial}) on {s_ticker} - {ns_parser.n_days} days prediction"
-            )
+            # BACKTESTING
+            if ns_parser.s_end_date:
+                plt.title(
+                    f"BACKTESTING: ARIMA {model.order} on {s_ticker} - {ns_parser.n_days} days prediction"
+                )
+            else:
+                plt.title(
+                    f"ARIMA {model.order} on {s_ticker} - {ns_parser.n_days} days prediction"
+                )
         plt.xlim(
             df_stock.index[0], get_next_stock_market_days(df_pred.index[-1], 1)[-1]
         )
@@ -344,8 +377,5 @@ def regression(l_args, s_ticker, df_stock, polynomial):
             print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
         print("")
 
-    except SystemExit:
-        print("")
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

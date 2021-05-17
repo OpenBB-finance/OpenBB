@@ -150,7 +150,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
         "-s",
         "--start",
         type=valid_date,
-        default="2015-01-01",
+        default="2019-01-01",
         dest="s_start_date",
         help="The starting date (format YYYY-MM-DD) of the stock",
     )

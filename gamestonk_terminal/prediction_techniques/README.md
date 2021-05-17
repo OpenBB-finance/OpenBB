@@ -2,8 +2,6 @@
 
 This menu aims to predict the share price of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below. See [How to fune-tuning a NN model](FUNE-TUNING-NN-models.md).
 
-  * [sma](#sma)
-    - simple moving average
   * [ets](#ets)
     - Exponential Smoothing (e.g. Holt-Winters)
   * [knn](#knn)
@@ -28,23 +26,14 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
   * [lstm](#lstm)
     - Long-Short Term Memory
     - Contains a [backtesting example](#backtesting)
+  * [conv1d](#conv1d)
+    - 1D Convolutional Neural Net
 
 **Note:** _Use this at your own discretion. All of these prediciton techniques rely solely on the closing price of the stock. This means that there are several factors that the models aren't aware of at the time of prediction, and may - drastically - move the price up or down. Examples are: news, analyst price targets, reddit post, tweets from Elon Musk, and so on._
 
 **Note 2:** _[Enabling GPU acceleration for TensorFlow requires CUDA setup](README-gpu-accel.md) and will probably not provide any speedup unless you are building large custom models._
 
 
-
-## sma <a name="sma"></a>
-```
-usage: sma [-l N_LENGTH] [-d N_DAYS]
-```
-Simple Moving Average:
-  * -l : length of SMA window. Default 20.
-  * -d : prediciton days. Default 5.
-  * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
-
-![sma](https://user-images.githubusercontent.com/25267873/108604945-d29aea80-73a8-11eb-8dac-6a545b9c52b9.png)
 
 ## ets <a name="ets"></a>
 ```
@@ -54,19 +43,18 @@ Exponential Smoothing (based on trend+seasonality, see https://otexts.com/fpp2/t
   * -t : trend component: N: None, A: Additive, Ad: Additive Damped. Default N.
   * -s : seasonality component: N: None, A: Additive, M: Multiplicative. Default N.
   * -p : seasonal periods. Default 5.
-  * -d : prediciton days. Default 5.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![ets_pltr](https://user-images.githubusercontent.com/25267873/110266847-97a6d280-7fb6-11eb-997e-0b598abc713b.png)
 
 ## knn <a name="knn"></a>
 ```
-usage: knn [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS] [-n N_NEIGHBORS]
+usage: knn [-i N_INPUTS] [-d N_DAYS] [-n N_NEIGHBORS]
 ```
 k-Nearest Neighbors:
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -n : number of neighbors to use on the algorithm. Default 20.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
@@ -74,51 +62,47 @@ k-Nearest Neighbors:
 
 ## linear <a name="linear"></a>
 ```
-usage: linear [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
-usage: regression -p 1 [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: linear [-i N_INPUTS] [-d N_DAYS]
+usage: regression -p 1 [-i N_INPUTS] [-d N_DAYS]
 ```
 Linear Regression (p=1):
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![linear](https://user-images.githubusercontent.com/25267873/108604948-d3cc1780-73a8-11eb-860f-49274a34038b.png)
 
 ## quadratic <a name="quadratic"></a>
 ```
-usage: quadratic [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
-usage: regression -p 2 [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: quadratic [-i N_INPUTS] [-d N_DAYS]
+usage: regression -p 2 [-i N_INPUTS] [-d N_DAYS]
 ```
 Quadratic Regression (p=2):
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![quadratic](https://user-images.githubusercontent.com/25267873/108604935-cca50980-73a8-11eb-9af1-bba807203cc6.png)
 
 ## cubic <a name="cubic"></a>
 ```
-usage: cubic [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
-usage: regression -p 3 [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: cubic [-i N_INPUTS] [-d N_DAYS]
+usage: regression -p 3 [-i N_INPUTS] [-d N_DAYS]
 ```
 Cubic Regression (p=3):
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![cubic](https://user-images.githubusercontent.com/25267873/108604941-d169bd80-73a8-11eb-9220-84a7013e1283.png)
 
 ## regression <a name="regression"></a>
 ```
-usage: regression -p N_POLYNOMIAL [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: regression -p N_POLYNOMIAL [-i N_INPUTS] [-d N_DAYS]
 ```
 Regression:
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -p : polynomial associated with regression. Required.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
@@ -133,7 +117,7 @@ Auto-Regressive Integrated Moving Average:
   * -i : information criteria - used if auto_arima library is invoked. Default aic.
   * -s : weekly seasonality flag. Default False.
   * -r : results about ARIMA summary flag. Default False.
-  * -o : arima model order. If the model order is defined, auto_arima is not invoked, deeming information criteria useless. <br />Example: -o 514, where:
+  * -o : arima model order. If the model order is defined, auto_arima is not invoked, deeming information criteria useless. <br />Example: `-o 5,1,4` where:
     * p = 5 : order (number of time lags) of the autoregressive model.
     * d = 1 : degree of differencing (the number of times the data have had past values subtracted).
     * q = 4 : order of the moving-average model.
@@ -146,30 +130,29 @@ Auto-Regressive Integrated Moving Average:
 usage: fbprophet [-d N_DAYS]
 ```
 Facebook's Prophet:
-  * -d : prediciton days. Default 5.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![prophet](https://user-images.githubusercontent.com/25267873/108604938-cf9ffa00-73a8-11eb-973b-0affb343e2f6.png)
 
 ## mlp <a name="mlp"></a>
 ```
-usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
+usage: mlp [-d N_DAYS] [-i N_INPUTS] [--epochs N_EPOCHS] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID]
+ [--lr LEARNING_RATE] [--no_shuffle]
 ```
 MulitLayer Perceptron:
   * -d : prediciton days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default normalization.
-  * -o : optimization technique. Default adam.
-  * -l : loss function. Default mae.
+  * -v : validation split.  Default 0.1
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --lr : learning rate for optimizer
   * --loops: number of loops to iterate and train models. Default 1.
+  * --no_shuffle : split validation data in time_ordered way instead of random.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -183,30 +166,29 @@ MultiLayer_Perceptron \
         {'Dense':
                 {'units':30, 'activation':'relu'} },
         {'Dense':
-                {'activation':'linear'} }]
+                {'activation':'relu'} }]
 ```
 
 ![mlp](https://user-images.githubusercontent.com/25267873/108604944-d2025400-73a8-11eb-9ab6-52972160cd2a.png)
 
 ## rnn <a name="rnn"></a>
 ```
-usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
+usage: rnn [-d N_DAYS] [-i N_INPUTS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
+ [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
 ```
 Recurrent Neural Network:
   * -d : prediciton days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default normalization.
-  * -o : optimization technique. Default adam.
-  * -l : loss function. Default mae.
+  * -v : validation split.  Default 0.1
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
   * --loops: number of loops to iterate and train models. Default 1.
+  * --lr : learning rate for optimizer
+  * --no_shuffle : split validation data in time_ordered way instead of random.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.txt](/config_neural_network_models.py)
 ```
@@ -220,7 +202,7 @@ Recurrent_Neural_Network \
         {'SimpleRNN':
                 {'units':21, 'activation':'linear', 'return_sequences':False} },
         {'Dense':
-                {'activation':'linear'} }]
+                {'activation':'relu'} }]
 ```
 
 ![rnn](https://user-images.githubusercontent.com/25267873/108604940-d0d12700-73a8-11eb-837e-a5aa128942d9.png)
@@ -234,23 +216,22 @@ Recurrent_Neural_Network \
 
 ## lstm <a name="lstm"></a>
 ```
-usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
-[-o {adam,adagrad,adadelta,adamax,ftrl,nadam,optimizer,rmsprop,sgd}] [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS]
+usage: lstm [-d N_DAYS] [-i N_INPUTS]  [--epochs N_EPOCHS] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID]
+ [--lr LEARNING_RATE] [--no_shuffle]
 ```
 Long-Short Term Memory:
-  * -d : prediciton days. Default 5.
+  * -d : prediction days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default normalization.
-  * -o : optimization technique. Default adam.
-  * -l : loss function. Default mae.
+  * -v : validation split.  Default 0.1
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
   * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
   * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
-  * --loops: number of loops to iterate and train models. Default 1.
+  * --loops: number of loops to iterate and train models. Default 1
+  * --lr : learning rate for optimizer
+  * --no_shuffle : split validation data in time_ordered way instead of random.
 
 Due to the complexity of defining a model through command line, one can define it in: [config_neural_network_models.py](/config_neural_network_models.py)
 ```
@@ -260,7 +241,7 @@ Long_Short_Term_Memory \
         {'LSTM':
                 {'units':15, 'activation':'tanh', 'return_sequences':False} },
         {'Dense':
-                {'activation':'linear'} }]
+                {'activation':'relu'} }]
 ```
 
 ![lstm](https://user-images.githubusercontent.com/25267873/108604943-d2025400-73a8-11eb-83c5-edb4a2121cba.png)
@@ -273,3 +254,21 @@ Long_Short_Term_Memory \
 
 <img width="992" alt="Captura de ecrã 2021-03-14, às 00 06 51" src="https://user-images.githubusercontent.com/25267873/111053158-420c7300-8459-11eb-993b-6d9c26f98af9.png">
 
+## conv1d <a name="conv1d"></a>
+```
+usage: lstm [-d N_DAYS] [-i N_INPUTS] [--epochs N_EPOCHS] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] 
+[--lr LEARNING_RATE] [--no_shuffle]
+```
+1D Convolutional Neural Net:
+  * -d : prediction days. Default 5.
+  * -i : number of days to use for prediction. Default 40.
+  * --epochs : number of training epochs. Default 50.
+  * -v : validation split.  Default 0.1
+  * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
+  * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
+  * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
+  * --force_allow_gpu_growth: if true, will force TensorFlow to allow GPU memory usage to grow as needed. Otherwise will allocate 100% of available GPU memory when CUDA is set up. Default true.
+  * --batch_size: batch size for model training, should not be used unless advanced user. Default None.
+  * --loops: number of loops to iterate and train models. Default 1.
+  * --lr : learning rate for optimizer
+  * --no_shuffle : split validation data in time_ordered way instead of random.

@@ -2,7 +2,7 @@
 import unittest
 
 try:
-    from gamestonk_terminal.prediction_techniques.neural_networks import mlp
+    from gamestonk_terminal.prediction_techniques.neural_networks_view import mlp
 except ModuleNotFoundError as e:
     print("One of the optional packages seems to be missing")
     print(e)

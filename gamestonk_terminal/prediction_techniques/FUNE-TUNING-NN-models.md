@@ -16,7 +16,17 @@ load MSFT -s 2014-01-01
 
 3. **Out of this training data, select which part will be used for validation**
 
-Since this is a timeseries, and the data has a sequence, the data at the end of the timeseries is the one to be used for validation. As a rule of thumb I usually try to "steal" the least amount of data from the training set, since the more recent the data the more important it is for training. Hence, one could set the end date of training data to be the current day - days of predictions.
+Anyone reading this, note this is quite a discussion between the devs.  Since this is a time series, there is an inherent
+ordering of the data.  However, since returns are random, it is hard to predict, and ordering data may not have any meaning.
+
+To this end, we allow users to specify how much validation data to use and if it should be shuffled.  By default, we will split 
+into 10% validation data with a random shuffle.  This will allow the user to see how the model performs at various times in your sequence.
+
+```
+-v/--valid : validation split of data.  Default 0.1 (10%)
+--no_shuffle : Flag that will order the validation data so that the last (-v) percent of data is the validation.
+```
+To try "backtesting" to a certain data, you can specify the end date.  This will forecast and compare the true data from that time.
 ```
 -e/--end : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 ```
@@ -25,8 +35,9 @@ Since this is a timeseries, and the data has a sequence, the data at the end of 
 
 Decide whether you want to pre-process your share price data or not. I.e. do you want to use these values between 18 and 245, or perhaps normalize these between 0 and 1? The later may improve performance.
 ```
--p/--pp : pre-processing data. Default normalization.
+Preprocess = "minmax"
 ```
+This is defined in the config file.
 
 5. **Select input, prediction days and jumps in training data**
 
@@ -42,13 +53,6 @@ The **prediction days** is the number we want to predict for.
 Personally, I recommend to set this for a really short window. This is because the bigger the window, the less reliable the prediction is. This is mainly due to the fact that by having a larger prediction horizon, more unexpected events (news, insider trading activity, rumours, ...) can occur, which may shift share price.
 ```
 -d/--days : prediciton days. Default 5.
-```
-
-The **jumps in the training data** corresponds to the number of days we want to jump between training loops.
-
-Let's say we start training our Neural Network from 2021-01-04, with 10 inputs (days) and 5 prediction days. If jump is set to 1, it means that the after optimizing our model for input data from 2021-01-04 to 2021-01-15, and predicting from 2021-01-18 to 2021-01-22, we will optimize the model for input data from 2021-01-05 to 2021-01-18, and predicting from 2021-01-19 to 2021-01-25. On the other hand, if we set the jump to 5, it means that we are identifying a "weekly" frequency in the data, and therefore, our next model optimization would use input data from 2021-01-11 to 2021-01-22, and predicting from 2021-01-25 to 2021-01-29.
-```
--j/--jumps : number of jumps in training data. Default 1.
 ```
 
 6. **Select NN architecture.** TL;DR: LSTM > RNN > MLP
@@ -88,17 +92,24 @@ This model is set in [config_neural_network_models.py](/config_neural_network_mo
 
 **Loss function**: Often chosen having the activation functions of the hidden layers in mind. See https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/, and https://www.tensorflow.org/api_docs/python/tf/keras/losses.
 ```
--l/--loss : loss function. Default mae.
+Loss = "mae"
 ```
+This is defined in the config file.
 
-**Optimizer technique**: Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
+**Optimizer technique**:Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
+
+The optimizer selection has been moved to the config_neural_network_models.py file and the new argument is the learning rate.
+This tells your model how "fast" to train by adjusting the factor that gets multiplied to the loss function for updating weights
 ```
--o/--optimizer : optimization technique. Default adam.
+--lr : learning rate. Default 0.01.
 ```
 
 9. **Training epochs**
 
 Select the number of epochs to train your model. The bigger number of epochs, the longer the training will take, and also increase chances of overfitting.
+
+An early stopping has been implemented that will (if desired) stop training once the validation loss has plateaued.  the patience (number of 
+epochs with no improvement) can be found in the config file.
 ```
 --epochs : number of training epochs. Default 200.
 ```
