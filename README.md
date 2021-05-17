@@ -229,23 +229,41 @@ git stash pop
 The project is build around several different API calls, whether it is to access historical data or financials.
 
 These are the ones where a key is necessary:
-  * Alpha Vantage: https://www.alphavantage.co
-  * Quandl: https://www.quandl.com/tools/api
-  * Reddit: https://www.reddit.com/prefs/apps
-  * Twitter: https://developer.twitter.com
-  * Polygon: https://polygon.io
-  * Financial Modeling Prep: https://financialmodelingprep.com/developer
-  * FRED: https://fred.stlouisfed.org/docs/api/api_key.html
-  * News API: https://newsapi.org
-  * Tradier: https://developer.tradier.com/getting_started
-  * Oanda API: https://developer.oanda.com
-  * CoinMarketCap API: https://coinmarketcap.com/api/
-  * Finhub API: https://finnhub.io
-  * Binance: https://binance.us (US) / https://binance.com (Outside US)
+* Alpha Vantage: https://www.alphavantage.co
+* Binance: https://binance.us (US) / https://binance.com (Outside US)
+* CoinMarketCap API: https://coinmarketcap.com/api
+* Degiro API : https://www.degiro.fr
+* FRED: https://fred.stlouisfed.org/docs/api/api_key.html
+* Financial Modeling Prep: https://financialmodelingprep.com/developer
+* Finhub API: https://finnhub.io
+* News API: https://newsapi.org
+* Oanda API: https://developer.oanda.com
+* Polygon: https://polygon.io
+* Quandl: https://www.quandl.com/tools/api
+* Reddit: https://www.reddit.com/prefs/apps
+* Tradier: https://developer.tradier.com/getting_started
+* Twitter: https://developer.twitter.com
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
-Alternatively, you can also set them to the following environment variables: GT_API_KEY_ALPHAVANTAGE, GT_API_KEY_FINANCIALMODELINGPREP, GT_API_KEY_QUANDL, GT_API_REDDIT_CLIENT_ID, GT_API_REDDIT_CLIENT_SECRET, GT_API_REDDIT_USERNAME, GT_API_REDDIT_USER_AGENT, GT_API_REDDIT_PASSWORD, GT_API_TWITTER_KEY, GT_API_TWITTER_SECRET_KEY, GT_API_TWITTER_BEARER_TOKEN, GT_API_POLYGON_KEY, GT_FRED_API_KEY, GT_API_NEWS_TOKEN, GT_OANDA_TOKEN, GT_OANDA_ACCOUNT, GT_TRADIER_TOKEN, GT_CMC_API_KEY, GT_CMC_API_KEY, API_FINNHUB_KEY, GT_API_BINANCE_KEY, GT_API_BINANCE_SECRET.
+Alternatively, you can also set them to the following environment variables:
+
+| Website | Variables |
+| :--- | :--- |
+| [Alpha Vantage](https://www.alphavantage.co) | GT_API_KEY_ALPHAVANTAGE |
+| [Binance](https://binance.com) | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
+| [CoinMarketCap](https://coinmarketcap.com) | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
+| [DEGIRO](https://www.degiro.fr) | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP <br/> DG_TOTP_SECRET |
+| [FRED](https://fred.stlouisfed.org) | GT_FRED_API_KEY |
+| [Financial Modeling Prep](https://financialmodelingprep.com) | GT_API_KEY_FINANCIALMODELINGPREP |
+| [Finhub](https://finnhub.io) | API_FINNHUB_KEY |
+| [News](https://newsapi.org) | GT_API_NEWS_TOKEN |
+| [Oanda](https://developer.oanda.com) | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT |
+| [Polygon](https://polygon.io) | GT_API_POLYGON_KEY |
+| [Quandl](https://www.quandl.com) | GT_API_KEY_QUANDL |
+| [Reddit](https://www.reddit.com) | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD|
+| [Tradier](https://developer.tradier.com) | GT_TRADIER_TOKEN |
+| [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
 
 Example:
 ```
@@ -362,6 +380,7 @@ Feel free to share loss porn, memes or any questions at:
   * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
 * **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app. 
   * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
+* **Chavithra** and **Deel18** : for Degiro's integration.
 
 ## Acknowledgments
 
