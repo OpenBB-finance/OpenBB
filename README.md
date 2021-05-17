@@ -380,6 +380,7 @@ Feel free to share loss porn, memes or any questions at:
   * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
 * **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app. 
   * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
+* **Chavithra** and **Deel18** : for Degiro's integration.
 
 ## Acknowledgments
 
