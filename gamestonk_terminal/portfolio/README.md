@@ -43,17 +43,17 @@ Your  login information should be stored as environment variables in [config fil
   * Look at Ally Invest Holdings
 
 [DEGIRO](#DEGIRO)
-* [dghold](#dghold)
+* [hold](#hold)
     * Command to look at current holdings
-* [dgtopnews](#dgtopnews)
+* [topnews](#topnews)
     * Command to get top news preview
-* [dglastnews](#dglastnews)
+* [lastnews](#lastnews)
     * Command to get latest news
-* [dgcompanynews](#dgcompanynews)
+* [companynews](#companynews)
     * Command to get news about a company with it's isin
-* [dglookup](#dglookup)
+* [lookup](#lookup)
     * Command to search for a product by name
-* [dgpending](#dgpending)
+* [pending](#pending)
     * Command to list pending orders
 
 [Merge](#Merge)
@@ -157,6 +157,19 @@ No additional flags.
 
 ## DEGIRO <a name="DEGIRO"></a>
 
+**Sub-menu**
+````
+usage:
+    pa
+    degiro
+    login
+````
+
+To use the `degiro` sub-menu you need to :
+* Enter `portfolio analysis`, with the command : `pa`
+* Enter `degiro` sub-menu using the command: `degiro`
+* Connect to `degiro` by typing : `login`
+
 **Credentials**
 
 In order to login you need to provide the following credentials :
@@ -186,33 +199,33 @@ More information on 2FA credentials, in the documentation of this library :
 
 https://github.com/Chavithra/degiro-connector
 
-### dghold <a name="dghold"></a>
+### hold <a name="hold"></a>
 ````
-usage: dghold
+usage: hold
 ````
 
 Displays current holdings to the console.
 
-### dgtopnews <a name="dgtopnews"></a>
+### topnews <a name="topnews"></a>
 ````
-usage: dgtopnews
-````
-
-### dglastnews <a name="dglastnews"></a>
-````
-usage: dglastnews
+usage: topnews
 ````
 
-### dgcompanynews <a name="dgcompanynews"></a>
+### lastnews <a name="lastnews"></a>
 ````
-usage: dgcompanynews NL0000235190
+usage: lastnews
+````
+
+### companynews <a name="companynews"></a>
+````
+usage: companynews NL0000235190
 ````
 
 You need to provide the `ISIN` number of the company.
 You can get this `ISIN` using the `dglookup` command for instance.
 
 
-### dglookup <a name="dglookup"></a>
+### lookup <a name="lookup"></a>
 ````
 usage: dglookup TESLA
 ````
@@ -232,9 +245,9 @@ It will display a result like this :
 9  Leverage Shares 1x Tesla ETP  IE00BKT6ZH01          STSL         ETF      GBX     135.550     2021-05-13
 ```
 
-### dgpending <a name="dgpending"></a>
+### pending <a name="pending"></a>
 ````
-usage: dgpending
+usage: pending
 ````
 
 ## Merge <a name="Merge"></a>
