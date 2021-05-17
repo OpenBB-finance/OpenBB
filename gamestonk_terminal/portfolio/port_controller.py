@@ -68,19 +68,18 @@ class PortfolioController:
     @staticmethod
     def print_portfolio_menu(broker_list):
         print(
-            f"\nCurrent Broker: {('None', ', '.join(broker_list))[bool(broker_list)]}\n\n"
+            f"Current Broker: {('None', ', '.join(broker_list))[bool(broker_list)]}\n\n"
             "Ally:\n"
             "   allyhold      view ally holdings\n"
             "Alpaca:\n"
             "   alphold       view alp holdings\n"
             "   alphist       view alp portfolio history\n"
-            "Degiro:\n"
-            "   degiro        view degiro sub-menu\n"
             "Robinhood:\n"
             "   rhhold        view rh holdings\n"
             "   rhhist        plot rh portfolio history\n"
-            "\n"
-            "Merge:\n"
+            "\nDegiro:\n"
+            ">  degiro        view degiro sub-menu\n"
+            "\nMerge:\n"
             "   login         login to your brokers\n"
             "   hold          view net holdings across all logins\n"
         )

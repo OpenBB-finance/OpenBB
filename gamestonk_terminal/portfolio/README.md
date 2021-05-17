@@ -43,6 +43,8 @@ Your  login information should be stored as environment variables in [config fil
   * Look at Ally Invest Holdings
 
 [DEGIRO](#DEGIRO)
+* [login](#login)
+    * Connect to your Degiro account
 * [hold](#hold)
     * Command to look at current holdings
 * [topnews](#topnews)
@@ -199,6 +201,11 @@ More information on 2FA credentials, in the documentation of this library :
 
 https://github.com/Chavithra/degiro-connector
 
+### login <a name="login"></a>
+````
+usage: login
+````
+
 ### hold <a name="hold"></a>
 ````
 usage: hold
@@ -227,7 +234,7 @@ You can get this `ISIN` using the `dglookup` command for instance.
 
 ### lookup <a name="lookup"></a>
 ````
-usage: dglookup TESLA
+usage: lookup TESLA
 ````
 
 It will display a result like this :

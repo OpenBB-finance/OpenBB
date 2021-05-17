@@ -248,22 +248,22 @@ When these are obtained, don't forget to update [config_terminal.py](/gamestonk_
 
 Alternatively, you can also set them to the following environment variables:
 
-| Company | Variables |
+| Website | Variables |
 | :--- | :--- |
-| Alpha Vantage | GT_API_KEY_ALPHAVANTAGE |
-| Binance | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
-| CoinMarketCap | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
-| DEGIRO | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP <br/> DG_TOTP_SECRET |
-| FRED | GT_FRED_API_KEY |
-| Financial Modeling Prep | GT_API_KEY_FINANCIALMODELINGPREP |
-| Finhub API | API_FINNHUB_KEY |
-| News API | GT_API_NEWS_TOKEN |
-| Oanda API | GT_OANDA_TOKEN, GT_OANDA_ACCOUNT |
-| Polygon | GT_API_POLYGON_KEY |
-| Quandl | GT_API_KEY_QUANDL |
-| Reddit | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD|
-| Tradier | GT_TRADIER_TOKEN |
-| Twitter | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
+| [Alpha Vantage](https://www.alphavantage.co) | GT_API_KEY_ALPHAVANTAGE |
+| [Binance](https://binance.com) | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
+| [CoinMarketCap](https://coinmarketcap.com) | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
+| [DEGIRO](https://www.degiro.fr) | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP <br/> DG_TOTP_SECRET |
+| [FRED](https://fred.stlouisfed.org) | GT_FRED_API_KEY |
+| [Financial Modeling Prep](https://financialmodelingprep.com) | GT_API_KEY_FINANCIALMODELINGPREP |
+| [Finhub](https://finnhub.io) | API_FINNHUB_KEY |
+| [News](https://newsapi.org) | GT_API_NEWS_TOKEN |
+| [Oanda](https://developer.oanda.com) | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT |
+| [Polygon](https://polygon.io) | GT_API_POLYGON_KEY |
+| [Quandl](https://www.quandl.com) | GT_API_KEY_QUANDL |
+| [Reddit](https://www.reddit.com) | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD|
+| [Tradier](https://developer.tradier.com) | GT_TRADIER_TOKEN |
+| [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
 
 Example:
 ```
