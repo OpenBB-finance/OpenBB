@@ -76,12 +76,13 @@ class PortfolioController:
             "   alphist       view alp portfolio history\n"
             "Degiro:\n"
             "   degiro        view degiro sub-menu\n"
-            "Merge:\n"
-            "   login         login to your brokers\n"
-            "   hold          view net holdings across all logins\n"
             "Robinhood:\n"
             "   rhhold        view rh holdings\n"
             "   rhhist        plot rh portfolio history\n"
+            "\n"
+            "Merge:\n"
+            "   login         login to your brokers\n"
+            "   hold          view net holdings across all logins\n"
         )
 
     def switch(self, an_input: str):
