@@ -43,19 +43,18 @@ Exponential Smoothing (based on trend+seasonality, see https://otexts.com/fpp2/t
   * -t : trend component: N: None, A: Additive, Ad: Additive Damped. Default N.
   * -s : seasonality component: N: None, A: Additive, M: Multiplicative. Default N.
   * -p : seasonal periods. Default 5.
-  * -d : prediciton days. Default 5.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![ets_pltr](https://user-images.githubusercontent.com/25267873/110266847-97a6d280-7fb6-11eb-997e-0b598abc713b.png)
 
 ## knn <a name="knn"></a>
 ```
-usage: knn [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS] [-n N_NEIGHBORS]
+usage: knn [-i N_INPUTS] [-d N_DAYS] [-n N_NEIGHBORS]
 ```
 k-Nearest Neighbors:
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -n : number of neighbors to use on the algorithm. Default 20.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
@@ -63,51 +62,47 @@ k-Nearest Neighbors:
 
 ## linear <a name="linear"></a>
 ```
-usage: linear [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
-usage: regression -p 1 [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: linear [-i N_INPUTS] [-d N_DAYS]
+usage: regression -p 1 [-i N_INPUTS] [-d N_DAYS]
 ```
 Linear Regression (p=1):
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![linear](https://user-images.githubusercontent.com/25267873/108604948-d3cc1780-73a8-11eb-860f-49274a34038b.png)
 
 ## quadratic <a name="quadratic"></a>
 ```
-usage: quadratic [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
-usage: regression -p 2 [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: quadratic [-i N_INPUTS] [-d N_DAYS]
+usage: regression -p 2 [-i N_INPUTS] [-d N_DAYS]
 ```
 Quadratic Regression (p=2):
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![quadratic](https://user-images.githubusercontent.com/25267873/108604935-cca50980-73a8-11eb-9af1-bba807203cc6.png)
 
 ## cubic <a name="cubic"></a>
 ```
-usage: cubic [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
-usage: regression -p 3 [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: cubic [-i N_INPUTS] [-d N_DAYS]
+usage: regression -p 3 [-i N_INPUTS] [-d N_DAYS]
 ```
 Cubic Regression (p=3):
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![cubic](https://user-images.githubusercontent.com/25267873/108604941-d169bd80-73a8-11eb-9220-84a7013e1283.png)
 
 ## regression <a name="regression"></a>
 ```
-usage: regression -p N_POLYNOMIAL [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS]
+usage: regression -p N_POLYNOMIAL [-i N_INPUTS] [-d N_DAYS]
 ```
 Regression:
   * -i : number of days to use for prediction. Default 40.
-  * -d : prediciton days. Default 5.
-  * -j : number of jumps in training data. Default 1.
+  * -d : prediction days. Default 5.
   * -p : polynomial associated with regression. Required.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
@@ -135,24 +130,21 @@ Auto-Regressive Integrated Moving Average:
 usage: fbprophet [-d N_DAYS]
 ```
 Facebook's Prophet:
-  * -d : prediciton days. Default 5.
+  * -d : prediction days. Default 5.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![prophet](https://user-images.githubusercontent.com/25267873/108604938-cf9ffa00-73a8-11eb-973b-0affb343e2f6.png)
 
 ## mlp <a name="mlp"></a>
 ```
-usage: mlp [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {minmax, normalization,standardization,none}]
- [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
+usage: mlp [-d N_DAYS] [-i N_INPUTS] [--epochs N_EPOCHS] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID]
+ [--lr LEARNING_RATE] [--no_shuffle]
 ```
 MulitLayer Perceptron:
   * -d : prediciton days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default minmax.
   * -v : validation split.  Default 0.1
-  * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
@@ -181,17 +173,14 @@ MultiLayer_Perceptron \
 
 ## rnn <a name="rnn"></a>
 ```
-usage: rnn [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
+usage: rnn [-d N_DAYS] [-i N_INPUTS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
  [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
 ```
 Recurrent Neural Network:
   * -d : prediciton days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default normalization.
   * -v : validation split.  Default 0.1
-  * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
@@ -227,17 +216,14 @@ Recurrent_Neural_Network \
 
 ## lstm <a name="lstm"></a>
 ```
-usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,none}]
- [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
+usage: lstm [-d N_DAYS] [-i N_INPUTS]  [--epochs N_EPOCHS] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID]
+ [--lr LEARNING_RATE] [--no_shuffle]
 ```
 Long-Short Term Memory:
-  * -d : prediciton days. Default 5.
+  * -d : prediction days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 200.
-  * -p : pre-processing data. Default normalization.
   * -v : validation split.  Default 0.1
-  * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).
@@ -270,17 +256,14 @@ Long_Short_Term_Memory \
 
 ## conv1d <a name="conv1d"></a>
 ```
-usage: lstm [-d N_DAYS] [-i N_INPUTS] [-j N_JUMPS] [--epochs N_EPOCHS] [-p {normalization,standardization,minmax,none}]
- [-l {mae,mape,mse,msle}] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] [--lr LEARNING_RATE] [--no_shuffle]
+usage: lstm [-d N_DAYS] [-i N_INPUTS] [--epochs N_EPOCHS] [-e S_END_DATE] [--loops N_LOOPS] [-v VALID] 
+[--lr LEARNING_RATE] [--no_shuffle]
 ```
 1D Convolutional Neural Net:
   * -d : prediction days. Default 5.
   * -i : number of days to use for prediction. Default 40.
-  * -j : number of jumps in training data. Default 1.
   * --epochs : number of training epochs. Default 50.
-  * -p : pre-processing data. Default minmax.
   * -v : validation split.  Default 0.1
-  * -l : loss function. Default mae.
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
   * --xla_cpu: if present, will enable XLA for CPU (overrides environment variables during run).
   * --xla_gpu: if present, will enable XLA for GPU (overrides environment variables during run).

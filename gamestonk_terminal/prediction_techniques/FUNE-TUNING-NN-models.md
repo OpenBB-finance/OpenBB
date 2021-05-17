@@ -35,8 +35,9 @@ To try "backtesting" to a certain data, you can specify the end date.  This will
 
 Decide whether you want to pre-process your share price data or not. I.e. do you want to use these values between 18 and 245, or perhaps normalize these between 0 and 1? The later may improve performance.
 ```
--p/--pp : pre-processing data. Default minmax.
+Preprocess = "minmax"
 ```
+This is defined in the config file.
 
 5. **Select input, prediction days and jumps in training data**
 
@@ -52,13 +53,6 @@ The **prediction days** is the number we want to predict for.
 Personally, I recommend to set this for a really short window. This is because the bigger the window, the less reliable the prediction is. This is mainly due to the fact that by having a larger prediction horizon, more unexpected events (news, insider trading activity, rumours, ...) can occur, which may shift share price.
 ```
 -d/--days : prediciton days. Default 5.
-```
-
-The **jumps in the training data** corresponds to the number of days we want to jump between training loops.
-
-Let's say we start training our Neural Network from 2021-01-04, with 10 inputs (days) and 5 prediction days. If jump is set to 1, it means that the after optimizing our model for input data from 2021-01-04 to 2021-01-15, and predicting from 2021-01-18 to 2021-01-22, we will optimize the model for input data from 2021-01-05 to 2021-01-18, and predicting from 2021-01-19 to 2021-01-25. On the other hand, if we set the jump to 5, it means that we are identifying a "weekly" frequency in the data, and therefore, our next model optimization would use input data from 2021-01-11 to 2021-01-22, and predicting from 2021-01-25 to 2021-01-29.
-```
--j/--jumps : number of jumps in training data. Default 1.
 ```
 
 6. **Select NN architecture.** TL;DR: LSTM > RNN > MLP
@@ -98,8 +92,9 @@ This model is set in [config_neural_network_models.py](/config_neural_network_mo
 
 **Loss function**: Often chosen having the activation functions of the hidden layers in mind. See https://machinelearningmastery.com/how-to-choose-loss-functions-when-training-deep-learning-neural-networks/, and https://www.tensorflow.org/api_docs/python/tf/keras/losses.
 ```
--l/--loss : loss function. Default mae.
+Loss = "mae"
 ```
+This is defined in the config file.
 
 **Optimizer technique**:Adaptive Moment Estimation (_adam_) is usually the default choice for this type of problems. See https://www.tensorflow.org/api_docs/python/tf/keras/optimizers.
 
