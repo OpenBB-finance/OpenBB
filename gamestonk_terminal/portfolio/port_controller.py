@@ -171,7 +171,7 @@ class PortfolioController:
             print("")
 
     def call_degiro(self, _):
-        """"Process degiro command."""
+        """ "Process degiro command."""
 
         return degiro_api.menu()
 

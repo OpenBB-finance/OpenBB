@@ -240,7 +240,7 @@ class DegiroController:
         print(fmt_positions)
 
     def topnews(self, _):
-        """ Display pending orders."""
+        """Display pending orders."""
 
         # GET ATTRIBUTES
         trading_api = self.__trading_api
@@ -258,7 +258,7 @@ class DegiroController:
             print("---")
 
     def lookup(self, l_args):
-        """ Search for products by their name."""
+        """Search for products by their name."""
 
         # PARSING ARGS
         parser = argparse.ArgumentParser(
@@ -324,7 +324,7 @@ class DegiroController:
             print("0 results found.")
 
     def lastnews(self, _):
-        """ Display latest news."""
+        """Display latest news."""
 
         # GET ATTRIBUTES
         trading_api = self.__trading_api
@@ -347,7 +347,7 @@ class DegiroController:
             print("---")
 
     def companynews(self, l_args):
-        """ Display news related to a company using its ISIN."""
+        """Display news related to a company using its ISIN."""
 
         # PARSING ARGS
         parser = argparse.ArgumentParser(
@@ -388,7 +388,7 @@ class DegiroController:
             print("---")
 
     def pending(self, _):
-        """ Display pending orders."""
+        """Display pending orders."""
 
         # GET ATTRIBUTES
         trading_api = self.__trading_api
