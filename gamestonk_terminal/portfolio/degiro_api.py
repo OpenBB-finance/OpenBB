@@ -79,7 +79,6 @@ class DegiroController:
         )
         self.__degiro_parser.add_argument("cmd", choices=self.CHOICES)
 
-
     def q(self, _):
         """Process Q command - quit the menu"""
 
@@ -260,7 +259,7 @@ class DegiroController:
 
     def lookup(self, l_args):
         """ Search for products by their name."""
-        
+
         # PARSING ARGS
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -429,9 +428,7 @@ class DegiroController:
         try:
             degiro_parser = self.__degiro_parser
 
-            (known_args, other_args) = degiro_parser.parse_known_args(
-                an_input.split()
-            )
+            (known_args, other_args) = degiro_parser.parse_known_args(an_input.split())
 
             return getattr(
                 self,

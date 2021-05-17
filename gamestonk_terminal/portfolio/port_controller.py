@@ -19,6 +19,7 @@ from gamestonk_terminal.portfolio.portfolio_helpers import (
     print_portfolio,
 )
 
+
 class PortfolioController:
     """Portfolio Controller"""
 
