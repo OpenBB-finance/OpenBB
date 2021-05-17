@@ -201,10 +201,10 @@ def buy_government(other_args: List[str], gov_type: str):
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        df_gov.groupby("Ticker")["upper"].sum().sort_values(ascending=False).head(
-            n=ns_parser.top_num
-        ).plot(kind="bar", rot=0)
-        plt.ylabel("Amount [$]")
+        df_gov.groupby("Ticker")["upper"].sum().div(1000).sort_values(
+            ascending=False
+        ).head(n=ns_parser.top_num).plot(kind="bar", rot=0)
+        plt.ylabel("Amount [1k $]")
         plt.title(
             f"Top {ns_parser.top_num} most bought stocks since last {ns_parser.past_transactions_months} "
             "months (upper bound)"
@@ -301,10 +301,10 @@ def sell_government(other_args: List[str], gov_type: str):
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        df_gov.groupby("Ticker")["lower"].sum().sort_values().abs().head(
+        df_gov.groupby("Ticker")["lower"].sum().div(1000).sort_values().abs().head(
             n=ns_parser.top_num
         ).plot(kind="bar", rot=0)
-        plt.ylabel("Amount [$]")
+        plt.ylabel("Amount [1k $]")
         plt.title(
             f"Top {ns_parser.top_num} most sold stocks since last {ns_parser.past_transactions_months} months"
             " (upper bound)"
