@@ -193,7 +193,7 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             )
             model.compile(
                 optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                loss=ns_parser.s_loss,
+                loss=cfg_nn_models.Loss,
             )
 
             model.fit(
@@ -303,7 +303,7 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             )
             model.compile(
                 optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                loss=ns_parser.s_loss,
+                loss=cfg_nn_models.Loss,
             )
             model.fit(
                 X_train.reshape(X_train.shape[0], X_train.shape[1], 1),
@@ -410,7 +410,7 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             )
             model.compile(
                 optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                loss=ns_parser.s_loss,
+                loss=cfg_nn_models.Loss,
             )
 
             model.fit(
@@ -521,7 +521,7 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
 
             model.compile(
                 optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
-                loss=ns_parser.s_loss,
+                loss=cfg_nn_models.Loss,
             )
 
             model.fit(

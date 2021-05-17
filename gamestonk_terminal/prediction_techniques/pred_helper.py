@@ -25,6 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     plot_autoscale,
 )
+from gamestonk_terminal import config_neural_network_models as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 
@@ -38,6 +39,8 @@ simplefilter(action="ignore", category=FutureWarning)
 # store the user's TensorFlow environment variables
 ORIGINAL_TF_XLA_FLAGS = os.environ.get("TF_XLA_FLAGS")
 ORIGINAL_TF_FORCE_GPU_ALLOW_GROWTH = os.environ.get("TF_FORCE_GPU_ALLOW_GROWTH")
+
+PREPROCESSER = cfg.Preprocess
 
 
 def check_valid_frac(num) -> float:
@@ -108,44 +111,6 @@ def parse_args(prog: str, description: str, other_args: List[str]):
         type=check_positive,
         default=50,
         help="number of training epochs.",
-    )
-    parser.add_argument(
-        "-j",
-        "--jumps",
-        action="store",
-        dest="n_jumps",
-        type=check_positive,
-        default=1,
-        help="number of jumps in training data.",
-    )
-    parser.add_argument(
-        "-p",
-        "--pp",
-        action="store",
-        dest="s_preprocessing",
-        default="minmax",
-        choices=["normalization", "standardization", "minmax", "none"],
-        help="pre-processing data.",
-    )
-    parser.add_argument(
-        "-l",
-        "--loss",
-        action="store",
-        dest="s_loss",
-        default="mae",
-        choices=[
-            "mae",
-            "mape",
-            "mse",
-            "msle",
-            "poisson",
-            "logcosh",
-            "kld",
-            "hinge",
-            "squared_hinge",
-            "huber",
-        ],
-        help="loss function (see https://www.tensorflow.org/api_docs/python/tf/keras/losses)",
     )
     parser.add_argument(
         "-e",
@@ -293,16 +258,16 @@ def prepare_scale_train_valid_test(
     test_size = ns_parser.valid_split
 
     # Pre-process data
-    if ns_parser.s_preprocessing == "standardization":
+    if PREPROCESSER == "standardization":
         scaler = StandardScaler()
 
-    elif ns_parser.s_preprocessing == "minmax":
+    elif PREPROCESSER == "minmax":
         scaler = MinMaxScaler()
 
-    elif ns_parser.s_preprocessing == "normalization":
+    elif PREPROCESSER == "normalization":
         scaler = Normalizer()
 
-    elif ns_parser.s_preprocessing == "none":
+    elif (PREPROCESSER == "none") or (PREPROCESSER is None):
         scaler = None
     # Test data is used for forecasting.  Takes the last n_input_days data points.
     # These points are not fed into training

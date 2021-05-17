@@ -56,3 +56,15 @@ Optimizer = "Adam"
 # Add early stopping to save time training when validation is plateaued
 # Can be set to large number or None to ignore
 Early_Stop_Patience = 10
+
+# Losses https://www.tensorflow.org/api_docs/python/tf/keras/losses
+# mae, mape, mse, msle, poisson, logcosh, kld, hinge, squared_hinge, huber
+Loss = "mae"
+
+# Preprocessing technique to use : https://scikit-learn.org/stable/modules/preprocessing.html
+# Options are:
+# minmax - Adjusts data to be between 0 and 1 - Most Used for Stocks
+# standardization - Standardizes data so that it has mean 0 and standard deviation = 1
+# normalization - Normalizes data so that L2 norm (sum x_i^2) = 1
+# none - No preprocessing
+Preprocess = "minmax"
