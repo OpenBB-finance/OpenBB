@@ -8,40 +8,38 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio import rh_api, alp_api, ally_api, dg_api
+from gamestonk_terminal.portfolio import (
+    rh_api,
+    alp_api,
+    ally_api,
+    degiro_api,
+)
 from gamestonk_terminal.portfolio.portfolio_helpers import (
     merge_portfolios,
     print_portfolio,
 )
 
-
 class PortfolioController:
     """Portfolio Controller"""
 
     CHOICES = [
+        "alphist",
+        "alphold",
+        "allyhold",
+        "degiro",
         "help",
+        "hold",
+        "login",
         "q",
         "quit",
-        "login",
         "rhhold",
         "rhhist",
-        "alphold",
-        "alphist",
-        "allyhold",
-        "dghold",
-        "dgtopnews",
-        "dglastnews",
-        "dgcompanynews",
-        "dglookup",
-        "dgpending",
-        "hold",
     ]
 
     BROKERS = [
-        "rh",
         "alp",
         "ally",
-        "dg",
+        "rh",
     ]
 
     def __init__(self):
@@ -50,69 +48,40 @@ class PortfolioController:
         self.broker_list = set()
         self.merged_holdings = None
 
-    @staticmethod
-    def print_help(broker_list):
-
+    @classmethod
+    def print_help(cls, broker_list):
         """Print help"""
-        print("\nBrokers Supported: rh   - Robinhood")
-        print("                   alp  - Alpaca")
-        print("                   ally - Ally Invest")
-        print("                   dg - Degiro")
-        print("\nPortfolio:")
-        print("   help          show this menu again")
-        print(
-            "   q             quit this menu, and shows back to main menu, logs out of brokers"
-        )
-        print("   quit          quit to abandon program, logs out of brokers")
 
         print(
-            f"\nCurrent Broker: {('None', ', '.join(broker_list))[bool(broker_list)]}"
+            "Brokers Supported:\n"
+            "   ally - Ally Invest\n"
+            "   alp  - Alpaca\n"
+            "   rh   - Robinhood\n"
+            "\nPortfolio:\n"
+            "   help          show this menu again\n"
+            "   q             quit this menu, and shows back to main menu, logs out of brokers\n"
+            "   quit          quit to abandon program, logs out of brokers\n"
         )
-        print("")
-        print("   login         login to your brokers")
+        cls.print_portfolio_menu(broker_list)
 
-        print("\nRobinhood:")
-        print("   rhhold        view rh holdings")
-        print("   rhhist        plot rh portfolio history")
-        print("Alpaca:")
-        print("   alphold       view alp holdings")
-        print("   alphist       view alp portfolio history")
-        print("Ally:")
-        print("   allyhold      view ally holdings")
-        print("Degiro:")
-        print("   dghold        view dg holdings")
-        print("   dgtopnews     view top news preview")
-        print("   dglastnews    view latest news")
-        print("   dgcompanynews view news about a company with it's isin")
-        print("   dglookup      view search for a product by name")
-        print("   dgpending     view pending orders")
-        print("\nMerge:")
-        print("   hold          view net holdings across all logins")
-        print("")
-
-    def print_portfolio_menu(self):
-
+    @staticmethod
+    def print_portfolio_menu(broker_list):
         print(
-            f"\nCurrent Brokers : {('None', ', '.join(self.broker_list))[bool(self.broker_list)]}"
+            f"\nCurrent Broker: {('None', ', '.join(broker_list))[bool(broker_list)]}\n\n"
+            "Ally:\n"
+            "   allyhold      view ally holdings\n"
+            "Alpaca:\n"
+            "   alphold       view alp holdings\n"
+            "   alphist       view alp portfolio history\n"
+            "Degiro:\n"
+            "   degiro        view degiro sub-menu\n"
+            "Merge:\n"
+            "   login         login to your brokers\n"
+            "   hold          view net holdings across all logins\n"
+            "Robinhood:\n"
+            "   rhhold        view rh holdings\n"
+            "   rhhist        plot rh portfolio history\n"
         )
-        print("\nRobinhood:")
-        print("   rhhold        check holdings")
-        print("   rhhist        plot historical RH portfolio")
-        print("\nAlpaca:")
-        print("   alphold       view alpaca holdings")
-        print("   alphist       plot historical alpaca portfolio")
-        print("\nAlly:")
-        print("   allyhold      view ally holdings")
-        print("\nDegiro:")
-        print("   dghold        view dg holdings")
-        print("   dgtopnews     view top news preview")
-        print("   dglastnews    view latest news")
-        print("   dgcompanynews view news about a company with it's isin")
-        print("   dglookup      view search for a product by name")
-        print("   dgpending     view pending orders")
-        print("\nMerge:")
-        print("   hold          view net holdings across all logins")
-        print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -124,6 +93,7 @@ class PortfolioController:
             True - quit the program
             None - continue in the menu
         """
+
         (known_args, other_args) = self.port_parser.parse_known_args(an_input.split())
 
         return getattr(
@@ -132,18 +102,21 @@ class PortfolioController:
 
     def call_help(self, _):
         """Process Help command"""
+
         self.print_help(self.broker_list)
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
+
         return False
 
     def call_quit(self, _):
         """Process Quit command - quit the program"""
+
         return True
 
     def call_login(self, other_args):
-
+        broker_list = self.broker_list
         logged_in = False
         if not other_args:
             print("Please enter brokers you wish to login to")
@@ -167,7 +140,7 @@ class PortfolioController:
                 print(f"{broker} not supported")
 
         if logged_in:
-            self.print_portfolio_menu()
+            self.print_portfolio_menu(broker_list)
 
     def call_rhhist(self, other_args: List[str]):
         rh_api.plot_historical(other_args)
@@ -196,54 +169,10 @@ class PortfolioController:
             print(e)
             print("")
 
-    def call_dghold(self, _):
-        """"Process dghold command."""
-        try:
-            dg_api.show_holdings()
-        except Exception as e:
-            print(e)
-            print("")
+    def call_degiro(self, _):
+        """"Process degiro command."""
 
-    def call_dgtopnews(self, _):
-        """"Process dgtopnews command."""
-        try:
-            dg_api.top_news_preview()
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_dglastnews(self, _):
-        """" Process dglastnews command. """
-        try:
-            dg_api.latest_news()
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_dgcompanynews(self, isin_list: List[str]):
-        """"Process dgcompanynews command."""
-        try:
-            dg_api.news_by_company(isin_list[0])
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_dglookup(self, search_text_list: List[str]):
-        """"Process dglookup command."""
-        try:
-            search_text = " ".join(search_text_list)
-            dg_api.product_lookup(search_text=search_text)
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_dgpending(self, _):
-        """"Process dgpending command."""
-        try:
-            dg_api.pending_orders()
-        except Exception as e:
-            print(e)
-            print("")
+        return degiro_api.menu()
 
     def call_hold(self, _):
         holdings = pd.DataFrame(
