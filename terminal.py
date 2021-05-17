@@ -8,6 +8,7 @@ import subprocess
 from datetime import datetime, timedelta
 import pandas as pd
 import yfinance as yf
+from matplotlib import pyplot as plt
 from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
 
@@ -114,7 +115,9 @@ def main():
 
     try:
         if os.name == "nt":
+            # pylint: disable=E1101
             sys.stdin.reconfigure(encoding="utf-8")
+            # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
         print(e, "\n")
@@ -134,6 +137,7 @@ def main():
 
     # Loop forever and ever
     while True:
+
         main_cmd = False
         if should_print_help:
             print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
@@ -152,6 +156,8 @@ def main():
             as_input = session.prompt(f"{get_flair()}> ", completer=completer)
         else:
             as_input = input(f"{get_flair()}> ")
+
+        plt.close("all")
 
         # Is command empty
         if not as_input:
@@ -206,15 +212,7 @@ def main():
             main_cmd = True
 
         elif ns_known_args.opt == "view":
-
-            if s_ticker:
-                view(l_args, s_ticker, s_start, s_interval, df_stock)
-
-            else:
-                print(
-                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at.",
-                    "\n",
-                )
+            view(l_args, s_ticker, s_start, s_interval, df_stock)
             main_cmd = True
 
         elif ns_known_args.opt == "export":

@@ -454,8 +454,19 @@ Command|Website
 `last_congress`         |last congress trading
 `buy_congress`          |top buy congress tickers
 `sell_congress`         |top sell congress tickers
+`last_senate`           |last senate trading
+`buy_senate`            |top buy senate tickers
+`sell_senate`           |top sell senate tickers
+`last_house`            |last house trading
+`buy_house`             |top buy house tickers
+`sell_house`            |top sell house tickers
 with ticker provided    |
+`raw_congress`          | raw congress trades on the ticker
 `congress`              | congress trades on the ticker
+`raw_senate`            | raw senate trades on the ticker
+`senate`                | senate trades on the ticker
+`raw_house`             | raw house trades on the ticker
+`house`                 | house trades on the ticker
 
 &nbsp;
 

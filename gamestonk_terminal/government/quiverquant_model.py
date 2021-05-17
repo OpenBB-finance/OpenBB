@@ -5,11 +5,13 @@ import pandas as pd
 API_QUIVERQUANT_KEY = "5cd2a65e96d0486efbe926a7cdbc1e8d8ab6c7b3"
 
 
-def get_congress_trading(ticker: str = "") -> pd.DataFrame:
-    """Returns the most recent transactions by members of U.S. Congress
+def get_government_trading(type: str, ticker: str = "") -> pd.DataFrame:
+    """Returns the most recent transactions by members of government
 
     Parameters
     ----------
+    type: str
+        Type of government data between: Congress, Senate and House
     ticker : str
         Ticker to get congress trading data from
 
@@ -19,10 +21,28 @@ def get_congress_trading(ticker: str = "") -> pd.DataFrame:
         Most recent transactions by members of U.S. Congress
     """
 
-    if ticker:
-        url = f"https://api.quiverquant.com/beta/historical/congresstrading/{ticker}"
+    if type == "congress":
+        if ticker:
+            url = (
+                f"https://api.quiverquant.com/beta/historical/congresstrading/{ticker}"
+            )
+        else:
+            url = "https://api.quiverquant.com/beta/live/congresstrading"
+
+    elif type == "senate":
+        if ticker:
+            url = f"https://api.quiverquant.com/beta/historical/senatetrading/{ticker}"
+        else:
+            url = "https://api.quiverquant.com/beta/live/senatetrading"
+
+    elif type == "house":
+        if ticker:
+            url = f"https://api.quiverquant.com/beta/historical/housetrading/{ticker}"
+        else:
+            url = "https://api.quiverquant.com/beta/live/housetrading"
+
     else:
-        url = "https://api.quiverquant.com/beta/live/congresstrading"
+        return pd.DataFrame()
 
     headers = {
         "accept": "application/json",
@@ -31,6 +51,8 @@ def get_congress_trading(ticker: str = "") -> pd.DataFrame:
     }
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        return pd.DataFrame(response.json())
+        return pd.DataFrame(response.json()).rename(
+            columns={"Date": "TransactionDate", "Senator": "Representative"}
+        )
 
     return pd.DataFrame()
