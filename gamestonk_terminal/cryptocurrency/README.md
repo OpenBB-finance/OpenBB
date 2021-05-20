@@ -2,6 +2,9 @@
 
 This menu aims to explore crypto world, and the usage of the following commands along with an example will be exploited below.
 
+Note that we have added the ability to look at technical analysis in the ta menu.  Data loaded from CoinGecko has no candle data,
+so indicators that rely on anything other than close will fail with an error.
+
 [COINGECKO](#COINGECKO)
 * [load](#load)
   * load a given coin vs a given currency [CoinGecko]
@@ -9,10 +12,10 @@ This menu aims to explore crypto world, and the usage of the following commands 
   * plot the loaded crypto data
 * [trend](#trend)
   * show top 7 trending coins
-  
+
 [COINMARKETCAP](#COINMARKETCAP)
 * [top](#top)
-  * view top coins from coinmarketcap [coinmarketcap.com] 
+  * view top coins from coinmarketcap [coinmarketcap.com]
 
 [BINANCE](#BINANCE)
 * [select](#select)
@@ -24,6 +27,10 @@ This menu aims to explore crypto world, and the usage of the following commands 
 * [balance](#balance)
   * show coin balance
 
+[MENUS](#Menu)
+* [> ta](technical_analysis/README.md)
+  * **technical analysis  for selected tickers**
+
 # COINGECKO <a name="COINGECKO"></a>
 ## load  <a name="load"></a>
 
@@ -31,11 +38,11 @@ This menu aims to explore crypto world, and the usage of the following commands 
 usage: load [-c --coin] [-d --days] [--vs]
 ````
 
-Load a given coin vs a given currency. Currently only retrieves price, not volume or MarketCap. The current crypto  data is [Powered by CoinGecko API](#https://www.coingecko.com/en), which is an awesome service that currently requires no API Key! 
+Load a given coin vs a given currency. Currently only retrieves price, not volume or MarketCap. The current crypto  data is [Powered by CoinGecko API](#https://www.coingecko.com/en), which is an awesome service that currently requires no API Key!
 
-* -c/--coin The coin you wish to load.  This can either be the symbol or the name.  `load -c btc` and `load -c bitcoin` 
+* -c/--coin The coin you wish to load.  This can either be the symbol or the name.  `load -c btc` and `load -c bitcoin`
   will load.  The -c flag is optional,  the above is equivalent to `load btc`.
-* -d/--days The number of days to look.  Defaults to 30 days.  As per the API: Minutely data will be used for duration within 1 day, 
+* -d/--days The number of days to look.  Defaults to 30 days.  As per the API: Minutely data will be used for duration within 1 day,
   Hourly data will be used for duration between 1 day and 90 days, Daily data will be used for duration above 90 days.
 * --vs The currency to look against.  Defaults to "usd".
 
@@ -80,17 +87,18 @@ This command displays the top n cryptocurrencies from coinmarketcap.com.
 
 ## select  <a name="select"></a>
 ````
-usage: select [-c --coin] [-q --quote]
+usage: select [-c --coin] [-q --quote] [-i --interval] [-l --limit]
 ````
 
-Select a coin/currency to the current object.  Note that in binance, the exchange "ticker" is usually COINCURR, such as BTCEUR for BTC to EURO.  There is no USD, but it uses a coin tethered to the USD (USDT), which is the default. Some symbols are a combination of coins, as `ETHBTC` is a valid symbol
+Select a coin/currency to the current object and load in the price dataframe.  Note that in binance, the exchange "ticker" is usually COINCURR, such as BTCEUR for BTC to EURO.  There is no USD, but it uses a coin tethered to the USD (USDT), which is the default. Some symbols are a combination of coins, as `ETHBTC` is a valid symbol
 * -c/--coin Coin to load. If not specified, BTC will be loaded to prevent errors later.
 * -q/--quote  Quote currency.  Defaults to `USDT` (which is 1-to-1 with USD)
-
+* -i/--interval. Interval for candles.  One of [1day,3day,1hour,2hour,4hour,6hour,8hour,12hour,1week,1min,3min,5min,15min,30min,1month]. Defaults to 1day.
+* -l/--limit.  Number of candles to get.  Defaults to 100.
 
 ## book  <a name="book"></a>
 ````
-usage: book -l/--limit 
+usage: book -l/--limit
 ````
 
 Gets and shows the order book for the given coin/currency.  Shows the cumulative amount of orders.
@@ -102,13 +110,11 @@ Gets and shows the order book for the given coin/currency.  Shows the cumulative
 
 ## candle  <a name="candle"></a>
 ````
-usage: candle [-i --interval] [-l --limit]
+usage: candle
 ````
 
 Show candle chart for loaded coin/currency.
 
-* -i/--interval. Interval for candles.  One of [1day,3day,1hour,2hour,4hour,6hour,8hour,12hour,1week,1min,3min,5min,15min,30min,1month]. Defaults to 1day.
-* -l/--limit.  Number of candles to get.  Defaults to 100.
 
 ![candle](https://user-images.githubusercontent.com/25267873/116886993-abbb2900-ac21-11eb-9ff8-b6a8131fdac5.png)
 
@@ -119,5 +125,3 @@ usage: balance
 ````
 
 Shows the current holding balance in your account.
-
-

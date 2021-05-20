@@ -297,9 +297,9 @@ Command|Description
 [coinmarketcap](#http://coinmarketcap.com)|
 `top` | view top coins from coinmarketcap
 [binance](#http://binance.us)|
-`select` | Select a coin/currency
+`select` | select coin/currency to use and load candle data
 `book`| show order book
-`candle`| get klines/candles and plot
+`candle`| show candles
 `balance`| show coin balance
 
 &nbsp;
@@ -469,4 +469,3 @@ with ticker provided    |
 `house`                 | house trades on the ticker
 
 &nbsp;
-

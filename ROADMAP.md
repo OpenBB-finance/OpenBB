@@ -101,9 +101,10 @@
 * [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
 * [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
 * [x] Add averaging around multiple predictions (@didier) - [PR #252](https://github.com/DidierRLopes/GamestonkTerminal/pull/252)
+* [x] CNN 1D (@jmaslek) - [PR #436](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/436)
+
 
 **NEXT**
-* [ ] CNN 1D (@didier)
 * [ ] Combine Sentiment Analysis with Chart data - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
 * [ ] Cross-Validation methods (Forward Chaining, K-Fold, Group K-Fold) (@didier)
 
@@ -202,12 +203,14 @@ ___
 
 ## Cryptocurrencies
 * [x] Add Coingecko (@jmaslek) - [PR #283](https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] Add top coins from CG (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 * [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
 * [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
+* [x] Add crypto ta (@jmaslek) [PR #452](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/452)
+
 
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
-* [ ] Add crypto charts
 * [ ] Add top altcoin lists
 ---
 
