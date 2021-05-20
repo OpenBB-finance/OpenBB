@@ -13,6 +13,7 @@ from gamestonk_terminal.cryptocurrency import (
     pycoingecko_view,
     coinmarketcap_view as cmc_view,
 )
+from gamestonk_terminal.technical_analysis import ta_controller
 
 
 class CryptoController:
@@ -30,6 +31,7 @@ class CryptoController:
         "candle",
         "balance",
         "select",
+        "ta",
     ]
 
     def __init__(self):
@@ -40,6 +42,7 @@ class CryptoController:
         self.current_coin = None
         self.current_currency = None
         self.current_df = pd.DataFrame()
+        self.source = ""
 
     def print_help(self):
         """Print help"""
@@ -58,10 +61,12 @@ class CryptoController:
         print("   top           view top coins from coinmarketcap")
         print("")
         print("Binance:")
-        print("   select        select coin/currency to use")
+        print("   select        select coin/currency to use and load candle data")
         print("   book          show order book")
-        print("   candle        get klines/candles and plot")
+        print("   candle        show candles")
         print("   balance       show coin balance")
+        print("")
+        print("   >ta           technical analysis menu for")
         print("")
 
     def switch(self, an_input: str):
@@ -95,6 +100,7 @@ class CryptoController:
     def call_load(self, other_args):
         """Process load command"""
         self.current_coin, self.current_df = pycoingecko_view.load(other_args)
+        self.source = "CG"
 
     def call_view(self, other_args):
         """Process view command"""
@@ -117,9 +123,11 @@ class CryptoController:
         """Process book command"""
         binance_model.order_book(other_args, self.current_coin, self.current_currency)
 
-    def call_candle(self, other_args):
+    def call_candle(self, _):
         """Process candle command"""
-        binance_model.show_candles(other_args, self.current_coin, self.current_currency)
+        binance_model.show_candles(
+            self.current_df, self.current_coin, self.current_currency
+        )
 
     def call_balance(self, _):
         """Process balance command"""
@@ -127,10 +135,51 @@ class CryptoController:
 
     def call_select(self, other_args):
         """Process select command"""
-        self.current_coin, self.current_currency = binance_model.select_binance_coin(
-            other_args
-        )
+        (
+            self.current_coin,
+            self.current_currency,
+            self.current_df,
+        ) = binance_model.select_binance_coin(other_args)
+        self.source = "BIN"
         print("")
+
+    # pylint: disable=inconsistent-return-statements
+    def call_ta(self, _):
+        """Process ta command"""
+        if not self.current_coin:
+            print("Please load a coin through either load or select", "\n")
+        if self.current_df.empty:
+            print("Price dataframe is empty")
+        else:
+            # Need to make the columns in df be compatible.  Also since there are no splits or dividends, there is no
+            # adj close.  To tell ta to use Close, we can just set the interval to anything but 1440.
+            # Binance provides candles so we just need to rename:
+            if self.source == "BIN":
+                self.current_df = self.current_df.rename(
+                    columns={
+                        "Open": "1. open",
+                        "High": "2. high",
+                        "Low": "3. low",
+                        "Close": "4. close",
+                        "Volume": "6. volume",
+                    }
+                )
+                self.current_df.index.name = "date"
+
+            # Coingecko does not provide candles so we can only provide close data.
+            elif self.source == "CG":
+
+                self.current_df = self.current_df[["Price"]].rename(
+                    columns={"Price": "4. close"}
+                )
+                self.current_df.index.name = "date"
+
+            return ta_controller.menu(
+                self.current_df,
+                self.current_coin,
+                self.current_df.index[0],
+                "Hi",
+            )
 
 
 def menu():
