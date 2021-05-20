@@ -178,7 +178,7 @@ class CryptoController:
                 self.current_df,
                 self.current_coin,
                 self.current_df.index[0],
-                "Hi",
+                "",
             )
 
 

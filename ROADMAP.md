@@ -203,9 +203,10 @@ ___
 
 ## Cryptocurrencies
 * [x] Add Coingecko (@jmaslek) - [PR #283](https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] Add top coins from CG (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 * [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
 * [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
-* [x] Add crypto ta (@jmaslek)
+* [x] Add crypto ta (@jmaslek) [PR #452](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/452)
 
 
 **NEXT**
