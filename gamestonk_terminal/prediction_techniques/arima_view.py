@@ -173,7 +173,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                     information_criteria=ns_parser.s_ic,
                 )
             l_predictions = [
-                (i > 0) * i for i in model.predict(n_periods=ns_parser.n_days)
+                i if i > 0 else 0 for i in model.predict(n_periods=ns_parser.n_days)
             ]
 
         # Prediction data

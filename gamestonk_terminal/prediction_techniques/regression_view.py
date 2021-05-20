@@ -173,7 +173,7 @@ def regression(
 
         model.fit(stock_x, stock_y)
         l_predictions = [
-            (i > 0) * i
+            i if i > 0 else 0
             for i in model.predict(
                 df_stock["5. adjusted close"]
                 .values[-ns_parser.n_inputs :]
