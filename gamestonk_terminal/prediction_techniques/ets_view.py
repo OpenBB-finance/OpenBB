@@ -175,7 +175,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
         )
 
         if model.mle_retvals.success:
-            forecast = model.forecast(ns_parser.n_days)
+            forecast = [(i > 0) * i for i in model.forecast(ns_parser.n_days)]
 
             l_pred_days = get_next_stock_market_days(
                 last_stock_day=df_stock["5. adjusted close"].index[-1],
