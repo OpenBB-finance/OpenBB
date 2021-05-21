@@ -6,37 +6,44 @@ This data has been provided by [quiverquant](https://www.quiverquant.com).
 * [last_congress](#last_congress)
   * last congress trading
 * [buy_congress](#buy_congress)
-  * top buy congress tickers
+  * plot top buy congress tickers
 * [sell_congress](#sell_congress)
-  * top sell congress tickers
+  * plot top sell congress tickers
 * [last_senate](#last_senate)
   * last senate trading
 * [buy_senate](#buy_senate)
-  * top buy senate tickers
+  * plot top buy senate tickers
 * [sell_senate](#sell_senate)
-  * top sell senate tickers
+  * plot top sell senate tickers
 * [last_house](#last_house)
   * last house trading
 * [buy_house](#buy_house)
-  * top buy house tickers
+  * plot top buy house tickers
 * [sell_house](#sell_house)
-  * top sell house tickers
+  * plot top sell house tickers
+* [last_contracts](#last_contracts)
+  * last government contracts
+* [sum_contracts](#sum_contracts)
+  * plot sum of last government contracts
 
 #### WITH TICKER PROVIDED
 
 * [raw_congress](#raw_congress)
   * raw congress trades on the ticker
 * [congress](#congress)
-  * congress trades on the ticker
+  * plot congress trades on the ticker
 * [raw_senate](#raw_senate)
   * raw senate trades on the ticke
 * [senate](#senate)
-  * senate trades on the ticker
+  * plot senate trades on the ticker
 * [raw_house](#raw_house)
   * raw house trades on the ticker
 * [house](#house)
-  * house trades on the ticker
-
+  * plot house trades on the ticker
+* [raw_contracts](#raw_contracts)
+  * raw contracts on the ticker
+* [contracts](#contracts)
+  * plot sum of contracts on the ticker
 
 ## last_congress <a name="last_congress"></a>
 ```text
@@ -146,6 +153,29 @@ Top sell house trading. [Source: www.quiverquant.com]
 ![sell_house](https://user-images.githubusercontent.com/25267873/118394645-c5a33580-b63d-11eb-8dbe-a9b9d948df24.png)
 
 
+## last_contracts <a name="last_contracts"></a>
+```text
+usage: last_contracts [-p PAST_TRANSACTIONS_DAYS] [-l LIMIT_CONTRACTS]
+```
+Last contracts. [Source: www.quiverquant.com]
+
+* -p : Past transaction months. Default: 2.
+* -t : Number of top tickers. Default: 20.
+
+<img width="1081" alt="last_contracts" src="https://user-images.githubusercontent.com/25267873/119065144-d3a5dd00-b9d4-11eb-85c9-ab16255a6996.png">
+
+
+## sum_contracts <a name="sum_contracts"></a>
+```text
+usage: sum_contracts
+```
+Sum latest contracts. [Source: www.quiverquant.com]
+
+![sum_contracts](https://user-images.githubusercontent.com/25267873/119065220-f33d0580-b9d4-11eb-8870-37ca352b187c.png)
+
+
+#### WITH TICKER PROVIDED 
+
 ## raw_congress <a name="raw_congress"></a>
 ```text
 usage: raw_congress [-p PAST_TRANSACTIONS_DAYS]
@@ -210,3 +240,25 @@ House trading. [Source: www.quiverquant.com]
 * -p : Past transaction months. Default: 6.
 
 ![house](https://user-images.githubusercontent.com/25267873/118394690-19158380-b63e-11eb-85ba-87fc2fd7df15.png)
+
+
+## raw_contracts <a name="raw_contracts"></a>
+```text
+usage: raw_contracts [-p PAST_TRANSACTIONS_DAYS]
+```
+Raw contracts. [Source: www.quiverquant.com]
+
+* -p : Past transaction months. Default: 10.
+
+<img width="1109" alt="raw_contracts" src="https://user-images.githubusercontent.com/25267873/119065403-59298d00-b9d5-11eb-832c-3dd85d66bee1.png">
+
+
+## contracts <a name="contracts"></a>
+```text
+usage: contracts [-p PAST_TRANSACTIONS_DAYS]
+```
+Contracts associated with ticker. [Source: www.quiverquant.com]
+
+* -p : Past transaction months. Default: 10.
+
+![contracts](https://user-images.githubusercontent.com/25267873/119065405-59c22380-b9d5-11eb-9a34-9cad288b22de.png)
