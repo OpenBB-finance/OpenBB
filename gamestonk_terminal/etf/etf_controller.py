@@ -8,17 +8,17 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf.stockanalysis_model import name_search, open_web
+from gamestonk_terminal.etf.stockanalysis_model import (
+    name_search,
+    open_web,
+    etf_overview,
+    compare_etfs,
+    etf_holdings,
+)
 
 
 class ETFController:
-    CHOICES = [
-        "help",
-        "q",
-        "quit",
-        "web",
-        "search",
-    ]
+    CHOICES = ["help", "q", "quit", "web", "search", "overview", "compare", "holdings"]
 
     def __init__(self):
         """CONSTRUCTOR"""
@@ -35,6 +35,9 @@ class ETFController:
         print("\nStockAnalysis.com")
         print("   web           open StockAnalysis.com/etf")
         print("   search        search ETFs matching name (i.e. BlackRock or Invesco)")
+        print("   overview      get overview of ETF symbol")
+        print("   holdings      get top holdings for ETF")
+        print("   compare       compare overview of multiple ETF")
 
         print("")
 
@@ -73,6 +76,18 @@ class ETFController:
     def call_search(self, other_args: List[str]):
         """Process search command"""
         name_search(other_args)
+
+    def call_overview(self, other_args: List[str]):
+        """Process overview command"""
+        etf_overview(other_args)
+
+    def call_holdings(self, other_args: List[str]):
+        """Process holdings command"""
+        etf_holdings(other_args)
+
+    def call_compare(self, other_args):
+        """Process compare command"""
+        compare_etfs(other_args)
 
 
 def menu():
