@@ -34,6 +34,10 @@ class GovController:
         "sell_house",
         "house",
         "raw_house",
+        "last_contracts",
+        "sum_contracts",
+        "raw_contracts",
+        "contracts",
     ]
 
     def __init__(
@@ -58,24 +62,28 @@ class GovController:
         print("")
         print("Explore:")
         print("   last_congress    last congress trading")
-        print("   buy_congress     top buy congress tickers")
-        print("   sell_congress    top sell congress tickers")
+        print("   buy_congress     plot top buy congress tickers")
+        print("   sell_congress    plot top sell congress tickers")
         print("   last_senate      last senate trading")
-        print("   buy_senate       top buy senate tickers")
-        print("   sell_senate      top sell senate tickers")
+        print("   buy_senate       plot top buy senate tickers")
+        print("   sell_senate      plot top sell senate tickers")
         print("   last_house       last house trading")
-        print("   buy_house        top buy house tickers")
-        print("   sell_house       top sell house tickers")
+        print("   buy_house        plot top buy house tickers")
+        print("   sell_house       plot top sell house tickers")
+        print("   last_contracts   last government contracts")
+        print("   sum_contracts    plot sum of last government contracts")
         print("")
         if self.ticker:
             print(f"Ticker: {self.ticker}")
             print("   raw_congress     raw congress trades on the ticker")
-            print("   congress         congress trades on the ticker")
+            print("   congress         plot congress trades on the ticker")
             print("   raw_senate       raw senate trades on the ticker")
-            print("   senate           senate trades on the ticker")
+            print("   senate           plot senate trades on the ticker")
             print("   raw_house        raw house trades on the ticker")
-            print("   house            house trades on the ticker")
-        print("")
+            print("   house            plot house trades on the ticker")
+            print("   raw_contracts    raw contracts on the ticker")
+            print("   contracts        plot sum of contracts on the ticker")
+            print("")
         return
 
     def switch(self, an_input: str):
@@ -165,6 +173,22 @@ class GovController:
     def call_house(self, other_args: List[str]):
         """Process house command"""
         quiverquant_view.government_trading(other_args, self.ticker, "house")
+
+    def call_last_contracts(self, other_args: List[str]):
+        """Process last_contracts command"""
+        quiverquant_view.last_contracts(other_args)
+
+    def call_sum_contracts(self, other_args: List[str]):
+        """Process sum_contracts command"""
+        quiverquant_view.sum_contracts(other_args)
+
+    def call_raw_contracts(self, other_args: List[str]):
+        """Process raw_contracts command"""
+        quiverquant_view.raw_contracts(other_args, self.ticker)
+
+    def call_contracts(self, other_args: List[str]):
+        """Process contracts command"""
+        quiverquant_view.contracts(other_args, self.ticker)
 
 
 def menu(ticker: str):
