@@ -257,6 +257,7 @@ ___
 ## Government
 * [x] Add congress data (@didier) [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
 * [x] Add senate and house data (@didier) [PR #446](https://github.com/DidierRLopes/GamestonkTerminal/pull/446)
+* [x] Add government contracts (@didier) [PR #453](https://github.com/DidierRLopes/GamestonkTerminal/pull/453)
 
 **NEXT**
 
