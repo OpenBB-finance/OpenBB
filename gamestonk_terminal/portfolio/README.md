@@ -43,20 +43,28 @@ Your  login information should be stored as environment variables in [config fil
   * Look at Ally Invest Holdings
 
 [DEGIRO](#DEGIRO)
-* [login](#login)
-    * Connect to your Degiro account
-* [hold](#hold)
-    * Command to look at current holdings
-* [topnews](#topnews)
-    * Command to get top news preview
-* [lastnews](#lastnews)
-    * Command to get latest news
+* [cancel](#cancel)
+    * Cancel and `Order`
 * [companynews](#companynews)
     * Command to get news about a company with it's isin
+* [create](#create)
+    * Create and `Order`
+* [hold](#hold)
+    * Command to look at current holdings
+* [lastnews](#lastnews)
+    * Command to get latest news
+* [login](#login)
+    * Connect to your Degiro account
+* [logout](#login)
+    * Disconnect from Degiro account
 * [lookup](#lookup)
     * Command to search for a product by name
 * [pending](#pending)
     * Command to list pending orders
+* [topnews](#topnews)
+    * Command to get top news preview
+* [update](#update)
+    * Update and `Order`
 
 [Merge](#Merge)
 * [hold](#hold)
@@ -197,6 +205,38 @@ More information on 2FA credentials, in the documentation of this library :
 
 https://github.com/Chavithra/degiro-connector
 
+
+### cancel <a name="cancel"></a>
+````
+usage: cancel ORDER_ID
+````
+
+### companynews <a name="companynews"></a>
+````
+usage: companynews NL0000235190
+````
+
+You need to provide the `ISIN` number of the company.
+You can get this `ISIN` using the `dglookup` command for instance.
+
+### create <a name="create"></a>
+````
+usage: create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_TO) [-d {gtd,gtc}] [-t {limit,market,stop-limit,stop-loss}] [-h]
+````
+
+### hold <a name="hold"></a>
+````
+usage: hold
+````
+
+Displays current holdings to the console.
+
+
+### lastnews <a name="lastnews"></a>
+````
+usage: lastnews
+````
+
 ### login <a name="login"></a>
 ````
 usage: login [-u USERNAME] [-p PASSWORD] [-o OTP] [-s TOPT_SECRET] [-h]
@@ -212,31 +252,10 @@ optional arguments:
   -h, --help            show this help message
 ````
 
-### hold <a name="hold"></a>
+### logout <a name="logout"></a>
 ````
-usage: hold
+usage: logout
 ````
-
-Displays current holdings to the console.
-
-### topnews <a name="topnews"></a>
-````
-usage: topnews
-````
-
-### lastnews <a name="lastnews"></a>
-````
-usage: lastnews
-````
-
-### companynews <a name="companynews"></a>
-````
-usage: companynews NL0000235190
-````
-
-You need to provide the `ISIN` number of the company.
-You can get this `ISIN` using the `dglookup` command for instance.
-
 
 ### lookup <a name="lookup"></a>
 ````
@@ -261,6 +280,16 @@ It will display a result like this :
 ### pending <a name="pending"></a>
 ````
 usage: pending
+````
+
+### topnews <a name="topnews"></a>
+````
+usage: topnews
+````
+
+### update <a name="update"></a>
+````
+usage: update ORDER_ID -p PRICE
 ````
 
 ## Merge <a name="Merge"></a>
