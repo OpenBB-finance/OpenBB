@@ -22,6 +22,7 @@
 * [Backtesting](#Backtesting-)
 * [Resource Collection](#Resource-Collection-)
 * [Government](#Government-)
+* [ETF](#ETF-)
 
 ## Main
 
@@ -473,3 +474,12 @@ with ticker provided    |
 `contracts`             | plot sum of contracts on the ticker
 
 &nbsp;
+
+## ETF [»](etf/README.md)
+command|description
+---|----
+`web`|open webbroswer to stockanalysis.com
+`search`|search for ETFs matching an input
+`overview`|get ETF overview
+`holdings`|show ETF holdings
+`compare`|compare multiple ETFs overview

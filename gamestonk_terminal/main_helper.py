@@ -70,6 +70,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
     )
     print("   > gov         government menu, \t\t congress, senate, house trading")
+    print("   > etf         etf menu, \t\t\t from: StockAnalysis.com")
     print("   > fx          forex menu, \t\t\t forex support through Oanda")
     print("   > rc          resource collection, \t\t e.g. hf letters")
 

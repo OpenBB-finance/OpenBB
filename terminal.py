@@ -47,6 +47,7 @@ from gamestonk_terminal.backtesting import bt_controller
 from gamestonk_terminal.resource_collection import rc_controller
 from gamestonk_terminal.research import res_controller
 from gamestonk_terminal.government import gov_controller
+from gamestonk_terminal.etf import etf_controller
 
 
 # pylint: disable=too-many-statements,too-many-branches
@@ -108,6 +109,7 @@ def main():
         "fx",
         "rc",
         "gov",
+        "etf",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
@@ -390,6 +392,9 @@ def main():
 
         elif ns_known_args.opt == "gov":
             b_quit = gov_controller.menu(s_ticker)
+
+        elif ns_known_args.opt == "etf":
+            b_quit = etf_controller.menu()
 
         elif ns_known_args.opt == "update":
             update_succcess = not update_terminal()

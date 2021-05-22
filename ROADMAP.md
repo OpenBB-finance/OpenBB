@@ -24,6 +24,7 @@
 * [Backtesting](#Backtesting)
 * [Resource Collection](#Resource-Collection)
 * [Government](#Government)
+* [ETF](#ETF)
 
 ## Additional
 
@@ -262,7 +263,12 @@ ___
 **NEXT**
 
 ---
+## ETF
+* [x] Add ETF data (@jmaslek) [PR #454](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/454)
 
+**NEXT**
+
+---
 ## Backend
 
 **NEXT**
