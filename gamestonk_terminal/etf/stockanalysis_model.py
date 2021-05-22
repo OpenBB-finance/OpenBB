@@ -23,10 +23,10 @@ for link in all_links:
     etf_names.append(link.text.split("-")[1].strip(" "))
 
 
-def limit_number_of_holdings(num: int) -> int:
-    if num > 200:
+def limit_number_of_holdings(num: str) -> int:
+    if int(num) > 200:
         raise argparse.ArgumentTypeError("Asking for too many holdings")
-    return num
+    return int(num)
 
 
 def open_web():
@@ -54,16 +54,17 @@ def name_search(other_args: List[str]):
             if "-" not in other_args[0]:
                 other_args.insert(0, "-n")
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args[:2])
         if not ns_parser:
             return ""
-
         matching_etfs = [
             etf_symbols[idx] + " - " + etf
             for idx, etf in enumerate(etf_names)
-            if ns_parser.name.lower() in etf.lower()
+            if " ".join(other_args[1:]).lower() in etf.lower()
         ]
         print(*matching_etfs, sep="\n")
+        if len(matching_etfs) == 0:
+            print("No matches found")
         print("")
         return ""
 

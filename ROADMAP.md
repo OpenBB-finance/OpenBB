@@ -257,7 +257,12 @@ ___
 **NEXT**
 
 ---
+## ETF
+* [x] Add ETF data (@jmaslek) [PR #??]()
 
+**NEXT**
+
+---
 ## Backend
 
 **NEXT**
