@@ -1,9 +1,11 @@
 # IMPORTATION STANDARD
 import argparse
+import math
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import quotecast.helpers.pb_handler as pb_handler
+import trading.helpers.payload_handler as payload_handler
 
 from prompt_toolkit.completion import NestedCompleter
 from trading.api import API as TradingAPI
@@ -11,6 +13,7 @@ from trading.pb.trading_pb2 import (
     Credentials,
     LatestNews,
     NewsByCompany,
+    Order,
     ProductsInfo,
     ProductSearch,
     Update,
@@ -26,10 +29,14 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 
+# pylint: disable=no-member
+
 
 class DegiroController:
     CHOICES = [
+        "cancel",
         "companynews",
+        "create",
         "hold",
         "lastnews",
         "login",
@@ -39,7 +46,26 @@ class DegiroController:
         "q",
         "quit",
         "topnews",
+        "update",
     ]
+
+
+    ORDER_ACTION = {
+        "buy": Order.Action.BUY,
+        "sell": Order.Action.SELL,
+    }
+
+    ORDER_DURATION = {
+        "gtd": Order.TimeType.GOOD_TILL_DAY,
+        "gtc": Order.TimeType.GOOD_TILL_CANCELED,
+    }
+
+    ORDER_TYPE = {
+        "limit": Order.OrderType.LIMIT,
+        "market": Order.OrderType.MARKET,
+        "stop-limit": Order.OrderType.STOP_LIMIT,
+        "stop-loss": Order.OrderType.STOP_LOSS,
+    }
 
     @staticmethod
     def filter_current_positions(
@@ -159,28 +185,38 @@ class DegiroController:
             request_list=request_list,
             raw=False,
         )
-        positions_partial = self.filter_current_positions(
-            portfolio=update_pb.portfolio,
-        )
+        
+        # CHECK EMPTINESS
+        if len(update_pb.portfolio.values) == 0:
+            return pd.DataFrame()
+        else:
+            positions_partial = self.filter_current_positions(
+                portfolio=update_pb.portfolio,
+            )
 
-        # FETCH ADDITIONAL DATA ON PRODUCTS
-        positions = self.fetch_additional_information(
-            positions=positions_partial,
-        )
+            # FETCH ADDITIONAL DATA ON PRODUCTS
+            positions = self.fetch_additional_information(
+                positions=positions_partial,
+            )
 
-        return positions
+            return positions
 
     def help(self):
         message = (
             "Degiro:\n"
+            "   cancel      cancel an order using the `id`\n"
             "   companynews view news about a company with it's isin\n"
+            "   create      create an order.\n"
             "   hold        view holdings\n"
             "   lastnews    view latest news\n"
             "   login       connect to degiro's api\n"
             "   logout      disconnect from degiro's api\n"
             "   lookup      view search for a product by name\n"
             "   pending     view pending orders\n"
+            "   q           quit degiro integration\n"
+            "   quit        quit the app\n"
             "   topnews     view top news preview\n"
+            "   update      view top news preview\n"
         )
 
         print(message)
@@ -197,7 +233,6 @@ class DegiroController:
         parser.add_argument(
             "-u",
             "--username",
-            dest="username",
             type=str,
             default=default_credentials.username,
             help="Username in Degiro's account.",
@@ -205,7 +240,6 @@ class DegiroController:
         parser.add_argument(
             "-p",
             "--password",
-            dest="password",
             type=str,
             default=default_credentials.password,
             help="Password in Degiro's account.",
@@ -213,7 +247,6 @@ class DegiroController:
         parser.add_argument(
             "-o",
             "--otp",
-            dest="otp",
             type=int,
             default=None,
             help="One time password (2FA).",
@@ -221,7 +254,6 @@ class DegiroController:
         parser.add_argument(
             "-s",
             "--topt-secret",
-            dest="topt_secret",
             type=str,
             default=None,
             help="TOTP SECRET (2FA).",
@@ -268,31 +300,34 @@ class DegiroController:
         # FETCH HELD PRODUCTS
         positions = self.fetch_current_positions()
 
-        # FORMAT DATAFRAME
-        selected_columns = [
-            "symbol",
-            "size",
-            "price",
-            "closePrice",
-            "breakEvenPrice",
-        ]
-        formatted_columns = [
-            "Stonk",
-            "Size",
-            "Last Price",
-            "Close Price",
-            "Break Even Price",
-        ]
-        fmt_positions = positions[selected_columns].copy(deep=True)
-        fmt_positions.columns = formatted_columns
+        if len(positions) == 0:
+            print("0 result found.")
+        else:
+            # FORMAT DATAFRAME
+            selected_columns = [
+                "symbol",
+                "size",
+                "price",
+                "closePrice",
+                "breakEvenPrice",
+            ]
+            formatted_columns = [
+                "Stonk",
+                "Size",
+                "Last Price",
+                "Close Price",
+                "Break Even Price",
+            ]
+            fmt_positions = positions[selected_columns].copy(deep=True)
+            fmt_positions.columns = formatted_columns
 
-        fmt_positions["% Change"] = positions["price"]
-        fmt_positions["% Change"] -= fmt_positions["Close Price"]
-        fmt_positions["% Change"] /= fmt_positions["Close Price"]
-        fmt_positions["% Change"] = fmt_positions["% Change"].round(3)
+            fmt_positions["% Change"] = positions["price"]
+            fmt_positions["% Change"] -= fmt_positions["Close Price"]
+            fmt_positions["% Change"] /= fmt_positions["Close Price"]
+            fmt_positions["% Change"] = fmt_positions["% Change"].round(3)
 
-        # DISPLAY DATAFRAME
-        print(fmt_positions)
+            # DISPLAY DATAFRAME
+            print(fmt_positions)
 
     def topnews(self, _):
         """Display pending orders."""
@@ -365,6 +400,7 @@ class DegiroController:
             products_df = pd.DataFrame(products["products"])
             products_selected = products_df[
                 [
+                    "id",
                     "name",
                     "isin",
                     "symbol",
@@ -376,7 +412,7 @@ class DegiroController:
             ]
             print(products_selected)
         else:
-            print("0 results found.")
+            print("0 result found.")
 
     def lastnews(self, _):
         """Display latest news."""
@@ -450,11 +486,9 @@ class DegiroController:
 
         # SETUP REQUEST
         request_list = Update.RequestList()
-        request_list.values.extend(
-            [
-                Update.Request(option=Update.Option.ORDERS, last_updated=0),
-            ]
-        )
+        request_list.values.extend([
+            Update.Request(option=Update.Option.ORDERS, last_updated=0),
+        ])
 
         # FETCH DATA
         update = trading_api.get_update(request_list=request_list)
@@ -468,6 +502,253 @@ class DegiroController:
             print("No pending orders.")
         else:
             print(orders_df)
+
+    def cancel(self, l_args):
+        """Cancel an order using the `id`."""
+
+        # PARSING ARGS
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="companynews",
+        )
+        parser.add_argument(
+            "id",
+            help="Order's id.",
+            type=str,
+        )
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+
+        # GET ATTRIBUTES
+        trading_api = self.__trading_api
+
+        # CANCEL ORDER
+        order_id = ns_parser.id
+        succcess = trading_api.delete_order(order_id=order_id)
+
+        # DISPLAY DATA
+        if succcess == True:
+            print("`Order` canceled.")
+        else:
+            print("`Order` cancelation fail.")
+
+    def create(self, l_args):
+        """Create an order."""
+
+        # GET CONSTANTS
+        ORDER_ACTION = self.ORDER_ACTION
+        ORDER_DURATION = self.ORDER_DURATION
+        ORDER_TYPE = self.ORDER_TYPE
+        
+        # GET ATTRIBUTES
+        trading_api = self.__trading_api
+
+        # PARSING ARGS
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="create",
+        )
+        parser.add_argument(
+            "-a",
+            "--action",
+            choices=ORDER_ACTION.keys(),
+            default="buy",
+            help="Action wanted.",
+            required=False,
+            type=str,
+        )
+        product_group = parser.add_mutually_exclusive_group(
+            required=True,
+        )
+        product_group.add_argument(
+            "-prod",
+            "--product",
+            help="Id of the product wanted.",
+            required=False,
+            type=int,
+        )
+        product_group.add_argument(
+            "-sym",
+            "--symbol",
+            help="Symbol wanted.",
+            required=False,
+            type=str,
+        )
+        parser.add_argument(
+            "-p",
+            "--price",
+            help="Price wanted.",
+            required=True,
+            type=float,
+        )
+        size_group = parser.add_mutually_exclusive_group(required=True)
+        size_group.add_argument(
+            "-s",
+            "--size",
+            help="Price wanted.",
+            required=False,
+            type=int,
+        )
+        size_group.add_argument(
+            "-up",
+            "--up-to",
+            help="Up to price.",
+            required=False,
+            type=float,
+        )
+        parser.add_argument(
+            "-d",
+            "--duration",
+            default="gtd",
+            choices=ORDER_DURATION.keys(),
+            help="Duration of the Order.",
+            required=False,
+            type=str,
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            choices=ORDER_TYPE.keys(),
+            default="limit",
+            help="Type of the Order.",
+            required=False,
+            type=str,
+        )
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+
+        action = self.ORDER_ACTION[ns_parser.action]
+        time_type = self.ORDER_DURATION[ns_parser.duration]
+        price = ns_parser.price
+        order_type = self.ORDER_TYPE[ns_parser.type]
+
+        # SETUP PRODUCT
+        product_id = ns_parser.product
+        if product_id is None:
+            # SETUP REQUEST
+            request_lookup = ProductSearch.RequestLookup(
+                search_text=ns_parser.symbol,
+                limit=1,
+                offset=0,
+                product_type_id=1,
+            )
+
+            # FETCH DATA
+            products_lookup = trading_api.product_search(
+                request=request_lookup,
+                raw=False,
+            )
+            products_lookup_dict = payload_handler.message_to_dict(
+                message=products_lookup,
+            )
+            product = products_lookup_dict["products"][0]
+
+            if len(products_lookup.products) <= 0 \
+            or product["symbol"] != ns_parser.symbol:
+                print(f"`{ns_parser.symbol}` not found.")
+            else:
+                product_id = int(product["id"])
+
+        # SETUP SIZE
+        size = ns_parser.size
+        if size is None:
+            size = math.floor(ns_parser.up_to / ns_parser.price)
+
+        # SETUP ORDER
+        order = Order(
+            action=action,
+            order_type=order_type,
+            price=price,
+            product_id=product_id,
+            size=size,
+            time_type=time_type,
+        )
+
+        # CHECK ORDER
+        checking_response = trading_api.check_order(order=order)
+        checking_response_dict = payload_handler.message_to_dict(
+            message=checking_response,
+        )
+
+        # ASK CONFIRMATION
+        fees = pd.DataFrame(
+            checking_response_dict["transaction_fees"],
+        )
+        print(
+            "Free new space :",
+            checking_response_dict["free_space_new"]
+        )
+        print("Fees :", fees)
+        confirmation = input("Do you confirm this `Order`?\n")
+
+        # EXECUTE ORDER
+        if confirmation in ["y", "yes"]:
+            confirmation_id = checking_response.confirmation_id
+            confirmation_response = trading_api.confirm_order(
+                confirmation_id=confirmation_id,
+                order=order,
+            )
+            order_id = confirmation_response.orderId
+            print(f"`Order` created, id : {order_id}")
+        else:
+            print("`Order` canceled.")
+
+
+    def update(self, l_args):
+        """Update an order."""
+        
+        # GET ATTRIBUTES
+        trading_api = self.__trading_api
+
+        # PARSING ARGS
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="update",
+        )
+        parser.add_argument(
+            "id",
+            help="Order's id.",
+            type=str,
+        )
+        parser.add_argument(
+            "-p",
+            "--price",
+            help="Price wanted.",
+            required=True,
+            type=float,
+        )
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        
+        # SETUP REQUEST
+        request_list = Update.RequestList()
+        request_list.values.extend([
+            Update.Request(option=Update.Option.ORDERS, last_updated=0),
+        ])
+
+        # FETCH DATA
+        update = trading_api.get_update(request_list=request_list)
+        update_dict = pb_handler.message_to_dict(message=update)
+        orders_df = pd.DataFrame(update_dict["orders"]["values"])
+        order = orders_df[orders_df['id']==ns_parser.id].loc[0]
+
+        if len(order) == 0:
+            print("The following `order` was not found:", ns_parser.id)
+        else:
+            # SETUP ORDER
+            new_order = Order(
+                id=ns_parser.id,
+                action=order.action,
+                order_type=order.order_type,
+                price=ns_parser.price,
+                product_id=order.product_id,
+                size=order.quantity,
+                time_type=order.time_type,
+            )
+
+            succcess = trading_api.update_order(order=new_order)
+
+            if succcess == True:
+                print("`Order` updated.")
+            else:
+                print("`Order` update failed.")
 
     def switch(self, an_input: str):
         """Process and dispatch input
