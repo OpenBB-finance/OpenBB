@@ -172,7 +172,9 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                     seasonal=False,
                     information_criteria=ns_parser.s_ic,
                 )
-            l_predictions = model.predict(n_periods=ns_parser.n_days)
+            l_predictions = [
+                i if i > 0 else 0 for i in model.predict(n_periods=ns_parser.n_days)
+            ]
 
         # Prediction data
         l_pred_days = get_next_stock_market_days(

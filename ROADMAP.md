@@ -154,6 +154,7 @@
 * [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add Ally Invest (@jmaslek) - [PR #267](https://github.com/DidierRLopes/GamestonkTerminal/pull/267)
 * [x] Degiro support (@deel) - [PR #381](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
+* [x] Degiro improvement (@Chavithra) - [PR #445](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
 
 **NEXT**
 * [ ] Merge data from different brokers (@jmaslek)
@@ -212,6 +213,7 @@ ___
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add top altcoin lists
+
 ---
 
 ## Screener
@@ -221,6 +223,7 @@ ___
 * [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
 * [x] Add command to take tickers to portfolio optimization (@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
 * [x] Add flags to save screeners and run papermill on returned tickers (@alokan) - [PR #414](https://github.com/DidierRLopes/GamestonkTerminal/pull/414)
+* [x] Add several new screener presets (@Traceabl3) - [PR #447](https://github.com/DidierRLopes/GamestonkTerminal/pull/447)
 
 **NEXT**
 
@@ -253,6 +256,8 @@ ___
 
 ## Government
 * [x] Add congress data (@didier) [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
+* [x] Add senate and house data (@didier) [PR #446](https://github.com/DidierRLopes/GamestonkTerminal/pull/446)
+* [x] Add government contracts (@didier) [PR #453](https://github.com/DidierRLopes/GamestonkTerminal/pull/453)
 
 **NEXT**
 

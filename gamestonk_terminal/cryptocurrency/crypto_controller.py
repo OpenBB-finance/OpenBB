@@ -66,7 +66,7 @@ class CryptoController:
         print("   candle        show candles")
         print("   balance       show coin balance")
         print("")
-        print("   >ta           technical analysis menu for")
+        print(">  ta           technical analysis menu for")
         print("")
 
     def switch(self, an_input: str):

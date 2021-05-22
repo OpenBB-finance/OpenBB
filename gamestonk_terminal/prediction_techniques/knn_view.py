@@ -151,7 +151,9 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         preds = knn.predict(X_valid.reshape(X_valid.shape[0], X_valid.shape[1]))
         forecast_data = knn.predict(forecast_data_input.reshape(1, -1))
 
-        forecast_data_df = pd.DataFrame(forecast_data.T, index=future_dates)
+        forecast_data_df = pd.DataFrame(
+            [i if i > 0 else 0 for i in forecast_data.T], index=future_dates
+        )
         print_pretty_prediction(
             forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
         )

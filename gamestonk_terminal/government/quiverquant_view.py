@@ -513,3 +513,251 @@ def raw_government(other_args: List[str], ticker: str, gov_type: str):
 
     except Exception as e:
         print(e, "\n")
+
+
+def last_contracts(other_args: List[str]):
+    """Last contracts
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="last_contracts",
+        description="Last contracts. [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-p",
+        "--past_transactions_days",
+        action="store",
+        dest="past_transactions_days",
+        type=check_positive,
+        default=2,
+        help="Past transaction days",
+    )
+    parser.add_argument(
+        "-l",
+        "--limit",
+        action="store",
+        dest="limit_contracts",
+        type=check_positive,
+        default=20,
+        help="Limit of contracts to display",
+    )
+
+    try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_contracts = quiverquant_model.get_government_trading("contracts")
+
+        if df_contracts.empty:
+            print("No government contracts found\n")
+            return
+
+        df_contracts.sort_values("Date", ascending=False)
+
+        df_contracts["Date"] = pd.to_datetime(df_contracts["Date"])
+
+        df_contracts.drop_duplicates(inplace=True)
+
+        df_contracts = df_contracts[
+            df_contracts["Date"].isin(
+                df_contracts["Date"].unique()[: ns_parser.past_transactions_days]
+            )
+        ]
+
+        df_contracts = df_contracts[
+            ["Date", "Ticker", "Amount", "Description", "Agency"]
+        ][: ns_parser.limit_contracts]
+
+        print(df_contracts.to_string(index=False))
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def sum_contracts(other_args: List[str]):
+    """Sum contracts
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="sum_contracts",
+        description="Sum latest contracts. [Source: www.quiverquant.com]",
+    )
+
+    try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_contracts = quiverquant_model.get_government_trading("contracts")
+
+        if df_contracts.empty:
+            print("No government contracts found\n")
+            return
+
+        df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
+
+        df_contracts.drop_duplicates(inplace=True)
+
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        df_contracts.groupby("Date").sum().div(1000).plot(
+            kind="bar", rot=0, ax=plt.gca()
+        )
+        plt.ylabel("Amount [1k $]")
+        plt.title("Sum of latest government contracts")
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def raw_contracts(other_args: List[str], ticker: str):
+    """Raw contracts
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker: str
+        Ticker to get congress trading data from
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="raw_contracts",
+        description="Raw contracts. [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-p",
+        "--past_transactions_days",
+        action="store",
+        dest="past_transactions_days",
+        type=check_positive,
+        default=10,
+        help="Past transaction days",
+    )
+
+    try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
+
+        if df_contracts.empty:
+            print("No government contracts found\n")
+            return
+
+        df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
+
+        df_contracts.drop_duplicates(inplace=True)
+
+        df_contracts = df_contracts[
+            df_contracts["Date"].isin(
+                df_contracts["Date"].unique()[: ns_parser.past_transactions_days]
+            )
+        ]
+
+        df_contracts.drop_duplicates(inplace=True)
+
+        print(df_contracts.to_string(index=False))
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def contracts(other_args: List[str], ticker: str):
+    """Contracts
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker: str
+        Ticker to get congress trading data from
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="contracts",
+        description="Contracts associated with ticker. [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-p",
+        "--past_transactions_days",
+        action="store",
+        dest="past_transactions_days",
+        type=check_positive,
+        default=10,
+        help="Past transaction days",
+    )
+
+    try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
+
+        if df_contracts.empty:
+            print("No government contracts found\n")
+            return
+
+        df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
+
+        df_contracts = df_contracts[
+            df_contracts["Date"].isin(
+                df_contracts["Date"].unique()[: ns_parser.past_transactions_days]
+            )
+        ]
+
+        df_contracts.drop_duplicates(inplace=True)
+
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        df_contracts.groupby("Date").sum().div(1000).plot(
+            kind="bar", rot=0, ax=plt.gca()
+        )
+        plt.ylabel("Amount [1k $]")
+        plt.title(f"Sum of latest government contracts to {ticker}")
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
