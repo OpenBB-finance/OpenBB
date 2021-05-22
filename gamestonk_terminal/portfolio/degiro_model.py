@@ -22,6 +22,9 @@ from trading.pb.trading_pb2 import (
 # IMPORTATION INTERNAL
 import gamestonk_terminal.config_terminal as config
 
+# pylint: disable=no-member
+# pylint: disable=no-else-return
+
 
 class DegiroModel:
     def __init__(self):
@@ -35,10 +38,10 @@ class DegiroModel:
         self.__trading_api = TradingAPI(
             credentials=self.__default_credentials,
         )
-    
+
     def __hold_fetch_additional_information(
         self,
-        positions:pd.DataFrame,
+        positions: pd.DataFrame,
     ) -> pd.DataFrame:
         """Fetch extra information about the positions like :
             - name
@@ -103,7 +106,7 @@ class DegiroModel:
             request_list=request_list,
             raw=False,
         )
-        
+
         # CHECK EMPTINESS
         if len(update_pb.portfolio.values) == 0:
             return pd.DataFrame()
@@ -200,8 +203,7 @@ class DegiroModel:
             )
             product = products_lookup_dict["products"][0]
 
-            if len(products_lookup.products) <= 0 \
-            or product["symbol"] != symbol:
+            if len(products_lookup.products) <= 0 or product["symbol"] != symbol:
                 return None
             else:
                 return int(product["id"])
@@ -231,10 +233,10 @@ class DegiroModel:
             confirmation_id=confirmation_id,
             order=order,
         )
-    
+
     def hold_positions(self) -> pd.DataFrame:
         return self.__hold_fetch_current_positions()
-    
+
     def lastnews(self, limit: int) -> LatestNews:
         trading_api = self.__trading_api
         request = LatestNews.Request(
@@ -279,25 +281,29 @@ class DegiroModel:
     def pending(self) -> Update.Orders:
         trading_api = self.__trading_api
         request_list = Update.RequestList()
-        request_list.values.extend([
-            Update.Request(option=Update.Option.ORDERS, last_updated=0),
-        ])
+        request_list.values.extend(
+            [
+                Update.Request(option=Update.Option.ORDERS, last_updated=0),
+            ]
+        )
         update = trading_api.get_update(request_list=request_list)
 
         return update.orders
 
     def topnews(self) -> TopNewsPreview:
         return self.__trading_api.get_top_news_preview(raw=False)
-    
+
     def update(self, order: Order) -> Update.Orders:
         return self.__trading_api.update_order(order=order)
 
     def update_pending_order(self, order_id: str) -> Union[None, Order]:
         trading_api = self.__trading_api
         request_list = Update.RequestList()
-        request_list.values.extend([
-            Update.Request(option=Update.Option.ORDERS, last_updated=0),
-        ])
+        request_list.values.extend(
+            [
+                Update.Request(option=Update.Option.ORDERS, last_updated=0),
+            ]
+        )
         update = trading_api.get_update(request_list=request_list)
 
         if len(update.orders.values) > 0:

@@ -11,6 +11,7 @@ from trading.pb.trading_pb2 import (
     Update,
 )
 
+
 class DegiroView:
     @staticmethod
     def help_display():
@@ -222,7 +223,7 @@ class DegiroView:
     @staticmethod
     def update_display_not_found(order_id: str):
         print("The following `order` was not found:", order_id)
-    
+
     @staticmethod
     def update_display_success():
         print("`Order` updated .")
