@@ -38,7 +38,7 @@ class DegiroView:
 
     @staticmethod
     def cancel_display_fail(order_id: str):
-        print(f"Following `Order` cancelation failed : {order_id}")
+        print(f"Following `Order` cancellation failed : {order_id}")
 
     @staticmethod
     def create_display_canceled():
