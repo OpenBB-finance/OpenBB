@@ -253,7 +253,7 @@ Alternatively, you can also set them to the following environment variables:
 | [Alpha Vantage](https://www.alphavantage.co) | GT_API_KEY_ALPHAVANTAGE |
 | [Binance](https://binance.com) | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
 | [CoinMarketCap](https://coinmarketcap.com) | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
-| [DEGIRO](https://www.degiro.fr) | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP <br/> DG_TOTP_SECRET |
+| [DEGIRO](https://www.degiro.fr) | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP_SECRET |
 | [FRED](https://fred.stlouisfed.org) | GT_FRED_API_KEY |
 | [Financial Modeling Prep](https://financialmodelingprep.com) | GT_API_KEY_FINANCIALMODELINGPREP |
 | [Finhub](https://finnhub.io) | API_FINNHUB_KEY |
