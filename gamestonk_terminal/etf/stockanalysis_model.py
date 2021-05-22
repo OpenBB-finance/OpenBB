@@ -36,7 +36,7 @@ def open_web():
 
 def name_search(other_args: List[str]):
     """
-    Search all available etfs for matching
+    Search all available etfs for matching input
     Parameters
     ----------
     other_args: List[str]
