@@ -119,7 +119,7 @@ def arima(
             return
 
         if ns_parser.s_order:
-            t_order = tuple([int(ord) for ord in list(ns_parser.s_order)])
+            t_order = tuple(int(ord) for ord in list(ns_parser.s_order))
             model_fit = ARIMA(stock.values, order=t_order).fit()
             model = pd.Series(model_fit.fittedvalues[1:], index=stock.index[1:])
             model_name = f"ARIMA {t_order}"

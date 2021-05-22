@@ -150,7 +150,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
 
         # Machine Learning model
         if ns_parser.s_order:
-            t_order = tuple([int(ord) for ord in ns_parser.s_order.split(",")])
+            t_order = tuple(int(ord) for ord in ns_parser.s_order.split(","))
             model = ARIMA(df_stock["5. adjusted close"].values, order=t_order).fit()
             l_predictions = model.predict(
                 start=len(df_stock["5. adjusted close"]) + 1,
