@@ -120,6 +120,7 @@ def etf_overview(other_args: List[str]):
             value.append(row.text)
         df = pd.DataFrame(value, index=column, columns=[ns_parser.name.upper()])
         print(tabulate(df, headers=df.columns, tablefmt="fancy_grid"))
+        print("")
         return ""
     except Exception as e:
         print(e, "\n")
@@ -180,6 +181,7 @@ def etf_holdings(other_args: List[str]):
                 df, headers=["Ticker", "% of ETF", "Shares"], tablefmt="fancy_grid"
             )
         )
+        print("")
         return ""
 
     except Exception as e:
@@ -240,8 +242,10 @@ def compare_etfs(other_args: List[str]):
                 df[etf] = value
             else:
                 print(f"{etf} not found")
+                df = df.drop(etf, axis=1)
         df.index = column
         print(tabulate(df, headers=df.columns, tablefmt="fancy_grid"))
+        print("")
         return ""
     except Exception as e:
         print(e, "\n")

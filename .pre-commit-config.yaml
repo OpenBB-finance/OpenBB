@@ -5,6 +5,8 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: detect-private-key
   - repo: https://github.com/psf/black
     rev: 21.4b2
     hooks:
@@ -36,3 +38,8 @@ repos:
       - id: detect-secrets
         args: [ '--baseline', '.secrets.baseline' ]
         exclude: package.lock.json
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.18.1
+    hooks:
+      - id: pyupgrade
+        args: [ --py36-plus ]
