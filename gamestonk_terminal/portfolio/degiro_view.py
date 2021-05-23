@@ -68,16 +68,16 @@ class DegiroView:
 
         # DISPLAY DATA
         if degiro_model.cancel(order_id=order_id):
-            DegiroView.cancel_display_success(order_id=order_id)
+            DegiroView.__cancel_display_success(order_id=order_id)
         else:
-            DegiroView.cancel_display_fail(order_id=order_id)
+            DegiroView.__cancel_display_fail(order_id=order_id)
 
     @staticmethod
-    def cancel_display_success(order_id: str):
+    def __cancel_display_success(order_id: str):
         print(f"Following `Order` was canceled : {order_id}")
 
     @staticmethod
-    def cancel_display_fail(order_id: str):
+    def __cancel_display_fail(order_id: str):
         print(f"Following `Order` cancellation failed : {order_id}")
 
     def companynews(self, ns_parser: Namespace):
@@ -88,10 +88,10 @@ class DegiroView:
         news_by_company = degiro_model.companynews(isin=ns_parser.isin)
 
         # DISPLAY DATA
-        DegiroView.companynews_display(news_by_company=news_by_company)
+        DegiroView.__companynews_display(news_by_company=news_by_company)
 
     @staticmethod
-    def companynews_display(news_by_company: NewsByCompany):
+    def __companynews_display(news_by_company: NewsByCompany):
         news_dict = payload_handler.message_to_dict(
             message=news_by_company,
         )
@@ -136,13 +136,13 @@ class DegiroView:
 
         # CHECK ORDER
         checking_response = degiro_model.create_check(order=order)
-        DegiroView.create_display_check(
+        DegiroView.__create_display_check(
             order=order,
             checking_response=checking_response,
         )
 
         # USER INPUT
-        message_ask = DegiroView.create_message_ask_confirmation()
+        message_ask = DegiroView.__create_message_ask_confirmation()
         confirmation = input(message_ask)
 
         # EXECUTE ORDER
@@ -153,16 +153,16 @@ class DegiroView:
                 order=order,
             )
             order.id = confirmation_response.orderId
-            DegiroView.create_display_created_order(order=order)
+            DegiroView.__create_display_created_order(order=order)
         else:
-            DegiroView.create_display_canceled()
+            DegiroView.__create_display_canceled()
 
     @staticmethod
-    def create_display_canceled():
+    def __create_display_canceled():
         print("`Order` creation canceled.\n")
 
     @staticmethod
-    def create_display_check(
+    def __create_display_check(
         order: Order,
         checking_response: Order.CheckingResponse,
     ):
@@ -191,7 +191,7 @@ class DegiroView:
         )
 
     @staticmethod
-    def create_display_created_order(order: Order):
+    def __create_display_created_order(order: Order):
         order_dict = payload_handler.message_to_dict(message=order)
         order_df = pd.DataFrame([order_dict])
         fields = [
@@ -205,12 +205,12 @@ class DegiroView:
         ]
 
         print(
-            "The following `Order` was created :",
-            order_df[fields],
+            "The following `Order` was created :\n",
+            order_df[order_df.columns.intersection(fields)],
         )
 
     @staticmethod
-    def create_message_ask_confirmation():
+    def __create_message_ask_confirmation():
         return "\nDo you confirm this `Order`?\n"
 
     def hold(self, ns_parser: Namespace):
@@ -223,17 +223,18 @@ class DegiroView:
         positions = degiro_model.hold_positions()
 
         if len(positions) == 0:
-            DegiroView.hold_display_no_position()
+            DegiroView.__hold_display_no_position()
         else:
-            DegiroView.hold_display_positions(positions=positions)
+            DegiroView.__hold_display_positions(positions=positions)
 
     @staticmethod
-    def hold_display_no_position():
+    def __hold_display_no_position():
         print("0 position found.")
 
     @staticmethod
-    def hold_display_positions(positions: pd.DataFrame):
+    def __hold_display_positions(positions: pd.DataFrame):
         selected_columns = [
+            "id",
             "symbol",
             "size",
             "price",
@@ -241,6 +242,7 @@ class DegiroView:
             "breakEvenPrice",
         ]
         formatted_columns = [
+            "Product Id",
             "Stonk",
             "Size",
             "Last Price",
@@ -263,10 +265,10 @@ class DegiroView:
         latest_news = degiro_model.lastnews(limit=ns_parser.limit)
 
         # DISPLAY DATA
-        DegiroView.lastnews_display(latest_news=latest_news)
+        DegiroView.__lastnews_display(latest_news=latest_news)
 
     @staticmethod
-    def lastnews_display(latest_news: LatestNews):
+    def __lastnews_display(latest_news: LatestNews):
         news_dict = payload_handler.message_to_dict(
             message=latest_news,
         )
@@ -293,10 +295,10 @@ class DegiroView:
 
         degiro_model.login(credentials=credentials)
 
-        DegiroView.login_display_success()
+        DegiroView.__login_display_success()
 
     @staticmethod
-    def login_display_success():
+    def __login_display_success():
         print("You are now logged in !")
 
     def logout(self, ns_parser: Namespace):
@@ -307,16 +309,16 @@ class DegiroView:
 
         # CALL API
         if degiro_model.logout():
-            DegiroView.logout_display_success()
+            DegiroView.__logout_display_success()
         else:
-            DegiroView.logout_display_fail()
+            DegiroView.__logout_display_fail()
 
     @staticmethod
-    def logout_display_fail():
+    def __logout_display_fail():
         print("Logged out failed.")
 
     @staticmethod
-    def logout_display_success():
+    def __logout_display_success():
         print("You are now logged out !")
 
     def lookup(self, ns_parser: Namespace):
@@ -332,12 +334,12 @@ class DegiroView:
 
         # DISPLAY DATA
         if len(product_search.products) > 0:
-            DegiroView.lookup_display(product_search=product_search)
+            DegiroView.__lookup_display(product_search=product_search)
         else:
-            DegiroView.lookup_display_no_result()
+            DegiroView.__lookup_display_no_result()
 
     @staticmethod
-    def lookup_display(product_search: ProductSearch):
+    def __lookup_display(product_search: ProductSearch):
         products_dict = payload_handler.message_to_dict(
             message=product_search,
         )
@@ -357,7 +359,7 @@ class DegiroView:
         print(products_selected)
 
     @staticmethod
-    def lookup_display_no_result():
+    def __lookup_display_no_result():
         print("0 result found.")
 
     def pending(self, ns_parser: Namespace):
@@ -371,12 +373,12 @@ class DegiroView:
 
         # DISPLAY DATA
         if len(orders.values) > 0:
-            DegiroView.pending_display(orders=orders)
+            DegiroView.__pending_display(orders=orders)
         else:
-            DegiroView.pending_display_no_result()
+            DegiroView.__pending_display_no_result()
 
     @staticmethod
-    def pending_display(orders: Update.Orders):
+    def __pending_display(orders: Update.Orders):
         orders_dict = payload_handler.message_to_dict(message=orders)
         orders_df = pd.DataFrame(orders_dict["values"])
         fields = [
@@ -394,15 +396,15 @@ class DegiroView:
         print(orders_df[orders_df.columns.intersection(fields)])
 
     @staticmethod
-    def pending_display_no_result():
+    def __pending_display_no_result():
         print("No pending orders.")
 
     @staticmethod
-    def q_display():
+    def __q_display():
         print("Quit Degiro integration.")
 
     @staticmethod
-    def quit_display():
+    def __quit_display():
         print("Quit the app.")
 
     def topnews(self, ns_parser: Namespace):
@@ -415,10 +417,10 @@ class DegiroView:
         top_news = degiro_model.topnews()
 
         # DISPLAY DATA
-        DegiroView.topnews_display(top_news=top_news)
+        DegiroView.__topnews_display(top_news=top_news)
 
     @staticmethod
-    def topnews_display(top_news: TopNewsPreview):
+    def __topnews_display(top_news: TopNewsPreview):
         news_dict = payload_handler.message_to_dict(
             message=top_news,
         )
@@ -440,24 +442,24 @@ class DegiroView:
         )
 
         if order is None:
-            DegiroView.update_display_not_found(order_id=ns_parser.id)
+            DegiroView.__update_display_not_found(order_id=ns_parser.id)
         else:
             # SETUP ORDER
             order.price = ns_parser.price
 
             if degiro_model.update(order=order):
-                DegiroView.update_display_success()
+                DegiroView.__update_display_success()
             else:
-                DegiroView.update_display_fail()
+                DegiroView.__update_display_fail()
 
     @staticmethod
-    def update_display_fail():
+    def __update_display_fail():
         print("`Order` update failed.")
 
     @staticmethod
-    def update_display_not_found(order_id: str):
+    def __update_display_not_found(order_id: str):
         print("The following `order` was not found:", order_id)
 
     @staticmethod
-    def update_display_success():
+    def __update_display_success():
         print("`Order` updated .")
