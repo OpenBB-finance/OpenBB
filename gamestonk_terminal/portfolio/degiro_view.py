@@ -301,7 +301,7 @@ class DegiroView:
 
     def logout(self, ns_parser: Namespace):
         _ = ns_parser
-        
+
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
 
@@ -322,7 +322,7 @@ class DegiroView:
     def lookup(self, ns_parser: Namespace):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
-        
+
         # FECTH DATA
         product_search = degiro_model.lookup(
             limit=ns_parser.limit,
@@ -406,7 +406,7 @@ class DegiroView:
         print("Quit the app.")
 
     def topnews(self, ns_parser: Namespace):
-        _ =  ns_parser
+        _ = ns_parser
 
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
