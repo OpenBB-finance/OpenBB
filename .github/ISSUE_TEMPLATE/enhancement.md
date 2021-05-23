@@ -2,7 +2,7 @@
 name: Improvement
 about: Improve something on this project
 title: "[IMPROVE]"
-labels: 'enhancement'
+labels: 'type:enhancement'
 assignees: ''
 
 ---

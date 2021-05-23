@@ -10,7 +10,7 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: "s-feature, m-feature, l-feature, build, refactor, tests, documentation, bug, enhancement"
+          labels: "size:XS, size:S, size:M, size:L, size:XL, type:feature, type:build, type:refactor, type:tests, type:docs, type:bug, type:enhancement, type:other"
       - uses: mheap/github-action-required-labels@v1
         with:
           mode: exactly
