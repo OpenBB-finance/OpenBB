@@ -400,11 +400,11 @@ class DegiroView:
         print("No pending orders.")
 
     @staticmethod
-    def __q_display():
+    def q_display():
         print("Quit Degiro integration.")
 
     @staticmethod
-    def __quit_display():
+    def quit_display():
         print("Quit the app.")
 
     def topnews(self, ns_parser: Namespace):
