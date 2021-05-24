@@ -237,77 +237,111 @@ def main():
                 print("")
                 continue
 
-
         elif ns_known_args.opt == "res":
-            b_quit = res_controller.menu(
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                s_start,
-                s_interval,
-            )
+            if s_ticker:
+                b_quit = res_controller.menu(
+                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                    s_start,
+                    s_interval,
+                )
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
         elif ns_known_args.opt == "ca":
-            b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
+            if s_ticker:
+                b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
         elif ns_known_args.opt == "fa":
-            b_quit = fa_controller.menu(
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                s_start,
-                s_interval,
-            )
+            if s_ticker:
+                b_quit = fa_controller.menu(
+                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                    s_start,
+                    s_interval,
+                )
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
         elif ns_known_args.opt == "fx":
             b_quit = fx_controller.menu()
 
         elif ns_known_args.opt == "ta":
-            b_quit = ta_controller.menu(
-                df_stock,
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                s_start,
-                s_interval,
-            )
-
-        elif ns_known_args.opt == "dd":
-            b_quit = dd_controller.menu(
-                df_stock,
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                s_start,
-                s_interval,
-            )
-
-        elif ns_known_args.opt == "eda":
-            if s_interval == "1440min":
-                b_quit = eda_controller.menu(
+            if s_ticker:
+                b_quit = ta_controller.menu(
                     df_stock,
                     s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
                     s_start,
                     s_interval,
                 )
             else:
-                df_stock = yf.download(s_ticker, start=s_start, progress=False)
-                df_stock = df_stock.rename(
-                    columns={
-                        "Open": "1. open",
-                        "High": "2. high",
-                        "Low": "3. low",
-                        "Close": "4. close",
-                        "Adj Close": "5. adjusted close",
-                        "Volume": "6. volume",
-                    }
-                )
-                df_stock.index.name = "date"
-                s_interval = "1440min"
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
-                b_quit = eda_controller.menu(
+        elif ns_known_args.opt == "dd":
+            if s_ticker:
+                b_quit = dd_controller.menu(
                     df_stock,
                     s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
                     s_start,
                     s_interval,
                 )
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
+
+        elif ns_known_args.opt == "eda":
+            if s_ticker:
+                if s_interval == "1440min":
+                    b_quit = eda_controller.menu(
+                        df_stock,
+                        s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                        s_start,
+                        s_interval,
+                    )
+                else:
+                    df_stock = yf.download(s_ticker, start=s_start, progress=False)
+                    df_stock = df_stock.rename(
+                        columns={
+                            "Open": "1. open",
+                            "High": "2. high",
+                            "Low": "3. low",
+                            "Close": "4. close",
+                            "Adj Close": "5. adjusted close",
+                            "Volume": "6. volume",
+                        }
+                    )
+                    df_stock.index.name = "date"
+                    s_interval = "1440min"
+
+                    b_quit = eda_controller.menu(
+                        df_stock,
+                        s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
+                        s_start,
+                        s_interval,
+                    )
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
         elif ns_known_args.opt == "op":
-            b_quit = op_controller.menu(
-                s_ticker, df_stock["5. adjusted close"].values[-1]
-            )
+            if s_ticker:
+                b_quit = op_controller.menu(
+                    s_ticker, df_stock["5. adjusted close"].values[-1]
+                )
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
         elif ns_known_args.opt == "econ":
             b_quit = econ_controller.menu()
