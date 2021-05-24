@@ -7,7 +7,7 @@ import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from TimeSeriesCrossValidation import splitTrain
+from tsxv import splitTrain
 from sklearn import linear_model
 from sklearn import pipeline
 from sklearn import preprocessing

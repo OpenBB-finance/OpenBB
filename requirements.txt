@@ -159,7 +159,7 @@ terminado==0.10.0; python_version >= "3.6"
 testpath==0.5.0; python_version >= "3.6"
 textwrap3==0.9.2; python_version >= "3.6"
 threadpoolctl==2.1.0; python_version >= "3.6"
-timeseriescrossvalidation @ git+https://github.com/DidierRLopes/TimeSeriesCrossValidation.git@master
+timeseries-cv==0.1.4; python_version >= "3.6" and python_version < "4.0"
 toml==0.10.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6"
 tornado==6.1; python_full_version >= "3.6.1" and python_version >= "3.6"
 tqdm==4.60.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"

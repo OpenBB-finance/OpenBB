@@ -22,7 +22,7 @@ psaw = "^0.0.12"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
 pytrends = "^4.7.3"
-TimeSeriesCrossValidation = { git = "https://github.com/DidierRLopes/TimeSeriesCrossValidation.git",  branch = "master" }
+timeseries-cv = "0.1.4"
 matplotlib = "^3.3.3"
 plotly = "^4.14.3"
 colorama = "^0.4.4"
