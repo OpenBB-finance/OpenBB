@@ -228,9 +228,15 @@ def main():
             b_quit = mill.papermill_menu()
 
         elif ns_known_args.opt == "ba":
-            b_quit = ba_controller.menu(
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
-            )
+            if s_ticker:
+                b_quit = ba_controller.menu(
+                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
+                )
+            else:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
+
 
         elif ns_known_args.opt == "res":
             b_quit = res_controller.menu(
@@ -316,6 +322,11 @@ def main():
             b_quit = po_controller.menu([s_ticker])
 
         elif ns_known_args.opt == "pred":
+
+            if not s_ticker:
+                print("Please load a ticker using <load TICKER>")
+                print("")
+                continue
 
             if not gtff.ENABLE_PREDICT:
                 print("Predict is not enabled in feature_flags.py")
