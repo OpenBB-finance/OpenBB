@@ -12,7 +12,7 @@ async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
 attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 backcall==0.2.0; python_version >= "3.6"
 beautifulsoup4==4.9.3; python_version >= "3.5"
-black==20.8b1; python_version >= "3.6"
+black==21.5b1; python_version >= "3.6"
 bleach==3.3.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 bpemb==0.3.3; python_version >= "3.6"
 bs4==0.0.1

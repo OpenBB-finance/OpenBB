@@ -8,7 +8,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 21.4b2
+    rev: 21.5b1
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
@@ -39,7 +39,7 @@ repos:
         args: [ '--baseline', '.secrets.baseline' ]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.18.1
+    rev: v2.18.2
     hooks:
       - id: pyupgrade
         args: [ --py36-plus ]

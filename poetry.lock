@@ -2260,9 +2260,9 @@ python-versions = "*"
 
 [[package]]
 name = "pyupgrade"
-version = "2.18.1"
+version = "2.18.2"
 description = "A tool to automatically upgrade syntax for newer versions."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.1"
 
@@ -2812,7 +2812,7 @@ resolved_reference = "1e29d393204abb3bde23ff3f15258ed85d3b263e"
 name = "tokenize-rt"
 version = "4.1.0"
 description = "A wrapper around the stdlib `tokenize` which roundtrips."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.1"
 
@@ -3145,7 +3145,7 @@ prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "t
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "2c825896f89d8c830ec19c7e3f82fd47cb674fe19aff983fad0dcf2370873d89"
+content-hash = "9bdd4cebea56bceb53c9fd55e6191da710cbe4ca875fecc048d6500a19ee38f3"
 
 [metadata.files]
 absl-py = [
@@ -4596,8 +4596,8 @@ pytz = [
     {file = "pytz-2021.1.tar.gz", hash = "sha256:83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da"},
 ]
 pyupgrade = [
-    {file = "pyupgrade-2.18.1-py2.py3-none-any.whl", hash = "sha256:d4066fbe134ea161e0c23eb2923d609bc6949c9d50725f2fe0ec91d0eadea21c"},
-    {file = "pyupgrade-2.18.1.tar.gz", hash = "sha256:b6ac3aa12c494dbd237be1baf61ef32d51d0098130fa95374dc8c851fe4c795d"},
+    {file = "pyupgrade-2.18.2-py2.py3-none-any.whl", hash = "sha256:3bbf8a6f9febe28f128c40f640e3975dba588cf3642f20a666e6ea2cd907909d"},
+    {file = "pyupgrade-2.18.2.tar.gz", hash = "sha256:dc3fb2699ed206de9efd18ef683dc2a117a91328ed86945d47e125d9009226ac"},
 ]
 pywin32 = [
     {file = "pywin32-300-cp35-cp35m-win32.whl", hash = "sha256:1c204a81daed2089e55d11eefa4826c05e604d27fe2be40b6bf8db7b6a39da63"},
