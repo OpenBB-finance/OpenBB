@@ -87,9 +87,9 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Donation
 
-GST is a completely free open-source terminal. My personal goal has always been to keep this terminal available for everyone to use at zero cost. 
+GST is a completely free open-source terminal. My personal goal has always been to keep this terminal available for everyone to use at zero cost.
 
-Lately, some developers have been helping me in this endeavour. As you can probably tell from the git history, the terminal has been increasing in features/robustness at a really fast pace. Since none of us are getting paid to do so, and we all have 9-5 jobs, it's hard to onbard people to work towards the cause. On a personal level, I stopped investing since the repository was made public, since I spend all my spare time working on it, and don't have time left for DD. 
+Lately, some developers have been helping me in this endeavour. As you can probably tell from the git history, the terminal has been increasing in features/robustness at a really fast pace. Since none of us are getting paid to do so, and we all have 9-5 jobs, it's hard to onbard people to work towards the cause. On a personal level, I stopped investing since the repository was made public, since I spend all my spare time working on it, and don't have time left for DD.
 
 There are many ways to help support GST. If technical development or support are one of your strengths, join our [discord](https://discord.gg/Up2QGbMKHY). Otherwise, you could certainly help us by providing a donation to our coinbase crypto wallet: **3Pfx7NwGgmZsk7hQJxzHdp5rGBftUHVTiM**.
 
@@ -253,10 +253,10 @@ Alternatively, you can also set them to the following environment variables:
 | [Alpha Vantage](https://www.alphavantage.co) | GT_API_KEY_ALPHAVANTAGE |
 | [Binance](https://binance.com) | GT_API_BINANCE_KEY <br/> GT_API_BINANCE_SECRET |
 | [CoinMarketCap](https://coinmarketcap.com) | GT_CMC_API_KEY <br/> GT_CMC_API_KEY |
-| [DEGIRO](https://www.degiro.fr) | DG_USERNAME <br/> DG_PASSWORD <br/> DG_TOTP_SECRET |
-| [FRED](https://fred.stlouisfed.org) | GT_FRED_API_KEY |
+| [DEGIRO](https://www.degiro.fr) | GT_DG_USERNAME <br/> GT_DG_PASSWORD <br/> GT_DG_TOTP_SECRET |
+| [FRED](https://fred.stlouisfed.org) | GT_API_FRED_KEY |
 | [Financial Modeling Prep](https://financialmodelingprep.com) | GT_API_KEY_FINANCIALMODELINGPREP |
-| [Finhub](https://finnhub.io) | API_FINNHUB_KEY |
+| [Finhub](https://finnhub.io) | GT_API_FINNHUB_KEY |
 | [News](https://newsapi.org) | GT_API_NEWS_TOKEN |
 | [Oanda](https://developer.oanda.com) | GT_OANDA_TOKEN <br/> GT_OANDA_ACCOUNT |
 | [Polygon](https://polygon.io) | GT_API_POLYGON_KEY |
@@ -376,9 +376,9 @@ Feel free to share loss porn, memes or any questions at:
 
 #### Shoutout to:
 * **alokan** : Responsible by developing `Forex` menu
-* **pll_llq** and **hinxx** : Working towards a GUI using Qt. 
+* **pll_llq** and **hinxx** : Working towards a GUI using Qt.
   * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
-* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app. 
+* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app.
   * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
 * **Chavithra** and **Deel18** : for Degiro's integration.
 

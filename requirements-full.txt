@@ -29,7 +29,7 @@ colorama==0.4.4; (python_version >= "2.7" and python_full_version < "3.0.0") or 
 convertdate==2.3.2; python_version >= "3.5"
 cryptography==3.4.7; python_version >= "3.6"
 cssselect==1.1.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
-cvxpy==1.1.13; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
+cvxpy==1.1.12; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.5"
 cycler==0.10.0; python_version >= "3.6"
 cython==0.29.17; python_version >= "3.6" and python_full_version < "3.0.0" and sys_platform == "darwin" or python_full_version >= "3.3.0" and python_version >= "3.6" and sys_platform == "darwin"
 dataclasses==0.8; python_version >= "3.6" and python_version < "3.7" and python_full_version >= "3.6.2" and (python_version >= "3.6" and python_full_version < "3.0.0" and python_version < "3.7" or python_full_version >= "3.2.0" and python_version >= "3.6" and python_version < "3.7")
