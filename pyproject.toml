@@ -22,7 +22,7 @@ psaw = "^0.0.12"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
 pytrends = "^4.7.3"
-TimeSeriesCrossValidation = { git = "https://github.com/DidierRLopes/TimeSeriesCrossValidation.git",  branch = "master" }
+timeseries-cv = "0.1.4"
 matplotlib = "^3.3.3"
 plotly = "^4.14.3"
 colorama = "^0.4.4"
@@ -31,7 +31,7 @@ torch = {version = "1.7.1", optional = true}
 transformers = {version = "3.5.1", optional = true}
 fbprophet = {version = "0.6", optional = true}
 pmdarima = {version = "1.8.0", optional = false}
-tensorflow = {version = "2.4.1", optional = true}
+tensorflow = "2.5"
 flair = {version = "0.7", optional = true}
 holidays = "^0.10"
 prompt-toolkit = "^3.0.16"
@@ -44,7 +44,7 @@ screeninfo = "^0.6.7"
 numpy = "~1.19.5,<1.20"
 pyrsistent = "~0.14.11"
 regex = "~2020.11.13"
-h5py = "~2.10.0"
+h5py = "3.1"
 robin-stocks = "^2.0.3"
 termcolor = "^1.1.0"
 alpaca-trade-api = "^1.0.1"
@@ -64,12 +64,14 @@ degiro-connector = "^0.1.0"
 valinvest = "^0.0.2"
 bt = "^0.2.9"
 python-binance = "^1.0.1"
+grpcio = "1.34.0"
+pyupgrade = "2.18.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "^2.7.2"
 flake8 = "^3.9.0"
-black = "^20.8b1"
+black = "21.5b1"
 mypy = "^0.812"
 mock = "^4.0.3"
 codespell = "^2.0.0"
