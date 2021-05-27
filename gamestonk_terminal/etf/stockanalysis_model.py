@@ -100,7 +100,7 @@ def etf_overview(other_args: List[str]):
         if not ns_parser:
             return ""
 
-        if ns_parser.name not in etf_symbols:
+        if ns_parser.name.upper() not in etf_symbols:
             print("ETF symbol not available")
             return ""
         r1 = requests.get(f"https://stockanalysis.com/etf/{ns_parser.name}")
