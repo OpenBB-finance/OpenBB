@@ -48,7 +48,7 @@ jobs:
         run: |
           conda install numpy=1.19.5
           conda install gensim=3.8.3
-          conda install -c conda-forge cvxpy
+          conda install -c conda-forge cvxpy=1.1.12
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}

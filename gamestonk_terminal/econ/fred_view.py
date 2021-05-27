@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.config_terminal import API_FRED_KEY
+from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
@@ -90,7 +90,7 @@ def display_fred(other_args: List[str], choice: str):
         if not ns_parser:
             return
 
-        fred = Fred(api_key=API_FRED_KEY)
+        fred = Fred(api_key=cfg.API_FRED_KEY)
         d_data = fred.get_series(ns_parser.series_id, ns_parser.start_date)
 
         df_fred = pd.DataFrame(d_data, columns=[f"{ns_parser.series_id}"])
