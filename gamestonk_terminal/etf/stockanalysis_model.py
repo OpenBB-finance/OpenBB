@@ -29,9 +29,44 @@ def limit_number_of_holdings(num: str) -> int:
     return int(num)
 
 
-def open_web():
-    """Opens webbrowser to the website page"""
-    webbrowser.open("https://stockanalysis.com/etf/")
+def open_web(other_args: List[str]):
+
+    """
+    Opens webbrowser to the website page
+    Parameters
+    ----------
+    other_args : List[str]
+        Argparse arguments
+
+    """
+    parser = argparse.ArgumentParser(prog="web", add_help=False)
+    parser.add_argument(
+        "-n", "--name", type=str, dest="name", help="Symbol to look for", required=False
+    )
+
+    try:
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return ""
+
+        if not ns_parser.name:
+            webbrowser.open("https://stockanalysis.com/etf/")
+            return ""
+
+        if ns_parser.name.upper() in etf_symbols:
+            webbrowser.open(f"https://stockanalysis.com/etf/{ns_parser.name.lower()}")
+        else:
+            print("ETF symbol not available")
+        return ""
+
+    except Exception as e:
+        print(e, "\n")
+        return ""
 
 
 def name_search(other_args: List[str]):

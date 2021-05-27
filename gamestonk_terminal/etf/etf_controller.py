@@ -69,9 +69,9 @@ class ETFController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_web(self, _):
+    def call_web(self, other_args: List[str]):
         """Process web command"""
-        open_web()
+        open_web(other_args)
 
     def call_search(self, other_args: List[str]):
         """Process search command"""
