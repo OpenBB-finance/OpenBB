@@ -99,7 +99,7 @@ Sharing the terminal with friends and family would also go a long way. Thanks in
 ## Getting Started
 ### Install
 
-If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.twitch.tv/videos/1013768299).
+If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=fYKw_MH6gi0).
 
 This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
 
