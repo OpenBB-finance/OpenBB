@@ -438,21 +438,28 @@ def quote(l_args: List[str], s_ticker: str):
     ticker = yf.Ticker(ns_parser.s_ticker)
 
     try:
-        quote_df = pd.DataFrame([{
-            "Symbol": ticker.info["symbol"],
-            "Name": ticker.info["shortName"],
-            "Price": ticker.info["regularMarketPrice"],
-            "Open": ticker.info["regularMarketOpen"],
-            "High": ticker.info["dayHigh"],
-            "Low": ticker.info["dayLow"],
-            "Previous Close": ticker.info["previousClose"],
-            "Volume": ticker.info["volume"],
-            "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-            "52 Week Low": ticker.info["fiftyTwoWeekLow"],
-        }])
+        quote_df = pd.DataFrame(
+            [
+                {
+                    "Symbol": ticker.info["symbol"],
+                    "Name": ticker.info["shortName"],
+                    "Price": ticker.info["regularMarketPrice"],
+                    "Open": ticker.info["regularMarketOpen"],
+                    "High": ticker.info["dayHigh"],
+                    "Low": ticker.info["dayLow"],
+                    "Previous Close": ticker.info["previousClose"],
+                    "Volume": ticker.info["volume"],
+                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
+                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+                }
+            ]
+        )
 
         quote_df["Change"] = round(quote_df["Price"] - quote_df["Previous Close"], 2)
-        quote_df["Change %"] = quote_df.apply(lambda x: str(round((x["Change"]/ x["Previous Close"]) * 100, 2)) + "%", axis="columns")
+        quote_df["Change %"] = quote_df.apply(
+            lambda x: str(round((x["Change"] / x["Previous Close"]) * 100, 2)) + "%",
+            axis="columns",
+        )
 
         quote_df = quote_df.set_index("Symbol")
 
