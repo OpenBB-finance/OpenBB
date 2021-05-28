@@ -27,6 +27,7 @@ from gamestonk_terminal.main_helper import (
     view,
     candle,
     print_goodbye,
+    quote,
     update_terminal,
 )
 from gamestonk_terminal.menu import session
@@ -85,6 +86,7 @@ def main():
         "update",
         "clear",
         "load",
+        "quote",
         "candle",
         "view",
         "export",
@@ -195,6 +197,10 @@ def main():
             s_ticker, s_start, s_interval, df_stock = load(
                 l_args, s_ticker, s_start, s_interval, df_stock
             )
+            main_cmd = True
+
+        elif ns_known_args.opt == "quote":
+            quote(l_args, s_ticker)
             main_cmd = True
 
         elif ns_known_args.opt == "candle":

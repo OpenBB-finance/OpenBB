@@ -1,15 +1,18 @@
 import argparse
+from typing import List
 from sys import stdout
 import random
 from datetime import datetime, timedelta
 import subprocess
 import hashlib
 import matplotlib.pyplot as plt
+from numpy.core.fromnumeric import transpose
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
+from tabulate import tabulate
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -36,6 +39,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("")
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
+    print("   quote       view the current price for a specific stock ticker")
     print("   candle      view a candle chart for a specific stock ticker")
     print("   view        view and load a specific stock ticker for technical analysis")
     if s_ticker:
@@ -390,6 +394,102 @@ def candle(s_ticker: str, s_start: str):
         ),
     )
     print("")
+
+
+def quote(l_args: List[str], s_ticker: str):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="quote",
+        description="Current quote for stock ticker",
+    )
+
+    if s_ticker:
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            default=s_ticker,
+            help="Stock ticker",
+        )
+    else:
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            required=True,
+            help="Stock ticker",
+        )
+
+    try:
+        # For the case where a user uses: 'quote BB'
+        if l_args:
+            if "-" not in l_args[0]:
+                l_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
+
+    except SystemExit:
+        print("")
+        return
+
+    ticker = yf.Ticker(ns_parser.s_ticker)
+
+    try:
+        quote_df = pd.DataFrame(
+            [
+                {
+                    "Symbol": ticker.info["symbol"],
+                    "Name": ticker.info["shortName"],
+                    "Price": ticker.info["regularMarketPrice"],
+                    "Open": ticker.info["regularMarketOpen"],
+                    "High": ticker.info["dayHigh"],
+                    "Low": ticker.info["dayLow"],
+                    "Previous Close": ticker.info["previousClose"],
+                    "Volume": ticker.info["volume"],
+                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
+                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+                }
+            ]
+        )
+
+        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
+        quote_df["Change %"] = quote_df.apply(
+            lambda x: "{:.2f}%".format((x["Change"] / x["Previous Close"]) * 100),
+            axis="columns",
+        )
+        for c in [
+            "Price",
+            "Open",
+            "High",
+            "Low",
+            "Previous Close",
+            "52 Week High",
+            "52 Week Low",
+            "Change",
+        ]:
+            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
+        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
+
+        quote_df = quote_df.set_index("Symbol")
+
+        quote_data = transpose(quote_df)
+
+        print(
+            tabulate(
+                quote_data,
+                headers=quote_data.columns,
+                tablefmt="fancy_grid",
+                stralign="right",
+            )
+        )
+    except KeyError:
+        print(f"Invalid stock ticker: {ns_parser.s_ticker}")
+
+    print("")
+    return
 
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
