@@ -455,17 +455,36 @@ def quote(l_args: List[str], s_ticker: str):
             ]
         )
 
-        quote_df["Change"] = round(quote_df["Price"] - quote_df["Previous Close"], 2)
+        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
         quote_df["Change %"] = quote_df.apply(
-            lambda x: str(round((x["Change"] / x["Previous Close"]) * 100, 2)) + "%",
+            lambda x: "{:.2f}%".format((x["Change"] / x["Previous Close"]) * 100),
             axis="columns",
         )
+        for c in [
+            "Price",
+            "Open",
+            "High",
+            "Low",
+            "Previous Close",
+            "52 Week High",
+            "52 Week Low",
+            "Change",
+        ]:
+            quote_df[c] = quote_df[c].apply(lambda x: "{:.2f}".format(x))
+        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: "{:,}".format(x))
 
         quote_df = quote_df.set_index("Symbol")
 
         quote_data = transpose(quote_df)
 
-        print(tabulate(quote_data, headers=quote_data.columns, tablefmt="fancy_grid"))
+        print(
+            tabulate(
+                quote_data,
+                headers=quote_data.columns,
+                tablefmt="fancy_grid",
+                stralign="right",
+            )
+        )
     except KeyError:
         print(f"Invalid stock ticker: {ns_parser.s_ticker}")
 
