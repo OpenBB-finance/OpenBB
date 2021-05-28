@@ -470,8 +470,8 @@ def quote(l_args: List[str], s_ticker: str):
             "52 Week Low",
             "Change",
         ]:
-            quote_df[c] = quote_df[c].apply(lambda x: "{:.2f}".format(x))
-        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: "{:,}".format(x))
+            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
+        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
 
         quote_df = quote_df.set_index("Symbol")
 
