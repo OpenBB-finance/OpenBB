@@ -1,15 +1,18 @@
 import argparse
+from typing import List
 from sys import stdout
 import random
 from datetime import datetime, timedelta
 import subprocess
 import hashlib
 import matplotlib.pyplot as plt
+from numpy.core.fromnumeric import transpose
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
+from tabulate import tabulate
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -36,6 +39,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("")
     print("   clear       clear a specific stock ticker from analysis")
     print("   load        load a specific stock ticker for analysis")
+    print("   quote       view the current price for a specific stock ticker")
     print("   candle      view a candle chart for a specific stock ticker")
     print("   view        view and load a specific stock ticker for technical analysis")
     if s_ticker:
@@ -390,6 +394,58 @@ def candle(s_ticker: str, s_start: str):
         ),
     )
     print("")
+
+
+def quote(l_args: List[str], s_ticker: str):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="quote",
+        description="Current quote for stock ticker",
+    )
+
+    if s_ticker:
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            default=s_ticker,
+            help="Stock ticker",
+        )
+    else:
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            required=True,
+            help="Stock ticker",
+        )
+
+    try:
+        # For the case where a user uses: 'quote BB'
+        if l_args:
+            if "-" not in l_args[0]:
+                l_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if not ns_parser:
+            return
+
+    except SystemExit:
+        print("")
+        return
+
+    ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+    quote_df = ts.get_quote_endpoint(ns_parser.s_ticker)[0]
+    if quote_df.empty:
+        print(f"Invalid stock ticker: {ns_parser.s_ticker}")
+    else:
+        quote_data = transpose(quote_df.rename(lambda x: x[4:].title(), axis="columns"))
+
+        print(tabulate(quote_data, headers=quote_data.columns, tablefmt="fancy_grid"))
+
+    print("")
+    return
 
 
 def view(l_args, s_ticker, s_start, s_interval, df_stock):
