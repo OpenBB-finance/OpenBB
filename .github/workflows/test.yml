@@ -197,6 +197,12 @@ jobs:
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
 
+      - name: Update pip version (Bash)
+        shell: bash -l {0}
+        run: |
+          conda update pip
+          pip --version
+
       - name: Get pip cache dir
         id: pip-cache
         run: |
