@@ -4,6 +4,12 @@ name = "GamestonkTerminal"
 version = "0.1.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
+packages = [
+    { include = "gamestonk_terminal" },
+]
+
+[tool.poetry.scripts]
+gst = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.6.8"
