@@ -12,10 +12,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Setup Python 3.8
+      - name: Setup Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           architecture: x64
 
       - uses: actions/cache@v2
@@ -35,17 +35,17 @@ jobs:
       - run: |
           pylint terminal.py gamestonk_terminal tests
   test:
-    name: ubuntu-latest - Python 3.8
+    name: ubuntu-latest - Python 3.9
     needs: linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Setup Python 3.8
+      - name: Setup Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           architecture: x64
 
       - name: Install Poetry
@@ -87,11 +87,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ['3.6', '3.7', '3.8']
+        python-version: ['3.6', '3.8', '3.9']
         os: [ubuntu-latest, macos-latest]
         exclude:
           - os: ubuntu-latest
-            python-version: '3.8'
+            python-version: '3.9'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -148,13 +148,13 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu', 'windows']
-        python-version: ['3.8']
+        python-version: ['3.9']
         dependencies: ['']
         include:
           - os: ubuntu
-            python: 3.8
+            python: 3.9
           - os: windows
-            python: 3.8
+            python: 3.9
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
