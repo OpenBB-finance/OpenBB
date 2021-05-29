@@ -1,5 +1,6 @@
 name: Mac OS X Full Clean Build with ML
 env:
+  PIP_DEFAULT_TIMEOUT: 100
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
   GTFF_ENABLE_QUICK_EXIT: true

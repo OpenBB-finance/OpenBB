@@ -1,8 +1,9 @@
 name: Tests
 env:
-    GTFF_USE_PROMPT_TOOLKIT: false
-    GTFF_USE_ION: false
-    GTFF_ENABLE_QUICK_EXIT: true
+  PIP_DEFAULT_TIMEOUT: 100
+  GTFF_USE_PROMPT_TOOLKIT: false
+  GTFF_USE_ION: false
+  GTFF_ENABLE_QUICK_EXIT: true
 on: [pull_request, push]
 jobs:
   linting:
