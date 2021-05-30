@@ -37,7 +37,6 @@ torch = {version = "1.7.1", optional = true}
 transformers = {version = "3.5.1", optional = true}
 fbprophet = {version = "0.6", optional = true}
 pmdarima = {version = "1.8.0", optional = false}
-tensorflow = "2.5"
 flair = {version = "0.7", optional = true}
 holidays = "^0.10"
 prompt-toolkit = "^3.0.16"
@@ -73,6 +72,7 @@ python-binance = "^1.0.1"
 grpcio = "1.34.0"
 pyupgrade = "2.18.2"
 cvxpy = "1.1.12"
+tensorflow = {version = "2.5.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
