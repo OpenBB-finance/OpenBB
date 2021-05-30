@@ -202,8 +202,10 @@ jobs:
         run: |
           conda update pip
           pip --version
+          pip cache dir
 
       - name: Get pip cache dir
+        shell: bash -l {0}
         id: pip-cache
         run: |
           echo "::set-output name=dir::$(pip cache dir)"
