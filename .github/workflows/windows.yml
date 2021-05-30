@@ -1,5 +1,6 @@
 name: Windows 10 Full Clean Build with ML
 env:
+  PIP_DEFAULT_TIMEOUT: 100
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
   GTFF_ENABLE_QUICK_EXIT: true
@@ -30,6 +31,12 @@ jobs:
           # to be able to push to GitHub.
           persist-credentials: false
 
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-windows-3-7-${{ hashFiles('requirements*.txt') }}
+
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -48,6 +55,27 @@ jobs:
         shell: cmd /C CALL {0}
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+
+      - name: Update pip version (Bash)
+        shell: bash -l {0}
+        run: |
+          conda update pip
+          pip --version
+          pip cache dir
+
+      - name: Get pip cache dir
+        shell: bash -l {0}
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: windows-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            windows-pip-
 
       - name: Install fbprophet with conda
         shell: bash -l {0}

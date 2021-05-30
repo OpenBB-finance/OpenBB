@@ -39,7 +39,8 @@ from gamestonk_terminal.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.options import op_controller
 from gamestonk_terminal.econ import econ_controller
 from gamestonk_terminal.residuals_analysis import ra_controller
-from gamestonk_terminal.portfolio import port_controller
+
+# from gamestonk_terminal.portfolio import port_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.screener import screener_controller
 from gamestonk_terminal.portfolio_optimization import po_controller
@@ -353,7 +354,9 @@ def main():
             b_quit = econ_controller.menu()
 
         elif ns_known_args.opt == "pa":
-            b_quit = port_controller.menu()
+            print("Portfolio Controller menu has been temporarily disabled")
+            print("")
+            # b_quit = port_controller.menu()
 
         elif ns_known_args.opt == "crypto":
             b_quit = crypto_controller.menu()

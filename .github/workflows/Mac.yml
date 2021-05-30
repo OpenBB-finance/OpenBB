@@ -1,5 +1,6 @@
 name: Mac OS X Full Clean Build with ML
 env:
+  PIP_DEFAULT_TIMEOUT: 100
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
   GTFF_ENABLE_QUICK_EXIT: true
@@ -30,6 +31,12 @@ jobs:
           # to be able to push to GitHub.
           persist-credentials: false
 
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-macos-3-8-${{ hashFiles('requirements*.txt') }}
+
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -42,6 +49,27 @@ jobs:
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
+
+      - name: Update pip version (Bash)
+        shell: bash -l {0}
+        run: |
+          conda update pip
+          pip --version
+          pip cache dir
+
+      - name: Get pip cache dir
+        shell: bash -l {0}
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: macos-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            macos-pip-
 
       - name: Install gensim with conda
         shell: bash -l {0}
