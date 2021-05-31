@@ -245,7 +245,7 @@ jobs:
           # conda info
           # conda install numpy=1.19.5
           # conda install -c conda-forge cvxpy=1.1.12
-          pip install --requirement --user requirements.txt
+          pip install --requirement requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

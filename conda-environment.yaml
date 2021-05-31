@@ -4,9 +4,8 @@ channels:
 dependencies:
   - python=3.8.*
   - pip
-  - poetry
+  - poetry=1.1.6
   - numpy=1.19.5
-  - jupyter
   - cvxpy=1.1.12
   - pytest
   - pylint
