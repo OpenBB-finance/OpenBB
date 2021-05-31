@@ -38,9 +38,15 @@ jobs:
         run: |
           pylint --version
           ls -al
+          echo "terminal"
           pylint --verbose terminal.py
+          echo "main"
           pylint --verbose gamestonk_terminal
+          echo "main_helper.py"
+          pylint --verbose gamestonk_terminal/main_helper.py
+          echo "tests"
           pylint --verbose tests
+          echo "rest"
           pylint --verbose **/*.py
   test:
     name: ubuntu-latest - Python 3.9
