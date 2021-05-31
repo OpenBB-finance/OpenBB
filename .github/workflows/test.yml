@@ -9,6 +9,7 @@ jobs:
   linting:
     name: Linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -50,6 +51,7 @@ jobs:
     name: ubuntu-latest - Python 3.9
     needs: linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -101,6 +103,7 @@ jobs:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: true
       matrix:
@@ -161,6 +164,7 @@ jobs:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
       matrix:
@@ -175,6 +179,7 @@ jobs:
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
+      PYTHONNOUSERSITE: 1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -216,7 +221,6 @@ jobs:
       - name: Update pip version (Bash)
         shell: bash -l {0}
         run: |
-          conda update pip
           pip --version
           pip cache dir
 
@@ -240,7 +244,7 @@ jobs:
           conda info
           conda install numpy=1.19.5
           conda install -c conda-forge cvxpy=1.1.12
-          pip install --user --requirement requirements.txt
+          pip install --requirement requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
