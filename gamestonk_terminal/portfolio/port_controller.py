@@ -12,7 +12,7 @@ from gamestonk_terminal.portfolio import (
     rh_api,
     alp_api,
     ally_api,
-    degiro_controller,
+    # degiro_controller,
 )
 from gamestonk_terminal.portfolio.portfolio_helpers import (
     merge_portfolios,
@@ -172,8 +172,8 @@ class PortfolioController:
 
     def call_degiro(self, _):
         """ "Process degiro command."""
-
-        return degiro_controller.menu()
+        print("Degiro menu has been temporarily disabled", "\n")
+        # return degiro_controller.menu()
 
     def call_hold(self, _):
         holdings = pd.DataFrame(
