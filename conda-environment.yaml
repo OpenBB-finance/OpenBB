@@ -2,10 +2,10 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8.*
+  - python=3.8
   - pip
   - poetry=1.1.6
   - numpy=1.19.5
   - cvxpy=1.1.12
   - pytest
-  - pylint
+  - pylint=2.8.3
