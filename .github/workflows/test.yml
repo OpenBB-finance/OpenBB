@@ -262,6 +262,7 @@ jobs:
       - name: Run pylint
         shell: bash -l {0}
         run: |
+          pip install pylint
           pylint --version
           pylint --verbose terminal.py gamestonk_terminal tests
 

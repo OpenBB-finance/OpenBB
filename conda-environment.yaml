@@ -8,4 +8,3 @@ dependencies:
   - numpy=1.19.5
   - cvxpy=1.1.12
   - pytest
-  - pylint=2.8.3
