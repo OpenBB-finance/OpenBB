@@ -8,6 +8,5 @@ dependencies:
   - numpy=1.19.5
   - jupyter
   - cvxpy=1.1.12
-  - pmdarima=1.8.2
   - pytest
   - pylint

@@ -246,7 +246,6 @@ jobs:
           # conda install numpy=1.19.5
           # conda install -c conda-forge cvxpy=1.1.12
           pip install --requirement requirements.txt
-          pip install pytest
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
