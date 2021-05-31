@@ -83,6 +83,7 @@ jobs:
 
       - name: Run pylint
         run: |
+          pip install pylint
           pylint --verbose terminal.py gamestonk_terminal tests
 
       - name: Run tests
