@@ -197,7 +197,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt') }}
+          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt', 'conda-*.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
