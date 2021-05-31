@@ -34,7 +34,10 @@ jobs:
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py gamestonk_terminal tests
+          pylint --version
+          pylint --verbose terminal.py
+          pylint --verbose gamestonk_terminal
+          pylint --verbose tests
   test:
     name: ubuntu-latest - Python 3.9
     needs: linting
