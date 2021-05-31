@@ -46,8 +46,6 @@ jobs:
           pylint --verbose gamestonk_terminal/main_helper.py
           echo "tests"
           pylint --verbose tests
-          echo "rest"
-          pylint --verbose **/*.py
   test:
     name: ubuntu-latest - Python 3.9
     needs: linting
@@ -82,6 +80,10 @@ jobs:
 
       - name: Install Package
         run: poetry install --no-interaction
+
+      - name: Run pylint
+        run: |
+          pylint --verbose terminal.py gamestonk_terminal tests
 
       - name: Run tests
         env:
