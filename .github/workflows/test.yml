@@ -248,6 +248,12 @@ jobs:
           conda list
           pip list
 
+      - name: Run pylint
+        shell: bash -l {0}
+        run: |
+          pylint --version
+          pylint --verbose terminal.py gamestonk_terminal tests
+
       - name: Run tests (Bash)
         shell: bash -l {0}
         run: pytest tests/
