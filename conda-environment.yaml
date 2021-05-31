@@ -2,7 +2,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python
+  - python=3.8.*
   - pip
   - poetry
   - numpy=1.19.5

@@ -169,13 +169,13 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu', 'windows']
-        python-version: ['3.9']
+        python-version: ['3.8']
         dependencies: ['']
         include:
           - os: ubuntu
-            python: 3.9
+            python: 3.8
           - os: windows
-            python: 3.9
+            python: 3.8
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -205,8 +205,9 @@ jobs:
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
           auto-update-conda: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           show-channel-urls: true
+          channel-priority: flexible
           environment-file: conda-environment.yaml
           activate-environment: testing
           # Needed for caching
@@ -241,10 +242,11 @@ jobs:
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          conda info
-          conda install numpy=1.19.5
-          conda install -c conda-forge cvxpy=1.1.12
+          # conda info
+          # conda install numpy=1.19.5
+          # conda install -c conda-forge cvxpy=1.1.12
           pip install --requirement requirements.txt
+          pip install pytest
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
