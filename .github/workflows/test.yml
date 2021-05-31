@@ -181,6 +181,12 @@ jobs:
       PYTHON: ${{ matrix.python }}
       PYTHONNOUSERSITE: 1
     steps:
+      - name: Set git to use LF
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
