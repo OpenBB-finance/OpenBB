@@ -29,7 +29,7 @@ cython==0.29.14; python_version >= "3.6" and python_full_version < "3.0.0" and s
 dataclasses==0.8; python_version >= "3.6" and python_version < "3.7" and python_full_version >= "3.6.2"
 dateparser==1.0.0; python_version >= "3.5"
 datetime==4.3; python_version >= "3.5"
-decorator==5.0.9; python_full_version >= "3.6.1" and python_version >= "3.6"
+decorator==5.0.9; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 defusedxml==0.7.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 degiro-connector==0.1.3; python_version >= "3.6"
 detecta==0.0.5; python_version >= "3.6"
@@ -50,7 +50,7 @@ idna==2.10; python_version >= "3.6" and python_full_version < "3.0.0" and python
 importlib-metadata==3.10.1; python_version < "3.8" and python_version >= "3.6"
 inflection==0.5.1; python_version >= "3.5"
 ipykernel==5.5.5; python_version >= "3.6"
-ipython-genutils==0.2.0; python_full_version >= "3.6.1" and python_version >= "3.6"
+ipython-genutils==0.2.0; python_version >= "3.6"
 ipython==7.16.1; python_version >= "3.6"
 ipywidgets==7.6.3
 iso8601==0.1.14
@@ -58,7 +58,7 @@ jedi==0.18.0; python_version >= "3.6"
 jinja2==3.0.1; python_version >= "3.6"
 joblib==1.0.1; python_version >= "3.6"
 jsonschema==3.2.0; python_version >= "3.6"
-jupyter-client==6.2.0; python_full_version >= "3.6.1" and python_version >= "3.6"
+jupyter-client==6.1.12; python_version >= "3.5"
 jupyter-console==6.4.0; python_version >= "3.6"
 jupyter-core==4.7.1; python_full_version >= "3.6.1" and python_version >= "3.6"
 jupyter==1.0.0
@@ -151,7 +151,7 @@ scs==2.1.3; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and
 seaborn==0.11.1; python_version >= "3.6"
 selenium==3.141.0
 send2trash==1.5.0; python_version >= "3.6"
-six==1.15.0; python_full_version >= "3.6.1" and python_version >= "3.6" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "3.6" and python_full_version < "3.0.0" and python_version < "4.0" or python_version >= "3.6" and python_version < "4.0" and python_full_version >= "3.4.0") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6")
+six==1.15.0; python_full_version >= "3.6.1" and python_version >= "3.6" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "3.6" and python_full_version < "3.0.0" and python_version < "4.0" or python_version >= "3.6" and python_version < "4.0" and python_full_version >= "3.4.0") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.5") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6")
 soupsieve==2.2.1; python_version >= "3.6"
 statsmodels==0.12.2; python_version >= "3.6"
 tabulate==0.8.9
