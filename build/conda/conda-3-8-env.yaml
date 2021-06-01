@@ -7,4 +7,5 @@ dependencies:
   - poetry=1.1.6
   - numpy=1.19.5
   - cvxpy=1.1.12
+  - jupyter_client=6.1.12
   - pytest
