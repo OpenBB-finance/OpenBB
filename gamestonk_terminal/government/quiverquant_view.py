@@ -1,6 +1,8 @@
 import argparse
 from typing import List
 from datetime import datetime, timedelta
+import numpy as np
+from sklearn import linear_model
 import pandas as pd
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
@@ -752,6 +754,171 @@ def contracts(other_args: List[str], ticker: str):
         )
         plt.ylabel("Amount [1k $]")
         plt.title(f"Sum of latest government contracts to {ticker}")
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def call_qtr_contracts(other_args: List[str]):
+    """Quarter contracts
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="qtr_contracts",
+        description="Quarterly-contracts, best regression slope. [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-t",
+        "--top",
+        action="store",
+        dest="top",
+        type=check_positive,
+        default=5,
+        help="Top promising stocks with best quarterly-contracts momentum",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
+
+        if df_contracts.empty:
+            print("No quarterly government contracts found\n")
+            return
+
+        df_coef = pd.DataFrame(columns=["Ticker", "Coef"])
+
+        for symbol in df_contracts["Ticker"].unique():
+            # Create linear regression object
+            regr = linear_model.LinearRegression()
+
+            amounts = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Amount"]
+                .values
+            )
+
+            # Train the model using the training sets
+            regr.fit(np.arange(0, len(amounts)).reshape(-1, 1), amounts)
+
+            df_coef = df_coef.append(
+                {"Ticker": symbol, "Coef": regr.coef_[0]}, ignore_index=True
+            )
+
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        tickers = df_coef.sort_values(by=["Coef"], ascending=False).head(ns_parser.top)[
+            "Ticker"
+        ]
+
+        max_amount = 0
+        quarter_ticks = list()
+        for symbol in tickers:
+            amounts = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Amount"]
+                .values
+            )
+
+            qtr = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Qtr"]
+                .values
+            )
+            year = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Year"]
+                .values
+            )
+
+            plt.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
+
+            if len(amounts) > max_amount:
+                max_amount = len(amounts)
+                quarter_ticks = [
+                    f"{quarter[0]} - {quarter[1]} Qtr" for quarter in zip(year, qtr)
+                ]
+
+        plt.xlim([-0.5, max_amount - 0.5])
+        plt.xticks(np.arange(0, max_amount), quarter_ticks)
+        plt.grid()
+        plt.legend(tickers)
+        plt.title("Quarterly Government Contracts - Top promising stocks")
+        plt.xlabel("Date")
+        plt.ylabel("Amount [1k $]")
+        plt.show()
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def call_qtr_contracts_hist(other_args: List[str], ticker: str):
+    """Quarter contracts
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker: str
+        Ticker to get congress trading data from
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="qtr_contracts_hist",
+        description="Quarterly-contracts historical [Source: www.quiverquant.com]",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_contracts = quiverquant_model.get_government_trading(
+            "quarter-contracts", ticker=ticker
+        )
+
+        if df_contracts.empty:
+            print("No quarterly government contracts found\n")
+            return
+
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
+
+        qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
+        year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
+
+        quarter_ticks = [
+            f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
+        ]
+
+        plt.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
+
+        plt.xlim([-0.5, len(amounts) - 0.5])
+        plt.xticks(np.arange(0, len(amounts)), quarter_ticks)
+        plt.grid()
+        plt.title(f"Quarterly Government Contracts Historical on {ticker.upper()}")
+        plt.xlabel("Date")
+        plt.ylabel("Amount [1k $]")
+        plt.show()
 
         if gtff.USE_ION:
             plt.ion()
