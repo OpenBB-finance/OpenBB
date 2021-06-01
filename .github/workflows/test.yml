@@ -9,6 +9,7 @@ jobs:
   linting:
     name: Linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -39,6 +40,7 @@ jobs:
     name: ubuntu-latest - Python 3.9
     needs: linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -85,6 +87,7 @@ jobs:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: true
       matrix:
@@ -145,6 +148,7 @@ jobs:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
       matrix:
