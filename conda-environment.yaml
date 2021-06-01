@@ -1,7 +1,0 @@
-channels:
-  - conda-forge
-dependencies:
-  - python
-  - poetry
-  - jupyter
-  - pytest

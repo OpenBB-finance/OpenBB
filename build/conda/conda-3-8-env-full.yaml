@@ -1,0 +1,13 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pip
+  - poetry=1.1.6
+  - numpy=1.19.5
+  - fbprophet=0.7.1
+  - spyder
+  - gensim=3.8.3
+  - cvxpy=1.1.12
+  - pytest
