@@ -4,11 +4,11 @@ env:
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
   GTFF_ENABLE_QUICK_EXIT: true
+  PYTHONNOUSERSITE: 1
 on:
   push:
     branches:
       - "main"
-      - "full-builds"
   workflow_dispatch:
     inputs:
       comments:
@@ -19,6 +19,12 @@ jobs:
     name: Windows-latest, Conda-latest,  Python 3.7
     runs-on: windows-latest
     steps:
+      - name: Set git to use LF
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -35,17 +41,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-windows-3-7-${{ hashFiles('requirements*.txt') }}
+          key: conda-windows-3-7-${{ hashFiles('build/conda/conda-3-7-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: '3.7'
           miniconda-version: 'latest'
           auto-update-conda: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           show-channel-urls: true
-          environment-file: conda-environment.yaml
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-7-env-full.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
@@ -55,13 +61,6 @@ jobs:
         shell: cmd /C CALL {0}
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
-
-      - name: Update pip version (Bash)
-        shell: bash -l {0}
-        run: |
-          conda update pip
-          pip --version
-          pip cache dir
 
       - name: Get pip cache dir
         shell: bash -l {0}
@@ -73,24 +72,15 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: windows-pip-${{ hashFiles('**/requirements.txt') }}
+          key: windows-3-7-pip-${{ hashFiles('requirements-full.txt') }}
           restore-keys: |
             windows-pip-
-
-      - name: Install fbprophet with conda
-        shell: bash -l {0}
-        run: |
-          conda install numpy=1.19.5
-          conda install -c conda-forge fbprophet=0.6
-          conda install spyder
-          conda install gensim=3.8.3
-          conda install -c conda-forge cvxpy=1.1.12
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
           conda info
-          pip install --user --requirement requirements-full.txt
+          pip install --requirement requirements-full.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

@@ -153,17 +153,24 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu', 'windows']
-        python-version: ['3.9']
+        python-version: ['3.8']
         dependencies: ['']
         include:
           - os: ubuntu
-            python: 3.9
+            python: 3.8
           - os: windows
-            python: 3.9
+            python: 3.8
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
+      PYTHONNOUSERSITE: 1
     steps:
+      - name: Set git to use LF
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -180,7 +187,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt') }}
+          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -188,9 +195,10 @@ jobs:
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
           auto-update-conda: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           show-channel-urls: true
-          environment-file: conda-environment.yaml
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-8-env.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
@@ -200,13 +208,6 @@ jobs:
         shell: cmd /C CALL {0}
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
-
-      - name: Update pip version (Bash)
-        shell: bash -l {0}
-        run: |
-          conda update pip
-          pip --version
-          pip cache dir
 
       - name: Get pip cache dir
         shell: bash -l {0}
@@ -218,17 +219,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-3-8-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          conda info
-          conda install numpy=1.19.5
-          conda install -c conda-forge cvxpy=1.1.12
-          pip install --user --requirement requirements.txt
+          pip install --requirement requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

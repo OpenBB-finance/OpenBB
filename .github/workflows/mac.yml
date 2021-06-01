@@ -4,11 +4,11 @@ env:
   GTFF_USE_PROMPT_TOOLKIT: false
   GTFF_USE_ION: false
   GTFF_ENABLE_QUICK_EXIT: true
+  PYTHONNOUSERSITE: 1
 on:
   push:
     branches:
       - "main"
-      - "full-builds"
   workflow_dispatch:
     inputs:
       comments:
@@ -35,27 +35,20 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-8-${{ hashFiles('requirements*.txt') }}
+          key: conda-macos-3-8-${{ hashFiles('build/conda/conda-3-8-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: '3.8'
           miniconda-version: 'latest'
           auto-update-conda: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           show-channel-urls: true
-          environment-file: conda-environment.yaml
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-8-env-full.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
-
-      - name: Update pip version (Bash)
-        shell: bash -l {0}
-        run: |
-          conda update pip
-          pip --version
-          pip cache dir
 
       - name: Get pip cache dir
         shell: bash -l {0}
@@ -67,22 +60,15 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: macos-pip-${{ hashFiles('**/requirements.txt') }}
+          key: macos-3-8-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             macos-pip-
-
-      - name: Install gensim with conda
-        shell: bash -l {0}
-        run: |
-          conda install numpy=1.19.5
-          conda install gensim=3.8.3
-          conda install -c conda-forge cvxpy=1.1.12
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
           conda info
-          pip install --user --requirement requirements-full.txt
+          pip install --requirement requirements-full.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
