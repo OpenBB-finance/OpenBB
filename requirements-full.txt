@@ -12,7 +12,7 @@ async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
 attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 backcall==0.2.0; python_version >= "3.6"
 beautifulsoup4==4.9.3; python_version >= "3.5"
-black==21.5b1; python_full_version >= "3.6.2"
+black==21.5b2; python_full_version >= "3.6.2"
 bleach==3.3.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 bpemb==0.3.3; python_version >= "3.6"
 bs4==0.0.1
@@ -112,10 +112,10 @@ networkx==2.5; python_version >= "3.6"
 notebook==6.4.0; python_version >= "3.6"
 numpy==1.19.5; python_version >= "3.6"
 oandapyv20==0.6.3
-oauthlib==3.1.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+oauthlib==3.1.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 onetimepass==1.0.1; python_version >= "3.6"
 opt-einsum==3.3.0; python_version >= "3.5"
-orjson==3.5.2; python_version >= "3.6"
+orjson==3.5.3; python_version >= "3.6"
 osqp==0.6.2.post0; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.5"
 overrides==3.1.0; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and python_version >= "3.6"
 packaging==20.9; python_full_version >= "3.6.0" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6")
@@ -135,7 +135,7 @@ pmdarima==1.8.0; python_version >= "3.6"
 praw==7.2.0; python_version >= "3.6" and python_version < "4.0"
 prawcore==2.0.0; python_version >= "3.6" and python_version < "4.0"
 prettytable==2.1.0; python_version >= "3.6"
-prometheus-client==0.10.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
+prometheus-client==0.11.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 prompt-toolkit==3.0.18; python_full_version >= "3.6.1"
 protobuf==3.17.1; python_full_version >= "3.6.0" and python_version >= "3.6" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.2.0")
 psaw==0.0.12; python_version >= "3"
@@ -157,7 +157,7 @@ pyprind==2.11.3; python_version >= "2.7" and python_full_version < "3.0.0" or py
 pyrsistent==0.14.11
 pysocks==1.7.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 pystan==2.19.1.1
-python-binance==1.0.10
+python-binance==1.0.11
 python-coinmarketcap==0.2
 python-dateutil==2.8.1; python_full_version >= "3.6.1" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.5") and (python_version >= "2.7" and python_full_version < "3.0.0" and python_version < "4" or python_version >= "2.7" and python_version < "4" and python_full_version >= "3.3.0")
 python-dotenv==0.17.1; python_version >= "3"
