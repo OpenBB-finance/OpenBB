@@ -2,7 +2,9 @@ import requests
 import pandas as pd
 
 # Provided by Quiverquant guys to GST users
-API_QUIVERQUANT_KEY = "5cd2a65e96d0486efbe926a7cdbc1e8d8ab6c7b3"
+API_QUIVERQUANT_KEY = (
+    "5cd2a65e96d0486efbe926a7cdbc1e8d8ab6c7b3"  # pragma: allowlist secret
+)
 
 
 def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
@@ -11,7 +13,7 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
     Parameters
     ----------
     gov_type: str
-        Type of government data between: Congress, Senate, House and Contracts
+        Type of government data between: Congress, Senate, House, Contracts and Quarter-Contracts
     ticker : str
         Ticker to get congress trading data from
 
@@ -49,12 +51,18 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
         else:
             url = "https://api.quiverquant.com/beta/live/govcontractsall"
 
+    elif gov_type == "quarter-contracts":
+        if ticker:
+            url = f"https://api.quiverquant.com/beta/historical/govcontracts/{ticker}"
+        else:
+            url = "https://api.quiverquant.com/beta/live/govcontracts"
+
     else:
         return pd.DataFrame()
 
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": "TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu",
+        "X-CSRFToken": "TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu",  # pragma: allowlist secret
         "Authorization": f"Token {API_QUIVERQUANT_KEY}",
     }
     response = requests.get(url, headers=headers)
@@ -63,7 +71,6 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
             return pd.DataFrame(response.json()).rename(
                 columns={"Date": "TransactionDate", "Senator": "Representative"}
             )
-        else:
-            return pd.DataFrame(response.json())
+        return pd.DataFrame(response.json())
 
     return pd.DataFrame()
