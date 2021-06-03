@@ -15,6 +15,8 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
+# pylint: disable=C0302
+
 
 def last_government(other_args: List[str], gov_type: str):
     """Last government trading
@@ -765,7 +767,7 @@ def contracts(other_args: List[str], ticker: str):
         print(e, "\n")
 
 
-def call_qtr_contracts(other_args: List[str]):
+def qtr_contracts(other_args: List[str]):
     """Quarter contracts
 
     Parameters
@@ -859,7 +861,6 @@ def call_qtr_contracts(other_args: List[str]):
         plt.title("Quarterly Government Contracts - Top promising stocks")
         plt.xlabel("Date")
         plt.ylabel("Amount [1k $]")
-        plt.show()
 
         if gtff.USE_ION:
             plt.ion()
@@ -871,7 +872,7 @@ def call_qtr_contracts(other_args: List[str]):
         print(e, "\n")
 
 
-def call_qtr_contracts_hist(other_args: List[str], ticker: str):
+def qtr_contracts_hist(other_args: List[str], ticker: str):
     """Quarter contracts
 
     Parameters
@@ -918,12 +919,137 @@ def call_qtr_contracts_hist(other_args: List[str], ticker: str):
         plt.title(f"Quarterly Government Contracts Historical on {ticker.upper()}")
         plt.xlabel("Date")
         plt.ylabel("Amount [1k $]")
-        plt.show()
 
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def top_lobbying(other_args: List[str]):
+    """Top lobbying based on tickers that have biggest amounts for the past couple months
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="top_lobbying",
+        description="Top lobbying. [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-t",
+        "--top",
+        action="store",
+        dest="top",
+        type=check_positive,
+        default=10,
+        help="Top corporate lobbying tickers with biggest amounts",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_lobbying = quiverquant_model.get_government_trading("corporate-lobbying")
+
+        if df_lobbying.empty:
+            print("No corporate lobbying found\n")
+            return
+
+        d_lobbying = {}
+        for symbol in df_lobbying["Ticker"].unique():
+            d_lobbying[symbol] = sum(
+                float(amount)
+                for amount in df_lobbying[df_lobbying["Ticker"] == symbol]
+                .replace(np.nan, 0)["Amount"]
+                .values
+            )
+
+        df_amount = pd.DataFrame.from_dict(
+            d_lobbying, orient="index", columns=["Amount"]
+        ).sort_values(by=["Amount"], ascending=False)
+
+        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+        plt.bar(
+            df_amount.head(ns_parser.top).index,
+            df_amount.head(ns_parser.top).values.flatten() / 1000,
+        )
+        plt.xlabel("Ticker")
+        plt.ylabel("Sum Amount [1k $]")
+        plt.title(
+            f"Total amount spent on corporate lobbying since {df_lobbying['Date'].min()}"
+        )
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def lobbying(other_args: List[str], ticker: str):
+    """Corporate lobbying details
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    ticker: str
+        Ticker to get corporate lobbying data from
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="lobbying",
+        description="Lobbying details [Source: www.quiverquant.com]",
+    )
+    parser.add_argument(
+        "-l",
+        "--last",
+        action="store",
+        dest="last",
+        type=check_positive,
+        default=10,
+        help="Last corporate lobbying details",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df_lobbying = quiverquant_model.get_government_trading(
+            "corporate-lobbying", ticker=ticker
+        )
+
+        if df_lobbying.empty:
+            print("No corporate lobbying found\n")
+            return
+
+        for _, row in (
+            df_lobbying.sort_values(by=["Date"], ascending=False)
+            .head(ns_parser.last)
+            .iterrows()
+        ):
+            amount = (
+                "$" + str(int(float(row["Amount"])))
+                if row["Amount"] is not None
+                else "N/A"
+            )
+            print(f"{row['Date']}: {row['Client']} {amount}")
+            if row["Amount"] is not None:
+                print("\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", ""))
+            print("")
         print("")
 
     except Exception as e:
