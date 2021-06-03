@@ -99,11 +99,11 @@ Sharing the terminal with friends and family would also go a long way. Thanks in
 ## Getting Started
 ### Install
 
-If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=fYKw_MH6gi0).
+If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
 The user @mchow01 has made available a tutorial on [how to run the terminal on an Apple M1](https://mchow01.github.io/macos/system/gamestonk/2021/05/27/gamestonk-terminal-m1.html).
 
-This project was originally written and tested with Python 3.6.8. It should now support Python 3.6, 3.7, and 3.8.
+This project supports Python 3.7, 3.8 and 3.9.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
 
@@ -120,7 +120,7 @@ Confirm that you have it with: `conda -V`. The output should be something along 
 
 You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used from now onwards.
 ```
-conda create -n gst python=3.6.8
+conda create -n gst python=3.9
 ````
 
 3. Activate the virtual environment
