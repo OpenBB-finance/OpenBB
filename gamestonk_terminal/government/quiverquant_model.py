@@ -13,7 +13,7 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
     Parameters
     ----------
     gov_type: str
-        Type of government data between: Congress, Senate, House, Contracts and Quarter-Contracts
+        Type of government data between: Congress, Senate, House, Contracts, Quarter-Contracts and Corporate-Lobbying
     ticker : str
         Ticker to get congress trading data from
 
@@ -56,6 +56,12 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
             url = f"https://api.quiverquant.com/beta/historical/govcontracts/{ticker}"
         else:
             url = "https://api.quiverquant.com/beta/live/govcontracts"
+
+    elif gov_type == "corporate-lobbying":
+        if ticker:
+            url = f"https://api.quiverquant.com/beta/historical/lobbying/{ticker}"
+        else:
+            url = "https://api.quiverquant.com/beta/live/lobbying"
 
     else:
         return pd.DataFrame()
