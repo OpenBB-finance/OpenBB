@@ -165,6 +165,22 @@ Print up to the last 30 messages of a user. [Source: Stocktwits]
 
 
 # TWITTER <a name="TWITTER"></a>
+Uses VADER sentiment.  this is a lexicon based system.  A sampple tweet is 
+```'
+Have some $SENS  🚀🏆\n👉FDA approval coming very soon, 👉News is out, amazing test results. \n👉Very high short 
+interest rate. \n👉Major short squeeze coming. \n\n$amc $gme $nakd $ctrm $tsla $aapl $oeg $aht $bbby $bb $fsr $spce
+ https://t.co/B0cPhufpA2'
+```
+
+This gives the following scores:
+```python
+created_at                                  Thu Jun 03 20:37:54
+text          Have some $SENS  🚀🏆\n👉FDA approval coming very...
+sentiment                                                 0.872
+positive                                                  0.177
+negative                                                      0
+neutral                                                   0.823
+```
 
 ## infer <a name="infer"></a>
 ```

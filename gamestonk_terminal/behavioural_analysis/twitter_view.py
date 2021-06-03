@@ -19,7 +19,7 @@ from gamestonk_terminal.helper_funcs import (
 
 analyzer = SentimentIntensityAnalyzer()
 
-def load_tweets(s_ticker: str, count: int, params:Optional[Dict]) -> DataFrame:
+def load_tweets(s_ticker: str, count: int) -> DataFrame:
     """
     Load tweets from twitter API
     Parameters
@@ -34,13 +34,12 @@ def load_tweets(s_ticker: str, count: int, params:Optional[Dict]) -> DataFrame:
     de_tweet: pd.DataFrame
         Dataframe of tweets and sentiment
     """
-    if not params:
-        params = {
+    params = {
             "q": "$" + s_ticker,
             "tweet_mode": "extended",
             "lang": "en",
             "count": count,
-        }
+    }
 
     # Request Twitter API
     response = requests.get(
@@ -62,6 +61,7 @@ def load_tweets(s_ticker: str, count: int, params:Optional[Dict]) -> DataFrame:
     sentiments = []
     pos = []
     neg = []
+    neu = []
     for s_tweet in df_tweets["text"].to_list():
         tweet = clean_tweet(s_tweet, s_ticker)
         """ 
@@ -73,11 +73,12 @@ def load_tweets(s_ticker: str, count: int, params:Optional[Dict]) -> DataFrame:
         sentiments.append(analyzer.polarity_scores(tweet)["compound"])
         pos.append(analyzer.polarity_scores(tweet)["pos"])
         neg.append(analyzer.polarity_scores(tweet)["neg"])
-
+        neu.append( analyzer.polarity_scores(tweet)["neu"] )
     # Add sentiments to tweets dataframe
     df_tweets["sentiment"] = sentiments
     df_tweets["positive"] = pos
     df_tweets["negative"] = neg
+    df_tweets["neutral"] = neu
 
     return df_tweets
 
@@ -134,12 +135,15 @@ def inference(other_args:List[str], s_ticker:str):
 
         pos = df_tweets["positive"]
         neg = df_tweets["negative"]
-        percent_pos = np.sum(pos>=neg)/len(df_tweets)
+
+        percent_pos = len(np.where(pos>neg)[0])/len(df_tweets)
+        percent_neg = len(np.where(pos < neg)[0]) / len(df_tweets)
         total_sent = np.round(np.sum(df_tweets["sentiment"]),2)
         mean_sent = np.round(np.mean(df_tweets["sentiment"]),2)
         print(f"The summed compound sentiment of {s_ticker} is: {total_sent}")
         print(f"The average compound sentiment of {s_ticker} is: {mean_sent}")
-        print(f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % were of positive sentiment.")
+        print(f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % had a higher positive sentiment")
+        print(f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment")
         print("")
 
     except Exception as e:
