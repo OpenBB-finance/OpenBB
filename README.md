@@ -47,8 +47,6 @@
   </p>
 </p>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
@@ -95,8 +93,8 @@ There are many ways to help support GST. If technical development or support are
 
 Sharing the terminal with friends and family would also go a long way. Thanks in advance ape.
 
-
 ## Getting Started
+
 ### Install
 
 If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
@@ -108,14 +106,13 @@ This project supports Python 3.7, 3.8 and 3.9.
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
 
 0. Star the project
-
 <img width="1272" alt="Captura de ecrã 2021-04-25, às 01 13 30" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
 1. Install Anaconda
 
 Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
-  - If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+- If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
 2. Install git
 
@@ -125,8 +122,8 @@ conda install -c anaconda git
 
 3. Clone the Project
 
-- Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
-- via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
+  - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
+  - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
 
 4. Navigate into the project's folder
 
