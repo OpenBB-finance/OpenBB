@@ -41,8 +41,6 @@ class PredictionTechniquesController:
         "conv1d",
     ]
 
-    if gtff.ENABLE_FBPROPHET:
-        CHOICES.append("prophet")
 
     def __init__(
         self,
@@ -90,8 +88,6 @@ class PredictionTechniquesController:
         print("   rnn         Recurrent Neural Network")
         print("   lstm        Long-Short Term Memory")
         print("   conv1d      1D Convolutional Neural Network")
-        if gtff.ENABLE_FBPROPHET:
-            print("   prophet     Facebook's prophet prediction")
         print("")
 
     def switch(self, an_input: str):
@@ -173,15 +169,6 @@ class PredictionTechniquesController:
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
         neural_networks_view.conv1d(other_args, self.ticker, self.stock)
-
-    if gtff.ENABLE_FBPROPHET:
-
-        def call_prophet(self, other_args: List[str]):
-            """Process prophet command"""
-            # pylint: disable=import-outside-toplevel
-            from gamestonk_terminal.prediction_techniques import fbprophet_view
-
-            fbprophet_view.fbprophet(other_args, self.ticker, self.stock)
 
 
 def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):

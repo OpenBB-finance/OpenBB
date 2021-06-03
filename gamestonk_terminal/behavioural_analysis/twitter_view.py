@@ -1,12 +1,15 @@
+"""Twitter view"""
+__docformat__ = "numpy"
 import argparse
+from typing import List, Optional, Dict
 from datetime import datetime, timedelta
 import requests
 import dateutil
 import pandas as pd
 from pandas.core.frame import DataFrame
 import numpy as np
-import flair
 import matplotlib.pyplot as plt
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import (
     get_data,
@@ -14,15 +17,30 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 
+analyzer = SentimentIntensityAnalyzer()
 
-def load_tweets(s_ticker: str, count: int) -> DataFrame:
-    # Get tweets using Twitter API
-    params = {
-        "q": "$" + s_ticker,
-        "tweet_mode": "extended",
-        "lang": "en",
-        "count": count,
-    }
+def load_tweets(s_ticker: str, count: int, params:Optional[Dict]) -> DataFrame:
+    """
+    Load tweets from twitter API
+    Parameters
+    ----------
+    s_ticker: str
+        Ticker to search twitter for
+    count: int
+        Number of tweets to analyze
+
+    Returns
+    -------
+    de_tweet: pd.DataFrame
+        Dataframe of tweets and sentiment
+    """
+    if not params:
+        params = {
+            "q": "$" + s_ticker,
+            "tweet_mode": "extended",
+            "lang": "en",
+            "count": count,
+        }
 
     # Request Twitter API
     response = requests.get(
@@ -40,50 +58,47 @@ def load_tweets(s_ticker: str, count: int) -> DataFrame:
             row = get_data(tweet)
             df_tweets = df_tweets.append(row, ignore_index=True)
 
-    # Load sentiment model
-    sentiment_model = flair.models.TextClassifier.load("en-sentiment")
-    print("")
-
     # We will append probability/sentiment preds later
-    probs = []
     sentiments = []
+    pos = []
+    neg = []
     for s_tweet in df_tweets["text"].to_list():
         tweet = clean_tweet(s_tweet, s_ticker)
+        """ 
+        VADER stores predictions as a dict with "pos", "neu", "neg", "compound"
+        The compound will be the one of interest, as it is 
+        a 'normalized, weighted composite score' is accurate
+        """
 
-        # Make sentiment prediction
-        sentence = flair.data.Sentence(tweet)
-        sentiment_model.predict(sentence)
+        sentiments.append(analyzer.polarity_scores(tweet)["compound"])
+        pos.append(analyzer.polarity_scores(tweet)["pos"])
+        neg.append(analyzer.polarity_scores(tweet)["neg"])
 
-        # Extract sentiment prediction (POSITIVE/NEGATIVE) and confidence (0-1)
-        probs.append(sentence.labels[0].score)
-        sentiments.append(sentence.labels[0].value)
-
-    # Add probability and sentiment predictions to tweets dataframe
-    df_tweets["probability"] = probs
+    # Add sentiments to tweets dataframe
     df_tweets["sentiment"] = sentiments
-
-    # Add sentiment estimation (probability positive for POSITIVE sentiment,
-    # and negative for NEGATIVE sentiment)
-    df_tweets["sentiment_estimation"] = df_tweets.apply(
-        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"], axis=1
-    ).cumsum()
-    # Cumulative sentiment_estimation
-    df_tweets["prob_sen"] = df_tweets.apply(
-        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"], axis=1
-    )
+    df_tweets["positive"] = pos
+    df_tweets["negative"] = neg
 
     return df_tweets
 
 
-def inference(l_args, s_ticker):
+def inference(other_args:List[str], s_ticker:str):
+    """
+    Infer sentiment from past n tweets
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    s_ticker: str
+        Stock ticker
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="infer",
         description="""
             Print quick sentiment inference from last tweets that contain the ticker.
-            This model splits the text into character-level tokens and uses the DistilBERT
-            model to make predictions. DistilBERT is a distilled version of the powerful
-            BERT transformer model. Not only time period of these, but also frequency.
+            This model splits the text into character-level tokens and uses vader sentiment analysis.
             [Source: Twitter]
         """,
     )
@@ -100,80 +115,11 @@ def inference(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        # Get tweets using Twitter API
-        params = {
-            "q": "$" + s_ticker,
-            "tweet_mode": "extended",
-            "lang": "en",
-            "count": str(ns_parser.n_num),
-        }
-
-        # Request Twitter API
-        response = requests.get(
-            "https://api.twitter.com/1.1/search/tweets.json",
-            params=params,
-            headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
-        )
-
-        # Create dataframe
-        df_tweets = pd.DataFrame()
-
-        # Check that the API response was successful
-        if response.status_code == 200:
-            for tweet in response.json()["statuses"]:
-                row = get_data(tweet)
-                df_tweets = df_tweets.append(row, ignore_index=True)
-
-        elif response.status_code == 401:
-            print("Twitter API Key provided is incorrect\n")
-            return
-
-        # Load sentiment model
-        sentiment_model = flair.models.TextClassifier.load("en-sentiment")
-        print("")
-
-        # We will append probability/sentiment preds later
-        probs = []
-        sentiments = []
-        for s_tweet in df_tweets["text"].to_list():
-            tweet = clean_tweet(s_tweet, s_ticker)
-
-            # Make sentiment prediction
-            sentence = flair.data.Sentence(tweet)
-            sentiment_model.predict(sentence)
-
-            # Extract sentiment prediction (POSITIVE/NEGATIVE) and confidence (0-1)
-            probs.append(sentence.labels[0].score)
-            sentiments.append(sentence.labels[0].value)
-
-        # Add probability and sentiment predictions to tweets dataframe
-        df_tweets["probability"] = probs
-        df_tweets["sentiment"] = sentiments
-
-        # Add sentiment estimation (probability positive for POSITIVE sentiment,
-        # and negative for NEGATIVE sentiment)
-        df_tweets["sentiment_estimation"] = df_tweets.apply(
-            lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-            axis=1,
-        ).cumsum()
-        # Cumulative sentiment_estimation
-        df_tweets["prob_sen"] = df_tweets.apply(
-            lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-            axis=1,
-        )
-
-        # Percentage of confidence
-        if df_tweets["sentiment_estimation"].values[-1] > 0:
-            n_pos = df_tweets[df_tweets["prob_sen"] > 0]["prob_sen"].sum()
-            # pylint: disable=unused-variable
-            n_pct = round(100 * n_pos / df_tweets["probability"].sum())
-        else:
-            n_neg = abs(df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].sum())
-            n_pct = round(100 * n_neg / df_tweets["probability"].sum())  # noqa: F841
+        df_tweets = load_tweets(s_ticker, ns_parser.n_num)
 
         # Parse tweets
         dt_from = dateutil.parser.parse(df_tweets["created_at"].values[-1])
@@ -186,26 +132,38 @@ def inference(l_args, s_ticker):
         n_freq = dt_delta.total_seconds() / len(df_tweets)
         print(f"Frequency of approx 1 tweet every {round(n_freq)} seconds.")
 
-        s_sen = f"{('NEGATIVE', 'POSITIVE')[int(df_tweets['sentiment_estimation'].values[-1] > 0)]}"
-        print(f"The sentiment of {s_ticker} is: {s_sen} ({n_pct} %)")
+        pos = df_tweets["positive"]
+        neg = df_tweets["negative"]
+        percent_pos = np.sum(pos>=neg)/len(df_tweets)
+        total_sent = np.round(np.sum(df_tweets["sentiment"]),2)
+        mean_sent = np.round(np.mean(df_tweets["sentiment"]),2)
+        print(f"The summed compound sentiment of {s_ticker} is: {total_sent}")
+        print(f"The average compound sentiment of {s_ticker} is: {mean_sent}")
+        print(f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % were of positive sentiment.")
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def sentiment(l_args, s_ticker):
+def sentiment(other_args:List[str], s_ticker:str):
+    """
+    Plot sentiments from ticker
+    Parameters
+    ----------
+    other_args
+    s_ticker
+
+    Returns
+    -------
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="sen",
         description="""
             Plot in-depth sentiment predicted from tweets from last days
-            that contain pre-defined ticker. This model splits the text into character-level
-            tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled
-            version of the powerful BERT transformer model. Note that a big num of tweets
-            extracted per hour in conjunction with a high number of days in the past, will make the
-            algorithm take a long period of time to estimate sentiment. [Source: Twitter]
+            that contain pre-defined ticker. T[Source: Twitter]
         """,
     )
 
@@ -233,7 +191,7 @@ def sentiment(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
