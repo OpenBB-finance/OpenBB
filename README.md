@@ -47,8 +47,6 @@
   </p>
 </p>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
@@ -95,8 +93,8 @@ There are many ways to help support GST. If technical development or support are
 
 Sharing the terminal with friends and family would also go a long way. Thanks in advance ape.
 
-
 ## Getting Started
+
 ### Install
 
 If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
@@ -108,70 +106,62 @@ This project supports Python 3.7, 3.8 and 3.9.
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.
 
 0. Star the project
-
 <img width="1272" alt="Captura de ecrã 2021-04-25, às 01 13 30" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
-
 
 1. Install Anaconda
 
 Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
-2. Create Environment
+- If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
-You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used from now onwards.
-```
-conda create -n gst python=3.9
-````
+2. Install git
 
-3. Activate the virtual environment
-
-```
-conda activate gst
-```
-Note: At the end, you can deactivate it with: `conda deactivate`.
-
-4. Install git
 ```
 conda install -c anaconda git
 ````
 
-5. Clone the Project
+3. Clone the Project
 
-- Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
-- via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
+  - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
+  - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
 
-6. Navigate into the project's folder
+4. Navigate into the project's folder
 
 ```
 cd GamestonkTerminal/
 ```
 
-7. Install poetry
-```
-conda install poetry
-```
+5. Create Environment
 
-7.1. If installing python 3.8
+You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used from now onwards.
+
 ```
-conda deactivate
+conda create -n gst --file build/conda/conda-3-8-env.yaml
+````
+
+6. Activate the virtual environment
+
+```
 conda activate gst
 ```
-*The `conda deactivate` -> `conda activate` in the middle is on purpose, this is sometimes required to avoid issues with poetry*
 
-7.2. If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+Note: At the end, you can deactivate it with: `conda deactivate`.
 
-8. Install poetry dependencies
+7. Install poetry dependencies
+
 ```
 poetry install
 ```
+
 This is a library for package management, and ensures a smoother experience than: ``pip install -r requirements.txt``
 
-9.  You're ready to Gamestonk it!
+8.  You're ready to Gamestonk it!
 
 ```
 python terminal.py
 ```
-10. (Windows - Optional) Speeding up opening process in the future
+
+9. (Windows - Optional) Speeding up opening process in the future
 
 After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing.
 
@@ -182,6 +172,8 @@ After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk T
 ### Advanced User Install - Machine Learning
 
 If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can pick from to download project dependencies.
+
+If you are using conda instead of build/conda/conda-3-8-env.yaml configuration file in Step 5, use build/conda/conda-3-8-env-full.
 
 Note: The libraries specified in the [requirements.txt](/requirements.txt) file have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
