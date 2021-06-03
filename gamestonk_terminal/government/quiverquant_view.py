@@ -986,7 +986,7 @@ def top_lobbying(other_args: List[str]):
         plt.xlabel("Ticker")
         plt.ylabel("Sum Amount [1k $]")
         plt.title(
-            f"Sum amount spent on corporate lobbying since {df_lobbying['Date'].min()}"
+            f"Total amount spent on corporate lobbying since {df_lobbying['Date'].min()}"
         )
 
         if gtff.USE_ION:
