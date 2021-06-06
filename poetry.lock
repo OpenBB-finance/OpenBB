@@ -2564,6 +2564,17 @@ python-versions = "*"
 six = "*"
 
 [[package]]
+name = "vadersentiment"
+version = "3.3.2"
+description = "VADER Sentiment Analysis. VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media, and works well on texts from other domains."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
 name = "valinvest"
 version = "0.0.2"
 description = "A value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts"
@@ -2698,7 +2709,7 @@ prediction = ["tensorflow", "pmdarima"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "54bd04535cfaa60f2fb513e10e1b1f8f091d872abc4b6c5d8143749f76fe9449"
+content-hash = "b0be53254befc6a54c4f72fe7fa7b82ea3892763528b578ac7440acbbb26b423"
 
 [metadata.files]
 absl-py = [
@@ -4534,6 +4545,10 @@ urllib3 = [
 ]
 user-agent = [
     {file = "user_agent-0.1.9.tar.gz", hash = "sha256:8f1ad46cc4aef9f99515ea1c74bb8cacc43e23074c335b2ba2db7735ebe9c0d5"},
+]
+vadersentiment = [
+    {file = "vaderSentiment-3.3.2-py2.py3-none-any.whl", hash = "sha256:3bf1d243b98b1afad575b9f22bc2cb1e212b94ff89ca74f8a23a588d024ea311"},
+    {file = "vaderSentiment-3.3.2.tar.gz", hash = "sha256:5d7c06e027fc8b99238edb0d53d970cf97066ef97654009890b83703849632f9"},
 ]
 valinvest = [
     {file = "valinvest-0.0.2-py3-none-any.whl", hash = "sha256:37fadaf30c69e0487fed8d9cc93bb792ca8cf36fed0839e0e755a84738166ab9"},

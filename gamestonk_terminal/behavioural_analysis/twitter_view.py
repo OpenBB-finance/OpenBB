@@ -16,7 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     clean_tweet,
     parse_known_args_and_warn,
     plot_autoscale,
-check_int_range
+    check_int_range,
 )
 import gamestonk_terminal.config_plot as cfg_plot
 from gamestonk_terminal import feature_flags as gtff
@@ -49,7 +49,7 @@ def load_analyze_tweets(
         Dataframe of tweets and sentiment
     """
     params = {
-        "query": f"(\${s_ticker}) (lang:en)",
+        "query": fr"(\${s_ticker}) (lang:en)",
         "max_results": str(count),
         "tweet.fields": "created_at,lang",
     }
@@ -80,7 +80,7 @@ def load_analyze_tweets(
         return pd.DataFrame()
     elif response.status_code == 400:
         print(
-            "Status Code 400.  Either the query exceeds the 7 days from the API or you have reached API limits"
+            "Status Code 400.  This means you are requesting data from beyond the API's 7 day limit"
         )
         return pd.DataFrame()
 
@@ -88,11 +88,12 @@ def load_analyze_tweets(
     pos = []
     neg = []
     neu = []
+
     for s_tweet in df_tweets["text"].to_list():
         tweet = clean_tweet(s_tweet, s_ticker)
-        """ 
+        """
         VADER stores predictions as a dict with "pos", "neu", "neg", "compound"
-        The compound will be the one of interest, as it is 
+        The compound will be the one of interest, as it is
         a 'normalized, weighted composite score' is accurate
         """
 
@@ -135,9 +136,8 @@ def inference(other_args: List[str], s_ticker: str):
         "--num",
         action="store",
         dest="n_num",
-        type=int,
+        type=check_int_range(10, 100),
         default=100,
-        choices=range(10, 101),
         help="num of latest tweets to infer from.",
     )
 
@@ -207,7 +207,7 @@ def sentiment(other_args: List[str], s_ticker: str):
         "--num",
         action="store",
         dest="n_tweets",
-        type=check_int_range(8,62),
+        type=check_int_range(8, 62),
         default=10,
         help="number of tweets to extract per hour.",
     )
@@ -216,8 +216,8 @@ def sentiment(other_args: List[str], s_ticker: str):
         "--days",
         action="store",
         dest="n_days_past",
-        type=int_range(1,6),
-        default=2,
+        type=check_int_range(1, 6),
+        default=6,
         help="number of days in the past to extract tweets.",
     )
 
@@ -291,11 +291,18 @@ def sentiment(other_args: List[str], s_ticker: str):
             c="cyan",
         )
         ax[0].set_ylabel("Cumulative VADER Sentiment")
+        xlocations = []
+        xlabels = []
         for a, b in df_tweets.groupby(by="Day"):
             b["time"] = pd.to_datetime(b["created_at"])
             b = b.sort_values(by="time")
             ax[0].plot(b["time"], b["sentiment"].cumsum(), c="tab:blue")
-        ax[1].bar(df_tweets["date"], df_tweets["positive"], color="green", width=0.02)
+            xlocations.append(b.time.values[0])
+            xlabels.append(b["time"].apply(lambda x: x.strftime("%m-%d")).values[0])
+
+            ax[1].bar(
+                df_tweets["date"], df_tweets["positive"], color="green", width=0.02
+            )
         ax[1].bar(
             df_tweets["date"], -1 * df_tweets["negative"], color="red", width=0.02
         )
@@ -304,15 +311,17 @@ def sentiment(other_args: List[str], s_ticker: str):
         )
         ax[0].minorticks_on()
         ax[0].grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax[0].tick_params(axis='x', rotation=45)
-        ax[1].tick_params(axis='x', rotation=45)
+        ax[0].set_xticks(xlocations)
+        ax[0].set_xticklabels(xlabels)
+
         ax[1].grid(
             b=True, which="major", color="#666666", linestyle="-", lw=1.5, alpha=0.5
         )
         ax[1].minorticks_on()
         ax[1].grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         ax[1].set_ylabel("VADER Polarity Scores")
-
+        ax[1].set_xticks(xlocations)
+        ax[1].set_xticklabels(xlabels)
         plt.suptitle(
             f"Twitter's {s_ticker} total compound sentiment over time is {np.sum(df_tweets['sentiment'])}"
         )

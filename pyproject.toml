@@ -70,6 +70,7 @@ pyupgrade = "2.18.2"
 cvxpy = "1.1.12"
 tensorflow = {version = "2.5.0", optional = true}
 jupyter-client = "6.1.12"
+vaderSentiment = "3.3.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
