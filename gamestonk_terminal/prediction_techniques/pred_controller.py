@@ -41,7 +41,6 @@ class PredictionTechniquesController:
         "conv1d",
     ]
 
-
     def __init__(
         self,
         stock: pd.DataFrame,
