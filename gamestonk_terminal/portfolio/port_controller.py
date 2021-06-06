@@ -12,7 +12,7 @@ from gamestonk_terminal.portfolio import (
     rh_api,
     alp_api,
     ally_api,
-    # degiro_controller,
+    degiro_controller,
 )
 from gamestonk_terminal.portfolio.portfolio_helpers import (
     merge_portfolios,
