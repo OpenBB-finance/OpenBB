@@ -4,7 +4,7 @@ import argparse
 from typing import List, Optional
 from datetime import datetime, timedelta
 import requests
-import dateutil
+from dateutil import parser as dparse
 import pandas as pd
 from pandas.core.frame import DataFrame
 import numpy as np
@@ -149,8 +149,8 @@ def inference(other_args: List[str], s_ticker: str):
         df_tweets = load_analyze_tweets(s_ticker, ns_parser.n_num)
 
         # Parse tweets
-        dt_from = dateutil.parser.parse(df_tweets["created_at"].values[-1])
-        dt_to = dateutil.parser.parse(df_tweets["created_at"].values[0])
+        dt_from = dparse.parse(df_tweets["created_at"].values[-1])
+        dt_to = dparse.parse(df_tweets["created_at"].values[0])
         print(f"From: {dt_from.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"To:   {dt_to.strftime('%Y-%m-%d %H:%M:%S')}")
 
