@@ -1,18 +1,21 @@
+"""Helper functions"""
+__docformat__ = "numpy"
 import argparse
 from datetime import datetime, timedelta, time as Time
 import os
 import random
 import re
 import sys
+import pandas as pd
 from pytz import timezone
 import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as holidaysUS
 from colorama import Fore, Style
-import pandas.io.formats.format
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
+import pandas.io.formats.format
 from screeninfo import get_monitors
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
@@ -23,6 +26,7 @@ if cfgPlot.BACKEND is not None:
 
 
 def check_non_negative(value) -> int:
+    """Argparse type to check non negative int"""
     ivalue = int(value)
     if ivalue < 0:
         raise argparse.ArgumentTypeError(f"{value} is negative")
@@ -30,6 +34,7 @@ def check_non_negative(value) -> int:
 
 
 def check_positive(value) -> int:
+    """Argparse type to check positive int"""
     ivalue = int(value)
     if ivalue <= 0:
         raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
@@ -37,13 +42,26 @@ def check_positive(value) -> int:
 
 
 def valid_date(s: str) -> datetime:
+    """Argparse type to check date is in valid format"""
     try:
         return datetime.strptime(s, "%Y-%m-%d")
     except ValueError as value_error:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
-def plot_view_stock(df, symbol):
+def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
+    """
+    Plot the loaded stock dataframe
+    Parameters
+    ----------
+    df: Dataframe
+        Dataframe of prices and volumnes
+    symbol: str
+        Symbol of ticker
+    interval: str
+        Stock data resolution for plotting purposes
+
+    """
     df.sort_index(ascending=True, inplace=True)
 
     try:
@@ -55,7 +73,13 @@ def plot_view_stock(df, symbol):
         )
         return
 
-    plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=0.3)
+    # In order to make nice Volume plot, make the bar width = interval
+    if interval == "1440min":
+        bar_width = timedelta(days=1)
+    else:
+        bar_width = timedelta(minutes=int(interval.split("m")[0]))
+
+    plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=bar_width)
     plt.ylabel("Volume")
     _ = axVolume.twinx()
     plt.plot(df.index, df.iloc[:, :-1])
@@ -76,6 +100,7 @@ def plot_view_stock(df, symbol):
 
 
 def us_market_holidays(years) -> list:
+    """get US market holidays"""
     if isinstance(years, int):
         years = [
             years,
@@ -212,6 +237,7 @@ def divide_chunks(data, n):
 
 
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
+    """gets the next stock market day. Checks against weekends and holidays"""
     n_days = 0
     l_pred_days = list()
     years: list = []
@@ -236,6 +262,7 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
 
 
 def get_data(tweet):
+    """Gets twitter data from API request"""
     if "+" in tweet["created_at"]:
         s_datetime = tweet["created_at"].split(" +")[0]
     else:
@@ -253,6 +280,7 @@ def get_data(tweet):
 
 
 def clean_tweet(tweet: str, s_ticker: str) -> str:
+    """Cleans tweets to be fed to sentiment model"""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
     ticker = re.compile(fr"(?i)@{s_ticker}(?=\b)")
@@ -386,12 +414,14 @@ def financials_colored_values(val: str) -> str:
 
 
 def check_ohlc(type_ohlc: str) -> str:
+    """Check that data is in ohlc"""
     if bool(re.match("^[ohlca]+$", type_ohlc)):
         return type_ohlc
     raise argparse.ArgumentTypeError("The type specified is not recognized")
 
 
 def lett_to_num(word: str) -> str:
+    """Matches ohlca to integers"""
     replacements = [("o", "1"), ("h", "2"), ("l", "3"), ("c", "4"), ("a", "5")]
     for (a, b) in replacements:
         word = word.replace(a, b)
@@ -438,7 +468,8 @@ def get_flair() -> str:
     return ""
 
 
-def str_to_bool(value):
+def str_to_bool(value) -> bool:
+    """Match a string to a boolean value"""
     if isinstance(value, bool):
         return value
     if value.lower() in {"false", "f", "0", "no", "n"}:

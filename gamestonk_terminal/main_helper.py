@@ -1,3 +1,5 @@
+"""Main helper"""
+__docformat__ = "numpy"
 import argparse
 from typing import List
 from sys import stdout
@@ -115,7 +117,8 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("")
 
 
-def clear(l_args, s_ticker, s_start, s_interval, df_stock):
+def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
+    """Clears loaded stock and returns empty variables"""
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="clear",
@@ -123,7 +126,7 @@ def clear(l_args, s_ticker, s_start, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return "", "", "", pd.DataFrame()
 
@@ -135,7 +138,34 @@ def clear(l_args, s_ticker, s_start, s_interval, df_stock):
         return s_ticker, s_start, s_interval, df_stock
 
 
-def load(l_args, s_ticker, s_start, s_interval, df_stock):
+def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
+    """
+    Load selected ticker
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_start: str
+        Start date
+    s_interval: str
+        Interval to get data for
+    df_stock: pd.DataFrame
+        Preloaded dataframe
+
+    Returns
+    -------
+    ns_parser.s_ticker :
+        Ticker
+    s_start:
+        Start date
+    str(ns_parser.n_interval) + "min":
+        Interval
+    df_stock_candidate
+        Dataframe loaded with close and volumes.
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="load",
@@ -188,11 +218,11 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
 
     try:
         # For the case where a user uses: 'load BB'
-        if l_args:
-            if "-" not in l_args[0]:
-                l_args.insert(0, "-t")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
 
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return [s_ticker, s_start, s_interval, df_stock]
 
@@ -259,7 +289,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
                     outputsize="full",
                     interval=str(ns_parser.n_interval) + "min",
                 )
-
+                s_interval = str(ns_parser.n_interval) + "min"
                 # Check that loading a stock was not successful
                 if df_stock_candidate.empty:
                     print("")
@@ -280,7 +310,7 @@ def load(l_args, s_ticker, s_start, s_interval, df_stock):
             # Yahoo Finance Source
             elif ns_parser.source == "yf":
                 s_int = str(ns_parser.n_interval) + "m"
-
+                s_interval = s_int
                 d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
                 s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
@@ -396,7 +426,7 @@ def candle(s_ticker: str, s_start: str):
     print("")
 
 
-def quote(l_args: List[str], s_ticker: str):
+def quote(other_args: List[str], s_ticker: str):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="quote",
@@ -424,10 +454,10 @@ def quote(l_args: List[str], s_ticker: str):
 
     try:
         # For the case where a user uses: 'quote BB'
-        if l_args:
-            if "-" not in l_args[0]:
-                l_args.insert(0, "-t")
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -492,7 +522,23 @@ def quote(l_args: List[str], s_ticker: str):
     return
 
 
-def view(l_args, s_ticker, s_start, s_interval, df_stock):
+def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
+    """
+    Plot loaded ticker or load ticker and plot
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker to load
+    s_start: str
+        Start date
+    s_interval: str
+        Interval tto get data for
+    df_stock: pd.Dataframe
+        Preloaded dataframe to plot
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="view",
@@ -547,7 +593,7 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -594,9 +640,6 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
 
     df_stock.sort_index(ascending=True, inplace=True)
 
-    # Slice dataframe from the starting date YYYY-MM-DD selected
-    df_stock = df_stock[ns_parser.s_start_date :]
-
     # Daily
     if s_interval == "1440min":
         # The default doesn't exist for intradaily data
@@ -608,26 +651,27 @@ def view(l_args, s_ticker, s_start, s_interval, df_stock):
             return
         # Append last column of df to be filtered which corresponds to: 6. Volume
         ln_col_idx.append(5)
+        # Slice dataframe from the starting date YYYY-MM-DD selected
+        df_stock = df_stock[ns_parser.s_start_date :]
     # Intraday
     else:
         # The default doesn't exist for intradaily data
+        # JM edit 6-7-21 -- It seems it does
         if ns_parser.type == "a":
-            ln_col_idx = [3]
+            ln_col_idx = [4]
         else:
             ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-        # Check that the types given are not bigger than 3, as there are only 4 types (0-3)
-        # pylint: disable=len-as-condition
-        if len([i for i in ln_col_idx if i > 3]) > 0:
-            print("An index bigger than 3 was given, which is wrong. Try again")
-            return
+
         # Append last column of df to be filtered which corresponds to: 5. Volume
-        ln_col_idx.append(4)
+        ln_col_idx.append(5)
+        # Slice dataframe from the starting date YYYY-MM-DD selected
+        df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
 
     # Plot view of the stock
-    plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker)
+    plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
 
 
-def export(l_args, df_stock):
+def export(other_args: List[str], df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="export",
@@ -650,7 +694,7 @@ def export(l_args, df_stock):
         help="Export historical data into following formats: csv, json, excel, clipboard",
     )
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
