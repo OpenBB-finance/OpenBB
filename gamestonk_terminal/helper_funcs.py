@@ -23,16 +23,14 @@ if cfgPlot.BACKEND is not None:
 
 
 def check_int_range(mini, maxi):
-    """https://stackoverflow.com/questions/55324449/how-to-specify-a-minimum-or-maximum-float-value-with-argparse"""
-    """Return function handle of an argument type function for
-       ArgumentParser checking a float range: mini <= arg <= maxi
-         mini - minimum acceptable argument
-         maxi - maximum acceptable argument"""
+    """
+    Checks if argparse argument is an int between 2 values.
+    https://stackoverflow.com/questions/55324449/how-to-specify-a-minimum-or-maximum-float-value-with-argparse
+    """
 
     # Define the function with default arguments
-    def int_range_checker(num):
+    def int_range_checker(num) -> int:
         num = int(num)
-        """New Type function for argparse - a float within predefined range."""
         if num < mini or num > maxi:
             raise argparse.ArgumentTypeError(f"must be in range [{mini},{maxi}]")
         return num

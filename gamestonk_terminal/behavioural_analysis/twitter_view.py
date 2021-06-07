@@ -91,12 +91,6 @@ def load_analyze_tweets(
 
     for s_tweet in df_tweets["text"].to_list():
         tweet = clean_tweet(s_tweet, s_ticker)
-        """
-        VADER stores predictions as a dict with "pos", "neu", "neg", "compound"
-        The compound will be the one of interest, as it is
-        a 'normalized, weighted composite score' is accurate
-        """
-
         sentiments.append(analyzer.polarity_scores(tweet)["compound"])
         pos.append(analyzer.polarity_scores(tweet)["pos"])
         neg.append(analyzer.polarity_scores(tweet)["neg"])
@@ -283,7 +277,7 @@ def sentiment(other_args: List[str], s_ticker: str):
         df_tweets["date"] = pd.to_datetime(df_tweets["created_at"])
         df_tweets = df_tweets.sort_values(by="date")
         df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
-        fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI)
+        _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI)
         ax[0].plot(
             pd.to_datetime(df_tweets["created_at"]),
             df_tweets["cumulative_compound"].values,
@@ -293,12 +287,14 @@ def sentiment(other_args: List[str], s_ticker: str):
         ax[0].set_ylabel("Cumulative VADER Sentiment")
         xlocations = []
         xlabels = []
-        for a, b in df_tweets.groupby(by="Day"):
-            b["time"] = pd.to_datetime(b["created_at"])
-            b = b.sort_values(by="time")
-            ax[0].plot(b["time"], b["sentiment"].cumsum(), c="tab:blue")
-            xlocations.append(b.time.values[0])
-            xlabels.append(b["time"].apply(lambda x: x.strftime("%m-%d")).values[0])
+        for _, day_df in df_tweets.groupby(by="Day"):
+            day_df["time"] = pd.to_datetime(day_df["created_at"])
+            day_df = day_df.sort_values(by="time")
+            ax[0].plot(day_df["time"], day_df["sentiment"].cumsum(), c="tab:blue")
+            xlocations.append(day_df.time.values[0])
+            xlabels.append(
+                day_df["time"].apply(lambda x: x.strftime("%m-%d")).values[0]
+            )
 
             ax[1].bar(
                 df_tweets["date"], df_tweets["positive"], color="green", width=0.02
