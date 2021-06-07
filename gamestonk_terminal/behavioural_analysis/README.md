@@ -193,6 +193,8 @@ negative                                                      0
 neutral                                                   0.823
 ```
 
+Note that both functions use twitters v2 endpoint, which only gives 7 days of historical data.  It also requires at least 10 tweets be pulled.
+
 ## infer <a name="infer"></a>
 ```
 usage: infer [-n N_NUM]
@@ -206,8 +208,8 @@ Print quick sentiment inference from last tweets that contain the ticker. This m
 usage: sentiment [-n N_NUM] [-d N_DAYS_PAST]
 ```
 Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the VADER model to make predictions.
-  * -n : num of tweets to extract per hour. Default 100.
-  * -d : num of days in the past to extract tweets. Default 7.
+  * -n : num of tweets to extract per hour. Default 15.
+  * -d : num of days in the past to extract tweets. Default 6.  Max 6
 
 # GOOGLE
 

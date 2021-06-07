@@ -201,8 +201,8 @@ def sentiment(other_args: List[str], s_ticker: str):
         "--num",
         action="store",
         dest="n_tweets",
-        type=check_int_range(8, 62),
-        default=10,
+        type=check_int_range(10, 62),
+        default=15,
         help="number of tweets to extract per hour.",
     )
     parser.add_argument(
