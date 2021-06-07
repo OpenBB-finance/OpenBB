@@ -40,6 +40,8 @@ class GovController:
         "contracts",
         "qtr_contracts",
         "qtr_contracts_hist",
+        "top_lobbying",
+        "lobbying",
     ]
 
     def __init__(
@@ -75,6 +77,7 @@ class GovController:
         print("   last_contracts       last government contracts")
         print("   sum_contracts        plot sum of last government contracts")
         print("   qtr_contracts        quarterly government contracts best regression")
+        print("   top_lobbying         top corporate lobbying tickers")
         print("")
         if self.ticker:
             print(f"Ticker: {self.ticker}")
@@ -87,6 +90,7 @@ class GovController:
             print("   raw_contracts        raw contracts on the ticker")
             print("   contracts            plot sum of contracts on the ticker")
             print("   qtr_contracts_hist   quarterly government contracts historical")
+            print("   lobbying             corporate lobbying details")
             print("")
         return
 
@@ -196,11 +200,19 @@ class GovController:
 
     def call_qtr_contracts(self, other_args: List[str]):
         """Process qtr_contracts command"""
-        quiverquant_view.call_qtr_contracts(other_args)
+        quiverquant_view.qtr_contracts(other_args)
 
     def call_qtr_contracts_hist(self, other_args: List[str]):
         """Process qtr_contracts_hist command"""
-        quiverquant_view.call_qtr_contracts_hist(other_args, self.ticker)
+        quiverquant_view.qtr_contracts_hist(other_args, self.ticker)
+
+    def call_top_lobbying(self, other_args: List[str]):
+        """Process top_lobbying command"""
+        quiverquant_view.top_lobbying(other_args)
+
+    def call_lobbying(self, other_args: List[str]):
+        """Process lobbying command"""
+        quiverquant_view.lobbying(other_args, self.ticker)
 
 
 def menu(ticker: str):
