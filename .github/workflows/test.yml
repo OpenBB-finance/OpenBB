@@ -27,7 +27,7 @@ jobs:
           restore-keys: ${{ runner.os }}-linting
 
       - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint
-      - run: mypy --install-types
+      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML
       - run: bandit -r . || true
       - run: black --check .
       - run: codespell --ignore-words-list="mape","ba","hist" --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.json"
