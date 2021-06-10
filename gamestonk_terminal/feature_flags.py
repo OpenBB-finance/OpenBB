@@ -19,9 +19,6 @@ USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "False"))
 # Enable Prediction features
 ENABLE_PREDICT = strtobool(os.getenv("GTFF_ENABLE_PREDICT", "False"))
 
-# Enable FB Prophet
-ENABLE_FBPROPHET = strtobool(os.getenv("GTFF_ENABLE_FBPROPHET", "False"))
-
 # Enable plot autoscaling
 USE_PLOT_AUTOSCALING = strtobool(os.getenv("GTFF_USE_PLOT_AUTOSCALING", "False"))
 

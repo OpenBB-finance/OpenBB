@@ -165,34 +165,51 @@ Print up to the last 30 messages of a user. [Source: Stocktwits]
 
 
 # TWITTER <a name="TWITTER"></a>
+Uses VADER sentiment.  VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis
+tool that is specifically attuned to sentiments expressed in social media.
+
+The output of VADER analysis :
+```
+The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the
+rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). This is the most
+useful metric if you want a single unidimensional measure of sentiment for a given sentence. Calling it a 'normalized,
+ weighted composite score' is accurate.
+```
+A sample tweet is shown below along with what the VADER polarity scores are.
+
+```'
+Have some $SENS  🚀🏆\n👉FDA approval coming very soon, 👉News is out, amazing test results. \n👉Very high short
+interest rate. \n👉Major short squeeze coming. \n\n$amc $gme $nakd $ctrm $tsla $aapl $oeg $aht $bbby $bb $fsr $spce
+ https://t.co/B0cPhufpA2'
+```
+
+This gives the following scores:
+```python
+created_at                                  Thu Jun 03 20:37:54
+text          Have some $SENS  🚀🏆\n👉FDA approval coming very...
+sentiment                                                 0.872
+positive                                                  0.177
+negative                                                      0
+neutral                                                   0.823
+```
+
+Note that both functions use twitters v2 endpoint, which only gives 7 days of historical data.  It also requires at least 10 tweets be pulled.
 
 ## infer <a name="infer"></a>
 ```
 usage: infer [-n N_NUM]
 ```
-Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled version of the powerful BERT transformer model. Not only time period of these, but also frequency. Inspired by https://towardsdatascience.com/sentiment-analysis-for-stock-price-prediction-in-python-bed40c65d178. [Source: Twitter]
+Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses theVADER model to make predictions.
   * -n : num of latest tweets to infer from. Default 100.
 
-<img width="948" alt="Captura de ecrã 2021-02-22, às 00 18 22" src="https://user-images.githubusercontent.com/25267873/108643679-808abf80-74a3-11eb-9b50-899be0a4799f.png">
 
 ## sentiment <a name="sentiment"></a>
 ```
 usage: sentiment [-n N_NUM] [-d N_DAYS_PAST]
 ```
-Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled version of the powerful BERT transformer model. Note that a big num of tweets extracted per hour in conjunction with a high number of days in the past, will make the algorithm take a long period of time to estimate sentiment. Inspired by https://towardsdatascience.com/sentiment-analysis-for-stock-price-prediction-in-python-bed40c65d178. [Source: Twitter]
-  * -n : num of tweets to extract per hour. Default 100.
-  * -d : num of days in the past to extract tweets. Default 7.
-
-<img width="949" alt="Captura de ecrã 2021-02-22, às 00 15 20" src="https://user-images.githubusercontent.com/25267873/108643678-7ff22900-74a3-11eb-9bea-54f84ffe42e1.png">
-
-![nvda](https://user-images.githubusercontent.com/25267873/108643604-2ab61780-74a3-11eb-950b-ba0bbec8293e.png)
-
-Additional examples:
-
-![bb](https://user-images.githubusercontent.com/25267873/108643608-2db10800-74a3-11eb-838c-3db6ec2be9aa.png)
-
-![tsla](https://user-images.githubusercontent.com/25267873/108643609-2e499e80-74a3-11eb-8fa8-489ea15b27c4.png)
-
+Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the VADER model to make predictions.
+  * -n : num of tweets to extract per hour. Default 15.
+  * -d : num of days in the past to extract tweets. Default 6.  Max 6
 
 # GOOGLE
 
@@ -234,5 +251,3 @@ Print top rising related queries with this stock's query. [Source: Google]
   * -n : number of top rising related queries to print. Default 10.
 
 <img width="934" alt="Captura de ecrã 2021-02-22, às 22 21 21" src="https://user-images.githubusercontent.com/25267873/108777814-4f21fa80-755c-11eb-96da-0327c9a0da57.png">
-
-

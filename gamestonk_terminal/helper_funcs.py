@@ -25,6 +25,23 @@ if cfgPlot.BACKEND is not None:
     matplotlib.use(cfgPlot.BACKEND)
 
 
+def check_int_range(mini, maxi):
+    """
+    Checks if argparse argument is an int between 2 values.
+    https://stackoverflow.com/questions/55324449/how-to-specify-a-minimum-or-maximum-float-value-with-argparse
+    """
+
+    # Define the function with default arguments
+    def int_range_checker(num) -> int:
+        num = int(num)
+        if num < mini or num > maxi:
+            raise argparse.ArgumentTypeError(f"must be in range [{mini},{maxi}]")
+        return num
+
+    # Return function handle to checking function
+    return int_range_checker
+
+
 def check_non_negative(value) -> int:
     """Argparse type to check non negative int"""
     ivalue = int(value)

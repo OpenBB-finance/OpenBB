@@ -33,11 +33,7 @@ matplotlib = "^3.3.3"
 plotly = "^4.14.3"
 colorama = "^0.4.4"
 papermill = "^2.3.2"
-torch = {version = "1.7.1", optional = true}
-transformers = {version = "3.5.1", optional = true}
-fbprophet = {version = "0.6", optional = true}
 pmdarima = {version = "1.8.0", optional = false}
-flair = {version = "0.7", optional = true}
 holidays = "^0.10"
 prompt-toolkit = "^3.0.16"
 jupyter = "^1.0.0"
@@ -65,7 +61,6 @@ pyportfolioopt = "^1.4.1"
 selenium = "^3.141.0"
 python-coinmarketcap = "^0.2"
 oandapyV20 = "^0.6.3"
-degiro-connector = "1.0.0"
 valinvest = "^0.0.2"
 bt = "^0.2.9"
 python-binance = "^1.0.1"
@@ -74,6 +69,8 @@ pyupgrade = "2.18.2"
 cvxpy = "1.1.12"
 tensorflow = {version = "2.5.0", optional = true}
 jupyter-client = "6.1.12"
+vaderSentiment = "3.3.2"
+degiro-connector = "1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

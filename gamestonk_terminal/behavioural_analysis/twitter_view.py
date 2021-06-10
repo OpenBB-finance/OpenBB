@@ -1,32 +1,68 @@
+"""Twitter view"""
+__docformat__ = "numpy"
 import argparse
+from typing import List, Optional
 from datetime import datetime, timedelta
 import requests
-import dateutil
+from dateutil import parser as dparse
 import pandas as pd
 from pandas.core.frame import DataFrame
 import numpy as np
-import flair
 import matplotlib.pyplot as plt
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import (
     get_data,
     clean_tweet,
     parse_known_args_and_warn,
+    plot_autoscale,
+    check_int_range,
 )
+import gamestonk_terminal.config_plot as cfg_plot
+from gamestonk_terminal import feature_flags as gtff
+
+analyzer = SentimentIntensityAnalyzer()
 
 
-def load_tweets(s_ticker: str, count: int) -> DataFrame:
-    # Get tweets using Twitter API
+def load_analyze_tweets(
+    s_ticker: str,
+    count: int,
+    start_time: Optional[str] = "",
+    end_time: Optional[str] = "",
+) -> DataFrame:
+    """
+    Load tweets from twitter API and analyzes using VADER
+    Parameters
+    ----------
+    s_ticker: str
+        Ticker to search twitter for
+    count: int
+        Number of tweets to analyze
+    start : Optional[str]
+        If given, the start time to get tweets from
+    end : Optional[str]
+        If given, the end time to get tweets from
+
+    Returns
+    -------
+    de_tweet: pd.DataFrame
+        Dataframe of tweets and sentiment
+    """
     params = {
-        "q": "$" + s_ticker,
-        "tweet_mode": "extended",
-        "lang": "en",
-        "count": count,
+        "query": fr"(\${s_ticker}) (lang:en)",
+        "max_results": str(count),
+        "tweet.fields": "created_at,lang",
     }
+
+    if start_time:
+        # Assign from and to datetime parameters for the API
+        params["start_time"] = start_time
+    if end_time:
+        params["end_time"] = end_time
 
     # Request Twitter API
     response = requests.get(
-        "https://api.twitter.com/1.1/search/tweets.json",
+        "https://api.twitter.com/2/tweets/search/recent",
         params=params,  # type: ignore
         headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
     )
@@ -36,54 +72,55 @@ def load_tweets(s_ticker: str, count: int) -> DataFrame:
 
     # Check that the API response was successful
     if response.status_code == 200:
-        for tweet in response.json()["statuses"]:
+        for tweet in response.json()["data"]:
             row = get_data(tweet)
             df_tweets = df_tweets.append(row, ignore_index=True)
+    elif response.status_code == 401:
+        print("Twitter API Key provided is incorrect\n")
+        return pd.DataFrame()
+    elif response.status_code == 400:
+        print(
+            "Status Code 400.  This means you are requesting data from beyond the API's 7 day limit"
+        )
+        return pd.DataFrame()
 
-    # Load sentiment model
-    sentiment_model = flair.models.TextClassifier.load("en-sentiment")
-    print("")
-
-    # We will append probability/sentiment preds later
-    probs = []
     sentiments = []
+    pos = []
+    neg = []
+    neu = []
+
     for s_tweet in df_tweets["text"].to_list():
         tweet = clean_tweet(s_tweet, s_ticker)
-
-        # Make sentiment prediction
-        sentence = flair.data.Sentence(tweet)
-        sentiment_model.predict(sentence)
-
-        # Extract sentiment prediction (POSITIVE/NEGATIVE) and confidence (0-1)
-        probs.append(sentence.labels[0].score)
-        sentiments.append(sentence.labels[0].value)
-
-    # Add probability and sentiment predictions to tweets dataframe
-    df_tweets["probability"] = probs
+        sentiments.append(analyzer.polarity_scores(tweet)["compound"])
+        pos.append(analyzer.polarity_scores(tweet)["pos"])
+        neg.append(analyzer.polarity_scores(tweet)["neg"])
+        neu.append(analyzer.polarity_scores(tweet)["neu"])
+    # Add sentiments to tweets dataframe
     df_tweets["sentiment"] = sentiments
-
-    # Add sentiment estimation (probability positive for POSITIVE sentiment,
-    # and negative for NEGATIVE sentiment)
-    df_tweets["sentiment_estimation"] = df_tweets.apply(
-        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"], axis=1
-    ).cumsum()
-    # Cumulative sentiment_estimation
-    df_tweets["prob_sen"] = df_tweets.apply(
-        lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"], axis=1
-    )
+    df_tweets["positive"] = pos
+    df_tweets["negative"] = neg
+    df_tweets["neutral"] = neu
 
     return df_tweets
 
 
-def inference(l_args, s_ticker):
+def inference(other_args: List[str], s_ticker: str):
+    """
+    Infer sentiment from past n tweets
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    s_ticker: str
+        Stock ticker
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="infer",
         description="""
             Print quick sentiment inference from last tweets that contain the ticker.
-            This model splits the text into character-level tokens and uses the DistilBERT
-            model to make predictions. DistilBERT is a distilled version of the powerful
-            BERT transformer model. Not only time period of these, but also frequency.
+            This model splits the text into character-level tokens and uses vader sentiment analysis.
             [Source: Twitter]
         """,
     )
@@ -93,91 +130,21 @@ def inference(l_args, s_ticker):
         "--num",
         action="store",
         dest="n_num",
-        type=int,
+        type=check_int_range(10, 100),
         default=100,
-        choices=range(10, 101),
         help="num of latest tweets to infer from.",
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        # Get tweets using Twitter API
-        params = {
-            "q": "$" + s_ticker,
-            "tweet_mode": "extended",
-            "lang": "en",
-            "count": str(ns_parser.n_num),
-        }
-
-        # Request Twitter API
-        response = requests.get(
-            "https://api.twitter.com/1.1/search/tweets.json",
-            params=params,
-            headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
-        )
-
-        # Create dataframe
-        df_tweets = pd.DataFrame()
-
-        # Check that the API response was successful
-        if response.status_code == 200:
-            for tweet in response.json()["statuses"]:
-                row = get_data(tweet)
-                df_tweets = df_tweets.append(row, ignore_index=True)
-
-        elif response.status_code == 401:
-            print("Twitter API Key provided is incorrect\n")
-            return
-
-        # Load sentiment model
-        sentiment_model = flair.models.TextClassifier.load("en-sentiment")
-        print("")
-
-        # We will append probability/sentiment preds later
-        probs = []
-        sentiments = []
-        for s_tweet in df_tweets["text"].to_list():
-            tweet = clean_tweet(s_tweet, s_ticker)
-
-            # Make sentiment prediction
-            sentence = flair.data.Sentence(tweet)
-            sentiment_model.predict(sentence)
-
-            # Extract sentiment prediction (POSITIVE/NEGATIVE) and confidence (0-1)
-            probs.append(sentence.labels[0].score)
-            sentiments.append(sentence.labels[0].value)
-
-        # Add probability and sentiment predictions to tweets dataframe
-        df_tweets["probability"] = probs
-        df_tweets["sentiment"] = sentiments
-
-        # Add sentiment estimation (probability positive for POSITIVE sentiment,
-        # and negative for NEGATIVE sentiment)
-        df_tweets["sentiment_estimation"] = df_tweets.apply(
-            lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-            axis=1,
-        ).cumsum()
-        # Cumulative sentiment_estimation
-        df_tweets["prob_sen"] = df_tweets.apply(
-            lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-            axis=1,
-        )
-
-        # Percentage of confidence
-        if df_tweets["sentiment_estimation"].values[-1] > 0:
-            n_pos = df_tweets[df_tweets["prob_sen"] > 0]["prob_sen"].sum()
-            # pylint: disable=unused-variable
-            n_pct = round(100 * n_pos / df_tweets["probability"].sum())
-        else:
-            n_neg = abs(df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].sum())
-            n_pct = round(100 * n_neg / df_tweets["probability"].sum())  # noqa: F841
+        df_tweets = load_analyze_tweets(s_ticker, ns_parser.n_num)
 
         # Parse tweets
-        dt_from = dateutil.parser.parse(df_tweets["created_at"].values[-1])
-        dt_to = dateutil.parser.parse(df_tweets["created_at"].values[0])
+        dt_from = dparse.parse(df_tweets["created_at"].values[-1])
+        dt_to = dparse.parse(df_tweets["created_at"].values[0])
         print(f"From: {dt_from.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"To:   {dt_to.strftime('%Y-%m-%d %H:%M:%S')}")
 
@@ -186,26 +153,44 @@ def inference(l_args, s_ticker):
         n_freq = dt_delta.total_seconds() / len(df_tweets)
         print(f"Frequency of approx 1 tweet every {round(n_freq)} seconds.")
 
-        s_sen = f"{('NEGATIVE', 'POSITIVE')[int(df_tweets['sentiment_estimation'].values[-1] > 0)]}"
-        print(f"The sentiment of {s_ticker} is: {s_sen} ({n_pct} %)")
+        pos = df_tweets["positive"]
+        neg = df_tweets["negative"]
+
+        percent_pos = len(np.where(pos > neg)[0]) / len(df_tweets)
+        percent_neg = len(np.where(pos < neg)[0]) / len(df_tweets)
+        total_sent = np.round(np.sum(df_tweets["sentiment"]), 2)
+        mean_sent = np.round(np.mean(df_tweets["sentiment"]), 2)
+        print(f"The summed compound sentiment of {s_ticker} is: {total_sent}")
+        print(f"The average compound sentiment of {s_ticker} is: {mean_sent}")
+        print(
+            f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % had a higher positive sentiment"
+        )
+        print(
+            f"Of the last {len(df_tweets)} tweets, {100*percent_neg:.2f} % had a higher negative sentiment"
+        )
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def sentiment(l_args, s_ticker):
+def sentiment(other_args: List[str], s_ticker: str):
+    """
+    Plot sentiments from ticker
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Stock to get sentiment for
+
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="sen",
         description="""
             Plot in-depth sentiment predicted from tweets from last days
-            that contain pre-defined ticker. This model splits the text into character-level
-            tokens and uses the DistilBERT model to make predictions. DistilBERT is a distilled
-            version of the powerful BERT transformer model. Note that a big num of tweets
-            extracted per hour in conjunction with a high number of days in the past, will make the
-            algorithm take a long period of time to estimate sentiment. [Source: Twitter]
+            that contain pre-defined ticker. [Source: Twitter]
         """,
     )
 
@@ -216,34 +201,24 @@ def sentiment(l_args, s_ticker):
         "--num",
         action="store",
         dest="n_tweets",
-        type=int,
-        default=10,
-        choices=range(10, 61),
-        help="num of tweets to extract per hour.",
+        type=check_int_range(10, 62),
+        default=15,
+        help="number of tweets to extract per hour.",
     )
     parser.add_argument(
         "-d",
         "--days",
         action="store",
         dest="n_days_past",
-        type=int,
-        default=7,
-        choices=range(1, 8),
-        help="num of days in the past to extract tweets.",
+        type=check_int_range(1, 6),
+        default=6,
+        help="number of days in the past to extract tweets.",
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
-        # Setup API request params and headers
-        headers = {"authorization": f"Bearer {cfg.API_TWITTER_BEARER_TOKEN}"}
-        params = {
-            "query": f"({s_ticker}) (lang:en)",
-            "max_results": str(ns_parser.n_tweets),
-            "tweet.fields": "created_at,lang",
-        }
 
         # Date format string required by twitter
         dtformat = "%Y-%m-%dT%H:%M:%SZ"
@@ -255,212 +230,101 @@ def sentiment(l_args, s_ticker):
             f"From {dt_recent.date()} retrieving {ns_parser.n_tweets*24} tweets ({ns_parser.n_tweets} tweets/hour)"
         )
 
-        df_tweets = pd.DataFrame()
+        df_tweets = pd.DataFrame(
+            columns=[
+                "created_at",
+                "text",
+                "sentiment",
+                "positive",
+                "negative",
+                "neutral",
+            ]
+        )
         while True:
             # Iterate until we haven't passed the old number of days
             if dt_recent < dt_old:
                 break
-
             # Update past datetime
             dt_past = dt_recent - timedelta(minutes=60)
-
             if dt_past.day < dt_recent.day:
                 print(
                     f"From {dt_past.date()} retrieving {ns_parser.n_tweets*24} tweets ({ns_parser.n_tweets} tweets/hour)"
                 )
-
-            # Assign from and to datetime parameters for the API
-            params["start_time"] = dt_past.strftime(dtformat)
-            params["end_time"] = dt_recent.strftime(dtformat)
-
-            # Send API request
-            response = requests.get(
-                "https://api.twitter.com/2/tweets/search/recent",
-                params=params,
-                headers=headers,
+            temp = load_analyze_tweets(
+                s_ticker,
+                ns_parser.n_tweets,
+                start_time=dt_past.strftime(dtformat),
+                end_time=dt_recent.strftime(dtformat),
             )
+            df_tweets = pd.concat([df_tweets, temp])
 
             # Update recent datetime
             dt_recent = dt_past
 
-            # If response from API request is a success
-            if response.status_code == 200:
-
-                # Iteratively append our tweet data to our dataframe
-                for tweet in response.json()["data"]:
-                    row = get_data(tweet)
-                    df_tweets = df_tweets.append(row, ignore_index=True)
-
-            elif response.status_code == 401:
-                print("Twitter API Key provided is incorrect\n")
-                return
-
-        # Load sentiment model
-        print("")
-        sentiment_model = flair.models.TextClassifier.load("en-sentiment")
-        print("")
-
-        # Append probability and sentiment preds later
-        probs = []
-        sentiments = []
-        for s_tweet in df_tweets["text"].to_list():
-            tweet = clean_tweet(s_tweet, s_ticker)
-
-            # Make sentiment prediction
-            sentence = flair.data.Sentence(tweet)
-            sentiment_model.predict(sentence)
-
-            # Extract sentiment prediction (POSITIVE/NEGATIVE) and confidence (0-1)
-            probs.append(sentence.labels[0].score)
-            sentiments.append(sentence.labels[0].value)
-
-        # Add probability and sentiment predictions to tweets dataframe
-        df_tweets["probability"] = probs
-        df_tweets["sentiment"] = sentiments
-
         # Sort tweets per date
         df_tweets.sort_index(ascending=False, inplace=True)
-
-        # Add sentiment estimation (probability positive for POSITIVE sentiment, and negative for NEGATIVE sentiment)
-        df_tweets["sentiment_estimation"] = df_tweets.apply(
-            lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-            axis=1,
-        ).cumsum()
-        # Cumulative sentiment_estimation
-        df_tweets["prob_sen"] = df_tweets.apply(
-            lambda row: row["probability"] * (-1, 1)[row["sentiment"] == "POSITIVE"],
-            axis=1,
-        )
-
-        # Percentage of confidence
-        if df_tweets["sentiment_estimation"].values[-1] > 0:
-            n_pos = df_tweets[df_tweets["prob_sen"] > 0]["prob_sen"].sum()
-            n_pct = round(100 * n_pos / df_tweets["probability"].sum())
-        else:
-            n_neg = abs(df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].sum())
-            n_pct = round(100 * n_neg / df_tweets["probability"].sum())
-        s_sen = f"{('NEGATIVE', 'POSITIVE')[int(df_tweets['sentiment_estimation'].values[-1] > 0)]}"
+        df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
+        df_tweets["prob_sen"] = 1
 
         # df_tweets.to_csv(r'notebooks/tweets.csv', index=False)
         df_tweets.reset_index(inplace=True)
-
-        # Plotting
-        plt.subplot(211)
-        plt.title(f"Twitter's {s_ticker} sentiment over time is {s_sen} ({n_pct} %)")
-        plt.plot(
-            df_tweets.index, df_tweets["sentiment_estimation"].values, lw=3, c="cyan"
+        df_tweets["Month"] = pd.to_datetime(df_tweets["created_at"]).apply(
+            lambda x: x.month
         )
-        plt.xlim(df_tweets.index[0], df_tweets.index[-1])
-        plt.grid(
+        df_tweets["Day"] = pd.to_datetime(df_tweets["created_at"]).apply(
+            lambda x: x.day
+        )
+        df_tweets["date"] = pd.to_datetime(df_tweets["created_at"])
+        df_tweets = df_tweets.sort_values(by="date")
+        df_tweets["cumulative_compound"] = df_tweets["sentiment"].cumsum()
+        _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI)
+        ax[0].plot(
+            pd.to_datetime(df_tweets["created_at"]),
+            df_tweets["cumulative_compound"].values,
+            lw=3,
+            c="cyan",
+        )
+        ax[0].set_ylabel("Cumulative VADER Sentiment")
+        xlocations = []
+        xlabels = []
+        for _, day_df in df_tweets.groupby(by="Day"):
+            day_df["time"] = pd.to_datetime(day_df["created_at"])
+            day_df = day_df.sort_values(by="time")
+            ax[0].plot(day_df["time"], day_df["sentiment"].cumsum(), c="tab:blue")
+            xlocations.append(day_df.time.values[0])
+            xlabels.append(
+                day_df["time"].apply(lambda x: x.strftime("%m-%d")).values[0]
+            )
+
+            ax[1].bar(
+                df_tweets["date"], df_tweets["positive"], color="green", width=0.02
+            )
+        ax[1].bar(
+            df_tweets["date"], -1 * df_tweets["negative"], color="red", width=0.02
+        )
+        ax[0].grid(
             b=True, which="major", color="#666666", linestyle="-", lw=1.5, alpha=0.5
         )
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.ylabel("Cumulative Sentiment")
-        l_xticks = list()
-        l_xlabels = list()
-        l_xticks.append(0)
-        l_xlabels.append(df_tweets["created_at"].values[0].split(" ")[0])
-        n_day = datetime.strptime(
-            df_tweets["created_at"].values[0], "%Y-%m-%d %H:%M:%S"
-        ).day
-        n_idx = 0
-        for n_next_idx, dt_created in enumerate(df_tweets["created_at"]):
-            if datetime.strptime(dt_created, "%Y-%m-%d %H:%M:%S").day > n_day:
-                l_xticks.append(n_next_idx)
-                l_xlabels.append(
-                    df_tweets["created_at"].values[n_next_idx].split(" ")[0]
-                )
-                l_val_days = (
-                    df_tweets["sentiment_estimation"].values[n_idx:n_next_idx]
-                    - df_tweets["sentiment_estimation"].values[n_idx]
-                )
-                plt.plot(range(n_idx, n_next_idx), l_val_days, lw=3, c="tab:blue")
-                n_day_avg = np.mean(l_val_days)
-                if n_day_avg > 0:
-                    plt.hlines(
-                        n_day_avg,
-                        n_idx,
-                        n_next_idx,
-                        linewidth=2.5,
-                        linestyle="--",
-                        color="green",
-                        lw=3,
-                    )
-                else:
-                    plt.hlines(
-                        n_day_avg,
-                        n_idx,
-                        n_next_idx,
-                        linewidth=2.5,
-                        linestyle="--",
-                        color="red",
-                        lw=3,
-                    )
-                n_idx = n_next_idx
-                n_day += 1
-        l_val_days = (
-            df_tweets["sentiment_estimation"].values[n_idx:]
-            - df_tweets["sentiment_estimation"].values[n_idx]
-        )
-        plt.plot(range(n_idx, len(df_tweets)), l_val_days, lw=3, c="tab:blue")
-        n_day_avg = np.mean(l_val_days)
-        if n_day_avg > 0:
-            plt.hlines(
-                n_day_avg,
-                n_idx,
-                len(df_tweets),
-                linewidth=2.5,
-                linestyle="--",
-                color="green",
-                lw=3,
-            )
-        else:
-            plt.hlines(
-                n_day_avg,
-                n_idx,
-                len(df_tweets),
-                linewidth=2.5,
-                linestyle="--",
-                color="red",
-                lw=3,
-            )
-        l_xticks.append(len(df_tweets))
-        # (unused?) datetime.strptime(dt_created, "%Y-%m-%d %H:%M:%S") + timedelta(days=1)
-        l_xlabels.append(
-            datetime.strftime(
-                datetime.strptime(
-                    df_tweets["created_at"].values[len(df_tweets) - 1],
-                    "%Y-%m-%d %H:%M:%S",
-                )
-                + timedelta(days=1),
-                "%Y-%m-%d",
-            )
-        )
-        plt.xticks(l_xticks, l_xlabels)
-        plt.axhspan(plt.gca().get_ylim()[0], 0, facecolor="r", alpha=0.1)
-        plt.axhspan(0, plt.gca().get_ylim()[1], facecolor="g", alpha=0.1)
+        ax[0].minorticks_on()
+        ax[0].grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax[0].set_xticks(xlocations)
+        ax[0].set_xticklabels(xlabels)
 
-        plt.subplot(212)
-        plt.bar(
-            df_tweets[df_tweets["prob_sen"] > 0].index,
-            df_tweets[df_tweets["prob_sen"] > 0]["prob_sen"].values,
-            color="green",
+        ax[1].grid(
+            b=True, which="major", color="#666666", linestyle="-", lw=1.5, alpha=0.5
         )
-        plt.bar(
-            df_tweets[df_tweets["prob_sen"] < 0].index,
-            df_tweets[df_tweets["prob_sen"] < 0]["prob_sen"].values,
-            color="red",
+        ax[1].minorticks_on()
+        ax[1].grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax[1].set_ylabel("VADER Polarity Scores")
+        ax[1].set_xticks(xlocations)
+        ax[1].set_xticklabels(xlabels)
+        plt.suptitle(
+            f"Twitter's {s_ticker} total compound sentiment over time is {np.sum(df_tweets['sentiment'])}"
         )
-        for l_x in l_xticks[1:]:
-            plt.vlines(l_x, -1, 1, linewidth=2, linestyle="--", color="k", lw=3)
-        plt.xlim(df_tweets.index[0], df_tweets.index[-1])
-        plt.xticks(l_xticks, l_xlabels)
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.ylabel("Sentiment")
-        plt.xlabel("Time")
+        if gtff.USE_ION:
+            plt.ion()
         plt.show()
+        print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
