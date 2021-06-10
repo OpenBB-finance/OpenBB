@@ -23,6 +23,7 @@ from gamestonk_terminal.discovery import (
     marketbeat_view,
     finra_ats_view,
     finnhub_view,
+stockgrid_view
 )
 
 
@@ -54,6 +55,7 @@ class DiscoveryController:
         "latest",
         "trending",
         "darkpool",
+        "topdark"
     ]
 
     def __init__(self):
@@ -100,6 +102,8 @@ class DiscoveryController:
         print("   trending       trending news [Seeking Alpha]")
         print("   ratings        top ratings updates [MarketBeat]")
         print("   darkpool       dark pool tickers with growing activity [FINRA]")
+        print("   topdark        largest dark pool positions [Stockgrid.io']")
+        print("   darkshort      dark pool short information [Stockgrid.io]")
         print("")
 
     def switch(self, an_input: str):
@@ -220,6 +224,17 @@ class DiscoveryController:
         """Process darkpool command"""
         finra_ats_view.dark_pool(other_args)
 
+    def call_topdark(self,other_args:List[str]):
+        """Process topdark command"""
+        stockgrid_view.top_dark_pools(other_args)
+
+    def darkshort(self, other_args:List[str]):
+        """Process shortvol command"""
+        stockgrid_view.short_volume(other_args)
+
+    def call_shortvol(self, other_args:List[str]):
+        """Process shortvol command"""
+        stockgrid_view.short_volume(other_args)
 
 def menu():
     """Discovery Menu"""

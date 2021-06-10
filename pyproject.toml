@@ -71,13 +71,14 @@ tensorflow = {version = "2.5.0", optional = true}
 jupyter-client = "6.1.12"
 vaderSentiment = "3.3.2"
 degiro-connector = "1.0.0"
+mypy = "^0.901"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "^2.7.2"
 flake8 = "^3.9.0"
 black = "21.5b2"
-mypy = "^0.812"
+mypy = "^0.901"
 mock = "^4.0.3"
 codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
