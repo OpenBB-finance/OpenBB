@@ -57,6 +57,7 @@ class DiscoveryController:
         "darkpool",
         "topdark",
         "darkshort",
+        "shortvol"
     ]
 
     def __init__(self):
@@ -236,7 +237,7 @@ class DiscoveryController:
 
     def call_shortvol(self, other_args: List[str]):
         """Process shortvol command"""
-        stockgrid_view.short_volume(other_args)
+        stockgrid_view.shortvol(other_args)
 
 
 def menu():
