@@ -85,8 +85,24 @@ def darkshort(other_args:List[str]):
             return
 
         link = "https://stockgridapp.herokuapp.com/get_dark_pool_data?top=Dark+Pools+Position+$&minmax=desc"
-        response = requests.get(link1)
+        response = requests.get(link)
         df = pd.DataFrame(response.json()["data"])
+
+        df = df[['Ticker', 'Date',
+                 'Net Short Volume', 'Net Short Volume $', 'Short Volume',
+                 'Short Volume %']].sort_values(by="Net Short Volume $", ascending=False)
+        df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
+        df["Short Volume"] = df["Short Volume"] / 1_000_000
+        df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
+        df.columns = ["Ticker", "Date", "Net Short (1M)", "Net Short ($100M)", "Short Volume (1M)", "Short Volume %"]
+        print(
+            tabulate(
+                df.iloc[:ns_parser.num],
+                tablefmt="fancy_grid",
+                floatfmt=".2f",
+                headers=list(df.columns),
+                showindex=False)
+        )
 
 
         print("")
@@ -121,8 +137,25 @@ def shortvol(other_args:List[str]):
             return
 
         link = "https://stockgridapp.herokuapp.com/get_short_interest?top=days"
-        response = requests.get(link)
-        df = pd.DataFrame(response.json()['data'])
+        r = requests.get(link)
+        df = pd.DataFrame(r.json()["data"])
+        df.head()
+
+        # %%
+        df = df[["Ticker", "Date", "%Float Short", "Days To Cover", "Short Interest"]].sort_values(by="%Float Short",
+                                                                                                   ascending=False)
+        df["Short Interest"] = df["Short Interest"] / 1_000_000
+        df.head()
+        df.columns = ["Ticker", "Date", "%Float Short", "Days To Cover", "Short Interest (1M)"]
+
+        print(
+            tabulate(
+                df.iloc[:ns_parser.num],
+                tablefmt="fancy_grid",
+                floatfmt=".2f",
+                headers=list(df.columns),
+                showindex=False))
+
 
     except Exception as e:
         print(e, "\n")

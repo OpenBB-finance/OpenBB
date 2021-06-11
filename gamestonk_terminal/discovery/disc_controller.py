@@ -55,7 +55,8 @@ class DiscoveryController:
         "latest",
         "trending",
         "darkpool",
-        "topdark"
+        "topdark",
+        "darkshort"
     ]
 
     def __init__(self):
@@ -102,8 +103,9 @@ class DiscoveryController:
         print("   trending       trending news [Seeking Alpha]")
         print("   ratings        top ratings updates [MarketBeat]")
         print("   darkpool       dark pool tickers with growing activity [FINRA]")
-        print("   topdark        largest dark pool positions [Stockgrid.io']")
+        print("   topdark        largest dark pool positions [Stockgrid.io]")
         print("   darkshort      dark pool short information [Stockgrid.io]")
+        print("   shortvol       short interest [Stockgrid.io]")
         print("")
 
     def switch(self, an_input: str):
@@ -228,9 +230,9 @@ class DiscoveryController:
         """Process topdark command"""
         stockgrid_view.top_dark_pools(other_args)
 
-    def darkshort(self, other_args:List[str]):
+    def call_darkshort(self, other_args:List[str]):
         """Process shortvol command"""
-        stockgrid_view.short_volume(other_args)
+        stockgrid_view.darkshort(other_args)
 
     def call_shortvol(self, other_args:List[str]):
         """Process shortvol command"""
