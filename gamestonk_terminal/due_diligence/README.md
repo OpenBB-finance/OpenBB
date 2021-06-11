@@ -30,6 +30,8 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * dark pools (ATS) vs OTC data [FINRA]
 * [ftd](#ftd)
   * fails-to-deliver data [SEC]
+* [shortview](#shortview)
+  * shows price vs short interest over last year [Stockgrid.io]
 
 ## news <a name="news"></a>
 
@@ -198,3 +200,8 @@ The fails-to-deliver data collected by SEC. Fails to deliver on a given day are 
 
 ![ftd](https://user-images.githubusercontent.com/25267873/115201750-93a9bc80-a0ed-11eb-8f13-68508749259e.png)
 
+## shortview <a name="shortview"></a>
+```text
+usage: shortview
+```
+Plots price and short volume over the past year.

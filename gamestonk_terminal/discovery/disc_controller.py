@@ -57,7 +57,7 @@ class DiscoveryController:
         "darkpool",
         "topdark",
         "darkshort",
-        "shortvol"
+        "shortvol",
     ]
 
     def __init__(self):
