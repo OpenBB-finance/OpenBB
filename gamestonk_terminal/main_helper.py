@@ -238,6 +238,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                 )
 
                 # Check that loading a stock was not successful
+                # pylint: disable=no-member
                 if df_stock_candidate.empty:
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
@@ -291,6 +292,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                 )
                 s_interval = str(ns_parser.n_interval) + "min"
                 # Check that loading a stock was not successful
+                # pylint: disable=no-member
                 if df_stock_candidate.empty:
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
