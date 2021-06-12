@@ -15,6 +15,7 @@ from gamestonk_terminal.due_diligence import reddit_view as r_view
 from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal.due_diligence import finra_view
 from gamestonk_terminal.due_diligence import sec_view
+from gamestonk_terminal.due_diligence import stockgrid_dd_view as sg_view
 from gamestonk_terminal.due_diligence import finnhub_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -43,6 +44,7 @@ class DueDiligenceController:
         "sec",
         "dp",
         "ftd",
+        "shortview",
     ]
 
     def __init__(self, stock: DataFrame, ticker: str, start: str, interval: str):
@@ -108,6 +110,9 @@ class DueDiligenceController:
         )
         print("   dp            dark pools (ATS) vs OTC data [FINRA]")
         print("   ftd           fails-to-deliver data [SEC]")
+        print(
+            "   shortview     shows price vs short interest over last year [Stockgrid.io]"
+        )
         print("")
 
     def switch(self, an_input: str):
@@ -197,6 +202,9 @@ class DueDiligenceController:
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
         sec_view.fails_to_deliver(other_args, self.ticker)
+
+    def call_shortview(self, other_args: List[str]):
+        sg_view.shortview(self.ticker, other_args)
 
 
 def menu(stock: DataFrame, ticker: str, start: str, interval: str):
