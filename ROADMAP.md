@@ -43,7 +43,7 @@
 * [x] Add top ratings updates (@hinxx) - [PR #357](https://github.com/DidierRLopes/GamestonkTerminal/pull/357)
 * [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
 * [x] Past and future IPOs calendar (@didier) - [PR #432](https://github.com/DidierRLopes/GamestonkTerminal/pull/432)
-
+* [x] Short volume and dark pool short information (stockgrid) (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496
 
 **NEXT**
 
@@ -93,6 +93,7 @@
 * [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
 * [x] Add failure to deliver command (@hinxx) - [PR #366](https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
 * [x] Ratings over time (@didier) - [PR #431](https://github.com/DidierRLopes/GamestonkTerminal/pull/431)
+* [x] Add short volume from stockgrid (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496)
 
 **NEXT**
 
