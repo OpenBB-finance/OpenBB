@@ -110,6 +110,13 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         choices=["normalization", "standardization", "minmax", "none"],
         help="pre-processing data.",
     )
+    parser.add_argument(
+        "--no_shuffle",
+        action="store_false",
+        dest="no_shuffle",
+        default=True,
+        help="Specify if shuffling validation inputs.",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -167,6 +174,7 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
             forecast_data_df,
             1,
         )
+        print("")
 
     except Exception as e:
         print(e)

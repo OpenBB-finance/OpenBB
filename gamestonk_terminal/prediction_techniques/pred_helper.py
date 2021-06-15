@@ -507,7 +507,6 @@ def plot_data_predictions(
     if gtff.USE_ION:
         plt.ion()
     plt.show()
-    print("")
 
 
 def price_prediction_color(val: float, last_val: float) -> str:

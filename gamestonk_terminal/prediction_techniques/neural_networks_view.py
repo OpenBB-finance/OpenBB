@@ -192,7 +192,9 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_days,
             )
             model.compile(
-                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                optimizer=optimizers[cfg_nn_models.Optimizer](
+                    learning_rate=ns_parser.lr
+                ),
                 loss=cfg_nn_models.Loss,
             )
 
@@ -302,7 +304,9 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_days,
             )
             model.compile(
-                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                optimizer=optimizers[cfg_nn_models.Optimizer](
+                    learning_rate=ns_parser.lr
+                ),
                 loss=cfg_nn_models.Loss,
             )
             model.fit(
@@ -409,7 +413,9 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 ns_parser.n_days,
             )
             model.compile(
-                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                optimizer=optimizers[cfg_nn_models.Optimizer](
+                    learning_rate=ns_parser.lr
+                ),
                 loss=cfg_nn_models.Loss,
             )
 
@@ -520,7 +526,9 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             )
 
             model.compile(
-                optimizer=optimizers[cfg_nn_models.Optimizer](lr=ns_parser.lr),
+                optimizer=optimizers[cfg_nn_models.Optimizer](
+                    learning_rate=ns_parser.lr
+                ),
                 loss=cfg_nn_models.Loss,
             )
 
