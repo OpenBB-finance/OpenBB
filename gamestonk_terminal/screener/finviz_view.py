@@ -115,12 +115,12 @@ def get_screener_data(
     if signal:
         screen.set_filter(signal=d_signals[signal])
     else:
-        if d_general["Signal"]:
+        if "Signal" in d_general:
             screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
         else:
             screen.set_filter(filters_dict=d_filters)
 
-    if d_general["Order"]:
+    if "Order" in d_general:
         if limit > 0:
             df_screen = screen.ScreenerView(
                 order=d_general["Order"],
