@@ -12,8 +12,8 @@ from gamestonk_terminal.brokers import (
     rh_api,
     alp_api,
     ally_api,
-    degiro_controller,
 )
+from gamestonk_terminal.brokers.degiro import degiro_controller
 from gamestonk_terminal.brokers.brokers_helpers import (
     merge_brokers_holdings,
     print_brokers_holdings,
