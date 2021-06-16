@@ -42,7 +42,7 @@ Your  login information should be stored as environment variables in [config fil
 * [allyhold](#allyhold)
   * Look at Ally Invest Holdings
 
-[DEGIRO standalone menu](gamestonk_terminal/brokers/degiro/README.md)
+[DEGIRO standalone menu](/gamestonk_terminal/brokers/degiro/)
 
 [Merge](#Merge)
 * [hold](#hold)
