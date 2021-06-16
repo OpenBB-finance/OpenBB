@@ -194,6 +194,17 @@ class BrokersController:
 def menu():
     """Brokers Menu"""
     bro_controller = BrokersController()
+    print(
+        "\nUSE THIS MENU AT YOUR OWN DISCRETION\n"
+        "   - This menu is the only one in the entire repository that has access to your broker accounts. "
+        "If you have provided your login details on the config_terminal.py file"
+        "   - We review the code thoroughly from each contributor, hence, we can ensure that our codebase "
+        "does not take advantage of your data.\n"
+        "   - HOWEVER, our project imports almost 200 different open source python modules. Therefore, it "
+        "is impossible for us to check the coding standards and security of each of these modules. "
+        "Hence why adding this disclaimer here."
+    )
+    print()
     bro_controller.print_help()
 
     while True:
