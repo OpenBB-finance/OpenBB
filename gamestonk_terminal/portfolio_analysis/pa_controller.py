@@ -8,17 +8,17 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio import (
+from gamestonk_terminal.portfolio_analysis import (
     rh_api,
     alp_api,
     ally_api,
     degiro_controller,
 )
-from gamestonk_terminal.portfolio.portfolio_helpers import (
+from gamestonk_terminal.portfolio_analysis.portfolio_helpers import (
     merge_portfolios,
     print_portfolio,
 )
-from gamestonk_terminal.portfolio import custom_model
+from gamestonk_terminal.portfolio_analysis import custom_model
 
 
 class PortfolioController:

@@ -14,7 +14,7 @@ from degiro_connector.trading.pb.trading_pb2 import (
 )
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.portfolio.degiro_model import DegiroModel
+from gamestonk_terminal.portfolio_analysis.degiro_model import DegiroModel
 
 # pylint: disable=no-member
 

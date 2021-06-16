@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.degiro_view import DegiroView
+from gamestonk_terminal.portfolio_analysis.degiro_view import DegiroView
 
 
 class DegiroController:
