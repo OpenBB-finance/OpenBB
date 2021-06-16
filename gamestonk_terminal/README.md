@@ -10,6 +10,7 @@
 * [Due Diligence](#Due-Diligence-)
 * [Prediction Techniques](#Prediction-Techniques-)
 * [Portfolio Analysis](#Portfolio-Analysis-)
+* [Brokers](#Brokers-)
 * [Portfolio Optimization](#Portfolio-Optimization-)
 * [Cryptocurrencies](#Cryptocurrencies-)
 * [Comparison Analysis](#Comparison-Analysis-)
@@ -266,7 +267,15 @@ Command|Technique|Sources
 `conv1d`      |1D Convolution Neural Net| [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network)
 &nbsp;
 
-## Portfolio Analysis [»](portfolio/README.md)
+## Portfolio Analysis [»](portfolio_analysis/README.md)
+
+Command|Description
+------ | ------------
+t.b.d
+
+&nbsp;
+
+## Brokers [»](brokers/README.md)
 
 Command|Description|Brokers
 ------ | ------------|---
@@ -277,7 +286,22 @@ Command|Description|Brokers
 `alphist` | view alpaca portfolio history | [Alpaca](https://app.alpaca.markets/login)
 `allyhold`| view ally holdings | [Ally](https://www.ally.com/invest/)
 `hold`    | view net holdings across all logins
+`degiro`  | degiro standalone menu | [Degiro](https://trader.degiro.nl/login/#/login)
 
+Degiro command|Description
+------ | ------------
+`cancel`| cancel an order using the `id`
+`companynews`| view news about a company with it's isin
+`create`    |  create an order
+`hold`     |   view holdings
+`lastnews`  |  view latest news
+`login`      | connect to degiro's api
+`logout`     | disconnect from degiro's api
+`lookup`    |  view search for a product by name
+`pending`   | view pending orders
+`topnews`   |  view top news preview
+`update`    |  view top news preview
+            
 &nbsp;
 
 ## Portfolio Optimization [»](portfolio_optimization/README.md)
