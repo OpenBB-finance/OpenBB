@@ -1,6 +1,6 @@
 # DEGIRO
 
-This menu aims to contain several commands that are available to a user through his Degiro account. 
+This menu aims to contain several commands that are available to a user through his Degiro account.
 
 In order to be able to use these, just ensure you connect to your degiro account by typing `login` first.
 
@@ -29,65 +29,32 @@ More information on 2FA credentials, in the documentation of the [degiro-connect
 
 ## Features
 
-* [cancel](#cancel)
-    * Cancel and `Order`
-* [companynews](#companynews)
-    * Command to get news about a company with it's isin
-* [create](#create)
-    * Create and `Order`
-* [hold](#hold)
-    * Command to look at current holdings
-* [lastnews](#lastnews)
-    * Command to get latest news
 * [login](#login)
     * Connect to your Degiro account
 * [logout](#login)
     * Disconnect from Degiro account
+
+* [hold](#hold)
+    * Command to look at current holdings
 * [lookup](#lookup)
     * Command to search for a product by name
-* [pending](#pending)
-    * Command to list pending orders
-* [topnews](#topnews)
-    * Command to get top news preview
+
+* [create](#create)
+    * Create and `Order`
 * [update](#update)
     * Update and `Order`
+* [cancel](#cancel)
+    * Cancel and `Order`
+* [pending](#pending)
+    * Command to list pending orders
 
+* [companynews](#companynews)
+    * Command to get news about a company with it's isin
+* [lastnews](#lastnews)
+    * Command to get latest news
+* [topnews](#topnews)
+    * Command to get top news preview
 
-### cancel <a name="cancel"></a>
-````
-usage: cancel ORDER_ID
-````
-
-### companynews <a name="companynews"></a>
-````
-usage: companynews NL0000235190
-````
-
-You need to provide the `ISIN` number of the company.
-You can get this `ISIN` using the `dglookup` command for instance.
-
-### create <a name="create"></a>
-````
-usage: create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_TO) [-d {gtd,gtc}] [-t {limit,market,stop-limit,stop-loss}] [-h]
-````
-
-### hold <a name="hold"></a>
-````
-usage: hold
-````
-
-Displays current holdings to the console.
-
-
-### lastnews <a name="lastnews"></a>
-````
-usage: lastnews [-l LIMIT] [-h]
-
-optional arguments:
-  -l LIMIT, --limit LIMIT
-                        Number of news to display.
-  -h, --help            show this help message
-````
 
 ### login <a name="login"></a>
 ````
@@ -109,6 +76,14 @@ optional arguments:
 usage: logout
 ````
 
+
+### hold <a name="hold"></a>
+````
+usage: hold
+````
+
+Displays current holdings to the console.
+
 ### lookup <a name="lookup"></a>
 ````
 usage: lookup TESLA
@@ -129,17 +104,47 @@ It will display a result like this :
 9  Leverage Shares 1x Tesla ETP  IE00BKT6ZH01          STSL         ETF      GBX     135.550     2021-05-13
 ```
 
-### pending <a name="pending"></a>
-````
-usage: pending
-````
 
-### topnews <a name="topnews"></a>
+### create <a name="create"></a>
 ````
-usage: topnews
+usage: create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_TO) [-d {gtd,gtc}] [-t {limit,market,stop-limit,stop-loss}] [-h]
 ````
 
 ### update <a name="update"></a>
 ````
 usage: update ORDER_ID -p PRICE
+````
+
+### cancel <a name="cancel"></a>
+````
+usage: cancel ORDER_ID
+````
+
+### pending <a name="pending"></a>
+````
+usage: pending
+````
+
+
+### companynews <a name="companynews"></a>
+````
+usage: companynews NL0000235190
+````
+
+You need to provide the `ISIN` number of the company.
+You can get this `ISIN` using the `dglookup` command for instance.
+
+### lastnews <a name="lastnews"></a>
+````
+usage: lastnews [-l LIMIT] [-h]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of news to display.
+  -h, --help            show this help message
+````
+
+### topnews <a name="topnews"></a>
+````
+usage: topnews
 ````

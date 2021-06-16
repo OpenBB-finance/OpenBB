@@ -287,16 +287,10 @@ class DegiroController:
 
     def q(self, _):
         """Process Q command - quit the menu."""
-
-        DegiroView.q_display()
-
         return False
 
     def quit(self, _):
         """Process Quit command - quit the program."""
-
-        DegiroView.quit_display()
-
         return True
 
     def topnews(self, l_args):

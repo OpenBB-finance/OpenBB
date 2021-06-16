@@ -1,5 +1,7 @@
 __docformat__ = "numpy"
 
+# pylint: disable=R1710
+
 import argparse
 from typing import List
 import pandas as pd
@@ -172,7 +174,9 @@ class BrokersController:
 
     def call_degiro(self, _):
         """Process degiro command."""
-        return degiro_controller.menu()
+        if degiro_controller.menu():
+            return True
+        print("")
 
     def call_hold(self, _):
         """Process hold command."""
@@ -204,7 +208,6 @@ def menu():
         "is impossible for us to check the coding standards and security of each of these modules. "
         "Hence why adding this disclaimer here."
     )
-    print()
     bro_controller.print_help()
 
     while True:
