@@ -159,6 +159,7 @@
 * [ ] Merge data from different brokers
 * [ ] Add more options around merged portfolios
 * [ ] Add Brokers (td, webull, etc)
+* [ ] Allow to go directly onto Portfolo Analysis
 
 ---
 ## Portfolio Analysis
