@@ -76,7 +76,7 @@ class BrokersController:
             "   rhhold        view rh holdings\n"
             "   rhhist        plot rh brokers holdings history\n"
             "\nDegiro:\n"
-            ">  degiro        view degiro sub-menu\n"
+            ">  degiro        degiro standalone menu\n"
             "\nMerge:\n"
             "   login         login to your brokers\n"
             "   hold          view net holdings across all logins\n"
