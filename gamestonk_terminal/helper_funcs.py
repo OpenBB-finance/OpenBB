@@ -25,6 +25,12 @@ if cfgPlot.BACKEND is not None:
     matplotlib.use(cfgPlot.BACKEND)
 
 
+def check_valid_path(path: str) -> str:
+    if not os.path.exists(path):
+        raise argparse.ArgumentTypeError("Path does not exist")
+    return path
+
+
 def check_int_range(mini, maxi):
     """
     Checks if argparse argument is an int between 2 values.
