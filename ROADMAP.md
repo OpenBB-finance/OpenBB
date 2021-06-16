@@ -14,6 +14,7 @@
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis)
 * [Residual Analysis](#Residual-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
+* [Brokers](#Brokers)
 * [Portfolio Optimization](#Portfolio-Optimization)
 * [Economy](#Economy)
 * [Options](#Options)
@@ -150,20 +151,30 @@
 **NEXT**
 
 ---
+## Brokers
 
+*[ ] Port from current portfolio menu
+
+**NEXT**
+* [ ] Merge data from different brokers
+* [ ] Add more options around merged portfolios
+* [ ] Add Brokers (td, webull, etc)
+
+---
 ## Portfolio Analysis
 * [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add Ally Invest (@jmaslek) - [PR #267](https://github.com/DidierRLopes/GamestonkTerminal/pull/267)
 * [x] Degiro support (@deel) - [PR #381](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
 * [x] Degiro improvement (@Chavithra) - [PR #445](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
+* [x] Add custom csv integration (jmaslek) - [PR #502](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/502)
 
 **NEXT**
-* [ ] Merge data from different brokers (@jmaslek)
-* [ ] Add more options around merged portfolios
-* [ ] Add Brokers (td, webull, etc) (@jmaslek)
+* [ ] Port to new Broker Menu
 * [ ] Refactoring
-* [ ] Summaries / tear sheets (@jmaslek)
+* [ ] Summaries / tear sheets (potentially QuantStats)
+* [ ] Add plots for `group` functions
+* [ ] Add more functionality for custom portfolio viewing (suggested XRay)
 
 ___
 

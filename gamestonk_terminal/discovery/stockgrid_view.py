@@ -95,6 +95,7 @@ def darkshort(other_args: List[str]):
         df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
         df["Short Volume"] = df["Short Volume"] / 1_000_000
         df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
+        df["Short Volume %"] = df["Short Volume %"] * 100
         df.columns = [
             "Ticker",
             "Date",

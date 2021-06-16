@@ -18,6 +18,7 @@ from gamestonk_terminal.portfolio.portfolio_helpers import (
     merge_portfolios,
     print_portfolio,
 )
+from gamestonk_terminal.portfolio import custom_model
 
 
 class PortfolioController:
@@ -35,6 +36,8 @@ class PortfolioController:
         "quit",
         "rhhold",
         "rhhist",
+        "csv",
+        "group",
     ]
 
     BROKERS = [
@@ -48,9 +51,9 @@ class PortfolioController:
         self.port_parser.add_argument("cmd", choices=self.CHOICES)
         self.broker_list = set()
         self.merged_holdings = None
+        self.custom_portfolio = pd.DataFrame()
 
-    @classmethod
-    def print_help(cls, broker_list):
+    def print_help(self):
         """Print help"""
 
         print(
@@ -63,12 +66,11 @@ class PortfolioController:
             "   q             quit this menu, and shows back to main menu, logs out of brokers\n"
             "   quit          quit to abandon program, logs out of brokers\n"
         )
-        cls.print_portfolio_menu(broker_list)
+        self.print_portfolio_menu()
 
-    @staticmethod
-    def print_portfolio_menu(broker_list):
+    def print_portfolio_menu(self):
         print(
-            f"Current Broker: {('None', ', '.join(broker_list))[bool(broker_list)]}\n\n"
+            f"Current Broker: {('None', ', '.join(self.broker_list))[bool(self.broker_list)]}\n\n"
             "Ally:\n"
             "   allyhold      view ally holdings\n"
             "Alpaca:\n"
@@ -82,7 +84,17 @@ class PortfolioController:
             "\nMerge:\n"
             "   login         login to your brokers\n"
             "   hold          view net holdings across all logins\n"
+            "\nCustom:\n"
+            "   csv           load holdings from CSV\n"
         )
+        if not self.custom_portfolio.empty:
+            self.print_portfolio_view()
+
+    def print_portfolio_view(self):
+        if not self.custom_portfolio.empty:
+            print("Custom Portfolio Options:")
+            print("   group   view holdings by a user input group")
+            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -104,7 +116,7 @@ class PortfolioController:
     def call_help(self, _):
         """Process Help command"""
 
-        self.print_help(self.broker_list)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -117,7 +129,6 @@ class PortfolioController:
         return True
 
     def call_login(self, other_args):
-        broker_list = self.broker_list
         logged_in = False
         if not other_args:
             print("Please enter brokers you wish to login to")
@@ -141,7 +152,7 @@ class PortfolioController:
                 print(f"{broker} not supported")
 
         if logged_in:
-            self.print_portfolio_menu(broker_list)
+            self.print_portfolio_menu()
 
     def call_rhhist(self, other_args: List[str]):
         rh_api.plot_historical(other_args)
@@ -189,12 +200,24 @@ class PortfolioController:
         self.merged_holdings = merge_portfolios(holdings)
         print_portfolio(self.merged_holdings)
 
+    def call_csv(self, other_args):
+        """Process csv command"""
+        self.custom_portfolio = custom_model.load_csv_portfolio(other_args)
+        self.print_portfolio_view()
+
+    def call_group(self, other_args):
+        """Process group command"""
+        if not self.custom_portfolio.empty:
+            custom_model.breakdown_by_group(self.custom_portfolio, other_args)
+        else:
+            print("Please load a portfolio")
+
 
 def menu():
     """Portfolio Analysis Menu"""
 
     port_controller = PortfolioController()
-    port_controller.print_help(port_controller.broker_list)
+    port_controller.print_help()
 
     while True:
         # Get input command from user
