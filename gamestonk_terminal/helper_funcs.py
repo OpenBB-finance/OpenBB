@@ -26,7 +26,11 @@ if cfgPlot.BACKEND is not None:
 
 
 def check_valid_path(path: str) -> str:
-    if not os.path.exists(path):
+    if not os.path.exists(
+        os.path.abspath(
+            "gamestonk_terminal/portfolio_analysis/portfolios/" + path + ".csv"
+        )
+    ):
         raise argparse.ArgumentTypeError("Path does not exist")
     return path
 

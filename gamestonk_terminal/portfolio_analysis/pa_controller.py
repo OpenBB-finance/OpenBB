@@ -1,99 +1,46 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio_analysis import (
-    rh_api,
-    alp_api,
-    ally_api,
-    degiro_controller,
-)
-from gamestonk_terminal.portfolio_analysis.portfolio_helpers import (
-    merge_portfolios,
-    print_portfolio,
-)
-from gamestonk_terminal.portfolio_analysis import custom_model
+
+from gamestonk_terminal.portfolio_analysis import portfolio_parser
 
 
 class PortfolioController:
     """Portfolio Controller"""
 
     CHOICES = [
-        "alphist",
-        "alphold",
-        "allyhold",
-        "degiro",
         "help",
-        "hold",
-        "login",
         "q",
         "quit",
-        "rhhold",
-        "rhhist",
-        "csv",
+        "load",
         "group",
     ]
 
-    BROKERS = [
-        "alp",
-        "ally",
-        "rh",
-    ]
-
     def __init__(self):
-        self.port_parser = argparse.ArgumentParser(add_help=False, prog="port")
-        self.port_parser.add_argument("cmd", choices=self.CHOICES)
-        self.broker_list = set()
-        self.merged_holdings = None
-        self.custom_portfolio = pd.DataFrame()
+        self.pa_parser = argparse.ArgumentParser(add_help=False, prog="pa")
+        self.pa_parser.add_argument("cmd", choices=self.CHOICES)
+        self.portfolio_name = ""
+        self.portfolio = pd.DataFrame()
 
     def print_help(self):
         """Print help"""
-
-        print(
-            "Brokers Supported:\n"
-            "   ally - Ally Invest\n"
-            "   alp  - Alpaca\n"
-            "   rh   - Robinhood\n"
-            "\nPortfolio:\n"
-            "   help          show this menu again\n"
-            "   q             quit this menu, and shows back to main menu, logs out of brokers\n"
-            "   quit          quit to abandon program, logs out of brokers\n"
-        )
-        self.print_portfolio_menu()
-
-    def print_portfolio_menu(self):
-        print(
-            f"Current Broker: {('None', ', '.join(self.broker_list))[bool(self.broker_list)]}\n\n"
-            "Ally:\n"
-            "   allyhold      view ally holdings\n"
-            "Alpaca:\n"
-            "   alphold       view alp holdings\n"
-            "   alphist       view alp portfolio history\n"
-            "Robinhood:\n"
-            "   rhhold        view rh holdings\n"
-            "   rhhist        plot rh portfolio history\n"
-            "\nDegiro:\n"
-            ">  degiro        view degiro sub-menu\n"
-            "\nMerge:\n"
-            "   login         login to your brokers\n"
-            "   hold          view net holdings across all logins\n"
-            "\nCustom:\n"
-            "   csv           load holdings from CSV\n"
-        )
-        if not self.custom_portfolio.empty:
-            self.print_portfolio_view()
-
-    def print_portfolio_view(self):
-        if not self.custom_portfolio.empty:
-            print("Custom Portfolio Options:")
-            print("   group   view holdings by a user input group")
+        print("\nPortfolio Analysis:")
+        print("   help          show this  menu again")
+        print("   q             quit this menu, and shows back to main menu")
+        print("   quit          quit to abandon program")
+        print("")
+        print("   load          load portfolio from csv file")
+        print("")
+        if self.portfolio_name:
+            print(f"Portfolio: {self.portfolio_name}")
+            print("")
+            print("   group         view holdings by a user input group")
             print("")
 
     def switch(self, an_input: str):
@@ -107,7 +54,7 @@ class PortfolioController:
             None - continue in the menu
         """
 
-        (known_args, other_args) = self.port_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.pa_parser.parse_known_args(an_input.split())
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -115,115 +62,43 @@ class PortfolioController:
 
     def call_help(self, _):
         """Process Help command"""
-
         self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-
         return False
 
     def call_quit(self, _):
         """Process Quit command - quit the program"""
-
         return True
 
-    def call_login(self, other_args):
-        logged_in = False
-        if not other_args:
-            print("Please enter brokers you wish to login to")
-            print("")
-            return
-        for broker in other_args:
-            if broker in self.BROKERS:
-                api = broker + "_api"
-                try:
-                    # pylint: disable=eval-used
-                    eval(api + ".login()")
-                    self.broker_list.add(broker)
-                    logged_in = True
-                except Exception as e:
-                    print("")
-                    print(f"Error at broker : {broker}")
-                    print(e)
-                    print("Make sure credentials are defined in config_terminal.py ")
-                    print("")
-            else:
-                print(f"{broker} not supported")
-
-        if logged_in:
-            self.print_portfolio_menu()
-
-    def call_rhhist(self, other_args: List[str]):
-        rh_api.plot_historical(other_args)
-
-    def call_rhhold(self, _):
-        try:
-            rh_api.show_holdings()
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_alphold(self, _):
-        try:
-            alp_api.show_holdings()
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_alphist(self, other_args: List[str]):
-        alp_api.plot_historical(other_args)
-
-    def call_allyhold(self, _):
-        try:
-            ally_api.show_holdings()
-        except Exception as e:
-            print(e)
-            print("")
-
-    def call_degiro(self, _):
-        """ "Process degiro command."""
-        return degiro_controller.menu()
-
-    def call_hold(self, _):
-        holdings = pd.DataFrame(
-            columns=["Symbol", "MarketValue", "Quantity", "CostBasis"]
-        )
-        if not self.broker_list:
-            print("Login to desired brokers\n")
-        for broker in self.broker_list:
-            holdings = pd.concat(
-                # pylint: disable=eval-used
-                [holdings, eval(broker + "_api.return_holdings()")],
-                axis=0,
-            )
-        self.merged_holdings = merge_portfolios(holdings)
-        print_portfolio(self.merged_holdings)
-
-    def call_csv(self, other_args):
+    def call_load(self, other_args):
         """Process csv command"""
-        self.custom_portfolio = custom_model.load_csv_portfolio(other_args)
-        self.print_portfolio_view()
+        self.portfolio_name, self.portfolio = portfolio_parser.load_csv_portfolio(
+            other_args
+        )
+
+        if self.portfolio_name:
+            print(f"Successfully loaded: {self.portfolio_name}\n")
 
     def call_group(self, other_args):
         """Process group command"""
-        if not self.custom_portfolio.empty:
-            custom_model.breakdown_by_group(self.custom_portfolio, other_args)
+        if self.portfolio_name:
+            portfolio_parser.breakdown_by_group(self.portfolio, other_args)
         else:
             print("Please load a portfolio")
 
 
 def menu():
     """Portfolio Analysis Menu"""
-
-    port_controller = PortfolioController()
-    port_controller.print_help()
+    pa_controller = PortfolioController()
+    pa_controller.print_help()
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in port_controller.CHOICES}
+                {c: None for c in pa_controller.CHOICES}
             )
             an_input = session.prompt(
                 f"{get_flair()} (pa)> ",
@@ -233,7 +108,7 @@ def menu():
             an_input = input(f"{get_flair()} (pa)> ")
 
         try:
-            process_input = port_controller.switch(an_input)
+            process_input = pa_controller.switch(an_input)
 
             if process_input is not None:
                 return process_input

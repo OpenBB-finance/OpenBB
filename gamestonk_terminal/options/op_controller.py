@@ -32,7 +32,6 @@ class OptionsController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def expiry_dates(self, other_args: List[str]):
         """Print all available expiry dates."""
         parser = argparse.ArgumentParser(
@@ -81,7 +80,7 @@ class OptionsController:
     @staticmethod
     def print_help(expiry_date):
         """Print help."""
-        print("\nOptions insight Mode:")
+        print("\nOptions:")
         print("   help          show this  menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
@@ -128,7 +127,7 @@ class OptionsController:
 
     def call_exp(self, other_args: List[str]):
         """Process exp command."""
-        self.expiry_dates(self, other_args)
+        self.expiry_dates(other_args)
 
     def call_voi(self, other_args: List[str]):
         """Process voi command."""
