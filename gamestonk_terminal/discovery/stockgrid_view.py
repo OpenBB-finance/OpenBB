@@ -10,7 +10,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_pos
 
 
 def darkshort(other_args: List[str]):
-    """Get short volume data from Dark Pools.
+    """Get dark pool short positions.
 
     Parameters
     ----------
@@ -19,12 +19,14 @@ def darkshort(other_args: List[str]):
 
     """
     parser = argparse.ArgumentParser(
-        prog="darkshort", add_help=False, description="Get dark pool short positions"
+        prog="darkshort",
+        add_help=False,
+        description="Get dark pool short positions. [Source: Stockgrid]",
     )
     parser.add_argument(
         "-n",
         "--number",
-        help="Number of rows to show",
+        help="Number of top tickers to show",
         type=check_positive,
         default=10,
         dest="num",
@@ -33,7 +35,7 @@ def darkshort(other_args: List[str]):
         "-s",
         "--sort",
         help="Field for which to sort by, where 'sv': Short Vol. (1M), "
-        "'sv_pct': Short Vol. %, 'nsv': Net Short Vol. (1M), "
+        "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
         "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
         "'dpp_dollar': DP Position ($1B)",
         choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
@@ -106,8 +108,8 @@ def darkshort(other_args: List[str]):
 
 
 def shortvol(other_args: List[str]):
-    """
-    Get and show short volume from stockgrid.io
+    """Print short interest and days to cover
+
     Parameters
     ----------
     other_args: List[str]
@@ -116,12 +118,12 @@ def shortvol(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="shortvol",
         add_help=False,
-        description="Scrape stockgrid.io for short volume data",
+        description="Print short interest and days to cover. [Source: Stockgrid]",
     )
     parser.add_argument(
         "-n",
         "--number",
-        help="Number of rows to show",
+        help="Number of top tickers to show",
         type=check_positive,
         default=10,
         dest="num",
@@ -129,7 +131,7 @@ def shortvol(other_args: List[str]):
     parser.add_argument(
         "-s",
         "--sort",
-        help="Field for which to sort by, where 'float': Float Short %, "
+        help="Field for which to sort by, where 'float': Float Short %%, "
         "'dtc': Days to Cover, 'si': Short Interest",
         choices=["float", "dtc", "si"],
         default="float",

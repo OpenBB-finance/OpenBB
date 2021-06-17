@@ -31,7 +31,7 @@ def shortview(ticker: str, other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="shortvol",
         add_help=False,
-        description="Shows price vs short interest volume",
+        description="Shows price vs short interest volume. [Source: Stockgrid]",
     )
     parser.add_argument(
         "-n",
