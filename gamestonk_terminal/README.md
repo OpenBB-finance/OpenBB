@@ -102,11 +102,10 @@ Command|Description|Source
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`ratings`      |top ratings updates |[MarketBeat](https://marketbeat.com)
+`ratings`       |top ratings updates |[MarketBeat](https://marketbeat.com)
 `darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
-`topdark`       |largest dark pool positions | [Stockgrid](https://stockgrid.io)
-`darkshort`     | dark pool short information|[Stockgrid](https://stockgrid.io)
-`shortvol`      |short interest              |[Stockgrid](https://stockgrid.io)
+`darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
+`shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
 
 &nbsp;
 
@@ -246,7 +245,7 @@ Command|Description|Source
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
 `dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
 `ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
-`shortview`     |shows price vs short interest over last year [Stockgrid](https://stockgrid.io
+`shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
 
 &nbsp;
 
