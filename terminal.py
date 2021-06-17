@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 import argparse
-import git
+
 import sys
 import os
 import subprocess
 from datetime import datetime, timedelta
+import git
 import pandas as pd
 import yfinance as yf
 from matplotlib import pyplot as plt
