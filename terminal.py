@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
-
+import git
 import sys
 import os
 import subprocess
@@ -130,7 +130,8 @@ def main():
         print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Ape.\n")
+    print("\nWelcome to Gamestonk Terminal Ape.")
+    print("(#" + str(git.Repo(".").head.commit) + ")\n")
     should_print_help = True
     parsed_stdin = False
 
