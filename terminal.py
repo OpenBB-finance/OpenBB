@@ -29,6 +29,7 @@ from gamestonk_terminal.main_helper import (
     print_goodbye,
     quote,
     update_terminal,
+    about_us,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
@@ -113,6 +114,7 @@ def main():
         "rc",
         "gov",
         "etf",
+        "about",
     ]
 
     menu_parser.add_argument("opt", choices=choices)
@@ -451,6 +453,10 @@ def main():
         elif ns_known_args.opt == "update":
             update_succcess = not update_terminal()
             break
+
+        elif ns_known_args.opt == "about":
+            about_us()
+            main_cmd = True
 
         else:
             print("Shouldn't see this command!")
