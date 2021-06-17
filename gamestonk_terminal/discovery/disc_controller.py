@@ -102,7 +102,7 @@ class DiscoveryController:
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
         print("   ratings        top ratings updates [MarketBeat]")
-        print("   darkshort      dark pool short information [Stockgrid.io]")
+        print("   darkshort      dark pool short position [Stockgrid.io]")
         print("   shortvol       short interest and days to cover [Stockgrid.io]")
         print("")
 
@@ -225,7 +225,7 @@ class DiscoveryController:
         finra_ats_view.dark_pool(other_args)
 
     def call_darkshort(self, other_args: List[str]):
-        """Process shortvol command"""
+        """Process darkshort command"""
         stockgrid_view.darkshort(other_args)
 
     def call_shortvol(self, other_args: List[str]):
