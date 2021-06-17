@@ -270,7 +270,8 @@ Command|Technique|Sources
 
 Command|Description
 ------ | ------------
-t.b.d
+`load`   | load portfolio from csv file
+`group`  | view holdings by a user input group
 
 &nbsp;
 
