@@ -66,9 +66,12 @@ def load_csv_portfolio(other_args: List[str]):
             return "", pd.DataFrame()
 
         full_path = os.path.abspath(
-            "gamestonk_terminal/portfolio_analysis/portfolios/"
-            + ns_parser.path
-            + ".csv"
+            os.path.join(
+                "gamestonk_terminal",
+                "portfolio_analysis",
+                "portfolios",
+                f"{ns_parser.path}.csv",
+            )
         )
         df = pd.read_csv(full_path)
 
