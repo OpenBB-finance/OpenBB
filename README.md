@@ -369,12 +369,18 @@ Feel free to share loss porn, memes or any questions at:
 
 
 #### Shoutout to:
-* **alokan** : Responsible by developing `Forex` menu
 * **pll_llq** and **hinxx** : Working towards a GUI using Qt.
   * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
 * **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app.
   * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
+* **Meghan Hone** : Managing Twitter account
+* **alokan** : Responsible by developing `Forex` menu
 * **Chavithra** and **Deel18** : for Degiro's integration.
+* **Traceabl3** : By adding several preset screeners
+
+#### Other Contributors
+
+cclauss, shadycuz, lolrenx, buzzCraft, clothespin, arcutright, jperkins12, nodesocket, akx, sigaloid, pchaganti, danielorf, henrytdsimmons, RowanHarley, sabujp, qTipTip, gmerrall, bfxavier, donno2048, noufal85, rmassoth, benkulbertis, ricleal-fugue, sandsturm, breck7, derrickknox, daxxog, Felixkruemel, gvikei, backhand, ntoscano, nickodell, grvsaxena419, priteshkeleven, kaitj
 
 ## Acknowledgments
 

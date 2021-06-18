@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+* [Main Menu](#Main-Menu)
 * [Discovery](#Discovery)
 * [Behavioral Analysis](#Behavioral-Analysis)
 * [Sell-side Equity Research](#Sell-side-Equity-Research)
@@ -35,6 +36,12 @@
 * [User Experience](#User-Experience)
 
 ---
+
+## Main Menu
+* [x] Add about us command (@didier) - [PR #506](https://github.com/DidierRLopes/GamestonkTerminal/pull/506)
+* [x] Add git commit hash to welcome message (@didier) - [PR #506](https://github.com/DidierRLopes/GamestonkTerminal/pull/506)
+
+**NEXT**
 
 ## Discovery
 * [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)

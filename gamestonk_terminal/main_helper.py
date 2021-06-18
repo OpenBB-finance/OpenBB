@@ -7,6 +7,7 @@ import random
 from datetime import datetime, timedelta
 import subprocess
 import hashlib
+from colorama import Fore, Style
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import transpose
 import pandas as pd
@@ -37,6 +38,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
     print("   help        help to see this menu again")
     print("   update      update terminal from remote")
     print("   reset       reset terminal and reload configs")
+    print("   about       about us")
     print("   quit        to abandon the program")
     print("")
     print("   clear       clear a specific stock ticker from analysis")
@@ -786,3 +788,37 @@ def update_terminal():
         return completed_process.returncode
 
     return 0
+
+
+def about_us():
+    print(
+        f"\n{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
+        "\n"
+        f"{Fore.CYAN}Join our community on discord: {Style.RESET_ALL}https://discord.gg/Up2QGbMKHY\n"
+        f"{Fore.CYAN}Follow our twitter for updates: {Style.RESET_ALL}https://twitter.com/gamestonkt\n"
+        f"{Fore.CYAN}Access our landing page: {Style.RESET_ALL}https://gamestonkterminal.vercel.app\n"
+        "\n"
+        f"{Fore.YELLOW}Author:{Style.RESET_ALL} DidierRLopes\n"
+        f"{Fore.YELLOW}Main Devs:{Style.RESET_ALL} jmaslek, aia\n"
+        "\n"
+        f"{Fore.YELLOW}Main Contributors:{Style.RESET_ALL}\n"
+        f"{Fore.MAGENTA}Working towards a GUI using Qt:{Style.RESET_ALL} piiq, hinxx\n"
+        f"{Fore.MAGENTA}Working on our landing page:{Style.RESET_ALL} jose-donato, crspy, martiaaz\n"
+        f"{Fore.MAGENTA}Managing Twitter account:{Style.RESET_ALL} Meghan Hone\n"
+        f"{Fore.MAGENTA}Responsible by developing Forex menu:{Style.RESET_ALL} alokan\n"
+        f"{Fore.MAGENTA}Degiro's integration:{Style.RESET_ALL} Chavithra, Deel18\n"
+        f"{Fore.MAGENTA}Preset screeners:{Style.RESET_ALL} Traceabl3\n"
+        "\n"
+        f"{Fore.YELLOW}Partnerships:{Style.RESET_ALL}\n"
+        f"{Fore.CYAN}FinBrain: {Style.RESET_ALL}https://finbrain.tech\n"
+        f"{Fore.CYAN}Quiver Quantitative: {Style.RESET_ALL}https://www.quiverquant.com\n"
+        f"\n{Fore.RED}"
+        "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
+        "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "
+        "financial instrument you should be fully informed of the risks and costs associated with trading the financial "
+        "markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek "
+        "professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. "
+        "GST and any provider of the data contained in this website will not accept liability for any loss or damage "
+        "as a result of your trading, or your reliance on the information displayed."
+        f"\n{Style.RESET_ALL}"
+    )

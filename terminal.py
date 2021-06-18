@@ -6,6 +6,7 @@ import sys
 import os
 import subprocess
 from datetime import datetime, timedelta
+import git
 import pandas as pd
 import yfinance as yf
 from matplotlib import pyplot as plt
@@ -29,6 +30,7 @@ from gamestonk_terminal.main_helper import (
     print_goodbye,
     quote,
     update_terminal,
+    about_us,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.papermill import papermill_controller as mill
@@ -114,6 +116,7 @@ def main():
         "rc",
         "gov",
         "etf",
+        "about",
         "bro",
     ]
 
@@ -130,7 +133,8 @@ def main():
         print(e, "\n")
 
     # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Ape.\n")
+    print("\nWelcome to Gamestonk Terminal Ape.")
+    print("(#" + str(git.Repo(".").head.commit) + ")\n")
     should_print_help = True
     parsed_stdin = False
 
@@ -456,6 +460,10 @@ def main():
         elif ns_known_args.opt == "update":
             update_succcess = not update_terminal()
             break
+
+        elif ns_known_args.opt == "about":
+            about_us()
+            main_cmd = True
 
         else:
             print("Shouldn't see this command!")
