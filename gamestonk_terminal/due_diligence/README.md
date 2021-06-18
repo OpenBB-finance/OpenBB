@@ -31,7 +31,7 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
 * [ftd](#ftd)
   * fails-to-deliver data [SEC]
 * [shortview](#shortview)
-  * shows price vs short interest over last year [Stockgrid.io]
+  * shows price vs short interest volume [Stockgrid]
 
 ## news <a name="news"></a>
 
@@ -201,7 +201,17 @@ The fails-to-deliver data collected by SEC. Fails to deliver on a given day are 
 ![ftd](https://user-images.githubusercontent.com/25267873/115201750-93a9bc80-a0ed-11eb-8f13-68508749259e.png)
 
 ## shortview <a name="shortview"></a>
+
 ```text
-usage: shortview
+usage: shortvol [-n NUM] [-r]
 ```
-Plots price and short volume over the past year.
+
+Shows price vs short interest volume. [Source: Stockgrid]
+* -r: Flag to print raw data instead. 
+* -n: Number of last open market days to show. Default: 120, but if -r is set it's 10.
+
+![shortvol_gme](https://user-images.githubusercontent.com/25267873/122323986-ee119e80-cf1f-11eb-8a01-2fd90f786d70.png)
+
+<img width="951" alt="shortvolraw_gme" src="https://user-images.githubusercontent.com/25267873/122323990-eeaa3500-cf1f-11eb-91b9-6b9d3a4eee36.png">
+
+

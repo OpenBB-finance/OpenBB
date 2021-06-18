@@ -63,7 +63,7 @@ def rh_positions_to_df(holds: dict):
     return df
 
 
-def merge_portfolios(df: pd.DataFrame) -> pd.DataFrame:
+def merge_brokers_holdings(df: pd.DataFrame) -> pd.DataFrame:
     if set(df.columns) != {"Symbol", "MarketValue", "Quantity", "CostBasis", "Broker"}:
         print("Check df generation")
         return None
@@ -79,7 +79,7 @@ def merge_portfolios(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def print_portfolio(portfolio):
+def print_brokers_holdings(portfolio):
     print(
         "Stonk\t Market Value \t\t Quantity \t\t Cost Basis \t\t All Time % Change \t\t Brokers"
     )

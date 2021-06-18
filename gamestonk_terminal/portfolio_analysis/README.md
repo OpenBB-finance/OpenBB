@@ -1,23 +1,24 @@
-# PORTFOLIO
+# PORTFOLIO ANALYSIS
 
-This document will walk through the custom portfolio loading.
+This menu aims to analyze a portfolio loaded through csv, and the usage of the following commands along with an example will be exploited below.
 
-## csv
+* [load](#load)
+  * load portfolio from csv file
+* [group](#group)
+  * view holdings by a user input group
+
+## load
 ```
-usage: csv [-p PATH] [--no_sector] [--no_last_price] [--nan]
+usage: load [-p PATH] [--no_sector] [--no_last_price] [--nan]
 ```
+This function allows you to load from a predefined csv file.  The csv file can contain any information you want, but the stocks should be under a column `Ticker`.  The number owned should be defined in `Shares`.  By default, this will loop through all Tickers and pull sector and latest price. An example column that could be added would be if the ticker is considered a Value or Growth stock.
 * -p/--path : Path to csv.  A template is supplied and the default path points to it.
 * --no_sector : Flag to avoid getting the sector of each stock.
 * --no_last_price : Flag to avoid getting the latest price for each supplied stock.
 * --nan : Flag to display NaN columns.  Useful if importing partial information.
 
-This function allows you to load from a predefined csv file.  The csv file can contain any information you want, but the stocks
-should be under a column `Ticker`.  The number owned should be defined in `Shares`.  By default, this will loop through
-all Tickers and pull sector and latest price.  An example column that could be added would be if the ticker is considered
-a Value or Growth stock.
-
 ```python
-(✨) (pa)> csv
+(✨) (pa)> load
 ╒════╤══════════╤══════════╤════════════════════╤══════════════╤═════════╕
 │    │ Ticker   │   Shares │ sector             │   last_price │   value │
 ╞════╪══════════╪══════════╪════════════════════╪══════════════╪═════════╡
@@ -32,19 +33,14 @@ a Value or Growth stock.
 │  4 │ BAC      │        3 │ Financial Services │        41.39 │  124.17 │
 ╘════╧══════════╧══════════╧════════════════════╧══════════════╧═════════╛
 ```
+
 ## group
 ```
-usage: groupby [-g GROUP]
+usage: group [-g GROUP]
 ```
+Displays data in groups based on columns.  Currently this only looks at the `value` column.
 * -g/--group : Column to group data by.  Ex: "sector"
 
-Displays data in groups based on columns.  Currently this only looks at the `value` column.
-
-Example commands to load csv file and then group by sector.
-```
-csv
-group -g sector
-```
 ```python
 (✨) (pa)> group -g sector
 ╒════════════════════╤═════════╕
@@ -58,3 +54,4 @@ group -g sector
 ├────────────────────┼─────────┤
 │ Technology         │ 1423.28 │
 ╘════════════════════╧═════════╛
+```

@@ -11,7 +11,9 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.portfolio.portfolio_helpers import alpaca_positions_to_df
+from gamestonk_terminal.brokers.brokers_helpers import (
+    alpaca_positions_to_df,
+)
 
 register_matplotlib_converters()
 

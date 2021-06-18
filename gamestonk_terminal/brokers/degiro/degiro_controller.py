@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.degiro_view import DegiroView
+from gamestonk_terminal.brokers.degiro.degiro_view import DegiroView
 
 
 class DegiroController:
@@ -287,16 +287,10 @@ class DegiroController:
 
     def q(self, _):
         """Process Q command - quit the menu."""
-
-        DegiroView.q_display()
-
         return False
 
     def quit(self, _):
         """Process Quit command - quit the program."""
-
-        DegiroView.quit_display()
-
         return True
 
     def topnews(self, l_args):
@@ -377,11 +371,11 @@ def menu():
                 {c: None for c in degiro_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (pa)>(degiro)> ",
+                f"{get_flair()} (bro)>(degiro)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (pa)>(degiro)> ")
+            an_input = input(f"{get_flair()} (bro)>(degiro)> ")
 
         try:
             process_input = degiro_controller.switch(an_input)

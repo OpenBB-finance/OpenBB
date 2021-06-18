@@ -14,7 +14,7 @@ from degiro_connector.trading.pb.trading_pb2 import (
 )
 
 # IMPORTATION INTERNAL
-from gamestonk_terminal.portfolio.degiro_model import DegiroModel
+from gamestonk_terminal.brokers.degiro.degiro_model import DegiroModel
 
 # pylint: disable=no-member
 
@@ -44,19 +44,22 @@ class DegiroView:
     def help_display():
         print(
             "Degiro:\n"
-            "   cancel      cancel an order using the `id`\n"
-            "   companynews view news about a company with it's isin\n"
-            "   create      create an order.\n"
-            "   hold        view holdings\n"
-            "   lastnews    view latest news\n"
-            "   login       connect to degiro's api\n"
-            "   logout      disconnect from degiro's api\n"
-            "   lookup      view search for a product by name\n"
-            "   pending     view pending orders\n"
-            "   q           quit degiro integration\n"
-            "   quit        quit the app\n"
-            "   topnews     view top news preview\n"
-            "   update      view top news preview\n"
+            "   q            quit degiro standalone menu\n"
+            "   quit         quit the app\n"
+            "   login        connect to degiro's api\n"
+            "   logout       disconnect from degiro's api\n"
+            "\n"
+            "   hold         view holdings\n"
+            "   lookup       view search for a product by name\n"
+            "\n"
+            "   create       create an order\n"
+            "   update       update an order\n"
+            "   cancel       cancel an order using the id\n"
+            "   pending      view pending orders\n"
+            "\n"
+            "   companynews  view news about a company with it's isin\n"
+            "   lastnews     view latest news\n"
+            "   topnews      view top news preview\n"
         )
 
     def cancel(self, ns_parser: Namespace):
@@ -398,14 +401,6 @@ class DegiroView:
     @staticmethod
     def __pending_display_no_result():
         print("No pending orders.")
-
-    @staticmethod
-    def q_display():
-        print("Quit Degiro integration.")
-
-    @staticmethod
-    def quit_display():
-        print("Quit the app.")
 
     def topnews(self, ns_parser: Namespace):
         _ = ns_parser

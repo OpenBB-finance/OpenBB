@@ -65,20 +65,23 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
         "   > scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
     )
     print("   > mill        papermill menu, \t\t menu to generate notebook reports")
-    print("   > econ        economic data, \t\t e.g.: FRED, events")
-    print(
-        "   > pa          portfolio analysis, \t\t supports: robinhood, alpaca, ally "
-    )
+    print("   > econ        economic data, \t\t e.g.: events, FRED data, GDP, VIXCLS")
+    print("   > pa          portfolio analysis, \t\t analyses your custom portfolio")
+    print("   > bro         brokers holdings, \t\t supports: robinhood, alpaca, ally")
     print(
         "   > crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance"
     )
     print(
         "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
     )
-    print("   > gov         government menu, \t\t congress, senate, house trading")
+    print(
+        "   > gov         government menu, \t\t house trading, contracts, corporate lobbying"
+    )
     print("   > etf         etf menu, \t\t\t from: StockAnalysis.com")
     print("   > fx          forex menu, \t\t\t forex support through Oanda")
-    print("   > rc          resource collection, \t\t e.g. hf letters")
+    print(
+        "   > rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA"
+    )
 
     if s_ticker:
         print(
@@ -112,7 +115,7 @@ def print_help(s_ticker, s_start, s_interval, b_is_market_open):
             "   > ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
         )
         print(
-            "   > op          options info,            \t e.g.: volume and open interest"
+            "   > op          options info,            \t e.g.: volume, open interest, chains, volatility"
         )
     print("")
 

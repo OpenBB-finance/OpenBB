@@ -3,7 +3,7 @@ import numpy as np
 import ally
 import yfinance as yf
 from termcolor import colored
-from gamestonk_terminal.portfolio.portfolio_helpers import ally_positions_to_df
+from gamestonk_terminal.brokers.brokers_helpers import ally_positions_to_df
 
 
 def login():

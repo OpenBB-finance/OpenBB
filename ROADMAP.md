@@ -45,6 +45,7 @@
 * [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
 * [x] Past and future IPOs calendar (@didier) - [PR #432](https://github.com/DidierRLopes/GamestonkTerminal/pull/432)
 * [x] Short volume and dark pool short information (stockgrid) (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496
+* [x] Combine topdark onto darkshort cmd, improve shortvol cmd (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 
@@ -95,6 +96,7 @@
 * [x] Add failure to deliver command (@hinxx) - [PR #366](https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
 * [x] Ratings over time (@didier) - [PR #431](https://github.com/DidierRLopes/GamestonkTerminal/pull/431)
 * [x] Add short volume from stockgrid (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496)
+* [x] Allow short vol to output datapoints (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 
@@ -152,22 +154,25 @@
 
 ---
 ## Brokers
-
-*[ ] Port from current portfolio menu
-
-**NEXT**
-* [ ] Merge data from different brokers
-* [ ] Add more options around merged portfolios
-* [ ] Add Brokers (td, webull, etc)
-
----
-## Portfolio Analysis
 * [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add Ally Invest (@jmaslek) - [PR #267](https://github.com/DidierRLopes/GamestonkTerminal/pull/267)
 * [x] Degiro support (@deel) - [PR #381](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
 * [x] Degiro improvement (@Chavithra) - [PR #445](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
+* [x] Brokers to be the old portfolio menu (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
+* [x] Refactor degiro menu onto a folder (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
+
+**NEXT**
+* [ ] Merge data from different brokers
+* [ ] Add more options around merged portfolios
+* [ ] Add Brokers (td, webull, etc)
+* [ ] Allow to go directly onto Portfolo Analysis
+
+---
+## Portfolio Analysis
+
 * [x] Add custom csv integration (jmaslek) - [PR #502](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/502)
+* [x] Commands ported to brokers menu (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 * [ ] Port to new Broker Menu
@@ -181,10 +186,10 @@ ___
 ## Portfolio Optimization
 * [x] Basic Optimization through PyPortFolioOpt(@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
 * [x] Add command to maximise the quadratic utility(@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
+* [x] Allow to remove ticker from list (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 * [ ] Allow for more custom optimization constrains
-
 
 ---
 

@@ -42,15 +42,10 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * top ratings updates [MarketBeat]
 * [darkpool](#darkpool)
   * dark pool tickers with growing activity [FINRA]
-  
-* [topdark](#topdark)
-  * largest dark pool positions [Stockgrid.io]
-  
 * [darkshort](#darkshort)
-  * dark pool short information [Stockgrid.io]
-  
+  * dark pool short position [Stockgrid]
 * [shortvol](#shortvol)
-  * short interest [Stockgrid.io]
+  * short interest and days to cover [Stockgrid]
 
 ## ipo <a name="ipo"></a>
 
@@ -305,72 +300,27 @@ Display dark pool (ATS) data of tickers with growing trades activity. [Source: F
 
 ![darkpool](https://user-images.githubusercontent.com/25267873/115323195-8d642080-a17f-11eb-9ef8-d456ce769ab7.png)
 
-# Stockgrid.io
-
-## topdark <a name="topdark"></a>
-
-```
-usage: topdark [-n]
-```
-Display the largest dark pool positions
-* -n : Number of tickers to display
-
-```python
-(✨) (disc)> topdark -n 4
-
-╒══════════╤═══════════════════╤═══════════════╤════════════╕
-│ Ticker   │   Position ($1B)  │   Shares (1M) │ Date       │
-╞══════════╪═══════════════════╪═══════════════╪════════════╡
-│ QQQ      │             16.83 │         51.11 │ 2021-06-10 │
-├──────────┼───────────────────┼───────────────┼────────────┤
-│ IWM      │              5.18 │         22.99 │ 2021-06-10 │
-├──────────┼───────────────────┼───────────────┼────────────┤
-│ BND      │              3.24 │         37.98 │ 2021-06-10 │
-├──────────┼───────────────────┼───────────────┼────────────┤
-│ EEM      │              3.13 │         56.95 │ 2021-06-10 │
-╘══════════╧═══════════════════╧═══════════════╧════════════╛
-```
-
 ## darkshort <a name="darkshort"></a>
 
 ```
-usage: darkshort [-n]
+usage: darkshort [-n NUM] [-s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}]
 ```
-Display the largest dark pool short positions
-* -n : Number of tickers to display
+Get dark pool short positions. [Source: Stockgrid]
+* -n: Number of top tickers to show
+* -s: Field for which to sort by, where 'sv': Short Vol. (1M), 'sv_pct': Short Vol. %, 'nsv': Net Short Vol. (1M), 'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), 'dpp_dollar': DP Position ($1B). Default: dpp_dollar.
 
-```
-(✨) (disc)> darkshort -n 4
+<img width="945" alt="darkshort" src="https://user-images.githubusercontent.com/25267873/122323732-76dc0a80-cf1f-11eb-9983-fd7688778016.png">
 
-╒══════════╤════════════╤══════════════════╤═════════════════════╤═════════════════════╤══════════════════╕
-│ Ticker   │ Date       │   Net Short (1M) │   Net Short ($100M) │   Short Volume (1M) │   Short Volume % │
-╞══════════╪════════════╪══════════════════╪═════════════════════╪═════════════════════╪══════════════════╡
-│ QQQ      │ 2021-06-10 │             1.66 │                5.65 │                5.90 │             0.58 │
-├──────────┼────────────┼──────────────────┼─────────────────────┼─────────────────────┼──────────────────┤
-│ IWM      │ 2021-06-10 │             1.38 │                3.17 │                5.43 │             0.57 │
-├──────────┼────────────┼──────────────────┼─────────────────────┼─────────────────────┼──────────────────┤
-│ RH       │ 2021-06-10 │             0.43 │                3.03 │                1.26 │             0.60 │
-├──────────┼────────────┼──────────────────┼─────────────────────┼─────────────────────┼──────────────────┤
-│ TLT      │ 2021-06-10 │             1.70 │                2.42 │                2.25 │             0.80 │
-╘══════════╧════════════╧══════════════════╧═════════════════════╧═════════════════════╧══════════════════╛
-```
+
 ## shortvol <a name="darkpool"></a>
 
-Display the largest short positions
-* -n : Number of tickers to display
-
 ```
-(✨) (disc)> shortvol -n 4
-
-╒══════════╤════════════╤════════════════╤═════════════════╤═══════════════════════╕
-│ Ticker   │ Date       │   %Float Short │   Days To Cover │   Short Interest (1M) │
-╞══════════╪════════════╪════════════════╪═════════════════╪═══════════════════════╡
-│ AGC      │ 2021-05-28 │          42.51 │           24.75 │                 15.94 │
-├──────────┼────────────┼────────────────┼─────────────────┼───────────────────────┤
-│ PETS     │ 2021-05-28 │          32.69 │           20.05 │                  6.40 │
-├──────────┼────────────┼────────────────┼─────────────────┼───────────────────────┤
-│ BCEL     │ 2021-05-28 │          27.86 │           24.51 │                  6.23 │
-├──────────┼────────────┼────────────────┼─────────────────┼───────────────────────┤
-│ KDMN     │ 2021-05-28 │          25.54 │           35.96 │                 39.73 │
-╘══════════╧════════════╧════════════════╧═════════════════╧═══════════════════════╛
+usage: shortvol [-n NUM] [-s {float,dtc,si}] [-h]
 ```
+
+Print short interest and days to cover. [Source: Stockgrid]
+* -n: Number of top tickers to show
+* -s: Field for which to sort by, where 'float': Float Short %, 'dtc': Days to Cover, 'si': Short Interest. Default: float.
+
+<img width="949" alt="shortvol" src="https://user-images.githubusercontent.com/25267873/122323861-af7be400-cf1f-11eb-9de2-5c7f2debddf0.png">
+

@@ -1,5 +1,7 @@
-"""Custom portfolio model"""
+"""Portfolio parser module"""
 __docformat__ = "numpy"
+
+import os
 import argparse
 from typing import List
 from tabulate import tabulate
@@ -9,11 +11,32 @@ from gamestonk_terminal.helper_funcs import check_valid_path, parse_known_args_a
 
 
 def load_csv_portfolio(other_args: List[str]):
+    """Load portfolio from csv
 
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+
+    Returns
+    ----------
+    portfolio_name : str
+        Portfolio name
+    portfolio : pd.DataFrame
+        Portfolio dataframe
+    """
     parser = argparse.ArgumentParser(
-        prog="csv",
+        prog="load",
         add_help=False,
-        description="Function to get portfolio holdings from predefined csv file",
+        description="Function to get portfolio from predefined csv file inside portfolios folder",
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        default="my_portfolio",
+        type=check_valid_path,
+        help="Path to csv file",
+        dest="path",
     )
     parser.add_argument(
         "--no_sector",
@@ -22,7 +45,6 @@ def load_csv_portfolio(other_args: List[str]):
         help="Add sector to dataframe",
         dest="sector",
     )
-
     parser.add_argument(
         "--no_last_price",
         action="store_true",
@@ -30,7 +52,6 @@ def load_csv_portfolio(other_args: List[str]):
         help="Add last price from yfinance",
         dest="last_price",
     )
-
     parser.add_argument(
         "--nan",
         action="store_true",
@@ -39,20 +60,20 @@ def load_csv_portfolio(other_args: List[str]):
         dest="show_nan",
     )
 
-    parser.add_argument(
-        "-p",
-        "--path",
-        default="./gamestonk_terminal/portfolio/custom_portfolio/portfolio.csv",
-        type=check_valid_path,
-        help="Path to csv file",
-        dest="path",
-    )
-
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return pd.DataFrame()
-        df = pd.read_csv(ns_parser.path)
+            return "", pd.DataFrame()
+
+        full_path = os.path.abspath(
+            os.path.join(
+                "gamestonk_terminal",
+                "portfolio_analysis",
+                "portfolios",
+                f"{ns_parser.path}.csv",
+            )
+        )
+        df = pd.read_csv(full_path)
 
         if not ns_parser.sector:
             df["sector"] = df.apply(
@@ -76,11 +97,11 @@ def load_csv_portfolio(other_args: List[str]):
 
         print(tabulate(df, tablefmt="fancy_grid", headers=df.columns))
         print("")
-        return df
+        return ns_parser.path, df
 
     except Exception as e:
         print(e, "\n")
-        return pd.DataFrame()
+        return "", pd.DataFrame()
 
 
 def breakdown_by_group(portfolio: pd.DataFrame, other_args: List[str]):

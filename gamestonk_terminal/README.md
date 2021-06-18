@@ -10,6 +10,7 @@
 * [Due Diligence](#Due-Diligence-)
 * [Prediction Techniques](#Prediction-Techniques-)
 * [Portfolio Analysis](#Portfolio-Analysis-)
+* [Brokers](#Brokers-)
 * [Portfolio Optimization](#Portfolio-Optimization-)
 * [Cryptocurrencies](#Cryptocurrencies-)
 * [Comparison Analysis](#Comparison-Analysis-)
@@ -101,11 +102,10 @@ Command|Description|Source
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`ratings`      |top ratings updates |[MarketBeat](https://marketbeat.com)
+`ratings`       |top ratings updates |[MarketBeat](https://marketbeat.com)
 `darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
-`topdark`       |largest dark pool positions | [Stockgrid](https://stockgrid.io)
-`darkshort`     | dark pool short information|[Stockgrid](https://stockgrid.io)
-`shortvol`      |short interest              |[Stockgrid](https://stockgrid.io)
+`darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
+`shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
 
 &nbsp;
 
@@ -245,7 +245,7 @@ Command|Description|Source
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
 `dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
 `ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
-`shortview`     |shows price vs short interest over last year [Stockgrid](https://stockgrid.io
+`shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
 
 &nbsp;
 
@@ -266,7 +266,16 @@ Command|Technique|Sources
 `conv1d`      |1D Convolution Neural Net| [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network)
 &nbsp;
 
-## Portfolio Analysis [»](portfolio/README.md)
+## Portfolio Analysis [»](portfolio_analysis/README.md)
+
+Command|Description
+------ | ------------
+`load`   | load portfolio from csv file
+`group`  | view holdings by a user input group
+
+&nbsp;
+
+## Brokers [»](brokers/README.md)
 
 Command|Description|Brokers
 ------ | ------------|---
@@ -277,7 +286,22 @@ Command|Description|Brokers
 `alphist` | view alpaca portfolio history | [Alpaca](https://app.alpaca.markets/login)
 `allyhold`| view ally holdings | [Ally](https://www.ally.com/invest/)
 `hold`    | view net holdings across all logins
+`degiro`  | degiro standalone menu | [Degiro](https://trader.degiro.nl/login/#/login)
 
+Degiro command|Description
+------ | ------------
+`cancel`| cancel an order using the `id`
+`companynews`| view news about a company with it's isin
+`create`    |  create an order
+`hold`     |   view holdings
+`lastnews`  |  view latest news
+`login`      | connect to degiro's api
+`logout`     | disconnect from degiro's api
+`lookup`    |  view search for a product by name
+`pending`   | view pending orders
+`topnews`   |  view top news preview
+`update`    |  view top news preview
+            
 &nbsp;
 
 ## Portfolio Optimization [»](portfolio_optimization/README.md)
