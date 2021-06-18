@@ -15,7 +15,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_terminal import RH_USERNAME as user, RH_PASSWORD as pw
-from gamestonk_terminal.portfolio.portfolio_helpers import rh_positions_to_df
+from gamestonk_terminal.brokers.brokers_helpers import rh_positions_to_df
 
 register_matplotlib_converters()
 

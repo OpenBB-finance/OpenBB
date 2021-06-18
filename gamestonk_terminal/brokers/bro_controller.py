@@ -1,5 +1,7 @@
 __docformat__ = "numpy"
 
+# pylint: disable=R1710
+
 import argparse
 from typing import List
 import pandas as pd
@@ -8,21 +10,20 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio import (
+from gamestonk_terminal.brokers import (
     rh_api,
     alp_api,
     ally_api,
-    degiro_controller,
 )
-from gamestonk_terminal.portfolio.portfolio_helpers import (
-    merge_portfolios,
-    print_portfolio,
+from gamestonk_terminal.brokers.degiro import degiro_controller
+from gamestonk_terminal.brokers.brokers_helpers import (
+    merge_brokers_holdings,
+    print_brokers_holdings,
 )
-from gamestonk_terminal.portfolio import custom_model
 
 
-class PortfolioController:
-    """Portfolio Controller"""
+class BrokersController:
+    """Brokers Controller"""
 
     CHOICES = [
         "alphist",
@@ -36,8 +37,6 @@ class PortfolioController:
         "quit",
         "rhhold",
         "rhhist",
-        "csv",
-        "group",
     ]
 
     BROKERS = [
@@ -47,11 +46,10 @@ class PortfolioController:
     ]
 
     def __init__(self):
-        self.port_parser = argparse.ArgumentParser(add_help=False, prog="port")
-        self.port_parser.add_argument("cmd", choices=self.CHOICES)
+        self.bro_parser = argparse.ArgumentParser(add_help=False, prog="bro")
+        self.bro_parser.add_argument("cmd", choices=self.CHOICES)
         self.broker_list = set()
         self.merged_holdings = None
-        self.custom_portfolio = pd.DataFrame()
 
     def print_help(self):
         """Print help"""
@@ -66,35 +64,25 @@ class PortfolioController:
             "   q             quit this menu, and shows back to main menu, logs out of brokers\n"
             "   quit          quit to abandon program, logs out of brokers\n"
         )
-        self.print_portfolio_menu()
+        self.print_brokers_menu()
 
-    def print_portfolio_menu(self):
+    def print_brokers_menu(self):
         print(
             f"Current Broker: {('None', ', '.join(self.broker_list))[bool(self.broker_list)]}\n\n"
             "Ally:\n"
             "   allyhold      view ally holdings\n"
             "Alpaca:\n"
             "   alphold       view alp holdings\n"
-            "   alphist       view alp portfolio history\n"
+            "   alphist       view alp brokers holdings history\n"
             "Robinhood:\n"
             "   rhhold        view rh holdings\n"
-            "   rhhist        plot rh portfolio history\n"
+            "   rhhist        plot rh brokers holdings history\n"
             "\nDegiro:\n"
-            ">  degiro        view degiro sub-menu\n"
+            ">  degiro        degiro standalone menu\n"
             "\nMerge:\n"
             "   login         login to your brokers\n"
             "   hold          view net holdings across all logins\n"
-            "\nCustom:\n"
-            "   csv           load holdings from CSV\n"
         )
-        if not self.custom_portfolio.empty:
-            self.print_portfolio_view()
-
-    def print_portfolio_view(self):
-        if not self.custom_portfolio.empty:
-            print("Custom Portfolio Options:")
-            print("   group   view holdings by a user input group")
-            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -107,28 +95,26 @@ class PortfolioController:
             None - continue in the menu
         """
 
-        (known_args, other_args) = self.port_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.bro_parser.parse_known_args(an_input.split())
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
     def call_help(self, _):
-        """Process Help command"""
-
+        """Process help command"""
         self.print_help()
 
     def call_q(self, _):
-        """Process Q command - quit the menu"""
-
+        """Process q command - quit the menu"""
         return False
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-
+        """Process quit command - quit the program"""
         return True
 
     def call_login(self, other_args):
+        """Process login command"""
         logged_in = False
         if not other_args:
             print("Please enter brokers you wish to login to")
@@ -152,12 +138,14 @@ class PortfolioController:
                 print(f"{broker} not supported")
 
         if logged_in:
-            self.print_portfolio_menu()
+            self.print_brokers_menu()
 
     def call_rhhist(self, other_args: List[str]):
+        """Process rhhist command"""
         rh_api.plot_historical(other_args)
 
     def call_rhhold(self, _):
+        """Process rhhold command"""
         try:
             rh_api.show_holdings()
         except Exception as e:
@@ -165,6 +153,7 @@ class PortfolioController:
             print("")
 
     def call_alphold(self, _):
+        """Process alphold command"""
         try:
             alp_api.show_holdings()
         except Exception as e:
@@ -172,9 +161,11 @@ class PortfolioController:
             print("")
 
     def call_alphist(self, other_args: List[str]):
+        """Process alphist command"""
         alp_api.plot_historical(other_args)
 
     def call_allyhold(self, _):
+        """Process allyhold command"""
         try:
             ally_api.show_holdings()
         except Exception as e:
@@ -182,10 +173,13 @@ class PortfolioController:
             print("")
 
     def call_degiro(self, _):
-        """ "Process degiro command."""
-        return degiro_controller.menu()
+        """Process degiro command."""
+        if degiro_controller.menu():
+            return True
+        print("")
 
     def call_hold(self, _):
+        """Process hold command."""
         holdings = pd.DataFrame(
             columns=["Symbol", "MarketValue", "Quantity", "CostBasis"]
         )
@@ -197,43 +191,40 @@ class PortfolioController:
                 [holdings, eval(broker + "_api.return_holdings()")],
                 axis=0,
             )
-        self.merged_holdings = merge_portfolios(holdings)
-        print_portfolio(self.merged_holdings)
-
-    def call_csv(self, other_args):
-        """Process csv command"""
-        self.custom_portfolio = custom_model.load_csv_portfolio(other_args)
-        self.print_portfolio_view()
-
-    def call_group(self, other_args):
-        """Process group command"""
-        if not self.custom_portfolio.empty:
-            custom_model.breakdown_by_group(self.custom_portfolio, other_args)
-        else:
-            print("Please load a portfolio")
+        self.merged_holdings = merge_brokers_holdings(holdings)
+        print_brokers_holdings(self.merged_holdings)
 
 
 def menu():
-    """Portfolio Analysis Menu"""
-
-    port_controller = PortfolioController()
-    port_controller.print_help()
+    """Brokers Menu"""
+    bro_controller = BrokersController()
+    print(
+        "\nUSE THIS MENU AT YOUR OWN DISCRETION\n"
+        "   - This menu is the only one in the entire repository that has access to your broker accounts. "
+        "If you have provided your login details on the config_terminal.py file"
+        "   - We review the code thoroughly from each contributor, hence, we can ensure that our codebase "
+        "does not take advantage of your data.\n"
+        "   - HOWEVER, our project imports almost 200 different open source python modules. Therefore, it "
+        "is impossible for us to check the coding standards and security of each of these modules. "
+        "Hence why adding this disclaimer here."
+    )
+    bro_controller.print_help()
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in port_controller.CHOICES}
+                {c: None for c in bro_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (pa)> ",
+                f"{get_flair()} (bro)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (pa)> ")
+            an_input = input(f"{get_flair()} (bro)> ")
 
         try:
-            process_input = port_controller.switch(an_input)
+            process_input = bro_controller.switch(an_input)
 
             if process_input is not None:
                 return process_input

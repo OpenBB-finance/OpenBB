@@ -19,6 +19,7 @@ class PortfolioOptimization:
         "quit",
         "select",
         "add",
+        "rmv",
         "equal",
         "mktcap",
         "dividend",
@@ -55,8 +56,11 @@ class PortfolioOptimization:
         print("   quit          quit to abandon program")
         print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
         print("")
-        print("   add           add ticker to optimize")
-        print("   select        overwrite current tickers with new tickers")
+        print("   select        select list of tickers to be optimized")
+        print("   add           add tickers to the list of the tickers to be optimized")
+        print(
+            "   rmv           remove tickers from the list of the tickers to be optimized"
+        )
         print("")
         print("Optimization:")
         print("   equal         equally weighted")
@@ -111,14 +115,18 @@ class PortfolioOptimization:
         """Process Quit command - quit the program"""
         return True
 
-    def call_add(self, other_args: List[str]):
-        """Process add command"""
-        self.add_stocks(other_args)
-
     def call_select(self, other_args: List[str]):
         """Process select command"""
         self.tickers = []
         self.add_stocks(other_args)
+
+    def call_add(self, other_args: List[str]):
+        """Process add command"""
+        self.add_stocks(other_args)
+
+    def call_rmv(self, other_args: List[str]):
+        """Process rmv command"""
+        self.rmv_stocks(other_args)
 
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
@@ -201,11 +209,49 @@ class PortfolioOptimization:
                 )
 
             self.tickers = list(tickers)
+            print("")
 
         except Exception as e:
-            print(e)
+            print(e, "\n")
 
-        print("")
+    def rmv_stocks(self, other_args: List[str]):
+        """Remove one of the tickers to be optimized"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rmv",
+            description="""Remove one of the tickers to be optimized.""",
+        )
+        parser.add_argument(
+            "-t",
+            "--tickers",
+            dest="rmv_tickers",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="tickers to be removed from the tickers to optimize.",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-t")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            tickers = set(self.tickers)
+            for ticker in ns_parser.rmv_tickers:
+                tickers.remove(ticker)
+
+            if self.tickers:
+                print(
+                    f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
+                )
+
+            self.tickers = list(tickers)
+            print("")
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(tickers: List[str]):

@@ -6,61 +6,12 @@ from typing import List
 import requests
 import pandas as pd
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
-
-
-def top_dark_pools(other_args: List[str]):
-    """
-    Get and show the top dark pool positions
-    Parameters
-    ----------
-    other_args: List[str[
-        Argparse arguments
-
-    """
-
-    parser = argparse.ArgumentParser(
-        prog="topdark", add_help=False, description="Get top dark pool positions"
-    )
-    parser.add_argument("-n", help="Number to show", type=int, default=10, dest="num")
-    print("")
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        link1 = "https://stockgridapp.herokuapp.com/get_dark_pool_data?top=Dark+Pools+Position+$&minmax=desc"
-        response = requests.get(link1)
-        df = pd.DataFrame(response.json()["data"]).sort_values(
-            "Dark Pools Position $", ascending=False
-        )
-        df = df[["Ticker", "Dark Pools Position $", "Dark Pools Position", "Date"]]
-        df["Dark Pools Position $"] = df["Dark Pools Position $"] / (
-            1_000_000_000
-        )  # %%
-        df["Dark Pools Position"] = df["Dark Pools Position"] / 1_000_000
-
-        df.columns = ["Ticker", "Position ($1B) ", "Shares (1M)", "Date"]
-        print(
-            tabulate(
-                df.iloc[: ns_parser.num],
-                tablefmt="fancy_grid",
-                floatfmt=".2f",
-                headers=list(df.columns),
-                showindex=False,
-            )
-        )
-        print("")
-    except Exception as e:
-        print(e, "\n")
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
 
 
 def darkshort(other_args: List[str]):
-    """
-    Get short volume data from Dark Pools.
+    """Get dark pool short positions.
+
     Parameters
     ----------
     other_args: List[str]
@@ -68,15 +19,43 @@ def darkshort(other_args: List[str]):
 
     """
     parser = argparse.ArgumentParser(
-        prog="darkshort", add_help=False, description="Get dark pool short positions"
+        prog="darkshort",
+        add_help=False,
+        description="Get dark pool short positions. [Source: Stockgrid]",
     )
-    parser.add_argument("-n", help="Number to show", type=int, default=10, dest="num")
-    print("")
+    parser.add_argument(
+        "-n",
+        "--number",
+        help="Number of top tickers to show",
+        type=check_positive,
+        default=10,
+        dest="num",
+    )
+    parser.add_argument(
+        "-s",
+        "--sort",
+        help="Field for which to sort by, where 'sv': Short Vol. (1M), "
+        "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
+        "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
+        "'dpp_dollar': DP Position ($1B)",
+        choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
+        default="dpp_dollar",
+        dest="sort_field",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        d_fields = {
+            "sv": "Short Volume",
+            "sv_pct": "Short Volume %",
+            "nsv": "Net Short Volume",
+            "nsv_dollar": "Net Short Volume $",
+            "dpp": "Dark Pools Position",
+            "dpp_dollar": "Dark Pools Position $",
+        }
 
         link = "https://stockgridapp.herokuapp.com/get_dark_pool_data?top=Dark+Pools+Position+$&minmax=desc"
         response = requests.get(link)
@@ -86,24 +65,33 @@ def darkshort(other_args: List[str]):
             [
                 "Ticker",
                 "Date",
-                "Net Short Volume",
-                "Net Short Volume $",
                 "Short Volume",
                 "Short Volume %",
+                "Net Short Volume",
+                "Net Short Volume $",
+                "Dark Pools Position",
+                "Dark Pools Position $",
             ]
-        ].sort_values(by="Net Short Volume $", ascending=False)
+        ].sort_values(by=d_fields[ns_parser.sort_field], ascending=False)
+        dp_date = df["Date"].values[0]
+        df = df.drop(columns=["Date"])
         df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
         df["Short Volume"] = df["Short Volume"] / 1_000_000
         df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
         df["Short Volume %"] = df["Short Volume %"] * 100
+        df["Dark Pools Position $"] = df["Dark Pools Position $"] / (1_000_000_000)
+        df["Dark Pools Position"] = df["Dark Pools Position"] / 1_000_000
         df.columns = [
             "Ticker",
-            "Date",
-            "Net Short (1M)",
-            "Net Short ($100M)",
-            "Short Volume (1M)",
-            "Short Volume %",
+            "Short Vol. (1M)",
+            "Short Vol. %",
+            "Net Short Vol. (1M)",
+            "Net Short Vol. ($100M)",
+            "DP Position (1M)",
+            "DP Position ($1B)",
         ]
+        # Assuming that the datetime is the same, which from my experiments seems to be the case
+        print(f"The following data corresponds to the date: {dp_date}")
         print(
             tabulate(
                 df.iloc[: ns_parser.num],
@@ -120,8 +108,8 @@ def darkshort(other_args: List[str]):
 
 
 def shortvol(other_args: List[str]):
-    """
-    Get and show short volume from stockgrid.io
+    """Print short interest and days to cover
+
     Parameters
     ----------
     other_args: List[str]
@@ -130,10 +118,25 @@ def shortvol(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="shortvol",
         add_help=False,
-        description="Scrape stockgrid.io for short volume data",
+        description="Print short interest and days to cover. [Source: Stockgrid]",
     )
-    parser.add_argument("-n", help="Number to show", type=int, default=10, dest="num")
-    print("")
+    parser.add_argument(
+        "-n",
+        "--number",
+        help="Number of top tickers to show",
+        type=check_positive,
+        default=10,
+        dest="num",
+    )
+    parser.add_argument(
+        "-s",
+        "--sort",
+        help="Field for which to sort by, where 'float': Float Short %%, "
+        "'dtc': Days to Cover, 'si': Short Interest",
+        choices=["float", "dtc", "si"],
+        default="float",
+        dest="sort_field",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -145,20 +148,31 @@ def shortvol(other_args: List[str]):
         df = pd.DataFrame(r.json()["data"])
         df.head()
 
-        # %%
+        d_fields = {
+            "float": "%Float Short",
+            "dtc": "Days To Cover",
+            "si": "Short Interest",
+        }
+
         df = df[
             ["Ticker", "Date", "%Float Short", "Days To Cover", "Short Interest"]
-        ].sort_values(by="%Float Short", ascending=False)
+        ].sort_values(
+            by=d_fields[ns_parser.sort_field],
+            ascending=bool(ns_parser.sort_field == "dtc"),
+        )
+        dp_date = df["Date"].values[0]
+        df = df.drop(columns=["Date"])
         df["Short Interest"] = df["Short Interest"] / 1_000_000
         df.head()
         df.columns = [
             "Ticker",
-            "Date",
-            "%Float Short",
-            "Days To Cover",
+            "Float Short %",
+            "Days to Cover",
             "Short Interest (1M)",
         ]
 
+        # Assuming that the datetime is the same, which from my experiments seems to be the case
+        print(f"The following data corresponds to the date: {dp_date}")
         print(
             tabulate(
                 df.iloc[: ns_parser.num],
@@ -168,6 +182,7 @@ def shortvol(other_args: List[str]):
                 showindex=False,
             )
         )
+        print("")
 
     except Exception as e:
         print(e, "\n")
