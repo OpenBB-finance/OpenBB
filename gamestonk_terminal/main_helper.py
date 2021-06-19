@@ -2,10 +2,11 @@
 __docformat__ = "numpy"
 import argparse
 from typing import List
-from sys import stdout
+import sys
+import subprocess
+import os
 import random
 from datetime import datetime, timedelta
-import subprocess
 import hashlib
 from colorama import Fore, Style
 import matplotlib.pyplot as plt
@@ -16,6 +17,8 @@ import mplfinance as mpf
 import yfinance as yf
 import pytz
 from tabulate import tabulate
+import git
+
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -29,6 +32,7 @@ from gamestonk_terminal.helper_funcs import (
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.technical_analysis import trendline_api as trend
 
 
@@ -599,7 +603,7 @@ def export(other_args: List[str], df_stock):
         "--filename",
         type=str,
         dest="s_filename",
-        default=stdout,
+        default=sys.stdout,
         help="Name of file to save the historical data exported (stdout if unspecified)",
     )
     parser.add_argument(
@@ -732,3 +736,44 @@ def about_us():
         "as a result of your trading, or your reliance on the information displayed."
         f"\n{Style.RESET_ALL}"
     )
+
+
+def bootup():
+    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+    if sys.platform == "win32":
+        os.system("")
+
+    try:
+        if os.name == "nt":
+            # pylint: disable=E1101
+            sys.stdin.reconfigure(encoding="utf-8")
+            # pylint: disable=E1101
+            sys.stdout.reconfigure(encoding="utf-8")
+    except Exception as e:
+        print(e, "\n")
+
+    # Print first welcome message and help
+    print(
+        f"\nWelcome to Gamestonk Terminal Beta ({str(git.Repo('.').head.commit)[:7]})"
+    )
+
+    if gtff.ENABLE_THOUGHTS_DAY:
+        print("-------------------")
+        try:
+            thought.get_thought_of_the_day()
+        except Exception as e:
+            print(e)
+        print("")
+
+
+def reset():
+    print("resetting...")
+    completed_process = subprocess.run("python terminal.py", shell=True, check=False)
+    if completed_process.returncode != 0:
+        completed_process = subprocess.run(
+            "python3 terminal.py", shell=True, check=False
+        )
+        if completed_process.returncode != 0:
+            print("Unfortunately, resetting wasn't possible!\n")
+
+    return completed_process.returncode

@@ -5,11 +5,8 @@ __docformat__ = "numpy"
 import argparse
 
 import sys
-import os
-import subprocess
 from datetime import datetime, timedelta
 from typing import List
-import git
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
@@ -26,11 +23,12 @@ from gamestonk_terminal.main_helper import (
     quote,
     update_terminal,
     about_us,
+    bootup,
+    reset,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.discovery import disc_controller
 from gamestonk_terminal.due_diligence import dd_controller
 from gamestonk_terminal.fundamental_analysis import fa_controller
@@ -170,17 +168,17 @@ Contexts:
         if self.ticker:
             help_text += """export      export the currently loaded dataframe to a file or stdout
 
+    > dd        in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
     > ba        behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+    > ta        technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
+    > fa        fundamental analysis,    \t e.g.: income, balance, cash, earnings
+    > op        options info,            \t e.g.: volume, open interest, chains, volatility
     > res       research web page,       \t e.g.: macroaxis, yahoo finance, fool
     > ca        comparison analysis,     \t e.g.: historical, correlation, financials
-    > fa        fundamental analysis,    \t e.g.: income, balance, cash, earnings
-    > ta        technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
-    > bt        strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
-    > dd        in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
     > eda       exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
-    > pred      prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet
     > ra        residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
-    > op        options info,            \t e.g.: volume, open interest, chains, volatility"""
+    > bt        strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
+    > pred      prediction techniques,   \t e.g.: regression, arima, rnn, lstm"""
 
         help_text += "\n    > disc      discover trending stocks, \t e.g. map, sectors, high short interest\n"
         print(help_text)
@@ -483,31 +481,7 @@ Contexts:
 def terminal():
     """Terminal Menu"""
 
-    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-    if sys.platform == "win32":
-        os.system("")
-
-    try:
-        if os.name == "nt":
-            # pylint: disable=E1101
-            sys.stdin.reconfigure(encoding="utf-8")
-            # pylint: disable=E1101
-            sys.stdout.reconfigure(encoding="utf-8")
-    except Exception as e:
-        print(e, "\n")
-
-    # Print first welcome message and help
-    print(
-        f"\nWelcome to Gamestonk Terminal Beta ({str(git.Repo('.').head.commit)[:7]})"
-    )
-
-    if gtff.ENABLE_THOUGHTS_DAY:
-        print("-------------------")
-        try:
-            thought.get_thought_of_the_day()
-        except Exception as e:
-            print(e)
-        print("")
+    bootup()
 
     ticker = ""  # "GME"
     start = ""  # "2021-01-01"
@@ -565,18 +539,9 @@ def terminal():
     if not gtff.ENABLE_QUICK_EXIT:
         # Check if the user wants to reset application
         if an_input == "reset" or t_controller.update_succcess:
-            print("resetting...")
-
-            completed_process = subprocess.run(
-                "python terminal.py", shell=True, check=False
-            )
-            if completed_process.returncode != 0:
-                completed_process = subprocess.run(
-                    "python3 terminal.py", shell=True, check=False
-                )
-                if completed_process.returncode != 0:
-                    print("Unfortunately, resetting wasn't possible!\n")
-                    print_goodbye()
+            ret_code = reset()
+            if ret_code != 0:
+                print_goodbye()
         else:
             print_goodbye()
 
