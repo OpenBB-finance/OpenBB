@@ -42,6 +42,14 @@ def darkshort(other_args: List[str]):
         default="dpp_dollar",
         dest="sort_field",
     )
+    parser.add_argument(
+        "-a",
+        "--ascending",
+        action="store_true",
+        default=False,
+        dest="ascending",
+        help="Data in ascending order",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -72,7 +80,7 @@ def darkshort(other_args: List[str]):
                 "Dark Pools Position",
                 "Dark Pools Position $",
             ]
-        ].sort_values(by=d_fields[ns_parser.sort_field], ascending=False)
+        ].sort_values(by=d_fields[ns_parser.sort_field], ascending=ns_parser.ascending)
         dp_date = df["Date"].values[0]
         df = df.drop(columns=["Date"])
         df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
