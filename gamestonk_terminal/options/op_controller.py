@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import matplotlib.pyplot as plt
+import pandas as pd
 
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
@@ -19,13 +20,14 @@ class OptionsController:
     # Command choices
     CHOICES = ["help", "q", "quit", "exp", "voi", "vcalls", "vputs", "chains", "info"]
 
-    def __init__(self, ticker: str, last_adj_close_price: float):
+    def __init__(self, ticker: str, stock: pd.DataFrame):
         """Construct data."""
         self.ticker = ticker
         self.yf_ticker_data = yf.Ticker(self.ticker)
         self.expiry_date = self.yf_ticker_data.options[0]
         self.options = self.yf_ticker_data.option_chain(self.expiry_date)
-        self.last_adj_close_price = last_adj_close_price
+        self.last_adj_close_price = stock["5. adjusted close"].values[-1]
+
         self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
         self.op_parser.add_argument(
             "cmd",
@@ -167,11 +169,11 @@ class OptionsController:
         op_scrape_view.print_options_data(self.ticker, other_args)
 
 
-def menu(ticker: str, last_adj_close_price: float):
+def menu(ticker: str, stock: pd.DataFrame):
     """Options Menu."""
 
     try:
-        op_controller = OptionsController(ticker, last_adj_close_price)
+        op_controller = OptionsController(ticker, stock)
         op_controller.call_help(None)
     except IndexError:
         print("No options found for " + ticker)

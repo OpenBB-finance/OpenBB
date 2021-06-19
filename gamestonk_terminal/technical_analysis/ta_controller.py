@@ -50,16 +50,17 @@ class TechnicalAnalysisController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
+        stock: pd.DataFrame,
     ):
         """Constructor"""
-        self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.stock = stock
+
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
             "cmd",
@@ -208,11 +209,16 @@ class TechnicalAnalysisController:
         ta_volume.obv(other_args, self.ticker, self.interval, self.stock)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
+def menu(
+    ticker: str, start: datetime, interval: str, stock: pd.DataFrame, context: str = ""
+):
     """Technical Analysis Menu"""
 
-    ta_controller = TechnicalAnalysisController(stock, ticker, start, interval)
+    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock)
     ta_controller.call_help(None)
+
+    if context:
+        context = f"({context})>"
 
     while True:
         # Get input command from user
@@ -221,11 +227,11 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
                 {c: None for c in ta_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (ta)> ",
+                f"{get_flair()} {context}(ta)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (ta)> ")
+            an_input = input(f"{get_flair()} {context}(ta)> ")
 
         try:
             plt.close("all")

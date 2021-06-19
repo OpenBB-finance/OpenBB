@@ -148,7 +148,7 @@ class CryptoController:
         """Process ta command"""
         if not self.current_coin:
             print("Please load a coin through either load or select", "\n")
-        if self.current_df.empty:
+        elif self.current_df.empty:
             print("Price dataframe is empty")
         else:
             # Need to make the columns in df be compatible.  Also since there are no splits or dividends, there is no
@@ -174,12 +174,14 @@ class CryptoController:
                 )
                 self.current_df.index.name = "date"
 
-            return ta_controller.menu(
-                self.current_df,
+            ta_controller.menu(
                 self.current_coin,
                 self.current_df.index[0],
                 "",
+                self.current_df,
+                "crypto",
             )
+            print("")
 
 
 def menu():

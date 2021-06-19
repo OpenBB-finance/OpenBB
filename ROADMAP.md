@@ -52,7 +52,7 @@
 * [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
 * [x] Past and future IPOs calendar (@didier) - [PR #432](https://github.com/DidierRLopes/GamestonkTerminal/pull/432)
 * [x] Short volume and dark pool short information (stockgrid) (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496
-* [x] Combine topdark onto darkshort cmd, improve shortvol cmd (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
+* [x] Combine topdark onto darkshort cmd (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 
@@ -103,7 +103,8 @@
 * [x] Add failure to deliver command (@hinxx) - [PR #366](https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
 * [x] Ratings over time (@didier) - [PR #431](https://github.com/DidierRLopes/GamestonkTerminal/pull/431)
 * [x] Add short volume from stockgrid (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496)
-* [x] Allow short vol to output datapoints (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
+* [x] Add darkpos command (@didier) - [PR #507](https://github.com/DidierRLopes/GamestonkTerminal/pull/507)
+
 
 **NEXT**
 
@@ -319,6 +320,7 @@ ___
 * [x] Add ad-hoc builds (@aia) - [PR #192](https://github.com/DidierRLopes/GamestonkTerminal/pull/192)
 * [x] Add test generators and test parametrization helpers (@aia) - [PR #264](https://github.com/DidierRLopes/GamestonkTerminal/pull/264)
 * [x] Sphinx documentation https://gamestonk-terminal.readthedocs.io/en/latest/index.html (@piiq) - [PR #413](https://github.com/DidierRLopes/GamestonkTerminal/pull/413)
+* [x] Re-write main menu terminal to have same class struct as remaining modules (@didier) - [PR #507](https://github.com/DidierRLopes/GamestonkTerminal/pull/507)
 
 **NEXT**
 * [ ] Write a developer guide

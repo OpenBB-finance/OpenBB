@@ -246,6 +246,7 @@ Command|Description|Source
 `dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
 `ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
 `shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
+`darkpos`       |net short vs position [Stockgrid](https://stockgrid.io)
 
 &nbsp;
 

@@ -2,10 +2,11 @@
 __docformat__ = "numpy"
 import argparse
 from typing import List
-from sys import stdout
+import os
+import sys
+import subprocess
 import random
 from datetime import datetime, timedelta
-import subprocess
 import hashlib
 from colorama import Fore, Style
 import matplotlib.pyplot as plt
@@ -16,6 +17,8 @@ import mplfinance as mpf
 import yfinance as yf
 import pytz
 from tabulate import tabulate
+import git
+
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -29,97 +32,8 @@ from gamestonk_terminal.helper_funcs import (
 
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.technical_analysis import trendline_api as trend
-
-
-def print_help(s_ticker, s_start, s_interval, b_is_market_open):
-    """Print help"""
-    print("What do you want to do?")
-    print("   help        help to see this menu again")
-    print("   update      update terminal from remote")
-    print("   reset       reset terminal and reload configs")
-    print("   about       about us")
-    print("   quit        to abandon the program")
-    print("")
-    print("   clear       clear a specific stock ticker from analysis")
-    print("   load        load a specific stock ticker for analysis")
-    print("   quote       view the current price for a specific stock ticker")
-    print("   candle      view a candle chart for a specific stock ticker")
-    print("   view        view and load a specific stock ticker for technical analysis")
-    if s_ticker:
-        print(
-            "   export      export the currently loaded dataframe to a file or stdout"
-        )
-
-    s_intraday = (f"Intraday {s_interval}", "Daily")[s_interval == "1440min"]
-    if s_ticker and s_start:
-        print(f"\n{s_intraday} Stock: {s_ticker} (from {s_start.strftime('%Y-%m-%d')})")
-    elif s_ticker:
-        print(f"\n{s_intraday} Stock: {s_ticker}")
-    else:
-        print("\nStock: ?")
-    print(f"Market {('CLOSED', 'OPEN')[b_is_market_open]}.\n")
-
-    print(
-        "   > disc        discover trending stocks, \t e.g. map, sectors, high short interest"
-    )
-    print(
-        "   > scr         screener stocks, \t\t e.g. overview/performance, using preset filters"
-    )
-    print("   > mill        papermill menu, \t\t menu to generate notebook reports")
-    print("   > econ        economic data, \t\t e.g.: events, FRED data, GDP, VIXCLS")
-    print("   > pa          portfolio analysis, \t\t analyses your custom portfolio")
-    print("   > bro         brokers holdings, \t\t supports: robinhood, alpaca, ally")
-    print(
-        "   > crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance"
-    )
-    print(
-        "   > po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt"
-    )
-    print(
-        "   > gov         government menu, \t\t house trading, contracts, corporate lobbying"
-    )
-    print("   > etf         etf menu, \t\t\t from: StockAnalysis.com")
-    print("   > fx          forex menu, \t\t\t forex support through Oanda")
-    print(
-        "   > rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA"
-    )
-
-    if s_ticker:
-        print(
-            "   > ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google"
-        )
-        print(
-            "   > res         research web page,       \t e.g.: macroaxis, yahoo finance, fool"
-        )
-        print(
-            "   > ca          comparison analysis,     \t e.g.: historical, correlation, financials"
-        )
-        print(
-            "   > fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings"
-        )
-        print(
-            "   > ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv"
-        )
-        print(
-            "   > bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies"
-        )
-        print(
-            "   > dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec"
-        )
-        print(
-            "   > eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis"
-        )
-        print(
-            "   > pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm, prophet"
-        )
-        print(
-            "   > ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test"
-        )
-        print(
-            "   > op          options info,            \t e.g.: volume, open interest, chains, volatility"
-        )
-    print("")
 
 
 def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
@@ -689,7 +603,7 @@ def export(other_args: List[str], df_stock):
         "--filename",
         type=str,
         dest="s_filename",
-        default=stdout,
+        default=sys.stdout,
         help="Name of file to save the historical data exported (stdout if unspecified)",
     )
     parser.add_argument(
@@ -822,3 +736,44 @@ def about_us():
         "as a result of your trading, or your reliance on the information displayed."
         f"\n{Style.RESET_ALL}"
     )
+
+
+def bootup():
+    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+    if sys.platform == "win32":
+        os.system("")
+
+    try:
+        if os.name == "nt":
+            # pylint: disable=E1101
+            sys.stdin.reconfigure(encoding="utf-8")
+            # pylint: disable=E1101
+            sys.stdout.reconfigure(encoding="utf-8")
+    except Exception as e:
+        print(e, "\n")
+
+    # Print first welcome message and help
+    print(
+        f"\nWelcome to Gamestonk Terminal Beta ({str(git.Repo('.').head.commit)[:7]})"
+    )
+
+    if gtff.ENABLE_THOUGHTS_DAY:
+        print("-------------------")
+        try:
+            thought.get_thought_of_the_day()
+        except Exception as e:
+            print(e)
+        print("")
+
+
+def reset():
+    print("resetting...")
+    completed_process = subprocess.run("python terminal.py", shell=True, check=False)
+    if completed_process.returncode != 0:
+        completed_process = subprocess.run(
+            "python3 terminal.py", shell=True, check=False
+        )
+        if completed_process.returncode != 0:
+            print("Unfortunately, resetting wasn't possible!\n")
+
+    return completed_process.returncode

@@ -1,47 +1,45 @@
 #!/usr/bin/env python
+"""Main Terminal Module"""
+__docformat__ = "numpy"
 
 import argparse
 
 import sys
-import os
-import subprocess
 from datetime import datetime, timedelta
-import git
+from typing import List
 import pandas as pd
 import yfinance as yf
-from matplotlib import pyplot as plt
 from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal import thought_of_the_day as thought
-from gamestonk_terminal.discovery import disc_controller
-from gamestonk_terminal.due_diligence import dd_controller
-from gamestonk_terminal.fundamental_analysis import fa_controller
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import (
     clear,
     export,
     load,
-    print_help,
     view,
     candle,
     print_goodbye,
     quote,
     update_terminal,
     about_us,
+    bootup,
+    reset,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.discovery import disc_controller
+from gamestonk_terminal.due_diligence import dd_controller
+from gamestonk_terminal.fundamental_analysis import fa_controller
 from gamestonk_terminal.papermill import papermill_controller as mill
 from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.technical_analysis import ta_controller
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.options import op_controller
-from gamestonk_terminal.econ import econ_controller
+from gamestonk_terminal.economy import econ_controller
 from gamestonk_terminal.residuals_analysis import ra_controller
-
 from gamestonk_terminal.portfolio_analysis import pa_controller
 from gamestonk_terminal.brokers import bro_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
@@ -55,34 +53,26 @@ from gamestonk_terminal.government import gov_controller
 from gamestonk_terminal.etf import etf_controller
 
 
-# pylint: disable=too-many-statements,too-many-branches
-def main():
-    """
-    Gamestonk Terminal is an awesome stock market terminal that has been developed for fun,
-    while I saw my GME shares tanking. But hey, I like the stock.
-    """
-    # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-    if sys.platform == "win32":
-        os.system("")
+# pylint: disable=too-many-public-methods
+class TerminalController:
+    """Terminal Controller class"""
 
-    s_ticker = ""
-    s_start = "2015-01-01"
-    df_stock = pd.DataFrame()
-    s_interval = "1440min"
+    # Command choices
+    CHOICES_TICKER_DEPENDENT = [
+        "ba",
+        "res",
+        "fa",
+        "ta",
+        "bt",
+        "dd",
+        "eda",
+        "pred",
+        "ca",
+        "op",
+        "ra",
+    ]
 
-    update_succcess = False
-
-    # Set stock by default to speed up testing
-    # s_ticker = "BB"
-    # ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format='pandas')
-    # df_stock, d_stock_metadata = ts.get_daily_adjusted(symbol=s_ticker, outputsize='full')
-    # df_stock.sort_index(ascending=True, inplace=True)
-    # s_start = datetime.strptime("2020-06-04", "%Y-%m-%d")
-    # df_stock = df_stock[s_start:]
-
-    # Add list of arguments that the main parser accepts
-    menu_parser = argparse.ArgumentParser(add_help=False, prog="gamestonk_terminal")
-    choices = [
+    CHOICES = [
         "help",
         "quit",
         "q",
@@ -97,20 +87,9 @@ def main():
         "disc",
         "scr",
         "mill",
-        "ba",
-        "res",
-        "fa",
-        "ta",
-        "bt",
-        "dd",
-        "eda",
-        "pred",
-        "ca",
-        "op",
         "econ",
         "pa",
         "crypto",
-        "ra",
         "po",
         "fx",
         "rc",
@@ -119,40 +98,403 @@ def main():
         "about",
         "bro",
     ]
+    CHOICES += CHOICES_TICKER_DEPENDENT
 
-    menu_parser.add_argument("opt", choices=choices)
-    completer = NestedCompleter.from_nested_dict({c: None for c in choices})
+    def __init__(
+        self,
+        stock: pd.DataFrame,
+        ticker: str,
+        start: datetime,
+        interval: str,
+    ):
+        """Constructor"""
+        self.stock = stock
+        self.ticker = ticker
+        self.start = start
+        self.interval = interval
 
-    try:
-        if os.name == "nt":
-            # pylint: disable=E1101
-            sys.stdin.reconfigure(encoding="utf-8")
-            # pylint: disable=E1101
-            sys.stdout.reconfigure(encoding="utf-8")
-    except Exception as e:
-        print(e, "\n")
+        self.update_succcess = False
+        self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
+        self.t_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+        self.completer = NestedCompleter.from_nested_dict(
+            {c: None for c in self.CHOICES}
+        )
 
-    # Print first welcome message and help
-    print("\nWelcome to Gamestonk Terminal Ape.")
-    print("(#" + str(git.Repo(".").head.commit) + ")\n")
-    should_print_help = True
-    parsed_stdin = False
+    def print_help(self):
+        """Print help"""
+        help_text = """
+What do you want to do?
+    help        help to see this menu again
+    update      update terminal from remote
+    reset       reset terminal and reload configs
+    about       about us
+    q(uit)      to abandon the program
 
-    if gtff.ENABLE_THOUGHTS_DAY:
-        print("-------------------")
+Contexts:
+>   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
+>   mill        papermill menu, \t\t menu to generate notebook reports
+>   econ        economic data, \t\t\t e.g.: events, FRED data, GDP, VIXCLS
+>   pa          portfolio analysis, \t\t analyses your custom portfolio
+>   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally
+>   crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance
+>   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
+>   gov         government menu, \t\t house trading, contracts, corporate lobbying
+>   etf         etf menu, \t\t\t from: StockAnalysis.com
+>   fx          forex menu, \t\t\t forex support through Oanda
+>   rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA
+            """
+
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        if self.ticker and self.start:
+            help_text += f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})\n"
+        elif self.ticker:
+            help_text += f"\n{s_intraday} Stock: {self.ticker}\n"
+        else:
+            help_text += "\nStock: ?\n"
+
+        help_text += f"Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}.\n"
+
+        help_text += """
+    clear       clear a specific stock ticker from analysis
+    load        load a specific stock ticker for analysis
+    quote       view the current price for a specific stock ticker
+    candle      view a candle chart for a specific stock ticker
+    view        view and load a specific stock ticker for technical analysis
+    """
+
+        if self.ticker:
+            help_text += """export      export the currently loaded dataframe to a file or stdout
+
+>   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
+>   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+>   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
+>   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
+>   op          options info,            \t e.g.: volume, open interest, chains, volatility
+>   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
+>   ca          comparison analysis,     \t e.g.: historical, correlation, financials
+>   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
+>   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
+>   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
+>   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm"""
+
+        help_text += "\n>   disc        discover trending stocks, \t e.g. map, sectors, high short interest\n"
+        print(help_text)
+
+    def switch(self, an_input: str):
+        """Process and dispatch input
+
+        Returns
+        -------
+        True, False or None
+            False - quit the menu
+            True - quit the program
+            None - continue in the menu
+        """
+
+        if not self.ticker and an_input in self.CHOICES_TICKER_DEPENDENT:
+            print("No ticker selected. Use 'load <ticker>'.\n")
+            return None
+
+        (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
+
+        return getattr(
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        )(other_args)
+
+    def call_help(self, _):
+        """Process Help command"""
+        self.print_help()
+
+    def call_quit(self, _):
+        """Process Quit command - quit the program"""
+        return True
+
+    def call_q(self, _):
+        """Process Quit command - quit the program"""
+        return True
+
+    def call_reset(self, _):
+        """Process reset command"""
+        return True
+
+    def call_clear(self, other_args: List[str]):
+        """Process clear command"""
+        self.ticker, self.start, self.interval, self.stock = clear(
+            other_args, self.ticker, self.start, self.interval, self.stock
+        )
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.interval, self.stock = load(
+            other_args, self.ticker, self.start, self.interval, self.stock
+        )
+        if "." in self.ticker:
+            self.ticker = self.ticker.split(".")[0]
+
+    def call_quote(self, other_args: List[str]):
+        """Process quote command"""
+        quote(other_args, self.ticker)
+
+    def call_candle(self, _):
+        """Process candle command"""
+        candle(
+            self.ticker,
+            (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
+        )
+
+    def call_view(self, other_args: List[str]):
+        """Process view command"""
+        view(other_args, self.ticker, self.start, self.interval, self.stock)
+
+    def call_export(self, other_args: List[str]):
+        """Process export command"""
+        export(other_args, self.stock)
+
+    def call_disc(self, _):
+        """Process disc command"""
+        return disc_controller.menu()
+
+    def call_mill(self, _):
+        """Process mill command"""
+        return mill.papermill_menu()
+
+    def call_fx(self, _):
+        """Process fx command"""
+        return fx_controller.menu()
+
+    def call_econ(self, _):
+        """Process econ command"""
+        return econ_controller.menu()
+
+    def call_pa(self, _):
+        """Process pa command"""
+        return pa_controller.menu()
+
+    def call_bro(self, _):
+        """Process bro command"""
+        return bro_controller.menu()
+
+    def call_crypto(self, _):
+        """Process crypto command"""
+        return crypto_controller.menu()
+
+    def call_scr(self, _):
+        """Process scr command"""
+        return screener_controller.menu()
+
+    def call_rc(self, _):
+        """Process rc command"""
+        return rc_controller.menu()
+
+    def call_etf(self, _):
+        """Process etf command"""
+        return etf_controller.menu()
+
+    def call_gov(self, _):
+        """Process gov command"""
+        return gov_controller.menu(self.ticker)
+
+    def call_po(self, _):
+        """Process po command"""
+        return po_controller.menu([self.ticker])
+
+    def call_update(self, _):
+        """Process update command"""
+        self.update_succcess = not update_terminal()
+        return True
+
+    def call_about(self, _):
+        """Process about command"""
+        about_us()
+
+    def call_ba(self, _):
+        """Process ba command"""
+        return ba_controller.menu(
+            self.ticker,
+            self.start,
+        )
+
+    def call_res(self, _):
+        """Process res command"""
+        return res_controller.menu(
+            self.ticker,
+            self.start,
+            self.interval,
+        )
+
+    def call_ca(self, _):
+        """Process ca command"""
+        return ca_controller.menu(self.ticker, self.start, self.interval, self.stock)
+
+    def call_fa(self, _):
+        """Process fa command"""
+        return fa_controller.menu(
+            self.ticker,
+            self.start,
+            self.interval,
+        )
+
+    def call_ta(self, _):
+        """Process ta command"""
+        return ta_controller.menu(
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+        )
+
+    def call_dd(self, _):
+        """Process dd command"""
+        return dd_controller.menu(
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+        )
+
+    def call_ra(self, _):
+        """Process ra command"""
+        return ra_controller.menu(
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+        )
+
+    def call_bt(self, _):
+        """Process bt command"""
+        return bt_controller.menu(
+            self.ticker,
+            self.start,
+        )
+
+    def call_eda(self, _):
+        """Process eda command"""
+        if self.interval == "1440min":
+            return eda_controller.menu(
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+            )
+
+        df_stock = yf.download(self.ticker, start=self.start, progress=False)
+        df_stock = df_stock.rename(
+            columns={
+                "Open": "1. open",
+                "High": "2. high",
+                "Low": "3. low",
+                "Close": "4. close",
+                "Adj Close": "5. adjusted close",
+                "Volume": "6. volume",
+            }
+        )
+        df_stock.index.name = "date"
+        s_interval = "1440min"
+
+        return eda_controller.menu(
+            self.ticker,
+            self.start,
+            s_interval,
+            df_stock,
+        )
+
+    def call_op(self, _):
+        """Process op command"""
+        if self.interval == "1440min":
+            return op_controller.menu(
+                self.ticker,
+                self.stock,
+            )
+
+        df_stock = yf.download(self.ticker, start=self.start, progress=False)
+        df_stock = df_stock.rename(
+            columns={
+                "Open": "1. open",
+                "High": "2. high",
+                "Low": "3. low",
+                "Close": "4. close",
+                "Adj Close": "5. adjusted close",
+                "Volume": "6. volume",
+            }
+        )
+
+        return op_controller.menu(
+            self.ticker,
+            df_stock,
+        )
+
+    def call_pred(self, _):
+        """Process pred command"""
+        if not gtff.ENABLE_PREDICT:
+            print(
+                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
+                "\n",
+            )
+            return None
+
         try:
-            thought.get_thought_of_the_day()
+            # pylint: disable=import-outside-toplevel
+            from gamestonk_terminal.prediction_techniques import pred_controller
+        except ModuleNotFoundError as e:
+            print("One of the optional packages seems to be missing", "\n", e)
+            return None
+        except Exception as e:
+            print(e, "\n")
+            return None
+
+        if self.interval == "1440min":
+            return pred_controller.menu(
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+            )
+
+        # If stock data is intradaily, we need to get data again as prediction
+        # techniques work on daily adjusted data. By default we load data from
+        # Alpha Vantage because the historical data loaded gives a larger
+        # dataset than the one provided by quandl
+        try:
+            ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+            # pylint: disable=unbalanced-tuple-unpacking
+            df_stock_pred, _ = ts.get_daily_adjusted(
+                symbol=self.ticker, outputsize="full"
+            )
+            # pylint: disable=no-member
+            df_stock_pred = df_stock_pred.sort_index(ascending=True)
+            df_stock_pred = df_stock_pred[self.start :]
+            return pred_controller.menu(
+                self.ticker,
+                self.start,
+                "1440min",
+                df_stock_pred,
+            )
         except Exception as e:
             print(e)
-        print("")
+            print("Either the ticker or the API_KEY are invalids. Try again!")
+            return None
 
-    # Loop forever and ever
+
+def terminal():
+    """Terminal Menu"""
+
+    bootup()
+
+    ticker = ""  # "GME"
+    start = ""  # "2021-01-01"
+    stock = pd.DataFrame()  # yf.download(ticker, start, progress=False)
+    interval = "1440min"
+
+    t_controller = TerminalController(stock, ticker, start, interval)
+    t_controller.print_help()
+
+    parsed_stdin = False
+
     while True:
-
-        main_cmd = False
-        if should_print_help:
-            print_help(s_ticker, s_start, s_interval, b_is_stock_market_open())
-            should_print_help = False
 
         if gtff.ENABLE_QUICK_EXIT:
             print("Quick exit enabled")
@@ -160,338 +502,50 @@ def main():
 
         # Get input command from stdin or user
         if not parsed_stdin and len(sys.argv) > 1:
-            as_input = " ".join(sys.argv[1:])
+            an_input = " ".join(sys.argv[1:])
+            print(f"{get_flair()}> {an_input}")
             parsed_stdin = True
-            print(f"{get_flair()}> {as_input}")
-        elif session and gtff.USE_PROMPT_TOOLKIT:
-            as_input = session.prompt(f"{get_flair()}> ", completer=completer)
-        else:
-            as_input = input(f"{get_flair()}> ")
 
-        plt.close("all")
+        elif session and gtff.USE_PROMPT_TOOLKIT:
+            an_input = session.prompt(
+                f"{get_flair()}> ", completer=t_controller.completer
+            )
+
+        else:
+            an_input = input(f"{get_flair()}> ")
 
         # Is command empty
-        if not as_input:
+        if not an_input:
             print("")
             continue
 
-        # Parse main command of the list of possible commands
+        # Process list of commands selected by user
         try:
-            (ns_known_args, l_args) = menu_parser.parse_known_args(as_input.split())
+            process_input = t_controller.switch(an_input)
+            # None - Keep loop
+            # True - Quit or Reset based on flag
+            # False - Keep loop and show help menu
+
+            if process_input is not None:
+                # Quit terminal
+                if process_input:
+                    break
+
+                t_controller.print_help()
 
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
 
-        b_quit = False
-        if ns_known_args.opt == "help":
-            should_print_help = True
-
-        elif (
-            (ns_known_args.opt == "quit")
-            or (ns_known_args.opt == "q")
-            or (ns_known_args.opt == "reset")
-        ):
-            break
-
-        elif ns_known_args.opt == "clear":
-            s_ticker, s_start, s_interval, df_stock = clear(
-                l_args, s_ticker, s_start, s_interval, df_stock
-            )
-            main_cmd = True
-
-        elif ns_known_args.opt == "load":
-            s_ticker, s_start, s_interval, df_stock = load(
-                l_args, s_ticker, s_start, s_interval, df_stock
-            )
-            main_cmd = True
-
-        elif ns_known_args.opt == "quote":
-            quote(l_args, s_ticker)
-            main_cmd = True
-
-        elif ns_known_args.opt == "candle":
-
-            if s_ticker:
-                candle(
-                    s_ticker,
-                    (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
-                )
-
-            else:
-                print(
-                    "No ticker selected. Use 'load ticker' to load the ticker you want to look at.",
-                    "\n",
-                )
-
-            main_cmd = True
-
-        elif ns_known_args.opt == "view":
-            view(l_args, s_ticker, s_start, s_interval, df_stock)
-            main_cmd = True
-
-        elif ns_known_args.opt == "export":
-            export(l_args, df_stock)
-            main_cmd = True
-
-        elif ns_known_args.opt == "disc":
-            b_quit = disc_controller.menu()
-
-        elif ns_known_args.opt == "mill":
-            b_quit = mill.papermill_menu()
-
-        elif ns_known_args.opt == "ba":
-            if s_ticker:
-                b_quit = ba_controller.menu(
-                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
-                )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "res":
-            if s_ticker:
-                b_quit = res_controller.menu(
-                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                    s_start,
-                    s_interval,
-                )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "ca":
-            if s_ticker:
-                b_quit = ca_controller.menu(df_stock, s_ticker, s_start, s_interval)
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "fa":
-            if s_ticker:
-                b_quit = fa_controller.menu(
-                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                    s_start,
-                    s_interval,
-                )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "fx":
-            b_quit = fx_controller.menu()
-
-        elif ns_known_args.opt == "ta":
-            if s_ticker:
-                b_quit = ta_controller.menu(
-                    df_stock,
-                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                    s_start,
-                    s_interval,
-                )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "dd":
-            if s_ticker:
-                b_quit = dd_controller.menu(
-                    df_stock,
-                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                    s_start,
-                    s_interval,
-                )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "eda":
-            if s_ticker:
-                if s_interval == "1440min":
-                    b_quit = eda_controller.menu(
-                        df_stock,
-                        s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                        s_start,
-                        s_interval,
-                    )
-                else:
-                    df_stock = yf.download(s_ticker, start=s_start, progress=False)
-                    df_stock = df_stock.rename(
-                        columns={
-                            "Open": "1. open",
-                            "High": "2. high",
-                            "Low": "3. low",
-                            "Close": "4. close",
-                            "Adj Close": "5. adjusted close",
-                            "Volume": "6. volume",
-                        }
-                    )
-                    df_stock.index.name = "date"
-                    s_interval = "1440min"
-
-                    b_quit = eda_controller.menu(
-                        df_stock,
-                        s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                        s_start,
-                        s_interval,
-                    )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "op":
-            if s_ticker:
-                b_quit = op_controller.menu(
-                    s_ticker, df_stock["5. adjusted close"].values[-1]
-                )
-            else:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-        elif ns_known_args.opt == "econ":
-            b_quit = econ_controller.menu()
-
-        elif ns_known_args.opt == "pa":
-            b_quit = pa_controller.menu()
-
-        elif ns_known_args.opt == "bro":
-            b_quit = bro_controller.menu()
-
-        elif ns_known_args.opt == "crypto":
-            b_quit = crypto_controller.menu()
-
-        elif ns_known_args.opt == "po":
-            b_quit = po_controller.menu([s_ticker])
-
-        elif ns_known_args.opt == "pred":
-
-            if not s_ticker:
-                print("Please load a ticker using <load TICKER>")
-                print("")
-                continue
-
-            if not gtff.ENABLE_PREDICT:
-                print("Predict is not enabled in feature_flags.py")
-                print("Prediction menu is disabled")
-                print("")
-                continue
-
-            try:
-                # pylint: disable=import-outside-toplevel
-                from gamestonk_terminal.prediction_techniques import pred_controller
-            except ModuleNotFoundError as e:
-                print("One of the optional packages seems to be missing")
-                print("Optional packages need to be installed")
-                print(e)
-                print("")
-                continue
-            except Exception as e:
-                print(e)
-                print("")
-                continue
-
-            if s_interval == "1440min":
-                b_quit = pred_controller.menu(
-                    df_stock,
-                    s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                    s_start,
-                    s_interval,
-                )
-            # If stock data is intradaily, we need to get data again as prediction
-            # techniques work on daily adjusted data. By default we load data from
-            # Alpha Vantage because the historical data loaded gives a larger
-            # dataset than the one provided by quandl
-            else:
-                try:
-                    ts = TimeSeries(
-                        key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
-                    )
-                    # pylint: disable=unbalanced-tuple-unpacking
-                    df_stock_pred, _ = ts.get_daily_adjusted(
-                        symbol=s_ticker, outputsize="full"
-                    )
-                    # pylint: disable=no-member
-                    df_stock_pred = df_stock_pred.sort_index(ascending=True)
-                    df_stock_pred = df_stock_pred[s_start:]
-                    b_quit = pred_controller.menu(
-                        df_stock_pred,
-                        s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                        s_start,
-                        interval="1440min",
-                    )
-                except Exception as e:
-                    print(e)
-                    print("Either the ticker or the API_KEY are invalids. Try again!")
-                    return
-
-        elif ns_known_args.opt == "ra":
-            b_quit = ra_controller.menu(
-                df_stock,
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker,
-                s_start,
-                s_interval,
-            )
-
-        elif ns_known_args.opt == "scr":
-            b_quit = screener_controller.menu()
-
-        elif ns_known_args.opt == "bt":
-            b_quit = bt_controller.menu(
-                s_ticker.split(".")[0] if "." in s_ticker else s_ticker, s_start
-            )
-
-        elif ns_known_args.opt == "rc":
-            b_quit = rc_controller.menu()
-
-        elif ns_known_args.opt == "gov":
-            b_quit = gov_controller.menu(s_ticker)
-
-        elif ns_known_args.opt == "etf":
-            b_quit = etf_controller.menu()
-
-        elif ns_known_args.opt == "update":
-            update_succcess = not update_terminal()
-            break
-
-        elif ns_known_args.opt == "about":
-            about_us()
-            main_cmd = True
-
-        else:
-            print("Shouldn't see this command!")
-            continue
-
-        if b_quit:
-            break
-
-        if not main_cmd:
-            should_print_help = True
-
     if not gtff.ENABLE_QUICK_EXIT:
-        if ns_known_args.opt == "reset" or update_succcess:
-            print("resetting...")
-
-            completed_process = subprocess.run(
-                "python terminal.py", shell=True, check=False
-            )
-            if completed_process.returncode != 0:
-                completed_process = subprocess.run(
-                    "python3 terminal.py", shell=True, check=False
-                )
-                if completed_process.returncode != 0:
-                    print("Unfortunately, resetting wasn't possible!\n")
-                    print_goodbye()
+        # Check if the user wants to reset application
+        if an_input == "reset" or t_controller.update_succcess:
+            ret_code = reset()
+            if ret_code != 0:
+                print_goodbye()
         else:
             print_goodbye()
 
 
 if __name__ == "__main__":
-    main()
+    terminal()
