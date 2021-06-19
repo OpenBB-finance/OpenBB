@@ -91,61 +91,70 @@ def shortview(ticker: str, other_args: List[str]):
         else:
             prices = response.json()["prices"]["prices"]
 
-            fig = plt.figure(figsize=(plot_autoscale()), dpi=PLOT_DPI)
+            _, axes = plt.subplots(
+                2,
+                1,
+                figsize=(plot_autoscale()),
+                dpi=PLOT_DPI,
+                gridspec_kw={"height_ratios": [2, 1]},
+            )
 
-            ax = fig.add_subplot(111)
-            ax.bar(
+            axes[0].bar(
                 df["date"],
-                df["total_volume"],
+                df["total_volume"] / 1_000_000,
                 width=timedelta(days=1),
                 color="b",
                 alpha=0.4,
                 label="Total Volume",
             )
-            ax.bar(
+            axes[0].bar(
                 df["date"],
-                df["short_volume"],
+                df["short_volume"] / 1_000_000,
                 width=timedelta(days=1),
                 color="r",
                 alpha=0.4,
                 label="Short Volume",
             )
 
-            ax.set_ylabel("Volume")
-            ax2 = ax.twinx()
+            axes[0].set_ylabel("Volume (1M)")
+            ax2 = axes[0].twinx()
             ax2.plot(
                 df["date"].values, prices[len(prices) - len(df) :], c="k", label="Price"
             )
             ax2.set_ylabel("Price ($)")
 
-            ax3 = ax.twinx()
-            ax3.plot(
+            lines, labels = axes[0].get_legend_handles_labels()
+            lines2, labels2 = ax2.get_legend_handles_labels()
+            ax2.legend(lines + lines2, labels + labels2, loc="upper left")
+
+            axes[0].set_xlim(
+                df["date"].values[max(0, len(df) - ns_parser.num)],
+                df["date"].values[len(df) - 1],
+            )
+
+            axes[0].grid()
+            axes[0].ticklabel_format(style="plain", axis="y")
+            plt.title(f"Price vs Short Volume Interest for {ticker}")
+            plt.gcf().autofmt_xdate()
+
+            axes[1].plot(
                 df["date"].values,
                 100 * df["short_volume%"],
                 c="green",
                 label="Short Vol. %",
             )
-            ax3.set_ylabel("Short Volume %")
-            ax3.spines["right"].set_position(("outward", 50))
-            ax3.yaxis.label.set_color("green")
 
-            lines, labels = ax.get_legend_handles_labels()
-            lines2, labels2 = ax2.get_legend_handles_labels()
-            lines3, labels3 = ax3.get_legend_handles_labels()
-            ax3.legend(
-                lines + lines2 + lines3, labels + labels2 + labels3, loc="upper left"
-            )
-
-            ax.set_xlim(
+            axes[1].set_xlim(
                 df["date"].values[max(0, len(df) - ns_parser.num)],
                 df["date"].values[len(df) - 1],
             )
+            axes[1].set_ylabel("Short Vol. %")
 
-            ax.grid(b=True, which="major", color="#666666", linestyle="-")
-            ax.minorticks_on()
-            ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            plt.suptitle(f"Price vs Short Volume Interest for {ticker}")
-            plt.gcf().autofmt_xdate()
+            axes[1].grid(axis="y")
+            lines, labels = axes[1].get_legend_handles_labels()
+            axes[1].legend(lines, labels, loc="upper left")
+            axes[1].set_ylim([0, 100])
+
             if USE_ION:
                 plt.ion()
 
