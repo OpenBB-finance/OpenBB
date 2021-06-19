@@ -8,7 +8,7 @@ import pandas as pd
 import valinvest
 import FundamentalAnalysis as fa  # Financial Modeling Prep
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.dataframe_helpers import clean_df_index
+from gamestonk_terminal.fundamental_analysis.fa_helper import clean_df_index
 from gamestonk_terminal.helper_funcs import (
     long_number_format,
     check_positive,
