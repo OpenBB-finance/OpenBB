@@ -16,8 +16,6 @@ This menu aims to predict the share price of a pre-loaded stock, and the usage o
     - regression (other polynomial)
   * [arima](#arima)
     - autoregressive integrated moving average
-  * [prophet](#prophet)
-    - Facebook's prophet prediction
   * [mlp](#mlp)
     - MultiLayer Perceptron
   * [rnn](#rnn)
@@ -124,16 +122,6 @@ Auto-Regressive Integrated Moving Average:
   * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
 
 ![arima](https://user-images.githubusercontent.com/25267873/108604947-d3cc1780-73a8-11eb-9dbb-53b959ae7947.png)
-
-## prophet <a name="prophet"></a>
-```
-usage: fbprophet [-d N_DAYS]
-```
-Facebook's Prophet:
-  * -d : prediction days. Default 5.
-  * -e : end date (format YYYY-MM-DD) of the stock - Backtesting. Default None.
-
-![prophet](https://user-images.githubusercontent.com/25267873/108604938-cf9ffa00-73a8-11eb-973b-0affb343e2f6.png)
 
 ## mlp <a name="mlp"></a>
 ```

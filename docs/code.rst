@@ -84,8 +84,6 @@ Prediction techniques
    :members:
 .. automodule:: gamestonk_terminal.prediction_techniques.ets
    :members:
-.. automodule:: gamestonk_terminal.prediction_techniques.fbprophet
-   :members:
 .. automodule:: gamestonk_terminal.prediction_techniques.knn
    :members:
 .. automodule:: gamestonk_terminal.prediction_techniques.neural_networks
