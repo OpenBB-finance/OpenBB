@@ -94,7 +94,7 @@ pip install pyally
 If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:
 
 ```
-conda install -c conda-forge fbprophet numpy=1.19.5 hdf5=1.10.5
+conda install -c conda-forge numpy=1.19.5 hdf5=1.10.5
 poetry install
 poetry install -E prediction
 ```

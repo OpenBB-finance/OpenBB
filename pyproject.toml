@@ -85,7 +85,7 @@ codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
 
 [tool.poetry.extras]
-prediction = ["fbprophet", "tensorflow", "pmdarima", "transformers", "flair", "torch"]
+prediction = ["tensorflow", "pmdarima", "transformers", "flair", "torch"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
