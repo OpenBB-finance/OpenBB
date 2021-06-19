@@ -5,7 +5,7 @@ from io import StringIO
 import pandas as pd
 
 # pylint: disable=unused-import
-from gamestonk_terminal.econ.fred_view import display_fred  # noqa: F401
+from gamestonk_terminal.economy.fred_view import display_fred  # noqa: F401
 
 fred_data_mock = """
 ,GDP

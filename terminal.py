@@ -38,7 +38,7 @@ from gamestonk_terminal.technical_analysis import ta_controller
 from gamestonk_terminal.comparison_analysis import ca_controller
 from gamestonk_terminal.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.options import op_controller
-from gamestonk_terminal.econ import econ_controller
+from gamestonk_terminal.economy import econ_controller
 from gamestonk_terminal.residuals_analysis import ra_controller
 from gamestonk_terminal.portfolio_analysis import pa_controller
 from gamestonk_terminal.brokers import bro_controller

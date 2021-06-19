@@ -3,17 +3,16 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.econ import fred_view
-from gamestonk_terminal.econ import finnhub_view
+from gamestonk_terminal.economy import fred_view
+from gamestonk_terminal.economy import finnhub_view
 
 
-class EconController:
-    """Econ Controller"""
+class EconomyController:
+    """Economy Controller"""
 
     # Command choices
     CHOICES = [
@@ -154,8 +153,7 @@ class EconController:
 def menu():
     """Econ Menu"""
 
-    econ_controller = EconController()
-    plt.close("all")
+    econ_controller = EconomyController()
     econ_controller.print_help()
 
     # Loop forever and ever
