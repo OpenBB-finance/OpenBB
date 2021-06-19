@@ -134,17 +134,17 @@ What do you want to do?
     q(uit)      to abandon the program
 
 Contexts:
-    > scr       screener stocks, \t\t e.g. overview/performance, using preset filters
-    > mill      papermill menu, \t\t menu to generate notebook reports
-    > econ      economic data, \t\t\t e.g.: events, FRED data, GDP, VIXCLS
-    > pa        portfolio analysis, \t\t analyses your custom portfolio
-    > bro       brokers holdings, \t\t supports: robinhood, alpaca, ally
-    > crypto    cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance
-    > po        portfolio optimization, \t optimal portfolio weights from pyportfolioopt
-    > gov       government menu, \t\t house trading, contracts, corporate lobbying
-    > etf       etf menu, \t\t\t from: StockAnalysis.com
-    > fx        forex menu, \t\t\t forex support through Oanda
-    > rc        resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA
+>   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
+>   mill        papermill menu, \t\t menu to generate notebook reports
+>   econ        economic data, \t\t\t e.g.: events, FRED data, GDP, VIXCLS
+>   pa          portfolio analysis, \t\t analyses your custom portfolio
+>   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally
+>   crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance
+>   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
+>   gov         government menu, \t\t house trading, contracts, corporate lobbying
+>   etf         etf menu, \t\t\t from: StockAnalysis.com
+>   fx          forex menu, \t\t\t forex support through Oanda
+>   rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA
             """
 
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
@@ -168,19 +168,19 @@ Contexts:
         if self.ticker:
             help_text += """export      export the currently loaded dataframe to a file or stdout
 
-    > dd        in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
-    > ba        behavioural analysis,    \t from: reddit, stocktwits, twitter, google
-    > ta        technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
-    > fa        fundamental analysis,    \t e.g.: income, balance, cash, earnings
-    > op        options info,            \t e.g.: volume, open interest, chains, volatility
-    > res       research web page,       \t e.g.: macroaxis, yahoo finance, fool
-    > ca        comparison analysis,     \t e.g.: historical, correlation, financials
-    > eda       exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
-    > ra        residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
-    > bt        strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
-    > pred      prediction techniques,   \t e.g.: regression, arima, rnn, lstm"""
+>   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
+>   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
+>   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
+>   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
+>   op          options info,            \t e.g.: volume, open interest, chains, volatility
+>   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
+>   ca          comparison analysis,     \t e.g.: historical, correlation, financials
+>   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
+>   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
+>   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
+>   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm"""
 
-        help_text += "\n    > disc      discover trending stocks, \t e.g. map, sectors, high short interest\n"
+        help_text += "\n>   disc        discover trending stocks, \t e.g. map, sectors, high short interest\n"
         print(help_text)
 
     def switch(self, an_input: str):
@@ -231,12 +231,14 @@ Contexts:
         self.ticker, self.start, self.interval, self.stock = load(
             other_args, self.ticker, self.start, self.interval, self.stock
         )
+        if "." in self.ticker:
+            self.ticker = self.ticker.split(".")[0]
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         quote(other_args, self.ticker)
 
-    def call_candle(self):
+    def call_candle(self, _):
         """Process candle command"""
         candle(
             self.ticker,
@@ -311,26 +313,26 @@ Contexts:
     def call_ba(self, _):
         """Process ba command"""
         return ba_controller.menu(
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
         )
 
     def call_res(self, _):
         """Process res command"""
         return res_controller.menu(
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
             self.interval,
         )
 
     def call_ca(self, _):
         """Process ca command"""
-        return ca_controller.menu(self.stock, self.ticker, self.start, self.interval)
+        return ca_controller.menu(self.ticker, self.start, self.interval, self.stock)
 
     def call_fa(self, _):
         """Process fa command"""
         return fa_controller.menu(
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
             self.interval,
         )
@@ -338,34 +340,34 @@ Contexts:
     def call_ta(self, _):
         """Process ta command"""
         return ta_controller.menu(
-            self.stock,
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
             self.interval,
+            self.stock,
         )
 
     def call_dd(self, _):
         """Process dd command"""
         return dd_controller.menu(
-            self.stock,
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
             self.interval,
+            self.stock,
         )
 
     def call_ra(self, _):
         """Process ra command"""
         return ra_controller.menu(
-            self.stock,
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
             self.interval,
+            self.stock,
         )
 
     def call_bt(self, _):
         """Process bt command"""
         return bt_controller.menu(
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
         )
 
@@ -373,10 +375,10 @@ Contexts:
         """Process eda command"""
         if self.interval == "1440min":
             return eda_controller.menu(
-                self.stock,
-                self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+                self.ticker,
                 self.start,
                 self.interval,
+                self.stock,
             )
 
         df_stock = yf.download(self.ticker, start=self.start, progress=False)
@@ -394,18 +396,18 @@ Contexts:
         s_interval = "1440min"
 
         return eda_controller.menu(
-            df_stock,
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+            self.ticker,
             self.start,
             s_interval,
+            df_stock,
         )
 
     def call_op(self, _):
         """Process op command"""
         if self.interval == "1440min":
             return op_controller.menu(
-                self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
-                self.stock["5. adjusted close"].values[-1],
+                self.ticker,
+                self.stock,
             )
 
         df_stock = yf.download(self.ticker, start=self.start, progress=False)
@@ -419,11 +421,10 @@ Contexts:
                 "Volume": "6. volume",
             }
         )
-        df_stock.index.name = "date"
 
         return op_controller.menu(
-            self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
-            df_stock["5. adjusted close"].values[-1],
+            self.ticker,
+            df_stock,
         )
 
     def call_pred(self, _):
@@ -447,10 +448,10 @@ Contexts:
 
         if self.interval == "1440min":
             return pred_controller.menu(
-                self.stock,
-                self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+                self.ticker,
                 self.start,
                 self.interval,
+                self.stock,
             )
 
         # If stock data is intradaily, we need to get data again as prediction
@@ -467,10 +468,10 @@ Contexts:
             df_stock_pred = df_stock_pred.sort_index(ascending=True)
             df_stock_pred = df_stock_pred[self.start :]
             return pred_controller.menu(
-                df_stock_pred,
-                self.ticker.split(".")[0] if "." in self.ticker else self.ticker,
+                self.ticker,
                 self.start,
-                interval="1440min",
+                "1440min",
+                df_stock_pred,
             )
         except Exception as e:
             print(e)

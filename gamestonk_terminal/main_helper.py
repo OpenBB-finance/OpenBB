@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 import argparse
 from typing import List
+import os
 import sys
 import subprocess
-import os
 import random
 from datetime import datetime, timedelta
 import hashlib

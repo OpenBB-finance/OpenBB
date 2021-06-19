@@ -6,12 +6,12 @@ from typing import List
 from datetime import datetime
 import pandas as pd
 from matplotlib import pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.residuals_analysis import residuals_api
 from gamestonk_terminal.residuals_analysis import residuals_model
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
 
 
 class ResidualsController:
@@ -37,26 +37,27 @@ class ResidualsController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
+        stock: pd.DataFrame,
     ):
         """Constructor"""
-        self.stock = stock["5. adjusted close"]
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.stock = stock["5. adjusted close"]
+
         self.model_name: str = "None"
         self.model: pd.Series = None
         self.residuals: List[float] = list()
+
         self.ra_parser = argparse.ArgumentParser(add_help=False, prog="ra")
         self.ra_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """Print help"""
 
@@ -94,7 +95,6 @@ class ResidualsController:
             print("")
         return
 
-    @staticmethod
     def pick_model(self, other_args: List[str]):
         """Pick model to fit to stock data"""
         parser = argparse.ArgumentParser(
@@ -124,7 +124,7 @@ class ResidualsController:
                 if "-" not in other_args[0]:
                     other_args.insert(0, "-m")
 
-            (ns_parser, l_model_args) = parser.parse_known_args(other_args)
+            (ns_parser, _) = parser.parse_known_args(other_args)
 
             if ns_parser.help:
                 parser.print_help()
@@ -167,7 +167,7 @@ class ResidualsController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -179,7 +179,7 @@ class ResidualsController:
 
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
-        self.pick_model(self, other_args)
+        self.pick_model(other_args)
 
     def call_fit(self, other_args: List[str]):
         """Process fit command"""
@@ -228,10 +228,10 @@ class ResidualsController:
         residuals_api.independence(other_args, self.residuals)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
+def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
     """Residuals Menu"""
 
-    ra_controller = ResidualsController(stock, ticker, start, interval)
+    ra_controller = ResidualsController(ticker, start, interval, stock)
     ra_controller.call_help(None)
 
     while True:

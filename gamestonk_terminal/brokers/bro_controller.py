@@ -206,7 +206,7 @@ def menu():
         "does not take advantage of your data.\n"
         "   - HOWEVER, our project imports almost 200 different open source python modules. Therefore, it "
         "is impossible for us to check the coding standards and security of each of these modules. "
-        "Hence why adding this disclaimer here."
+        "Hence why adding this disclaimer here.\n"
     )
     bro_controller.print_help()
 

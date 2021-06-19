@@ -30,12 +30,14 @@ class PortfolioOptimization:
         "effrisk",
         "maxquadutil",
         "ef",
-        "ca",
         "yolo",
     ]
 
     # pylint: disable=dangerous-default-value
-    def __init__(self, tickers: List[str] = []):
+    def __init__(
+        self,
+        tickers: List[str],
+    ):
         """
         Construct Portfolio Optimization
         """
@@ -43,9 +45,6 @@ class PortfolioOptimization:
         self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
         self.po_parser.add_argument("cmd", choices=self.CHOICES)
         self.tickers = list(set(tickers))
-        # These will allow the ca menu to be re-access
-        self.ca_ticker = None
-        self.ca_similar = None
 
     @staticmethod
     def print_help(tickers: List[str]):
@@ -83,9 +82,6 @@ class PortfolioOptimization:
         print("")
         print("   ef            show the efficient frontier")
         print("")
-        if len(tickers) > 1:
-            print("   > ca          comparison analysis for selected tickers")
-            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input

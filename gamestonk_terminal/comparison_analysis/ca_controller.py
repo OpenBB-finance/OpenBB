@@ -50,34 +50,32 @@ class ComparisonAnalysisController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
-        similar: List[str],
+        stock: pd.DataFrame,
     ):
         """Constructor
 
         Parameters
         ----------
-        stock : pd.DataFrame
-            Stock data
         ticker : str
             Stock ticker
         start : datetime
             Start time
         interval : str
             Time interval
-        similar : List[str]
-            List of similar tickers
+        stock : pd.DataFrame
+            Stock data
         """
-
-        self.similar = similar
-        self.user = ""
-        self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.stock = stock
+
+        self.similar: List[str] = []
+        self.user = ""
+
         self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
         self.ca_parser.add_argument(
             "cmd",
@@ -369,22 +367,22 @@ class ComparisonAnalysisController:
         return po_controller.menu([self.ticker] + self.similar)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
+def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
     """Comparison Analysis Menu
 
     Parameters
     ----------
-    stock : pd.DataFrame
-        Stock data
     ticker : str
         Stock ticker
     start : datetime
         Time start
     interval : str
         Time interval
+    stock : pd.DataFrame
+        Stock data
     """
 
-    ca_controller = ComparisonAnalysisController(stock, ticker, start, interval, [])
+    ca_controller = ComparisonAnalysisController(ticker, start, interval, stock)
     ca_controller.call_help(None)
 
     while True:
