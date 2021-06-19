@@ -163,3 +163,116 @@ def shortview(ticker: str, other_args: List[str]):
 
     except Exception as e:
         print(e, "\n")
+
+
+def darkpos(ticker: str, other_args: List[str]):
+    """Plot dark pool position
+
+    Parameters
+    ----------
+    ticker: str
+        Stock to plot for
+    other_args : List[str]
+        Argparse arguments
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="darkpos",
+        add_help=False,
+        description="Shows Net Short Vol. vs Position. [Source: Stockgrid]",
+    )
+    parser.add_argument(
+        "-n",
+        "--number",
+        help="Number of last open market days to show",
+        type=check_positive,
+        default=10 if "-r" in other_args else 120,
+        dest="num",
+    )
+    parser.add_argument(
+        "-r",
+        action="store_true",
+        default=False,
+        help="Flag to print raw data instead",
+        dest="raw",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={ticker}"
+        response = requests.get(link)
+
+        df = pd.DataFrame(response.json()["individual_dark_pool_position_data"])
+        df["dates"] = pd.to_datetime(df["dates"])
+
+        if ns_parser.raw:
+            df = df.sort_values(by="dates", ascending=False)
+
+            df["Net Short Vol. (1k $)"] = df["dollar_net_volume"] / 1_000
+            df["Position (1M $)"] = df["dollar_dp_position"]
+
+            df = df[
+                [
+                    "dates",
+                    "Net Short Vol. (1k $)",
+                    "Position (1M $)",
+                ]
+            ]
+
+            df["dates"] = df["dates"].dt.date
+
+            print(
+                tabulate(
+                    df.iloc[: ns_parser.num],
+                    tablefmt="fancy_grid",
+                    floatfmt=".2f",
+                    headers=list(df.columns),
+                    showindex=False,
+                )
+            )
+
+        else:
+            fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+            ax = fig.add_subplot(111)
+            ax.bar(
+                df["dates"],
+                df["dollar_net_volume"] / 1_000,
+                color="r",
+                alpha=0.4,
+                label="Net Short Vol. (1k $)",
+            )
+            ax.set_ylabel("Net Short Vol. (1k $)")
+
+            ax2 = ax.twinx()
+            ax2.plot(
+                df["dates"].values,
+                df["dollar_dp_position"],
+                c="tab:blue",
+                label="Position (1M $)",
+            )
+            ax2.set_ylabel("Position (1M $)")
+
+            lines, labels = ax.get_legend_handles_labels()
+            lines2, labels2 = ax2.get_legend_handles_labels()
+            ax2.legend(lines + lines2, labels + labels2, loc="upper left")
+
+            ax.set_xlim(
+                df["dates"].values[max(0, len(df) - ns_parser.num)],
+                df["dates"].values[len(df) - 1],
+            )
+
+            ax.grid()
+            plt.title(f"Net Short Vol. vs Position for {ticker}")
+            plt.gcf().autofmt_xdate()
+
+            if USE_ION:
+                plt.ion()
+
+            plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")

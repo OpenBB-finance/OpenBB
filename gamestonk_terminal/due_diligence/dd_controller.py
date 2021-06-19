@@ -45,6 +45,7 @@ class DueDiligenceController:
         "dp",
         "ftd",
         "shortview",
+        "darkpos",
     ]
 
     def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
@@ -112,6 +113,7 @@ class DueDiligenceController:
         print("   dp            dark pools (ATS) vs OTC data [FINRA]")
         print("   ftd           fails-to-deliver data [SEC]")
         print("   shortview     price vs short interest volume [Stockgrid.io]")
+        print("   darkpos       net short vs position [Stockgrid.io]")
         print("")
 
     def switch(self, an_input: str):
@@ -205,6 +207,10 @@ class DueDiligenceController:
     def call_shortview(self, other_args: List[str]):
         """Process shortview command"""
         sg_view.shortview(self.ticker, other_args)
+
+    def call_darkpos(self, other_args: List[str]):
+        """Process darkpos command"""
+        sg_view.darkpos(self.ticker, other_args)
 
 
 def menu(ticker: str, start: str, interval: str, stock: DataFrame):
