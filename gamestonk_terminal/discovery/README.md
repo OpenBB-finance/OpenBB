@@ -321,6 +321,7 @@ usage: shortvol [-n NUM] [-s {float,dtc,si}] [-h]
 Print short interest and days to cover. [Source: Stockgrid]
 * -n: Number of top tickers to show
 * -s: Field for which to sort by, where 'float': Float Short %, 'dtc': Days to Cover, 'si': Short Interest. Default: float.
+* -a: Data in ascending order. Default: false.
 
 <img width="949" alt="shortvol" src="https://user-images.githubusercontent.com/25267873/122323861-af7be400-cf1f-11eb-9de2-5c7f2debddf0.png">
 
