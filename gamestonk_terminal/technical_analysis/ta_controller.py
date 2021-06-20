@@ -120,7 +120,6 @@ class TechnicalAnalysisController:
             True - quit the program
             None - continue in the menu
         """
-
         (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
 
         return getattr(
