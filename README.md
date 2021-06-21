@@ -122,8 +122,8 @@ conda install -c anaconda git
 
 3. Clone the Project
 
-  - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
-  - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
+  - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+  - via SSH:  `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
 
 4. Navigate into the project's folder
 
