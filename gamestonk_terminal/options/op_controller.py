@@ -10,7 +10,7 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.options import volume_view, chains_view, op_scrape_view
+from gamestonk_terminal.options import yahoo_view, tradier_view, barchart_view
 from gamestonk_terminal.menu import session
 
 
@@ -133,7 +133,7 @@ class OptionsController:
 
     def call_voi(self, other_args: List[str]):
         """Process voi command."""
-        volume_view.plot_volume_open_interest(
+        yahoo_view.plot_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -144,7 +144,7 @@ class OptionsController:
 
     def call_vcalls(self, other_args: List[str]):
         """Process vcalls command."""
-        volume_view.plot_calls_volume_open_interest(
+        yahoo_view.plot_calls_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -154,7 +154,7 @@ class OptionsController:
 
     def call_vputs(self, other_args: List[str]):
         """Process vcalls command."""
-        volume_view.plot_puts_volume_open_interest(
+        yahoo_view.plot_puts_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -163,10 +163,10 @@ class OptionsController:
         )
 
     def call_chains(self, other_args):
-        chains_view.display_chains(self.ticker, self.expiry_date, other_args)
+        tradier_view.display_chains(self.ticker, self.expiry_date, other_args)
 
     def call_info(self, other_args):
-        op_scrape_view.print_options_data(self.ticker, other_args)
+        barchart_view.print_options_data(self.ticker, other_args)
 
 
 def menu(ticker: str, stock: pd.DataFrame):

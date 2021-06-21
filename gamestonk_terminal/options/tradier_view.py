@@ -171,12 +171,12 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
 
         if ns_parser.min_sp == -1:
             min_strike = np.percentile(chains_df["strike"], 25)
-
-        elif ns_parser.max_sp == -1:
-            max_strike = np.percentile(chains_df["strike"], 75)
-
         else:
             min_strike = ns_parser.min_sp
+
+        if ns_parser.max_sp == -1:
+            max_strike = np.percentile(chains_df["strike"], 75)
+        else:
             max_strike = ns_parser.max_sp
 
         print(f"The strike prices are displayed between {min_strike} and {max_strike}")
