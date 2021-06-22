@@ -795,7 +795,169 @@ def get_exchanges():
     )
 
 
+def get_financial_platforms():
+    """Get list of financial platforms from CoinGecko API
+
+    Returns
+    -------
+    pandas.DataFrame
+        name, category, centralized, website_url
+    """
+    df = pd.DataFrame(client.get_finance_platforms())
+    df.drop('facts', axis=1, inplace=True)
+    return df
+
+
+def get_finance_products():
+    """Get list of financial products from CoinGecko API
+
+    Returns
+    -------
+    pandas.DataFrame
+        platform, identifier, supply_rate_percentage, borrow_rate_percentage
+    """
+    return pd.DataFrame(client.get_finance_products(per_page=250),
+                        columns=[
+            "platform",
+            "identifier",
+            "supply_rate_percentage",
+            "borrow_rate_percentage",
+        ],
+    )
+
+
+def get_indexes():
+    """Get list of crypto indexes from CoinGecko API
+
+    Returns
+    -------
+    pandas.DataFrame
+        name, id, market, last, is_multi_asset_composite
+    """
+    return pd.DataFrame(client.get_indexes(per_page=250))
+
+
+def get_derivatives():
+    """Get list of crypto derivatives from CoinGecko API
+
+    Returns
+    -------
+    pandas.DataFrame
+        market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, open_interest, volume_24h
+    """
+    df = pd.DataFrame(
+        client.get_derivatives(include_tickers="unexpired")
+    )
+    df.drop(
+        ["index", "last_traded_at", "expired_at", "index_id"], axis=1, inplace=True
+    )
+
+    df.rename(
+        columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True
+    )
+    return df
+
+
+def get_exchange_rates():
+    """Get list of crypto, fiats, commodity exchange rates from CoinGecko API
+
+    Returns
+    -------
+    pandas.DataFrame
+        name, unit, value, type
+    """
+    return (
+        pd.DataFrame(client.get_exchange_rates()["rates"])
+        .T.reset_index()
+        .drop("index", axis=1)
+    )
+
+
+def get_global_info():
+    """Get global statistics about crypto from CoinGecko API like:
+        - market cap change
+        - number of markets
+        - icos
+        - number of active crypto
+
+    Returns
+    -------
+    pandas.DataFrame
+        Metric, Value
+    """
+    results = client.get_global()
+
+    total_mcap = results.pop('market_cap_percentage')
+    eth, btc = total_mcap.get('btc'), total_mcap.get('eth')
+    for key in [
+        COLUMNS["total_market_cap"],
+        COLUMNS["total_volume"],
+        'updated_at'
+    ]:
+        del results[key]
+    results['eth_market_cap_in_pct'] = eth
+    results['btc_market_cap_in_pct'] = btc
+    results['altcoin_market_cap_in_pct'] = 100 - (float(eth)+float(btc))
+    df = pd.Series(results).reset_index()
+    df.columns = ["Metric", "Value"]
+    return df
+
+
+def get_global_markets_info():
+    """Get global statistics about crypto markets from CoinGecko API like:
+        - total_market_cap
+        - total_volume
+        - market_cap_percentage
+
+    Returns
+    -------
+    pandas.DataFrame
+        total_market_cap, total_volume, market_cap_percentage
+    """
+    columns = [
+        COLUMNS["total_market_cap"],
+        COLUMNS["total_volume"],
+        COLUMNS["market_cap_percentage"],
+    ]
+    data = []
+    results = client.get_global()
+    for key in columns:
+        data.append(results.get(key))
+    df = pd.DataFrame(data).T
+    df.columns = columns
+    df.replace({float('nan') : None}, inplace=True)
+    return df.reset_index()
+
+
+def get_global_defi_info():
+    """Get global statistics about Decentralized Finances from CoinGecko API like:
+
+    Returns
+    -------
+    pandas.DataFrame
+        Metric, Value
+    """
+    results = client.get_global_decentralized_finance_defi()
+    for key, value in results.items():
+        try:
+            results[key] = round(float(value), 4)
+        except (ValueError, TypeError):
+            pass
+
+    df = pd.Series(results).reset_index()
+    df.columns = ["Metric", "Value"]
+    return df
+
+
 def get_coin_list():
+    """Get list of coins available on CoinGecko
+
+    Returns
+    -------
+    pandas.DataFrame
+        id, symbol, name
+    """
+
     return (
         pd.DataFrame(
             client.get_coins_list(),
@@ -804,10 +966,9 @@ def get_coin_list():
     )
 
 
-
 from tabulate import tabulate
 
-z = get_gainers_or_losers(period='30d', typ='losers')
+z = get_global_defi_info()
 print(
     tabulate(
         z,
