@@ -56,16 +56,24 @@ def darkshort(other_args: List[str]):
         if not ns_parser:
             return
 
-        d_fields = {
-            "sv": "Short Volume",
-            "sv_pct": "Short Volume %",
-            "nsv": "Net Short Volume",
-            "nsv_dollar": "Net Short Volume $",
-            "dpp": "Dark Pools Position",
-            "dpp_dollar": "Dark Pools Position $",
+        d_fields_endpoints = {
+            "sv": "Short+Volume",
+            "sv_pct": "Short+Volume+%25",
+            "nsv": "Net+Short+Volume",
+            "nsv_dollar": "Net+Short+Volume+$",
+            "dpp": "Dark+Pools+Position",
+            "dpp_dollar": "Dark+Pools+Position+$",
         }
 
-        link = "https://stockgridapp.herokuapp.com/get_dark_pool_data?top=Dark+Pools+Position+$&minmax=desc"
+        field = d_fields_endpoints[ns_parser.sort_field]
+
+        if ns_parser.ascending:
+            order = "asc"
+        else:
+            order = "desc"
+
+        link = f"https://stockgridapp.herokuapp.com/get_dark_pool_data?top={field}&minmax={order}"
+
         response = requests.get(link)
         df = pd.DataFrame(response.json()["data"])
 
@@ -80,7 +88,7 @@ def darkshort(other_args: List[str]):
                 "Dark Pools Position",
                 "Dark Pools Position $",
             ]
-        ].sort_values(by=d_fields[ns_parser.sort_field], ascending=ns_parser.ascending)
+        ]
         dp_date = df["Date"].values[0]
         df = df.drop(columns=["Date"])
         df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
