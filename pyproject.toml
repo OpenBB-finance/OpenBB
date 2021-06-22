@@ -73,6 +73,7 @@ vaderSentiment = "3.3.2"
 degiro-connector = "1.0.0"
 mypy = "^0.901"
 GitPython = "^3.1.17"
+retry = "^0.9.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
