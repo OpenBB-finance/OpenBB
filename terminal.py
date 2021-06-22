@@ -57,6 +57,9 @@ from gamestonk_terminal.etf import etf_controller
 class TerminalController:
     """Terminal Controller class"""
 
+    # To hold suffix for Yahoo Finance
+    suffix = ""
+
     # Command choices
     CHOICES_TICKER_DEPENDENT = [
         "ba",
@@ -134,7 +137,6 @@ What do you want to do?
     q(uit)      to abandon the program
 
 Contexts:
->   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   mill        papermill menu, \t\t menu to generate notebook reports
 >   econ        economic data, \t\t\t e.g.: events, FRED data, GDP, VIXCLS
 >   pa          portfolio analysis, \t\t analyses your custom portfolio
@@ -180,7 +182,9 @@ Contexts:
 >   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm"""
 
-        help_text += "\n>   disc        discover trending stocks, \t e.g. map, sectors, high short interest\n"
+        help_text += """\n>   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
+        """
         print(help_text)
 
     def switch(self, an_input: str):
@@ -232,7 +236,9 @@ Contexts:
             other_args, self.ticker, self.start, self.interval, self.stock
         )
         if "." in self.ticker:
-            self.ticker = self.ticker.split(".")[0]
+            self.ticker, self.suffix = self.ticker.split(".")
+        else:
+            self.suffix = ""
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
@@ -241,7 +247,7 @@ Contexts:
     def call_candle(self, _):
         """Process candle command"""
         candle(
-            self.ticker,
+            self.ticker + "." + self.suffix if self.suffix else self.ticker,
             (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
         )
 

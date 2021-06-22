@@ -138,7 +138,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
     try:
         # For the case where a user uses: 'load BB'
         if other_args:
-            if "-" not in other_args[0]:
+            if "-t" not in other_args:
                 other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
