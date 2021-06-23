@@ -10,7 +10,7 @@ from tabulate import tabulate
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
-
+import gamestonk_terminal.cryptocurrency.pycoingecko_model as gecko
 register_matplotlib_converters()
 
 # Generate a list of valid coins to be checked against later
@@ -176,3 +176,193 @@ def trend():
         )
     )
     print("")
+
+
+def holdings_overview(other_args: List[str]):
+    """
+    Shows overview of public companies that holds ethereum or bitcoin from www.coingecko.com
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="holdings_overview",
+        add_help=False,
+        description="Shows overview of public companies that holds ethereum or bitcoin",
+    )
+
+    parser.add_argument(
+        "-c",
+        "--coin",
+        dest="coin",
+        type=str,
+        help="companies with ethereum or bitcoin",
+        default="bitcoin",
+        choices=['ethereum','bitcoin'],
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_holdings_overview(endpoint=ns_parser.coin)
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def holdings_companies_list(other_args: List[str]):
+    """Shows Ethereum/Bitcoin Holdings by Public Companies from www.coingecko.com
+    Track publicly traded companies around the world that are buying ethereum as part of corporate treasury
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="holdings_companies_list",
+        add_help=False,
+        description="Track publicly traded companies around the world that "
+                    "are buying ethereum as part of corporate treasury",
+    )
+
+    parser.add_argument(
+        "-c",
+        "--coin",
+        dest="coin",
+        type=str,
+        help="companies with ethereum or bitcoin",
+        default="bitcoin",
+        choices=['ethereum','bitcoin'],
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_companies_assets(endpoint=ns_parser.coin)
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def gainers(other_args: List[str]):
+    """Shows Largest Gainers - coins which gain the most in given period from www.coingecko.com
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_gainers",
+        add_help=False,
+        description="Shows Largest Gainers - coins which gain the most in given period"
+    )
+
+    parser.add_argument(
+        "-p",
+        "--period",
+        dest="period",
+        type=str,
+        help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
+        default="1h",
+        choices=['1h', '24h', '7d', '14d', '30d', '60d', '1y'],
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_gainers_or_losers(period=ns_parser.period, typ='gainers')
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def losers(other_args: List[str]):
+    """Shows Largest Losers - coins which lost the most in given period of time from www.coingecko.com
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_gainers",
+        add_help=False,
+        description="Shows Largest Losers - coins which price dropped the most in given period"
+    )
+
+    parser.add_argument(
+        "-p",
+        "--period",
+        dest="period",
+        type=str,
+        help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
+        default="1h",
+        choices=['1h', '24h', '7d', '14d', '30d', '60d', '1y'],
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_gainers_or_losers(period=ns_parser.period, typ='losers')
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")

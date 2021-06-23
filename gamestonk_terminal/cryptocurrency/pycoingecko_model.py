@@ -1,12 +1,11 @@
 from retry import retry
 import math
-import textwrap
 import requests
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
 from pycoingecko import CoinGeckoAPI
-from pycoingecko_helpers import (
+from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     changes_parser,
     replace_qm,
     clean_row,
@@ -966,17 +965,17 @@ def get_coin_list():
     )
 
 
-from tabulate import tabulate
-
-z = get_global_defi_info()
-print(
-    tabulate(
-        z,
-        headers=z.columns,
-        showindex=False,
-        tablefmt="fancy_grid",
-        floatfmt=".2f",
-    )
-)
-print("")
+# from tabulate import tabulate
+#
+# z = get_global_defi_info()
+# print(
+#     tabulate(
+#         z,
+#         headers=z.columns,
+#         showindex=False,
+#         tablefmt="fancy_grid",
+#         floatfmt=".2f",
+#     )
+# )
+# print("")
 

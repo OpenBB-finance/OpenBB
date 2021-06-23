@@ -25,6 +25,10 @@ class CryptoController:
         "load",
         "view",
         "top",
+        "gainers",
+        "losers",
+        "hold",
+        "hold_comp",
         "trend",
         "book",
         "trades",
@@ -56,6 +60,10 @@ class CryptoController:
         print("   load          load cryptocurrency data")
         print("   view          load and view cryptocurrency data")
         print("   trend         show top 7 trending coins")
+        print("   hold          show eth, btc holdings overview statistics")
+        print("   hold_comp     show eth, btc holdings by public companies")
+        print("   gainers       show top gainers - coins which price gained the most in given period ")
+        print("   losers        show top gainers - coins which price dropped the most in given period ")
         print("")
         print("CoinMarketCap:")
         print("   top           view top coins from coinmarketcap")
@@ -142,6 +150,22 @@ class CryptoController:
         ) = binance_model.select_binance_coin(other_args)
         self.source = "BIN"
         print("")
+
+    def call_hold(self, other_args):
+        """Process hold command"""
+        pycoingecko_view.holdings_overview(other_args)
+
+    def call_hold_comp(self, other_args):
+        """Process hold_comp command"""
+        pycoingecko_view.holdings_companies_list(other_args)
+
+    def call_gainers(self, other_args):
+        """Process hold_comp command"""
+        pycoingecko_view.gainers(other_args)
+
+    def call_losers(self, other_args):
+        """Process hold_comp command"""
+        pycoingecko_view.losers(other_args)
 
     # pylint: disable=inconsistent-return-statements
     def call_ta(self, _):
