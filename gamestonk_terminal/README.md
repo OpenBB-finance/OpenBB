@@ -393,6 +393,7 @@ Command|Description|Source
 
 Command|Description|Source
 ------ | -------- | --------
+`feargreed`     | CNN Fear Greed Index | <https://money.cnn.com/data/fear-and-greed/>
 `events`        | economic impact events | <https://finnhub.io>
 `fred`          | display customized FRED data | <https://fred.stlouisfed.org>
 `vixcls`        | Volatility Index | <https://fred.stlouisfed.org>

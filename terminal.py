@@ -162,13 +162,13 @@ Contexts:
         help_text += """
     clear       clear a specific stock ticker from analysis
     load        load a specific stock ticker for analysis
-    quote       view the current price for a specific stock ticker
-    candle      view a candle chart for a specific stock ticker
-    view        view and load a specific stock ticker for technical analysis
     """
 
         if self.ticker:
-            help_text += """export      export the currently loaded dataframe to a file or stdout
+            help_text += """quote       view the current price for a specific stock ticker
+    candle      view a candle chart for a specific stock ticker
+    view        view and load a specific stock ticker for technical analysis
+    export      export the currently loaded dataframe to a file or stdout
 
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google

@@ -2,6 +2,8 @@
 
 This menu aims to assess economy data, and the usage of the following commands along with an example will be exploited below.
 
+* [feargreed](#feargreed)
+    * CNN Fear Greed Index from https://money.cnn.com/data/fear-and-greed/
 * [events](#events)
     * economic impact events [Finnhub]
 * [fred](#fred)
@@ -28,6 +30,19 @@ This menu aims to assess economy data, and the usage of the following commands a
     * Moody's Seasoned AAA Corporate Bond Yield
 * [dexcaus](#dexcaus)
     * Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+
+
+## feargreed <a name="feargreed"></a>
+```text
+usage: feargreed [-i {jbd,mv,pco,mm,sps,spb,shd,index}]  
+```
+
+Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
+* -i : CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility, Put and Call Options, Market Momentum Stock Price, Strength, Stock Price Breadth, Safe Heaven Demand, and Index. Default: None, shows all.
+
+![feargreed](https://user-images.githubusercontent.com/25267873/122684285-7338d400-d1fc-11eb-8702-d409d96a2672.png)
+
+<img width="962" alt="Captura de ecrã 2021-06-20, às 19 18 12" src="https://user-images.githubusercontent.com/25267873/122684256-4a184380-d1fc-11eb-939c-d8007310324d.png">
 
 
 ## events <a name="events"></a>

@@ -205,6 +205,7 @@ ___
 * [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
 * [x] Refactor FRED to ECON menu and add VIX view (@jmaslek) - [PR #405](https://github.com/DidierRLopes/GamestonkTerminal/pull/405)
 * [x] Output economic impact events calendar (@didier) - [PR #430](https://github.com/DidierRLopes/GamestonkTerminal/pull/430)
+* [x] Add CNN Fear and Greed Index (@didier) - [PR #509](https://github.com/DidierRLopes/GamestonkTerminal/pull/509)
 
 **NEXT**
 
