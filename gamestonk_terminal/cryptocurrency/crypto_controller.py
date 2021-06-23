@@ -25,8 +25,17 @@ class CryptoController:
         "load",
         "view",
         "top",
+        "news",
+        "trending",
+        "most_voted",
+        "most_visited",
+        "recently_added",
+        "positive_sentiment",
         "gainers",
         "losers",
+        "stablecoins",
+        "yield_farms",
+        "categories",
         "hold",
         "hold_comp",
         "trend",
@@ -62,8 +71,12 @@ class CryptoController:
         print("   trend         show top 7 trending coins")
         print("   hold          show eth, btc holdings overview statistics")
         print("   hold_comp     show eth, btc holdings by public companies")
-        print("   gainers       show top gainers - coins which price gained the most in given period ")
-        print("   losers        show top gainers - coins which price dropped the most in given period ")
+        print(
+            "   gainers       show top gainers - coins which price gained the most in given period "
+        )
+        print(
+            "   losers        show top gainers - coins which price dropped the most in given period "
+        )
         print("")
         print("CoinMarketCap:")
         print("   top           view top coins from coinmarketcap")
@@ -166,6 +179,42 @@ class CryptoController:
     def call_losers(self, other_args):
         """Process hold_comp command"""
         pycoingecko_view.losers(other_args)
+
+    def call_trending(self, other_args):
+        """Process trending command"""
+        pycoingecko_view.discover(category="trending", other_args=other_args)
+
+    def call_most_voted(self, other_args):
+        """Process most_voted command"""
+        pycoingecko_view.discover(category="most_voted", other_args=other_args)
+
+    def call_recently_added(self, other_args):
+        """Process recently_added command"""
+        pycoingecko_view.recently_added(other_args=other_args)
+
+    def call_most_visited(self, other_args):
+        """Process most_voted command"""
+        pycoingecko_view.discover(category="most_visited", other_args=other_args)
+
+    def call_positive_sentiment(self, other_args):
+        """Process positive_sentiment command"""
+        pycoingecko_view.discover(category="positive_sentiment", other_args=other_args)
+
+    def call_news(self, other_args):
+        """Process news command"""
+        pycoingecko_view.news(other_args=other_args)
+
+    def call_categories(self, other_args):
+        """Process top_categories command"""
+        pycoingecko_view.top_categories(other_args=other_args)
+
+    def call_stablecoins(self, other_args):
+        """Process top_categories command"""
+        pycoingecko_view.stablecoins(other_args=other_args)
+
+    def call_yield_farms(self, other_args):
+        """Process top_categories command"""
+        pycoingecko_view.yield_farms(other_args=other_args)
 
     # pylint: disable=inconsistent-return-statements
     def call_ta(self, _):

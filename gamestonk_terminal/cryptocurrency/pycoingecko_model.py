@@ -1,6 +1,6 @@
-from retry import retry
 import math
 import requests
+from retry import retry
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
@@ -13,11 +13,6 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     replace_underscores_to_newlines,
     swap_columns,
     wrap_text_in_df,
-    remove_keys,
-    filter_list,
-    find_discord,
-    rename_columns_in_dct,
-    create_dictionary_with_prefixes,
 )
 
 PERIODS = {
@@ -61,11 +56,11 @@ COLUMNS = {
     "posted": "posted",
     "article": "article",
     "url": "url",
-    'price_btc' : 'price_btc',
-    'price_usd' : 'price_usd',
-    'n_of_coins' : 'n_of_coins',
-    "exchanges" : "exchanges",
-    "change_30d" : "change_30d",
+    "price_btc": "price_btc",
+    "price_usd": "price_usd",
+    "n_of_coins": "n_of_coins",
+    "exchanges": "exchanges",
+    "change_30d": "change_30d",
 }
 
 CHANNELS = {
@@ -128,7 +123,9 @@ def get_holdings_overview(endpoint: str = "bitcoin"):
         Metric, Value
     """
     url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
-    rows = scrape_gecko_data(url).find_all("span", class_="overview-box d-inline-block p-3 mr-2")
+    rows = scrape_gecko_data(url).find_all(
+        "span", class_="overview-box d-inline-block p-3 mr-2"
+    )
     kpis = {}
     for row in rows:
         row_cleaned = clean_row(row)
@@ -206,9 +203,7 @@ def get_gainers_or_losers(period="1h", typ="gainers"):
         )
 
     url = f"https://www.coingecko.com/en/coins/trending{PERIODS.get(period)}"
-    rows = (
-        scrape_gecko_data(url).find_all("tbody")[category.get(typ)].find_all("tr")
-    )
+    rows = scrape_gecko_data(url).find_all("tbody")[category.get(typ)].find_all("tr")
     results = []
     for row in rows:
         url = GECKO_BASE_URL + row.find("a")["href"]
@@ -228,7 +223,7 @@ def get_gainers_or_losers(period="1h", typ="gainers"):
 
 
 def get_btc_price():
-    """ Get BTC/USD price from CoinGecko API
+    """Get BTC/USD price from CoinGecko API
 
     Returns
     -------
@@ -264,7 +259,9 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
             f"Wrong category name\nPlease chose one from list: {CATEGORIES.keys()}"
         )
     url = "https://www.coingecko.com/en/discover"
-    popular = scrape_gecko_data(url).find_all("div", class_="col-12 col-sm-6 col-md-6 col-lg-4")[CATEGORIES[category]]
+    popular = scrape_gecko_data(url).find_all(
+        "div", class_="col-12 col-sm-6 col-md-6 col-lg-4"
+    )[CATEGORIES[category]]
     rows = popular.find_all("a")
     results = []
     btc_price = get_btc_price()
@@ -281,8 +278,8 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
         results,
         columns=[
             COLUMNS["name"],
-            COLUMNS['price_btc'],
-            COLUMNS['price_usd'],
+            COLUMNS["price_btc"],
+            COLUMNS["price_usd"],
             COLUMNS["url"],
         ],
     )
@@ -316,15 +313,17 @@ def get_news(n: int = 100) -> pd.DataFrame:
             author, posted = " ".join(by_who).split("(")
             posted = posted.strip().replace(")", "")
             results.append([title, author.strip(), posted, article, link])
-        dfs.append(pd.DataFrame(
-            results,
-            columns=[
-                COLUMNS["title"],
-                COLUMNS["author"],
-                COLUMNS["posted"],
-                COLUMNS["article"],
-                COLUMNS["url"],
-            ],)
+        dfs.append(
+            pd.DataFrame(
+                results,
+                columns=[
+                    COLUMNS["title"],
+                    COLUMNS["author"],
+                    COLUMNS["posted"],
+                    COLUMNS["article"],
+                    COLUMNS["url"],
+                ],
+            )
         )
     df = pd.concat(dfs, ignore_index=True).head(n)
     df.drop("article", axis=1, inplace=True)
@@ -391,16 +390,16 @@ def get_recently_added_coins():
         name, symbol, price, change_1h, change_24h, volume_24h,  market_cap, last_added, url
     """
     columns = [
-            COLUMNS["name"],
-            COLUMNS["symbol"],
-            COLUMNS["price"],
-            COLUMNS["change_1h"],
-            COLUMNS["change_24h"],
-            COLUMNS["volume_24h"],
-            COLUMNS["market_cap"],
-            COLUMNS["last_added"],
-            COLUMNS["url"],
-        ]
+        COLUMNS["name"],
+        COLUMNS["symbol"],
+        COLUMNS["price"],
+        COLUMNS["change_1h"],
+        COLUMNS["change_24h"],
+        COLUMNS["volume_24h"],
+        COLUMNS["market_cap"],
+        COLUMNS["last_added"],
+        COLUMNS["url"],
+    ]
 
     url = "https://www.coingecko.com/en/coins/recently_added"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -438,7 +437,7 @@ def get_recently_added_coins():
 
 
 def get_stable_coins():
-    """Scrapes stable coins data from "https://www.coingecko.com/en/coins/recently_added"
+    """Scrapes stable coins data from "https://www.coingecko.com/en/stablecoins"
 
     Returns
     -------
@@ -502,15 +501,15 @@ def get_yield_farms():
         rank, name, pool, audits, collateral,value_locked, returns_year, returns_hour
     """
     columns = [
-            COLUMNS["rank"],
-            COLUMNS["name"],
-            "pool",
-            "audits",
-            "collateral",
-            "value_locked",
-            "returns_year",
-            "returns_hour",
-        ]
+        COLUMNS["rank"],
+        COLUMNS["name"],
+        "pool",
+        "audits",
+        "collateral",
+        "value_locked",
+        "returns_year",
+        "returns_hour",
+    ]
     url = "https://www.coingecko.com/en/yield-farming"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
     results = []
@@ -529,8 +528,8 @@ def get_yield_farms():
             apy2,
         ) = row_cleaned
         auditors, collateral = collateral_auditors_parse(others)
-        auditors = ", ".join([aud.strip() for aud in auditors])
-        collateral = ", ".join([coll.strip() for coll in collateral])
+        auditors = ", ".join(aud.strip() for aud in auditors)
+        collateral = ", ".join(coll.strip() for coll in collateral)
         results.append(
             [
                 rank,
@@ -543,9 +542,7 @@ def get_yield_farms():
                 apy2,
             ]
         )
-    return (
-        pd.DataFrame(results, columns=columns).set_index("rank").replace({"": None})
-    )
+    return pd.DataFrame(results, columns=columns).set_index("rank").replace({"": None})
 
 
 def get_top_volume_coins():
@@ -601,27 +598,23 @@ def get_top_defi_coins():
             row_cleaned.insert(4, "?")
         results.append(row_cleaned)
 
-    df = (
-        pd.DataFrame(
-            results,
-            columns=[
-                COLUMNS["rank"],
-                COLUMNS["name"],
-                COLUMNS["symbol"],
-                COLUMNS["price"],
-                COLUMNS["change_1h"],
-                COLUMNS["change_24h"],
-                COLUMNS["change_7d"],
-                COLUMNS["volume_24h"],
-                COLUMNS["market_cap"],
-                "fully_diluted_market_cap",
-                "market_cap_to_tvl_ratio",
-                COLUMNS["url"],
-            ],
-        )
-        .set_index(COLUMNS["rank"])
-
-    )
+    df = pd.DataFrame(
+        results,
+        columns=[
+            COLUMNS["rank"],
+            COLUMNS["name"],
+            COLUMNS["symbol"],
+            COLUMNS["price"],
+            COLUMNS["change_1h"],
+            COLUMNS["change_24h"],
+            COLUMNS["change_7d"],
+            COLUMNS["volume_24h"],
+            COLUMNS["market_cap"],
+            "fully_diluted_market_cap",
+            "market_cap_to_tvl_ratio",
+            COLUMNS["url"],
+        ],
+    ).set_index(COLUMNS["rank"])
     df.drop(
         ["fully_diluted_market_cap", "market_cap_to_tvl_ratio"],
         axis=1,
@@ -696,19 +689,20 @@ def get_top_nfts():
         row_cleaned.pop(3)
         results.append(row_cleaned)
     df = pd.DataFrame(
-            results,columns=[
-                COLUMNS["rank"],
-                COLUMNS["name"],
-                COLUMNS["symbol"],
-                COLUMNS["price"],
-                COLUMNS["change_1h"],
-                COLUMNS["change_24h"],
-                COLUMNS["change_7d"],
-                COLUMNS["volume_24h"],
-                COLUMNS["market_cap"],
-                COLUMNS["url"],
-            ],
-        ).set_index(COLUMNS["rank"])
+        results,
+        columns=[
+            COLUMNS["rank"],
+            COLUMNS["name"],
+            COLUMNS["symbol"],
+            COLUMNS["price"],
+            COLUMNS["change_1h"],
+            COLUMNS["change_24h"],
+            COLUMNS["change_7d"],
+            COLUMNS["volume_24h"],
+            COLUMNS["market_cap"],
+            COLUMNS["url"],
+        ],
+    ).set_index(COLUMNS["rank"])
     df = wrap_text_in_df(df, w=55)
     return df
 
@@ -756,7 +750,9 @@ def get_nft_market_status():
         Metric, Value
     """
     url = "https://www.coingecko.com/en/nft"
-    rows = scrape_gecko_data(url).find_all("span", class_="overview-box d-inline-block p-3 mr-2")
+    rows = scrape_gecko_data(url).find_all(
+        "span", class_="overview-box d-inline-block p-3 mr-2"
+    )
     kpis = {}
     for row in rows:
         value, *kpi = clean_row(row)
@@ -777,21 +773,18 @@ def get_exchanges():
     """
     df = pd.DataFrame(client.get_exchanges_list(per_page=250))
     df.replace({float(np.NaN): None}, inplace=True)
-    return (
-        df[
-            [
-                "trust_score_rank",
-                "trust_score",
-                COLUMNS["id"],
-                COLUMNS["name"],
-                COLUMNS["country"],
-                "year_established",
-                "trade_volume_24h_btc",
-                COLUMNS["url"],
-            ]
+    return df[
+        [
+            "trust_score_rank",
+            "trust_score",
+            COLUMNS["id"],
+            COLUMNS["name"],
+            COLUMNS["country"],
+            "year_established",
+            "trade_volume_24h_btc",
+            COLUMNS["url"],
         ]
-        .set_index("trust_score_rank")
-    )
+    ].set_index("trust_score_rank")
 
 
 def get_financial_platforms():
@@ -803,7 +796,7 @@ def get_financial_platforms():
         name, category, centralized, website_url
     """
     df = pd.DataFrame(client.get_finance_platforms())
-    df.drop('facts', axis=1, inplace=True)
+    df.drop("facts", axis=1, inplace=True)
     return df
 
 
@@ -815,8 +808,9 @@ def get_finance_products():
     pandas.DataFrame
         platform, identifier, supply_rate_percentage, borrow_rate_percentage
     """
-    return pd.DataFrame(client.get_finance_products(per_page=250),
-                        columns=[
+    return pd.DataFrame(
+        client.get_finance_products(per_page=250),
+        columns=[
             "platform",
             "identifier",
             "supply_rate_percentage",
@@ -844,16 +838,10 @@ def get_derivatives():
     pandas.DataFrame
         market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, open_interest, volume_24h
     """
-    df = pd.DataFrame(
-        client.get_derivatives(include_tickers="unexpired")
-    )
-    df.drop(
-        ["index", "last_traded_at", "expired_at", "index_id"], axis=1, inplace=True
-    )
+    df = pd.DataFrame(client.get_derivatives(include_tickers="unexpired"))
+    df.drop(["index", "last_traded_at", "expired_at", "index_id"], axis=1, inplace=True)
 
-    df.rename(
-        columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True
-    )
+    df.rename(columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True)
     return df
 
 
@@ -886,17 +874,13 @@ def get_global_info():
     """
     results = client.get_global()
 
-    total_mcap = results.pop('market_cap_percentage')
-    eth, btc = total_mcap.get('btc'), total_mcap.get('eth')
-    for key in [
-        COLUMNS["total_market_cap"],
-        COLUMNS["total_volume"],
-        'updated_at'
-    ]:
+    total_mcap = results.pop("market_cap_percentage")
+    eth, btc = total_mcap.get("btc"), total_mcap.get("eth")
+    for key in [COLUMNS["total_market_cap"], COLUMNS["total_volume"], "updated_at"]:
         del results[key]
-    results['eth_market_cap_in_pct'] = eth
-    results['btc_market_cap_in_pct'] = btc
-    results['altcoin_market_cap_in_pct'] = 100 - (float(eth)+float(btc))
+    results["eth_market_cap_in_pct"] = eth
+    results["btc_market_cap_in_pct"] = btc
+    results["altcoin_market_cap_in_pct"] = 100 - (float(eth) + float(btc))
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
     return df
@@ -924,7 +908,7 @@ def get_global_markets_info():
         data.append(results.get(key))
     df = pd.DataFrame(data).T
     df.columns = columns
-    df.replace({float('nan') : None}, inplace=True)
+    df.replace({float("nan"): None}, inplace=True)
     return df.reset_index()
 
 
@@ -957,11 +941,9 @@ def get_coin_list():
         id, symbol, name
     """
 
-    return (
-        pd.DataFrame(
-            client.get_coins_list(),
-            columns=[COLUMNS["id"], COLUMNS["symbol"], COLUMNS["name"]],
-        )
+    return pd.DataFrame(
+        client.get_coins_list(),
+        columns=[COLUMNS["id"], COLUMNS["symbol"], COLUMNS["name"]],
     )
 
 
@@ -978,4 +960,3 @@ def get_coin_list():
 #     )
 # )
 # print("")
-

@@ -11,6 +11,7 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
 import gamestonk_terminal.cryptocurrency.pycoingecko_model as gecko
+
 register_matplotlib_converters()
 
 # Generate a list of valid coins to be checked against later
@@ -200,7 +201,7 @@ def holdings_overview(other_args: List[str]):
         type=str,
         help="companies with ethereum or bitcoin",
         default="bitcoin",
-        choices=['ethereum','bitcoin'],
+        choices=["ethereum", "bitcoin"],
     )
 
     try:
@@ -239,7 +240,7 @@ def holdings_companies_list(other_args: List[str]):
         prog="holdings_companies_list",
         add_help=False,
         description="Track publicly traded companies around the world that "
-                    "are buying ethereum as part of corporate treasury",
+        "are buying ethereum as part of corporate treasury",
     )
 
     parser.add_argument(
@@ -249,7 +250,7 @@ def holdings_companies_list(other_args: List[str]):
         type=str,
         help="companies with ethereum or bitcoin",
         default="bitcoin",
-        choices=['ethereum','bitcoin'],
+        choices=["ethereum", "bitcoin"],
     )
 
     try:
@@ -286,7 +287,7 @@ def gainers(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_gainers",
         add_help=False,
-        description="Shows Largest Gainers - coins which gain the most in given period"
+        description="Shows Largest Gainers - coins which gain the most in given period",
     )
 
     parser.add_argument(
@@ -296,7 +297,7 @@ def gainers(other_args: List[str]):
         type=str,
         help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
         default="1h",
-        choices=['1h', '24h', '7d', '14d', '30d', '60d', '1y'],
+        choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
     )
 
     try:
@@ -304,7 +305,7 @@ def gainers(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_gainers_or_losers(period=ns_parser.period, typ='gainers')
+        df = gecko.get_gainers_or_losers(period=ns_parser.period, typ="gainers")
         print(
             tabulate(
                 df,
@@ -333,7 +334,7 @@ def losers(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_gainers",
         add_help=False,
-        description="Shows Largest Losers - coins which price dropped the most in given period"
+        description="Shows Largest Losers - coins which price dropped the most in given period",
     )
 
     parser.add_argument(
@@ -343,7 +344,7 @@ def losers(other_args: List[str]):
         type=str,
         help="time period, one from [1h, 24h, 7d, 14d, 30d, 60d, 1y]",
         default="1h",
-        choices=['1h', '24h', '7d', '14d', '30d', '60d', '1y'],
+        choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
     )
 
     try:
@@ -351,12 +352,254 @@ def losers(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_gainers_or_losers(period=ns_parser.period, typ='losers')
+        df = gecko.get_gainers_or_losers(period=ns_parser.period, typ="losers")
         print(
             tabulate(
                 df,
                 headers=df.columns,
                 floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def discover(category: str, other_args: List[str]):
+    """Discover coins by different categories
+        - Most voted coins
+        - Most popular coins
+        - Recently added coins
+        - Most positive sentiment coins
+
+    Parameters
+    ----------
+    category: str
+        one from list: [trending, most_voted, positive_sentiment, most_visited]
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="discover_coins",
+        add_help=False,
+        description=f"Discover {category} coins by one of category\n"
+        "Available categories: [trending, most_voted, positive_sentiment, most_visited]",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.discover_coins(category=category)
+        df.index = df.index + 1
+        df.reset_index(inplace=True)
+        df.rename(columns={"index": "rank"}, inplace=True)
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".5f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def news(other_args: List[str]):
+    """Get latest crypto news from www.coingecko.com
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="news",
+        add_help=False,
+        description="Shows latest crypto news from CoinGecko",
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number of news >=10",
+        default=100,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_news(n=ns_parser.top)
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def top_categories(other_args: List[str]):
+    """Get top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
+    The cryptocurrency category ranking is based on market capitalization.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_categories",
+        add_help=False,
+        description="Shows top cryptocurrency categories by market capitalization",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_top_crypto_categories()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def recently_added(other_args: List[str]):
+    """Get recently added coins from "https://www.coingecko.com/en/coins/recently_added"
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="recently_added",
+        add_help=False,
+        description="Shows top cryptocurrency categories by market capitalization",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_recently_added_coins()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def stablecoins(other_args: List[str]):
+    """Get stablecoins data from "https://www.coingecko.com/en/stablecoins"
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="stablecoins",
+        add_help=False,
+        description="Shows stablecoins by market capitalization",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_stable_coins()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def yield_farms(other_args: List[str]):
+    """Get Top Yield Farming Pools by Value Locked from "https://www.coingecko.com/en/yield-farming"
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="stablecoins",
+        add_help=False,
+        description="Shows Top Yield Farming Pools by Value Locked",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_yield_farms()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
             )

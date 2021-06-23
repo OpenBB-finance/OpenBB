@@ -1,9 +1,10 @@
+import textwrap
+import json
 import datetime as dt
 from datetime import timezone
-from dateutil import parser
-import json
+from typing import Sequence, Optional, Any, Dict
 import pandas as pd
-import textwrap
+from dateutil import parser
 
 
 def replace_underscores_to_newlines(cols: list, line: int = 13):
@@ -25,30 +26,29 @@ def replace_underscores_to_newlines(cols: list, line: int = 13):
     ]
 
 
-def find_discord(item: list) -> list or None:
+def find_discord(item: list):
     if isinstance(item, list) and len(item) > 0:
         discord = [chat for chat in item if "discord" in chat]
         if len(discord) > 0:
             return discord[0]
+    return None
 
 
 def join_list_elements(elem):
-    if not elem:
-        raise ValueError("Elem is empty")
     if isinstance(elem, dict):
-        return ", ".join([k for k, v in elem.items()])
-    elif isinstance(elem, list):
-        return ", ".join([k for k in elem])
-    else:
-        return None
+        return ", ".join(k for k, v in elem.items())
+    if isinstance(elem, list):
+        return ", ".join(k for k in elem)
+    return None
 
 
 def filter_list(lst: list) -> list:
     if isinstance(lst, list) and len(lst) > 0:
         return [i for i in lst if i != ""]
+    return lst
 
 
-def calculate_time_delta(date: str):
+def calculate_time_delta(date: dt.datetime):
     now = dt.datetime.now(timezone.utc)
     if not isinstance(date, dt.datetime):
         date = parser.parse(date)
@@ -56,7 +56,7 @@ def calculate_time_delta(date: str):
 
 
 def get_eth_addresses_for_cg_coins(file):  # pragma: no cover
-    with open(file, "r") as f:
+    with open(file) as f:
         data = json.load(f)
         df = pd.DataFrame(data)
         df["ethereum"] = df["platforms"].apply(
@@ -120,7 +120,7 @@ def swap_columns(df):
 
 def changes_parser(changes):
     if isinstance(changes, list) and len(changes) < 3:
-        for i in range(3 - len(changes)):
+        for _ in range(3 - len(changes)):
             changes.append(None)
     else:
         changes = [None for _ in range(3)]
@@ -138,17 +138,17 @@ def rename_columns_in_dct(dct, mapper):
 
 
 def create_dictionary_with_prefixes(
-    columns: [list, tuple], dct: dict, constrains: [list, tuple] = None
-):
+    columns: Sequence[Any], dct: Dict[Any, Any], constrains: Optional[Dict] = None
+):  # type: ignore
     results = {}
     for column in columns:
         ath_data = dct.get(column)
-        for element in ath_data:
-            if constrains:
-                if element in constrains:
-                    results[f"{column}_" + element] = ath_data.get(element)
+        for element in ath_data:  # type: ignore
+            if constrains:  # type: ignore
+                if element in constrains:  # type: ignore
+                    results[f"{column}_" + element] = ath_data.get(element)  # type: ignore
             else:
-                results[f"{column}_" + element] = ath_data.get(element)
+                results[f"{column}_" + element] = ath_data.get(element)  # type: ignore
     return results
 
 
