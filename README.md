@@ -169,6 +169,15 @@ After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk T
 
 **TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/DidierRLopes/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
+### Beginner User - Python Virtual Environment
+If you would like to use GamestonkTerminal without using Anaconda.
+
+1. Create and run a python virtual environment: https://docs.python.org/3/tutorial/venv.html
+2. Clone or download the repository. `$ git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+3. Change directory to where you cloned the repository `$ cd path/to/GamestonkTerminal`
+4. Install the specified libraries in requirements-full.txt `$ pip3 install -r requirements.txt`
+5. Run the main script and enjoy! `$ python3 terminal.py`
+
 ### Advanced User Install - Machine Learning
 
 If you are an advanced user and use other Python distributions, we have several requirements.txt documents that you can pick from to download project dependencies.
