@@ -242,7 +242,9 @@ Contexts:
 
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
-        quote(other_args, self.ticker)
+        quote(
+            other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
+        )
 
     def call_candle(self, _):
         """Process candle command"""
