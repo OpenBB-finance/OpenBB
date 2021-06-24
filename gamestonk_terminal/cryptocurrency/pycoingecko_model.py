@@ -1,6 +1,5 @@
 import math
 import requests
-from retry import retry
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
@@ -90,7 +89,6 @@ client = CoinGeckoAPI()
 GECKO_BASE_URL = "https://www.coingecko.com"
 
 
-@retry(tries=2, delay=3, max_delay=5)
 def scrape_gecko_data(url: str) -> BeautifulSoup:
     """Helper method that scrape Coin Gecko site.
 
