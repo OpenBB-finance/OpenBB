@@ -1,6 +1,6 @@
 """ pycoingecko_api """
 __docformat__ = "numpy"
-
+# pylint: disable=R0904, C0302
 import argparse
 from typing import List
 import pandas as pd
@@ -417,7 +417,7 @@ def discover(category: str, other_args: List[str]):
 
 
 def news(other_args: List[str]):
-    """Get latest crypto news from www.coingecko.com
+    """Shows latest crypto news from www.coingecko.com
 
     Parameters
     ----------
@@ -463,7 +463,7 @@ def news(other_args: List[str]):
 
 
 def top_categories(other_args: List[str]):
-    """Get top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
+    """Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
     The cryptocurrency category ranking is based on market capitalization.
 
     Parameters
@@ -501,7 +501,7 @@ def top_categories(other_args: List[str]):
 
 
 def recently_added(other_args: List[str]):
-    """Get recently added coins from "https://www.coingecko.com/en/coins/recently_added"
+    """Shows recently added coins from "https://www.coingecko.com/en/coins/recently_added"
 
     Parameters
     ----------
@@ -538,7 +538,7 @@ def recently_added(other_args: List[str]):
 
 
 def stablecoins(other_args: List[str]):
-    """Get stablecoins data from "https://www.coingecko.com/en/stablecoins"
+    """Shows stablecoins data from "https://www.coingecko.com/en/stablecoins"
 
     Parameters
     ----------
@@ -575,7 +575,7 @@ def stablecoins(other_args: List[str]):
 
 
 def yield_farms(other_args: List[str]):
-    """Get Top Yield Farming Pools by Value Locked from "https://www.coingecko.com/en/yield-farming"
+    """Shows Top Yield Farming Pools by Value Locked from "https://www.coingecko.com/en/yield-farming"
 
     Parameters
     ----------
@@ -606,6 +606,560 @@ def yield_farms(other_args: List[str]):
         )
         print("")
 
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def top_volume_coins(other_args: List[str]):
+    """Shows Top 100 Coins by Trading Volume from "https://www.coingecko.com/en/yield-farming"
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_volume",
+        add_help=False,
+        description="Shows Top 100 Coins by Trading Volume",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_top_volume_coins()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def top_defi_coins(other_args: List[str]):
+    """Shows Top 100 DeFi Coins by Market Capitalization from "https://www.coingecko.com/en/defi"
+    DeFi or Decentralized Finance refers to financial services that are built
+    on top of distributed networks with no central intermediaries.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_defi",
+        add_help=False,
+        description="Shows Top 100 DeFi Coins by Market Capitalization",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_top_defi_coins()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def top_dex(other_args: List[str]):
+    """Shows Top Decentralized Exchanges on CoinGecko by Trading Volume from "https://www.coingecko.com/en/dex"
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_dex",
+        add_help=False,
+        description="Shows Top Decentralized Exchanges on CoinGecko by Trading Volume",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_top_dexes()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def top_nft(other_args: List[str]):
+    """Shows Top 100 NFT Coins by Market Capitalization from "https://www.coingecko.com/en/nft"
+    Top 100 NFT Coins by Market Capitalization
+    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="top_nft",
+        add_help=False,
+        description="Shows Top 100 NFT Coins by Market Capitalization",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_top_nfts()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def nft_of_the_day(other_args: List[str]):
+    """Shows NFT of the day "https://www.coingecko.com/en/nft"
+
+    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="nft_of_the_day",
+        add_help=False,
+        description="Shows NFT of the day",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_nft_of_the_day()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def nft_market_status(other_args: List[str]):
+    """Shows overview data of nft markets "https://www.coingecko.com/en/nft"
+
+    NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+    Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="nft_market_status",
+        add_help=False,
+        description="Shows NFT market status",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_nft_market_status()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def exchanges(other_args: List[str]):
+    """Shows list of top exchanges from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="exchanges",
+        add_help=False,
+        description="Shows Top Crypto Exchanges",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_exchanges()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def platforms(other_args: List[str]):
+    """Shows list of financial platforms from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="platforms",
+        add_help=False,
+        description="Shows Top Crypto Financial Platforms",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_financial_platforms()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def products(other_args: List[str]):
+    """Shows list of financial products from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="platforms",
+        add_help=False,
+        description="Shows Top Crypto Financial Products",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_finance_products()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def indexes(other_args: List[str]):
+    """Shows list of crypto indexes from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="indexes",
+        add_help=False,
+        description="Shows list of crypto indexes from CoinGecko",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_indexes()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def derivatives(other_args: List[str]):
+    """Shows  list of crypto derivatives from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="derivatives",
+        add_help=False,
+        description="Shows list of crypto derivatives from CoinGecko",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_derivatives()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def exchange_rates(other_args: List[str]):
+    """Shows  list of crypto, fiats, commodity exchange rates from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="exchange_rates",
+        add_help=False,
+        description="Shows list of crypto, fiats, commodity exchange rates from CoinGecko",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_exchange_rates()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def global_market_info(other_args: List[str]):
+    """Shows global statistics about crypto from CoinGecko
+        - market cap change
+        - number of markets
+        - icos
+        - number of active crypto
+        - market_cap_pct
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="global",
+        add_help=False,
+        description="Shows global statistics about Crypto Market",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_global_info()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def global_defi_info(other_args: List[str]):
+    """Shows global statistics about Decentralized Finances from CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="defi",
+        add_help=False,
+        description="Shows global DeFi statistics",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        df = gecko.get_global_defi_info()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def coin_list(other_args: List[str]):
+    """Shows list of coins available on CoinGecko
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+
+    """
+    parser = argparse.ArgumentParser(
+        prog="coins",
+        add_help=False,
+        description="Shows list of coins available on CoinGecko",
+    )
+    parser.add_argument(
+        "-s", "--skip", default=0, dest="skip", help="Skip n of records", type=int
+    )
+    parser.add_argument(
+        "-l", "--limit", default=300, dest="limit", help="Limit of records", type=int
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        try:
+            df = gecko.get_coin_list()[
+                ns_parser.skip : ns_parser.skip + ns_parser.limit
+            ]
+            print(df)
+        except Exception:
+            df = gecko.get_coin_list()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
     except Exception as e:
         print(e)
         print("")

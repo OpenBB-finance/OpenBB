@@ -625,7 +625,7 @@ def get_top_defi_coins():
 
 
 def get_top_dexes():
-    """Scrapes top decentralized exchanges from "https://www.coingecko.com/en/defi"
+    """Scrapes top decentralized exchanges from "https://www.coingecko.com/en/dex"
 
     Returns
     -------
@@ -944,19 +944,4 @@ def get_coin_list():
     return pd.DataFrame(
         client.get_coins_list(),
         columns=[COLUMNS["id"], COLUMNS["symbol"], COLUMNS["name"]],
-    )
-
-
-# from tabulate import tabulate
-#
-# z = get_global_defi_info()
-# print(
-#     tabulate(
-#         z,
-#         headers=z.columns,
-#         showindex=False,
-#         tablefmt="fancy_grid",
-#         floatfmt=".2f",
-#     )
-# )
-# print("")
+    ).reset_index()

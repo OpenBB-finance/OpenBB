@@ -1,6 +1,6 @@
 """Cryptocurrency Controller"""
 __docformat__ = "numpy"
-
+# pylint: disable=R0904, C0302
 import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -25,16 +25,31 @@ class CryptoController:
         "load",
         "view",
         "top",
+        "global",
+        "coins",
+        "defi",
         "news",
         "trending",
         "most_voted",
         "most_visited",
-        "recently_added",
-        "positive_sentiment",
+        "top_volume",
+        "recently",
+        "sentiment",
         "gainers",
         "losers",
-        "stablecoins",
-        "yield_farms",
+        "stables",
+        "yfarms",
+        "top_defi",
+        "top_dex",
+        "top_nft",
+        "nft_today",
+        "nft_market",
+        "exchanges",
+        "ex_rates",
+        "platforms",
+        "products",
+        "indexes",
+        "derivatives",
         "categories",
         "hold",
         "hold_comp",
@@ -60,23 +75,47 @@ class CryptoController:
     def print_help(self):
         """Print help"""
         print("\nCryptocurrency:")
-        print("   help          show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
+        print("   help            show this menu again")
+        print("   q               quit this menu, and shows back to main menu")
+        print("   quit            quit to abandon program")
         print(f"\nCurrent Coin: {self.current_coin}")
         print("")
         print("Coingecko:")
-        print("   load          load cryptocurrency data")
-        print("   view          load and view cryptocurrency data")
-        print("   trend         show top 7 trending coins")
-        print("   hold          show eth, btc holdings overview statistics")
-        print("   hold_comp     show eth, btc holdings by public companies")
+        print("   load            load cryptocurrency data")
+        print("   view            load and view cryptocurrency data")
+        print("   trend           show top 7 trending coins")
+        print("   global          show global crypto market info")
+        print("   coins           show coins available on CoinGecko")
+        print("   defi            show global DeFi market info")
+        print("   trending        show trending coins on CoinGecko")
+        print("   most_voted      show most voted coins on CoinGecko")
+        print("   top_volume      show coins with highest volume on CoinGecko")
+        print("   recently        show recently added on CoinGecko")
+        print("   sentiment       show coins with most positive sentiment")
         print(
-            "   gainers       show top gainers - coins which price gained the most in given period "
+            "   gainers         show top gainers - coins which price gained the most in given period "
         )
         print(
-            "   losers        show top gainers - coins which price dropped the most in given period "
+            "   losers          show top losers - coins which price dropped the most in given period "
         )
+        print("   stables         show Stable Coins")
+        print("   yfarms          show top Yield Farms")
+        print("   top_defi        show top DeFi Protocols")
+        print("   top_dex         show top Decentralized Exchanges")
+        print("   top_nft         show top Non Fungible Tokens")
+        print("   nft_today       show NFT Of The Day")
+        print("   nft_market      show NFT Market Status")
+        print("   exchanges       show Top Crypto Exchanges")
+        print("   ex_rates        show Coin Exchange Rates")
+        print("   platforms       show Crypto Financial Platforms")
+        print("   products        show Crypto Financial Products")
+        print("   indexes         show Crypto Indexes")
+        print("   derivatives     show Crypto Derivatives")
+        print("   categories      show Crypto Categories")
+        print("   derivatives     show Crypto Derivatives")
+        print("   hold            show eth, btc holdings overview statistics")
+        print("   hold_comp       show eth, btc holdings by public companies")
+
         print("")
         print("CoinMarketCap:")
         print("   top           view top coins from coinmarketcap")
@@ -188,16 +227,16 @@ class CryptoController:
         """Process most_voted command"""
         pycoingecko_view.discover(category="most_voted", other_args=other_args)
 
-    def call_recently_added(self, other_args):
-        """Process recently_added command"""
+    def call_recently(self, other_args):
+        """Process recently command"""
         pycoingecko_view.recently_added(other_args=other_args)
 
     def call_most_visited(self, other_args):
         """Process most_voted command"""
         pycoingecko_view.discover(category="most_visited", other_args=other_args)
 
-    def call_positive_sentiment(self, other_args):
-        """Process positive_sentiment command"""
+    def call_sentiment(self, other_args):
+        """Process sentiment command"""
         pycoingecko_view.discover(category="positive_sentiment", other_args=other_args)
 
     def call_news(self, other_args):
@@ -208,13 +247,73 @@ class CryptoController:
         """Process top_categories command"""
         pycoingecko_view.top_categories(other_args=other_args)
 
-    def call_stablecoins(self, other_args):
-        """Process top_categories command"""
+    def call_stables(self, other_args):
+        """Process stables command"""
         pycoingecko_view.stablecoins(other_args=other_args)
 
-    def call_yield_farms(self, other_args):
-        """Process top_categories command"""
+    def call_yfarms(self, other_args):
+        """Process yield_farms command"""
         pycoingecko_view.yield_farms(other_args=other_args)
+
+    def call_top_volume(self, other_args):
+        """Process top_volume command"""
+        pycoingecko_view.top_volume_coins(other_args=other_args)
+
+    def call_top_defi(self, other_args):
+        """Process top_volume command"""
+        pycoingecko_view.top_defi_coins(other_args=other_args)
+
+    def call_top_dex(self, other_args):
+        """Process top_volume command"""
+        pycoingecko_view.top_dex(other_args=other_args)
+
+    def call_top_nft(self, other_args):
+        """Process top_volume command"""
+        pycoingecko_view.top_dex(other_args=other_args)
+
+    def call_nft_market(self, other_args):
+        """Process top_volume command"""
+        pycoingecko_view.nft_market_status(other_args=other_args)
+
+    def call_nft_today(self, other_args):
+        """Process nft_today command"""
+        pycoingecko_view.nft_of_the_day(other_args=other_args)
+
+    def call_products(self, other_args):
+        """Process products command"""
+        pycoingecko_view.products(other_args=other_args)
+
+    def call_platforms(self, other_args):
+        """Process platforms command"""
+        pycoingecko_view.platforms(other_args=other_args)
+
+    def call_exchanges(self, other_args):
+        """Process exchanges command"""
+        pycoingecko_view.exchanges(other_args=other_args)
+
+    def call_ex_rates(self, other_args):
+        """Process exchange_rates command"""
+        pycoingecko_view.exchange_rates(other_args=other_args)
+
+    def call_indexes(self, other_args):
+        """Process indexes command"""
+        pycoingecko_view.indexes(other_args=other_args)
+
+    def call_derivatives(self, other_args):
+        """Process derivatives command"""
+        pycoingecko_view.derivatives(other_args=other_args)
+
+    def call_global(self, other_args):
+        """Process global command"""
+        pycoingecko_view.global_market_info(other_args=other_args)
+
+    def call_defi(self, other_args):
+        """Process defi command"""
+        pycoingecko_view.global_defi_info(other_args=other_args)
+
+    def call_coins(self, other_args):
+        """Process coins command"""
+        pycoingecko_view.coin_list(other_args=other_args)
 
     # pylint: disable=inconsistent-return-statements
     def call_ta(self, _):
