@@ -184,7 +184,7 @@ class ForexController:
     def call_eda(self, _):
         try:
             df = fx_view.get_candles_dataframe(account, self.instrument, None)
-            df = df.rename(columns={"Close": "5. adjusted close"})
+            df = df.rename(columns={"Close": "Adj Close"})
             instrument = self.instrument
             s_start = pd.to_datetime(df.index.values[0])
             s_interval = "1440min"

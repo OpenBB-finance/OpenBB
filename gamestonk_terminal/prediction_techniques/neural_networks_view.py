@@ -171,7 +171,7 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             dates_forecast_input,
             scaler,
             is_error,
-        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        ) = prepare_scale_train_valid_test(df_stock["Adj Close"], ns_parser)
         if is_error:
             return
         print(
@@ -222,11 +222,11 @@ def mlp(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if ns_parser.n_loops > 1:
             forecast_data_df["Median"] = forecast_data_df.median(axis=1)
             print_pretty_prediction(
-                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df["Median"], df_stock["Adj Close"].values[-1]
             )
         else:
             print_pretty_prediction(
-                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df[0], df_stock["Adj Close"].values[-1]
             )
         plot_data_predictions(
             df_stock,
@@ -283,7 +283,7 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             dates_forecast_input,
             scaler,
             is_error,
-        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        ) = prepare_scale_train_valid_test(df_stock["Adj Close"], ns_parser)
         if is_error:
             return
         print(
@@ -333,11 +333,11 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if ns_parser.n_loops > 1:
             forecast_data_df["Median"] = forecast_data_df.median(axis=1)
             print_pretty_prediction(
-                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df["Median"], df_stock["Adj Close"].values[-1]
             )
         else:
             print_pretty_prediction(
-                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df[0], df_stock["Adj Close"].values[-1]
             )
         plot_data_predictions(
             df_stock,
@@ -392,7 +392,7 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             dates_forecast_input,
             scaler,
             is_error,
-        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        ) = prepare_scale_train_valid_test(df_stock["Adj Close"], ns_parser)
         if is_error:
             return
         print(
@@ -444,11 +444,11 @@ def lstm(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if ns_parser.n_loops > 1:
             forecast_data_df["Median"] = forecast_data_df.median(axis=1)
             print_pretty_prediction(
-                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df["Median"], df_stock["Adj Close"].values[-1]
             )
         else:
             print_pretty_prediction(
-                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df[0], df_stock["Adj Close"].values[-1]
             )
         plot_data_predictions(
             df_stock,
@@ -504,7 +504,7 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             dates_forecast_input,
             scaler,
             is_error,
-        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        ) = prepare_scale_train_valid_test(df_stock["Adj Close"], ns_parser)
         if is_error:
             return
         print(
@@ -556,11 +556,11 @@ def conv1d(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if ns_parser.n_loops > 1:
             forecast_data_df["Median"] = forecast_data_df.median(axis=1)
             print_pretty_prediction(
-                forecast_data_df["Median"], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df["Median"], df_stock["Adj Close"].values[-1]
             )
         else:
             print_pretty_prediction(
-                forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
+                forecast_data_df[0], df_stock["Adj Close"].values[-1]
             )
         plot_data_predictions(
             df_stock,

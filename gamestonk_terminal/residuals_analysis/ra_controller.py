@@ -46,7 +46,7 @@ class ResidualsController:
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.stock = stock["5. adjusted close"]
+        self.stock = stock["Adj Close"]
 
         self.model_name: str = "None"
         self.model: pd.Series = None

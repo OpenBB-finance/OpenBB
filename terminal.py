@@ -390,16 +390,6 @@ Contexts:
             )
 
         df_stock = yf.download(self.ticker, start=self.start, progress=False)
-        df_stock = df_stock.rename(
-            columns={
-                "Open": "1. open",
-                "High": "2. high",
-                "Low": "3. low",
-                "Close": "4. close",
-                "Adj Close": "5. adjusted close",
-                "Volume": "6. volume",
-            }
-        )
         df_stock.index.name = "date"
         s_interval = "1440min"
 
@@ -419,16 +409,6 @@ Contexts:
             )
 
         df_stock = yf.download(self.ticker, start=self.start, progress=False)
-        df_stock = df_stock.rename(
-            columns={
-                "Open": "1. open",
-                "High": "2. high",
-                "Low": "3. low",
-                "Close": "4. close",
-                "Adj Close": "5. adjusted close",
-                "Volume": "6. volume",
-            }
-        )
 
         return op_controller.menu(
             self.ticker,
@@ -472,6 +452,7 @@ Contexts:
             df_stock_pred, _ = ts.get_daily_adjusted(
                 symbol=self.ticker, outputsize="full"
             )
+
             # pylint: disable=no-member
             df_stock_pred = df_stock_pred.sort_index(ascending=True)
             df_stock_pred = df_stock_pred[self.start :]

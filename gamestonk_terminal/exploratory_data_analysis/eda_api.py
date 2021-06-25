@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+from datetime import datetime
 from detecta import detect_cusum
 from matplotlib import pyplot as plt
-from datetime import datetime
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import numpy as np
@@ -88,7 +88,7 @@ def hist(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetim
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         sns.distplot(
             stock,
@@ -119,7 +119,9 @@ def hist(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetim
         return
 
 
-def cdf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime):
+def cumulative_distribution_function(
+    other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
+):
     """Plot cumulative distribution function
 
     Parameters
@@ -146,7 +148,7 @@ def cdf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         cdf = stock.value_counts().sort_index().div(len(stock)).cumsum()
         cdf.plot(lw=2)
@@ -230,7 +232,7 @@ def bwy(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         sns.set(style="whitegrid")
         box_plot = sns.boxplot(x=stock.index.year, y=stock)
@@ -278,7 +280,7 @@ def bwm(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         sns.set(style="whitegrid")
         box_plot = sns.boxplot(x=stock.index.month, y=stock)
@@ -341,7 +343,7 @@ def rolling(other_args: List[str], ticker: str, stock: pd.DataFrame):
         "--window",
         dest="rolling_window",
         type=check_positive,
-        default=100,
+        default=10,
         help="rolling window",
     )
 
@@ -350,7 +352,7 @@ def rolling(other_args: List[str], ticker: str, stock: pd.DataFrame):
         if not ns_parser:
             return
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         rolling_mean = stock.rolling(
             ns_parser.rolling_window, center=True, min_periods=1
@@ -359,7 +361,7 @@ def rolling(other_args: List[str], ticker: str, stock: pd.DataFrame):
             ns_parser.rolling_window, center=True, min_periods=1
         ).std()
 
-        fig, axMean = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, axMean = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         axMean.plot(stock.index, stock.values, label=ticker, linewidth=2, color="black")
         axMean.plot(rolling_mean, linestyle="--", linewidth=3, color="blue")
@@ -434,7 +436,7 @@ def decompose(other_args: List[str], ticker: str, stock: pd.DataFrame):
         if not ns_parser:
             return
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         seasonal_periods = 5
         # Hodrick-Prescott filter
@@ -562,7 +564,7 @@ def decompose(other_args: List[str], ticker: str, stock: pd.DataFrame):
         return
 
 
-def cusum(other_args: List[str], ticker: str, stock: pd.DataFrame):
+def cusum(other_args: List[str], stock: pd.DataFrame):
     """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
@@ -586,11 +588,7 @@ def cusum(other_args: List[str], ticker: str, stock: pd.DataFrame):
         "--threshold",
         dest="threshold",
         type=float,
-        default=(
-            max(stock["5. adjusted close"].values)
-            - min(stock["5. adjusted close"].values)
-        )
-        / 40,
+        default=(max(stock["Adj Close"].values) - min(stock["Adj Close"].values)) / 40,
         help="threshold",
     )
     parser.add_argument(
@@ -598,11 +596,7 @@ def cusum(other_args: List[str], ticker: str, stock: pd.DataFrame):
         "--drift",
         dest="drift",
         type=float,
-        default=(
-            max(stock["5. adjusted close"].values)
-            - min(stock["5. adjusted close"].values)
-        )
-        / 80,
+        default=(max(stock["Adj Close"].values) - min(stock["Adj Close"].values)) / 80,
         help="drift",
     )
 
@@ -611,7 +605,7 @@ def cusum(other_args: List[str], ticker: str, stock: pd.DataFrame):
         if not ns_parser:
             return
 
-        stock = stock["5. adjusted close"]
+        stock = stock["Adj Close"]
 
         detect_cusum(stock.values, ns_parser.threshold, ns_parser.drift, True, True)
 
@@ -650,7 +644,7 @@ def acf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
         "--lags",
         dest="lags",
         type=check_positive,
-        default=40,
+        default=15,
         help="maximum lags to display in plots",
     )
 
@@ -659,7 +653,8 @@ def acf(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
         if not ns_parser:
             return
 
-        stock = stock["5. adjusted close"]
+        print(stock.head())
+        stock = stock["Adj Close"]
 
         fig = plt.figure(
             figsize=plot_autoscale(), dpi=PLOT_DPI, constrained_layout=True

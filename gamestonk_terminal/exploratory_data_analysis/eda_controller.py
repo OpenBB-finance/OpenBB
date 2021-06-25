@@ -120,7 +120,9 @@ class EdaController:
 
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
-        eda_api.cdf(other_args, self.ticker, self.stock, self.start)
+        eda_api.cumulative_distribution_function(
+            other_args, self.ticker, self.stock, self.start
+        )
 
     def call_bwy(self, other_args: List[str]):
         """Process bwy command"""
@@ -140,7 +142,7 @@ class EdaController:
 
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
-        eda_api.cusum(other_args, self.ticker, self.stock)
+        eda_api.cusum(other_args, self.stock)
 
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
