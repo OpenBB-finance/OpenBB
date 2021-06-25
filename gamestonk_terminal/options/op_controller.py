@@ -82,6 +82,9 @@ class OptionsController:
     @staticmethod
     def print_help(expiry_date):
         """Print help."""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options"
+        )
         print("\nOptions:")
         print("   help          show this  menu again")
         print("   q             quit this menu, and shows back to main menu")

@@ -30,6 +30,9 @@ class PortfolioController:
 
     def print_help(self):
         """Print help"""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_analysis"
+        )
         print("\nPortfolio Analysis:")
         print("   help          show this  menu again")
         print("   q             quit this menu, and shows back to main menu")

@@ -448,7 +448,7 @@ Contexts:
             # pylint: disable=import-outside-toplevel
             from gamestonk_terminal.prediction_techniques import pred_controller
         except ModuleNotFoundError as e:
-            print("One of the optional packages seems to be missing", "\n", e)
+            print("One of the optional packages seems to be missing: ", e, "\n")
             return None
         except Exception as e:
             print(e, "\n")

@@ -47,7 +47,9 @@ class EconomyController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy"
+        )
         print("\nEconomic Data:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")

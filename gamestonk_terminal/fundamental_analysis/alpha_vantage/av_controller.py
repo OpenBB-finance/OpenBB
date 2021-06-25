@@ -51,7 +51,10 @@ class AlphaVantageController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/"
+            "tree/main/gamestonk_terminal/fundamental_analysis/alpha_vantage"
+        )
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
