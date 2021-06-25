@@ -19,6 +19,7 @@ import pytz
 from tabulate import tabulate
 import git
 
+# pylint: disable=no-member
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
