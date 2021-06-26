@@ -200,20 +200,26 @@ class GeckoCoinController:
         """Process ta command"""
         if self.current_coin:
             self.current_df = pycoingecko_view.ta(self.current_coin, other_args)
+            if self.current_df is not None:
+                try:
+                    self.current_df = self.current_df[["price"]].rename(
+                        columns={"price": "4. close"}
+                    )
+                    self.current_df.index.name = "date"
 
-            self.current_df = self.current_df[["price"]].rename(
-                columns={"price": "4. close"}
-            )
-            self.current_df.index.name = "date"
-
-            return ta_crypto_controller.menu(
-                self.current_df,
-                self.current_coin.coin_symbol,
-                self.current_df.index[0],
-                "",
-            )
-
-        print("Please load a coin through either load - coin", "\n")
+                    return ta_crypto_controller.menu(
+                        self.current_df,
+                        self.current_coin.coin_symbol,
+                        self.current_df.index[0],
+                        "",
+                    )
+                except (ValueError, KeyError) as e:
+                    print(e)
+            else:
+                return
+        else:
+            print("Please load a coin through either load - coin", "\n")
+            return
 
 
 def menu():
