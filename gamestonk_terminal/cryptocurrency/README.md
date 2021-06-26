@@ -27,44 +27,25 @@ so indicators that rely on anything other than close will fail with an error.
 * [balance](#balance)
   * show coin balance
 
-[MENUS](#Menu)
-* [> ta](technical_analysis/README.md)
-  * **technical analysis  for selected tickers**
 
 # COINGECKO <a name="COINGECKO"></a>
-## load  <a name="load"></a>
+## overview  <a name="overview"></a>
 
 ````
-usage: load [-c --coin] [-d --days] [--vs]
+usage: overview
 ````
 
-Load a given coin vs a given currency. Currently only retrieves price, not volume or MarketCap. The current crypto  data is [Powered by CoinGecko API](#https://www.coingecko.com/en), which is an awesome service that currently requires no API Key!
+load CoinGecko overview menu. In which you can find a lot of useful data like top defi coins, trending coins, top nfts, companies that hold btc or eth and many others
 
-* -c/--coin The coin you wish to load.  This can either be the symbol or the name.  `load -c btc` and `load -c bitcoin`
-  will load.  The -c flag is optional,  the above is equivalent to `load btc`.
-* -d/--days The number of days to look.  Defaults to 30 days.  As per the API: Minutely data will be used for duration within 1 day,
-  Hourly data will be used for duration between 1 day and 90 days, Daily data will be used for duration above 90 days.
-* --vs The currency to look against.  Defaults to "usd".
-
-
-## view  <a name="view"></a>
+## coin  <a name="coin"></a>
 
 ````
-usage: view
+usage: coin
 ````
 
-Plot the loaded crypto data.
+load CoinGecko coin menu. In which you can investigate specific coin. See description of coin, some market statistics,
+charts, technical analysis and many others.
 
-![crypto_view](https://user-images.githubusercontent.com/25267873/115787452-20889a80-a3ba-11eb-9216-f7fd1ffc98cf.png)
-
-
-## trend  <a name="trend"></a>
-````
-usage: trend
-````
-Print the top 7 trending coins from coingecko.
-
-<img width="1004" alt="Captura de ecrã 2021-05-03, às 15 07 15" src="https://user-images.githubusercontent.com/25267873/116886674-45cea180-ac21-11eb-9951-ff10271df370.png">
 
 
 # COINMARKETCAP <a name="COINMARKETCAP"></a>
