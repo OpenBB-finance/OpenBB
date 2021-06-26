@@ -104,7 +104,7 @@ Load a given coin vs a given currency. Currently only retrieves price, not volum
   will load.  The -c flag is optional,  the above is equivalent to `load btc`.
 
 
-## chart <a name="view"></a>
+## chart <a name="chart"></a>
 
 ````
 usage: chart [-d --days] [--vs]
@@ -117,3 +117,113 @@ Plot the loaded crypto data.
 * --vs The currency to look against.  Defaults to "usd".
 
 ![crypto_view](https://user-images.githubusercontent.com/25267873/115787452-20889a80-a3ba-11eb-9216-f7fd1ffc98cf.png)
+
+
+* [ta](technical_analysis/README.md)
+  * open technical analysis menu
+
+## ta <a name="ta"></a>
+
+````
+usage: ta [-d --days] [--vs]
+````
+
+Open Technical Analysis menu for loaded coin
+
+* -d/--days The number of days to look.  Defaults to 30 days.  As per the API: Minutely data will be used for duration within 1 day,
+  Hourly data will be used for duration between 1 day and 90 days, Daily data will be used for duration above 90 days.
+* --vs The currency to look against.  Defaults to "usd".
+
+## info <a name="info"></a>
+
+````
+usage: info
+````
+
+Display basic coin information
+
+![image](https://user-images.githubusercontent.com/275820/123523774-48e88a00-d6c6-11eb-97cf-71529fb209ca.png)
+
+## market <a name="market"></a>
+
+````
+usage: market
+````
+
+Display coin market basic metrics
+
+![image](https://user-images.githubusercontent.com/275820/123523943-708c2200-d6c7-11eb-97f4-6fb4f7e12c04.png)
+
+## ath <a name="ath"></a>
+
+````
+usage: ath
+````
+
+Display all time high for loaded coin
+
+![image](https://user-images.githubusercontent.com/275820/123523988-b648ea80-d6c7-11eb-9b08-7d8afecf9231.png)
+
+
+## atl <a name="atl"></a>
+
+````
+usage: atl
+````
+
+Display all time low for loaded coin
+
+![image](https://user-images.githubusercontent.com/275820/123523993-c4970680-d6c7-11eb-89ab-3637155e00a9.png)
+
+
+## score <a name="score"></a>
+
+````
+usage: score
+````
+
+Display different scores for loaded coin
+
+![image](https://user-images.githubusercontent.com/275820/123524080-3707e680-d6c8-11eb-96e0-106b7a9c00c2.png)
+
+
+## dev <a name="dev"></a>
+
+````
+usage: dev
+````
+
+Display coin development stats
+
+![image](https://user-images.githubusercontent.com/275820/123524107-60c10d80-d6c8-11eb-8217-cc767f82d7d9.png)
+
+## web <a name="web"></a>
+
+````
+usage: web
+````
+
+Display found websites for loaded coin
+
+![image](https://user-images.githubusercontent.com/275820/123524127-720a1a00-d6c8-11eb-9a63-ec4cef42c43f.png)
+
+## social <a name="social"></a>
+
+````
+usage: social
+````
+
+Display social media for loaded coin
+
+![image](https://user-images.githubusercontent.com/275820/123524140-949c3300-d6c8-11eb-9fb7-1d7a3a084c88.png)
+
+## bc <a name="bc"></a>
+
+````
+usage: bc
+````
+
+Display blockchain explorers urls for loaded coin
+
+![image](https://user-images.githubusercontent.com/275820/123524154-b5fd1f00-d6c8-11eb-9ec0-1fd1803db422.png)
+
