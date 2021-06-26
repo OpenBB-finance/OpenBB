@@ -9,7 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_view
-from gamestonk_terminal.technical_analysis import ta_controller
+from gamestonk_terminal.cryptocurrency import ta_crypto_controller
 
 
 class GeckoCoinController:
@@ -206,7 +206,7 @@ class GeckoCoinController:
             )
             self.current_df.index.name = "date"
 
-            return ta_controller.menu(
+            return ta_crypto_controller.menu(
                 self.current_df,
                 self.current_coin.coin_symbol,
                 self.current_df.index[0],

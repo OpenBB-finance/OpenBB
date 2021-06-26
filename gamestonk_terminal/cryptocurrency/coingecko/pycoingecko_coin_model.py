@@ -393,3 +393,27 @@ class Coin:
         df = df.set_index("time")
         df["currency"] = vs_currency
         return df
+
+    def get_ohlc(self, vs_currency="usd", days=90):
+        """Get Open, High, Low, Close prices for given coin
+
+        Parameters
+        ----------
+        vs_currency: str
+            currency vs which display data
+        days: int
+            number of days to display the data
+            on from (1/7/14/30/90/180/365, max)
+
+        Returns
+        -------
+        pandas.DataFrame
+            time, price, currency
+        """
+
+        prices = self.client.get_coin_ohlc_by_id(self.coin_symbol, vs_currency, days)
+        df = pd.DataFrame(data=prices, columns=["time", "open", "high", "low", "close"])
+        df["time"] = pd.to_datetime(df.time, unit="ms")
+        df = df.set_index("time")
+        df["currency"] = vs_currency
+        return df
