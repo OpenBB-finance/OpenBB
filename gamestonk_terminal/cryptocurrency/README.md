@@ -6,12 +6,10 @@ Note that we have added the ability to look at technical analysis in the ta menu
 so indicators that rely on anything other than close will fail with an error.
 
 [COINGECKO](#COINGECKO)
-* [load](#load)
-  * load a given coin vs a given currency [CoinGecko]
-* [view](#view)
-  * plot the loaded crypto data
-* [trend](#trend)
-  * show top 7 trending coins
+* [overview](#overview)
+  * load CoinGecko overview menu, in which you can find a different crypto metrics
+* [coin](#coin)
+  * load CoinGecko coin menu, in which you can investigate specific coin.
 
 [COINMARKETCAP](#COINMARKETCAP)
 * [top](#top)
