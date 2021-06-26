@@ -32,7 +32,7 @@ DENOMINATION = ("usd", "btc", "eth")
 
 
 class Coin:
-    """Coin class, it holds loaded coin in"""
+    """Coin class, it holds loaded coin"""
 
     def __init__(self, symbol):
         self.client = CoinGeckoAPI()
@@ -46,6 +46,19 @@ class Coin:
         return f"{self.coin_symbol}"
 
     def _validate_coin(self, symbol):
+        """Validate if given coin symbol or id exists in list of available coins on CoinGecko.
+        If yes it returns coin id.
+
+        Parameters
+        ----------
+        symbol: str
+            Either coin symbol or coin id
+
+        Returns
+        -------
+        id of the coin on CoinGecko service.
+
+        """
         coin = None
         for dct in self._coin_list:
             if symbol.lower() in list(dct.values()):
@@ -55,21 +68,53 @@ class Coin:
         return coin
 
     def coin_list(self):
+        """
+        Returns
+        -------
+        list of all available coin ids
+        """
         return [token.get("id") for token in self._coin_list]
 
     def _get_coin_info(self):
+        """Helper method which fetch the coin information by id from CoinGecko API like:
+         (name, price, market, ... including exchange tickers)
+
+        Returns
+        -------
+        dict
+        """
         params = dict(localization="false", tickers="false", sparkline=True)
         return self.client.get_coin_by_id(self.coin_symbol, **params)
 
     def _get_links(self):
+        """Helper method that extracts links from coin
+
+        Returns
+        -------
+        dict
+        """
         return self.coin.get("links")
 
     @property
     def repositories(self):
+        """Get list of all repositories for given coin
+
+        Returns
+        -------
+        list with repositories
+        """
         return self._get_links().get("repos_url")
 
     @property
     def developers_data(self):
+        """Get coin development data from GitHub or BitBucket like:
+            number of pull requests, contributor etc
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric, Value
+        """
         dev = self.coin.get("developer_data")
         useless_keys = (
             "code_additions_deletions_4_weeks",
@@ -82,6 +127,13 @@ class Coin:
 
     @property
     def blockchain_explorers(self):
+        """Get list of URLs to blockchain explorers for given coin:
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric, Value
+        """
         blockchain = self._get_links().get("blockchain_site")
         if blockchain:
             dct = filter_list(blockchain)
@@ -92,6 +144,13 @@ class Coin:
 
     @property
     def social_media(self):
+        """Get list of URLs to social media like twitter, facebook, reddit...
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric, Value
+        """
         social_dct = {}
         links = self._get_links()
         for (
@@ -112,6 +171,13 @@ class Coin:
 
     @property
     def websites(self):
+        """Get list of URLs to websites like homepage of coin, forum,
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric, Value
+        """
         websites_dct = {}
         links = self._get_links()
         sites = ["homepage", "official_forum_url", "announcement_url"]
@@ -124,9 +190,20 @@ class Coin:
 
     @property
     def categories(self):
+        """Coins categories
+        Returns
+        -------
+        list/dict
+        """
         return self.coin.get("categories")
 
     def _get_base_market_data_info(self):
+        """Helper method that fetches all the base market/price information about given coin
+
+        Returns
+        -------
+        dict
+        """
         market_dct = {}
         market_data = self.coin.get("market_data")
         for stat in [
@@ -146,6 +223,12 @@ class Coin:
 
     @property
     def base_info(self):
+        """Get all the base information about given coin
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
         results = {}
         for attr in BASE_INFO:
             info_obj = self.coin.get(attr)
@@ -157,6 +240,13 @@ class Coin:
 
     @property
     def market_data(self):
+        """Get all the base market information about given coin
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric,Value
+        """
         market_data = self.coin.get("market_data")
         market_columns_denominated = [
             "market_cap",
@@ -198,6 +288,13 @@ class Coin:
 
     @property
     def all_time_high(self):
+        """Get all time high data for given coin
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric,Value
+        """
         market_data = self.coin.get("market_data")
         ath_columns = [
             "current_price",
@@ -214,6 +311,13 @@ class Coin:
 
     @property
     def all_time_low(self):
+        """Get all time low data for given coin
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric,Value
+        """
         market_data = self.coin.get("market_data")
         ath_columns = [
             "current_price",
@@ -230,6 +334,13 @@ class Coin:
 
     @property
     def scores(self):
+        """Get different kind of scores for given coin
+
+        Returns
+        -------
+        pandas.DataFrame
+            Metric,Value
+        """
         score_columns = [
             "coingecko_rank",
             "coingecko_score",
@@ -258,6 +369,21 @@ class Coin:
         return df
 
     def get_coin_market_chart(self, vs_currency="usd", days=30, **kwargs):
+        """Get prices for given coin
+
+        Parameters
+        ----------
+        vs_currency: str
+            currency vs which display data
+        days: int
+            number of days to display the data
+        kwargs
+
+        Returns
+        -------
+        pandas.DataFrame
+            time, price, currency
+        """
         prices = self.client.get_coin_market_chart_by_id(
             self.coin_symbol, vs_currency, days, **kwargs
         )
