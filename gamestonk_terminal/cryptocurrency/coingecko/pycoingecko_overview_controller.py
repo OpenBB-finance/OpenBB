@@ -96,7 +96,6 @@ class GeckoController:
         print("   indexes         show Crypto Indexes")
         print("   derivatives     show Crypto Derivatives")
         print("   categories      show Crypto Categories")
-        print("   derivatives     show Crypto Derivatives")
         print("   hold            show eth, btc holdings overview statistics")
         print("   hold_comp       show eth, btc holdings by public companies")
         print("")

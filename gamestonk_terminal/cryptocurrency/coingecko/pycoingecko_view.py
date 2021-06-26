@@ -11,6 +11,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_auto
 from gamestonk_terminal.config_plot import PLOT_DPI
 import gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_overview_model as gecko
 import gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model as gecko_coin
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import wrap_text_in_df
 
 register_matplotlib_converters()
 
@@ -18,14 +19,12 @@ register_matplotlib_converters()
 cg_api = CoinGeckoAPI()
 coins = cg_api.get_coins()
 
-COIN = None
-
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=R0904, C0302
 
 
 def load(other_args: List[str]):
-    """Load selected Cryptocurrency
+    """Load selected Cryptocurrency. You can pass either symbol of id of the coin
 
     Parameters
     ----------
@@ -35,9 +34,9 @@ def load(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="Crypto",
+        prog="load_coin",
         description="""
-                        Cryptocurrencies
+                        Load Coin [CoinGecko]
                         """,
     )
 
@@ -47,7 +46,7 @@ def load(other_args: List[str]):
         required=True,
         type=str,
         dest="coin",
-        help="Coin to load data for",
+        help="Coin to load data for (symbol or coin id)",
     )
 
     try:
@@ -67,7 +66,6 @@ def load(other_args: List[str]):
             print("")
             return None
 
-        print(f"{ns_parser.coin} loaded")
         print("")
         return coin
 
@@ -82,23 +80,21 @@ def load(other_args: List[str]):
 
 
 def view(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Plots chart for loaded cryptocurrency
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="Crypto",
+        prog="chart",
         description="""
-                        Cryptocurrencies
+                        Display chart for loaded coin
                         """,
     )
 
@@ -138,22 +134,66 @@ def view(coin: gecko_coin.Coin, other_args: List[str]):
         print("")
 
 
-def base_info(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+def ta(coin: gecko_coin.Coin, other_args: List[str]):
+    """Load data for Technical Analysis
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="baseinfo",
+        prog="ta",
+        description="""
+                        Loads data for technical analysis
+                        """,
+    )
+
+    parser.add_argument(
+        "--vs", default="usd", dest="vs", help="Currency to display vs coin"
+    )
+
+    parser.add_argument(
+        "-d", "--days", default=30, dest="days", help="Number of days to get data for"
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return
+
+        df = coin.get_coin_market_chart(ns_parser.vs, ns_parser.days)
+        return df
+
+    except SystemExit:
+        print("")
+        return None
+
+    except Exception as e:
+        print(e)
+        print("")
+        return None
+
+
+def base_info(coin: gecko_coin.Coin, other_args: List[str]):
+    """Shows basic information about loaded coin
+
+    Parameters
+    ----------
+    coin : gecko_coin.Coin
+        Cryptocurrency
+    other_args : List[str]
+        argparse arguments
+
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="base_info",
         description="""
                         Cryptocurrencies
                         """,
@@ -165,7 +205,7 @@ def base_info(coin: gecko_coin.Coin, other_args: List[str]):
         if not ns_parser:
             return
 
-        df = coin.base_info
+        df = wrap_text_in_df(coin.base_info, w=80)
         print(
             tabulate(
                 df,
@@ -186,14 +226,12 @@ def base_info(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def web(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows found websites corresponding to loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
@@ -202,7 +240,7 @@ def web(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="web",
         description="""
-                        Cryptocurrencies
+                        Websites found for given Coin
                         """,
     )
 
@@ -233,14 +271,12 @@ def web(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def social(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows social media corresponding to loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
@@ -249,7 +285,7 @@ def social(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="web",
         description="""
-                        Cryptocurrencies
+                        social
                         """,
     )
 
@@ -280,23 +316,21 @@ def social(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def dev(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows developers data for loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="web",
+        prog="dev",
         description="""
-                        Cryptocurrencies
+                       Developers data
                         """,
     )
 
@@ -327,14 +361,12 @@ def dev(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def ath(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows all time high data for loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
@@ -343,7 +375,7 @@ def ath(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="ath",
         description="""
-                        Cryptocurrencies
+                        All time high
                         """,
     )
 
@@ -374,14 +406,12 @@ def ath(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def atl(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows all time low data for loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
@@ -390,7 +420,7 @@ def atl(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="atl",
         description="""
-                        Cryptocurrencies
+                        All time low
                         """,
     )
 
@@ -421,14 +451,12 @@ def atl(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def score(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows different kind of scores for loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
@@ -437,7 +465,7 @@ def score(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="score",
         description="""
-                        Cryptocurrencies
+                        Coin scores
                         """,
     )
 
@@ -468,23 +496,21 @@ def score(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def blockchain_explorers(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows urls to blockchain explorers
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="score",
+        prog="bc",
         description="""
-                        Cryptocurrencies
+                        Blockchain explorers
                         """,
     )
 
@@ -515,23 +541,21 @@ def blockchain_explorers(coin: gecko_coin.Coin, other_args: List[str]):
 
 
 def market_data(coin: gecko_coin.Coin, other_args: List[str]):
-    """Plots loaded cryptocurrency
+    """Shows market data for loaded coin
 
     Parameters
     ----------
-    coin : str
+    coin : gecko_coin.Coin
         Cryptocurrency
-    prices : pandas.DataFrame
-        Dataframe containing prices and dates for selected coin
     other_args : List[str]
         argparse arguments
 
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="baseinfo",
+        prog="market_data",
         description="""
-                        Cryptocurrencies
+                        Coin Market Data
                         """,
     )
 

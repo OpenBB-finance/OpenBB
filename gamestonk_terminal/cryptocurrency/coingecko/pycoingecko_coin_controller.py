@@ -3,11 +3,13 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302
 import argparse
 import pandas as pd
+import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_view
+from gamestonk_terminal.technical_analysis import ta_controller
 
 
 class GeckoCoinController:
@@ -17,7 +19,9 @@ class GeckoCoinController:
         "q",
         "quit",
         "load",
+        "clear",
         "chart",
+        "ta",
         "info",
         "market",
         "ath",
@@ -37,7 +41,6 @@ class GeckoCoinController:
         self.current_coin = None
         self.current_currency = None
         self.current_df = pd.DataFrame()
-        self.source = ""
 
     def print_help(self):
         """Print help"""
@@ -48,16 +51,24 @@ class GeckoCoinController:
         print("")
         print("Coingecko Coin Menu:")
         print("   load            load cryptocurrency data")
-        print("   chart           load and view cryptocurrency data")
-        print("   info          load and view cryptocurrency data")
-        print("   market          load and view cryptocurrency data")
-        print("   ath           load and view cryptocurrency data")
-        print("   atl          load and view cryptocurrency data")
-        print("   web           load and view cryptocurrency data")
-        print("   social           load and view cryptocurrency data")
-        print("   score            load and view cryptocurrency data")
-        print("   dev           load and view cryptocurrency data")
-        print("   bc           load and view cryptocurrency data")
+        print("   clear           remove loaded coin")
+        print("   chart           show price chart for loaded coin")
+        print("   ta              technical analysis menu for loaded coin")
+        print("   info            show basic information about loaded coin")
+        print("   market          show market stats about loaded coin")
+        print("   ath             show all time high related stats for loaded coin")
+        print("   atl             show all time low related stats for loaded coin")
+        print(
+            "   web             show found websites for loaded coin e.g forum, homepage"
+        )
+        print(
+            "   social          show social portals urls for loaded coin, e.g reddit, twitter"
+        )
+        print(
+            "   score           show different kind of scores for loaded coin, e.g developer score, sentiment score"
+        )
+        print("   dev             show github, bitbucket coin development statistics")
+        print("   bc              show url to blockchain explorers for loaded coin")
         print("")
 
     def switch(self, an_input: str):
@@ -90,10 +101,11 @@ class GeckoCoinController:
         return True
 
     def call_load(self, other_args):
+        """Process load command"""
         self.current_coin = pycoingecko_view.load(other_args)
-        self.source = "CG"
 
     def call_chart(self, other_args):
+        """Process chart command"""
         if self.current_coin:
             pycoingecko_view.view(self.current_coin, other_args)
         else:
@@ -101,6 +113,7 @@ class GeckoCoinController:
             print("")
 
     def call_info(self, other_args):
+        """Process info command"""
         if self.current_coin:
             pycoingecko_view.base_info(self.current_coin, other_args)
         else:
@@ -108,6 +121,7 @@ class GeckoCoinController:
             print("")
 
     def call_market(self, other_args):
+        """Process market command"""
         if self.current_coin:
             pycoingecko_view.market_data(self.current_coin, other_args)
         else:
@@ -115,6 +129,7 @@ class GeckoCoinController:
             print("")
 
     def call_web(self, other_args):
+        """Process web command"""
         if self.current_coin:
             pycoingecko_view.web(self.current_coin, other_args)
         else:
@@ -122,6 +137,7 @@ class GeckoCoinController:
             print("")
 
     def call_social(self, other_args):
+        """Process social command"""
         if self.current_coin:
             pycoingecko_view.social(self.current_coin, other_args)
         else:
@@ -129,6 +145,7 @@ class GeckoCoinController:
             print("")
 
     def call_dev(self, other_args):
+        """Process dev command"""
         if self.current_coin:
             pycoingecko_view.dev(self.current_coin, other_args)
         else:
@@ -136,6 +153,7 @@ class GeckoCoinController:
             print("")
 
     def call_ath(self, other_args):
+        """Process ath command"""
         if self.current_coin:
             pycoingecko_view.ath(self.current_coin, other_args)
         else:
@@ -143,6 +161,7 @@ class GeckoCoinController:
             print("")
 
     def call_atl(self, other_args):
+        """Process atl command"""
         if self.current_coin:
             pycoingecko_view.atl(self.current_coin, other_args)
         else:
@@ -150,6 +169,7 @@ class GeckoCoinController:
             print("")
 
     def call_score(self, other_args):
+        """Process score command"""
         if self.current_coin:
             pycoingecko_view.score(self.current_coin, other_args)
         else:
@@ -157,19 +177,55 @@ class GeckoCoinController:
             print("")
 
     def call_bc(self, other_args):
+        """Process bc command"""
         if self.current_coin:
             pycoingecko_view.blockchain_explorers(self.current_coin, other_args)
         else:
             print("No coin selected. Use 'load' to load the coin you want to look at.")
             print("")
 
+    def call_clear(self, _):
+        """Process clear command"""
+        if self.current_coin:
+            print(
+                f"Current coin {self.current_coin.coin_symbol} was removed. You can load new coin with load -c <coin>"
+            )
+            self.current_coin = None
+        else:
+            print("No coin selected. Use 'load' to load the coin you want to look at.")
+            print("")
+
+    # pylint: disable=inconsistent-return-statements
+    def call_ta(self, other_args):
+        """Process ta command"""
+        if self.current_coin:
+            self.current_df = pycoingecko_view.ta(self.current_coin, other_args)
+
+            self.current_df = self.current_df[["price"]].rename(
+                columns={"price": "4. close"}
+            )
+            self.current_df.index.name = "date"
+
+            return ta_controller.menu(
+                self.current_df,
+                self.current_coin.coin_symbol,
+                self.current_df.index[0],
+                "",
+            )
+
+        print("Please load a coin through either load - coin", "\n")
+
 
 def menu():
     gecko_controller = GeckoCoinController()
     gecko_controller.print_help()
+    plt.close("all")
 
     while True:
         # Get input command from user
+        if gecko_controller.current_coin:
+            print(f"loaded coin: ({gecko_controller.current_coin.coin_symbol})")
+
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
                 {c: None for c in gecko_controller.CHOICES}
@@ -190,6 +246,3 @@ def menu():
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
-
-menu()
