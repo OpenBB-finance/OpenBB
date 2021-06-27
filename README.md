@@ -313,7 +313,9 @@ Example:
 <!-- CONTRIBUTING -->
 ## Contributing
 
-There are 3 main ways of contributing to this project.
+There are 3 main ways of contributing to this project. 
+
+For a 1h coding session where the architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
 
 **Become a Contributor 🦍**
 

@@ -71,7 +71,9 @@ class DiscoveryController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/discovery"
+        )
         print("\nDiscovery Mode:")
         print("   help           show this discovery menu again")
         print("   q              quit this menu, and shows back to main menu")

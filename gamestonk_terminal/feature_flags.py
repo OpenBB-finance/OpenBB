@@ -17,7 +17,7 @@ USE_ION = strtobool(os.getenv("GTFF_USE_ION", "False"))
 USE_PROMPT_TOOLKIT = strtobool(os.getenv("GTFF_USE_PROMPT_TOOLKIT", "False"))
 
 # Enable Prediction features
-ENABLE_PREDICT = strtobool(os.getenv("GTFF_ENABLE_PREDICT", "False"))
+ENABLE_PREDICT = strtobool(os.getenv("GTFF_ENABLE_PREDICT", "True"))
 
 # Enable plot autoscaling
 USE_PLOT_AUTOSCALING = strtobool(os.getenv("GTFF_USE_PLOT_AUTOSCALING", "False"))

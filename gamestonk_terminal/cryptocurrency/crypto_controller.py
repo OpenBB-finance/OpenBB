@@ -46,6 +46,9 @@ class CryptoController:
 
     def print_help(self):
         """Print help"""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency"
+        )
         print("\nCryptocurrency:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
@@ -148,31 +151,19 @@ class CryptoController:
         """Process ta command"""
         if not self.current_coin:
             print("Please load a coin through either load or select", "\n")
+
         elif self.current_df.empty:
             print("Price dataframe is empty")
-        else:
-            # Need to make the columns in df be compatible.  Also since there are no splits or dividends, there is no
-            # adj close.  To tell ta to use Close, we can just set the interval to anything but 1440.
-            # Binance provides candles so we just need to rename:
-            if self.source == "BIN":
-                self.current_df = self.current_df.rename(
-                    columns={
-                        "Open": "1. open",
-                        "High": "2. high",
-                        "Low": "3. low",
-                        "Close": "4. close",
-                        "Volume": "6. volume",
-                    }
-                )
-                self.current_df.index.name = "date"
 
+        else:
             # Coingecko does not provide candles so we can only provide close data.
-            elif self.source == "CG":
+            if self.source == "CG":
 
                 self.current_df = self.current_df[["Price"]].rename(
-                    columns={"Price": "4. close"}
+                    columns={"Price": "Close"}
                 )
-                self.current_df.index.name = "date"
+
+            self.current_df.index.name = "date"
 
             ta_controller.menu(
                 self.current_coin,

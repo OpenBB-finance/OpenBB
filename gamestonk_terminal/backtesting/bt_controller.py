@@ -42,7 +42,9 @@ class BacktestingController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/backtesting"
+        )
         print("\nBacktesting:")
         print("   help        show this backtesting menu again")
         print("   q           quit this menu, and shows back to main menu")

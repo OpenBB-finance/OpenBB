@@ -151,7 +151,7 @@ def regression(
 
         # Split training data
         stock_x, stock_y = splitTrain.split_train(
-            df_stock["5. adjusted close"].values,
+            df_stock["Adj Close"].values,
             ns_parser.n_inputs,
             ns_parser.n_days,
             ns_parser.n_jumps,
@@ -175,22 +175,20 @@ def regression(
         l_predictions = [
             i if i > 0 else 0
             for i in model.predict(
-                df_stock["5. adjusted close"]
-                .values[-ns_parser.n_inputs :]
-                .reshape(1, -1)
+                df_stock["Adj Close"].values[-ns_parser.n_inputs :].reshape(1, -1)
             )[0]
         ]
 
         # Prediction data
         l_pred_days = get_next_stock_market_days(
-            last_stock_day=df_stock["5. adjusted close"].index[-1],
+            last_stock_day=df_stock["Adj Close"].index[-1],
             n_next_days=ns_parser.n_days,
         )
         df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
 
         # Plotting
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
+        plt.plot(df_stock.index, df_stock["Adj Close"], lw=2)
         # BACKTESTING
         if ns_parser.s_end_date:
             plt.title(
@@ -210,7 +208,7 @@ def regression(
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         plt.plot(
             [df_stock.index[-1], df_pred.index[0]],
-            [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+            [df_stock["Adj Close"].values[-1], df_pred.values[0]],
             lw=1,
             c="tab:green",
             linestyle="--",
@@ -228,7 +226,7 @@ def regression(
         if ns_parser.s_end_date:
             plt.plot(
                 df_future.index,
-                df_future["5. adjusted close"],
+                df_future["Adj Close"],
                 lw=2,
                 c="tab:blue",
                 ls="--",
@@ -236,8 +234,8 @@ def regression(
             plt.plot(
                 [df_stock.index[-1], df_future.index[0]],
                 [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_future["5. adjusted close"].values[0],
+                    df_stock["Adj Close"].values[-1],
+                    df_future["Adj Close"].values[0],
                 ],
                 lw=1,
                 c="tab:blue",
@@ -255,20 +253,18 @@ def regression(
             plt.subplot(211)
             plt.plot(
                 df_future.index,
-                df_future["5. adjusted close"],
+                df_future["Adj Close"],
                 lw=2,
                 c="tab:blue",
                 ls="--",
             )
             plt.plot(df_pred.index, df_pred, lw=2, c="green")
-            plt.scatter(
-                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
-            )
+            plt.scatter(df_future.index, df_future["Adj Close"], c="tab:blue", lw=3)
             plt.plot(
                 [df_stock.index[-1], df_future.index[0]],
                 [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_future["5. adjusted close"].values[0],
+                    df_stock["Adj Close"].values[-1],
+                    df_future["Adj Close"].values[0],
                 ],
                 lw=2,
                 c="tab:blue",
@@ -277,7 +273,7 @@ def regression(
             plt.scatter(df_pred.index, df_pred, c="green", lw=3)
             plt.plot(
                 [df_stock.index[-1], df_pred.index[0]],
-                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                [df_stock["Adj Close"].values[-1], df_pred.values[0]],
                 lw=2,
                 c="green",
                 ls="--",
@@ -300,16 +296,16 @@ def regression(
             plt.plot(
                 df_future.index,
                 100
-                * (df_pred.values - df_future["5. adjusted close"].values)
-                / df_future["5. adjusted close"].values,
+                * (df_pred.values - df_future["Adj Close"].values)
+                / df_future["Adj Close"].values,
                 lw=2,
                 c="red",
             )
             plt.scatter(
                 df_future.index,
                 100
-                * (df_pred.values - df_future["5. adjusted close"].values)
-                / df_future["5. adjusted close"].values,
+                * (df_pred.values - df_future["Adj Close"].values)
+                / df_future["Adj Close"].values,
                 c="red",
                 lw=5,
             )
@@ -319,8 +315,8 @@ def regression(
                 [
                     0,
                     100
-                    * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
-                    / df_future["5. adjusted close"].values[0],
+                    * (df_pred.values[0] - df_future["Adj Close"].values[0])
+                    / df_future["Adj Close"].values[0],
                 ],
                 lw=2,
                 ls="--",
@@ -346,7 +342,7 @@ def regression(
             # Refactor prediction dataframe for backtesting print
             df_pred.name = "Prediction"
             df_pred = df_pred.to_frame()
-            df_pred["Real"] = df_future["5. adjusted close"]
+            df_pred["Real"] = df_future["Adj Close"]
 
             if gtff.USE_COLOR:
 
@@ -366,7 +362,7 @@ def regression(
 
         else:
             # Print prediction data
-            print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
+            print_pretty_prediction(df_pred, df_stock["Adj Close"].values[-1])
         print("")
 
     except SystemExit:

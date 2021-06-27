@@ -56,7 +56,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.ema(
-                df_stock["5. adjusted close"],
+                df_stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
             ).dropna()
@@ -64,7 +64,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         # Intraday
         else:
             df_ta = ta.ema(
-                df_stock["4. close"],
+                df_stock["Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
             ).dropna()
@@ -73,18 +73,18 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         plt.title(f"{ns_parser.n_length} EMA on {s_ticker}")
         if s_interval == "1440min":
             plt.plot(
-                df_stock["5. adjusted close"].index,
-                df_stock["5. adjusted close"].values,
+                df_stock["Adj Close"].index,
+                df_stock["Adj Close"].values,
                 "k",
                 lw=3,
             )
             plt.xlim(
-                df_stock["5. adjusted close"].index[0],
-                df_stock["5. adjusted close"].index[-1],
+                df_stock["Adj Close"].index[0],
+                df_stock["Adj Close"].index[-1],
             )
         else:
-            plt.plot(df_stock["4. close"].index, df_stock["4. close"].values, "k", lw=3)
-            plt.xlim(df_stock["4. close"].index[0], df_stock["4. close"].index[-1])
+            plt.plot(df_stock["Close"].index, df_stock["Close"].values, "k", lw=3)
+            plt.xlim(df_stock["Close"].index[0], df_stock["Close"].index[-1])
         plt.xlabel("Time")
         plt.ylabel(f"Share Price of {s_ticker} ($)")
         plt.plot(df_ta.index, df_ta.values, c="tab:blue")
@@ -152,21 +152,21 @@ def sma(l_args, s_ticker, s_interval, df_stock):
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, color="k")
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, color="k")
+            plt.plot(df_stock.index, df_stock["Close"].values, color="k")
         l_legend = list()
         l_legend.append(s_ticker)
         for length in ns_parser.l_length:
             if s_interval == "1440min":
                 df_ta = ta.sma(
-                    df_stock["5. adjusted close"],
+                    df_stock["Adj Close"],
                     length=length,
                     offset=ns_parser.n_offset,
                 ).dropna()
             else:
                 df_ta = ta.sma(
-                    df_stock["4. close"], length=length, offset=ns_parser.n_offset
+                    df_stock["Close"], length=length, offset=ns_parser.n_offset
                 ).dropna()
             plt.plot(df_ta.index, df_ta.values)
             l_legend.append(f"{length} SMA")
@@ -218,28 +218,28 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.vwap(
-                high=df_stock["2. high"],
-                low=df_stock["3. low"],
-                close=df_stock["5. adjusted close"],
-                volume=df_stock["6. volume"],
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Adj Close"],
+                volume=df_stock["Volume"],
                 offset=ns_parser.n_offset,
             )
 
         # Intraday
         else:
             df_ta = ta.vwap(
-                high=df_stock["2. high"],
-                low=df_stock["3. low"],
-                close=df_stock["4. close"],
-                volume=df_stock["5. volume"],
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Close"],
+                volume=df_stock["Volume"],
                 offset=ns_parser.n_offset,
             )
 
         _, axPrice = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, color="k")
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, color="k")
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, color="k")
+            plt.plot(df_stock.index, df_stock["Close"].values, color="k")
         plt.plot(df_ta.index, df_ta.values)
         plt.title(f"VWAP on {s_ticker}")
         plt.xlim(df_stock.index[0], df_stock.index[-1])
@@ -247,10 +247,11 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         plt.ylabel("Share Price ($)")
         plt.legend([s_ticker, "VWAP"])
         _ = axPrice.twinx()
+
         if s_interval == "1440min":
             plt.bar(
                 df_stock.index,
-                df_stock["6. volume"].values,
+                df_stock["Volume"].values,
                 color="k",
                 alpha=0.8,
                 width=0.3,
@@ -258,7 +259,7 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         else:
             plt.bar(
                 df_stock.index,
-                df_stock["5. volume"].values,
+                df_stock["Volume"].values,
                 color="k",
                 alpha=0.8,
                 width=0.3,

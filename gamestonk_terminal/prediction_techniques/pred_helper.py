@@ -399,7 +399,7 @@ def plot_data_predictions(
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(
         df_stock.index,
-        df_stock["5. adjusted close"].values,
+        df_stock["Adj Close"].values,
         "-ob",
         lw=1,
         ms=2,
