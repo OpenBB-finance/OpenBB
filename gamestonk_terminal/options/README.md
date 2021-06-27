@@ -26,18 +26,20 @@ This menu aims to give insight on options. Options can cause significant share p
 ## disp <a name="disp"></a>
 
 ```text
-usage: view [-p {template}]
+usage: view [-p {template,...}]
 ```
 
 View available presets under [presets folder](/gamestonk_terminal/options/presets/).
 
 * -p : View specific preset
 
+<img width="979" alt="Captura de ecrã 2021-06-27, às 02 32 21" src="https://user-images.githubusercontent.com/25267873/123530365-59fac080-d6f1-11eb-85e1-536f7e927308.png">
+
 
 ## scr <a name="scr"></a>
 
 ```text
-usage: scr [-p {template}]
+usage: scr [-p {template,...}]
 ```
 
 Sreener filter output from https://ops.syncretism.io/index.html. Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV:
@@ -45,6 +47,8 @@ Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest
 Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book. [Source: Ops.Syncretism]
 
 * -p : Filter presets
+
+<img width="1220" alt="Captura de ecrã 2021-06-27, às 02 31 28" src="https://user-images.githubusercontent.com/25267873/123530368-5e26de00-d6f1-11eb-9a23-0b481b5efae1.png">
 
 
 ## exp <a name="exp"></a>
