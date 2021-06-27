@@ -248,7 +248,7 @@ usage: news [-t --top]
 
 Shows latest news from https://www.coingecko.com/en/news
 
-* -t/--top - number of news to display. One page of news constains 25 news, so to get 250 news script needs to scrape 10 pages (it can take some time). Default 100. E.g `news --top 150`
+* -t/--top - number of news to display. One page of news contains 25 news, so to get 250 news script needs to scrape 10 pages (it can take some time). Default 100. E.g `news --top 150`
 
 ![image](https://user-images.githubusercontent.com/275820/123539958-a0294180-d73c-11eb-9e8d-82b9de3402a5.png)
 
@@ -323,7 +323,7 @@ Shows coins with the most positive sentiment on CoinGecko
 usage: recently
 ````
 
-Shows coins which were recenlty added on CoinGecko
+Shows coins which were recently added on CoinGecko
 
 ![image](https://user-images.githubusercontent.com/275820/123538777-a9171480-d736-11eb-9950-efa4946f4be9.png)
 
@@ -419,7 +419,7 @@ Examples of NFT include crypto artwork, collectibles, game items, financial prod
 ````
 usage: nft_today
 ````
-Get Non-fungible Token of the Day. Everyday on CoinGecko there is choosen new NFT.
+Get Non-fungible Token of the Day. Everyday on CoinGecko there is chosen new NFT.
 
 ![image](https://user-images.githubusercontent.com/275820/123539455-2abc7180-d73a-11eb-9b58-160f11d99b44.png)
 
