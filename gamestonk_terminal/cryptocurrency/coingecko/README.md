@@ -220,6 +220,14 @@ Display blockchain explorers urls for loaded coin
 
 ![image](https://user-images.githubusercontent.com/275820/123524154-b5fd1f00-d6c8-11eb-9ec0-1fd1803db422.png)
 
+## clear <a name="clear"></a>
+
+````
+usage: clear
+````
+
+Just remove proviously loaded coin. (set coin = None)
+
 
 # OVERVIEW <a name="OVERVIEW"></a>
 ## global  <a name="global"></a>
@@ -232,6 +240,17 @@ Shows basic statistics about crypto market like: market cap change, number of ma
 
 ![image](https://user-images.githubusercontent.com/275820/123538175-d1514400-d733-11eb-9634-09c341f63cb9.png)
 
+## news  <a name="news"></a>
+
+````
+usage: news [-t --top]
+````
+
+Shows latest news from https://www.coingecko.com/en/news
+
+* -t/--top - number of news to display. One page of news constains 25 news, so to get 250 news script needs to scrape 10 pages (it can take some time). Default 100. E.g `news --top 150`
+
+![image](https://user-images.githubusercontent.com/275820/123539958-a0294180-d73c-11eb-9e8d-82b9de3402a5.png)
 
 ## coins <a name="coins"></a>
 
@@ -395,3 +414,112 @@ Examples of NFT include crypto artwork, collectibles, game items, financial prod
 
 ![image](https://user-images.githubusercontent.com/275820/123539187-b7fec680-d738-11eb-99b6-2f6a0a9673c1.png)
 
+## nft_today <a name="nft_today"></a>
+
+````
+usage: nft_today
+````
+Get Non-fungible Token of the Day. Everyday on CoinGecko there is choosen new NFT.
+
+![image](https://user-images.githubusercontent.com/275820/123539455-2abc7180-d73a-11eb-9b58-160f11d99b44.png)
+
+## nft_market <a name="nft_market"></a>
+
+````
+usage: nft_market
+````
+Get current state of NFTs market.
+
+![image](https://user-images.githubusercontent.com/275820/123539514-7838de80-d73a-11eb-8e22-ef3f250d3003.png)
+
+
+## exchanges <a name="exchanges"></a>
+
+````
+usage: exchanges
+````
+Shows top crypto exchanges base on trust score.
+
+![image](https://user-images.githubusercontent.com/275820/123539542-98689d80-d73a-11eb-9561-2de524d329d0.png)
+
+## ex_rates <a name="ex_rates"></a>
+
+````
+usage: ex_rates
+````
+Shows crypto exchange rates.
+
+![image](https://user-images.githubusercontent.com/275820/123539584-c3eb8800-d73a-11eb-8b92-952f25bb0372.png)
+
+## platforms <a name="platforms"></a>
+
+````
+usage: platforms
+````
+Shows list of financial platforms
+
+![image](https://user-images.githubusercontent.com/275820/123539607-e1205680-d73a-11eb-9ab4-b8998ef37731.png)
+
+
+## products <a name="products"></a>
+
+````
+usage: products
+````
+Shows list of financial products
+
+![image](https://user-images.githubusercontent.com/275820/123539641-0d3bd780-d73b-11eb-8eea-62e98fcd7662.png)
+
+## indexes <a name="indexes"></a>
+
+````
+usage: indexes
+````
+Shows list of crypto indexes
+
+![image](https://user-images.githubusercontent.com/275820/123539690-2ba1d300-d73b-11eb-9c05-7f8d14f1a91e.png)
+
+## derivatives <a name="derivatives"></a>
+
+````
+usage: derivatives
+````
+Shows list of crypto derivatives
+
+![image](https://user-images.githubusercontent.com/275820/123539719-496f3800-d73b-11eb-8ebb-538516e75093.png)
+
+## categories <a name="categories"></a>
+
+````
+usage: categories
+````
+Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
+The cryptocurrency category ranking is based on market capitalization.
+
+![image](https://user-images.githubusercontent.com/275820/123539761-82a7a800-d73b-11eb-83be-34754c35131e.png)
+
+
+## hold <a name="hold"></a>
+
+````
+usage: hold [-c --coin]
+````
+
+Shows overview of public companies that holds ethereum or bitcoin
+
+* -c/--coin - chose a coin. Only available for ethereum or bitcoin. If you want to see overview of public companies that holds ethereum use `hold --coin ethereum` for bitcoin `hold --coin bitcoin`
+
+![image](https://user-images.githubusercontent.com/275820/123539842-f77ae200-d73b-11eb-9d6c-feb2fbd98c01.png)
+
+
+## hold_comp <a name="hold_comp"></a>
+
+````
+usage: hold_comp [-c --coin]
+````
+
+Shows Ethereum/Bitcoin Holdings by Public Companies. Track publicly traded companies around the world that are buying ethereum as part of corporate treasury
+
+* -c/--coin - chose a coin. Only available for ethereum or bitcoin. If you want to see list of public companies that holds ethereum use `hold_comp --coin ethereum` for bitcoin `hold_comp --coin bitcoin`
+
+![image](https://user-images.githubusercontent.com/275820/123539890-43c62200-d73c-11eb-9722-a81a8510f576.png)
