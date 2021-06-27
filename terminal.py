@@ -71,7 +71,6 @@ class TerminalController:
         "eda",
         "pred",
         "ca",
-        "op",
         "ra",
     ]
 
@@ -96,6 +95,7 @@ class TerminalController:
         "po",
         "fx",
         "rc",
+        "op",
         "gov",
         "etf",
         "about",
@@ -147,6 +147,7 @@ Contexts:
 >   etf         etf menu, \t\t\t from: StockAnalysis.com
 >   fx          forex menu, \t\t\t forex support through Oanda
 >   rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA
+>   op          options info,            \t e.g.: volume, open interest, chains, volatility
             """
 
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
@@ -174,7 +175,6 @@ Contexts:
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
->   op          options info,            \t e.g.: volume, open interest, chains, volatility
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   ca          comparison analysis,     \t e.g.: historical, correlation, financials
 >   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
