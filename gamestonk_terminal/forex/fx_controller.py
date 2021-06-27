@@ -1,5 +1,6 @@
 import argparse
 from typing import List
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import feature_flags as gtff
@@ -9,7 +10,6 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.due_diligence import news_view, reddit_view
 from gamestonk_terminal.behavioural_analysis import ba_controller
 from gamestonk_terminal.exploratory_data_analysis import eda_controller
-import pandas as pd
 
 
 account = cfg.OANDA_ACCOUNT
@@ -51,10 +51,11 @@ class ForexController:
         )
         self.instrument = None
 
-    @staticmethod
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/forex"
+        )
         print("\nForex Mode:")
         print("    help          show this menu again")
         print("    q             quit this menu and goes back to main menu")
@@ -108,7 +109,7 @@ class ForexController:
 
     def call_help(self, _):
         """Process Help Command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -180,10 +181,10 @@ class ForexController:
         instrument = fx_view.format_instrument(self.instrument, " ")
         reddit_view.due_diligence(other_args, instrument)
 
-    def call_eda(self, other_args):
+    def call_eda(self, _):
         try:
             df = fx_view.get_candles_dataframe(account, self.instrument, None)
-            df = df.rename(columns={"Close": "5. adjusted close"})
+            df = df.rename(columns={"Close": "Adj Close"})
             instrument = self.instrument
             s_start = pd.to_datetime(df.index.values[0])
             s_interval = "1440min"
@@ -191,7 +192,7 @@ class ForexController:
         except AttributeError:
             print("No data found, do you have your oanda API keys set?")
 
-    def call_ba(self, other_args: List[str]):
+    def call_ba(self, _):
         instrument = fx_view.format_instrument(self.instrument, " ")
         try:
             df = fx_view.get_candles_dataframe(account, self.instrument, None)

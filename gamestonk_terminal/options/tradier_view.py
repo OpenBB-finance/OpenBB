@@ -99,9 +99,9 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
         params=params,
         headers=headers,
     )
-    if response.status_code == 401:
-        print("Error in request.get -- check token")
-        return
+    if response.status_code != 200:
+        print("Error in request. Check TRADIER_TOKEN\n")
+        return pd.DataFrame()
 
     chains = process_chains(response)
     return chains
@@ -156,20 +156,30 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
         "gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
     )
 
-    chains_df = get_option_chains(symbol, expiry)
-
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        chains_df = get_option_chains(symbol, expiry)
+
+        if chains_df.empty:
+            return
+
         columns = ns_parser.to_display + ["strike", "option_type"]
         chains_df = chains_df[columns].rename(columns=column_map)
-        if ns_parser.max_sp == -1 and ns_parser.min_sp == -1:
+
+        if ns_parser.min_sp == -1:
             min_strike = np.percentile(chains_df["strike"], 25)
-            max_strike = np.percentile(chains_df["strike"], 75)
         else:
             min_strike = ns_parser.min_sp
+
+        if ns_parser.max_sp == -1:
+            max_strike = np.percentile(chains_df["strike"], 75)
+        else:
             max_strike = ns_parser.max_sp
+
+        print(f"The strike prices are displayed between {min_strike} and {max_strike}")
 
         chains_df = chains_df[chains_df["strike"] >= min_strike]
         chains_df = chains_df[chains_df["strike"] <= max_strike]
@@ -190,9 +200,8 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
                     floatfmt=".2f",
                 )
             )
-            return
 
-        if ns_parser.puts_only:
+        elif ns_parser.puts_only:
             print(
                 tabulate(
                     puts_df,
@@ -202,31 +211,30 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
                     floatfmt=".2f",
                 )
             )
-            return
 
-        puts_df = puts_df[puts_df.columns[::-1]]
-        chain_table = calls_df.merge(puts_df, on="strike")
+        else:
+            puts_df = puts_df[puts_df.columns[::-1]]
+            chain_table = calls_df.merge(puts_df, on="strike")
 
-        headers = [
-            col.strip("_x")
-            if col.endswith("_x")
-            else col.strip("_y")
-            if col.endswith("_y")
-            else col
-            for col in chain_table.columns
-        ]
-        print(
-            tabulate(
-                chain_table,
-                headers=headers,
-                tablefmt="fancy_grid",
-                showindex=False,
-                floatfmt=".2f",
+            headers = [
+                col.strip("_x")
+                if col.endswith("_x")
+                else col.strip("_y")
+                if col.endswith("_y")
+                else col
+                for col in chain_table.columns
+            ]
+            print(
+                tabulate(
+                    chain_table,
+                    headers=headers,
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                    floatfmt=".2f",
+                )
             )
-        )
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return

@@ -6,11 +6,11 @@ from typing import List
 from datetime import datetime
 import pandas as pd
 from matplotlib import pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.exploratory_data_analysis import eda_api
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
 
 
 class EdaController:
@@ -34,10 +34,10 @@ class EdaController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
+        stock: pd.DataFrame,
     ):
         """Constructor"""
         self.stock = stock
@@ -50,10 +50,12 @@ class EdaController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/"
+            "GamestonkTerminal/tree/main/gamestonk_terminal/exploratory_data_analysis"
+        )
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -98,7 +100,7 @@ class EdaController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -118,7 +120,9 @@ class EdaController:
 
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
-        eda_api.cdf(other_args, self.ticker, self.stock, self.start)
+        eda_api.cumulative_distribution_function(
+            other_args, self.ticker, self.stock, self.start
+        )
 
     def call_bwy(self, other_args: List[str]):
         """Process bwy command"""
@@ -138,17 +142,17 @@ class EdaController:
 
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
-        eda_api.cusum(other_args, self.ticker, self.stock)
+        eda_api.cusum(other_args, self.stock)
 
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
         eda_api.acf(other_args, self.ticker, self.stock, self.start)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
+def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
     """Statistics Menu"""
 
-    eda_controller = EdaController(stock, ticker, start, interval)
+    eda_controller = EdaController(ticker, start, interval, stock)
     eda_controller.call_help(None)
 
     while True:

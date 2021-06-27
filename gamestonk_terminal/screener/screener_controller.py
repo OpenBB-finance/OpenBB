@@ -53,7 +53,9 @@ class ScreenerController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/screener"
+        )
         print("\nScreener:")
         print("   help          show this screener menu again")
         print("   q             quit this menu, and shows back to main menu")

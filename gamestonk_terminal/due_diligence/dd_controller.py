@@ -45,9 +45,10 @@ class DueDiligenceController:
         "dp",
         "ftd",
         "shortview",
+        "darkpos",
     ]
 
-    def __init__(self, stock: DataFrame, ticker: str, start: str, interval: str):
+    def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
         """Constructor
 
         Parameters
@@ -61,10 +62,11 @@ class DueDiligenceController:
         interval : str
             Stock data interval
         """
-        self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.stock = stock
+
         self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
         self.dd_parser.add_argument(
             "cmd",
@@ -73,7 +75,9 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/due_diligence"
+        )
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -111,6 +115,7 @@ class DueDiligenceController:
         print("   dp            dark pools (ATS) vs OTC data [FINRA]")
         print("   ftd           fails-to-deliver data [SEC]")
         print("   shortview     price vs short interest volume [Stockgrid.io]")
+        print("   darkpos       net short vs position [Stockgrid.io]")
         print("")
 
     def switch(self, an_input: str):
@@ -205,8 +210,12 @@ class DueDiligenceController:
         """Process shortview command"""
         sg_view.shortview(self.ticker, other_args)
 
+    def call_darkpos(self, other_args: List[str]):
+        """Process darkpos command"""
+        sg_view.darkpos(self.ticker, other_args)
 
-def menu(stock: DataFrame, ticker: str, start: str, interval: str):
+
+def menu(ticker: str, start: str, interval: str, stock: DataFrame):
     """Due Diligence Menu
 
     Parameters
@@ -221,7 +230,7 @@ def menu(stock: DataFrame, ticker: str, start: str, interval: str):
         Stock data interval
     """
 
-    dd_controller = DueDiligenceController(stock, ticker, start, interval)
+    dd_controller = DueDiligenceController(ticker, start, interval, stock)
     dd_controller.call_help(None)
 
     while True:

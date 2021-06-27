@@ -246,6 +246,7 @@ Command|Description|Source
 `dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
 `ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
 `shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
+`darkpos`       |net short vs position [Stockgrid](https://stockgrid.io)
 
 &nbsp;
 
@@ -259,7 +260,6 @@ Command|Technique|Sources
 `cubic`       |cubic regression (polynomial 3) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
 `regression`  |regression (other polynomial) | [Wikipedia](https://en.wikipedia.org/wiki/Polynomial_regression), [Investopedia](https://www.investopedia.com/terms/r/regression.asp)
 `arima`       |autoregressive integrated moving average | [Wikipedia](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Investopedia](https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp)
-`prophet`     |Facebook's prophet prediction | [Details](https://facebook.github.io/prophet/)
 `mlp`         |MultiLayer Perceptron | [Wikipedia](https://en.wikipedia.org/wiki/Multilayer_perceptron)
 `rnn`         |Recurrent Neural Network  | [Wikipedia](https://en.wikipedia.org/wiki/Recurrent_neural_network)
 `lstm`        |Long Short-Term Memory  | [Wikipedia](https://en.wikipedia.org/wiki/Long_short-term_memory), [Details](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
@@ -393,6 +393,7 @@ Command|Description|Source
 
 Command|Description|Source
 ------ | -------- | --------
+`feargreed`     | CNN Fear Greed Index | <https://money.cnn.com/data/fear-and-greed/>
 `events`        | economic impact events | <https://finnhub.io>
 `fred`          | display customized FRED data | <https://fred.stlouisfed.org>
 `vixcls`        | Volatility Index | <https://fred.stlouisfed.org>

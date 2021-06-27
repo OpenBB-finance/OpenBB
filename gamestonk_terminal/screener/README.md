@@ -29,9 +29,9 @@ This menu aims to filter stocks based on pre-specified preset filters, and the u
 ## view <a name="view"></a>
 
 ```text
-usage: view [-p {template,sexy_year}]
+usage: view [-p {template,sexy_year,...}]
 ```
-View available presets under presets folder.
+View available presets under [presets folder](/gamestonk_terminal/screener/presets/).
 
 * -p : View specific preset filters.
 
@@ -45,7 +45,7 @@ View available presets under presets folder.
 usage: set [-p {template,sexy_year,...}]
 ```
 
-Set preset from under presets folder.
+Set preset from under [presets folder](/gamestonk_terminal/screener/presets/).
 
 * -p : Filter presets
 

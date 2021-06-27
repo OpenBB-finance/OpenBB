@@ -168,7 +168,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
 
         # Get ETS model
         model, title = get_exponential_smoothing_model(
-            df_stock["5. adjusted close"].values,
+            df_stock["Adj Close"].values,
             ns_parser.trend,
             ns_parser.seasonal,
             ns_parser.seasonal_periods,
@@ -178,7 +178,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
             forecast = [i if i > 0 else 0 for i in model.forecast(ns_parser.n_days)]
 
             l_pred_days = get_next_stock_market_days(
-                last_stock_day=df_stock["5. adjusted close"].index[-1],
+                last_stock_day=df_stock["Adj Close"].index[-1],
                 n_next_days=ns_parser.n_days,
             )
             df_pred = pd.Series(forecast, index=l_pred_days, name="Price")
@@ -197,7 +197,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
 
                 # Plotting
                 plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
+                plt.plot(df_stock.index, df_stock["Adj Close"], lw=2)
                 # BACKTESTING
                 if ns_parser.s_end_date:
                     plt.title(f"BACKTESTING: {title} on {s_ticker}")
@@ -217,7 +217,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                 )
                 plt.plot(
                     [df_stock.index[-1], df_pred.index[0]],
-                    [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                    [df_stock["Adj Close"].values[-1], df_pred.values[0]],
                     lw=1,
                     c="tab:green",
                     linestyle="--",
@@ -243,7 +243,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                 if ns_parser.s_end_date:
                     plt.plot(
                         df_future.index,
-                        df_future["5. adjusted close"],
+                        df_future["Adj Close"],
                         lw=2,
                         c="tab:blue",
                         ls="--",
@@ -251,8 +251,8 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                     plt.plot(
                         [df_stock.index[-1], df_future.index[0]],
                         [
-                            df_stock["5. adjusted close"].values[-1],
-                            df_future["5. adjusted close"].values[0],
+                            df_stock["Adj Close"].values[-1],
+                            df_future["Adj Close"].values[0],
                         ],
                         lw=1,
                         c="tab:blue",
@@ -270,7 +270,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                     plt.subplot(211)
                     plt.plot(
                         df_future.index,
-                        df_future["5. adjusted close"],
+                        df_future["Adj Close"],
                         lw=2,
                         c="tab:blue",
                         ls="--",
@@ -278,15 +278,15 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                     plt.plot(df_pred.index, df_pred, lw=2, c="green")
                     plt.scatter(
                         df_future.index,
-                        df_future["5. adjusted close"],
+                        df_future["Adj Close"],
                         c="tab:blue",
                         lw=3,
                     )
                     plt.plot(
                         [df_stock.index[-1], df_future.index[0]],
                         [
-                            df_stock["5. adjusted close"].values[-1],
-                            df_future["5. adjusted close"].values[0],
+                            df_stock["Adj Close"].values[-1],
+                            df_future["Adj Close"].values[0],
                         ],
                         lw=2,
                         c="tab:blue",
@@ -295,7 +295,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                     plt.scatter(df_pred.index, df_pred, c="green", lw=3)
                     plt.plot(
                         [df_stock.index[-1], df_pred.index[0]],
-                        [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                        [df_stock["Adj Close"].values[-1], df_pred.values[0]],
                         lw=2,
                         c="green",
                         ls="--",
@@ -319,16 +319,16 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                     plt.plot(
                         df_future.index,
                         100
-                        * (df_pred.values - df_future["5. adjusted close"].values)
-                        / df_future["5. adjusted close"].values,
+                        * (df_pred.values - df_future["Adj Close"].values)
+                        / df_future["Adj Close"].values,
                         lw=2,
                         c="red",
                     )
                     plt.scatter(
                         df_future.index,
                         100
-                        * (df_pred.values - df_future["5. adjusted close"].values)
-                        / df_future["5. adjusted close"].values,
+                        * (df_pred.values - df_future["Adj Close"].values)
+                        / df_future["Adj Close"].values,
                         c="red",
                         lw=5,
                     )
@@ -338,11 +338,8 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                         [
                             0,
                             100
-                            * (
-                                df_pred.values[0]
-                                - df_future["5. adjusted close"].values[0]
-                            )
-                            / df_future["5. adjusted close"].values[0],
+                            * (df_pred.values[0] - df_future["Adj Close"].values[0])
+                            / df_future["Adj Close"].values[0],
                         ],
                         lw=2,
                         ls="--",
@@ -369,7 +366,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
                     # Refactor prediction dataframe for backtesting print
                     df_pred.name = "Prediction"
                     df_pred = df_pred.to_frame()
-                    df_pred["Real"] = df_future["5. adjusted close"]
+                    df_pred["Real"] = df_future["Adj Close"]
 
                     if gtff.USE_COLOR:
 
@@ -391,9 +388,7 @@ def exponential_smoothing(other_args: List[str], s_ticker: str, df_stock: pd.Dat
 
                 else:
                     # Print prediction data
-                    print_pretty_prediction(
-                        df_pred, df_stock["5. adjusted close"].values[-1]
-                    )
+                    print_pretty_prediction(df_pred, df_stock["Adj Close"].values[-1])
                 print("")
 
             else:

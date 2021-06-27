@@ -43,6 +43,9 @@ class CryptoController:
 
     def print_help(self):
         """Print help"""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency"
+        )
         print("\nCryptocurrency:")
         print("   help            show this menu again")
         print("   q               quit this menu, and shows back to main menu")
@@ -136,6 +139,33 @@ class CryptoController:
         self.source = "BIN"
         print("")
 
+    # pylint: disable=inconsistent-return-statements
+    def call_ta(self, _):
+        """Process ta command"""
+        if not self.current_coin:
+            print("Please load a coin through either load or select", "\n")
+
+        elif self.current_df.empty:
+            print("Price dataframe is empty")
+
+        else:
+            # Coingecko does not provide candles so we can only provide close data.
+            if self.source == "CG":
+
+                self.current_df = self.current_df[["Price"]].rename(
+                    columns={"Price": "Close"}
+                )
+
+            self.current_df.index.name = "date"
+
+            ta_controller.menu(
+                self.current_coin,
+                self.current_df.index[0],
+                "",
+                self.current_df,
+                "crypto",
+            )
+            print("")
 
 def menu():
     crypto_controller = CryptoController()

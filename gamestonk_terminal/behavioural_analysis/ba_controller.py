@@ -58,7 +58,9 @@ class BehaviouralAnalysisController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/behavioural_analysis"
+        )
         print("\nBehavioural Analysis:")
         print("   help          show this behavioural analysis menu again")
         print("   q             quit this menu, and shows back to main menu")
@@ -226,11 +228,14 @@ class BehaviouralAnalysisController:
         finnhub_view.sentiment_stats(other_args, self.ticker)
 
 
-def menu(ticker: str, start: datetime):
+def menu(ticker: str, start: datetime, context: str = ""):
     """Behavioural Analysis Menu"""
 
     ba_controller = BehaviouralAnalysisController(ticker, start)
     ba_controller.call_help(None)
+
+    if context:
+        context = f"({context})>"
 
     while True:
         # Get input command from user
@@ -239,11 +244,11 @@ def menu(ticker: str, start: datetime):
                 {c: None for c in ba_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (ba)> ",
+                f"{get_flair()} {context}(ba)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (ba)> ")
+            an_input = input(f"{get_flair()} {context}(ba)> ")
 
         try:
             process_input = ba_controller.switch(an_input)

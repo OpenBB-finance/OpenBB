@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+from datetime import datetime
 import requests
 import pandas as pd
 from tabulate import tabulate
@@ -42,22 +43,44 @@ def darkshort(other_args: List[str]):
         default="dpp_dollar",
         dest="sort_field",
     )
+    parser.add_argument(
+        "-a",
+        "--ascending",
+        action="store_true",
+        default=False,
+        dest="ascending",
+        help="Data in ascending order",
+    )
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        dest="export",
+        help="Save dataframe as a csv file",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        d_fields = {
-            "sv": "Short Volume",
-            "sv_pct": "Short Volume %",
-            "nsv": "Net Short Volume",
-            "nsv_dollar": "Net Short Volume $",
-            "dpp": "Dark Pools Position",
-            "dpp_dollar": "Dark Pools Position $",
+        d_fields_endpoints = {
+            "sv": "Short+Volume",
+            "sv_pct": "Short+Volume+%25",
+            "nsv": "Net+Short+Volume",
+            "nsv_dollar": "Net+Short+Volume+$",
+            "dpp": "Dark+Pools+Position",
+            "dpp_dollar": "Dark+Pools+Position+$",
         }
 
-        link = "https://stockgridapp.herokuapp.com/get_dark_pool_data?top=Dark+Pools+Position+$&minmax=desc"
+        field = d_fields_endpoints[ns_parser.sort_field]
+
+        if ns_parser.ascending:
+            order = "asc"
+        else:
+            order = "desc"
+
+        link = f"https://stockgridapp.herokuapp.com/get_dark_pool_data?top={field}&minmax={order}"
+
         response = requests.get(link)
         df = pd.DataFrame(response.json()["data"])
 
@@ -72,7 +95,7 @@ def darkshort(other_args: List[str]):
                 "Dark Pools Position",
                 "Dark Pools Position $",
             ]
-        ].sort_values(by=d_fields[ns_parser.sort_field], ascending=False)
+        ]
         dp_date = df["Date"].values[0]
         df = df.drop(columns=["Date"])
         df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
@@ -101,8 +124,16 @@ def darkshort(other_args: List[str]):
                 showindex=False,
             )
         )
-
         print("")
+
+        if ns_parser.export:
+            now = datetime.now()
+            with open(
+                f"darkshort_{now.strftime('%Y%m%d_%H%M%S')}.csv",
+                "w",
+            ) as file:
+                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+
     except Exception as e:
         print(e, "\n")
 
@@ -136,6 +167,12 @@ def shortvol(other_args: List[str]):
         choices=["float", "dtc", "si"],
         default="float",
         dest="sort_field",
+    )
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        dest="export",
+        help="Save dataframe as a csv file",
     )
 
     try:
@@ -183,6 +220,14 @@ def shortvol(other_args: List[str]):
             )
         )
         print("")
+
+        if ns_parser.export:
+            now = datetime.now()
+            with open(
+                f"shortvol_{now.strftime('%Y%m%d_%H%M%S')}.csv",
+                "w",
+            ) as file:
+                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
 
     except Exception as e:
         print(e, "\n")

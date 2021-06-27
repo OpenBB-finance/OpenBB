@@ -43,10 +43,10 @@ class PredictionTechniquesController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
+        stock: pd.DataFrame,
     ):
         """Constructor"""
         self.stock = stock
@@ -61,7 +61,9 @@ class PredictionTechniquesController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/prediction_techniques"
+        )
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -170,10 +172,10 @@ class PredictionTechniquesController:
         neural_networks_view.conv1d(other_args, self.ticker, self.stock)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
-    """Comparison Analysis Menu"""
+def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
+    """Prediction Techniques Menu"""
 
-    pred_controller = PredictionTechniquesController(stock, ticker, start, interval)
+    pred_controller = PredictionTechniquesController(ticker, start, interval, stock)
     pred_controller.call_help(None)
 
     while True:

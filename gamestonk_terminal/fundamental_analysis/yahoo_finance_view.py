@@ -7,7 +7,7 @@ from datetime import datetime
 import yfinance as yf
 import pandas as pd
 
-from gamestonk_terminal.dataframe_helpers import clean_df_index
+from gamestonk_terminal.fundamental_analysis.fa_helper import clean_df_index
 from gamestonk_terminal.helper_funcs import (
     long_number_format,
     parse_known_args_and_warn,

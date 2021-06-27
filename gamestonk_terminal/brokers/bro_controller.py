@@ -53,9 +53,11 @@ class BrokersController:
 
     def print_help(self):
         """Print help"""
-
         print(
-            "Brokers Supported:\n"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/brokers"
+        )
+        print(
+            "\nBrokers Supported:\n"
             "   ally - Ally Invest\n"
             "   alp  - Alpaca\n"
             "   rh   - Robinhood\n"
@@ -206,7 +208,7 @@ def menu():
         "does not take advantage of your data.\n"
         "   - HOWEVER, our project imports almost 200 different open source python modules. Therefore, it "
         "is impossible for us to check the coding standards and security of each of these modules. "
-        "Hence why adding this disclaimer here."
+        "Hence why adding this disclaimer here.\n"
     )
     bro_controller.print_help()
 

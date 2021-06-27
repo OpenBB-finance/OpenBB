@@ -15,8 +15,8 @@
 [![Bugs Open][bugs-open-shield]][bugs-open-url]
 [![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
-[![Build Status](https://github.com/DidierRLopes/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DidierRLopes/GamestonkTerminal/actions)
-[![GitHub release](https://img.shields.io/github/release/DidierRLopes/GamestonkTerminal.svg?maxAge=3600)](https://github.com/DidierRLopes/GamestonkTerminal/releases)
+[![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
+[![GitHub release](https://img.shields.io/github/release/GamestonkTerminal/GamestonkTerminal.svg?maxAge=3600)](https://github.com/GamestonkTerminal/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
@@ -25,7 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/DidierRLopes/GamestonkTerminal">
+  <a href="https://github.com/GamestonkTerminal/GamestonkTerminal">
     <img src="images/gst_logo_lockup_rGreen_with_letters.png" alt="Logo" width="800" height="276">
   </a>
 
@@ -34,16 +34,16 @@
   <p align="center">
     The next best thing after Bloomberg Terminal. #weliketheterminal
     <br />
-    <a href="https://github.com/DidierRLopes/GamestonkTerminal/blob/main/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
     &nbsp · &nbsp
-    <a href="https://github.com/DidierRLopes/GamestonkTerminal/tree/main/gamestonk_terminal/README.md"><strong>FEATURES »</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/README.md"><strong>FEATURES »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/DidierRLopes/GamestonkTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D">Report Bug</a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D">Report Bug</a>
     ·
-    <a href="https://github.com/DidierRLopes/GamestonkTerminal/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D">Suggest Improvement</a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D">Suggest Improvement</a>
     ·
-    <a href="https://github.com/DidierRLopes/GamestonkTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D">Request Feature</a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D">Request Feature</a>
   </p>
 </p>
 
@@ -122,8 +122,8 @@ conda install -c anaconda git
 
 3. Clone the Project
 
-  - Via HTTPS: `git clone https://github.com/DidierRLopes/GamestonkTerminal.git`
-  - via SSH:  `git clone git@github.com:DidierRLopes/GamestonkTerminal.git`
+  - Via HTTPS: `git clone https://github.com/GamestonkTerminal/GamestonkTerminal.git`
+  - via SSH:  `git clone git@github.com:GamestonkTerminal/GamestonkTerminal.git`
 
 4. Navigate into the project's folder
 
@@ -167,7 +167,7 @@ After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk T
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/DidierRLopes/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
+**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
 
@@ -313,7 +313,9 @@ Example:
 <!-- CONTRIBUTING -->
 ## Contributing
 
-There are 3 main ways of contributing to this project.
+There are 3 main ways of contributing to this project. 
+
+For a 1h coding session where the architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
 
 **Become a Contributor 🦍**
 
@@ -333,9 +335,9 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 
 Recommended if you adopted a strategy of buying high and selling low.
 
-We are interested in your view on what sort of [features](https://github.com/DidierRLopes/GamestonkTerminal/issues) would make you buy even higher and selling even lower.
+We are interested in your view on what sort of [features](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) would make you buy even higher and selling even lower.
 
-Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a [bug](https://github.com/DidierRLopes/GamestonkTerminal/issues) so that the team can fix, and keep the old ways.
+Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a [bug](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) so that the team can fix, and keep the old ways.
 
 
 **Join the 🙌 💎 Gang**
@@ -347,7 +349,7 @@ Welcome to the club, and feel free to support the developers behind this amazing
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/DidierRLopes/GamestonkTerminal/blob/main/LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/LICENSE) for more information.
 
 ## Disclaimer
 
@@ -394,19 +396,19 @@ cclauss, shadycuz, lolrenx, buzzCraft, clothespin, arcutright, jperkins12, nodes
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
-[contributors-url]: https://github.com/DidierRLopes/GamestonkTerminal/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
-[forks-url]: https://github.com/DidierRLopes/GamestonkTerminal/network/members
-[stars-shield]: https://img.shields.io/github/stars/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
-[stars-url]: https://github.com/DidierRLopes/GamestonkTerminal/stargazers
-[issues-shield]: https://img.shields.io/github/issues/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge&color=blue
-[issues-url]: https://github.com/DidierRLopes/GamestonkTerminal/issues
-[bugs-open-shield]: https://img.shields.io/github/issues/DidierRLopes/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=yellow
-[bugs-open-url]: https://github.com/DidierRLopes/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aopen
-[bugs-closed-shield]: https://img.shields.io/github/issues-closed/DidierRLopes/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=success
-[bugs-closed-url]: https://github.com/DidierRLopes/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aclosed
-[license-shield]: https://img.shields.io/github/license/DidierRLopes/GamestonkTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/DidierRLopes/GamestonkTerminal/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
+[contributors-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
+[forks-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/network/members
+[stars-shield]: https://img.shields.io/github/stars/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
+[stars-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/stargazers
+[issues-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge&color=blue
+[issues-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues
+[bugs-open-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=yellow
+[bugs-open-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aopen
+[bugs-closed-shield]: https://img.shields.io/github/issues-closed/GamestonkTerminal/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=success
+[bugs-closed-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aclosed
+[license-shield]: https://img.shields.io/github/license/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
+[license-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/DidierRLopes

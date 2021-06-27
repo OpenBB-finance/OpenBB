@@ -3,17 +3,17 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.econ import fred_view
-from gamestonk_terminal.econ import finnhub_view
+from gamestonk_terminal.economy import fred_view
+from gamestonk_terminal.economy import finnhub_view
+from gamestonk_terminal.economy import cnn_view
 
 
-class EconController:
-    """Econ Controller"""
+class EconomyController:
+    """Economy Controller"""
 
     # Command choices
     CHOICES = [
@@ -33,6 +33,7 @@ class EconController:
         "fedfunds",
         "aaa",
         "dexcaus",
+        "feargreed",
     ]
 
     def __init__(self):
@@ -46,12 +47,15 @@ class EconController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy"
+        )
         print("\nEconomic Data:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print(" ")
+        print("   feargreed     CNN Fear and Greed Index")
         print("   events        economic impact events [Finnhub]")
         print(
             "   fred          display customized FRED data from https://fred.stlouisfed.org"
@@ -150,12 +154,15 @@ class EconController:
         """Process dexcaus command"""
         fred_view.display_fred(other_args, "DEXCAUS")
 
+    def call_feargreed(self, other_args: List[str]):
+        """Process feargreed command"""
+        cnn_view.fear_and_greed_index(other_args)
+
 
 def menu():
     """Econ Menu"""
 
-    econ_controller = EconController()
-    plt.close("all")
+    econ_controller = EconomyController()
     econ_controller.print_help()
 
     # Loop forever and ever
