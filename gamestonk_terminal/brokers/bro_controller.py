@@ -53,9 +53,11 @@ class BrokersController:
 
     def print_help(self):
         """Print help"""
-
         print(
-            "Brokers Supported:\n"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/brokers"
+        )
+        print(
+            "\nBrokers Supported:\n"
             "   ally - Ally Invest\n"
             "   alp  - Alpaca\n"
             "   rh   - Robinhood\n"

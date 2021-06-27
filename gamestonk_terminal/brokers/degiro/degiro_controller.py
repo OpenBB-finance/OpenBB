@@ -31,6 +31,7 @@ class DegiroController:
         "quit",
         "topnews",
         "update",
+        "help",
     ]
 
     def __init__(self):
@@ -153,9 +154,8 @@ class DegiroController:
 
         self.__degiro_view.create(ns_parser=ns_parser)
 
-    def help(self):
+    def help(self, _):
         """Show the help menu."""
-
         DegiroView.help_display()
 
     def hold(self, l_args):
@@ -362,7 +362,7 @@ def menu():
 
     # SETUP CONTROLLER
     degiro_controller = DegiroController()
-    degiro_controller.help()
+    degiro_controller.help(None)
 
     while True:
         # Get input command from user

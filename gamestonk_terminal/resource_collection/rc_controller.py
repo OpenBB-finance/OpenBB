@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 import webbrowser
-from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -37,7 +36,9 @@ class ResourceCollectionController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/resource_collection"
+        )
         print("\nResources:")
         print("   help          show this behavioural analysis menu again")
         print("   q             quit this menu, and shows back to main menu")
@@ -82,32 +83,32 @@ class ResourceCollectionController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_hfletters(self, other_args: List[str]):
+    def call_hfletters(self, _):
         """Process hfletters command"""
         webbrowser.open("https://miltonfmr.com/hedge-fund-letters/")
         print("")
 
-    def call_arxiv(self, other_args: List[str]):
+    def call_arxiv(self, _):
         """Process arxiv command"""
         webbrowser.open("https://arxiv.org")
         print("")
 
-    def call_finra(self, other_args: List[str]):
+    def call_finra(self, _):
         """Process finra command"""
         webbrowser.open("https://www.finra.org/#/")
         print("")
 
-    def call_edgar(self, other_args: List[str]):
+    def call_edgar(self, _):
         """Process edgar command"""
         webbrowser.open("https://www.sec.gov/edgar.shtml")
         print("")
 
-    def call_fred(self, other_args: List[str]):
+    def call_fred(self, _):
         """Process fred command"""
         webbrowser.open("https://fred.stlouisfed.org")
         print("")
 
-    def call_learn(self, other_args: List[str]):
+    def call_learn(self, _):
         """Process learn command"""
         webbrowser.open("https://moongangcapital.com/free-stock-market-resources/")
         print("")

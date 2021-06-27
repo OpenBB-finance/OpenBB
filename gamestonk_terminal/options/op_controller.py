@@ -26,7 +26,7 @@ class OptionsController:
         self.yf_ticker_data = yf.Ticker(self.ticker)
         self.expiry_date = self.yf_ticker_data.options[0]
         self.options = self.yf_ticker_data.option_chain(self.expiry_date)
-        self.last_adj_close_price = stock["5. adjusted close"].values[-1]
+        self.last_adj_close_price = stock["Adj Close"].values[-1]
 
         self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
         self.op_parser.add_argument(
@@ -82,6 +82,9 @@ class OptionsController:
     @staticmethod
     def print_help(expiry_date):
         """Print help."""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options"
+        )
         print("\nOptions:")
         print("   help          show this  menu again")
         print("   q             quit this menu, and shows back to main menu")

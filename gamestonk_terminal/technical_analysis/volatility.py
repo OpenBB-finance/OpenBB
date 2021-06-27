@@ -70,7 +70,7 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.bbands(
-                close=df_stock["5. adjusted close"],
+                close=df_stock["Adj Close"],
                 length=ns_parser.n_length,
                 std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
@@ -80,7 +80,7 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
         # Intraday
         else:
             df_ta = ta.bbands(
-                close=df_stock["4. close"],
+                close=df_stock["Close"],
                 length=ns_parser.n_length,
                 std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
@@ -89,11 +89,9 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
 
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_ticker == "1440min":
-            plt.plot(
-                df_stock.index, df_stock["5. adjusted close"].values, color="k", lw=3
-            )
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, color="k", lw=3)
+            plt.plot(df_stock.index, df_stock["Close"].values, color="k", lw=3)
         plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
         plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
         plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "g", lw=2)

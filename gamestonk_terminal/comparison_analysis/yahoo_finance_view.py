@@ -128,7 +128,7 @@ def historical(
             plt.plot(
                 df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
             )
-            # plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=2)
+            # plt.plot(df_stock.index, df_stock["Adj Close"].values, lw=2)
             l_min = [df_stock.index[0]]
             l_leg = [ticker]
 

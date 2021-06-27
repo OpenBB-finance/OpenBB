@@ -28,6 +28,9 @@ class ETFController:
 
     def print_help(self):
         """Print help"""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf"
+        )
         print("\nETF:")
         print("   help          show this menu again")
         print("   q             quit this menu, and shows back to main menu")

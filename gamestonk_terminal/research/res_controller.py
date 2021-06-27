@@ -49,10 +49,11 @@ class ResearchController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/research"
+        )
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -107,7 +108,7 @@ class ResearchController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""

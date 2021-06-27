@@ -19,6 +19,7 @@ import pytz
 from tabulate import tabulate
 import git
 
+# pylint: disable=no-member
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -156,6 +157,17 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                     symbol=ns_parser.s_ticker, outputsize="full"
                 )
 
+                df_stock_candidate.columns = [
+                    val.split(". ")[1].capitalize()
+                    for val in df_stock_candidate.columns
+                ]
+
+                df_stock_candidate = df_stock_candidate.rename(
+                    columns={
+                        "Adjusted close": "Adj Close",
+                    }
+                )
+
                 # Check that loading a stock was not successful
                 # pylint: disable=no-member
                 if df_stock_candidate.empty:
@@ -179,16 +191,6 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
 
-                df_stock_candidate = df_stock_candidate.rename(
-                    columns={
-                        "Open": "1. open",
-                        "High": "2. high",
-                        "Low": "3. low",
-                        "Close": "4. close",
-                        "Adj Close": "5. adjusted close",
-                        "Volume": "6. volume",
-                    }
-                )
                 df_stock_candidate.index.name = "date"
 
             # Check if start time from dataframe is more recent than specified
@@ -209,6 +211,18 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                     outputsize="full",
                     interval=str(ns_parser.n_interval) + "min",
                 )
+
+                df_stock_candidate.columns = [
+                    val.split(". ")[1].capitalize()
+                    for val in df_stock_candidate.columns
+                ]
+
+                df_stock_candidate = df_stock_candidate.rename(
+                    columns={
+                        "Adjusted close": "Adj Close",
+                    }
+                )
+
                 s_interval = str(ns_parser.n_interval) + "min"
                 # Check that loading a stock was not successful
                 # pylint: disable=no-member
@@ -267,16 +281,6 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                 else:
                     s_start = ns_parser.s_start_date
 
-                df_stock_candidate = df_stock_candidate.rename(
-                    columns={
-                        "Open": "1. open",
-                        "High": "2. high",
-                        "Low": "3. low",
-                        "Close": "4. close",
-                        "Adj Close": "5. adjusted close",
-                        "Volume": "6. volume",
-                    }
-                )
                 df_stock_candidate.index.name = "date"
 
         s_intraday = (f"Intraday {s_interval}", "Daily")[ns_parser.n_interval == 1440]
@@ -570,7 +574,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         if len([i for i in ln_col_idx if i > 4]) > 0:
             print("An index bigger than 4 was given, which is wrong. Try again")
             return
-        # Append last column of df to be filtered which corresponds to: 6. Volume
+        # Append last column of df to be filtered which corresponds to: Volume
         ln_col_idx.append(5)
         # Slice dataframe from the starting date YYYY-MM-DD selected
         df_stock = df_stock[ns_parser.s_start_date :]

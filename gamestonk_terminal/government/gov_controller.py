@@ -58,7 +58,9 @@ class GovController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/government"
+        )
         print("\nExploratory Data Analysis:")
         print("   help             show this comparison analysis menu again")
         print("   q                quit this menu, and shows back to main menu")

@@ -151,15 +151,15 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         # Machine Learning model
         if ns_parser.s_order:
             t_order = tuple(int(ord) for ord in ns_parser.s_order.split(","))
-            model = ARIMA(df_stock["5. adjusted close"].values, order=t_order).fit()
+            model = ARIMA(df_stock["Adj Close"].values, order=t_order).fit()
             l_predictions = model.predict(
-                start=len(df_stock["5. adjusted close"]) + 1,
-                end=len(df_stock["5. adjusted close"]) + ns_parser.n_days,
+                start=len(df_stock["Adj Close"]) + 1,
+                end=len(df_stock["Adj Close"]) + ns_parser.n_days,
             )
         else:
             if ns_parser.b_seasonal:
                 model = pmdarima.auto_arima(
-                    df_stock["5. adjusted close"].values,
+                    df_stock["Adj Close"].values,
                     error_action="ignore",
                     seasonal=True,
                     m=5,
@@ -167,7 +167,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 )
             else:
                 model = pmdarima.auto_arima(
-                    df_stock["5. adjusted close"].values,
+                    df_stock["Adj Close"].values,
                     error_action="ignore",
                     seasonal=False,
                     information_criteria=ns_parser.s_ic,
@@ -178,7 +178,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
 
         # Prediction data
         l_pred_days = get_next_stock_market_days(
-            last_stock_day=df_stock["5. adjusted close"].index[-1],
+            last_stock_day=df_stock["Adj Close"].index[-1],
             n_next_days=ns_parser.n_days,
         )
         df_pred = pd.Series(l_predictions, index=l_pred_days, name="Price")
@@ -189,7 +189,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
 
         # Plotting
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.plot(df_stock.index, df_stock["5. adjusted close"], lw=2)
+        plt.plot(df_stock.index, df_stock["Adj Close"], lw=2)
         if ns_parser.s_order:
             # BACKTESTING
             if ns_parser.s_end_date:
@@ -220,7 +220,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         plt.plot(
             [df_stock.index[-1], df_pred.index[0]],
-            [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+            [df_stock["Adj Close"].values[-1], df_pred.values[0]],
             lw=1,
             c="tab:green",
             linestyle="--",
@@ -238,7 +238,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
         if ns_parser.s_end_date:
             plt.plot(
                 df_future.index,
-                df_future["5. adjusted close"],
+                df_future["Adj Close"],
                 lw=2,
                 c="tab:blue",
                 ls="--",
@@ -246,8 +246,8 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             plt.plot(
                 [df_stock.index[-1], df_future.index[0]],
                 [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_future["5. adjusted close"].values[0],
+                    df_stock["Adj Close"].values[-1],
+                    df_future["Adj Close"].values[0],
                 ],
                 lw=1,
                 c="tab:blue",
@@ -265,20 +265,18 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             plt.subplot(211)
             plt.plot(
                 df_future.index,
-                df_future["5. adjusted close"],
+                df_future["Adj Close"],
                 lw=2,
                 c="tab:blue",
                 ls="--",
             )
             plt.plot(df_pred.index, df_pred, lw=2, c="green")
-            plt.scatter(
-                df_future.index, df_future["5. adjusted close"], c="tab:blue", lw=3
-            )
+            plt.scatter(df_future.index, df_future["Adj Close"], c="tab:blue", lw=3)
             plt.plot(
                 [df_stock.index[-1], df_future.index[0]],
                 [
-                    df_stock["5. adjusted close"].values[-1],
-                    df_future["5. adjusted close"].values[0],
+                    df_stock["Adj Close"].values[-1],
+                    df_future["Adj Close"].values[0],
                 ],
                 lw=2,
                 c="tab:blue",
@@ -287,7 +285,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             plt.scatter(df_pred.index, df_pred, c="green", lw=3)
             plt.plot(
                 [df_stock.index[-1], df_pred.index[0]],
-                [df_stock["5. adjusted close"].values[-1], df_pred.values[0]],
+                [df_stock["Adj Close"].values[-1], df_pred.values[0]],
                 lw=2,
                 c="green",
                 ls="--",
@@ -310,16 +308,16 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             plt.plot(
                 df_future.index,
                 100
-                * (df_pred.values - df_future["5. adjusted close"].values)
-                / df_future["5. adjusted close"].values,
+                * (df_pred.values - df_future["Adj Close"].values)
+                / df_future["Adj Close"].values,
                 lw=2,
                 c="red",
             )
             plt.scatter(
                 df_future.index,
                 100
-                * (df_pred.values - df_future["5. adjusted close"].values)
-                / df_future["5. adjusted close"].values,
+                * (df_pred.values - df_future["Adj Close"].values)
+                / df_future["Adj Close"].values,
                 c="red",
                 lw=5,
             )
@@ -329,8 +327,8 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
                 [
                     0,
                     100
-                    * (df_pred.values[0] - df_future["5. adjusted close"].values[0])
-                    / df_future["5. adjusted close"].values[0],
+                    * (df_pred.values[0] - df_future["Adj Close"].values[0])
+                    / df_future["Adj Close"].values[0],
                 ],
                 lw=2,
                 ls="--",
@@ -356,7 +354,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
             # Refactor prediction dataframe for backtesting print
             df_pred.name = "Prediction"
             df_pred = df_pred.to_frame()
-            df_pred["Real"] = df_future["5. adjusted close"]
+            df_pred["Real"] = df_future["Adj Close"]
 
             if gtff.USE_COLOR:
 
@@ -376,7 +374,7 @@ def arima(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
 
         else:
             # Print prediction data
-            print_pretty_prediction(df_pred, df_stock["5. adjusted close"].values[-1])
+            print_pretty_prediction(df_pred, df_stock["Adj Close"].values[-1])
         print("")
 
     except Exception as e:

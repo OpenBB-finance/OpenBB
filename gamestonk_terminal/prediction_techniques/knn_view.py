@@ -136,7 +136,7 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
             dates_forecast_input,
             scaler,
             is_error,
-        ) = prepare_scale_train_valid_test(df_stock["5. adjusted close"], ns_parser)
+        ) = prepare_scale_train_valid_test(df_stock["Adj Close"], ns_parser)
         if is_error:
             print("Error preparing data")
             return
@@ -161,9 +161,7 @@ def k_nearest_neighbors(other_args: List[str], s_ticker: str, df_stock: pd.DataF
         forecast_data_df = pd.DataFrame(
             [i if i > 0 else 0 for i in forecast_data.T], index=future_dates
         )
-        print_pretty_prediction(
-            forecast_data_df[0], df_stock["5. adjusted close"].values[-1]
-        )
+        print_pretty_prediction(forecast_data_df[0], df_stock["Adj Close"].values[-1])
         plot_data_predictions(
             df_stock,
             preds,
