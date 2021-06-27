@@ -69,7 +69,9 @@ class CryptoTechnicalAnalysisController(TAC):
 def menu(crypto: pd.DataFrame, ticker: str, start: datetime, interval: str):
     """Crypto Technical Analysis Menu"""
 
-    ta_controller = CryptoTechnicalAnalysisController(crypto, ticker, start, interval)
+    ta_controller = CryptoTechnicalAnalysisController(
+        stock=crypto, ticker=ticker, start=start, interval=interval
+    )
     ta_controller.call_help(None)
 
     while True:
