@@ -4,6 +4,10 @@ This menu aims to give insight on options.
 
 This menu aims to give insight on options. Options can cause significant share price movement, and option pricing gives info about market sentiment for a ticker. The usage of the following commands along with an example will be exploited below:
 
+* [disp](#disp)
+  * Display all preset screeners filters
+* [scr](#scr)
+  * Output screener options
 * [exp](#exp)
   * See/set expiry date [Yahoo Finance]
 * [voi](#voi)
@@ -17,6 +21,30 @@ This menu aims to give insight on options. Options can cause significant share p
 * [info](#info)
   * _**This requires selenium webdriver installed**_
   * Display option information [Source: Barchart.com]
+
+
+## disp <a name="disp"></a>
+
+```text
+usage: view [-p {template}]
+```
+
+View available presets under [presets folder](/gamestonk_terminal/options/presets/).
+
+* -p : View specific preset
+
+
+## scr <a name="scr"></a>
+
+```text
+usage: scr [-p {template}]
+```
+
+Sreener filter output from https://ops.syncretism.io/index.html. Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV:
+Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market
+Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book. [Source: Ops.Syncretism]
+
+* -p : Filter presets
 
 
 ## exp <a name="exp"></a>
