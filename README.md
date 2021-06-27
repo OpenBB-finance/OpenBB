@@ -153,7 +153,11 @@ Note: At the end, you can deactivate it with: `conda deactivate`.
 poetry install
 ```
 
-This is a library for package management, and ensures a smoother experience than: ``pip install -r requirements.txt``
+If you are having trouble with Poetry (e.g. on a Windows system), simply install requirements.txt with pip
+
+```
+pip install -r requirements.txt
+```
 
 8.  You're ready to Gamestonk it!
 
