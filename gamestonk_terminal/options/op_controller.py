@@ -116,7 +116,7 @@ class OptionsController:
         print("   quit          quit to abandon program")
         print("")
         print("   disp          display all preset screeners filters")
-        print("   scr           output screener optioms")
+        print("   scr           output screener options")
         print("")
         if expiry_date:
             print(f"Selected expiry date: {expiry_date}")
