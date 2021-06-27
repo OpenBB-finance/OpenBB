@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+from datetime import datetime
 import requests
 import pandas as pd
 from tabulate import tabulate
@@ -49,6 +50,12 @@ def darkshort(other_args: List[str]):
         default=False,
         dest="ascending",
         help="Data in ascending order",
+    )
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        dest="export",
+        help="Save dataframe as a csv file",
     )
 
     try:
@@ -117,8 +124,16 @@ def darkshort(other_args: List[str]):
                 showindex=False,
             )
         )
-
         print("")
+
+        if ns_parser.export:
+            now = datetime.now()
+            with open(
+                f"darkshort_{now.strftime('%Y%m%d_%H%M%S')}.csv",
+                "w",
+            ) as file:
+                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+
     except Exception as e:
         print(e, "\n")
 
@@ -152,6 +167,12 @@ def shortvol(other_args: List[str]):
         choices=["float", "dtc", "si"],
         default="float",
         dest="sort_field",
+    )
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        dest="export",
+        help="Save dataframe as a csv file",
     )
 
     try:
@@ -199,6 +220,14 @@ def shortvol(other_args: List[str]):
             )
         )
         print("")
+
+        if ns_parser.export:
+            now = datetime.now()
+            with open(
+                f"shortvol_{now.strftime('%Y%m%d_%H%M%S')}.csv",
+                "w",
+            ) as file:
+                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
 
     except Exception as e:
         print(e, "\n")

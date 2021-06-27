@@ -44,7 +44,9 @@ def overview(other_args: List[str], ticker: str):
             outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short
             percent outstanding, Short percent float, Percent insiders, Percent institutions,
             Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend
-            date, Ex dividend date, Last split factor, and Last split date. [Source: Alpha Vantage]
+            date, Ex dividend date, Last split factor, and Last split date. Also, the C i k field
+            corresponds to Central Index Key, which can be used to search a company on
+            https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
         """,
     )
 
@@ -63,7 +65,7 @@ def overview(other_args: List[str], ticker: str):
             df_fa = pd.json_normalize(result.json())
             # Keep json data sorting in dataframe
             df_fa = df_fa[list(result.json().keys())].T
-            df_fa = df_fa.applymap(lambda x: long_number_format(x))
+            df_fa.iloc[5:] = df_fa.iloc[5:].applymap(lambda x: long_number_format(x))
             clean_df_index(df_fa)
             df_fa = df_fa.rename(
                 index={

@@ -212,6 +212,7 @@ usage: shortvol [-n NUM] [-r]
 Shows price vs short interest volume. [Source: Stockgrid]
 * -r: Flag to print raw data instead. 
 * -n: Number of last open market days to show. Default: 120, but if -r is set it's 10.
+* --export: Save dataframe as a csv file. Default: false.
 
 ![shortview](https://user-images.githubusercontent.com/25267873/122646172-c4ba6380-d115-11eb-8e5c-6ee3ab70095b.png)
 
@@ -227,6 +228,7 @@ usage: darkpos [-n NUM] [-r]
 Shows Net Short Vol. vs Position. [Source: Stockgrid]
 * -r: Flag to print raw data instead. 
 * -n: Number of last open market days to show. Default: 120, but if -r is set it's 10.
+* --export: Save dataframe as a csv file. Default: false.
 
 ![darkpos](https://user-images.githubusercontent.com/25267873/122646991-f03f4d00-d119-11eb-971f-b554bb4cdec4.png)
 

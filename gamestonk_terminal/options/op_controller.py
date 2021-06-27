@@ -10,7 +10,12 @@ import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.options import yahoo_view, tradier_view, barchart_view
+from gamestonk_terminal.options import (
+    yahoo_view,
+    tradier_view,
+    barchart_view,
+    syncretism_view,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -18,21 +23,44 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = ["help", "q", "quit", "exp", "voi", "vcalls", "vputs", "chains", "info"]
+    CHOICES = [
+        "help",
+        "q",
+        "quit",
+        "disp",
+        "scr",
+    ]
+
+    CHOICES_TICKER_DEPENDENT = [
+        "exp",
+        "voi",
+        "vcalls",
+        "vputs",
+        "chains",
+        "info",
+    ]
 
     def __init__(self, ticker: str, stock: pd.DataFrame):
         """Construct data."""
-        self.ticker = ticker
-        self.yf_ticker_data = yf.Ticker(self.ticker)
-        self.expiry_date = self.yf_ticker_data.options[0]
-        self.options = self.yf_ticker_data.option_chain(self.expiry_date)
-        self.last_adj_close_price = stock["Adj Close"].values[-1]
+        if ticker:
+            self.ticker = ticker
+            self.yf_ticker_data = yf.Ticker(self.ticker)
+            self.expiry_date = self.yf_ticker_data.options[0]
+            self.options = self.yf_ticker_data.option_chain(self.expiry_date)
+            self.last_adj_close_price = stock["5. adjusted close"].values[-1]
 
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-        self.op_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+            self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
+            self.op_parser.add_argument(
+                "cmd",
+                choices=self.CHOICES + self.CHOICES_TICKER_DEPENDENT,
+            )
+        else:
+            self.expiry_date = ""
+            self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
+            self.op_parser.add_argument(
+                "cmd",
+                choices=self.CHOICES,
+            )
 
     def expiry_dates(self, other_args: List[str]):
         """Print all available expiry dates."""
@@ -90,17 +118,22 @@ class OptionsController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-        print(f"Selected expiry date: {expiry_date}")
+        print("   disp          display all preset screeners filters")
+        print("   scr           output screener options")
         print("")
-        print("   exp           see/set expiry date")
-        print("   voi           volume + open interest options trading plot")
-        print("   vcalls        calls volume + open interest plot")
-        print("   vputs         puts volume + open interest plot")
-        print("")
-        print("   chains        display option chains")
-        print("   info          display option information (volatility, IV rank etc)")
-        print("")
-        return
+        if expiry_date:
+            print(f"Selected expiry date: {expiry_date}")
+            print("")
+            print("   exp           see/set expiry date")
+            print("   voi           volume + open interest options trading plot")
+            print("   vcalls        calls volume + open interest plot")
+            print("   vputs         puts volume + open interest plot")
+            print("")
+            print("   chains        display option chains")
+            print(
+                "   info          display option information (volatility, IV rank etc)"
+            )
+            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -170,6 +203,12 @@ class OptionsController:
 
     def call_info(self, other_args):
         barchart_view.print_options_data(self.ticker, other_args)
+
+    def call_disp(self, other_args):
+        syncretism_view.view_available_presets(other_args)
+
+    def call_scr(self, other_args):
+        syncretism_view.screener_output(other_args)
 
 
 def menu(ticker: str, stock: pd.DataFrame):

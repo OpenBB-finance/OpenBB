@@ -18,6 +18,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
+# pylint: disable=inconsistent-return-statements
+
 
 class FundamentalAnalysisController:
     """Fundamental Analysis Controller"""
@@ -180,15 +182,19 @@ class FundamentalAnalysisController:
         """Process av command"""
         ret = av_controller.menu(self.ticker, self.start, self.interval)
 
-        if ret is not True:
+        if ret is False:
             self.print_help()
+        else:
+            return True
 
     def call_fmp(self, _):
         """Process fmp command"""
         ret = fmp_controller.menu(self.ticker, self.start, self.interval)
 
-        if ret is not True:
+        if ret is False:
             self.print_help()
+        else:
+            return True
 
 
 def key_metrics_explained(other_args: List[str]):
