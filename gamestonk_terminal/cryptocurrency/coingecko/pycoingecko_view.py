@@ -1554,7 +1554,6 @@ def coin_list(other_args: List[str]):
             df = gecko.get_coin_list()[
                 ns_parser.skip : ns_parser.skip + ns_parser.limit
             ]
-            print(df)
         except Exception:
             df = gecko.get_coin_list()
         print(

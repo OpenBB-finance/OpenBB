@@ -69,6 +69,7 @@ class GeckoController:
         print("   defi            show global DeFi market info")
         print("   trending        show trending coins on CoinGecko")
         print("   most_voted      show most voted coins on CoinGecko")
+        print("   most_visited    show most visited coins on CoinGecko")
         print("   top_volume      show coins with highest volume on CoinGecko")
         print("   recently        show recently added on CoinGecko")
         print("   sentiment       show coins with most positive sentiment")
