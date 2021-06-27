@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import timedelta
+from datetime import datetime
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -47,6 +48,12 @@ def shortview(ticker: str, other_args: List[str]):
         default=False,
         help="Flag to print raw data instead",
         dest="raw",
+    )
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        dest="export",
+        help="Save dataframe as a csv file",
     )
 
     try:
@@ -161,6 +168,14 @@ def shortview(ticker: str, other_args: List[str]):
             plt.show()
         print("")
 
+        if ns_parser.export:
+            now = datetime.now()
+            with open(
+                f"shortview_{now.strftime('%Y%m%d_%H%M%S')}.csv",
+                "w",
+            ) as file:
+                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+
     except Exception as e:
         print(e, "\n")
 
@@ -195,6 +210,12 @@ def darkpos(ticker: str, other_args: List[str]):
         default=False,
         help="Flag to print raw data instead",
         dest="raw",
+    )
+    parser.add_argument(
+        "--export",
+        action="store_true",
+        dest="export",
+        help="Save dataframe as a csv file",
     )
 
     try:
@@ -273,6 +294,14 @@ def darkpos(ticker: str, other_args: List[str]):
 
             plt.show()
         print("")
+
+        if ns_parser.export:
+            now = datetime.now()
+            with open(
+                f"darkpos_{now.strftime('%Y%m%d_%H%M%S')}.csv",
+                "w",
+            ) as file:
+                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
 
     except Exception as e:
         print(e, "\n")
