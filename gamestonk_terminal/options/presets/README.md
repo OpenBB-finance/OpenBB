@@ -34,6 +34,7 @@ Then you can play with it on the terminal as shown:
 
 <img width="1218" alt="Captura de ecrã 2021-06-28, às 22 10 25" src="https://user-images.githubusercontent.com/25267873/123706431-2f7b4580-d860-11eb-9074-efa96278d241.png">
 
+7. Share with other Apes. You can do so by either creating yourself a Pull Request with this change, or asking a dev (e.g. @Sexy_Year) on our discord server to add it for you.
 
 ---
 
