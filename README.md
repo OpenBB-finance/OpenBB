@@ -375,9 +375,9 @@ Feel free to share loss porn, memes or any questions at:
 
 
 #### Shoutout to:
-* **pll_llq** and **hinxx** : Working towards a GUI using Qt.
+* **pll_llq**, **Chavithra** and **hinxx** : Working towards a GUI using Qt.
   * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
-* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.vercel.app.
+* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.netlify.app.
   * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
 * **Meghan Hone** : Managing Twitter account
 * **alokan** : Responsible by developing `Forex` menu
