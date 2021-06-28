@@ -1,5 +1,6 @@
 # PRESETS
 
+* [How to add presets](#how-to-add-presets)
 * [template](#template)
 * [sexy_year](#sexy_year)
 * [buffett_like](#buffett_like)
@@ -14,6 +15,12 @@
 * [rosenwald](#rosenwald)
 * [rosenwald_gtfo](#rosenwald_gtfo)
 * [undervalue](#undervalue)
+
+---
+
+1. Go to the folder GamestonkTerminal/gamestonk_terminal/options/presets. 
+
+2. There should be a `README.md` file and multiple `.ini` files. One of these `.ini` files should be named `template.ini`.
 
 ---
 
