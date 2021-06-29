@@ -80,8 +80,7 @@ def view_available_presets(other_args: List[str]):
                         description += line.strip()
                 print(f"\nPRESET: {preset}")
                 print(description.split("Description: ")[1].replace("#", ""))
-                print("")
-
+            print("")
     except Exception as e:
         print(e)
 
