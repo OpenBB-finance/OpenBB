@@ -3,9 +3,9 @@ import unittest
 
 try:
     from gamestonk_terminal.prediction_techniques.neural_networks_view import mlp
-except ModuleNotFoundError as e:
+except ModuleNotFoundError as e_module:
     print("One of the optional packages seems to be missing")
-    print(e)
+    print(e_module)
     print("Skipping the test")
 
 from gamestonk_terminal import feature_flags as gtff
@@ -20,7 +20,7 @@ class TestPredNeuralNetworks(unittest.TestCase):
         try:
             # Fix: need to move loading of ticker data into a df somewhere
             mlp([], "TLSA", None)
-        except NameError as e:
+        except NameError as e_name:
             print("One of the optional packages seems to be missing")
-            print(e)
+            print(e_name)
             print("Skipping the test")

@@ -17,7 +17,8 @@ import mplfinance as mpf
 import yfinance as yf
 import pytz
 from tabulate import tabulate
-import git
+
+# import git
 
 # pylint: disable=no-member
 
@@ -758,9 +759,10 @@ def bootup():
         print(e, "\n")
 
     # Print first welcome message and help
-    print(
-        f"\nWelcome to Gamestonk Terminal Beta ({str(git.Repo('.').head.commit)[:7]})"
-    )
+    print("\nWelcome to Gamestonk Terminal Beta")
+
+    # The commit has was commented out because the terminal was crashing due to git import for multiple users
+    # ({str(git.Repo('.').head.commit)[:7]})
 
     if gtff.ENABLE_THOUGHTS_DAY:
         print("-------------------")
