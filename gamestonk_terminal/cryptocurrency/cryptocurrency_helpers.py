@@ -18,3 +18,26 @@ def wrap_text_in_df(df: pd.DataFrame, w=55):  # pragma: no cover
     return df.applymap(
         lambda x: "\n".join(textwrap.wrap(x, width=w)) if isinstance(x, str) else x
     )
+
+
+def percent_to_float(s: str):
+    """Helper method to replace string pct like "123.56%" to float 1.2356
+    Parameters
+    ----------
+    s: string
+        string to replace
+    Returns
+    -------
+    float
+    """
+    s = str(float(s.rstrip("%")))
+    i = s.find(".")
+    if i == -1:
+        return int(s) / 100
+    if s.startswith("-"):
+        return -percent_to_float(s.lstrip("-"))
+    s = s.replace(".", "")
+    i -= 2
+    if i < 0:
+        return float("." + "0" * abs(i) + s)
+    return float(s[:i] + "." + s[i:])

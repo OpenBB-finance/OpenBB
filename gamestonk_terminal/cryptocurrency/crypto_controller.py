@@ -12,8 +12,7 @@ from gamestonk_terminal.cryptocurrency import (
     binance_model,
     coinmarketcap_view as cmc_view,
 )
-from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_coin_controller
-from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_overview_controller
+from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_controller
 
 
 class CryptoController:
@@ -22,8 +21,7 @@ class CryptoController:
         "help",
         "q",
         "quit",
-        "coin",
-        "overview",
+        "cg",
         "book",
         "trades",
         "candle",
@@ -50,16 +48,10 @@ class CryptoController:
         print("   help            show this menu again")
         print("   q               quit this menu, and shows back to main menu")
         print("   quit            quit to abandon program")
-        print(f"\nCurrent Coin: {self.current_coin}")
+        # print(f"\nCurrent Coin: {self.current_coin}")
         print("")
         print("Coingecko:")
-        print(
-            "   overview        navigate to CoinGecko Overview Menu (overall market statistics)"
-        )
-        print(
-            "   coin            navigate to CoinGecko Coin Menu (shows data for given Coin)"
-        )
-
+        print(">  cg             CoinGecko overview (market statistics) and coin menu")
         print("")
         print("CoinMarketCap:")
         print("   top           view top coins from coinmarketcap")
@@ -99,15 +91,8 @@ class CryptoController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_overview(self, _):
-        """Process degiro command."""
-        if pycoingecko_overview_controller.menu():
-            return True
-        print("")
-
-    def call_coin(self, _):
-        """Process degiro command."""
-        if pycoingecko_coin_controller.menu():
+    def call_cg(self, _):
+        if pycoingecko_controller.menu():
             return True
         print("")
 

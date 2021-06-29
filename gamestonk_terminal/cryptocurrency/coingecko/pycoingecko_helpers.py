@@ -100,15 +100,18 @@ def convert(word):
 
 
 def collateral_auditors_parse(args):  # pragma: no cover
-    if args and args[0] == "N/A":
-        collateral = args[1:]
-        auditors = []
-    else:
-        n_elem = int(args[0])
-        auditors = args[1 : n_elem + 1]
-        collateral = args[n_elem + 1 :]
+    try:
+        if args and args[0] == "N/A":
+            collateral = args[1:]
+            auditors = []
+        else:
+            n_elem = int(args[0])
+            auditors = args[1 : n_elem + 1]
+            collateral = args[n_elem + 1 :]
 
-    return auditors, collateral
+        return auditors, collateral
+    except ValueError:
+        return [], []
 
 
 def swap_columns(df):

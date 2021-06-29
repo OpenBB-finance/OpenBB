@@ -25,30 +25,7 @@ so indicators that rely on anything other than close will fail with an error.
 * [balance](#balance)
   * show coin balance
 
-
-# COINGECKO <a name="COINGECKO"></a>
-## overview  <a name="overview"></a>
-
-````
-usage: overview
-````
-
-load CoinGecko overview menu. In which you can find a lot of useful data like top defi coins, trending coins, top nfts, companies that hold btc or eth and many others
-
-<img width="990" alt="crypto" src="https://user-images.githubusercontent.com/275820/123521953-48e28d00-d6ba-11eb-8607-2f211b3435ad.png">
-
-## coin  <a name="coin"></a>
-
-````
-usage: coin
-````
-
-load CoinGecko coin menu. In which you can investigate specific coin. See description of coin, some market statistics,
-charts, technical analysis and many others.
-
-<img width="990" alt="crypto" src="https://user-images.githubusercontent.com/275820/123521976-67e11f00-d6ba-11eb-9076-a769450e2b3f.png">
-
-
+[COINGECKO standalone menu](/gamestonk_terminal/cryptocurrency/coingecko/)
 
 # COINMARKETCAP <a name="COINMARKETCAP"></a>
 

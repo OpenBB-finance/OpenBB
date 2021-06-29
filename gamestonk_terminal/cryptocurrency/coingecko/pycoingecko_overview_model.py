@@ -4,7 +4,10 @@ import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import wrap_text_in_df
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    wrap_text_in_df,
+    percent_to_float,
+)
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_helpers import (
     changes_parser,
     replace_qm,
@@ -49,7 +52,7 @@ COLUMNS = {
     "market_cap_percentage": "market_cap_percentage",
     "company": "company",
     "ticker": "ticker",
-    "last_added": "last_added",
+    "last_added": "added",
     "title": "title",
     "author": "author",
     "posted": "posted",
@@ -173,7 +176,6 @@ def get_companies_assets(endpoint="bitcoin"):
             COLUMNS["url"],
         ],
     )
-    df = wrap_text_in_df(df)
     return df
 
 
@@ -208,18 +210,26 @@ def get_gainers_or_losers(period="1h", typ="gainers"):
     for row in rows:
         url = GECKO_BASE_URL + row.find("a")["href"]
         symbol, name, *_, volume, price, change = clean_row(row)
+        try:
+            change = percent_to_float(change)
+        except (ValueError, TypeError):
+            ...
         results.append([symbol, name, volume, price, change, url])
-    return pd.DataFrame(
+    df = pd.DataFrame(
         results,
         columns=[
             COLUMNS["symbol"],
             COLUMNS["name"],
             "volume",
             COLUMNS["price"],
-            f"change_{period}",
+            f"%change_{period}",
             COLUMNS["url"],
         ],
     )
+    df.index = df.index + 1
+    df.reset_index(inplace=True)
+    df = df.rename(columns={"index": "rank"})
+    return df
 
 
 def get_btc_price():
@@ -388,7 +398,7 @@ def get_recently_added_coins():
     Returns
     -------
     pandas.DataFrame
-        name, symbol, price, change_1h, change_24h, volume_24h,  market_cap, last_added, url
+        name, symbol, price, change_1h, change_24h, last_added
     """
     columns = [
         COLUMNS["name"],
@@ -396,8 +406,6 @@ def get_recently_added_coins():
         COLUMNS["price"],
         COLUMNS["change_1h"],
         COLUMNS["change_24h"],
-        COLUMNS["volume_24h"],
-        COLUMNS["market_cap"],
         COLUMNS["last_added"],
         COLUMNS["url"],
     ]
@@ -415,26 +423,16 @@ def get_recently_added_coins():
             _,
             price,
             *changes,
-            market_cap,
-            volume,
+            _,
+            _volume,
             last_added,
         ) = row_cleaned
         change_1h, change_24h, _ = changes_parser(changes)
-        results.append(
-            [
-                name,
-                symbol,
-                price,
-                change_1h,
-                change_24h,
-                market_cap,
-                volume,
-                last_added,
-                url,
-            ]
-        )
+        results.append([name, symbol, price, change_1h, change_24h, last_added, url])
     df = replace_qm(pd.DataFrame(results, columns=columns))
-    df = wrap_text_in_df(df, w=42)
+    df.index = df.index + 1
+    df.reset_index(inplace=True)
+    df.rename(columns={"index": "rank"}, inplace=True)
     return df
 
 
@@ -509,14 +507,16 @@ def get_yield_farms():
         "audits",
         "collateral",
         "value_locked",
-        "returns_year",
-        "returns_hour",
+        "return_year",
     ]
     url = "https://www.coingecko.com/en/yield-farming"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
     results = []
     for row in rows:
         row_cleaned = clean_row(row)[:-2]
+        if " New" in row_cleaned:  # find better way to fix it in future
+            row_cleaned.remove(" New")
+
         if len(row_cleaned) == 7:
             row_cleaned.insert(2, None)
         (
@@ -527,7 +527,7 @@ def get_yield_farms():
             _,
             value_locked,
             apy1,
-            apy2,
+            _,  # hourly removed for most cases it's 0.00 so it doesn't bring any value for user
         ) = row_cleaned
         auditors, collateral = collateral_auditors_parse(others)
         auditors = ", ".join(aud.strip() for aud in auditors)
@@ -541,11 +541,15 @@ def get_yield_farms():
                 collateral,
                 value_locked,
                 apy1,
-                apy2,
             ]
         )
-    df = pd.DataFrame(results, columns=columns).set_index("rank").replace({"": None})
-    df = wrap_text_in_df(df)
+    df = pd.DataFrame(results, columns=columns).replace({"": None})
+    for col in ["return_year"]:
+        df[col] = df[col].apply(
+            lambda x: x.replace(" Yearly", "") if isinstance(x, str) else x
+        )
+    df["rank"] = df["rank"].astype(int)
+    df = wrap_text_in_df(df, w=30)
     return df
 
 
