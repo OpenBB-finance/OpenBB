@@ -85,13 +85,13 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Donation
 
-GST is a completely free open-source terminal. My personal goal has always been to keep this terminal available for everyone to use at zero cost.
+Gamestonk Terminal is a free Open-Source Software. This means that the entire codebase is public, and any user can use it for free.
 
-Lately, some developers have been helping me in this endeavour. As you can probably tell from the git history, the terminal has been increasing in features/robustness at a really fast pace. Since none of us are getting paid to do so, and we all have 9-5 jobs, it's hard to onbard people to work towards the cause. On a personal level, I stopped investing since the repository was made public, since I spend all my spare time working on it, and don't have time left for DD.
+A small team of us are consistently working to provide as many updates to the project as we can, and this is done out of hours, often late nights to improve this tool. Whilst we don't earn any money from Gamestonk Terminal, we want to make sure that all our users can make the best investments from our software. As we continue to build on this project, we would really appreciate any type of donation or support so we can buy more coffees to fuel us even more!
 
-There are many ways to help support GST. If technical development or support are one of your strengths, join our [discord](https://discord.gg/Up2QGbMKHY). Otherwise, you could certainly help us by providing a donation to our coinbase crypto wallet: **3Pfx7NwGgmZsk7hQJxzHdp5rGBftUHVTiM**.
+Here's our Patreon page: https://www.patreon.com/gamestonkterminal
 
-Sharing the terminal with friends and family would also go a long way. Thanks in advance ape.
+There are many ways to help support GST. If you want to help, non-monetarily, join our [discord](https://discord.gg/Up2QGbMKHY). Sharing the terminal with friends would also go a long way. Thanks in advance ape.
 
 ## Getting Started
 
@@ -317,7 +317,7 @@ Example:
 <!-- CONTRIBUTING -->
 ## Contributing
 
-There are 3 main ways of contributing to this project. 
+There are 3 main ways of contributing to this project.
 
 For a 1h coding session where the architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
 
