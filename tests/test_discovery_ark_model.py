@@ -4,7 +4,8 @@ from unittest import mock
 from io import StringIO
 import pandas as pd
 
-# pylint: disable=unused-import
+# pylint: disable=unused-import,no-member
+
 from gamestonk_terminal.test_helper import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,

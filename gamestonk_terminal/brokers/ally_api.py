@@ -5,6 +5,8 @@ import yfinance as yf
 from termcolor import colored
 from gamestonk_terminal.brokers.brokers_helpers import ally_positions_to_df
 
+# pylint: disable=no-member
+
 
 def login():
     try:

@@ -9,6 +9,8 @@ import pandas as pd
 import yfinance as yf
 from gamestonk_terminal.helper_funcs import check_valid_path, parse_known_args_and_warn
 
+# pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
+
 
 def load_csv_portfolio(other_args: List[str]):
     """Load portfolio from csv
