@@ -41,3 +41,9 @@ def percent_to_float(s: str):
     if i < 0:
         return float("." + "0" * abs(i) + s)
     return float(s[:i] + "." + s[i:])
+
+
+def create_df_index(df: pd.DataFrame, name="rank"):
+    df.index = df.index + 1
+    df.reset_index(inplace=True)
+    df.rename(columns={"index": name}, inplace=True)

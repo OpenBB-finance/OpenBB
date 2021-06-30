@@ -5,11 +5,7 @@ This menu aims to explore crypto world, and the usage of the following commands 
 Note that we have added the ability to look at technical analysis in the ta menu.  Data loaded from CoinGecko has no candle data,
 so indicators that rely on anything other than close will fail with an error.
 
-[COINGECKO](#COINGECKO)
-* [overview](#overview)
-  * load CoinGecko overview menu, in which you can find a different crypto metrics
-* [coin](#coin)
-  * load CoinGecko coin menu, in which you can investigate specific coin.
+[COINGECKO standalone menu](/gamestonk_terminal/cryptocurrency/coingecko/)
 
 [COINMARKETCAP](#COINMARKETCAP)
 * [top](#top)
@@ -24,8 +20,6 @@ so indicators that rely on anything other than close will fail with an error.
   * get klines/candles and plot
 * [balance](#balance)
   * show coin balance
-
-[COINGECKO standalone menu](/gamestonk_terminal/cryptocurrency/coingecko/)
 
 # COINMARKETCAP <a name="COINMARKETCAP"></a>
 

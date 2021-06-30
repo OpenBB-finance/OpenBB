@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+import textwrap
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -36,7 +37,10 @@ def load(other_args: List[str]):
         add_help=False,
         prog="load",
         description="""
-                        Load Coin [CoinGecko]
+                        Load cryptocurrency, from CoinGecko.
+                        You will have access to a lot of statistics on that coin like price data,
+                        coin development stats, social media and many others. Loading coin
+                        also will open access to technical analysis menu.
                         """,
     )
 
@@ -46,7 +50,9 @@ def load(other_args: List[str]):
         required=True,
         type=str,
         dest="coin",
-        help="Coin to load data for (symbol or coin id)",
+        help="Coin to load data for (symbol or coin id). You can use either symbol of the coin or coinId"
+        "You can find all coins using command `coins` or visit  https://www.coingecko.com/en. "
+        "To use load a coin use command load -c [symbol or coinId]",
     )
 
     try:
@@ -94,7 +100,11 @@ def chart(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="chart",
         description="""
-                        Display chart for loaded coin
+                        Display chart for loaded coin. You can specify currency vs which you want
+                        to show chart and also number of days to get data for.
+                        By default currency: usd and days: 30.
+                        E.g. if you loaded in previous step Bitcoin and you want to see it's price vs ethereum
+                        in lat 90 days range use `chart --vs eth --days 90`
                         """,
     )
 
@@ -149,7 +159,11 @@ def ta(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="ta",
         description="""
-                        Loads data for technical analysis
+                        Loads data for technical analysis. You can specify currency vs which you want
+                        to show chart and also number of days to get data for.
+                        By default currency: usd and days: 30.
+                        E.g. if you loaded in previous step Bitcoin and you want to see it's price vs ethereum
+                        in lat 90 days range use `ta --vs eth --days 90`
                         """,
     )
 
@@ -195,7 +209,11 @@ def info(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="info",
         description="""
-                        Shows basic information about loaded coin
+                        Shows basic information about loaded coin like:
+                        id, name, symbol, asset_platform, description, contract_address,
+                        market_cap_rank, public_interest_score, total_supply, max_supply,
+                        price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d,
+                        current_price_btc, current_price_eth, current_price_usd
                         """,
     )
 
@@ -240,7 +258,8 @@ def web(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="web",
         description="""
-                        Websites found for given Coin
+                        Websites found for given Coin. You can find there urls to
+                        homepage, forum, announcement site and others.
                         """,
     )
 
@@ -285,7 +304,8 @@ def social(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="social",
         description="""
-                        Shows social media corresponding to loaded coin
+                        Shows social media corresponding to loaded coin. You can find there name of
+                        telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.
                         """,
     )
 
@@ -330,7 +350,10 @@ def dev(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="dev",
         description="""
-                       Developers data for loaded coin
+                       Developers data for loaded coin. If the development data is available you can see
+                       how the code development of given coin is going on.
+                       There are some statistics that shows number of stars, forks, subscribers, pull requests,
+                       commits, merges, contributors on github.
                         """,
     )
 
@@ -375,7 +398,11 @@ def ath(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="ath",
         description="""
-                        All time high data for loaded coin
+                        All time high data for loaded coin. You can find there most important metrics regarding
+                        ath of coin price like:
+                        current_price_btc,  ,current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd,
+                        ath_date_btc, ath_date_eth, ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc,
+                        ath_change_percentage_eth,  ath_change_percentage_usd
                         """,
     )
 
@@ -420,7 +447,11 @@ def atl(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="atl",
         description="""
-                        All time low data for loaded coin
+                        All time low data for loaded coin. You can find there most important metrics regarding
+                        atl of coin price like:
+                        current_price_btc,  ,current_price_eth, current_price_usd, atl_btc, atl_eth, atl_usd,
+                        atl_date_btc, atl_date_eth, atl_date_usd, atl_change_percentage_btc, atl_change_percentage_btc,
+                        atl_change_percentage_eth,  atl_change_percentage_usd
                         """,
     )
 
@@ -465,7 +496,13 @@ def score(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="score",
         description="""
-                        Different kind of scores for loaded coin
+                        In this view you can find different kind of scores for loaded coin.
+                        Those scores represents different rankings, sentiment metrics, some user stats and others.
+                        coingecko_rank, coingecko_score, developer_score, community_score, liquidity_score,
+                        sentiment_votes_up_percentage, sentiment_votes_down_percentage, public_interest_score,
+                        facebook_likes, twitter_followers, reddit_average_posts_48h, reddit_average_comments_48h,
+                        reddit_subscribers, reddit_accounts_active_48h, telegram_channel_user_count, alexa_rank,
+                        bing_matches
                         """,
     )
 
@@ -510,7 +547,8 @@ def bc(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="bc",
         description="""
-                        Blockchain explorers URLs for loaded coin
+                        Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io
+                        in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
                         """,
     )
 
@@ -555,7 +593,13 @@ def market(coin: gecko_coin.Coin, other_args: List[str]):
         add_help=False,
         prog="market",
         description="""
-                        Market data for loaded coin
+                        Market data for loaded coin. There you find metrics like:
+                        market_cap_rank, total_supply, max_supply, circulating_supply,
+                        price_change_percentage_24h, price_change_percentage_7d, 'price_change_percentage_30d',
+                        price_change_percentage_60d', 'price_change_percentage_1y', 'market_cap_change_24h',
+                        market_cap_btc', 'market_cap_eth', 'market_cap_usd', 'total_volume_btc', 'total_volume_eth',
+                        total_volume_usd', 'high_24h_btc', 'high_24h_eth', 'high_24h_usd', 'low_24h_btc', 'low_24h_eth',
+                        low_24h_usd'
                         """,
     )
 
@@ -597,7 +641,11 @@ def holdings_overview(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="hold",
         add_help=False,
-        description="Shows overview of public companies that holds ethereum or bitcoin",
+        description="""
+        Shows overview of public companies that holds ethereum or bitcoin.
+        You can find there most important metrics like:
+        Total Bitcoin Holdings, Total Value (USD), Public Companies Bitcoin Dominance, Companies
+        """,
     )
 
     parser.add_argument(
@@ -645,8 +693,12 @@ def holdings_companies_list(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="hold_comp",
         add_help=False,
-        description="Track publicly traded companies around the world that "
-        "are buying ethereum as part of corporate treasury",
+        description="""Track publicly traded companies around the world that
+        are buying ethereum or bitcoin as part of corporate treasury:
+        rank, company, ticker, country, total_btc, entry_value, today_value, pct_of_supply
+        You can use additional flag --links to see urls to announcement about buying btc or eth by given company.
+        In this case you will see only columns like rank, company, url
+        """,
     )
 
     parser.add_argument(
@@ -664,7 +716,7 @@ def holdings_companies_list(other_args: List[str]):
         "--links",
         dest="links",
         action="store_true",
-        help="Flag to show urls",
+        help="Flag to show urls. If you will use that flag you will see only rank, company, url columns",
         default=False,
     )
 
@@ -708,7 +760,14 @@ def gainers(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="gainers",
         add_help=False,
-        description="Shows Largest Gainers - coins which gain the most in given period",
+        description="""
+        Shows Largest Gainers - coins which gain the most in given period.
+        You can use parameter --period to set which timeframe are you interested in. eg. 1h, 24h, 7d, 14d, 30d, 60d, 1y
+        You can look on only top N number of records with --top,
+        You can sort by rank, symbol, name, volume, price, change with --sort and also with --descend flag to set it
+        to sort descending.
+        There is --links flag, which will display one additional column you all urls for coins.
+        """,
     )
 
     parser.add_argument(
@@ -748,6 +807,15 @@ def gainers(other_args: List[str]):
         default=True,
     )
 
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls. If you will use that flag you will additional column with urls",
+        default=False,
+    )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -761,6 +829,10 @@ def gainers(other_args: List[str]):
         df = gecko.get_gainers_or_losers(
             period=ns_parser.period, typ="gainers"
         ).sort_values(by=sortby, ascending=ns_parser.descend)
+
+        if not ns_parser.links:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
                 df.head(ns_parser.top),
@@ -789,7 +861,14 @@ def losers(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="losers",
         add_help=False,
-        description="Shows Largest Losers - coins which price dropped the most in given period",
+        description="""
+        Shows Largest Losers - coins which price dropped the most in given period
+        You can use parameter --period to set which timeframe are you interested in. eg. 1h, 24h, 7d, 14d, 30d, 60d, 1y
+        You can look on only top N number of records with --top,
+        You can sort by rank, symbol, name, volume, price, change with --sort and also with --descend flag
+        to sort descending.
+        Flag --links will display one additional column with all coingecko urls for listed coins.
+        """,
     )
 
     parser.add_argument(
@@ -829,6 +908,15 @@ def losers(other_args: List[str]):
         default=True,
     )
 
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls. If you will use that flag you will additional column with urls",
+        default=False,
+    )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -842,6 +930,10 @@ def losers(other_args: List[str]):
         df = gecko.get_gainers_or_losers(
             period=ns_parser.period, typ="losers"
         ).sort_values(by=sortby, ascending=ns_parser.descend)
+
+        if not ns_parser.links:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
                 df.head(ns_parser.top),
@@ -874,10 +966,15 @@ def discover(category: str, other_args: List[str]):
 
     """
     parser = argparse.ArgumentParser(
-        prog="discover",
+        prog=f"{category}",
         add_help=False,
-        description=f"Discover {category} coins by one of category\n"
-        "Available categories: [trending, most_voted, positive_sentiment, most_visited]",
+        description=f"""Discover {category} coins.
+        Use --top parameter to display only top N number of records,
+        You can sort by rank, name, price_btc, price_usd, using --sort parameter and also with --descend flag
+        to sort descending.
+        Flag --links will display one additional column with all coingecko urls for listed coins.
+        {category} will display: rank, name, price_usd, price_btc
+        """,
     )
 
     parser.add_argument(
@@ -889,6 +986,33 @@ def discover(category: str, other_args: List[str]):
         default=20,
     )
 
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=["rank", "name", "price_usd", "price_btc"],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls. If you will use that flag you will additional column with urls",
+        default=False,
+    )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -898,10 +1022,15 @@ def discover(category: str, other_args: List[str]):
         df.index = df.index + 1
         df.reset_index(inplace=True)
         df.rename(columns={"index": "rank"}, inplace=True)
-        df = df.head(ns_parser.top)
+
+        df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
+
+        if not ns_parser.links:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".5f",
                 showindex=False,
@@ -927,7 +1056,10 @@ def news(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="news",
         add_help=False,
-        description="Shows latest crypto news from CoinGecko",
+        description="Shows latest crypto news from CoinGecko. "
+        "You will see index, title, author, posted columns. "
+        "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
+        "To display urls to news use --links flag.",
     )
 
     parser.add_argument(
@@ -936,7 +1068,34 @@ def news(other_args: List[str]):
         dest="top",
         type=int,
         help="top N number of news >=10",
-        default=100,
+        default=50,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: index",
+        default="index",
+        choices=["index", "title", "author", "posted"],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls. If you will use that flag you will additional column with urls",
+        default=False,
     )
 
     try:
@@ -944,7 +1103,19 @@ def news(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_news(n=ns_parser.top)
+        df = gecko.get_news(n=ns_parser.top).sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
+        df["title"] = df["title"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
+        )
+
+        if not ns_parser.links:
+            df.drop("url", axis=1, inplace=True)
+        else:
+            df = df[["index", "url"]]
+
         print(
             tabulate(
                 df,
@@ -1011,7 +1182,12 @@ def recently_added(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="recently",
         add_help=False,
-        description="Shows top cryptocurrency categories by market capitalization",
+        description="""
+        Shows recently added coins on CoinGecko. You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, symbol, price, change_24h, change_1h, added with --sort
+        and also with --descend flag to sort descending.
+        Flag --links will display urls
+        """,
     )
 
     parser.add_argument(
@@ -1028,7 +1204,7 @@ def recently_added(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: change",
+        help="Sort by given column. Default: rank",
         default="rank",
         choices=["rank", "name", "symbol", "price", "change_24h", "change_1h", "added"],
     )
@@ -1092,7 +1268,59 @@ def stablecoins(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="stables",
         add_help=False,
-        description="Shows stablecoins by market capitalization",
+        description="""Shows stablecoins by market capitalization.
+        Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
+        like the U.S. dollar or to a commodity's price such as gold.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, symbol, price, change_24h, exchanges, market_cap, change_30d with --sort
+        and also with --descend flag to sort descending.
+        Flag --links will display stablecoins urls
+    """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "name",
+            "symbol",
+            "price",
+            "change_24h",
+            "exchanges",
+            "market_cap",
+            "change_30d",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls",
+        default=False,
     )
 
     try:
@@ -1100,10 +1328,18 @@ def stablecoins(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_stable_coins()
+        df = gecko.get_stable_coins().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
+        if ns_parser.links is True:
+            df = df[["rank", "name", "symbol", "url"]]
+        else:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".0f",
                 showindex=False,
@@ -1129,7 +1365,13 @@ def yfarms(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="yfarms",
         add_help=False,
-        description="Shows Top Yield Farming Pools by Value Locked",
+        description="""Shows Top Yield Farming Pools by Value Locked
+        Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency holdings.
+        In simple terms, it means locking up cryptocurrencies and getting rewards.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, value_locked, return_year with --sort parameter
+        and also with --descend flag to sort descending.
+        """,
     )
 
     parser.add_argument(
@@ -1195,7 +1437,49 @@ def top_volume_coins(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_volume",
         add_help=False,
-        description="Shows Top 100 Coins by Trading Volume",
+        description="""Shows Top Coins by Trading Volume.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by on of columns rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,
+        market_cap with --sort parameter and also with --descend flag to sort descending.
+        Displays columns: rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,market_cap
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="Top N of records. Default 20",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "name",
+            "symbol",
+            "price",
+            "change_1h",
+            "change_24h",
+            "change_7d",
+            "volume_24h",
+            "market_cap",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
     )
 
     try:
@@ -1203,10 +1487,13 @@ def top_volume_coins(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_volume_coins()
+        df = gecko.get_top_volume_coins().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1234,7 +1521,60 @@ def top_defi_coins(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_defi",
         add_help=False,
-        description="Shows Top 100 DeFi Coins by Market Capitalization",
+        description="""Shows Top DeFi Coins by Market Capitalization
+        DeFi or Decentralized Finance refers to financial services that are built
+        on top of distributed networks with no central intermediaries.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, symbol, price, change_24h, change_1h, change_7d,
+        volume_24h, market_cap with --sort and also with --descend flag to sort descending.
+        Flag --links will display  urls
+                    """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "name",
+            "symbol",
+            "price",
+            "change_1h",
+            "change_24h",
+            "change_7d",
+            "volume_24h",
+            "market_cap",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls",
+        default=False,
     )
 
     try:
@@ -1242,10 +1582,18 @@ def top_defi_coins(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_defi_coins()
+        df = gecko.get_top_defi_coins().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
+        if ns_parser.links is True:
+            df = df[["rank", "name", "symbol", "url"]]
+        else:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1270,7 +1618,50 @@ def top_dex(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_dex",
         add_help=False,
-        description="Shows Top Decentralized Exchanges on CoinGecko by Trading Volume",
+        description="""
+        Shows Top Decentralized Exchanges on CoinGecko by Trading Volume
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
+        most_traded_pairs, market_share_by_volume with --sort and also with --descend flag to sort descending.
+        Display columns:
+             rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "name",
+            "volume_24h",
+            "n_coins",
+            "visits",
+            "most_traded",
+            "market_share_by_vol",
+            "n_pairs",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
     )
 
     try:
@@ -1278,10 +1669,13 @@ def top_dex(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_dexes()
+        df = gecko.get_top_dexes().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1309,7 +1703,62 @@ def top_nft(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_nft",
         add_help=False,
-        description="Shows Top 100 NFT Coins by Market Capitalization",
+        description="""Shows Top NFT Coins by Market Capitalization
+        NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+        Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, symbol, price, change_24h, change_1h, change_7d,
+        volume_24h, market_cap with --sort and also with --descend flag to sort descending.
+        Flag --links will display urls
+        Displays : rank, name, symbol, price, change_1h, change_24h, change_7d, market_cap, url
+
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "name",
+            "symbol",
+            "price",
+            "change_1h",
+            "change_24h",
+            "change_7d",
+            "volume_24h",
+            "market_cap",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls",
+        default=False,
     )
 
     try:
@@ -1317,10 +1766,18 @@ def top_nft(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_nfts()
+        df = gecko.get_top_nfts().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
+        if ns_parser.links is True:
+            df = df[["rank", "name", "symbol", "url"]]
+        else:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".4f",
                 showindex=False,
@@ -1348,7 +1805,13 @@ def nft_of_the_day(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="nft_today",
         add_help=False,
-        description="Shows NFT of the day",
+        description="""Shows NFT of the day
+        NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+        Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+        With nft_today command you will display:
+            author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.
+
+        """,
     )
 
     try:
@@ -1387,7 +1850,12 @@ def nft_market_status(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="nft_market",
         add_help=False,
-        description="Shows NFT market status",
+        description="""Shows NFT market status
+        NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+        Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+        Displays:
+            NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
+        """,
     )
 
     try:
@@ -1423,7 +1891,57 @@ def exchanges(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="exchanges",
         add_help=False,
-        description="Shows Top Crypto Exchanges",
+        description="""Shows Top Crypto Exchanges
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, trust_score, id, name, country, established, trade_volume_24h_btc with --sort
+        and also with --descend flag to sort descending.
+        Flag --links will display urls.
+        Displays: rank, trust_score, id, name, country, established, trade_volume_24h_btc
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "trust_score",
+            "id",
+            "name",
+            "country",
+            "year_established",
+            "trade_volume_24h_btc",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls",
+        default=False,
     )
 
     try:
@@ -1431,10 +1949,18 @@ def exchanges(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_exchanges()
+        df = gecko.get_exchanges().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
+        if ns_parser.links is True:
+            df = df[["rank", "name", "url"]]
+        else:
+            df.drop("url", axis=1, inplace=True)
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".1f",
                 showindex=False,
@@ -1459,18 +1985,53 @@ def platforms(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="platforms",
         add_help=False,
-        description="Shows Top Crypto Financial Platforms",
+        description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
+        e.g Celsius, Nexo, Crypto.com, Aave and others.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, category, centralized with --sort
+        and also with --descend flag to sort descending.
+        Displays: rank, name, category, centralized, website_url
+        """,
     )
 
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=["rank", "name", "category", "centralized"],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        df = gecko.get_financial_platforms()
+        df = gecko.get_financial_platforms().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1495,7 +2056,45 @@ def products(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="products",
         add_help=False,
-        description="Shows Top Crypto Financial Products",
+        description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage  with --sort
+        and also with --descend flag to sort descending.
+        Displays: rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "platform",
+            "identifier",
+            "supply_rate_percentage",
+            "borrow_rate_percentage",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
     )
 
     try:
@@ -1503,10 +2102,12 @@ def products(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_finance_products()
+        df = gecko.get_finance_products().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1531,7 +2132,40 @@ def indexes(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="indexes",
         add_help=False,
-        description="Shows list of crypto indexes from CoinGecko",
+        description="""Shows list of crypto indexes from CoinGecko.
+        Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
+        You can display only top N number of coins with --top parameter.
+        You can sort data by rank, name, id, market, last, is_multi_asset_composite with --sort
+        and also with --descend flag to sort descending.
+        Displays: rank, name, id, market, last, is_multi_asset_composite
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=["rank", "name", "id", "market", "last", "is_multi_asset_composite"],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
     )
 
     try:
@@ -1539,10 +2173,13 @@ def indexes(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_indexes()
+        df = gecko.get_indexes().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1567,7 +2204,55 @@ def derivatives(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="derivatives",
         add_help=False,
-        description="Shows list of crypto derivatives from CoinGecko",
+        description="""Shows list of crypto derivatives from CoinGecko
+        Crypto derivatives are secondary contracts or financial tools that derive their value from a primary
+        underlying asset. In this case, the primary asset would be a cryptocurrency such as Bitcoin.
+        The most popular crypto derivatives are crypto futures, crypto options, and perpetual contracts.
+        You can look on only top N number of records with --top,
+        You can sort by rank, market, symbol, price, pct_change_24h, contract_type, basis, spread,
+        funding_rate, volume_24h with --sort and also with --descend flag to set it to sort descending.
+        Displays:
+            rank, market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, volume_24h
+
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "market",
+            "symbol",
+            "price",
+            "pct_change_24h",
+            "contract_type",
+            "basis",
+            "spread",
+            "funding_rate",
+            "volume_24h",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
     )
 
     try:
@@ -1575,10 +2260,13 @@ def derivatives(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_derivatives()
+        df = gecko.get_derivatives().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1603,7 +2291,38 @@ def exchange_rates(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="ex_rates",
         add_help=False,
-        description="Shows list of crypto, fiats, commodity exchange rates from CoinGecko",
+        description="""
+        Shows list of crypto, fiats, commodity exchange rates from CoinGecko
+        You can look on only top N number of records with --top,
+        You can sort by index,name,unit, value, type, and also use --descend flag to sort descending.
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number records",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: index",
+        default="index",
+        choices=["index", "name", "unit", "value", "type"],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
     )
 
     try:
@@ -1611,10 +2330,12 @@ def exchange_rates(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_exchange_rates()
+        df = gecko.get_exchange_rates().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -1644,7 +2365,10 @@ def global_market_info(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="global",
         add_help=False,
-        description="Shows global statistics about Crypto Market",
+        description="""Shows global statistics about Crypto Market like:
+        active_cryptocurrencies, upcoming_icos, ongoing_icos, ended_icos, markets, market_cap_change_percentage_24h,
+        eth_market_cap_in_pct, btc_market_cap_in_pct, altcoin_market_cap_in_pct
+        """,
     )
 
     try:
@@ -1680,7 +2404,14 @@ def global_defi_info(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="defi",
         add_help=False,
-        description="Shows global DeFi statistics",
+        description="""Shows global DeFi statistics
+        DeFi or Decentralized Finance refers to financial services that are built
+        on top of distributed networks with no central intermediaries.
+        Displays metrics like:
+            defi_market_cap, eth_market_cap, defi_to_eth_ratio, trading_volume_24h, defi_dominance, top_coin_name,
+            top_coin_defi_dominance
+
+        """,
     )
 
     try:
@@ -1722,17 +2453,37 @@ def coin_list(other_args: List[str]):
         "-s", "--skip", default=0, dest="skip", help="Skip n of records", type=int
     )
     parser.add_argument(
-        "-l", "--limit", default=300, dest="limit", help="Limit of records", type=int
+        "-t", "--top", default=300, dest="top", help="Limit of records", type=int
+    )
+
+    parser.add_argument(
+        "-l", "--letter", dest="letter", help="First letter first letter", type=str
+    )
+    parser.add_argument(
+        "-k",
+        "--key",
+        dest="key",
+        help="Search in column symbol, name, id",
+        type=str,
+        choices=["id", "symbol", "name"],
+        default="symbol",
     )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        df = gecko.get_coin_list()
+
+        letter = ns_parser.letter
+        if letter and isinstance(letter, str):
+            if letter.isalpha():
+                letter = letter.lower()
+            df = df[df[ns_parser.key].str.startswith(letter)]
+
         try:
-            df = gecko.get_coin_list()[
-                ns_parser.skip : ns_parser.skip + ns_parser.limit
-            ]
+            df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
         except Exception:
             df = gecko.get_coin_list()
         print(

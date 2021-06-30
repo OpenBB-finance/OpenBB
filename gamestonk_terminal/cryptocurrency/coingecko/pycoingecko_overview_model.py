@@ -7,13 +7,13 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     wrap_text_in_df,
     percent_to_float,
+    create_df_index,
 )
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_helpers import (
     changes_parser,
     replace_qm,
     clean_row,
     collateral_auditors_parse,
-    replace_underscores_to_newlines,
     swap_columns,
 )
 
@@ -337,7 +337,8 @@ def get_news(n: int = 100) -> pd.DataFrame:
         )
     df = pd.concat(dfs, ignore_index=True).head(n)
     df.drop("article", axis=1, inplace=True)
-    df = wrap_text_in_df(df)
+    df.index = df.index + 1
+    df.reset_index(inplace=True)
     return df
 
 
@@ -488,7 +489,7 @@ def get_stable_coins():
                 link,
             ]
         )
-    df = replace_qm(pd.DataFrame(results, columns=columns).set_index("rank"))
+    df = replace_qm(pd.DataFrame(results, columns=columns))
     return df
 
 
@@ -581,7 +582,8 @@ def get_top_volume_coins():
             row_cleaned.insert(0, "?")
         row_cleaned.pop(3)
         results.append(row_cleaned)
-    df = replace_qm(pd.DataFrame(results, columns=columns).set_index(COLUMNS["rank"]))
+    df = replace_qm(pd.DataFrame(results, columns=columns))
+    df["rank"] = df["rank"].astype(int)
     return df
 
 
@@ -622,13 +624,13 @@ def get_top_defi_coins():
             "market_cap_to_tvl_ratio",
             COLUMNS["url"],
         ],
-    ).set_index(COLUMNS["rank"])
+    )
     df.drop(
         ["fully_diluted_market_cap", "market_cap_to_tvl_ratio"],
         axis=1,
         inplace=True,
     )
-    df.columns = replace_underscores_to_newlines(list(df.columns), 10)
+    df["rank"] = df["rank"].astype(int)
     return df
 
 
@@ -638,17 +640,17 @@ def get_top_dexes():
     Returns
     -------
     pandas.DataFrame
-        name, rank, volume_24h, number_of_coins, number_of_pairs, visits, most_traded_pairs, market_share_by_volume
+        name, rank, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
     """
     columns = [
         COLUMNS["name"],
         COLUMNS["rank"],
         COLUMNS["volume_24h"],
-        "number_of_coins",
-        "number_of_pairs",
+        "n_coins",
+        "n_pairs",
         "visits",
-        "most_traded_pairs",
-        "market_share_by_volume",
+        "most_traded",
+        "market_share_by_vol",
     ]
     url = "https://www.coingecko.com/en/dex"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -665,16 +667,16 @@ def get_top_dexes():
     df.drop(df.columns[1:3], axis=1, inplace=True)
     df = swap_columns(df)
     df.columns = columns
-    df["most_traded_pairs"] = (
-        df["most_traded_pairs"]
+    df["most_traded"] = (
+        df["most_traded"]
         .apply(lambda x: x.split("$")[0])
         .str.replace(",", "", regex=True)
         .str.replace(".", "", regex=True)
     )
-    df["most_traded_pairs"] = df["most_traded_pairs"].apply(
-        lambda x: None if x.isdigit() else x
-    )
-    return df.set_index(COLUMNS["rank"])
+    df["most_traded"] = df["most_traded"].apply(lambda x: None if x.isdigit() else x)
+    df["rank"] = df["rank"].astype(int)
+    df.set_index("rank", inplace=True)
+    return df.reset_index()
 
 
 def get_top_nfts():
@@ -710,8 +712,8 @@ def get_top_nfts():
             COLUMNS["market_cap"],
             COLUMNS["url"],
         ],
-    ).set_index(COLUMNS["rank"])
-    df = wrap_text_in_df(df, w=55)
+    )
+    df["rank"] = df["rank"].astype(int)
     return df
 
 
@@ -783,7 +785,6 @@ def get_exchanges():
     df.replace({float(np.NaN): None}, inplace=True)
     df = df[
         [
-            # "trust_score_rank",
             "trust_score",
             COLUMNS["id"],
             COLUMNS["name"],
@@ -793,7 +794,7 @@ def get_exchanges():
             COLUMNS["url"],
         ]
     ]
-    df = wrap_text_in_df(df, w=42)
+    create_df_index(df, "rank")
     return df
 
 
@@ -803,10 +804,11 @@ def get_financial_platforms():
     Returns
     -------
     pandas.DataFrame
-        name, category, centralized, website_url
+        rank, name, category, centralized, website_url
     """
     df = pd.DataFrame(client.get_finance_platforms())
     df.drop("facts", axis=1, inplace=True)
+    create_df_index(df, "rank")
     return df
 
 
@@ -816,9 +818,9 @@ def get_finance_products():
     Returns
     -------
     pandas.DataFrame
-        platform, identifier, supply_rate_percentage, borrow_rate_percentage
+       rank,  platform, identifier, supply_rate_percentage, borrow_rate_percentage
     """
-    return pd.DataFrame(
+    df = pd.DataFrame(
         client.get_finance_products(per_page=250),
         columns=[
             "platform",
@@ -827,6 +829,8 @@ def get_finance_products():
             "borrow_rate_percentage",
         ],
     )
+    create_df_index(df, "rank")
+    return df
 
 
 def get_indexes():
@@ -837,7 +841,9 @@ def get_indexes():
     pandas.DataFrame
         name, id, market, last, is_multi_asset_composite
     """
-    return pd.DataFrame(client.get_indexes(per_page=250))
+    df = pd.DataFrame(client.get_indexes(per_page=250))
+    create_df_index(df, "rank")
+    return df
 
 
 def get_derivatives():
@@ -846,12 +852,17 @@ def get_derivatives():
     Returns
     -------
     pandas.DataFrame
-        market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, open_interest, volume_24h
+        market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, volume_24h
     """
     df = pd.DataFrame(client.get_derivatives(include_tickers="unexpired"))
-    df.drop(["index", "last_traded_at", "expired_at", "index_id"], axis=1, inplace=True)
+    df.drop(
+        ["index", "last_traded_at", "expired_at", "index_id", "open_interest"],
+        axis=1,
+        inplace=True,
+    )
 
     df.rename(columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True)
+    create_df_index(df, "rank")
     return df
 
 
@@ -861,13 +872,11 @@ def get_exchange_rates():
     Returns
     -------
     pandas.DataFrame
-        name, unit, value, type
+        index, name, unit, value, type
     """
-    return (
-        pd.DataFrame(client.get_exchange_rates()["rates"])
-        .T.reset_index()
-        .drop("index", axis=1)
-    )
+    df = pd.DataFrame(client.get_exchange_rates()["rates"]).T
+    create_df_index(df, "index")
+    return df
 
 
 def get_global_info():
