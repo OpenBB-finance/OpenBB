@@ -219,7 +219,7 @@ def menu(
     ta_controller.call_help(None)
 
     if context:
-        context = f"({context})>"
+        context = f"{context}>"
 
     while True:
         # Get input command from user

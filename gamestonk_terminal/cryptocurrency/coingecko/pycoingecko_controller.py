@@ -1,6 +1,6 @@
 """Cryptocurrency Controller"""
 __docformat__ = "numpy"
-# pylint: disable=R0904, C0302
+# pylint: disable=R0904, C0302, W0622
 import argparse
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -18,6 +18,7 @@ class GeckoController:
         "q",
         "quit",
         "global",
+        "find",
         "coins",
         "defi",
         "news",
@@ -63,7 +64,7 @@ class GeckoController:
     def __init__(self):
         """CONSTRUCTOR"""
 
-        self._gecko_parser = argparse.ArgumentParser(add_help=False, prog="gecko")
+        self._gecko_parser = argparse.ArgumentParser(add_help=False, prog="cg")
         self._gecko_parser.add_argument("cmd", choices=self.CHOICES)
         self.current_coin = None
         self.current_currency = None
@@ -78,6 +79,7 @@ class GeckoController:
         print("   quit            quit to abandon program")
         print("")
         print("Coin")
+        print("   find            find coin by name, symbol or id")
         print("   load            load cryptocurrency data")
         print("   clear           remove loaded coin")
         print("")
@@ -161,6 +163,10 @@ class GeckoController:
     def call_quit(self, _):
         """Process Quit command - quit the program."""
         return True
+
+    def call_find(self, other_args):
+        """Process find command"""
+        pycoingecko_view.find(other_args=other_args)
 
     def call_load(self, other_args):
         """Process load command"""
@@ -261,21 +267,27 @@ class GeckoController:
     def call_ta(self, other_args):
         """Process ta command"""
         if self.current_coin:
-            self.current_df = pycoingecko_view.ta(self.current_coin, other_args)
+            self.current_df, self.current_currency = pycoingecko_view.ta(
+                self.current_coin, other_args
+            )
             if self.current_df is not None:
                 try:
                     self.current_df = self.current_df[["price"]].rename(
                         columns={"price": "Close"}
                     )
                     self.current_df.index.name = "date"
-                    # ticker: str, start: datetime, interval: str, stock: pd.DataFrame, context: str = ""
-                    return ta_controller.menu(
+                    quit = ta_controller.menu(
                         stock=self.current_df,
                         ticker=self.current_coin.coin_symbol,
                         start=self.current_df.index[0],
                         interval="",
-                        context="cg",
+                        context="(crypto)>(cg)",
                     )
+                    print("")
+                    if quit is not None:
+                        if quit is True:
+                            return quit
+
                 except (ValueError, KeyError) as e:
                     print(e)
             else:

@@ -40,8 +40,9 @@ class TestCoinGeckoAPI(TestCase):
 
         mock_load.return_value = sample_return
         coin = load(["-c", "bitcoin"])
-        mock_return = ta(coin, ["--vs", "usd"])
+        mock_return, vs = ta(coin, ["--vs", "usd"])
         self.assertTrue(mock_return.shape == (722, 2))
+        self.assertTrue(vs == "usd")
 
     def test_coin(self):
         """Test that pycoingecko retrieves the major coins"""

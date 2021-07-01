@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import textwrap
+import difflib
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -179,19 +181,19 @@ def ta(coin: gecko_coin.Coin, other_args: List[str]):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
-            return
+            return None, None
 
         df = coin.get_coin_market_chart(ns_parser.vs, ns_parser.days)
-        return df
+        return df, ns_parser.vs
 
     except SystemExit:
         print("")
-        return None
+        return None, None
 
     except Exception as e:
         print(e)
         print("")
-        return None
+        return None, None
 
 
 def info(coin: gecko_coin.Coin, other_args: List[str]):
@@ -1145,7 +1147,58 @@ def categories(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="categories",
         add_help=False,
-        description="Shows top cryptocurrency categories by market capitalization",
+        description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
+        stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
+        "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
+        "To display urls to news use --links flag.",
+        Displays: rank, name, change_1h, change_24h, change_7d, market_cap, volume_24h, n_of_coins
+
+        """,
+    )
+
+    parser.add_argument(
+        "-t",
+        "--top",
+        dest="top",
+        type=int,
+        help="top N number of news >=10",
+        default=20,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sort",
+        dest="sortby",
+        type=str,
+        help="Sort by given column. Default: rank",
+        default="rank",
+        choices=[
+            "rank",
+            "name",
+            "change_1h",
+            "change_24h",
+            "change_7d",
+            "market_cap",
+            "volume_24h",
+            "n_of_coins",
+        ],
+    )
+
+    parser.add_argument(
+        "--descend",
+        action="store_false",
+        help="Flag to sort in descending order (lowest first)",
+        dest="descend",
+        default=True,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--links",
+        dest="links",
+        action="store_true",
+        help="Flag to show urls. If you will use that flag you will additional column with urls",
+        default=False,
     )
 
     try:
@@ -1153,10 +1206,18 @@ def categories(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_crypto_categories()
+        df = gecko.get_top_crypto_categories().sort_values(
+            by=ns_parser.sortby, ascending=ns_parser.descend
+        )
+
+        if not ns_parser.links:
+            df.drop("url", axis=1, inplace=True)
+        else:
+            df = df[["rank", "name", "url"]]
+
         print(
             tabulate(
-                df,
+                df.head(ns_parser.top),
                 headers=df.columns,
                 floatfmt=".0f",
                 showindex=False,
@@ -2453,7 +2514,7 @@ def coin_list(other_args: List[str]):
         "-s", "--skip", default=0, dest="skip", help="Skip n of records", type=int
     )
     parser.add_argument(
-        "-t", "--top", default=300, dest="top", help="Limit of records", type=int
+        "-t", "--top", default=100, dest="top", help="Limit of records", type=int
     )
 
     parser.add_argument(
@@ -2486,6 +2547,70 @@ def coin_list(other_args: List[str]):
             df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
         except Exception:
             df = gecko.get_coin_list()
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+        print("")
+    except Exception as e:
+        print(e)
+        print("")
+
+
+def find(other_args: List[str]):
+    parser = argparse.ArgumentParser(
+        prog="find",
+        add_help=False,
+        description="""Find similar coin by coin name,symbol or id
+        If you don't remember exact name or id of the Coin at CoinGecko, you can use this command to
+        display coins with similar name, symbol or id to your search query.
+        Example of usage is I know that Coin name is something similar to polka. So I can try:
+        find -c polka -k name -t 25
+        It will search for coin that has similar name to polka, display top 25 matches.
+        -c, --coin stands for coin - you provide here your search query
+        -k, --key it's a searching key. You can search by symbol, id or name of coin
+        -t, --top it displays top N number of records.
+        """,
+    )
+    parser.add_argument(
+        "-c",
+        "--coin",
+        help="Symbol Name or Id of Coin",
+        dest="coin",
+        required=True,
+        type=str,
+    )
+
+    parser.add_argument(
+        "-k",
+        "--key",
+        dest="key",
+        help="Search in column symbol, name, id",
+        type=str,
+        choices=["id", "symbol", "name"],
+        default="symbol",
+    )
+
+    parser.add_argument(
+        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        coins_df = gecko.get_coin_list()
+        coins_list = coins_df[ns_parser.key].to_list()
+        sim = difflib.get_close_matches(ns_parser.coin, coins_list, ns_parser.top)
+        df = pd.Series(sim).to_frame().reset_index()
+        df.columns = ["index", ns_parser.key]
+        coins_df.drop("index", axis=1, inplace=True)
+        df = df.merge(coins_df, on=ns_parser.key)
         print(
             tabulate(
                 df,

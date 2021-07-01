@@ -390,7 +390,9 @@ def get_top_crypto_categories():
             ]
         )
 
-    return pd.DataFrame(results, columns=columns).set_index(COLUMNS["rank"])
+    df = pd.DataFrame(results, columns=columns)
+    df["rank"] = df["rank"].astype(int)
+    return df
 
 
 def get_recently_added_coins():
@@ -583,7 +585,8 @@ def get_top_volume_coins():
         row_cleaned.pop(3)
         results.append(row_cleaned)
     df = replace_qm(pd.DataFrame(results, columns=columns))
-    df["rank"] = df["rank"].astype(int)
+    df.drop("rank", axis=1, inplace=True)
+    create_df_index(df, "rank")
     return df
 
 
@@ -874,7 +877,8 @@ def get_exchange_rates():
     pandas.DataFrame
         index, name, unit, value, type
     """
-    df = pd.DataFrame(client.get_exchange_rates()["rates"]).T
+    df = pd.DataFrame(client.get_exchange_rates()["rates"]).T.reset_index()
+    df.drop("index", axis=1, inplace=True)
     create_df_index(df, "index")
     return df
 
