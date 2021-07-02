@@ -106,7 +106,7 @@ def chart(coin: gecko_coin.Coin, other_args: List[str]):
                         to show chart and also number of days to get data for.
                         By default currency: usd and days: 30.
                         E.g. if you loaded in previous step Bitcoin and you want to see it's price vs ethereum
-                        in lat 90 days range use `chart --vs eth --days 90`
+                        in last 90 days range use `chart --vs eth --days 90`
                         """,
     )
 
@@ -165,7 +165,7 @@ def ta(coin: gecko_coin.Coin, other_args: List[str]):
                         to show chart and also number of days to get data for.
                         By default currency: usd and days: 30.
                         E.g. if you loaded in previous step Bitcoin and you want to see it's price vs ethereum
-                        in lat 90 days range use `ta --vs eth --days 90`
+                        in last 90 days range use `ta --vs eth --days 90`
                         """,
     )
 
@@ -2517,9 +2517,7 @@ def coin_list(other_args: List[str]):
         "-t", "--top", default=100, dest="top", help="Limit of records", type=int
     )
 
-    parser.add_argument(
-        "-l", "--letter", dest="letter", help="First letter first letter", type=str
-    )
+    parser.add_argument("-l", "--letter", dest="letter", help="First letters", type=str)
     parser.add_argument(
         "-k",
         "--key",
@@ -2566,12 +2564,11 @@ def find(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="find",
         add_help=False,
-        description="""Find similar coin by coin name,symbol or id
-        If you don't remember exact name or id of the Coin at CoinGecko, you can use this command to
-        display coins with similar name, symbol or id to your search query.
-        Example of usage is I know that Coin name is something similar to polka. So I can try:
-        find -c polka -k name -t 25
-        It will search for coin that has similar name to polka, display top 25 matches.
+        description="""
+        Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
+        you can use this command to display coins with similar name, symbol or id to your search query.
+        Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+        It will search for coin that has similar name to polka and display top 25 matches.
         -c, --coin stands for coin - you provide here your search query
         -k, --key it's a searching key. You can search by symbol, id or name of coin
         -t, --top it displays top N number of records.
@@ -2590,7 +2587,7 @@ def find(other_args: List[str]):
         "-k",
         "--key",
         dest="key",
-        help="Search in column symbol, name, id",
+        help="Specify by which column you would like to search: symbol, name, id",
         type=str,
         choices=["id", "symbol", "name"],
         default="symbol",
