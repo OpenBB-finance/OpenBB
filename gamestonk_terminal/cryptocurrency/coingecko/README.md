@@ -333,6 +333,8 @@ It will search for coin that has similar name to polka and display top 25 matche
 * -k, --key it's a searching key. You can search by symbol, id or name of coin
 * -t, --top it displays top N number of records.
 
+![image](https://user-images.githubusercontent.com/275820/124304806-8a64b380-db64-11eb-8df1-71d8032b0345.png)
+
 
 # OVERVIEW <a name="OVERVIEW"></a>
 ## global  <a name="global"></a>
@@ -370,7 +372,7 @@ It's also possible to display urls to news with `--links` flag. If you want to d
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls and display only `index, url` columns
 
-![image](https://user-images.githubusercontent.com/275820/123539958-a0294180-d73c-11eb-9e8d-82b9de3402a5.png)
+![image](https://user-images.githubusercontent.com/275820/124304537-1e824b00-db64-11eb-946d-4eb28a37bd18.png)
 
 ## coins <a name="coins"></a>
 
@@ -422,8 +424,7 @@ Shows most trending coins on CoinGecko.
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `trending --top 10 --links`
 
-
-![image](https://user-images.githubusercontent.com/275820/123538474-5e48cd00-d735-11eb-9619-31e50a677033.png)
+![image](https://user-images.githubusercontent.com/275820/124305015-c8fa6e00-db64-11eb-81de-4e8b943c6c0d.png)
 
 ## most_voted <a name="most_voted"></a>
 
@@ -485,8 +486,7 @@ Shows coins which were recently added on CoinGecko
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `recently --top 10 --links`
 
-
-![image](https://user-images.githubusercontent.com/275820/123538777-a9171480-d736-11eb-9950-efa4946f4be9.png)
+![image](https://user-images.githubusercontent.com/275820/124305122-f47d5880-db64-11eb-9048-b495248723d3.png)
 
 ## top_volume <a name="top_volume"></a>
 
@@ -500,7 +500,7 @@ Shows coins with the highest transactions volume on CoinGecko
 * -s/--sortby - sort by given column. You can chose on from `rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h`
 * --descend - flag to sort in descending order (lowest first)
 
-![image](https://user-images.githubusercontent.com/275820/123538841-fa270880-d736-11eb-9f64-d972c648da58.png)
+![image](https://user-images.githubusercontent.com/275820/124305188-0a8b1900-db65-11eb-953f-febc32500ff9.png)
 
 
 ## gainers <a name="gainers"></a>
@@ -517,7 +517,7 @@ Shows largest gainers - coins which gain the most in given period.
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `gainers --period 24h --links`
 
-![image](https://user-images.githubusercontent.com/275820/123538914-50944700-d737-11eb-896c-b1173b2ab972.png)
+![image](https://user-images.githubusercontent.com/275820/124305218-137bea80-db65-11eb-914c-865b56cf33ea.png)
 
 ## losers <a name="losers"></a>
 
@@ -533,7 +533,7 @@ Shows largest losers - coins which lost the most in given period.
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `losers --period 24h --links`
 
-![image](https://user-images.githubusercontent.com/275820/123539004-cdbfbc00-d737-11eb-908a-a0bce9c0b5a4.png)
+![image](https://user-images.githubusercontent.com/275820/124305327-3ad2b780-db65-11eb-9922-7783b740312c.png))
 
 ## stables <a name="stables"></a>
 
@@ -549,7 +549,7 @@ like the U.S. dollar or to a commodity's price such as gold.
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `stables --links`. If you will use this flag `rank, name, symbol, url` columns will be displayed.
 
-![image](https://user-images.githubusercontent.com/275820/123539032-fe9ff100-d737-11eb-9518-ebf3e1190c5b.png)
+![image](https://user-images.githubusercontent.com/275820/124305427-62298480-db65-11eb-9216-02cf9690c958.png)
 
 
 ## yfarms <a name="yfarms"></a>
@@ -567,7 +567,7 @@ In simple terms, it means locking up cryptocurrencies and getting rewards.
 * --descend - flag to sort in descending order (lowest first)
 
 
-![image](https://user-images.githubusercontent.com/275820/123539067-2db66280-d738-11eb-811e-70256c82da00.png)
+![image](https://user-images.githubusercontent.com/275820/124305461-6ce41980-db65-11eb-9c82-648f4ff905e8.png)
 
 ## top_defi <a name="top_defi"></a>
 
@@ -575,7 +575,7 @@ In simple terms, it means locking up cryptocurrencies and getting rewards.
 usage: top_defi [-t --top] [-s --sortby] [--descend] [-l --links]
 ````
 
-Shows Top 100 DeFi Coins by Market Capitalization from https://www.coingecko.com/en/defi
+Shows Top DeFi Coins by Market Capitalization from https://www.coingecko.com/en/defi
 DeFi or Decentralized Finance refers to financial services that are built on top of distributed networks with no central intermediaries.
 
 * -t/--top - number of defi coins to display. To display top 10 defi coins: `top_defi --top 10 --sortby rank`
@@ -585,7 +585,7 @@ DeFi or Decentralized Finance refers to financial services that are built on top
 
 
 
-![image](https://user-images.githubusercontent.com/275820/123539104-58a0b680-d738-11eb-9f4c-6f4e4ccb03c0.png)
+![image](https://user-images.githubusercontent.com/275820/124305508-7c636280-db65-11eb-8ae7-38389ac72770.png)
 
 ## top_dex <a name="top_dex"></a>
 
@@ -601,8 +601,7 @@ sellers to trade without having to give up control over their funds to any inter
 * -s/--sortby - sort by given column. You can sort data by `rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol most_traded_pairs, market_share_by_volume`
 * --descend - flag to sort in descending order (lowest first)
 
-
-![image](https://user-images.githubusercontent.com/275820/123539124-6eae7700-d738-11eb-9e74-c4542883a762.png)
+![image](https://user-images.githubusercontent.com/275820/124305536-84230700-db65-11eb-82bf-ad2d0878135c.png)
 
 ## top_nft <a name="top_nft"></a>
 
@@ -620,7 +619,7 @@ Examples of NFT include crypto artwork, collectibles, game items, financial prod
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `top_nft --links`.
 
 
-![image](https://user-images.githubusercontent.com/275820/123539187-b7fec680-d738-11eb-99b6-2f6a0a9673c1.png)
+![image](https://user-images.githubusercontent.com/275820/124305553-8be2ab80-db65-11eb-92a8-86485d2b7ef8.png)
 
 ## nft_today <a name="nft_today"></a>
 
@@ -679,7 +678,7 @@ Shows list of crypto, fiats, commodity exchange rates from CoinGecko
 * -s/--sortby - sort by given column. You can sort by `index,name,unit, value, type`
 * --descend - flag to sort in descending order (lowest first)
 
-![image](https://user-images.githubusercontent.com/275820/123539584-c3eb8800-d73a-11eb-8b92-952f25bb0372.png)
+![image](https://user-images.githubusercontent.com/275820/124305586-969d4080-db65-11eb-8cc9-7024ae06758a.png)
 
 ## platforms <a name="platforms"></a>
 
@@ -707,7 +706,7 @@ Shows Top Crypto Financial Products with which you can earn yield, borrow or len
 * -s/--sortby - sort by given column. You can sort data by `rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage`
 * --descend - flag to sort in descending order (lowest first)
 
-![image](https://user-images.githubusercontent.com/275820/123539641-0d3bd780-d73b-11eb-8eea-62e98fcd7662.png)
+![image](https://user-images.githubusercontent.com/275820/124305624-a583f300-db65-11eb-819d-4bd9961d2a08.png)
 
 ## indexes <a name="indexes"></a>
 
@@ -720,7 +719,7 @@ Shows list of crypto indexes from CoinGecko.Each crypto index is made up of a se
 * -s/--sortby - sort by given column. You can sort data by `rank, name, id, market, last, is_multi_asset_composite`
 * --descend - flag to sort in descending order (lowest first)
 
-![image](https://user-images.githubusercontent.com/275820/123539690-2ba1d300-d73b-11eb-9c05-7f8d14f1a91e.png)
+![image](https://user-images.githubusercontent.com/275820/124305656-afa5f180-db65-11eb-91fc-a9b57e99e690.png)
 
 ## derivatives <a name="derivatives"></a>
 
@@ -734,7 +733,7 @@ underlying asset. In this case, the primary asset would be a cryptocurrency such
 * --descend - flag to sort in descending order (lowest first)
 
 
-![image](https://user-images.githubusercontent.com/275820/123539719-496f3800-d73b-11eb-8ebb-538516e75093.png)
+![image](https://user-images.githubusercontent.com/275820/124305694-b896c300-db65-11eb-9a15-dfd2d1e5832f.png)
 
 ## categories <a name="categories"></a>
 
@@ -749,7 +748,7 @@ It includes categories like: stablecoins, defi, solana ecosystem, polkadot ecosy
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `categories --links`. Using `links` parameter will display only `rank, name, url` columns
 
-![image](https://user-images.githubusercontent.com/275820/123539761-82a7a800-d73b-11eb-83be-34754c35131e.png)
+![image](https://user-images.githubusercontent.com/275820/124305739-c51b1b80-db65-11eb-9f35-6dd1fceb731d.png)
 
 
 ## hold <a name="hold"></a>
@@ -781,4 +780,5 @@ Shows Ethereum/Bitcoin Holdings by Public Companies. Track publicly traded compa
 * -c/--coin - chose a coin. Only available for ethereum or bitcoin. List of public companies that holds ethereum  `hold_comp --coin ethereum` for bitcoin `hold_comp --coin bitcoin`
 * -l/--links - You can use additional flag `--links` to see urls to announcement about buying btc or eth by given company. In this case of usage `links` only columns `rank, company, url` will be displayed
 
-![image](https://user-images.githubusercontent.com/275820/123539890-43c62200-d73c-11eb-9722-a81a8510f576.png)
+![image](https://user-images.githubusercontent.com/275820/124305825-e419ad80-db65-11eb-85b4-35f2e163f3fd.png)
+
