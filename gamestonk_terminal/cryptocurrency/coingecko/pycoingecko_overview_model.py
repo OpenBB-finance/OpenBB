@@ -19,7 +19,7 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_helpers import (
 
 PERIODS = {
     "1h": "?time=h1",
-    "1d": "?time=h24",
+    "24h": "?time=h24",
     "7d": "?time=d7",
     "14d": "?time=d14",
     "30d": "?time=d30",
@@ -492,6 +492,8 @@ def get_stable_coins():
             ]
         )
     df = replace_qm(pd.DataFrame(results, columns=columns))
+    df.drop("rank", axis=1, inplace=True)
+    create_df_index(df, "rank")
     return df
 
 
