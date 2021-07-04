@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 import webbrowser
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
@@ -15,6 +16,8 @@ class ResearchController:
 
     # Command choices
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -64,7 +67,8 @@ class ResearchController:
             print(f"\n{s_intraday} Stock: {self.ticker}")
 
         print("\nResearch:")
-        print("   help              show this behavioural analysis menu again")
+        print("   cls               clear screen")
+        print("   ?/help            show this menu again")
         print("   q                 quit this menu, and shows back to main menu")
         print("   quit              quit to abandon program")
         print("")
@@ -97,7 +101,23 @@ class ResearchController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.res_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         if other_args:
             print(f"The following args were unexpected: {other_args}")
