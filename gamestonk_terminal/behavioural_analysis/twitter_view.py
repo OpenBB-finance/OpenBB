@@ -142,6 +142,9 @@ def inference(other_args: List[str], s_ticker: str):
 
         df_tweets = load_analyze_tweets(s_ticker, ns_parser.n_num)
 
+        if df_tweets.empty:
+            return
+
         # Parse tweets
         dt_from = dparse.parse(df_tweets["created_at"].values[-1])
         dt_to = dparse.parse(df_tweets["created_at"].values[0])
@@ -246,17 +249,23 @@ def sentiment(other_args: List[str], s_ticker: str):
                 break
             # Update past datetime
             dt_past = dt_recent - timedelta(minutes=60)
-            if dt_past.day < dt_recent.day:
-                print(
-                    f"From {dt_past.date()} retrieving {ns_parser.n_tweets*24} tweets ({ns_parser.n_tweets} tweets/hour)"
-                )
+
             temp = load_analyze_tweets(
                 s_ticker,
                 ns_parser.n_tweets,
                 start_time=dt_past.strftime(dtformat),
                 end_time=dt_recent.strftime(dtformat),
             )
+
+            if temp.empty:
+                return
+
             df_tweets = pd.concat([df_tweets, temp])
+
+            if dt_past.day < dt_recent.day:
+                print(
+                    f"From {dt_past.date()} retrieving {ns_parser.n_tweets*24} tweets ({ns_parser.n_tweets} tweets/hour)"
+                )
 
             # Update recent datetime
             dt_recent = dt_past
