@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
@@ -26,6 +27,8 @@ class FundamentalAnalysisController:
 
     # Command choices
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -80,10 +83,9 @@ class FundamentalAnalysisController:
         else:
             print(f"\n{intraday} Stock: {self.ticker}")
 
-        print(
-            "\nFundamental Analysis:"
-        )  # https://github.com/JerBouma/FundamentalAnalysis
-        print("   help          show this fundamental analysis menu again")
+        print("\nFundamental Analysis:")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
@@ -120,7 +122,22 @@ class FundamentalAnalysisController:
             None - continue in the menu
         """
 
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.fa_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
