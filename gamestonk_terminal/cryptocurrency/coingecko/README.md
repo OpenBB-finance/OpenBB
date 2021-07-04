@@ -6,7 +6,7 @@ The usage of the following commands along with an example will be exploited belo
 Note that we have added the ability to look at technical analysis in the ta menu.  Data loaded from CoinGecko has no candle data,
 so indicators that rely on anything other than close will fail with an error.
 
-[coin](#coin)
+[COIN](#COIN)
 * [load](#load)
   * load a given coin, you can use either coin symbol or coin id
 * [find](#find)
@@ -36,7 +36,7 @@ so indicators that rely on anything other than close will fail with an error.
 * [dev](#dev)
   * show developers data for loaded coins
 
-[overview](#overview)
+[OVERVIEW](#OVERVIEW)
 * [global](#global)
   * show global crypto market info
 * [coins](#coins)
@@ -145,23 +145,7 @@ E.g. if you loaded in previous step Bitcoin and you want to see it's price vs et
 usage: info
 ````
 
-Shows basic information about loaded coin like:
-* id,
-* name,
-* symbol,
-* asset_platform,
-* description,
-* contract_address,
-* market_cap_rank,
-* public_interest_score,
-* total_supply,
-* max_supply,
-* price_change_percentage_24h,
-* price_change_percentage_7d,
-* price_change_percentage_30d,
-* current_price_btc,
-* current_price_eth,
-* current_price_usd
+Shows basic information about loaded coin like: id, name, symbol, asset_platform, description, contract_address, market_cap_rank, public_interest_score, total_supply, max_supply, price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d, current_price_btc, current_price_eth, current_price_usd
 
 ![image](https://user-images.githubusercontent.com/275820/123523774-48e88a00-d6c6-11eb-97cf-71529fb209ca.png)
 
@@ -171,29 +155,7 @@ Shows basic information about loaded coin like:
 usage: market
 ````
 
-Market data for loaded coin. There you find metrics like:
-* market_cap_rank,
-* total_supply,
-* max_supply,
-* circulating_supply,
-* price_change_percentage_24h,
-* price_change_percentage_7d,
-* price_change_percentage_30d,
-* price_change_percentage_60d,
-* price_change_percentage_1y,
-* market_cap_change_24h,
-* market_cap_btc,
-* market_cap_eth,
-* market_cap_usd,
-* total_volume_btc,
-* total_volume_eth,
-* total_volume_usd,
-* high_24h_btc,
-* high_24h_eth,
-* high_24h_usd,
-* low_24h_btc,
-* low_24h_eth,
-* low_24h_usd
+Market data for loaded coin. There you find metrics like: market_cap_rank, total_supply, max_supply, circulating_supply, price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d, price_change_percentage_60d, price_change_percentage_1y, market_cap_change_24h, market_cap_btc, market_cap_eth, market_cap_usd, total_volume_btc, total_volume_eth, total_volume_usd, high_24h_btc, high_24h_eth, high_24h_usd, low_24h_btc, low_24h_eth, low_24h_usd
 
 ![image](https://user-images.githubusercontent.com/275820/123523943-708c2200-d6c7-11eb-97f4-6fb4f7e12c04.png)
 
@@ -203,20 +165,7 @@ Market data for loaded coin. There you find metrics like:
 usage: ath
 ````
 
-All time high data for loaded coin. You can find there most important metrics regarding ath of coin price like:
-* current_price_btc,
-* current_price_eth,
-* current_price_usd,
-* ath_btc,
-* ath_eth,
-* ath_usd,
-* ath_date_btc,
-* ath_date_eth,
-* ath_date_usd,
-* ath_change_percentage_btc,
-* ath_change_percentage_btc,
-* ath_change_percentage_eth,
-* ath_change_percentage_usd
+All time high data for loaded coin. You can find there most important metrics regarding ath of coin price like: current_price_btc, current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd, ath_date_btc, ath_date_eth, ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc, ath_change_percentage_eth, ath_change_percentage_usd
 
 ![image](https://user-images.githubusercontent.com/275820/123523988-b648ea80-d6c7-11eb-9b08-7d8afecf9231.png)
 
@@ -226,21 +175,7 @@ All time high data for loaded coin. You can find there most important metrics re
 usage: atl
 ````
 
-All time low data for loaded coin. You can find there most important metrics regarding atl of coin price like:
-* current_price_btc,
-* current_price_eth,
-* current_price_usd,
-* atl_btc,
-* atl_eth,
-* atl_usd,
-* atl_date_btc,
-* atl_date_eth,
-* atl_date_usd,
-* atl_change_percentage_btc,
-* atl_change_percentage_btc,
-* atl_change_percentage_eth,
-* atl_change_percentage_usd
-
+All time low data for loaded coin. You can find there most important metrics regarding atl of coin price like: current_price_btc, current_price_eth, current_price_usd, atl_btc, atl_eth, atl_usd, atl_date_btc, atl_date_eth, atl_date_usd, atl_change_percentage_btc, atl_change_percentage_btc, atl_change_percentage_eth, atl_change_percentage_usd
 
 ![image](https://user-images.githubusercontent.com/275820/123523993-c4970680-d6c7-11eb-89ab-3637155e00a9.png)
 
@@ -250,24 +185,7 @@ All time low data for loaded coin. You can find there most important metrics reg
 usage: score
 ````
 
-In this view you can find different kind of scores for loaded coin. Those scores represents different rankings, sentiment metrics, some user stats and others.
-* coingecko_rank,
-* coingecko_score,
-* developer_score,
-* community_score,
-* liquidity_score,
-* sentiment_votes_up_percentage,
-* sentiment_votes_down_percentage,
-* public_interest_score,
-* facebook_likes,
-* twitter_followers,
-* reddit_average_posts_48h,
-* reddit_average_comments_48h,
-* reddit_subscribers,
-* reddit_accounts_active_48h,
-* telegram_channel_user_count,
-* alexa_rank,
- * bing_matches
+In this view you can find different kind of scores for loaded coin. Those scores represents different rankings, sentiment metrics, some user stats and other, like:  coingecko_rank, coingecko_score, developer_score, community_score, liquidity_score, sentiment_votes_up_percentage, sentiment_votes_down_percentage, public_interest_score, facebook_likes, twitter_followers, reddit_average_posts_48h, reddit_average_comments_48h, reddit_subscribers, reddit_accounts_active_48h, telegram_channel_user_count, alexa_rank, bing_matches
 
 ![image](https://user-images.githubusercontent.com/275820/123524080-3707e680-d6c8-11eb-96e0-106b7a9c00c2.png)
 
@@ -343,16 +261,7 @@ It will search for coin that has similar name to polka and display top 25 matche
 usage: global
 ````
 
-Display global statistics about Crypto Market like:
-* active_cryptocurrencies,
-* upcoming_icos,
-* ongoing_icos,
-* ended_icos,
-* markets,
-* market_cap_change_percentage_24h,
-* eth_market_cap_in_pct,
-* btc_market_cap_in_pct,
-* altcoin_market_cap_in_pct
+Display global statistics about Crypto Market like: active_cryptocurrencies, upcoming_icos, ongoing_icos, ended_icos, markets, market_cap_change_percentage_24h,  eth_market_cap_in_pct, btc_market_cap_in_pct, altcoin_market_cap_in_pct
 
 ![image](https://user-images.githubusercontent.com/275820/123538175-d1514400-d733-11eb-9634-09c341f63cb9.png)
 
@@ -362,10 +271,7 @@ Display global statistics about Crypto Market like:
 usage: news [-t --top] [-s --sortby] [--descend] [-l --links]
 ````
 
-Shows latest news from https://www.coingecko.com/en/news
-Display columns: index, title, author, posted columns. You can sort by each of column above, using `--sort` parameter and also do it descending with `--descend` flag
-It's also possible to display urls to news with `--links` flag. If you want to display top 75 news, sorted by author use `news -t 75 -s author` if you want to see urls to source of the news use `news -t 75 -l`
-
+Shows latest news from https://www.coingecko.com/en/news. Display columns: index, title, author, posted columns. You can sort by each of column above, using `--sort` parameter and also do it descending with `--descend` flag. It's also possible to display urls to news with `--links` flag. If you want to display top 75 news, sorted by author use `news -t 75 -s author` if you want to see urls to source of the news use `news -t 75 -l`
 
 * -t/--top - number of news to display. One page of news contains 25 news, so to get 250 news script needs to scrape 10 pages (it can take some time). Default 100. E.g `news --top 150`
 * -s/--sortby - sort by given column. You can chose on from `index, title, author, posted`
@@ -398,15 +304,7 @@ e.q if you want to see only records from 500-750 you should use `coins --skip 50
 usage: defi
 ````
 
-Shows global DeFi statistics. DeFi or Decentralized Finance refers to financial services that are built on top of distributed networks with no central intermediaries.
-Displays metrics like:
-* defi_market_cap,
-* eth_market_cap,
-* defi_to_eth_ratio,
-* trading_volume_24h,
-* defi_dominance,
-* top_coin_name,
-* top_coin_defi_dominance
+Shows global DeFi statistics. DeFi or Decentralized Finance refers to financial services that are built on top of distributed networks with no central intermediaries. Displays metrics like: defi_market_cap, eth_market_cap, defi_to_eth_ratio, trading_volume_24h, defi_dominance, top_coin_name, top_coin_defi_dominance.
 
 ![image](https://user-images.githubusercontent.com/275820/123538414-188c0480-d735-11eb-8395-f9bd2f1ef96c.png)
 
@@ -583,8 +481,6 @@ DeFi or Decentralized Finance refers to financial services that are built on top
 * --descend - flag to sort in descending order (lowest first)
 * -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `top_defi --links`.
 
-
-
 ![image](https://user-images.githubusercontent.com/275820/124305508-7c636280-db65-11eb-8ae7-38389ac72770.png)
 
 ## top_dex <a name="top_dex"></a>
@@ -626,14 +522,8 @@ Examples of NFT include crypto artwork, collectibles, game items, financial prod
 ````
 usage: nft_today
 ````
-Get Non-fungible Token of the Day. Everyday on CoinGecko there is chosen new NFT.
-NFT (Non-fungible Token) refers to digital assets with unique characteristics.
-Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-`nft_today` command you will display:
-* author,
-* description,
-* url,
-* img url
+Get Non-fungible Token of the Day. Everyday on CoinGecko there is chosen new NFT. NFT (Non-fungible Token) refers to digital assets with unique characteristics. Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+`nft_today` command you will display: author, description, url, img url.
 
 ![image](https://user-images.githubusercontent.com/275820/123539455-2abc7180-d73a-11eb-9b58-160f11d99b44.png)
 
@@ -644,11 +534,7 @@ usage: nft_market
 ````
 Get current state of NFTs market. NFT (Non-fungible Token) refers to digital assets with unique characteristics.
 Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-`nft_market` will display:
-* NFT Market Cap,
-* 24h Trading Volume,
-* NFT Dominance vs Global market,
-* Theta Network NFT Dominance
+`nft_market` will display: NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance.
 
 ![image](https://user-images.githubusercontent.com/275820/123539514-7838de80-d73a-11eb-8e22-ef3f250d3003.png)
 
@@ -758,11 +644,7 @@ usage: hold [-c --coin]
 ````
 
 Shows overview of public companies that holds ethereum or bitcoin
-Displays most important metrics like:
-* Total Bitcoin/Ethereum Holdings,
-* Total Value (USD),
-* Public Companies Bitcoin/Ethereum Dominance,
-* Companies
+Displays most important metrics like: Total Bitcoin/Ethereum Holdings, Total Value (USD), Public Companies Bitcoin/Ethereum Dominance, Companies.
 
 * -c/--coin - chose a coin. Only available for ethereum or bitcoin. If you want to see overview of public companies that holds ethereum use `hold --coin ethereum` for bitcoin `hold --coin bitcoin`
 
