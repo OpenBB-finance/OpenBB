@@ -633,13 +633,16 @@ def export(other_args: List[str], df_stock):
         return
 
     if ns_parser.s_format == "csv":
-        df_stock.to_csv(ns_parser.s_filename)
+        outPath = os.path.join("r'", os.path.dirname( __file__ ), 'exports', 'csv', ns_parser.s_filename)
+        df_stock.to_csv(outPath)
 
     elif ns_parser.s_format == "json":
-        df_stock.to_json(ns_parser.s_filename)
+        outPath = os.path.join("r'", os.path.dirname( __file__ ), 'exports', 'json', ns_parser.s_filename)
+        df_stock.to_json(outPath)
 
     elif ns_parser.s_format == "excel":
-        df_stock.to_excel(ns_parser.s_filename)
+        outPath = os.path.join("r'", os.path.dirname( __file__ ), 'exports', 'excel', ns_parser.s_filename)
+        df_stock.to_excel(outPath)
 
     elif ns_parser.s_format == "clipboard":
         df_stock.to_clipboard()
