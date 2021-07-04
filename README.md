@@ -108,7 +108,7 @@ Our current recommendation is to use this project with Anaconda's Python distrib
 0. Star the project
 <img width="1272" alt="Captura de ecrã 2021-04-25, às 01 13 30" src="https://user-images.githubusercontent.com/25267873/115989986-e20cfe80-a5b8-11eb-8182-d6d87d092252.png">
 
-1. Install Anaconda
+1. [Install Anaconda](https://docs.anaconda.com/anaconda/install/index.html) (It's on the AUR as anaconda or miniconda3!)
 
 Confirm that you have it with: `conda -V`. The output should be something along the lines of: `conda 4.9.2`
 
