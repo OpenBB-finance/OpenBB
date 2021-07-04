@@ -10,7 +10,10 @@ from binance.exceptions import BinanceAPIException
 from tabulate import tabulate
 from gamestonk_terminal.main_helper import parse_known_args_and_warn
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal.cryptocurrency.binance_view import plot_order_book, plot_candles
+from gamestonk_terminal.cryptocurrency.binance.binance_view import (
+    plot_order_book,
+    plot_candles,
+)
 
 
 def check_valid_binance_str(symbol: str) -> str:
@@ -43,7 +46,7 @@ def select_binance_coin(other_args: List[str]):
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     parser = argparse.ArgumentParser(
-        prog="select",
+        prog="load",
         add_help=False,
         description="Define the coin to be used from binance and get data",
     )
@@ -196,7 +199,6 @@ def show_candles(candles_df: pd.DataFrame, coin: str, currency: str):
         f"{coin+currency} from {candles_df.index[0].strftime('%Y/%m/%d')} to "
         f"{candles_df.index[-1].strftime('%Y/%m/%d')}",
     )
-    print("")
 
 
 def balance(coin: str):
