@@ -6,8 +6,8 @@ This menu has a different concept from remaining menus. It has 2 main goals:
 
 Command | Template | Example
 ------ | --------|----
-`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | todo
-`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | todo
+`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | [Due Diligence Example](/notebooks/examples/GME_20210704_191432_due_diligence.html)
+`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | [Economy Example](/notebooks/examples/econ_data_20210704_074122.html)
 
      
 ## How to run the report
