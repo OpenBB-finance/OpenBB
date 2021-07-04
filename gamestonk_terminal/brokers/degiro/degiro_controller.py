@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 import argparse
+import os
 
 # IMPORTATION THIRDPARTY
 from prompt_toolkit.completion import NestedCompleter
@@ -18,6 +19,8 @@ from gamestonk_terminal.brokers.degiro.degiro_view import DegiroView
 
 class DegiroController:
     CHOICES = [
+        "?",
+        "cls",
         "cancel",
         "companynews",
         "create",
@@ -343,7 +346,22 @@ class DegiroController:
         try:
             degiro_parser = self.__degiro_parser
 
+            # Empty command
+            if not an_input:
+                print("")
+                return None
+
             (known_args, other_args) = degiro_parser.parse_known_args(an_input.split())
+
+            # Help menu again
+            if known_args.cmd == "?":
+                DegiroView.help_display()
+                return None
+
+            # Clear screen
+            if known_args.cmd == "cls":
+                os.system("cls||clear")
+                return None
 
             return getattr(
                 self,
