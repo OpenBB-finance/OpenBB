@@ -1,4 +1,5 @@
 import argparse
+import os
 from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -19,6 +20,8 @@ class ForexController:
     """Oanda Controller class"""
 
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -57,37 +60,38 @@ class ForexController:
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/forex"
         )
         print("\nForex Mode:")
-        print("    help          show this menu again")
-        print("    q             quit this menu and goes back to main menu")
-        print("    quit          quit to abandon program")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
+        print("   q             quit this menu and goes back to main menu")
+        print("   quit          quit to abandon program")
         print("")
-        print("    summary       shows account summary")
-        print("    calendar      show calendar")
-        print("    list          list order history")
-        print("    pending       get information on pending orders")
-        print("    cancel        cancel a pending order by ID -i order ID")
-        print("    positions     get open positions")
-        print("    trades        list open trades")
-        print("    closetrade    close a trade by id")
+        print("   summary       shows account summary")
+        print("   calendar      show calendar")
+        print("   list          list order history")
+        print("   pending       get information on pending orders")
+        print("   cancel        cancel a pending order by ID -i order ID")
+        print("   positions     get open positions")
+        print("   trades        list open trades")
+        print("   closetrade    close a trade by id")
         print("")
         print(f"Loaded instrument: {self.instrument if self.instrument else ''}")
         print("")
         print("    load          load an instrument to use")
         if self.instrument:
-            print("    candles       show candles")
-            print("    price         shows price for selected instrument")
-            print("    order         place limit order -u # of units -p price")
-            print("    orderbook     print orderbook")
-            print("    positionbook  print positionbook")
-            print("    news          print news [News API]")
+            print("   candles       show candles")
+            print("   price         shows price for selected instrument")
+            print("   order         place limit order -u # of units -p price")
+            print("   orderbook     print orderbook")
+            print("   positionbook  print positionbook")
+            print("   news          print news [News API]")
             print(
-                "    reddit        search reddit for posts about the loaded instrument"
+                "   reddit        search reddit for posts about the loaded instrument"
             )
             print(
-                "    > eda         exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
+                ">  eda         exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
             )
             print(
-                "    > ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
+                ">  ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
             )
         print("")
 
@@ -101,7 +105,23 @@ class ForexController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.fx_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "command not recognized!"
