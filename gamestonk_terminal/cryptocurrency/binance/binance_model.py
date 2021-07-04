@@ -199,7 +199,6 @@ def show_candles(candles_df: pd.DataFrame, coin: str, currency: str):
         f"{coin+currency} from {candles_df.index[0].strftime('%Y/%m/%d')} to "
         f"{candles_df.index[-1].strftime('%Y/%m/%d')}",
     )
-    print("")
 
 
 def balance(coin: str):

@@ -79,9 +79,13 @@ class BinanceController:
 
     def call_candle(self, _):
         """Process candle command"""
-        binance_model.show_candles(
-            self.current_df, self.current_coin, self.current_currency
-        )
+        if self.current_coin is None and self.current_df.empty:
+            print("No coin selected. Use 'load' to load the coin you want to look at.")
+            print("")
+        else:
+            binance_model.show_candles(
+                self.current_df, self.current_coin, self.current_currency
+            )
 
     def call_balance(self, _):
         """Process balance command"""
@@ -103,7 +107,10 @@ class BinanceController:
             print(
                 f"Current coin {self.current_coin} was removed. You can load new coin with load -c <coin>"
             )
+            print("")
             self.current_coin = None
+            self.current_currency = None
+            self.current_df = pd.DataFrame()
         else:
             print("No coin selected. Use 'load' to load the coin you want to look at.")
             print("")

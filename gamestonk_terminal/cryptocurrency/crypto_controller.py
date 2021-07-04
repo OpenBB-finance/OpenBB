@@ -39,13 +39,8 @@ class CryptoController:
         print("   q               quit this menu, and shows back to main menu")
         print("   quit            quit to abandon program")
         print("")
-        print("Coingecko:")
         print(">  cg              CoinGecko overview (market statistics) and coin menu")
-        print("")
-        print("CoinMarketCap:")
         print(">  cmc             Coinmarketcap menu")
-        print("")
-        print("Binance:")
         print(">  bin             Binance menu with order book, candles, ta.. ")
         print("")
 
