@@ -48,7 +48,7 @@ class BacktestingController:
         )
         print("\nBacktesting:")
         print("   cls         clear screen")
-        print("   ?/help      show this discovery menu again")
+        print("   ?/help      show this menu again")
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
         print("")
