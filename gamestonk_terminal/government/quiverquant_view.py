@@ -392,7 +392,6 @@ def government_trading(other_args: List[str], ticker: str, gov_type: str):
     )
 
     try:
-
         if other_args:
             if "-" not in other_args[0]:
                 other_args.insert(0, "-p")
@@ -416,6 +415,10 @@ def government_trading(other_args: List[str], ticker: str, gov_type: str):
         df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
         df_gov = df_gov[df_gov["TransactionDate"] > start_date]
+
+        if df_gov.empty:
+            print(f"No recent {gov_type} trading data found\n")
+            return
 
         df_gov["min"] = df_gov["Range"].apply(
             lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
