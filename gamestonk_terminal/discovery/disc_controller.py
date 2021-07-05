@@ -104,6 +104,9 @@ class DiscoveryController:
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
         print("   ratings        top ratings updates [MarketBeat]")
+        print(
+            "   darkpool       promising tickers based on dark pool shares regression [FINRA]"
+        )
         print("   darkshort      dark pool short position [Stockgrid.io]")
         print("   shortvol       short interest and days to cover [Stockgrid.io]")
         print("")

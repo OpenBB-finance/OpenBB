@@ -64,8 +64,10 @@ class PapermillController:
 
 def print_papermill():
     """Print help"""
-
-    print("\nDiscovery Mode:")
+    print(
+        "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/papermill"
+    )
+    print("\nPapermill Reports:")
     print("   help          show this papermill menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")

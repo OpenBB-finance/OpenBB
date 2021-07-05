@@ -213,9 +213,12 @@ def sustainability(other_args: List[str], ticker: str):
 
         df_sustainability = stock.sustainability
 
+        if df_sustainability is None:
+            print(f"No sustainability information in Yahoo for {ticker}", "\n")
+            return
+
         if df_sustainability.empty:
-            print(f"No sustainability information in Yahoo for {ticker}")
-            print("")
+            print(f"No sustainability information in Yahoo for {ticker}", "\n")
             return
 
         clean_df_index(df_sustainability)

@@ -125,7 +125,7 @@ class ComparisonAnalysisController:
         print("")
 
         if self.similar:
-            print("   > po          portfolio optimization for selected tickers")
+            print(">  po          portfolio optimization for selected tickers")
             print("")
         return
 
