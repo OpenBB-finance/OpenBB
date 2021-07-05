@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
@@ -14,6 +15,8 @@ from gamestonk_terminal.portfolio_optimization import optimizer_view
 class PortfolioOptimization:
 
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -53,7 +56,8 @@ class PortfolioOptimization:
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_optimization"
         )
         print("\nPortfolio Optimization:")
-        print("   help          show this menu again")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
@@ -96,7 +100,23 @@ class PortfolioOptimization:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.po_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help(self.tickers)
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
