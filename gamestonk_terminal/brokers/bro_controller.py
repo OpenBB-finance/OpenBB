@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=R1710
 
 import argparse
+import os
 from typing import List
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -26,6 +27,8 @@ class BrokersController:
     """Brokers Controller"""
 
     CHOICES = [
+        "?",
+        "cls",
         "alphist",
         "alphold",
         "allyhold",
@@ -56,13 +59,16 @@ class BrokersController:
         print(
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/brokers"
         )
+        print()
+        print("   ?/help      show this menu again")
         print(
             "\nBrokers Supported:\n"
             "   ally - Ally Invest\n"
             "   alp  - Alpaca\n"
             "   rh   - Robinhood\n"
             "\nPortfolio:\n"
-            "   help          show this menu again\n"
+            "   cls           clear screen\n"
+            "   ?/help        show this menu again\n"
             "   q             quit this menu, and shows back to main menu, logs out of brokers\n"
             "   quit          quit to abandon program, logs out of brokers\n"
         )
@@ -97,7 +103,22 @@ class BrokersController:
             None - continue in the menu
         """
 
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.bro_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"

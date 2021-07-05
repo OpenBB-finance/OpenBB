@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622
 import argparse
+import os
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -14,6 +15,8 @@ from gamestonk_terminal.technical_analysis import ta_controller
 class GeckoController:
 
     CHOICES = [
+        "?",
+        "cls",
         "help",
         "q",
         "quit",
@@ -74,7 +77,8 @@ class GeckoController:
     def print_help(self):
         """Print help"""
         print("\nCoinGecko:")
-        print("   help            show this menu again")
+        print("   cls             clear screen")
+        print("   ?/help          show this menu again")
         print("   q               quit this menu, and shows back to main menu")
         print("   quit            quit to abandon program")
         print("")
@@ -145,7 +149,23 @@ class GeckoController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self._gecko_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"

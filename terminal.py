@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import argparse
-
+import os
 import sys
 from datetime import datetime, timedelta
 from typing import List
@@ -75,6 +75,8 @@ class TerminalController:
     ]
 
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "quit",
         "q",
@@ -130,7 +132,8 @@ class TerminalController:
         """Print help"""
         help_text = """
 What do you want to do?
-    help        help to see this menu again
+    cls         clear screen
+    ?/help      show this menu again
     update      update terminal from remote
     reset       reset terminal and reload configs
     about       about us
@@ -198,11 +201,26 @@ Contexts:
             None - continue in the menu
         """
 
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         if not self.ticker and an_input in self.CHOICES_TICKER_DEPENDENT:
             print("No ticker selected. Use 'load <ticker>'.\n")
             return None
 
         (known_args, other_args) = self.t_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"

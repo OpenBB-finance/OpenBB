@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List, Union
 from datetime import datetime
 import matplotlib as mpl
@@ -25,7 +26,7 @@ mpl.use(default_backend)
 class BacktestingController:
     """Backtesting Class"""
 
-    CHOICES = ["help", "q", "quit", "ema", "ema_cross", "rsi"]
+    CHOICES = ["?", "cls", "help", "q", "quit", "ema", "ema_cross", "rsi"]
 
     def __init__(
         self,
@@ -46,7 +47,8 @@ class BacktestingController:
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/backtesting"
         )
         print("\nBacktesting:")
-        print("   help        show this backtesting menu again")
+        print("   cls         clear screen")
+        print("   ?/help      show this menu again")
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
         print("")
@@ -66,7 +68,22 @@ class BacktestingController:
             None - continue in the menu
         """
 
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.bt_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -118,6 +135,7 @@ def menu(ticker: str, start: Union[str, datetime]):
 
         try:
             plt.close("all")
+
             process_input = bt_controller.switch(an_input)
             if process_input is not None:
                 return process_input

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 import webbrowser
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -14,6 +15,8 @@ class ResourceCollectionController:
 
     # Command choices
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -40,7 +43,8 @@ class ResourceCollectionController:
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/resource_collection"
         )
         print("\nResources:")
-        print("   help          show this behavioural analysis menu again")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
@@ -62,7 +66,23 @@ class ResourceCollectionController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.rc_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         if other_args:
             print(f"The following args were unexpected: {other_args}")

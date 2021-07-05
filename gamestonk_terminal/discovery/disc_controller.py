@@ -32,6 +32,8 @@ class DiscoveryController:
 
     # Command choices
     CHOICES = [
+        "?",
+        "cls",
         "help",
         "q",
         "quit",
@@ -75,7 +77,8 @@ class DiscoveryController:
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/discovery"
         )
         print("\nDiscovery Mode:")
-        print("   help           show this discovery menu again")
+        print("   cls            clear screen")
+        print("   ?/help         show this discovery menu again")
         print("   q              quit this menu, and shows back to main menu")
         print("   quit           quit to abandon program")
         print("")
@@ -121,6 +124,11 @@ class DiscoveryController:
             True - quit the program
             None - continue in the menu
         """
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
@@ -130,6 +138,16 @@ class DiscoveryController:
             if os.path.isfile(self.spectrum_img_to_delete + ".jpg"):
                 os.remove(self.spectrum_img_to_delete + ".jpg")
                 self.spectrum_img_to_delete = ""
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
