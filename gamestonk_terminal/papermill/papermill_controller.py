@@ -81,7 +81,9 @@ class PapermillController:
 
 def print_papermill():
     """Print help"""
-
+    print(
+        "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/papermill"
+    )
     print("\nPapermill Reports:")
     print("   cls           clear screen")
     print("   ?/help        show this menu again")

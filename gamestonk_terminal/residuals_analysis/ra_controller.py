@@ -150,6 +150,8 @@ class ResidualsController:
                     other_args[2:], self.stock
                 )
 
+            self.print_help()
+
         except Exception as e:
             print(e)
 

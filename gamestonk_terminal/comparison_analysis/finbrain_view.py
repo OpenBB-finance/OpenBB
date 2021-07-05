@@ -169,6 +169,7 @@ def get_sentiments(similar: List[str]) -> pd.DataFrame:
     """
 
     df_sentiment = pd.DataFrame()
+    dates_sentiment = list()
     for ticker in similar:
         result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         if result.status_code == 200:
@@ -177,14 +178,17 @@ def get_sentiments(similar: List[str]) -> pd.DataFrame:
                     float(val)
                     for val in list(result.json()["sentimentAnalysis"].values())
                 ]
+                dates_sentiment = list(result.json()["sentimentAnalysis"].keys())
             else:
                 print(f"Unexpected data format from FinBrain API for {ticker}")
+                similar.remove(ticker)
 
         else:
             print(f"Request error in retrieving {ticker} sentiment from FinBrain API")
+            similar.remove(ticker)
 
     if not df_sentiment.empty:
-        df_sentiment.index = list(result.json()["sentimentAnalysis"].keys())
+        df_sentiment.index = dates_sentiment
         df_sentiment.sort_index(ascending=True, inplace=True)
 
     return df_sentiment

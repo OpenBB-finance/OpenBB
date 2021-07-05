@@ -162,8 +162,13 @@ PC: Price Change; PB: Price-to-book. """,
 
         if res.status_code == 200:
             df_res = pd.DataFrame(res.json())
+
+            if df_res.empty:
+                print(f"No options data found for preset: {ns_parser.preset}", "\n")
+                return
+
             df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:17]]
-            # print(df_res.to_string())
+
             print(
                 tabulate(
                     df_res,
