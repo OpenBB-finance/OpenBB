@@ -7,6 +7,8 @@ from typing import Union
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 import bt
+import yfinance as yf
+import pandas as pd
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
@@ -14,7 +16,28 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
+def get_data(ticker: str, start_date: Union[str, datetime]):
+    """
+    Function to replace bt.get,  Gets Adjusted close of ticker
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get data for
+    start_date:
+        Start date
+
+    Returns
+    -------
+    prices: pd.DataFrame
+        Dataframe of Adj Close with columns = [ticker]
+    """
+    prices = yf.download(ticker, start=start_date, progress=False)
+    prices = pd.DataFrame(prices["Adj Close"])
+    prices.columns = [ticker]
+    return prices
+
+
+def buy_and_hold(ticker: str, start_date: Union[str, datetime], name: str):
     """
     Generates a backtest object for the given ticker
     Parameters
@@ -30,7 +53,8 @@ def buy_and_hold(ticker: str, start: Union[str, datetime], name: str):
     -------
     bt.Backtest object for buy and hold strategy
     """
-    prices = bt.get(ticker, start=start)
+    # prices = bt.get(ticker, start=start)
+    prices = get_data(ticker, start_date)
     bt_strategy = bt.Strategy(
         name,
         [

@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-gst = 'terminal:main'
+gst = 'terminal:terminal'
 
 [tool.poetry.dependencies]
 python = "^3.6.8"
