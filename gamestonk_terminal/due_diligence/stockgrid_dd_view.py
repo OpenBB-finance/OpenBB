@@ -2,9 +2,9 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from datetime import timedelta
-from datetime import datetime
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     check_positive,
+    export_data,
 )
 
 
@@ -51,9 +52,10 @@ def shortview(ticker: str, other_args: List[str]):
     )
     parser.add_argument(
         "--export",
-        action="store_true",
+        choices=["csv", "json", "xlsx"],
+        default="",
         dest="export",
-        help="Save dataframe as a csv file",
+        help="Export dataframe data to csv,json,xlsx file",
     )
 
     try:
@@ -168,13 +170,12 @@ def shortview(ticker: str, other_args: List[str]):
             plt.show()
         print("")
 
-        if ns_parser.export:
-            now = datetime.now()
-            with open(
-                f"shortview_{now.strftime('%Y%m%d_%H%M%S')}.csv",
-                "w",
-            ) as file:
-                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortview",
+            df,
+        )
 
     except Exception as e:
         print(e, "\n")
@@ -213,9 +214,10 @@ def darkpos(ticker: str, other_args: List[str]):
     )
     parser.add_argument(
         "--export",
-        action="store_true",
+        choices=["csv", "json", "xlsx"],
+        default="",
         dest="export",
-        help="Save dataframe as a csv file",
+        help="Export dataframe data to csv,json,xlsx file",
     )
 
     try:
@@ -295,13 +297,12 @@ def darkpos(ticker: str, other_args: List[str]):
             plt.show()
         print("")
 
-        if ns_parser.export:
-            now = datetime.now()
-            with open(
-                f"darkpos_{now.strftime('%Y%m%d_%H%M%S')}.csv",
-                "w",
-            ) as file:
-                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "darkpos",
+            df,
+        )
 
     except Exception as e:
         print(e, "\n")
