@@ -34,7 +34,10 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * shows price vs short interest volume [Stockgrid]
 * [darkpos](#darkpos)
   * net short vs position [Stockgrid]
-
+* [supplier](#supplier)
+  * list of suppliers [csimarket]
+* [customer](#customer)
+  * list of customers [csimarket]
 
 ## news <a name="news"></a>
 
@@ -235,3 +238,23 @@ Shows Net Short Vol. vs Position. [Source: Stockgrid]
 <img width="958" alt="darkpos_raw" src="https://user-images.githubusercontent.com/25267873/122646989-ee758980-d119-11eb-9f67-f51f0b75c49d.png">
 
 
+## supplier <a name="supplier"></a>
+
+```text
+usage: supplier
+```
+
+List of suppliers from ticker provided. [Source: CSIMarket]
+
+<img width="974" alt="supplier" src="https://user-images.githubusercontent.com/25267873/124523361-b98e5580-ddee-11eb-94dc-08e4df1b17c0.png">
+
+
+## customer <a name="customer"></a>
+
+```text
+usage: customer
+```
+
+List of customer from ticker provided. [Source: CSIMarket]
+
+<img width="980" alt="customer" src="https://user-images.githubusercontent.com/25267873/124523360-b85d2880-ddee-11eb-8413-836de13d13ce.png">
