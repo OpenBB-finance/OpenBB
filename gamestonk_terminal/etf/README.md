@@ -81,7 +81,7 @@ usage: compare [-n --names]
 ```
 * -n/--names : ETFs to compare.  Input as comma separated (ETF1,ETF2,..)
 
-Campares the overview of different ETFs.  Unknown tickers show nan
+Campares the overview of different ETFs.
 
 Example:
 

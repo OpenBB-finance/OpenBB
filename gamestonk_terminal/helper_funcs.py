@@ -608,3 +608,40 @@ def find_tickers(submission):
             l_tickers_found.append(s_ticker.strip())
 
     return l_tickers_found
+
+
+def export_data(export_type: str, dir_path: str, func_name: str, df: pd.DataFrame):
+    """Export data to a file.
+
+    Parameters
+    ----------
+    export_type : str
+        Type of export between: csv,json,xlsx,xls
+    dir_path : str
+        Path of directory from where this function is called
+    func_name : str
+        Name of the command that invokes this function
+    df : pd.Dataframe
+        Datframe containing the data
+    """
+    if export_type:
+        export_dir = dir_path.replace("gamestonk_terminal", "exports")
+
+        now = datetime.now()
+        full_path = os.path.abspath(
+            os.path.join(
+                export_dir,
+                f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}.{export_type}",
+            )
+        )
+
+        if export_type == "csv":
+            df.to_csv(full_path)
+        elif export_type == "json":
+            df.to_json(full_path)
+        elif export_type in "xlsx":
+            df.to_excel(full_path, index=True, header=True)
+        else:
+            print("Wrong export file specified.\n")
+
+        print(f"Saved file: {full_path}\n")

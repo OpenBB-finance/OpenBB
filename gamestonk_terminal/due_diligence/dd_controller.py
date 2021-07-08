@@ -18,6 +18,7 @@ from gamestonk_terminal.due_diligence import finra_view
 from gamestonk_terminal.due_diligence import sec_view
 from gamestonk_terminal.due_diligence import stockgrid_dd_view as sg_view
 from gamestonk_terminal.due_diligence import finnhub_view
+from gamestonk_terminal.due_diligence import csimarket_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -49,6 +50,8 @@ class DueDiligenceController:
         "ftd",
         "shortview",
         "darkpos",
+        "supplier",
+        "customer",
     ]
 
     def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
@@ -120,6 +123,8 @@ class DueDiligenceController:
         print("   ftd           fails-to-deliver data [SEC]")
         print("   shortview     price vs short interest volume [Stockgrid.io]")
         print("   darkpos       net short vs position [Stockgrid.io]")
+        print("   supplier      list of suppliers [csimarket]")
+        print("   customer      list of customers [csimarket]")
         print("")
 
     def switch(self, an_input: str):
@@ -233,6 +238,14 @@ class DueDiligenceController:
     def call_darkpos(self, other_args: List[str]):
         """Process darkpos command"""
         sg_view.darkpos(self.ticker, other_args)
+
+    def call_supplier(self, other_args: List[str]):
+        """Process supplier command"""
+        csimarket_view.suppliers(self.ticker, other_args)
+
+    def call_customer(self, other_args: List[str]):
+        """Process customer command"""
+        csimarket_view.customers(self.ticker, other_args)
 
 
 def menu(ticker: str, start: str, interval: str, stock: DataFrame):
