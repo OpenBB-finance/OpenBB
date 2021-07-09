@@ -16,6 +16,7 @@ from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
+import pyEX
 from tabulate import tabulate
 
 # import git
@@ -126,7 +127,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         dest="source",
         type=check_sources,
         default="yf",
-        help="Source of historical data. 'yf' and 'av' available.",
+        help="Source of historical data. 'yf', 'av' and 'iex' available.",
     )
     parser.add_argument(
         "-p",
@@ -193,6 +194,38 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                     return [s_ticker, s_start, s_interval, df_stock]
 
                 df_stock_candidate.index.name = "date"
+
+            # IEX Cloud Source
+            elif ns_parser.source == "iex":
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ns_parser.s_ticker)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock_candidate = df_stock_candidate[
+                    ["uClose", "uHigh", "uLow", "uOpen", "fClose", "volume"]
+                ]
+                df_stock_candidate = df_stock_candidate.rename(
+                    columns={
+                        "uClose": "Close",
+                        "uHigh": "High",
+                        "uLow": "Low",
+                        "uOpen": "Open",
+                        "fClose": "Adj Close",
+                        "volume": "Volume",
+                    }
+                )
+
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+
+                print(df_stock_candidate.to_string())
 
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
@@ -523,78 +556,78 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         if not ns_parser:
             return
 
+        # Update values:
+        if ns_parser.s_ticker != s_ticker:
+            if ns_parser.n_interval > 0:
+                s_ticker, s_start, s_interval, df_stock = load(
+                    [
+                        "-t",
+                        ns_parser.s_ticker,
+                        "-s",
+                        ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                        "-i",
+                        ns_parser.n_interval,
+                    ],
+                    s_ticker,
+                    s_start,
+                    s_interval,
+                    df_stock,
+                )
+            else:
+                s_ticker, s_start, s_interval, df_stock = load(
+                    [
+                        "-t",
+                        ns_parser.s_ticker,
+                        "-s",
+                        ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                    ],
+                    s_ticker,
+                    s_start,
+                    s_interval,
+                    df_stock,
+                )
+
+        # A new interval intraday period was given
+        if ns_parser.n_interval != 0:
+            s_interval = str(ns_parser.n_interval) + "min"
+
+        type_candles = lett_to_num(ns_parser.type)
+
+        df_stock.sort_index(ascending=True, inplace=True)
+
+        # Daily
+        if s_interval == "1440min":
+            # The default doesn't exist for intradaily data
+            ln_col_idx = [int(x) - 1 for x in list(type_candles)]
+            # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
+            # pylint: disable=len-as-condition
+            if len([i for i in ln_col_idx if i > 4]) > 0:
+                print("An index bigger than 4 was given, which is wrong. Try again")
+                return
+            # Append last column of df to be filtered which corresponds to: Volume
+            ln_col_idx.append(5)
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            df_stock = df_stock[ns_parser.s_start_date :]
+        # Intraday
+        else:
+            # The default doesn't exist for intradaily data
+            # JM edit 6-7-21 -- It seems it does
+            if ns_parser.type == "a":
+                ln_col_idx = [4]
+            else:
+                ln_col_idx = [int(x) - 1 for x in list(type_candles)]
+
+            # Append last column of df to be filtered which corresponds to: 5. Volume
+            ln_col_idx.append(5)
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
+
+        # Plot view of the stock
+        plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
+
     except SystemExit:
         print("")
         return
-
-    # Update values:
-    if ns_parser.s_ticker != s_ticker:
-        if ns_parser.n_interval > 0:
-            s_ticker, s_start, s_interval, df_stock = load(
-                [
-                    "-t",
-                    ns_parser.s_ticker,
-                    "-s",
-                    ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                    "-i",
-                    ns_parser.n_interval,
-                ],
-                s_ticker,
-                s_start,
-                s_interval,
-                df_stock,
-            )
-        else:
-            s_ticker, s_start, s_interval, df_stock = load(
-                [
-                    "-t",
-                    ns_parser.s_ticker,
-                    "-s",
-                    ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                ],
-                s_ticker,
-                s_start,
-                s_interval,
-                df_stock,
-            )
-
-    # A new interval intraday period was given
-    if ns_parser.n_interval != 0:
-        s_interval = str(ns_parser.n_interval) + "min"
-
-    type_candles = lett_to_num(ns_parser.type)
-
-    df_stock.sort_index(ascending=True, inplace=True)
-
-    # Daily
-    if s_interval == "1440min":
-        # The default doesn't exist for intradaily data
-        ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-        # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
-        # pylint: disable=len-as-condition
-        if len([i for i in ln_col_idx if i > 4]) > 0:
-            print("An index bigger than 4 was given, which is wrong. Try again")
-            return
-        # Append last column of df to be filtered which corresponds to: Volume
-        ln_col_idx.append(5)
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date :]
-    # Intraday
-    else:
-        # The default doesn't exist for intradaily data
-        # JM edit 6-7-21 -- It seems it does
-        if ns_parser.type == "a":
-            ln_col_idx = [4]
-        else:
-            ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-
-        # Append last column of df to be filtered which corresponds to: 5. Volume
-        ln_col_idx.append(5)
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
-
-    # Plot view of the stock
-    plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
 
 
 def export(other_args: List[str], df_stock):

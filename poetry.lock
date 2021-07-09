@@ -306,6 +306,14 @@ python-versions = "*"
 pycparser = "*"
 
 [[package]]
+name = "pyex"
+version = "0.5.0"
+description = "Rest API to IEX"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "chardet"
 version = "4.0.0"
 description = "Universal encoding detector for Python 2 and 3"
@@ -4173,6 +4181,10 @@ pycoingecko = [
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
     {file = "pycparser-2.20.tar.gz", hash = "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"},
+]
+pyex = [
+    {file = "pyEX-0.5.0-py2.py3-none-any.whl", hash = "sha256:8860b8eb9c15d91e5f552786fbe8f8ecd46c4c4931e5cb82ba41187eb603f742"},
+    {file = "pyEX-0.5.0.tar.gz", hash = "sha256:e85c392733aec3717b00d05640bd7efcfc87bf949064a7f31112293fe395c27e"},
 ]
 pyflakes = [
     {file = "pyflakes-2.3.1-py2.py3-none-any.whl", hash = "sha256:7893783d01b8a89811dd72d7dfd4d84ff098e5eed95cfa8905b22bbffe52efc3"},

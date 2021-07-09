@@ -459,7 +459,7 @@ def lett_to_num(word: str) -> str:
 
 
 def check_sources(source: str) -> str:
-    available_historical_price_sources = ["yf", "av"]
+    available_historical_price_sources = ["yf", "av", "iex"]
     if source in available_historical_price_sources:
         return source
     raise argparse.ArgumentTypeError(
