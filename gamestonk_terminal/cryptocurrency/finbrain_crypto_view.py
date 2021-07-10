@@ -1,3 +1,4 @@
+"""Finbrain Crypto Sentiment Analysis"""
 __docformat__ = "numpy"
 import os
 import argparse
@@ -13,10 +14,13 @@ from gamestonk_terminal.behavioural_analysis.finbrain_view import (
     sentiment_coloring,
 )
 
-
 PATH = os.path.dirname(os.path.abspath(__file__))
-COINS_JSON = pd.read_json(PATH + "/finbrain_coins.json")
-COINS = COINS_JSON["SYMBOL"].tolist()
+
+try:
+    COINS_JSON = pd.read_json(PATH + "/data/finbrain_coins.json")
+    COINS = COINS_JSON["SYMBOL"].tolist()
+except ValueError:
+    COINS = None
 
 
 def crypto_sentiment_analysis(other_args: List[str]):
@@ -45,7 +49,7 @@ def crypto_sentiment_analysis(other_args: List[str]):
         default="BTC",
         type=str,
         dest="coin",
-        help="Symbol of coin to load data for. Currently more then 100 symbols are available",
+        help="Symbol of coin to load data for, ~100 symbols are available",
         choices=COINS,
     )
 
@@ -61,9 +65,11 @@ def crypto_sentiment_analysis(other_args: List[str]):
             f"{coin}-USD"
         )  # Currently only USD pairs are available
 
-        if not df_sentiment.empty:
-            plot_sentiment(df_sentiment, coin)
+        if df_sentiment.empty:
+            print(f"Couldn't find Sentiment Data for {coin}")
+            return
 
+        plot_sentiment(df_sentiment, coin)
         df_sentiment.sort_index(ascending=True, inplace=True)
 
         if gtff.USE_COLOR:
