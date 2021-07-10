@@ -11,6 +11,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.coinmarketcap import coinmarketcap_controller
 from gamestonk_terminal.cryptocurrency.binance import binance_controller
 from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_controller
+from gamestonk_terminal.cryptocurrency import finbrain_crypto_view
 
 
 class CryptoController:
@@ -24,6 +25,7 @@ class CryptoController:
         "cg",
         "bin",
         "cmc",
+        "finbrain",
     ]
 
     def __init__(self):
@@ -42,6 +44,8 @@ class CryptoController:
         print("   ?/help          show this menu again")
         print("   q               quit this menu, and shows back to main menu")
         print("   quit            quit to abandon program")
+        print("")
+        print("   finbrain        Crypto sentiment from 15+ major news headlines")
         print("")
         print(">  cg              CoinGecko overview (market statistics) and coin menu")
         print(">  cmc             Coinmarketcap menu")
@@ -108,6 +112,10 @@ class CryptoController:
         if coinmarketcap_controller.menu():
             return True
         print("")
+
+    def call_finbrain(self, other_args):
+        """Process sentiment command"""
+        finbrain_crypto_view.crypto_sentiment_analysis(other_args=other_args)
 
 
 def menu():
