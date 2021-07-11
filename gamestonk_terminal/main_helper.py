@@ -225,8 +225,6 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                 # Slice dataframe from the starting date YYYY-MM-DD selected
                 df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
 
-                print(df_stock_candidate.to_string())
-
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
                 s_start = df_stock_candidate.index[0]
