@@ -119,7 +119,10 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
         title_string = f"{int(interval.split('m')[0])} min"
 
     ax[0].yaxis.tick_right()
-    ax[0].plot(df.index, df["Adj Close"], c=cfgPlot.VIEW_COLOR)
+    if "Adj Close" in df.columns:
+        ax[0].plot(df.index, df["Adj Close"], c=cfgPlot.VIEW_COLOR)
+    else:
+        ax[0].plot(df.index, df["Close"], c=cfgPlot.VIEW_COLOR)
     ax[0].set_xlim(df.index[0], df.index[-1])
     ax[0].set_xticks([])
     ax[0].yaxis.set_label_position("right")

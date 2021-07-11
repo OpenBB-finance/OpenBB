@@ -26,8 +26,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     plot_view_stock,
     parse_known_args_and_warn,
-    check_ohlc,
-    lett_to_num,
     check_sources,
     plot_autoscale,
 )
@@ -506,17 +504,6 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         choices=[1, 5, 15, 30, 60],
         help="Intraday stock minutes",
     )
-    parser.add_argument(
-        "--type",
-        action="store",
-        dest="type",
-        type=check_ohlc,
-        default="a",  # in case it's adjusted close
-        help=(
-            "ohlc corresponds to types: open; high; low; close; "
-            "while oc corresponds to types: open; close"
-        ),
-    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -562,39 +549,12 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
     if ns_parser.n_interval != 0:
         s_interval = str(ns_parser.n_interval) + "min"
 
-    type_candles = lett_to_num(ns_parser.type)
-
     df_stock.sort_index(ascending=True, inplace=True)
 
-    # Daily
-    if s_interval == "1440min":
-        # The default doesn't exist for intradaily data
-        ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-        # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
-        # pylint: disable=len-as-condition
-        if len([i for i in ln_col_idx if i > 4]) > 0:
-            print("An index bigger than 4 was given, which is wrong. Try again")
-            return
-        # Append last column of df to be filtered which corresponds to: Volume
-        ln_col_idx.append(5)
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date :]
-    # Intraday
-    else:
-        # The default doesn't exist for intradaily data
-        # JM edit 6-7-21 -- It seems it does
-        if ns_parser.type == "a":
-            ln_col_idx = [4]
-        else:
-            ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-
-        # Append last column of df to be filtered which corresponds to: 5. Volume
-        ln_col_idx.append(5)
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
+    # Slice dataframe from the starting date YYYY-MM-DD selected
+    df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
 
     # Plot view of the stock
-    # plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
     plot_view_stock(df_stock, ns_parser.s_ticker, s_interval)
 
 
