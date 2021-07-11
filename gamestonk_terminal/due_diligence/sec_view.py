@@ -45,7 +45,7 @@ def fails_to_deliver(other_args: List[str], ticker: str, stock: pd.DataFrame):
         action="store",
         dest="start",
         type=valid_date,
-        default=(datetime.now() - timedelta(days=20)).strftime("%Y-%m-%d"),
+        default=(datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d"),
         help="start of datetime to see FTD",
     )
     parser.add_argument(
@@ -198,7 +198,7 @@ def fails_to_deliver(other_args: List[str], ticker: str, stock: pd.DataFrame):
 
         if ns_parser.n_num > 0:
             stock_ftd = stock[
-                stock.index > (datetime.now() - timedelta(days=ns_parser.n_num))
+                stock.index > (datetime.now() - timedelta(days=ns_parser.n_num + 31))
             ]
         else:
             stock_ftd = stock[stock.index > ns_parser.start]
