@@ -31,6 +31,7 @@ from gamestonk_terminal.helper_funcs import (
     lett_to_num,
     check_sources,
     plot_autoscale,
+    export_data,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -604,6 +605,13 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         dest="b_raw",
         help="Print raw data.",
     )
+    parser.add_argument(
+        "--export",
+        choices=["csv", "json", "xlsx"],
+        default="",
+        dest="export",
+        help="Export dataframe data to csv,json,xlsx file",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -690,59 +698,16 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
             )
             print("")
 
-    except SystemExit:
-        print("")
-        return
-
-
-def export(other_args: List[str], df_stock):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="export",
-        description="Exports the historical data from this ticker to a file or stdout.",
-    )
-    parser.add_argument(
-        "-f",
-        "--filename",
-        type=str,
-        dest="s_filename",
-        default=sys.stdout,
-        help="Name of file to save the historical data exported (stdout if unspecified)",
-    )
-    parser.add_argument(
-        "-F",
-        "--format",
-        dest="s_format",
-        type=str,
-        default="csv",
-        help="Export historical data into following formats: csv, json, excel, clipboard",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "view",
+            df_stock,
+        )
 
     except SystemExit:
         print("")
         return
-
-    if df_stock.empty:
-        print("No data loaded yet to export.")
-        return
-
-    if ns_parser.s_format == "csv":
-        df_stock.to_csv(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "json":
-        df_stock.to_json(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "excel":
-        df_stock.to_excel(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "clipboard":
-        df_stock.to_clipboard()
-
-    print("")
 
 
 def print_goodbye():

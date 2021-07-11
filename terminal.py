@@ -15,7 +15,6 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
 from gamestonk_terminal.main_helper import (
     clear,
-    export,
     load,
     view,
     candle,
@@ -87,7 +86,6 @@ class TerminalController:
         "quote",
         "candle",
         "view",
-        "export",
         "disc",
         "scr",
         "mill",
@@ -172,7 +170,6 @@ Contexts:
             help_text += """quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     view        view and load a specific stock ticker for technical analysis
-    export      export the currently loaded dataframe to a file or stdout
 
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
@@ -274,10 +271,6 @@ Contexts:
     def call_view(self, other_args: List[str]):
         """Process view command"""
         view(other_args, self.ticker, self.start, self.interval, self.stock)
-
-    def call_export(self, other_args: List[str]):
-        """Process export command"""
-        export(other_args, self.stock)
 
     def call_disc(self, _):
         """Process disc command"""
