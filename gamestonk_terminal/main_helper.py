@@ -548,7 +548,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="view",
-        description="Visualize historical data of a stock. An alpha_vantage key is necessary.",
+        description="Visualize historical data of a stock.",
     )
     if s_ticker:
         parser.add_argument(
@@ -565,7 +565,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=True,
+            required="-h" not in other_args,
             help="Stock ticker",
         )
     parser.add_argument(
@@ -573,7 +573,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         "--start",
         type=valid_date,
         dest="s_start_date",
-        default=s_start,
+        default=s_start if s_start else "2019-01-01",
         help="The starting date (format YYYY-MM-DD) of the stock",
     )
     parser.add_argument(
