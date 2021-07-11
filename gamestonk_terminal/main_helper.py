@@ -594,7 +594,8 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
 
     # Plot view of the stock
-    plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
+    # plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
+    plot_view_stock(df_stock, ns_parser.s_ticker, s_interval)
 
 
 def export(other_args: List[str], df_stock):
@@ -775,6 +776,7 @@ def bootup():
 
 def reset():
     print("resetting...")
+    plt.close("all")
     completed_process = subprocess.run("python terminal.py", shell=True, check=False)
     if completed_process.returncode != 0:
         completed_process = subprocess.run(

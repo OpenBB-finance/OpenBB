@@ -20,3 +20,7 @@ PLOT_WIDTH_PERCENTAGE = 70
 # When autoscaling is True, choose which monitor to scale to
 # Primary monitor = 0, secondary monitor use 1
 MONITOR = 0
+
+# Color for `view` command data.  All pyplot colors listed at:
+# https://matplotlib.org/stable/gallery/color/named_colors.html
+VIEW_COLOR = "tab:green"
