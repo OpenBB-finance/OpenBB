@@ -229,7 +229,7 @@ class DueDiligenceController:
 
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
-        sec_view.fails_to_deliver(other_args, self.ticker)
+        sec_view.fails_to_deliver(other_args, self.ticker, self.stock)
 
     def call_shortview(self, other_args: List[str]):
         """Process shortview command"""
