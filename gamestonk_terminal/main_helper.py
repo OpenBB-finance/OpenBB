@@ -597,6 +597,13 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
             "while oc corresponds to types: open; close"
         ),
     )
+    parser.add_argument(
+        "--raw",
+        action="store_true",
+        default=False,
+        dest="b_raw",
+        help="Print raw data.",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -671,6 +678,17 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
 
         # Plot view of the stock
         plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
+
+        if ns_parser.b_raw:
+            print(
+                tabulate(
+                    df_stock,
+                    headers=df_stock.columns,
+                    tablefmt="fancy_grid",
+                    stralign="right",
+                )
+            )
+            print("")
 
     except SystemExit:
         print("")
