@@ -80,6 +80,10 @@ def etf_screener(other_args: List[str]):
         "-B", "--max_beta", help="max beta", dest="max_beta", default=False
     )
     parser.add_argument(
+        "--num", type=int, help="Number of etfs to show", dest="num", default=20
+    )
+
+    parser.add_argument(
         "--config",
         help="Load options from config file",
         dest="config",
@@ -106,7 +110,7 @@ def etf_screener(other_args: List[str]):
         param_string = "etf_screener"
         if ns_parser.config:
             cf = configparser.ConfigParser()
-            cf.read("gamestonk_terminal/etf/ETF_Config.ini")
+            cf.read("gamestonk_terminal/etf/etf_config.ini")
             cols = cf.sections()
 
             for col in cols:
@@ -184,7 +188,13 @@ def etf_screener(other_args: List[str]):
             df,
         )
 
-        print(tabulate(df, tablefmt="fancy_grid", headers=df.columns, showindex=True))
+        if df.shape[0] > int(ns_parser.num):
+            df = df.sample(ns_parser.num)
+        print(
+            tabulate(
+                df.fillna(""), tablefmt="fancy_grid", headers=df.columns, showindex=True
+            )
+        )
         print("")
 
     except Exception as e:
