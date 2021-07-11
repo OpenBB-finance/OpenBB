@@ -16,6 +16,7 @@ from gamestonk_terminal.etf.stockanalysis_model import (
     compare_etfs,
     etf_holdings,
 )
+from gamestonk_terminal.etf.screener_model import etf_screener
 
 
 class ETFController:
@@ -30,6 +31,7 @@ class ETFController:
         "overview",
         "compare",
         "holdings",
+        "screener",
     ]
 
     def __init__(self):
@@ -54,7 +56,7 @@ class ETFController:
         print("   overview      get overview of ETF symbol")
         print("   holdings      get top holdings for ETF")
         print("   compare       compare overview of multiple ETF")
-
+        print("   screener      screen etfs based on overview data")
         print("")
 
     def switch(self, an_input: str):
@@ -120,6 +122,10 @@ class ETFController:
     def call_compare(self, other_args):
         """Process compare command"""
         compare_etfs(other_args)
+
+    def call_screener(self, other_args):
+        """Process screener command"""
+        etf_screener(other_args)
 
 
 def menu():
