@@ -29,7 +29,6 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_ohlc,
     lett_to_num,
-    check_sources,
     plot_autoscale,
     export_data,
 )
@@ -126,9 +125,9 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "--source",
         action="store",
         dest="source",
-        type=check_sources,
+        choices=["yf", "av", "iex"],
         default="yf",
-        help="Source of historical data. 'yf', 'av' and 'iex' available.",
+        help="Source of historical data.",
     )
     parser.add_argument(
         "-p",
