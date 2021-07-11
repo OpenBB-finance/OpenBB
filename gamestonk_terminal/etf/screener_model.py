@@ -92,7 +92,7 @@ def etf_screener(other_args: List[str]):
         dest="export",
         help="Export dataframe data to csv,json,xlsx file",
     )
-
+    # pylint: disable=no-member
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -117,7 +117,6 @@ def etf_screener(other_args: List[str]):
                     query = f"{col} < {cf[col]['Max']} "
                     df = df.query(query)
             param_string += "_from_config"
-        # pylint: disable=no-member
         else:
 
             if ns_parser.min_price:
