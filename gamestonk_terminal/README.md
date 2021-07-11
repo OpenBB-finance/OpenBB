@@ -303,7 +303,7 @@ Degiro command|Description
 `pending`   | view pending orders
 `topnews`   |  view top news preview
 `update`    |  view top news preview
-            
+
 &nbsp;
 
 ## Portfolio Optimization [»](portfolio_optimization/README.md)
@@ -520,3 +520,4 @@ command|description
 `overview`|get ETF overview
 `holdings`|show ETF holdings
 `compare`|compare multiple ETFs overview
+`screener`|screen ETFs
