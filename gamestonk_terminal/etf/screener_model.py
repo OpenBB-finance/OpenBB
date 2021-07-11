@@ -117,9 +117,9 @@ def etf_screener(other_args: List[str]):
                     query = f"{col} < {cf[col]['Max']} "
                     df = df.query(query)
             param_string += "_from_config"
-
+        # pylint: disable=no-member
         else:
-            # pylint: disable=E1101
+
             if ns_parser.min_price:
                 df = df.query(f"Price > {ns_parser.min_price}")
                 param_string += f"_p_{ns_parser.min_price}".replace(".", "p")

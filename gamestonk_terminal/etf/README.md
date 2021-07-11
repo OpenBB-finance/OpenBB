@@ -116,7 +116,7 @@ usage: screener [--config] [-p MIN_PRICE] [-P MAX_PRICE] [-a MIN_ASSETS] [-A MAX
               [-D MAX_DIV] [-b MIN_BETA] [-B MAX_BETA] [--export {csv,json,xlsx}] [-h]
 ````
 
-* --config : Flag to load from ETF_config.ini file
+* --config : Flag to load from ETF_config.ini file.  This supersedes any other arguments.
 * -p/--min_price : Minimum ETF price
 * -P/--max_price : Maximum ETF price
 * -a/--min_assets : Minimum ETF assets held
