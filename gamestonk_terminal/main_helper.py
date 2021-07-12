@@ -16,11 +16,12 @@ from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
+import pyEX
 from tabulate import tabulate
 
 # import git
 
-# pylint: disable=no-member
+# pylint: disable=no-member,too-many-branches
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -28,8 +29,8 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_ohlc,
     lett_to_num,
-    check_sources,
     plot_autoscale,
+    export_data,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -99,7 +100,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "--ticker",
         action="store",
         dest="s_ticker",
-        required=True,
+        required="-h" not in other_args,
         help="Stock ticker",
     )
     parser.add_argument(
@@ -124,9 +125,9 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "--source",
         action="store",
         dest="source",
-        type=check_sources,
+        choices=["yf", "av", "iex"],
         default="yf",
-        help="Source of historical data. 'yf' and 'av' available.",
+        help="Source of historical data.",
     )
     parser.add_argument(
         "-p",
@@ -140,7 +141,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
     try:
         # For the case where a user uses: 'load BB'
         if other_args:
-            if "-t" not in other_args:
+            if "-t" not in other_args and "-h" not in other_args:
                 other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -194,6 +195,36 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
 
                 df_stock_candidate.index.name = "date"
 
+            # IEX Cloud Source
+            elif ns_parser.source == "iex":
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ns_parser.s_ticker)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock_candidate = df_stock_candidate[
+                    ["uClose", "uHigh", "uLow", "uOpen", "fClose", "volume"]
+                ]
+                df_stock_candidate = df_stock_candidate.rename(
+                    columns={
+                        "uClose": "Close",
+                        "uHigh": "High",
+                        "uLow": "Low",
+                        "uOpen": "Open",
+                        "fClose": "Adj Close",
+                        "volume": "Volume",
+                    }
+                )
+
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
                 s_start = df_stock_candidate.index[0]
@@ -246,7 +277,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
             # Yahoo Finance Source
             elif ns_parser.source == "yf":
                 s_int = str(ns_parser.n_interval) + "m"
-                s_interval = s_int
+                s_interval = s_int + "in"
                 d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
                 s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
@@ -283,6 +314,53 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                     s_start = ns_parser.s_start_date
 
                 df_stock_candidate.index.name = "date"
+
+            # IEX Cloud Source
+            elif ns_parser.source == "iex":
+
+                s_interval = str(ns_parser.n_interval) + "min"
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ns_parser.s_ticker)
+
+                df_stock_candidate = client.intradayDF(ns_parser.s_ticker).iloc[
+                    0 :: ns_parser.n_interval
+                ]
+
+                df_stock_candidate = df_stock_candidate[
+                    ["close", "high", "low", "open", "volume", "close"]
+                ]
+                df_stock_candidate.columns = [
+                    x.capitalize() for x in df_stock_candidate.columns
+                ]
+
+                df_stock_candidate.columns = list(df_stock_candidate.columns[:-1]) + [
+                    "Adj Close"
+                ]
+
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+                new_index = list()
+                for idx in range(len(df_stock_candidate)):
+                    dt_time = datetime.strptime(
+                        df_stock_candidate.index[idx][1], "%H:%M"
+                    )
+                    new_index.append(
+                        df_stock_candidate.index[idx][0]
+                        + timedelta(hours=dt_time.hour, minutes=dt_time.minute)
+                    )
+
+                df_stock_candidate.index = pd.DatetimeIndex(new_index)
+                df_stock_candidate.index.name = "date"
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+
+                # Check if start time from dataframe is more recent than specified
+                if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
+                    s_start = df_stock_candidate.index[0]
+                else:
+                    s_start = ns_parser.s_start_date
 
         s_intraday = (f"Intraday {s_interval}", "Daily")[ns_parser.n_interval == 1440]
 
@@ -468,7 +546,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="view",
-        description="Visualize historical data of a stock. An alpha_vantage key is necessary.",
+        description="Visualize historical data of a stock.",
     )
     if s_ticker:
         parser.add_argument(
@@ -485,7 +563,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required=True,
+            required="-h" not in other_args,
             help="Stock ticker",
         )
     parser.add_argument(
@@ -493,7 +571,7 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         "--start",
         type=valid_date,
         dest="s_start_date",
-        default=s_start,
+        default=s_start if s_start else "2019-01-01",
         help="The starting date (format YYYY-MM-DD) of the stock",
     )
     parser.add_argument(
@@ -517,134 +595,116 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
             "while oc corresponds to types: open; close"
         ),
     )
+    parser.add_argument(
+        "--raw",
+        action="store_true",
+        default=False,
+        dest="b_raw",
+        help="Print raw data.",
+    )
+    parser.add_argument(
+        "--export",
+        choices=["csv", "json", "xlsx"],
+        default="",
+        dest="export",
+        help="Export dataframe data to csv,json,xlsx file",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-    except SystemExit:
-        print("")
-        return
+        # Update values:
+        if ns_parser.s_ticker != s_ticker:
+            if ns_parser.n_interval > 0:
+                s_ticker, s_start, s_interval, df_stock = load(
+                    [
+                        "-t",
+                        ns_parser.s_ticker,
+                        "-s",
+                        ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                        "-i",
+                        ns_parser.n_interval,
+                    ],
+                    s_ticker,
+                    s_start,
+                    s_interval,
+                    df_stock,
+                )
+            else:
+                s_ticker, s_start, s_interval, df_stock = load(
+                    [
+                        "-t",
+                        ns_parser.s_ticker,
+                        "-s",
+                        ns_parser.s_start_date.strftime("%Y-%m-%d"),
+                    ],
+                    s_ticker,
+                    s_start,
+                    s_interval,
+                    df_stock,
+                )
 
-    # Update values:
-    if ns_parser.s_ticker != s_ticker:
-        if ns_parser.n_interval > 0:
-            s_ticker, s_start, s_interval, df_stock = load(
-                [
-                    "-t",
-                    ns_parser.s_ticker,
-                    "-s",
-                    ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                    "-i",
-                    ns_parser.n_interval,
-                ],
-                s_ticker,
-                s_start,
-                s_interval,
-                df_stock,
-            )
-        else:
-            s_ticker, s_start, s_interval, df_stock = load(
-                [
-                    "-t",
-                    ns_parser.s_ticker,
-                    "-s",
-                    ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                ],
-                s_ticker,
-                s_start,
-                s_interval,
-                df_stock,
-            )
+        # A new interval intraday period was given
+        if ns_parser.n_interval != 0:
+            s_interval = str(ns_parser.n_interval) + "min"
 
-    # A new interval intraday period was given
-    if ns_parser.n_interval != 0:
-        s_interval = str(ns_parser.n_interval) + "min"
+        type_candles = lett_to_num(ns_parser.type)
 
-    type_candles = lett_to_num(ns_parser.type)
+        df_stock.sort_index(ascending=True, inplace=True)
 
-    df_stock.sort_index(ascending=True, inplace=True)
-
-    # Daily
-    if s_interval == "1440min":
-        # The default doesn't exist for intradaily data
-        ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-        # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
-        # pylint: disable=len-as-condition
-        if len([i for i in ln_col_idx if i > 4]) > 0:
-            print("An index bigger than 4 was given, which is wrong. Try again")
-            return
-        # Append last column of df to be filtered which corresponds to: Volume
-        ln_col_idx.append(5)
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date :]
-    # Intraday
-    else:
-        # The default doesn't exist for intradaily data
-        # JM edit 6-7-21 -- It seems it does
-        if ns_parser.type == "a":
-            ln_col_idx = [4]
-        else:
+        # Daily
+        if s_interval == "1440min":
+            # The default doesn't exist for intradaily data
             ln_col_idx = [int(x) - 1 for x in list(type_candles)]
+            # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
+            # pylint: disable=len-as-condition
+            if len([i for i in ln_col_idx if i > 4]) > 0:
+                print("An index bigger than 4 was given, which is wrong. Try again")
+                return
+            # Append last column of df to be filtered which corresponds to: Volume
+            ln_col_idx.append(5)
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            df_stock = df_stock[ns_parser.s_start_date :]
+        # Intraday
+        else:
+            # The default doesn't exist for intradaily data
+            # JM edit 6-7-21 -- It seems it does
+            if ns_parser.type == "a":
+                ln_col_idx = [4]
+            else:
+                ln_col_idx = [int(x) - 1 for x in list(type_candles)]
 
-        # Append last column of df to be filtered which corresponds to: 5. Volume
-        ln_col_idx.append(5)
-        # Slice dataframe from the starting date YYYY-MM-DD selected
-        df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
+            # Append last column of df to be filtered which corresponds to: 5. Volume
+            ln_col_idx.append(5)
+            # Slice dataframe from the starting date YYYY-MM-DD selected
+            df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
 
-    # Plot view of the stock
-    plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
+        # Plot view of the stock
+        plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
 
+        if ns_parser.b_raw:
+            print(
+                tabulate(
+                    df_stock,
+                    headers=df_stock.columns,
+                    tablefmt="fancy_grid",
+                    stralign="right",
+                )
+            )
+            print("")
 
-def export(other_args: List[str], df_stock):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="export",
-        description="Exports the historical data from this ticker to a file or stdout.",
-    )
-    parser.add_argument(
-        "-f",
-        "--filename",
-        type=str,
-        dest="s_filename",
-        default=sys.stdout,
-        help="Name of file to save the historical data exported (stdout if unspecified)",
-    )
-    parser.add_argument(
-        "-F",
-        "--format",
-        dest="s_format",
-        type=str,
-        default="csv",
-        help="Export historical data into following formats: csv, json, excel, clipboard",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "view",
+            df_stock,
+        )
 
     except SystemExit:
         print("")
         return
-
-    if df_stock.empty:
-        print("No data loaded yet to export.")
-        return
-
-    if ns_parser.s_format == "csv":
-        df_stock.to_csv(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "json":
-        df_stock.to_json(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "excel":
-        df_stock.to_excel(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "clipboard":
-        df_stock.to_clipboard()
-
-    print("")
 
 
 def print_goodbye():

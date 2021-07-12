@@ -30,10 +30,11 @@
 The main menu allows the following commands:
 
 ```
-load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
+usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] 
 ```
 
 * Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
+  * -t : Stock ticker 
   * -s : The starting date (format YYYY-MM-DD) of the stock
   * -i : Intraday stock minutes
   * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
@@ -42,19 +43,22 @@ load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 **Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ```
-clear
+usage: clear
 ```
 
 * Clear previously loaded stock ticker.
 
 ```
-view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
+usage: view [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--type TYPE] [--raw] [--export {csv,json,xlsx}]
 ```
 
 * Visualise historical data of a stock. An alpha_vantage key is necessary.
+  * -t : Stock ticker 
   * -s : The starting date (format YYYY-MM-DD) of the stock
   * -i : Intraday stock minutes
   * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
+  * --raw : Print raw data.
+  * --export : Export dataframe data to csv,json,xlsx file
 
 ![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
 

@@ -122,6 +122,7 @@ py==1.10.0; python_version >= "3.6" and python_full_version < "3.0.0" and implem
 pyally==1.1.2
 pycoingecko==1.4.1
 pycparser==2.20; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
+pyEX==0.5.0
 pygments==2.9.0; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
 pymeeus==0.5.11; python_version >= "3.5"
 pyobjc-core==7.3; python_version >= "3.6" and sys_platform == "darwin"
