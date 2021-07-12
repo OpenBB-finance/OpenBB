@@ -446,7 +446,7 @@ def quote(other_args: List[str], s_ticker: str):
     return
 
 
-def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
+def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
     """
     Plot loaded ticker or load ticker and plot
     Parameters
@@ -455,54 +455,17 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         Argparse arguments
     s_ticker: str
         Ticker to load
-    s_start: str
-        Start date
     s_interval: str
         Interval tto get data for
     df_stock: pd.Dataframe
         Preloaded dataframe to plot
 
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="view",
-        description="Visualize historical data of a stock. An alpha_vantage key is necessary.",
-    )
-    if s_ticker:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            default=s_ticker,
-            help="Stock ticker",
-        )
-    else:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required=True,
-            help="Stock ticker",
-        )
-    parser.add_argument(
-        "-s",
-        "--start",
-        type=valid_date,
-        dest="s_start_date",
-        default=s_start,
-        help="The starting date (format YYYY-MM-DD) of the stock",
-    )
-    parser.add_argument(
-        "-i",
-        "--interval",
-        action="store",
-        dest="n_interval",
-        type=int,
-        default=0,
-        choices=[1, 5, 15, 30, 60],
-        help="Intraday stock minutes",
+        description="Visualize historical data of a stock.",
     )
 
     try:
@@ -510,52 +473,20 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         if not ns_parser:
             return
 
+        if not s_ticker:
+            print("No ticker loaded.  First use `load {ticker}`")
+            print("")
+            return
+
+        # Plot view of the stock
+        plot_view_stock(df_stock, s_ticker, s_interval)
+    except Exception as e:
+        print("Error in plotting:")
+        print(e, "\n")
+
     except SystemExit:
         print("")
         return
-
-    # Update values:
-    if ns_parser.s_ticker != s_ticker:
-        if ns_parser.n_interval > 0:
-            s_ticker, s_start, s_interval, df_stock = load(
-                [
-                    "-t",
-                    ns_parser.s_ticker,
-                    "-s",
-                    ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                    "-i",
-                    ns_parser.n_interval,
-                ],
-                s_ticker,
-                s_start,
-                s_interval,
-                df_stock,
-            )
-        else:
-            s_ticker, s_start, s_interval, df_stock = load(
-                [
-                    "-t",
-                    ns_parser.s_ticker,
-                    "-s",
-                    ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                ],
-                s_ticker,
-                s_start,
-                s_interval,
-                df_stock,
-            )
-
-    # A new interval intraday period was given
-    if ns_parser.n_interval != 0:
-        s_interval = str(ns_parser.n_interval) + "min"
-
-    df_stock.sort_index(ascending=True, inplace=True)
-
-    # Slice dataframe from the starting date YYYY-MM-DD selected
-    df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
-
-    # Plot view of the stock
-    plot_view_stock(df_stock, ns_parser.s_ticker, s_interval)
 
 
 def export(other_args: List[str], df_stock):

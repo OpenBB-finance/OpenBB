@@ -273,7 +273,7 @@ Contexts:
 
     def call_view(self, other_args: List[str]):
         """Process view command"""
-        view(other_args, self.ticker, self.start, self.interval, self.stock)
+        view(other_args, self.ticker, self.interval, self.stock)
 
     def call_export(self, other_args: List[str]):
         """Process export command"""
