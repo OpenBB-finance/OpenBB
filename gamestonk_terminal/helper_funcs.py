@@ -131,19 +131,21 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 
     ax[0].spines["top"].set_visible(False)
     ax[0].spines["left"].set_visible(False)
-    ax[1].bar(df.index, df.Volume, color=bar_colors, alpha=0.8, width=bar_width)
+    ax[1].bar(
+        df.index, df.Volume / 1_000_000, color=bar_colors, alpha=0.8, width=bar_width
+    )
     ax[1].set_xlim(df.index[0], df.index[-1])
     ax[1].yaxis.tick_right()
     ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume")
+    ax[1].set_ylabel("Volume (1M)")
     ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
     ax[1].spines["top"].set_visible(False)
     ax[1].spines["left"].set_visible(False)
     ax[1].set_xlabel("Time")
     fig.suptitle(
-        symbol + " " + title_string + " Adj Close and Volume ",
+        symbol + " " + title_string,
         size=20,
-        x=0.33,
+        x=0.15,
         y=0.95,
         fontfamily="serif",
         fontstyle="italic",
