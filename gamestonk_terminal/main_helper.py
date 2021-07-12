@@ -27,7 +27,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     plot_view_stock,
     parse_known_args_and_warn,
-    check_sources,
     plot_autoscale,
     export_data,
 )
@@ -542,10 +541,13 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
     """
 
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="view",
-        description="Visualize historical data of a stock.",
+        add_help=False, prog="view", description="Visualize historical data of a stock."
+    )
 
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
         if not s_ticker:
             print("No ticker loaded.  First use `load {ticker}`")
             print("")
@@ -588,7 +590,7 @@ def export(other_args: List[str], df_stock):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-      
+
         if ns_parser.b_raw:
             print(
                 tabulate(
