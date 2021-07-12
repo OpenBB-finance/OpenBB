@@ -13,6 +13,8 @@ Data is currently scraped from StockAnalysis.com/etf
   * show ETF holdings
 * [compare](#compare)
   * compare multiple ETFs overview
+* [screener](#screener)
+  * screen ETFs
 
 ## web <a name="web"></a>
 ```python
@@ -107,4 +109,54 @@ DOGE not found
 ├────────────────┼──────────┼──────────┼──────────┤
 │ Dividend Yield │ 1.34%    │ 0.54%    │ 1.41%    │
 ╘════════════════╧══════════╧══════════╧══════════╛
+```
+## screener <a name="screener"></a>
+````python
+usage: screener [--config] [-p MIN_PRICE] [-P MAX_PRICE] [-a MIN_ASSETS] [-A MAX_ASSETS] [-n MIN_NAV] [-N MAX_NAV] [-e MIN_EXP] [-E MAX_EXP] [-r MIN_PE] [-R MAX_PE] [-d MIN_DIV]
+              [-D MAX_DIV] [-b MIN_BETA] [-B MAX_BETA] [--num] [--export {csv,json,xlsx}] [-h]
+````
+
+* --config : Flag to load from etf_config.ini file.  This supersedes any other arguments.
+* -p/--min_price : Minimum ETF price
+* -P/--max_price : Maximum ETF price
+* -a/--min_assets : Minimum ETF assets held
+* -A/--max_assets : Maximum ETF assets held
+* -n/--min_nav : Minimum ETF net asset valuation
+* -N/--max_nav : Maximum ETF net asset valuation
+* -e/--min_exp : Minimum ETF expense ratio
+* -E/--max_exp : Maximum ETF expense ratio
+* -r/--min_pe : Minimum ETF PE Ratio
+* -R/--max_pe : Maximum ETF PE Ratio
+* -d/--min_div : Minimum ETF dividend yield
+* -D/--max_div : Maximum ETF dividend yield
+* -b/--min_beta : Minimum ETF 5Y beta
+* -B/--max_beta : Maximum ETF 5Y beta
+* --num : Number of etfs to display in console. Defaults to 20
+* --export {csv,json,xlsx} : Export to the selected file
+
+Screen ETFs based on the overview data from stockanalysis.com.  This data is scraped nightly at midnight EST, so it will not be up to date or change during the day.  Repo can be found at https://github.com/jmaslek/etf_scraper.
+For screeners with many results (exceeding the `--num` flag), the console will display a random subset of them.
+
+Note that to use the config file, locate the desired data column then change MIN and MAX.  Make sure unused columns are set to None.
+Example which will screen for ETFs between $45 and $57:
+```python
+[Price]
+MIN = 45
+MAX = 57
+```
+
+Sample usage:
+```python
+(✨) (etf)> screener -p 45 -P 88 -E 1 -d 3 -r 12 -a 10000
+ETFs downloaded
+
+╒═════╤═════════╤══════════╤═══════╤═══════════╤═══════╤════════╤═══════╤════════════╕
+│     │   Price │   Assets │   NAV │   Expense │    PE │   Beta │   Div │   DivYield │
+╞═════╪═════════╪══════════╪═══════╪═══════════╪═══════╪════════╪═══════╪════════════╡
+│ VGK │   66.97 │    19750 │ 67.38 │      0.08 │ 20.7  │   0.94 │  2.07 │       3.07 │
+├─────┼─────────┼──────────┼───────┼───────────┼───────┼────────┼───────┼────────────┤
+│ XLE │   51.75 │    24950 │ 52.92 │      0.12 │ 20    │   1.75 │  2.11 │       3.99 │
+├─────┼─────────┼──────────┼───────┼───────────┼───────┼────────┼───────┼────────────┤
+│ XLU │   64.52 │    11640 │ 64.31 │      0.12 │ 19.94 │   0.35 │  1.98 │       3.07 │
+╘═════╧═════════╧══════════╧═══════╧═══════════╧═══════╧════════╧═══════╧════════════╛
 ```

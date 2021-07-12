@@ -16,11 +16,12 @@ from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
 import yfinance as yf
 import pytz
+import pyEX
 from tabulate import tabulate
 
 # import git
 
-# pylint: disable=no-member
+# pylint: disable=no-member,too-many-branches
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -28,6 +29,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_sources,
     plot_autoscale,
+    export_data,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -97,7 +99,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "--ticker",
         action="store",
         dest="s_ticker",
-        required=True,
+        required="-h" not in other_args,
         help="Stock ticker",
     )
     parser.add_argument(
@@ -122,9 +124,9 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "--source",
         action="store",
         dest="source",
-        type=check_sources,
+        choices=["yf", "av", "iex"],
         default="yf",
-        help="Source of historical data. 'yf' and 'av' available.",
+        help="Source of historical data.",
     )
     parser.add_argument(
         "-p",
@@ -138,7 +140,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
     try:
         # For the case where a user uses: 'load BB'
         if other_args:
-            if "-t" not in other_args:
+            if "-t" not in other_args and "-h" not in other_args:
                 other_args.insert(0, "-t")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -192,6 +194,36 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
 
                 df_stock_candidate.index.name = "date"
 
+            # IEX Cloud Source
+            elif ns_parser.source == "iex":
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ns_parser.s_ticker)
+
+                # Check that loading a stock was not successful
+                if df_stock_candidate.empty:
+                    print("")
+                    return [s_ticker, s_start, s_interval, df_stock]
+
+                df_stock_candidate = df_stock_candidate[
+                    ["uClose", "uHigh", "uLow", "uOpen", "fClose", "volume"]
+                ]
+                df_stock_candidate = df_stock_candidate.rename(
+                    columns={
+                        "uClose": "Close",
+                        "uHigh": "High",
+                        "uLow": "Low",
+                        "uOpen": "Open",
+                        "fClose": "Adj Close",
+                        "volume": "Volume",
+                    }
+                )
+
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+
             # Check if start time from dataframe is more recent than specified
             if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
                 s_start = df_stock_candidate.index[0]
@@ -244,7 +276,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
             # Yahoo Finance Source
             elif ns_parser.source == "yf":
                 s_int = str(ns_parser.n_interval) + "m"
-                s_interval = s_int
+                s_interval = s_int + "in"
                 d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
                 s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
@@ -281,6 +313,53 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
                     s_start = ns_parser.s_start_date
 
                 df_stock_candidate.index.name = "date"
+
+            # IEX Cloud Source
+            elif ns_parser.source == "iex":
+
+                s_interval = str(ns_parser.n_interval) + "min"
+                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+
+                df_stock_candidate = client.chartDF(ns_parser.s_ticker)
+
+                df_stock_candidate = client.intradayDF(ns_parser.s_ticker).iloc[
+                    0 :: ns_parser.n_interval
+                ]
+
+                df_stock_candidate = df_stock_candidate[
+                    ["close", "high", "low", "open", "volume", "close"]
+                ]
+                df_stock_candidate.columns = [
+                    x.capitalize() for x in df_stock_candidate.columns
+                ]
+
+                df_stock_candidate.columns = list(df_stock_candidate.columns[:-1]) + [
+                    "Adj Close"
+                ]
+
+                df_stock_candidate.sort_index(ascending=True, inplace=True)
+
+                new_index = list()
+                for idx in range(len(df_stock_candidate)):
+                    dt_time = datetime.strptime(
+                        df_stock_candidate.index[idx][1], "%H:%M"
+                    )
+                    new_index.append(
+                        df_stock_candidate.index[idx][0]
+                        + timedelta(hours=dt_time.hour, minutes=dt_time.minute)
+                    )
+
+                df_stock_candidate.index = pd.DatetimeIndex(new_index)
+                df_stock_candidate.index.name = "date"
+
+                # Slice dataframe from the starting date YYYY-MM-DD selected
+                df_stock_candidate = df_stock_candidate[ns_parser.s_start_date :]
+
+                # Check if start time from dataframe is more recent than specified
+                if df_stock_candidate.index[0] > pd.to_datetime(ns_parser.s_start_date):
+                    s_start = df_stock_candidate.index[0]
+                else:
+                    s_start = ns_parser.s_start_date
 
         s_intraday = (f"Intraday {s_interval}", "Daily")[ns_parser.n_interval == 1440]
 
@@ -466,12 +545,6 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
         add_help=False,
         prog="view",
         description="Visualize historical data of a stock.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
         if not s_ticker:
             print("No ticker loaded.  First use `load {ticker}`")
@@ -515,28 +588,28 @@ def export(other_args: List[str], df_stock):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+      
+        if ns_parser.b_raw:
+            print(
+                tabulate(
+                    df_stock,
+                    headers=df_stock.columns,
+                    tablefmt="fancy_grid",
+                    stralign="right",
+                )
+            )
+            print("")
+
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "view",
+            df_stock,
+        )
 
     except SystemExit:
         print("")
         return
-
-    if df_stock.empty:
-        print("No data loaded yet to export.")
-        return
-
-    if ns_parser.s_format == "csv":
-        df_stock.to_csv(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "json":
-        df_stock.to_json(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "excel":
-        df_stock.to_excel(ns_parser.s_filename)
-
-    elif ns_parser.s_format == "clipboard":
-        df_stock.to_clipboard()
-
-    print("")
 
 
 def print_goodbye():
