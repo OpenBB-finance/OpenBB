@@ -1,0 +1,280 @@
+# Coinpaprika
+
+This menu aims to explore crypto world with [Coinpaprika](#https://coinpaprika.com/)
+The usage of the following commands along with an example will be exploited below.
+
+Coinpaprika research platform was founded in April 2018. Coinpaprika mission is to provide comprehensive, reliable, transparent
+and objective access to information about crypto projects from all around the world. [Source: See https://coinpaprika.com/about-us/]
+
+
+[COIN](#COIN)
+ [find](#find)
+  * find similar coin by coin name,symbol or id
+* [load](#load)
+  * load a given coin, you can use either coin symbol or coin id
+* [clear](#clear)
+  * clear loaded coin
+* [chart](#chart)
+  * plot the loaded crypto chart
+* [ta](technical_analysis/README.md)
+  * open technical analysis menu
+* [basic](#basic)
+  * show coin basic information
+* [ps](#ps)
+  * show coin price, supply, market cap related metrics.
+* [mkt](#mkt)
+  * show all markets for loaded coin
+* [ex](#ex)
+  * show all exchanges where loaded coin is listed
+* [twitter](#twitter)
+  * show up to 50 last tweets for loaded coin
+* [events ](#events )
+  * show events related to loaded coin (for most of cryptocurrencies there is no data)
+
+
+[OVERVIEW](#OVERVIEW)
+* [global](#global)
+  * show global crypto market info
+* [coins](#coins)
+   * show coins available on CoinGecko
+* [info](#info)
+  * show basic info about all coins available on CoinPaprika
+* [markets](#markets)
+  * show market related info about all coins available on CoinPaprika
+* [search](#search)
+  * search for coins, exchanges, people on CoinPaprika
+* [exchanges](#exchanges)
+  * list all exchanges available on CoinPaprika
+* [ex_markets](#ex_markets)
+  * show all available markets on given exchange
+* [platforms](#platforms)
+  * list blockchain platforms/ecosystems eg. ethereum, solana, kusama, terra
+* [contracts](#contracts)
+  * show all smart contracts for given platform
+
+
+
+
+# COIN <a name="COIN"></a>
+## load  <a name="load"></a>
+
+````
+usage: load [-c --coin]
+````
+
+Load a given coin. The current crypto data is [Powered by Coinpaprika API](#https://coinpaprika.com/en/api/), which is an awesome service that currently requires no API Key!
+By loading a coin you will have access to a lot of statistics on that coin like price data, available markets, exchanges where coin is listed and also open access to technical analysis menu
+
+
+* -c/--coin The coin you wish to load.  This can either be the symbol or the name.  `load -c BTC` and `load -c btc-bitcoin`
+  will load.  The -c flag is optional,  the above is equivalent to `load btc`. If you not sure about coin symbol or coin id. You can use either `search`, `find` or `coins` commands and look for id of coin that you are interested in.
+
+
+## chart <a name="chart"></a>
+
+````
+usage: chart [-d --days] [--vs]
+````
+
+Display chart for loaded coin. You can specify currency vs which you want to show chart and also number of days to get data for.
+Maximum range for chart is 1 year (365 days). If you use bigger range it will be automatically converted to 365 limit.
+By default currency: usd and days: 30. E.g. if you loaded in previous step Bitcoin and you want to see it's price vs USD in last 90 days range use `chart --vs USD --days 90`
+
+
+* -d/--days The number of days to look.  Defaults to 30 days. Maximum 365 days
+* --vs The currency to look against.  Defaults to "USD". Available options are: USD, BTC
+
+
+## ta <a name="ta"></a>
+
+````
+usage: ta [-d --days] [--vs]
+````
+
+Open Technical Analysis menu for loaded coin
+Loads data for technical analysis. You can specify currency vs which you want to show chart and also number of days to get data for.
+E.g. if you loaded in previous step Bitcoin and you want to see it's price vs USDin last 90 days range use `ta --vs USD --days 90`
+
+
+* -d/--days The number of days to look.  Defaults to 30 days. Maximum 365 days
+* --vs The currency to look against.  Defaults to "USD". Available options are: USD, BTC
+
+## basic <a name="basic"></a>
+
+````
+usage: basic
+````
+
+Shows basic information about loaded coin like: name, symbol, rank, type, description, platform, proof_type, contract, tags, parent
+
+
+## ps <a name="ps"></a>
+
+````
+usage: ps [--vs]
+````
+
+* --vs The currency to look against. Defaults to "USD". Available options are: [BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK]
+
+Price, supply related data for loaded coin. There you find metrics like:
+name, symbol, rank, supply, volume, ath, market cap, price change related metrics
+
+
+## mkt <a name="mkt"></a>
+
+````
+usage: mkt [--vs] [-t --top] [-s --sort] [--descend] [-l --links]
+````
+
+* --vs The currency to look against. Defaults to "USD". Available options are: [BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK]
+* -t/--top - number of markets to display. To display top 10 markets: `mkt --top 10 --sort trust_score`
+* -s/--sort - sort by given column. You can chose on from `pct_volume_share, exchange, pair, trust_score, volume,price`.
+* --descend - flag to sort in descending order (lowest first)
+* -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `mkt --links`
+
+Get all markets found for given coin.
+
+## ex <a name="ex"></a>
+
+````
+usage: ex [-t --top] [-s --sort] [--descend]
+````
+
+* -t/--top - number of exchanges to display. To display top 10 exchanges: `ex --top 10 --sort fiats`
+* -s/--sort - sort by given column. You can chose on from `id, name, adjusted_volume_24h_share, fiats`.
+* --descend - flag to sort in descending order (lowest first)
+
+Get all exchanges found for given coin.
+
+## twitter <a name="twitter"></a>
+
+````
+usage: twitter [-t --top] [-s --sort] [--descend]
+````
+
+* -t/--top - number of tweets to display. To display top 10 tweets: `twitter --top 10 --sort date`
+* -s/--sort - sort by given column. You can chose on from `date, user_name, status, retweet_count, like_count`.
+* --descend - flag to sort in descending order (lowest first)
+
+Show last 10 tweets for given coin.
+
+## events <a name="events"></a>
+
+````
+usage: events [-t --top] [-s --sort] [--descend] [-l --links]
+````
+
+* -t/--top - number of events to display. To display top 10 events: `events --top 10 --sort date`
+* -s/--sort - sort by given column. You can chose on from `date, date_to, name, description, is_conference`.
+* --descend - flag to sort in descending order (lowest first)
+* -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `events --links`. If you will use this flag url column will be displayed.
+
+Show information about most important coins events.
+
+# OVERVIEW <a name="OVERVIEW"></a>
+
+## global <a name="global"></a>
+
+````
+usage: global
+````
+
+Show most important global crypto statistics like: market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
+market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date, market_cap_change_24h, volume_24h_change_24h, last_updated
+
+## coins <a name="coins"></a>
+
+````
+usage: coins [-s --skip] [-t --top] [-l --letter] [-k --key]
+````
+
+Display all available coins in coinpaprika. You can search with pagination mechanism with `coins --skip [num] --top [num]` or you can just search by letter like
+`coins --letter d --key name --top 10` it will display top 10 matches for coins which name starts with letter `d` and search will be done in column `name`
+
+* -s/--skip - number of records to skip.  Default is 0. There are thousands of coins, so there is mechanism to paginate through them.
+e.q if you want to see only records from 500-750 you should use `coins --skip 500 --top 250` or if you want to see 1200-1880 you should use `coins --skip 1200 --top 680`.
+* -t/--top - number of news to display. One page of news contains 25 news, so to get 250 news script needs to scrape 10 pages (it can take some time). Default 100. E.g `news --top 150`
+* -l/--letter - first letters of coin by which you want to search
+* -k/--key - search key. With this parameter you can specify in which column you would like to search. Choose on from `name, id, symbol`
+
+## info <a name="info"></a>
+
+````
+usage: info [-t --top] [-s --sort] [--descend]
+````
+* --vs The currency to look against. Defaults to "USD". Available options are: [BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK]
+* -t/--top - number of coins to display. To display top 10 coins: `info --top 10 --sort rank`
+* -s/--sort - sort by given column. You can chose on from `rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply, ath_price,market_cap, beta_value`.
+* --descend - flag to sort in descending order (lowest first)
+
+Show basic coin information for all coins from CoinPaprika
+
+## markets <a name="markets"></a>
+
+````
+usage: markets [--vs] [-t --top] [-s --sort] [--descend]
+````
+* --vs The currency to look against. Defaults to "USD". Available options are: [BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK]
+* -t/--top - number of coins to display. To display top 10 coins: `markets --top 10 --sort rank`
+* -s/--sort - sort by given column. You can chose on from `rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h, ath_price, pct_from_ath`.
+* --descend - flag to sort in descending order (lowest first)
+
+Show market related (price, supply, volume) coin information for all coins on CoinPaprika
+
+
+## exchanges <a name="exchanges"></a>
+
+````
+usage: exchanges [--vs] [-t --top] [-s --sort] [--descend]
+````
+* --vs The currency to look against. Defaults to "USD". Available options are: [BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK]
+* -t/--top - number of coins to display. To display top 10 coins: `exchanges --top 10 --sort rank`
+* -s/--sort - sort by given column. You can chose on from `rank, name, currencies, markets, fiats, confidence, volume_24h, volume_7d, volume_30d, sessions_per_month`.
+* --descend - flag to sort in descending order (lowest first)
+
+Show all exchanges from CoinPaprika
+
+
+## ex_markets <a name="ex_markets"></a>
+
+````
+usage: ex_markets [-e --exchange] [-t --top] [-s --sort] [--descend] [-l --links]
+````
+* -e/--exchange identifier of exchange e.g for Binance Exchange -> binance
+* -t/--top - number of markets to display. To display top 10 markets: `ex_markets --top 10 --sort reported_volume_24h_share`
+* -s/--sort - sort by given column. You can chose on from `pair , base_currency_name, quote_currency_name, category, reported_volume_24h_share, trust_score, market_url`.
+* --descend - flag to sort in descending order (lowest first)
+* -l/--links - flag to show urls. Using this flag will add additional column with urls e.g. `ex_markets --links`. If you will use this flag url column will be displayed.
+
+Get all exchange markets found for given exchange
+
+
+## platforms <a name="platforms"></a>
+
+````
+usage: platforms
+````
+
+List all smart contract platforms like ethereum, solana, cosmos, eos
+
+
+## contracts <a name="contracts"></a>
+
+````
+usage: contracts [-p --platform] [-t --top] [-s --sort] [--descend]
+````
+* -p/--platform - smart contract platform id. Available coins:
+```
+btc-bitcoin, eos-eos, eth-ethereum, xrp-xrp, bch-bitcoin-cash, xem-nem, neo-neo, xlm-stellar, etc-ethereum-classic,
+qtum-qtum, zec-zcash, bts-bitshares, waves-waves, nxt-nxt, act-achain, ubq-ubiq, xcp-counterparty, etp-metaverse-etp,
+burst-burst, omni-omni, trx-tron, bnb-binance-coin, ardr-ardor, ht-huobi-token, blvr-believer, cake-pa
+ncakeswap, fsxu-flashx-ultra, chik-chickenkebab-finance, jgn-juggernaut7492, crx-cryptex, whirl-whirl-finance,
+ eubi-eubi-token, swam-swapmatic-token, shells-shells
+```
+
+* -t/--top - number of smart contracts to display. To display 10 smart contracts: `contracts -p eth-ethereum --top 10 --sort index`
+* -s/--sort - sort by given column. You can chose on from `index, id, type, active, address`.
+* --descend - flag to sort in descending order (lowest first)
+
+
+Gets all contract addresses for given blockchain platform

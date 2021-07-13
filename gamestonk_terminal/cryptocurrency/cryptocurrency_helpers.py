@@ -1,5 +1,6 @@
 import textwrap
 import pandas as pd
+from gamestonk_terminal.helper_funcs import long_number_format
 
 
 def wrap_text_in_df(df: pd.DataFrame, w=55):  # pragma: no cover
@@ -44,6 +45,29 @@ def percent_to_float(s: str):
 
 
 def create_df_index(df: pd.DataFrame, name="rank"):
+    """Helper method that creates new index for given data frame, with provided index name
+    Parameters
+    ----------
+    df:
+        pd.DataFrame
+    name: str
+        index name
+    """
     df.index = df.index + 1
     df.reset_index(inplace=True)
     df.rename(columns={"index": name}, inplace=True)
+
+
+def long_number_format_with_type_check(x):
+    """Helper which checks if type of x is int or float and it's smaller then 10^18.
+    If yes it apply long_num_format
+    Parameters
+    ----------
+    x: int/float
+        number to apply long_number_format method
+    Returns
+    -------
+    """
+    if isinstance(x, (int, float)) and x < 10 ** 18:
+        return long_number_format(x)
+    return x

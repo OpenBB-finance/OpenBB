@@ -15,6 +15,7 @@ so indicators that rely on anything other than close will fail with an error.
 
 [BINANCE standalone menu](/gamestonk_terminal/cryptocurrency/binance/)
 
+[COINPAPRIKA standalone menu](/gamestonk_terminal/cryptocurrency/coinpaprika/)
 
 ## finbrain <a name="finbrain"></a>
 
