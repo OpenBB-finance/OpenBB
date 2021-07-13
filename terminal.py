@@ -50,6 +50,7 @@ from gamestonk_terminal.resource_collection import rc_controller
 from gamestonk_terminal.research import res_controller
 from gamestonk_terminal.government import gov_controller
 from gamestonk_terminal.etf import etf_controller
+from gamestonk_terminal.insider import insider_controller
 
 
 # pylint: disable=too-many-public-methods
@@ -93,6 +94,7 @@ class TerminalController:
         "pa",
         "crypto",
         "po",
+        "ins",
         "fx",
         "rc",
         "op",
@@ -100,6 +102,7 @@ class TerminalController:
         "etf",
         "about",
         "bro",
+        "ins",
     ]
     CHOICES += CHOICES_TICKER_DEPENDENT
 
@@ -149,6 +152,7 @@ Contexts:
 >   fx          forex menu, \t\t\t forex support through Oanda
 >   rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA
 >   op          options info,            \t e.g.: volume, open interest, chains, volatility
+>   ins         insider trading,         \t e.g.: latest penny stock buys, insider sales
             """
 
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
@@ -311,6 +315,10 @@ Contexts:
     def call_etf(self, _):
         """Process etf command"""
         return etf_controller.menu()
+
+    def call_ins(self, _):
+        """Process ins command"""
+        return insider_controller.menu()
 
     def call_gov(self, _):
         """Process gov command"""
