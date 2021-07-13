@@ -2,14 +2,21 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 import matplotlib.pyplot as plt
+import pandas as pd
 
 import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.options import volume_view, chains_view, op_scrape_view
+from gamestonk_terminal.options import (
+    yahoo_view,
+    tradier_view,
+    barchart_view,
+    syncretism_view,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -17,22 +24,47 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = ["help", "q", "quit", "exp", "voi", "vcalls", "vputs", "chains", "info"]
+    CHOICES = [
+        "cls",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "disp",
+        "scr",
+    ]
 
-    def __init__(self, ticker: str, last_adj_close_price: float):
+    CHOICES_TICKER_DEPENDENT = [
+        "exp",
+        "voi",
+        "vcalls",
+        "vputs",
+        "chains",
+        "info",
+    ]
+
+    def __init__(self, ticker: str, stock: pd.DataFrame):
         """Construct data."""
-        self.ticker = ticker
-        self.yf_ticker_data = yf.Ticker(self.ticker)
-        self.expiry_date = self.yf_ticker_data.options[0]
-        self.options = self.yf_ticker_data.option_chain(self.expiry_date)
-        self.last_adj_close_price = last_adj_close_price
-        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-        self.op_parser.add_argument(
-            "cmd",
-            choices=self.CHOICES,
-        )
+        if ticker:
+            self.ticker = ticker
+            self.yf_ticker_data = yf.Ticker(self.ticker)
+            self.expiry_date = self.yf_ticker_data.options[0]
+            self.options = self.yf_ticker_data.option_chain(self.expiry_date)
+            self.last_adj_close_price = stock["Adj Close"].values[-1]
 
-    @staticmethod
+            self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
+            self.op_parser.add_argument(
+                "cmd",
+                choices=self.CHOICES + self.CHOICES_TICKER_DEPENDENT,
+            )
+        else:
+            self.expiry_date = ""
+            self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
+            self.op_parser.add_argument(
+                "cmd",
+                choices=self.CHOICES,
+            )
+
     def expiry_dates(self, other_args: List[str]):
         """Print all available expiry dates."""
         parser = argparse.ArgumentParser(
@@ -81,22 +113,31 @@ class OptionsController:
     @staticmethod
     def print_help(expiry_date):
         """Print help."""
-        print("\nOptions insight Mode:")
-        print("   help          show this  menu again")
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options"
+        )
+        print("\nOptions:")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-        print(f"Selected expiry date: {expiry_date}")
+        print("   disp          display all preset screeners filters")
+        print("   scr           output screener options")
         print("")
-        print("   exp           see/set expiry date")
-        print("   voi           volume + open interest options trading plot")
-        print("   vcalls        calls volume + open interest plot")
-        print("   vputs         puts volume + open interest plot")
-        print("")
-        print("   chains        display option chains")
-        print("   info          display option information (volatility, IV rank etc)")
-        print("")
-        return
+        if expiry_date:
+            print(f"Selected expiry date: {expiry_date}")
+            print("")
+            print("   exp           see/set expiry date")
+            print("   voi           volume + open interest options trading plot")
+            print("   vcalls        calls volume + open interest plot")
+            print("   vputs         puts volume + open interest plot")
+            print("")
+            print("   chains        display option chains")
+            print(
+                "   info          display option information (volatility, IV rank etc)"
+            )
+            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -108,7 +149,23 @@ class OptionsController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.op_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help(self.expiry_date)
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -128,11 +185,11 @@ class OptionsController:
 
     def call_exp(self, other_args: List[str]):
         """Process exp command."""
-        self.expiry_dates(self, other_args)
+        self.expiry_dates(other_args)
 
     def call_voi(self, other_args: List[str]):
         """Process voi command."""
-        volume_view.plot_volume_open_interest(
+        yahoo_view.plot_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -143,7 +200,7 @@ class OptionsController:
 
     def call_vcalls(self, other_args: List[str]):
         """Process vcalls command."""
-        volume_view.plot_calls_volume_open_interest(
+        yahoo_view.plot_calls_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -153,7 +210,7 @@ class OptionsController:
 
     def call_vputs(self, other_args: List[str]):
         """Process vcalls command."""
-        volume_view.plot_puts_volume_open_interest(
+        yahoo_view.plot_puts_volume_open_interest(
             other_args,
             self.ticker,
             self.expiry_date,
@@ -162,17 +219,23 @@ class OptionsController:
         )
 
     def call_chains(self, other_args):
-        chains_view.display_chains(self.ticker, self.expiry_date, other_args)
+        tradier_view.display_chains(self.ticker, self.expiry_date, other_args)
 
     def call_info(self, other_args):
-        op_scrape_view.print_options_data(self.ticker, other_args)
+        barchart_view.print_options_data(self.ticker, other_args)
+
+    def call_disp(self, other_args):
+        syncretism_view.view_available_presets(other_args)
+
+    def call_scr(self, other_args):
+        syncretism_view.screener_output(other_args)
 
 
-def menu(ticker: str, last_adj_close_price: float):
+def menu(ticker: str, stock: pd.DataFrame):
     """Options Menu."""
 
     try:
-        op_controller = OptionsController(ticker, last_adj_close_price)
+        op_controller = OptionsController(ticker, stock)
         op_controller.call_help(None)
     except IndexError:
         print("No options found for " + ticker)

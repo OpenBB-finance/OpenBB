@@ -22,6 +22,8 @@ from gamestonk_terminal.discovery import (
     yahoo_finance_view,
     marketbeat_view,
     finra_ats_view,
+    finnhub_view,
+    stockgrid_view,
 )
 
 
@@ -30,9 +32,12 @@ class DiscoveryController:
 
     # Command choices
     CHOICES = [
+        "?",
+        "cls",
         "help",
         "q",
         "quit",
+        "ipo",
         "map",
         "rtp_sectors",
         "gainers",
@@ -52,6 +57,8 @@ class DiscoveryController:
         "latest",
         "trending",
         "darkpool",
+        "darkshort",
+        "shortvol",
     ]
 
     def __init__(self):
@@ -66,12 +73,16 @@ class DiscoveryController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/discovery"
+        )
         print("\nDiscovery Mode:")
-        print("   help           show this discovery menu again")
+        print("   cls            clear screen")
+        print("   ?/help         show this discovery menu again")
         print("   q              quit this menu, and shows back to main menu")
         print("   quit           quit to abandon program")
         print("")
+        print("   ipo            past and future IPOs [Finnhub]")
         print("   map            S&P500 index stocks map [Finviz]")
         print("   rtp_sectors    real-time performance sectors [Alpha Vantage]")
         print("   gainers        show latest top gainers [Yahoo Finance]")
@@ -96,7 +107,11 @@ class DiscoveryController:
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
         print("   ratings        top ratings updates [MarketBeat]")
-        print("   darkpool       dark pool tickers with growing activity [FINRA]")
+        print(
+            "   darkpool       promising tickers based on dark pool shares regression [FINRA]"
+        )
+        print("   darkshort      dark pool short position [Stockgrid.io]")
+        print("   shortvol       short interest and days to cover [Stockgrid.io]")
         print("")
 
     def switch(self, an_input: str):
@@ -109,6 +124,11 @@ class DiscoveryController:
             True - quit the program
             None - continue in the menu
         """
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
         # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
@@ -118,6 +138,16 @@ class DiscoveryController:
             if os.path.isfile(self.spectrum_img_to_delete + ".jpg"):
                 os.remove(self.spectrum_img_to_delete + ".jpg")
                 self.spectrum_img_to_delete = ""
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -134,6 +164,10 @@ class DiscoveryController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_ipo(self, other_args: List[str]):
+        """Process ipo command"""
+        finnhub_view.ipo_calendar(other_args)
 
     def call_map(self, other_args: List[str]):
         """Process map command"""
@@ -212,6 +246,14 @@ class DiscoveryController:
     def call_darkpool(self, other_args: List[str]):
         """Process darkpool command"""
         finra_ats_view.dark_pool(other_args)
+
+    def call_darkshort(self, other_args: List[str]):
+        """Process darkshort command"""
+        stockgrid_view.darkshort(other_args)
+
+    def call_shortvol(self, other_args: List[str]):
+        """Process shortvol command"""
+        stockgrid_view.shortvol(other_args)
 
 
 def menu():

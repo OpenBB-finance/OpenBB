@@ -2,6 +2,8 @@
 
 This menu aims to discover new stocks, and the usage of the following commands along with an example will be exploited below.
 
+* [ipo](#ipo)
+  * past and future IPOs [Finnhub]
 * [map](#map)
   * S&P500 index stocks map [Finviz]
 * [rtp_sectors](#rtp_sectors)
@@ -40,6 +42,23 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * top ratings updates [MarketBeat]
 * [darkpool](#darkpool)
   * dark pool tickers with growing activity [FINRA]
+* [darkshort](#darkshort)
+  * dark pool short position [Stockgrid]
+* [shortvol](#shortvol)
+  * short interest and days to cover [Stockgrid]
+
+## ipo <a name="ipo"></a>
+
+```shell
+usage: ipo [-p PAST_DAYS] [-f FUTURE_DAYS]
+```
+
+Past and future IPOs. [Source: https://finnhub.io]
+
+* -p : Number of past days to look for IPOs. Default 0.
+* -f : Number of future days to look for IPOs. Default 10.
+
+<img width="1005" alt="Captura de ecrã 2021-05-03, às 12 54 44" src="https://user-images.githubusercontent.com/25267873/116873168-1e6ed900-ac0f-11eb-9d80-dddc8a754885.png">
 
 
 ## map <a name="map"></a>
@@ -281,4 +300,30 @@ Display dark pool (ATS) data of tickers with growing trades activity. [Source: F
 
 ![darkpool](https://user-images.githubusercontent.com/25267873/115323195-8d642080-a17f-11eb-9ef8-d456ce769ab7.png)
 
+## darkshort <a name="darkshort"></a>
+
+```
+usage: darkshort [-n NUM] [-s {sv,sv_pct,nsv,nsv_dollar,dpp,dpp_dollar}]
+```
+Get dark pool short positions. [Source: Stockgrid]
+* -n: Number of top tickers to show
+* -s: Field for which to sort by, where 'sv': Short Vol. (1M), 'sv_pct': Short Vol. %, 'nsv': Net Short Vol. (1M), 'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), 'dpp_dollar': DP Position ($1B). Default: dpp_dollar.
+* --export: Save dataframe as a csv file. Default: false.
+
+<img width="945" alt="darkshort" src="https://user-images.githubusercontent.com/25267873/122323732-76dc0a80-cf1f-11eb-9983-fd7688778016.png">
+
+
+## shortvol <a name="darkpool"></a>
+
+```
+usage: shortvol [-n NUM] [-s {float,dtc,si}] [-h]
+```
+
+Print short interest and days to cover. [Source: Stockgrid]
+* -n: Number of top tickers to show
+* -s: Field for which to sort by, where 'float': Float Short %, 'dtc': Days to Cover, 'si': Short Interest. Default: float.
+* -a: Data in ascending order. Default: false.
+* --export: Save dataframe as a csv file. Default: false.
+
+<img width="949" alt="shortvol" src="https://user-images.githubusercontent.com/25267873/122323861-af7be400-cf1f-11eb-9de2-5c7f2debddf0.png">
 

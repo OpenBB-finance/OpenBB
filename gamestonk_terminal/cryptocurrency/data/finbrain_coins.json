@@ -1,0 +1,522 @@
+[
+  {
+    "PAIR": "AAVE-USD",
+    "SYMBOL": "AAVE",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ADA-USD",
+    "SYMBOL": "ADA",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ADX-USD",
+    "SYMBOL": "ADX",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "AE-USD",
+    "SYMBOL": "AE",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ANT-USD",
+    "SYMBOL": "ANT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ARDR-USD",
+    "SYMBOL": "ARDR",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ARK-USD",
+    "SYMBOL": "ARK",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ATOM-USD",
+    "SYMBOL": "ATOM",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BAT-USD",
+    "SYMBOL": "BAT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BCCOIN-USD",
+    "SYMBOL": "BCCOIN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BCH-USD",
+    "SYMBOL": "BCH",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BCN-USD",
+    "SYMBOL": "BCN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BLOCK-USD",
+    "SYMBOL": "BLOCK",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BNB-USD",
+    "SYMBOL": "BNB",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BNT-USD",
+    "SYMBOL": "BNT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BTC-USD",
+    "SYMBOL": "BTC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BTCD-USD",
+    "SYMBOL": "BTCD",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BTG-USD",
+    "SYMBOL": "BTG",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BTM-USD",
+    "SYMBOL": "BTM",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "BTS-USD",
+    "SYMBOL": "BTS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "CVC-USD",
+    "SYMBOL": "CVC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DASH-USD",
+    "SYMBOL": "DASH",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DCN-USD",
+    "SYMBOL": "DCN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DCR-USD",
+    "SYMBOL": "DCR",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DGB-USD",
+    "SYMBOL": "DGB",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DGD-USD",
+    "SYMBOL": "DGD",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DNT-USD",
+    "SYMBOL": "DNT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DOGE-USD",
+    "SYMBOL": "DOGE",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "DOT-USD",
+    "SYMBOL": "DOT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "EDG-USD",
+    "SYMBOL": "EDG",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "EOS-USD",
+    "SYMBOL": "EOS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ETH-USD",
+    "SYMBOL": "ETH",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ETP-USD",
+    "SYMBOL": "ETP",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "FAIR-USD",
+    "SYMBOL": "FAIR",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "FCT-USD",
+    "SYMBOL": "FCT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "FUN-USD",
+    "SYMBOL": "FUN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "GAME-USD",
+    "SYMBOL": "GAME",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "GAS-USD",
+    "SYMBOL": "GAS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "GBYTE-USD",
+    "SYMBOL": "GBYTE",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "GNO-USD",
+    "SYMBOL": "GNO",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "GNT-USD",
+    "SYMBOL": "GNT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "HSR-USD",
+    "SYMBOL": "HSR",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ICX-USD",
+    "SYMBOL": "ICX",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "IOC-USD",
+    "SYMBOL": "IOC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "KIN-USD",
+    "SYMBOL": "KIN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "KMD-USD",
+    "SYMBOL": "KMD",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "KNC-USD",
+    "SYMBOL": "KNC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "LINK-USD",
+    "SYMBOL": "LINK",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "LKK-USD",
+    "SYMBOL": "LKK",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "LRC-USD",
+    "SYMBOL": "LRC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "LSK-USD",
+    "SYMBOL": "LSK",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "LTC-USD",
+    "SYMBOL": "LTC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MAID-USD",
+    "SYMBOL": "MAID",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MCAP-USD",
+    "SYMBOL": "MCAP",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MCO-USD",
+    "SYMBOL": "MCO",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MGO-USD",
+    "SYMBOL": "MGO",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MKR-USD",
+    "SYMBOL": "MKR",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MLN-USD",
+    "SYMBOL": "MLN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MONA-USD",
+    "SYMBOL": "MONA",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "MTL-USD",
+    "SYMBOL": "MTL",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "NAV-USD",
+    "SYMBOL": "NAV",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "NEBL-USD",
+    "SYMBOL": "NEBL",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "NEO-USD",
+    "SYMBOL": "NEO",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "NLC2-USD",
+    "SYMBOL": "NLC2",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "NXS-USD",
+    "SYMBOL": "NXS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "NXT-USD",
+    "SYMBOL": "NXT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "OMG-USD",
+    "SYMBOL": "OMG",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "PAY-USD",
+    "SYMBOL": "PAY",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "PIVX-USD",
+    "SYMBOL": "PIVX",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "PPT-USD",
+    "SYMBOL": "PPT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "QASH-USD",
+    "SYMBOL": "QASH",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "QRL-USD",
+    "SYMBOL": "QRL",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "QTUM-USD",
+    "SYMBOL": "QTUM",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "REP-USD",
+    "SYMBOL": "REP",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "RLC-USD",
+    "SYMBOL": "RLC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "SALT-USD",
+    "SYMBOL": "SALT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "SC-USD",
+    "SYMBOL": "SC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "SMART-USD",
+    "SYMBOL": "SMART",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "SNGLS-USD",
+    "SYMBOL": "SNGLS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "STEEM-USD",
+    "SYMBOL": "STEEM",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "STORJ-USD",
+    "SYMBOL": "STORJ",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "SUB-USD",
+    "SYMBOL": "SUB",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "SYS-USD",
+    "SYMBOL": "SYS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "TAAS-USD",
+    "SYMBOL": "TAAS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "TRX-USD",
+    "SYMBOL": "TRX",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "UBQ-USD",
+    "SYMBOL": "UBQ",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "UNI-USD",
+    "SYMBOL": "UNI",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "USDT-USD",
+    "SYMBOL": "USDT",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "VEN-USD",
+    "SYMBOL": "VEN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "VERI-USD",
+    "SYMBOL": "VERI",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "VTC-USD",
+    "SYMBOL": "VTC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "WAVES-USD",
+    "SYMBOL": "WAVES",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "WINGS-USD",
+    "SYMBOL": "WINGS",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "WTC-USD",
+    "SYMBOL": "WTC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "XCP-USD",
+    "SYMBOL": "XCP",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "XLM-USD",
+    "SYMBOL": "XLM",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "XMR-USD",
+    "SYMBOL": "XMR",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "XRP-USD",
+    "SYMBOL": "XRP",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "XTZ-USD",
+    "SYMBOL": "XTZ",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "XVG-USD",
+    "SYMBOL": "XVG",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "YFI-USD",
+    "SYMBOL": "YFI",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ZEC-USD",
+    "SYMBOL": "ZEC",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ZEN-USD",
+    "SYMBOL": "ZEN",
+    "VS": "USD"
+  },
+  {
+    "PAIR": "ZRX-USD",
+    "SYMBOL": "ZRX",
+    "VS": "USD"
+  }
+]

@@ -100,10 +100,10 @@ def price_target_from_analysts(
             df_analyst_data = df_analyst_data[start:]  # type: ignore
 
         if interval == "1440min":
-            plt.plot(stock.index, stock["5. adjusted close"].values, lw=3)
+            plt.plot(stock.index, stock["Adj Close"].values, lw=3)
         # Intraday
         else:
-            plt.plot(stock.index, stock["4. close"].values, lw=3)
+            plt.plot(stock.index, stock["Close"].values, lw=3)
 
         if start:
             plt.plot(df_analyst_data.groupby(by=["Date"]).mean()[start:])  # type: ignore
@@ -394,9 +394,9 @@ def insider_activity(
         _, ax = plt.subplots()
 
         if interval == "1440min":
-            plt.plot(stock.index, stock["5. adjusted close"].values, lw=3)
+            plt.plot(stock.index, stock["Adj Close"].values, lw=3)
         else:  # Intraday
-            plt.plot(stock.index, stock["4. close"].values, lw=3)
+            plt.plot(stock.index, stock["Close"].values, lw=3)
 
         plt.title(f"{ticker.upper()} (Time Series) and Price Target")
 
@@ -434,9 +434,9 @@ def insider_activity(
 
             n_stock_price = 0
             if interval == "1440min":
-                n_stock_price = stock["5. adjusted close"][ind_dt]
+                n_stock_price = stock["Adj Close"][ind_dt]
             else:
-                n_stock_price = stock["4. close"][ind_dt]
+                n_stock_price = stock["Close"][ind_dt]
 
             plt.vlines(
                 x=ind_dt,
@@ -463,9 +463,9 @@ def insider_activity(
 
             n_stock_price = 0
             if interval == "1440min":
-                n_stock_price = stock["5. adjusted close"][ind_dt]
+                n_stock_price = stock["Adj Close"][ind_dt]
             else:
-                n_stock_price = stock["4. close"][ind_dt]
+                n_stock_price = stock["Close"][ind_dt]
 
             plt.vlines(
                 x=ind_dt,

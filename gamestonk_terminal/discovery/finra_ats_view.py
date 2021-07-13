@@ -260,6 +260,5 @@ def dark_pool(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return

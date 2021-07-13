@@ -1,41 +1,55 @@
+"""Cryptocurrency Controller"""
 __docformat__ = "numpy"
-
+# pylint: disable=R0904, C0302, R1710
 import argparse
-import pandas as pd
+import os
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency import pycoingecko_view
-from gamestonk_terminal.cryptocurrency import coinmarketcap_view as cmc_view
+from gamestonk_terminal.cryptocurrency.coinmarketcap import coinmarketcap_controller
+from gamestonk_terminal.cryptocurrency.binance import binance_controller
+from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_controller
+from gamestonk_terminal.cryptocurrency import finbrain_crypto_view
 
 
 class CryptoController:
 
-    CHOICES = ["help", "q", "quit", "load", "view", "top"]
+    CHOICES = [
+        "?",
+        "cls",
+        "help",
+        "q",
+        "quit",
+        "cg",
+        "bin",
+        "cmc",
+        "finbrain",
+    ]
 
     def __init__(self):
         """CONSTRUCTOR"""
 
         self.crypto_parser = argparse.ArgumentParser(add_help=False, prog="crypto")
         self.crypto_parser.add_argument("cmd", choices=self.CHOICES)
-        self.current_coin = None
-        self.current_df = pd.DataFrame()
 
-    @staticmethod
-    def print_help(current_coin):
+    def print_help(self):
         """Print help"""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency"
+        )
         print("\nCryptocurrency:")
-        print("   help          show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print(f"\nCurrent Coin: {current_coin}")
+        print("   cls             clear screen")
+        print("   ?/help          show this menu again")
+        print("   q               quit this menu, and shows back to main menu")
+        print("   quit            quit to abandon program")
         print("")
-        print("   load          load cryptocurrency data")
-        print("   view          load and view cryptocurrency data")
+        print("   finbrain        Crypto sentiment from 15+ major news headlines")
         print("")
-        print("   top           view top coins from coinmarketcap")
+        print(">  cg              CoinGecko overview (market statistics) and coin menu")
+        print(">  cmc             Coinmarketcap menu")
+        print(">  bin             Binance menu with order book, candles, ta.. ")
         print("")
 
     def switch(self, an_input: str):
@@ -48,7 +62,23 @@ class CryptoController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.crypto_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -56,7 +86,7 @@ class CryptoController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self.current_coin)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -66,24 +96,31 @@ class CryptoController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_load(self, other_args):
-        self.current_coin, self.current_df = pycoingecko_view.load(other_args)
+    def call_cg(self, _):
+        if pycoingecko_controller.menu():
+            return True
+        print("")
 
-    def call_view(self, other_args):
-        if self.current_coin:
-            pycoingecko_view.view(self.current_coin, self.current_df, other_args)
+    def call_bin(self, _):
+        """Process bin command"""
+        if binance_controller.menu():
+            return True
+        print("")
 
-        else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+    def call_cmc(self, _):
+        """Process top command"""
+        if coinmarketcap_controller.menu():
+            return True
+        print("")
 
-    def call_top(self, other_args):
-        cmc_view.get_cmc_top_n(other_args)
+    def call_finbrain(self, other_args):
+        """Process sentiment command"""
+        finbrain_crypto_view.crypto_sentiment_analysis(other_args=other_args)
 
 
 def menu():
     crypto_controller = CryptoController()
-    crypto_controller.print_help(crypto_controller.current_coin)
+    crypto_controller.print_help()
     plt.close("all")
     while True:
         # Get input command from user

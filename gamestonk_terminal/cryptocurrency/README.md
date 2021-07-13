@@ -2,51 +2,37 @@
 
 This menu aims to explore crypto world, and the usage of the following commands along with an example will be exploited below.
 
-* [load](#load)
-  * load a given coin vs a given currency [CoinGecko]
-* [view](#view)
-  * plot the loaded crypto data
-* [top](#top)
-  * view top coins from coinmarketcap [coinmarketcap.com] 
+Note that we have added the ability to look at technical analysis in the ta menu.  Data loaded from CoinGecko has no candle data,
+so indicators that rely on anything other than close will fail with an error.
 
 
-## load  <a name="load"></a>
+* [finbrain](#finbrain)
+    * crypto sentiment from 15+ major news headlines for more then 100 coins
 
-````
-usage: load [-c --coin] [-d --days] [--vs]
-````
+[COINGECKO standalone menu](/gamestonk_terminal/cryptocurrency/coingecko/)
 
-Load a given coin vs a given currency. Currently only retrieves price, not volume or MarketCap. The current crypto  data is [Powered by CoinGecko API](#https://www.coingecko.com/en), which is an awesome service that currently requires no API Key! 
+[COINMARKETCAP standalone menu](/gamestonk_terminal/cryptocurrency/coinmarketcap/)
 
-* -c/--coin The coin you wish to load.  This can either be the symbol or the name.  `load -c btc` and `load -c bitcoin` 
-  will load.  The -c flag is optional,  the above is equivalent to `load btc`.
-* -d/--days The number of days to look.  Defaults to 30 days.  As per the API: Minutely data will be used for duration within 1 day, 
-  Hourly data will be used for duration between 1 day and 90 days, Daily data will be used for duration above 90 days.
-* --vs The currency to look against.  Defaults to "usd".
+[BINANCE standalone menu](/gamestonk_terminal/cryptocurrency/binance/)
 
 
-## view  <a name="view"></a>
+## finbrain <a name="finbrain"></a>
 
-````
-usage: view
-````
+```bash
+usage: finbrain [-c --coin]
+```
 
-Plot the loaded crypto data.
+FinBrain collects the news headlines from 15+ major financial news sources on a daily basis and analyzes them to generate sentiment scores for more than 4500 US stocks. FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world. [Source: See https://finbrain.tech]
 
-![crypto_view](https://user-images.githubusercontent.com/25267873/115787452-20889a80-a3ba-11eb-9216-f7fd1ffc98cf.png)
+Currently all sentiment is gathered for  `COIN-USD` pairs. Please use upper case symbols of coins.
 
+* -c/--coin - Symbol of the Coin for which you want to analyse sentiment. Currently available coins are:
+```
+AAVE, ADA, ADX, AE, ANT, ARDR, ARK, ATOM, BAT, BCCOIN, BCH, BCN, BLOCK, BNB, BNT, BTC, BTCD, BTG, BTM, BTS, CVC, DASH,
+DCN, DCR, DGB, DGD, DNT, DOGE, DOT, EDG, EOS, ETH, ETP, FAIR, FCT, FUN, GAME, GAS, GBYTE, GNO, GNT, HSR, ICX, IOC, KIN,
+KMD, KNC, LINK, LKK, LRC, LSK, LTC, MAID, MCAP, MCO, MGO, MKR, MLN, MONA, MTL, NAV, NEBL, NEO, NLC2, NXS, NXT, OMG, PAY,
+PIVX, PPT, QASH, QRL, QTUM, REP, RLC, SALT, SC, SMART, SNGLS, STEEM, STORJ, SUB, SYS, TAAS, TRX, UBQ, UNI, USDT, VEN,
+VERI, VTC, WAVES, WINGS, WTC, XCP, XLM, XMR, XRP, XTZ, XVG, YFI, ZEC, ZEN, ZRX
+```
 
-## top <a name="top"></a>
-
-````
-top [-n] [-s --sort SORTBY] [--descend]
-````
-
-This command displays the top n cryptocurrencies from coinmarketcap.com.
-
-* -n: Number of coins to look at (after sort).  Defaults to 10.
-* -s/--sort : Column to sort by. One of {Symbol,CMC_Rank,LastPrice,DayPctChange,MarketCap}. Defaults to sorting by the CMC rank.
-* --descend : Flag to change the sorting order.  Sorts in ascending order (since default order is the Rank which starts at 1).
-
-<img width="990" alt="crypto" src="https://user-images.githubusercontent.com/25267873/115787544-4746d100-a3ba-11eb-9433-b7cb9142404a.png">
-
+![image](https://user-images.githubusercontent.com/275820/125166701-126a3f00-e19d-11eb-9f81-26c844f7dd62.png)

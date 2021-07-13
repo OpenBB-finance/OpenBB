@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+* [Main Menu](#Main-Menu)
 * [Discovery](#Discovery)
 * [Behavioral Analysis](#Behavioral-Analysis)
 * [Sell-side Equity Research](#Sell-side-Equity-Research)
@@ -14,13 +15,18 @@
 * [Exploratory Data Analysis](#Exploratory-Data-Analysis)
 * [Residual Analysis](#Residual-Analysis)
 * [Portfolio Analysis](#Portfolio-Analysis)
+* [Brokers](#Brokers)
 * [Portfolio Optimization](#Portfolio-Optimization)
-* [FRED](#FRED)
+* [Economy](#Economy)
 * [Options](#Options)
 * [Credit Analysis](#Credit-Analysis)
 * [Cryptocurrencies](#Cryptocurrencies)
 * [Screener](#Screener)
 * [Forex](#Forex)
+* [Backtesting](#Backtesting)
+* [Resource Collection](#Resource-Collection)
+* [Government](#Government)
+* [ETF](#ETF)
 
 ## Additional
 
@@ -31,6 +37,12 @@
 
 ---
 
+## Main Menu
+* [x] Add about us command (@didier) - [PR #506](https://github.com/DidierRLopes/GamestonkTerminal/pull/506)
+* [x] Add git commit hash to welcome message (@didier) - [PR #506](https://github.com/DidierRLopes/GamestonkTerminal/pull/506)
+
+**NEXT**
+
 ## Discovery
 * [x] Top Losers (@didier) - [PR #171](https://github.com/DidierRLopes/GamestonkTerminal/pull/171)
 * [x] ARK orders (@aia) - [PR #140](https://github.com/DidierRLopes/GamestonkTerminal/pull/140)
@@ -38,7 +50,9 @@
 * [x] Add latest and trending news commands (@hinxx) - [PR #347](https://github.com/DidierRLopes/GamestonkTerminal/pull/347)
 * [x] Add top ratings updates (@hinxx) - [PR #357](https://github.com/DidierRLopes/GamestonkTerminal/pull/357)
 * [x] Add dark pool (ATS) data of tickers with growing trades activity (@didier) - [PR #372](https://github.com/DidierRLopes/GamestonkTerminal/pull/372)
-
+* [x] Past and future IPOs calendar (@didier) - [PR #432](https://github.com/DidierRLopes/GamestonkTerminal/pull/432)
+* [x] Short volume and dark pool short information (stockgrid) (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496
+* [x] Combine topdark onto darkshort cmd (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 
@@ -47,6 +61,7 @@
 
 ## Behavioral Analysis
 * [x] Add FinBrain sentiment from news (@didier) - [PR #223](https://github.com/DidierRLopes/GamestonkTerminal/pull/223)
+* [x] Sentiment stats from Finnhub (@didier) - [PR #433](https://github.com/DidierRLopes/GamestonkTerminal/pull/433)
 
 **NEXT**
 * [ ] Implement a better Twitter client (@aia)
@@ -76,15 +91,20 @@
 * [x] Add technical summary report provided by FinBrain (@didier) - [PR #294](https://github.com/DidierRLopes/GamestonkTerminal/pull/294)
 * [x] Add recommendation based on technical indicators from Tradingview (@didier) - [PR #301](https://github.com/DidierRLopes/GamestonkTerminal/pull/301)
 * [x] Add view of stock historical price with trendlines (support, resistance) by Finviz (@didier) - [PR #317](https://github.com/DidierRLopes/GamestonkTerminal/pull/317)
+* [x] Add auto-recognition of major TA patterns (@didier) - [PR #429](https://github.com/DidierRLopes/GamestonkTerminal/pull/429)
 
 **NEXT**
-* [ ] Add auto-recognition of major TA patterns (@didier)
+
 
 ---
 
 ## Due Diligence
 * [x] Add dark pools (ATS) vs Non-ATS data over time (@didier) - [PR #363](https://github.com/DidierRLopes/GamestonkTerminal/pull/363)
-* [x] Add failure to deliver command (@hinxx) - [PR #366](#https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
+* [x] Add failure to deliver command (@hinxx) - [PR #366](https://github.com/DidierRLopes/GamestonkTerminal/pull/366)
+* [x] Ratings over time (@didier) - [PR #431](https://github.com/DidierRLopes/GamestonkTerminal/pull/431)
+* [x] Add short volume from stockgrid (@jmaslek) - [PR #496](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/496)
+* [x] Add darkpos command (@didier) - [PR #507](https://github.com/DidierRLopes/GamestonkTerminal/pull/507)
+
 
 **NEXT**
 
@@ -94,9 +114,10 @@
 * [x] Add several exponential smoothing techniques (@didier) - [PR #132](https://github.com/DidierRLopes/GamestonkTerminal/pull/132)
 * [x] Allow backtesting (@didier) - [PR #169](https://github.com/DidierRLopes/GamestonkTerminal/pull/169)
 * [x] Add averaging around multiple predictions (@didier) - [PR #252](https://github.com/DidierRLopes/GamestonkTerminal/pull/252)
+* [x] CNN 1D (@jmaslek) - [PR #436](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/436)
+
 
 **NEXT**
-* [ ] CNN 1D (@didier)
 * [ ] Combine Sentiment Analysis with Chart data - [IS #240](https://github.com/DidierRLopes/GamestonkTerminal/issues/240)
 * [ ] Cross-Validation methods (Forward Chaining, K-Fold, Group K-Fold) (@didier)
 
@@ -140,33 +161,51 @@
 **NEXT**
 
 ---
-
-## Portfolio Analysis
+## Brokers
 * [x] Add alpaca (@jmaslek) - [PR #259](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add robinhood (@jmaslek) - [PR #229](https://github.com/DidierRLopes/GamestonkTerminal/pull/229)
 * [x] Add Ally Invest (@jmaslek) - [PR #267](https://github.com/DidierRLopes/GamestonkTerminal/pull/267)
+* [x] Degiro support (@deel) - [PR #381](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
+* [x] Degiro improvement (@Chavithra) - [PR #445](https://github.com/DidierRLopes/GamestonkTerminal/pull/381)
+* [x] Brokers to be the old portfolio menu (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
+* [x] Refactor degiro menu onto a folder (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
-* [ ] Merge data from different brokers (@jmaslek)
+* [ ] Merge data from different brokers
 * [ ] Add more options around merged portfolios
-* [ ] Add Brokers (td, webull, etc) (@jmaslek)
+* [ ] Add Brokers (td, webull, etc)
+* [ ] Allow to go directly onto Portfolo Analysis
+
+---
+## Portfolio Analysis
+
+* [x] Add custom csv integration (jmaslek) - [PR #502](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/502)
+* [x] Commands ported to brokers menu (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
+
+**NEXT**
+* [ ] Port to new Broker Menu
 * [ ] Refactoring
-* [ ] Summaries / tear sheets (@jmaslek)
+* [ ] Summaries / tear sheets (potentially QuantStats)
+* [ ] Add plots for `group` functions
+* [ ] Add more functionality for custom portfolio viewing (suggested XRay)
 
 ___
 
 ## Portfolio Optimization
 * [x] Basic Optimization through PyPortFolioOpt(@jmaslek) - [PR #329](https://github.com/DidierRLopes/GamestonkTerminal/pull/329)
 * [x] Add command to maximise the quadratic utility(@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
+* [x] Allow to remove ticker from list (@didier) - [PR #505](https://github.com/DidierRLopes/GamestonkTerminal/pull/505)
 
 **NEXT**
 * [ ] Allow for more custom optimization constrains
 
-
 ---
 
-## FRED
+## Economy
 * [x] Implement Economic data (gpd, unemployment rate, ...) (@jmaslek) - [PR #167](https://github.com/DidierRLopes/GamestonkTerminal/pull/167)
+* [x] Refactor FRED to ECON menu and add VIX view (@jmaslek) - [PR #405](https://github.com/DidierRLopes/GamestonkTerminal/pull/405)
+* [x] Output economic impact events calendar (@didier) - [PR #430](https://github.com/DidierRLopes/GamestonkTerminal/pull/430)
+* [x] Add CNN Fear and Greed Index (@didier) - [PR #509](https://github.com/DidierRLopes/GamestonkTerminal/pull/509)
 
 **NEXT**
 
@@ -191,14 +230,17 @@ ___
 ---
 
 ## Cryptocurrencies
-* [x] Add Coingecko (@jmaslek) - [PR #283](#https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] Add Coingecko (@jmaslek) - [PR #283](https://github.com/DidierRLopes/GamestonkTerminal/pull/283)
+* [x] Add top coins from CG (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 * [x] view top coins from coinmarketcap (@jmaslek) - [PR #378](https://github.com/DidierRLopes/GamestonkTerminal/pull/378)
+* [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
+* [x] Add crypto ta (@jmaslek) [PR #452](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/452)
+
 
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
-* [ ] Add crypto charts
-* [ ] Add binance 
 * [ ] Add top altcoin lists
+
 ---
 
 ## Screener
@@ -207,6 +249,8 @@ ___
 * [x] Add screener signals (e.g. top gainers, new highs, most volatile, oversold, major news, ...) from Finviz (@didier) - [PR #314](https://github.com/DidierRLopes/GamestonkTerminal/pull/314)
 * [x] Plot screener historical using Yahoo Finance data (@didier) - [PR #319](https://github.com/DidierRLopes/GamestonkTerminal/pull/319)
 * [x] Add command to take tickers to portfolio optimization (@didier) - [PR #349](https://github.com/DidierRLopes/GamestonkTerminal/pull/349)
+* [x] Add flags to save screeners and run papermill on returned tickers (@alokan) - [PR #414](https://github.com/DidierRLopes/GamestonkTerminal/pull/414)
+* [x] Add several new screener presets (@Traceabl3) - [PR #447](https://github.com/DidierRLopes/GamestonkTerminal/pull/447)
 
 **NEXT**
 
@@ -214,11 +258,43 @@ ___
 
 ## Forex
 * [x] Add entire forex menu through Oanda (@alokan) - [PR #360](https://github.com/DidierRLopes/GamestonkTerminal/pull/360)
+* [x] Add EDA menu, Behavioural Analysis menu, Due Diligence from other users in Reddit, and latest news regarding currency provided. (@alokan) - [PR #387](https://github.com/DidierRLopes/GamestonkTerminal/pull/387)
+
+**NEXT**
+
+
+---
+
+## Resource Collection
+* [x] Add hfletters and learn commands to resource collection (@didier) - [PR #427](https://github.com/DidierRLopes/GamestonkTerminal/pull/427)
+* [x] Add arxiv, finra, edgar, fred (@didier) - [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
+
 
 **NEXT**
 
 ---
 
+## Backtesting
+* [x] Add simple backtest menu with simple strategies and benchmarks (@jmaslek) [PR #415](https://github.com/DidierRLopes/GamestonkTerminal/pull/415)
+
+**NEXT**
+
+---
+
+## Government
+* [x] Add congress data (@didier) [PR #438](https://github.com/DidierRLopes/GamestonkTerminal/pull/438)
+* [x] Add senate and house data (@didier) [PR #446](https://github.com/DidierRLopes/GamestonkTerminal/pull/446)
+* [x] Add government contracts (@didier) [PR #453](https://github.com/DidierRLopes/GamestonkTerminal/pull/453)
+
+**NEXT**
+
+---
+## ETF
+* [x] Add ETF data (@jmaslek) [PR #454](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/454)
+
+**NEXT**
+
+---
 ## Backend
 
 **NEXT**
@@ -244,6 +320,8 @@ ___
 * [x] Add Feature Flags (@aia) - [PR #158](https://github.com/DidierRLopes/GamestonkTerminal/pull/158)
 * [x] Add ad-hoc builds (@aia) - [PR #192](https://github.com/DidierRLopes/GamestonkTerminal/pull/192)
 * [x] Add test generators and test parametrization helpers (@aia) - [PR #264](https://github.com/DidierRLopes/GamestonkTerminal/pull/264)
+* [x] Sphinx documentation https://gamestonk-terminal.readthedocs.io/en/latest/index.html (@piiq) - [PR #413](https://github.com/DidierRLopes/GamestonkTerminal/pull/413)
+* [x] Re-write main menu terminal to have same class struct as remaining modules (@didier) - [PR #507](https://github.com/DidierRLopes/GamestonkTerminal/pull/507)
 
 **NEXT**
 * [ ] Write a developer guide
@@ -254,6 +332,9 @@ ___
 ---
 
 ## User Experience
+
+* [x] Add reset command to allow update API keys (@didier) - [PR #440](https://github.com/DidierRLopes/GamestonkTerminal/pull/440)
+* [x] Add update command to automatically update terminal (@didier) - [PR #441](https://github.com/DidierRLopes/GamestonkTerminal/pull/441)
 
 **NEXT**
 * [ ] Publish Docker

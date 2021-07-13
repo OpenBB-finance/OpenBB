@@ -1,10 +1,11 @@
+import os
 import argparse
 from typing import List
 import random
-from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
 import datetime
 import configparser
+from pandas.plotting import register_matplotlib_converters
+import matplotlib.pyplot as plt
 import yfinance as yf
 from finvizfinance.screener import ticker
 from gamestonk_terminal.screener import finviz_view
@@ -18,6 +19,8 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 
 register_matplotlib_converters()
 
+presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+
 d_candle_types = {
     "o": "Open",
     "h": "High",
@@ -28,18 +31,12 @@ d_candle_types = {
 
 
 def check_one_of_ohlca(type_candles: str) -> str:
-    if (
-        type_candles == "o"
-        or type_candles == "h"
-        or type_candles == "l"
-        or type_candles == "c"
-        or type_candles == "a"
-    ):
+    if type_candles in ("o", "h", "l", "c", "a"):
         return type_candles
     raise argparse.ArgumentTypeError("The type of candles specified is not recognized")
 
 
-def historical(other_args: List[str], preset_loaded: str):
+def historical(other_args: List[str], preset_loaded: str) -> List[str]:
     """View historical price of stocks that meet preset
 
     Parameters
@@ -48,6 +45,11 @@ def historical(other_args: List[str], preset_loaded: str):
         Command line arguments to be processed with argparse
     ticker : str
         Loaded preset filter
+
+    Returns
+    -------
+    List[str]
+        List of stocks that meet preset criteria
     """
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -85,13 +87,11 @@ def historical(other_args: List[str], preset_loaded: str):
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return list()
 
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(
-            "gamestonk_terminal/screener/presets/" + preset_loaded + ".ini"
-        )
+        preset_filter.read(presets_path + preset_loaded + ".ini")
 
         d_general = preset_filter["General"]
         d_filters = {

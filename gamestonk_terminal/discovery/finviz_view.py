@@ -176,7 +176,7 @@ def view_group_data(other_args: List[str], data_type: str):
             img.show()
 
             print("")
-            return img
+            return ns_parser.group
 
         else:
             print(

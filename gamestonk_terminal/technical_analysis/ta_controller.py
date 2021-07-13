@@ -20,6 +20,7 @@ from gamestonk_terminal.technical_analysis import volume as ta_volume
 from gamestonk_terminal.technical_analysis import finbrain_view
 from gamestonk_terminal.technical_analysis import tradingview_view
 from gamestonk_terminal.technical_analysis import finviz_view
+from gamestonk_terminal.technical_analysis import finnhub_view
 
 
 class TechnicalAnalysisController:
@@ -27,12 +28,15 @@ class TechnicalAnalysisController:
 
     # Command choices
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
         "view",
         "summary",
         "recom",
+        "pr",
         "ema",
         "sma",
         "vwap",
@@ -49,17 +53,17 @@ class TechnicalAnalysisController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
+        stock: pd.DataFrame,
     ):
         """Constructor"""
-        self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.delete_img = False
+        self.stock = stock
+
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
             "cmd",
@@ -68,7 +72,9 @@ class TechnicalAnalysisController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/technical_analysis"
+        )
         s_intraday = (f"Intraday {self.interval }", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -79,7 +85,8 @@ class TechnicalAnalysisController:
             print(f"\n{s_intraday} Stock: {self.ticker}")
 
         print("\nTechnical Analysis:")  # https://github.com/twopirllc/pandas-ta
-        print("   help        show this technical analysis menu again")
+        print("   cls         clear screen")
+        print("   ?/help      show this menu again")
         print("   q           quit this menu, and shows back to main menu")
         print("   quit        quit to abandon program")
         print("")
@@ -88,6 +95,8 @@ class TechnicalAnalysisController:
         print(
             "   recom       recommendation based on Technical Indicators [Tradingview API]"
         )
+        print("   pr          pattern recognition [Finnhub]")
+        print("")
         print("overlap:")
         print("   ema         exponential moving average")
         print("   sma         simple moving average")
@@ -118,15 +127,22 @@ class TechnicalAnalysisController:
             None - continue in the menu
         """
 
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.ta_parser.parse_known_args(an_input.split())
 
-        # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-        # after saving it and displaying it to the user
-        if self.delete_img:
-            # Confirm that file exists
-            if os.path.isfile(self.ticker + ".jpg"):
-                os.remove(self.ticker + ".jpg")
-                self.delete_img = False
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -147,7 +163,6 @@ class TechnicalAnalysisController:
     def call_view(self, other_args: List[str]):
         """Process view command"""
         finviz_view.view(other_args, self.ticker)
-        self.delete_img = True
 
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
@@ -156,6 +171,10 @@ class TechnicalAnalysisController:
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
         tradingview_view.print_recommendation(other_args, self.ticker)
+
+    def call_pr(self, other_args: List[str]):
+        """Process pr command"""
+        finnhub_view.pattern_recognition_view(other_args, self.ticker)
 
     # OVERLAP
     def call_ema(self, other_args: List[str]):
@@ -211,11 +230,16 @@ class TechnicalAnalysisController:
         ta_volume.obv(other_args, self.ticker, self.interval, self.stock)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
+def menu(
+    ticker: str, start: datetime, interval: str, stock: pd.DataFrame, context: str = ""
+):
     """Technical Analysis Menu"""
 
-    ta_controller = TechnicalAnalysisController(stock, ticker, start, interval)
+    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock)
     ta_controller.call_help(None)
+
+    if context:
+        context = f"{context}>"
 
     while True:
         # Get input command from user
@@ -224,11 +248,11 @@ def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
                 {c: None for c in ta_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (ta)> ",
+                f"{get_flair()} {context}(ta)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (ta)> ")
+            an_input = input(f"{get_flair()} {context}(ta)> ")
 
         try:
             plt.close("all")

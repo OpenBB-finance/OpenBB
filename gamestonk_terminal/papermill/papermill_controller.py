@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 
 from gamestonk_terminal.papermill import due_diligence_view
@@ -20,7 +21,7 @@ class PapermillController:
         )
         self.papermill_parser.add_argument(
             "cmd",
-            choices=["help", "q", "quit", "dd", "econ"],
+            choices=["cls", "?", "help", "q", "quit", "dd", "econ"],
         )
 
     def switch(self, an_input: str):
@@ -33,9 +34,25 @@ class PapermillController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.papermill_parser.parse_known_args(
             an_input.split()
         )
+
+        # Help menu again
+        if known_args.cmd == "?":
+            print_papermill()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -64,9 +81,12 @@ class PapermillController:
 
 def print_papermill():
     """Print help"""
-
-    print("\nDiscovery Mode:")
-    print("   help          show this papermill menu again")
+    print(
+        "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/papermill"
+    )
+    print("\nPapermill Reports:")
+    print("   cls           clear screen")
+    print("   ?/help        show this menu again")
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print("")

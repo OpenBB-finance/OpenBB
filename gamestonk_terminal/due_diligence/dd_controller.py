@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
@@ -15,6 +16,9 @@ from gamestonk_terminal.due_diligence import reddit_view as r_view
 from gamestonk_terminal.due_diligence import news_view
 from gamestonk_terminal.due_diligence import finra_view
 from gamestonk_terminal.due_diligence import sec_view
+from gamestonk_terminal.due_diligence import stockgrid_dd_view as sg_view
+from gamestonk_terminal.due_diligence import finnhub_view
+from gamestonk_terminal.due_diligence import csimarket_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -25,6 +29,8 @@ class DueDiligenceController:
 
     # Command choices
     CHOICES = [
+        "?",
+        "cls",
         "help",
         "q",
         "quit",
@@ -32,6 +38,7 @@ class DueDiligenceController:
         "short",
         "rating",
         "pt",
+        "rot",
         "est",
         "ins",
         "insider",
@@ -41,9 +48,13 @@ class DueDiligenceController:
         "sec",
         "dp",
         "ftd",
+        "shortview",
+        "darkpos",
+        "supplier",
+        "customer",
     ]
 
-    def __init__(self, stock: DataFrame, ticker: str, start: str, interval: str):
+    def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
         """Constructor
 
         Parameters
@@ -57,10 +68,11 @@ class DueDiligenceController:
         interval : str
             Stock data interval
         """
-        self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.stock = stock
+
         self.dd_parser = argparse.ArgumentParser(add_help=False, prog="dd")
         self.dd_parser.add_argument(
             "cmd",
@@ -69,7 +81,9 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/due_diligence"
+        )
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -80,7 +94,8 @@ class DueDiligenceController:
             print(f"\n{intraday} Stock: {self.ticker}")
 
         print("\nDue Diligence:")
-        print("   help          show this fundamental analysis menu again")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
@@ -91,6 +106,9 @@ class DueDiligenceController:
             "   rating        rating of the company from strong sell to strong buy [FMP]"
         )
         print("   pt            price targets over time [Business Insider]")
+        print(
+            "   rot           rating over timefrom strong sell to strong buy [Finnhub]"
+        )
         print(
             "   est           quarter and year analysts earnings estimates [Business Insider]"
         )
@@ -103,6 +121,10 @@ class DueDiligenceController:
         )
         print("   dp            dark pools (ATS) vs OTC data [FINRA]")
         print("   ftd           fails-to-deliver data [SEC]")
+        print("   shortview     price vs short interest volume [Stockgrid.io]")
+        print("   darkpos       net short vs position [Stockgrid.io]")
+        print("   supplier      list of suppliers [csimarket]")
+        print("   customer      list of customers [csimarket]")
         print("")
 
     def switch(self, an_input: str):
@@ -115,7 +137,23 @@ class DueDiligenceController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.dd_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -155,6 +193,10 @@ class DueDiligenceController:
             other_args, self.stock, self.ticker, self.start, self.interval
         )
 
+    def call_rot(self, other_args: List[str]):
+        """Process rot command"""
+        finnhub_view.rating_over_time(other_args, self.ticker)
+
     def call_est(self, other_args: List[str]):
         """Process est command"""
         bi_view.estimates(other_args, self.ticker)
@@ -187,10 +229,26 @@ class DueDiligenceController:
 
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
-        sec_view.fails_to_deliver(other_args, self.ticker)
+        sec_view.fails_to_deliver(other_args, self.ticker, self.stock)
+
+    def call_shortview(self, other_args: List[str]):
+        """Process shortview command"""
+        sg_view.shortview(self.ticker, other_args)
+
+    def call_darkpos(self, other_args: List[str]):
+        """Process darkpos command"""
+        sg_view.darkpos(self.ticker, other_args)
+
+    def call_supplier(self, other_args: List[str]):
+        """Process supplier command"""
+        csimarket_view.suppliers(self.ticker, other_args)
+
+    def call_customer(self, other_args: List[str]):
+        """Process customer command"""
+        csimarket_view.customers(self.ticker, other_args)
 
 
-def menu(stock: DataFrame, ticker: str, start: str, interval: str):
+def menu(ticker: str, start: str, interval: str, stock: DataFrame):
     """Due Diligence Menu
 
     Parameters
@@ -205,7 +263,7 @@ def menu(stock: DataFrame, ticker: str, start: str, interval: str):
         Stock data interval
     """
 
-    dd_controller = DueDiligenceController(stock, ticker, start, interval)
+    dd_controller = DueDiligenceController(ticker, start, interval, stock)
     dd_controller.call_help(None)
 
     while True:

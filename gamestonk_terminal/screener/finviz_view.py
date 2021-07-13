@@ -5,6 +5,7 @@ import argparse
 from typing import List
 import os
 import configparser
+from datetime import datetime
 import pandas as pd
 from finvizfinance.screener import (
     technical,
@@ -14,10 +15,13 @@ from finvizfinance.screener import (
     ownership,
     performance,
 )
+from gamestonk_terminal.papermill import due_diligence_view
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
 )
+
+presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 d_signals = {
     "top_gainers": "Top Gainers",
@@ -81,7 +85,7 @@ def get_screener_data(
     """
     preset_filter = configparser.RawConfigParser()
     preset_filter.optionxform = str  # type: ignore
-    preset_filter.read("gamestonk_terminal/screener/presets/" + preset_loaded + ".ini")
+    preset_filter.read(presets_path + preset_loaded + ".ini")
 
     d_general = preset_filter["General"]
     d_filters = {
@@ -111,12 +115,12 @@ def get_screener_data(
     if signal:
         screen.set_filter(signal=d_signals[signal])
     else:
-        if d_general["Signal"]:
+        if "Signal" in d_general:
             screen.set_filter(filters_dict=d_filters, signal=d_general["Signal"])
         else:
             screen.set_filter(filters_dict=d_filters)
 
-    if d_general["Order"]:
+    if "Order" in d_general:
         if limit > 0:
             df_screen = screen.ScreenerView(
                 order=d_general["Order"],
@@ -135,7 +139,7 @@ def get_screener_data(
     return df_screen
 
 
-def screener(other_args: List[str], loaded_preset: str, data_type: str):
+def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[str]:
     """Screener
 
     Parameters
@@ -146,6 +150,11 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         Loaded preset filter
     data_type : str
         Data type string between: overview, valuation, financial, ownership, performance, technical
+
+    Returns
+    -------
+    List[str]
+        List of stocks that meet preset criteria
     """
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -167,7 +176,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         help="Filter presets",
         choices=[
             preset.split(".")[0]
-            for preset in os.listdir("gamestonk_terminal/screener/presets")
+            for preset in os.listdir(presets_path)
             if preset[-4:] == ".ini"
         ],
     )
@@ -198,11 +207,25 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         dest="ascend",
         help="Set order to Ascend, the default is Descend",
     )
+    parser.add_argument(
+        "-e",
+        "--export",
+        action="store_true",
+        dest="exportFile",
+        help="Save list as a text file",
+    )
+    parser.add_argument(
+        "-m",
+        "--mill",
+        action="store_true",
+        dest="mill",
+        help="Run papermill on list",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return
+            return []
 
         df_screen = get_screener_data(
             ns_parser.preset,
@@ -215,10 +238,23 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str):
         if isinstance(df_screen, pd.DataFrame):
             print(df_screen.to_string())
             print("")
+            if ns_parser.exportFile:
+                now = datetime.now()
+                if not os.path.exists("reports/screener"):
+                    os.makedirs("reports/screener")
+                with open(
+                    f"reports/screener/{ns_parser.signal}-{now.strftime('%Y-%m-%d_%H:%M:%S')}",
+                    "w",
+                ) as file:
+                    file.write(df_screen.to_string(index=False) + "\n")
+            if ns_parser.mill:
+                for i in range(len(df_screen)):
+                    ticker = [df_screen.iat[i, 0]]
+                    due_diligence_view.due_diligence(ticker, show=False)
             return list(df_screen["Ticker"].values)
-        else:
-            print("")
-            return []
+
+        print("")
+        return []
 
     except Exception as e:
         print(e)

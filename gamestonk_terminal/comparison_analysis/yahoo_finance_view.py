@@ -128,7 +128,7 @@ def historical(
             plt.plot(
                 df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
             )
-            # plt.plot(df_stock.index, df_stock["5. adjusted close"].values, lw=2)
+            # plt.plot(df_stock.index, df_stock["Adj Close"].values, lw=2)
             l_min = [df_stock.index[0]]
             l_leg = [ticker]
 
@@ -265,7 +265,7 @@ def correlation(other_args, df_stock, ticker, start, interval, similar):
                 df_stock = d_stock[ticker][
                     d_candle_types[ns_parser.type_candle]
                 ].rename(ticker)
-                for symbol in d_stock:
+                for symbol in d_stock.items():
                     if symbol != ticker:
                         if not d_stock[symbol].empty:
                             df_stock = pd.concat(

@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
@@ -14,6 +15,7 @@ from gamestonk_terminal.behavioural_analysis import (
     reddit_view,
     stocktwits_view,
     finbrain_view,
+    finnhub_view,
 )
 
 
@@ -22,6 +24,8 @@ class BehaviouralAnalysisController:
 
     # Command choices
     CHOICES = [
+        "?",
+        "cls",
         "help",
         "q",
         "quit",
@@ -41,6 +45,7 @@ class BehaviouralAnalysisController:
         "queries",
         "rise",
         "finbrain",
+        "stats",
     ]
 
     def __init__(self, ticker: str, start: datetime):
@@ -56,13 +61,17 @@ class BehaviouralAnalysisController:
     @staticmethod
     def print_help():
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/behavioural_analysis"
+        )
         print("\nBehavioural Analysis:")
-        print("   help          show this behavioural analysis menu again")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
         print("   finbrain      sentiment from 15+ major news headlines")
+        print("   stats         sentiment stats including comparison with sector")
         print("")
         print("Reddit:")
         print(
@@ -104,7 +113,22 @@ class BehaviouralAnalysisController:
             True - quit the program
             None - continue in the menu
         """
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.ba_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -218,12 +242,19 @@ class BehaviouralAnalysisController:
         """Process finbrain command"""
         finbrain_view.sentiment_analysis(other_args, self.ticker)
 
+    def call_stats(self, other_args: List[str]):
+        """Process stats command"""
+        finnhub_view.sentiment_stats(other_args, self.ticker)
 
-def menu(ticker: str, start: datetime):
+
+def menu(ticker: str, start: datetime, context: str = ""):
     """Behavioural Analysis Menu"""
 
     ba_controller = BehaviouralAnalysisController(ticker, start)
     ba_controller.call_help(None)
+
+    if context:
+        context = f"({context})>"
 
     while True:
         # Get input command from user
@@ -232,11 +263,11 @@ def menu(ticker: str, start: datetime):
                 {c: None for c in ba_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (ba)> ",
+                f"{get_flair()} {context}(ba)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (ba)> ")
+            an_input = input(f"{get_flair()} {context}(ba)> ")
 
         try:
             process_input = ba_controller.switch(an_input)

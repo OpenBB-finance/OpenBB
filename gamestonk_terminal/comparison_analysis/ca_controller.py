@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 import random
 from typing import List
 from datetime import datetime
@@ -27,6 +28,8 @@ class ComparisonAnalysisController:
 
     # Command choices
     CHOICES = [
+        "?",
+        "cls",
         "help",
         "q",
         "quit",
@@ -50,34 +53,32 @@ class ComparisonAnalysisController:
 
     def __init__(
         self,
-        stock: pd.DataFrame,
         ticker: str,
         start: datetime,
         interval: str,
-        similar: List[str],
+        stock: pd.DataFrame,
     ):
         """Constructor
 
         Parameters
         ----------
-        stock : pd.DataFrame
-            Stock data
         ticker : str
             Stock ticker
         start : datetime
             Start time
         interval : str
             Time interval
-        similar : List[str]
-            List of similar tickers
+        stock : pd.DataFrame
+            Stock data
         """
-
-        self.similar = similar
-        self.user = ""
-        self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.stock = stock
+
+        self.similar: List[str] = []
+        self.user = ""
+
         self.ca_parser = argparse.ArgumentParser(add_help=False, prog="ca")
         self.ca_parser.add_argument(
             "cmd",
@@ -86,6 +87,9 @@ class ComparisonAnalysisController:
 
     def print_help(self):
         """Print help"""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/comparison_analysis"
+        )
 
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
@@ -100,7 +104,8 @@ class ComparisonAnalysisController:
             print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
 
         print("\nComparison Analysis Mode:")
-        print("   help          show this comparison analysis menu again")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
@@ -124,7 +129,7 @@ class ComparisonAnalysisController:
         print("")
 
         if self.similar:
-            print("   > po          portfolio optimization for selected tickers")
+            print(">  po          portfolio optimization for selected tickers")
             print("")
         return
 
@@ -136,25 +141,25 @@ class ComparisonAnalysisController:
         other_args : List[str]
             argparse other args
         """
-
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="get",
             description="""Get similar companies to compare with.""",
         )
         parser.add_argument(
-            "-p",
-            "--polygon",
-            action="store_true",
-            default=False,
-            dest="b_polygon",
-            help="Polygon data source flag.",
+            "-s",
+            "--source",
+            action="store",
+            default="finviz",
+            dest="source",
+            choices=["polygon", "finnhub", "finviz"],
+            help="source that provides similar companies",
         )
 
-        # If polygon source not selected, the user may want to get
+        # If source is finviz the user may want to get
         # similar companies based on Industry and Sector only, and not
         # on the fact that they are based on the same country
-        if "-p" not in other_args and "--polygon" not in other_args:
+        if "finviz" in other_args or not other_args:
             parser.add_argument(
                 "--nocountry",
                 action="store_true",
@@ -164,11 +169,15 @@ class ComparisonAnalysisController:
             )
 
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-s")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            if ns_parser.b_polygon:
+            if ns_parser.source == "polygon":
                 result = requests.get(
                     f"https://api.polygon.io/v1/meta/symbols/{self.ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
                 )
@@ -178,6 +187,20 @@ class ComparisonAnalysisController:
                     self.user = "Polygon"
                 else:
                     print(result.json()["error"])
+
+            elif ns_parser.source == "finnhub":
+                result = requests.get(
+                    f"https://finnhub.io/api/v1/stock/peers?symbol={self.ticker}&token={cfg.API_FINNHUB_KEY}"
+                )
+
+                if result.status_code == 200:
+                    d_peers = result.json()
+
+                    if d_peers:
+                        self.similar = d_peers
+                        self.user = "Finnhub"
+                    else:
+                        print("Similar companies not found.")
 
             else:
                 if ns_parser.b_no_country:
@@ -192,17 +215,18 @@ class ComparisonAnalysisController:
                 )
                 self.user = "Finviz"
 
-            if self.similar:
-                print(f"\n[{self.user}] Similar Companies: {', '.join(self.similar)}")
+            if self.ticker.upper() in self.similar:
+                self.similar.remove(self.ticker.upper())
 
             if len(self.similar) > 10:
-                print(
-                    "\nThe limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.",
-                    "\nThe selected list will be:",
-                )
                 random.shuffle(self.similar)
                 self.similar = sorted(self.similar[:10])
-                print(", ".join(self.similar))
+                print(
+                    "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
+                )
+
+            if self.similar:
+                print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
 
         except Exception as e:
             print(e)
@@ -261,7 +285,23 @@ class ComparisonAnalysisController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.ca_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -350,22 +390,22 @@ class ComparisonAnalysisController:
         return po_controller.menu([self.ticker] + self.similar)
 
 
-def menu(stock: pd.DataFrame, ticker: str, start: datetime, interval: str):
+def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
     """Comparison Analysis Menu
 
     Parameters
     ----------
-    stock : pd.DataFrame
-        Stock data
     ticker : str
         Stock ticker
     start : datetime
         Time start
     interval : str
         Time interval
+    stock : pd.DataFrame
+        Stock data
     """
 
-    ca_controller = ComparisonAnalysisController(stock, ticker, start, interval, [])
+    ca_controller = ComparisonAnalysisController(ticker, start, interval, stock)
     ca_controller.call_help(None)
 
     while True:

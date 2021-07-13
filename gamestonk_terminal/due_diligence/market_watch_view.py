@@ -16,6 +16,8 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 
+# pylint: disable=too-many-branches
+
 
 def sec_fillings(other_args: List[str], ticker: str):
     """Display SEC filings for a given stock ticker
@@ -189,12 +191,17 @@ def sean_seah_warnings(other_args: List[str], ticker: str):
                         df_financials.loc[len(df_financials.index)] = l_financials
                         break
 
+        l_fin = ["EPS (Basic)", "Net Income", "Interest Expense", "EBITDA"]
+
+        if not all(elem in df_financials["Item"].values for elem in l_fin):
+            print("The source doesn't contain all necessary financial data")
+            print(url_financials, "\n")
+            return
+
         # Set item name as index
         df_financials = df_financials.set_index("Item")
 
-        df_sean_seah = df_financials.loc[
-            ["EPS (Basic)", "Net Income", "Interest Expense", "EBITDA"]
-        ]
+        df_sean_seah = df_financials.loc[l_fin]
 
         # From BALANCE SHEET, get: 'Liabilities & Shareholders\' Equity', 'Long-Term Debt'
         url_financials = f"https://www.marketwatch.com/investing/stock/{ticker}/financials/balance-sheet"
@@ -321,16 +328,16 @@ def sean_seah_warnings(other_args: List[str], ticker: str):
             print("5x Net Income < Long-Term Debt")
             n_warnings += 1
             if ns_parser.b_debug:
-                sa_net_income = np.array2string(
-                    df_sean_seah.loc["Net Income"].values,
+                sa_5_net_income = np.array2string(
+                    5 * df_sean_seah.loc["Net Income"].values,
                     formatter={"float_kind": lambda x: int_or_round_float(x)},
                 )
-                print(f"   NET Income: {sa_net_income}")
-                sa_5_long_term_debt = np.array2string(
-                    5 * df_sean_seah.loc["Long-Term Debt"].values,
+                print(f"   5x NET Income: {sa_5_net_income}")
+                sa_long_term_debt = np.array2string(
+                    df_sean_seah.loc["Long-Term Debt"].values,
                     formatter={"float_kind": lambda x: int_or_round_float(x)},
                 )
-                print(f"   lower than 5x Long-Term Debt: {sa_5_long_term_debt}")
+                print(f"   lower than Long-Term Debt: {sa_long_term_debt}")
 
         if np.any(df_sean_seah.loc["Interest Coverage Ratio"].values < 3):
             print("Interest coverage ratio less than 3")

@@ -1,21 +1,23 @@
 name: Tests
 env:
-    GTFF_USE_PROMPT_TOOLKIT: false
-    GTFF_USE_ION: false
-    GTFF_ENABLE_QUICK_EXIT: true
+  PIP_DEFAULT_TIMEOUT: 100
+  GTFF_USE_PROMPT_TOOLKIT: false
+  GTFF_USE_ION: false
+  GTFF_ENABLE_QUICK_EXIT: true
 on: [pull_request, push]
 jobs:
   linting:
     name: Linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Setup Python 3.8
+      - name: Setup Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           architecture: x64
 
       - uses: actions/cache@v2
@@ -25,9 +27,10 @@ jobs:
           restore-keys: ${{ runner.os }}-linting
 
       - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint
+      - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil
       - run: bandit -r . || true
       - run: black --check .
-      - run: codespell --ignore-words-list="mape","ba","hist" --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.json"
+      - run: codespell --ignore-words-list="mape","ba","hist" --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.json" --skip="*.html"
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics
       - run: mypy --ignore-missing-imports .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
@@ -35,17 +38,18 @@ jobs:
       - run: |
           pylint terminal.py gamestonk_terminal tests
   test:
-    name: ubuntu-latest - Python 3.8
+    name: ubuntu-latest - Python 3.9
     needs: linting
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Setup Python 3.8
+      - name: Setup Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           architecture: x64
 
       - name: Install Poetry
@@ -84,14 +88,15 @@ jobs:
     name: Python (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: true
       matrix:
-        python-version: ['3.6', '3.7', '3.8']
+        python-version: ['3.6', '3.8', '3.9']
         os: [ubuntu-latest, macos-latest]
         exclude:
           - os: ubuntu-latest
-            python-version: '3.8'
+            python-version: '3.9'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -144,6 +149,7 @@ jobs:
     name: Conda (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
     runs-on: ${{ matrix.os }}-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     strategy:
       fail-fast: false
       matrix:
@@ -158,7 +164,14 @@ jobs:
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
+      PYTHONNOUSERSITE: 1
     steps:
+      - name: Set git to use LF
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -175,7 +188,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements*.txt') }}
+          key: conda-${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-8-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -183,9 +196,10 @@ jobs:
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
           auto-update-conda: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           show-channel-urls: true
-          environment-file: conda-environment.yaml
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-8-env.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true
@@ -196,19 +210,36 @@ jobs:
         run: >-
           c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
 
+      - name: Get pip cache dir
+        shell: bash -l {0}
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-3-8-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          conda info
-          conda install numpy=1.19.5
-          conda install -c conda-forge cvxpy
-          pip install --user --requirement requirements.txt
+          pip install --requirement requirements.txt
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
         run: |
           conda list
           pip list
+
+      - name: Run linter (Bash)
+        shell: bash -l {0}
+        run: |
+          pip install pylint
+          pylint terminal.py gamestonk_terminal tests
 
       - name: Run tests (Bash)
         shell: bash -l {0}

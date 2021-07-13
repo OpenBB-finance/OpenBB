@@ -62,9 +62,9 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.cci(
-                high=df_stock["2. high"],
-                low=df_stock["3. low"],
-                close=df_stock["5. adjusted close"],
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 offset=ns_parser.n_offset,
@@ -73,9 +73,9 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         # Intraday
         else:
             df_ta = ta.cci(
-                high=df_stock["2. high"],
-                low=df_stock["3. low"],
-                close=df_stock["4. close"],
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 offset=ns_parser.n_offset,
@@ -85,9 +85,9 @@ def cci(l_args, s_ticker, s_interval, df_stock):
         plt.subplot(211)
         plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
         plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.ylabel("Share Price ($)")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -181,7 +181,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.macd(
-                df_stock["5. adjusted close"],
+                df_stock["Adj Close"],
                 fast=ns_parser.n_fast,
                 slow=ns_parser.n_slow,
                 signal=ns_parser.n_signal,
@@ -191,7 +191,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         # Intraday
         else:
             df_ta = ta.macd(
-                df_stock["4. close"],
+                df_stock["Close"],
                 fast=ns_parser.n_fast,
                 slow=ns_parser.n_slow,
                 signal=ns_parser.n_signal,
@@ -202,9 +202,9 @@ def macd(l_args, s_ticker, s_interval, df_stock):
         plt.subplot(211)
         plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
         plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.ylabel("Share Price ($)")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -296,7 +296,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.rsi(
-                df_stock["5. adjusted close"],
+                df_stock["Adj Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -306,7 +306,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         # Intraday
         else:
             df_ta = ta.rsi(
-                df_stock["4. close"],
+                df_stock["Close"],
                 length=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -316,9 +316,9 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.subplot(211)
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
         plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
         plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.ylabel("Share Price ($)")
@@ -411,9 +411,9 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         # Daily
         if s_interval == "1440min":
             df_ta = ta.stoch(
-                high=df_stock["2. high"],
-                low=df_stock["3. low"],
-                close=df_stock["5. adjusted close"],
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Adj Close"],
                 k=ns_parser.n_fastkperiod,
                 d=ns_parser.n_slowdperiod,
                 smooth_k=ns_parser.n_slowkperiod,
@@ -423,9 +423,9 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         # Intraday
         else:
             df_ta = ta.stoch(
-                high=df_stock["2. high"],
-                low=df_stock["3. low"],
-                close=df_stock["4. close"],
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Close"],
                 k=ns_parser.n_fastkperiod,
                 d=ns_parser.n_slowdperiod,
                 smooth_k=ns_parser.n_slowkperiod,
@@ -435,9 +435,9 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
         plt.subplot(211)
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["5. adjusted close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["4. close"].values, "k", lw=2)
+            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
         plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
         plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.ylabel("Share Price ($)")

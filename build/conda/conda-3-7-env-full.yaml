@@ -1,0 +1,14 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7
+  - pip
+  - poetry=1.1.6
+  - numpy=1.19.5
+  - spyder
+  - gensim=3.8.3
+  - cvxpy=1.1.12
+  - jupyter_client=6.1.12
+  - pytest
+  - black=21.5b2

@@ -3,12 +3,13 @@ __docformat__ = "numpy"
 
 import os
 import argparse
+import configparser
 from typing import List
 import matplotlib.pyplot as plt
-from gamestonk_terminal import feature_flags as gtff
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
@@ -16,12 +17,16 @@ from gamestonk_terminal.screener import finviz_view
 from gamestonk_terminal.screener import yahoo_finance_view
 from gamestonk_terminal.portfolio_optimization import po_controller
 
+presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+
 
 class ScreenerController:
     """Screener Controller class"""
 
     # Command choices
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -48,12 +53,14 @@ class ScreenerController:
             choices=self.CHOICES,
         )
 
-    @staticmethod
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/screener"
+        )
         print("\nScreener:")
-        print("   help          show this screener menu again")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
@@ -86,38 +93,71 @@ class ScreenerController:
             prog="view",
             description="""View available presets under presets folder.""",
         )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            help="View specific preset",
+            default="",
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir(presets_path)
+                if preset[-4:] == ".ini"
+            ],
+        )
 
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            presets = [
-                preset.split(".")[0]
-                for preset in os.listdir("gamestonk_terminal/screener/presets")
-                if preset[-4:] == ".ini"
-            ]
+            if ns_parser.preset:
+                preset_filter = configparser.RawConfigParser()
+                preset_filter.optionxform = str  # type: ignore
+                preset_filter.read(presets_path + ns_parser.preset + ".ini")
 
-            for preset in presets:
-                with open(
-                    "gamestonk_terminal/screener/presets/" + preset + ".ini",
-                    encoding="utf8",
-                ) as f:
-                    description = ""
-                    for line in f:
-                        if "[General]" == line.strip():
-                            break
-                        description += line.strip()
-                print(f"\nPRESET: {preset}")
-                print(description.split("Description: ")[1].replace("#", ""))
+                filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
+
+                print("")
+                for filter_header in filters_headers:
+                    print(f" - {filter_header} -")
+                    d_filters = {**preset_filter[filter_header]}
+                    d_filters = {k: v for k, v in d_filters.items() if v}
+                    if d_filters:
+                        max_len = len(max(d_filters, key=len))
+                        for key, value in d_filters.items():
+                            print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    print("")
+
+            else:
+                presets = [
+                    preset.split(".")[0]
+                    for preset in os.listdir(presets_path)
+                    if preset[-4:] == ".ini"
+                ]
+
+                for preset in presets:
+                    with open(
+                        presets_path + preset + ".ini",
+                        encoding="utf8",
+                    ) as f:
+                        description = ""
+                        for line in f:
+                            if line.strip() == "[General]":
+                                break
+                            description += line.strip()
+                    print(f"\nPRESET: {preset}")
+                    print(description.split("Description: ")[1].replace("#", ""))
+                print("")
 
         except Exception as e:
             print(e)
 
-        print("")
-        return
-
-    @staticmethod
     def set_preset(self, other_args: List[str]):
         """Set preset"""
         parser = argparse.ArgumentParser(
@@ -135,7 +175,7 @@ class ScreenerController:
             help="Filter presets",
             choices=[
                 preset.split(".")[0]
-                for preset in os.listdir("gamestonk_terminal/screener/presets")
+                for preset in os.listdir(presets_path)
                 if preset[-4:] == ".ini"
             ],
         )
@@ -167,7 +207,23 @@ class ScreenerController:
             True - quit the program
             None - continue in the menu
         """
+
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.scr_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -175,7 +231,7 @@ class ScreenerController:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help(self)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -191,7 +247,7 @@ class ScreenerController:
 
     def call_set(self, other_args: List[str]):
         """Process overview command"""
-        self.set_preset(self, other_args)
+        self.set_preset(other_args)
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
@@ -227,7 +283,7 @@ class ScreenerController:
         """Process signals command"""
         finviz_view.view_signals(other_args)
 
-    def call_po(self, other_args: List[str]):
+    def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         return po_controller.menu(self.screen_tickers)
 

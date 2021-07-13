@@ -2,14 +2,15 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.fundamental_analysis import alpha_vantage_controller as avc
-from gamestonk_terminal.fundamental_analysis import business_insider_view as biw
-from gamestonk_terminal.fundamental_analysis import (
-    financial_modeling_prep_controller as fmpc,
-    financial_modeling_prep_view as fmpv,
+from gamestonk_terminal.fundamental_analysis.alpha_vantage import av_controller
+from gamestonk_terminal.fundamental_analysis import business_insider_view
+from gamestonk_terminal.fundamental_analysis.financial_modeling_prep import (
+    fmp_controller,
+    fmp_view,
 )
 from gamestonk_terminal.fundamental_analysis import finviz_view
 from gamestonk_terminal.fundamental_analysis import market_watch_view
@@ -18,12 +19,16 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
+# pylint: disable=inconsistent-return-statements
+
 
 class FundamentalAnalysisController:
     """Fundamental Analysis Controller"""
 
     # Command choices
     CHOICES = [
+        "cls",
+        "?",
         "help",
         "q",
         "quit",
@@ -66,7 +71,9 @@ class FundamentalAnalysisController:
 
     def print_help(self):
         """Print help"""
-
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/fundamental_analysis"
+        )
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
@@ -76,10 +83,9 @@ class FundamentalAnalysisController:
         else:
             print(f"\n{intraday} Stock: {self.ticker}")
 
-        print(
-            "\nFundamental Analysis:"
-        )  # https://github.com/JerBouma/FundamentalAnalysis
-        print("   help          show this fundamental analysis menu again")
+        print("\nFundamental Analysis:")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
@@ -116,7 +122,22 @@ class FundamentalAnalysisController:
             None - continue in the menu
         """
 
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
         (known_args, other_args) = self.fa_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
@@ -136,7 +157,7 @@ class FundamentalAnalysisController:
 
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command"""
-        biw.management(other_args, self.ticker)
+        business_insider_view.management(other_args, self.ticker)
 
     def call_screener(self, other_args: List[str]):
         """Process screener command"""
@@ -144,7 +165,7 @@ class FundamentalAnalysisController:
 
     def call_score(self, other_args: List[str]):
         """Process score command"""
-        fmpv.valinvest_score(other_args, self.ticker)
+        fmp_view.valinvest_score(other_args, self.ticker)
 
     def call_income(self, other_args: List[str]):
         """Process income command"""
@@ -174,21 +195,23 @@ class FundamentalAnalysisController:
         """Process cal command"""
         yahoo_finance_view.calendar_earnings(other_args, self.ticker)
 
-    # pylint: disable=unused-argument
-    def call_av(self, other_args: List[str]):
+    def call_av(self, _):
         """Process av command"""
-        ret = avc.menu(self.ticker, self.start, self.interval)
+        ret = av_controller.menu(self.ticker, self.start, self.interval)
 
-        if ret is not True:
+        if ret is False:
             self.print_help()
+        else:
+            return True
 
-    # pylint: disable=unused-argument
-    def call_fmp(self, other_args: List[str]):
+    def call_fmp(self, _):
         """Process fmp command"""
-        ret = fmpc.menu(self.ticker, self.start, self.interval)
+        ret = fmp_controller.menu(self.ticker, self.start, self.interval)
 
-        if ret is not True:
+        if ret is False:
             self.print_help()
+        else:
+            return True
 
 
 def key_metrics_explained(other_args: List[str]):

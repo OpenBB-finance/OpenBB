@@ -7,7 +7,7 @@ from datetime import datetime
 import yfinance as yf
 import pandas as pd
 
-from gamestonk_terminal.dataframe_helpers import clean_df_index
+from gamestonk_terminal.fundamental_analysis.fa_helper import clean_df_index
 from gamestonk_terminal.helper_funcs import (
     long_number_format,
     parse_known_args_and_warn,
@@ -213,9 +213,12 @@ def sustainability(other_args: List[str], ticker: str):
 
         df_sustainability = stock.sustainability
 
-        if not df_sustainability:
-            print(f"No sustainability information in Yahoo for {ticker}")
-            print("")
+        if df_sustainability is None:
+            print(f"No sustainability information in Yahoo for {ticker}", "\n")
+            return
+
+        if df_sustainability.empty:
+            print(f"No sustainability information in Yahoo for {ticker}", "\n")
             return
 
         clean_df_index(df_sustainability)

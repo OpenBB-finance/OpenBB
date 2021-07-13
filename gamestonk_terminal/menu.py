@@ -12,7 +12,7 @@ def inputhook(inputhook_context):
         try:
             pyplot.pause(0.1)
         # pylint: disable=unused-variable
-        except Exception as e:  # noqa: F841
+        except Exception:  # noqa: F841
             continue
     return False
 

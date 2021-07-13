@@ -57,13 +57,13 @@ def ratings_view(other_args: List[str]):
         )
 
         df_ratings["clean_current_price"] = df_ratings["current_price"].apply(
-            lambda x: "".join([c if c.isdigit() or c == "." else "" for c in str(x)])
+            lambda x: "".join(c if c.isdigit() or c == "." else "" for c in str(x))
         )
         df_ratings["clean_current_price"] = df_ratings["clean_current_price"].astype(
             float
         )
         df_ratings["clean_target_price"] = df_ratings["new_target"].apply(
-            lambda x: "".join([c if c.isdigit() or c == "." else "" for c in str(x)])
+            lambda x: "".join(c if c.isdigit() or c == "." else "" for c in str(x))
         )
         df_ratings["clean_target_price"] = df_ratings["clean_target_price"].astype(
             float
