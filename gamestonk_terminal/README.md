@@ -49,18 +49,14 @@ usage: clear
 * Clear previously loaded stock ticker.
 
 ```
-usage: view [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--type TYPE] [--raw] [--export {csv,json,xlsx}]
+view
 ```
 
-* Visualise historical data of a stock. An alpha_vantage key is necessary.
-  * -t : Stock ticker 
-  * -s : The starting date (format YYYY-MM-DD) of the stock
-  * -i : Intraday stock minutes
-  * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
-  * --raw : Print raw data.
-  * --export : Export dataframe data to csv,json,xlsx file
+* Visualise historical data of a stock.
+![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
 
-![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
+
+Line plot color is configurable in config_plot.py
 
 ```
 quote -t S_TICKER

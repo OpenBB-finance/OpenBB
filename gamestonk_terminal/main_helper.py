@@ -27,8 +27,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     plot_view_stock,
     parse_known_args_and_warn,
-    check_ohlc,
-    lett_to_num,
     plot_autoscale,
     export_data,
 )
@@ -526,7 +524,7 @@ def quote(other_args: List[str], s_ticker: str):
     return
 
 
-def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
+def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
     """
     Plot loaded ticker or load ticker and plot
     Parameters
@@ -535,154 +533,63 @@ def view(other_args: List[str], s_ticker: str, s_start, s_interval, df_stock):
         Argparse arguments
     s_ticker: str
         Ticker to load
-    s_start: str
-        Start date
     s_interval: str
         Interval tto get data for
     df_stock: pd.Dataframe
         Preloaded dataframe to plot
 
     """
+
     parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="view",
-        description="Visualize historical data of a stock.",
-    )
-    if s_ticker:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            default=s_ticker,
-            help="Stock ticker",
-        )
-    else:
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required="-h" not in other_args,
-            help="Stock ticker",
-        )
-    parser.add_argument(
-        "-s",
-        "--start",
-        type=valid_date,
-        dest="s_start_date",
-        default=s_start if s_start else "2019-01-01",
-        help="The starting date (format YYYY-MM-DD) of the stock",
-    )
-    parser.add_argument(
-        "-i",
-        "--interval",
-        action="store",
-        dest="n_interval",
-        type=int,
-        default=0,
-        choices=[1, 5, 15, 30, 60],
-        help="Intraday stock minutes",
-    )
-    parser.add_argument(
-        "--type",
-        action="store",
-        dest="type",
-        type=check_ohlc,
-        default="a",  # in case it's adjusted close
-        help=(
-            "ohlc corresponds to types: open; high; low; close; "
-            "while oc corresponds to types: open; close"
-        ),
-    )
-    parser.add_argument(
-        "--raw",
-        action="store_true",
-        default=False,
-        dest="b_raw",
-        help="Print raw data.",
-    )
-    parser.add_argument(
-        "--export",
-        choices=["csv", "json", "xlsx"],
-        default="",
-        dest="export",
-        help="Export dataframe data to csv,json,xlsx file",
+        add_help=False, prog="view", description="Visualize historical data of a stock."
     )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-
-        # Update values:
-        if ns_parser.s_ticker != s_ticker:
-            if ns_parser.n_interval > 0:
-                s_ticker, s_start, s_interval, df_stock = load(
-                    [
-                        "-t",
-                        ns_parser.s_ticker,
-                        "-s",
-                        ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                        "-i",
-                        ns_parser.n_interval,
-                    ],
-                    s_ticker,
-                    s_start,
-                    s_interval,
-                    df_stock,
-                )
-            else:
-                s_ticker, s_start, s_interval, df_stock = load(
-                    [
-                        "-t",
-                        ns_parser.s_ticker,
-                        "-s",
-                        ns_parser.s_start_date.strftime("%Y-%m-%d"),
-                    ],
-                    s_ticker,
-                    s_start,
-                    s_interval,
-                    df_stock,
-                )
-
-        # A new interval intraday period was given
-        if ns_parser.n_interval != 0:
-            s_interval = str(ns_parser.n_interval) + "min"
-
-        type_candles = lett_to_num(ns_parser.type)
-
-        df_stock.sort_index(ascending=True, inplace=True)
-
-        # Daily
-        if s_interval == "1440min":
-            # The default doesn't exist for intradaily data
-            ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-            # Check that the types given are not bigger than 4, as there are only 5 types (0-4)
-            # pylint: disable=len-as-condition
-            if len([i for i in ln_col_idx if i > 4]) > 0:
-                print("An index bigger than 4 was given, which is wrong. Try again")
-                return
-            # Append last column of df to be filtered which corresponds to: Volume
-            ln_col_idx.append(5)
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock = df_stock[ns_parser.s_start_date :]
-        # Intraday
-        else:
-            # The default doesn't exist for intradaily data
-            # JM edit 6-7-21 -- It seems it does
-            if ns_parser.type == "a":
-                ln_col_idx = [4]
-            else:
-                ln_col_idx = [int(x) - 1 for x in list(type_candles)]
-
-            # Append last column of df to be filtered which corresponds to: 5. Volume
-            ln_col_idx.append(5)
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock = df_stock[ns_parser.s_start_date.strftime("%Y-%m-%d") :]
+        if not s_ticker:
+            print("No ticker loaded.  First use `load {ticker}`")
+            print("")
+            return
 
         # Plot view of the stock
-        plot_view_stock(df_stock.iloc[:, ln_col_idx], ns_parser.s_ticker, s_interval)
+        plot_view_stock(df_stock, s_ticker, s_interval)
+    except Exception as e:
+        print("Error in plotting:")
+        print(e, "\n")
+
+    except SystemExit:
+        print("")
+        return
+
+
+def export(other_args: List[str], df_stock):
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        prog="export",
+        description="Exports the historical data from this ticker to a file or stdout.",
+    )
+    parser.add_argument(
+        "-f",
+        "--filename",
+        type=str,
+        dest="s_filename",
+        default=sys.stdout,
+        help="Name of file to save the historical data exported (stdout if unspecified)",
+    )
+    parser.add_argument(
+        "-F",
+        "--format",
+        dest="s_format",
+        type=str,
+        default="csv",
+        help="Export historical data into following formats: csv, json, excel, clipboard",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
         if ns_parser.b_raw:
             print(
@@ -835,6 +742,7 @@ def bootup():
 
 def reset():
     print("resetting...")
+    plt.close("all")
     completed_process = subprocess.run("python terminal.py", shell=True, check=False)
     if completed_process.returncode != 0:
         completed_process = subprocess.run(

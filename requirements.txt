@@ -203,6 +203,6 @@ websockets==9.1; python_full_version >= "3.6.1"
 widgetsnbextension==3.5.1
 wrapt==1.12.1; python_version >= "3.6"
 yarl==1.6.3; python_version >= "3.6"
-yfinance==0.1.59
+yfinance==0.1.63
 zipp==3.4.1; python_version < "3.8" and python_version >= "3.6"
 zope.interface==5.4.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"

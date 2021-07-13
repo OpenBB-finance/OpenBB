@@ -93,9 +93,16 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 
     """
     df.sort_index(ascending=True, inplace=True)
+    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df.iterrows()]
 
     try:
-        _, axVolume = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        fig, ax = plt.subplots(
+            2,
+            1,
+            gridspec_kw={"height_ratios": [3, 1]},
+            figsize=plot_autoscale(),
+            dpi=cfgPlot.PLOT_DPI,
+        )
     except Exception as e:
         print(e)
         print(
@@ -106,24 +113,47 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
     # In order to make nice Volume plot, make the bar width = interval
     if interval == "1440min":
         bar_width = timedelta(days=1)
+        title_string = "Daily"
     else:
         bar_width = timedelta(minutes=int(interval.split("m")[0]))
+        title_string = f"{int(interval.split('m')[0])} min"
 
-    plt.bar(df.index, df.iloc[:, -1], color="k", alpha=0.8, width=bar_width)
-    plt.ylabel("Volume")
-    _ = axVolume.twinx()
-    plt.plot(df.index, df.iloc[:, :-1])
-    plt.title(symbol.upper() + " (Time Series)")
-    plt.xlim(df.index[0], df.index[-1])
-    plt.xlabel("Time")
-    plt.ylabel("Share Price ($)")
-    plt.legend(df.columns)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    ax[0].yaxis.tick_right()
+    if "Adj Close" in df.columns:
+        ax[0].plot(df.index, df["Adj Close"], c=cfgPlot.VIEW_COLOR)
+    else:
+        ax[0].plot(df.index, df["Close"], c=cfgPlot.VIEW_COLOR)
+    ax[0].set_xlim(df.index[0], df.index[-1])
+    ax[0].set_xticks([])
+    ax[0].yaxis.set_label_position("right")
+    ax[0].set_ylabel("Share Price ($)")
+    ax[0].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
 
+    ax[0].spines["top"].set_visible(False)
+    ax[0].spines["left"].set_visible(False)
+    ax[1].bar(
+        df.index, df.Volume / 1_000_000, color=bar_colors, alpha=0.8, width=bar_width
+    )
+    ax[1].set_xlim(df.index[0], df.index[-1])
+    ax[1].yaxis.tick_right()
+    ax[1].yaxis.set_label_position("right")
+    ax[1].set_ylabel("Volume (1M)")
+    ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
+    ax[1].spines["top"].set_visible(False)
+    ax[1].spines["left"].set_visible(False)
+    ax[1].set_xlabel("Time")
+    fig.suptitle(
+        symbol + " " + title_string,
+        size=20,
+        x=0.15,
+        y=0.95,
+        fontfamily="serif",
+        fontstyle="italic",
+    )
     if gtff.USE_ION:
         plt.ion()
+    fig.tight_layout(pad=2)
+    plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
 
     plt.show()
     print("")
