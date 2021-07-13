@@ -30,10 +30,11 @@
 The main menu allows the following commands:
 
 ```
-load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
+usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] 
 ```
 
 * Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
+  * -t : Stock ticker 
   * -s : The starting date (format YYYY-MM-DD) of the stock
   * -i : Intraday stock minutes
   * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
@@ -42,21 +43,20 @@ load -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}]
 **Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
 
 ```
-clear
+usage: clear
 ```
 
 * Clear previously loaded stock ticker.
 
 ```
-view -t S_TICKER [-s S_START_DATE] [-i {1,5,15,30,60}] [--type N_TYPE]
+view
 ```
 
-* Visualise historical data of a stock. An alpha_vantage key is necessary.
-  * -s : The starting date (format YYYY-MM-DD) of the stock
-  * -i : Intraday stock minutes
-  * --type : 1234 corresponds to types: 1. open; 2. high; 3.low; 4. close; while 14 corresponds to types: 1.open; 4. close
+* Visualise historical data of a stock.
+![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
 
-![GNUS](https://user-images.githubusercontent.com/25267873/108925137-f2920e80-7633-11eb-8274-6e3bb6a19592.png)
+
+Line plot color is configurable in config_plot.py
 
 ```
 quote -t S_TICKER
@@ -247,6 +247,8 @@ Command|Description|Source
 `ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
 `shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
 `darkpos`       |net short vs position [Stockgrid](https://stockgrid.io)
+`supplier`      |list of suppliers [csimarket](https://csimarket.com)
+`customer`      |list of customers [csimarket](https://csimarket.com)
 
 &nbsp;
 
@@ -301,7 +303,7 @@ Degiro command|Description
 `pending`   | view pending orders
 `topnews`   |  view top news preview
 `update`    |  view top news preview
-            
+
 &nbsp;
 
 ## Portfolio Optimization [»](portfolio_optimization/README.md)
@@ -518,3 +520,4 @@ command|description
 `overview`|get ETF overview
 `holdings`|show ETF holdings
 `compare`|compare multiple ETFs overview
+`screener`|screen ETFs

@@ -3,11 +3,14 @@ __docformat__ = "numpy"
 import argparse
 from typing import List, Union
 from datetime import datetime
+import numpy as np
 import pandas as pd
 import bt
 import pandas_ta as ta
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
-from gamestonk_terminal.backtesting.bt_helper import buy_and_hold, plot_bt
+from gamestonk_terminal.backtesting.bt_helper import buy_and_hold, plot_bt, get_data
+
+np.seterr(divide="ignore")
 
 
 def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[str]):
@@ -53,7 +56,9 @@ def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[s
             return
         ticker = ticker.lower()
         ema = pd.DataFrame()
-        prices = bt.get(ticker, start=start_date)
+        # prices = bt.get(ticker, start=start_date)
+        # bt.get not working
+        prices = get_data(ticker, start_date)
         ema[ticker] = ta.ema(prices[ticker], ns_parser.length)
         bt_strategy = bt.Strategy(
             "AboveEMA",
@@ -145,7 +150,8 @@ def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[st
             print("Short EMA period is longer than Long EMA period\n")
             return
         ticker = ticker.lower()
-        prices = bt.get(ticker, start=start_date)
+        # prices = bt.get(ticker, start=start_date)
+        prices = get_data(ticker, start_date)
         short_ema = pd.DataFrame(ta.ema(prices[ticker], ns_parser.short))
         short_ema.columns = [ticker]
         long_ema = pd.DataFrame(ta.ema(prices[ticker], ns_parser.long))
@@ -257,8 +263,8 @@ def rsi_strat(ticker: str, start_date: Union[datetime, str], other_args: List[st
             print("Low RSI value is higher than Low RSI value\n")
             return
         ticker = ticker.lower()
-        prices = bt.get(ticker, start=start_date)
-
+        # prices = bt.get(ticker, start=start_date)
+        prices = get_data(ticker, start_date)
         rsi = pd.DataFrame(ta.rsi(prices[ticker], ns_parser.periods))
         rsi.columns = [ticker]
 
@@ -294,6 +300,5 @@ def rsi_strat(ticker: str, start_date: Union[datetime, str], other_args: List[st
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return

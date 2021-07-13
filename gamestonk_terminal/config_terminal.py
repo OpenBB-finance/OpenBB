@@ -67,3 +67,6 @@ API_BINANCE_SECRET = os.getenv("GT_API_BINANCE_SECRET") or "REPLACE_ME"
 
 # https://finnhub.io
 API_FINNHUB_KEY = os.getenv("GT_API_FINNHUB_KEY") or "REPLACE_ME"
+
+# https://iexcloud.io
+API_IEX_TOKEN = os.getenv("GT_API_IEX_KEY") or "REPLACE_ME"

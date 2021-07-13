@@ -13,7 +13,7 @@ so indicators that rely on anything other than close will fail with an error.
 
 [COINMARKETCAP standalone menu](/gamestonk_terminal/cryptocurrency/coinmarketcap/)
 
-[BINANCE standalone menu](/gamestonk_terminal/cryptocurrency/coinmarketcap/)
+[BINANCE standalone menu](/gamestonk_terminal/cryptocurrency/binance/)
 
 
 ## finbrain <a name="finbrain"></a>

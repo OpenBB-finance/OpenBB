@@ -2,12 +2,16 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
-from datetime import datetime
 import requests
 import pandas as pd
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    check_positive,
+    export_data,
+)
 
 
 def darkshort(other_args: List[str]):
@@ -53,9 +57,10 @@ def darkshort(other_args: List[str]):
     )
     parser.add_argument(
         "--export",
-        action="store_true",
+        choices=["csv", "json", "xlsx"],
+        default="",
         dest="export",
-        help="Save dataframe as a csv file",
+        help="Export dataframe data to csv,json,xlsx file",
     )
 
     try:
@@ -113,6 +118,7 @@ def darkshort(other_args: List[str]):
             "DP Position (1M)",
             "DP Position ($1B)",
         ]
+
         # Assuming that the datetime is the same, which from my experiments seems to be the case
         print(f"The following data corresponds to the date: {dp_date}")
         print(
@@ -126,13 +132,12 @@ def darkshort(other_args: List[str]):
         )
         print("")
 
-        if ns_parser.export:
-            now = datetime.now()
-            with open(
-                f"darkshort_{now.strftime('%Y%m%d_%H%M%S')}.csv",
-                "w",
-            ) as file:
-                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "darkshort",
+            df,
+        )
 
     except Exception as e:
         print(e, "\n")
@@ -170,9 +175,10 @@ def shortvol(other_args: List[str]):
     )
     parser.add_argument(
         "--export",
-        action="store_true",
+        choices=["csv", "json", "xlsx"],
+        default="",
         dest="export",
-        help="Save dataframe as a csv file",
+        help="Export dataframe data to csv,json,xlsx file",
     )
 
     try:
@@ -221,13 +227,12 @@ def shortvol(other_args: List[str]):
         )
         print("")
 
-        if ns_parser.export:
-            now = datetime.now()
-            with open(
-                f"shortvol_{now.strftime('%Y%m%d_%H%M%S')}.csv",
-                "w",
-            ) as file:
-                file.write(df.iloc[: ns_parser.num].to_csv(index=False) + "\n")
+        export_data(
+            ns_parser.export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortvol",
+            df,
+        )
 
     except Exception as e:
         print(e, "\n")
