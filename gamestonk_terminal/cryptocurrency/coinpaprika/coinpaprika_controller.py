@@ -1,6 +1,8 @@
 """CoinPaprika Controller"""
 __docformat__ = "numpy"
-# pylint: disable=R0904, C0302, W0622
+
+# pylint: disable=inconsistent-return-statements, too-many-public-methods, too-many-lines, redefined-builtin
+
 import argparse
 import os
 import pandas as pd
@@ -67,7 +69,7 @@ class PaprikaController:
         print(f"Loaded coin: {self.current_coin}")
         print("")
         print("   chart           price chart for loaded coin")
-        print("   ta              technical analysis menu for loaded coin")
+        print(">  ta              technical analysis menu for loaded coin")
         print("   basic           basic information about loaded coin")
         print("   ps              price and supply related metrics for loaded coin")
         print("   mkt             all markets for loaded coin")

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import textwrap
 import requests
 import pandas as pd
+from dateutil import parser
 from requests.adapters import HTTPAdapter
 
 ENDPOINTS = {
@@ -73,6 +74,13 @@ def get_global_market():
     global_markets["last_updated"] = datetime.fromtimestamp(
         global_markets["last_updated"]
     )
+
+    for key, date in global_markets.items():
+        if "date" in key:
+            try:
+                global_markets[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
+            except (KeyError, ValueError, TypeError):
+                ...
     df = pd.Series(global_markets).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
     return df
@@ -133,6 +141,8 @@ def get_coin_twitter_timeline(coin_id="eth-ethereum"):
         lambda x: "\n".join(textwrap.wrap(x, width=80)) if isinstance(x, str) else x
     )
     df["status"] = df["status"].apply(lambda x: x.replace("  ", ""))
+    df["date"] = df["date"].apply(lambda x: x.replace("T", "\n"))
+    df["date"] = df["date"].apply(lambda x: x.replace("Z", ""))
     return df
 
 
@@ -168,6 +178,8 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
         lambda x: "\n".join(textwrap.wrap(x, width=40)) if isinstance(x, str) else x
     )
     data.drop(["id", "proof_image_link"], axis=1, inplace=True)
+    data["date"] = data["date"].apply(lambda x: x.replace("T", "\n"))
+    data["date"] = data["date"].apply(lambda x: x.replace("Z", ""))
     return data
 
 
@@ -524,6 +536,14 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
         Metric, Value
     """
     tickers = make_request(ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes)
+
+    for key, date in tickers.items():
+        if "date" in key:
+            try:
+                tickers[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
+            except (KeyError, ValueError, TypeError):
+                ...
+
     df = pd.json_normalize(tickers)
     try:
         df.columns = [col.replace("quotes.", "") for col in list(df.columns)]
@@ -593,15 +613,13 @@ def get_contract_platform(platform_id="eth-ethereum"):
     Returns
     -------
     pandas.DataFrame
-         index, id, type, active, address
+         id, type, active, address
     """
     contract_platforms = make_request(
         ENDPOINTS["contract_platform_addresses"].format(platform_id)
     )
 
-    return pd.DataFrame(contract_platforms).reset_index()[
-        ["index", "id", "type", "active", "address"]
-    ]
+    return pd.DataFrame(contract_platforms)[["id", "type", "active", "address"]]
 
 
 def validate_coin(coin: str, coins_dct: dict):
@@ -617,20 +635,20 @@ def validate_coin(coin: str, coins_dct: dict):
     coin id, coin symbol
 
     """
-    found_coin, symbol = None, None
+    coin_found, symbol = None, None
     if coin in coins_dct:
-        found_coin = coin
-        symbol = coins_dct.get(found_coin)
+        coin_found = coin
+        symbol = coins_dct.get(coin_found)
     else:
         for key, value in coins_dct.items():
             if coin.upper() == value:
-                found_coin = key
+                coin_found = key
                 symbol = value
 
-    if not found_coin:
+    if not coin_found:
         raise ValueError(f"Could not find coin with given id: {coin}\n")
-    print(f"Coin founded : {found_coin} with symbol {symbol}")
-    return found_coin, symbol
+    print(f"Coin found : {coin_found} with symbol {symbol}")
+    return coin_found, symbol
 
 
 def basic_coin_info(coin_id: str):
@@ -664,4 +682,5 @@ def basic_coin_info(coin_id: str):
     df["Value"] = df["Value"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=80)) if isinstance(x, str) else x
     )
+    df.dropna(subset=["Value"], inplace=True)
     return df

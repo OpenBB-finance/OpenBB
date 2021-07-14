@@ -9,7 +9,7 @@ from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
 from gamestonk_terminal.main_helper import plot_autoscale
 from gamestonk_terminal.feature_flags import USE_ION as ion
 import gamestonk_terminal.cryptocurrency.coinpaprika.coinpaprika_model as paprika
@@ -21,7 +21,7 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
-# pylint: disable=R0904, C0302
+# pylint: disable=too-many-lines
 
 CURRENCIES = [
     "BTC",
@@ -140,10 +140,20 @@ def coins(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-s", "--skip", default=0, dest="skip", help="Skip n of records", type=int
+        "-s",
+        "--skip",
+        default=0,
+        dest="skip",
+        help="Skip n of records",
+        type=check_positive,
     )
     parser.add_argument(
-        "-t", "--top", default=30, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=30,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument("-l", "--letter", dest="letter", help="First letters", type=str)
@@ -221,7 +231,12 @@ def all_coins_market_info(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=20, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=20,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -316,7 +331,12 @@ def all_coins_info(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=20, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=20,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -359,9 +379,11 @@ def all_coins_info(other_args: List[str]):
         )
 
         if df.empty:
+            print("Not data found", "\n")
             return
 
-        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        cols = [col for col in df.columns if col != "rank"]
+        df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
 
         print("")
         print(f"Displaying data vs {ns_parser.vs}")
@@ -414,7 +436,12 @@ def all_exchanges(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=20, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=20,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -500,7 +527,12 @@ def search(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-q", "--query", help="phrase for search", dest="query", type=str, required=True
+        "-q",
+        "--query",
+        help="phrase for search",
+        dest="query",
+        type=str,
+        required="-h" not in other_args,
     )
 
     parser.add_argument(
@@ -521,7 +553,12 @@ def search(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=20, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=20,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -543,6 +580,11 @@ def search(other_args: List[str]):
     )
 
     try:
+
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-q")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -610,7 +652,12 @@ def exchange_markets(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -735,11 +782,11 @@ def contracts(other_args: List[str]):
         description="""Gets all contract addresses for given platform.
         Provide platform id with -p/--platform parameter
         You can display only top N number of smart contracts with --top parameter.
-        You can sort data by index, id, type, active, address  --sort parameter
+        You can sort data by id, type, active, address  --sort parameter
         and also with --descend flag to sort descending.
 
         Displays:
-            index, id, type, active, address
+            id, type, active, address
         """,
     )
 
@@ -754,7 +801,12 @@ def contracts(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=20, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=20,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -762,9 +814,9 @@ def contracts(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: index",
-        default="index",
-        choices=["index", "id", "type", "active", "address"],
+        help="Sort by given column",
+        default="id",
+        choices=["id", "type", "active", "address"],
     )
 
     parser.add_argument(
@@ -783,7 +835,7 @@ def contracts(other_args: List[str]):
         df = paprika.get_contract_platform(ns_parser.platform)
 
         if df.empty:
-            print(f"Nothing found for platform: {ns_parser.platform}")
+            print(f"Nothing found for platform: {ns_parser.platform}", "\n")
             return
 
         df = df.sort_values(ns_parser.sortby, ascending=ns_parser.descend)
@@ -840,10 +892,20 @@ def find(other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     try:
+
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-c")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
@@ -904,7 +966,12 @@ def twitter(coin_id: str, other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -982,7 +1049,12 @@ def events(coin_id: str, other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -1071,7 +1143,12 @@ def exchanges(coin_id: str, other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -1154,7 +1231,12 @@ def markets(coin_id: str, other_args: List[str]):
     )
 
     parser.add_argument(
-        "-t", "--top", default=20, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=20,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     parser.add_argument(
@@ -1205,6 +1287,7 @@ def markets(coin_id: str, other_args: List[str]):
         df = paprika.get_coin_markets_by_id(coin_id, vs)
 
         if df.empty:
+            print("There is no data")
             return
 
         df = df.sort_values(by=sort, ascending=ns_parser.descend)
@@ -1267,7 +1350,7 @@ def chart(coin_id: str, other_args: List[str]):
         "--days",
         default=90,
         dest="days",
-        type=int,
+        type=check_positive,
     )
 
     try:
@@ -1279,6 +1362,7 @@ def chart(coin_id: str, other_args: List[str]):
         df = paprika.get_ohlc_historical(coin_id, ns_parser.vs.upper(), ns_parser.days)
 
         if df.empty:
+            print("There is not data to plot chart\n")
             return
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
@@ -1292,15 +1376,15 @@ def chart(coin_id: str, other_args: List[str]):
         ]
         df = df.set_index(pd.to_datetime(df["Time0"])).drop("Time0", axis=1)
         title = (
-            f"{coin_id}/{ns_parser.vs} from {df.index[0].strftime('%Y/%m/%d')} "
-            f"to {df.index[-1].strftime('%Y/%m/%d')}",
+            f"{coin_id}/{ns_parser.vs} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
         )
-
+        df["Volume"] = df["Volume"] / 1000000
         mpf.plot(
             df,
             type="candle",
             volume=True,
-            title=str(title),
+            ylabel_lower="Volume [1M]",
+            title=str(title[0]) if isinstance(title, tuple) else title,
             xrotation=20,
             style="binance",
             figratio=(10, 7),
@@ -1310,6 +1394,7 @@ def chart(coin_id: str, other_args: List[str]):
                 candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
             ),
         )
+
         if ion:
             plt.ion()
         plt.show()
@@ -1457,7 +1542,7 @@ def ta(coin_id: str, other_args: List[str]):
         default=30,
         dest="days",
         help="Number of days to get data for",
-        type=int,
+        type=check_positive,
     )
 
     try:
@@ -1523,6 +1608,7 @@ def basic(coin_id: str, other_args: List[str]):
         df = paprika.basic_coin_info(coin_id)
 
         if df.empty:
+            print("No data available\n")
             return
 
         print(
