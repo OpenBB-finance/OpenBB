@@ -21,7 +21,7 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
-# pylint: disable=too-many-lines
+# pylint: disable=C0302, too-many-lines
 
 CURRENCIES = [
     "BTC",
