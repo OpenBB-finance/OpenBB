@@ -8,7 +8,7 @@ and objective access to information about crypto projects from all around the wo
 
 
 [COIN](#COIN)
- [find](#find)
+* [find](#find)
   * find similar coin by coin name,symbol or id
 * [load](#load)
   * load a given coin, you can use either coin symbol or coin id
@@ -171,6 +171,31 @@ usage: events [-t --top] [-s --sort] [--descend] [-l --links]
 
 Show information about most important coins events.
 
+## clear <a name="clear"></a>
+
+````
+usage: clear
+````
+
+Just remove previously loaded coin. (set coin = None)
+
+
+## find <a name="find"></a>
+
+````
+usage: find [-c --coin] [-t --top] [-k --key]
+````
+
+Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at Coinpaprika, you can use this command to display coins with similar name, symbol or id to your search query.
+Example of usage: coin name is something like `polka`. So you can try: `find -c polka -k name -t 25`
+It will search for coin that has similar name to polka and display top 25 matches.
+* -c, --coin stands for coin - you provide here your search query
+* -k, --key it's a searching key. You can search by symbol, id or name of coin
+* -t, --top it displays top N number of records.
+
+![image](https://user-images.githubusercontent.com/275820/125335645-150b9680-e34d-11eb-8ab4-6d1de1d9ab84.png)
+
+
 # OVERVIEW <a name="OVERVIEW"></a>
 
 ## global <a name="global"></a>
@@ -278,3 +303,19 @@ ncakeswap, fsxu-flashx-ultra, chik-chickenkebab-finance, jgn-juggernaut7492, crx
 
 
 Gets all contract addresses for given blockchain platform
+
+## search <a name="search"></a>
+
+````
+usage: search [-q --query] [-c --cat] [-s --sort] [-t --top] [--descend]
+````
+* -q/--query - phrase for search
+* -c/--cat - categories to search: currencies|exchanges|icos|people|tags|all. Default: all
+* -t/--top - number of found records to display.
+* -s/--sort - sort by given column. You can chose on from `category, id, name`.
+* --descend - flag to sort in descending order (lowest first)
+
+Search over CoinPaprika API
+
+![image](https://user-images.githubusercontent.com/275820/125336200-c7435e00-e34d-11eb-965f-16856f4d9913.png)
+
