@@ -11,6 +11,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.economy import fred_view
 from gamestonk_terminal.economy import finnhub_view
 from gamestonk_terminal.economy import cnn_view
+from gamestonk_terminal.economy.wsj_view import display_wsj
 
 
 class EconomyController:
@@ -37,6 +38,13 @@ class EconomyController:
         "aaa",
         "dexcaus",
         "feargreed",
+        "overview",
+        "indices",
+        "futures",
+        "us_bonds",
+        "gl_bonds",
+        "futures",
+        "currencies",
     ]
 
     def __init__(self):
@@ -75,6 +83,14 @@ class EconomyController:
         print("   fedfunds      Effective Federal Funds Rate")
         print("   aaa           Moody's Seasoned AAA Corporate Bond Yield")
         print("   dexcaus       Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)")
+        print("")
+        print("WSJ:")
+        print("   overview      market data overview")
+        print("   indices       us indices overview")
+        print("   futures       futures overview")
+        print("   us_bonds      us bond overview")
+        print("   gl_bonds      global bonds overview")
+        print("   currencies    currency overview")
         print("")
         return
 
@@ -177,6 +193,30 @@ class EconomyController:
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
         cnn_view.fear_and_greed_index(other_args)
+
+    def call_overview(self, _):
+        """Process overview command"""
+        display_wsj("market")
+
+    def call_indices(self, _):
+        """Process indices command"""
+        display_wsj("indices")
+
+    def call_futures(self, _):
+        """Process futures command"""
+        display_wsj("commodities")
+
+    def call_us_bonds(self, _):
+        """Process us_bonds command"""
+        display_wsj("us_bonds")
+
+    def call_gl_bonds(self, _):
+        """Process gl_bonds command"""
+        display_wsj("gl_bonds")
+
+    def call_currencies(self, _):
+        """Process curremcies command"""
+        display_wsj("currencies")
 
 
 def menu():
