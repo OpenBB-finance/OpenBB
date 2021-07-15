@@ -528,3 +528,6 @@ command|description
 `holdings`|show ETF holdings
 `compare`|compare multiple ETFs overview
 `screener`|screen ETFs
+`gainers`|show top gainers
+`decliners`|show top decliners
+`active`|show most active
