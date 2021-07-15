@@ -61,7 +61,7 @@ class ETFController:
         print("   holdings      get top holdings for ETF")
         print("   compare       compare overview of multiple ETF")
         print("   screener      screen etfs based on overview data")
-        print("\n Wall St Journal")
+        print("\n Wall St. Journal")
         print("   gainers       show top gainers")
         print("   decliners     show top decliners")
         print("   active        show most active")
@@ -145,7 +145,7 @@ class ETFController:
 
     def call_active(self, other_args):
         """Process gainers command"""
-        wsj_view.show_top_mover("activity", other_args)
+        wsj_view.show_top_mover("active", other_args)
 
 
 def menu():

@@ -1,4 +1,4 @@
-"""WSJ view functions"""
+"""WSJ view"""
 __docformat__ = "numpy"
 
 import argparse
@@ -6,7 +6,7 @@ from typing import List
 import os
 from tabulate import tabulate
 
-from gamestonk_terminal.wsj_functions import etf_movers
+from gamestonk_terminal.etf import wsj_model
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, export_data
 
 
@@ -15,7 +15,7 @@ def show_top_mover(sort_type: str, other_args: List[str]):
     Show top ETF movers from wsj.com
     Parameters
     ----------
-    move_type: str
+    sort_type: str
         What to show.  Either Gainers, Decliners or Activity
     other_args: List[str]
         Argparse arguments
@@ -41,7 +41,7 @@ def show_top_mover(sort_type: str, other_args: List[str]):
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
-        data = etf_movers(sort_type)
+        data = wsj_model.etf_movers(sort_type)
         print(
             tabulate(
                 data.iloc[: ns_parser.num],

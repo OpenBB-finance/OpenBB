@@ -176,27 +176,24 @@ The following functions atake the information from the [WSJ Market Data Page](ht
 ```python
 usage: gainers [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+Shows top gaining ETFs
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.
-
-Shows top gaining ETFS
 
 ## decliners <a name="decliners"></a>
 
 ```python
 usage: decliners [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+Shows highest declining ETFs
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.
-
-Shows highest declining ETFs
 
 ## active <a name="active"></a>
 
 ```python
 usage: active [-n NUM] [--export {csv,json,xlsx}] [-h]
 ```
+Shows most active ETFs
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.
-
-Shows most active ETFs
