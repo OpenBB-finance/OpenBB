@@ -32,8 +32,6 @@ PAPRIKA_BASE_URL = "https://api.coinpaprika.com/v1"
 session = requests.Session()
 session.mount(PAPRIKA_BASE_URL, HTTPAdapter(max_retries=5))
 
-PATTERN = r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)((-(\d{2}):(\d{2})|Z)?)$"
-
 
 def make_request(endpoint, payload=None, **kwargs):
     """Helper method that handles request for coinpaprika api.

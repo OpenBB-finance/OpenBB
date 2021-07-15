@@ -278,6 +278,7 @@ def all_coins_market_info(other_args: List[str]):
         )
 
         if df.empty:
+            print("No data found", "\n")
             return
 
         cols = [col for col in df.columns if col != "rank"]
@@ -484,6 +485,7 @@ def all_exchanges(other_args: List[str]):
         )
 
         if df.empty:
+            print("No data found", "\n")
             return
 
         cols = [col for col in df.columns if col != "rank"]
@@ -707,6 +709,7 @@ def exchange_markets(other_args: List[str]):
         df = paprika.get_exchanges_market(exchange_id=ns_parser.exchange)
 
         if df.empty:
+            print("No data found", "\n")
             return
 
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
@@ -1180,6 +1183,7 @@ def exchanges(coin_id: str, other_args: List[str]):
         df = paprika.get_coin_exchanges_by_id(coin_id)
 
         if df.empty:
+            print("No data found", "\n")
             return
 
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
@@ -1568,6 +1572,7 @@ def ta(coin_id: str, other_args: List[str]):
         df = paprika.get_ohlc_historical(coin_id, ns_parser.vs.upper(), ns_parser.days)
 
         if df.empty:
+            print("No data found", "\n")
             return None, None
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
