@@ -10,3 +10,4 @@ dependencies:
   - jupyter_client=6.1.12
   - pytest
   - black=21.5b2
+  - sphinx=4.1.0
