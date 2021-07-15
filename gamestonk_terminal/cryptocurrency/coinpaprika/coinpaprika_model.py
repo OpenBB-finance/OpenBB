@@ -32,6 +32,8 @@ PAPRIKA_BASE_URL = "https://api.coinpaprika.com/v1"
 session = requests.Session()
 session.mount(PAPRIKA_BASE_URL, HTTPAdapter(max_retries=5))
 
+PATTERN = r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)((-(\d{2}):(\d{2})|Z)?)$"
+
 
 def make_request(endpoint, payload=None, **kwargs):
     """Helper method that handles request for coinpaprika api.
@@ -178,8 +180,9 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
         lambda x: "\n".join(textwrap.wrap(x, width=40)) if isinstance(x, str) else x
     )
     data.drop(["id", "proof_image_link"], axis=1, inplace=True)
-    data["date"] = data["date"].apply(lambda x: x.replace("T", "\n"))
-    data["date"] = data["date"].apply(lambda x: x.replace("Z", ""))
+    for col in ["date", "date_to"]:
+        data[col] = data[col].apply(lambda x: x.replace("T", "\n"))
+        data[col] = data[col].apply(lambda x: x.replace("Z", ""))
     return data
 
 
@@ -538,11 +541,18 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
     tickers = make_request(ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes)
 
     for key, date in tickers.items():
-        if "date" in key:
+        if "date" in key or "data" in key:
             try:
                 tickers[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError):
                 ...
+        if key == "quotes":
+            try:
+                tickers[key][quotes]["ath_date"] = parser.parse(
+                    tickers[key][quotes]["ath_date"]
+                ).strftime("%Y-%m-%d %H:%M:%S")
+            except (KeyError, ValueError, TypeError) as e:
+                print(e)
 
     df = pd.json_normalize(tickers)
     try:

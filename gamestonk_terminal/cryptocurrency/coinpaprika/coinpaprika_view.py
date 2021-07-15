@@ -280,7 +280,8 @@ def all_coins_market_info(other_args: List[str]):
         if df.empty:
             return
 
-        df = df.applymap(long_number_format_with_type_check)
+        cols = [col for col in df.columns if col != "rank"]
+        df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
         print("")
         print(f"Displaying data vs {ns_parser.vs}")
         print(
@@ -485,7 +486,8 @@ def all_exchanges(other_args: List[str]):
         if df.empty:
             return
 
-        df = df.applymap(lambda x: long_number_format_with_type_check(x))
+        cols = [col for col in df.columns if col != "rank"]
+        df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
         print("")
         print(f"Displaying data vs {ns_parser.vs}")
         print(
@@ -582,7 +584,7 @@ def search(other_args: List[str]):
     try:
 
         if other_args:
-            if "-" not in other_args[0]:
+            if not other_args[0][0] == "-":
                 other_args.insert(0, "-q")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -599,6 +601,7 @@ def search(other_args: List[str]):
             print(
                 f"No results for search query '{ns_parser.query}' in category '{ns_parser.category}'"
             )
+            print("")
             return
 
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
@@ -877,7 +880,7 @@ def find(other_args: List[str]):
         "--coin",
         help="Coin name or id, or symbol",
         dest="coin",
-        required=False,
+        required="-h" not in other_args,
         type=str,
     )
 
@@ -903,7 +906,7 @@ def find(other_args: List[str]):
     try:
 
         if other_args:
-            if "-" not in other_args[0]:
+            if other_args[0][0] == "-":
                 other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1348,7 +1351,7 @@ def chart(coin_id: str, other_args: List[str]):
     parser.add_argument(
         "-d",
         "--days",
-        default=90,
+        default=30,
         dest="days",
         type=check_positive,
     )
@@ -1442,6 +1445,7 @@ def price_supply(coin_id: str, other_args: List[str]):
         df = paprika.get_tickers_info_for_coin(coin_id, ns_parser.vs)
 
         if df.empty:
+            print("No data found", "\n")
             return
 
         df = df.applymap(lambda x: long_number_format_with_type_check(x))
@@ -1482,13 +1486,20 @@ def load(other_args: List[str]):
         description="Define the coin to be used from CoinPaprika and get data",
     )
     parser.add_argument(
-        "-c", "--coin", help="Coin to get", dest="coin", type=str, default="btc-bitcoin"
+        "-c",
+        "--coin",
+        help="Coin to get",
+        dest="coin",
+        type=str,
+        required="-h" not in other_args,
     )
 
     try:
+
         if other_args:
-            if "-" not in other_args[0]:
+            if not other_args[0][0] == "-":
                 other_args.insert(0, "-c")
+
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
@@ -1499,6 +1510,9 @@ def load(other_args: List[str]):
         if coin_id:
             print("")
             return coin_id
+
+    except SystemExit:
+        print("")
 
     except Exception as e:
         print(e, "\n")
