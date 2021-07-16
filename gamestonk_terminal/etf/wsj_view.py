@@ -53,7 +53,7 @@ def show_top_mover(sort_type: str, other_args: List[str]):
         )
         export_data(
             ns_parser.export,
-            os.path.dirname(os.path.abspath(__file__)) + "/movers/",
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "movers"),
             sort_type,
             data,
         )
