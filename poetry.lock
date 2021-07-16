@@ -3030,7 +3030,7 @@ prediction = ["tensorflow", "pmdarima"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "f44b48192187dfc5266aaa656762a66465288d738e0cce25f4d3f9c45ddc3131"
+content-hash = "47ea04f7495d8f1e468fcf36dc988d67aacd436a44149261bd77c631b5fc4a72"
 
 [metadata.files]
 absl-py = [
