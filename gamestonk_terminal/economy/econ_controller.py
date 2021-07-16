@@ -11,6 +11,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.economy import fred_view
 from gamestonk_terminal.economy import finnhub_view
 from gamestonk_terminal.economy import cnn_view
+from gamestonk_terminal.economy import wsj_view
 
 
 class EconomyController:
@@ -37,6 +38,13 @@ class EconomyController:
         "aaa",
         "dexcaus",
         "feargreed",
+        "overview",
+        "indices",
+        "futures",
+        "us_bonds",
+        "gl_bonds",
+        "futures",
+        "currencies",
     ]
 
     def __init__(self):
@@ -75,6 +83,14 @@ class EconomyController:
         print("   fedfunds      Effective Federal Funds Rate")
         print("   aaa           Moody's Seasoned AAA Corporate Bond Yield")
         print("   dexcaus       Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)")
+        print("")
+        print("Wall St. Journal:")
+        print("   overview      market data overview")
+        print("   indices       us indices overview")
+        print("   futures       futures overview")
+        print("   us_bonds      us bond overview")
+        print("   gl_bonds      global bonds overview")
+        print("   currencies    currency overview")
         print("")
         return
 
@@ -177,6 +193,30 @@ class EconomyController:
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
         cnn_view.fear_and_greed_index(other_args)
+
+    def call_overview(self, other_args: List[str]):
+        """Process overview command"""
+        wsj_view.display_overview(other_args)
+
+    def call_indices(self, other_args: List[str]):
+        """Process indices command"""
+        wsj_view.display_indices(other_args)
+
+    def call_futures(self, other_args: List[str]):
+        """Process futures command"""
+        wsj_view.display_futures(other_args)
+
+    def call_us_bonds(self, other_args: List[str]):
+        """Process us_bonds command"""
+        wsj_view.display_usbonds(other_args)
+
+    def call_gl_bonds(self, other_args: List[str]):
+        """Process gl_bonds command"""
+        wsj_view.display_glbonds(other_args)
+
+    def call_currencies(self, other_args: List[str]):
+        """Process curremcies command"""
+        wsj_view.display_currencies(other_args)
 
 
 def menu():

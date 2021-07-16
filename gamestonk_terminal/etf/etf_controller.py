@@ -17,6 +17,7 @@ from gamestonk_terminal.etf.stockanalysis_model import (
     etf_holdings,
 )
 from gamestonk_terminal.etf.screener_model import etf_screener
+from gamestonk_terminal.etf import wsj_view
 
 
 class ETFController:
@@ -32,6 +33,9 @@ class ETFController:
         "compare",
         "holdings",
         "screener",
+        "gainers",
+        "decliners",
+        "active",
     ]
 
     def __init__(self):
@@ -57,6 +61,10 @@ class ETFController:
         print("   holdings      get top holdings for ETF")
         print("   compare       compare overview of multiple ETF")
         print("   screener      screen etfs based on overview data")
+        print("\n Wall St. Journal")
+        print("   gainers       show top gainers")
+        print("   decliners     show top decliners")
+        print("   active        show most active")
         print("")
 
     def switch(self, an_input: str):
@@ -126,6 +134,18 @@ class ETFController:
     def call_screener(self, other_args):
         """Process screener command"""
         etf_screener(other_args)
+
+    def call_gainers(self, other_args):
+        """Process gainers command"""
+        wsj_view.show_top_mover("gainers", other_args)
+
+    def call_decliners(self, other_args):
+        """Process decliners command"""
+        wsj_view.show_top_mover("decliners", other_args)
+
+    def call_active(self, other_args):
+        """Process gainers command"""
+        wsj_view.show_top_mover("active", other_args)
 
 
 def menu():

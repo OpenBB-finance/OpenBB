@@ -16,6 +16,14 @@ Data is currently scraped from StockAnalysis.com/etf
 * [screener](#screener)
   * screen ETFs
 
+[WSJ](#WSJ)
+* [gainers](#gainers)
+  * show top gainers
+* [decliners](#decliners)
+  * show top decliners
+* [active](#active)
+  * show most active
+
 ## web <a name="web"></a>
 ```python
 usage: web
@@ -160,3 +168,32 @@ ETFs downloaded
 │ XLU │   64.52 │    11640 │ 64.31 │      0.12 │ 19.94 │   0.35 │  1.98 │       3.07 │
 ╘═════╧═════════╧══════════╧═══════╧═══════════╧═══════╧════════╧═══════╧════════════╛
 ```
+# WSJ <a name="wsj"></a>
+The following functions atake the information from the [WSJ Market Data Page](https://www.wsj.com/market-data)
+
+## gainers <a name="gainers"></a>
+
+```python
+usage: gainers [-n NUM] [--export {csv,json,xlsx}] [-h]
+```
+Shows top gaining ETFs
+* -n/--num: Number to show.  Defaults to 25, which is the max provided
+* --export: Export data to one of {csv, json, xlsx}.
+
+## decliners <a name="decliners"></a>
+
+```python
+usage: decliners [-n NUM] [--export {csv,json,xlsx}] [-h]
+```
+Shows highest declining ETFs
+* -n/--num: Number to show.  Defaults to 25, which is the max provided
+* --export: Export data to one of {csv, json, xlsx}.
+
+## active <a name="active"></a>
+
+```python
+usage: active [-n NUM] [--export {csv,json,xlsx}] [-h]
+```
+Shows most active ETFs
+* -n/--num: Number to show.  Defaults to 25, which is the max provided
+* --export: Export data to one of {csv, json, xlsx}.

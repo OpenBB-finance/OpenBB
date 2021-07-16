@@ -183,7 +183,7 @@ def etf_screener(other_args: List[str]):
 
         export_data(
             ns_parser.export,
-            os.path.dirname(os.path.abspath(__file__)),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "screeners"),
             param_string,
             df,
         )
