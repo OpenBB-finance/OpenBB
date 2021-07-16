@@ -909,7 +909,7 @@ def find(other_args: List[str]):
     try:
 
         if other_args:
-            if other_args[0][0] == "-":
+            if not other_args[0][0] == "-":
                 other_args.insert(0, "-c")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1385,7 +1385,7 @@ def chart(coin_id: str, other_args: List[str]):
         title = (
             f"{coin_id}/{ns_parser.vs} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
         )
-        df["Volume"] = df["Volume"] / 1000000
+        df["Volume"] = df["Volume"] / 1_000_000
         mpf.plot(
             df,
             type="candle",
