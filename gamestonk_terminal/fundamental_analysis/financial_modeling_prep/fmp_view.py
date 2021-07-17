@@ -26,9 +26,9 @@ def valinvest_score(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="score",
         description="""
             Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
@@ -47,7 +47,6 @@ def valinvest_score(other_args: List[str], ticker: str):
 
     except Exception as e:
         print(e, "\n")
-        return
 
 
 def profile(other_args: List[str], ticker: str):
@@ -60,9 +59,9 @@ def profile(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="profile",
         description="""
             Prints information about, among other things, the industry, sector exchange and company
@@ -88,9 +87,7 @@ def profile(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def quote(other_args: List[str], ticker: str):
@@ -103,9 +100,9 @@ def quote(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="quote",
         description="""
             Prints actual information about the company which is, among other things, the day high,
@@ -143,9 +140,7 @@ def quote(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def enterprise(other_args: List[str], ticker: str):
@@ -158,9 +153,9 @@ def enterprise(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="enterprise",
         description="""
             Prints stock price, number of shares, market capitalization and
@@ -169,7 +164,6 @@ def enterprise(other_args: List[str], ticker: str):
             of shares, Stock price, and Symbol. [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -206,14 +200,11 @@ def enterprise(other_args: List[str], ticker: str):
             df_fa = fa.enterprise(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num, mask=False)
-
         print(df_fa)
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def discounted_cash_flow(other_args: List[str], ticker: str):
@@ -226,9 +217,9 @@ def discounted_cash_flow(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="dcf",
         description="""
             Prints the discounted cash flow of a company over time including the DCF of today. The
@@ -272,14 +263,11 @@ def discounted_cash_flow(other_args: List[str], ticker: str):
             df_fa = fa.discounted_cash_flow(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num, mask=False)
-
         print(df_fa)
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def income_statement(other_args: List[str], ticker: str):
@@ -292,9 +280,9 @@ def income_statement(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="inc",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
@@ -308,7 +296,6 @@ def income_statement(other_args: List[str], ticker: str):
             average shs out, Weighted average shs out dil [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -356,9 +343,7 @@ def income_statement(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def balance_sheet(other_args: List[str], ticker: str):
@@ -371,9 +356,9 @@ def balance_sheet(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="bal",
         description="""
             Prints a complete balance sheet statement over time. This can be
@@ -392,7 +377,6 @@ def balance_sheet(other_args: List[str], ticker: str):
             equity. [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -442,9 +426,7 @@ def balance_sheet(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def cash_flow(other_args: List[str], ticker: str):
@@ -457,9 +439,9 @@ def cash_flow(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="cash",
         description="""
             Prints a complete cash flow statement over time. This can be either
@@ -476,7 +458,6 @@ def cash_flow(other_args: List[str], ticker: str):
             investments, Stock based compensation. [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -524,9 +505,7 @@ def cash_flow(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def key_metrics(other_args: List[str], ticker: str):
@@ -539,9 +518,9 @@ def key_metrics(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="metrics",
         description="""
             Prints a list of the key metrics of a company over time. This can be either
@@ -563,7 +542,6 @@ def key_metrics(other_args: List[str], ticker: str):
             capital. [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -600,14 +578,11 @@ def key_metrics(other_args: List[str], ticker: str):
             df_fa = fa.key_metrics(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
-
         print(df_fa)
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def financial_ratios(other_args: List[str], ticker: str):
@@ -620,9 +595,9 @@ def financial_ratios(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ratios",
         description="""
             Prints in-depth ratios of a company over time. This can be either quarterly or
@@ -645,7 +620,6 @@ def financial_ratios(other_args: List[str], ticker: str):
             ratios, and Total debt to capitalization. [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -682,14 +656,11 @@ def financial_ratios(other_args: List[str], ticker: str):
             df_fa = fa.financial_ratios(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
 
         df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
-
         print(df_fa)
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def financial_statement_growth(other_args: List[str], ticker: str):
@@ -702,9 +673,9 @@ def financial_statement_growth(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="growth",
         description=""" Prints the growth of several financial statement items and ratios over
         time. This can be either annually and quarterly. These are, among other things, Revenue
@@ -723,7 +694,6 @@ def financial_statement_growth(other_args: List[str], ticker: str):
         shares diluted growth, and Weighted average shares growth [Source: Financial Modeling Prep]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -762,14 +732,11 @@ def financial_statement_growth(other_args: List[str], ticker: str):
             )
 
         df_fa = clean_metrics_df(df_fa, num=ns_parser.n_num)
-
         print(df_fa)
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
@@ -805,4 +772,5 @@ def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.Dat
             "Net income per e b t": "Net income per EBT",
         }
     )
+
     return df_fa
