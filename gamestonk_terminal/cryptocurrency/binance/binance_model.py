@@ -2,12 +2,14 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+
+from typing import List, Tuple
 import pandas as pd
 import numpy as np
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 from tabulate import tabulate
+from gamestonk_terminal.helper_funcs import check_positive
 from gamestonk_terminal.main_helper import parse_known_args_and_warn
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.cryptocurrency.binance.binance_view import (
@@ -28,26 +30,28 @@ def check_valid_binance_str(symbol: str) -> str:
         ) from e
 
 
-# pylint: disable=inconsistent-return-statements
-def select_binance_coin(other_args: List[str]):
+def select_binance_coin(other_args: List[str]) -> Tuple[str, str, pd.DataFrame]:
     """Define current_coin from binance
 
     Parameters
     ----------
-    other_args: List[str]
+    other_args : List[str]
         Argparse arguments
 
     Returns
     -------
-    coin: str
+    str
         Coin that is defined on binance
-    df_coin : pd.DataFrame
+    str
+        Base pair of coin
+    pd.DataFrame
         Dataframe of prices for selected coin
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     parser = argparse.ArgumentParser(
         prog="load",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Define the coin to be used from binance and get data",
     )
     parser.add_argument(
@@ -78,20 +82,22 @@ def select_binance_coin(other_args: List[str]):
         "30min": client.KLINE_INTERVAL_30MINUTE,
         "1month": client.KLINE_INTERVAL_1MONTH,
     }
-    interval_choices = list(interval_map.keys())
-
     parser.add_argument(
         "-i",
         "--interval",
         help="Interval to get data",
-        choices=interval_choices,
+        choices=list(interval_map.keys()),
         dest="interval",
         default="1day",
         type=str,
     )
-
     parser.add_argument(
-        "-l", "--limit", dest="limit", default=100, help="Number to get", type=int
+        "-l",
+        "--limit",
+        dest="limit",
+        default=100,
+        help="Number to get",
+        type=check_positive,
     )
     try:
         if other_args:
@@ -100,7 +106,7 @@ def select_binance_coin(other_args: List[str]):
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
-            return None, None, pd.DataFrame()
+            return "", "", pd.DataFrame()
 
         coin = ns_parser.coin + ns_parser.quote
 
@@ -127,10 +133,11 @@ def select_binance_coin(other_args: List[str]):
             ).drop("Time0", axis=1)
 
             return ns_parser.coin.upper(), ns_parser.quote.upper(), df_coin
+        return "", "", pd.DataFrame
 
     except Exception as e:
         print(e, "\n")
-        return None, None, pd.DataFrame
+        return "", "", pd.DataFrame
 
 
 def order_book(other_args: List[str], coin: str, currency: str):
@@ -147,7 +154,10 @@ def order_book(other_args: List[str], coin: str, currency: str):
     """
     limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
     parser = argparse.ArgumentParser(
-        prog="book", add_help=False, description="Get the order book for selected coin"
+        prog="book",
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description="Get the order book for selected coin",
     )
     parser.add_argument(
         "-l",
@@ -193,7 +203,6 @@ def show_candles(candles_df: pd.DataFrame, coin: str, currency: str):
     currency : str
         Currency loaded
     """
-
     plot_candles(
         candles_df,
         f"{coin+currency} from {candles_df.index[0].strftime('%Y/%m/%d')} to "
@@ -215,6 +224,7 @@ def balance(coin: str):
         if current_balance is None:
             print("Check loaded coin")
             return
+
         print("")
         amounts = [float(current_balance["free"]), float(current_balance["locked"])]
         total = np.sum(amounts)
@@ -225,7 +235,6 @@ def balance(coin: str):
         print(f"You currently have {total} coins and the breakdown is:")
         print(tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"))
         print("")
-        return
+
     except Exception as e:
         print(e, "\n")
-        return
