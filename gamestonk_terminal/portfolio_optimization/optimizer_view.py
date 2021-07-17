@@ -55,8 +55,7 @@ d_period = {
 
 
 def equal_weight(stocks: List[str], other_args: List[str]):
-    """
-    Equally weighted portfolio, where weight = 1/# of stocks
+    """Equally weighted portfolio, where weight = 1/# of stocks
 
     Parameters
     ----------
@@ -71,10 +70,10 @@ def equal_weight(stocks: List[str], other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="equal",
         description="Returns an equally weighted portfolio",
     )
-
     parser.add_argument(
         "-v",
         "--value",
@@ -90,6 +89,7 @@ def equal_weight(stocks: List[str], other_args: List[str]):
         default=False,
         help="Display a pie chart for weights",
     )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -109,8 +109,7 @@ def equal_weight(stocks: List[str], other_args: List[str]):
             print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def property_weighting(stocks: List[str], other_args: List[str]):
@@ -123,9 +122,9 @@ def property_weighting(stocks: List[str], other_args: List[str]):
     other_args : List[str]
         Command line arguments to be processed with argparse
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="property",
         description="Returns a portfolio that is weighted based on a selected property info",
     )
@@ -191,8 +190,9 @@ def property_weighting(stocks: List[str], other_args: List[str]):
             prop_sum += stock_prop
 
         if prop_sum == 0:
-            print(f"No {ns_parser.property} was found on list of tickers provided")
-            print("")
+            print(
+                f"No {ns_parser.property} was found on list of tickers provided", "\n"
+            )
             return
 
         for k, v in prop.items():
@@ -207,9 +207,7 @@ def property_weighting(stocks: List[str], other_args: List[str]):
             print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def max_sharpe(stocks: List[str], other_args: List[str]):
@@ -222,9 +220,11 @@ def max_sharpe(stocks: List[str], other_args: List[str]):
     other_args : List[str]
         argparse other args
     """
-
     parser = argparse.ArgumentParser(
-        add_help=False, prog="maxsharpe", description="Maximise the Sharpe Ratio"
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="maxsharpe",
+        description="Maximise the Sharpe Ratio",
     )
     parser.add_argument(
         "-p",
@@ -253,6 +253,7 @@ def max_sharpe(stocks: List[str], other_args: List[str]):
     if other_args:
         if "-" not in other_args[0]:
             other_args.insert(0, "-r")
+
     parser.add_argument(
         "-r",
         "--risk-free-rate",
@@ -296,9 +297,7 @@ def max_sharpe(stocks: List[str], other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def min_volatility(stocks: List[str], other_args: List[str]):
@@ -311,9 +310,9 @@ def min_volatility(stocks: List[str], other_args: List[str]):
     other_args : List[str]
         argparse other args
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="min_volatility",
         description="Optimizes for minimum volatility",
     )
@@ -374,9 +373,7 @@ def min_volatility(stocks: List[str], other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def max_quadratic_utility(stocks: List[str], other_args: List[str]):
@@ -389,9 +386,9 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
     other_args : List[str]
         argparse other args
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="max_quadratic_utility",
         description="Maximises the quadratic utility, given some risk aversion",
     )
@@ -480,8 +477,7 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
 
 
@@ -497,6 +493,7 @@ def efficient_risk(stocks: List[str], other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="effrisk",
         description="""Maximise return for a target risk. The resulting portfolio will have
         a volatility less than the target (but not guaranteed to be equal)""",
@@ -575,7 +572,6 @@ def efficient_risk(stocks: List[str], other_args: List[str]):
             if ns_parser.pie:
                 pie_chart_weights(weights, s_title)
                 ef.portfolio_performance(verbose=True)
-                print("")
                 return
 
         print(s_title)
@@ -585,9 +581,7 @@ def efficient_risk(stocks: List[str], other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def efficient_return(stocks: List[str], other_args: List[str]):
@@ -600,9 +594,9 @@ def efficient_return(stocks: List[str], other_args: List[str]):
     other_args : List[str]
         argparse other args
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="effret",
         description="Calculate the 'Markowitz portfolio', minimising volatility for a given target return",
     )
@@ -643,6 +637,7 @@ def efficient_return(stocks: List[str], other_args: List[str]):
     if other_args:
         if "-" not in other_args[0]:
             other_args.insert(0, "-t")
+
     parser.add_argument(
         "-t",
         "--target-return",
@@ -690,9 +685,7 @@ def efficient_return(stocks: List[str], other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def show_ef(stocks: List[str], other_args: List[str]):
@@ -708,11 +701,11 @@ def show_ef(stocks: List[str], other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ef",
         description="""This function plots random portfolios based
-                                     on their risk and returns and shows the efficient frontier.""",
+                    on their risk and returns and shows the efficient frontier.""",
     )
-
     parser.add_argument(
         "-p",
         "--period",
@@ -775,5 +768,4 @@ def show_ef(stocks: List[str], other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
