@@ -1,5 +1,6 @@
 import argparse
 import datetime
+from typing import List
 from datetime import datetime as dt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -35,15 +36,17 @@ span_title_dict = {
 
 
 def login():
+    """Robinhood login"""
     robinhood.login(user, pw)
 
 
 def logoff():
+    """Robinhood logoff"""
     robinhood.logout()
 
 
 def show_holdings():
-
+    """Show Robinhood holdings"""
     holds = robinhood.account.build_holdings()
     stocks = []
     equity = []
@@ -51,9 +54,7 @@ def show_holdings():
         stocks.append(stock)
         equity.append(round(float(data["equity"]), 2))
 
-    print("")
-    print("Stonk\t last price \t prev close \t equity \t % Change")
-    print("")
+    print("\n", "Stonk\t last price \t prev close \t equity \t % Change", "\n")
     for stonk, eq in zip(stocks, equity):
         stonk_data = robinhood.stocks.get_quotes(stonk)[0]
         prev_close = round(float(stonk_data["adjusted_previous_close"]), 2)
@@ -65,24 +66,35 @@ def show_holdings():
             print(colored(to_print, "green"))
         else:
             print(colored(to_print, "red"))
-
     print("")
 
 
 def return_holdings() -> pd.DataFrame:
+    """Return Robinhood holdings
+
+    Returns
+    ----------
+    pd.DataFrame
+        Robinhood holdings
+    """
     holds = robinhood.account.build_holdings()
     return rh_positions_to_df(holds)
 
 
-def plot_historical(l_args):
+def plot_historical(other_args: List[str]):
+    """Historical Portfolio Info
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="Port",
-        description="""
-                            Historical Portfolio Info
-                        """,
+        description="""Historical Portfolio Info""",
     )
-
     parser.add_argument(
         "-s",
         "--span",
@@ -91,7 +103,6 @@ def plot_historical(l_args):
         default="day",
         help="Span of historical data",
     )
-
     parser.add_argument(
         "-i",
         "--interval",
@@ -102,7 +113,7 @@ def plot_historical(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
@@ -161,10 +172,8 @@ def plot_historical(l_args):
         )
         if gtff.USE_ION:
             plt.ion()
-
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
