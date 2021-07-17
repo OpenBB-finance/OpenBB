@@ -1,5 +1,6 @@
 import argparse
 from typing import List
+from datetime import datetime
 from pytrends.request import TrendReq
 import matplotlib.pyplot as plt
 from gamestonk_terminal.helper_funcs import (
@@ -9,7 +10,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def mentions(other_args: List[str], ticker: str, start: str):
+def mentions(other_args: List[str], ticker: str, start: datetime):
     """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
 
     Parameters
