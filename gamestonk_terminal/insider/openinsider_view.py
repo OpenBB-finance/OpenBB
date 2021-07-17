@@ -52,6 +52,7 @@ def print_insider_data(other_args: List[str], type_insider: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog=type_insider,
         description=f"Print {d_open_insider[type_insider].replace('-', ' ')} [Source: OpenInsider]",
     )
@@ -64,6 +65,7 @@ def print_insider_data(other_args: List[str], type_insider: str):
         default=20,
         help="Number of datarows to display",
     )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
