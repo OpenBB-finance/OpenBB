@@ -10,22 +10,24 @@ import papermill as pm
 from gamestonk_terminal import config_terminal as cfg
 
 
-def due_diligence(other_args: List[str], show=True):
+def due_diligence(other_args: List[str], show: bool = True):
     """Due Diligence report
 
     Parameters
     ----------
     other_args : List[str]
         Command line arguments to be processed with argparse
+    show : bool
+        Flag to open browser or not
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="dd",
         description="""
             Run due diligence analysis
         """,
     )
-
     parser.add_argument(
         "-t",
         "--ticker",
@@ -41,11 +43,13 @@ def due_diligence(other_args: List[str], show=True):
 
     try:
         (ns_parser, unknown_args) = parser.parse_known_args(other_args)
+
+        if unknown_args:
+            print(f"The following args couldn't be interpreted: {unknown_args}")
+
     except SystemExit:
         print("")
         return
-    if unknown_args:
-        print(f"The following args couldn't be interpreted: {unknown_args}")
 
     # Update values:
     s_ticker = ns_parser.s_ticker
@@ -65,8 +69,7 @@ def due_diligence(other_args: List[str], show=True):
             ),
         )
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
 
     if show:
