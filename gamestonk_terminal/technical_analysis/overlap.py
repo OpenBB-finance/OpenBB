@@ -16,6 +16,7 @@ register_matplotlib_converters()
 def ema(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ema",
         description="""
             The Exponential Moving Average is a staple of technical
@@ -115,6 +116,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
 def sma(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="sma",
         description="""
             Moving Averages are used to smooth the data in an array to
@@ -193,6 +195,7 @@ def sma(l_args, s_ticker, s_interval, df_stock):
 def vwap(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="vwap",
         description="""
             The Volume Weighted Average Price that measures the average typical price

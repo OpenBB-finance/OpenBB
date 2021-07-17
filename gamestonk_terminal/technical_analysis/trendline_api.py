@@ -7,8 +7,7 @@ from scipy.stats import linregress
 
 
 def load_ticker(ticker: str, start_date: str) -> DataFrame:
-    """
-    Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
+    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
 
     Parameters
     ----------

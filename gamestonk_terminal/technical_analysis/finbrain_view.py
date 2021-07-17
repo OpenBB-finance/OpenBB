@@ -44,6 +44,7 @@ def technical_summary_report(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="summary",
         description="""
             Technical summary report provided by FinBrain's API.

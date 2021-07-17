@@ -16,6 +16,7 @@ register_matplotlib_converters()
 def ad(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ad",
         description="""
             The Accumulation/Distribution Line is similar to the On Balance
@@ -149,8 +150,10 @@ def ad(l_args, s_ticker, s_interval, df_stock):
 
 
 def obv(l_args, s_ticker, s_interval, df_stock):
+    """Technical Analysis with On-Balance Volume indicator"""
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="obv",
         description="""
             The On Balance Volume (OBV) is a cumulative total of the up and
@@ -162,7 +165,6 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
         """,
     )
-
     parser.add_argument(
         "-o",
         "--offset",
@@ -236,9 +238,7 @@ def obv(l_args, s_ticker, s_interval, df_stock):
             plt.ion()
 
         plt.show()
-
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
