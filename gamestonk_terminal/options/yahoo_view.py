@@ -26,7 +26,7 @@ def plot_volume_open_interest(
     op_calls: pd.DataFrame,
     op_puts: pd.DataFrame,
 ):
-    """Options volume and open interest
+    """Plot volume open interest
 
     Parameters
     ----------
@@ -45,6 +45,7 @@ def plot_volume_open_interest(
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="voi",
         description="""
             Plots Volume + Open Interest of calls vs puts. [Source: Yahoo Finance]
@@ -204,12 +205,10 @@ def plot_volume_open_interest(
         if gtff.USE_ION:
             plt.ion()
         plt.show()
-
         print("")
 
     except Exception as e:
         print(e, "\n")
-        return
 
 
 def get_calls_puts_maxpain(
@@ -282,7 +281,7 @@ def plot_calls_volume_open_interest(
     last_adj_close_price: float,
     op_calls: pd.DataFrame,
 ):
-    """Options volume and open interest
+    """Plot calls volume open interest
 
     Parameters
     ----------
@@ -299,6 +298,7 @@ def plot_calls_volume_open_interest(
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="vcalls",
         description="""
             Plots Calls Volume + Open Interest. [Source: Yahoo Finance]
@@ -365,7 +365,6 @@ def plot_calls_volume_open_interest(
 
     except Exception as e:
         print(e, "\n")
-        return
 
 
 def plot_puts_volume_open_interest(
@@ -375,7 +374,7 @@ def plot_puts_volume_open_interest(
     last_adj_close_price: float,
     op_puts: pd.DataFrame,
 ):
-    """Options volume and open interest
+    """Plot puts volume open interest
 
     Parameters
     ----------
@@ -392,6 +391,7 @@ def plot_puts_volume_open_interest(
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="vputs",
         description="""
             Plots Puts Volume + Open Interest. [Source: Yahoo Finance]
@@ -458,12 +458,11 @@ def plot_puts_volume_open_interest(
 
     except Exception as e:
         print(e, "\n")
-        return
 
 
 def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
-    """
-    Function to get the loss at the given expiry
+    """Function to get the loss at the given expiry
+
     Parameters
     ----------
     strike: Union[int,float]
@@ -485,12 +484,13 @@ def get_loss_at_strike(strike: float, chain: pd.DataFrame) -> float:
     itm_puts["loss"] = (itm_puts.index - strike) * itm_puts["OI_put"] * -1
     put_loss = itm_puts.loss.sum()
     loss = call_loss + put_loss
+
     return loss
 
 
 def get_max_pain(chain: pd.DataFrame) -> int:
-    """
-    Returns the max pain for a given call/put dataframe
+    """Returns the max pain for a given call/put dataframe
+
     Parameters
     ----------
     chain: DataFrame
