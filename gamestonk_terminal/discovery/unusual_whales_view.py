@@ -15,6 +15,7 @@ def unusual_whales_view(other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="uwhales",
         description="""Good website for SPACs research. [Source: www.unusualwhales.com]""",
     )

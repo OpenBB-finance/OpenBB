@@ -79,6 +79,7 @@ def latest_news_view(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="latest",
         description="""Latest news articles. [Source: Seeking Alpha]""",
     )
@@ -162,6 +163,7 @@ def trending_news_view(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="trending",
         description="""Trending news articles. [Source: Seeking Alpha]""",
     )

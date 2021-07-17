@@ -18,6 +18,7 @@ def gainers_view(other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="gainers",
         description="Print up to 25 top ticker gainers. [Source: Yahoo Finance]",
     )
@@ -55,6 +56,7 @@ def losers_view(other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="losers",
         description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
     )

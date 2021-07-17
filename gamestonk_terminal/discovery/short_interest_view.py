@@ -22,6 +22,7 @@ def high_short_interest_view(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="high_short",
         description="""
             Print top stocks being more heavily shorted. HighShortInterest.com provides
@@ -64,6 +65,7 @@ def low_float_view(other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="low_float",
         description="""
             Print top stocks with lowest float. LowFloat.com provides a convenient

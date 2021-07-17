@@ -18,6 +18,7 @@ def simply_wallst_view(other_args: List[str]):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="simply_wallst",
         description="""
             Simply Wall Street Research. Opens web browser. Although this does not require
