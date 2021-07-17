@@ -30,6 +30,7 @@ def last_government(other_args: List[str], gov_type: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="last_" + gov_type,
         description=f"Last {gov_type} trading. [Source: www.quiverquant.com]",
     )
@@ -136,6 +137,7 @@ def buy_government(other_args: List[str], gov_type: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="buy_" + gov_type,
         description=f"Top buy {gov_type} trading. [Source: www.quiverquant.com]",
     )
@@ -236,6 +238,7 @@ def sell_government(other_args: List[str], gov_type: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="sell_" + gov_type,
         description=f"Top sell {gov_type} trading. [Source: www.quiverquant.com]",
     )
@@ -318,7 +321,6 @@ def sell_government(other_args: List[str], gov_type: str):
             plt.ion()
 
         plt.show()
-
         print("")
 
     except Exception as e:
@@ -378,6 +380,7 @@ def government_trading(other_args: List[str], ticker: str, gov_type: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog=gov_type,
         description=f"{gov_type} trading. [Source: www.quiverquant.com]",
     )
@@ -445,7 +448,6 @@ def government_trading(other_args: List[str], ticker: str, gov_type: str):
         df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
         plot_government(df_gov, ticker, gov_type)
-
         print("")
 
     except Exception as e:
@@ -466,6 +468,7 @@ def raw_government(other_args: List[str], ticker: str, gov_type: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog=gov_type,
         description=f"Raw {gov_type} trading. [Source: www.quiverquant.com]",
     )
@@ -532,6 +535,7 @@ def last_contracts(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="last_contracts",
         description="Last contracts. [Source: www.quiverquant.com]",
     )
@@ -602,6 +606,7 @@ def sum_contracts(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="sum_contracts",
         description="Sum latest contracts. [Source: www.quiverquant.com]",
     )
@@ -655,6 +660,7 @@ def raw_contracts(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="raw_contracts",
         description="Raw contracts. [Source: www.quiverquant.com]",
     )
@@ -714,6 +720,7 @@ def contracts(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="contracts",
         description="Contracts associated with ticker. [Source: www.quiverquant.com]",
     )
@@ -780,6 +787,7 @@ def qtr_contracts(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="qtr_contracts",
         description="Quarterly-contracts, best regression slope. [Source: www.quiverquant.com]",
     )
@@ -887,6 +895,7 @@ def qtr_contracts_hist(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="qtr_contracts_hist",
         description="Quarterly-contracts historical [Source: www.quiverquant.com]",
     )
@@ -943,6 +952,7 @@ def top_lobbying(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="top_lobbying",
         description="Top lobbying. [Source: www.quiverquant.com]",
     )
@@ -1014,6 +1024,7 @@ def lobbying(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="lobbying",
         description="Lobbying details [Source: www.quiverquant.com]",
     )
