@@ -1,5 +1,6 @@
 import argparse
 import warnings
+from typing import List, Dict
 import pandas as pd
 from prawcore.exceptions import ResponseException
 from requests import HTTPError
@@ -14,9 +15,17 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
-def watchlist(l_args):
+def watchlist(other_args: List[str]):
+    """Print other users watchlist. [Source: Reddit]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="watchlist",
         description="""Print other users watchlist. [Source: Reddit]""",
     )
@@ -31,7 +40,7 @@ def watchlist(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -46,8 +55,8 @@ def watchlist(l_args):
             "wallstreetbets",
         ]
 
-        d_submission = {}
-        d_watchlist_tickers = {}
+        d_submission: Dict = {}
+        d_watchlist_tickers: Dict = {}
         l_watchlist_links = list()
         l_watchlist_author = list()
 
@@ -154,11 +163,19 @@ def watchlist(l_args):
         print("")
 
 
-def popular_tickers(l_args):
+def popular_tickers(other_args: List[str]):
+    """Print latest popular tickers. [Source: Reddit]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="popular",
-        description="""Print latest popular tickers. [Source: Reddit] """,
+        description="""Print latest popular tickers. [Source: Reddit]""",
     )
     parser.add_argument(
         "-n",
@@ -192,7 +209,7 @@ def popular_tickers(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -218,7 +235,7 @@ def popular_tickers(l_args):
             ]
 
         # d_submission = {}
-        d_watchlist_tickers = {}
+        d_watchlist_tickers: Dict = {}
         # l_watchlist_links = list()
         l_watchlist_author = list()
 
@@ -354,11 +371,19 @@ def popular_tickers(l_args):
         print(e, "\n")
 
 
-def spac_community(l_args):
+def spac_community(other_args: List[str]):
+    """Print other users SPACs announcement under subreddit 'SPACs' [Source: Reddit]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="spac_c",
-        description="""Print other users SPACs announcement under subreddit 'SPACs' [Source: Reddit]""",
+        description="""Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]""",
     )
     parser.add_argument(
         "-l",
@@ -379,7 +404,7 @@ def spac_community(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -391,8 +416,8 @@ def spac_community(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        d_submission = {}
-        d_watchlist_tickers = {}
+        d_submission: Dict = {}
+        d_watchlist_tickers: Dict = {}
         l_watchlist_links = list()
         l_watchlist_author = list()
 
@@ -478,11 +503,19 @@ def spac_community(l_args):
         print(e, "\n")
 
 
-def spac(l_args):
+def spac(other_args: List[str]):
+    """Show other users SPACs announcement [Source: Reddit]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="spac",
-        description=""" Show other users SPACs announcement [Reddit] """,
+        description="""Show other users SPACs announcement. [Source: Reddit]""",
     )
     parser.add_argument(
         "-l",
@@ -495,7 +528,7 @@ def spac(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -507,8 +540,8 @@ def spac(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        d_submission = {}
-        d_watchlist_tickers = {}
+        d_submission: Dict = {}
+        d_watchlist_tickers: Dict = {}
         l_watchlist_links = list()
         l_watchlist_author = list()
 
@@ -616,9 +649,17 @@ def spac(l_args):
         print(e, "\n")
 
 
-def wsb_community(l_args):
+def wsb_community(other_args: List[str]):
+    """Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="wsb",
         description="""Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]""",
     )
@@ -641,7 +682,7 @@ def wsb_community(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -653,7 +694,7 @@ def wsb_community(l_args):
             password=cfg.API_REDDIT_PASSWORD,
         )
 
-        d_submission = {}
+        d_submission: Dict = {}
         l_watchlist_links = list()
 
         # psaw_api = PushshiftAPI()
