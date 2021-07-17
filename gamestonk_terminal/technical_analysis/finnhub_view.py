@@ -49,7 +49,6 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
     pattern : pd.DataFrame
         Pattern recognition signal data
     """
-
     l_segments = list()
     for i in pattern:
         a_part = ("", "")
@@ -136,8 +135,9 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
 
     for ix in range(len(pattern.columns)):
         print(f"From {l_segments[ix][0][0]} to {l_segments[ix][-1][0]}")
-        print(f"Pattern: {pattern[0]['patternname']} ({pattern[0]['patterntype']})")
-        print("")
+        print(
+            f"Pattern: {pattern[0]['patternname']} ({pattern[0]['patterntype']})", "\n"
+        )
 
 
 def pattern_recognition_view(other_args: List[str], ticker: str):
@@ -152,6 +152,7 @@ def pattern_recognition_view(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="pr",
         description="""
             Display pattern recognition signals on the data. [Source: https://finnhub.io]
