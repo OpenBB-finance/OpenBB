@@ -25,7 +25,7 @@ analyzer = SentimentIntensityAnalyzer()
 
 
 def load_analyze_tweets(
-    s_ticker: str,
+    ticker: str,
     count: int,
     start_time: Optional[str] = "",
     end_time: Optional[str] = "",
@@ -34,7 +34,7 @@ def load_analyze_tweets(
     Load tweets from twitter API and analyzes using VADER
     Parameters
     ----------
-    s_ticker: str
+    ticker: str
         Ticker to search twitter for
     count: int
         Number of tweets to analyze
@@ -49,7 +49,7 @@ def load_analyze_tweets(
         Dataframe of tweets and sentiment
     """
     params = {
-        "query": fr"(\${s_ticker}) (lang:en)",
+        "query": fr"(\${ticker}) (lang:en)",
         "max_results": str(count),
         "tweet.fields": "created_at,lang",
     }
@@ -90,7 +90,7 @@ def load_analyze_tweets(
     neu = []
 
     for s_tweet in df_tweets["text"].to_list():
-        tweet = clean_tweet(s_tweet, s_ticker)
+        tweet = clean_tweet(s_tweet, ticker)
         sentiments.append(analyzer.polarity_scores(tweet)["compound"])
         pos.append(analyzer.polarity_scores(tweet)["pos"])
         neg.append(analyzer.polarity_scores(tweet)["neg"])
@@ -104,19 +104,19 @@ def load_analyze_tweets(
     return df_tweets
 
 
-def inference(other_args: List[str], s_ticker: str):
-    """
-    Infer sentiment from past n tweets
+def inference(other_args: List[str], ticker: str):
+    """Infer sentiment from past n tweets
+
     Parameters
     ----------
     other_args: List[str]
         Arguments for argparse
-    s_ticker: str
+    ticker: str
         Stock ticker
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="infer",
         description="""
             Print quick sentiment inference from last tweets that contain the ticker.
@@ -124,7 +124,6 @@ def inference(other_args: List[str], s_ticker: str):
             [Source: Twitter]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -140,7 +139,7 @@ def inference(other_args: List[str], s_ticker: str):
         if not ns_parser:
             return
 
-        df_tweets = load_analyze_tweets(s_ticker, ns_parser.n_num)
+        df_tweets = load_analyze_tweets(ticker, ns_parser.n_num)
 
         if df_tweets.empty:
             return
@@ -163,8 +162,8 @@ def inference(other_args: List[str], s_ticker: str):
         percent_neg = len(np.where(pos < neg)[0]) / len(df_tweets)
         total_sent = np.round(np.sum(df_tweets["sentiment"]), 2)
         mean_sent = np.round(np.mean(df_tweets["sentiment"]), 2)
-        print(f"The summed compound sentiment of {s_ticker} is: {total_sent}")
-        print(f"The average compound sentiment of {s_ticker} is: {mean_sent}")
+        print(f"The summed compound sentiment of {ticker} is: {total_sent}")
+        print(f"The average compound sentiment of {ticker} is: {mean_sent}")
         print(
             f"Of the last {len(df_tweets)} tweets, {100*percent_pos:.2f} % had a higher positive sentiment"
         )
@@ -177,26 +176,25 @@ def inference(other_args: List[str], s_ticker: str):
         print(e, "\n")
 
 
-def sentiment(other_args: List[str], s_ticker: str):
-    """
-    Plot sentiments from ticker
+def sentiment(other_args: List[str], ticker: str):
+    """Plot sentiments from ticker
+
     Parameters
     ----------
     other_args: List[str]
         Argparse arguments
-    s_ticker: str
+    ticker: str
         Stock to get sentiment for
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="sen",
         description="""
             Plot in-depth sentiment predicted from tweets from last days
             that contain pre-defined ticker. [Source: Twitter]
         """,
     )
-
     # in reality this argument could be 100, but after testing it takes too long
     # to compute which may not be acceptable
     parser.add_argument(
@@ -251,7 +249,7 @@ def sentiment(other_args: List[str], s_ticker: str):
             dt_past = dt_recent - timedelta(minutes=60)
 
             temp = load_analyze_tweets(
-                s_ticker,
+                ticker,
                 ns_parser.n_tweets,
                 start_time=dt_past.strftime(dtformat),
                 end_time=dt_recent.strftime(dtformat),
@@ -328,7 +326,7 @@ def sentiment(other_args: List[str], s_ticker: str):
         ax[1].set_xticks(xlocations)
         ax[1].set_xticklabels(xlabels)
         plt.suptitle(
-            f"Twitter's {s_ticker} total compound sentiment over time is {np.sum(df_tweets['sentiment'])}"
+            f"Twitter's {ticker} total compound sentiment over time is {np.sum(df_tweets['sentiment'])}"
         )
         if gtff.USE_ION:
             plt.ion()
