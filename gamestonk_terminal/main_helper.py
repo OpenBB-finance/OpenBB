@@ -41,15 +41,15 @@ def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
 
     Parameters
     ----------
-    other_args: List[str]
+    other_args : List[str]
         Argparse arguments
-    s_ticker: str
+    s_ticker : str
         Ticker
-    s_start: str
+    s_start : str
         Start date
-    s_interval: str
+    s_interval : str
         Interval to get data for
-    df_stock: pd.DataFrame
+    df_stock : pd.DataFrame
         Preloaded dataframe
 
     Returns
@@ -88,15 +88,15 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
 
     Parameters
     ----------
-    other_args: List[str]
+    other_args : List[str]
         Argparse arguments
-    s_ticker: str
+    s_ticker : str
         Ticker
-    s_start: str
+    s_start : str
         Start date
-    s_interval: str
+    s_interval : str
         Interval to get data for
-    df_stock: pd.DataFrame
+    df_stock : pd.DataFrame
         Preloaded dataframe
 
     Returns
@@ -458,9 +458,9 @@ def quote(other_args: List[str], s_ticker: str):
 
     Parameters
     ----------
-    other_args: List[str]
+    other_args : List[str]
         Argparse arguments
-    s_ticker: str
+    s_ticker : str
         Ticker
     """
     parser = argparse.ArgumentParser(
@@ -564,13 +564,13 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
 
     Parameters
     ----------
-    other_args: List[str]
+    other_args : List[str]
         Argparse arguments
-    s_ticker: str
+    s_ticker : str
         Ticker to load
-    s_interval: str
+    s_interval : str
         Interval tto get data for
-    df_stock: pd.Dataframe
+    df_stock : pd.Dataframe
         Preloaded dataframe to plot
     """
     parser = argparse.ArgumentParser(

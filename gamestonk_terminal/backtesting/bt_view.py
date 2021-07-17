@@ -18,11 +18,11 @@ def simple_ema(ticker: str, start_date: Union[str, datetime], other_args: List[s
 
     Parameters
     ----------
-    ticker: str
+    ticker : str
         Stock to test
-    start: Union[str, datetime]
+    start : Union[str, datetime]
         Backtest start date.  Can be either string or datetime
-    other_args: List[str]
+    other_args : List[str]
         List of argparse arguments
     """
     parser = argparse.ArgumentParser(
@@ -99,11 +99,11 @@ def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[st
 
     Parameters
     ----------
-    ticker: str
+    ticker : str
         Stock to test
-    start: Union[str, datetime]
+    start : Union[str, datetime]
         Backtest start date.  Can be either string or datetime
-    other_args: List[str]
+    other_args : List[str]
         List of argparse arguments
     """
     parser = argparse.ArgumentParser(
@@ -206,20 +206,16 @@ def ema_cross(ticker: str, start_date: Union[str, datetime], other_args: List[st
 
 
 def rsi_strat(ticker: str, start_date: Union[datetime, str], other_args: List[str]):
-    """
-    Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
+    """Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
+
     Parameters
     ----------
-    ticker: str
+    ticker : str
         Stock to test
-    start: Union[str, datetime]
+    start : Union[str, datetime]
         Backtest start date.  Can be either string or datetime
-    other_args: List[str]
+    other_args : List[str]
         List of argparse arguments
-
-    Returns
-    -------
-    Plot and a printout of backtest
     """
     parser = argparse.ArgumentParser(
         add_help=False,
