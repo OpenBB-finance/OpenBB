@@ -41,6 +41,18 @@ default_columns = [
 
 
 def check_valid_option_chains_headers(headers: str) -> List[str]:
+    """Check valid option chains headers
+
+    Parameters
+    ----------
+    headers : str
+        Option chains headers
+
+    Returns
+    ----------
+    List[str]
+        List of columns string
+    """
     columns = [str(item) for item in headers.split(",")]
 
     for header in columns:
@@ -51,8 +63,8 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
 
 
 def process_chains(response: requests.models.Response) -> pd.DataFrame:
-    """
-    Function to take in the requests.get and return a DataFrame
+    """Function to take in the requests.get and return a DataFrame
+
     Parameters
     ----------
     response: requests.models.Response
@@ -76,7 +88,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
 
 
 def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
-    """
+    """Display option chains [Source: Tradier]"
 
     Parameters
     ----------
@@ -87,7 +99,7 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
 
     Returns
     -------
-    chains: pd.DataFrame
+    pd.DataFrame
         Dataframe with options for the gievn Symbol and Expiration date
     """
     params = {"symbol": symbol, "expiration": expiry, "greeks": "true"}
@@ -108,13 +120,24 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
 
 
 def display_chains(symbol: str, expiry: str, other_args: List[str]):
+    """Check valid option chains headers
 
+    Parameters
+    ----------
+    headers : str
+        Option chains headers
+
+    Returns
+    ----------
+    List[str]
+        List of columns string
+    """
     parser = argparse.ArgumentParser(
         prog="chains",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Display option chains [Source: Tradier]",
     )
-
     parser.add_argument(
         "--calls",
         action="store_true",
@@ -122,7 +145,6 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
         dest="calls_only",
         help="Flag to show calls only",
     )
-
     parser.add_argument(
         "--puts",
         action="store_true",
@@ -237,4 +259,3 @@ def display_chains(symbol: str, expiry: str, other_args: List[str]):
 
     except Exception as e:
         print(e, "\n")
-        return
