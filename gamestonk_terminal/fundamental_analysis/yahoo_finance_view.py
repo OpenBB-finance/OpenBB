@@ -24,9 +24,9 @@ def info(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="info",
         description="""
             Print information about the company. The following fields are expected:
@@ -96,9 +96,7 @@ def info(other_args: List[str], ticker: str):
             print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def shareholders(other_args: List[str], ticker: str):
@@ -114,6 +112,7 @@ def shareholders(other_args: List[str], ticker: str):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="shrs",
         description="""Print Major, institutional and mutualfunds shareholders.
         [Source: Yahoo Finance]""",
@@ -170,13 +169,10 @@ def shareholders(other_args: List[str], ticker: str):
             lambda x: str(f"{100 * x:.2f}") + " %"
         )
         print(df_mutualfund_shareholders.to_string(index=False))
-
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def sustainability(other_args: List[str], ticker: str):
@@ -189,9 +185,9 @@ def sustainability(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="sust",
         description="""
             Print sustainability values of the company. The following fields are expected:
@@ -242,9 +238,7 @@ def sustainability(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def calendar_earnings(other_args: List[str], ticker: str):
@@ -257,9 +251,9 @@ def calendar_earnings(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="cal",
         description="""
             Calendar earnings of the company. Including revenue and earnings estimates.
@@ -299,6 +293,4 @@ def calendar_earnings(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
