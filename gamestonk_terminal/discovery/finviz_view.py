@@ -34,18 +34,17 @@ def map_sp500_view(other_args: List[str]):
     Parameters
     ----------
     other_args : List[str]
-        argparse other args - ["-p", "6m", "-t", "sp500"]
+        argparse other args
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="map",
         description="""
             Performance index stocks map categorized by sectors and industries.
             Size represents market cap. Opens web-browser. [Source: Finviz]
         """,
     )
-
     parser.add_argument(
         "-p",
         "--period",
@@ -71,14 +70,18 @@ def map_sp500_view(other_args: List[str]):
     d_period = {"1d": "", "1w": "w1", "1m": "w4", "3m": "w13", "6m": "w26", "1y": "w52"}
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    webbrowser.open(
-        f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}"
-    )
-    print("")
+        webbrowser.open(
+            f"https://finviz.com/map.ashx?t={d_type[ns_parser.s_type]}&st={d_period[ns_parser.s_period]}"
+        )
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
 
 
 def get_valuation_performance_data(group: str, data_type: str):
@@ -86,25 +89,19 @@ def get_valuation_performance_data(group: str, data_type: str):
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args
     group : str
-        select group to see data between sectors, industry or country
+       sectors, industry or country
     data_type : str
-        select data type to see data between valuation or performance
+       valuation or performance
 
     Returns
     ----------
     pd.DataFrame
         dataframe with valuation/performance data
     """
-
     if data_type == "valuation":
-        df_group = valuation.Valuation().ScreenerView(group=group)
-    elif data_type == "performance":
-        df_group = performance.Performance().ScreenerView(group=group)
-
-    return df_group
+        return valuation.Valuation().ScreenerView(group=group)
+    return performance.Performance().ScreenerView(group=group)
 
 
 def get_spectrum_data(group: str):
@@ -112,14 +109,9 @@ def get_spectrum_data(group: str):
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args
     group : str
-        select group to see data between sectors, industry or country
-    data_type : str
-        select data type to see data between valuation or performance
+       sectors, industry or country
     """
-
     spectrum.Spectrum().ScreenerView(group=group)
 
 
@@ -133,9 +125,9 @@ def view_group_data(other_args: List[str], data_type: str):
     data_type : str
         select data type to see data between valuation, performance and spectrum
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="group_data",
         description="""
             View group (sectors, industry or country) valuation/performance/spectrum data. [Source: Finviz]
@@ -160,7 +152,7 @@ def view_group_data(other_args: List[str], data_type: str):
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
-            return None
+            return ""
 
         if isinstance(ns_parser.group, List):
             ns_parser.group = ns_parser.group[0]
@@ -175,17 +167,15 @@ def view_group_data(other_args: List[str], data_type: str):
             img = Image.open(ns_parser.group + ".jpg")
             img.show()
 
-            print("")
             return ns_parser.group
 
         else:
             print(
                 "Invalid data type. Choose between valuation, performance and spectrum."
             )
-
         print("")
-        return None
+        return ""
 
     except SystemExit:
         print("")
-        return None
+        return ""
