@@ -27,9 +27,9 @@ def overview(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="overview",
         description="""
             Prints an overview about the company. The following fields are expected:
@@ -100,9 +100,7 @@ def overview(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def key(other_args: List[str], ticker: str):
@@ -115,9 +113,9 @@ def key(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="key",
         description="""
             Gives main key metrics about the company (it's a subset of the Overview data from Alpha
@@ -169,16 +167,12 @@ def key(other_args: List[str], ticker: str):
                 "Beta",
             ]
             print(df_fa.loc[as_key_metrics].to_string(header=False))
-            print("")
         else:
             print(f"Error: {result.status_code}")
-
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def income_statement(other_args: List[str], ticker: str):
@@ -191,9 +185,9 @@ def income_statement(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="income",
         description="""
             Prints a complete income statement over time. This can be either quarterly or annually.
@@ -206,7 +200,6 @@ def income_statement(other_args: List[str], ticker: str):
             marketing expenses, Total other income expenses net, Weighted average shs out, Weighted
             average shs out dil [Source: Alpha Vantage]""",
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -248,9 +241,7 @@ def income_statement(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def balance_sheet(other_args: List[str], ticker: str):
@@ -263,9 +254,9 @@ def balance_sheet(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="balance",
         description="""
             Prints a complete balance sheet statement over time. This can be either quarterly or
@@ -284,7 +275,6 @@ def balance_sheet(other_args: List[str], ticker: str):
             [Source: Alpha Vantage]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -328,9 +318,7 @@ def balance_sheet(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def cash_flow(other_args: List[str], ticker: str):
@@ -343,9 +331,9 @@ def cash_flow(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="cash",
         description="""
             Prints a complete cash flow statement over time. This can be either quarterly or
@@ -362,7 +350,6 @@ def cash_flow(other_args: List[str], ticker: str):
             compensation. [Source: Alpha Vantage]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -404,9 +391,7 @@ def cash_flow(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def earnings(other_args: List[str], ticker: str):
@@ -419,16 +404,15 @@ def earnings(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="earnings",
         description="""
             Print earnings dates and reported EPS of the company. The following fields are
             expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
         """,
     )
-
     parser.add_argument(
         "-q",
         "--quarter",
@@ -502,16 +486,27 @@ def earnings(other_args: List[str], ticker: str):
             print("")
         else:
             print(f"Error: {result.status_code}")
-
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
+    """Clean fundamentals dataframe
+
+    Parameters
+    ----------
+    df_fa : pd.DataFrame
+        Fundamentals dataframe
+    num : int
+        Number of data rows to display
+
+    Returns
+    ----------
+    pd.DataFrame
+        Clean dataframe to output
+    """
     # pylint: disable=no-member
     df_fa = df_fa.set_index("fiscalDateEnding")
     df_fa = df_fa.head(n=num).T
@@ -520,4 +515,5 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
     df_fa = df_fa.applymap(lambda x: long_number_format(x))
     clean_df_index(df_fa)
     df_fa.columns.name = "Fiscal Date Ending"
+
     return df_fa
