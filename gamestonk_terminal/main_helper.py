@@ -573,7 +573,6 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
     df_stock: pd.Dataframe
         Preloaded dataframe to plot
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
