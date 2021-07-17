@@ -57,7 +57,9 @@ def getFINRAweeks(tier, is_ats) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> Tuple[int, List]:
+def getFINRAdata(
+    weekStartDate: str, tier: str, ticker: str, is_ats: bool
+) -> Tuple[int, List]:
     """Get FINRA data
 
     Parameters
@@ -130,7 +132,7 @@ def getFINRAdata(weekStartDate, tier, ticker, is_ats) -> Tuple[int, List]:
     )
 
 
-def getTickerFINRAdata(ticker) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get all FINRA data associated with a ticker
 
     Parameters
@@ -200,7 +202,6 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     otc : pd.DataFrame
         OTC (Non-ATS) Data
     """
-
     _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     plt.subplot(3, 1, (1, 2))
@@ -282,10 +283,10 @@ def dark_pool(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="dp",
         description="Display barchart of dark pool (ATS) and OTC (Non ATS) data [Source: FINRA]",
     )
-
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -300,6 +301,4 @@ def dark_pool(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
