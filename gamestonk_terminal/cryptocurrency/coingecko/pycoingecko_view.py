@@ -10,7 +10,11 @@ from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    parse_known_args_and_warn,
+    plot_autoscale,
+)
 from gamestonk_terminal.config_plot import PLOT_DPI
 import gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_overview_model as gecko
 import gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model as gecko_coin
@@ -33,19 +37,16 @@ def load(other_args: List[str]):
     ----------
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="load",
-        description="""
-                        Load cryptocurrency, from CoinGecko.
-                        You will have access to a lot of statistics on that coin like price data,
-                        coin development stats, social media and many others. Loading coin
-                        also will open access to technical analysis menu.
-                        """,
+        description="""Load cryptocurrency, from CoinGecko.
+                    You will have access to a lot of statistics on that coin like price data,
+                    coin development stats, social media and many others. Loading coin
+                    also will open access to technical analysis menu.""",
     )
-
     parser.add_argument(
         "-c",
         "--coin",
@@ -67,23 +68,18 @@ def load(other_args: List[str]):
         if not ns_parser:
             return
 
-        try:
-            coin = gecko_coin.Coin(ns_parser.coin)
-        except KeyError:
-            print(f"Could not find coin with the id: {ns_parser.coin}")
-            print("")
-            return None
-
+        coin = gecko_coin.Coin(ns_parser.coin)
         print("")
         return coin
 
+    except KeyError:
+        print(f"Could not find coin with the id: {ns_parser.coin}", "\n")
+        return None
     except SystemExit:
         print("")
         return None
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return None
 
 
@@ -96,10 +92,10 @@ def chart(coin: gecko_coin.Coin, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="chart",
         description="""
                         Display chart for loaded coin. You can specify currency vs which you want
@@ -109,11 +105,9 @@ def chart(coin: gecko_coin.Coin, other_args: List[str]):
                         in last 90 days range use `chart --vs eth --days 90`
                         """,
     )
-
     parser.add_argument(
         "--vs", default="usd", dest="vs", help="Currency to display vs coin"
     )
-
     parser.add_argument(
         "-d", "--days", default=30, dest="days", help="Number of days to get data for"
     )
@@ -140,10 +134,8 @@ def chart(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def ta(coin: gecko_coin.Coin, other_args: List[str]):
@@ -159,6 +151,7 @@ def ta(coin: gecko_coin.Coin, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ta",
         description="""
                         Loads data for technical analysis. You can specify currency vs which you want
@@ -168,11 +161,9 @@ def ta(coin: gecko_coin.Coin, other_args: List[str]):
                         in last 90 days range use `ta --vs eth --days 90`
                         """,
     )
-
     parser.add_argument(
         "--vs", default="usd", dest="vs", help="Currency to display vs coin"
     )
-
     parser.add_argument(
         "-d", "--days", default=30, dest="days", help="Number of days to get data for"
     )
@@ -189,10 +180,8 @@ def ta(coin: gecko_coin.Coin, other_args: List[str]):
     except SystemExit:
         print("")
         return None, None
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return None, None
 
 
@@ -209,6 +198,7 @@ def info(coin: gecko_coin.Coin, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="info",
         description="""
                         Shows basic information about loaded coin like:
@@ -239,10 +229,8 @@ def info(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def web(coin: gecko_coin.Coin, other_args: List[str]):
@@ -258,11 +246,10 @@ def web(coin: gecko_coin.Coin, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="web",
-        description="""
-                        Websites found for given Coin. You can find there urls to
-                        homepage, forum, announcement site and others.
-                        """,
+        description="""Websites found for given Coin. You can find there urls to
+                       homepage, forum, announcement site and others.""",
     )
 
     try:
@@ -285,10 +272,8 @@ def web(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def social(coin: gecko_coin.Coin, other_args: List[str]):
@@ -300,15 +285,13 @@ def social(coin: gecko_coin.Coin, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="social",
-        description="""
-                        Shows social media corresponding to loaded coin. You can find there name of
-                        telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.
-                        """,
+        description="""Shows social media corresponding to loaded coin. You can find there name of
+                    telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.""",
     )
 
     try:
@@ -331,10 +314,8 @@ def social(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def dev(coin: gecko_coin.Coin, other_args: List[str]):
@@ -346,17 +327,15 @@ def dev(coin: gecko_coin.Coin, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="dev",
-        description="""
-                       Developers data for loaded coin. If the development data is available you can see
+        description="""Developers data for loaded coin. If the development data is available you can see
                        how the code development of given coin is going on.
                        There are some statistics that shows number of stars, forks, subscribers, pull requests,
-                       commits, merges, contributors on github.
-                        """,
+                       commits, merges, contributors on github.""",
     )
 
     try:
@@ -379,10 +358,8 @@ def dev(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def ath(coin: gecko_coin.Coin, other_args: List[str]):
@@ -394,18 +371,16 @@ def ath(coin: gecko_coin.Coin, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ath",
-        description="""
-                        All time high data for loaded coin. You can find there most important metrics regarding
-                        ath of coin price like:
-                        current_price_btc,  ,current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd,
-                        ath_date_btc, ath_date_eth, ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc,
-                        ath_change_percentage_eth,  ath_change_percentage_usd
-                        """,
+        description="""All time high data for loaded coin. You can find there most important metrics regarding
+                    ath of coin price like:
+                    current_price_btc, current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd,
+                    ath_date_btc, ath_date_eth, ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc,
+                    ath_change_percentage_eth, ath_change_percentage_usd""",
     )
 
     try:
@@ -428,10 +403,8 @@ def ath(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def atl(coin: gecko_coin.Coin, other_args: List[str]):
@@ -443,10 +416,10 @@ def atl(coin: gecko_coin.Coin, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="atl",
         description="""
                         All time low data for loaded coin. You can find there most important metrics regarding
@@ -477,10 +450,8 @@ def atl(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def score(coin: gecko_coin.Coin, other_args: List[str]):
@@ -496,6 +467,7 @@ def score(coin: gecko_coin.Coin, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="score",
         description="""
                         In this view you can find different kind of scores for loaded coin.
@@ -528,10 +500,8 @@ def score(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def bc(coin: gecko_coin.Coin, other_args: List[str]):
@@ -547,6 +517,7 @@ def bc(coin: gecko_coin.Coin, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="bc",
         description="""
                         Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io
@@ -574,10 +545,8 @@ def bc(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def market(coin: gecko_coin.Coin, other_args: List[str]):
@@ -593,6 +562,7 @@ def market(coin: gecko_coin.Coin, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="market",
         description="""
                         Market data for loaded coin. There you find metrics like:
@@ -625,31 +595,28 @@ def market(coin: gecko_coin.Coin, other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def holdings_overview(other_args: List[str]):
-    """
-    Shows overview of public companies that holds ethereum or bitcoin from www.coingecko.com
+    """Shows overview of public companies that holds ethereum or bitcoin from www.coingecko.com
+
     Parameters
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="hold",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows overview of public companies that holds ethereum or bitcoin.
         You can find there most important metrics like:
         Total Bitcoin Holdings, Total Value (USD), Public Companies Bitcoin Dominance, Companies
         """,
     )
-
     parser.add_argument(
         "-c",
         "--coin",
@@ -678,12 +645,12 @@ def holdings_overview(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def holdings_companies_list(other_args: List[str]):
     """Shows Ethereum/Bitcoin Holdings by Public Companies from www.coingecko.com
+
     Track publicly traded companies around the world that are buying ethereum as part of corporate treasury
 
     Parameters
@@ -695,6 +662,7 @@ def holdings_companies_list(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="hold_comp",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Track publicly traded companies around the world that
         are buying ethereum or bitcoin as part of corporate treasury:
         rank, company, ticker, country, total_btc, entry_value, today_value, pct_of_supply
@@ -702,7 +670,6 @@ def holdings_companies_list(other_args: List[str]):
         In this case you will see only columns like rank, company, url
         """,
     )
-
     parser.add_argument(
         "-c",
         "--coin",
@@ -712,7 +679,6 @@ def holdings_companies_list(other_args: List[str]):
         default="bitcoin",
         choices=["ethereum", "bitcoin"],
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -746,8 +712,7 @@ def holdings_companies_list(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def gainers(other_args: List[str]):
@@ -757,11 +722,11 @@ def gainers(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="gainers",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows Largest Gainers - coins which gain the most in given period.
         You can use parameter --period to set which timeframe are you interested in. eg. 1h, 24h, 7d, 14d, 30d, 60d, 1y
@@ -771,7 +736,6 @@ def gainers(other_args: List[str]):
         There is --links flag, which will display one additional column you all urls for coins.
         """,
     )
-
     parser.add_argument(
         "-p",
         "--period",
@@ -781,7 +745,6 @@ def gainers(other_args: List[str]):
         default="1h",
         choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -790,7 +753,6 @@ def gainers(other_args: List[str]):
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -800,7 +762,6 @@ def gainers(other_args: List[str]):
         default="rank",
         choices=["rank", "symbol", "name", "volume", "price", "change"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -808,7 +769,6 @@ def gainers(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -847,8 +807,7 @@ def gainers(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def losers(other_args: List[str]):
@@ -863,6 +822,7 @@ def losers(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="losers",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows Largest Losers - coins which price dropped the most in given period
         You can use parameter --period to set which timeframe are you interested in. eg. 1h, 24h, 7d, 14d, 30d, 60d, 1y
@@ -872,7 +832,6 @@ def losers(other_args: List[str]):
         Flag --links will display one additional column with all coingecko urls for listed coins.
         """,
     )
-
     parser.add_argument(
         "-p",
         "--period",
@@ -882,16 +841,14 @@ def losers(other_args: List[str]):
         default="1h",
         choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -901,7 +858,6 @@ def losers(other_args: List[str]):
         default="rank",
         choices=["rank", "symbol", "name", "volume", "price", "change"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -909,7 +865,6 @@ def losers(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -948,8 +903,7 @@ def losers(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def discover(category: str, other_args: List[str]):
@@ -965,11 +919,11 @@ def discover(category: str, other_args: List[str]):
         one from list: [trending, most_voted, positive_sentiment, most_visited]
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog=f"{category}",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description=f"""Discover {category} coins.
         Use --top parameter to display only top N number of records,
         You can sort by rank, name, price_btc, price_usd, using --sort parameter and also with --descend flag
@@ -978,16 +932,14 @@ def discover(category: str, other_args: List[str]):
         {category} will display: rank, name, price_usd, price_btc
         """,
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -997,7 +949,6 @@ def discover(category: str, other_args: List[str]):
         default="rank",
         choices=["rank", "name", "price_usd", "price_btc"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1005,7 +956,6 @@ def discover(category: str, other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1042,8 +992,7 @@ def discover(category: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def news(other_args: List[str]):
@@ -1053,17 +1002,16 @@ def news(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="news",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Shows latest crypto news from CoinGecko. "
         "You will see index, title, author, posted columns. "
         "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
         "To display urls to news use --links flag.",
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -1072,7 +1020,6 @@ def news(other_args: List[str]):
         help="top N number of news >=10",
         default=50,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1082,7 +1029,6 @@ def news(other_args: List[str]):
         default="index",
         choices=["index", "title", "author", "posted"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1090,7 +1036,6 @@ def news(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1130,41 +1075,37 @@ def news(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def categories(other_args: List[str]):
     """Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
+
     The cryptocurrency category ranking is based on market capitalization.
 
     Parameters
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="categories",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
         stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
         "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
         "To display urls to news use --links flag.",
-        Displays: rank, name, change_1h, change_24h, change_7d, market_cap, volume_24h, n_of_coins
-
-        """,
+        Displays: rank, name, change_1h, change_24h, change_7d, market_cap, volume_24h, n_of_coins""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number of news >=10",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1183,7 +1124,6 @@ def categories(other_args: List[str]):
             "n_of_coins",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1191,7 +1131,6 @@ def categories(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1227,8 +1166,7 @@ def categories(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def recently_added(other_args: List[str]):
@@ -1238,28 +1176,25 @@ def recently_added(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="recently",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows recently added coins on CoinGecko. You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, symbol, price, change_24h, change_1h, added with --sort
         and also with --descend flag to sort descending.
-        Flag --links will display urls
-        """,
+        Flag --links will display urls""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1269,7 +1204,6 @@ def recently_added(other_args: List[str]):
         default="rank",
         choices=["rank", "name", "symbol", "price", "change_24h", "change_1h", "added"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1277,7 +1211,6 @@ def recently_added(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1313,8 +1246,7 @@ def recently_added(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def stablecoins(other_args: List[str]):
@@ -1329,25 +1261,23 @@ def stablecoins(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="stables",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows stablecoins by market capitalization.
         Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
         like the U.S. dollar or to a commodity's price such as gold.
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, symbol, price, change_24h, exchanges, market_cap, change_30d with --sort
         and also with --descend flag to sort descending.
-        Flag --links will display stablecoins urls
-    """,
+        Flag --links will display stablecoins urls""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1366,7 +1296,6 @@ def stablecoins(other_args: List[str]):
             "change_30d",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1374,7 +1303,6 @@ def stablecoins(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1410,8 +1338,7 @@ def stablecoins(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def yfarms(other_args: List[str]):
@@ -1421,29 +1348,26 @@ def yfarms(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="yfarms",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Yield Farming Pools by Value Locked
         Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency holdings.
         In simple terms, it means locking up cryptocurrencies and getting rewards.
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, value_locked, return_year with --sort parameter
-        and also with --descend flag to sort descending.
-        """,
+        and also with --descend flag to sort descending.""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="Top N of records. Default 20",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1453,7 +1377,6 @@ def yfarms(other_args: List[str]):
         default="rank",
         choices=["rank", "name", "value_locked", "return_year"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1482,8 +1405,7 @@ def yfarms(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def top_volume_coins(other_args: List[str]):
@@ -1493,28 +1415,25 @@ def top_volume_coins(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="top_volume",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Coins by Trading Volume.
         You can display only top N number of coins with --top parameter.
         You can sort data by on of columns rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,
         market_cap with --sort parameter and also with --descend flag to sort descending.
-        Displays columns: rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,market_cap
-        """,
+        Displays columns: rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,market_cap""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="Top N of records. Default 20",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1534,7 +1453,6 @@ def top_volume_coins(other_args: List[str]):
             "market_cap",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1564,8 +1482,7 @@ def top_volume_coins(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def top_defi_coins(other_args: List[str]):
@@ -1582,25 +1499,23 @@ def top_defi_coins(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_defi",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top DeFi Coins by Market Capitalization
         DeFi or Decentralized Finance refers to financial services that are built
         on top of distributed networks with no central intermediaries.
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, symbol, price, change_24h, change_1h, change_7d,
         volume_24h, market_cap with --sort and also with --descend flag to sort descending.
-        Flag --links will display  urls
-                    """,
+        Flag --links will display  urls""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1620,7 +1535,6 @@ def top_defi_coins(other_args: List[str]):
             "market_cap",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1628,7 +1542,6 @@ def top_defi_coins(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1663,8 +1576,7 @@ def top_defi_coins(other_args: List[str]):
         )
         print("")
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def top_dex(other_args: List[str]):
@@ -1679,25 +1591,23 @@ def top_dex(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_dex",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows Top Decentralized Exchanges on CoinGecko by Trading Volume
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
         most_traded_pairs, market_share_by_volume with --sort and also with --descend flag to sort descending.
         Display columns:
-             rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
-        """,
+             rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1716,7 +1626,6 @@ def top_dex(other_args: List[str]):
             "n_pairs",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1744,9 +1653,9 @@ def top_dex(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def top_nft(other_args: List[str]):
@@ -1764,6 +1673,7 @@ def top_nft(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="top_nft",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top NFT Coins by Market Capitalization
         NFT (Non-fungible Token) refers to digital assets with unique characteristics.
         Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
@@ -1771,20 +1681,16 @@ def top_nft(other_args: List[str]):
         You can sort data by rank, name, symbol, price, change_24h, change_1h, change_7d,
         volume_24h, market_cap with --sort and also with --descend flag to sort descending.
         Flag --links will display urls
-        Displays : rank, name, symbol, price, change_1h, change_24h, change_7d, market_cap, url
-
-        """,
+        Displays : rank, name, symbol, price, change_1h, change_24h, change_7d, market_cap, url""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1804,7 +1710,6 @@ def top_nft(other_args: List[str]):
             "market_cap",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1812,7 +1717,6 @@ def top_nft(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1846,9 +1750,9 @@ def top_nft(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def nft_of_the_day(other_args: List[str]):
@@ -1861,18 +1765,16 @@ def nft_of_the_day(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="nft_today",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows NFT of the day
         NFT (Non-fungible Token) refers to digital assets with unique characteristics.
         Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
         With nft_today command you will display:
-            author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.
-
-        """,
+            author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.""",
     )
 
     try:
@@ -1891,9 +1793,9 @@ def nft_of_the_day(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def nft_market_status(other_args: List[str]):
@@ -1911,11 +1813,11 @@ def nft_market_status(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="nft_market",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows NFT market status
         NFT (Non-fungible Token) refers to digital assets with unique characteristics.
         Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
-        Displays:
-            NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
+        Displays: NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
         """,
     )
 
@@ -1935,9 +1837,9 @@ def nft_market_status(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def exchanges(other_args: List[str]):
@@ -1952,24 +1854,22 @@ def exchanges(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="exchanges",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Exchanges
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, trust_score, id, name, country, established, trade_volume_24h_btc with --sort
         and also with --descend flag to sort descending.
         Flag --links will display urls.
-        Displays: rank, trust_score, id, name, country, established, trade_volume_24h_btc
-        """,
+        Displays: rank, trust_score, id, name, country, established, trade_volume_24h_btc""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1987,7 +1887,6 @@ def exchanges(other_args: List[str]):
             "trade_volume_24h_btc",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1995,7 +1894,6 @@ def exchanges(other_args: List[str]):
         dest="descend",
         default=True,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -2029,9 +1927,9 @@ def exchanges(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def platforms(other_args: List[str]):
@@ -2041,29 +1939,26 @@ def platforms(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="platforms",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
         e.g Celsius, Nexo, Crypto.com, Aave and others.
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, category, centralized with --sort
         and also with --descend flag to sort descending.
-        Displays: rank, name, category, centralized, website_url
-        """,
+        Displays: rank, name, category, centralized, website_url""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -2073,7 +1968,6 @@ def platforms(other_args: List[str]):
         default="rank",
         choices=["rank", "name", "category", "centralized"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -2081,6 +1975,7 @@ def platforms(other_args: List[str]):
         dest="descend",
         default=True,
     )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -2100,9 +1995,9 @@ def platforms(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def products(other_args: List[str]):
@@ -2112,28 +2007,25 @@ def products(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="products",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage  with --sort
         and also with --descend flag to sort descending.
-        Displays: rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage
-        """,
+        Displays: rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -2149,7 +2041,6 @@ def products(other_args: List[str]):
             "borrow_rate_percentage",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -2176,9 +2067,9 @@ def products(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def indexes(other_args: List[str]):
@@ -2188,11 +2079,11 @@ def indexes(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="indexes",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows list of crypto indexes from CoinGecko.
         Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
         You can display only top N number of coins with --top parameter.
@@ -2201,16 +2092,14 @@ def indexes(other_args: List[str]):
         Displays: rank, name, id, market, last, is_multi_asset_composite
         """,
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -2220,7 +2109,6 @@ def indexes(other_args: List[str]):
         default="rank",
         choices=["rank", "name", "id", "market", "last", "is_multi_asset_composite"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -2248,9 +2136,9 @@ def indexes(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def derivatives(other_args: List[str]):
@@ -2260,11 +2148,11 @@ def derivatives(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="derivatives",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows list of crypto derivatives from CoinGecko
         Crypto derivatives are secondary contracts or financial tools that derive their value from a primary
         underlying asset. In this case, the primary asset would be a cryptocurrency such as Bitcoin.
@@ -2273,20 +2161,16 @@ def derivatives(other_args: List[str]):
         You can sort by rank, market, symbol, price, pct_change_24h, contract_type, basis, spread,
         funding_rate, volume_24h with --sort and also with --descend flag to set it to sort descending.
         Displays:
-            rank, market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, volume_24h
-
-        """,
+            rank, market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, volume_24h""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -2307,7 +2191,6 @@ def derivatives(other_args: List[str]):
             "volume_24h",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -2335,9 +2218,9 @@ def derivatives(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def exchange_rates(other_args: List[str]):
@@ -2347,27 +2230,24 @@ def exchange_rates(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="ex_rates",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows list of crypto, fiats, commodity exchange rates from CoinGecko
         You can look on only top N number of records with --top,
-        You can sort by index,name,unit, value, type, and also use --descend flag to sort descending.
-        """,
+        You can sort by index,name,unit, value, type, and also use --descend flag to sort descending.""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
         dest="top",
-        type=int,
+        type=check_positive,
         help="top N number records",
         default=20,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -2377,7 +2257,6 @@ def exchange_rates(other_args: List[str]):
         default="index",
         choices=["index", "name", "unit", "value", "type"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -2404,9 +2283,9 @@ def exchange_rates(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def global_market_info(other_args: List[str]):
@@ -2421,15 +2300,14 @@ def global_market_info(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="global",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows global statistics about Crypto Market like:
         active_cryptocurrencies, upcoming_icos, ongoing_icos, ended_icos, markets, market_cap_change_percentage_24h,
-        eth_market_cap_in_pct, btc_market_cap_in_pct, altcoin_market_cap_in_pct
-        """,
+        eth_market_cap_in_pct, btc_market_cap_in_pct, altcoin_market_cap_in_pct""",
     )
 
     try:
@@ -2448,9 +2326,9 @@ def global_market_info(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def global_defi_info(other_args: List[str]):
@@ -2460,19 +2338,17 @@ def global_defi_info(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="defi",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows global DeFi statistics
         DeFi or Decentralized Finance refers to financial services that are built
         on top of distributed networks with no central intermediaries.
         Displays metrics like:
             defi_market_cap, eth_market_cap, defi_to_eth_ratio, trading_volume_24h, defi_dominance, top_coin_name,
-            top_coin_defi_dominance
-
-        """,
+            top_coin_defi_dominance""",
     )
 
     try:
@@ -2491,9 +2367,9 @@ def global_defi_info(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def coin_list(other_args: List[str]):
@@ -2503,20 +2379,29 @@ def coin_list(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="coins",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Shows list of coins available on CoinGecko",
     )
     parser.add_argument(
-        "-s", "--skip", default=0, dest="skip", help="Skip n of records", type=int
+        "-s",
+        "--skip",
+        default=0,
+        dest="skip",
+        help="Skip n of records",
+        type=check_positive,
     )
     parser.add_argument(
-        "-t", "--top", default=100, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=100,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
-
     parser.add_argument("-l", "--letter", dest="letter", help="First letters", type=str)
     parser.add_argument(
         "-k",
@@ -2555,15 +2440,31 @@ def coin_list(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def find(other_args: List[str]):
+    """Find similar coin by coin name,symbol or id.
+
+    If you don't remember exact name or id of the Coin at CoinGecko,
+    you can use this command to display coins with similar name, symbol or id to your search query.
+    Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+    It will search for coin that has similar name to polka and display top 25 matches.
+      -c, --coin stands for coin - you provide here your search query
+      -k, --key it's a searching key. You can search by symbol, id or name of coin
+      -t, --top it displays top N number of records.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+    """
     parser = argparse.ArgumentParser(
         prog="find",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
         you can use this command to display coins with similar name, symbol or id to your search query.
@@ -2571,8 +2472,7 @@ def find(other_args: List[str]):
         It will search for coin that has similar name to polka and display top 25 matches.
         -c, --coin stands for coin - you provide here your search query
         -k, --key it's a searching key. You can search by symbol, id or name of coin
-        -t, --top it displays top N number of records.
-        """,
+        -t, --top it displays top N number of records.""",
     )
     parser.add_argument(
         "-c",
@@ -2582,7 +2482,6 @@ def find(other_args: List[str]):
         required=True,
         type=str,
     )
-
     parser.add_argument(
         "-k",
         "--key",
@@ -2592,15 +2491,20 @@ def find(other_args: List[str]):
         choices=["id", "symbol", "name"],
         default="symbol",
     )
-
     parser.add_argument(
-        "-t", "--top", default=10, dest="top", help="Limit of records", type=int
+        "-t",
+        "--top",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
     )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         coins_df = gecko.get_coin_list()
         coins_list = coins_df[ns_parser.key].to_list()
         sim = difflib.get_close_matches(ns_parser.coin, coins_list, ns_parser.top)
@@ -2618,6 +2522,6 @@ def find(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

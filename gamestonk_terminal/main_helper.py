@@ -28,7 +28,6 @@ from gamestonk_terminal.helper_funcs import (
     plot_view_stock,
     parse_known_args_and_warn,
     plot_autoscale,
-    export_data,
 )
 
 from gamestonk_terminal import config_terminal as cfg
@@ -38,9 +37,35 @@ from gamestonk_terminal.technical_analysis import trendline_api as trend
 
 
 def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
-    """Clears loaded stock and returns empty variables"""
+    """Clears loaded stock and returns empty variables
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Argparse arguments
+    s_ticker : str
+        Ticker
+    s_start : str
+        Start date
+    s_interval : str
+        Interval to get data for
+    df_stock : pd.DataFrame
+        Preloaded dataframe
+
+    Returns
+    -------
+    str
+        Ticker
+    str
+        Start date
+    str
+        Interval
+    pd.DataFrame
+        Dataframe of data
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="clear",
         description="""Clear previously loaded stock ticker.""",
     )
@@ -59,35 +84,35 @@ def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
 
 
 def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
-    """
-    Load selected ticker
+    """Load selected ticker
+
     Parameters
     ----------
-    other_args:List[str]
+    other_args : List[str]
         Argparse arguments
-    s_ticker: str
+    s_ticker : str
         Ticker
-    s_start: str
+    s_start : str
         Start date
-    s_interval: str
+    s_interval : str
         Interval to get data for
-    df_stock: pd.DataFrame
+    df_stock : pd.DataFrame
         Preloaded dataframe
 
     Returns
     -------
-    ns_parser.s_ticker :
+    str
         Ticker
-    s_start:
+    str
         Start date
-    str(ns_parser.n_interval) + "min":
+    str
         Interval
-    df_stock_candidate
-        Dataframe loaded with close and volumes.
-
+    pd.DataFrame
+        Dataframe of data.
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="load",
         description="Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be"
         " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
@@ -429,8 +454,18 @@ def candle(s_ticker: str, s_start: str):
 
 
 def quote(other_args: List[str], s_ticker: str):
+    """Ticker quote
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Argparse arguments
+    s_ticker : str
+        Ticker
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="quote",
         description="Current quote for stock ticker",
     )
@@ -525,89 +560,41 @@ def quote(other_args: List[str], s_ticker: str):
 
 
 def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
-    """
-    Plot loaded ticker or load ticker and plot
+    """Plot loaded ticker
+
     Parameters
     ----------
-    other_args:List[str]
+    other_args : List[str]
         Argparse arguments
-    s_ticker: str
+    s_ticker : str
         Ticker to load
-    s_interval: str
+    s_interval : str
         Interval tto get data for
-    df_stock: pd.Dataframe
+    df_stock : pd.Dataframe
         Preloaded dataframe to plot
-
     """
-
     parser = argparse.ArgumentParser(
-        add_help=False, prog="view", description="Visualize historical data of a stock."
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="view",
+        description="Visualize historical data of a stock.",
     )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         if not s_ticker:
-            print("No ticker loaded.  First use `load {ticker}`")
-            print("")
+            print("No ticker loaded.  First use `load {ticker}`", "\n")
             return
 
         # Plot view of the stock
         plot_view_stock(df_stock, s_ticker, s_interval)
+
     except Exception as e:
         print("Error in plotting:")
         print(e, "\n")
-
-    except SystemExit:
-        print("")
-        return
-
-
-def export(other_args: List[str], df_stock):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="export",
-        description="Exports the historical data from this ticker to a file or stdout.",
-    )
-    parser.add_argument(
-        "-f",
-        "--filename",
-        type=str,
-        dest="s_filename",
-        default=sys.stdout,
-        help="Name of file to save the historical data exported (stdout if unspecified)",
-    )
-    parser.add_argument(
-        "-F",
-        "--format",
-        dest="s_format",
-        type=str,
-        default="csv",
-        help="Export historical data into following formats: csv, json, excel, clipboard",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if ns_parser.b_raw:
-            print(
-                tabulate(
-                    df_stock,
-                    headers=df_stock.columns,
-                    tablefmt="fancy_grid",
-                    stralign="right",
-                )
-            )
-            print("")
-
-        export_data(
-            ns_parser.export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "view",
-            df_stock,
-        )
 
     except SystemExit:
         print("")

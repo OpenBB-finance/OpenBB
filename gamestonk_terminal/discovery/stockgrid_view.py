@@ -26,6 +26,7 @@ def darkshort(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="darkshort",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Get dark pool short positions. [Source: Stockgrid]",
     )
     parser.add_argument(
@@ -154,6 +155,7 @@ def shortvol(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="shortvol",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Print short interest and days to cover. [Source: Stockgrid]",
     )
     parser.add_argument(

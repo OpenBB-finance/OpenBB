@@ -15,9 +15,9 @@ def simply_wallst_view(other_args: List[str]):
     other_args : List[str]
         argparse other args - ["-i", "banks"]
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="simply_wallst",
         description="""
             Simply Wall Street Research. Opens web browser. Although this does not require
@@ -25,7 +25,6 @@ def simply_wallst_view(other_args: List[str]):
             (there's a 14 days free trial).[Source: Simply Wall St.]
         """,
     )
-
     parser.add_argument(
         "-i",
         "--industry",
@@ -63,9 +62,15 @@ def simply_wallst_view(other_args: List[str]):
         ],
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    webbrowser.open(f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1")
-    print("")
+        webbrowser.open(
+            f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1"
+        )
+        print("")
+
+    except Exception as e:
+        print(e, "\n")

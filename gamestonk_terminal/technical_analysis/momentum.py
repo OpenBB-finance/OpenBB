@@ -16,6 +16,7 @@ register_matplotlib_converters()
 def cci(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="cci",
         description="""
             The CCI is designed to detect beginning and ending market trends.
@@ -123,6 +124,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
 def macd(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="macd",
         description="""
             The Moving Average Convergence Divergence (MACD) is the difference
@@ -241,6 +243,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
 def rsi(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="rsi",
         description="""
             The Relative Strength Index (RSI) calculates a ratio of the
@@ -356,6 +359,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
 def stoch(l_args, s_ticker, s_interval, df_stock):
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="stoch",
         description="""
             The Stochastic Oscillator measures where the close is in relation

@@ -17,8 +17,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
 def display_overview(other_args: List[str]):
-    """
-    Display market overview
+    """Display market overview
 
     Parameters
     ----------
@@ -26,7 +25,10 @@ def display_overview(other_args: List[str]):
         Argparse arguments
     """
     parser = argparse.ArgumentParser(
-        prog="overview", description="WSJ market overview", add_help=False
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="overview",
+        description="WSJ market overview",
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -43,13 +45,13 @@ def display_overview(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
         print(e, "\n")
 
 
 def display_indices(other_args: List[str]):
-    """
-    Display us indices
+    """Display us indices
 
     Parameters
     ----------
@@ -57,12 +59,16 @@ def display_indices(other_args: List[str]):
         Argparse arguments
     """
     parser = argparse.ArgumentParser(
-        prog="indices", description="WSJ US Indices", add_help=False
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="indices",
+        description="WSJ US Indices",
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         data = us_indices()
         print(
             tabulate(
@@ -74,13 +80,13 @@ def display_indices(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
         print(e, "\n")
 
 
 def display_futures(other_args: List[str]):
-    """
-    Display futures/commodities
+    """Display futures/commodities
 
     Parameters
     ----------
@@ -88,7 +94,10 @@ def display_futures(other_args: List[str]):
         Argparse arguments
     """
     parser = argparse.ArgumentParser(
-        prog="futures", description="WSJ futures/commodities", add_help=False
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="futures",
+        description="WSJ futures/commodities",
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -105,13 +114,13 @@ def display_futures(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
         print(e, "\n")
 
 
 def display_usbonds(other_args: List[str]):
-    """
-    Display us bonds overview
+    """Display us bonds overview
 
     Parameters
     ----------
@@ -119,12 +128,16 @@ def display_usbonds(other_args: List[str]):
         Argparse arguments
     """
     parser = argparse.ArgumentParser(
-        prog="usbonds", description="WSJ US Bonds overview", add_help=False
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="usbonds",
+        description="WSJ US Bonds overview",
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         data = us_bonds()
         print(
             tabulate(
@@ -136,13 +149,13 @@ def display_usbonds(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
         print(e, "\n")
 
 
 def display_glbonds(other_args: List[str]):
-    """
-    Display global bond overview
+    """Display global bond overview
 
     Parameters
     ----------
@@ -150,12 +163,16 @@ def display_glbonds(other_args: List[str]):
         Argparse arguments
     """
     parser = argparse.ArgumentParser(
-        prog="glbond", description="WSJ global bond overview", add_help=False
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="glbond",
+        description="WSJ global bond overview",
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         data = global_bonds()
         print(
             tabulate(
@@ -167,13 +184,13 @@ def display_glbonds(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
         print(e, "\n")
 
 
 def display_currencies(other_args: List[str]):
-    """
-    Display global currencies
+    """Display global currencies
 
     Parameters
     ----------
@@ -181,12 +198,16 @@ def display_currencies(other_args: List[str]):
         Argparse arguments
     """
     parser = argparse.ArgumentParser(
-        prog="currencies", description="WSJ currency overview", add_help=False
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="currencies",
+        description="WSJ currency overview",
     )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
         data = global_currencies()
         print(
             tabulate(
@@ -198,5 +219,6 @@ def display_currencies(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
         print(e, "\n")

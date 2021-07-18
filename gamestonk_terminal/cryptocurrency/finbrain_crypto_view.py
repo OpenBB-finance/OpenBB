@@ -26,15 +26,22 @@ except ValueError:
 def crypto_sentiment_analysis(other_args: List[str]):
     """Sentiment analysis from FinBrain for Cryptocurrencies
 
+    FinBrain collects the news headlines from 15+ major financial news
+    sources on a daily basis and analyzes them to generate sentiment scores
+    for more than 4500 US stocks. FinBrain Technologies develops deep learning
+    algorithms for financial analysis and prediction, which currently serves
+    traders from more than 150 countries all around the world.
+    [Source:  https://finbrain.tech]
+
     Parameters
     ----------
     other_args : List[str]
         Command line arguments to be processed with argparse
-
     """
     parser = argparse.ArgumentParser(
-        prog="finbrain",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="finbrain",
         description="""FinBrain collects the news headlines from 15+ major financial news
                     sources on a daily basis and analyzes them to generate sentiment scores
                     for more than 4500 US stocks. FinBrain Technologies develops deep learning
@@ -42,7 +49,6 @@ def crypto_sentiment_analysis(other_args: List[str]):
                     traders from more than 150 countries all around the world.
                     [Source:  https://finbrain.tech]""",
     )
-
     parser.add_argument(
         "-c",
         "--coin",
@@ -83,5 +89,4 @@ def crypto_sentiment_analysis(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

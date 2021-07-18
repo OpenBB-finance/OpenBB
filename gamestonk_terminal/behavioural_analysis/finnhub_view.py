@@ -30,7 +30,8 @@ def get_sentiment_stats(ticker: str) -> Dict:
 
 
 def sentiment_stats(other_args: List[str], ticker: str):
-    """Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
+    """
+    Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
     bullish vs bearish percentages, sector average bullish percentage, and sector average news score
 
     Parameters
@@ -42,6 +43,7 @@ def sentiment_stats(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="stats",
         description="""
             Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
@@ -75,7 +77,6 @@ def sentiment_stats(other_args: List[str], ticker: str):
             )
         else:
             print("No sentiment stats found.")
-
         print("")
 
     except Exception as e:

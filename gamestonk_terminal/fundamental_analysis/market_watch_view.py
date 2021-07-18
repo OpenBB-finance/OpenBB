@@ -24,9 +24,9 @@ def income(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="income",
         description="""
             Prints either yearly or quarterly income statement the company. The following fields
@@ -49,7 +49,6 @@ def income(other_args: List[str], ticker: str):
             [Source: Market Watch]
         """,
     )
-
     parser.add_argument(
         "-q",
         "--quarter",
@@ -80,9 +79,7 @@ def income(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def balance(other_args: List[str], ticker: str):
@@ -95,9 +92,9 @@ def balance(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="balance",
         description="""
             Prints either yearly or quarterly assets from balance sheet of the company.
@@ -132,7 +129,6 @@ def balance(other_args: List[str], ticker: str):
             [Source: Market Watch]
         """,
     )
-
     parser.add_argument(
         "-q",
         "--quarter",
@@ -165,9 +161,7 @@ def balance(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
 def cash(other_args: List[str], ticker: str):
@@ -180,9 +174,9 @@ def cash(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="cash_flow",
         description="""
             Prints either yearly or quarterly cash flow operating activities of the company.
@@ -213,7 +207,6 @@ def cash(other_args: List[str], ticker: str):
             [Source: Market Watch]
         """,
     )
-
     parser.add_argument(
         "-q",
         "--quarter",
@@ -246,6 +239,4 @@ def cash(other_args: List[str], ticker: str):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")

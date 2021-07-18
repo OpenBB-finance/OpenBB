@@ -20,6 +20,7 @@ def econ_data(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="econ",
         description="""
             Run Economic Data report
@@ -28,12 +29,13 @@ def econ_data(other_args: List[str]):
 
     try:
         (_, unknown_args) = parser.parse_known_args(other_args)
+
+        if unknown_args:
+            print(f"The following args couldn't be interpreted: {unknown_args}")
+
     except SystemExit:
         print("")
         return
-
-    if unknown_args:
-        print(f"The following args couldn't be interpreted: {unknown_args}")
 
     today = datetime.now()
 
@@ -51,8 +53,7 @@ def econ_data(other_args: List[str]):
             ),
         )
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return
 
     webbrowser.open(

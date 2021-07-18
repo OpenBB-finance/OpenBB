@@ -83,16 +83,15 @@ def global_market(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
-        prog="global",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="global",
         description="""Show most important global crypto statistics like:
         market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
         market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
-        market_cap_change_24h, volume_24h_change_24h, last_updated,
-        """,
+        market_cap_change_24h, volume_24h_change_24h, last_updated.""",
     )
 
     try:
@@ -114,8 +113,7 @@ def global_market(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def coins(other_args: List[str]):
@@ -125,20 +123,18 @@ def coins(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
-        prog="coins",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="coins",
         description="""Shows list of all available coins on CoinPaprika.
         You can display top N number of coins with --top N flag,
         You can search by starting letters with -l/--letter flag like `coins -l M`
         And you can also specify by which column you are searching for coin with --key
         Displays columns like:
-            rank, id, name, type
-        """,
+            rank, id, name, type""",
     )
-
     parser.add_argument(
         "-s",
         "--skip",
@@ -155,7 +151,6 @@ def coins(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument("-l", "--letter", dest="letter", help="First letters", type=str)
     parser.add_argument(
         "-k",
@@ -194,9 +189,9 @@ def coins(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def all_coins_market_info(other_args: List[str]):
@@ -206,11 +201,11 @@ def all_coins_market_info(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="markets",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h,
@@ -220,7 +215,6 @@ def all_coins_market_info(other_args: List[str]):
            pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
         """,
     )
-
     parser.add_argument(
         "--vs",
         help="Quoted currency. Default USD",
@@ -229,7 +223,6 @@ def all_coins_market_info(other_args: List[str]):
         type=str,
         choices=CURRENCIES,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -238,7 +231,6 @@ def all_coins_market_info(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -259,7 +251,6 @@ def all_coins_market_info(other_args: List[str]):
             "pct_from_ath",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -297,8 +288,7 @@ def all_coins_market_info(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def all_coins_info(other_args: List[str]):
@@ -308,11 +298,11 @@ def all_coins_info(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
-        prog="info",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="info",
         description="""Show basic coin information for all coins from CoinPaprika API
         You can display only top N number of coins with --top parameter.
         You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
@@ -322,7 +312,6 @@ def all_coins_info(other_args: List[str]):
             total_supply, max_supply, market_cap, beta_value, ath_price
         """,
     )
-
     parser.add_argument(
         "--vs",
         help="Quoted currency. Default USD",
@@ -331,7 +320,6 @@ def all_coins_info(other_args: List[str]):
         type=str,
         choices=CURRENCIES,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -340,7 +328,6 @@ def all_coins_info(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -362,7 +349,6 @@ def all_coins_info(other_args: List[str]):
             "beta_value",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -401,8 +387,7 @@ def all_coins_info(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def all_exchanges(other_args: List[str]):
@@ -415,8 +400,9 @@ def all_exchanges(other_args: List[str]):
 
     """
     parser = argparse.ArgumentParser(
-        prog="exchanges",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="exchanges",
         description="""Show all exchanges from CoinPaprika
         You can display only top N number of coins with --top parameter.
         You can sort data by  rank, name, currencies, markets, fiats, confidence,
@@ -424,10 +410,8 @@ def all_exchanges(other_args: List[str]):
         and also with --descend flag to sort descending.
         Displays:
             rank, name, currencies, markets, fiats, confidence, volume_24h,
-            volume_7d ,volume_30d, sessions_per_month,
-        """,
+            volume_7d ,volume_30d, sessions_per_month""",
     )
-
     parser.add_argument(
         "--vs",
         help="Quoted currency. Default USD",
@@ -436,7 +420,6 @@ def all_exchanges(other_args: List[str]):
         type=str,
         choices=CURRENCIES,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -445,7 +428,6 @@ def all_exchanges(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -466,7 +448,6 @@ def all_exchanges(other_args: List[str]):
             "sessions_per_month",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -504,8 +485,7 @@ def all_exchanges(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def search(other_args: List[str]):
@@ -515,21 +495,19 @@ def search(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
-        prog="search",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="search",
         description="""Search over CoinPaprika API
         You can display only top N number of results with --top parameter.
         You can sort data by id, name , category --sort parameter and also with --descend flag to sort descending.
         To choose category in which you are searching for use --cat/-c parameter. Available categories:
         currencies|exchanges|icos|people|tags|all
         Displays:
-            id, name, category
-        """,
+            id, name, category""",
     )
-
     parser.add_argument(
         "-q",
         "--query",
@@ -538,7 +516,6 @@ def search(other_args: List[str]):
         type=str,
         required="-h" not in other_args,
     )
-
     parser.add_argument(
         "-c",
         "--cat",
@@ -555,7 +532,6 @@ def search(other_args: List[str]):
             "all",
         ],
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -564,7 +540,6 @@ def search(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -574,7 +549,6 @@ def search(other_args: List[str]):
         default="id",
         choices=["category", "id", "name"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -620,8 +594,7 @@ def search(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def exchange_markets(other_args: List[str]):
@@ -636,6 +609,7 @@ def exchange_markets(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="ex_markets",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Get all exchange markets found for given exchange
         You can display only top N number of records with --top parameter.
         You can sort data by pair, base_currency_name, quote_currency_name, market_url, category,
@@ -643,10 +617,8 @@ def exchange_markets(other_args: List[str]):
         You can use additional flag --links to see urls for each market
         Displays:
             exchange_id, pair, base_currency_name, quote_currency_name, market_url,
-            category, reported_volume_24h_share, trust_score,
-        """,
+            category, reported_volume_24h_share, trust_score,""",
     )
-
     parser.add_argument(
         "-e",
         "--exchange",
@@ -655,7 +627,6 @@ def exchange_markets(other_args: List[str]):
         default="binance",
         type=str,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -664,7 +635,6 @@ def exchange_markets(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -682,7 +652,6 @@ def exchange_markets(other_args: List[str]):
             "market_url",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -690,7 +659,6 @@ def exchange_markets(other_args: List[str]):
         dest="descend",
         default=False,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -731,8 +699,7 @@ def exchange_markets(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def all_platforms(other_args: List[str]):
@@ -742,13 +709,12 @@ def all_platforms(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="platforms",
         add_help=False,
-        description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
-        """,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
     )
 
     try:
@@ -769,8 +735,7 @@ def all_platforms(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def contracts(other_args: List[str]):
@@ -780,11 +745,11 @@ def contracts(other_args: List[str]):
     ----------
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="contracts",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Gets all contract addresses for given platform.
         Provide platform id with -p/--platform parameter
         You can display only top N number of smart contracts with --top parameter.
@@ -795,7 +760,6 @@ def contracts(other_args: List[str]):
             id, type, active, address
         """,
     )
-
     parser.add_argument(
         "-p",
         "--platform",
@@ -805,7 +769,6 @@ def contracts(other_args: List[str]):
         type=str,
         choices=PLATFORMS,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -814,7 +777,6 @@ def contracts(other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -824,7 +786,6 @@ def contracts(other_args: List[str]):
         default="id",
         choices=["id", "type", "active", "address"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -857,8 +818,7 @@ def contracts(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 # Coin Related
@@ -866,8 +826,9 @@ def contracts(other_args: List[str]):
 
 def find(other_args: List[str]):
     parser = argparse.ArgumentParser(
-        prog="find",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="find",
         description="""
         Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinPaprika,
         you can use this command to display coins with similar name, symbol or id to your search query.
@@ -886,7 +847,6 @@ def find(other_args: List[str]):
         required="-h" not in other_args,
         type=str,
     )
-
     parser.add_argument(
         "-k",
         "--key",
@@ -896,7 +856,6 @@ def find(other_args: List[str]):
         choices=["id", "symbol", "name"],
         default="name",
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -917,8 +876,9 @@ def find(other_args: List[str]):
             return
 
         if not ns_parser.coin or ns_parser.coin is None:
-            print("You didn't provide coin. Please use param -c/--coin <coin name>")
-            print("")
+            print(
+                "You didn't provide coin. Please use param -c/--coin <coin name>", "\n"
+            )
             return
 
         coins_df = paprika.get_list_of_coins()
@@ -943,9 +903,9 @@ def find(other_args: List[str]):
             )
         )
         print("")
+
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def twitter(coin_id: str, other_args: List[str]):
@@ -960,8 +920,9 @@ def twitter(coin_id: str, other_args: List[str]):
 
     """
     parser = argparse.ArgumentParser(
-        prog="twitter",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="twitter",
         description="""Show last 10 tweets for given coin.
         You can display only top N number of tweets with --top parameter.
         You can sort data by date, user_name, status, retweet_count, like_count --sort parameter
@@ -970,7 +931,6 @@ def twitter(coin_id: str, other_args: List[str]):
             date, user_name, status, retweet_count, like_count
         """,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -979,7 +939,6 @@ def twitter(coin_id: str, other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -989,7 +948,6 @@ def twitter(coin_id: str, other_args: List[str]):
         default="date",
         choices=["date", "user_name", "status", "retweet_count", "like_count"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1006,9 +964,9 @@ def twitter(coin_id: str, other_args: List[str]):
         df = paprika.get_coin_twitter_timeline(coin_id)
 
         if df.empty:
-            print(f"Couldn't find any tweets for coin {coin_id}")
-            print("")
+            print(f"Couldn't find any tweets for coin {coin_id}", "\n")
             return
+
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
         # Remove unicode chars (it breaks pretty tables)
         df["status"] = df["status"].apply(
@@ -1026,8 +984,7 @@ def twitter(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def events(coin_id: str, other_args: List[str]):
@@ -1039,21 +996,19 @@ def events(coin_id: str, other_args: List[str]):
         Identifier of coin for CoinPaprika API
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="events",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Show information about most important coins events. Most of coins doesn't have any events.
         You can display only top N number of events with --top parameter.
         You can sort data by id, date , date_to, name, description, is_conference --sort parameter
         and also with --descend flag to sort descending.
         You can use additional flag --links to see urls for each event
         Displays:
-            date , date_to, name, description, is_conference, link, proof_image_link
-        """,
+            date , date_to, name, description, is_conference, link, proof_image_link""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -1062,7 +1017,6 @@ def events(coin_id: str, other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1072,7 +1026,6 @@ def events(coin_id: str, other_args: List[str]):
         default="date",
         choices=["date", "date_to", "name", "description", "is_conference"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1080,7 +1033,6 @@ def events(coin_id: str, other_args: List[str]):
         dest="descend",
         default=False,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1121,8 +1073,7 @@ def events(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def exchanges(coin_id: str, other_args: List[str]):
@@ -1134,20 +1085,18 @@ def exchanges(coin_id: str, other_args: List[str]):
         Identifier of coin for CoinPaprika API
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
-        prog="ex",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="ex",
         description="""Get all exchanges found for given coin.
         You can display only top N number of exchanges with --top parameter.
         You can sort data by  id, name, adjusted_volume_24h_share, fiats --sort parameter
         and also with --descend flag to sort descending.
         Displays:
-            id, name, adjusted_volume_24h_share, fiats
-        """,
+            id, name, adjusted_volume_24h_share, fiats""",
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -1156,7 +1105,6 @@ def exchanges(coin_id: str, other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1166,7 +1114,6 @@ def exchanges(coin_id: str, other_args: List[str]):
         default="adjusted_volume_24h_share",
         choices=["id", "name", "adjusted_volume_24h_share", "fiats"],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1200,8 +1147,7 @@ def exchanges(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def markets(coin_id: str, other_args: List[str]):
@@ -1213,21 +1159,19 @@ def markets(coin_id: str, other_args: List[str]):
         Identifier of coin for CoinPaprika API
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="mkt",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Get all markets found for given coin.
         You can display only top N number of markets with --top parameter.
         You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter
         and also with --descend flag to sort descending.
         You can use additional flag --links to see urls for each market
         Displays:
-            exchange, pair, trust_score, volume, price, pct_volume_share,
-        """,
+            exchange, pair, trust_score, volume, price, pct_volume_share,""",
     )
-
     parser.add_argument(
         "--vs",
         help="Quoted currency. Default USD",
@@ -1236,7 +1180,6 @@ def markets(coin_id: str, other_args: List[str]):
         type=str,
         choices=CURRENCIES,
     )
-
     parser.add_argument(
         "-t",
         "--top",
@@ -1245,7 +1188,6 @@ def markets(coin_id: str, other_args: List[str]):
         help="Limit of records",
         type=check_positive,
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -1262,7 +1204,6 @@ def markets(coin_id: str, other_args: List[str]):
             "price",
         ],
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -1270,7 +1211,6 @@ def markets(coin_id: str, other_args: List[str]):
         dest="descend",
         default=False,
     )
-
     parser.add_argument(
         "-l",
         "--links",
@@ -1316,8 +1256,7 @@ def markets(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def chart(coin_id: str, other_args: List[str]):
@@ -1333,17 +1272,15 @@ def chart(coin_id: str, other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="chart",
-        description="""
-                        Display chart for loaded coin. You can specify currency vs which you want
+        description="""Display chart for loaded coin. You can specify currency vs which you want
                         to show chart and also number of days to get data for.
                         By default currency: usd and days: 90.
                         E.g. if you loaded in previous step Ethereum and you want to see it's price vs bitcoin
                         in last 90 days range use `chart --vs btc --days 90`
-                        Available quoted currencies are only btc and usd
-                        """,
+                        Available quoted currencies are only btc and usd""",
     )
-
     parser.add_argument(
         "--vs",
         default="usd",
@@ -1351,7 +1288,6 @@ def chart(coin_id: str, other_args: List[str]):
         help="Currency to display vs coin",
         choices=["usd", "btc", "BTC", "USD"],
     )
-
     parser.add_argument(
         "-d",
         "--days",
@@ -1410,8 +1346,7 @@ def chart(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def price_supply(coin_id: str, other_args: List[str]):
@@ -1423,15 +1358,13 @@ def price_supply(coin_id: str, other_args: List[str]):
         Identifier of coin for CoinPaprika API
     other_args: List[str]
         Arguments to pass to argparse
-
     """
     parser = argparse.ArgumentParser(
         prog="ps",
         add_help=False,
-        description="""Get price and supply related metrics for given coin.
-        """,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description="""Get price and supply related metrics for given coin.""",
     )
-
     parser.add_argument(
         "--vs",
         help="Quoted currency. Default USD",
@@ -1465,8 +1398,7 @@ def price_supply(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
 def load(other_args: List[str]):
@@ -1485,8 +1417,9 @@ def load(other_args: List[str]):
         Dataframe of prices for selected coin
     """
     parser = argparse.ArgumentParser(
-        prog="load",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="load",
         description="Define the coin to be used from CoinPaprika and get data",
     )
     parser.add_argument(
@@ -1517,7 +1450,6 @@ def load(other_args: List[str]):
 
     except SystemExit:
         print("")
-
     except Exception as e:
         print(e, "\n")
 
@@ -1531,20 +1463,17 @@ def ta(coin_id: str, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ta",
-        description="""
-                        Loads data for technical analysis. You can specify currency vs which you want
+        description="""Loads data for technical analysis. You can specify currency vs which you want
                         to show chart and also number of days to get data for.
                         By default currency: usd and days: 30.
                         E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
-                        in last 90 days range use `ta --vs btc --days 90`
-                        """,
+                        in last 90 days range use `ta --vs btc --days 90`""",
     )
-
     parser.add_argument(
         "--vs",
         default="usd",
@@ -1553,7 +1482,6 @@ def ta(coin_id: str, other_args: List[str]):
         choices=["usd", "btc", "BTC", "USD"],
         type=str,
     )
-
     parser.add_argument(
         "-d",
         "--days",
@@ -1592,8 +1520,7 @@ def ta(coin_id: str, other_args: List[str]):
         return None, None
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return None, None
 
 
@@ -1613,10 +1540,10 @@ def basic(coin_id: str, other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="basic",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Get basic information for coin. Like:
             name, symbol, rank, type, description, platform, proof_type,
-            contract, tags, parent
-        """,
+            contract, tags, parent""",
     )
 
     try:
@@ -1642,5 +1569,4 @@ def basic(coin_id: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

@@ -57,6 +57,7 @@ def ipo_calendar(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ipo",
         description="""
             Past and future IPOs. [Source: https://finnhub.io]

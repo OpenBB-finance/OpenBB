@@ -23,6 +23,7 @@ def ratings_view(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ratings",
         description="""Top ratings updates. [Source: MarketBeat]""",
     )

@@ -27,9 +27,9 @@ def compare_income(other_args: List[str], ticker: str, similar: List[str]):
     similar : List[str]
         Similar companies to compare income with
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="income",
         description="""
             Prints either yearly or quarterly income statement the company, and compares
@@ -133,9 +133,9 @@ def compare_balance(other_args: List[str], ticker: str, similar: List[str]):
     similar : List[str]
         Similar companies to compare income with
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="compare_balance",
         description="""
             Prints either yearly or quarterly balance statement the company, and compares
@@ -239,9 +239,9 @@ def compare_cashflow(other_args: List[str], ticker: str, similar: List[str]):
     similar : List[str]
         Similar companies to compare income with
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="compare_cashflow",
         description="""
             Prints either yearly or quarterly cash statement the company, and compares

@@ -1,5 +1,6 @@
 import argparse
 import os
+from typing import List
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -19,7 +20,7 @@ register_matplotlib_converters()
 
 
 def login():
-
+    """Login to Alpaca account"""
     if not (
         os.getenv("APCA_API_KEY_ID")
         and os.getenv("APCA_API_SECRET_KEY")
@@ -29,10 +30,10 @@ def login():
 
 
 def show_holdings():
+    """Show Alpaca holdings"""
     api = alp_api.REST()
     positions = api.list_positions()
-    print("")
-    print("Stonk\t last price \t prev close \t equity \t % Change")
+    print("\n", "Stonk\t last price \t prev close \t equity \t % Change")
 
     for pos in positions:
         stonk = pos.symbol
@@ -49,21 +50,33 @@ def show_holdings():
 
 
 def return_holdings() -> pd.DataFrame:
+    """Get Alpaca holdings
+
+    Returns
+    ----------
+    pd.DataFrame
+        Alpaca holdings
+    """
     api = alp_api.REST()
     positions = api.list_positions()
     return alpaca_positions_to_df(positions)
 
 
-def plot_historical(l_args):
+def plot_historical(other_args: List[str]):
+    """Historical Portfolio Info
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    """
     api = alp_api.REST()
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="Port",
-        description="""
-                                Historical Portfolio Info
-                            """,
+        description="""Historical Portfolio Info""",
     )
-
     parser.add_argument(
         "-p",
         "--period",
@@ -72,7 +85,6 @@ def plot_historical(l_args):
         default="1M",
         help="Duration of data (<number> + <unit>)",
     )
-
     parser.add_argument(
         "-t",
         "--timeframe",
@@ -83,7 +95,7 @@ def plot_historical(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         port_hist = api.get_portfolio_history(
             period=ns_parser.period, timeframe=ns_parser.timeframe
         ).df
@@ -102,6 +114,4 @@ def plot_historical(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")

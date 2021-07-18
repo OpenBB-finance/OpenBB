@@ -100,6 +100,7 @@ def print_recommendation(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="recom",
         description="""
             Print tradingview recommendation based on technical indicators.

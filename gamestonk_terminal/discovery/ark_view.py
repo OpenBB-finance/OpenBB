@@ -50,12 +50,12 @@ def ark_orders_view(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ARK Orders",
         description="""
             Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -66,31 +66,38 @@ def ark_orders_view(other_args: List[str]):
         help="Last N orders.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
 
-    df_orders = ark_model.get_ark_orders()
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    if df_orders.empty:
-        print("The ARK orders aren't anavilable at the moment.\n")
-        return
+        df_orders = ark_model.get_ark_orders()
 
-    pd.set_option("mode.chained_assignment", None)
-    df_orders = ark_model.add_order_total(df_orders.head(ns_parser.n_num))
+        if df_orders.empty:
+            print("The ARK orders aren't anavilable at the moment.\n")
+            return
 
-    if gtff.USE_COLOR:
-        df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
+        pd.set_option("mode.chained_assignment", None)
+        df_orders = ark_model.add_order_total(df_orders.head(ns_parser.n_num))
 
-        patch_pandas_text_adjustment()
+        if gtff.USE_COLOR:
+            df_orders["direction"] = df_orders["direction"].apply(
+                direction_color_red_green
+            )
 
-    df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
+            patch_pandas_text_adjustment()
 
-    pd.set_option("display.max_colwidth", None)
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.float_format", "{:,.2f}".format)
-    print("")
-    print("Orders by ARK Investment Management LLC")
-    print("")
-    print(df_orders.to_string(index=False))
-    print("")
+        df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
+
+        pd.set_option("display.max_colwidth", None)
+        pd.set_option("display.max_rows", None)
+        pd.set_option("display.float_format", "{:,.2f}".format)
+        print("")
+        print("Orders by ARK Investment Management LLC")
+        print("")
+        print(df_orders.to_string(index=False))
+        print("")
+
+    except Exception as e:
+        print(e, "\n")

@@ -7,7 +7,7 @@ import pandas as pd
 from tabulate import tabulate
 from coinmarketcapapi import CoinMarketCapAPI
 import gamestonk_terminal.config_terminal as cfg
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 sort_options = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
 
@@ -32,13 +32,16 @@ def get_cmc_top_n(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="cmc_top_n",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="This gets the top ranked coins from coinmarketcap.com",
     )
-
     parser.add_argument(
-        "-n", default=10, dest="n_to_get", type=int, help="number of coins to display"
+        "-n",
+        default=10,
+        dest="n_to_get",
+        type=check_positive,
+        help="number of coins to display",
     )
-
     parser.add_argument(
         "-s",
         "--sort",
@@ -48,7 +51,6 @@ def get_cmc_top_n(other_args: List[str]):
         default="CMC_Rank",
         choices=sort_options,
     )
-
     parser.add_argument(
         "--descend",
         action="store_false",
@@ -96,5 +98,4 @@ def get_cmc_top_n(other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
