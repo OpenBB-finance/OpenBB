@@ -560,7 +560,7 @@ def quote(other_args: List[str], s_ticker: str):
 
 
 def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
-    """Plot loaded ticker or load ticker and plot
+    """Plot loaded ticker
 
     Parameters
     ----------
