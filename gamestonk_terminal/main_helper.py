@@ -408,49 +408,85 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def candle(s_ticker: str, s_start: str):
-    df_stock = trend.load_ticker(s_ticker, s_start)
-    df_stock = trend.find_trendline(df_stock, "OC_High", "high")
-    df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
+def candle(s_ticker: str, other_args: List[str]):
+    """Shows candle plot of loaded ticker
+    Parameters
+    ----------
+    s_ticker: str
+        Ticker to display
+    other_args: str
+        Argparse arguments
 
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+    """
+    parser = argparse.ArgumentParser(
+        prog="candle",
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description="Displays candle chart of loaded ticker",
     )
 
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
-    ap0 = []
-
-    if "OC_High_trend" in df_stock.columns:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
-        )
-
-    if "OC_Low_trend" in df_stock.columns:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
-        )
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    mpf.plot(
-        df_stock,
-        type="candle",
-        mav=(20, 50),
-        volume=True,
-        title=f"\n{s_ticker} - Last 6 months",
-        addplot=ap0,
-        xrotation=10,
-        style=s,
-        figratio=(10, 7),
-        figscale=1.10,
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-        ),
+    parser.add_argument(
+        "-s",
+        "--start_date",
+        dest="s_start",
+        type=valid_date,
+        default=(datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
+        help="Start date for candle data",
     )
-    print("")
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not s_ticker:
+            print("No ticker loaded.  First use `load {ticker}`", "\n")
+            return
+
+        df_stock = trend.load_ticker(s_ticker, ns_parser.s_start)
+        df_stock = trend.find_trendline(df_stock, "OC_High", "high")
+        df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
+
+        mc = mpf.make_marketcolors(
+            up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+        )
+
+        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+
+        ap0 = []
+
+        if "OC_High_trend" in df_stock.columns:
+            ap0.append(
+                mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+            )
+
+        if "OC_Low_trend" in df_stock.columns:
+            ap0.append(
+                mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+            )
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        mpf.plot(
+            df_stock,
+            type="candle",
+            mav=(20, 50),
+            volume=True,
+            title=f"\n{s_ticker} - Starting {ns_parser.s_start.strftime('%Y-%m-%d')}",
+            addplot=ap0,
+            xrotation=10,
+            style=s,
+            figratio=(10, 7),
+            figscale=1.10,
+            figsize=(plot_autoscale()),
+            update_width_config=dict(
+                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+            ),
+        )
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
 
 
 def quote(other_args: List[str], s_ticker: str):
@@ -599,6 +635,89 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
     except SystemExit:
         print("")
         return
+
+
+def check_api_keys():
+    """Check api keys and if they are supplied"""
+
+    AVAILABLE_KEYS = {
+        "ALPHA_VANTAGE": cfg.API_KEY_ALPHAVANTAGE,
+        "FINANCIAL_MODELING_PREP": cfg.API_KEY_FINANCIALMODELINGPREP,
+        "QUANDL": cfg.API_KEY_QUANDL,
+        "POLYGON": cfg.API_POLYGON_KEY,
+        "FRED": cfg.API_FRED_KEY,
+        "NEWSAPI": cfg.API_NEWS_TOKEN,
+        "TRADIER": cfg.TRADIER_TOKEN,
+        "COINMARKETCAP": cfg.API_CMC_KEY,
+        "FINNHUB": cfg.API_FINNHUB_KEY,
+        "IEXCLOUD": cfg.API_IEX_TOKEN,
+    }
+
+    key_dict = {}
+    for source, key in AVAILABLE_KEYS.items():
+        if key == "REPLACE_ME":
+            key_dict[source] = "Not defined"
+        else:
+            key_dict[source] = "defined, not tested"
+
+    # Reddit
+    reddit_keys = [
+        cfg.API_REDDIT_CLIENT_ID,
+        cfg.API_REDDIT_CLIENT_SECRET,
+        cfg.API_REDDIT_USERNAME,
+        cfg.API_REDDIT_PASSWORD,
+        cfg.API_REDDIT_USER_AGENT,
+    ]
+    if "REPLACE_ME" in reddit_keys:
+        key_dict["REDDIT"] = "Not defined"
+    else:
+        key_dict["REDDIT"] = "defined, not tested"
+
+    # Reddit keys
+    twitter_keys = [
+        cfg.API_TWITTER_KEY,
+        cfg.API_TWITTER_SECRET_KEY,
+        cfg.API_TWITTER_BEARER_TOKEN,
+    ]
+    if "REPLACE_ME" in twitter_keys:
+        key_dict["TWITTER"] = "Not defined"
+    else:
+        key_dict["TWITTER"] = "defined, not tested"
+
+    # Robinhood keys
+    rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
+    if "REPLACE_ME" in rh_keys:
+        key_dict["ROBINHOOD"] = "Not defined"
+    else:
+        key_dict["ROBINHOOD"] = "defined, not tested"
+    # Degiro keys
+    dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
+    if "REPLACE_ME" in dg_keys:
+        key_dict["DEGIRO"] = "Not defined"
+    else:
+        key_dict["DEGIRO"] = "defined, not tested"
+    # OANDA keys
+    oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
+    if "REPLACE_ME" in oanda_keys:
+        key_dict["OANDA"] = "Not defined"
+    else:
+        key_dict["OANDA"] = "defined, not tested"
+    # Binance keys
+    bn_keys = [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]
+    if "REPLACE_ME" in bn_keys:
+        key_dict["BINANCE"] = "Not defined"
+    else:
+        key_dict["BINANCE"] = "defined, not tested"
+
+    print(
+        tabulate(
+            pd.DataFrame(key_dict.items()),
+            showindex=False,
+            headers=[],
+            tablefmt="fancy_grid",
+        ),
+        "\n",
+    )
 
 
 def print_goodbye():
