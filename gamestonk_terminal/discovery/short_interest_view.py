@@ -22,6 +22,7 @@ def high_short_interest_view(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="high_short",
         description="""
             Print top stocks being more heavily shorted. HighShortInterest.com provides
@@ -31,7 +32,6 @@ def high_short_interest_view(other_args: List[str]):
             the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -42,15 +42,19 @@ def high_short_interest_view(other_args: List[str]):
         help="Number of top stocks to print.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    df_high_short_interest = short_interest_model.get_high_short_interest()
+        df_high_short_interest = short_interest_model.get_high_short_interest()
 
-    pd.set_option("display.max_colwidth", None)
-    print(df_high_short_interest.head(n=ns_parser.n_num).to_string(index=False))
-    print("")
+        pd.set_option("display.max_colwidth", None)
+        print(df_high_short_interest.head(n=ns_parser.n_num).to_string(index=False))
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
 
 
 def low_float_view(other_args: List[str]):
@@ -61,9 +65,9 @@ def low_float_view(other_args: List[str]):
     other_args : List[str]
         argparse other args - ["-n", "20"]
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="low_float",
         description="""
             Print top stocks with lowest float. LowFloat.com provides a convenient
@@ -73,7 +77,6 @@ def low_float_view(other_args: List[str]):
             the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -84,12 +87,16 @@ def low_float_view(other_args: List[str]):
         help="Number of top stocks to print.",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    df_low_float = short_interest_model.get_low_float()
+        df_low_float = short_interest_model.get_low_float()
 
-    pd.set_option("display.max_colwidth", None)
-    print(df_low_float.head(n=ns_parser.n_num).to_string(index=False))
-    print("")
+        pd.set_option("display.max_colwidth", None)
+        print(df_low_float.head(n=ns_parser.n_num).to_string(index=False))
+        print("")
+
+    except Exception as e:
+        print(e, "\n")

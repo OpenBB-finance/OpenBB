@@ -14,9 +14,16 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 
 
 def view_available_presets(other_args: List[str]):
-    """View available presets."""
+    """View available presets.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Other arguments to be parsed
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="view",
         description="""View available presets under presets folder.""",
     )
@@ -89,6 +96,7 @@ def screener_output(other_args: List[str]):
     """screener filter output"""
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="scr",
         description="""Sreener filter output from https://ops.syncretism.io/index.html.
 Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration;
@@ -179,7 +187,6 @@ PC: Price Change; PB: Price-to-book. """,
             )
         else:
             print("Wrong arguments specified. Error " + str(res.status_code))
-
         print("")
 
     except Exception as e:

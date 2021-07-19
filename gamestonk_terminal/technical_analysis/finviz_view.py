@@ -30,6 +30,7 @@ def view(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="view",
         description="""
             View historical price with trendlines. [Source: Finviz]

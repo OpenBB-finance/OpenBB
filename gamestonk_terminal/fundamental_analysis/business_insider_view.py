@@ -20,9 +20,9 @@ def management(other_args: List[str], ticker: str):
     ticker : str
         Stock ticker
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="mgmt",
         description="""
             Print management team. Namely: Name, Title, Information from google and
@@ -113,6 +113,4 @@ def management(other_args: List[str], ticker: str):
             print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")

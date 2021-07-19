@@ -143,6 +143,7 @@ class ComparisonAnalysisController:
         """
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="get",
             description="""Get similar companies to compare with.""",
         )
@@ -227,12 +228,10 @@ class ComparisonAnalysisController:
 
             if self.similar:
                 print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+            print("")
 
         except Exception as e:
-            print(e)
-
-        print("")
-        return
+            print(e, "\n")
 
     def select_similar_companies(self, other_args: List[str]):
         """Select similar companies, e.g. NIO,XPEV,LI
@@ -242,9 +241,9 @@ class ComparisonAnalysisController:
         other_args : List[str]
             argparse other args
         """
-
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="select",
             description="""Select similar companies to compare with.""",
         )
@@ -269,11 +268,10 @@ class ComparisonAnalysisController:
 
             self.similar = ns_parser.l_similar
             self.user = "User"
+            print("")
 
         except Exception as e:
-            print(e)
-
-        print("")
+            print(e, "\n")
 
     def switch(self, an_input: str):
         """Process and dispatch input

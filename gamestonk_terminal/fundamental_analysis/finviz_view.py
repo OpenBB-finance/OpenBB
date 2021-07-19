@@ -19,9 +19,9 @@ def screener(other_args: List[str], ticker: str):
     ticker : str
         Fundamental analysis ticker symbol
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="screener",
         description="""
             Print several metrics about the company. The following fields are expected:
@@ -49,10 +49,7 @@ def screener(other_args: List[str], ticker: str):
         )
         df_fa = df_fa[df_fa.Values != "-"]
         print(df_fa.to_string(header=False))
-
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")

@@ -221,6 +221,7 @@ def dark_pool(other_args: List[str]):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="darkpool",
         description="Display dark pool (ATS) data of tickers with growing trades activity",
     )
@@ -261,4 +262,3 @@ def dark_pool(other_args: List[str]):
 
     except Exception as e:
         print(e, "\n")
-        return

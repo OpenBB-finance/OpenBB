@@ -31,10 +31,24 @@ This menu aims to assess economy data, and the usage of the following commands a
 * [dexcaus](#dexcaus)
     * Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
 
+[WSJ](#wsj)
+* [overview](#overview)
+  * Get market overview
+* [indices](#indices)
+  * Get us major indices overview
+* [futures](#futures)
+  * Get top futures overview
+* [us_bonds](#us_bonds)
+  * Get us bonds overview
+* [gl_bonds](#gl_bonds)
+  * Get global bonds overview
+* [currencies](#currencies)
+  * Get global currency overview
+
 
 ## feargreed <a name="feargreed"></a>
 ```text
-usage: feargreed [-i {jbd,mv,pco,mm,sps,spb,shd,index}]  
+usage: feargreed [-i {jbd,mv,pco,mm,sps,spb,shd,index}]
 ```
 
 Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
@@ -212,3 +226,42 @@ Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
 * -t : Only output text data.
 
 ![dexcaus](https://user-images.githubusercontent.com/25267873/116769155-10b02c80-aa32-11eb-8ece-d8e92b8df1af.png)
+
+# WSJ <a name="wsj"></a>
+The following functions are meant to take the information from the [WSJ Market Data Page](https://www.wsj.com/market-data)
+
+## overview <a name="overview"></a>
+```python
+usage: overview
+```
+Market overview
+
+## indices <a name="indices"></a>
+```python
+usage: indices
+```
+US indices overview
+
+## futures <a name="futures"></a>
+```python
+usage: futures
+```
+Top futures/commodities overview
+
+## us_bonds <a name="us_bonds"></a>
+```python
+usage: us_bonds
+```
+US bonds overview
+
+## gl_bonds <a name="gl_bonds"></a>
+```python
+usage: gl_bonds
+```
+Global bonds overview
+
+## currencies <a name="currencies"></a>
+```python
+usage: currencies
+```
+Global currencies overview

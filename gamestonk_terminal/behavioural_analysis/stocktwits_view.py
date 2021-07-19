@@ -1,12 +1,25 @@
 import argparse
+from typing import List
 import requests
 import pandas as pd
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
 
 
-def bullbear(l_args, s_ticker):
+def bullbear(other_args: List[str], ticker: str):
+    """
+    Print bullbear sentiment based on last 30 messages on the board.
+    Also prints the watchlist_count. [Source: Stocktwits]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    ticker: str
+        Stock ticker
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="bullbear",
         description="""
             Print bullbear sentiment based on last 30 messages on the board.
@@ -17,19 +30,19 @@ def bullbear(l_args, s_ticker):
         "-t",
         "--ticker",
         action="store",
-        dest="s_ticker",
+        dest="ticker",
         type=str,
-        default=s_ticker,
+        default=ticker,
         help="ticker to gather sentiment from.",
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         result = requests.get(
-            f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
+            f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.ticker}.json"
         )
         if result.status_code == 200:
             print(f"Watchlist count: {result.json()['symbol']['watchlist_count']}")
@@ -50,24 +63,32 @@ def bullbear(l_args, s_ticker):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def messages(l_args, s_ticker):
+def messages(other_args: List[str], ticker: str):
+    """Print up to 30 of the last messages on the board. [Source: Stocktwits]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    ticker: str
+        Stock ticker
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="messages",
         description="""Print up to 30 of the last messages on the board. [Source: Stocktwits]""",
     )
-
     parser.add_argument(
         "-t",
         "--ticker",
         action="store",
-        dest="s_ticker",
+        dest="ticker",
         type=str,
-        default=s_ticker,
+        default=ticker,
         help="get board messages from this ticker.",
     )
     parser.add_argument(
@@ -81,12 +102,12 @@ def messages(l_args, s_ticker):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         result = requests.get(
-            f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.s_ticker}.json"
+            f"https://api.stocktwits.com/api/2/streams/symbol/{ns_parser.ticker}.json"
         )
         if result.status_code == 200:
             for idx, message in enumerate(result.json()["messages"]):
@@ -101,19 +122,25 @@ def messages(l_args, s_ticker):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def trending(l_args):
+def trending(other_args: List[str]):
+    """Stocks trending. [Source: Stocktwits]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
-        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="trending",
         description="""Stocks trending. [Source: Stocktwits]""",
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -135,17 +162,23 @@ def trending(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def stalker(l_args):
+def stalker(other_args: List[str]):
+    """Print up to the last 30 messages of a user. [Source: Stocktwits]
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments for argparse
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="stalker",
         description="""Print up to the last 30 messages of a user. [Source: Stocktwits]""",
     )
-
     parser.add_argument(
         "-u",
         "--user",
@@ -166,7 +199,7 @@ def stalker(l_args):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -189,5 +222,4 @@ def stalker(l_args):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

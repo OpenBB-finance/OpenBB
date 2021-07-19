@@ -374,19 +374,21 @@ Feel free to share loss porn, memes or any questions at:
 * Twitter: [@gamestonkt](https://twitter.com/gamestonkt)
 
 
-#### Shoutout to:
-* **pll_llq**, **Chavithra** and **hinxx** : Working towards a GUI using Qt.
+#### Contributors
+
+* **pll_llq** and **Chavithra**: Working towards a GUI using Qt.
   * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
-* **1lluz10n**, **crspy**, and **martiaaz** : Working on our landing page https://gamestonkterminal.netlify.app.
+* **1lluz10n** and **crspy** : Working on our landing page https://gamestonkterminal.netlify.app.
   * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
 * **Meghan Hone** : Managing Twitter account
 * **alokan** : Responsible by developing `Forex` menu
 * **Chavithra** and **Deel18** : for Degiro's integration.
 * **Traceabl3** : By adding several preset screeners
+* **jpp** : Responsible by developing `Crypto` menu
 
-#### Other Contributors
-
-cclauss, shadycuz, lolrenx, buzzCraft, clothespin, arcutright, jperkins12, nodesocket, akx, sigaloid, pchaganti, danielorf, henrytdsimmons, RowanHarley, sabujp, qTipTip, gmerrall, bfxavier, donno2048, noufal85, rmassoth, benkulbertis, ricleal-fugue, sandsturm, breck7, derrickknox, daxxog, Felixkruemel, gvikei, backhand, ntoscano, nickodell, grvsaxena419, priteshkeleven, kaitj
+<a href="https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
+</a>
 
 ## Acknowledgments
 
@@ -396,6 +398,8 @@ cclauss, shadycuz, lolrenx, buzzCraft, clothespin, arcutright, jperkins12, nodes
 * [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
 * [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
 * [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
+* [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
+* [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

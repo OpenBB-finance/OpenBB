@@ -68,6 +68,7 @@ def screener(other_args: List[str], data_type: str, ticker: str, similar: List[s
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog=data_type,
         description="""
             Prints screener data of similar companies. [Source: Finviz]
@@ -109,4 +110,3 @@ def screener(other_args: List[str], data_type: str, ticker: str, similar: List[s
 
     except Exception as e:
         print(e, "\n")
-        return

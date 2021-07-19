@@ -16,7 +16,7 @@ from gamestonk_terminal.fundamental_analysis import finviz_view
 from gamestonk_terminal.fundamental_analysis import market_watch_view
 from gamestonk_terminal.fundamental_analysis import yahoo_finance_view
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 
 # pylint: disable=inconsistent-return-statements
@@ -215,8 +215,16 @@ class FundamentalAnalysisController:
 
 
 def key_metrics_explained(other_args: List[str]):
+    """Key metrics explained
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="info",
         description="""
             Provides information about main key metrics. Namely: EBITDA,
@@ -225,10 +233,9 @@ def key_metrics_explained(other_args: List[str]):
     )
 
     try:
-        (_, l_unknown_args) = parser.parse_known_args(other_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
         filepath = "fundamental_analysis/key_metrics_explained.txt"
         with open(filepath) as fp:
@@ -239,9 +246,7 @@ def key_metrics_explained(other_args: List[str]):
             print("")
 
     except Exception as e:
-        print(e)
-        print("ERROR!\n")
-        return
+        print(e, "ERROR!\n")
 
 
 def menu(ticker: str, start: str, interval: str):
@@ -256,7 +261,6 @@ def menu(ticker: str, start: str, interval: str):
     interval : str
         Stock data interval
     """
-
     fa_controller = FundamentalAnalysisController(ticker, start, interval)
     fa_controller.call_help(None)
 

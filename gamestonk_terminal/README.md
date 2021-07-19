@@ -30,11 +30,11 @@
 The main menu allows the following commands:
 
 ```
-usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p] 
+usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p]
 ```
 
 * Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
-  * -t : Stock ticker 
+  * -t : Stock ticker
   * -s : The starting date (format YYYY-MM-DD) of the stock
   * -i : Intraday stock minutes
   * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
@@ -409,6 +409,13 @@ Command|Description|Source
 `fedfunds`      | Effective Federal Funds Rate | <https://fred.stlouisfed.org>
 `aaa`           | Moody's Seasoned AAA Corporate Bond Yield | <https://fred.stlouisfed.org>
 `dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | <https://fred.stlouisfed.org>
+`overview`      | Market overview  |  <https://www.wsj.com/market-data>
+`indices`       | US indices overview  |  <https://www.wsj.com/market-data>
+`futures`       | Futures/commodities overview  |  <https://www.wsj.com/market-data>
+`us_bonds`      | US bonds overview  |  <https://www.wsj.com/market-data>
+`gl_bonds`      | Global bonds overview  |  <https://www.wsj.com/market-data>
+`currencies`    | Global currencies overview  |  <https://www.wsj.com/market-data>
+
 
 &nbsp;
 
@@ -521,3 +528,6 @@ command|description
 `holdings`|show ETF holdings
 `compare`|compare multiple ETFs overview
 `screener`|screen ETFs
+`gainers`|show top gainers
+`decliners`|show top decliners
+`active`|show most active

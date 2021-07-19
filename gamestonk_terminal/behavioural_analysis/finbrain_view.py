@@ -126,6 +126,7 @@ def sentiment_analysis(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="finbrain",
         description="""FinBrain collects the news headlines from 15+ major financial news
                     sources on a daily basis and analyzes them to generate sentiment scores

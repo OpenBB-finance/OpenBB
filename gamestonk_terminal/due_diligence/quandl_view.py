@@ -27,16 +27,15 @@ def short_interest(other_args: List[str], ticker: str, start: str):
     start : str
         Start date of the stock data
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="short",
         description="""
             Plots the short interest of a stock. This corresponds to the number of shares that
             have been sold short but have not yet been covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--nyse",
@@ -54,7 +53,6 @@ def short_interest(other_args: List[str], ticker: str, start: str):
         default=10,
         help="number of latest days to print data.",
     )
-
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -129,10 +127,8 @@ def short_interest(other_args: List[str], ticker: str, start: str):
         pd.set_option("display.max_colwidth", 70)
         print(df_short_interest.head(n=ns_parser.n_days).to_string())
         print("")
-
         plt.show()
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return

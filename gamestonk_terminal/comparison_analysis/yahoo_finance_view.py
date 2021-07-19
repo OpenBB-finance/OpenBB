@@ -75,9 +75,9 @@ def historical(
     similar : List[str]
         List of similar tickers
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="historical",
         description="""Historical price comparison between similar companies [Source: Yahoo Finance]
         """,
@@ -183,7 +183,9 @@ def historical(
 
 
 def correlation(other_args, df_stock, ticker, start, interval, similar):
-    """[summary]
+    """
+    Correlation heatmap based on historical price comparison
+    between similar companies. [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -203,6 +205,7 @@ def correlation(other_args, df_stock, ticker, start, interval, similar):
 
     parser = argparse.ArgumentParser(
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="corr",
         description=""" Correlation heatmap based on historical price comparison between similar
         companies. [Source: Yahoo Finance]
@@ -293,7 +296,6 @@ def correlation(other_args, df_stock, ticker, start, interval, similar):
                 )
                 plt.title("Correlation Heatmap")
                 plt.show()
-
         print("")
 
     except SystemExit:

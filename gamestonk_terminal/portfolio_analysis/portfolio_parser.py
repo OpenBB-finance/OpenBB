@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 import argparse
-from typing import List
+from typing import List, Tuple
 from tabulate import tabulate
 import pandas as pd
 import yfinance as yf
@@ -12,7 +12,7 @@ from gamestonk_terminal.helper_funcs import check_valid_path, parse_known_args_a
 # pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
 
 
-def load_csv_portfolio(other_args: List[str]):
+def load_csv_portfolio(other_args: List[str]) -> Tuple[str, pd.DataFrame]:
     """Load portfolio from csv
 
     Parameters
@@ -30,6 +30,7 @@ def load_csv_portfolio(other_args: List[str]):
     parser = argparse.ArgumentParser(
         prog="load",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Function to get portfolio from predefined csv file inside portfolios folder",
     )
     parser.add_argument(
@@ -107,22 +108,21 @@ def load_csv_portfolio(other_args: List[str]):
 
 
 def breakdown_by_group(portfolio: pd.DataFrame, other_args: List[str]):
-    """
-    Breakdown of portfolio by a specified group
+    """Breakdown of portfolio by a specified group
+
     Parameters
     ----------
     portfolio: pd.DataFrame
         Dataframe of portfolio generated from menu
     other_args: List[str]
         Argparse arguments
-
     """
     parser = argparse.ArgumentParser(
         prog="groupby",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Displays portfolio grouped by a given column",
     )
-
     parser.add_argument(
         "-g",
         "--group",

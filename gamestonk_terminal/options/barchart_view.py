@@ -20,28 +20,25 @@ browsers = ["chrome", "firefox"]
 
 
 def print_options_data(stock: str, other_args: List[str]):
-    """
-    Scrapes Barchart.com for the options information
+    """Scrapes Barchart.com for the options information
+
     Parameters
     ----------
     stock: str
         Ticker to get options info for
     other_args: List[str]
         Other arguments.  Currently just accepts a browser flag for selenium
-
     """
-
     if path_to_driver is None:
-        print("Please specify your selenium driver path in config_terminal.py")
-        print("")
+        print("Please specify your selenium driver path in config_terminal.py", "\n")
         return
 
     parser = argparse.ArgumentParser(
-        prog="info",
         add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="info",
         description="Display option data [Source: Barchart.com]",
     )
-
     parser.add_argument(
         "-b",
         "--browser",
@@ -53,16 +50,9 @@ def print_options_data(stock: str, other_args: List[str]):
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
-
         if ns_parser.browser:
             browser = ns_parser.browser
 
-    except Exception as e:
-        print(e)
-        print("")
-        return
-
-    try:
         if browser == "chrome":
             # commenting this because it breaks when in usage
             # the downside is that the browser will pop up to get the data
@@ -100,5 +90,4 @@ def print_options_data(stock: str, other_args: List[str]):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

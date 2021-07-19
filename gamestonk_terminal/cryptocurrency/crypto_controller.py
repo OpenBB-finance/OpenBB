@@ -12,6 +12,7 @@ from gamestonk_terminal.cryptocurrency.coinmarketcap import coinmarketcap_contro
 from gamestonk_terminal.cryptocurrency.binance import binance_controller
 from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_controller
 from gamestonk_terminal.cryptocurrency import finbrain_crypto_view
+from gamestonk_terminal.cryptocurrency.coinpaprika import coinpaprika_controller
 
 
 class CryptoController:
@@ -26,6 +27,7 @@ class CryptoController:
         "bin",
         "cmc",
         "finbrain",
+        "cp",
     ]
 
     def __init__(self):
@@ -50,6 +52,7 @@ class CryptoController:
         print(">  cg              CoinGecko overview (market statistics) and coin menu")
         print(">  cmc             Coinmarketcap menu")
         print(">  bin             Binance menu with order book, candles, ta.. ")
+        print(">  cp              CoinPaprika menu")
         print("")
 
     def switch(self, an_input: str):
@@ -116,6 +119,12 @@ class CryptoController:
     def call_finbrain(self, other_args):
         """Process sentiment command"""
         finbrain_crypto_view.crypto_sentiment_analysis(other_args=other_args)
+
+    def call_cp(self, _):
+        """Process cp command"""
+        if coinpaprika_controller.menu():
+            return True
+        print("")
 
 
 def menu():
