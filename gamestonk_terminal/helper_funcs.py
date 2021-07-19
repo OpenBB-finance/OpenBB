@@ -44,7 +44,6 @@ def check_valid_path(path: str) -> str:
     -------
     argparse.ArgumentTypeError
         Given path does not exist
-
     """
     if not os.path.exists(
         os.path.abspath(
@@ -66,6 +65,7 @@ def check_int_range(mini: int, maxi: int):
         Min value to compare
     maxi: int
         Max value to compare
+
     Returns
     -------
     int_range_checker:
@@ -91,7 +91,6 @@ def check_int_range(mini: int, maxi: int):
         -------
         argparse.ArgumentTypeError
             Input number not between min and max values
-
         """
         num = int(num)
         if num < mini or num > maxi:

@@ -410,18 +410,18 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
 
 def candle(s_ticker: str, other_args: List[str]):
     """Shows candle plot of loaded ticker
+
     Parameters
     ----------
     s_ticker: str
         Ticker to display
     other_args: str
         Argparse arguments
-
     """
     parser = argparse.ArgumentParser(
-        prog="candle",
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="candle",
         description="Displays candle chart of loaded ticker",
     )
 
