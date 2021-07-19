@@ -141,6 +141,7 @@ What do you want to do?
     cls         clear screen
     ?/help      show this menu again
     update      update terminal from remote
+    keys        check for defined api keys
     reset       reset terminal and reload configs
     about       about us
     q(uit)      to abandon the program
@@ -194,7 +195,7 @@ Contexts:
         help_text += """\n>   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
         """
-        help_text += "\n    keys \tcheck what api keys are defined \n"
+
         print(help_text)
 
     def switch(self, an_input: str):

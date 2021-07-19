@@ -721,6 +721,7 @@ def check_api_keys():
 
 
 def print_goodbye():
+    """Prints a goodbye message when quitting the terminal"""
     goodbye_msg = [
         "An informed ape, is a strong ape. ",
         "Remember that stonks only go up. ",
@@ -760,6 +761,7 @@ def sha256sum(filename):
 
 
 def update_terminal():
+    """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
     poetry_hash = sha256sum("poetry.lock")
 
     completed_process = subprocess.run("git pull", shell=True, check=False)
@@ -783,6 +785,7 @@ def update_terminal():
 
 
 def about_us():
+    """Prints an about us section"""
     print(
         f"\n{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
         "\n"
@@ -847,6 +850,7 @@ def bootup():
 
 
 def reset():
+    """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
     completed_process = subprocess.run("python terminal.py", shell=True, check=False)
