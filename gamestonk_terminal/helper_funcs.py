@@ -70,7 +70,6 @@ def check_int_range(mini: int, maxi: int):
     -------
     int_range_checker:
         Function that compares the three integers
-
     """
 
     # Define the function with default arguments
