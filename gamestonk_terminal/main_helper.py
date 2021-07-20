@@ -22,10 +22,12 @@ import pytz
 import pyEX
 from pyEX.common.exception import PyEXception
 from tabulate import tabulate
+import praw
+from prawcore.exceptions import ResponseException
 
 # import git
 
-# pylint: disable=no-member,too-many-branches
+# pylint: disable=no-member,too-many-branches,C0302
 
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -659,7 +661,7 @@ def check_api_keys():
         else:
             key_dict["ALPHA_VANTAGE"] = "defined, test passed"
 
-    if cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME":
+    if cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME":  # pragma: allowlist secret
         key_dict["FINANCIAL_MODELING_PREP"] = "Not defined"
     else:
         r = requests.get(
@@ -672,7 +674,7 @@ def check_api_keys():
         else:
             key_dict["FINANCIAL_MODELING_PREP"] = "defined, test inconclusive"
 
-    if cfg.API_KEY_QUANDL == "REPLACE_ME":
+    if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
         key_dict["QUANDL"] = "Not defined"
     else:
         try:
@@ -788,9 +790,21 @@ def check_api_keys():
     if "REPLACE_ME" in reddit_keys:
         key_dict["REDDIT"] = "Not defined"
     else:
-        key_dict["REDDIT"] = "defined, not tested"
+        praw_api = praw.Reddit(
+            client_id=cfg.API_REDDIT_CLIENT_ID,
+            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+            username=cfg.API_REDDIT_USERNAME,
+            user_agent=cfg.API_REDDIT_USER_AGENT,
+            password=cfg.API_REDDIT_PASSWORD,
+        )
 
-    # Reddit keys
+        try:
+            praw_api.user.me()
+            key_dict["REDDIT"] = "defined, test passed"
+        except ResponseException:
+            key_dict["REDDIT"] = "defined, test failed"
+
+    # Twitter keys
     twitter_keys = [
         cfg.API_TWITTER_KEY,
         cfg.API_TWITTER_SECRET_KEY,
