@@ -16,6 +16,7 @@ from gamestonk_terminal.options import (
     tradier_view,
     barchart_view,
     syncretism_view,
+    calculator_model,
 )
 from gamestonk_terminal.menu import session
 
@@ -24,15 +25,7 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "disp",
-        "scr",
-    ]
+    CHOICES = ["cls", "?", "help", "q", "quit", "disp", "scr", "calc"]
 
     CHOICES_TICKER_DEPENDENT = [
         "exp",
@@ -125,6 +118,8 @@ class OptionsController:
         print("   disp          display all preset screeners filters")
         print("   scr           output screener options")
         print("")
+        print("   calc          basic call/put PnL calculator")
+        print("")
         if expiry_date:
             print(f"Selected expiry date: {expiry_date}")
             print("")
@@ -182,6 +177,9 @@ class OptionsController:
     def call_quit(self, _):
         """Process Quit command - quit the program."""
         return True
+
+    def call_calc(self, other_args: List[str]):
+        calculator_model.pnl_calculator(other_args)
 
     def call_exp(self, other_args: List[str]):
         """Process exp command."""
