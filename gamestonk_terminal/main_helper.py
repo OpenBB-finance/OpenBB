@@ -8,15 +8,19 @@ import subprocess
 import random
 from datetime import datetime, timedelta
 import hashlib
+import requests
 from colorama import Fore, Style
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import transpose
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+import quandl
 import mplfinance as mpf
 import yfinance as yf
+from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 import pytz
 import pyEX
+from pyEX.common.exception import PyEXception
 from tabulate import tabulate
 
 # import git
@@ -637,28 +641,141 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
         return
 
 
+# pylint: disable=too-many-statements
+
+
 def check_api_keys():
     """Check api keys and if they are supplied"""
 
-    AVAILABLE_KEYS = {
-        "ALPHA_VANTAGE": cfg.API_KEY_ALPHAVANTAGE,
-        "FINANCIAL_MODELING_PREP": cfg.API_KEY_FINANCIALMODELINGPREP,
-        "QUANDL": cfg.API_KEY_QUANDL,
-        "POLYGON": cfg.API_POLYGON_KEY,
-        "FRED": cfg.API_FRED_KEY,
-        "NEWSAPI": cfg.API_NEWS_TOKEN,
-        "TRADIER": cfg.TRADIER_TOKEN,
-        "COINMARKETCAP": cfg.API_CMC_KEY,
-        "FINNHUB": cfg.API_FINNHUB_KEY,
-        "IEXCLOUD": cfg.API_IEX_TOKEN,
-    }
-
     key_dict = {}
-    for source, key in AVAILABLE_KEYS.items():
-        if key == "REPLACE_ME":
-            key_dict[source] = "Not defined"
+    if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
+        key_dict["ALPHA_VANTAGE"] = "Not defined"
+    else:
+        df = TimeSeries(
+            key=cfg.API_KEY.ALPHAVANTAGE, output_format="pandas"
+        ).get_intraday(symbol="AAPL")
+        if df.empty:
+            key_dict["ALPHA_VANTAGE"] = "defined, test failed"
         else:
-            key_dict[source] = "defined, not tested"
+            key_dict["ALPHA_VANTAGE"] = "defined, test passed"
+
+    if cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME":
+        key_dict["FINANCIAL_MODELING_PREP"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+        )
+        if r.status_code in [403, 401]:
+            key_dict["FINANCIAL_MODELING_PREP"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["FINANCIAL_MODELING_PREP"] = "defined, test passed"
+        else:
+            key_dict["FINANCIAL_MODELING_PREP"] = "defined, test inconclusive"
+
+    if cfg.API_KEY_QUANDL == "REPLACE_ME":
+        key_dict["QUANDL"] = "Not defined"
+    else:
+        try:
+            quandl.save_key(cfg.API_KEY_QUANDL)
+            quandl.get_table(
+                "ZACKS/FC",
+                paginate=True,
+                ticker=["AAPL", "MSFT"],
+                per_end_date={"gte": "2015-01-01"},
+                qopts={"columns": ["ticker", "per_end_date"]},
+            )
+            key_dict["QUANDL"] = "defined, test passed"
+        except quandl.errors.quandl_error.ForbiddenError:
+            key_dict["QUANDL"] = "defined, test failed"
+
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+        key_dict["POLYGON"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17?apiKey={cfg.API_POLYGON_KEY}"
+        )
+        if r.status_code in [403, 401]:
+            key_dict["POLYGON"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["POLYGON"] = "defined, test passed"
+        else:
+            key_dict["POLYGON"] = "defined, test inconclusive"
+
+    if cfg.API_FRED_KEY == "REPLACE_ME":
+        key_dict["FRED"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
+        )
+        if r.status_code in [403, 401, 400]:
+            key_dict["FRED"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["FRED"] = "defined, test passed"
+        else:
+            key_dict["FRED"] = "defined, test inconclusive"
+
+    if cfg.API_NEWS_TOKEN == "REPLACE_ME":
+        key_dict["NEWSAPI"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
+        )
+        if r.status_code in [401, 403]:
+            key_dict["NEWSAPI"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["NEWSAPI"] = "defined, test passed"
+        else:
+            key_dict["NEWSAPI"] = "defined, test inconclusive"
+
+    if cfg.TRADIER_TOKEN == "REPLACE_ME":
+        key_dict["TRADIER"] = "Not defined"
+    else:
+        r = requests.get(
+            "https://sandbox.tradier.com/v1/markets/quotes",
+            params={"symbols": "AAPL"},
+            headers={
+                "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+                "Accept": "application/json",
+            },
+        )
+        if r.status_code in [401, 403]:
+            key_dict["TRADIER"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["TRADIER"] = "defined, test passed"
+        else:
+            key_dict["TRADIER"] = "defined, test inconclusive"
+
+    if cfg.API_CMC_KEY == "REPLACE_ME":
+        key_dict["COINMARKETCAP"] = "Not defined"
+    else:
+        cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
+        try:
+            cmc.exchange_info()
+            key_dict["COINMARKETCAP"] = "defined, test passed"
+        except CoinMarketCapAPIError:
+            key_dict["COINMARKETCAP"] = "defined, test failed"
+
+    if cfg.API_FINNHUB_KEY == "REPLACE_ME":
+        key_dict["FINNHUB"] = "Not defined"
+    else:
+        r = r = requests.get(
+            f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
+        )
+        if r.status_code in [403, 401, 400]:
+            key_dict["FINNHUB"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["FINNHUB"] = "defined, test passed"
+        else:
+            key_dict["FINNHUB"] = "defined, test inconclusive"
+
+    if cfg.API_IEX_TOKEN == "REPLACE_ME":
+        key_dict["IEXCLOUD"] = "Not defined"
+    else:
+        try:
+            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+            key_dict["IEXCLOUD"] = "defined, test passed"
+        except PyEXception:
+            key_dict["IEXCLOUD"] = "defined, test failed"
 
     # Reddit
     reddit_keys = [
@@ -682,7 +799,22 @@ def check_api_keys():
     if "REPLACE_ME" in twitter_keys:
         key_dict["TWITTER"] = "Not defined"
     else:
-        key_dict["TWITTER"] = "defined, not tested"
+        params = {
+            "query": "(\\$AAPL) (lang:en)",
+            "max_results": "10",
+            "tweet.fields": "created_at,lang",
+        }
+        r = requests.get(
+            "https://api.twitter.com/2/tweets/search/recent",
+            params=params,  # type: ignore
+            headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
+        )
+        if r.status_code == 200:
+            key_dict["TWITTER"] = "defined, test passed"
+        elif r.status_code in [401, 403]:
+            key_dict["TWITTER"] = "defined, test failed"
+        else:
+            key_dict["TWITTER"] = "defined, test inconclusive"
 
     # Robinhood keys
     rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
