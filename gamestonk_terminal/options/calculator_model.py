@@ -36,6 +36,14 @@ def pnl_calculator(other_args: List[str]):
     )
 
     parser.add_argument(
+        "--sell",
+        action="store_true",
+        default=False,
+        dest="sell",
+        help="Flag to get profit chart of selling contract",
+    )
+
+    parser.add_argument(
         "-s",
         "--strike",
         type=float,
@@ -59,15 +67,16 @@ def pnl_calculator(other_args: List[str]):
 
         price_at_expiry = np.linspace(ns_parser.strike / 2, 1.5 * ns_parser.strike, 301)
 
+        sell = [1, -1][ns_parser.sell]
         if ns_parser.put:
             break_even = strike - premium
             pnl = strike - premium - price_at_expiry
-            pnl = 100 * np.where(price_at_expiry < strike, pnl, -premium)
+            pnl = sell * 100 * np.where(price_at_expiry < strike, pnl, -premium)
 
         else:
             break_even = strike + premium
             pnl = price_at_expiry - strike - premium
-            pnl = 100 * np.where(price_at_expiry > strike, pnl, -premium)
+            pnl = sell * 100 * np.where(price_at_expiry > strike, pnl, -premium)
 
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
         ax.plot(price_at_expiry, pnl, alpha=0.1, c="k")
@@ -80,7 +89,9 @@ def pnl_calculator(other_args: List[str]):
         ax.axvline(x=break_even, c="black")
         ax.set_xlabel("Price at Expiry")
         ax.set_ylabel("Profit")
-        ax.set_title(f"Profit for {['Call', 'Put'][ns_parser.put]} option")
+        ax.set_title(
+            f"Profit for {['Buying','Selling'][ns_parser.sell]} {['Call', 'Put'][ns_parser.put]} option"
+        )
         ax.grid("on")
 
         if gtff.USE_ION:
@@ -99,4 +110,5 @@ def pnl_calculator(other_args: List[str]):
         return
 
     except SystemExit:
+        print("")
         return
