@@ -5,14 +5,17 @@ __docformat__ = "numpy"
 import argparse
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.helper_funcs import b_is_stock_market_open, get_flair
+from gamestonk_terminal.helper_funcs import (
+    b_is_stock_market_open,
+    get_flair,
+)
 from gamestonk_terminal.main_helper import (
     clear,
     load,
@@ -24,6 +27,7 @@ from gamestonk_terminal.main_helper import (
     about_us,
     bootup,
     reset,
+    check_api_keys,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import config_terminal as cfg
@@ -103,6 +107,7 @@ class TerminalController:
         "about",
         "bro",
         "ins",
+        "keys",
     ]
     CHOICES += CHOICES_TICKER_DEPENDENT
 
@@ -136,6 +141,7 @@ What do you want to do?
     cls         clear screen
     ?/help      show this menu again
     update      update terminal from remote
+    keys        check for defined api keys
     reset       reset terminal and reload configs
     about       about us
     q(uit)      to abandon the program
@@ -189,6 +195,7 @@ Contexts:
         help_text += """\n>   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
         """
+
         print(help_text)
 
     def switch(self, an_input: str):
@@ -265,11 +272,11 @@ Contexts:
             other_args, self.ticker + "." + self.suffix if self.suffix else self.ticker
         )
 
-    def call_candle(self, _):
+    def call_candle(self, other_args: List[str]):
         """Process candle command"""
         candle(
             self.ticker + "." + self.suffix if self.suffix else self.ticker,
-            (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
+            other_args,
         )
 
     def call_view(self, other_args: List[str]):
@@ -332,6 +339,10 @@ Contexts:
         """Process update command"""
         self.update_succcess = not update_terminal()
         return True
+
+    def call_keys(self, _):
+        """Process keys command"""
+        check_api_keys()
 
     def call_about(self, _):
         """Process about command"""

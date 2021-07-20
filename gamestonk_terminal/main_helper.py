@@ -8,15 +8,19 @@ import subprocess
 import random
 from datetime import datetime, timedelta
 import hashlib
+import requests
 from colorama import Fore, Style
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import transpose
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+import quandl
 import mplfinance as mpf
 import yfinance as yf
+from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 import pytz
 import pyEX
+from pyEX.common.exception import PyEXception
 from tabulate import tabulate
 
 # import git
@@ -408,49 +412,85 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def candle(s_ticker: str, s_start: str):
-    df_stock = trend.load_ticker(s_ticker, s_start)
-    df_stock = trend.find_trendline(df_stock, "OC_High", "high")
-    df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
+def candle(s_ticker: str, other_args: List[str]):
+    """Shows candle plot of loaded ticker
 
-    mc = mpf.make_marketcolors(
-        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+    Parameters
+    ----------
+    s_ticker: str
+        Ticker to display
+    other_args: str
+        Argparse arguments
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="candle",
+        description="Displays candle chart of loaded ticker",
     )
 
-    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
-    ap0 = []
-
-    if "OC_High_trend" in df_stock.columns:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
-        )
-
-    if "OC_Low_trend" in df_stock.columns:
-        ap0.append(
-            mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
-        )
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    mpf.plot(
-        df_stock,
-        type="candle",
-        mav=(20, 50),
-        volume=True,
-        title=f"\n{s_ticker} - Last 6 months",
-        addplot=ap0,
-        xrotation=10,
-        style=s,
-        figratio=(10, 7),
-        figscale=1.10,
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-        ),
+    parser.add_argument(
+        "-s",
+        "--start_date",
+        dest="s_start",
+        type=valid_date,
+        default=(datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
+        help="Start date for candle data",
     )
-    print("")
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not s_ticker:
+            print("No ticker loaded.  First use `load {ticker}`", "\n")
+            return
+
+        df_stock = trend.load_ticker(s_ticker, ns_parser.s_start)
+        df_stock = trend.find_trendline(df_stock, "OC_High", "high")
+        df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
+
+        mc = mpf.make_marketcolors(
+            up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+        )
+
+        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+
+        ap0 = []
+
+        if "OC_High_trend" in df_stock.columns:
+            ap0.append(
+                mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+            )
+
+        if "OC_Low_trend" in df_stock.columns:
+            ap0.append(
+                mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+            )
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        mpf.plot(
+            df_stock,
+            type="candle",
+            mav=(20, 50),
+            volume=True,
+            title=f"\n{s_ticker} - Starting {ns_parser.s_start.strftime('%Y-%m-%d')}",
+            addplot=ap0,
+            xrotation=10,
+            style=s,
+            figratio=(10, 7),
+            figscale=1.10,
+            figsize=(plot_autoscale()),
+            update_width_config=dict(
+                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+            ),
+        )
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
 
 
 def quote(other_args: List[str], s_ticker: str):
@@ -601,7 +641,219 @@ def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
         return
 
 
+# pylint: disable=too-many-statements
+
+
+def check_api_keys():
+    """Check api keys and if they are supplied"""
+
+    key_dict = {}
+    if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
+        key_dict["ALPHA_VANTAGE"] = "Not defined"
+    else:
+        df = TimeSeries(
+            key=cfg.API_KEY.ALPHAVANTAGE, output_format="pandas"
+        ).get_intraday(symbol="AAPL")
+        if df.empty:
+            key_dict["ALPHA_VANTAGE"] = "defined, test failed"
+        else:
+            key_dict["ALPHA_VANTAGE"] = "defined, test passed"
+
+    if cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME":
+        key_dict["FINANCIAL_MODELING_PREP"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+        )
+        if r.status_code in [403, 401]:
+            key_dict["FINANCIAL_MODELING_PREP"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["FINANCIAL_MODELING_PREP"] = "defined, test passed"
+        else:
+            key_dict["FINANCIAL_MODELING_PREP"] = "defined, test inconclusive"
+
+    if cfg.API_KEY_QUANDL == "REPLACE_ME":
+        key_dict["QUANDL"] = "Not defined"
+    else:
+        try:
+            quandl.save_key(cfg.API_KEY_QUANDL)
+            quandl.get_table(
+                "ZACKS/FC",
+                paginate=True,
+                ticker=["AAPL", "MSFT"],
+                per_end_date={"gte": "2015-01-01"},
+                qopts={"columns": ["ticker", "per_end_date"]},
+            )
+            key_dict["QUANDL"] = "defined, test passed"
+        except quandl.errors.quandl_error.ForbiddenError:
+            key_dict["QUANDL"] = "defined, test failed"
+
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+        key_dict["POLYGON"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17?apiKey={cfg.API_POLYGON_KEY}"
+        )
+        if r.status_code in [403, 401]:
+            key_dict["POLYGON"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["POLYGON"] = "defined, test passed"
+        else:
+            key_dict["POLYGON"] = "defined, test inconclusive"
+
+    if cfg.API_FRED_KEY == "REPLACE_ME":
+        key_dict["FRED"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
+        )
+        if r.status_code in [403, 401, 400]:
+            key_dict["FRED"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["FRED"] = "defined, test passed"
+        else:
+            key_dict["FRED"] = "defined, test inconclusive"
+
+    if cfg.API_NEWS_TOKEN == "REPLACE_ME":
+        key_dict["NEWSAPI"] = "Not defined"
+    else:
+        r = requests.get(
+            f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
+        )
+        if r.status_code in [401, 403]:
+            key_dict["NEWSAPI"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["NEWSAPI"] = "defined, test passed"
+        else:
+            key_dict["NEWSAPI"] = "defined, test inconclusive"
+
+    if cfg.TRADIER_TOKEN == "REPLACE_ME":
+        key_dict["TRADIER"] = "Not defined"
+    else:
+        r = requests.get(
+            "https://sandbox.tradier.com/v1/markets/quotes",
+            params={"symbols": "AAPL"},
+            headers={
+                "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+                "Accept": "application/json",
+            },
+        )
+        if r.status_code in [401, 403]:
+            key_dict["TRADIER"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["TRADIER"] = "defined, test passed"
+        else:
+            key_dict["TRADIER"] = "defined, test inconclusive"
+
+    if cfg.API_CMC_KEY == "REPLACE_ME":
+        key_dict["COINMARKETCAP"] = "Not defined"
+    else:
+        cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
+        try:
+            cmc.exchange_info()
+            key_dict["COINMARKETCAP"] = "defined, test passed"
+        except CoinMarketCapAPIError:
+            key_dict["COINMARKETCAP"] = "defined, test failed"
+
+    if cfg.API_FINNHUB_KEY == "REPLACE_ME":
+        key_dict["FINNHUB"] = "Not defined"
+    else:
+        r = r = requests.get(
+            f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
+        )
+        if r.status_code in [403, 401, 400]:
+            key_dict["FINNHUB"] = "defined, test failed"
+        elif r.status_code == 200:
+            key_dict["FINNHUB"] = "defined, test passed"
+        else:
+            key_dict["FINNHUB"] = "defined, test inconclusive"
+
+    if cfg.API_IEX_TOKEN == "REPLACE_ME":
+        key_dict["IEXCLOUD"] = "Not defined"
+    else:
+        try:
+            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+            key_dict["IEXCLOUD"] = "defined, test passed"
+        except PyEXception:
+            key_dict["IEXCLOUD"] = "defined, test failed"
+
+    # Reddit
+    reddit_keys = [
+        cfg.API_REDDIT_CLIENT_ID,
+        cfg.API_REDDIT_CLIENT_SECRET,
+        cfg.API_REDDIT_USERNAME,
+        cfg.API_REDDIT_PASSWORD,
+        cfg.API_REDDIT_USER_AGENT,
+    ]
+    if "REPLACE_ME" in reddit_keys:
+        key_dict["REDDIT"] = "Not defined"
+    else:
+        key_dict["REDDIT"] = "defined, not tested"
+
+    # Reddit keys
+    twitter_keys = [
+        cfg.API_TWITTER_KEY,
+        cfg.API_TWITTER_SECRET_KEY,
+        cfg.API_TWITTER_BEARER_TOKEN,
+    ]
+    if "REPLACE_ME" in twitter_keys:
+        key_dict["TWITTER"] = "Not defined"
+    else:
+        params = {
+            "query": "(\\$AAPL) (lang:en)",
+            "max_results": "10",
+            "tweet.fields": "created_at,lang",
+        }
+        r = requests.get(
+            "https://api.twitter.com/2/tweets/search/recent",
+            params=params,  # type: ignore
+            headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
+        )
+        if r.status_code == 200:
+            key_dict["TWITTER"] = "defined, test passed"
+        elif r.status_code in [401, 403]:
+            key_dict["TWITTER"] = "defined, test failed"
+        else:
+            key_dict["TWITTER"] = "defined, test inconclusive"
+
+    # Robinhood keys
+    rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
+    if "REPLACE_ME" in rh_keys:
+        key_dict["ROBINHOOD"] = "Not defined"
+    else:
+        key_dict["ROBINHOOD"] = "defined, not tested"
+    # Degiro keys
+    dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
+    if "REPLACE_ME" in dg_keys:
+        key_dict["DEGIRO"] = "Not defined"
+    else:
+        key_dict["DEGIRO"] = "defined, not tested"
+    # OANDA keys
+    oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
+    if "REPLACE_ME" in oanda_keys:
+        key_dict["OANDA"] = "Not defined"
+    else:
+        key_dict["OANDA"] = "defined, not tested"
+    # Binance keys
+    bn_keys = [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]
+    if "REPLACE_ME" in bn_keys:
+        key_dict["BINANCE"] = "Not defined"
+    else:
+        key_dict["BINANCE"] = "defined, not tested"
+
+    print(
+        tabulate(
+            pd.DataFrame(key_dict.items()),
+            showindex=False,
+            headers=[],
+            tablefmt="fancy_grid",
+        ),
+        "\n",
+    )
+
+
 def print_goodbye():
+    """Prints a goodbye message when quitting the terminal"""
     goodbye_msg = [
         "An informed ape, is a strong ape. ",
         "Remember that stonks only go up. ",
@@ -641,6 +893,7 @@ def sha256sum(filename):
 
 
 def update_terminal():
+    """Updates the terminal by running git pull in the directory.  Runs poetry install if needed"""
     poetry_hash = sha256sum("poetry.lock")
 
     completed_process = subprocess.run("git pull", shell=True, check=False)
@@ -664,6 +917,7 @@ def update_terminal():
 
 
 def about_us():
+    """Prints an about us section"""
     print(
         f"\n{Fore.GREEN}Thanks for using Gamestonk Terminal. This is our way!{Style.RESET_ALL}\n"
         "\n"
@@ -728,6 +982,7 @@ def bootup():
 
 
 def reset():
+    """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
     completed_process = subprocess.run("python terminal.py", shell=True, check=False)

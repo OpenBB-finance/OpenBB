@@ -1,6 +1,7 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
+from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
 import random
@@ -27,6 +28,23 @@ if cfgPlot.BACKEND is not None:
 
 
 def check_valid_path(path: str) -> str:
+    """Argparse type function to test is path is valid
+
+    Parameters
+    ----------
+    path: str
+        Path supplied
+
+    Returns
+    -------
+    path: str
+        Valid path
+
+    Raises
+    -------
+    argparse.ArgumentTypeError
+        Given path does not exist
+    """
     if not os.path.exists(
         os.path.abspath(
             os.path.join(
@@ -38,14 +56,41 @@ def check_valid_path(path: str) -> str:
     return path
 
 
-def check_int_range(mini, maxi):
-    """
-    Checks if argparse argument is an int between 2 values.
-    https://stackoverflow.com/questions/55324449/how-to-specify-a-minimum-or-maximum-float-value-with-argparse
+def check_int_range(mini: int, maxi: int):
+    """Checks if argparse argument is an int between 2 values.
+
+    Parameters
+    ----------
+    mini: int
+        Min value to compare
+    maxi: int
+        Max value to compare
+
+    Returns
+    -------
+    int_range_checker:
+        Function that compares the three integers
     """
 
     # Define the function with default arguments
-    def int_range_checker(num) -> int:
+    def int_range_checker(num: int) -> int:
+        """Checks if int is between a high and low value
+
+        Parameters
+        ----------
+        num: int
+            Input integer
+
+        Returns
+        -------
+        num: int
+            Input number if conditions are met
+
+        Raises
+        -------
+        argparse.ArgumentTypeError
+            Input number not between min and max values
+        """
         num = int(num)
         if num < mini or num > maxi:
             raise argparse.ArgumentTypeError(f"must be in range [{mini},{maxi}]")
@@ -437,7 +482,21 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_known_args_and_warn(parser, l_args):
+def parse_known_args_and_warn(parser: argparse.ArgumentParser, other_args: List[str]):
+    """Parses list of arguments into the supplied parser
+
+    Parameters
+    ----------
+    parser: argparse.ArgumentParser
+        Parser with predefined arguments
+    other_args: List[str]
+        List of arguments to parse
+
+    Returns
+    -------
+    ns_parser:
+        Namespace with parsed arguments
+    """
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
@@ -445,7 +504,7 @@ def parse_known_args_and_warn(parser, l_args):
     if gtff.USE_CLEAR_AFTER_CMD:
         os.system("cls||clear")
 
-    (ns_parser, l_unknown_args) = parser.parse_known_args(l_args)
+    (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
     if ns_parser.help:
         parser.print_help()

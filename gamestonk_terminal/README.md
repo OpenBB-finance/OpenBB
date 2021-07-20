@@ -65,10 +65,10 @@ quote -t S_TICKER
 * Show the current price of a stock.
 
 ```
-candle
+candle -s START_DATE
 ```
 
-* Visualize candles historical data from the past 6 months, with support and resistance bars, and moving averages of 20 and 50
+* Visualize candles historical data, with support and resistance bars, and moving averages of 20 and 50.
 
 ![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
 
