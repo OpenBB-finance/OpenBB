@@ -8,18 +8,11 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
-from gamestonk_terminal.options import op_helpers
-from gamestonk_terminal.options.yfinance import yfinance_model
+from gamestonk_terminal.options.yfinance import yfinance_model, yfinance_view
+
 
 class YFinanceController:
-    CHOICES = [
-        "?",
-        "cls",
-        "help",
-        "q",
-        "quit",
-        "load"
-    ]
+    CHOICES = ["?", "cls", "help", "q", "quit", "load", "exp", "oi", "vol", "voi"]
 
     def __init__(self, ticker):
         self.ticker = ticker
@@ -27,6 +20,8 @@ class YFinanceController:
             self.expiry_dates = yfinance_model.option_expirations(ticker)
         else:
             self.expiry_dates = []
+        self.selected_date = None
+        self.options = None
         self.yf_parser = argparse.ArgumentParser(add_help=False, prog="yf")
         self.yf_parser.add_argument(
             "cmd",
@@ -53,7 +48,7 @@ class YFinanceController:
 
         # Help menu again
         if known_args.cmd == "?":
-            self.print_help(self.ticker)
+            self.print_help()
             return None
 
         # Clear screen
@@ -75,18 +70,76 @@ class YFinanceController:
 
     def call_help(self, _):
         """Process Help command."""
-        self.print_help(self.ticker)
+        self.print_help(s)
 
-    def call_load(self, other_args:List[str]):
+    def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker = op_helpers.load(other_args)
+        self.ticker = yfinance_model.load(other_args)
         self.expiry_dates = yfinance_model.option_expirations(self.ticker)
-        self.print_help()
+        print("")
+        print(f"Current Ticker: {self.ticker or None}")
+        print(f"Current Expiration: {self.selected_date or None}")
+        print("")
+
+    def call_exp(self, other_args: List[str]):
+        """Process exp command"""
+        if self.ticker:
+            self.selected_date = yfinance_model.select_option_date(
+                self.expiry_dates, other_args
+            )
+        else:
+            print("Please select a ticker using load {ticker}", "\n")
+        if self.selected_date:
+            self.options = yfinance_model.get_option_chain(
+                self.ticker, self.selected_date
+            )
+            self.calls = self.options.calls
+            self.puts = self.options.puts
+            print("")
+            print(f"Current Ticker: {self.ticker or None}")
+            print(f"Current Expiration: {self.selected_date or None}")
+            print("")
+
+    def call_oi(self, other_args: List[str]):
+        """Process oi command"""
+        yfinance_view.plot_oi(
+            self.calls, self.puts, self.ticker, self.selected_date, other_args
+        )
+
+    def call_vol(self, other_args: List[str]):
+        """Process oi command"""
+        yfinance_view.plot_vol(
+            self.calls, self.puts, self.ticker, self.selected_date, other_args
+        )
+
+    def call_voi(self, other_args: List[str]):
+        yfinance_view.plot_volume_open_interest(
+            other_args, self.ticker, self.selected_date, self.calls, self.puts
+        )
 
     def print_help(self):
-        print("help")
-        print(f"Ticker: {self.ticker or None}")
-        print(self.expiry_dates)
+        """Print help."""
+        print(
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options/yfinance"
+        )
+        print("\nOptions:")
+        print("   cls           clear screen")
+        print("   ?/help        show this menu again")
+        print("   q             quit this menu, and shows back to main menu")
+        print("   quit          quit to abandon program")
+        print("")
+        print("   load          load a new ticker")
+        print("   exp           see and set expiration date")
+        print("")
+        print(f"Current Ticker: {self.ticker or None}")
+        print(f"Current Expiration: {self.selected_date or None}")
+        if self.options:
+            print("")
+            print("   oi            plot open interest")
+            print("   vol           plot volume")
+            print("   voi           plot volume and open interest")
+        print("")
+
 
 def menu(ticker):
 
