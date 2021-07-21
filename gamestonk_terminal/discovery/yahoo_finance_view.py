@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import pandas as pd
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 import requests
+
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
 def gainers_view(other_args: List[str]):
