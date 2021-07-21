@@ -432,18 +432,7 @@ Contexts:
 
     def call_op(self, _):
         """Process op command"""
-        if self.interval == "1440min":
-            return op_controller.menu(
-                self.ticker,
-                self.stock,
-            )
-
-        df_stock = yf.download(self.ticker, start=self.start, progress=False)
-
-        return op_controller.menu(
-            self.ticker,
-            df_stock,
-        )
+        return op_controller.menu(self.ticker)
 
     def call_pred(self, _):
         """Process pred command"""

@@ -18,6 +18,7 @@ from gamestonk_terminal.options import (
     syncretism_view,
     calculator_model,
 )
+from gamestonk_terminal.options.yfinance import yfinance_controller
 from gamestonk_terminal.menu import session
 
 
@@ -25,7 +26,7 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit", "disp", "scr", "calc"]
+    CHOICES = ["cls", "?", "help", "q", "quit", "disp", "scr", "calc", "yf", "tr"]
 
     CHOICES_TICKER_DEPENDENT = [
         "exp",
@@ -36,27 +37,18 @@ class OptionsController:
         "info",
     ]
 
-    def __init__(self, ticker: str, stock: pd.DataFrame):
+    def __init__(self, ticker: str):
         """Construct data."""
         if ticker:
             self.ticker = ticker
-            self.yf_ticker_data = yf.Ticker(self.ticker)
-            self.expiry_date = self.yf_ticker_data.options[0]
-            self.options = self.yf_ticker_data.option_chain(self.expiry_date)
-            self.last_adj_close_price = stock["Adj Close"].values[-1]
-
-            self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-            self.op_parser.add_argument(
-                "cmd",
-                choices=self.CHOICES + self.CHOICES_TICKER_DEPENDENT,
-            )
         else:
-            self.expiry_date = ""
-            self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
-            self.op_parser.add_argument(
-                "cmd",
-                choices=self.CHOICES,
-            )
+            self.ticker = ""
+
+        self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
+        self.op_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
 
     def expiry_dates(self, other_args: List[str]):
         """Print all available expiry dates."""
@@ -104,7 +96,7 @@ class OptionsController:
         return
 
     @staticmethod
-    def print_help(expiry_date):
+    def print_help(ticker):
         """Print help."""
         print(
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options"
@@ -120,7 +112,11 @@ class OptionsController:
         print("")
         print("   calc          basic call/put PnL calculator")
         print("")
-        if expiry_date:
+        print(">  yf            yahoo finance options menu")
+        print(">  tr            tradier options menu")
+        print("")
+
+        if False:
             print(f"Selected expiry date: {expiry_date}")
             print("")
             print("   exp           see/set expiry date")
@@ -154,7 +150,7 @@ class OptionsController:
 
         # Help menu again
         if known_args.cmd == "?":
-            self.print_help(self.expiry_date)
+            self.print_help(self.ticker)
             return None
 
         # Clear screen
@@ -168,7 +164,7 @@ class OptionsController:
 
     def call_help(self, _):
         """Process Help command."""
-        self.print_help(self.expiry_date)
+        self.print_help(self.ticker)
 
     def call_q(self, _):
         """Process Q command - quit the menu."""
@@ -228,12 +224,22 @@ class OptionsController:
     def call_scr(self, other_args):
         syncretism_view.screener_output(other_args)
 
+    def call_yf(self, _):
+        """Process cp command"""
+        if yfinance_controller.menu(self.ticker):
+            return True
 
-def menu(ticker: str, stock: pd.DataFrame):
+    def call_tr(self, _):
+        """Process cp command"""
+        if tradier_controller.menu():
+            return True
+
+
+def menu(ticker: str):
     """Options Menu."""
 
     try:
-        op_controller = OptionsController(ticker, stock)
+        op_controller = OptionsController(ticker)
         op_controller.call_help(None)
     except IndexError:
         print("No options found for " + ticker)
