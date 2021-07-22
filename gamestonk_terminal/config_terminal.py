@@ -52,7 +52,7 @@ OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
 OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE_ME"
 
 # https://tradier.com/products/market-data-api
-TRADIER_TOKEN = os.getenv("GT_API_TRADIER_TOKEN") or "GS161j3aMFZS1yonewMpyGC3Z1LX"
+TRADIER_TOKEN = os.getenv("GT_API_TRADIER_TOKEN") or "REPLACE_ME"
 
 # Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
 WEBDRIVER_TO_USE = "chrome"

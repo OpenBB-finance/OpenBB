@@ -10,10 +10,10 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.options import (
-    tradier_view,
     barchart_view,
     syncretism_view,
     calculator_model,
+    op_helpers,
 )
 from gamestonk_terminal.options.yfinance import yfinance_controller
 from gamestonk_terminal.options.tradier import tradier_controller
@@ -27,15 +27,19 @@ class OptionsController:
     """Options Controller class."""
 
     # Command choices
-    CHOICES = ["cls", "?", "help", "q", "quit", "disp", "scr", "calc", "yf", "tr"]
-
-    CHOICES_TICKER_DEPENDENT = [
-        "exp",
-        "voi",
-        "vcalls",
-        "vputs",
-        "chains",
+    CHOICES = [
+        "cls",
+        "?",
+        "help",
+        "q",
+        "quit",
+        "disp",
+        "scr",
+        "calc",
+        "yf",
+        "tr",
         "info",
+        "load",
     ]
 
     def __init__(self, ticker: str):
@@ -71,9 +75,10 @@ class OptionsController:
         print(">  yf            yahoo finance options menu")
         print(">  tr            tradier options menu")
         print("")
+        print(f"Current Ticker: {ticker}")
+        print("   load          load new ticker")
         print("   info          display option information (volatility, IV rank etc)")
         print("")
-        print(f"Current Ticker: {ticker}")
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -122,17 +127,18 @@ class OptionsController:
     def call_calc(self, other_args: List[str]):
         calculator_model.pnl_calculator(other_args)
 
-    def call_chains(self, other_args):
-        tradier_view.display_chains(self.ticker, self.expiry_date, other_args)
-
-    def call_info(self, other_args):
+    def call_info(self, other_args: List[str]):
         barchart_view.print_options_data(self.ticker, other_args)
 
-    def call_disp(self, other_args):
+    def call_disp(self, other_args: List[str]):
         syncretism_view.view_available_presets(other_args)
 
-    def call_scr(self, other_args):
+    def call_scr(self, other_args: List[str]):
         syncretism_view.screener_output(other_args)
+
+    def call_load(self, other_args: List[str]):
+        self.ticker = op_helpers.load(other_args)
+        print(f"{self.ticker} loaded \n")
 
     # pylint: disable=inconsistent-return-statements
     def call_yf(self, _):
