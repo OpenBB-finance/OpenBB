@@ -1,7 +1,7 @@
 import dataclasses
 import statistics
 import time
-from typing import Union, Iterable, Optional, Tuple
+from typing import Union, Optional
 
 from colorama import Fore, Style
 from sentipy.sentipy import Sentipy
@@ -9,7 +9,8 @@ from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
 
-sentipy: Sentipy = Sentipy(token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY)
+sentipy: Sentipy = Sentipy(
+    token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY)
 """Initialise SentiPy with the user's API token and key"""
 
 
@@ -54,7 +55,8 @@ class _Boundary:
 
         """
 
-        boundaries = [self.min + (self.max - self.min) / 5 * i for i in range(1, 5)]
+        boundaries = [self.min + (self.max - self.min) /
+                      5 * i for i in range(1, 5)]
 
         return _bright_text(
             f"{Fore.WHITE}N/A" if num is None
@@ -68,7 +70,8 @@ class _Boundary:
 
 
 def _get_past_week_average(ticker: str, metric: str) -> float:
-    historical_data = [dp for dp in sentipy.historical(ticker, metric, int(time.time() - 60 * 60 * 24 * 7), int(time.time())).values() if dp is not None]
+    historical_data = [dp for dp in sentipy.historical(ticker, metric, int(time.time() - 60 * 60 * 24 * 7),
+                                                       int(time.time())).values() if dp is not None]
     return statistics.mean(historical_data) if historical_data else None
 
 
@@ -92,18 +95,20 @@ class _Metric(_MetricInfo):
     value: Union[float, int]
     """Value"""
 
-    def __init__(self, metric_info: _MetricInfo, ticker: str, value: Union[float, int], boundary: Optional[_Boundary] = None):
+    def __init__(self, metric_info: _MetricInfo, ticker: str, value: Union[float, int],
+                 boundary: Optional[_Boundary] = None):
         super(_Metric, self).__init__(**dataclasses.asdict(metric_info))
 
-        self.boundary = _Boundary(0, 2 * _get_past_week_average(ticker, self.name)) if boundary is None else boundary
+        self.boundary = _Boundary(
+            0, 2 * _get_past_week_average(ticker, self.name)) if boundary is None else boundary
         self.ticker = ticker
         self.value = value
 
     def visualise(self) -> tuple:
         return self.title, \
-               self.boundary.categorise(self.value), \
-               "N/A" if self.value is None else f"{self.value:{self.format}}", \
-               self.description
+            self.boundary.categorise(self.value), \
+            "N/A" if self.value is None else f"{self.value:{self.format}}", \
+            self.description
 
 
 core_metrics = [
@@ -143,7 +148,8 @@ social_metrics = [
 
 def _tabulate_metrics(ticker: str, metrics_list: list[_Metric]) -> tabulate:
     table_data = []
-    table_headers = [f'{_bright_text(ticker)} Metrics', 'vs Past 7 Days', 'Value', 'Description']
+    table_headers = [
+        f'{_bright_text(ticker)} Metrics', 'vs Past 7 Days', 'Value', 'Description']
 
     for metric in metrics_list:
         table_data.append(metric.visualise())
@@ -161,13 +167,15 @@ def _show_metric_descriptions(other_args: list[str]) -> bool:
 
 def metrics(ticker: str, other_args: list[str]) -> None:
     data = sentipy.parsed(ticker)
-    metric_values = [_Metric(metric_info, ticker, data.__getattribute__(metric_info.name)) for metric_info in core_metrics]
+    metric_values = [_Metric(metric_info, ticker, data.__getattribute__(metric_info.name)) for metric_info in
+                     core_metrics]
 
     print(_tabulate_metrics(ticker, metric_values))
 
 
 def socials(ticker: str, other_args: list[str]) -> None:
     data = sentipy.raw(ticker)
-    metric_values = [_Metric(metric_info, ticker, data.__getattribute__(metric_info.name)) for metric_info in social_metrics]
+    metric_values = [_Metric(metric_info, ticker, data.__getattribute__(metric_info.name)) for metric_info in
+                     social_metrics]
 
     print(_tabulate_metrics(ticker, metric_values))
