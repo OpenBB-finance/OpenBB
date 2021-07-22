@@ -5,21 +5,22 @@ import argparse
 import os
 from typing import List
 import matplotlib.pyplot as plt
-import pandas as pd
 
-import yfinance as yf
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.options import (
-    yahoo_view,
     tradier_view,
     barchart_view,
     syncretism_view,
     calculator_model,
 )
 from gamestonk_terminal.options.yfinance import yfinance_controller
+from gamestonk_terminal.options.tradier import tradier_controller
+
 from gamestonk_terminal.menu import session
+
+# pylint: disable=no-member
 
 
 class OptionsController:
@@ -50,51 +51,6 @@ class OptionsController:
             choices=self.CHOICES,
         )
 
-    def expiry_dates(self, other_args: List[str]):
-        """Print all available expiry dates."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="exp",
-            description="""See/set expiry dates. [Source: Yahoo Finance]""",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            dest="n_date",
-            action="store",
-            type=int,
-            default=-1,
-            choices=range(len(self.yf_ticker_data.options)),
-            help=f"Expiry date index for {self.ticker}.",
-        )
-
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-d")
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            # Print possible expiry dates
-            if ns_parser.n_date == -1:
-                print("\nAvailable expiry dates:")
-                for i, d in enumerate(self.yf_ticker_data.options):
-                    print(f"   {(2-len(str(i)))*' '}{i}.  {d}")
-
-            # It means an expiry date was correctly selected
-            else:
-                self.expiry_date = self.yf_ticker_data.options[ns_parser.n_date]
-                self.options = self.yf_ticker_data.option_chain(self.expiry_date)
-                print(f"\nSelected expiry date : {self.expiry_date}")
-
-        except Exception as e:
-            print(e)
-
-        print("")
-        return
-
     @staticmethod
     def print_help(ticker):
         """Print help."""
@@ -115,20 +71,9 @@ class OptionsController:
         print(">  yf            yahoo finance options menu")
         print(">  tr            tradier options menu")
         print("")
-
-        if False:
-            print(f"Selected expiry date: {expiry_date}")
-            print("")
-            print("   exp           see/set expiry date")
-            print("   voi           volume + open interest options trading plot")
-            print("   vcalls        calls volume + open interest plot")
-            print("   vputs         puts volume + open interest plot")
-            print("")
-            print("   chains        display option chains")
-            print(
-                "   info          display option information (volatility, IV rank etc)"
-            )
-            print("")
+        print("   info          display option information (volatility, IV rank etc)")
+        print("")
+        print(f"Current Ticker: {ticker}")
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -177,41 +122,6 @@ class OptionsController:
     def call_calc(self, other_args: List[str]):
         calculator_model.pnl_calculator(other_args)
 
-    def call_exp(self, other_args: List[str]):
-        """Process exp command."""
-        self.expiry_dates(other_args)
-
-    def call_voi(self, other_args: List[str]):
-        """Process voi command."""
-        yahoo_view.plot_volume_open_interest(
-            other_args,
-            self.ticker,
-            self.expiry_date,
-            self.last_adj_close_price,
-            self.options.calls,
-            self.options.puts,
-        )
-
-    def call_vcalls(self, other_args: List[str]):
-        """Process vcalls command."""
-        yahoo_view.plot_calls_volume_open_interest(
-            other_args,
-            self.ticker,
-            self.expiry_date,
-            self.last_adj_close_price,
-            self.options.calls,
-        )
-
-    def call_vputs(self, other_args: List[str]):
-        """Process vcalls command."""
-        yahoo_view.plot_puts_volume_open_interest(
-            other_args,
-            self.ticker,
-            self.expiry_date,
-            self.last_adj_close_price,
-            self.options.puts,
-        )
-
     def call_chains(self, other_args):
         tradier_view.display_chains(self.ticker, self.expiry_date, other_args)
 
@@ -224,6 +134,7 @@ class OptionsController:
     def call_scr(self, other_args):
         syncretism_view.screener_output(other_args)
 
+    # pylint: disable=inconsistent-return-statements
     def call_yf(self, _):
         """Process cp command"""
         if yfinance_controller.menu(self.ticker):
@@ -231,7 +142,7 @@ class OptionsController:
 
     def call_tr(self, _):
         """Process cp command"""
-        if tradier_controller.menu():
+        if tradier_controller.menu(self.ticker):
             return True
 
 

@@ -3,12 +3,17 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+import os
+
+import pandas as pd
+
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
 from gamestonk_terminal.options.yfinance import yfinance_model, yfinance_view
+from gamestonk_terminal.options import op_helpers
 
 
 class YFinanceController:
@@ -20,8 +25,10 @@ class YFinanceController:
             self.expiry_dates = yfinance_model.option_expirations(ticker)
         else:
             self.expiry_dates = []
-        self.selected_date = None
+        self.selected_date = ""
         self.options = None
+        self.calls = pd.DataFrame()
+        self.puts = pd.DataFrame()
         self.yf_parser = argparse.ArgumentParser(add_help=False, prog="yf")
         self.yf_parser.add_argument(
             "cmd",
@@ -70,11 +77,11 @@ class YFinanceController:
 
     def call_help(self, _):
         """Process Help command."""
-        self.print_help(s)
+        self.print_help()
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker = yfinance_model.load(other_args)
+        self.ticker = op_helpers.load(other_args)
         self.expiry_dates = yfinance_model.option_expirations(self.ticker)
         print("")
         print(f"Current Ticker: {self.ticker or None}")
@@ -84,7 +91,7 @@ class YFinanceController:
     def call_exp(self, other_args: List[str]):
         """Process exp command"""
         if self.ticker:
-            self.selected_date = yfinance_model.select_option_date(
+            self.selected_date = op_helpers.select_option_date(
                 self.expiry_dates, other_args
             )
         else:
