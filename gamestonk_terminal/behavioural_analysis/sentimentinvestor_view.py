@@ -1,21 +1,32 @@
 import argparse
 import dataclasses
+import datetime
 import multiprocessing
 import os
 import statistics
 import time
 from typing import Union, Optional
 
+import matplotlib.dates as mdates
+import pandas as pd
+import seaborn as sns
 from colorama import Fore, Style
+from matplotlib import pyplot as plt
 from sentipy.sentipy import Sentipy
 from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    plot_autoscale,
+)
 
 sentipy: Sentipy = Sentipy(
     token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY)
 """Initialise SentiPy with the user's API token and key"""
+
+pd.plotting.register_matplotlib_converters()
 
 
 def _bright_text(string: str) -> str:
@@ -169,6 +180,35 @@ def _show_metric_descriptions(other_args: list[str]) -> bool:
     return False
 
 
+def _customise_plot() -> None:
+    sns.set(font='Open Sans',
+            style='darkgrid',
+            rc={
+                'axes.axisbelow': False,
+                'axes.edgecolor': 'lightgrey',
+                'axes.facecolor': 'None',
+                'axes.grid': False,
+                'axes.labelcolor': 'dimgrey',
+                'axes.spines.right': False,
+                'axes.spines.top': False,
+                'figure.facecolor': 'white',
+                'lines.solid_capstyle': 'round',
+                'patch.edgecolor': 'w',
+                'patch.force_edgecolor': True,
+                'text.color': 'dimgrey',
+                'xtick.bottom': False,
+                'xtick.color': 'dimgrey',
+                'xtick.direction': 'out',
+                'xtick.top': False,
+                'ytick.color': 'dimgrey',
+                'ytick.direction': 'out',
+                'ytick.left': False,
+                'ytick.right': False})
+    sns.despine(left=True, bottom=True)
+    sns.color_palette('pastel')
+    plt.legend(frameon=False)
+
+
 def metrics(ticker: str, other_args: list[str]) -> None:
     parser = argparse.ArgumentParser(add_help=False, prog="metrics",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -208,3 +248,52 @@ def socials(ticker: str, other_args: list[str]) -> None:
                                                for metric_info in social_metrics])
 
     print(_tabulate_metrics(ticker, metric_values))
+
+
+def historical(ticker: str, other_args: list[str]) -> None:
+    parser = argparse.ArgumentParser(add_help=False, prog="historical",
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                                     description="Plot the past week of data for a specific metric")
+    parser.add_argument("-t", "--ticker", action="store", dest="ticker", type=str, default=ticker,
+                        help="ticker for which to fetch data")
+    parser.add_argument("metric", type=str, action="store", default="sentiment", nargs="?",
+                        choices=["sentiment", "AHI", "RHI", "SGP"], help="the metric to plot")
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
+    data = sentipy.historical(ns_parser.ticker, ns_parser.metric, int(time.time() - 60 * 60 * 24 * 7), int(time.time()))
+    df = pd.DataFrame.from_dict({
+        'date': map(datetime.datetime.utcfromtimestamp, data.keys()),
+        ns_parser.metric: data.values()
+    })
+
+    df.sort_index(ascending=True, inplace=True)
+
+    if not df.empty:
+        _customise_plot()
+
+        # use seaborn to lineplot
+        ax = sns.lineplot(data=df, x='date', y=ns_parser.metric, legend=False)
+
+        # always show zero on the y-axis
+        plt.ylim(bottom=0)
+
+        # set the x-axis date formatting
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%x'))
+
+        # scale the plot appropriately
+        plt.gcf().set_size_inches(plot_autoscale())
+        plt.gcf().set_dpi(PLOT_DPI)
+        plt.gcf().autofmt_xdate()
+
+        # fill below the line
+        plt.fill_between(df.date, df[ns_parser.metric], alpha=0.3)
+
+        # add title e.g. AAPL sentiment since 22/07/21
+        plt.title(f"{ns_parser.ticker} {ns_parser.metric} since {min(df.date).strftime('%x')}")
+
+        plt.show()
+
+    print(tabulate(df, headers=['Date and time', ns_parser.metric], tablefmt='psql', floatfmt=".3f"))
