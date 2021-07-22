@@ -8,6 +8,10 @@ import numpy as np
 import pandas as pd
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from gamestonk_terminal.insider.openinsider_model import (
+    get_open_insider_link,
+    get_open_insider_data,
+)
 
 d_open_insider = {
     "lcb": "latest-cluster-buys",
@@ -41,7 +45,7 @@ d_notes = {
 
 
 def print_insider_data(other_args: List[str], type_insider: str):
-    """Corporate lobbying details
+    """Print insider data
 
     Parameters
     ----------
@@ -143,6 +147,64 @@ def print_insider_data(other_args: List[str], type_insider: str):
 
         for char in l_uchars:
             print(d_notes[char])
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def print_insider_filter(other_args: List[str], preset_loaded: str):
+    """Print insider filter based on loaded preset
+
+    Parameters
+    ----------
+    other_args : List[str]
+        Command line arguments to be processed with argparse
+    preset_loaded: str
+        Loaded preset filter
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="filter",
+        description="Print open insider filtered data using loaded preset [Source: OpenInsider]",
+    )
+    parser.add_argument(
+        "-n",
+        "--num",
+        action="store",
+        dest="num",
+        type=check_positive,
+        default=20,
+        help="Number of datarows to display",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        link = get_open_insider_link(preset_loaded)
+
+        if not link:
+            print("")
+            return
+
+        df_insider = get_open_insider_data(link)
+
+        if df_insider.empty:
+            print("")
+            return
+
+        print(
+            tabulate(
+                df_insider.head(ns_parser.num),
+                headers=df_insider.columns,
+                tablefmt="fancy_grid",
+                stralign="right",
+                showindex=False,
+            )
+        )
         print("")
 
     except Exception as e:

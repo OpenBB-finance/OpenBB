@@ -272,8 +272,12 @@ class InsiderController:
         self.view_available_presets(other_args)
 
     def call_set(self, other_args: List[str]):
-        """Process overview command"""
+        """Process set command"""
         self.set_preset(other_args)
+
+    def call_filter(self, other_args: List[str]):
+        """Process filter command"""
+        return openinsider_view.print_insider_filter(other_args, self.preset)
 
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""
