@@ -18,7 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     check_non_negative,
 )
-from gamestonk_terminal.options.yfinance import yfinance_model
+from gamestonk_terminal.options import op_helpers
 
 
 def plot_oi(
@@ -114,7 +114,7 @@ def plot_oi(
             columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
         )
 
-        max_pain = yfinance_model.calculate_max_pain(df_opt)
+        max_pain = op_helpers.calculate_max_pain(df_opt)
         plt.style.use("classic")
         fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
@@ -387,7 +387,7 @@ def plot_volume_open_interest(
             columns={"openInterest_x": "OI_call", "openInterest_y": "OI_put"}
         )
 
-        max_pain = yfinance_model.calculate_max_pain(df_opt)
+        max_pain = op_helpers.calculate_max_pain(df_opt)
 
         if (
             ns_parser.min_vol == -1

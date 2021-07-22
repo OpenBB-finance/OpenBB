@@ -62,7 +62,7 @@ def plot_candles(candles_df: pd.DataFrame, title: str):
         candles_df,
         type="candle",
         volume=True,
-        title=f"{title}",
+        title=f"\n{title}",
         xrotation=20,
         style="binance",
         figratio=(10, 7),

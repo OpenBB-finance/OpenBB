@@ -28,6 +28,7 @@ class TradierController:
         "oi",
         "vol",
         "voi",
+        "hist",
     ]
 
     def __init__(self, ticker):
@@ -120,18 +121,21 @@ class TradierController:
             self.options, self.ticker, self.selected_date, other_args
         )
 
-    # pylint: disable=unnecessary-pass
-
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
-        pass
+        tradier_view.plot_oi(self.options, self.ticker, self.selected_date, other_args)
 
     def call_vol(self, other_args: List[str]):
         """Process oi command"""
-        pass
+        tradier_view.plot_vol(self.options, self.ticker, self.selected_date, other_args)
 
     def call_voi(self, other_args: List[str]):
-        pass
+        tradier_view.plot_volume_open_interest(
+            other_args, self.ticker, self.selected_date, self.options
+        )
+
+    def call_hist(self, other_args: List[str]):
+        tradier_view.display_historical(self.ticker, self.selected_date, other_args)
 
     def print_help(self):
         """Print help."""
@@ -155,6 +159,7 @@ class TradierController:
             print("   oi            plot open interest")
             print("   vol           plot volume")
             print("   voi           plot volume and open interest")
+            print("   hist          plot option history")
         print("")
 
 

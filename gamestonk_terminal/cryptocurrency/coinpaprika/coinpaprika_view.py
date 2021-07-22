@@ -1319,7 +1319,7 @@ def chart(coin_id: str, other_args: List[str]):
         ]
         df = df.set_index(pd.to_datetime(df["Time0"])).drop("Time0", axis=1)
         title = (
-            f"{coin_id}/{ns_parser.vs} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
+            f"\n{coin_id}/{ns_parser.vs} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
         )
         df["Volume"] = df["Volume"] / 1_000_000
         mpf.plot(

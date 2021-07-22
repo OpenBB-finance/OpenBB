@@ -1,14 +1,13 @@
 """Tradier options model"""
 __docformat__ = "numpy"
 
-
 import requests
 import pandas as pd
 
 from gamestonk_terminal import config_terminal as cfg
 
-
 option_columns = [
+    "symbol",
     "bid",
     "ask",
     "strike",
@@ -123,3 +122,67 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
         opt_chain.loc[idx, :] = data
 
     return opt_chain
+
+
+def last_price(ticker: str):
+    """Makes api request for last price
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker
+
+    Returns
+    -------
+    float:
+        Last price
+    """
+    r = requests.get(
+        "https://sandbox.tradier.com/v1/markets/quotes",
+        params={"symbols": ticker, "includeAllRoots": "true", "strikes": "false"},
+        headers={
+            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+            "Accept": "application/json",
+        },
+    )
+    if r.status_code == 200:
+        return float(r.json()["quotes"]["quote"]["last"])
+    else:
+        print("Error getting last price")
+        return None
+
+
+def historical_prices(symbol: str) -> pd.DataFrame:
+    """Get historical options prices
+
+    Parameters
+    ----------
+    symbol: str
+        OCC option chain symbol
+
+    Returns
+    -------
+    df_hist: pd.DataFrame
+        Dataframe of historical options
+    """
+    response = requests.get(
+        "https://sandbox.tradier.com/v1/markets/history",
+        params={"symbol": {symbol}, "interval": "daily"},
+        headers={
+            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+            "Accept": "application/json",
+        },
+    )
+
+    if response.status_code != 200:
+        print("Error with request")
+        return pd.DataFrame()
+
+    data = response.json()["history"]
+    if not data:
+        print("No historical data available")
+        return pd.DataFrame()
+
+    df_hist = pd.DataFrame(data["day"]).set_index("date")
+
+    return df_hist
