@@ -1,3 +1,4 @@
+import argparse
 import dataclasses
 import statistics
 import time
@@ -8,6 +9,7 @@ from sentipy.sentipy import Sentipy
 from tabulate import tabulate
 
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 sentipy: Sentipy = Sentipy(
     token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY)
@@ -166,14 +168,35 @@ def _show_metric_descriptions(other_args: list[str]) -> bool:
 
 
 def metrics(ticker: str, other_args: list[str]) -> None:
-    data = sentipy.parsed(ticker)
-    metric_values = [_Metric(metric_info, ticker, data.__getattribute__(metric_info.name)) for metric_info in
+    parser = argparse.ArgumentParser(add_help=False, prog="metrics",
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                                     description="Print realtime sentiment and hype index for this stock, aggregated from social media.")
+
+    parser.add_argument("-t", "--ticker", action="store", dest="ticker", type=str, default=ticker,
+                        help="ticker for which to fetch the core metrics")
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
+    data = sentipy.parsed(ns_parser.ticker)
+    metric_values = [_Metric(metric_info, ns_parser.ticker, data.__getattribute__(metric_info.name)) for metric_info in
                      core_metrics]
 
-    print(_tabulate_metrics(ticker, metric_values))
+    print(_tabulate_metrics(ns_parser.ticker, metric_values))
 
 
 def socials(ticker: str, other_args: list[str]) -> None:
+    parser = argparse.ArgumentParser(add_help=False, prog="social",
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                                     description="Print the number of mentions and average sentiment of remarks mentioning this stock for several social media sources")
+    parser.add_argument("-t", "--ticker", action="store", dest="ticker", type=str, default=ticker,
+                        help="ticker for which to fetch the raw social media data")
+
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
+
     data = sentipy.raw(ticker)
     metric_values = [_Metric(metric_info, ticker, data.__getattribute__(metric_info.name)) for metric_info in
                      social_metrics]
