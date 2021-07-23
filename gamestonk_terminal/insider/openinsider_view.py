@@ -7,11 +7,17 @@ import requests
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from colorama import Fore, Style
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    parse_known_args_and_warn,
+    patch_pandas_text_adjustment,
+)
 from gamestonk_terminal.insider.openinsider_model import (
     get_open_insider_link,
     get_open_insider_data,
 )
+from gamestonk_terminal import feature_flags as gtff
 
 d_open_insider = {
     "lcb": "latest-cluster-buys",
@@ -42,6 +48,80 @@ d_notes = {
     "E": "E: Error detected in filing",
     "M": "M: Multiple transactions in filing; earliest reported transaction date and weighted average transaction price",
 }
+
+d_trade_types = {
+    "S - Sale": f"{Fore.RED}S - Sale: Sale of securities on an exchange or to another person{Style.RESET_ALL}",
+    "S - Sale+OE": f"{Fore.YELLOW}S - Sale+OE: Sale of securities "
+    f"on an exchange or to another person (after option exercise){Style.RESET_ALL}",
+    "F - Tax": f"{Fore.MAGENTA}F - Tax: Payment of exercise price or "
+    f"tax liability using portion of securities received from the company{Style.RESET_ALL}",
+    "P - Purchase": f"{Fore.GREEN}P - Purchase: Purchase of securities on "
+    f"an exchange or from another person{Style.RESET_ALL}",
+}
+
+
+def red_highlight(values):
+    """Red highlight
+
+    Parameters
+    ----------
+    values : List[str]
+        dataframe values to color
+
+    Returns
+    ----------
+    List[str]
+        colored dataframes values
+    """
+    return [f"{Fore.RED}{val}{Style.RESET_ALL}" for val in values]
+
+
+def yellow_highlight(values):
+    """Yellow highlight
+
+    Parameters
+    ----------
+    values : List[str]
+        dataframe values to color
+
+    Returns
+    ----------
+    List[str]
+        colored dataframes values
+    """
+    return [f"{Fore.YELLOW}{val}{Style.RESET_ALL}" for val in values]
+
+
+def magenta_highlight(values):
+    """Magenta highlight
+
+    Parameters
+    ----------
+    values : List[str]
+        dataframe values to color
+
+    Returns
+    ----------
+    List[str]
+        colored dataframes values
+    """
+    return [f"{Fore.MAGENTA}{val}{Style.RESET_ALL}" for val in values]
+
+
+def green_highlight(values):
+    """Green highlight
+
+    Parameters
+    ----------
+    values : List[str]
+        dataframe values to color
+
+    Returns
+    ----------
+    List[str]
+        colored dataframes values
+    """
+    return [f"{Fore.GREEN}{val}{Style.RESET_ALL}" for val in values]
 
 
 def print_insider_data(other_args: List[str], type_insider: str):
@@ -178,6 +258,14 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         default=20,
         help="Number of datarows to display",
     )
+    parser.add_argument(
+        "-l",
+        "--links",
+        action="store_true",
+        default=False,
+        help="Flag to show hyperlinks",
+        dest="links",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -191,20 +279,66 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
             return
 
         df_insider = get_open_insider_data(link)
+        df_insider_orig = df_insider.copy()
 
         if df_insider.empty:
             print("")
             return
 
-        print(
-            tabulate(
-                df_insider.head(ns_parser.num),
-                headers=df_insider.columns,
-                tablefmt="fancy_grid",
-                stralign="right",
-                showindex=False,
-            )
-        )
+        if ns_parser.links:
+            df_insider = df_insider[
+                ["Ticker Link", "Insider Link", "Filing Link"]
+            ].head(ns_parser.num)
+        else:
+            df_insider = df_insider.drop(
+                columns=["Filing Link", "Ticker Link", "Insider Link"]
+            ).head(ns_parser.num)
+
+        if gtff.USE_COLOR:
+            if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
+                df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
+                    df_insider["Trade Type"] == "S - Sale"
+                ].apply(red_highlight)
+            if not df_insider[df_insider["Trade Type"] == "S - Sale+OE"].empty:
+                df_insider[df_insider["Trade Type"] == "S - Sale+OE"] = df_insider[
+                    df_insider["Trade Type"] == "S - Sale+OE"
+                ].apply(yellow_highlight)
+            if not df_insider[df_insider["Trade Type"] == "F - Tax"].empty:
+                df_insider[df_insider["Trade Type"] == "F - Tax"] = df_insider[
+                    df_insider["Trade Type"] == "F - Tax"
+                ].apply(magenta_highlight)
+            if not df_insider[df_insider["Trade Type"] == "P - Purchase"].empty:
+                df_insider[df_insider["Trade Type"] == "P - Purchase"] = df_insider[
+                    df_insider["Trade Type"] == "P - Purchase"
+                ].apply(green_highlight)
+
+            patch_pandas_text_adjustment()
+            pd.set_option("display.max_colwidth", 0)
+            pd.set_option("display.max_rows", None)
+
+            # needs to be done because table is too large :(
+            df_insider = df_insider.drop(columns=["Filing Date", "Trade Type"])
+
+        else:
+            # needs to be done because table is too large :(
+            df_insider = df_insider.drop(columns=["Filing Date"])
+
+        print("")
+        print(df_insider.to_string(index=False))
+
+        if not ns_parser.links:
+            l_chars = [list(chars) for chars in df_insider_orig["X"].values]
+            l_uchars = np.unique(list(itertools.chain(*l_chars)))
+            print("")
+            for char in l_uchars:
+                print(d_notes[char])
+
+            l_tradetype = df_insider_orig["Trade Type"].values
+            l_utradetype = np.unique(l_tradetype)
+            print("")
+            for tradetype in l_utradetype:
+                print(d_trade_types[tradetype])
+
         print("")
 
     except Exception as e:

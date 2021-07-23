@@ -9,7 +9,7 @@ import pandas as pd
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 
-# pylint: disable=too-many-branches,line-too-long,too-many-lines
+# pylint: disable=too-many-branches,line-too-long,C0302
 # flake8: noqa
 
 
@@ -1329,6 +1329,7 @@ def get_open_insider_data(url: str) -> pd.DataFrame:
         "Ticker": l_ticker,
         "Company": l_company,
         "Insider": l_insider,
+        "Title": l_title,
         "Trade Type": l_trade_type,
         "Price": l_price,
         "Quantity": l_quantity,
