@@ -19,6 +19,7 @@
 * [Economy](#Economy)
 * [Options](#Options-)
 * [Screener](#Screener-)
+* [Insider](#Insider-)
 * [Forex](#Forex-)
 * [Backtesting](#Backtesting-)
 * [Resource Collection](#Resource-Collection-)
@@ -447,6 +448,38 @@ ownership      |ownership (e.g. Float, Insider Own, Short Ratio)
 performance    |performance (e.g. Perf Week, Perf YTD, Volatility M)
 technical      |technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
 signals        |view filter signals (e.g. -s top_gainers)
+
+&nbsp;
+
+## Insider [»](insider/README.md)
+
+Command|Description|Source
+------ | --------|----
+view           |view available presets | [presets](insider/presets/README.md)
+set            |set one of the available presets
+filter         |filter insiders based on preset | [Open Insider](http://openinsider.com)
+Latest |
+lcb |latest cluster boys
+lpsb | latest penny stock buys
+lit | latest insider trading (all filings)
+lip | latest insider purchases
+blip |  big latest insider purchases ($25k+)
+blop | big latest officer purchases ($25k+)
+blcp | big latest CEO/CFO purchases ($25k+)
+lis | latest insider sales
+blis | big latest insider sales ($100k+)
+blos | big latest officer sales ($100k+)
+blcs | big latest CEO/CFO sales ($100k+)
+Top | 
+topt | top officer purchases today
+toppw | top officer purchases past week
+toppm | top officer purchases past month
+tipt | top insider purchases today
+tippw | top insider purchases past week
+tippm | top insider purchases past month
+tist | top insider sales today
+tispw | top insider sales past week
+tispm | top insider sales past month
 
 &nbsp;
 
