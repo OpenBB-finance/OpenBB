@@ -96,7 +96,8 @@ class YFinanceController:
             )
         else:
             print("Please select a ticker using load {ticker}", "\n")
-        if self.selected_date:
+
+        if self.selected_date and self.ticker:
             self.options = yfinance_model.get_option_chain(
                 self.ticker, self.selected_date
             )
