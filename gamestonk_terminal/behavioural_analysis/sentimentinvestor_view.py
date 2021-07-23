@@ -271,29 +271,42 @@ def historical(ticker: str, other_args: list[str]) -> None:
 
     df.sort_index(ascending=True, inplace=True)
 
-    if not df.empty:
-        _customise_plot()
+    if df.empty:
+        print("The dataset is empty, something must have gone wrong")
+        return
 
-        # use seaborn to lineplot
-        ax = sns.lineplot(data=df, x='date', y=ns_parser.metric, legend=False)
+    _customise_plot()
 
-        # always show zero on the y-axis
-        plt.ylim(bottom=0)
+    # use seaborn to lineplot
+    ax = sns.lineplot(data=df, x='date', y=ns_parser.metric, legend=False)
 
-        # set the x-axis date formatting
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%x'))
+    # always show zero on the y-axis
+    plt.ylim(bottom=0)
 
-        # scale the plot appropriately
-        plt.gcf().set_size_inches(plot_autoscale())
-        plt.gcf().set_dpi(PLOT_DPI)
-        plt.gcf().autofmt_xdate()
+    # set the x-axis date formatting
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%x'))
 
-        # fill below the line
-        plt.fill_between(df.date, df[ns_parser.metric], alpha=0.3)
+    # scale the plot appropriately
+    plt.gcf().set_size_inches(plot_autoscale())
+    plt.gcf().set_dpi(PLOT_DPI)
+    plt.gcf().autofmt_xdate()
 
-        # add title e.g. AAPL sentiment since 22/07/21
-        plt.title(f"{ns_parser.ticker} {ns_parser.metric} since {min(df.date).strftime('%x')}")
+    # fill below the line
+    plt.fill_between(df.date, df[ns_parser.metric], alpha=0.3)
 
-        plt.show()
+    # add title e.g. AAPL sentiment since 22/07/21
+    plt.title(f"{ns_parser.ticker} {ns_parser.metric} since {min(df.date).strftime('%x')}")
 
-    print(tabulate(df, headers=['Date and time', ns_parser.metric], tablefmt='psql', floatfmt=".3f"))
+    plt.show()
+
+    ###
+
+    aggregated = df.resample('D', on='date').mean()
+    aggregated.index = aggregated.index.strftime('%x')
+
+    print(tabulate(
+        aggregated,
+        headers=['Day', f"average {ns_parser.metric}"],
+        tablefmt='psql',
+        floatfmt=".3f",
+    ))
