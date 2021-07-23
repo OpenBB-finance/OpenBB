@@ -2,6 +2,12 @@
 
 This menu aims to get some insights regarding insider trading, and the usage of the following commands along with an example will be exploited below. This data has been provided by [OpenInsider](http://openinsider.com).
 
+* [view](#view)
+  * view available presets
+* [set](#set)
+  * set one of the available presets
+* [filter](#filter)
+  * filter insiders based on preset
 
 #### LATEST
 
@@ -48,6 +54,47 @@ This menu aims to get some insights regarding insider trading, and the usage of 
   * top insider sales past week
 * [tispm](#tispm)
   * top insider sales past month
+
+
+## view <a name="view"></a>
+
+```text
+usage: view [-p {template,sexy_year,...}]
+```
+View available presets under [presets folder](/gamestonk_terminal/insider/presets/).
+
+* -p : View specific preset filters.
+
+<img width="1187" alt="Captura de ecrã 2021-07-23, às 21 38 46" src="https://user-images.githubusercontent.com/25267873/126839016-72aece8d-5e7a-4230-b59a-7ad4df6a9f0e.png">
+
+
+## set <a name="set"></a>
+
+```text
+usage: set [-p {template,whales,...}]
+```
+
+Set preset from under [presets folder](/gamestonk_terminal/insider/presets/).
+
+* -p : Filter presets
+
+
+## filter <a name="filter"></a>
+
+```text
+usage: filter [-n NUM] [-t TICKER] [-l]
+```
+
+Print open insider filtered data using loaded preset, or selected ticker. [Source: OpenInsider]
+
+* -n : Number of datarows to display (default: 20)
+* -t : Filter latest insiders from this ticker (default: )
+* -l : Flag to show hyperlinks (default: False)
+
+<img width="1179" alt="Captura de ecrã 2021-07-23, às 21 41 57" src="https://user-images.githubusercontent.com/25267873/126839373-a4376c84-77a9-4abc-b7ed-aec11e6469a3.png">
+
+<img width="1179" alt="Captura de ecrã 2021-07-23, às 21 42 18" src="https://user-images.githubusercontent.com/25267873/126839376-a5dd8502-1d5e-4038-932c-55b9c2d77233.png">
+
 
 #### LATEST
 
