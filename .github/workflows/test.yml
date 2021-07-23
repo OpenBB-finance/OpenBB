@@ -30,7 +30,7 @@ jobs:
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil
       - run: bandit -r . || true
       - run: black --check .
-      - run: codespell --ignore-words-list=Press,coup,Navagation,Ser,Buil,Operatio,mape,ba,hist --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.json" --skip="*.html" --skip="*.ini"
+      - run: codespell --ignore-words-list=press,coup,navagation,ser,buil,operatio,mape,ba,hist --quiet-level=2 --skip=".git" --skip="*.yaml" --skip="*.json" --skip="*.html" --skip="*.ini"
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics
       - run: mypy --ignore-missing-imports .
       - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
