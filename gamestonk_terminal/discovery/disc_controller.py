@@ -118,7 +118,6 @@ class DiscoveryController:
         print("   shortvol       short interest and days to cover [Stockgrid.io]")
         print("   popular        show most popular stocks on social media right now [SentimentInvestor.com]")
         print("   emerging       show stocks that are being talked about more than usual [SentimentInvestor.com]")
-        print("   positive       show stocks that are being talked about most positively [SentimentInvestor.com]")
         print("")
 
     def switch(self, an_input: str):
@@ -269,10 +268,6 @@ class DiscoveryController:
     def call_emerging(self, other_args: List[str]):
         """Process popular command"""
         sentimentinvestor_view.sort("RHI", other_args)
-
-    def call_positive(self, other_args: List[str]):
-        """Process popular command"""
-        sentimentinvestor_view.sort("sentiment", other_args)
 
 
 def menu():
