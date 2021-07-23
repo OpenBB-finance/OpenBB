@@ -527,7 +527,7 @@ d_SectorSubsectorIndustry = {
 
 def check_valid_range(
     category: str, field: str, val: str, min_range: int, max_range: int
-):  # -> str
+) -> str:
     """Check valid range of data being used
 
     Parameters
@@ -565,7 +565,7 @@ def check_valid_range(
     return error
 
 
-def check_dates(d_date: Dict):  # -> str
+def check_dates(d_date: Dict) -> str:
     """Check valid dates
 
     Parameters
@@ -632,7 +632,7 @@ def check_dates(d_date: Dict):  # -> str
     return error
 
 
-def check_valid_multiple(category: str, field: str, val: str, multiple: int):  # -> str
+def check_valid_multiple(category: str, field: str, val: str, multiple: int) -> str:
     """Check valid value being a multiple
 
     Parameters
@@ -665,7 +665,7 @@ def check_valid_multiple(category: str, field: str, val: str, multiple: int):  #
     return error
 
 
-def check_boolean_list(category: str, d_data: Dict, l_fields_to_check: List):  # -> str
+def check_boolean_list(category: str, d_data: Dict, l_fields_to_check: List) -> str:
     """Check list of fields being bools
 
     Parameters
@@ -693,7 +693,7 @@ def check_boolean_list(category: str, d_data: Dict, l_fields_to_check: List):  #
 
 def check_in_list(
     category: str, field: str, val: int, l_possible_vals: List[str]
-):  # -> str
+) -> str:
     """Check value being in possible list
 
     Parameters
@@ -726,7 +726,7 @@ def check_in_list(
 
 def check_int_in_list(
     category: str, field: str, val: str, l_possible_vals: List[int]
-):  # -> str
+) -> str:
     """Check int value being in possible list
 
     Parameters
@@ -763,7 +763,7 @@ def check_int_in_list(
     return error
 
 
-def check_open_insider_general(d_general):  # -> str
+def check_open_insider_general(d_general) -> str:
     """Check valid open insider general
 
     Parameters
@@ -795,7 +795,7 @@ def check_open_insider_general(d_general):  # -> str
     return error
 
 
-def check_open_insider_date(d_date: Dict):  # -> str
+def check_open_insider_date(d_date: Dict) -> str:
     """Check valid open insider date
 
     Parameters
@@ -820,7 +820,7 @@ def check_open_insider_date(d_date: Dict):  # -> str
     return error
 
 
-def check_open_insider_transaction_filing(d_transaction_filing: Dict):  # -> str
+def check_open_insider_transaction_filing(d_transaction_filing: Dict) -> str:
     """Check valid open insider transaction filing
 
     Parameters
@@ -875,7 +875,7 @@ def check_open_insider_transaction_filing(d_transaction_filing: Dict):  # -> str
     return error
 
 
-def check_open_insider_industry(d_industry: Dict):  # -> str
+def check_open_insider_industry(d_industry: Dict) -> str:
     """Check valid open insider industry
 
     Parameters
@@ -895,7 +895,7 @@ def check_open_insider_industry(d_industry: Dict):  # -> str
     return ""
 
 
-def check_open_insider_insider_title(d_insider_title: Dict):  # -> str
+def check_open_insider_insider_title(d_insider_title: Dict) -> str:
     """Check valid open insider title
 
     Parameters
@@ -927,7 +927,7 @@ def check_open_insider_insider_title(d_insider_title: Dict):  # -> str
     return error
 
 
-def check_open_insider_others(d_others: Dict):  # -> str
+def check_open_insider_others(d_others: Dict) -> str:
     """Check valid open insider others
 
     Parameters
@@ -956,7 +956,7 @@ def check_open_insider_others(d_others: Dict):  # -> str
     return error
 
 
-def check_open_insider_company_totals(d_company_totals: Dict):  # -> str
+def check_open_insider_company_totals(d_company_totals: Dict) -> str:
     """Check valid open insider company totals
 
     Parameters
@@ -1020,7 +1020,7 @@ def check_open_insider_screener(
     d_insider_title: Dict,
     d_others: Dict,
     d_company_totals: Dict,
-):
+) -> str:
     """Check valid open insider screener
 
     Parameters
@@ -1057,7 +1057,7 @@ def check_open_insider_screener(
     return error
 
 
-def get_open_insider_link(preset_loaded: str):  # -> str
+def get_open_insider_link(preset_loaded: str) -> str:
     """Get open insider link
 
     Parameters
@@ -1225,7 +1225,7 @@ def get_open_insider_link(preset_loaded: str):  # -> str
     return link
 
 
-def get_open_insider_data(url: str):  # -> pd.DataFrame
+def get_open_insider_data(url: str) -> pd.DataFrame:
     """Get open insider link
 
     Parameters
