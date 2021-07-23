@@ -2381,6 +2381,28 @@ python-versions = "*"
 win32 = ["pywin32"]
 
 [[package]]
+name = "sentiment-investor"
+version = "2.0.0"
+description = "Access the Sentiment Investor API through Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+sentipy = "*"
+
+[[package]]
+name = "sentipy"
+version = "0.2.0"
+description = "Python implementations of Sentinel 2 Toolbox L2 products & spectral indices"
+category = "main"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[package.dependencies]
+numpy = ">=1.18.4,<2.0.0"
+
+[[package]]
 name = "six"
 version = "1.15.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -3030,7 +3052,7 @@ prediction = ["tensorflow", "pmdarima"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.8"
-content-hash = "47ea04f7495d8f1e468fcf36dc988d67aacd436a44149261bd77c631b5fc4a72"
+content-hash = "f0f4648cb473e92ab7e49380ac8a8b7f0ec9ec05e8cf1c8c8bc2ffb3a390e599"
 
 [metadata.files]
 absl-py = [
@@ -3247,8 +3269,8 @@ chardet = [
     {file = "chardet-4.0.0.tar.gz", hash = "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"},
 ]
 charset-normalizer = [
-    {file = "charset-normalizer-2.0.3.tar.gz", hash = "sha256:c46c3ace2d744cfbdebceaa3c19ae691f53ae621b39fd7570f59d14fb7f2fd12"},
-    {file = "charset_normalizer-2.0.3-py3-none-any.whl", hash = "sha256:88fce3fa5b1a84fdcb3f603d889f723d1dd89b26059d0123ca435570e848d5e1"},
+    {file = "charset-normalizer-2.0.1.tar.gz", hash = "sha256:ad0da505736fc7e716a8da15bf19a985db21ac6415c26b34d2fafd3beb3d927e"},
+    {file = "charset_normalizer-2.0.1-py3-none-any.whl", hash = "sha256:b68b38179052975093d71c1b5361bf64afd80484697c1f27056e50593e695ceb"},
 ]
 click = [
     {file = "click-8.0.1-py3-none-any.whl", hash = "sha256:fba402a4a47334742d782209a7c79bc448911afe1149d07bdabdf480b3e2f4b6"},
@@ -4697,6 +4719,14 @@ selenium = [
 send2trash = [
     {file = "Send2Trash-1.7.1-py3-none-any.whl", hash = "sha256:c20fee8c09378231b3907df9c215ec9766a84ee20053d99fbad854fe8bd42159"},
     {file = "Send2Trash-1.7.1.tar.gz", hash = "sha256:17730aa0a33ab82ed6ca76be3bb25f0433d0014f1ccf63c979bab13a5b9db2b2"},
+]
+sentiment-investor = [
+    {file = "sentiment-investor-2.0.0.tar.gz", hash = "sha256:ff97986fbd414e8166f92e4503b3b9cb8c583bff860aaba1dc9a3536666b57a4"},
+    {file = "sentiment_investor-2.0.0-py3-none-any.whl", hash = "sha256:e5744dd6e591d52d44d2ea51b1c5483e434affc598ea1a4b0cabab02f0d455ec"},
+]
+sentipy = [
+    {file = "sentipy-0.2.0-py3-none-any.whl", hash = "sha256:ca80a3cc284c08de8c7df0ee9bccff27fb2f4b07e8aa7f0dc52683e765855287"},
+    {file = "sentipy-0.2.0.tar.gz", hash = "sha256:dfcb4d5caeee6606714bc6e00966692ebf637616ce9215c69768583ad757efac"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
