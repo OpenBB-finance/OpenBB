@@ -6,7 +6,7 @@ import multiprocessing
 import os
 import statistics
 import time
-from typing import Union, Optional
+from typing import Union, Optional, List
 
 import matplotlib.dates as mdates
 import pandas as pd
@@ -226,8 +226,8 @@ social_metrics = [
 
 
 def _contextualise_metrics(
-    data: object, ticker: str, metric_infos: list[_MetricInfo]
-) -> Optional[list[_Metric]]:
+    data: object, ticker: str, metric_infos: List[_MetricInfo]
+) -> Optional[List[_Metric]]:
     arguments = []
     for metric_info in metric_infos:
         if not hasattr(data, metric_info.name):
@@ -243,7 +243,7 @@ def _contextualise_metrics(
         return pool.starmap(_Metric, arguments)
 
 
-def _tabulate_metrics(ticker: str, metrics_list: list[_Metric]):
+def _tabulate_metrics(ticker: str, metrics_list: List[_Metric]):
     table_data = []
     table_headers = [
         f"{Style.BRIGHT}{ticker}{Style.RESET_ALL} Metrics",
@@ -290,7 +290,7 @@ def _customise_plot() -> None:
     plt.legend(frameon=False)
 
 
-def _parse_args_for_ticker(other_args: list[str], ticker: str, command: str, desc: str):
+def _parse_args_for_ticker(other_args: List[str], ticker: str, command: str, desc: str):
     parser = argparse.ArgumentParser(
         add_help=False,
         prog=command,
@@ -311,7 +311,7 @@ def _parse_args_for_ticker(other_args: list[str], ticker: str, command: str, des
     return parse_known_args_and_warn(parser, other_args)
 
 
-def metrics(ticker: str, other_args: list[str]) -> None:
+def metrics(ticker: str, other_args: List[str]) -> None:
     ns_parser = _parse_args_for_ticker(
         other_args=other_args,
         ticker=ticker,
@@ -338,7 +338,7 @@ def metrics(ticker: str, other_args: list[str]) -> None:
     print(_tabulate_metrics(ns_parser.ticker, metric_values))
 
 
-def socials(ticker: str, other_args: list[str]) -> None:
+def socials(ticker: str, other_args: List[str]) -> None:
     ns_parser = _parse_args_for_ticker(
         other_args=other_args,
         ticker=ticker,
@@ -366,7 +366,7 @@ def socials(ticker: str, other_args: list[str]) -> None:
     print(_tabulate_metrics(ns_parser.ticker, metric_values))
 
 
-def historical(ticker: str, other_args: list[str]) -> None:
+def historical(ticker: str, other_args: List[str]) -> None:
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="historical",

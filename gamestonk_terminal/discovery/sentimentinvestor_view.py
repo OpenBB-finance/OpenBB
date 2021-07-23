@@ -1,6 +1,6 @@
 import argparse
 import logging
-from typing import Any
+from typing import Any, List
 
 from sentipy.sentipy import Sentipy
 from tabulate import tabulate
@@ -14,7 +14,7 @@ sentipy: Sentipy = Sentipy(
 """Initialise SentiPy with the user's API token and key"""
 
 
-def sort(metric: str, other_args: list[str]) -> None:
+def sort(metric: str, other_args: List[str]) -> None:
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="metrics",
@@ -38,7 +38,7 @@ def sort(metric: str, other_args: list[str]) -> None:
 
     data = sentipy.sort(metric, ns_parser.limit)
 
-    table: list[list[Any]] = []
+    table: List[List[Any]] = []
     for index, stock in enumerate(data):
         if not hasattr(stock, "symbol") or not hasattr(stock, metric):
             logging.warning("data for stock %s is incomplete, ignoring", index + 1)
