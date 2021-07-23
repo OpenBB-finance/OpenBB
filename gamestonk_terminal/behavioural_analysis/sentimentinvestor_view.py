@@ -1,6 +1,7 @@
 import argparse
 import dataclasses
 import datetime
+import logging
 import multiprocessing
 import os
 import statistics
@@ -27,22 +28,6 @@ sentipy: Sentipy = Sentipy(
 """Initialise SentiPy with the user's API token and key"""
 
 pd.plotting.register_matplotlib_converters()
-
-
-def _bright_text(string: str) -> str:
-    """
-    Simple wrapper method to make a given string bright (bold on some platforms)
-
-    Parameters
-    ----------
-    string: the string to brighten
-
-    Returns
-    -------
-    the brightened string
-
-    """
-    return Style.BRIGHT + string + Style.RESET_ALL
 
 
 @dataclasses.dataclass
@@ -76,14 +61,14 @@ class _Boundary:
         boundaries = [self.min + (self.max - self.min) /
                       5 * i for i in range(1, 5)]
 
-        return _bright_text(
-            f"{Fore.WHITE}Extreme (anomaly?)" if (num <= self.min or num >= self.max) and self.strong
-            else f"{Fore.RED}Much Lower" if num < boundaries[0]
-            else f"{Fore.LIGHTRED_EX}Lower" if num < boundaries[1]
-            else f"{Fore.YELLOW}Same" if num < boundaries[2]
-            else f"{Fore.LIGHTGREEN_EX}Higher" if num < boundaries[3]
-            else f"{Fore.GREEN}Much Higher"
-        )
+        return (
+                   f"{Fore.WHITE}Extreme (anomaly?)" if (num <= self.min or num >= self.max) and self.strong
+                   else f"{Style.BRIGHT}{Fore.RED}Much Lower" if num < boundaries[0]
+                   else f"{Style.DIM}{Fore.RED}Lower" if num < boundaries[1]
+                   else f"{Fore.YELLOW}Same" if num < boundaries[2]
+                   else f"{Style.DIM}{Fore.LIGHTGREEN_EX}Higher" if num < boundaries[3]
+                   else f"{Style.BRIGHT}{Fore.GREEN}Much Higher"
+               ) + Style.RESET_ALL
 
 
 def _get_past_week_average(ticker: str, metric: str) -> float:
@@ -164,10 +149,24 @@ social_metrics = [
 ]
 
 
+def _contextualise_metrics(data: object, ticker: str, metric_infos: list[_MetricInfo]) -> Optional[list[_Metric]]:
+    arguments = []
+    for metric_info in metric_infos:
+        if not hasattr(data, metric_info.name):
+            logging.error(
+                f"data for {ticker!r} stock is incomplete. If you believe this is an error, "
+                f"please contact hello@sentimentinvestor.com")
+            return None
+        arguments.append((metric_info, ticker, data.__getattribute__(metric_info.name)))
+
+    with multiprocessing.Pool(os.cpu_count()) as pool:
+        return pool.starmap(_Metric, arguments)
+
+
 def _tabulate_metrics(ticker: str, metrics_list: list[_Metric]) -> tabulate:
     table_data = []
     table_headers = [
-        f'{_bright_text(ticker)} Metrics', 'vs Past 7 Days', 'Value', 'Description']
+        f'{Style.BRIGHT}{ticker}{Style.RESET_ALL} Metrics', 'vs Past 7 Days', 'Value', 'Description']
 
     for metric in metrics_list:
         table_data.append(metric.visualise())
@@ -212,43 +211,63 @@ def _customise_plot() -> None:
     plt.legend(frameon=False)
 
 
-def metrics(ticker: str, other_args: list[str]) -> None:
-    parser = argparse.ArgumentParser(add_help=False, prog="metrics",
+def _parse_args_for_ticker(other_args: list[str], ticker: str, command: str, desc: str):
+    parser = argparse.ArgumentParser(add_help=False, prog=command,
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                                     description="Print realtime sentiment and hype index for this stock, aggregated from social media.")
+                                     description=desc)
 
     parser.add_argument("-t", "--ticker", action="store", dest="ticker", type=str, default=ticker,
-                        help="ticker for which to fetch the core metrics")
+                        help="ticker to use instead of the loaded one")
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
+    return parse_known_args_and_warn(parser, other_args)
+
+
+def metrics(ticker: str, other_args: list[str]) -> None:
+    ns_parser = _parse_args_for_ticker(
+        other_args=other_args, ticker=ticker, command="metrics",
+        desc="Print realtime sentiment and hype index for this stock, aggregated from social media."
+    )
+
     if not ns_parser:
+        logging.error("There was an error in parsing the command-line arguments.")
+        return
+
+    if not sentipy.supported(ns_parser.ticker):
+        print("This stock is not supported by the SentimentInvestor API.")
         return
 
     data = sentipy.parsed(ns_parser.ticker)
 
-    with multiprocessing.Pool(os.cpu_count()) as pool:
-        metric_values = pool.starmap(_Metric, [(metric_info, ns_parser.ticker, data.__getattribute__(metric_info.name))
-                                               for metric_info in core_metrics])
+    metric_values = _contextualise_metrics(data, ns_parser.ticker, core_metrics)
+
+    if not metric_values:
+        logging.error("No data available or an error occurred.")
+        return
 
     print(_tabulate_metrics(ns_parser.ticker, metric_values))
 
 
 def socials(ticker: str, other_args: list[str]) -> None:
-    parser = argparse.ArgumentParser(add_help=False, prog="social",
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                                     description="Print the number of mentions and average sentiment of remarks mentioning this stock for several social media sources")
-    parser.add_argument("-t", "--ticker", action="store", dest="ticker", type=str, default=ticker,
-                        help="ticker for which to fetch the raw social media data")
+    ns_parser = _parse_args_for_ticker(
+        other_args=other_args, ticker=ticker, command="social",
+        desc="Print the number of mentions and average sentiment of remarks mentioning this stock for several social media sources"
+    )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
+        logging.error("There was an error in parsing the command-line arguments.")
+        return
+
+    if not sentipy.supported(ns_parser.ticker):
+        print("This stock is not supported by the SentimentInvestor API.")
         return
 
     data = sentipy.raw(ns_parser.ticker)
 
-    with multiprocessing.Pool(os.cpu_count()) as pool:
-        metric_values = pool.starmap(_Metric, [(metric_info, ns_parser.ticker, data.__getattribute__(metric_info.name))
-                                               for metric_info in social_metrics])
+    metric_values = _contextualise_metrics(data, ns_parser.ticker, social_metrics)
+
+    if not metric_values:
+        logging.error("No data available or an error occurred.")
+        return
 
     print(_tabulate_metrics(ns_parser.ticker, metric_values))
 
@@ -264,6 +283,11 @@ def historical(ticker: str, other_args: list[str]) -> None:
 
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
+        logging.error("There was an error in parsing the command-line arguments.")
+        return
+
+    if not sentipy.supported(ns_parser.ticker):
+        print("This stock is not supported by the SentimentInvestor API.")
         return
 
     data = sentipy.historical(ns_parser.ticker, ns_parser.metric, int(time.time() - 60 * 60 * 24 * 7), int(time.time()))
@@ -275,7 +299,7 @@ def historical(ticker: str, other_args: list[str]) -> None:
     df.sort_index(ascending=True, inplace=True)
 
     if df.empty:
-        print("The dataset is empty, something must have gone wrong")
+        logging.error("The dataset is empty, something must have gone wrong")
         return
 
     _customise_plot()
