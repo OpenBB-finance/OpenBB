@@ -1225,13 +1225,15 @@ def get_open_insider_link(preset_loaded: str) -> str:
     return link
 
 
-def get_open_insider_data(url: str) -> pd.DataFrame:
+def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
     """Get open insider link
 
     Parameters
     ----------
     url: str
         open insider link with filters to retrieve data from
+    has_company_name: bool
+        contains company name columns
 
     Returns
     ----------
@@ -1256,7 +1258,7 @@ def get_open_insider_data(url: str) -> pd.DataFrame:
         elif idx == 1:
             l_ticker_link.append("http://openinsider.com" + val["href"])
             idx += 1
-        elif idx == 2:
+        elif idx == 2 and has_company_name:
             idx += 1
         else:
             l_insider_link.append("http://openinsider.com" + val["href"])
@@ -1290,34 +1292,34 @@ def get_open_insider_data(url: str) -> pd.DataFrame:
         elif idx == 3:
             l_ticker.append(val.text.strip())
             idx += 1
-        elif idx == 4:
+        elif idx == 4 and has_company_name:
             l_company.append(val.text)
             idx += 1
-        elif idx == 5:
+        elif idx == (5 - int(not has_company_name)):
             l_insider.append(val.text)
             idx += 1
-        elif idx == 6:
+        elif idx == (6 - int(not has_company_name)):
             l_title.append(val.text)
             idx += 1
-        elif idx == 7:
+        elif idx == (7 - int(not has_company_name)):
             l_trade_type.append(val.text)
             idx += 1
-        elif idx == 8:
+        elif idx == (8 - int(not has_company_name)):
             l_price.append(val.text)
             idx += 1
-        elif idx == 9:
+        elif idx == (9 - int(not has_company_name)):
             l_quantity.append(val.text)
             idx += 1
-        elif idx == 10:
+        elif idx == (10 - int(not has_company_name)):
             l_owned.append(val.text)
             idx += 1
-        elif idx == 11:
+        elif idx == (11 - int(not has_company_name)):
             l_delta_own.append(val.text)
             idx += 1
-        elif idx == 12:
+        elif idx == (12 - int(not has_company_name)):
             l_value.append(val.text)
             idx += 1
-        elif idx < 16:
+        elif idx < (16 - int(not has_company_name)):
             idx += 1
         else:
             idx = 0
@@ -1327,7 +1329,6 @@ def get_open_insider_data(url: str) -> pd.DataFrame:
         "Filing Date": l_filing_date,
         "Trading Date": l_trading_date,
         "Ticker": l_ticker,
-        "Company": l_company,
         "Insider": l_insider,
         "Title": l_title,
         "Trade Type": l_trade_type,
@@ -1340,5 +1341,7 @@ def get_open_insider_data(url: str) -> pd.DataFrame:
         "Ticker Link": l_ticker_link,
         "Insider Link": l_insider_link,
     }
+    if has_company_name:
+        d_open_insider["Company"] = l_company
 
     return pd.DataFrame(d_open_insider)

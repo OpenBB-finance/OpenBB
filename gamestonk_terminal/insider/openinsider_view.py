@@ -247,7 +247,7 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="filter",
-        description="Print open insider filtered data using loaded preset [Source: OpenInsider]",
+        description="Print open insider filtered data using loaded preset, or selected ticker. [Source: OpenInsider]",
     )
     parser.add_argument(
         "-n",
@@ -257,6 +257,15 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         type=check_positive,
         default=20,
         help="Number of datarows to display",
+    )
+    parser.add_argument(
+        "-t",
+        "--ticker",
+        action="store",
+        dest="ticker",
+        type=str,
+        default="",
+        help="Filter latest insiders from this ticker",
     )
     parser.add_argument(
         "-l",
@@ -272,13 +281,16 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
         if not ns_parser:
             return
 
-        link = get_open_insider_link(preset_loaded)
+        if ns_parser.ticker:
+            link = f"http://openinsider.com/screener?s={ns_parser.ticker}"
+        else:
+            link = get_open_insider_link(preset_loaded)
 
         if not link:
             print("")
             return
 
-        df_insider = get_open_insider_data(link)
+        df_insider = get_open_insider_data(link, has_company_name=bool(not ns_parser.ticker))
         df_insider_orig = df_insider.copy()
 
         if df_insider.empty:
@@ -294,7 +306,7 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
                 columns=["Filing Link", "Ticker Link", "Insider Link"]
             ).head(ns_parser.num)
 
-        if gtff.USE_COLOR:
+        if gtff.USE_COLOR and not ns_parser.links:
             if not df_insider[df_insider["Trade Type"] == "S - Sale"].empty:
                 df_insider[df_insider["Trade Type"] == "S - Sale"] = df_insider[
                     df_insider["Trade Type"] == "S - Sale"
