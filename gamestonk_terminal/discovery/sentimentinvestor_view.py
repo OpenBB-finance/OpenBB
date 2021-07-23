@@ -14,10 +14,10 @@ sentipy: Sentipy = Sentipy(
 """Initialise SentiPy with the user's API token and key"""
 
 
-def sort(metric: str, other_args: List[str]) -> None:
+def sort(metric: str, other_args: List[str], command_name: str) -> None:
     parser = argparse.ArgumentParser(
         add_help=False,
-        prog="metrics",
+        prog=command_name,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Print realtime sentiment and hype index for this stock, aggregated from social media.",
     )

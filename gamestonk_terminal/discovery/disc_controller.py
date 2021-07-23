@@ -266,11 +266,11 @@ class DiscoveryController:
 
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
-        sentimentinvestor_view.sort("AHI", other_args)
+        sentimentinvestor_view.sort("AHI", other_args, "popular")
 
     def call_emerging(self, other_args: List[str]):
         """Process popular command"""
-        sentimentinvestor_view.sort("RHI", other_args)
+        sentimentinvestor_view.sort("RHI", other_args, "emerging")
 
 
 def menu():
