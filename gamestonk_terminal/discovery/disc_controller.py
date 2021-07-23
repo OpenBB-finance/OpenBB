@@ -24,6 +24,7 @@ from gamestonk_terminal.discovery import (
     finra_ats_view,
     finnhub_view,
     stockgrid_view,
+    sentimentinvestor_view,
 )
 
 
@@ -59,6 +60,9 @@ class DiscoveryController:
         "darkpool",
         "darkshort",
         "shortvol",
+        "popular",
+        "emerging",
+        "positive",
     ]
 
     def __init__(self):
@@ -112,6 +116,9 @@ class DiscoveryController:
         )
         print("   darkshort      dark pool short position [Stockgrid.io]")
         print("   shortvol       short interest and days to cover [Stockgrid.io]")
+        print("   popular        show most popular stocks on social media right now [SentimentInvestor.com]")
+        print("   emerging       show stocks that are being talked about more than usual [SentimentInvestor.com]")
+        print("   positive       show stocks that are being talked about most positively [SentimentInvestor.com]")
         print("")
 
     def switch(self, an_input: str):
@@ -254,6 +261,18 @@ class DiscoveryController:
     def call_shortvol(self, other_args: List[str]):
         """Process shortvol command"""
         stockgrid_view.shortvol(other_args)
+
+    def call_popular(self, other_args: List[str]):
+        """Process popular command"""
+        sentimentinvestor_view.sort("AHI", other_args)
+
+    def call_emerging(self, other_args: List[str]):
+        """Process popular command"""
+        sentimentinvestor_view.sort("RHI", other_args)
+
+    def call_positive(self, other_args: List[str]):
+        """Process popular command"""
+        sentimentinvestor_view.sort("sentiment", other_args)
 
 
 def menu():
