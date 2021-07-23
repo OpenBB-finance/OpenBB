@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 import pandas as pd
+import requests
+
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
@@ -39,9 +41,9 @@ def gainers_view(other_args: List[str]):
         if not ns_parser:
             return
 
-        df_gainers = pd.read_html(
-            "https://finance.yahoo.com/screener/predefined/day_gainers"
-        )[0]
+        url = "https://finance.yahoo.com/screener/predefined/day_gainers"
+
+        df_gainers = pd.read_html(requests.get(url).text)[0]
         print(df_gainers.head(ns_parser.n_gainers).to_string(index=False))
         print("")
 
@@ -57,12 +59,14 @@ def losers_view(other_args: List[str]):
     other_args : List[str]
         argparse other args - ["-n", "20"]
     """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="losers",
         description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
     )
+
     parser.add_argument(
         "-n",
         "--num",
@@ -79,9 +83,9 @@ def losers_view(other_args: List[str]):
         if not ns_parser:
             return
 
-        df_losers = pd.read_html(
-            "https://finance.yahoo.com/screener/predefined/day_losers"
-        )[0]
+        url = "https://finance.yahoo.com/screener/predefined/day_losers"
+
+        df_losers = pd.read_html(requests.get(url).text)[0]
         print(df_losers.head(ns_parser.n_losers).to_string(index=False))
         print("")
 
