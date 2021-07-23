@@ -62,7 +62,6 @@ class DiscoveryController:
         "shortvol",
         "popular",
         "emerging",
-        "positive",
     ]
 
     def __init__(self):
@@ -116,8 +115,12 @@ class DiscoveryController:
         )
         print("   darkshort      dark pool short position [Stockgrid.io]")
         print("   shortvol       short interest and days to cover [Stockgrid.io]")
-        print("   popular        show most popular stocks on social media right now [SentimentInvestor.com]")
-        print("   emerging       show stocks that are being talked about more than usual [SentimentInvestor.com]")
+        print(
+            "   popular        show most popular stocks on social media right now [SentimentInvestor.com]"
+        )
+        print(
+            "   emerging       show stocks that are being talked about more than usual [SentimentInvestor.com]"
+        )
         print("")
 
     def switch(self, an_input: str):
