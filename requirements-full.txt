@@ -178,6 +178,7 @@ scs==2.1.4; python_full_version >= "3.6.1" and python_full_version < "4.0.0" and
 seaborn==0.11.1; python_version >= "3.6"
 selenium==3.141.0
 send2trash==1.7.1; python_version >= "3.6"
+sentiment-investor==2.0.0
 six==1.15.0; python_full_version >= "3.6.1" and python_version >= "3.5" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6") and (python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.5") and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")
 smmap==4.0.0; python_version >= "3.6"
 snowballstemmer==2.1.0; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6"
