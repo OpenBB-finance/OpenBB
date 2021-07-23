@@ -290,7 +290,9 @@ def print_insider_filter(other_args: List[str], preset_loaded: str):
             print("")
             return
 
-        df_insider = get_open_insider_data(link, has_company_name=bool(not ns_parser.ticker))
+        df_insider = get_open_insider_data(
+            link, has_company_name=bool(not ns_parser.ticker)
+        )
         df_insider_orig = df_insider.copy()
 
         if df_insider.empty:
