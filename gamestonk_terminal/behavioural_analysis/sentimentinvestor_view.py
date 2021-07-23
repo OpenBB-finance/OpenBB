@@ -241,13 +241,13 @@ def socials(ticker: str, other_args: list[str]) -> None:
     if not ns_parser:
         return
 
-    data = sentipy.raw(ticker)
+    data = sentipy.raw(ns_parser.ticker)
 
     with multiprocessing.Pool(os.cpu_count()) as pool:
         metric_values = pool.starmap(_Metric, [(metric_info, ns_parser.ticker, data.__getattribute__(metric_info.name))
                                                for metric_info in social_metrics])
 
-    print(_tabulate_metrics(ticker, metric_values))
+    print(_tabulate_metrics(ns_parser.ticker, metric_values))
 
 
 def historical(ticker: str, other_args: list[str]) -> None:
