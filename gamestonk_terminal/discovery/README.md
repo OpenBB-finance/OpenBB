@@ -46,6 +46,10 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * dark pool short position [Stockgrid]
 * [shortvol](#shortvol)
   * short interest and days to cover [Stockgrid]
+* [popular](#popular)
+  * most popular stocks on social media right now [SentimentInvestor.com]
+* [emerging](#emerging)
+  * stocks that are being talked about more than usual [SentimentInvestor.com]
 
 ## ipo <a name="ipo"></a>
 
@@ -327,3 +331,36 @@ Print short interest and days to cover. [Source: Stockgrid]
 
 <img width="949" alt="shortvol" src="https://user-images.githubusercontent.com/25267873/122323861-af7be400-cf1f-11eb-9de2-5c7f2debddf0.png">
 
+## popular <a name="popular"></a>
+
+```
+usage: popular [-l LIMIT] [-h]
+
+Print realtime sentiment and hype index for this stock, aggregated from social media.
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        the maximum number of stocks to retrieve (default: 10)
+  -h, --help            show this help message (default: False)
+```
+
+This command lists the top `n` (default=10) most popular stocks on social media right now according to SentimentInvestor, i.e., the ones with the highest [Average Hype Index (AHI)](https://sentimentinvestor.com/learn/metrics).
+
+![image](https://user-images.githubusercontent.com/8385172/126782851-5ede26c2-ab70-480d-a56d-867ba2c8ab73.png)
+
+## emerging <a name="emerging"></a>
+
+```
+usage: emerging [-l LIMIT] [-h]
+
+Print realtime sentiment and hype index for this stock, aggregated from social media.
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        the maximum number of stocks to retrieve (default: 10)
+  -h, --help            show this help message (default: False)
+```
+
+This command lists the top `n` (default=10) stocks that are being talked about more than usual on social media according to SentimentInvestor, i.e., the ones with the highest [Relative Hype Index (RHI)](https://sentimentinvestor.com/learn/metrics).
+
+![image](https://user-images.githubusercontent.com/8385172/126782979-33f2ad1e-e69d-4c52-91c3-438dedea2084.png)

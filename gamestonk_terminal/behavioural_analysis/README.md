@@ -45,6 +45,13 @@ This menu aims to extrapolate behavioural analysis regarding a pre-loaded ticker
   * [rise](#rise)
     - top rising related queries with stock
 
+[SENTIMENT INVESTOR](#SENTIMENTINVESTOR)
+  * [metrics](#metrics)
+    - core social sentiment metrics for this stock
+  * [social](#social)
+    - social media figures for stock popularity
+  * [historical](#historical)
+    - plot the past week of data for a selected metric
 
 ## finbrain <a name="finbrain"></a>
 ```
@@ -251,3 +258,59 @@ Print top rising related queries with this stock's query. [Source: Google]
   * -n : number of top rising related queries to print. Default 10.
 
 <img width="934" alt="Captura de ecrã 2021-02-22, às 22 21 21" src="https://user-images.githubusercontent.com/25267873/108777814-4f21fa80-755c-11eb-96da-0327c9a0da57.png">
+
+# SENTIMENTINVESTOR
+
+## metrics <a name="metrics"></a>
+```
+usage: metrics [-t TICKER] [-h]
+
+Print realtime sentiment and hype index for this stock, aggregated from social media.
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        ticker to use instead of the loaded one (default: <loaded ticker>)
+  -h, --help            show this help message (default: False)
+```
+
+This command presents the four core metrics provided by Sentiment Investor, including AHI, RHI, sentiment and SGP. You can learn more about what these metrics mean on [their website](https://sentimentinvestor.com/learn/metrics).
+
+![image](https://user-images.githubusercontent.com/8385172/126782316-a1d2294a-383b-4a5e-be61-8e4ef9388772.png)
+
+## social <a name="social"></a>
+```
+usage: social [-t TICKER] [-h]
+
+Print the number of mentions and average sentiment of remarks mentioning this stock for several social media sources
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        ticker to use instead of the loaded one (default: <loaded ticker>)
+  -h, --help            show this help message (default: False)
+```
+
+This command presents the number of mentions and the sentiment score for several social media, including Reddit, Twitter, Stocktwits and Yahoo! Finance.
+
+![image](https://user-images.githubusercontent.com/8385172/126782441-b84634e8-91b8-435a-84e1-35316c5995f4.png)
+
+## historical <a name="historical"></a>
+```
+usage: historical [-t TICKER] [-h] [{sentiment,AHI,RHI,SGP}]
+
+Plot the past week of data for a specific metric
+
+positional arguments:
+  one of {sentiment,AHI,RHI,SGP}
+                        the metric to plot (default: sentiment)
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        ticker for which to fetch data (default: <loaded ticker>)
+  -h, --help            show this help message (default: False)
+```
+
+This command plots the selected SentimentInvestor core metric (sentiment score by default) for the chosen stock for the past seven days, as well as a table with the mean of that metric for each day
+
+![image](https://user-images.githubusercontent.com/8385172/126782509-bfc21dbb-2fe6-4cd4-a384-018eb41ac8f3.png)
+
+![image](https://user-images.githubusercontent.com/8385172/126782661-f357da02-8192-41be-8902-4b5174e34361.png)
