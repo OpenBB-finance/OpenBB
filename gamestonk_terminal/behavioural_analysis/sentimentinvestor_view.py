@@ -70,12 +70,14 @@ class _Boundary:
 
         """
 
+        if num is None or self.min is None or self.max is None:
+            return f"{Fore.WHITE}N/A{Style.RESET_ALL}"
+
         boundaries = [self.min + (self.max - self.min) /
                       5 * i for i in range(1, 5)]
 
         return _bright_text(
-            f"{Fore.WHITE}N/A" if num is None
-            else f"{Fore.WHITE}Extreme (anomaly?)" if (num <= self.min or num >= self.max) and self.strong
+            f"{Fore.WHITE}Extreme (anomaly?)" if (num <= self.min or num >= self.max) and self.strong
             else f"{Fore.RED}Much Lower" if num < boundaries[0]
             else f"{Fore.LIGHTRED_EX}Lower" if num < boundaries[1]
             else f"{Fore.YELLOW}Same" if num < boundaries[2]
@@ -114,8 +116,9 @@ class _Metric(_MetricInfo):
                  boundary: Optional[_Boundary] = None):
         super(_Metric, self).__init__(**dataclasses.asdict(metric_info))
 
+        weekly_mean = _get_past_week_average(ticker, self.name)
         self.boundary = _Boundary(
-            0, 2 * _get_past_week_average(ticker, self.name)) if boundary is None else boundary
+            0, None if weekly_mean is None else 2 * weekly_mean) if boundary is None else boundary
         self.ticker = ticker
         self.value = value
 
