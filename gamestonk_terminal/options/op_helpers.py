@@ -7,7 +7,10 @@ from typing import List
 import pandas as pd
 import numpy as np
 
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    check_non_negative,
+)
 
 # pylint: disable=R1710
 
@@ -174,3 +177,217 @@ def calculate_max_pain(chain: pd.DataFrame) -> int:
     max_pain = chain["loss"].idxmin()
 
     return max_pain
+
+
+def vol(other_args: List[str]):
+    """Parse volume argparse
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+
+    Returns
+    -------
+    ns_parser: argparse.Namespace
+        Parsed namespace
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="vol",
+        description="Plot volume.  Volume refers to the number of contracts traded today.",
+    )
+
+    parser.add_argument(
+        "-m",
+        "--min",
+        default=-1,
+        type=check_non_negative,
+        help="Min strike to plot",
+        dest="min",
+    )
+    parser.add_argument(
+        "-M",
+        "--max",
+        default=-1,
+        type=check_non_negative,
+        help="Max strike to plot",
+        dest="max",
+    )
+
+    parser.add_argument(
+        "--calls",
+        action="store_true",
+        default=False,
+        dest="calls",
+        help="Flag to plot call options only",
+    )
+
+    parser.add_argument(
+        "--puts",
+        action="store_true",
+        default=False,
+        dest="puts",
+        help="Flag to plot put options only",
+    )
+
+    parser.add_argument(
+        "--source",
+        type=str,
+        default="tr",
+        choices=["tr", "yf"],
+        dest="source",
+        help="Source to get data from",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        return ns_parser
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def voi(other_args: List[str]):
+    """Parse Volume + open interest argparse
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+
+    Returns
+    -------
+    ns_parser: argparse.Namespace
+        Parsed namespace
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="voi",
+        description="""
+                Plots Volume + Open Interest of calls vs puts.
+            """,
+    )
+    parser.add_argument(
+        "-v",
+        "--minv",
+        dest="min_vol",
+        type=check_non_negative,
+        default=-1,
+        help="minimum volume (considering open interest) threshold of the plot.",
+    )
+    parser.add_argument(
+        "-m",
+        "--min",
+        dest="min_sp",
+        type=check_non_negative,
+        default=-1,
+        help="minimum strike price to consider in the plot.",
+    )
+    parser.add_argument(
+        "-M",
+        "--max",
+        dest="max_sp",
+        type=check_non_negative,
+        default=-1,
+        help="maximum strike price to consider in the plot.",
+    )
+    parser.add_argument(
+        "--source",
+        type=str,
+        default="tr",
+        choices=["tr", "yf"],
+        dest="source",
+        help="Source to get data from",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return None
+        return ns_parser
+
+    except Exception as e:
+        print(e, "\n")
+        return None
+
+
+def oi(other_args: List[str]):
+    """Parse Open Interest argparse
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+
+    Returns
+    -------
+    ns_parser: argparse.Namespace
+        Parsed namespace
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="oi",
+        description="Plot open interest.  Open interest represents the number of contracts that exist.",
+    )
+
+    parser.add_argument(
+        "-m",
+        "--min",
+        default=-1,
+        type=check_non_negative,
+        help="Min strike to plot",
+        dest="min",
+    )
+    parser.add_argument(
+        "-M",
+        "--max",
+        default=-1,
+        type=check_non_negative,
+        help="Max strike to plot",
+        dest="max",
+    )
+
+    parser.add_argument(
+        "--calls",
+        action="store_true",
+        default=False,
+        dest="calls",
+        help="Flag to plot call options only",
+    )
+
+    parser.add_argument(
+        "--puts",
+        action="store_true",
+        default=False,
+        dest="puts",
+        help="Flag to plot put options only",
+    )
+    parser.add_argument(
+        "--source",
+        type=str,
+        default="tr",
+        choices=["tr", "yf"],
+        dest="source",
+        help="Source to get data from",
+    )
+
+    try:
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        if not ns_parser:
+            return None
+
+        return ns_parser
+
+    except Exception as e:
+        print(e, "\n")
+        return None

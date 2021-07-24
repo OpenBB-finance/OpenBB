@@ -48,7 +48,6 @@ def print_options_data(stock: str, other_args: List[str]):
         data = tags.find_all("li")
         labels = []
         values = []
-        print("")
         for row in data:
             labels.append(row.find_all("span")[0].getText())
             values.append(row.find_all("span")[1].getText())

@@ -14,13 +14,14 @@ from gamestonk_terminal.options import (
     syncretism_view,
     calculator_model,
     op_helpers,
+    yfinance_view,
+    yfinance_model,
+    tradier_view,
+    tradier_model,
 )
-from gamestonk_terminal.options.yfinance import yfinance_controller
-from gamestonk_terminal.options.tradier import tradier_controller
 
+from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.menu import session
-
-# pylint: disable=no-member
 
 
 class OptionsController:
@@ -40,23 +41,33 @@ class OptionsController:
         "tr",
         "info",
         "load",
+        "exp",
+        "vol",
+        "voi",
+        "oi",
+        "hist",
+        "chains",
     ]
 
     def __init__(self, ticker: str):
         """Construct data."""
-        if ticker:
-            self.ticker = ticker
+        self.ticker = ticker
+        if self.ticker:
+            if TRADIER_TOKEN == "REPLACE_ME":
+                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+            else:
+                self.expiry_dates = tradier_model.option_expirations(self.ticker)
         else:
-            self.ticker = ""
+            self.expiry_dates = []
 
+        self.selected_date = ""
         self.op_parser = argparse.ArgumentParser(add_help=False, prog="op")
         self.op_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
 
-    @staticmethod
-    def print_help(ticker):
+    def print_help(self):
         """Print help."""
         print(
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options"
@@ -70,15 +81,24 @@ class OptionsController:
         print("   disp          display all preset screeners filters")
         print("   scr           output screener options")
         print("")
-        print("   calc          basic call/put PnL calculator")
-        print("")
-        print(">  yf            yahoo finance options menu")
-        print(">  tr            tradier options menu")
-        print("")
-        print(f"Current Ticker: {ticker}")
+        print(f"Current Ticker: {self.ticker or None}")
         print("   load          load new ticker")
         print("   info          display option information (volatility, IV rank etc)")
         print("")
+        print("   calc          basic call/put PnL calculator")
+        print("")
+        print(f"Current Expiration: {self.selected_date or None}")
+        print("   exp           see and set expiration dates")
+        print("")
+        if self.selected_date and self.ticker:
+            print(
+                "   chains        display option chains with greeks (tradier key required)"
+            )
+            print("   oi            plot open interest")
+            print("   vol           plot volume")
+            print("   voi           plot volume and open interest")
+            print("   hist          plot option history")
+            print("")
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -100,7 +120,7 @@ class OptionsController:
 
         # Help menu again
         if known_args.cmd == "?":
-            self.print_help(self.ticker)
+            self.print_help()
             return None
 
         # Clear screen
@@ -114,7 +134,7 @@ class OptionsController:
 
     def call_help(self, _):
         """Process Help command."""
-        self.print_help(self.ticker)
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu."""
@@ -125,31 +145,88 @@ class OptionsController:
         return True
 
     def call_calc(self, other_args: List[str]):
+        """Process calc command"""
         calculator_model.pnl_calculator(other_args)
 
     def call_info(self, other_args: List[str]):
+        """Process info command"""
         barchart_view.print_options_data(self.ticker, other_args)
 
     def call_disp(self, other_args: List[str]):
+        """Process disp command"""
         syncretism_view.view_available_presets(other_args)
 
     def call_scr(self, other_args: List[str]):
+        """Process scr command"""
         syncretism_view.screener_output(other_args)
 
     def call_load(self, other_args: List[str]):
+        """Process load command"""
         self.ticker = op_helpers.load(other_args)
-        print(f"{self.ticker} loaded \n")
+        if TRADIER_TOKEN == "REPLACE_ME":
+            self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+        else:
+            self.expiry_dates = tradier_model.option_expirations(self.ticker)
 
-    # pylint: disable=inconsistent-return-statements
-    def call_yf(self, _):
-        """Process cp command"""
-        if yfinance_controller.menu(self.ticker):
-            return True
+    def call_exp(self, other_args: List[str]):
+        """Process exp command"""
+        if self.ticker:
+            self.selected_date = op_helpers.select_option_date(
+                self.expiry_dates, other_args
+            )
+        else:
+            print("Please select a ticker using load {ticker}", "\n")
 
-    def call_tr(self, _):
-        """Process cp command"""
-        if tradier_controller.menu(self.ticker):
-            return True
+    def call_hist(self, other_args: List[str]):
+        tradier_view.display_historical(self.ticker, self.selected_date, other_args)
+
+    def call_chains(self, other_args: List[str]):
+        """Process chains command"""
+        tradier_view.display_chains(self.ticker, self.selected_date, other_args)
+
+    def call_vol(self, other_args: List[str]):
+        """Process vol command"""
+        parsed = op_helpers.vol(other_args)
+        if not parsed:
+            return
+        if parsed.source == "tr":
+            options = tradier_model.get_option_chains(self.ticker, self.selected_date)
+            tradier_view.plot_vol(options, self.ticker, self.selected_date, parsed)
+        else:
+            options = yfinance_model.get_option_chain(self.ticker, self.selected_date)
+            yfinance_view.plot_vol(
+                options.calls, options.puts, self.ticker, self.selected_date, parsed
+            )
+
+    def call_voi(self, other_args: List[str]):
+        """Process voi command"""
+        parsed = op_helpers.voi(other_args)
+        if not parsed:
+            return
+        if parsed.source == "tr":
+            options = tradier_model.get_option_chains(self.ticker, self.selected_date)
+            tradier_view.plot_volume_open_interest(
+                self.ticker, self.selected_date, options, parsed
+            )
+        else:
+            options = yfinance_model.get_option_chain(self.ticker, self.selected_date)
+            yfinance_view.plot_volume_open_interest(
+                self.ticker, self.selected_date, options.calls, options.puts, parsed
+            )
+
+    def call_oi(self, other_args: List[str]):
+        """Process oi command"""
+        parsed = op_helpers.oi(other_args)
+        if not parsed:
+            return
+        if parsed.source == "tr":
+            options = tradier_model.get_option_chains(self.ticker, self.selected_date)
+            tradier_view.plot_oi(options, self.ticker, self.selected_date, parsed)
+        else:
+            options = yfinance_model.get_option_chain(self.ticker, self.selected_date)
+            yfinance_view.plot_oi(
+                options.calls, options.puts, self.ticker, self.selected_date, parsed
+            )
 
 
 def menu(ticker: str):
