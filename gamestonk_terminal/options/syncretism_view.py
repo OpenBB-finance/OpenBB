@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.options import yfinance_model
 from gamestonk_terminal import config_plot as cfp
+from gamestonk_terminal import feature_flags as gtff
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -385,6 +386,10 @@ def historical_greeks(ticker: str, expiry: str, other_args: List[str]):
         )
         plt.gcf().autofmt_xdate()
         fig.tight_layout(pad=1)
+
+        if gtff.USE_ION:
+            plt.ion()
+
         plt.show()
 
     except Exception as e:
