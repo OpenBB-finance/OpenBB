@@ -691,10 +691,9 @@ def display_historical(ticker: str, expiry: str, other_args: List[str]):
         print("")
 
         if ns_parser.export:
-            # Note the extra dirname needed due to the subfolder in options
             export_data(
                 ns_parser.export,
-                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                os.path.dirname(os.path.abspath(__file__)),
                 f"historical_op_{ticker}_{expiry}_{str(strike).replace('.','p')}_{op_type}",
                 df_hist,
             )

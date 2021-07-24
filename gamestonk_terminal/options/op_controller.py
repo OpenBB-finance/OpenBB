@@ -47,6 +47,7 @@ class OptionsController:
         "oi",
         "hist",
         "chains",
+        "gr_hist",
     ]
 
     def __init__(self, ticker: str):
@@ -98,6 +99,7 @@ class OptionsController:
             print("   vol           plot volume")
             print("   voi           plot volume and open interest")
             print("   hist          plot option history")
+            print("   gr_hist       plot option greek history")
             print("")
 
     def switch(self, an_input: str):
@@ -227,6 +229,9 @@ class OptionsController:
             yfinance_view.plot_oi(
                 options.calls, options.puts, self.ticker, self.selected_date, parsed
             )
+
+    def call_gr_hist(self, other_args: List[str]):
+        syncretism_view.historical_greeks(self.ticker, self.selected_date, other_args)
 
 
 def menu(ticker: str):

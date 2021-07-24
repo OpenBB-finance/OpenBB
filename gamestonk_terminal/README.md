@@ -435,7 +435,7 @@ Command|Description|Source
 `vol`           | Plot volume
 `voi`           | Plot volume and open interest
 `hist`          | Plot historical options data | [Tradier](https://developer.tradier.com/)
-
+`gr_hist`       | Plot historical option greek | [Syncretism](ops.syncretism.io)
 &nbsp;
 
 ## Screener [»](screener/README.md)
