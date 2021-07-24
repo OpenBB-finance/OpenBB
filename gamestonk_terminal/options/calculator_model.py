@@ -87,7 +87,13 @@ def pnl_calculator(other_args: List[str]):
             price_at_expiry, 0, pnl, where=(pnl < 0), facecolor="red", alpha=0.5
         )
         ax.axvline(x=break_even, c="black")
-        ax.set_xlabel("Price at Expiry")
+        ax.set_xlabel("\nPrice at Expiry")
+        xx = ax.get_xticks()
+        axx = np.append(xx, break_even)
+        labs = list(xx.round(1))
+        labs.append("\nBreak Even")
+        ax.set_xticks(axx)
+        ax.set_xticklabels(labs)
         ax.set_ylabel("Profit")
         ax.set_title(
             f"Profit for {['Buying','Selling'][ns_parser.sell]} {['Call', 'Put'][ns_parser.put]} option"
