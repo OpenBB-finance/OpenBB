@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import mplfinance as mpf
-
+from colorama import Fore, Style
 from tabulate import tabulate
 
 from gamestonk_terminal.helper_funcs import (
@@ -19,12 +19,45 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     export_data,
     plot_autoscale,
+    patch_pandas_text_adjustment,
 )
 from gamestonk_terminal.options import op_helpers, tradier_model
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
+
+
+def red_highlight(val):
+    """Red highlight
+
+    Parameters
+    ----------
+    val
+        dataframe values to color
+
+    Returns
+    ----------
+    str
+        colored dataframes values
+    """
+    return f"{Fore.RED}{val}{Style.RESET_ALL}"
+
+
+def green_highlight(val):
+    """Green highlight
+
+    Parameters
+    ----------
+    values : List[str]
+        dataframe values to color
+
+    Returns
+    ----------
+    List[str]
+        colored dataframes values
+    """
+    return f"{Fore.GREEN}{val}{Style.RESET_ALL}"
 
 
 def check_valid_option_chains_headers(headers: str) -> List[str]:
@@ -180,6 +213,16 @@ def display_chains(ticker: str, expiry: str, other_args: List[str]):
             puts_df = puts_df[puts_df.columns[::-1]]
             chain_table = calls_df.merge(puts_df, on="strike")
 
+            if gtff.USE_COLOR:
+                call_cols = [col for col in chain_table if col.endswith("_x")]
+                put_cols = [col for col in chain_table if col.endswith("_y")]
+                patch_pandas_text_adjustment()
+                pd.set_option("display.max_colwidth", 0)
+                pd.set_option("display.max_rows", None)
+                for cc in call_cols:
+                    chain_table[cc] = chain_table[cc].astype(str).apply(green_highlight)
+                for pc in put_cols:
+                    chain_table[pc] = chain_table[pc].astype(str).apply(red_highlight)
             headers = [
                 col.strip("_x")
                 if col.endswith("_x")
@@ -197,7 +240,7 @@ def display_chains(ticker: str, expiry: str, other_args: List[str]):
                     floatfmt=".2f",
                 )
             )
-        print("")
+            print("")
 
     except Exception as e:
         print(e, "\n")

@@ -81,6 +81,7 @@ usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 * --put: Flag to calculate for put option
 * --sell: Flag to calculate for selling option
 
+![calc](https://user-images.githubusercontent.com/18151143/126855896-9bb56980-dbde-47ee-9c7e-62a1542e342d.png)
 
 ## exp <a name="exp"></a>
 See/set expiry dates.
@@ -119,7 +120,7 @@ Display options chains. [Source: Tradier]
 * -d : Columns to display.  Should be comma separated.  Must be in * -d : Columns to display from the following selection: symbol, bid, ask, strike, bidsize, asksize, volume, open_interest, delta, gamma, theta, vega, iv. Note that they are separated by comma.
 * --export: Flag to export.  Options are {csv,json,xlsx}.
 
-<img width="948" alt="chains" src="https://user-images.githubusercontent.com/25267873/115161876-f708ff80-a097-11eb-8073-195979862a45.png">
+![chains](https://user-images.githubusercontent.com/18151143/126855845-4f156b6d-a368-4e66-8dc9-b971792128d8.png)
 
 ## oi <a name="oi"></a>
 Plot open interest.
@@ -132,6 +133,7 @@ usage: oi [-m MIN] [-M MAX] [--calls] [--puts] [--source {tr,yf}] [-h]
 * --puts: Flag to plot puts only
 * --source: Data source.  Can be ['yf','tr'].  Defaults to 'tr' for Tradier.
 
+![oi](https://user-images.githubusercontent.com/18151143/126855897-87eadd56-cca0-4eb0-8e55-6b7035762cbc.png)
 
 ## vol <a name="vol"></a>
 Plot volume.
@@ -143,6 +145,7 @@ usage: vol [-m MIN] [-M MAX] [--calls] [--puts] [--source {tr,yf}] [-h]
 * --calls: Flag to plot calls only
 * --puts: Flag to plot puts only
 * --source: Data source.  Can be ['yf','tr'].  Defaults to 'tr' for Tradier.
+![vol](https://user-images.githubusercontent.com/18151143/126855840-8fc3446d-081e-4961-9925-eb6c6e51c136.png)
 
 ## voi <a name="voi"></a>
 
@@ -157,4 +160,19 @@ Plots Volume + Open Interest of calls vs puts.
 * -M : Maximum strike price to consider in the plot.
 * --source: Data source.  Can be ['yf','tr'].  Defaults to 'tr' for Tradier.
 
-![voinio](https://user-images.githubusercontent.com/25267873/115161878-f7a19600-a097-11eb-889b-e9cc945f174d.png)
+![voi](https://user-images.githubusercontent.com/18151143/126855842-927ca7ff-78ca-46ce-9cc0-2a8dff4593af.png)
+
+## hist <a name="hist"></a>
+Shows historical option chain
+```python
+usage: hist [-s STRIKE] [--put] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
+```
+* -s/--strike: Strike to show history for
+* --put: Flag to indicate the option is a put
+* --chain: OCC Chain ID.  Example: AAPL210730C00144000.  This flag overwrites the strike and put option
+* --raw: Show raw output
+* --export: Export file.  Can be {csv, json, xlsx}.
+
+Note that the chain ID can be obtained by using `chains -d symbol`
+
+![hist](https://user-images.githubusercontent.com/18151143/126855841-6884b19b-63c8-4746-a63f-82ad1a523c0c.png)
