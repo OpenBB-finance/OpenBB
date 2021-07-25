@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+import subprocess
 
 from gamestonk_terminal.papermill import due_diligence_view
 from gamestonk_terminal.papermill import econ_data_view
@@ -94,14 +95,16 @@ def print_papermill():
     print("   econ          run papermill to generate economic data summary")
     print("")
 
-    return
-
 
 def papermill_menu():
     """Papermill Menu"""
 
-    pc = PapermillController()
+    # Initialize jupyter notebook
+    subprocess.Popen(
+        "jupyter notebook", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
 
+    pc = PapermillController()
     print_papermill()
 
     while True:
