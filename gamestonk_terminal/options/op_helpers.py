@@ -96,6 +96,15 @@ def select_option_date(avalaiable_dates: List[str], other_args: List[str]) -> st
         help="Select index for expiry date.",
     )
 
+    parser.add_argument(
+        "-D",
+        dest="date",
+        type=str,
+        choices=avalaiable_dates + [""],
+        help="Select date (YYYY-MM-DD)",
+        default="",
+    )
+
     try:
         if other_args:
             if "-" not in other_args[0]:
@@ -106,7 +115,7 @@ def select_option_date(avalaiable_dates: List[str], other_args: List[str]) -> st
             return ""
 
         # Print possible expiry dates
-        if ns_parser.n_date == -1:
+        if ns_parser.n_date == -1 and not ns_parser.date:
             print("\nAvailable expiry dates:")
             for i, d in enumerate(avalaiable_dates):
                 print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
@@ -115,8 +124,17 @@ def select_option_date(avalaiable_dates: List[str], other_args: List[str]) -> st
 
         # It means an expiry date was correctly selected
         else:
-            expiry_date = avalaiable_dates[ns_parser.n_date]
-            return expiry_date
+            if ns_parser.date:
+                if ns_parser.date in avalaiable_dates:
+                    print(f"Expiraration set to {ns_parser.date} \n")
+                    return ns_parser.date
+                else:
+                    print("Expiration not an option")
+                    return ""
+            else:
+                expiry_date = avalaiable_dates[ns_parser.n_date]
+                print(f"Expiraration set to {expiry_date} \n")
+                return expiry_date
 
     except Exception as e:
         print(e, "\n")

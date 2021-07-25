@@ -83,15 +83,16 @@ usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 * --put: Flag to calculate for put option
 * --sell: Flag to calculate for selling option
 
-![calc](https://user-images.githubusercontent.com/18151143/126855896-9bb56980-dbde-47ee-9c7e-62a1542e342d.png)
+![calc](https://user-images.githubusercontent.com/18151143/126883982-c54cb5ec-7eb2-41c1-812e-75e830e3703d.png)
 
 ## exp <a name="exp"></a>
 See/set expiry dates.
 ```text
-usage: exp [-d]
+usage: exp [-d] [-D
 ```
 
 * -d : Expiry date index to set.
+* -D : Date to set
 
 Running `exp` will show available option expirations
 ```python
@@ -105,8 +106,11 @@ Available expiry dates:
     4.  2021-08-27
     5.  2021-09-03
 ```
-So `exp 2` will set the expiration to '2021-08-13'
-
+To set 2021-08-13, the following two options are equivalent
+```python
+exp 2
+exp -D 2021-08-13
+```
 ## chains <a name="chains"></a>
 
 ````

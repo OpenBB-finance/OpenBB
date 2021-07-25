@@ -92,14 +92,12 @@ class OptionsController:
         print("   exp           see and set expiration dates")
         print("")
         if self.selected_date and self.ticker:
-            print(
-                "   chains        display option chains with greeks (tradier key required)"
-            )
-            print("   oi            plot open interest")
-            print("   vol           plot volume")
-            print("   voi           plot volume and open interest")
-            print("   hist          plot option history")
-            print("   gr_hist       plot option greek history")
+            print("   chains        display option chains with greeks [Tradier]]")
+            print("   oi            plot open interest [Tradier/YF]")
+            print("   vol           plot volume [Tradier/YF]")
+            print("   voi           plot volume and open interest [Tradier/YF]")
+            print("   hist          plot option history [Tradier")
+            print("   gr_hist       plot option greek history [Syncretism]")
             print("")
 
     def switch(self, an_input: str):
@@ -180,18 +178,27 @@ class OptionsController:
             print("Please select a ticker using load {ticker}", "\n")
 
     def call_hist(self, other_args: List[str]):
-        tradier_view.display_historical(self.ticker, self.selected_date, other_args)
+        if TRADIER_TOKEN != "REPLACE_ME":
+            tradier_view.display_historical(self.ticker, self.selected_date, other_args)
+        else:
+            print("TRADIER TOKEN not supplied. \n")
 
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
-        tradier_view.display_chains(self.ticker, self.selected_date, other_args)
+        if TRADIER_TOKEN != "REPLACE_ME":
+            tradier_view.display_chains(self.ticker, self.selected_date, other_args)
+        else:
+            print("TRADIER TOKEN not supplied. \n")
 
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required.\n")
+            return
         parsed = op_helpers.vol(other_args)
         if not parsed:
             return
-        if parsed.source == "tr":
+        if parsed.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
             options = tradier_model.get_option_chains(self.ticker, self.selected_date)
             tradier_view.plot_vol(options, self.ticker, self.selected_date, parsed)
         else:
@@ -202,10 +209,13 @@ class OptionsController:
 
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required.")
+            return
         parsed = op_helpers.voi(other_args)
         if not parsed:
             return
-        if parsed.source == "tr":
+        if parsed.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
             options = tradier_model.get_option_chains(self.ticker, self.selected_date)
             tradier_view.plot_volume_open_interest(
                 self.ticker, self.selected_date, options, parsed
@@ -218,10 +228,13 @@ class OptionsController:
 
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required.")
+            return
         parsed = op_helpers.oi(other_args)
         if not parsed:
             return
-        if parsed.source == "tr":
+        if parsed.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
             options = tradier_model.get_option_chains(self.ticker, self.selected_date)
             tradier_view.plot_oi(options, self.ticker, self.selected_date, parsed)
         else:
