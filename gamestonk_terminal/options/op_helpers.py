@@ -52,6 +52,7 @@ def load(other_args: List[str]) -> str:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return ""
+        print("")
         return ns_parser.ticker
     except Exception as e:
         print(e, "\n")

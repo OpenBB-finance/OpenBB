@@ -377,19 +377,19 @@ def historical_greeks(ticker: str, expiry: str, other_args: List[str]):
         im2 = ax1.plot(time, price, c="dodgerblue", label="Stock Price")
         ax1.set_ylabel(f"{ticker} Price")
         ax1.set_xlabel("Date")
-        ims = im1 + im2
-        labels = [lab.get_label() for lab in ims]
-        ax.legend(ims, labels, loc=0)
         ax.grid("on")
         ax.set_title(
             f"{ns_parser.greek} historical for {ticker.upper()} {ns_parser.strike} {['Call','Put'][ns_parser.put]}"
         )
         plt.gcf().autofmt_xdate()
-        fig.tight_layout(pad=1)
 
         if gtff.USE_ION:
             plt.ion()
 
+        ims = im1 + im2
+        labels = [lab.get_label() for lab in ims]
+        plt.legend(ims, labels, loc=0)
+        fig.tight_layout(pad=1)
         plt.show()
 
     except Exception as e:

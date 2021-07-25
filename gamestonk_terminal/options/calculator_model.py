@@ -69,12 +69,12 @@ def pnl_calculator(other_args: List[str]):
 
         sell = [1, -1][ns_parser.sell]
         if ns_parser.put:
-            break_even = strike - premium
+            break_even = strike - sell * premium
             pnl = strike - premium - price_at_expiry
             pnl = sell * 100 * np.where(price_at_expiry < strike, pnl, -premium)
 
         else:
-            break_even = strike + premium
+            break_even = strike + sell * premium
             pnl = price_at_expiry - strike - premium
             pnl = sell * 100 * np.where(price_at_expiry > strike, pnl, -premium)
 
@@ -86,29 +86,52 @@ def pnl_calculator(other_args: List[str]):
         ax.fill_between(
             price_at_expiry, 0, pnl, where=(pnl < 0), facecolor="red", alpha=0.5
         )
-        ax.axvline(x=break_even, c="black")
-        ax.set_xlabel("\nPrice at Expiry")
-        xx = ax.get_xticks()
-        axx = np.append(xx, break_even)
-        labs = list(xx.round(1))
-        labs.append("\nBreak Even")
-        ax.set_xticks(axx)
-        ax.set_xticklabels(labs)
+        ax.axvline(
+            x=break_even, c="black", lw=3, alpha=0.6, label=f"Breakeven: ${break_even}"
+        )
+        ax.axvline(
+            x=strike, c="dodgerblue", lw=3, alpha=0.6, label=f"Strike: ${strike}"
+        )
+        if ns_parser.sell:
+            ax.axhline(
+                y=100 * premium,
+                c="seagreen",
+                lw=3,
+                alpha=0.6,
+                label=f"Max Profit: ${100*premium}",
+            )
+        else:
+            ax.axhline(
+                y=-100 * premium,
+                c="firebrick",
+                lw=3,
+                alpha=0.6,
+                label=f"Max Loss: ${-100 * premium}",
+            )
+
+        ax.set_xlabel("Price at Expiry")
+
         ax.set_ylabel("Profit")
         ax.set_title(
             f"Profit for {['Buying','Selling'][ns_parser.sell]} {['Call', 'Put'][ns_parser.put]} option"
         )
-        ax.grid("on")
+        ax.grid(True)
 
         if gtff.USE_ION:
             plt.ion()
 
+        plt.legend(loc=0)
         fig.tight_layout(pad=1)
         plt.show()
         print(f"Strike: ${strike}")
         print(f"Premium: ${premium}")
         print(f"Breakeven price: ${break_even}")
-        print(f"Max loss is: ${-100*premium}")
+        if ns_parser.sell:
+            print(f"Max profit: ${100 * premium}")
+            print("Max loss: Unlimited")
+        else:
+            print("Max profit: Unlimited")
+            print(f"Max loss: ${-100*premium}")
         print("")
 
     except Exception as e:
