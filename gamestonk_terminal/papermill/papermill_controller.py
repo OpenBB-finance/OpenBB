@@ -10,6 +10,7 @@ from gamestonk_terminal.papermill import due_diligence_view
 from gamestonk_terminal.papermill import econ_data_view
 
 from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal import config_terminal
 
 # pylint: disable=R1732
 
@@ -113,8 +114,9 @@ def papermill_menu():
     print_papermill()
 
     # Initialize jupyter notebook
+    cmd = f"jupyter notebook --port={config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}"
     proc = subprocess.Popen(
-        "jupyter notebook", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
     while True:
