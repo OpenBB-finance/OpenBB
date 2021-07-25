@@ -12,17 +12,19 @@ Command | Template | Example
      
 ## How to run the report
 
-1. Start the terminal with `python terminal.py`
+1. In [config_terminal](/gamestonk_terminal/config_terminal.py) you may need to change your `PAPERMILL_NOTEBOOK_REPORT_PORT` from `8888`. If the notebook generation fails, it is likely that the port selected is not the correct one.
 
-2. Select `mill` and select one of the available reports generation, e.g. `econ`.
+2. Start the terminal with `python terminal.py`
 
-3. This should prompt you with a filled notebok with name: `report_name_date_time.ipynb`. E.g. `econ_data_20210725_193517.ipynb`
+3. Select `mill` and select one of the available reports generation, e.g. `econ`
 
-4. You can now write your own personal notes on the notebook. By doing:
+4. This should prompt you with a filled notebok with name: `report_name_date_time.ipynb`. E.g. `econ_data_20210725_193517.ipynb`
+
+5. You can now write your own personal notes on the notebook. By doing:
    * Click on the notebook cell that you are interested in writing your notes
    * On the toolbar click on "+" to add a new cell
    * On the tooblar click on "Cell" -> "Cell Type" -> "Markdown"
    * You're now ready to write your own notes
 
-5. Once you're happy with your report, you can export it by doing:
+6. Once you're happy with your report, you can export it by doing:
    * On the toolbar click on "File" -> "Download as" -> Select your preferred option (e.g. HTML)
