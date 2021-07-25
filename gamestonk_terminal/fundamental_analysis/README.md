@@ -10,7 +10,6 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
 
 [YAHOO FINANCE](#YAHOO_FINANCE)
-  * income statement of the company
 
 * [info](#info)
   * information scope of the company

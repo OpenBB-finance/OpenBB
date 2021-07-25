@@ -171,10 +171,6 @@ Command|Description
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
 `mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
 `score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
-[Market Watch API](https://markets.businessinsider.com/) |
-`income`        |income statement of the company
-`balance`       |balance sheet of the company
-`cash`          |cash flow statement of the company
 [Yahoo Finance API](https://finance.yahoo.com/) |
 `info`          |information scope of the company
 `shrs`          |shareholders of the company

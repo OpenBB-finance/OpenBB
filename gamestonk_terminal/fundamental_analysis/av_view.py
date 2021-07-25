@@ -483,7 +483,7 @@ def earnings(other_args: List[str], ticker: str):
                 )
 
             print(df_fa.head(n=ns_parser.n_num).T.to_string(header=False))
-            print("")
+
         else:
             print(f"Error: {result.status_code}")
         print("")

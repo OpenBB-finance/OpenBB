@@ -222,37 +222,6 @@ class FundamentalAnalysisController:
         """Process earnings command"""
         av_view.earnings(other_args, self.ticker)
 
-    # MW commands
-    # def call_income(self, _):
-    #     """Process income command"""
-    #     print(
-    #         "MarketWatch is now deprecated because to scrape the data, the user needs to be a subscriber.",
-    #         "\n",
-    #     )
-    #
-    # def call_balance(self, _):
-    #     """Process balance command"""
-    #     print(
-    #         "MarketWatch is now deprecated because to scrape the data, the user needs to be a subscriber.",
-    #         "\n",
-    #     )
-    #
-    # def call_cash(self, _):
-    #     """Process cash command"""
-    #     print(
-    #         "MarketWatch is now deprecated because to scrape the data, the user needs to be a subscriber.",
-    #         "\n",
-    #     )
-
-    # def call_av(self, _):
-    #     """Process av command"""
-    #     ret = av_controller.menu(self.ticker, self.start, self.interval)
-    #
-    #     if ret is False:
-    #         self.print_help()
-    #     else:
-    #         return True
-
     def call_fmp(self, _):
         """Process fmp command"""
         ret = fmp_controller.menu(self.ticker, self.start, self.interval)
