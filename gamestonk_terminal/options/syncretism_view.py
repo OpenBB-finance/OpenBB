@@ -391,6 +391,7 @@ def historical_greeks(ticker: str, expiry: str, other_args: List[str]):
         plt.legend(ims, labels, loc=0)
         fig.tight_layout(pad=1)
         plt.show()
+        print("")
 
     except Exception as e:
         print(e, "\n")
