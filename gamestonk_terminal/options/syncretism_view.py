@@ -5,10 +5,20 @@ import argparse
 import os
 from typing import List
 import configparser
+
 import requests
 import pandas as pd
+import matplotlib.pyplot as plt
 from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    export_data,
+    plot_autoscale,
+)
+from gamestonk_terminal.options import yfinance_model
+from gamestonk_terminal import config_plot as cfp
+from gamestonk_terminal import feature_flags as gtff
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -187,6 +197,200 @@ PC: Price Change; PB: Price-to-book. """,
             )
         else:
             print("Wrong arguments specified. Error " + str(res.status_code))
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+possible_greeks = [
+    "iv",
+    "gamma",
+    "theta",
+    "vega",
+    "delta",
+    "rho",
+    "premium",
+]
+
+
+def check_valid_option_greek_header(headers: str) -> List[str]:
+    """Check valid greek selection
+
+    Parameters
+    ----------
+    headers : str
+        Option chains headers
+
+    Returns
+    ----------
+    List[str]
+        List of columns string
+    """
+    columns = [str(item) for item in headers.split(",")]
+
+    for header in columns:
+        if header not in possible_greeks:
+            raise argparse.ArgumentTypeError("Invalid option chains header selected!")
+
+    return columns
+
+
+def historical_greeks(ticker: str, expiry: str, other_args: List[str]):
+    """Get historical greeks
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker
+    expiry: str
+        Expiration date
+    other_args: List[str]
+        Argparse arguments
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="gr_hist",
+        description="Plot historical option greeks.",
+    )
+
+    parser.add_argument(
+        "-s",
+        "--strike",
+        dest="strike",
+        type=float,
+        required="--chain" not in other_args or "-h" not in other_args,
+        help="Strike price to look at",
+    )
+    parser.add_argument(
+        "--put",
+        dest="put",
+        action="store_true",
+        default=False,
+        help="Flag for showing put option",
+    )
+
+    parser.add_argument(
+        "-g",
+        "--greek",
+        dest="greek",
+        type=str,
+        choices=possible_greeks,
+        default="delta",
+        help="Greek column to select",
+    )
+
+    parser.add_argument("--chain", dest="chain_id", type=str, help="OCC option symbol")
+
+    parser.add_argument(
+        "--raw", dest="raw", action="store_true", default=False, help="Display raw data"
+    )
+
+    parser.add_argument(
+        "--export",
+        choices=["csv", "json", "xlsx"],
+        default="",
+        dest="export",
+        help="Export dataframe data to csv,json,xlsx file",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if not ns_parser.chain_id:
+            options = yfinance_model.get_option_chain(ticker, expiry)
+
+            if ns_parser.put:
+                options = options.puts
+            else:
+                options = options.calls
+
+            chain_id = options.loc[
+                options.strike == ns_parser.strike, "contractSymbol"
+            ].values[0]
+        else:
+            chain_id = ns_parser.chain_id
+
+        r = requests.get(f"https://api.syncretism.io/ops/historical/{chain_id}")
+
+        if r.status_code != 200:
+            print("Error in request.")
+            return
+
+        history = r.json()
+
+        iv, delta, gamma, theta, rho, vega, premium, price, time = (
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+        )
+
+        for entry in history:
+
+            time.append(pd.to_datetime(entry["timestamp"], unit="s"))
+            iv.append(entry["impliedVolatility"])
+            gamma.append(entry["gamma"])
+            delta.append(entry["delta"])
+            theta.append(entry["theta"])
+            rho.append(entry["rho"])
+            vega.append(entry["vega"])
+            premium.append(entry["premium"])
+            price.append(entry["regularMarketPrice"])
+
+        data = {
+            "iv": iv,
+            "gamma": gamma,
+            "delta": delta,
+            "theta": theta,
+            "rho": rho,
+            "vega": vega,
+            "premium": premium,
+            "price": price,
+        }
+
+        df = pd.DataFrame(data, index=time)
+
+        if ns_parser.raw:
+            print(df.tail(20))
+        if ns_parser.export:
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"historical_greek_{ticker}_{expiry}_{ns_parser.greek}_{str(ns_parser.strike).replace('.', 'p')}"
+                f"_{['Call','Put'][ns_parser.put]}",
+                df,
+            )
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        im1 = ax.plot(time, df[ns_parser.greek], c="firebrick", label=ns_parser.greek)
+        ax.set_ylabel(ns_parser.greek)
+        ax1 = ax.twinx()
+        im2 = ax1.plot(time, price, c="dodgerblue", label="Stock Price")
+        ax1.set_ylabel(f"{ticker} Price")
+        ax1.set_xlabel("Date")
+        ax.grid("on")
+        ax.set_title(
+            f"{ns_parser.greek} historical for {ticker.upper()} {ns_parser.strike} {['Call','Put'][ns_parser.put]}"
+        )
+        plt.gcf().autofmt_xdate()
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        ims = im1 + im2
+        labels = [lab.get_label() for lab in ims]
+        plt.legend(ims, labels, loc=0)
+        fig.tight_layout(pad=1)
+        plt.show()
         print("")
 
     except Exception as e:

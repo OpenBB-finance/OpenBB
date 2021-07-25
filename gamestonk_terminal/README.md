@@ -424,13 +424,18 @@ Command|Description|Source
 
 Command|Description|Source
 ------ | --------|----
+`disp`          | Display all preset screeners filters
+`scr`           | Output screener options
+`load`          | Load new ticker
+`info`          | Display option information | [Barchart](https://barchart.com/)
+`calc`          | Basic option PnL calculator
 `exp`           | see/set expiry date
-`volume`        | volume + open interest options trading plot |[Yahoo Finance](https://finance.yahoo.com/)
-`vcalls`        | calls volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
-`vputs`         | puts volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
 `chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
-`info`          | display option information | [Barchart](https://barchart.com/)
-
+`oi`            | Plot open interest
+`vol`           | Plot volume
+`voi`           | Plot volume and open interest
+`hist`          | Plot historical options data | [Tradier](https://developer.tradier.com/)
+`gr_hist`       | Plot historical option greek | [Syncretism](ops.syncretism.io)
 &nbsp;
 
 ## Screener [»](screener/README.md)
@@ -470,7 +475,7 @@ lis | latest insider sales
 blis | big latest insider sales ($100k+)
 blos | big latest officer sales ($100k+)
 blcs | big latest CEO/CFO sales ($100k+)
-Top | 
+Top |
 topt | top officer purchases today
 toppw | top officer purchases past week
 toppm | top officer purchases past month
