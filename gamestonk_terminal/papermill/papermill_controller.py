@@ -4,11 +4,15 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+import subprocess
 
 from gamestonk_terminal.papermill import due_diligence_view
 from gamestonk_terminal.papermill import econ_data_view
 
 from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal import config_terminal
+
+# pylint: disable=R1732
 
 
 class PapermillController:
@@ -24,8 +28,15 @@ class PapermillController:
             choices=["cls", "?", "help", "q", "quit", "dd", "econ"],
         )
 
-    def switch(self, an_input: str):
+    def switch(self, an_input: str, proc: subprocess.Popen):
         """Process and dispatch input
+
+        Parameters
+        -------
+        an_input : str
+            string with input arguments
+        proc : subprocess.Popen
+            subprocess that calls jupyter notebook for report generation
 
         Returns
         -------
@@ -56,25 +67,27 @@ class PapermillController:
 
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
-        )(other_args)
+        )(other_args, proc)
 
     def call_help(self, _):
         """Process Help command"""
         print_papermill()
 
-    def call_q(self, _):
+    def call_q(self, _, proc):
         """Process Q command - quit the menu"""
+        proc.kill()
         return False
 
-    def call_quit(self, _):
+    def call_quit(self, _, proc):
         """Process Quit command - quit the program"""
+        proc.kill()
         return True
 
-    def call_dd(self, other_args: List[str]):
+    def call_dd(self, other_args: List[str], _):
         """Process DD command"""
         due_diligence_view.due_diligence(other_args)
 
-    def call_econ(self, other_args: List[str]):
+    def call_econ(self, other_args: List[str], _):
         """Process Econ command"""
         econ_data_view.econ_data(other_args)
 
@@ -94,22 +107,24 @@ def print_papermill():
     print("   econ          run papermill to generate economic data summary")
     print("")
 
-    return
-
 
 def papermill_menu():
     """Papermill Menu"""
-
     pc = PapermillController()
-
     print_papermill()
+
+    # Initialize jupyter notebook
+    cmd = f"jupyter notebook --port={config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}"
+    proc = subprocess.Popen(
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
 
     while True:
         # Get input command from user
         an_input = input(f"{get_flair()} (mill)> ")
 
         try:
-            process_input = pc.switch(an_input)
+            process_input = pc.switch(an_input, proc)
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue

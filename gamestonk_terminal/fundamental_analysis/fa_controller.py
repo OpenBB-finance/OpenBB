@@ -13,7 +13,6 @@ from gamestonk_terminal.fundamental_analysis.financial_modeling_prep import (
     fmp_view,
 )
 from gamestonk_terminal.fundamental_analysis import finviz_view
-from gamestonk_terminal.fundamental_analysis import market_watch_view
 from gamestonk_terminal.fundamental_analysis import yahoo_finance_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
@@ -95,7 +94,7 @@ class FundamentalAnalysisController:
             "   score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]"
         )
         print("")
-        print("Market Watch API")
+        print("Market Watch API - DEPRECATED")
         print("   income        income statement of the company")
         print("   balance       balance sheet of the company")
         print("   cash          cash flow statement of the company")
@@ -167,17 +166,26 @@ class FundamentalAnalysisController:
         """Process score command"""
         fmp_view.valinvest_score(other_args, self.ticker)
 
-    def call_income(self, other_args: List[str]):
+    def call_income(self, _):
         """Process income command"""
-        market_watch_view.income(other_args, self.ticker)
+        print(
+            "MarketWatch is now deprecated because to scrape the data, the user needs to be a subscriber.",
+            "\n",
+        )
 
-    def call_balance(self, other_args: List[str]):
+    def call_balance(self, _):
         """Process balance command"""
-        market_watch_view.balance(other_args, self.ticker)
+        print(
+            "MarketWatch is now deprecated because to scrape the data, the user needs to be a subscriber.",
+            "\n",
+        )
 
-    def call_cash(self, other_args: List[str]):
+    def call_cash(self, _):
         """Process cash command"""
-        market_watch_view.cash(other_args, self.ticker)
+        print(
+            "MarketWatch is now deprecated because to scrape the data, the user needs to be a subscriber.",
+            "\n",
+        )
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
