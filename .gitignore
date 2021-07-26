@@ -8,8 +8,6 @@ __pycache__/
 env/
 venv/
 notebooks/reports/*
-notebooks/*
-!notebooks/templates/*
 reports/*
 !notebooks/reports/.gitkeep
 .python-version
