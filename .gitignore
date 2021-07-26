@@ -5,10 +5,11 @@ __pycache__/
 .venv
 .vscode
 *.ipynb
-notebooks/*
 env/
 venv/
 notebooks/reports/*
+notebooks/*
+!notebooks/templates/*
 reports/*
 !notebooks/reports/.gitkeep
 .python-version
