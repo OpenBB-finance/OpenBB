@@ -7,7 +7,6 @@ import os
 import sys
 from datetime import datetime
 from typing import List
-import requests
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
@@ -490,11 +489,6 @@ Contexts:
 
 def terminal():
     """Terminal Menu"""
-
-    # Check if the user has internet connection
-    if requests.get("https://www.google.com/").status_code != 200:
-        print("Internet connection is needed to use Gamestonk Terminal.", "\n")
-        return
 
     bootup()
 
