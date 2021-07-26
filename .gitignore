@@ -7,9 +7,8 @@ __pycache__/
 *.ipynb
 env/
 venv/
+noteoboks/examples/*
 notebooks/reports/*
-notebooks/*
-!notebooks/templates/*
 reports/*
 !notebooks/reports/.gitkeep
 .python-version

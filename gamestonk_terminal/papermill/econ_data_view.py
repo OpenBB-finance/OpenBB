@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 import webbrowser
 import papermill as pm
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
@@ -28,22 +29,15 @@ def econ_data(other_args: List[str]):
     )
 
     try:
-        (_, unknown_args) = parser.parse_known_args(other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        if unknown_args:
-            print(f"The following args couldn't be interpreted: {unknown_args}")
+        today = datetime.now()
+        analysis_notebook = (
+            f"notebooks/reports/econ_data_{today.strftime('%Y%m%d_%H%M%S')}.ipynb"
+        )
 
-    except SystemExit:
-        print("")
-        return
-
-    today = datetime.now()
-
-    analysis_notebook = (
-        f"notebooks/reports/econ_data_{today.strftime('%Y%m%d_%H%M%S')}.ipynb"
-    )
-
-    try:
         pm.execute_notebook(
             "notebooks/templates/econ_data.ipynb",
             analysis_notebook,
@@ -52,11 +46,13 @@ def econ_data(other_args: List[str]):
                 base_path=os.path.abspath(os.path.join(".")),
             ),
         )
+
+        webbrowser.open(
+            f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
+        )
+        print("")
+
     except Exception as e:
         print(e, "\n")
-        return
-
-    webbrowser.open(
-        f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
-    )
-    print("")
+    except SystemExit:
+        print("")

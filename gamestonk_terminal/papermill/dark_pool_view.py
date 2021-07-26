@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 import webbrowser
 import papermill as pm
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
@@ -33,32 +34,24 @@ def dark_pool(other_args: List[str], show: bool = True):
         "--ticker",
         action="store",
         dest="s_ticker",
-        required=True,
+        required="-h" not in other_args,
         help="Stock ticker",
     )
 
-    if other_args:
-        if "-" not in other_args[0]:
-            other_args.insert(0, "-t")
-
     try:
-        (ns_parser, unknown_args) = parser.parse_known_args(other_args)
+        if other_args:
+            if "-t" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-t")
 
-        if unknown_args:
-            print(f"The following args couldn't be interpreted: {unknown_args}")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    except SystemExit:
-        print("")
-        return
+        # Update values:
+        s_ticker = ns_parser.s_ticker
+        today = datetime.now()
+        analysis_notebook = f"notebooks/reports/{s_ticker}_{today.strftime('%Y%m%d_%H%M%S')}_dark_pool.ipynb"
 
-    # Update values:
-    s_ticker = ns_parser.s_ticker
-
-    today = datetime.now()
-
-    analysis_notebook = f"notebooks/reports/{s_ticker}_{today.strftime('%Y%m%d_%H%M%S')}_dark_pool.ipynb"
-
-    try:
         pm.execute_notebook(
             "notebooks/templates/dark_pool.ipynb",
             analysis_notebook,
@@ -68,12 +61,14 @@ def dark_pool(other_args: List[str], show: bool = True):
                 base_path=os.path.abspath(os.path.join(".")),
             ),
         )
+
+        if show:
+            webbrowser.open(
+                f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
+            )
+        print("")
+
     except Exception as e:
         print(e, "\n")
-        return
-
-    if show:
-        webbrowser.open(
-            f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
-        )
-    print("")
+    except SystemExit:
+        print("")

@@ -6,8 +6,9 @@ This menu has a different concept from remaining menus. It has 2 main goals:
 
 Command | Template | Example
 ------ | --------|----
-`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | [Due Diligence Example](/notebooks/examples/GME_20210704_191432_due_diligence.html)
-`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | [Economy Example](/notebooks/examples/econ_data_20210704_074122.html)
+`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | [Due Diligence Example](/notebooks/examples/gme_20210726_030502_due_diligence.html)
+`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | [Economy Example](/notebooks/examples/econ_data_20210726_030519.html)
+`dp` | [Dark Pool](/notebooks/templates/dark_pool.ipynb) | [Dark Pool](/notebooks/examples/amc_20210726_030345_dark_pool.html)
 
      
 ## How to run the report
@@ -20,11 +21,25 @@ Command | Template | Example
 
 4. This should prompt you with a filled notebok with name: `report_name_date_time.ipynb`. E.g. `econ_data_20210725_193517.ipynb`
 
-5. You can now write your own personal notes on the notebook. By doing:
+5. Due to the last cell of the notebook, the report is saved by default as `.html`. E.g.  `econ_data_20210725_193517.html`
+```
+folder = "notebooks/reports/"
+extension = ".ipynb"
+!jupyter nbconvert {folder + report_name + extension} --to html --no-input
+```
+
+6. You can now write your own personal notes on the notebook. By doing:
    * Click on the notebook cell that you are interested in writing your notes
    * On the toolbar click on "+" to add a new cell
    * On the tooblar click on "Cell" -> "Cell Type" -> "Markdown"
    * You're now ready to write your own notes
 
-6. Once you're happy with your report, you can export it by doing:
-   * On the toolbar click on "File" -> "Download as" -> Select your preferred option (e.g. HTML)
+6. Once you're happy with your report, you can either:
+   * Re-run the last cell (potentially changing output from `.html` with: 
+   ```
+   folder = "notebooks/reports/"
+   extension = ".ipynb"
+   !jupyter nbconvert {folder + report_name + extension} --to html --no-input
+   ```
+   * Or, on the toolbar click on "File" -> "Download as" -> Select your preferred option (e.g. HTML)
+
