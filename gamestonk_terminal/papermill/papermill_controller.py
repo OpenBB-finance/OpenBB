@@ -6,7 +6,7 @@ import os
 from typing import List
 import subprocess
 
-from gamestonk_terminal.papermill import due_diligence_view
+from gamestonk_terminal.papermill import dark_pool_view, due_diligence_view
 from gamestonk_terminal.papermill import econ_data_view
 
 from gamestonk_terminal.helper_funcs import get_flair
@@ -25,7 +25,7 @@ class PapermillController:
         )
         self.papermill_parser.add_argument(
             "cmd",
-            choices=["cls", "?", "help", "q", "quit", "dd", "econ"],
+            choices=["cls", "?", "help", "q", "quit", "dd", "econ", "dp"],
         )
 
     def switch(self, an_input: str, proc: subprocess.Popen):
@@ -91,6 +91,10 @@ class PapermillController:
         """Process Econ command"""
         econ_data_view.econ_data(other_args)
 
+    def call_dp(self, other_args: List[str], _):
+        """Process DP command"""
+        dark_pool_view.dark_pool(other_args)
+
 
 def print_papermill():
     """Print help"""
@@ -103,8 +107,9 @@ def print_papermill():
     print("   q             quit this menu, and shows back to main menu")
     print("   quit          quit to abandon program")
     print("")
-    print("   dd            run papermill to generate due diligence summary")
-    print("   econ          run papermill to generate economic data summary")
+    print("   dd            generate DUE DILIGENCE report")
+    print("   econ          generate ECONOMIC DATA summary")
+    print("   dp            generate DARK POOL report")
     print("")
 
 
