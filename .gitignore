@@ -7,6 +7,7 @@ __pycache__/
 *.ipynb
 env/
 venv/
+noteoboks/examples/*
 notebooks/reports/*
 reports/*
 !notebooks/reports/.gitkeep
