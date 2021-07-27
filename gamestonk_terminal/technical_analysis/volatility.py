@@ -1,7 +1,14 @@
+"""Volatility Technical Indicators"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
+
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
+import pandas as pd
+
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -13,7 +20,23 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def bbands(l_args, s_ticker, s_interval, df_stock):
+def bbands(
+    other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame
+):
+    """Plot Bollinger Bands
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Interval
+    df_stock: pd.DataFrame
+        Stock dataframe
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -64,7 +87,7 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -88,32 +111,36 @@ def bbands(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_ticker == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, color="k", lw=3)
+            ax.plot(df_stock.index, df_stock["Close"].values, color="k", lw=3)
         plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
-        plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
-        plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "g", lw=2)
-        plt.title(f"Bollinger Band (BBands) on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
+        ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
+        ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "g", lw=2)
+        ax.set_title(f"{s_ticker} Bollinger Bands")
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Share Price ($)")
+
         plt.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
-        plt.gca().fill_between(
+        ax.fill_between(
             df_ta.index,
             df_ta.iloc[:, 0].values,
             df_ta.iloc[:, 2].values,
             alpha=0.1,
             color="b",
         )
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
         plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
 
         plt.show()
         print("")

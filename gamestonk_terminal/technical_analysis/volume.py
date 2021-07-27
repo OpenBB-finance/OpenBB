@@ -1,6 +1,14 @@
+"""Volume Technical Analysis"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
+from datetime import timedelta
+
 import matplotlib.pyplot as plt
 import pandas_ta as ta
+import pandas as pd
+
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -13,7 +21,21 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def ad(l_args, s_ticker, s_interval, df_stock):
+def ad(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Accumulation Dictribution Line
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock data interval
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -50,107 +72,115 @@ def ad(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        # Daily
-        if s_interval == "1440min":
-            # Use open stock values
-            if ns_parser.b_use_open:
-                df_ta = ta.ad(
-                    high=df_stock["High"],
-                    low=df_stock["Low"],
-                    close=df_stock["Adj Close"],
-                    volume=df_stock["Volume"],
-                    offset=ns_parser.n_offset,
-                    open_=df_stock["Open"],
-                ).dropna()
-            # Do not use open stock values
-            else:
-                df_ta = ta.ad(
-                    high=df_stock["High"],
-                    low=df_stock["Low"],
-                    close=df_stock["Adj Close"],
-                    volume=df_stock["Volume"],
-                    offset=ns_parser.n_offset,
-                ).dropna()
+        bar_colors = [
+            "r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()
+        ]
 
-        # Intraday
+        if s_interval == "1440min":
+            bar_width = timedelta(days=1)
         else:
-            # Use open stock values
-            if ns_parser.b_use_open:
-                df_ta = ta.ad(
-                    high=df_stock["High"],
-                    low=df_stock["Low"],
-                    close=df_stock["Close"],
-                    volume=df_stock["Volume"],
-                    offset=ns_parser.n_offset,
-                    open_=df_stock["Open"],
-                ).dropna()
-            # Do not use open stock values
-            else:
-                df_ta = ta.ad(
-                    high=df_stock["High"],
-                    low=df_stock["Low"],
-                    close=df_stock["Close"],
-                    volume=df_stock["Volume"],
-                    offset=ns_parser.n_offset,
-                ).dropna()
+            bar_width = timedelta(minutes=int(s_interval.split("m")[0]))
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        axPrice = plt.subplot(211)
-        if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+        if ns_parser.b_use_open:
+            df_ta = ta.ad(
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Adj Close"],
+                volume=df_stock["Volume"],
+                offset=ns_parser.n_offset,
+                open_=df_stock["Open"],
+            ).dropna()
+        # Do not use open stock values
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-        plt.title(f"Accumulation/Distribution Line (AD) on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        _ = axPrice.twinx()
+            # Note this should always be Close not Adj Close
+            df_ta = ta.ad(
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                close=df_stock["Close"],
+                volume=df_stock["Volume"],
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        fig, axes = plt.subplots(
+            3,
+            1,
+            gridspec_kw={"height_ratios": [2, 1, 1]},
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax = axes[0]
         if s_interval == "1440min":
-            plt.bar(
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+        else:
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+        ax.set_title(f"{s_ticker} AD")
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        ax2 = axes[1]
+        ax2.set_ylabel("Volume")
+        if s_interval == "1440min":
+            ax2.bar(
                 df_stock.index,
                 df_stock["Volume"].values,
-                color="k",
+                color=bar_colors,
                 alpha=0.8,
                 width=0.3,
             )
         else:
-            plt.bar(
+            ax2.bar(
                 df_stock.index,
                 df_stock["Volume"].values,
-                color="k",
+                color=bar_colors,
                 alpha=0.8,
-                width=0.3,
+                width=bar_width,
             )
-        plt.subplot(212)
-        plt.plot(df_ta.index, df_ta.values, "b", lw=1)
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.axhline(0, linewidth=2, color="k", ls="--")
-        plt.legend(["Chaikin Oscillator"])
-        plt.xlabel("Time")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+
+        ax3 = axes[2]
+        ax3.plot(df_ta.index, df_ta.values, "b", lw=1)
+        ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax3.axhline(0, linewidth=2, color="k", ls="--")
+        ax3.set_ylabel("A/D")
+        ax3.set_xlabel("Time")
+        ax3.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax3.minorticks_on()
+        ax3.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
 
         plt.show()
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
-        return
+        print(e, "\n")
 
 
-def obv(l_args, s_ticker, s_interval, df_stock):
-    """Technical Analysis with On-Balance Volume indicator"""
+def obv(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """On Balance Volume
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock data interval
+    df_stock: pd.DataFrame
+        Dataframe of stock prices
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -176,9 +206,18 @@ def obv(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
+
+        bar_colors = [
+            "r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()
+        ]
+
+        if s_interval == "1440min":
+            bar_width = timedelta(days=1)
+        else:
+            bar_width = timedelta(minutes=int(s_interval.split("m")[0]))
 
         # Daily
         if s_interval == "1440min":
@@ -196,46 +235,57 @@ def obv(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        axPrice = plt.subplot(211)
+        fig, axes = plt.subplots(
+            3,
+            1,
+            gridspec_kw={"height_ratios": [2, 1, 1]},
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+        )
+        ax = axes[0]
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-        plt.title(f"On-Balance Volume (OBV) on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        _ = axPrice.twinx()
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+
+        ax.set_title(f"{s_ticker} OBV")
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2 = axes[1]
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+
         if s_interval == "1440min":
-            plt.bar(
+            ax2.bar(
                 df_stock.index,
                 df_stock["Volume"].values,
-                color="k",
+                color=bar_colors,
                 alpha=0.8,
-                width=0.3,
+                width=bar_width,
             )
         else:
-            plt.bar(
+            ax2.bar(
                 df_stock.index,
                 df_stock["Volume"].values,
-                color="k",
+                color=bar_colors,
                 alpha=0.8,
-                width=0.3,
+                width=bar_width,
             )
-        plt.subplot(212)
-        plt.plot(df_ta.index, df_ta.values, "b", lw=1)
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.legend(["OBV"])
-        plt.xlabel("Time")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax3 = axes[2]
+        ax3.plot(df_ta.index, df_ta.values, "b", lw=1)
+        ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax3.set_xlabel("Time")
+        ax3.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax3.minorticks_on()
+        ax3.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
 
         plt.show()
         print("")

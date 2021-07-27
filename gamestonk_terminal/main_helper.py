@@ -42,7 +42,13 @@ from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.technical_analysis import trendline_api as trend
 
 
-def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
+def clear(
+    other_args: List[str],
+    s_ticker: str,
+    s_start,
+    s_interval: str,
+    df_stock: pd.DataFrame,
+):
     """Clears loaded stock and returns empty variables
 
     Parameters
@@ -89,7 +95,13 @@ def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         return s_ticker, s_start, s_interval, df_stock
 
 
-def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
+def load(
+    other_args: List[str],
+    s_ticker: str,
+    s_start,
+    s_interval: str,
+    df_stock: pd.DataFrame,
+):
     """Load selected ticker
 
     Parameters
@@ -136,7 +148,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "-s",
         "--start",
         type=valid_date,
-        default="2019-01-01",
+        default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
         dest="s_start_date",
         help="The starting date (format YYYY-MM-DD) of the stock",
     )
@@ -601,7 +613,7 @@ def quote(other_args: List[str], s_ticker: str):
     return
 
 
-def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
+def view(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
     """Plot loaded ticker
 
     Parameters
