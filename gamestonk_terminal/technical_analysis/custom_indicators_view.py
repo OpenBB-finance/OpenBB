@@ -109,7 +109,6 @@ def fibinocci_retracement(other_args: List[str], data: pd.DataFrame, ticker: str
 
         fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
-        print([min_date, max_date, min_pr, max_pr])
         ax.plot(data["Adj Close"], "b")
         ax.plot([min_date, max_date], [min_pr, max_pr], c="k")
 
