@@ -45,7 +45,7 @@ from gamestonk_terminal.technical_analysis import trendline_api as trend
 def clear(
     other_args: List[str],
     s_ticker: str,
-    s_start: str,
+    s_start,
     s_interval: str,
     df_stock: pd.DataFrame,
 ):
