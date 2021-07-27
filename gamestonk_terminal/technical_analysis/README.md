@@ -41,9 +41,14 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
 
 [VOLUME](#VOLUME)
   * [ad](#ad)
-    - chaikin accumulation/distribution line values
+    - Accumulation/distribution line values
   * [obv](#obv)
     - on balance volume
+
+[CUSTOM](#CUSTOM)
+  * [fib](#fib)
+    - Shows fibonocci levels
+
 
 **S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let us know if there's any other that you would like._
 
@@ -111,6 +116,7 @@ usage: sma [-l L_LENGTH] [-o N_OFFSET]
 
 
 ## vwap  <a name="vwap"></a>
+VWAP is only available for intraday data.  This plots the most recent day only.
 ```
 usage: vwap [-o N_OFFSET]
 ```
@@ -186,3 +192,19 @@ usage: ad [-o N_OFFSET] [--open]
 usage: obv [-o N_OFFSET]
 ```
 ![obv](https://user-images.githubusercontent.com/25267873/108603503-1dfccb00-73a0-11eb-8da5-e5e5419a94ac.png)
+
+# CUSTOM <a name="CUSTOM"></a>
+
+## fib <a name="fib"></a>
+Shows fibonocci levels
+```python
+usage: fib [-p PERIOD] [--start] [--end]
+```
+* -p/--period: Number of days to lookback for retracement.  Default = 120.
+* --start: Allows for custom selection of min point.
+* --end : Allows for custom selection of max point.
+
+The fibonocci retracement works by looking at a minimum and maximum point.  Between these values, there is typically support/resistance at
+23.5 %, 38.2%, 50% and 61.8%.  Those values follow the golden ratio from the fibonocci sequence.
+
+The `--start` and `--end` flags allow the user to select dates for the min and max points as your retracement levels.  Both flags are required if using.
