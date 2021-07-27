@@ -654,9 +654,10 @@ def check_api_keys():
         key_dict["ALPHA_VANTAGE"] = "Not defined"
     else:
         df = TimeSeries(
-            key=cfg.API_KEY.ALPHAVANTAGE, output_format="pandas"
+            key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
         ).get_intraday(symbol="AAPL")
-        if df.empty:
+        print(type(df[0]))
+        if df[0].empty:
             key_dict["ALPHA_VANTAGE"] = "defined, test failed"
         else:
             key_dict["ALPHA_VANTAGE"] = "defined, test passed"
