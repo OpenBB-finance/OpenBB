@@ -276,7 +276,7 @@ def vwap(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.Dat
 
         # Daily
         if s_interval == "1440min":
-            print("VWAP should be used with intraday data ")
+            print("VWAP should be used with intraday data. \n")
             return
 
         df_stock.index = df_stock.index.tz_localize(None)
