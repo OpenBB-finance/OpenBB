@@ -656,7 +656,6 @@ def check_api_keys():
         df = TimeSeries(
             key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
         ).get_intraday(symbol="AAPL")
-        print(type(df[0]))
         if df[0].empty:
             key_dict["ALPHA_VANTAGE"] = "defined, test failed"
         else:
