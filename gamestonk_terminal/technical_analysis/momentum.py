@@ -474,5 +474,4 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
