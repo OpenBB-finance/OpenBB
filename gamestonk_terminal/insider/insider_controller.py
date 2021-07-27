@@ -3,12 +3,15 @@ __docformat__ = "numpy"
 
 import os
 import argparse
+import configparser
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.insider import openinsider_view
+
+presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 
 class InsiderController:
@@ -20,6 +23,9 @@ class InsiderController:
         "?",
         "help",
         "q",
+        "view",
+        "set",
+        "filter",
         "quit",
         "lcb",
         "lpsb",
@@ -45,6 +51,7 @@ class InsiderController:
 
     def __init__(self):
         """Constructor"""
+        self.preset = "template"
         self.insider_parser = argparse.ArgumentParser(add_help=False, prog="ins")
         self.insider_parser.add_argument(
             "cmd",
@@ -61,6 +68,13 @@ class InsiderController:
         print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
+        print("")
+        print("   view          view available presets")
+        print("   set           set one of the available presets")
+        print("")
+        print(f"PRESET: {self.preset}")
+        print("")
+        print("   filter        filter insiders based on preset")
         print("")
         print("Latest:")
         print("   lcb           latest cluster boys")
@@ -86,6 +100,126 @@ class InsiderController:
         print("   tispw         top insider sales past week")
         print("   tispm         top insider sales past month")
         print("")
+
+    @staticmethod
+    def view_available_presets(other_args: List[str]):
+        """View available presets."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="view",
+            description="""View available presets under presets folder.""",
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            help="View specific preset",
+            default="",
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir(presets_path)
+                if preset[-4:] == ".ini"
+            ],
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if ns_parser.preset:
+                preset_filter = configparser.RawConfigParser()
+                preset_filter.optionxform = str  # type: ignore
+                preset_filter.read(presets_path + ns_parser.preset + ".ini")
+
+                filters_headers = [
+                    "General",
+                    "Date",
+                    "TransactionFiling",
+                    "Industry",
+                    "InsiderTitle",
+                    "Others",
+                    "CompanyTotals",
+                ]
+
+                print("")
+                for filter_header in filters_headers:
+                    print(f" - {filter_header} -")
+                    d_filters = {**preset_filter[filter_header]}
+                    d_filters = {k: v for k, v in d_filters.items() if v}
+                    if d_filters:
+                        max_len = len(max(d_filters, key=len))
+                        for key, value in d_filters.items():
+                            print(f"{key}{(max_len-len(key))*' '}: {value}")
+                    print("")
+
+            else:
+                presets = [
+                    preset.split(".")[0]
+                    for preset in os.listdir(presets_path)
+                    if preset[-4:] == ".ini"
+                ]
+
+                for preset in presets:
+                    with open(
+                        presets_path + preset + ".ini",
+                        encoding="utf8",
+                    ) as f:
+                        description = ""
+                        for line in f:
+                            if line.strip() == "[General]":
+                                break
+                            description += line.strip()
+                    print(f"\nPRESET: {preset}")
+                    print(description.split("Description: ")[1].replace("#", ""))
+                print("")
+
+        except Exception as e:
+            print(e)
+
+    def set_preset(self, other_args: List[str]):
+        """Set preset"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="set",
+            description="""Set preset from under presets folder.""",
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default="template",
+            help="Filter presets",
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir(presets_path)
+                if preset[-4:] == ".ini"
+            ],
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            self.preset = ns_parser.preset
+
+        except Exception as e:
+            print(e)
+
+        print("")
+        return
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -132,6 +266,18 @@ class InsiderController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_view(self, other_args: List[str]):
+        """Process view command"""
+        self.view_available_presets(other_args)
+
+    def call_set(self, other_args: List[str]):
+        """Process set command"""
+        self.set_preset(other_args)
+
+    def call_filter(self, other_args: List[str]):
+        """Process filter command"""
+        return openinsider_view.print_insider_filter(other_args, self.preset)
 
     def call_lcb(self, other_args: List[str]):
         """Process latest-cluster-buys"""

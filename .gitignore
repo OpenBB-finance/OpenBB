@@ -5,9 +5,9 @@ __pycache__/
 .venv
 .vscode
 *.ipynb
-notebooks/*
 env/
 venv/
+noteoboks/examples/*
 notebooks/reports/*
 reports/*
 !notebooks/reports/.gitkeep

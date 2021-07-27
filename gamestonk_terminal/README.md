@@ -19,6 +19,7 @@
 * [Economy](#Economy)
 * [Options](#Options-)
 * [Screener](#Screener-)
+* [Insider](#Insider-)
 * [Forex](#Forex-)
 * [Backtesting](#Backtesting-)
 * [Resource Collection](#Resource-Collection-)
@@ -65,10 +66,10 @@ quote -t S_TICKER
 * Show the current price of a stock.
 
 ```
-candle
+candle -s START_DATE
 ```
 
-* Visualize candles historical data from the past 6 months, with support and resistance bars, and moving averages of 20 and 50
+* Visualize candles historical data, with support and resistance bars, and moving averages of 20 and 50.
 
 ![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
 
@@ -170,10 +171,6 @@ Command|Description
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
 `mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
 `score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
-[Market Watch API](https://markets.businessinsider.com/) |
-`income`        |income statement of the company
-`balance`       |balance sheet of the company
-`cash`          |cash flow statement of the company
 [Yahoo Finance API](https://finance.yahoo.com/) |
 `info`          |information scope of the company
 `shrs`          |shareholders of the company
@@ -423,13 +420,18 @@ Command|Description|Source
 
 Command|Description|Source
 ------ | --------|----
+`disp`          | Display all preset screeners filters
+`scr`           | Output screener options
+`load`          | Load new ticker
+`info`          | Display option information | [Barchart](https://barchart.com/)
+`calc`          | Basic option PnL calculator
 `exp`           | see/set expiry date
-`volume`        | volume + open interest options trading plot |[Yahoo Finance](https://finance.yahoo.com/)
-`vcalls`        | calls volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
-`vputs`         | puts volume + open interest plot |[Yahoo Finance](https://finance.yahoo.com/)
 `chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
-`info`          | display option information | [Barchart](https://barchart.com/)
-
+`oi`            | Plot open interest
+`vol`           | Plot volume
+`voi`           | Plot volume and open interest
+`hist`          | Plot historical options data | [Tradier](https://developer.tradier.com/)
+`gr_hist`       | Plot historical option greek | [Syncretism](ops.syncretism.io)
 &nbsp;
 
 ## Screener [»](screener/README.md)
@@ -447,6 +449,38 @@ ownership      |ownership (e.g. Float, Insider Own, Short Ratio)
 performance    |performance (e.g. Perf Week, Perf YTD, Volatility M)
 technical      |technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
 signals        |view filter signals (e.g. -s top_gainers)
+
+&nbsp;
+
+## Insider [»](insider/README.md)
+
+Command|Description|Source
+------ | --------|----
+view           |view available presets | [presets](insider/presets/README.md)
+set            |set one of the available presets
+filter         |filter insiders based on preset | [Open Insider](http://openinsider.com)
+Latest |
+lcb |latest cluster boys
+lpsb | latest penny stock buys
+lit | latest insider trading (all filings)
+lip | latest insider purchases
+blip |  big latest insider purchases ($25k+)
+blop | big latest officer purchases ($25k+)
+blcp | big latest CEO/CFO purchases ($25k+)
+lis | latest insider sales
+blis | big latest insider sales ($100k+)
+blos | big latest officer sales ($100k+)
+blcs | big latest CEO/CFO sales ($100k+)
+Top |
+topt | top officer purchases today
+toppw | top officer purchases past week
+toppm | top officer purchases past month
+tipt | top insider purchases today
+tippw | top insider purchases past week
+tippm | top insider purchases past month
+tist | top insider sales today
+tispw | top insider sales past week
+tispm | top insider sales past month
 
 &nbsp;
 

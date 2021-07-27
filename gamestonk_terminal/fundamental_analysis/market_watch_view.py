@@ -1,4 +1,8 @@
-""" Fundamental Analysis Market Watch View """
+""" Fundamental Analysis Market Watch View. LEGACY.
+
+MarketWatch now requires a user to be a subscriber in order to have access to the financials...
+So this code is not being used for the time being, it may be at a later stage.
+"""
 __docformat__ = "numpy"
 
 import argparse

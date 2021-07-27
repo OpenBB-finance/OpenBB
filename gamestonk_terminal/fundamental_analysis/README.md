@@ -8,18 +8,8 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * management team of the company [Business Insider]
 * [score](#score)
   * investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
-         
-[MARKET WATCH](#MARKET_WATCH)
-
-* [income](#income)
-  * income statement of the company
-* [balance](#balance)
-  * balance sheet of the company
-* [cash](#cash)
-  * cash flow statement of the company
 
 [YAHOO FINANCE](#YAHOO_FINANCE)
-  * income statement of the company
 
 * [info](#info)
   * information scope of the company
@@ -31,7 +21,18 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * calendar earnings and estimates of the company
 
 
-[ALPHA VANTAGE menu](/gamestonk_terminal/fundamental_analysis/alpha_vantage/)
+[ALPHA VANTAGE](#ALPHA_VANTAGE)
+
+* [overview](#overview)
+  * overview of the company
+* [incom](#incom)
+  * income statements of the company
+* [balance](#balance)
+  * balance sheet of the company
+* [cash](#cash)
+  * cash flow of the company
+* [earnings](#earnings)
+  * earnings dates and reported EPS
 
 
 [FINANCIAL MODELING PREP menu](/gamestonk_terminal/fundamental_analysis/financial_modeling_prep/)
@@ -54,45 +55,6 @@ usage: mgmt
 ```
 
 Print management team. Namely: Name, Title, Information from google and (potentially) Insider Activity page. [Source: Business Insider]
-
-## MARKET WATCH <a name="MARKET_WATCH"></a>
-
-### income <a name="income"></a>
-
-```text
-usage: income [-q]
-```
-
-Prints either yearly or quarterly income statement the company. The following fields are expected: Sales Growth, Cost of Goods Sold (COGS) incl. D&A, COGS Growth, COGS excluding D&A, Depreciation & Amortization Expense, Depreciation, Amortization of Intangibles, Gross Income, Gross Income Growth, Gross Profit Margin, SG&A Expense, SGA Growth, Research & Development, Other SG&A, Other Operating Expense, Unusual Expense, EBIT after Unusual Expense, Non Operating Income/Expense, Non-Operating Interest Income, Equity in Affiliates (Pretax), Interest Expense, Interest Expense Growth, Gross Interest Expense, Interest Capitalized, Pretax Income, Pretax Income Growth, Pretax Margin, Income Tax, Income Tax - Current Domestic, Income Tax - Current Foreign, Income Tax - Deferred Domestic, Income Tax - Deferred Foreign, Income Tax Credits, Equity in Affiliates, Other After Tax Income (Expense), Consolidated Net Income, Minority Interest Expense, Net Income Growth, Net Margin Growth, Extraordinaries & Discontinued Operations, Extra Items & Gain/Loss Sale Of Assets, Cumulative Effect - Accounting Chg, Discontinued Operations, Net Income After Extraordinaries, Preferred Dividends, Net Income Available to Common, EPS (Basic), EPS (Basic) Growth, Basic Shares Outstanding, EPS (Diluted), EPS (Diluted) Growth, Diluted Shares Outstanding, EBITDA, EBITDA Growth, EBITDA Margin, Sales/Revenue, and Net Income. [Source: Market Watch]
-
-* q : Quarter fundamental data flag. Default False.
-
-### balance <a name="balance"></a>
-
-```text
-usage: assets [-q]
-```
-
-Prints either yearly or quarterly assets from balance sheet of the company. The following fields are expected: Cash & Short Term Investments, Cash & Short Term Investments Growth, Cash Only, Short-Term Investments, Cash & ST Investments / Total Assets, Total Accounts Receivable, Total Accounts Receivable Growth, Accounts Receivables, Net, Accounts Receivables, Gross, Bad Debt/Doubtful Accounts, Other Receivable, Accounts Receivable Turnover, Inventories, Finished Goods, Work in Progress, Raw Materials, Progress Payments & Other, Other Current Assets, Miscellaneous Current Assets, Net Property, Plant & Equipment, Property, Plant & Equipment - Gross, Buildings, Land & Improvements, Computer Software and Equipment, Other Property, Plant & Equipment, Accumulated Depreciation, Total Investments and Advances, Other Long-Term Investments, Long-Term Note Receivables, Intangible Assets, Net Goodwill, Net Other Intangibles, Other Assets.
-
-Prints either yearly or quarterly liabilities and shareholders' equity from balance sheet of the company. The following fields are expected: ST Debt & Current Portion LT Debt, Short Term Debt, Current Portion of Long Term Debt, Accounts Payable, Accounts Payable Growth, Income Tax Payable, Other Current Liabilities, Dividends Payable, Accrued Payroll, Miscellaneous Current Liabilities, Long-Term Debt, Long-Term Debt excl. Capitalized Leases, Non-Convertible Debt, Convertible Debt, Capitalized Lease Obligations, Provision for Risks & Charges, Deferred Taxes, Deferred Taxes - Credits, Deferred Taxes - Debit, Other Liabilities, Other Liabilities (excl. Deferred Income), Deferred Income, Non-Equity Reserves, Total Liabilities / Total Assets, Preferred Stock (Carrying Value), Redeemable Preferred Stock, Non-Redeemable Preferred Stock, Common Equity (Total), Common Equity/Total Assets, Common Stock Par/Carry Value, Retained Earnings, ESOP Debt Guarantee, Cumulative Translation Adjustment/Unrealized For. Exch. Gain, Unrealized Gain/Loss Marketable Securities, Revaluation Reserves, Treasury Stock, Total Shareholders' Equity, Total Shareholders' Equity / Total Assets, Accumulated Minority Interest, Total Equity, Total Current Assets, Total Assets, Total Current Liabilities, Total Liabilities, and Liabilities & Shareholders' Equity. [Source: Market Watch]
-
-* q : Quarter fundamental data flag. Default False.
-
-### cash <a name="cash"></a>
-
-```text
-usage: cash [-q]
-```
-
-Prints either yearly or quarterly cash flow operating activities of the company. The following fields are expected: Net Income before Extraordinaries, Net Income Growth, Depreciation, Depletion & Amortization, Depreciation and Depletion, Amortization of Intangible Assets, Deferred Taxes & Investment Tax Credit, Deferred Taxes, Investment Tax Credit, Other Funds, Funds from Operations, Extraordinaries, Changes in Working Capital, Receivables, Accounts Payable, Other Assets/Liabilities, and Net Operating Cash Flow Growth.
-            
-Prints either yearly or quarterly cash flow investing activities of the company. The following fields are expected: Capital Expenditures, Capital Expenditures Growth, Capital Expenditures/Sales, Capital Expenditures (Fixed Assets), Capital Expenditures (Other Assets), Net Assets from Acquisitions, Sale of Fixed Assets & Businesses, Purchase/Sale of Investments, Purchase of Investments, Sale/Maturity of Investments, Other Uses, Other Sources, Net Investing Cash Flow Growth.
-            
-Prints either yearly or quarterly cash flow financing activities of the company. The following fields are expected: Cash Dividends Paid - Total, Common Dividends, Preferred Dividends, Change in Capital Stock, Repurchase of Common & Preferred Stk., Sale of Common & Preferred Stock, Proceeds from Stock Options, Other Proceeds from Sale of Stock, Issuance/Reduction of Debt, Net, Change in Current Debt, Change in Long-Term Debt, Issuance of Long-Term Debt, Reduction in Long-Term Debt, Other Funds, Other Uses, Other Sources, Net Financing Cash Flow Growth, Net Financing Cash Flow/Sales, Exchange Rate Effect, Miscellaneous Funds, Net Change in Cash, Free Cash Flow, Free Cash Flow Growth, Free Cash Flow Yield, Net Operating Cash Flow, Net Investing Cash Flow, Net Financing Cash Flow. [Source: Market Watch]
-
-* q : Quarter fundamental data flag. Default False.
-
 
 ## YAHOO FINANCE <a name="YAHOO_FINANCE"></a>
 
@@ -128,3 +90,58 @@ usage: cal
 
 Calendar earnings of the company. Including revenue and earnings estimates. [Source: Yahoo Finance]
 
+## ALPHA VANTAGE<a name="ALPHA_VANTAGE"></a>
+
+### overview <a name="overview"></a>
+
+```text
+usage: overview
+```
+
+Prints an overview about the company. The following fields are expected: Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry, Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization, EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS, Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM, Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly earnings growth YOY, Quarterly revenue growth YOY, Analyst target price, Trailing PE, Forward PE, Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA, Beta, 52 week high, 52 week low, 50 day moving average, 200 day moving average, Shares outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short percent outstanding, Short percent float, Percent insiders, Percent institutions, Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend date, Ex dividend date, Last split factor, and Last split date. Also, the C i k field
+corresponds to Central Index Key, which can be used to search a company on
+https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
+
+### income <a name="income"></a>
+
+```text
+usage: income [-n N_NUM] [-q]
+```
+
+Prints a complete income statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]
+
+* n : Number of latest years/quarters. Default 1.
+* q : Quarter fundamental data flag. Default False.
+
+### balance <a name="balance"></a>
+
+```text
+usage: balance [-n N_NUM] [-q]
+```
+
+Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill, Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]
+
+* n : Number of latest years/quarters. Default 1.
+* q : Quarter fundamental data flag. Default False.
+
+### cash <a name="cash"></a>
+
+```text
+usage: cash [-n N_NUM] [-q]
+```
+
+Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization, Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
+
+* n : Number of latest years/quarters. Default 1.
+* q : Quarter fundamental data flag. Default False.
+
+### earnings <a name="earnings"></a>
+
+```text
+usage: earnings [-n N_NUM] [-q]
+```
+
+Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
+
+* n : Number of latest years/quarters. Default 1.
+* q : Quarter fundamental data flag. Default False.

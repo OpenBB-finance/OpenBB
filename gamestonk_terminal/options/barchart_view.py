@@ -3,20 +3,13 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from selenium import webdriver
-from bs4 import BeautifulSoup
 
-# from selenium.webdriver.chrome.options import Options as cOpts
-# from selenium.webdriver.firefox.options import Options as fOpts
+import requests
+from bs4 import BeautifulSoup
 import pandas as pd
 from tabulate import tabulate
-from gamestonk_terminal.config_terminal import (
-    PATH_TO_SELENIUM_DRIVER as path_to_driver,
-    WEBDRIVER_TO_USE as web,
-)
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-browsers = ["chrome", "firefox"]
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 
 def print_options_data(stock: str, other_args: List[str]):
@@ -29,9 +22,6 @@ def print_options_data(stock: str, other_args: List[str]):
     other_args: List[str]
         Other arguments.  Currently just accepts a browser flag for selenium
     """
-    if path_to_driver is None:
-        print("Please specify your selenium driver path in config_terminal.py", "\n")
-        return
 
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -39,38 +29,16 @@ def print_options_data(stock: str, other_args: List[str]):
         prog="info",
         description="Display option data [Source: Barchart.com]",
     )
-    parser.add_argument(
-        "-b",
-        "--browser",
-        dest="browser",
-        help="selenium webdriver to use",
-        choices=browsers,
-        default=web,
-    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
-        if ns_parser.browser:
-            browser = ns_parser.browser
-
-        if browser == "chrome":
-            # commenting this because it breaks when in usage
-            # the downside is that the browser will pop up to get the data
-            # options = cOpts()
-            # options.headless = True
-            driver = webdriver.Chrome(executable_path=path_to_driver)
-
-        elif browser == "firefox":
-            # commenting this because it breaks when in usage
-            # the downside is that the browser will pop up to get the data
-            # options = fOpts()
-            # options.headless = True
-            driver = webdriver.Firefox(executable_path=path_to_driver)
+        if not ns_parser:
+            return
 
         page = f"https://www.barchart.com/stocks/quotes/{stock}/overview"
-        driver.get(page)
 
-        soup = BeautifulSoup(driver.page_source, "html.parser")
+        r = requests.get(page, headers={"User-Agent": "Mozilla/5.0"})
+        soup = BeautifulSoup(r.text, "html.parser")
         tags = soup.find(
             "div",
             attrs={
@@ -80,7 +48,6 @@ def print_options_data(stock: str, other_args: List[str]):
         data = tags.find_all("li")
         labels = []
         values = []
-        print("")
         for row in data:
             labels.append(row.find_all("span")[0].getText())
             values.append(row.find_all("span")[1].getText())

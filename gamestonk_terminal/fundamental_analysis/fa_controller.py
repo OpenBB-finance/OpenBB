@@ -6,15 +6,16 @@ import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.fundamental_analysis.alpha_vantage import av_controller
 from gamestonk_terminal.fundamental_analysis import business_insider_view
 from gamestonk_terminal.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
 )
-from gamestonk_terminal.fundamental_analysis import finviz_view
-from gamestonk_terminal.fundamental_analysis import market_watch_view
-from gamestonk_terminal.fundamental_analysis import yahoo_finance_view
+from gamestonk_terminal.fundamental_analysis import (
+    finviz_view,
+    yahoo_finance_view,
+    av_view,
+)
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
@@ -42,7 +43,12 @@ class FundamentalAnalysisController:
         "shrs",
         "sust",
         "cal",
-        "av",
+        "overview",
+        "key",
+        "income",
+        "balance",
+        "cash",
+        "earnings",
         "fmp",
     ]
 
@@ -95,21 +101,30 @@ class FundamentalAnalysisController:
             "   score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]"
         )
         print("")
-        print("Market Watch API")
-        print("   income        income statement of the company")
-        print("   balance       balance sheet of the company")
-        print("   cash          cash flow statement of the company")
-        print("")
         print("Yahoo Finance API")
         print("   info          information scope of the company")
         print("   shrs          shareholders of the company")
         print("   sust          sustainability values of the company")
         print("   cal           calendar earnings and estimates of the company")
         print("")
+        print("Alpha Vantage API:")
+        print("   overview      overview of the company")
+        print("   key           company key metrics")
+        print("   income        income statements of the company")
+        print("   balance       balance sheet of the company")
+        print("   cash          cash flow of the company")
+        print("   earnings      earnings dates and reported EPS")
+        print("")
         print("Other Sources:")
-        print(">  av            Alpha Vantage MENU")
         print(">  fmp           Financial Modeling Prep MENU")
         print("")
+
+        # No longer used, but keep for future:
+        # print("")
+        # print("Market Watch API - DEPRECATED")
+        # print("   income        income statement of the company")
+        # print("   balance       balance sheet of the company")
+        # print("   cash          cash flow statement of the company")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -167,18 +182,6 @@ class FundamentalAnalysisController:
         """Process score command"""
         fmp_view.valinvest_score(other_args, self.ticker)
 
-    def call_income(self, other_args: List[str]):
-        """Process income command"""
-        market_watch_view.income(other_args, self.ticker)
-
-    def call_balance(self, other_args: List[str]):
-        """Process balance command"""
-        market_watch_view.balance(other_args, self.ticker)
-
-    def call_cash(self, other_args: List[str]):
-        """Process cash command"""
-        market_watch_view.cash(other_args, self.ticker)
-
     def call_info(self, other_args: List[str]):
         """Process info command"""
         yahoo_finance_view.info(other_args, self.ticker)
@@ -195,14 +198,29 @@ class FundamentalAnalysisController:
         """Process cal command"""
         yahoo_finance_view.calendar_earnings(other_args, self.ticker)
 
-    def call_av(self, _):
-        """Process av command"""
-        ret = av_controller.menu(self.ticker, self.start, self.interval)
+    def call_overview(self, other_args: List[str]):
+        """Process overview command"""
+        av_view.overview(other_args, self.ticker)
 
-        if ret is False:
-            self.print_help()
-        else:
-            return True
+    def call_key(self, other_args: List[str]):
+        """Process overview command"""
+        av_view.key(other_args, self.ticker)
+
+    def call_income(self, other_args: List[str]):
+        """Process income command"""
+        av_view.income_statement(other_args, self.ticker)
+
+    def call_balance(self, other_args: List[str]):
+        """Process balance command"""
+        av_view.balance_sheet(other_args, self.ticker)
+
+    def call_cash(self, other_args: List[str]):
+        """Process cash command"""
+        av_view.cash_flow(other_args, self.ticker)
+
+    def call_earnings(self, other_args: List[str]):
+        """Process earnings command"""
+        av_view.earnings(other_args, self.ticker)
 
     def call_fmp(self, _):
         """Process fmp command"""
