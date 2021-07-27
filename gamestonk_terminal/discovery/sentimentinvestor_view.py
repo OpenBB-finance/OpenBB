@@ -1,7 +1,9 @@
 import argparse
 import logging
+import textwrap
 from typing import Any, List
 
+from colorama import Style
 from sentipy.sentipy import Sentipy
 from tabulate import tabulate
 
@@ -14,12 +16,47 @@ sentipy: Sentipy = Sentipy(
 """Initialise SentiPy with the user's API token and key"""
 
 
+__command_descriptions = {
+    "popular": f"""
+        The {Style.BRIGHT}popular{Style.RESET_ALL} command prints the stocks with highest Average Hype Index right now.
+
+        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        ---
+        AHI is a measure of how much people are talking about a stock on social media.
+        It is calculated by dividing the total number of mentions for the chosen stock
+        on a social network by the mean number of mentions any stock receives on that
+        social medium.
+
+        ===
+
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+        """,
+    "emerging": f"""
+        The {Style.BRIGHT}emerging{Style.RESET_ALL} command prints the stocks with highest Relative Hype Index right now.
+
+        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        ---
+        RHI is a measure of whether people are talking about a stock more or less than
+        usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+        for the past week for that stock.
+
+        ===
+
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+        """,
+}
+
+
 def sort(metric: str, other_args: List[str], command_name: str) -> None:
     parser = argparse.ArgumentParser(
         add_help=False,
         prog=command_name,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Print realtime sentiment and hype index for this stock, aggregated from social media.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(__command_descriptions[command_name]),
     )
 
     parser.add_argument(
@@ -47,3 +84,4 @@ def sort(metric: str, other_args: List[str], command_name: str) -> None:
             table.append([index + 1, stock.symbol, stock.__getattribute__(metric)])
 
     print(tabulate(table, headers=["Rank", "Ticker", metric], floatfmt=".3f"))
+    print()

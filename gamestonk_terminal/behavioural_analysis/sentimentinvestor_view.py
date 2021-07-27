@@ -5,8 +5,9 @@ import logging
 import multiprocessing
 import os
 import statistics
+import textwrap
 import time
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Tuple
 
 import matplotlib.dates as mdates
 import pandas as pd
@@ -31,6 +32,10 @@ sentipy: Sentipy = Sentipy(
 pd.plotting.register_matplotlib_converters()
 
 
+# suppress warning messages for a clean interface
+logging.getLogger().setLevel(logging.CRITICAL)
+
+
 @dataclasses.dataclass
 class _Boundary:
     """Represents a strong or weak bounding inequality for categorising a value"""
@@ -42,7 +47,7 @@ class _Boundary:
     strong: bool = False
     "Whether this a strongly bounded inequality"
 
-    def categorise(self, num: Union[float, int]) -> str:
+    def categorise(self, num: Union[float, int]) -> Tuple[str, str]:
         """
         Categorise a given number using this bounding inequality
 
@@ -52,28 +57,26 @@ class _Boundary:
 
         Returns
         -------
-        A brightly colored string with low / medium / high as appropriate
+        A color string and a string with low / medium / high as appropriate
 
         """
 
         if num is None or self.min is None or self.max is None:
-            return f"{Fore.WHITE}N/A{Style.RESET_ALL}"
+            return Style.DIM + Fore.WHITE, "N/A"
 
         boundaries = [self.min + (self.max - self.min) / 5 * i for i in range(1, 5)]
 
-        return (
-            f"{Fore.WHITE}Extreme (anomaly?)"
-            if (num <= self.min or num >= self.max) and self.strong
-            else f"{Style.BRIGHT}{Fore.RED}Much Lower"
-            if num < boundaries[0]
-            else f"{Style.DIM}{Fore.RED}Lower"
-            if num < boundaries[1]
-            else f"{Fore.YELLOW}Same"
-            if num < boundaries[2]
-            else f"{Style.DIM}{Fore.LIGHTGREEN_EX}Higher"
-            if num < boundaries[3]
-            else f"{Style.BRIGHT}{Fore.GREEN}Much Higher"
-        ) + Style.RESET_ALL
+        if (num <= self.min or num >= self.max) and self.strong:
+            return Fore.WHITE, "Extreme (anomaly?)"
+        if num < boundaries[0]:
+            return Style.BRIGHT + Fore.RED, "Much Lower"
+        if num < boundaries[1]:
+            return Fore.RED, "Lower"
+        if num < boundaries[2]:
+            return Fore.YELLOW, "Same"
+        if num < boundaries[3]:
+            return Fore.GREEN, "Higher"
+        return Style.BRIGHT + Fore.GREEN, "Much Higher"
 
 
 def _get_past_week_average(ticker: str, metric: str) -> float:
@@ -125,12 +128,13 @@ class _Metric(_MetricInfo):
         self.ticker = ticker
         self.value = value
 
-    def visualise(self) -> tuple:
+    def visualise(self) -> Tuple[str, str, str, str]:
+        color, category = self.boundary.categorise(self.value)
         return (
-            self.title,
-            self.boundary.categorise(self.value),
+            color + self.title,
+            category,
             "N/A" if self.value is None else f"{self.value:{self.format}}",
-            self.description,
+            self.description + Style.RESET_ALL,
         )
 
 
@@ -255,12 +259,12 @@ def _tabulate_metrics(ticker: str, metrics_list: List[_Metric]):
     for metric in metrics_list:
         table_data.append(metric.visualise())
 
-    return tabulate.tabulate(table_data, table_headers, tablefmt="psql")
+    return tabulate.tabulate(table_data, table_headers, tablefmt="grid")
 
 
 def _customise_plot() -> None:
     sns.set(
-        font="Open Sans",
+        font="Arial",
         style="darkgrid",
         rc={
             "axes.axisbelow": False,
@@ -294,16 +298,15 @@ def _parse_args_for_ticker(other_args: List[str], ticker: str, command: str, des
     parser = argparse.ArgumentParser(
         add_help=False,
         prog=command,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         description=desc,
     )
 
     parser.add_argument(
-        "-t",
-        "--ticker",
+        "ticker",
         action="store",
-        dest="ticker",
         type=str,
+        nargs="?",
         default=ticker,
         help="ticker to use instead of the loaded one",
     )
@@ -312,11 +315,44 @@ def _parse_args_for_ticker(other_args: List[str], ticker: str, command: str, des
 
 
 def metrics(ticker: str, other_args: List[str]) -> None:
+    command_description = f"""
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+
+        The {Style.BRIGHT}metrics{Style.RESET_ALL} command prints the following realtime metrics:
+
+        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        ---
+        AHI is a measure of how much people are talking about a stock on social media.
+        It is calculated by dividing the total number of mentions for the chosen stock
+        on a social network by the mean number of mentions any stock receives on that
+        social medium.
+
+        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        ---
+        RHI is a measure of whether people are talking about a stock more or less than
+        usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+        for the past week for that stock.
+
+        {Style.BRIGHT}Sentiment Score{Style.RESET_ALL}
+        ---
+        Sentiment score is the percentage of people talking positively about the stock.
+        For each social network the number of positive posts/comments is divided by the
+        total number of both positive and negative posts/comments.
+
+        {Style.BRIGHT}SGP (Standard General Perception){Style.RESET_ALL}
+        ---
+        SGP is a measure of whether people are more or less positive about a stock than
+        usual. It is calculated by averaging the past day of sentiment values and then
+        dividing it by the average of the past week of sentiment values.
+        """
+
     ns_parser = _parse_args_for_ticker(
         other_args=other_args,
         ticker=ticker,
         command="metrics",
-        desc="Print realtime sentiment and hype index for this stock, aggregated from social media.",
+        desc=textwrap.dedent(command_description),
     )
 
     if not ns_parser:
@@ -336,15 +372,25 @@ def metrics(ticker: str, other_args: List[str]) -> None:
         return
 
     print(_tabulate_metrics(ns_parser.ticker, metric_values))
+    print()
 
 
 def socials(ticker: str, other_args: List[str]) -> None:
+    command_description = f"""
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+
+        The {Style.BRIGHT}social{Style.RESET_ALL} command prints the raw data for a given stock, including the number
+        of mentions it has received on social media in the last hour and the sentiment
+        score of those comments.
+        """
+
     ns_parser = _parse_args_for_ticker(
         other_args=other_args,
         ticker=ticker,
         command="social",
-        desc="Print the number of mentions and average sentiment of "
-        "remarks mentioning this stock for several social media sources",
+        desc=textwrap.dedent(command_description),
     )
 
     if not ns_parser:
@@ -364,14 +410,48 @@ def socials(ticker: str, other_args: List[str]) -> None:
         return
 
     print(_tabulate_metrics(ns_parser.ticker, metric_values))
+    print()
 
 
 def historical(ticker: str, other_args: List[str]) -> None:
+    command_description = f"""
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+
+        The {Style.BRIGHT}historical{Style.RESET_ALL} command plots the past week of data for a selected metric, one of:
+
+        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        ---
+        AHI is a measure of how much people are talking about a stock on social media.
+        It is calculated by dividing the total number of mentions for the chosen stock
+        on a social network by the mean number of mentions any stock receives on that
+        social medium.
+
+        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        ---
+        RHI is a measure of whether people are talking about a stock more or less than
+        usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+        for the past week for that stock.
+
+        {Style.BRIGHT}Sentiment Score{Style.RESET_ALL}
+        ---
+        Sentiment score is the percentage of people talking positively about the stock.
+        For each social network the number of positive posts/comments is divided by the
+        total number of both positive and negative posts/comments.
+
+        {Style.BRIGHT}SGP (Standard General Perception){Style.RESET_ALL}
+        ---
+        SGP is a measure of whether people are more or less positive about a stock than
+        usual. It is calculated by averaging the past day of sentiment values and then
+        dividing it by the average of the past week of sentiment values.
+        """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="historical",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Plot the past week of data for a specific metric",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(command_description),
     )
     parser.add_argument(
         "-t",
@@ -381,6 +461,28 @@ def historical(ticker: str, other_args: List[str]) -> None:
         type=str,
         default=ticker,
         help="ticker for which to fetch data",
+    )
+    parser.add_argument(
+        "-s",
+        "--sort",
+        action="store",
+        type=str,
+        default="date",
+        help="the parameter to sort output table by",
+        dest="sort_param",
+        nargs="?",
+        choices=["date", "value"],
+    )
+    parser.add_argument(
+        "-d",
+        "--direction",
+        action="store",
+        type=str,
+        default="desc",
+        help="the direction to sort the output table",
+        dest="sort_dir",
+        nargs="?",
+        choices=["asc", "desc"],
     )
     parser.add_argument(
         "metric",
@@ -423,7 +525,9 @@ def historical(ticker: str, other_args: List[str]) -> None:
     _customise_plot()
 
     # use seaborn to lineplot
-    ax = sns.lineplot(data=df, x="date", y=ns_parser.metric, legend=False)
+    ax = sns.lineplot(
+        data=df, x="date", y=ns_parser.metric, legend=False, label=[ns_parser.metric]
+    )
 
     # always show zero on the y-axis
     plt.ylim(bottom=0)
@@ -448,8 +552,29 @@ def historical(ticker: str, other_args: List[str]) -> None:
 
     ###
 
+    boundary = _Boundary(
+        0, max(df[ns_parser.metric].max(), 2 * df[ns_parser.metric].mean())
+    )
+
+    # average for each day
     aggregated = df.resample("D", on="date").mean()
+
+    # reverse the ordering if requested
+    aggregated.sort_values(
+        ns_parser.metric if ns_parser.sort_param == "value" else ns_parser.sort_param,
+        axis=0,
+        ascending=ns_parser.sort_dir == "asc",
+        inplace=True,
+    )
+
+    # format the date according to user's locale
     aggregated.index = aggregated.index.strftime("%x")
+
+    # apply coloring to every value
+    aggregated[ns_parser.metric] = [
+        boundary.categorise(value)[0] + str(value) + Style.RESET_ALL
+        for value in aggregated[ns_parser.metric]
+    ]
 
     print(
         tabulate.tabulate(
@@ -459,3 +584,4 @@ def historical(ticker: str, other_args: List[str]) -> None:
             floatfmt=".3f",
         )
     )
+    print()

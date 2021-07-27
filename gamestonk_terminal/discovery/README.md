@@ -335,32 +335,51 @@ Print short interest and days to cover. [Source: Stockgrid]
 
 ```
 usage: popular [-l LIMIT] [-h]
-
-Print realtime sentiment and hype index for this stock, aggregated from social media.
-
-optional arguments:
-  -l LIMIT, --limit LIMIT
-                        the maximum number of stocks to retrieve (default: 10)
-  -h, --help            show this help message (default: False)
 ```
 
-This command lists the top `n` (default=10) most popular stocks on social media right now according to SentimentInvestor, i.e., the ones with the highest [Average Hype Index (AHI)](https://sentimentinvestor.com/learn/metrics).
+The `popular` command prints the top `n` (default=10) stocks with the highest Average Hype Index right now.
 
-![image](https://user-images.githubusercontent.com/8385172/126782851-5ede26c2-ab70-480d-a56d-867ba2c8ab73.png)
+### AHI (Absolute Hype Index)
+
+AHI is a measure of how much people are talking about a stock on social media.
+It is calculated by dividing the total number of mentions for the chosen stock
+on a social network by the mean number of mentions any stock receives on that
+social medium.
+
+> **[Sentiment Investor](https://sentimentinvestor.com)** analyzes data from four major social media platforms to
+> generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+> sentiment metrics powered by proprietary NLP models.
+
+Optional arguments:
+-  `-l`, `--limit LIMIT`
+   the maximum number of stocks to retrieve
+-  `-h`, `--help`
+   show this help message
+
+![`popular` command output](https://user-images.githubusercontent.com/8385172/126782851-5ede26c2-ab70-480d-a56d-867ba2c8ab73.png)
 
 ## emerging <a name="emerging"></a>
 
 ```
 usage: emerging [-l LIMIT] [-h]
-
-Print realtime sentiment and hype index for this stock, aggregated from social media.
-
-optional arguments:
-  -l LIMIT, --limit LIMIT
-                        the maximum number of stocks to retrieve (default: 10)
-  -h, --help            show this help message (default: False)
 ```
 
-This command lists the top `n` (default=10) stocks that are being talked about more than usual on social media according to SentimentInvestor, i.e., the ones with the highest [Relative Hype Index (RHI)](https://sentimentinvestor.com/learn/metrics).
+The `emerging` command prints the top `n` (default=10) stocks with the highest Relative Hype Index right now.
 
-![image](https://user-images.githubusercontent.com/8385172/126782979-33f2ad1e-e69d-4c52-91c3-438dedea2084.png)
+### RHI (Relative Hype Index)
+RHI is a measure of whether people are talking about a stock more or less than
+usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+for the past week for that stock.
+
+> **[Sentiment Investor](https://sentimentinvestor.com)** analyzes data from four major social media platforms to
+> generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+> sentiment metrics powered by proprietary NLP models.
+
+
+Optional arguments:
+-  `-l`, `--limit LIMIT`
+   the maximum number of stocks to retrieve
+-  `-h`, `--help`
+   show this help message
+
+![`emerging` command output](https://user-images.githubusercontent.com/8385172/126782979-33f2ad1e-e69d-4c52-91c3-438dedea2084.png)
