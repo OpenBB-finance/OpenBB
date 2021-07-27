@@ -255,6 +255,7 @@ def obv(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.Data
         ax.minorticks_on()
         ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         ax2 = axes[1]
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
 
         if s_interval == "1440min":
             ax2.bar(
