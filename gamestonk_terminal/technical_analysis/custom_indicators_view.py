@@ -107,6 +107,11 @@ def fibinocci_retracement(other_args: List[str], data: pd.DataFrame, ticker: str
 
         levels = [round(max_pr - price_dif * f_lev, 2) for f_lev in fib_levels]
 
+        df = pd.DataFrame()
+        df["Level"] = fib_levels
+        df["Level"] = df["Level"].apply(lambda x: str(x * 100) + "%")
+        df["Price"] = levels
+
         fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
         ax.plot(data["Adj Close"], "b")
@@ -120,6 +125,7 @@ def fibinocci_retracement(other_args: List[str], data: pd.DataFrame, ticker: str
 
         ax.set_ylabel("Price")
         ax.set_title(f"Fibonacci Support for {ticker.upper()}")
+        ax.set_xlim(data.index[0], data.index[-1])
 
         ax1 = ax.twinx()
         ax1.set_ylim(ax.get_ylim())
@@ -133,10 +139,6 @@ def fibinocci_retracement(other_args: List[str], data: pd.DataFrame, ticker: str
             plt.ion()
         plt.show()
 
-        df = pd.DataFrame()
-        df["Level"] = fib_levels
-        df["Level"] = df["Level"].apply(lambda x: str(x * 100) + " %")
-        df["Price"] = levels
         print(
             tabulate(
                 df,

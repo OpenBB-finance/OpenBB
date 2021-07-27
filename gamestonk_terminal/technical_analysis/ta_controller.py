@@ -114,10 +114,10 @@ class TechnicalAnalysisController:
         print("volatility:")
         print("   bbands      bollinger bands")
         print("volume:")
-        print("   ad          chaikin accumulation/distribution line values")
+        print("   ad          accumulation/distribution line values")
         print("   obv         on balance volume")
-        print("custom")
-        print("   fib          fibinocci retracement")
+        print("custom:")
+        print("   fib         fibonocci retracement")
         print("")
 
     def switch(self, an_input: str):
