@@ -7,7 +7,7 @@ from typing import List
 import subprocess
 
 from gamestonk_terminal.papermill import (
-    crypto_overview_view,
+    crypto_market_view,
     dark_pool_view,
     due_diligence_view,
     econ_data_view,
@@ -29,7 +29,7 @@ class PapermillController:
         )
         self.papermill_parser.add_argument(
             "cmd",
-            choices=["cls", "?", "help", "q", "quit", "dd", "econ", "dp", "co"],
+            choices=["cls", "?", "help", "q", "quit", "dd", "econ", "dp", "cm"],
         )
 
     def switch(self, an_input: str, proc: subprocess.Popen):
@@ -73,7 +73,7 @@ class PapermillController:
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args, proc)
 
-    def call_help(self, _):
+    def call_help(self, *_):
         """Process Help command"""
         print_papermill()
 
@@ -99,9 +99,9 @@ class PapermillController:
         """Process DP command"""
         dark_pool_view.dark_pool(other_args)
 
-    def call_co(self, other_args: List[str], _):
-        """Process CO command"""
-        crypto_overview_view.crypto_overview(other_args)
+    def call_cm(self, other_args: List[str], _):
+        """Process CM command"""
+        crypto_market_view.crypto_market(other_args)
 
 
 def print_papermill():
@@ -118,7 +118,7 @@ def print_papermill():
     print("   dd            generate DUE DILIGENCE report")
     print("   econ          generate ECONOMIC DATA summary")
     print("   dp            generate DARK POOL report")
-    print("   co            generate CRYPTO OVERVIEW report")
+    print("   cm            generate CRYPTO MARKET report")
     print("")
 
 
