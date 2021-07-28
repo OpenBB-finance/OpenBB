@@ -239,6 +239,7 @@ These are the ones where a key is necessary:
 * Polygon: https://polygon.io
 * Quandl: https://www.quandl.com/tools/api
 * Reddit: https://www.reddit.com/prefs/apps
+* SentimentInvestor: https://sentimentinvestor.com
 * Tradier: https://developer.tradier.com/getting_started
 * Twitter: https://developer.twitter.com
 
@@ -260,6 +261,7 @@ Alternatively, you can also set them to the following environment variables:
 | [Polygon](https://polygon.io) | GT_API_POLYGON_KEY |
 | [Quandl](https://www.quandl.com) | GT_API_KEY_QUANDL |
 | [Reddit](https://www.reddit.com) | GT_API_REDDIT_CLIENT_ID <br> GT_API_REDDIT_CLIENT_SECRET <br/> GT_API_REDDIT_USERNAME <br/> GT_API_REDDIT_USER_AGENT <br/> GT_API_REDDIT_PASSWORD|
+| [SentimentInvestor](https://sentimentinvestor.com) | GT_API_SENTIMENTINVESTOR_TOKEN <br> GT_API_SENTIMENTINVESTOR_KEY |
 | [Tradier](https://developer.tradier.com) | GT_TRADIER_TOKEN |
 | [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
 

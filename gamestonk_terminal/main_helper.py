@@ -867,6 +867,20 @@ def check_api_keys():
     else:
         key_dict["BINANCE"] = "defined, not tested"
 
+    # SentimentInvestor keys
+    si_keys = [cfg.API_SENTIMENTINVESTOR_KEY, cfg.API_SENTIMENTINVESTOR_TOKEN]
+    if "REPLACE_ME" in si_keys:
+        key_dict["SENTIMENT_INVESTOR"] = "Not defined"
+    else:
+        account = requests.get(
+            f"https://api.sentimentinvestor.com/v4/account"
+            f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}&key={cfg.API_SENTIMENTINVESTOR_KEY}"
+        )
+        if account.ok and account.json().get("success", False):
+            key_dict["SENTIMENT_INVESTOR"] = "Defined, test passed"
+        else:
+            key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
+
     print(
         tabulate(
             pd.DataFrame(key_dict.items()),
@@ -966,6 +980,7 @@ def about_us():
         f"{Fore.CYAN}FinBrain: {Style.RESET_ALL}https://finbrain.tech\n"
         f"{Fore.CYAN}Quiver Quantitative: {Style.RESET_ALL}https://www.quiverquant.com\n"
         f"{Fore.CYAN}Ops.Syncretism: {Style.RESET_ALL}https://ops.syncretism.io/api.html\n"
+        f"{Fore.CYAN}SentimentInvestor: {Style.RESET_ALL}https://sentimentinvestor.com\n"
         f"\n{Fore.RED}"
         "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
         "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "

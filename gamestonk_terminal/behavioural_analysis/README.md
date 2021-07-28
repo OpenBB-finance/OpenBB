@@ -45,6 +45,13 @@ This menu aims to extrapolate behavioural analysis regarding a pre-loaded ticker
   * [rise](#rise)
     - top rising related queries with stock
 
+[SENTIMENT INVESTOR](#SENTIMENTINVESTOR)
+  * [metrics](#metrics)
+    - core social sentiment metrics for this stock
+  * [social](#social)
+    - social media figures for stock popularity
+  * [historical](#historical)
+    - plot the past week of data for a selected metric
 
 ## finbrain <a name="finbrain"></a>
 ```
@@ -251,3 +258,106 @@ Print top rising related queries with this stock's query. [Source: Google]
   * -n : number of top rising related queries to print. Default 10.
 
 <img width="934" alt="Captura de ecrã 2021-02-22, às 22 21 21" src="https://user-images.githubusercontent.com/25267873/108777814-4f21fa80-755c-11eb-96da-0327c9a0da57.png">
+
+# SENTIMENTINVESTOR
+
+> **[Sentiment Investor](https://sentimentinvestor.com)** analyzes data from four major social media platforms to
+> generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+> sentiment metrics powered by proprietary NLP models.
+
+## Metric definitions
+
+### AHI (Absolute Hype Index) <a name="AHI"></a>
+
+AHI is a measure of how much people are talking about a stock on social media.
+It is calculated by dividing the total number of mentions for the chosen stock
+on a social network by the mean number of mentions any stock receives on that
+social medium.
+
+### RHI (Relative Hype Index) <a name="RHI"></a>
+
+RHI is a measure of whether people are talking about a stock more or less than
+usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+for the past week for that stock.
+
+### Sentiment Score <a name="sentiment"></a>
+
+Sentiment score is the percentage of people talking positively about the stock.
+For each social network the number of positive posts/comments is divided by the
+total number of both positive and negative posts/comments.
+
+### SGP (Standard General Perception) <a name="SGP"></a>
+
+SGP is a measure of whether people are more or less positive about a stock than
+usual. It is calculated by averaging the past day of sentiment values and then
+dividing it by the average of the past week of sentiment values.
+
+## metrics <a name="metrics"></a>
+
+```
+usage: metrics [-h] [ticker]
+```
+
+The `metrics` command presents the four core metrics provided by Sentiment Investor,
+including AHI, RHI, sentiment and SGP, as described above.
+
+Optional arguments:
+- [optional, positional] ticker
+  ticker to use instead of the loaded one
+- `-h`, `--help`
+  show this help message
+
+Example output:
+
+![`metrics NFLX` command output](https://user-images.githubusercontent.com/8385172/127154566-1af3c274-c521-426b-8580-2ae714c2c1ca.png)
+
+## social <a name="social"></a>
+
+```
+usage: social [-h] [ticker]
+```
+
+The `social` command prints the raw data for a given stock, including the number
+of mentions it has received on social media in the last hour and the sentiment
+score of those comments.
+
+Optional arguments:
+- [optional, positional] ticker
+  ticker to use instead of the loaded one
+- `-h`, `--help`
+  show this help message
+
+Example output:
+
+![`social AAPL` command output](https://user-images.githubusercontent.com/8385172/127154775-13b1a81d-f5d2-4768-bf7e-bca8886f6d24.png)
+
+## historical <a name="historical"></a>
+
+```
+usage: historical [-t TICKER] [-s [{date,value}]] [-d [{asc,desc}]] [-h] [{sentiment,AHI,RHI,SGP}]
+```
+
+The `historical` command plots the past week of data for a selected
+SentimentInvestor core metric, one of:
+[AHI](#ahi), [RHI](#ahi), [sentiment](#sentiment) or [SGP](#SGP).
+It also outputs a sorted table of the mean value for that metric for each day.
+
+Positional arguments:
+-  one of `sentiment`, `AHI`, `RHI` or `SGP`
+   (optional) the metric to plot (default: `sentiment`)
+
+Optional arguments:
+-  `-t`, `--ticker TICKER`
+   ticker for which to fetch data
+-  `-s`, `--sort [{date,value}]`
+   the parameter to sort output table by
+-  `-d`, `--direction [{asc,desc}]`
+   the direction to sort the output table
+-  `-h`, `--help`
+   show this help message
+
+Example output:
+
+![`historical -t GME RHI` plot output](https://user-images.githubusercontent.com/8385172/126782509-bfc21dbb-2fe6-4cd4-a384-018eb41ac8f3.png)
+
+![`historical -t NFLX -s value -d asc RHI` command output](https://user-images.githubusercontent.com/8385172/127157236-7818a635-4394-4372-9673-2834b32811af.png)
