@@ -6,9 +6,10 @@ This menu has a different concept from remaining menus. It has 2 main goals:
 
 Command | Template | Example
 ------ | --------|----
-`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | [Due Diligence Example](/notebooks/examples/gme_20210726_030502_due_diligence.html)
-`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | [Economy Example](/notebooks/examples/econ_data_20210726_030519.html)
-`dp` | [Dark Pool](/notebooks/templates/dark_pool.ipynb) | [Dark Pool](/notebooks/examples/amc_20210726_030345_dark_pool.html)
+`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | [Due Diligence Example](/notebooks/examples/aapl_due_diligence_20210729_001048.html)
+`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | [Economy Example](/notebooks/examples/econ_data_20210729_001227.html)
+`dp` | [Dark Pool](/notebooks/templates/dark_pool.ipynb) | [Dark Pool](/notebooks/examples/amc_dark_pool_20210728_235316.html)
+`cm` | [Crypto Market](/notebooks/templates/crypto_market.ipynb) | [Crypto Market](/notebooks/examples/crypto_market_20210729_001530.html)
 
      
 ## How to run the report
