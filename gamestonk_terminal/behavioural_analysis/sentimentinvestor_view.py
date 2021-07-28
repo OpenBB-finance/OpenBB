@@ -355,24 +355,30 @@ def metrics(ticker: str, other_args: List[str]) -> None:
         desc=textwrap.dedent(command_description),
     )
 
-    if not ns_parser:
-        logging.error("There was an error in parsing the command-line arguments.")
-        return
+    try:
 
-    if not sentipy.supported(ns_parser.ticker):
-        print("This stock is not supported by the SentimentInvestor API.")
-        return
+        if not ns_parser:
+            logging.error("There was an error in parsing the command-line arguments.")
+            return
 
-    data = sentipy.parsed(ns_parser.ticker)
+        if not sentipy.supported(ns_parser.ticker):
+            print("This stock is not supported by the SentimentInvestor API.")
+            return
 
-    metric_values = _contextualise_metrics(data, ns_parser.ticker, core_metrics)
+        data = sentipy.parsed(ns_parser.ticker)
 
-    if not metric_values:
-        logging.error("No data available or an error occurred.")
-        return
+        metric_values = _contextualise_metrics(data, ns_parser.ticker, core_metrics)
 
-    print(_tabulate_metrics(ns_parser.ticker, metric_values))
-    print()
+        if not metric_values:
+            logging.error("No data available or an error occurred.")
+            return
+
+        print(_tabulate_metrics(ns_parser.ticker, metric_values))
+        print()
+
+    except Exception as e:
+        logging.error(e)
+        print(e, "\n")
 
 
 def socials(ticker: str, other_args: List[str]) -> None:
@@ -386,31 +392,37 @@ def socials(ticker: str, other_args: List[str]) -> None:
         score of those comments.
         """
 
-    ns_parser = _parse_args_for_ticker(
-        other_args=other_args,
-        ticker=ticker,
-        command="social",
-        desc=textwrap.dedent(command_description),
-    )
+    try:
 
-    if not ns_parser:
-        logging.error("There was an error in parsing the command-line arguments.")
-        return
+        ns_parser = _parse_args_for_ticker(
+            other_args=other_args,
+            ticker=ticker,
+            command="social",
+            desc=textwrap.dedent(command_description),
+        )
 
-    if not sentipy.supported(ns_parser.ticker):
-        print("This stock is not supported by the SentimentInvestor API.")
-        return
+        if not ns_parser:
+            logging.error("There was an error in parsing the command-line arguments.")
+            return
 
-    data = sentipy.raw(ns_parser.ticker)
+        if not sentipy.supported(ns_parser.ticker):
+            print("This stock is not supported by the SentimentInvestor API.")
+            return
 
-    metric_values = _contextualise_metrics(data, ns_parser.ticker, social_metrics)
+        data = sentipy.raw(ns_parser.ticker)
 
-    if not metric_values:
-        logging.error("No data available or an error occurred.")
-        return
+        metric_values = _contextualise_metrics(data, ns_parser.ticker, social_metrics)
 
-    print(_tabulate_metrics(ns_parser.ticker, metric_values))
-    print()
+        if not metric_values:
+            logging.error("No data available or an error occurred.")
+            return
+
+        print(_tabulate_metrics(ns_parser.ticker, metric_values))
+        print()
+
+    except Exception as e:
+        logging.error(e)
+        print(e, "\n")
 
 
 def historical(ticker: str, other_args: List[str]) -> None:
@@ -494,94 +506,106 @@ def historical(ticker: str, other_args: List[str]) -> None:
         help="the metric to plot",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        logging.error("There was an error in parsing the command-line arguments.")
-        return
+    try:
 
-    if not sentipy.supported(ns_parser.ticker):
-        print("This stock is not supported by the SentimentInvestor API.")
-        return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            logging.error("There was an error in parsing the command-line arguments.")
+            return
 
-    data = sentipy.historical(
-        ns_parser.ticker,
-        ns_parser.metric,
-        int(time.time() - 60 * 60 * 24 * 7),
-        int(time.time()),
-    )
-    df = pd.DataFrame.from_dict(
-        {
-            "date": map(datetime.datetime.utcfromtimestamp, data.keys()),
-            ns_parser.metric: data.values(),
-        }
-    )
+        if not sentipy.supported(ns_parser.ticker):
+            print("This stock is not supported by the SentimentInvestor API.")
+            return
 
-    df.sort_index(ascending=True, inplace=True)
-
-    if df.empty:
-        logging.error("The dataset is empty, something must have gone wrong")
-        return
-
-    _customise_plot()
-
-    # use seaborn to lineplot
-    ax = sns.lineplot(
-        data=df, x="date", y=ns_parser.metric, legend=False, label=[ns_parser.metric]
-    )
-
-    # always show zero on the y-axis
-    plt.ylim(bottom=0)
-
-    # set the x-axis date formatting
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%x"))
-
-    # scale the plot appropriately
-    plt.gcf().set_size_inches(plot_autoscale())
-    plt.gcf().set_dpi(PLOT_DPI)
-    plt.gcf().autofmt_xdate()
-
-    # fill below the line
-    plt.fill_between(df.date, df[ns_parser.metric], alpha=0.3)
-
-    # add title e.g. AAPL sentiment since 22/07/21
-    plt.title(
-        f"{ns_parser.ticker} {ns_parser.metric} since {min(df.date).strftime('%x')}"
-    )
-
-    plt.show()
-
-    ###
-
-    boundary = _Boundary(
-        0, max(df[ns_parser.metric].max(), 2 * df[ns_parser.metric].mean())
-    )
-
-    # average for each day
-    aggregated = df.resample("D", on="date").mean()
-
-    # reverse the ordering if requested
-    aggregated.sort_values(
-        ns_parser.metric if ns_parser.sort_param == "value" else ns_parser.sort_param,
-        axis=0,
-        ascending=ns_parser.sort_dir == "asc",
-        inplace=True,
-    )
-
-    # format the date according to user's locale
-    aggregated.index = aggregated.index.strftime("%x")
-
-    # apply coloring to every value
-    aggregated[ns_parser.metric] = [
-        boundary.categorise(value)[0] + str(value) + Style.RESET_ALL
-        for value in aggregated[ns_parser.metric]
-    ]
-
-    print(
-        tabulate.tabulate(
-            aggregated,
-            headers=["Day", f"average {ns_parser.metric}"],
-            tablefmt="psql",
-            floatfmt=".3f",
+        data = sentipy.historical(
+            ns_parser.ticker,
+            ns_parser.metric,
+            int(time.time() - 60 * 60 * 24 * 7),
+            int(time.time()),
         )
-    )
-    print()
+        df = pd.DataFrame.from_dict(
+            {
+                "date": map(datetime.datetime.utcfromtimestamp, data.keys()),
+                ns_parser.metric: data.values(),
+            }
+        )
+
+        df.sort_index(ascending=True, inplace=True)
+
+        if df.empty:
+            logging.error("The dataset is empty, something must have gone wrong")
+            return
+
+        _customise_plot()
+
+        # use seaborn to lineplot
+        ax = sns.lineplot(
+            data=df,
+            x="date",
+            y=ns_parser.metric,
+            legend=False,
+            label=[ns_parser.metric],
+        )
+
+        # always show zero on the y-axis
+        plt.ylim(bottom=0)
+
+        # set the x-axis date formatting
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%x"))
+
+        # scale the plot appropriately
+        plt.gcf().set_size_inches(plot_autoscale())
+        plt.gcf().set_dpi(PLOT_DPI)
+        plt.gcf().autofmt_xdate()
+
+        # fill below the line
+        plt.fill_between(df.date, df[ns_parser.metric], alpha=0.3)
+
+        # add title e.g. AAPL sentiment since 22/07/21
+        plt.title(
+            f"{ns_parser.ticker} {ns_parser.metric} since {min(df.date).strftime('%x')}"
+        )
+
+        plt.show()
+
+        ###
+
+        boundary = _Boundary(
+            0, max(df[ns_parser.metric].max(), 2 * df[ns_parser.metric].mean())
+        )
+
+        # average for each day
+        aggregated = df.resample("D", on="date").mean()
+
+        # reverse the ordering if requested
+        aggregated.sort_values(
+            ns_parser.metric
+            if ns_parser.sort_param == "value"
+            else ns_parser.sort_param,
+            axis=0,
+            ascending=ns_parser.sort_dir == "asc",
+            inplace=True,
+        )
+
+        # format the date according to user's locale
+        aggregated.index = aggregated.index.strftime("%x")
+
+        # apply coloring to every value
+        aggregated[ns_parser.metric] = [
+            boundary.categorise(value)[0] + str(value) + Style.RESET_ALL
+            for value in aggregated[ns_parser.metric]
+        ]
+
+        print(
+            tabulate.tabulate(
+                aggregated,
+                headers=["Day", f"average {ns_parser.metric}"],
+                tablefmt="psql",
+                floatfmt=".3f",
+            )
+        )
+        print()
+
+    except Exception as e:
+        logging.error(e)
+        print(e, "\n")

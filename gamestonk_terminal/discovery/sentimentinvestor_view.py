@@ -69,19 +69,23 @@ def sort(metric: str, other_args: List[str], command_name: str) -> None:
         help="the maximum number of stocks to retrieve",
     )
 
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    data = sentipy.sort(metric, ns_parser.limit)
+        data = sentipy.sort(metric, ns_parser.limit)
 
-    table: List[List[Any]] = []
-    for index, stock in enumerate(data):
-        if not hasattr(stock, "symbol") or not hasattr(stock, metric):
-            logging.warning("data for stock %s is incomplete, ignoring", index + 1)
-            table.append([])
-        else:
-            table.append([index + 1, stock.symbol, stock.__getattribute__(metric)])
+        table: List[List[Any]] = []
+        for index, stock in enumerate(data):
+            if not hasattr(stock, "symbol") or not hasattr(stock, metric):
+                logging.warning("data for stock %s is incomplete, ignoring", index + 1)
+                table.append([])
+            else:
+                table.append([index + 1, stock.symbol, stock.__getattribute__(metric)])
 
-    print(tabulate(table, headers=["Rank", "Ticker", metric], floatfmt=".3f"))
-    print()
+        print(tabulate(table, headers=["Rank", "Ticker", metric], floatfmt=".3f"))
+        print()
+    except Exception as e:
+        logging.error(e)
+        print(e, "\n")
