@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
-def dark_pool(other_args: List[str]):
+def dark_pool_report(other_args: List[str]):
     """Dark Pool Report
 
     Parameters

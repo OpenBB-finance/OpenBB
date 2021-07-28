@@ -89,19 +89,19 @@ class PapermillController:
 
     def call_dd(self, other_args: List[str], _):
         """Process DD command"""
-        due_diligence_view.due_diligence(other_args)
+        due_diligence_view.due_diligence_report(other_args)
 
     def call_econ(self, other_args: List[str], _):
         """Process Econ command"""
-        econ_data_view.econ_data(other_args)
+        econ_data_view.economy_data_report(other_args)
 
     def call_dp(self, other_args: List[str], _):
         """Process DP command"""
-        dark_pool_view.dark_pool(other_args)
+        dark_pool_view.dark_pool_report(other_args)
 
     def call_cm(self, other_args: List[str], _):
         """Process CM command"""
-        crypto_market_view.crypto_market(other_args)
+        crypto_market_view.crypto_market_report(other_args)
 
 
 def print_papermill():

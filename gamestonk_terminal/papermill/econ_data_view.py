@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
-def econ_data(other_args: List[str]):
+def economy_data_report(other_args: List[str]):
     """Economic Data report
 
     Parameters

@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
-def due_diligence(other_args: List[str]):
+def due_diligence_report(other_args: List[str]):
     """Due Diligence Report
 
     Parameters

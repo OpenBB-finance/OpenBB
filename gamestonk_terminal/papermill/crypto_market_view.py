@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
-def crypto_market(other_args: List[str]):
+def crypto_market_report(other_args: List[str]):
     """Crypto Market Report
 
     Parameters
