@@ -596,8 +596,8 @@ def mscore(other_args: List[str], ticker: str):
         ratios["DSRI"] = {
             "raw": (ar[0] / sales[0]) / (ar[1] / sales[1]),
             "description": (
-                "Days Sales in Receivables Index gauges whether receivables and"
-                "revenue are out of balance, a large number is expected to be associated with a"
+                "Days Sales in Receivables Index gauges whether receivables and "
+                "revenue are out of balance, a large number is expected to be associated with a "
                 "higher likelihood that revenues and earnings are overstated."
             ),
         }
@@ -605,9 +605,9 @@ def mscore(other_args: List[str], ticker: str):
             "raw": ((sales[1] - cogs[1]) / sales[1])
             / ((sales[0] - cogs[0]) / sales[0]),
             "description": (
-                "Gross Margin Index shows if gross margins are deteriorating."
-                "Research suggests that firms with worsening gross margin are more likely to engage"
-                "in earnings management, therefore there should be a positive correlation between GMI"
+                "Gross Margin Index shows if gross margins are deteriorating. "
+                "Research suggests that firms with worsening gross margin are more likely to engage "
+                "in earnings management, therefore there should be a positive correlation between GMI "
                 "and probability of earnings management."
             ),
         }
@@ -615,47 +615,47 @@ def mscore(other_args: List[str], ticker: str):
             "raw": (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0]))
             / (1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])),
             "description": (
-                "Asset Quality Index measures the proportion of assets where"
-                "potential benefit is less certain. A positive relation between AQI and earnings"
+                "Asset Quality Index measures the proportion of assets where "
+                "potential benefit is less certain. A positive relation between AQI and earnings "
                 "manipulation is expected."
             ),
         }
         ratios["SGI"] = {
             "raw": sales[0] / sales[1],
             "description": (
-                "Sales Growth Index shows the amount of growth companies are having."
-                "Higher growth companies are more likely to commit fraud so there should be a"
+                "Sales Growth Index shows the amount of growth companies are having. "
+                "Higher growth companies are more likely to commit fraud so there should be a "
                 "positive relation between SGI and earnings management."
             ),
         }
         ratios["DEPI"] = {
             "raw": (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0])),
             "description": (
-                "Depreciation Index is the ratio for the rate of depreciation. A DEPI"
-                "greater than 1 shows that the depreciation rate has slowed and is positively"
+                "Depreciation Index is the ratio for the rate of depreciation. A DEPI "
+                "greater than 1 shows that the depreciation rate has slowed and is positively "
                 "correlated with earnings management."
             ),
         }
         ratios["SGAI"] = {
             "raw": (sga[0] / sales[0]) / (sga[1] / sales[1]),
             "description": (
-                "Sales General and Administrative Expenses Index measures the change"
-                "in SG&A over sales. There should be a positive relationship between SGAI and"
+                "Sales General and Administrative Expenses Index measures the change "
+                "in SG&A over sales. There should be a positive relationship between SGAI and "
                 "earnings management."
             ),
         }
         ratios["LVGI"] = {
             "raw": (td[0] / ta[0]) / (td[1] / ta[1]),
             "description": (
-                "Leverage Index represents change in leverage. A LVGI greater than"
+                "Leverage Index represents change in leverage. A LVGI greater than "
                 "one indicates a lowe change of fraud."
             ),
         }
         ratios["TATA"] = {
             "raw": (icfo[0] - cfo[0]) / ta[0],
             "description": (
-                "Total Accruals to Total Assets is a proxy for the extent that cash"
-                "underlies earnigns. A higher number is associated with a higher likelihood of"
+                "Total Accruals to Total Assets is a proxy for the extent that cash "
+                "underlies earnigns. A higher number is associated with a higher likelihood of "
                 "earnings manipulation."
             ),
         }
@@ -671,10 +671,10 @@ def mscore(other_args: List[str], ticker: str):
                 - (0.327 * ratios["LVGI"]["raw"])
             ),
             "description": (
-                "The Beneish model uses financial ratios to check if it is likely"
-                "that earnings are manipulated. A score of -5 to -2.22 indicated a low chance of"
-                "fraud, a score of -2.22 to -1.78 indicates a moderate change of fraud, and a score"
-                "above -1.78 indicated a high chance of fraud."
+                "The Beneish model uses financial ratios to check if it is likely "
+                "that earnings are manipulated. A score of -5 to -2.22 indicated a low chance of "
+                "fraud, a score of -2.22 to -1.78 indicates a moderate change of fraud, and a "
+                "score above -1.78 indicated a high chance of fraud."
             ),
         }
 
