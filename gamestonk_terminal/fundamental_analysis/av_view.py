@@ -518,24 +518,6 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
 
     return df_fa
 
-def clean_mscore_df(df_fa: pd.DataFrame) -> List[int]:
-    """Clean fundamentals dataframe
-
-    Parameters
-    ----------
-    df_fa : pd.DataFrame
-        Fundamentals dataframe
-
-    Returns
-    ----------
-    List[int]
-        Last two years cleaned
-    """
-    # pylint: disable=no-member
-    ints = [int(x) for x in df_fa.to_list()]
-
-    return ints
-
 
 def mscore(other_args: List[str], ticker: str):
     """Mscore for given ticker
@@ -592,20 +574,20 @@ def mscore(other_args: List[str], ticker: str):
         df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
         df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
 
-        ar = clean_mscore_df(df_bs["currentNetReceivables"])
-        sales = clean_mscore_df(df_is["totalRevenue"])
-        cogs = clean_mscore_df(df_is["costofGoodsAndServicesSold"])
-        ca = clean_mscore_df(df_bs["totalCurrentAssets"])
-        ppe = clean_mscore_df(df_bs["propertyPlantEquipment"])
-        cash = clean_mscore_df(df_bs["cashAndCashEquivalentsAtCarryingValue"])
-        cash_and_sec = clean_mscore_df(df_bs["cashAndShortTermInvestments"])
+        ar = [int(x) for x in df_bs["currentNetReceivables"].to_list()]
+        sales = [int(x) for x in df_is["totalRevenue"].to_list()]
+        cogs = [int(x) for x in df_is["costofGoodsAndServicesSold"].to_list()]
+        ca = [int(x) for x in df_bs["totalCurrentAssets"].to_list()]
+        ppe = [int(x) for x in df_bs["propertyPlantEquipment"].to_list()]
+        cash = [int(x) for x in df_bs["cashAndCashEquivalentsAtCarryingValue"].to_list()]
+        cash_and_sec = [int(x) for x in df_bs["cashAndShortTermInvestments"].to_list()]
         sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
-        ta = clean_mscore_df(df_bs["totalAssets"])
-        dep = clean_mscore_df(df_bs["accumulatedDepreciationAmortizationPPE"])
-        sga = clean_mscore_df(df_is["sellingGeneralAndAdministrative"])
-        td = clean_mscore_df(df_bs["totalLiabilities"])
-        icfo = clean_mscore_df(df_is["netIncomeFromContinuingOperations"])
-        cfo = clean_mscore_df(df_cf["operatingCashflow"])
+        ta = [int(x) for x in df_bs["totalAssets"].to_list()]
+        dep = [int(x) for x in df_bs["accumulatedDepreciationAmortizationPPE"].to_list()]
+        sga = [int(x) for x in df_is["sellingGeneralAndAdministrative"].to_list()]
+        td = [int(x) for x in df_bs["totalLiabilities"].to_list()]
+        icfo = [int(x) for x in df_is["netIncomeFromContinuingOperations"].to_list()]
+        cfo = [int(x) for x in df_cf["operatingCashflow"].to_list()]
         ratios = {}
         ratios["DSRI"] = {"raw": (ar[0] / sales[0]) / (ar[1] / sales[1]),
                         "description": """Days Sales in Receivables Index gauges whether receivables and revenue are out of balance, a large number is expected to be associated with a higher likelihood that revenues and earnings are overstated."""
@@ -650,7 +632,5 @@ def mscore(other_args: List[str], ticker: str):
                 print(ratios["MSCORE"]["description"])
             print("MSCORE" + ": " + str(ratios["MSCORE"]["raw"]))
 
-
-    except Exception as e:
-        print(e, "\n")
-
+    except ValueError:
+        print("The ticker does not have complete information so a mscore analysis cannot be ran.")
