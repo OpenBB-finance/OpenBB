@@ -90,7 +90,7 @@ pyupgrade = "^2.11.0"
 Sphinx = "4.1.1"
 
 [tool.poetry.extras]
-prediction = ["tensorflow", "pmdarima", "transformers", "flair", "torch"]
+prediction = ["tensorflow", "pmdarima", "transformers", "torch"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
