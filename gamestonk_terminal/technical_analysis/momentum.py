@@ -1,7 +1,14 @@
+"""Momentum Technical Analysis"""
+__docformat__ = "numpy"
+
 import argparse
+from typing import List
+
 import matplotlib.pyplot as plt
 import pandas_ta as ta
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -13,7 +20,21 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def cci(l_args, s_ticker, s_interval, df_stock):
+def cci(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Commodity channel index
+
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock time interval
+    df_stock: pd.DataFrame
+        Dataframe of prices
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -56,7 +77,7 @@ def cci(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -82,46 +103,63 @@ def cci(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.subplot(211)
-        plt.title(f"Commodity Channel Index (CCI) on {s_ticker}")
+        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax = axes[0]
+        ax.set_title(f"{s_ticker} CCI")
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.subplot(212)
-        plt.plot(df_ta.index, df_ta.values, "b", lw=2)
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
-        plt.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
-        plt.axhline(100, linewidth=3, color="r", ls="--")
-        plt.axhline(-100, linewidth=3, color="g", ls="--")
-        plt.xlabel("Time")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.gca().twinx()
-        plt.ylim(plt.gca().get_ylim())
-        plt.yticks([0.2, 0.8], ("OVERSOLD", "OVERBOUGHT"))
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2 = axes[1]
+        ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax2.axhspan(100, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
+        ax2.axhspan(plt.gca().get_ylim()[0], -100, facecolor="g", alpha=0.2)
+        ax2.axhline(100, linewidth=3, color="r", ls="--")
+        ax2.axhline(-100, linewidth=3, color="g", ls="--")
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        ax3 = ax2.twinx()
+        ax3.set_ylim(ax2.get_ylim())
+        ax3.set_yticks([-100, 100])
+        ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
 
         if gtff.USE_ION:
             plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
 
         plt.show()
 
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def macd(l_args, s_ticker, s_interval, df_stock):
+def macd(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Moving average convergence divergence
+
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock time interval
+    df_stock: pd.DataFrame
+        Dataframe of prices
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -176,7 +214,7 @@ def macd(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -200,47 +238,63 @@ def macd(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.subplot(211)
-        plt.title(f"Moving Average Convergence Divergence (MACD) on {s_ticker}")
+        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax = axes[0]
+        ax.set_title(f"{s_ticker} MACD")
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.subplot(212)
-        plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
-        plt.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=2)
-        plt.bar(df_ta.index, df_ta.iloc[:, 1].values, color="g")
-        plt.legend(
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2 = axes[1]
+        ax2.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=2)
+        ax2.plot(df_ta.index, df_ta.iloc[:, 2].values, "r", lw=2)
+        ax2.bar(df_ta.index, df_ta.iloc[:, 1].values, color="g")
+        ax2.legend(
             [
                 f"MACD Line {df_ta.columns[0]}",
                 f"Signal Line {df_ta.columns[2]}",
                 f"Histogram {df_ta.columns[1]}",
-            ]
+            ],
+            loc="upper left",
         )
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.xlabel("Time")
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
 
         plt.show()
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def rsi(l_args, s_ticker, s_interval, df_stock):
+def rsi(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Relative strength index
+
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock time interval
+    df_stock: pd.DataFrame
+        Dataframe of prices
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -292,7 +346,7 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -316,47 +370,65 @@ def rsi(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.subplot(211)
+        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax = axes[0]
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-        plt.title(f"Relative Strength Index (RSI) on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.subplot(212)
-        plt.plot(df_ta.index, df_ta.values, "b", lw=2)
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.axhspan(70, 100, facecolor="r", alpha=0.2)
-        plt.axhspan(0, 30, facecolor="g", alpha=0.2)
-        plt.axhline(70, linewidth=3, color="r", ls="--")
-        plt.axhline(30, linewidth=3, color="g", ls="--")
-        plt.xlabel("Time")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.ylim([0, 100])
-        plt.gca().twinx()
-        plt.ylim(plt.gca().get_ylim())
-        plt.yticks([0.15, 0.85], ("OVERSOLD", "OVERBOUGHT"))
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+        ax.set_title(f" {s_ticker} RSI{ns_parser.n_length} ")
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2 = axes[1]
+        ax2.plot(df_ta.index, df_ta.values, "b", lw=2)
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax2.axhspan(70, 100, facecolor="r", alpha=0.2)
+        ax2.axhspan(0, 30, facecolor="g", alpha=0.2)
+        ax2.axhline(70, linewidth=3, color="r", ls="--")
+        ax2.axhline(30, linewidth=3, color="g", ls="--")
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2.set_ylim([0, 100])
+        ax3 = ax2.twinx()
+        ax3.set_ylim(ax2.get_ylim())
+        ax3.set_yticks([30, 70])
+        ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
 
         if gtff.USE_ION:
             plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
 
         plt.show()
 
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def stoch(l_args, s_ticker, s_interval, df_stock):
+def stoch(
+    other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame
+):
+    """Stochastic oscillator
+
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock time interval
+    df_stock: pd.DataFrame
+        Dataframe of prices
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -408,7 +480,7 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -436,43 +508,51 @@ def stoch(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.subplot(211)
+        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax = axes[0]
         if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=2)
         else:
-            plt.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
-        plt.title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.ylabel("Share Price ($)")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.subplot(212)
-        plt.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
-        plt.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.axhspan(80, 100, facecolor="r", alpha=0.2)
-        plt.axhspan(0, 20, facecolor="g", alpha=0.2)
-        plt.axhline(80, linewidth=3, color="r", ls="--")
-        plt.axhline(20, linewidth=3, color="g", ls="--")
-        plt.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
-        plt.xlabel("Time")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.ylim([0, 100])
-        plt.gca().twinx()
-        plt.ylim(plt.gca().get_ylim())
-        plt.yticks([0.1, 0.9], ("OVERSOLD", "OVERBOUGHT"))
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
+        ax.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {s_ticker}")
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_xticklabels([])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        ax2 = axes[1]
+        ax2.plot(df_ta.index, df_ta.iloc[:, 0].values, "k", lw=2)
+        ax2.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=2, ls="--")
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+
+        ax2.axhspan(80, 100, facecolor="r", alpha=0.2)
+        ax2.axhspan(0, 20, facecolor="g", alpha=0.2)
+        ax2.axhline(80, linewidth=3, color="r", ls="--")
+        ax2.axhline(20, linewidth=3, color="g", ls="--")
+
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2.set_ylim([0, 100])
+
+        ax3 = ax2.twinx()
+        ax3.set_ylim(ax2.get_ylim())
+        ax3.set_yticks([20, 80])
+        ax3.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
+        ax2.legend(
+            [f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"], loc="lower left"
+        )
 
         if gtff.USE_ION:
             plt.ion()
 
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
         plt.show()
 
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

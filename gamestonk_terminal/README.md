@@ -219,9 +219,10 @@ Command | Description | Sources
 [volatility](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/volatility) |
 `bbands`      |bollinger bands | [Wikipedia](https://en.wikipedia.org/wiki/Bollinger_Bands), [Investopedia](https://www.investopedia.com/terms/b/bollingerbands.asp)
 [volume](https://github.com/twopirllc/pandas-ta/tree/master/pandas_ta/volume) |
-`ad`          |chaikin accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
+`ad`          |accumulation/distribution line values | [Wikipedia](https://en.wikipedia.org/wiki/Accumulation/distribution_index), [Investopedia](https://www.investopedia.com/terms/a/accumulationdistribution.asp)
 `obv`         |on balance volume | [Wikipedia](https://en.wikipedia.org/wiki/On-balance_volume), [Investopedia](https://www.investopedia.com/terms/o/onbalancevolume.asp)
-
+custom|
+`fib`          | Fibonocci levels | [Investopedia](https://www.investopedia.com/terms/f/fibonacciretracement.asp)
 &nbsp;
 
 ## Due Diligence [»](due_diligence/README.md)

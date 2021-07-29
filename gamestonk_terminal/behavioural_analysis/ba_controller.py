@@ -16,6 +16,7 @@ from gamestonk_terminal.behavioural_analysis import (
     stocktwits_view,
     finbrain_view,
     finnhub_view,
+    sentimentinvestor_view,
 )
 
 
@@ -46,6 +47,9 @@ class BehaviouralAnalysisController:
         "rise",
         "finbrain",
         "stats",
+        "metrics",
+        "social",
+        "historical",
     ]
 
     def __init__(self, ticker: str, start: datetime):
@@ -101,6 +105,11 @@ class BehaviouralAnalysisController:
         print("   regions       regions that show highest interest in stock")
         print("   queries       top related queries with this stock")
         print("   rise          top rising related queries with stock")
+        print("")
+        print("SentimentInvestor:")
+        print("   metrics       core social sentiment metrics for this stock")
+        print("   social        social media figures for stock popularity")
+        print("   historical    plot the past week of data for a selected metric")
         print("")
 
     def switch(self, an_input: str):
@@ -245,6 +254,18 @@ class BehaviouralAnalysisController:
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
         finnhub_view.sentiment_stats(other_args, self.ticker)
+
+    def call_metrics(self, other_args: List[str]):
+        """Process metrics command"""
+        sentimentinvestor_view.metrics(self.ticker, other_args)
+
+    def call_social(self, other_args: List[str]):
+        """Process social command"""
+        sentimentinvestor_view.socials(self.ticker, other_args)
+
+    def call_historical(self, other_args: List[str]):
+        """Process historical command"""
+        sentimentinvestor_view.historical(self.ticker, other_args)
 
 
 def menu(ticker: str, start: datetime, context: str = ""):

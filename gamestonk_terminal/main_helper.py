@@ -42,7 +42,13 @@ from gamestonk_terminal import thought_of_the_day as thought
 from gamestonk_terminal.technical_analysis import trendline_api as trend
 
 
-def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
+def clear(
+    other_args: List[str],
+    s_ticker: str,
+    s_start,
+    s_interval: str,
+    df_stock: pd.DataFrame,
+):
     """Clears loaded stock and returns empty variables
 
     Parameters
@@ -89,7 +95,13 @@ def clear(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         return s_ticker, s_start, s_interval, df_stock
 
 
-def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
+def load(
+    other_args: List[str],
+    s_ticker: str,
+    s_start,
+    s_interval: str,
+    df_stock: pd.DataFrame,
+):
     """Load selected ticker
 
     Parameters
@@ -136,7 +148,7 @@ def load(other_args: List[str], s_ticker, s_start, s_interval, df_stock):
         "-s",
         "--start",
         type=valid_date,
-        default="2019-01-01",
+        default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
         dest="s_start_date",
         help="The starting date (format YYYY-MM-DD) of the stock",
     )
@@ -601,7 +613,7 @@ def quote(other_args: List[str], s_ticker: str):
     return
 
 
-def view(other_args: List[str], s_ticker: str, s_interval, df_stock):
+def view(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
     """Plot loaded ticker
 
     Parameters
@@ -654,9 +666,9 @@ def check_api_keys():
         key_dict["ALPHA_VANTAGE"] = "Not defined"
     else:
         df = TimeSeries(
-            key=cfg.API_KEY.ALPHAVANTAGE, output_format="pandas"
+            key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
         ).get_intraday(symbol="AAPL")
-        if df.empty:
+        if df[0].empty:
             key_dict["ALPHA_VANTAGE"] = "defined, test failed"
         else:
             key_dict["ALPHA_VANTAGE"] = "defined, test passed"
@@ -855,6 +867,20 @@ def check_api_keys():
     else:
         key_dict["BINANCE"] = "defined, not tested"
 
+    # SentimentInvestor keys
+    si_keys = [cfg.API_SENTIMENTINVESTOR_KEY, cfg.API_SENTIMENTINVESTOR_TOKEN]
+    if "REPLACE_ME" in si_keys:
+        key_dict["SENTIMENT_INVESTOR"] = "Not defined"
+    else:
+        account = requests.get(
+            f"https://api.sentimentinvestor.com/v4/account"
+            f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}&key={cfg.API_SENTIMENTINVESTOR_KEY}"
+        )
+        if account.ok and account.json().get("success", False):
+            key_dict["SENTIMENT_INVESTOR"] = "Defined, test passed"
+        else:
+            key_dict["SENTIMENT_INVESTOR"] = "Defined, test unsuccessful"
+
     print(
         tabulate(
             pd.DataFrame(key_dict.items()),
@@ -954,6 +980,7 @@ def about_us():
         f"{Fore.CYAN}FinBrain: {Style.RESET_ALL}https://finbrain.tech\n"
         f"{Fore.CYAN}Quiver Quantitative: {Style.RESET_ALL}https://www.quiverquant.com\n"
         f"{Fore.CYAN}Ops.Syncretism: {Style.RESET_ALL}https://ops.syncretism.io/api.html\n"
+        f"{Fore.CYAN}SentimentInvestor: {Style.RESET_ALL}https://sentimentinvestor.com\n"
         f"\n{Fore.RED}"
         "DISCLAIMER: Trading in financial instruments involves high risks including the risk of losing some, "
         "or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in "
