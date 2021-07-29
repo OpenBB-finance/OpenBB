@@ -517,3 +517,140 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
     df_fa.columns.name = "Fiscal Date Ending"
 
     return df_fa
+
+def clean_mscore_df(df_fa: pd.DataFrame) -> List[int]:
+    """Clean fundamentals dataframe
+
+    Parameters
+    ----------
+    df_fa : pd.DataFrame
+        Fundamentals dataframe
+
+    Returns
+    ----------
+    List[int]
+        Last two years cleaned
+    """
+    # pylint: disable=no-member
+    ints = [int(x) for x in df_fa.to_list()]
+
+    return ints
+
+
+def mscore(other_args: List[str], ticker: str):
+    """Mscore for given ticker
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="cash",
+        description="""
+            The Beneish model is a statistical model that uses financial ratios calculated with
+            accounting data of a specific company in order to check if it is likely (high 
+            probability) that the reported earnings of the company have been manipulated.
+            [Source: Wikipedia]
+        """,
+    )
+
+    parser.add_argument(
+        "-s",
+        "--sub",
+        action="store_true",
+        default=False,
+        dest="sub",
+        help="Show sub stats.",
+    )
+
+    parser.add_argument(
+        "-d",
+        "--description",
+        action="store_true",
+        default=False,
+        dest="description",
+        help="Show descriptions for stats.",
+    )
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+
+        
+        if not ns_parser:
+            return
+
+        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        # pylint: disable=unbalanced-tuple-unpacking
+        df_cf, _ = fd.get_cash_flow_annual(symbol=ticker)
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
+        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+        df_cf = df_cf.set_index("fiscalDateEnding").iloc[:2]
+        df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
+        df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
+
+        ar = clean_mscore_df(df_bs["currentNetReceivables"])
+        sales = clean_mscore_df(df_is["totalRevenue"])
+        cogs = clean_mscore_df(df_is["costofGoodsAndServicesSold"])
+        ca = clean_mscore_df(df_bs["totalCurrentAssets"])
+        ppe = clean_mscore_df(df_bs["propertyPlantEquipment"])
+        cash = clean_mscore_df(df_bs["cashAndCashEquivalentsAtCarryingValue"])
+        cash_and_sec = clean_mscore_df(df_bs["cashAndShortTermInvestments"])
+        sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
+        ta = clean_mscore_df(df_bs["totalAssets"])
+        dep = clean_mscore_df(df_bs["accumulatedDepreciationAmortizationPPE"])
+        sga = clean_mscore_df(df_is["sellingGeneralAndAdministrative"])
+        td = clean_mscore_df(df_bs["totalLiabilities"])
+        icfo = clean_mscore_df(df_is["netIncomeFromContinuingOperations"])
+        cfo = clean_mscore_df(df_cf["operatingCashflow"])
+        ratios = {}
+        ratios["DSRI"] = {"raw": (ar[0] / sales[0]) / (ar[1] / sales[1]),
+                        "description": """Days Sales in Receivables Index gauges whether receivables and revenue are out of balance, a large number is expected to be associated with a higher likelihood that revenues and earnings are overstated."""
+                        }
+        ratios["GMI"] = {"raw": ((sales[1] - cogs[1]) / sales[1]) / ((sales[0] - cogs[0]) / sales[0]),
+                        "description": """Gross Margin Index shows if gross margins are deteriorating. Research suggests that firms with worsening gross margin are more likely to engage in earnings management, therefore there should be a positive correlation between GMI and probability of earnings management."""
+                        }
+        ratios["AQI"] = {"raw": (1 - ((ca[0] + ppe[0] + sec[0])/ ta[0])) / (1 -
+                        ((ca[1] + ppe[1] + sec[1])/ ta[1])),
+                        "description": """Asset Quality Index measures the proportion of assets where potential benefit is less certain. A positive relation between AQI and earnings manipulation is expected."""
+                        }
+        ratios["SGI"] = {"raw": sales[0] / sales[1],
+                        "description": """Sales Growth Index shows the amount of growth companies are having. Higher growth companies are more likely to commit fraud so there should be a positive relation between SGI and earnings management."""
+                        }
+        ratios["DEPI"] = {"raw": (dep[1] / (ppe[1]+dep[1])) / (dep[0] / (ppe[0]+dep[0])),
+                        "description": """Depreciation Index is the ratio for the rate of depreciation. A DEPI greater than 1 shows that the depreciation rate has slowed and is positively correlated with earnings management."""
+                        }
+        ratios["SGAI"] = {"raw": (sga[0] / sales[0]) / (sga[1] / sales[1]),
+                        "description": """Sales General and Administrative Expenses Index measures the change in SG&A over sales. There should be a positive relationship between SGAI and earnings management."""
+                        }
+        ratios["LVGI"] = {"raw": (td[0] / ta[0]) / (td[1] / ta[1]),
+                        "description": """Leverage Index represents change in leverage. A LVGI greater than one indicates a lowe change of fraud."""
+                        }
+        ratios["TATA"] = {"raw": (icfo[0] - cfo[0]) / ta[0],
+                        "description": """Total Accruals to Total Assets is a proxy for the extent that cash underlies earnigns. A higher number is associated with a higher likelihood of earnings manipulation."""
+                        }
+        ratios["MSCORE"] = {"raw": (-4.84 + (0.92 * ratios["DSRI"]["raw"]) + (0.58 * ratios["GMI"]["raw"])
+                            + (0.404 * ratios["AQI"]["raw"]) + (0.892 * ratios["SGI"]["raw"])
+                            + (0.115 * ratios["DEPI"]["raw"]) - (0.172 * ratios["SGAI"]["raw"])
+                            + (4.679 * ratios["TATA"]["raw"]) - (0.327 * ratios["LVGI"]["raw"])
+                            ),
+                            "description": """The Beneish model uses financial ratios to check if it is likely that earnings are manipulated. A score of -5 to -2.22 indicated a low chance of fraud, a score of -2.22 to -1.78 indicates a moderate change of fraud, and a score above -1.78 indicated a high chance of fraud."""
+                            }
+
+        if ns_parser.sub:
+            for rkey, value in ratios.items():
+                if ns_parser.description:
+                    print(value["description"])
+                print(rkey + ": " + str(value["raw"]))
+        else:
+            if ns_parser.description:
+                print(ratios["MSCORE"]["description"])
+            print("MSCORE" + ": " + str(ratios["MSCORE"]["raw"]))
+
+
+    except Exception as e:
+        print(e, "\n")
+
