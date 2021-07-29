@@ -21,6 +21,7 @@ from gamestonk_terminal.technical_analysis import finbrain_view
 from gamestonk_terminal.technical_analysis import tradingview_view
 from gamestonk_terminal.technical_analysis import finviz_view
 from gamestonk_terminal.technical_analysis import finnhub_view
+from gamestonk_terminal.technical_analysis import custom_indicators_view
 
 
 class TechnicalAnalysisController:
@@ -49,6 +50,7 @@ class TechnicalAnalysisController:
         "bbands",
         "ad",
         "obv",
+        "fib",
     ]
 
     def __init__(
@@ -112,8 +114,10 @@ class TechnicalAnalysisController:
         print("volatility:")
         print("   bbands      bollinger bands")
         print("volume:")
-        print("   ad          chaikin accumulation/distribution line values")
+        print("   ad          accumulation/distribution line values")
         print("   obv         on balance volume")
+        print("custom:")
+        print("   fib         fibonocci retracement")
         print("")
 
     def switch(self, an_input: str):
@@ -228,6 +232,12 @@ class TechnicalAnalysisController:
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
         ta_volume.obv(other_args, self.ticker, self.interval, self.stock)
+
+    def call_fib(self, other_args: List[str]):
+        """Process fib command"""
+        custom_indicators_view.fibinocci_retracement(
+            other_args, self.stock, self.ticker
+        )
 
 
 def menu(

@@ -1,7 +1,15 @@
+"""Overlap Technical Analysis"""
+___docformat__ = "numpy"
+
 import argparse
+from typing import List
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
+import mplfinance as mpf
+
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
@@ -13,7 +21,21 @@ from gamestonk_terminal import feature_flags as gtff
 register_matplotlib_converters()
 
 
-def ema(l_args, s_ticker, s_interval, df_stock):
+def ema(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Plots exponential moving average (EMA) over stock
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    """
+
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -50,7 +72,7 @@ def ema(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
@@ -70,8 +92,9 @@ def ema(l_args, s_ticker, s_interval, df_stock):
                 offset=ns_parser.n_offset,
             ).dropna()
 
-        _, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        plt.title(f"{ns_parser.n_length} EMA on {s_ticker}")
+        fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        plt.title(f"{ns_parser.n_length} Day EMA on {s_ticker}")
+
         if s_interval == "1440min":
             plt.plot(
                 df_stock["Adj Close"].index,
@@ -86,17 +109,19 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         else:
             plt.plot(df_stock["Close"].index, df_stock["Close"].values, "k", lw=3)
             plt.xlim(df_stock["Close"].index[0], df_stock["Close"].index[-1])
+
         plt.xlabel("Time")
-        plt.ylabel(f"Share Price of {s_ticker} ($)")
+        plt.ylabel(f"{s_ticker} Price($)")
         plt.plot(df_ta.index, df_ta.values, c="tab:blue")
         l_legend = list()
         l_legend.append(s_ticker)
         # Pandas series
         if len(df_ta.shape) == 1:
-            l_legend.append(f"{ns_parser.n_length} EMA")
+            l_legend.append(f"EMA {ns_parser.n_length}")
         # Pandas dataframe
         else:
             l_legend.append(df_ta.columns.tolist())
+
         plt.legend(l_legend)
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
@@ -105,15 +130,30 @@ def ema(l_args, s_ticker, s_interval, df_stock):
         if gtff.USE_ION:
             plt.ion()
 
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
+
         plt.show()
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def sma(l_args, s_ticker, s_interval, df_stock):
+def sma(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Plots simple moving average (SMA) over stock
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -148,11 +188,11 @@ def sma(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         if s_interval == "1440min":
             plt.plot(df_stock.index, df_stock["Adj Close"].values, color="k")
         else:
@@ -171,11 +211,12 @@ def sma(l_args, s_ticker, s_interval, df_stock):
                     df_stock["Close"], length=length, offset=ns_parser.n_offset
                 ).dropna()
             plt.plot(df_ta.index, df_ta.values)
-            l_legend.append(f"{length} SMA")
+            l_legend.append(f"SMA{length} ")
+
         plt.title(f"SMA on {s_ticker}")
         plt.xlim(df_stock.index[0], df_stock.index[-1])
         plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
+        plt.ylabel(f"{s_ticker} Price ($)")
         plt.legend(l_legend)
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
         plt.minorticks_on()
@@ -184,15 +225,30 @@ def sma(l_args, s_ticker, s_interval, df_stock):
         if gtff.USE_ION:
             plt.ion()
 
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
+
         plt.show()
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
 
 
-def vwap(l_args, s_ticker, s_interval, df_stock):
+def vwap(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Plots volume weighted average price (VWAP)
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    """
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -214,63 +270,41 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
     )
 
     try:
-        ns_parser = parse_known_args_and_warn(parser, l_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
         # Daily
         if s_interval == "1440min":
-            df_ta = ta.vwap(
-                high=df_stock["High"],
-                low=df_stock["Low"],
-                close=df_stock["Adj Close"],
-                volume=df_stock["Volume"],
-                offset=ns_parser.n_offset,
-            )
+            print("VWAP should be used with intraday data. \n")
+            return
 
-        # Intraday
-        else:
-            df_ta = ta.vwap(
-                high=df_stock["High"],
-                low=df_stock["Low"],
-                close=df_stock["Close"],
-                volume=df_stock["Volume"],
-                offset=ns_parser.n_offset,
-            )
+        df_stock.index = df_stock.index.tz_localize(None)
+        df_stock["Day"] = [idx.date() for idx in df_stock.index]
 
-        _, axPrice = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        if s_interval == "1440min":
-            plt.plot(df_stock.index, df_stock["Adj Close"].values, color="k")
-        else:
-            plt.plot(df_stock.index, df_stock["Close"].values, color="k")
-        plt.plot(df_ta.index, df_ta.values)
-        plt.title(f"VWAP on {s_ticker}")
-        plt.xlim(df_stock.index[0], df_stock.index[-1])
-        plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
-        plt.legend([s_ticker, "VWAP"])
-        _ = axPrice.twinx()
+        day_df = df_stock[df_stock.Day == df_stock.Day[-1]]
 
-        if s_interval == "1440min":
-            plt.bar(
-                df_stock.index,
-                df_stock["Volume"].values,
-                color="k",
-                alpha=0.8,
-                width=0.3,
-            )
-        else:
-            plt.bar(
-                df_stock.index,
-                df_stock["Volume"].values,
-                color="k",
-                alpha=0.8,
-                width=0.3,
-            )
-        plt.ylabel("Volume")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        df_vwap = ta.vwap(
+            high=day_df["High"],
+            low=day_df["Low"],
+            close=day_df["Close"],
+            volume=day_df["Volume"],
+        )
+
+        mc = mpf.make_marketcolors(
+            up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
+        )
+
+        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+        apdict = mpf.make_addplot(df_vwap, color="k")
+        mpf.plot(
+            day_df,
+            style=s,
+            type="candle",
+            addplot=apdict,
+            volume=True,
+            title=f"\n{s_ticker} {s_interval} VWAP",
+        )
 
         if gtff.USE_ION:
             plt.ion()
@@ -279,5 +313,4 @@ def vwap(l_args, s_ticker, s_interval, df_stock):
         print("")
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")

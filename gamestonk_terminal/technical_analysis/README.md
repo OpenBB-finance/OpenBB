@@ -41,9 +41,14 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
 
 [VOLUME](#VOLUME)
   * [ad](#ad)
-    - chaikin accumulation/distribution line values
+    - Accumulation/distribution line values
   * [obv](#obv)
     - on balance volume
+
+[CUSTOM](#CUSTOM)
+  * [fib](#fib)
+    - Shows fibonocci levels
+
 
 **S/O to https://github.com/twopirllc/pandas-ta** _Owing to this library, it is fairly easy to add other technical indicators. So, let us know if there's any other that you would like._
 
@@ -111,10 +116,11 @@ usage: sma [-l L_LENGTH] [-o N_OFFSET]
 
 
 ## vwap  <a name="vwap"></a>
+VWAP is available for intraday data.  This plots the most recent day only.
 ```
 usage: vwap [-o N_OFFSET]
 ```
-![vwap](https://user-images.githubusercontent.com/25267873/108602302-361d1c00-7399-11eb-87de-6026a2987ae0.png)
+![vwap](https://user-images.githubusercontent.com/18151143/127217340-0f38bafd-fc16-4be4-a80a-6b89913559f5.png)
 
 
 # MOMENTUM <a name="MOMENTUM"></a>
@@ -178,11 +184,29 @@ usage: bbands [-h] [-l N_LENGTH] [-s N_STD] [-m S_MAMODE] [-o N_OFFSET]
 ```
 usage: ad [-o N_OFFSET] [--open]
 ```
-![ad](https://user-images.githubusercontent.com/25267873/108603504-1f2df800-73a0-11eb-8d04-bcfd044601c1.png)
+![ad](https://user-images.githubusercontent.com/18151143/127217265-73415705-3321-478f-b5a0-3ae1487c74ac.png)
 
 
 ## obv  <a name="obv"></a>
 ```
 usage: obv [-o N_OFFSET]
 ```
-![obv](https://user-images.githubusercontent.com/25267873/108603503-1dfccb00-73a0-11eb-8da5-e5e5419a94ac.png)
+![obv](https://user-images.githubusercontent.com/18151143/127217286-d73c1079-1b84-4da9-a5d4-39f4eb2d6b1b.png)
+
+# CUSTOM <a name="CUSTOM"></a>
+
+## fib <a name="fib"></a>
+Shows fibonocci levels
+```python
+usage: fib [-p PERIOD] [--start] [--end]
+```
+* -p/--period: Number of days to lookback for retracement.  Default = 120.
+* --start: Allows for custom selection of min point.
+* --end : Allows for custom selection of max point.
+
+The fibonocci retracement works by looking at a minimum and maximum point.  Between these values, there is typically support/resistance at
+23.5 %, 38.2%, 50% and 61.8%.  Those values follow the golden ratio from the fibonocci sequence.
+
+The `--start` and `--end` flags allow the user to select dates for the min and max points as your retracement levels.  Both flags are required if using.
+
+![Fib1](https://user-images.githubusercontent.com/18151143/127217240-0b4cd88b-8fd3-484f-941e-b02a0efe08dd.png)

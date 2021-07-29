@@ -70,7 +70,8 @@ CURRENCIES = [
 PLATFORMS = paprika.get_all_contract_platforms()["platform_id"].tolist()
 COINS = paprika.get_list_of_coins()
 COINS_DCT = dict(zip(COINS.id, COINS.symbol))
-EXCHANGES = paprika.get_list_of_exchanges()
+# see https://github.com/GamestonkTerminal/GamestonkTerminal/pull/562#issuecomment-887842888
+# EXCHANGES = paprika.get_list_of_exchanges()
 
 
 def global_market(other_args: List[str]):
