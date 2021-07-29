@@ -46,6 +46,10 @@ This menu aims to discover new stocks, and the usage of the following commands a
   * dark pool short position [Stockgrid]
 * [shortvol](#shortvol)
   * short interest and days to cover [Stockgrid]
+* [popular](#popular)
+  * most popular stocks on social media right now [SentimentInvestor.com]
+* [emerging](#emerging)
+  * stocks that are being talked about more than usual [SentimentInvestor.com]
 
 ## ipo <a name="ipo"></a>
 
@@ -327,3 +331,55 @@ Print short interest and days to cover. [Source: Stockgrid]
 
 <img width="949" alt="shortvol" src="https://user-images.githubusercontent.com/25267873/122323861-af7be400-cf1f-11eb-9de2-5c7f2debddf0.png">
 
+## popular <a name="popular"></a>
+
+```
+usage: popular [-l LIMIT] [-h]
+```
+
+The `popular` command prints the top `n` (default=10) stocks with the highest Average Hype Index right now.
+
+### AHI (Absolute Hype Index)
+
+AHI is a measure of how much people are talking about a stock on social media.
+It is calculated by dividing the total number of mentions for the chosen stock
+on a social network by the mean number of mentions any stock receives on that
+social medium.
+
+> **[Sentiment Investor](https://sentimentinvestor.com)** analyzes data from four major social media platforms to
+> generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+> sentiment metrics powered by proprietary NLP models.
+
+Optional arguments:
+-  `-l`, `--limit LIMIT`
+   the maximum number of stocks to retrieve
+-  `-h`, `--help`
+   show this help message
+
+![`popular` command output](https://user-images.githubusercontent.com/8385172/126782851-5ede26c2-ab70-480d-a56d-867ba2c8ab73.png)
+
+## emerging <a name="emerging"></a>
+
+```
+usage: emerging [-l LIMIT] [-h]
+```
+
+The `emerging` command prints the top `n` (default=10) stocks with the highest Relative Hype Index right now.
+
+### RHI (Relative Hype Index)
+RHI is a measure of whether people are talking about a stock more or less than
+usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+for the past week for that stock.
+
+> **[Sentiment Investor](https://sentimentinvestor.com)** analyzes data from four major social media platforms to
+> generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+> sentiment metrics powered by proprietary NLP models.
+
+
+Optional arguments:
+-  `-l`, `--limit LIMIT`
+   the maximum number of stocks to retrieve
+-  `-h`, `--help`
+   show this help message
+
+![`emerging` command output](https://user-images.githubusercontent.com/8385172/126782979-33f2ad1e-e69d-4c52-91c3-438dedea2084.png)
