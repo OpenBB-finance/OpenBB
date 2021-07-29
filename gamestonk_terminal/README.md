@@ -182,6 +182,7 @@ Command|Description
 `balance`       |balance sheet of the company
 `cash`          |cash flow of the company
 `earnings`      |earnings dates and reported EPS
+`fraud`         |key fraud ratios
 [Financial Modeling Prep API](https://financialmodelingprep.com/) |
 `profile`       |profile of the company
 `quote`         |quote of the company
