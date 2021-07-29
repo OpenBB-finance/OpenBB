@@ -11,8 +11,8 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
-def econ_data(other_args: List[str]):
-    """Creates an Economic Data report
+def economy_data_report(other_args: List[str]):
+    """Economic Data report
 
     Parameters
     ----------
@@ -27,6 +27,15 @@ def econ_data(other_args: List[str]):
             Run Economic Data report
         """,
     )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        action="store",
+        dest="mode",
+        default="html",
+        choices=["ipynb", "html"],
+        help="Output mode to show report. ipynb will allow to add information to the report.",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -34,22 +43,35 @@ def econ_data(other_args: List[str]):
             return
 
         today = datetime.now()
-        analysis_notebook = (
-            f"notebooks/reports/econ_data_{today.strftime('%Y%m%d_%H%M%S')}.ipynb"
+        analysis_notebook = os.path.join(
+            "notebooks", "reports", f"econ_data_{today.strftime('%Y%m%d_%H%M%S')}"
         )
 
         pm.execute_notebook(
-            "notebooks/templates/econ_data.ipynb",
-            analysis_notebook,
+            os.path.join("notebooks", "templates", "econ_data.ipynb"),
+            analysis_notebook + ".ipynb",
             parameters=dict(
                 report_name=f"econ_data_{today.strftime('%Y%m%d_%H%M%S')}",
                 base_path=os.path.abspath(os.path.join(".")),
             ),
         )
 
-        webbrowser.open(
-            f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
-        )
+        if ns_parser.mode == "ipynb":
+            webbrowser.open(
+                os.path.join(
+                    f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}",
+                    "notebooks",
+                    analysis_notebook + ".ipynb",
+                )
+            )
+        else:
+            webbrowser.open(
+                os.path.join(
+                    f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}",
+                    "view",
+                    analysis_notebook + "." + ns_parser.mode,
+                )
+            )
         print("")
 
     except Exception as e:

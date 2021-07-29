@@ -6,8 +6,12 @@ import os
 from typing import List
 import subprocess
 
-from gamestonk_terminal.papermill import dark_pool_view, due_diligence_view
-from gamestonk_terminal.papermill import econ_data_view
+from gamestonk_terminal.papermill import (
+    crypto_market_view,
+    dark_pool_view,
+    due_diligence_view,
+    econ_data_view,
+)
 
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import config_terminal
@@ -25,7 +29,7 @@ class PapermillController:
         )
         self.papermill_parser.add_argument(
             "cmd",
-            choices=["cls", "?", "help", "q", "quit", "dd", "econ", "dp"],
+            choices=["cls", "?", "help", "q", "quit", "dd", "econ", "dp", "cm"],
         )
 
     def switch(self, an_input: str, proc: subprocess.Popen):
@@ -69,7 +73,7 @@ class PapermillController:
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args, proc)
 
-    def call_help(self, _):
+    def call_help(self, *_):
         """Process Help command"""
         print_papermill()
 
@@ -85,15 +89,19 @@ class PapermillController:
 
     def call_dd(self, other_args: List[str], _):
         """Process DD command"""
-        due_diligence_view.due_diligence(other_args)
+        due_diligence_view.due_diligence_report(other_args)
 
     def call_econ(self, other_args: List[str], _):
         """Process Econ command"""
-        econ_data_view.econ_data(other_args)
+        econ_data_view.economy_data_report(other_args)
 
     def call_dp(self, other_args: List[str], _):
         """Process DP command"""
-        dark_pool_view.dark_pool(other_args)
+        dark_pool_view.dark_pool_report(other_args)
+
+    def call_cm(self, other_args: List[str], _):
+        """Process CM command"""
+        crypto_market_view.crypto_market_report(other_args)
 
 
 def print_papermill():
@@ -110,6 +118,7 @@ def print_papermill():
     print("   dd            generate DUE DILIGENCE report")
     print("   econ          generate ECONOMIC DATA summary")
     print("   dp            generate DARK POOL report")
+    print("   cm            generate CRYPTO MARKET report")
     print("")
 
 

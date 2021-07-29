@@ -250,7 +250,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
             if ns_parser.mill:
                 for i in range(len(df_screen)):
                     ticker = [df_screen.iat[i, 0]]
-                    due_diligence_view.due_diligence(ticker, show=False)
+                    due_diligence_view.due_diligence_report(ticker)
             return list(df_screen["Ticker"].values)
 
         print("")
