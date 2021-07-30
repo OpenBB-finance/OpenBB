@@ -531,33 +531,37 @@ def mscore(other_args: List[str], ticker: str):
     """
     parser = argparse.ArgumentParser(
         add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=argparse.RawTextHelpFormatter,
         prog="cash",
-        description="""
-            The Beneish model is a statistical model that uses financial ratios calculated with
-            accounting data of a specific company in order to check if it is likely (high
-            probability) that the reported earnings of the company have been manipulated.
-            [Source: Wikipedia]
-        """,
+        description=(
+            "The Beneish model is a statistical model that uses financial ratios calculated with"
+            " accounting data of a specific company in order to check if it is likely (high"
+            " probability) that the reported earnings of the company have been manipulated."
+            " A score of -5 to -2.22 indicated a low chance of fraud, a score of -2.22 to -1.78"
+            " indicates a moderate change of fraud, and a score above -1.78 indicated a high"
+            " chance of fraud.[Source: Wikipedia]\n\nDSRI:\nDays Sales in Receivables Index"
+            " gauges whether receivables and revenue are out of balance, a large number is"
+            " expected to be associated with a higher likelihood that revenues and earnings are"
+            " overstated.\n\nGMI:\nGross Margin Index shows if gross margins are deteriorating."
+            " Research suggests that firms with worsening gross margin are more likely to engage"
+            " in earnings management, therefore there should be a positive correlation between"
+            " GMI and probability of earnings management.\n\nAQI:\nAsset Quality Index measures"
+            " the proportion of assets where potential benefit is less certain. A positive"
+            " relation between AQI and earnings manipulation is expected.\n\nSGI:\nSales Growth"
+            " Index shows the amount of growth companies are having. Higher growth companies are"
+            " more likely to commit fraud so there should be a positive relation between SGI and"
+            " earnings management.\n\nDEPI:\nDepreciation Index is the ratio for the rate of"
+            " depreciation. A DEPI greater than 1 shows that the depreciation rate has slowed and"
+            " is positively correlated with earnings management.\n\nSGAI:\nSales General and"
+            " Administrative Expenses Index measures the change in SG&A over sales. There should"
+            " be a positive relationship between SGAI and earnings management.\n\nLVGI:\nLeverage"
+            " Index represents change in leverage. A LVGI greater than one indicates a lower"
+            " change of fraud.\n\nTATA: \nTotal Accruals to Total Assets is a proxy for the"
+            " extent that cash underlies earnigns. A higher number is associated with a higher"
+            " likelihood of manipulation."
+        ),
     )
 
-    parser.add_argument(
-        "-s",
-        "--sub",
-        action="store_true",
-        default=False,
-        dest="sub",
-        help="Show sub stats.",
-    )
-
-    parser.add_argument(
-        "-d",
-        "--description",
-        action="store_true",
-        default=False,
-        dest="description",
-        help="Show descriptions for stats.",
-    )
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -574,119 +578,69 @@ def mscore(other_args: List[str], ticker: str):
         df_bs = df_bs.set_index("fiscalDateEnding").iloc[:2]
         df_is = df_is.set_index("fiscalDateEnding").iloc[:2]
 
-        ar = [int(x) for x in df_bs["currentNetReceivables"].to_list()]
-        sales = [int(x) for x in df_is["totalRevenue"].to_list()]
-        cogs = [int(x) for x in df_is["costofGoodsAndServicesSold"].to_list()]
-        ca = [int(x) for x in df_bs["totalCurrentAssets"].to_list()]
-        ppe = [int(x) for x in df_bs["propertyPlantEquipment"].to_list()]
-        cash = [
-            int(x) for x in df_bs["cashAndCashEquivalentsAtCarryingValue"].to_list()
-        ]
-        cash_and_sec = [int(x) for x in df_bs["cashAndShortTermInvestments"].to_list()]
+        ar = df_bs["currentNetReceivables"].apply(lambda x: int(x)).values
+        sales = df_is["totalRevenue"].apply(lambda x: int(x)).values
+        cogs = df_is["costofGoodsAndServicesSold"].apply(lambda x: int(x)).values
+        ca = df_bs["totalCurrentAssets"].apply(lambda x: int(x)).values
+        ppe = df_bs["propertyPlantEquipment"].apply(lambda x: int(x)).values
+        cash = (
+            df_bs["cashAndCashEquivalentsAtCarryingValue"]
+            .apply(lambda x: int(x))
+            .values
+        )
+        cash_and_sec = (
+            df_bs["cashAndShortTermInvestments"].apply(lambda x: int(x)).values
+        )
         sec = [y - x for (x, y) in zip(cash, cash_and_sec)]
-        ta = [int(x) for x in df_bs["totalAssets"].to_list()]
-        dep = [
-            int(x) for x in df_bs["accumulatedDepreciationAmortizationPPE"].to_list()
-        ]
-        sga = [int(x) for x in df_is["sellingGeneralAndAdministrative"].to_list()]
-        td = [int(x) for x in df_bs["totalLiabilities"].to_list()]
-        icfo = [int(x) for x in df_is["netIncomeFromContinuingOperations"].to_list()]
-        cfo = [int(x) for x in df_cf["operatingCashflow"].to_list()]
+        ta = df_bs["totalAssets"].apply(lambda x: int(x)).values
+        dep = (
+            df_bs["accumulatedDepreciationAmortizationPPE"]
+            .apply(lambda x: int(x))
+            .values
+        )
+        sga = df_is["sellingGeneralAndAdministrative"].apply(lambda x: int(x)).values
+        td = df_bs["totalLiabilities"].apply(lambda x: int(x)).values
+        icfo = df_is["netIncomeFromContinuingOperations"].apply(lambda x: int(x)).values
+        cfo = df_cf["operatingCashflow"].apply(lambda x: int(x)).values
         ratios: Dict = {}
-        ratios["DSRI"] = {
-            "raw": (ar[0] / sales[0]) / (ar[1] / sales[1]),
-            "description": (
-                "Days Sales in Receivables Index gauges whether receivables and "
-                "revenue are out of balance, a large number is expected to be associated with a "
-                "higher likelihood that revenues and earnings are overstated."
-            ),
-        }
-        ratios["GMI"] = {
-            "raw": ((sales[1] - cogs[1]) / sales[1])
-            / ((sales[0] - cogs[0]) / sales[0]),
-            "description": (
-                "Gross Margin Index shows if gross margins are deteriorating. "
-                "Research suggests that firms with worsening gross margin are more likely to engage "
-                "in earnings management, therefore there should be a positive correlation between GMI "
-                "and probability of earnings management."
-            ),
-        }
-        ratios["AQI"] = {
-            "raw": (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0]))
-            / (1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])),
-            "description": (
-                "Asset Quality Index measures the proportion of assets where "
-                "potential benefit is less certain. A positive relation between AQI and earnings "
-                "manipulation is expected."
-            ),
-        }
-        ratios["SGI"] = {
-            "raw": sales[0] / sales[1],
-            "description": (
-                "Sales Growth Index shows the amount of growth companies are having. "
-                "Higher growth companies are more likely to commit fraud so there should be a "
-                "positive relation between SGI and earnings management."
-            ),
-        }
-        ratios["DEPI"] = {
-            "raw": (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0])),
-            "description": (
-                "Depreciation Index is the ratio for the rate of depreciation. A DEPI "
-                "greater than 1 shows that the depreciation rate has slowed and is positively "
-                "correlated with earnings management."
-            ),
-        }
-        ratios["SGAI"] = {
-            "raw": (sga[0] / sales[0]) / (sga[1] / sales[1]),
-            "description": (
-                "Sales General and Administrative Expenses Index measures the change "
-                "in SG&A over sales. There should be a positive relationship between SGAI and "
-                "earnings management."
-            ),
-        }
-        ratios["LVGI"] = {
-            "raw": (td[0] / ta[0]) / (td[1] / ta[1]),
-            "description": (
-                "Leverage Index represents change in leverage. A LVGI greater than "
-                "one indicates a lowe change of fraud."
-            ),
-        }
-        ratios["TATA"] = {
-            "raw": (icfo[0] - cfo[0]) / ta[0],
-            "description": (
-                "Total Accruals to Total Assets is a proxy for the extent that cash "
-                "underlies earnigns. A higher number is associated with a higher likelihood of "
-                "earnings manipulation."
-            ),
-        }
-        ratios["MSCORE"] = {
-            "raw": (
-                -4.84
-                + (0.92 * ratios["DSRI"]["raw"])
-                + (0.58 * ratios["GMI"]["raw"])
-                + (0.404 * ratios["AQI"]["raw"])
-                + (0.892 * ratios["SGI"]["raw"])
-                + (0.115 * ratios["DEPI"]["raw"] - (0.172 * ratios["SGAI"]["raw"]))
-                + (4.679 * ratios["TATA"]["raw"])
-                - (0.327 * ratios["LVGI"]["raw"])
-            ),
-            "description": (
-                "The Beneish model uses financial ratios to check if it is likely "
-                "that earnings are manipulated. A score of -5 to -2.22 indicated a low chance of "
-                "fraud, a score of -2.22 to -1.78 indicates a moderate change of fraud, and a "
-                "score above -1.78 indicated a high chance of fraud."
-            ),
-        }
+        ratios["DSRI"] = (ar[0] / sales[0]) / (ar[1] / sales[1])
+        ratios["GMI"] = ((sales[1] - cogs[1]) / sales[1]) / (
+            (sales[0] - cogs[0]) / sales[0]
+        )
+        ratios["AQI"] = (1 - ((ca[0] + ppe[0] + sec[0]) / ta[0])) / (
+            1 - ((ca[1] + ppe[1] + sec[1]) / ta[1])
+        )
+        ratios["SGI"] = sales[0] / sales[1]
+        ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
+        ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
+        ratios["LVGI"] = (td[0] / ta[0]) / (td[1] / ta[1])
+        ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
+        ratios["MSCORE"] = (
+            -4.84
+            + (0.92 * ratios["DSRI"])
+            + (0.58 * ratios["GMI"])
+            + (0.404 * ratios["AQI"])
+            + (0.892 * ratios["SGI"])
+            + (0.115 * ratios["DEPI"] - (0.172 * ratios["SGAI"]))
+            + (4.679 * ratios["TATA"])
+            - (0.327 * ratios["LVGI"])
+        )
 
-        if ns_parser.sub:
-            for rkey, value in ratios.items():
-                if ns_parser.description:
-                    print(value["description"], "\n")
-                print(rkey + ": " + str(round(value["raw"], 2)), "\n")
+        if ratios["MSCORE"] > -1.78:
+            chance = "high"
+        elif ratios["MSCORE"] > -2.22:
+            chance = "moderate"
         else:
-            if ns_parser.description:
-                print(ratios["MSCORE"]["description"], "\n")
-            print("MSCORE" + ": " + str(round(ratios["MSCORE"]["raw"], 2)), "\n")
+            chance = "low"
+
+        print("Stats:")
+        for rkey, value in ratios.items():
+            if rkey != "MSCORE":
+                print("  ", f"{rkey} : {value:.2f}")
+
+        print(
+            "\n", "MSCORE: ", f"{ratios['MSCORE']:.2f} ({chance} chance of fraud)", "\n"
+        )
 
     except Exception as e:
         print(e, "\n")
