@@ -33,6 +33,8 @@ This menu aims to extract all fundamentals of a pre-loaded company, and the usag
   * cash flow of the company
 * [earnings](#earnings)
   * earnings dates and reported EPS
+* [fraud](#fraud)
+  * key fraud ratios
 
 
 [FINANCIAL MODELING PREP menu](/gamestonk_terminal/fundamental_analysis/financial_modeling_prep/)
@@ -145,3 +147,11 @@ Print earnings dates and reported EPS of the company. The following fields are e
 
 * n : Number of latest years/quarters. Default 1.
 * q : Quarter fundamental data flag. Default False.
+
+### fraud <a name="fraud"></a>
+
+```text
+usage: fraud
+```
+
+The Beneish model is a statistical model that uses financial ratios calculated with accounting data of a specific company in order to check if it is likely (high probability) that the reported earnings of the company have been manipulated.[Source: Wikipedia]
