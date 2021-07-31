@@ -519,9 +519,8 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
     return df_fa
 
 
-def mscore(other_args: List[str], ticker: str):
-    """Mscore for given ticker
-
+def fraud(other_args: List[str], ticker: str):
+    """Fraud indicators for given ticker
     Parameters
     ----------
     other_args : List[str]
@@ -532,8 +531,9 @@ def mscore(other_args: List[str], ticker: str):
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.RawTextHelpFormatter,
-        prog="cash",
+        prog="fraud",
         description=(
+            "Mscore:\n------------------------------------------------\n"
             "The Beneish model is a statistical model that uses financial ratios calculated with"
             " accounting data of a specific company in order to check if it is likely (high"
             " probability) that the reported earnings of the company have been manipulated."
@@ -558,7 +558,14 @@ def mscore(other_args: List[str], ticker: str):
             " Index represents change in leverage. A LVGI greater than one indicates a lower"
             " change of fraud.\n\nTATA: \nTotal Accruals to Total Assets is a proxy for the"
             " extent that cash underlies earnigns. A higher number is associated with a higher"
-            " likelihood of manipulation."
+            " likelihood of manipulation.\n\n\n"
+            "Zscore:\n------------------------------------------------\n"
+            "The Zmijewski Score is a bankruptcy model used to predict a firm's bankruptcy in two"
+            " years. The ratio uses in the Zmijewski score were determined by probit analysis ("
+            "think of probit as probability unit). In this case, scores less than .5 represent a"
+            " higher probability of default. One of the criticisms that Zmijewski made was that"
+            " other bankruptcy scoring models oversampled distressed firms and favored situations"
+            " with more complete data.[Source: YCharts]"
         ),
     )
 
@@ -581,7 +588,9 @@ def mscore(other_args: List[str], ticker: str):
         ar = df_bs["currentNetReceivables"].apply(lambda x: int(x)).values
         sales = df_is["totalRevenue"].apply(lambda x: int(x)).values
         cogs = df_is["costofGoodsAndServicesSold"].apply(lambda x: int(x)).values
+        ni = df_is["netIncome"].apply(lambda x: int(x)).values
         ca = df_bs["totalCurrentAssets"].apply(lambda x: int(x)).values
+        cl = df_bs["totalCurrentLiabilities"].apply(lambda x: int(x)).values
         ppe = df_bs["propertyPlantEquipment"].apply(lambda x: int(x)).values
         cash = (
             df_bs["cashAndCashEquivalentsAtCarryingValue"]
@@ -599,7 +608,7 @@ def mscore(other_args: List[str], ticker: str):
             .values
         )
         sga = df_is["sellingGeneralAndAdministrative"].apply(lambda x: int(x)).values
-        td = df_bs["totalLiabilities"].apply(lambda x: int(x)).values
+        tl = df_bs["totalLiabilities"].apply(lambda x: int(x)).values
         icfo = df_is["netIncomeFromContinuingOperations"].apply(lambda x: int(x)).values
         cfo = df_cf["operatingCashflow"].apply(lambda x: int(x)).values
         ratios: Dict = {}
@@ -613,7 +622,7 @@ def mscore(other_args: List[str], ticker: str):
         ratios["SGI"] = sales[0] / sales[1]
         ratios["DEPI"] = (dep[1] / (ppe[1] + dep[1])) / (dep[0] / (ppe[0] + dep[0]))
         ratios["SGAI"] = (sga[0] / sales[0]) / (sga[1] / sales[1])
-        ratios["LVGI"] = (td[0] / ta[0]) / (td[1] / ta[1])
+        ratios["LVGI"] = (tl[0] / ta[0]) / (tl[1] / ta[1])
         ratios["TATA"] = (icfo[0] - cfo[0]) / ta[0]
         ratios["MSCORE"] = (
             -4.84
@@ -626,21 +635,36 @@ def mscore(other_args: List[str], ticker: str):
             - (0.327 * ratios["LVGI"])
         )
 
-        if ratios["MSCORE"] > -1.78:
-            chance = "high"
-        elif ratios["MSCORE"] > -2.22:
-            chance = "moderate"
-        else:
-            chance = "low"
+        zscore = (
+            -4.336
+            - (4.513 * (ni[0] / ta[0]))
+            + (5.679 * (tl[0] / ta[0]))
+            + (0.004 * (ca[0] / cl[0]))
+        )
 
-        print("Stats:")
+        if ratios["MSCORE"] > -1.78:
+            chanceM = "high"
+        elif ratios["MSCORE"] > -2.22:
+            chanceM = "moderate"
+        else:
+            chanceM = "low"
+
+        if zscore < 0.5:
+            chanceZ = "high"
+        else:
+            chanceZ = "low"
+
+        print("Mscore Sub Stats:")
         for rkey, value in ratios.items():
             if rkey != "MSCORE":
                 print("  ", f"{rkey} : {value:.2f}")
 
         print(
-            "\n", "MSCORE: ", f"{ratios['MSCORE']:.2f} ({chance} chance of fraud)", "\n"
+            "\n" + "MSCORE: ",
+            f"{ratios['MSCORE']:.2f} ({chanceM} chance of fraud)",
         )
+
+        print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
 
     except Exception as e:
         print(e, "\n")

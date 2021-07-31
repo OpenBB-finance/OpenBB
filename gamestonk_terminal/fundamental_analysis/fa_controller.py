@@ -226,7 +226,7 @@ class FundamentalAnalysisController:
 
     def call_fraud(self, other_args: List[str]):
         """Process fraud command"""
-        av_view.mscore(other_args, self.ticker)
+        av_view.fraud(other_args, self.ticker)
 
     def call_fmp(self, _):
         """Process fmp command"""
