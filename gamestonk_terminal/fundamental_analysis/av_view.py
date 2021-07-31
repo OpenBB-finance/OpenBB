@@ -662,7 +662,6 @@ def fraud(other_args: List[str], ticker: str):
         print(
             "\n" + "MSCORE: ",
             f"{ratios['MSCORE']:.2f} ({chanceM} chance of fraud)",
-            "\n",
         )
 
         print("ZSCORE: ", f"{zscore:.2f} ({chanceZ} chance of bankruptcy)", "\n")
