@@ -70,7 +70,9 @@ def info(other_args: List[str], ticker: str):
             ).strftime("%d/%m/%Y")
 
         df_info = df_info.mask(df_info["Value"].astype(str).eq("[]")).dropna()
-        df_info = df_info.applymap(lambda x: long_number_format(x))
+        df_info[df_info.index != "Zip"] = df_info[df_info.index != "Zip"].applymap(
+            lambda x: long_number_format(x)
+        )
 
         df_info = df_info.rename(
             index={
