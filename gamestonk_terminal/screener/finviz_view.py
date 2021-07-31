@@ -115,6 +115,9 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
         )
 
         if isinstance(df_screen, pd.DataFrame):
+            if df_screen.empty:
+                return []
+
             print(df_screen.to_string())
             print("")
             if ns_parser.exportFile:
@@ -136,8 +139,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
         return []
 
     except Exception as e:
-        print(e)
-        print("")
+        print(e, "\n")
         return []
 
 
