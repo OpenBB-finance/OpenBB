@@ -44,11 +44,12 @@ def headquarters(other_args: List[str], ticker: str):
         df_info = df_info.set_index("Metric")
 
         maps = "https://www.google.com/maps/search/"
-        for field in ["address1", "city", "state", "zip", "country"]:
-            maps += (
-                df_info[df_info.index == field]["Value"].values[0].replace(" ", "+")
-                + ","
-            )
+        for field in ["address1", "address2", "city", "state", "zip", "country"]:
+            if field in df_info.index:
+                maps += (
+                    df_info[df_info.index == field]["Value"].values[0].replace(" ", "+")
+                    + ","
+                )
         webbrowser.open(maps[:-1])
         print("")
 
