@@ -154,4 +154,6 @@ Print earnings dates and reported EPS of the company. The following fields are e
 usage: fraud
 ```
 
-The Beneish model is a statistical model that uses financial ratios calculated with accounting data of a specific company in order to check if it is likely (high probability) that the reported earnings of the company have been manipulated.[Source: Wikipedia]
+
+Fraud indicators allow a user to understand the likelihood that a business is committing fraud or will go bankrupt in the near future. These indidactors use financial ratios based on reported financial statements.
+
