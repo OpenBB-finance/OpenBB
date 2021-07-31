@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 from datetime import datetime
+import webbrowser
 import yfinance as yf
 import pandas as pd
 
@@ -12,6 +13,39 @@ from gamestonk_terminal.helper_funcs import (
     long_number_format,
     parse_known_args_and_warn,
 )
+
+
+def web(other_args: List[str], ticker: str):
+    """Website of the company
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="web",
+        description="""
+            Opens company's website. [Source: Yahoo Finance]
+        """,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        stock = yf.Ticker(ticker)
+        df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
+        webbrowser.open(df_info[df_info["Metric"] == "website"]["Value"].values[0])
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
 
 
 def info(other_args: List[str], ticker: str):

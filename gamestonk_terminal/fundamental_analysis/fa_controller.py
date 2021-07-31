@@ -44,6 +44,7 @@ class FundamentalAnalysisController:
         "shrs",
         "sust",
         "cal",
+        "web",
         "overview",
         "key",
         "income",
@@ -107,6 +108,7 @@ class FundamentalAnalysisController:
         print("   shrs          shareholders of the company")
         print("   sust          sustainability values of the company")
         print("   cal           calendar earnings and estimates of the company")
+        print("   web           open web browser of the company")
         print("")
         print("Alpha Vantage API:")
         print("   overview      overview of the company")
@@ -199,6 +201,10 @@ class FundamentalAnalysisController:
     def call_cal(self, other_args: List[str]):
         """Process cal command"""
         yahoo_finance_view.calendar_earnings(other_args, self.ticker)
+
+    def call_web(self, other_args: List[str]):
+        """Process web command"""
+        yahoo_finance_view.web(other_args, self.ticker)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
