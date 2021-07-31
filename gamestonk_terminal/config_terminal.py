@@ -1,7 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+env_files = [f for f in os.listdir() if f.endswith(".env")]
+if env_files:
+    load_dotenv(env_files[0])
 
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
