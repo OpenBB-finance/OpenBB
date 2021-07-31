@@ -3,7 +3,11 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List, Dict
+from datetime import datetime
+
 import requests
+from openpyxl import Workbook
+
 
 from alpha_vantage.fundamentaldata import FundamentalData
 import pandas as pd
@@ -641,6 +645,53 @@ def mscore(other_args: List[str], ticker: str):
         print(
             "\n", "MSCORE: ", f"{ratios['MSCORE']:.2f} ({chance} chance of fraud)", "\n"
         )
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def excel(other_args: List[str], ticker: str):
+    """Excel discounted cash flows
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="cash",
+        description="""
+            Creates a discounted cash flow statement that utilizes financial statements to predict
+             the value of a company. This report is built to be customized to allow a user to
+             input their own financial assumptions.
+        """,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+        df_is = df_is.set_index("fiscalDateEnding")
+
+        df_cf, _ = fd.get_cash_flow_annual(symbol=ticker)
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
+        df_cf = df_cf.set_index("fiscalDateEnding")
+        df_bs = df_bs.set_index("fiscalDateEnding")
+
+        print(df_is)
+
+        wb = Workbook()
+        ws1 = wb.active
+        ws1.title = "Financials"
+        ws1["A1"] = 3.14
+        wb.save("../" + f"{ticker}-{datetime.now()}" + ".xlsx")
 
     except Exception as e:
         print(e, "\n")

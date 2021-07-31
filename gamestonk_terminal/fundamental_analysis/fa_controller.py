@@ -36,6 +36,7 @@ class FundamentalAnalysisController:
         "score",
         "screener",
         "fraud",
+        "excel",
         "income",
         "balance",
         "cash",
@@ -116,6 +117,7 @@ class FundamentalAnalysisController:
         print("   cash          cash flow of the company")
         print("   earnings      earnings dates and reported EPS")
         print("   fraud         key fraud ratios")
+        print("   excel         download excel discounted cash flow")
         print("")
         print("Other Sources:")
         print(">  fmp           Financial Modeling Prep MENU")
@@ -227,6 +229,10 @@ class FundamentalAnalysisController:
     def call_fraud(self, other_args: List[str]):
         """Process fraud command"""
         av_view.mscore(other_args, self.ticker)
+
+    def call_excel(self, other_args: List[str]):
+        """Process fraud command"""
+        av_view.excel(other_args, self.ticker)
 
     def call_fmp(self, _):
         """Process fmp command"""
