@@ -15,6 +15,47 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 
+def headquarters(other_args: List[str], ticker: str):
+    """Headquarters location of the company
+
+    Parameters
+    ----------
+    other_args : List[str]
+        argparse other args
+    ticker : str
+        Fundamental analysis ticker symbol
+    """
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="hq",
+        description="""
+            Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
+        """,
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        stock = yf.Ticker(ticker)
+        df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
+        df_info = df_info.set_index("Metric")
+
+        maps = "https://www.google.com/maps/search/"
+        for field in ["address1", "city", "state", "zip", "country"]:
+            maps += (
+                df_info[df_info.index == field]["Value"].values[0].replace(" ", "+")
+                + ","
+            )
+        webbrowser.open(maps[:-1])
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
 def web(other_args: List[str], ticker: str):
     """Website of the company
 
