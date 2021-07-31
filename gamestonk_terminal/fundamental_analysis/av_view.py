@@ -521,7 +521,6 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
 
 def fraud(other_args: List[str], ticker: str):
     """Fraud indicators for given ticker
-
     Parameters
     ----------
     other_args : List[str]

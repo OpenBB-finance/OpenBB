@@ -11,15 +11,13 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal import config_terminal as cfg
 
 
-def due_diligence(other_args: List[str], show: bool = True):
-    """Due Diligence report
+def due_diligence_report(other_args: List[str]):
+    """Due Diligence Report
 
     Parameters
     ----------
     other_args : List[str]
         Command line arguments to be processed with argparse
-    show : bool
-        Flag to open browser or not
     """
     parser = argparse.ArgumentParser(
         add_help=False,
@@ -37,6 +35,15 @@ def due_diligence(other_args: List[str], show: bool = True):
         required="-h" not in other_args,
         help="Stock ticker",
     )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        action="store",
+        dest="mode",
+        default="html",
+        choices=["ipynb", "html"],
+        help="Output mode to show report. ipynb will allow to add information to the report.",
+    )
 
     try:
         if other_args:
@@ -50,21 +57,36 @@ def due_diligence(other_args: List[str], show: bool = True):
         # Update values:
         s_ticker = ns_parser.s_ticker
         today = datetime.now()
-        analysis_notebook = f"notebooks/reports/{s_ticker}_{today.strftime('%Y%m%d_%H%M%S')}_due_diligence.ipynb"
-
+        analysis_notebook = os.path.join(
+            "notebooks",
+            "reports",
+            f"{s_ticker}_due_diligence_{today.strftime('%Y%m%d_%H%M%S')}",
+        )
         pm.execute_notebook(
-            "notebooks/templates/due_diligence.ipynb",
-            analysis_notebook,
+            os.path.join("notebooks", "templates", "due_diligence.ipynb"),
+            analysis_notebook + ".ipynb",
             parameters=dict(
                 ticker=s_ticker,
-                report_name=f"{s_ticker}_{today.strftime('%Y%m%d_%H%M%S')}_due_diligence",
+                report_name=f"{s_ticker}_due_diligence_{today.strftime('%Y%m%d_%H%M%S')}",
                 base_path=os.path.abspath(os.path.join(".")),
             ),
         )
 
-        if show:
+        if ns_parser.mode == "ipynb":
             webbrowser.open(
-                f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}/notebooks/{analysis_notebook}"
+                os.path.join(
+                    f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}",
+                    "notebooks",
+                    analysis_notebook + ".ipynb",
+                )
+            )
+        else:
+            webbrowser.open(
+                os.path.join(
+                    f"http://localhost:{cfg.PAPERMILL_NOTEBOOK_REPORT_PORT}",
+                    "view",
+                    analysis_notebook + "." + ns_parser.mode,
+                )
             )
         print("")
 

@@ -4,9 +4,8 @@ channels:
 dependencies:
   - python=3.8
   - pip
-  - poetry=1.1.6
+  - poetry=1.1.7
   - numpy=1.19.5
-  - spyder
   - gensim=3.8.3
   - cvxpy=1.1.12
   - jupyter_client=6.1.12
