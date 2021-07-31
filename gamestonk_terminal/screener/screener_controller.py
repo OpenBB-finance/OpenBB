@@ -246,7 +246,7 @@ class ScreenerController:
         self.view_available_presets(other_args)
 
     def call_set(self, other_args: List[str]):
-        """Process overview command"""
+        """Process set command"""
         self.set_preset(other_args)
 
     def call_historical(self, other_args: List[str]):
