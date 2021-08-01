@@ -41,8 +41,8 @@ class EconomyController:
         "overview",
         "indices",
         "futures",
-        "us_bonds",
-        "gl_bonds",
+        "usbonds",
+        "glbonds",
         "futures",
         "currencies",
     ]
@@ -88,8 +88,8 @@ class EconomyController:
         print("   overview      market data overview")
         print("   indices       us indices overview")
         print("   futures       futures overview")
-        print("   us_bonds      us bond overview")
-        print("   gl_bonds      global bonds overview")
+        print("   usbonds       us bond overview")
+        print("   glbonds       global bonds overview")
         print("   currencies    currency overview")
         print("")
         return
@@ -206,12 +206,12 @@ class EconomyController:
         """Process futures command"""
         wsj_view.display_futures(other_args)
 
-    def call_us_bonds(self, other_args: List[str]):
-        """Process us_bonds command"""
+    def call_usbonds(self, other_args: List[str]):
+        """Process usbonds command"""
         wsj_view.display_usbonds(other_args)
 
-    def call_gl_bonds(self, other_args: List[str]):
-        """Process gl_bonds command"""
+    def call_glbonds(self, other_args: List[str]):
+        """Process glbonds command"""
         wsj_view.display_glbonds(other_args)
 
     def call_currencies(self, other_args: List[str]):
