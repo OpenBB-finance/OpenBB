@@ -60,7 +60,7 @@ def display_fred(other_args: List[str], choice: str):
         "-i",
         "--id",
         dest="series_id",
-        required=not bool(choice),
+        required=not bool(choice) and "-h" not in other_args,
         type=str,
         default=choice.upper(),
         help="FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
@@ -155,7 +155,7 @@ def display_fred(other_args: List[str], choice: str):
                 plt.xlim(min(l_ts_start), max(l_ts_end))
                 plt.gcf().autofmt_xdate()
                 plt.xlabel("Time")
-                plt.legend([p[line] for line in p], success_series)
+                plt.legend([val for _, val in p.items()], success_series)
                 plt.gca().spines["left"].set_visible(False)
                 plt.show()
             print("")
