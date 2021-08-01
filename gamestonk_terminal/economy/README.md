@@ -78,11 +78,16 @@ Output economy impact calendar impact events. [Source: https://finnhub.io]
 usage: fred [-i SERIES_ID] [-s START_DATE] [-t]
 ```
 
-Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org.
+Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org. It is possible to display multiple series.
 
-* -i : FRED Series ID from https://fred.stlouisfed.org.
+* -i : FRED Series ID from https://fred.stlouisfed.org. For multiple series use: `fred series1,series2,series3`
 * -s : Starting date (YYYY-MM-DD) of data. Default: 2019-01-01.
 * -t : Only output text data.
+
+Example: `fred gdp,t10yie,cpiaucsl`
+
+![fred_series](https://user-images.githubusercontent.com/25267873/127773594-2518ddfd-eae2-4f41-a963-356214c71e8c.png)
+
 
 
 ## vixcls <a name="vixcls"></a>
@@ -236,11 +241,17 @@ usage: overview
 ```
 Market overview
 
+<img width="943" alt="overview" src="https://user-images.githubusercontent.com/25267873/127777489-325b2d70-7f35-4efe-bee9-0f6e8de232b0.png">
+
+
 ## indices <a name="indices"></a>
 ```python
 usage: indices
 ```
 US indices overview
+
+<img width="947" alt="indices" src="https://user-images.githubusercontent.com/25267873/127777487-d7d70600-ba07-446b-8609-725b93fe5c89.png">
+
 
 ## futures <a name="futures"></a>
 ```python
@@ -248,11 +259,17 @@ usage: futures
 ```
 Top futures/commodities overview
 
+<img width="949" alt="futures" src="https://user-images.githubusercontent.com/25267873/127777482-4032c6da-7739-49d9-a5e6-83f8260baac0.png">
+
+
 ## us_bonds <a name="us_bonds"></a>
 ```python
 usage: us_bonds
 ```
 US bonds overview
+
+<img width="949" alt="us_bonds" src="https://user-images.githubusercontent.com/25267873/127777484-85384a7c-d7f0-4fd8-875d-9739dc9d6371.png">
+
 
 ## gl_bonds <a name="gl_bonds"></a>
 ```python
@@ -260,8 +277,13 @@ usage: gl_bonds
 ```
 Global bonds overview
 
+<img width="937" alt="gl_bonds" src="https://user-images.githubusercontent.com/25267873/127777486-40239a41-92bf-410d-b8d8-e1fe85bbea25.png">
+
+
 ## currencies <a name="currencies"></a>
 ```python
 usage: currencies
 ```
 Global currencies overview
+
+<img width="945" alt="currencies" src="https://user-images.githubusercontent.com/25267873/127777481-cf9ab6a8-5e9a-4954-a6dc-0b09981e7743.png">
