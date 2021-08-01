@@ -47,7 +47,7 @@ class OptionsController:
         "oi",
         "hist",
         "chains",
-        "gr_hist",
+        "grhist",
     ]
 
     def __init__(self, ticker: str):
@@ -97,7 +97,7 @@ class OptionsController:
             print("   vol           plot volume [Tradier/YF]")
             print("   voi           plot volume and open interest [Tradier/YF]")
             print("   hist          plot option history [Tradier")
-            print("   gr_hist       plot option greek history [Syncretism]")
+            print("   grhist        plot option greek history [Syncretism]")
             print("")
 
     def switch(self, an_input: str):
@@ -243,7 +243,8 @@ class OptionsController:
                 options.calls, options.puts, self.ticker, self.selected_date, parsed
             )
 
-    def call_gr_hist(self, other_args: List[str]):
+    def call_grhist(self, other_args: List[str]):
+        """Process grhist command"""
         syncretism_view.historical_greeks(self.ticker, self.selected_date, other_args)
 
 
