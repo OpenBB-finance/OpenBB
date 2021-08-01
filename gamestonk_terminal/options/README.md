@@ -26,7 +26,7 @@ This menu aims to give insight on options. Options can cause significant share p
   * Plot volume and open interest
 * [hist](#hist)
   * Plot option history [Source: Tradier.com]
-* [gr_hist](#gr_hist)
+* [grhist](#grhist)
    * Plot historical option greek [Source: ops.syncretism.io]
 
 
@@ -184,11 +184,11 @@ Note that the chain ID can be obtained by using `chains -d symbol`
 ![hist](https://user-images.githubusercontent.com/18151143/126855841-6884b19b-63c8-4746-a63f-82ad1a523c0c.png)
 
 
-## gr_hist <a name="gr_hist"></a>
+## grhist <a name="grhist"></a>
 Plot historical option greeks.  Data from ops.syncretism.io
 
 ```python
-usage: gr_hist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
+usage: grhist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
 ```
 * -s/--strike: Strike to show history for
 * -g/--greek: Greek to get data for.  Can be {iv,gamma,theta,vega,delta,rho}.  Also can be premium
@@ -198,6 +198,6 @@ usage: gr_hist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] 
 * --export: Export file.  Can be {csv, json, xlsx}.
 
 ```python
-(✨) (op)> gr_hist -s 145 --put -g delta
+(✨) (op)> grhist -s 145 --put -g delta
 ```
 ![gr_hist](https://user-images.githubusercontent.com/18151143/126881002-c516d94b-5c87-43b1-9e16-dce304795e1c.png)

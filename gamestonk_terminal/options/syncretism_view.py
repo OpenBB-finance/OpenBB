@@ -252,7 +252,7 @@ def historical_greeks(ticker: str, expiry: str, other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="gr_hist",
+        prog="grhist",
         description="Plot historical option greeks.",
     )
 
