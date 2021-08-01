@@ -199,7 +199,7 @@ poetry install -E prediction
 
 ```
 docker-compose -f docker/docker-compose.yaml build gst-python
-docker-compose -f docker/docker-compose.yaml build gst-poetry-dep
+docker-compose -f docker/docker-compose.yaml build gst-poetry-deps
 docker-compose -f docker/docker-compose.yaml build gst-poetry
 ```
 
