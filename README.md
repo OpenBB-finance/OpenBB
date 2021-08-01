@@ -209,7 +209,7 @@ docker-compose -f docker/docker-compose.yaml build gst-poetry
 docker run -it --env-file=docker/setenv --rm gst/gst-poetry:1.1.0
 ```
 
-Note: The problem with docker is that it won't output matplotlib figures.
+Note: Remember to customize your docker/setenv.
 
 ### Update Terminal
 
