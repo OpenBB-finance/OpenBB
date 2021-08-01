@@ -71,23 +71,23 @@ def get_ratings() -> List[dict]:
             td = tds[3]
             if td.find("span"):
                 td.span.extract()
-            current_price = td.text
-            rating["current_price"] = current_price
+            analyst = td.text
+            rating["analyst"] = analyst
             # target price
             td = tds[4]
-            target_price = td.text
-            rating["target_price"] = target_price
+            current_price = td.text
+            rating["current_price"] = current_price
             # new rating
             td = tds[5]
-            new_rating = td.text
-            rating["rating"] = new_rating
+            target_price = td.text
+            rating["target_price"] = target_price
             # impact on price
             td = tds[6]
             if td.find("a"):
-                impact = td.find("a").text
+                rate = td.find("a").text
             else:
-                impact = td.text
-            rating["impact"] = impact
+                rate = td.text
+            rating["rate"] = rate
             ratings.append(rating)
 
     return ratings
