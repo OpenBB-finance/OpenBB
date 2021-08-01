@@ -1,4 +1,4 @@
-FROM avvii/gst-python:1.0.0
+FROM gst/gst-python:1.0.0
 
 COPY --chown=python:python pyproject.toml poetry.lock /home/python/
 

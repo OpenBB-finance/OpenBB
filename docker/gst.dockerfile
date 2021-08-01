@@ -1,4 +1,4 @@
-FROM avvii/gst-deps:1.0.0
+FROM gst/gst-deps:1.0.0
 
 COPY --chown=python:python . .
 
