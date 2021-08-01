@@ -84,6 +84,8 @@ Display customized Federal Reserve Economic Data (FRED) from https://fred.stloui
 * -s : Starting date (YYYY-MM-DD) of data. Default: 2019-01-01.
 * -t : Only output text data.
 
+Example: `fred gdp,t10yie,cpiaucsl`
+
 ![fred_series](https://user-images.githubusercontent.com/25267873/127773594-2518ddfd-eae2-4f41-a963-356214c71e8c.png)
 
 
