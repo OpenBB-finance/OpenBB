@@ -88,7 +88,15 @@ def due_diligence_report(other_args: List[str]):
                     analysis_notebook + "." + ns_parser.mode,
                 )
             )
+
         print("")
+        print(
+            "Exported: ",
+            os.path.join(
+                os.path.abspath(os.path.join(".")), analysis_notebook + ".html"
+            ),
+            "\n",
+        )
 
     except Exception as e:
         print(e, "\n")
