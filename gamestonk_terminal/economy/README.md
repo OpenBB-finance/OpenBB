@@ -78,11 +78,14 @@ Output economy impact calendar impact events. [Source: https://finnhub.io]
 usage: fred [-i SERIES_ID] [-s START_DATE] [-t]
 ```
 
-Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org.
+Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org. It is possible to display multiple series.
 
-* -i : FRED Series ID from https://fred.stlouisfed.org.
+* -i : FRED Series ID from https://fred.stlouisfed.org. For multiple series use: `fred series1,series2,series3`
 * -s : Starting date (YYYY-MM-DD) of data. Default: 2019-01-01.
 * -t : Only output text data.
+
+![fred_series](https://user-images.githubusercontent.com/25267873/127773594-2518ddfd-eae2-4f41-a963-356214c71e8c.png)
+
 
 
 ## vixcls <a name="vixcls"></a>
