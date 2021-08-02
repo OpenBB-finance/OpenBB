@@ -134,6 +134,7 @@ def trending(other_args: List[str]):
         Arguments for argparse
     """
     parser = argparse.ArgumentParser(
+        add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="trending",
         description="""Stocks trending. [Source: Stocktwits]""",
