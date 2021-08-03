@@ -49,7 +49,7 @@ class OptionsController:
         "hist",
         "chains",
         "grhist",
-        "act",
+        "unu",
     ]
 
     def __init__(self, ticker: str):
@@ -83,13 +83,13 @@ class OptionsController:
         print("")
         print("   disp          display all preset screeners filters")
         print("   scr           output screener options")
+        print("   act           show unusual options activity")
         print("")
         print(f"Current Ticker: {self.ticker or None}")
         print("   load          load new ticker")
         print("   info          display option information (volatility, IV rank etc)")
         print("")
         print("   calc          basic call/put PnL calculator")
-        print("   act           show unusual options activity")
         print("")
         print(f"Current Expiration: {self.selected_date or None}")
         print("   exp           see and set expiration dates")
@@ -151,17 +151,18 @@ class OptionsController:
         """Process calc command"""
         calculator_model.pnl_calculator(other_args)
 
-    def call_act(self, other_args: List[str]):
+    def call_unu(self, other_args: List[str]):
         """Process act command"""
 
         parser = argparse.ArgumentParser(
-            prog="act",
+            prog="unu",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="This command gets unusual options from fdscanner.com",
         )
         parser.add_argument(
-            "-n" "--num",
+            "-n",
+            "--num",
             dest="num",
             type=int,
             default=20,
@@ -196,11 +197,13 @@ class OptionsController:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            num = ns_parser.num
-            sort_column = ns_parser.sortby
-            export = ns_parser.export
-            ascending = ns_parser.ascend
-            fdscanner_view.display_options(num, sort_column, export, ascending)
+
+            fdscanner_view.display_options(
+                num=ns_parser.num,
+                sort_column=ns_parser.sortby,
+                export=ns_parser.export,
+                ascending=ns_parser.ascend,
+            )
 
         except Exception as e:
             print(e, "\n")

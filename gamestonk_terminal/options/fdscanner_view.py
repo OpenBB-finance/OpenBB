@@ -26,14 +26,6 @@ def display_options(num: int, sort_column: pd.Timestamp, export: str, ascending:
     """
     data, last_update = fdscanner_model.unusual_options(num, sort_column, ascending)
 
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"UnusualOptions_updated_{last_update}",
-            data,
-        )
-
     print(f"Last Updated: {last_update}")
     print(
         tabulate(
@@ -41,3 +33,11 @@ def display_options(num: int, sort_column: pd.Timestamp, export: str, ascending:
         )
     )
     print("")
+
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "unu_",
+            data,
+        )

@@ -14,7 +14,7 @@ This menu aims to give insight on options. Options can cause significant share p
   * Display option information [Source: Barchart.com]
 * [calc](#calc)
   * basic call/put PnL calculator
-* [act](#act)
+* [unu](#unu)
   * Display unusual options activity
 * [exp](#exp)
   * See/set expiry date
@@ -87,18 +87,18 @@ usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 
 ![calc](https://user-images.githubusercontent.com/18151143/126883982-c54cb5ec-7eb2-41c1-812e-75e830e3703d.png)
 
-## act <a name="act"></a>
+## unu <a name="unu"></a>
 Show unusual options activity from fdscreener.com
 
 ```python
-usage: act [-n NUM] [--sortby] [-a] [--export] [-h]
+usage: unu [-n NUM] [--sortby] [-a] [--export] [-h]
 ```
 * -n/--num : Number to get.  Defaults to 20.  Each page scrapes 20 results
 * --sortby : Column to sort data by.  Can be {Option,Vol/OI,Vol,OI,Bid,Ask}.  Defaults to Vol/OI
 * -a : Flag to sort in ascending order
 * --export : Flag to export.  Can be {csv, json, xlsx}
 ```python
-(✨) (op)> act -n 5
+(✨) (op)> unu -n 5
 Last Updated: 2021-08-03 18:06:07
 ╒══════════╤════════════╤══════════╤══════════╤═══════╤══════╤═══════╤═══════╕
 │ Ticker   │ Exp        │ Option   │   Vol/OI │   Vol │   OI │   Bid │   Ask │

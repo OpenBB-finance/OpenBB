@@ -211,6 +211,9 @@ PC: Price Change; PB: Price-to-book. """,
         print(e, "\n")
 
 
+# pylint: disable=eval-used
+
+
 def check_presets(preset_dict: dict):
     """Checks option screener preset values
 
@@ -297,15 +300,11 @@ def check_presets(preset_dict: dict):
                 error += f"{key} : {value},  Should be [true/false]\n"
 
         elif key == "tickers":
-            if value[0] != '"':
-                error += f'{key} : {value}, ticker should have quotes "AAPL" \n'
-            else:
+            for ticker in value.split(","):
                 try:
-                    for ticker in value.split(","):
-                        if ticker[0] != '"':
-                            error += f'{key} : {ticker}, all tickers should have quotes "AAPL","GME" \n'
-                except Exception:
-                    error += f"Error splitting tickers: {value} \n"
+                    eval(ticker)
+                except NameError:
+                    error += f"{key} : {value}, {ticker} failed"
 
         elif key == "limit":
             try:
