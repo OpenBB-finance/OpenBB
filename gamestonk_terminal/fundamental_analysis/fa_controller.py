@@ -36,7 +36,6 @@ class FundamentalAnalysisController:
         "score",
         "screener",
         "fraud",
-        "excel",
         "income",
         "balance",
         "cash",
@@ -121,7 +120,6 @@ class FundamentalAnalysisController:
         print("   cash          cash flow of the company")
         print("   earnings      earnings dates and reported EPS")
         print("   fraud         key fraud ratios")
-        print("   excel         download excel discounted cash flow")
         print("")
         print("Other Sources:")
         print(">  fmp           Financial Modeling Prep MENU")
