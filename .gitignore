@@ -14,3 +14,5 @@ reports/*
 .python-version
 exports/*
 .idea
+.coverage
+htmlcov
