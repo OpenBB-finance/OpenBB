@@ -75,7 +75,7 @@ def ark_orders_view(other_args: List[str]):
         df_orders = ark_model.get_ark_orders()
 
         if df_orders.empty:
-            print("The ARK orders aren't anavilable at the moment.\n")
+            print("The ARK orders aren't available at the moment.\n")
             return
 
         pd.set_option("mode.chained_assignment", None)

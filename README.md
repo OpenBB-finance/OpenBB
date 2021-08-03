@@ -195,10 +195,21 @@ poetry install -E prediction
 
 *If you would like to set up a docker image:*
 
-* Build the docker: `docker build .`
-* Run it: `docker run -it gamestonkterminal:dev `
+* Build the docker:
 
-Note: The problem with docker is that it won't output matplotlib figures.
+```
+docker-compose -f docker/docker-compose.yaml build gst-python
+docker-compose -f docker/docker-compose.yaml build gst-poetry-deps
+docker-compose -f docker/docker-compose.yaml build gst-poetry
+```
+
+* Run it:
+
+```
+docker run -it --env-file=docker/setenv --rm gst/gst-poetry:1.1.0
+```
+
+Note: Remember to customize your docker/setenv.
 
 ### Update Terminal
 

@@ -40,16 +40,31 @@ def get_ark_orders() -> DataFrame:
 
     df_orders.drop(
         [
-            "everything",
-            "everything.profile.customThumbnail",
             "hidden",
             "images.thumbnail",
+            "cusip",
+            "estimated_price",
+            "updated_at",
+            "created_at",
+            "region",
+            "country",
+            "isADR",
+            "companyName",
+            "clinicalTrialsSearchHandle",
+            "wasSPACBuy",
+            "currencyMultiplier",
+            "useRapidAPI",
+            "description",
+            "quandlTicker",
+            "customThumbnail",
+            "custom_thumbnail",
+            "id",
         ],
         axis=1,
         inplace=True,
     )
 
-    df_orders["date"] = pd.to_datetime(df_orders["date"], format="%Y-%m-%dZ").dt.date
+    df_orders["date"] = pd.to_datetime(df_orders["date"], format="%Y-%m-%d").dt.date
 
     return df_orders
 
