@@ -9,22 +9,22 @@ if env_files:
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 
 # https://www.alphavantage.co
-API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
+API_KEY_ALPHAVANTAGE = os.getenv("XS7HK2PAF5XU4QGX") or "XS7HK2PAF5XU4QGX"
 
 # https://financialmodelingprep.com/developer
 API_KEY_FINANCIALMODELINGPREP = (
-    os.getenv("GT_API_KEY_FINANCIALMODELINGPREP") or "REPLACE_ME"
+    os.getenv("0ae3163febc1ff2717772df696651276") or "0ae3163febc1ff2717772df696651276"
 )
 
 # https://www.quandl.com/tools/api
-API_KEY_QUANDL = os.getenv("GT_API_KEY_QUANDL") or "REPLACE_ME"
+API_KEY_QUANDL = os.getenv("RzKS3jxHL_8Sgdq5cy_A") or "RzKS3jxHL_8Sgdq5cy_A"
 
 # https://www.reddit.com/prefs/apps
 API_REDDIT_CLIENT_ID = os.getenv("GT_API_REDDIT_CLIENT_ID") or "REPLACE_ME"
 API_REDDIT_CLIENT_SECRET = os.getenv("GT_API_REDDIT_CLIENT_SECRET") or "REPLACE_ME"
-API_REDDIT_USERNAME = os.getenv("GT_API_REDDIT_USERNAME") or "REPLACE_ME"
+API_REDDIT_USERNAME = os.getenv("Maddccc") or "Maddccc"
 API_REDDIT_USER_AGENT = os.getenv("GT_API_REDDIT_USER_AGENT") or "REPLACE_ME"
-API_REDDIT_PASSWORD = os.getenv("GT_API_REDDIT_PASSWORD") or "REPLACE_ME"
+API_REDDIT_PASSWORD = os.getenv("Rasengantao99!?") or "Rasengantao99!?"
 
 # https://polygon.io
 API_POLYGON_KEY = os.getenv("GT_API_POLYGON_KEY") or "REPLACE_ME"
@@ -35,10 +35,10 @@ API_TWITTER_SECRET_KEY = os.getenv("GT_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("GT_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
-API_FRED_KEY = os.getenv("GT_API_FRED_KEY") or "REPLACE_ME"
+API_FRED_KEY = os.getenv("0072f0794714b69566c52f8afba6708e") or "0072f0794714b69566c52f8afba6708e"
 
 # https://newsapi.org
-API_NEWS_TOKEN = os.getenv("GT_API_NEWS_TOKEN") or "REPLACE_ME"
+API_NEWS_TOKEN = os.getenv("1e17d823bba24d03851608d28c1631e8") or "1e17d823bba24d03851608d28c1631e8"
 
 # Robinhood
 RH_USERNAME = os.getenv("GT_RH_USERNAME") or "REPLACE_ME"
