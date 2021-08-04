@@ -83,7 +83,7 @@ class OptionsController:
         print("")
         print("   disp          display all preset screeners filters")
         print("   scr           output screener options")
-        print("   act           show unusual options activity")
+        print("   unu           show unusual options activity")
         print("")
         print(f"Current Ticker: {self.ticker or None}")
         print("   load          load new ticker")

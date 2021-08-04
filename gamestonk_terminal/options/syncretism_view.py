@@ -195,6 +195,8 @@ PC: Price Change; PB: Price-to-book. """,
             df_res["LU"] = df_res["LU"].apply(
                 lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
             )
+            df_res["Y"] = df_res["Y"].round(3)
+            df_res["MY"] = df_res["MY"].round(3)
             print(
                 tabulate(
                     df_res,
@@ -227,6 +229,16 @@ def check_presets(preset_dict: dict):
         String of all errors accumulated
     """
     float_list = [
+        "min-iv",
+        "max-iv",
+        "min-oi",
+        "max-oi",
+        "min-strike",
+        "max-strike",
+        "min-volume",
+        "max-volume",
+        "min-voi",
+        "max-voi",
         "min-diff",
         "max-diff",
         "min-ask-bid",
@@ -325,10 +337,6 @@ def check_presets(preset_dict: dict):
             ]
             if value not in accepted_orders:
                 error += f"{key} : {value} not accepted ordering\n"
-
-    if "itm" in preset_dict.keys() and "otm" in preset_dict.keys():
-        if preset_dict["itm"] == preset_dict["otm"]:
-            error += "Check otm/itm.  Both can't be the same value\n"
 
     return error
 
