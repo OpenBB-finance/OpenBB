@@ -20,7 +20,6 @@ from gamestonk_terminal.discovery import (
     spachero_view,
     unusual_whales_view,
     yahoo_finance_view,
-    marketbeat_view,
     finra_ats_view,
     finnhub_view,
     stockgrid_view,
@@ -54,7 +53,6 @@ class DiscoveryController:
         "valuation",
         "performance",
         "spectrum",
-        "ratings",
         "latest",
         "trending",
         "darkpool",
@@ -109,7 +107,6 @@ class DiscoveryController:
         print("   spectrum       spectrum of sectors, industry, country [Finviz]")
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
-        print("   ratings        top ratings updates [MarketBeat]")
         print(
             "   darkpool       promising tickers based on dark pool shares regression [FINRA]"
         )
@@ -247,10 +244,6 @@ class DiscoveryController:
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
         seeking_alpha_view.trending_news_view(other_args)
-
-    def call_ratings(self, other_args: List[str]):
-        """Process ratings command"""
-        marketbeat_view.ratings_view(other_args)
 
     def call_darkpool(self, other_args: List[str]):
         """Process darkpool command"""
