@@ -3,12 +3,15 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
+from json.decoder import JSONDecodeError
+
 import difflib
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
+
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
 from gamestonk_terminal.main_helper import plot_autoscale
 from gamestonk_terminal.feature_flags import USE_ION as ion
@@ -67,11 +70,14 @@ CURRENCIES = [
     "ARS",
     "ISK",
 ]
-PLATFORMS = paprika.get_all_contract_platforms()["platform_id"].tolist()
-COINS = paprika.get_list_of_coins()
-COINS_DCT = dict(zip(COINS.id, COINS.symbol))
-# see https://github.com/GamestonkTerminal/GamestonkTerminal/pull/562#issuecomment-887842888
-# EXCHANGES = paprika.get_list_of_exchanges()
+try:
+    PLATFORMS = paprika.get_all_contract_platforms()["platform_id"].tolist()
+    COINS = paprika.get_list_of_coins()
+    COINS_DCT = dict(zip(COINS.id, COINS.symbol))
+    # see https://github.com/GamestonkTerminal/GamestonkTerminal/pull/562#issuecomment-887842888
+    # EXCHANGES = paprika.get_list_of_exchanges()
+except JSONDecodeError:
+    print("JSON Error loading from coinpaprika")
 
 
 def global_market(other_args: List[str]):
