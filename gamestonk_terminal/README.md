@@ -427,6 +427,7 @@ Command|Description|Source
 `load`          | Load new ticker
 `info`          | Display option information | [Barchart](https://barchart.com/)
 `calc`          | Basic option PnL calculator
+`act`           | Scrapes unusual options activity|
 `exp`           | see/set expiry date
 `chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
 `oi`            | Plot open interest

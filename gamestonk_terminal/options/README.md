@@ -14,6 +14,8 @@ This menu aims to give insight on options. Options can cause significant share p
   * Display option information [Source: Barchart.com]
 * [calc](#calc)
   * basic call/put PnL calculator
+* [unu](#unu)
+  * Display unusual options activity
 * [exp](#exp)
   * See/set expiry date
 * [chains](#chains)
@@ -84,6 +86,34 @@ usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 * --sell: Flag to calculate for selling option
 
 ![calc](https://user-images.githubusercontent.com/18151143/126883982-c54cb5ec-7eb2-41c1-812e-75e830e3703d.png)
+
+## unu <a name="unu"></a>
+Show unusual options activity from fdscreener.com
+
+```python
+usage: unu [-n NUM] [--sortby] [-a] [--export] [-h]
+```
+* -n/--num : Number to get.  Defaults to 20.  Each page scrapes 20 results
+* --sortby : Column to sort data by.  Can be {Option,Vol/OI,Vol,OI,Bid,Ask}.  Defaults to Vol/OI
+* -a : Flag to sort in ascending order
+* --export : Flag to export.  Can be {csv, json, xlsx}
+```python
+(✨) (op)> unu -n 5
+Last Updated: 2021-08-03 18:06:07
+╒══════════╤════════════╤══════════╤══════════╤═══════╤══════╤═══════╤═══════╕
+│ Ticker   │ Exp        │ Option   │   Vol/OI │   Vol │   OI │   Bid │   Ask │
+╞══════════╪════════════╪══════════╪══════════╪═══════╪══════╪═══════╪═══════╡
+│ AMD      │ 2021-08-06 │ 112.0 P  │    102.9 │ 15639 │  152 │  1.67 │  1.69 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ MA       │ 2021-11-19 │ 375.0 C  │     50.3 │ 10165 │  202 │ 18.35 │ 18.65 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ GOOG     │ 2021-08-06 │ 2630.0 P │     38.5 │  5314 │  138 │  1.2  │  1.65 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ AMD      │ 2021-08-06 │ 111.0 P  │     37.2 │ 15245 │  410 │  1.29 │  1.31 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ GOOG     │ 2021-08-06 │ 2635.0 P │     34.1 │  5966 │  175 │  1.4  │  1.8  │
+╘══════════╧════════════╧══════════╧══════════╧═══════╧══════╧═══════╧═══════╛
+```
 
 ## exp <a name="exp"></a>
 See/set expiry dates.

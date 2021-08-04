@@ -7,7 +7,7 @@ from typing import List
 import matplotlib.pyplot as plt
 
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.options import (
     barchart_view,
@@ -18,6 +18,7 @@ from gamestonk_terminal.options import (
     yfinance_model,
     tradier_view,
     tradier_model,
+    fdscanner_view,
 )
 
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
@@ -48,6 +49,7 @@ class OptionsController:
         "hist",
         "chains",
         "grhist",
+        "unu",
     ]
 
     def __init__(self, ticker: str):
@@ -81,6 +83,7 @@ class OptionsController:
         print("")
         print("   disp          display all preset screeners filters")
         print("   scr           output screener options")
+        print("   unu           show unusual options activity")
         print("")
         print(f"Current Ticker: {self.ticker or None}")
         print("   load          load new ticker")
@@ -147,6 +150,63 @@ class OptionsController:
     def call_calc(self, other_args: List[str]):
         """Process calc command"""
         calculator_model.pnl_calculator(other_args)
+
+    def call_unu(self, other_args: List[str]):
+        """Process act command"""
+
+        parser = argparse.ArgumentParser(
+            prog="unu",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="This command gets unusual options from fdscanner.com",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="num",
+            type=int,
+            default=20,
+            help="Number of options to show.  Each scraped page gives 20 results.",
+        )
+
+        parser.add_argument(
+            "--sortby",
+            dest="sortby",
+            default="Vol/OI",
+            choices=["Option", "Vol/OI", "Vol", "OI", "Bid", "Ask"],
+            help="Column to sort by.  Vol/OI is the default and typical variable to be considered unusual.",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascending",
+            dest="ascend",
+            default=False,
+            action="store_true",
+            help="Flag to sort in ascending order",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            fdscanner_view.display_options(
+                num=ns_parser.num,
+                sort_column=ns_parser.sortby,
+                export=ns_parser.export,
+                ascending=ns_parser.ascend,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
