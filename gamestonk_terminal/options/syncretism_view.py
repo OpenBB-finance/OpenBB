@@ -10,6 +10,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -315,6 +316,9 @@ def check_presets(preset_dict: dict):
             for ticker in value.split(","):
                 try:
                     eval(ticker)
+                    if yf.Ticker(ticker).info["regularMarketPrice"] is None:
+                        error += f"{key} : {ticker} not found on yfinance"
+
                 except NameError:
                     error += f"{key} : {value}, {ticker} failed"
 
