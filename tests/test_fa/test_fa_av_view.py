@@ -74,7 +74,7 @@ class TestAVView(unittest.TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Price to sales ratio", capt)
 
-    @unittest.mock.patch("requests.get", side_effect=mocked_requests_get)
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_av_key(self, mock_get):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
@@ -84,7 +84,7 @@ class TestAVView(unittest.TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Market capitalization", capt)
 
-    @unittest.mock.patch("requests.get", side_effect=mocked_requests_get)
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_income_statement(self, mock_get):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
@@ -94,7 +94,7 @@ class TestAVView(unittest.TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Gross profit", capt)
 
-    @unittest.mock.patch("requests.get", side_effect=mocked_requests_get)
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_balance_sheet(self, mock_get):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
@@ -104,7 +104,7 @@ class TestAVView(unittest.TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Total assets", capt)
 
-    @unittest.mock.patch("requests.get", side_effect=mocked_requests_get)
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_cash_flow(self, mock_get):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
@@ -114,7 +114,7 @@ class TestAVView(unittest.TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Operating cashflow", capt)
 
-    @unittest.mock.patch("requests.get", side_effect=mocked_requests_get)
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_earnings(self, mock_get):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
@@ -124,7 +124,7 @@ class TestAVView(unittest.TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Reported EPS", capt)
 
-    @unittest.mock.patch("requests.get", side_effect=mocked_requests_get)
+    @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_fraud(self, mock_get):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
