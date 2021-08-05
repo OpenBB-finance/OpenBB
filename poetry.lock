@@ -1470,9 +1470,6 @@ python-versions = "*"
 [package.dependencies]
 six = "*"
 
-[package.dependencies]
-et-xmlfile = "*"
-
 [[package]]
 name = "opt-einsum"
 version = "3.3.0"
