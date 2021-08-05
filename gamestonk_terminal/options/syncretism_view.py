@@ -10,6 +10,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -140,27 +141,27 @@ PC: Price Change; PB: Price-to-book. """,
             return
 
         d_cols = {
-            "contractsymbol": "CS",
+            "contractSymbol": "CS",
             "symbol": "S",
-            "opttype": "T",
+            "optType": "T",
             "strike": "Str",
             "expiration": "Exp ∨",
-            "impliedvolatility": "IV",
-            "lastprice": "LP",
+            "impliedVolatility": "IV",
+            "lastPrice": "LP",
             "bid": "B",
             "ask": "A",
             "volume": "V",
-            "openinterest": "OI",
+            "openInterest": "OI",
             "yield": "Y",
             "monthlyyield": "MY",
-            "regularmarketprice": "SMP",
-            "regularmarketdaylow": "SMDL",
-            "regularmarketdayhigh": "SMDH",
-            "lasttradedate": "LU",
-            "lastcrawl": "LC",
-            "inthemoney": "ITM",
-            "pchange": "PC",
-            "pricetobook": "PB",
+            "regularMarketPrice": "SMP",
+            "regularMarketDayLow": "SMDL",
+            "regularMarketDayHigh": "SMDH",
+            "lastTradeDate": "LU",
+            "lastCrawl": "LC",
+            "inTheMoney": "ITM",
+            "pChange": "PC",
+            "priceToBook": "PB",
         }
 
         preset_filter = configparser.RawConfigParser()
@@ -171,7 +172,10 @@ PC: Price Change; PB: Price-to-book. """,
         s_filters = str(d_filters)
         s_filters = s_filters.replace(": '", ": ").replace("',", ",").replace("'}", "}")
         s_filters = s_filters.replace("'", '"')
-
+        errors = check_presets(d_filters)
+        if errors:
+            print(errors, "\n")
+            return
         link = "https://api.syncretism.io/ops"
 
         res = requests.get(
@@ -186,7 +190,14 @@ PC: Price Change; PB: Price-to-book. """,
                 return
 
             df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:17]]
-
+            df_res["Exp ∨"] = df_res["Exp ∨"].apply(
+                lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
+            )
+            df_res["LU"] = df_res["LU"].apply(
+                lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
+            )
+            df_res["Y"] = df_res["Y"].round(3)
+            df_res["MY"] = df_res["MY"].round(3)
             print(
                 tabulate(
                     df_res,
@@ -201,6 +212,137 @@ PC: Price Change; PB: Price-to-book. """,
 
     except Exception as e:
         print(e, "\n")
+
+
+# pylint: disable=eval-used
+
+
+def check_presets(preset_dict: dict):
+    """Checks option screener preset values
+
+    Parameters
+    ----------
+    preset_dict: dict
+        Defined presets from configparser
+    Returns
+    -------
+    error: str
+        String of all errors accumulated
+    """
+    float_list = [
+        "min-iv",
+        "max-iv",
+        "min-oi",
+        "max-oi",
+        "min-strike",
+        "max-strike",
+        "min-volume",
+        "max-volume",
+        "min-voi",
+        "max-voi",
+        "min-diff",
+        "max-diff",
+        "min-ask-bid",
+        "max-ask-bid",
+        "min-exp",
+        "max-exp",
+        "min-price",
+        "max-price",
+        "min-price-20d",
+        "max-price-20d",
+        "min-volume-20d",
+        "max-volume-20d",
+        "min-iv-20d",
+        "max-iv-20d",
+        "min-delta-20d",
+        "max-delta-20d",
+        "min-gamma-20d",
+        "max-gamma-20d",
+        "min-theta-20d",
+        "max-theta-20d",
+        "min-vega-20d",
+        "max-vega-20d",
+        "min-rho-20d",
+        "max-rho-20d",
+        "min-price-100d",
+        "max-price-100d",
+        "min-volume-100d",
+        "max-volume-100d",
+        "min-iv-100d",
+        "max-iv-100d",
+        "min-delta-100d",
+        "max-delta-100d",
+        "min-gamma-100d",
+        "max-gamma-100d",
+        "min-theta-100d",
+        "max-theta-100d",
+        "min-vega-100d",
+        "max-vega-100d",
+        "min-rho-100d",
+        "max-rho-100d",
+        "min-sto",
+        "max-sto",
+        "min-yield",
+        "max-yield",
+        "min-myield",
+        "max-myield",
+        "min-delta",
+        "max-delta",
+        "min-gamma",
+        "max-gamma",
+        "min-theta",
+        "max-theta",
+        "min-vega",
+        "max-vega",
+        "min-cap",
+        "max-cap",
+    ]
+    bool_list = ["active", "stock", "etf", "puts", "calls", "itm", "otm", "exclude"]
+    error = ""
+    for key, value in preset_dict.items():
+        if key in float_list:
+            try:
+                float(value)
+                if value.startswith("."):
+                    error += f"{key} : {value} needs to be formatted with leading 0\n"
+            except Exception:
+                error += f"{key} : {value}, should be float\n"
+
+        elif key in bool_list:
+            if value not in ["true", "false"]:
+                error += f"{key} : {value},  Should be [true/false]\n"
+
+        elif key == "tickers":
+            for ticker in value.split(","):
+                try:
+                    eval(ticker)
+                    if yf.Ticker(ticker).info["regularMarketPrice"] is None:
+                        error += f"{key} : {ticker} not found on yfinance"
+
+                except NameError:
+                    error += f"{key} : {value}, {ticker} failed"
+
+        elif key == "limit":
+            try:
+                int(value)
+            except Exception:
+                error += f"{key} : {value} , should be integer\n"
+
+        elif key == "order-by":
+            accepted_orders = [
+                "e_desc",
+                "e_asc",
+                "iv_desc",
+                "iv_asc",
+                "md_desc",
+                "md_asc",
+                "lp_desc",
+                "lp_asc",
+            ]
+            if value not in accepted_orders:
+                error += f"{key} : {value} not accepted ordering\n"
+
+    return error
 
 
 possible_greeks = [
