@@ -377,7 +377,7 @@ tispm | top insider sales past month
 &nbsp;
 
 
-## Backtesting [»](backtesting/README.md)
+## [Backtesting »»](backtesting/README.md)
 
 Command|Description
 ------ | --------
@@ -386,7 +386,7 @@ Command|Description
 `rsi`           | buy when RSI < low and sell when RSI > high
 
 
-## Government [»](government/README.md)
+## [Government »](government/README.md)
 
 Entire menu relies on [Quiver Quantitative](https://www.quiverquant.com).
 
