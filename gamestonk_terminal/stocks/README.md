@@ -44,7 +44,7 @@ Clear previously loaded stock ticker.
 ```
 view
 ```
-Visualise historical data of a stock. Line plot color is configurable in [config_plot](/config_terminal.py)
+Visualise historical data of a stock. Line plot color is configurable in [config_plot](/gamestonk_terminal/config_plot.py)
 
 ![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
 
