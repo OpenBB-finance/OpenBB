@@ -1,8 +1,11 @@
 # STOCKS 📈
 
-* Commands
+* [Commands](#Commands)
    * [Load](#Load)
    * [Clear](#Clear)
+   * [View](#View)
+   * [Quote](#Quote)
+   * [Candle](#Candle)
 * [Discover Stocks](#Discover-Stocks-)
 * [Behavioural Analysis](#Behavioural-Analysis-)
 * [Research](#Research-)
@@ -18,62 +21,49 @@
 * [Backtesting](#Backtesting-)
 * [Government](#Government-)
 
+## Commands 
+
 #### Load
-
-The main menu allows the following commands:
-
 ```
 usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av,iex}] [-p]
 ```
-
-* Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
+Load stock ticker to perform analysis on. When the data source is 'yf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in <https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html>.
   * -t : Stock ticker
   * -s : The starting date (format YYYY-MM-DD) of the stock
   * -i : Intraday stock minutes
   * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
   * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
 
-**Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
-
 #### Clear
-
 ```
 usage: clear
 ```
+Clear previously loaded stock ticker.
 
-* Clear previously loaded stock ticker.
-
+#### View
 ```
 view
 ```
+Visualise historical data of a stock. Line plot color is configurable in [config_plot](/config_terminal.py)
 
-* Visualise historical data of a stock.
 ![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
 
-
-Line plot color is configurable in config_plot.py
-
+#### Quote
 ```
 quote -t S_TICKER
 ```
+Show the current price of a stock.
 
-* Show the current price of a stock.
+<img width="896" alt="Captura de ecrã 2021-08-06, às 21 31 12" src="https://user-images.githubusercontent.com/25267873/128567977-7185427e-1511-460e-954d-047b53ea5c7d.png">
 
+#### Candle
 ```
 candle -s START_DATE
 ```
-
-* Visualize candles historical data, with support and resistance bars, and moving averages of 20 and 50.
+Visualize candles historical data, with support and resistance bars, and moving averages of 20 and 50.
 
 ![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)
 
-```
-export -f GNUS_data -F csv
-```
-
-* Exports the historical data from this ticker to a file or stdout.
-  * -f : Name of file to save the historical data exported (stdout if unspecified). Default: stdout.
-  * -F : Export historical data into following formats: csv, json, excel, clipboard. Default: csv.
 
 ## [Discover Stocks »»](discovery/README.md)
 
