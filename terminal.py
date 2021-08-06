@@ -53,7 +53,8 @@ from gamestonk_terminal.backtesting import bt_controller
 from gamestonk_terminal.resource_collection import rc_controller
 from gamestonk_terminal.research import res_controller
 from gamestonk_terminal.government import gov_controller
-from gamestonk_terminal.etf import etf_controller
+
+# from gamestonk_terminal.etf import etf_controller
 from gamestonk_terminal.insider import insider_controller
 
 
@@ -154,7 +155,7 @@ Contexts:
 >   crypto      cryptocurrencies, \t\t from: coingecko, coinmarketcap, binance
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 >   gov         government menu, \t\t house trading, contracts, corporate lobbying
->   etf         etf menu, \t\t\t from: StockAnalysis.com
+>   etf         TEMPORARILY DISABLED
 >   fx          forex menu, \t\t\t forex support through Oanda
 >   rc          resource collection, \t\t e.g. hf letters, arXiv, EDGAR, FINRA
 >   op          options info,            \t e.g.: volume, open interest, chains, volatility
@@ -321,7 +322,9 @@ Contexts:
 
     def call_etf(self, _):
         """Process etf command"""
-        return etf_controller.menu()
+        print("TEMPORARILY DISABLED \n")
+
+    #    return etf_controller.menu()
 
     def call_ins(self, _):
         """Process ins command"""
