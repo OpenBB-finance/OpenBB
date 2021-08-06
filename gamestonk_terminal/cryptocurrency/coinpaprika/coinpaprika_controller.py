@@ -11,7 +11,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.coinpaprika import coinpaprika_view
-from gamestonk_terminal.technical_analysis import ta_controller
+from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 
 
 class PaprikaController:
@@ -232,7 +232,6 @@ class PaprikaController:
                         ticker=self.current_coin,
                         start=self.current_df.index[0],
                         interval="",
-                        context="(crypto)>(cp)",
                     )
                     print("")
                     if quit is not None:

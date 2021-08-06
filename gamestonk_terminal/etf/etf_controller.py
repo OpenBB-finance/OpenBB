@@ -21,12 +21,17 @@ from gamestonk_terminal.etf import wsj_view
 
 
 class ETFController:
+    """ETF Controller class"""
+
     CHOICES = [
         "cls",
         "?",
         "help",
         "q",
         "quit",
+    ]
+
+    CHOICES_COMMANDS = [
         "web",
         "search",
         "overview",
@@ -38,9 +43,10 @@ class ETFController:
         "active",
     ]
 
-    def __init__(self):
-        """CONSTRUCTOR"""
+    CHOICES += CHOICES_COMMANDS
 
+    def __init__(self):
+        """Constructor"""
         self.etf_parser = argparse.ArgumentParser(add_help=False, prog="etf")
         self.etf_parser.add_argument("cmd", choices=self.CHOICES)
 
@@ -49,7 +55,10 @@ class ETFController:
         print(
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf"
         )
-        print("\nETF:")
+        print("")
+        print(">> ETF <<")
+        print("")
+        print("What do you want to do?")
         print("   cls           clear screen")
         print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
@@ -61,7 +70,7 @@ class ETFController:
         print("   holdings      get top holdings for ETF")
         print("   compare       compare overview of multiple ETF")
         print("   screener      screen etfs based on overview data")
-        print("\n Wall St. Journal")
+        print("\nWall St. Journal")
         print("   gainers       show top gainers")
         print("   decliners     show top decliners")
         print("   active        show most active")

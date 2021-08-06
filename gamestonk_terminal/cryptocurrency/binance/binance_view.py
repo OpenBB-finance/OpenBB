@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
-from gamestonk_terminal.main_helper import plot_autoscale
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.feature_flags import USE_ION as ion
 

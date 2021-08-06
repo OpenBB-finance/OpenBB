@@ -8,13 +8,13 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.discovery.fidelity_model import get_orders
+from gamestonk_terminal.stocks.discovery.fidelity_model import get_orders
 
 assertions = unittest.TestCase("__init__")
 
 
 class TestDiscoveryFidelityModel:
-    @mock.patch("gamestonk_terminal.discovery.fidelity_model.requests")
+    @mock.patch("gamestonk_terminal.stocks.discovery.fidelity_model.requests")
     @parameterize_from_file(
         "test_get_orders",
         "../tests/data/discovery_fidelity_model.yaml",
