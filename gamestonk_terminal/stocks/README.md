@@ -72,7 +72,7 @@ export -f GNUS_data -F csv
   * -f : Name of file to save the historical data exported (stdout if unspecified). Default: stdout.
   * -F : Export historical data into following formats: csv, json, excel, clipboard. Default: csv.
 
-## Discover Stocks [»](discovery/README.md)
+## [Discover Stocks »»](discovery/README.md)
 
 Command|Description|Source
 ---|---|---
@@ -100,7 +100,7 @@ Command|Description|Source
 
 &nbsp;
 
-## Behavioural Analysis [»](behavioural_analysis/README.md)
+## [Behavioural Analysis »»](behavioural_analysis/README.md)
 
 Command|Description
 ----|----
@@ -133,7 +133,7 @@ Command|Description
 
 &nbsp;
 
-## Research [»](research/README.md)
+## [Research »»](research/README.md)
 
 Command|Website
 ----|----
@@ -158,7 +158,7 @@ Command|Website
 
 &nbsp;
 
-## Fundamental Analysis [»](fundamental_analysis/README.md)
+## [Fundamental Analysis »»](fundamental_analysis/README.md)
 
 Command|Description
 ----- | ---------
@@ -191,7 +191,7 @@ Command|Description
 
 &nbsp;
 
-## Technical Analysis [»](technical_analysis/README.md)
+## [Technical Analysis »»](technical_analysis/README.md)
 
 Command | Description | Sources
 ------ | ------ | ------
@@ -220,7 +220,7 @@ custom|
 `fib`          | Fibonocci levels | [Investopedia](https://www.investopedia.com/terms/f/fibonacciretracement.asp)
 &nbsp;
 
-## Due Diligence [»](due_diligence/README.md)
+## [Due Diligence »»](due_diligence/README.md)
 
 Command|Description|Source
 ------ | --------|----
@@ -245,7 +245,7 @@ Command|Description|Source
 
 &nbsp;
 
-## Prediction Techniques [»](prediction_techniques/README.md)
+## [Prediction Techniques »»](prediction_techniques/README.md)
 
 Command|Technique|Sources
 ------ | ------------|---
@@ -261,7 +261,7 @@ Command|Technique|Sources
 `conv1d`      |1D Convolution Neural Net| [Wikipedia](https://en.wikipedia.org/wiki/Convolutional_neural_network)
 &nbsp;
 
-## Comparison Analysis [»](comparison_analysis/README.md)
+## [Comparison Analysis »»](comparison_analysis/README.md)
 
 Command|Description
 ------ | --------
@@ -289,7 +289,7 @@ Command|Description
 
 &nbsp;
 
-## Exploratory Data Analysis [»](exploratory_data_analysis/README.md)
+## [Exploratory Data Analysis »»](exploratory_data_analysis/README.md)
 
 Command|Description
 ------ | --------
@@ -305,7 +305,7 @@ Command|Description
 
 &nbsp;
 
-## Residual Analysis [»](residuals_analysis/README.md)
+## [Residual Analysis »»](residuals_analysis/README.md)
 
 Command|Description|More Info
 ------ | --------|----
@@ -323,7 +323,7 @@ Command|Description|More Info
 
 &nbsp;
 
-## Screener [»](screener/README.md)
+## [Screener »»](screener/README.md)
 
 Command|Description
 ------ | --------
@@ -342,7 +342,7 @@ signals        |view filter signals (e.g. -s top_gainers)
 
 &nbsp;
 
-## Insider [»](insider/README.md)
+## [Insider »»](insider/README.md)
 
 Entire menu relies on [Open Insider](http://openinsider.com).
 
@@ -386,7 +386,7 @@ Command|Description
 `rsi`           | buy when RSI < low and sell when RSI > high
 
 
-## [Government »](government/README.md)
+## [Government »»](government/README.md)
 
 Entire menu relies on [Quiver Quantitative](https://www.quiverquant.com).
 
