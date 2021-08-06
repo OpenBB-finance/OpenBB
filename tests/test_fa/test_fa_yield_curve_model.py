@@ -11,7 +11,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.fundamental_analysis.yield_curve_model import (
+from gamestonk_terminal.stocks.fundamental_analysis.yield_curve_model import (
     get_yield_curve,
     get_yield_curve_year,
 )
@@ -21,7 +21,7 @@ assertions = unittest.TestCase("__init__")
 
 class TestFaYieldCurveModel:
     @mock.patch(
-        "gamestonk_terminal.fundamental_analysis.yield_curve_model.get_yield_curve_year"
+        "gamestonk_terminal.stocks.fundamental_analysis.yield_curve_model.get_yield_curve_year"
     )
     @parameterize_from_file(
         "test_get_yield_curve",
@@ -53,7 +53,9 @@ class TestFaYieldCurveModel:
             df.to_csv().replace("\r\n", "\n"), expected_result.replace("\r\n", "\n")
         )
 
-    @mock.patch("gamestonk_terminal.fundamental_analysis.yield_curve_model.requests")
+    @mock.patch(
+        "gamestonk_terminal.stocks.fundamental_analysis.yield_curve_model.requests"
+    )
     @parameterize_from_file(
         "test_get_yield_curve_year",
         "../tests/data/fa_yield_curve_model.yaml",
