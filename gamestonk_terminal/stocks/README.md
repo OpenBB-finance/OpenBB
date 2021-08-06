@@ -236,12 +236,12 @@ Command|Description|Source
 `sec`           |SEC filings |[MarketWatch](https://www.marketwatch.com/)
 `short`         |short interest |[Quandl](https://www.quandl.com/)
 `warnings`      |company warnings according to Sean Seah book |[MarketWatch](https://www.marketwatch.com/)
-`dp`            |dark pools (ATS) vs OTC data [FINRA](https://www.finra.org/#/)
-`ftd`           |display fails-to-deliver data [SEC](https://www.sec.gov)
-`shortview`     |shows price vs short interest volume [Stockgrid](https://stockgrid.io)
-`darkpos`       |net short vs position [Stockgrid](https://stockgrid.io)
-`supplier`      |list of suppliers [csimarket](https://csimarket.com)
-`customer`      |list of customers [csimarket](https://csimarket.com)
+`dp`            |dark pools (ATS) vs OTC data | [FINRA](https://www.finra.org/#/)
+`ftd`           |display fails-to-deliver data | [SEC](https://www.sec.gov)
+`shortview`     |shows price vs short interest volume | [Stockgrid](https://stockgrid.io)
+`darkpos`       |net short vs position | [Stockgrid](https://stockgrid.io)
+`supplier`      |list of suppliers | [csimarket](https://csimarket.com)
+`customer`      |list of customers | [csimarket](https://csimarket.com)
 
 &nbsp;
 
@@ -271,16 +271,13 @@ Command|Description
 [Yahoo Finance](https://finance.yahoo.com/) |
 `historical`    |historical price data comparison
 `hcorr`         |historical price correlation
-
 [MarketWatch](https://www.marketwatch.com/) |
 `income`        |income financials comparison
 `balance`       |balance financials comparison
 `cashflow`      |cashflow comparison
-
 [FinBrain](https://finbrain.tech) |
 `sentiment`     |sentiment analysis comparison
 `scorr`         |sentiment correlation
-
 [Finviz](https://finviz.com/screener.ashx) |
 `overview`        |brief overview comparison
 `valuation`       |brief valuation comparison
@@ -296,14 +293,21 @@ Command|Description
 
 Command|Description
 ------ | --------
-
-T.B.D.
+`summary`      | brief summary statistics
+`hist`         | histogram with density plot
+`cdf`          | cumulative distribution function
+`bwy`          | box and whisker yearly plot
+`bwm`          | box and whisker monthly plot
+`rolling`      | rolling mean and std deviation
+`decompose`    | decomposition in cyclic-trend, season, and residuals
+`cusum`        | detects abrupt changes using cumulative sum algorithm
+`acf`          | (partial) auto-correlation function differentials
 
 &nbsp;
 
 ## Residual Analysis [»](residuals_analysis/README.md)
 
-Command|Description|Source
+Command|Description|More Info
 ------ | --------|----
 `pick`          |pick one of the model fitting | Supports [ARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average), [Naive](https://en.wikipedia.org/wiki/Forecasting#Naïve_approach)
 `fit`           |show model fit against stock | [Wikipedia](https://en.wikipedia.org/wiki/Curve_fitting)
@@ -319,60 +323,14 @@ Command|Description|Source
 
 &nbsp;
 
-## Economy [»](econ/README.md)
-
-Command|Description|Source
------- | -------- | --------
-`feargreed`     | CNN Fear Greed Index | <https://money.cnn.com/data/fear-and-greed/>
-`events`        | economic impact events | <https://finnhub.io>
-`fred`          | display customized FRED data | <https://fred.stlouisfed.org>
-`vixcls`        | Volatility Index | <https://fred.stlouisfed.org>
-`gdp`           | Gross Domestic Product | <https://fred.stlouisfed.org>
-`unrate`        | Unemployment Rate | <https://fred.stlouisfed.org>
-`dgs1`          | 1-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`dgs5`          | 5-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`dgs10`         | 10-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`dgs30`         | 30-Year Treasury Constant Maturity Rate | <https://fred.stlouisfed.org>
-`mortgage30us`  | 30-Year Fixed Rate Mortgage Average | <https://fred.stlouisfed.org>
-`fedfunds`      | Effective Federal Funds Rate | <https://fred.stlouisfed.org>
-`aaa`           | Moody's Seasoned AAA Corporate Bond Yield | <https://fred.stlouisfed.org>
-`dexcaus`       | Canada / U.S. Foreign Exchange Rate (CAD per 1 USD) | <https://fred.stlouisfed.org>
-`overview`      | Market overview  |  <https://www.wsj.com/market-data>
-`indices`       | US indices overview  |  <https://www.wsj.com/market-data>
-`futures`       | Futures/commodities overview  |  <https://www.wsj.com/market-data>
-`us_bonds`      | US bonds overview  |  <https://www.wsj.com/market-data>
-`gl_bonds`      | Global bonds overview  |  <https://www.wsj.com/market-data>
-`currencies`    | Global currencies overview  |  <https://www.wsj.com/market-data>
-
-
-&nbsp;
-
-## Options [»](options/README.md)
-
-Command|Description|Source
------- | --------|----
-`disp`          | Display all preset screeners filters
-`scr`           | Output screener options
-`load`          | Load new ticker
-`info`          | Display option information | [Barchart](https://barchart.com/)
-`calc`          | Basic option PnL calculator
-`act`           | Scrapes unusual options activity|
-`exp`           | see/set expiry date
-`chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
-`oi`            | Plot open interest
-`vol`           | Plot volume
-`voi`           | Plot volume and open interest
-`hist`          | Plot historical options data | [Tradier](https://developer.tradier.com/)
-`gr_hist`       | Plot historical option greek | [Syncretism](ops.syncretism.io)
-&nbsp;
-
 ## Screener [»](screener/README.md)
 
-Command|Description|Source
------- | --------|----
-view           |view available presets | [presets]((screener/presets/README.md))
-set            |set one of the available presets
-historical     |view historical price |[Yahoo Finance](https://finance.yahoo.com/)
+Command|Description
+------ | --------
+view           |view [preset(s)]((screener/presets/README.md))
+set            |set one of the [presets]((screener/presets/README.md))
+[Yahoo Finance](https://finance.yahoo.com/) |
+historical     |view historical price 
 [Finviz](https://finviz.com/screener.ashx) |
 overview       |overview (e.g. Sector, Industry, Market Cap, Volume)
 valuation      |valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
@@ -416,26 +374,6 @@ tispm | top insider sales past month
 
 &nbsp;
 
-## Forex [»](forex/README.md)
-
-Command|Description
------- | --------
-summary      |display a summary of your account
-calendar     |get information about past or upcoming events which may impact the price
-list         |list your order history
-pending      |get information about pending orders
-cancel       |cancel a pending order by ID
-positions    |get information about your positions
-trades       |see a list of open trades
-closetrade   |close a trade by ID
-load         |specify an instrument to use
-candles      |get a candlestick chart for the forex instrument
-price        |show the current price for the forex instrument
-order        |place a limit order
-orderbook    |display the orderbook if Oanda provides one for the forex instrument
-positionbook |display the positionbook if Oanda provides one for the forex instrument
-
-&nbsp;
 
 ## Backtesting [»](backtesting/README.md)
 
@@ -444,19 +382,6 @@ Command|Description
 `ema`           | buy when price exceeds EMA(l)
 `ema_cross`     | buy when EMA(short) > EMA(long)
 `rsi`           | buy when RSI < low and sell when RSI > high
-
-## Resource Collection [»](resource_collection/README.md)
-
-Command|Website
-----|----
-`hfletters`     |<https://miltonfmr.com/hedge-fund-letters/>
-`arxiv`         |<https://arxiv.org>
-`finra`         |<https://www.finra.org/#/>
-`edgar`         |<https://www.sec.gov/edgar.shtml>
-`fred`          |<https://fred.stlouisfed.org>
-`learn`         |<https://moongangcapital.com/free-stock-market-resources/>
-
-&nbsp;
 
 
 ## Government [»](government/README.md)
@@ -485,15 +410,3 @@ with ticker provided    |
 
 &nbsp;
 
-## ETF [»](etf/README.md)
-command|description
----|----
-`web`|open webbroswer to stockanalysis.com
-`search`|search for ETFs matching an input
-`overview`|get ETF overview
-`holdings`|show ETF holdings
-`compare`|compare multiple ETFs overview
-`screener`|screen ETFs
-`gainers`|show top gainers
-`decliners`|show top decliners
-`active`|show most active
