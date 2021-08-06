@@ -24,7 +24,8 @@ from gamestonk_terminal.stocks import stocks_controller
 from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.economy import economy_controller
 from gamestonk_terminal.options import options_controller
-from gamestonk_terminal.etf import etf_controller
+
+# from gamestonk_terminal.etf import etf_controller
 from gamestonk_terminal.forex import forex_controller
 from gamestonk_terminal.resources import resources_controller
 from gamestonk_terminal.portfolio import portfolio_controller
@@ -94,7 +95,7 @@ What do you want to do?
 >>  economy
 >>  options
 >>  portfolio
->>  etf
+>>  etf         :: TEMPORARILY DISABLED
 >>  forex
 >>  resources
     """
@@ -181,7 +182,8 @@ What do you want to do?
 
     def call_etf(self, _):
         """Process etf command"""
-        return etf_controller.menu()
+        print("Temporarily disabled\n")
+        # return etf_controller.menu()
 
     def call_forex(self, _):
         """Process fx command"""
