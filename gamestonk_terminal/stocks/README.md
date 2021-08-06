@@ -1,7 +1,8 @@
 # STOCKS 📈
 
-### Table of contents
-
+* Commands
+   * [Load](#Load)
+   * [Clear](#Clear)
 * [Discover Stocks](#Discover-Stocks-)
 * [Behavioural Analysis](#Behavioural-Analysis-)
 * [Research](#Research-)
@@ -17,7 +18,7 @@
 * [Backtesting](#Backtesting-)
 * [Government](#Government-)
 
-## Main
+#### Load
 
 The main menu allows the following commands:
 
@@ -33,6 +34,8 @@ usage: load [-t S_TICKER] [-s S_START_DATE] [-i {1,5,15,30,60}] [--source {yf,av
   * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
 
 **Note:** Until a ticker is loaded, the menu will only show *disc* and *sen* menu, as the others require a ticker being provided.
+
+#### Clear
 
 ```
 usage: clear
