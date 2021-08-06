@@ -29,6 +29,7 @@ from gamestonk_terminal.forex import forex_controller
 from gamestonk_terminal.resources import resources_controller
 from gamestonk_terminal.portfolio import portfolio_controller
 
+
 # pylint: disable=too-many-public-methods
 
 
