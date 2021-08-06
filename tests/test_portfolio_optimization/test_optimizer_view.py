@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 import sys
 import io
 
-from gamestonk_terminal.portfolio_optimization import optimizer_view
+from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_view
 
 
 class TestOptimizerView(TestCase):

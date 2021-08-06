@@ -6,7 +6,7 @@ import io
 import sys
 
 # pylint: disable=unused-import
-from gamestonk_terminal.fundamental_analysis import fa_controller
+from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 
 
 @contextmanager

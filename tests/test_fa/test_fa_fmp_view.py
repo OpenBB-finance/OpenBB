@@ -6,7 +6,9 @@ import io
 import sys
 
 # pylint: disable=unused-import
-from gamestonk_terminal.fundamental_analysis.financial_modeling_prep import fmp_view
+from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
+    fmp_view,
+)
 
 
 @contextmanager

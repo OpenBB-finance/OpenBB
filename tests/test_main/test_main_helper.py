@@ -7,7 +7,8 @@ import io
 
 import pandas as pd
 
-from gamestonk_terminal import main_helper
+from gamestonk_terminal import terminal_helper
+from gamestonk_terminal.stocks import stocks_helper
 
 
 def return_val(x, shell, check):
@@ -32,14 +33,16 @@ class TestMainHelper(unittest.TestCase):
     start = datetime.now() - timedelta(days=200)
 
     def test_load(self):
-        values = main_helper.load(["GME"], "GME", self.start, "1440min", pd.DataFrame())
+        values = stocks_helper.load(
+            ["GME"], "GME", self.start, "1440min", pd.DataFrame()
+        )
         self.assertEqual(values[0], "GME")
         self.assertNotEqual(values[1], None)
         self.assertEqual(values[2], "1440min")
 
     def test_load_clear(self):
-        main_helper.load(["GME"], "GME", self.start, "1440min", pd.DataFrame())
-        values = main_helper.clear([], "GME", self.start, "1440min", pd.DataFrame())
+        stocks_helper.load(["GME"], "GME", self.start, "1440min", pd.DataFrame())
+        values = stocks_helper.clear([], "GME", self.start, "1440min", pd.DataFrame())
         self.assertEqual(values[0], "")
         self.assertEqual(values[1], "")
         self.assertEqual(values[2], "")
@@ -47,12 +50,12 @@ class TestMainHelper(unittest.TestCase):
     @patch("matplotlib.pyplot.show")
     def test_candle(self, mock):
         # pylint: disable=unused-argument
-        main_helper.candle("GME", ["GME"])
+        stocks_helper.candle("GME", ["GME"])
 
     def test_quote(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        main_helper.quote(["GME"], "GME")
+        stocks_helper.quote(["GME"], "GME")
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Price", capt)
@@ -60,12 +63,12 @@ class TestMainHelper(unittest.TestCase):
     @patch("matplotlib.pyplot.show")
     def test_view(self, mock):
         # pylint: disable=unused-argument
-        main_helper.view(["GME"], "GME", "1440min", pd.DataFrame())
+        stocks_helper.view(["GME"], "GME", "1440min", pd.DataFrame())
 
     def test_check_api_keys(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        main_helper.check_api_keys()
+        terminal_helper.check_api_keys()
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("ALPHA", capt)
@@ -73,7 +76,7 @@ class TestMainHelper(unittest.TestCase):
     def test_print_goodbye(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        main_helper.print_goodbye()
+        terminal_helper.print_goodbye()
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertTrue(len(capt) > 0)
@@ -81,14 +84,14 @@ class TestMainHelper(unittest.TestCase):
     @patch("subprocess.run", side_effect=return_val)
     def test_update_terminal(self, mock):
         # pylint: disable=unused-argument
-        value = main_helper.update_terminal()
+        value = terminal_helper.update_terminal()
         print(f"Fail value: {value}")
         self.assertEqual(value, 2)
 
     def test_about_us(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        main_helper.about_us()
+        terminal_helper.about_us()
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Thanks for using Gamestonk Terminal.", capt)
@@ -96,7 +99,7 @@ class TestMainHelper(unittest.TestCase):
     def test_bootup(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        main_helper.bootup()
+        terminal_helper.bootup()
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Welcome to Gamestonk Terminal Beta", capt)
@@ -106,7 +109,7 @@ class TestMainHelper(unittest.TestCase):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        main_helper.reset()
+        terminal_helper.reset()
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Unfortunately, resetting wasn't", capt)

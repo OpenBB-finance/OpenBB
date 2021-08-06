@@ -8,7 +8,7 @@ import sys
 import json
 
 # pylint: disable=unused-import
-from gamestonk_terminal.fundamental_analysis import av_view
+from gamestonk_terminal.stocks.fundamental_analysis import av_view
 
 from gamestonk_terminal import config_terminal as cfg
 
