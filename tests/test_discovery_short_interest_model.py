@@ -17,7 +17,7 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestDiscoveryShortInterestApi:
-    @mock.patch("gamestonk_terminal.discovery.short_interest_model.requests")
+    @mock.patch("gamestonk_terminal.stocks.discovery.short_interest_model.requests")
     @parameterize_from_file(
         "test_get_high_short_interest",
         "../tests/data/discovery_short_interest_model.yaml",
@@ -36,7 +36,7 @@ class TestDiscoveryShortInterestApi:
             expected_result.replace("\r\n", "\n"),
         )
 
-    @mock.patch("gamestonk_terminal.discovery.short_interest_model.requests")
+    @mock.patch("gamestonk_terminal.stocks.discovery.short_interest_model.requests")
     @parameterize_from_file(
         "test_get_low_float",
         "../tests/data/discovery_short_interest_model.yaml",

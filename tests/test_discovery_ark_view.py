@@ -16,8 +16,10 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestDiscoveryArkView:
-    @mock.patch("gamestonk_terminal.discovery.ark_view.ark_model.get_ark_orders")
-    @mock.patch("gamestonk_terminal.discovery.ark_view.ark_model.add_order_total")
+    @mock.patch("gamestonk_terminal.stocks.discovery.ark_view.ark_model.get_ark_orders")
+    @mock.patch(
+        "gamestonk_terminal.stocks.discovery.ark_view.ark_model.add_order_total"
+    )
     @parameterize_from_file(
         "test_ark_orders_view",
         "../tests/data/discovery_ark_view.yaml",

@@ -14,7 +14,9 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestDiscoverySeekingAlphaModel:
-    @mock.patch("gamestonk_terminal.discovery.seeking_alpha_model.get_earnings_html")
+    @mock.patch(
+        "gamestonk_terminal.stocks.discovery.seeking_alpha_model.get_earnings_html"
+    )
     @parameterize_from_file(
         "test_get_next_earnings",
         "../tests/data/discovery_seeking_alpha_model.yaml",

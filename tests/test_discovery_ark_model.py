@@ -20,7 +20,7 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestDiscoveryArkModel:
-    @mock.patch("gamestonk_terminal.discovery.ark_model.requests")
+    @mock.patch("gamestonk_terminal.stocks.discovery.ark_model.requests")
     @parameterize_from_file(
         "test_get_ark_orders",
         "../tests/data/discovery_ark_model.yaml",
@@ -40,7 +40,7 @@ class TestDiscoveryArkModel:
             ret.to_csv().replace("\r\n", "\n"), expected_orders.replace("\r\n", "\n")
         )
 
-    @mock.patch("gamestonk_terminal.discovery.ark_model.yf.download")
+    @mock.patch("gamestonk_terminal.stocks.discovery.ark_model.yf.download")
     @parameterize_from_file(
         "test_add_order_total",
         "../tests/data/discovery_ark_model.yaml",
