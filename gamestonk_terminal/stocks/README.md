@@ -90,6 +90,8 @@ Command|Description|Source
 `darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
 `darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
 `shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
+`popular`       |show most popular stocks on social media right now|[Sentiment Investor](https://sentimentinvestor.com)
+`emerging`      |show stocks that are being talked about more than usual|[Sentiment Investor](https://sentimentinvestor.com)
 
 &nbsp;
 
