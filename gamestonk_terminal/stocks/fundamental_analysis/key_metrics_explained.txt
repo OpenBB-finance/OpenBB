@@ -1,0 +1,35 @@
+EBITDA
+Earnings (net income) before interest, taxes, depreciation, and amortisation. EBITDA can be used to analyse and compare profitability among companies and industries, as it eliminates the effects of financing and capital expenditures.
+
+EARNINGS PER SHARE (EPS)
+This is the portion of a company’s profit that is assigned to each share of its stock. It’s essentially the bottom line net income, just on a per-share basis. A growing EPS is a good sign to investors because it means that their shares are likely to be worth more.
+
+PRICE TO EARNINGS RATIO (P/E)
+The price-to-earnings ratio measures the relationship between the stock price of a company and its per-share earnings. It helps investors determine if a stock is undervalued or overvalued relative to others in the same sector. Since the P/E ratio shows what the market is willing to pay today for a stock based on its past or future earnings, investors simply compare the P/E ratio of a stock to those of its competitors and industry standards. A lower P/E ratio means the current stock price is low relative to earnings, which is favourable to investors.
+
+PROJECTED EARNINGS GROWTH (PEG)
+The P/E ratio is a good fundamental analysis indicator but is somewhat limited by the fact that it doesn’t include future earnings growth. The PEG compensates for this by anticipating the one-year earnings growth rate of the stock. Analysts can estimate the future growth rate of a company by looking at its historical growth rate. This provides a more complete picture of a stock’s valuation. To calculate Projected Earnings Growth, divide the P/E ratio by the company’s 12-month growth rate. The percentage in growth rate is removed in the calculation.
+
+FREE CASH FLOW (FCF)
+In simplest terms, Free Cash Flow is the cash left over after a company has paid for its operating expenses and capital expenditures. Cash is critical to the sustenance and amelioration of a business. Companies with high free cash flow can improve shareholder value, fund innovation, and survive downturns better than their less-liquid counterparts. Many investors cherish FCF as a fundamental indicator because it shows whether a company still has enough cash to reward its shareholders through dividends after funding operations and capital expenditures. Here's where this can be useful, if a company's P/E ratio makes it look excessively cheap or expensive, calculating the company's free cash flow can help you understand why.
+
+PRICE TO BOOK RATIO (P/B)
+Also known as the price to equity ratio, the price-to-book ratio is a fundamental analysis indicator that compares the book value of a stock to its market value. By showing the difference between the stock’s market value and the value the company has stated in its financial books, P/B helps investors determine whether the stock is under or overvalued relative to its book value. It is the theoretical value of a company if it will be liquidated. Value investors often look for low P/B multiples when searching for bargain-priced stocks.
+
+RETURN ON EQUITY (ROE)
+ROE is a profitability ratio that signifies the rate of return a shareholder receives for the portion of their investment in that company. It measures how well a company generates positive returns to its shareholders’ investment. Since profit is an actual driver of stock prices, separating out the profits earned with shareholder equity is actually a pretty good indicator of the financial health of a company and fair value of its stock.
+
+DIVIDEND PAYOUT RATIO (DPR)
+As you know, companies pay a part of their profits to their shareholders in the form of dividends. But it’s also important to know how well the company’s earnings support those dividend payments. This is what the Dividend Payout Ratio is all about. It tells you what portion of net income a company returns to its shareholders, as well as how much it sets aside for growth, cash reserve, and debt repayments.
+
+PRICE TO SALES RATIO (P/S)
+The price-to-sales ratio is a fundamental analysis indicator that can help determine the fair value of a stock by utilising a company’s market capitalisation and revenue. It shows how much the market values the company’s sales, which can be effective in valuing growth stocks that have yet to turn a profit or aren’t performing as expected due to a temporary setback. The P/S formula is calculated by dividing sales per share by the market value per share. A lower P/S ratio is seen as a good sign by investors. This is another metric that’s also useful when comparing companies in the same sector or industry.
+
+DIVIDEND YIELD RATIO
+Dividend yield ratio looks at the amount paid by a company in dividends every year relative to its share price. It is an estimate of the dividend-only return of a stock investment. Assuming there are no changes to the dividend, the yield features an inverse relationship with the stock price — the yield rises when the stock price falls and vice versa. This is important to investors because it tells them how much they are getting back from every dollar they’ve invested in the company’s stock.
+
+DEBT-TO-EQUITY RATIO (D/E)
+The debt to equity ratio is the last fundamental analysis indicator on this list. It measures the relationship between a company’s borrowed capital and the capital provided by its shareholders. Investors can use it to determine how a company finances its assets. The debt-to-equity ratio (D/E) helps investors evaluate the financial leverage of a company, signalling just how much shareholder’s equity can fulfil obligations to creditors should the business encounter financial hardship.
+
+Beta
+Beta is a measurement of how reactive a stock is, compared to the overall market, generally defined as the S&P 500. A beta of 1 indicates that a stock tends to move in line with the S&P 500 -- that is, a 5% upward move in the index should produce roughly the same move in the stock. A beta of less than 1 indicates that a stock is less reactive to market swings, while a beta of more than 1 indicates a more volatile stock. For example, if a stock's beta is 0.4, a 10% move in the S&P 500 should theoretically produce a 4% swing in the stock. And a negative beta indicates that a stock tends to move in the opposite direction of the market. Beta can be found in most stock quotes, and it will give you an idea of how much volatility you're taking on before you buy a stock.

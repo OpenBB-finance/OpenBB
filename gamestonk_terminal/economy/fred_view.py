@@ -185,6 +185,7 @@ def display_fred(other_args: List[str], choice: str):
                 if gtff.USE_ION:
                     plt.ion()
                 plt.show()
+            print("")
 
     except SystemExit:
         print("")

@@ -10,7 +10,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.discovery.ark_view import ark_orders_view
+from gamestonk_terminal.stocks.discovery.ark_view import ark_orders_view
 
 assertions = unittest.TestCase("__init__")
 

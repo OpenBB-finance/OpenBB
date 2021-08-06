@@ -8,7 +8,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.discovery.seeking_alpha_model import get_next_earnings
+from gamestonk_terminal.stocks.discovery.seeking_alpha_model import get_next_earnings
 
 assertions = unittest.TestCase("__init__")
 

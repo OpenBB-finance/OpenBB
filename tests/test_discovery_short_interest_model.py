@@ -8,7 +8,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.discovery.short_interest_model import (
+from gamestonk_terminal.stocks.discovery.short_interest_model import (
     get_high_short_interest,
     get_low_float,
 )

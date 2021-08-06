@@ -8,7 +8,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.fundamental_analysis.market_watch_model import (
+from gamestonk_terminal.stocks.fundamental_analysis.market_watch_model import (
     prepare_df_financials,
 )
 

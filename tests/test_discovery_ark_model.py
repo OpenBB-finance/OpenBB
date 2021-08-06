@@ -11,7 +11,10 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.discovery.ark_model import get_ark_orders, add_order_total
+from gamestonk_terminal.stocks.discovery.ark_model import (
+    get_ark_orders,
+    add_order_total,
+)
 
 assertions = unittest.TestCase("__init__")
 

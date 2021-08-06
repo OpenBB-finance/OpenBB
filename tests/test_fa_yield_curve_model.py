@@ -11,7 +11,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.fundamental_analysis.yield_curve_model import (
+from gamestonk_terminal.stocks.fundamental_analysis.yield_curve_model import (
     get_yield_curve,
     get_yield_curve_year,
 )

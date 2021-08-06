@@ -1,1 +1,1 @@
-from . import econ_controller  # noqa: F401
+from . import economy_controller  # noqa: F401
