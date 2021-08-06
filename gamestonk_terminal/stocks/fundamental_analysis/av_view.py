@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List, Dict
+
 import requests
 
 from alpha_vantage.fundamentaldata import FundamentalData
