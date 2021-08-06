@@ -268,7 +268,9 @@ def correlation(other_args, df_stock, ticker, start, interval, similar):
                 df_stock = d_stock[ticker][
                     d_candle_types[ns_parser.type_candle]
                 ].rename(ticker)
-                for symbol in d_stock.items():
+
+                for symbols in d_stock.items():
+                    symbol = symbols[0]
                     if symbol != ticker:
                         if not d_stock[symbol].empty:
                             df_stock = pd.concat(
