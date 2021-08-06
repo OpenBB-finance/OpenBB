@@ -327,8 +327,8 @@ Command|Description|More Info
 
 Command|Description
 ------ | --------
-view           |view [preset(s)]((screener/presets/README.md))
-set            |set one of the [presets]((screener/presets/README.md))
+view           |view [preset(s)](/gamestonk_terminal/stocks/screener/presets/README.md)
+set            |set one of the [presets](/gamestonk_terminal/stocks/screener/presets/README.md)
 [Yahoo Finance](https://finance.yahoo.com/) |
 historical     |view historical price 
 [Finviz](https://finviz.com/screener.ashx) |
@@ -344,12 +344,14 @@ signals        |view filter signals (e.g. -s top_gainers)
 
 ## Insider [»](insider/README.md)
 
-Command|Description|Source
------- | --------|----
-view           |view available presets | [presets](insider/presets/README.md)
-set            |set one of the available presets
-filter         |filter insiders based on preset | [Open Insider](http://openinsider.com)
-Latest |
+Entire menu relies on [Open Insider](http://openinsider.com).
+
+Command|Description
+------ | --------
+view           |view [preset(s)](/gamestonk_terminal/stocks/insider/presets/README.md)
+set            |set one of the [presets](/gamestonk_terminal/stocks/insider/presets/README.md)
+filter         |filter insiders based on preset
+**Latest** |
 lcb |latest cluster boys
 lpsb | latest penny stock buys
 lit | latest insider trading (all filings)
@@ -361,7 +363,7 @@ lis | latest insider sales
 blis | big latest insider sales ($100k+)
 blos | big latest officer sales ($100k+)
 blcs | big latest CEO/CFO sales ($100k+)
-Top |
+**Top** |
 topt | top officer purchases today
 toppw | top officer purchases past week
 toppm | top officer purchases past month
@@ -385,7 +387,10 @@ Command|Description
 
 
 ## Government [»](government/README.md)
-Command|Website
+
+Entire menu relies on [Quiver Quantitative](https://www.quiverquant.com).
+
+Command|Description
 ----|----
 `last_congress`         | last congress trading
 `buy_congress`          | plot top buy congress tickers
@@ -398,7 +403,7 @@ Command|Website
 `sell_house`            | plot top sell house tickers
 `last_contracts`        | last government contracts
 `sum_contracts`         | plot sum of last government contracts
-with ticker provided    |
+**When TICKER is provided** |
 `raw_congress`          | raw congress trades on the ticker
 `congress`              | plot congress trades on the ticker
 `raw_senate`            | raw senate trades on the ticker
