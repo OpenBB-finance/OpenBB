@@ -13,6 +13,7 @@ from gamestonk_terminal.cryptocurrency.binance import binance_controller
 from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_controller
 from gamestonk_terminal.cryptocurrency import finbrain_crypto_view
 from gamestonk_terminal.cryptocurrency.coinpaprika import coinpaprika_controller
+from gamestonk_terminal.cryptocurrency.report import report_controller
 
 
 class CryptoController:
@@ -23,12 +24,22 @@ class CryptoController:
         "help",
         "q",
         "quit",
+    ]
+
+    CHOICES_COMMAND = [
+        "finbrain",
+    ]
+
+    CHOICES_MENUS = [
         "cg",
         "bin",
         "cmc",
-        "finbrain",
         "cp",
+        "report",
     ]
+
+    CHOICES += CHOICES_COMMAND
+    CHOICES += CHOICES_MENUS
 
     def __init__(self):
         """CONSTRUCTOR"""
@@ -41,7 +52,10 @@ class CryptoController:
         print(
             "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency"
         )
-        print("\nCryptocurrency:")
+        print("")
+        print(">> CRYPTO <<")
+        print("")
+        print("What do you want to do?")
         print("   cls             clear screen")
         print("   ?/help          show this menu again")
         print("   q               quit this menu, and shows back to main menu")
@@ -53,6 +67,7 @@ class CryptoController:
         print(">  cmc             Coinmarketcap menu")
         print(">  bin             Binance menu with order book, candles, ta.. ")
         print(">  cp              CoinPaprika menu")
+        print(">  report          generate automatic report")
         print("")
 
     def switch(self, an_input: str):
@@ -125,6 +140,15 @@ class CryptoController:
         if coinpaprika_controller.menu():
             return True
         print("")
+
+    def call_report(self, _):
+        """Process report command"""
+        ret = report_controller.menu()
+
+        if ret is False:
+            self.print_help()
+        else:
+            return True
 
 
 def menu():

@@ -8,7 +8,7 @@ from gamestonk_terminal.test_helper import (  # noqa: F401
     pytest_generate_tests,
 )
 
-from gamestonk_terminal.fundamental_analysis.market_watch_model import (
+from gamestonk_terminal.stocks.fundamental_analysis.market_watch_model import (
     prepare_df_financials,
 )
 
@@ -16,7 +16,9 @@ assertions = unittest.TestCase("__init__")
 
 
 class TestFaMarketWatchApiUnit:
-    @mock.patch("gamestonk_terminal.fundamental_analysis.market_watch_model.requests")
+    @mock.patch(
+        "gamestonk_terminal.stocks.fundamental_analysis.market_watch_model.requests"
+    )
     @parameterize_from_file(
         "test_prepare_df_financials",
         "../tests/data/fa_market_watch_model.yaml",

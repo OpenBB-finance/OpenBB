@@ -1,7 +1,7 @@
 """ due_diligence/finviz_api.py tests """
 import unittest
 
-from gamestonk_terminal.due_diligence.finviz_view import analyst
+from gamestonk_terminal.stocks.due_diligence.finviz_view import analyst
 
 
 class TestDdFinvizApi(unittest.TestCase):

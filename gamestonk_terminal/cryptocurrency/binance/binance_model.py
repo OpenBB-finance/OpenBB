@@ -10,7 +10,7 @@ from binance.client import Client
 from binance.exceptions import BinanceAPIException
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import check_positive
-from gamestonk_terminal.main_helper import parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.cryptocurrency.binance.binance_view import (
     plot_order_book,

@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-from json.decoder import JSONDecodeError
-
 import difflib
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
@@ -13,7 +11,7 @@ import mplfinance as mpf
 import pandas as pd
 
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
-from gamestonk_terminal.main_helper import plot_autoscale
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.feature_flags import USE_ION as ion
 import gamestonk_terminal.cryptocurrency.coinpaprika.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
@@ -70,14 +68,9 @@ CURRENCIES = [
     "ARS",
     "ISK",
 ]
-try:
-    PLATFORMS = paprika.get_all_contract_platforms()["platform_id"].tolist()
-    COINS = paprika.get_list_of_coins()
-    COINS_DCT = dict(zip(COINS.id, COINS.symbol))
-    # see https://github.com/GamestonkTerminal/GamestonkTerminal/pull/562#issuecomment-887842888
-    # EXCHANGES = paprika.get_list_of_exchanges()
-except JSONDecodeError:
-    print("JSON Error loading from coinpaprika")
+
+# see https://github.com/GamestonkTerminal/GamestonkTerminal/pull/562#issuecomment-887842888
+# EXCHANGES = paprika.get_list_of_exchanges()
 
 
 def global_market(other_args: List[str]):
@@ -774,7 +767,7 @@ def contracts(other_args: List[str]):
         dest="platform",
         default="eth-ethereum",
         type=str,
-        choices=PLATFORMS,
+        choices=paprika.get_all_contract_platforms()["platform_id"].tolist(),
     )
     parser.add_argument(
         "-t",
@@ -1449,6 +1442,8 @@ def load(other_args: List[str]):
         if not ns_parser:
             return
 
+        COINS = paprika.get_list_of_coins()
+        COINS_DCT = dict(zip(COINS.id, COINS.symbol))
         coin_id, _ = paprika.validate_coin(ns_parser.coin, COINS_DCT)
 
         if coin_id:
