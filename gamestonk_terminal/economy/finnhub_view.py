@@ -90,10 +90,10 @@ def economy_calendar_events(other_args: List[str]):
 
         df_econ_calendar = df_events[
             df_events["country"] == ns_parser.country
-        ].sort_values("time", ascending=False)
+        ].sort_values("time", ascending=True)
 
         if df_econ_calendar.empty:
-            print("No latet economy calendar events found in the specified country\n")
+            print("No latest economy calendar events found in the specified country\n")
             return
 
         if ns_parser.impact != "all":

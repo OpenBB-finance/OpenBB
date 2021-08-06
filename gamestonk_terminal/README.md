@@ -103,7 +103,6 @@ Command|Description|Source
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`ratings`       |top ratings updates |[MarketBeat](https://marketbeat.com)
 `darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
 `darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
 `shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
