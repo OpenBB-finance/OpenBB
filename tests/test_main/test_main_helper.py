@@ -12,12 +12,10 @@ from gamestonk_terminal import main_helper
 
 def return_val(x, shell, check):
     # pylint: disable=unused-argument
+    # pylint: disable=R0903
     class ReturnVal:
         def __init__(self, code):
-            self.code = code
-
-        def returncode(self):
-            return self.code
+            self.returncode = code
 
     return ReturnVal(2)
 
