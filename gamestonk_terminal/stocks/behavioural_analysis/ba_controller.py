@@ -66,7 +66,8 @@ class BehaviouralAnalysisController:
     def print_help():
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/behavioural_analysis"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
+            "/stocks/behavioural_analysis"
         )
         print("\nBehavioural Analysis:")
         print("   cls           clear screen")
@@ -74,9 +75,9 @@ class BehaviouralAnalysisController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
+        print("Finbrain:")
         print("   finbrain      sentiment from 15+ major news headlines")
         print("   stats         sentiment stats including comparison with sector")
-        print("")
         print("Reddit:")
         print(
             "   wsb           show what WSB gang is up to in subreddit wallstreetbets"
@@ -87,7 +88,6 @@ class BehaviouralAnalysisController:
             "   spac_c        show other users spacs announcements from subreddit SPACs community"
         )
         print("   spac          show other users spacs announcements from other subs")
-        print("")
         print("Stocktwits:")
         print(
             "   bullbear      estimate quick sentiment from last 30 messages on board"
@@ -95,17 +95,14 @@ class BehaviouralAnalysisController:
         print("   messages      output up to the 30 last messages on the board")
         print("   trending      trending stocks")
         print("   stalker       stalk stocktwits user's last messages")
-        print("")
         print("Twitter:")
         print("   infer         infer about stock's sentiment from latest tweets")
         print("   sentiment     in-depth sentiment prediction from tweets over time")
-        print("")
         print("Google:")
         print("   mentions      interest over time based on stock's mentions")
         print("   regions       regions that show highest interest in stock")
         print("   queries       top related queries with this stock")
         print("   rise          top rising related queries with stock")
-        print("")
         print("SentimentInvestor:")
         print("   metrics       core social sentiment metrics for this stock")
         print("   social        social media figures for stock popularity")

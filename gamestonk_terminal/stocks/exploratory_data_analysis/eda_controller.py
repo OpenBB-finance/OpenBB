@@ -57,7 +57,7 @@ class EdaController:
         """Print help"""
         print(
             "https://github.com/GamestonkTerminal/"
-            "GamestonkTerminal/tree/main/gamestonk_terminal/exploratory_data_analysis"
+            "GamestonkTerminal/tree/main/gamestonk_terminal/stocks/exploratory_data_analysis"
         )
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 

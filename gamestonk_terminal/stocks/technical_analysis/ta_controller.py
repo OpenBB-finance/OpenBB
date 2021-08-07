@@ -79,7 +79,8 @@ class TechnicalAnalysisController:
     def print_help(self):
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/technical_analysis"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
+            "/stocks/technical_analysis"
         )
         s_intraday = (f"Intraday {self.interval }", "Daily")[self.interval == "1440min"]
 

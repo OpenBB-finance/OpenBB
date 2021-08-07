@@ -121,6 +121,7 @@ What do you want to do?
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   gov         government menu, \t\t house trading, contracts, corporate lobbying
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
+>   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   ca          comparison analysis,     \t e.g.: historical, correlation, financials

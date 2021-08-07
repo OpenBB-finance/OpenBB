@@ -64,7 +64,7 @@ class FinancialModelingPrepController:
         """Print help"""
         print(
             "https://github.com/GamestonkTerminal/GamestonkTerminal/"
-            "tree/main/gamestonk_terminal/fundamental_analysis/financial_modeling_prep"
+            "tree/main/gamestonk_terminal/stocks/fundamental_analysis/financial_modeling_prep"
         )
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
