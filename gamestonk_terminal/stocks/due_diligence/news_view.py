@@ -22,7 +22,6 @@ def news(other_args: List[str], ticker: str):
     ticker : str
         Stock ticker
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
         prog="news",
@@ -30,7 +29,6 @@ def news(other_args: List[str], ticker: str):
             Prints latest news about company, including date, title and web link. [Source: News API]
         """,
     )
-
     parser.add_argument(
         "-n",
         "--num",
@@ -40,7 +38,7 @@ def news(other_args: List[str], ticker: str):
         default=10,
         help="Number of latest news being printed.",
     )
-
+    # TODO: Add argument to specify news source being used
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
