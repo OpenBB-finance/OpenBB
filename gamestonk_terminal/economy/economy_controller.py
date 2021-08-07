@@ -198,7 +198,6 @@ Wall St. Journal:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-
         try:
             if other_args:
                 if "-" not in other_args[0]:
@@ -214,6 +213,42 @@ Wall St. Journal:
                 impact=ns_parser.impact,
                 export=ns_parser.export,
             )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_feargreed(self, other_args: List[str]):
+        """Process feargreed command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="feargreed",
+            description="""
+                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--indicator",
+            dest="indicator",
+            required=False,
+            type=str,
+            choices=["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"],
+            help="""
+                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
+                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
+                Safe Heaven Demand, and Index.
+            """,
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            cnn_view.fear_and_greed_index(indicator=ns_parser.indicator)
 
         except Exception as e:
             print(e, "\n")
@@ -269,10 +304,6 @@ Wall St. Journal:
     def call_dexcaus(self, other_args: List[str]):
         """Process dexcaus command"""
         fred_view.display_fred(other_args, "DEXCAUS")
-
-    def call_feargreed(self, other_args: List[str]):
-        """Process feargreed command"""
-        cnn_view.fear_and_greed_index(other_args)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
