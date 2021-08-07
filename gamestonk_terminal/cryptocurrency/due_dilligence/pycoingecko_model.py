@@ -1,11 +1,12 @@
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_helpers import (
+from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     remove_keys,
     filter_list,
     find_discord,
     rename_columns_in_dct,
     create_dictionary_with_prefixes,
+    DENOMINATION,
 )
 
 CHANNELS = {
@@ -27,8 +28,6 @@ BASE_INFO = [
     "market_cap_rank",
     "public_interest_score",
 ]
-
-DENOMINATION = ("usd", "btc", "eth")
 
 
 class Coin:
@@ -63,6 +62,7 @@ class Coin:
         for dct in self._coin_list:
             if symbol.lower() in list(dct.values()):
                 coin = dct.get("id")
+                print(f"Coin found : {coin} with symbol {symbol}\n")
         if not coin:
             raise ValueError(f"Could not find coin with the given id: {symbol}\n")
         return coin

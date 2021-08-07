@@ -3,8 +3,49 @@ import datetime as dt
 from datetime import timezone
 from typing import Sequence, Optional, Any, Dict, Tuple
 import textwrap
+import requests
+from bs4 import BeautifulSoup
 import pandas as pd
 from dateutil import parser
+
+
+GECKO_BASE_URL = "https://www.coingecko.com"
+
+DENOMINATION = ("usd", "btc", "eth")
+
+
+def get_btc_price():
+    """Get BTC/USD price from CoinGecko API
+
+    Returns
+    -------
+    str
+        latest bitcoin price in usd.
+    """
+    req = requests.get(
+        "https://api.coingecko.com/api/v3/simple/"
+        "price?ids=bitcoin&vs_currencies=usd&include_market_cap"
+        "=false&include_24hr_vol"
+        "=false&include_24hr_change=false&include_last_updated_at=false"
+    )
+    return req.json()["bitcoin"]["usd"]
+
+
+def scrape_gecko_data(url: str) -> BeautifulSoup:
+    """Helper method that scrape Coin Gecko site.
+
+    Parameters
+    ----------
+    url : str
+        coin gecko url to scrape e.g: "https://www.coingecko.com/en/discover"
+
+    Returns
+    -------
+        BeautifulSoup object
+    """
+
+    req = requests.get(url)
+    return BeautifulSoup(req.text, features="lxml")
 
 
 def replace_underscores_to_newlines(cols: list, line: int = 13):

@@ -4,7 +4,7 @@ import sys
 import io
 
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
+from gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_view import (
     load,
     ta,
     chart,
@@ -17,20 +17,29 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     score,
     bc,
     market,
-    holdings_overview,
-    holdings_companies_list,
+)
+
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view import (
     gainers,
     losers,
     discover,
-    news,
-    categories,
     recently_added,
-    stablecoins,
     yfarms,
     top_volume_coins,
     top_defi_coins,
     top_dex,
     top_nft,
+    coin_list,
+    find,
+)
+
+
+from gamestonk_terminal.cryptocurrency.overview.pycoingecko_view import (
+    holdings_overview,
+    holdings_companies_list,
+    news,
+    categories,
+    stablecoins,
     nft_of_the_day,
     nft_market_status,
     exchanges,
@@ -41,16 +50,14 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     exchange_rates,
     global_market_info,
     global_defi_info,
-    coin_list,
-    find,
 )
-from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model import Coin
+from gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model import Coin
 
 # pylint: disable=unused-import
 
 
 @mock.patch(
-    "gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view.CoinGeckoAPI.get_coin_market_chart_by_id"
+    "gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
 )
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
@@ -75,7 +82,7 @@ class TestCoinGeckoAPI(TestCase):
         self.assertIsInstance(self.coin, Coin)
 
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view.CoinGeckoAPI.get_coin_market_chart_by_id"
+        "gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
     )
     def test_coin_api_load_df_for_ta(self, mock_load):
         """
