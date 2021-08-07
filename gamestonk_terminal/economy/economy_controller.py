@@ -97,11 +97,11 @@ FRED:
     disp          display FRED shortcuts commands
 Wall St. Journal:
     overview      market data overview
-    indices       us indices overview
-    futures       futures overview
-    usbonds       us bond overview
+    indices       US indices overview
+    futures       futures and commodities overview
+    usbonds       US bonds overview
     glbonds       global bonds overview
-    currencies    currency overview
+    currencies    currencies overview
 
 >   report        generate automatic report
 """
@@ -307,27 +307,171 @@ Wall St. Journal:
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        wsj_view.display_overview(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="overview",
+            description="Market overview. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_overview(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_indices(self, other_args: List[str]):
         """Process indices command"""
-        wsj_view.display_indices(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="indices",
+            description="US indices. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_indices(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
-        wsj_view.display_futures(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="futures",
+            description="Futures/Commodities. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_futures(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_usbonds(self, other_args: List[str]):
         """Process usbonds command"""
-        wsj_view.display_usbonds(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="usbonds",
+            description="US Bonds. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_usbonds(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_glbonds(self, other_args: List[str]):
         """Process glbonds command"""
-        wsj_view.display_glbonds(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="glbonds",
+            description="Global Bonds. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_glbonds(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_currencies(self, other_args: List[str]):
-        """Process curremcies command"""
-        wsj_view.display_currencies(other_args)
+        """Process currencies command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="currencies",
+            description="Currencies. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_currencies(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_report(self, _):
         """Process report command"""
