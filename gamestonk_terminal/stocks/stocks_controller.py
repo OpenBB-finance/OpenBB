@@ -10,7 +10,7 @@ from gamestonk_terminal.helper_funcs import b_is_stock_market_open
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 
-from gamestonk_terminal.stocks.stocks_helper import clear, load, view, candle, quote
+from gamestonk_terminal.stocks.stocks_helper import load, candle, quote
 
 from gamestonk_terminal.stocks.discovery import disc_controller
 from gamestonk_terminal.stocks.screener import screener_controller
@@ -48,7 +48,6 @@ class StocksController:
         "load",
         "quote",
         "candle",
-        "view",
     ]
 
     CHOICES_MENUS = [
@@ -111,16 +110,15 @@ What do you want to do?
         help_text += f"Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}.\n"
 
         help_text += """
-    clear       clear a specific stock ticker from analysis
     load        load a specific stock ticker for analysis
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
-    view        view and load a specific stock ticker for technical analysis
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   gov         government menu, \t\t house trading, contracts, corporate lobbying
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
+>   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   ca          comparison analysis,     \t e.g.: historical, correlation, financials
@@ -179,12 +177,6 @@ What do you want to do?
         return True
 
     # COMMANDS
-    def call_clear(self, other_args: List[str]):
-        """Process clear command"""
-        self.ticker, self.start, self.interval, self.stock = clear(
-            other_args, self.ticker, self.start, self.interval, self.stock
-        )
-
     def call_load(self, other_args: List[str]):
         """Process load command"""
         self.ticker, self.start, self.interval, self.stock = load(
@@ -207,10 +199,6 @@ What do you want to do?
             self.ticker + "." + self.suffix if self.suffix else self.ticker,
             other_args,
         )
-
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-        view(other_args, self.ticker, self.interval, self.stock)
 
     # MENUS
     def call_disc(self, _):

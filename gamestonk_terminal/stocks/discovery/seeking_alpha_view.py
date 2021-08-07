@@ -46,6 +46,9 @@ def earnings_release_dates_view(other_args: List[str]):
         default=3,
         help="Number of upcoming earnings release dates to print",
     )
+    # TODO: Check why there are repeated companies
+    # TODO: Create a similar command that returns not only upcoming, but antecipated earnings
+    # i.e. companies where expectation on their returns are high
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)

@@ -2,6 +2,7 @@
 
 This menu aims to extrapolate behavioural analysis regarding a pre-loaded ticker, and the usage of the following commands along with an example will be exploited below.
 
+[FINBRAIN](#FINBRAIN)
   * [finbrain](#finbrain)
      - sentiment from 15+ major news headlines
   * [stats](#stats)
@@ -45,13 +46,16 @@ This menu aims to extrapolate behavioural analysis regarding a pre-loaded ticker
   * [rise](#rise)
     - top rising related queries with stock
 
-[SENTIMENT INVESTOR](#SENTIMENTINVESTOR)
+[SENTIMENT INVESTOR](#SENTIMENT-INVESTOR)
   * [metrics](#metrics)
     - core social sentiment metrics for this stock
   * [social](#social)
     - social media figures for stock popularity
   * [historical](#historical)
     - plot the past week of data for a selected metric
+
+
+# FINBRAIN <a name="FINBRAIN"></a>
 
 ## finbrain <a name="finbrain"></a>
 ```
@@ -172,35 +176,6 @@ Print up to the last 30 messages of a user. [Source: Stocktwits]
 
 
 # TWITTER <a name="TWITTER"></a>
-Uses VADER sentiment.  VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis
-tool that is specifically attuned to sentiments expressed in social media.
-
-The output of VADER analysis :
-```
-The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the
-rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). This is the most
-useful metric if you want a single unidimensional measure of sentiment for a given sentence. Calling it a 'normalized,
- weighted composite score' is accurate.
-```
-A sample tweet is shown below along with what the VADER polarity scores are.
-
-```'
-Have some $SENS  🚀🏆\n👉FDA approval coming very soon, 👉News is out, amazing test results. \n👉Very high short
-interest rate. \n👉Major short squeeze coming. \n\n$amc $gme $nakd $ctrm $tsla $aapl $oeg $aht $bbby $bb $fsr $spce
- https://t.co/B0cPhufpA2'
-```
-
-This gives the following scores:
-```python
-created_at                                  Thu Jun 03 20:37:54
-text          Have some $SENS  🚀🏆\n👉FDA approval coming very...
-sentiment                                                 0.872
-positive                                                  0.177
-negative                                                      0
-neutral                                                   0.823
-```
-
-Note that both functions use twitters v2 endpoint, which only gives 7 days of historical data.  It also requires at least 10 tweets be pulled.
 
 ## infer <a name="infer"></a>
 ```
@@ -209,6 +184,8 @@ usage: infer [-n N_NUM]
 Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses theVADER model to make predictions.
   * -n : num of latest tweets to infer from. Default 100.
 
+<img width="901" alt="Captura de ecrã 2021-08-06, às 21 49 29" src="https://user-images.githubusercontent.com/25267873/128569570-7bec34ee-e024-4add-ab94-29df23af04ca.png">
+
 
 ## sentiment <a name="sentiment"></a>
 ```
@@ -216,7 +193,8 @@ usage: sentiment [-n N_NUM] [-d N_DAYS_PAST]
 ```
 Plot in-depth sentiment extracted from tweets from last days that contain pre-defined ticker. This model splits the text into character-level tokens and uses the VADER model to make predictions.
   * -n : num of tweets to extract per hour. Default 15.
-  * -d : num of days in the past to extract tweets. Default 6.  Max 6
+  * -d : num of days in the past to extract tweets. Default 6. Max 6
+
 
 # GOOGLE
 
@@ -259,105 +237,63 @@ Print top rising related queries with this stock's query. [Source: Google]
 
 <img width="934" alt="Captura de ecrã 2021-02-22, às 22 21 21" src="https://user-images.githubusercontent.com/25267873/108777814-4f21fa80-755c-11eb-96da-0327c9a0da57.png">
 
-# SENTIMENTINVESTOR
-
-> **[Sentiment Investor](https://sentimentinvestor.com)** analyzes data from four major social media platforms to
-> generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
-> sentiment metrics powered by proprietary NLP models.
-
-## Metric definitions
-
-### AHI (Absolute Hype Index) <a name="AHI"></a>
-
-AHI is a measure of how much people are talking about a stock on social media.
-It is calculated by dividing the total number of mentions for the chosen stock
-on a social network by the mean number of mentions any stock receives on that
-social medium.
-
-### RHI (Relative Hype Index) <a name="RHI"></a>
-
-RHI is a measure of whether people are talking about a stock more or less than
-usual, calculated by dividing the mean AHI for the past day by the mean AHI for
-for the past week for that stock.
-
-### Sentiment Score <a name="sentiment"></a>
-
-Sentiment score is the percentage of people talking positively about the stock.
-For each social network the number of positive posts/comments is divided by the
-total number of both positive and negative posts/comments.
-
-### SGP (Standard General Perception) <a name="SGP"></a>
-
-SGP is a measure of whether people are more or less positive about a stock than
-usual. It is calculated by averaging the past day of sentiment values and then
-dividing it by the average of the past week of sentiment values.
+# SENTIMENT INVESTOR  <a name="SENTIMENT-INVESTOR"></a>
 
 ## metrics <a name="metrics"></a>
-
 ```
-usage: metrics [-h] [ticker]
+usage: metrics [ticker]
 ```
+The `metrics` command presents the four core metrics provided by Sentiment Investor. Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks. Sentiment provides volume and sentiment metrics powered by proprietary NLP models. These metrics include:
 
-The `metrics` command presents the four core metrics provided by Sentiment Investor,
-including AHI, RHI, sentiment and SGP, as described above.
+**AHI (Absolute Hype Index)** is a measure of how much people are talking about a stock on social media. It is calculated by dividing the total number of mentions for the chosen stock on a social network by the mean number of mentions any stock receives on that social medium.
 
-Optional arguments:
-- [optional, positional] ticker
-  ticker to use instead of the loaded one
-- `-h`, `--help`
-  show this help message
+**RHI (Relative Hype Index)** is a measure of whether people are talking about a stock more or less than usual, calculated by dividing the mean AHI for the past day by the mean AHI for for the past week for that stock.
 
-Example output:
+**Sentiment Score** is the percentage of people talking positively about the stock. For each social network the number of positive posts/comments is divided by the total number of both positive and negative posts/comments.
 
-![`metrics NFLX` command output](https://user-images.githubusercontent.com/8385172/127154566-1af3c274-c521-426b-8580-2ae714c2c1ca.png)
+**SGP (Standard General Perception)** is a measure of whether people are more or less positive about a stock than usual. It is calculated by averaging the past day of sentiment values and then dividing it by the average of the past week of sentiment values.
+
+  * -t : ticker to use instead of the loaded one.
+
+<img width="1183" alt="Captura de ecrã 2021-08-06, às 22 00 05" src="https://user-images.githubusercontent.com/25267873/128570641-29bab43b-b4bb-4c40-8467-ea366c903b7e.png">
+
 
 ## social <a name="social"></a>
-
 ```
-usage: social [-h] [ticker]
+usage: social [ticker]
 ```
 
-The `social` command prints the raw data for a given stock, including the number
-of mentions it has received on social media in the last hour and the sentiment
-score of those comments.
+The `social` command prints the raw data for a given stock, including the number of mentions it has received on social media in the last hour and the sentiment score of those comments. Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks. Sentiment provides volume and sentiment metrics powered by proprietary NLP models.
 
-Optional arguments:
-- [optional, positional] ticker
-  ticker to use instead of the loaded one
-- `-h`, `--help`
-  show this help message
+  * -t : ticker to use instead of the loaded one.
 
-Example output:
+<img width="1186" alt="Captura de ecrã 2021-08-06, às 22 00 15" src="https://user-images.githubusercontent.com/25267873/128570633-14bf8855-59ad-4ba2-a116-777b299c083c.png">
 
-![`social AAPL` command output](https://user-images.githubusercontent.com/8385172/127154775-13b1a81d-f5d2-4768-bf7e-bca8886f6d24.png)
 
 ## historical <a name="historical"></a>
-
 ```
 usage: historical [-t TICKER] [-s [{date,value}]] [-d [{asc,desc}]] [-h] [{sentiment,AHI,RHI,SGP}]
 ```
 
-The `historical` command plots the past week of data for a selected
-SentimentInvestor core metric, one of:
-[AHI](#ahi), [RHI](#ahi), [sentiment](#sentiment) or [SGP](#SGP).
+The `historical` command plots the past week of data for a selected SentimentInvestor core metric. Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks. Sentiment provides volume and sentiment metrics powered by proprietary NLP models. These core metrics include:
+
+**AHI (Absolute Hype Index)** is a measure of how much people are talking about a stock on social media. It is calculated by dividing the total number of mentions for the chosen stock on a social network by the mean number of mentions any stock receives on that social medium.
+
+**RHI (Relative Hype Index)** is a measure of whether people are talking about a stock more or less than usual, calculated by dividing the mean AHI for the past day by the mean AHI for for the past week for that stock.
+
+**Sentiment Score** is the percentage of people talking positively about the stock. For each social network the number of positive posts/comments is divided by the total number of both positive and negative posts/comments.
+
+**SGP (Standard General Perception)** is a measure of whether people are more or less positive about a stock than usual. It is calculated by averaging the past day of sentiment values and then dividing it by the average of the past week of sentiment values.
+
+
 It also outputs a sorted table of the mean value for that metric for each day.
 
-Positional arguments:
--  one of `sentiment`, `AHI`, `RHI` or `SGP`
-   (optional) the metric to plot (default: `sentiment`)
 
-Optional arguments:
--  `-t`, `--ticker TICKER`
-   ticker for which to fetch data
--  `-s`, `--sort [{date,value}]`
-   the parameter to sort output table by
--  `-d`, `--direction [{asc,desc}]`
-   the direction to sort the output table
--  `-h`, `--help`
-   show this help message
+  * -m : one of `sentiment`, `AHI`, `RHI` or `SGP`
+  * -t : ticker for which to fetch data
+  * -s : the parameter to sort output table by
+  * -d : the direction to sort the output table
 
-Example output:
+<img width="1183" alt="Captura de ecrã 2021-08-06, às 22 00 22" src="https://user-images.githubusercontent.com/25267873/128570628-162d036e-37f8-48cc-bd8d-b5e79141db5d.png">
 
-![`historical -t GME RHI` plot output](https://user-images.githubusercontent.com/8385172/126782509-bfc21dbb-2fe6-4cd4-a384-018eb41ac8f3.png)
-
-![`historical -t NFLX -s value -d asc RHI` command output](https://user-images.githubusercontent.com/8385172/127157236-7818a635-4394-4372-9673-2834b32811af.png)
+![sentiment_score](https://user-images.githubusercontent.com/25267873/128570642-b40df4d1-e95e-4e7e-846c-9f38d34c75cd.png)

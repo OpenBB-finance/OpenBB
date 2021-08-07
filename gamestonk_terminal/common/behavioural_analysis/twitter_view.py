@@ -189,7 +189,7 @@ def sentiment(other_args: List[str], ticker: str):
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="sen",
+        prog="sentiment",
         description="""
             Plot in-depth sentiment predicted from tweets from last days
             that contain pre-defined ticker. [Source: Twitter]

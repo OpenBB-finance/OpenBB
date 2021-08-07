@@ -62,13 +62,13 @@ class GovController:
     def print_help(self):
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/government"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/government"
         )
-        print("\nExploratory Data Analysis:")
-        print("   cls         clear screen")
-        print("   ?/help      show this menu again")
-        print("   q                quit this menu, and shows back to main menu")
-        print("   quit             quit to abandon program")
+        print("\nGovernment:")
+        print("   cls                  clear screen")
+        print("   ?/help               show this menu again")
+        print("   q                    quit this menu, and shows back to main menu")
+        print("   quit                 quit to abandon program")
         print("")
         print("Explore:")
         print("   last_congress        last congress trading")
@@ -86,7 +86,7 @@ class GovController:
         print("   top_lobbying         top corporate lobbying tickers")
         print("")
         if self.ticker:
-            print(f"Ticker: {self.ticker}")
+            print(f"Ticker: {self.ticker}\n")
             print("   raw_congress         raw congress trades on the ticker")
             print("   congress             plot congress trades on the ticker")
             print("   raw_senate           raw senate trades on the ticker")
