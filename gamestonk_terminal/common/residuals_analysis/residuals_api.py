@@ -10,10 +10,11 @@ from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 import scipy.stats as stats
 import statsmodels.api as sm
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 from statsmodels.graphics.gofplots import qqplot
 from statsmodels.tsa.stattools import adfuller, kpss, bds
 from statsmodels.stats.diagnostic import het_arch
+# pylint: disable=R0402
 from scipy.stats import skewtest, kurtosistest, skew, kurtosis
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
