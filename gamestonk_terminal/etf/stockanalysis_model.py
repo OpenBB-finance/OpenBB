@@ -73,7 +73,7 @@ def get_etf_holdings(symbol: str):
         Dataframe of holdings
     """
 
-    link = "https://api.stockanalysis.com/etf/spy/holdings/"
+    link = f"https://api.stockanalysis.com/etf/{symbol}/holdings/"
     r = requests.get(link)
     soup = bs(r.text, "html.parser")
     soup = soup.find("table")

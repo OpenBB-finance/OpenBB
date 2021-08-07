@@ -4,10 +4,17 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+
 import matplotlib.pyplot as plt
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    export_data,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf import stockanalysis_view
 from gamestonk_terminal.etf import stockanalysis_model
@@ -130,6 +137,13 @@ class ETFController:
             help="Name to search for",
             required=True,
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
         try:
             if other_args:
@@ -145,7 +159,12 @@ class ETFController:
                 for idx, etf in enumerate(self.etf_names)
                 if " ".join(other_args[1:]).lower() in etf.lower()
             ]
-
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "search",
+                pd.DataFrame(data=matching_etfs),
+            )
             print(*matching_etfs, sep="\n")
             if len(matching_etfs) == 0:
                 print("No matches found")
@@ -171,6 +190,15 @@ class ETFController:
             help="Symbol to look for",
             required="-h" not in other_args,
         )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
         try:
             if other_args:
                 if "-" not in other_args[0]:
@@ -185,7 +213,9 @@ class ETFController:
                 print("No matching ETFs found\n")
                 return
 
-            stockanalysis_view.view_overview(symbol=ns_parser.name)
+            stockanalysis_view.view_overview(
+                symbol=ns_parser.name, export=ns_parser.export
+            )
         except Exception as e:
             print(e, "\n")
 
@@ -203,7 +233,7 @@ class ETFController:
             type=str,
             dest="name",
             help="ETF to get holdings for",
-            required=True,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-l",
@@ -212,6 +242,13 @@ class ETFController:
             dest="limit",
             help="Number of holdings to get",
             default=20,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
         )
 
         try:
@@ -224,7 +261,9 @@ class ETFController:
                 return
 
             stockanalysis_view.view_holdings(
-                symbol=ns_parser.name, num_to_show=ns_parser.limit
+                symbol=ns_parser.name,
+                num_to_show=ns_parser.limit,
+                export=ns_parser.export,
             )
 
         except Exception as e:
@@ -246,6 +285,13 @@ class ETFController:
             help="Symbols to compare",
             required="-h" not in other_args,
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
         try:
             if other_args:
@@ -262,7 +308,7 @@ class ETFController:
                     print(f"{etf} not a known symbol. ")
                     etf_list.remove(etf)
 
-            stockanalysis_view.view_comparisons(etf_list)
+            stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
 
         except Exception as e:
             print(e, "\n")
@@ -271,7 +317,7 @@ class ETFController:
         """Process screener command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="etfscr",
+            prog="screener",
             add_help=False,
             description="Screens ETFS from a personal scraping github repository.  Data scraped from stockanalysis.com",
         )

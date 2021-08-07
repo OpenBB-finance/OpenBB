@@ -27,7 +27,7 @@ def view_screener(num_to_show: int, export: str):
 
     export_data(
         export,
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "screeners"),
-        "etfscreener",
+        os.path.dirname(os.path.abspath(__file__)),
+        "screener",
         screened_data,
     )
