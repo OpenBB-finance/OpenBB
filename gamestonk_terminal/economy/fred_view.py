@@ -34,6 +34,24 @@ fred_series_description = {
 }
 
 
+def display_fred_shortcuts():
+    shortcuts = """
+FRED shortcuts:
+    vixcls        Volatility Index
+    gdp           Gross Domestic Product
+    unrate        Unemployment Rate
+    dgs1          1-year Treasury Constant Maturity Rate
+    dgs5          5-year Treasury Constant Maturity Rate
+    dgs10         10-year Treasury Constant Maturity Rate
+    dgs30         30-year Treasury Constant Maturity Rate
+    mortgage30us  30-year Fixed Rate Mortgage Average
+    fedfunds      Effective Federal Funds Rate
+    aaa           Moody's Seasoned AAA Corporate Bond Yield
+    dexcaus       Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)
+    """
+    print(shortcuts)
+
+
 def display_fred(other_args: List[str], choice: str):
     """Display customized Federal Reserve Economic Data (FRED) from https://fred.stlouisfed.org.
     It is possible to display multiple series.

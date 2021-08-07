@@ -6,7 +6,11 @@ import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.economy import fred_view
 from gamestonk_terminal.economy import finnhub_view
@@ -20,7 +24,6 @@ from gamestonk_terminal.economy.report import report_controller
 class EconomyController:
     """Economy Controller"""
 
-    # Command choices
     CHOICES = [
         "cls",
         "?",
@@ -30,8 +33,20 @@ class EconomyController:
     ]
 
     CHOICES_COMMANDS = [
+        "feargreed",
         "events",
-        "fred",
+        "custom",
+        "disp",
+        "overview",
+        "indices",
+        "futures",
+        "usbonds",
+        "glbonds",
+        "futures",
+        "currencies",
+    ]
+
+    CHOICES_SHORTCUTS = [
         "vixcls",
         "gdp",
         "unrate",
@@ -43,14 +58,6 @@ class EconomyController:
         "fedfunds",
         "aaa",
         "dexcaus",
-        "feargreed",
-        "overview",
-        "indices",
-        "futures",
-        "usbonds",
-        "glbonds",
-        "futures",
-        "currencies",
     ]
 
     CHOICES_MENUS = [
@@ -58,6 +65,7 @@ class EconomyController:
     ]
 
     CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_SHORTCUTS
     CHOICES += CHOICES_MENUS
 
     def __init__(self):
@@ -71,45 +79,33 @@ class EconomyController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy"
-        )
-        print("")
-        print(">> ECONOMY <<")
-        print("")
-        print("What do you want to do?")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print(" ")
-        print("   feargreed     CNN Fear and Greed Index")
-        print("   events        economic impact events [Finnhub]")
-        print(
-            "   fred          display customized FRED data from https://fred.stlouisfed.org"
-        )
-        print("   vixcls        Volatility Index")
-        print("   gdp           Gross Domestic Product")
-        print("   unrate        Unemployment Rate")
-        print("   dgs1          1-year Treasury Constant Maturity Rate")
-        print("   dgs5          5-year Treasury Constant Maturity Rate")
-        print("   dgs10         10-year Treasury Constant Maturity Rate")
-        print("   dgs30         30-year Treasury Constant Maturity Rate")
-        print("   mortgage30us  30-year Fixed Rate Mortgage Average")
-        print("   fedfunds      Effective Federal Funds Rate")
-        print("   aaa           Moody's Seasoned AAA Corporate Bond Yield")
-        print("   dexcaus       Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)")
-        print("")
-        print("Wall St. Journal:")
-        print("   overview      market data overview")
-        print("   indices       us indices overview")
-        print("   futures       futures overview")
-        print("   usbonds       us bond overview")
-        print("   glbonds       global bonds overview")
-        print("   currencies    currency overview")
-        print("")
-        print(">  report        generate automatic report")
-        print("")
+        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy
+
+>> ECONOMY <<
+
+What do you want to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+CNN:
+    feargreed     CNN Fear and Greed Index
+Finnhub:
+    events        economic impact events
+FRED:
+    custom        customized FRED data from https://fred.stlouisfed.org
+    disp          display FRED shortcuts commands
+Wall St. Journal:
+    overview      market data overview
+    indices       us indices overview
+    futures       futures overview
+    usbonds       us bond overview
+    glbonds       global bonds overview
+    currencies    currency overview
+
+>   report        generate automatic report
+"""
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -157,11 +153,78 @@ class EconomyController:
 
     def call_events(self, other_args: List[str]):
         """Process events command"""
-        finnhub_view.economy_calendar_events(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="events",
+            description="""
+                Output economy impact calendar impact events. [Source: https://finnhub.io]
+            """,
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            type=str,
+            default="US",
+            choices=["NZ", "AU", "ERL", "CA", "EU", "US", "JP", "CN", "GB", "CH"],
+            help="Country from where to get economy calendar impact events",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=10,
+            help="Number economy calendar impact events to display",
+        )
+        parser.add_argument(
+            "-i",
+            "--impact",
+            action="store",
+            dest="impact",
+            type=str,
+            default="all",
+            choices=["low", "medium", "high", "all"],
+            help="Impact of the economy event",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
-    def call_fred(self, other_args: List[str]):
-        """Process fred command"""
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.economy_calendar_events(
+                country=ns_parser.country,
+                num=ns_parser.num,
+                impact=ns_parser.impact,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_custom(self, other_args: List[str]):
+        """Process custom command"""
         fred_view.display_fred(other_args, "")
+
+    def call_disp(self, _):
+        """Process custom command"""
+        fred_view.display_fred_shortcuts()
 
     def call_vixcls(self, other_args: List[str]):
         """Process vixcls command"""

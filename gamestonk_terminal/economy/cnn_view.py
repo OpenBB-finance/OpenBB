@@ -96,7 +96,6 @@ def fear_and_greed_index(other_args: List[str]):
             plt.ion()
 
         plt.show()
-        print("")
 
     except SystemExit:
         print("")
