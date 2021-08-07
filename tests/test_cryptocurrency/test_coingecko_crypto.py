@@ -2,7 +2,7 @@ from unittest import mock, TestCase
 import json
 import sys
 import io
-
+import os
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_view import (
     load,
@@ -61,6 +61,7 @@ from gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model import C
 )
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
+    print(os.getcwd())
     with open("tests/data/btc_usd_test_data.json") as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
@@ -96,7 +97,8 @@ class TestCoinGeckoAPI(TestCase):
         mock_load.return_value = sample_return
         coin = load(["-c", "bitcoin"])
         mock_return, vs = ta(coin, ["--vs", "usd"])
-        self.assertTrue(mock_return.shape == (722, 2))
+        print(mock_return, vs)
+        self.assertTrue(mock_return.shape == (722, 1))
         self.assertTrue(vs == "usd")
 
     def test_get_coins(self):
