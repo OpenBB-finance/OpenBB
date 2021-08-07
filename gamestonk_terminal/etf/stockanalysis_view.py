@@ -22,6 +22,29 @@ def view_overview(symbol: str):
     print("")
 
 
+def view_holdings(symbol: str, num_to_show: int):
+    """
+
+    Parameters
+    ----------
+    symbol: str
+        ETF symbol to show holdings for
+    num_to_show: int
+        Number of holdings to show
+
+    """
+
+    df = stockanalysis_model.get_etf_holdings(symbol)
+    print(
+        tabulate(
+            df[:num_to_show],
+            headers=["Ticker", "% of ETF", "Shares"],
+            tablefmt="fancy_grid",
+        )
+    )
+    print("")
+
+
 def view_comparisons(symbols: List[str]):
     """Show ETF comparisons
 

@@ -191,7 +191,44 @@ class ETFController:
 
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
-        etf_holdings(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="holdings",
+            description="Look at ETF holdings",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            help="ETF to get holdings for",
+            required=True,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=int,
+            dest="limit",
+            help="Number of holdings to get",
+            default=20,
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stockanalysis_view.view_holdings(
+                symbol=ns_parser.name, num_to_show=ns_parser.limit
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_compare(self, other_args):
         """Process compare command"""
