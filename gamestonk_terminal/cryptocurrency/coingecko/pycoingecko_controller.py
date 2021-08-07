@@ -9,7 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.coingecko import pycoingecko_view
-from gamestonk_terminal.technical_analysis import ta_controller
+from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 
 
 class GeckoController:
@@ -90,7 +90,7 @@ class GeckoController:
         print(f"Loaded coin: {self.current_coin}")
         print("")
         print("   chart           price chart for loaded coin")
-        print("   ta              yechnical analysis menu for loaded coin")
+        print(">  ta              technical analysis menu for loaded coin")
         print("   info            nasic information about loaded coin")
         print("   market          market stats about loaded coin")
         print("   ath             all time high related stats for loaded coin")
@@ -301,7 +301,6 @@ class GeckoController:
                         ticker=self.current_coin.coin_symbol,
                         start=self.current_df.index[0],
                         interval="",
-                        context="(crypto)>(cg)",
                     )
                     print("")
                     if quit is not None:

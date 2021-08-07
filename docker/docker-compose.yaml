@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  gst-python:
+    build:
+      context: ..
+      dockerfile: docker/gst-python.dockerfile
+    image: gst/gst-python:1.0.0
+  gst-deps:
+    build:
+      context: ..
+      dockerfile: docker/gst-deps.dockerfile
+    image: gst/gst-deps:1.0.0
+  gst-poetry-deps:
+    build:
+      context: ..
+      dockerfile: docker/gst-poetry-deps.dockerfile
+    image: gst/gst-poetry-deps:1.0.0
+  gst:
+    build:
+      context: ..
+      dockerfile: docker/gst.dockerfile
+    image: gst/gst:1.1.0
+    tty: true
+    env_file: setenv
+  gst-poetry:
+    build:
+      context: ..
+      dockerfile: docker/gst-poetry.dockerfile
+    image: gst/gst-poetry:1.1.0
+    tty: true
+    env_file: setenv

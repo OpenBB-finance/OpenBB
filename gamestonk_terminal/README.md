@@ -103,7 +103,6 @@ Command|Description|Source
 `spectrum`      |spectrum of sectors, industry, country |[Finviz](https://finviz.com)
 `latest`        |latest news |[Seeking Alpha](https://seekingalpha.com/)
 `trending`      |trending news |[Seeking Alpha](https://seekingalpha.com/)
-`ratings`       |top ratings updates |[MarketBeat](https://marketbeat.com)
 `darkpool`      |dark pool tickers with growing activity |[FINRA](https://www.finra.org)
 `darkshort`     |dark pool short position|[Stockgrid](https://stockgrid.io)
 `shortvol`      |short interest and days to cover |[Stockgrid](https://stockgrid.io)
@@ -182,6 +181,7 @@ Command|Description
 `balance`       |balance sheet of the company
 `cash`          |cash flow of the company
 `earnings`      |earnings dates and reported EPS
+`fraud`         |key fraud ratios
 [Financial Modeling Prep API](https://financialmodelingprep.com/) |
 `profile`       |profile of the company
 `quote`         |quote of the company
@@ -426,6 +426,7 @@ Command|Description|Source
 `load`          | Load new ticker
 `info`          | Display option information | [Barchart](https://barchart.com/)
 `calc`          | Basic option PnL calculator
+`act`           | Scrapes unusual options activity|
 `exp`           | see/set expiry date
 `chains`        | displays option chains    |[Tradier](https://developer.tradier.com/)
 `oi`            | Plot open interest

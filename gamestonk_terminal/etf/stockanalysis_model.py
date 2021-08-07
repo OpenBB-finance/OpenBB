@@ -14,13 +14,16 @@ from gamestonk_terminal.helper_funcs import (
 
 # Run this when called to get all available etfs and names
 r = requests.get("https://stockanalysis.com/etf/")
-soup = bs(r.text, "html.parser").findAll("ul", {"class": "no-spacing"})
-all_links = soup[0].findAll("li")
+soup = bs(r.text, "html.parser").findAll("table", {"class": "SymbolTable_table__3Q2qq"})
+all_links = soup[0].findAll("tr")
+
 etf_symbols = []
 etf_names = []
 for link in all_links:
-    etf_symbols.append(link.text.split("-")[0].strip(" "))
-    etf_names.append(link.text.split("-")[1].strip(" "))
+    data = link.findAll("td")
+    if data:
+        etf_symbols.append(data[0].find("a").get_text())
+        etf_names.append(data[1].find("span").get_text())
 
 
 def limit_number_of_holdings(num: str) -> int:

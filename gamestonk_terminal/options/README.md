@@ -14,6 +14,8 @@ This menu aims to give insight on options. Options can cause significant share p
   * Display option information [Source: Barchart.com]
 * [calc](#calc)
   * basic call/put PnL calculator
+* [unu](#unu)
+  * Display unusual options activity
 * [exp](#exp)
   * See/set expiry date
 * [chains](#chains)
@@ -26,7 +28,7 @@ This menu aims to give insight on options. Options can cause significant share p
   * Plot volume and open interest
 * [hist](#hist)
   * Plot option history [Source: Tradier.com]
-* [gr_hist](#gr_hist)
+* [grhist](#grhist)
    * Plot historical option greek [Source: ops.syncretism.io]
 
 
@@ -84,6 +86,34 @@ usage: calc [-s STRIKE] [-p PREMIUM] [--put] [--sell]  [-h]
 * --sell: Flag to calculate for selling option
 
 ![calc](https://user-images.githubusercontent.com/18151143/126883982-c54cb5ec-7eb2-41c1-812e-75e830e3703d.png)
+
+## unu <a name="unu"></a>
+Show unusual options activity from fdscreener.com
+
+```python
+usage: unu [-n NUM] [--sortby] [-a] [--export] [-h]
+```
+* -n/--num : Number to get.  Defaults to 20.  Each page scrapes 20 results
+* --sortby : Column to sort data by.  Can be {Option,Vol/OI,Vol,OI,Bid,Ask}.  Defaults to Vol/OI
+* -a : Flag to sort in ascending order
+* --export : Flag to export.  Can be {csv, json, xlsx}
+```python
+(✨) (op)> unu -n 5
+Last Updated: 2021-08-03 18:06:07
+╒══════════╤════════════╤══════════╤══════════╤═══════╤══════╤═══════╤═══════╕
+│ Ticker   │ Exp        │ Option   │   Vol/OI │   Vol │   OI │   Bid │   Ask │
+╞══════════╪════════════╪══════════╪══════════╪═══════╪══════╪═══════╪═══════╡
+│ AMD      │ 2021-08-06 │ 112.0 P  │    102.9 │ 15639 │  152 │  1.67 │  1.69 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ MA       │ 2021-11-19 │ 375.0 C  │     50.3 │ 10165 │  202 │ 18.35 │ 18.65 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ GOOG     │ 2021-08-06 │ 2630.0 P │     38.5 │  5314 │  138 │  1.2  │  1.65 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ AMD      │ 2021-08-06 │ 111.0 P  │     37.2 │ 15245 │  410 │  1.29 │  1.31 │
+├──────────┼────────────┼──────────┼──────────┼───────┼──────┼───────┼───────┤
+│ GOOG     │ 2021-08-06 │ 2635.0 P │     34.1 │  5966 │  175 │  1.4  │  1.8  │
+╘══════════╧════════════╧══════════╧══════════╧═══════╧══════╧═══════╧═══════╛
+```
 
 ## exp <a name="exp"></a>
 See/set expiry dates.
@@ -184,11 +214,11 @@ Note that the chain ID can be obtained by using `chains -d symbol`
 ![hist](https://user-images.githubusercontent.com/18151143/126855841-6884b19b-63c8-4746-a63f-82ad1a523c0c.png)
 
 
-## gr_hist <a name="gr_hist"></a>
+## grhist <a name="grhist"></a>
 Plot historical option greeks.  Data from ops.syncretism.io
 
 ```python
-usage: gr_hist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
+usage: grhist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] [--chain CHAIN_ID] [--raw] [--export {csv,json,xlsx}] [-h]
 ```
 * -s/--strike: Strike to show history for
 * -g/--greek: Greek to get data for.  Can be {iv,gamma,theta,vega,delta,rho}.  Also can be premium
@@ -198,6 +228,6 @@ usage: gr_hist [-s STRIKE] [--put] [-g {iv,gamma,theta,vega,delta,rho,premium}] 
 * --export: Export file.  Can be {csv, json, xlsx}.
 
 ```python
-(✨) (op)> gr_hist -s 145 --put -g delta
+(✨) (op)> grhist -s 145 --put -g delta
 ```
 ![gr_hist](https://user-images.githubusercontent.com/18151143/126881002-c516d94b-5c87-43b1-9e16-dce304795e1c.png)

@@ -9,7 +9,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.binance import binance_model
-from gamestonk_terminal.technical_analysis import ta_controller
+from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 
 
 class BinanceController:
@@ -53,7 +53,7 @@ class BinanceController:
         print("   book          show order book")
         print("   candle        show candles")
         print("   balance       show coin balance")
-        print("   ta            open technical analysis menu")
+        print(">  ta            open technical analysis menu")
         print("")
 
     def switch(self, an_input: str):
@@ -162,7 +162,6 @@ class BinanceController:
                     ticker=self.current_coin,
                     start=self.current_df.index[0],
                     interval="",
-                    context="(crypto)>(bin)",
                 )
                 print("")
                 if quit is not None:
