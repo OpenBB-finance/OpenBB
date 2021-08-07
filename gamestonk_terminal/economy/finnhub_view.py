@@ -5,7 +5,7 @@ from gamestonk_terminal.helper_funcs import export_data
 
 
 def economy_calendar_events(country: str, num: int, impact: str, export: str):
-    """Output economy calendar impact events
+    """Output economy calendar impact events. [Source: Finnhub]
 
     Parameters
     ----------

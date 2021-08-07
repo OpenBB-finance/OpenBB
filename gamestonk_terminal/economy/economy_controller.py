@@ -92,9 +92,6 @@ CNN:
     feargreed     CNN Fear and Greed Index
 Finnhub:
     events        economic impact events
-FRED:
-    custom        customized FRED data from https://fred.stlouisfed.org
-    disp          display FRED shortcuts commands
 Wall St. Journal:
     overview      market data overview
     indices       US indices overview
@@ -102,6 +99,9 @@ Wall St. Journal:
     usbonds       US bonds overview
     glbonds       global bonds overview
     currencies    currencies overview
+FRED:
+    custom        customized FRED data from https://fred.stlouisfed.org
+    disp          display FRED shortcuts commands
 
 >   report        generate automatic report
 """
@@ -158,7 +158,7 @@ Wall St. Journal:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="events",
             description="""
-                Output economy impact calendar impact events. [Source: https://finnhub.io]
+                Output economy impact calendar impact events. [Source: Finnhub]
             """,
         )
         parser.add_argument(
@@ -252,58 +252,6 @@ Wall St. Journal:
 
         except Exception as e:
             print(e, "\n")
-
-    def call_custom(self, other_args: List[str]):
-        """Process custom command"""
-        fred_view.display_fred(other_args, "")
-
-    def call_disp(self, _):
-        """Process custom command"""
-        fred_view.display_fred_shortcuts()
-
-    def call_vixcls(self, other_args: List[str]):
-        """Process vixcls command"""
-        fred_view.display_fred(other_args, "VIXCLS")
-
-    def call_gdp(self, other_args: List[str]):
-        """Process gdp command"""
-        fred_view.display_fred(other_args, "GDP")
-
-    def call_unrate(self, other_args: List[str]):
-        """Process unrate command"""
-        fred_view.display_fred(other_args, "UNRATE")
-
-    def call_dgs1(self, other_args: List[str]):
-        """Process dgs1 command"""
-        fred_view.display_fred(other_args, "DGS1")
-
-    def call_dgs5(self, other_args: List[str]):
-        """Process dgs5 command"""
-        fred_view.display_fred(other_args, "DGS5")
-
-    def call_dgs10(self, other_args: List[str]):
-        """Process dgs10 command"""
-        fred_view.display_fred(other_args, "DGS10")
-
-    def call_dgs30(self, other_args: List[str]):
-        """Process dgs30 command"""
-        fred_view.display_fred(other_args, "DGS30")
-
-    def call_mortgage30us(self, other_args: List[str]):
-        """Process mortgage30us command"""
-        fred_view.display_fred(other_args, "MORTGAGE30US")
-
-    def call_fedfunds(self, other_args: List[str]):
-        """Process fedfunds command"""
-        fred_view.display_fred(other_args, "FEDFUNDS")
-
-    def call_aaa(self, other_args: List[str]):
-        """Process aaa command"""
-        fred_view.display_fred(other_args, "AAA")
-
-    def call_dexcaus(self, other_args: List[str]):
-        """Process dexcaus command"""
-        fred_view.display_fred(other_args, "DEXCAUS")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -472,6 +420,58 @@ Wall St. Journal:
 
         except Exception as e:
             print(e, "\n")
+
+    def call_custom(self, other_args: List[str]):
+        """Process custom command"""
+        fred_view.display_fred(other_args, "")
+
+    def call_disp(self, _):
+        """Process custom command"""
+        fred_view.display_fred_shortcuts()
+
+    def call_vixcls(self, other_args: List[str]):
+        """Process vixcls command"""
+        fred_view.display_fred(other_args, "VIXCLS")
+
+    def call_gdp(self, other_args: List[str]):
+        """Process gdp command"""
+        fred_view.display_fred(other_args, "GDP")
+
+    def call_unrate(self, other_args: List[str]):
+        """Process unrate command"""
+        fred_view.display_fred(other_args, "UNRATE")
+
+    def call_dgs1(self, other_args: List[str]):
+        """Process dgs1 command"""
+        fred_view.display_fred(other_args, "DGS1")
+
+    def call_dgs5(self, other_args: List[str]):
+        """Process dgs5 command"""
+        fred_view.display_fred(other_args, "DGS5")
+
+    def call_dgs10(self, other_args: List[str]):
+        """Process dgs10 command"""
+        fred_view.display_fred(other_args, "DGS10")
+
+    def call_dgs30(self, other_args: List[str]):
+        """Process dgs30 command"""
+        fred_view.display_fred(other_args, "DGS30")
+
+    def call_mortgage30us(self, other_args: List[str]):
+        """Process mortgage30us command"""
+        fred_view.display_fred(other_args, "MORTGAGE30US")
+
+    def call_fedfunds(self, other_args: List[str]):
+        """Process fedfunds command"""
+        fred_view.display_fred(other_args, "FEDFUNDS")
+
+    def call_aaa(self, other_args: List[str]):
+        """Process aaa command"""
+        fred_view.display_fred(other_args, "AAA")
+
+    def call_dexcaus(self, other_args: List[str]):
+        """Process dexcaus command"""
+        fred_view.display_fred(other_args, "DEXCAUS")
 
     def call_report(self, _):
         """Process report command"""
