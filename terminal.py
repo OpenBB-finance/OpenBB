@@ -20,18 +20,10 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal
 
-from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.cryptocurrency import crypto_controller
-from gamestonk_terminal.economy import economy_controller
-from gamestonk_terminal.options import options_controller
-
 # from gamestonk_terminal.etf import etf_controller
-from gamestonk_terminal.forex import forex_controller
-from gamestonk_terminal.resources import resources_controller
-from gamestonk_terminal.portfolio import portfolio_controller
 
 
-# pylint: disable=too-many-public-methods
+# pylint: disable=too-many-public-methods,import-outside-toplevel
 
 
 class TerminalController:
@@ -166,18 +158,26 @@ What do you want to do?
     # MENUS
     def call_stocks(self, _):
         """Process stocks command"""
+        from gamestonk_terminal.stocks import stocks_controller
+
         return stocks_controller.menu()
 
     def call_crypto(self, _):
         """Process crypto command"""
+        from gamestonk_terminal.cryptocurrency import crypto_controller
+
         return crypto_controller.menu()
 
     def call_economy(self, _):
         """Process econ command"""
+        from gamestonk_terminal.economy import economy_controller
+
         return economy_controller.menu()
 
     def call_options(self, _):
         """Process op command"""
+        from gamestonk_terminal.options import options_controller
+
         return options_controller.menu()
 
     def call_etf(self, _):
@@ -187,14 +187,20 @@ What do you want to do?
 
     def call_forex(self, _):
         """Process fx command"""
+        from gamestonk_terminal.forex import forex_controller
+
         return forex_controller.menu()
 
     def call_resources(self, _):
         """Process resources command"""
+        from gamestonk_terminal.resources import resources_controller
+
         return resources_controller.menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
+        from gamestonk_terminal.portfolio import portfolio_controller
+
         return portfolio_controller.menu()
 
 
