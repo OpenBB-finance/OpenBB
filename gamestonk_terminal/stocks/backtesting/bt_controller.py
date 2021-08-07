@@ -44,7 +44,7 @@ class BacktestingController:
     def print_help(self):
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/backtesting"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/backtesting"
         )
         print("\nBacktesting:")
         print("   cls         clear screen")

@@ -1,0 +1,4 @@
+[coverage:run]
+omit =
+    env/*
+source = .

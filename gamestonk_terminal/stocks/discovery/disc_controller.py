@@ -75,7 +75,7 @@ class DiscoveryController:
     def print_help():
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/discovery"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery"
         )
         print("\nDiscovery Mode:")
         print("   cls            clear screen")

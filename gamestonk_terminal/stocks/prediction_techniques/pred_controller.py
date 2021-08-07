@@ -65,7 +65,8 @@ class PredictionTechniquesController:
     def print_help(self):
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/prediction_techniques"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
+            "/stocks/prediction_techniques"
         )
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 

@@ -427,7 +427,6 @@ def candle(s_ticker: str, other_args: List[str]):
         prog="candle",
         description="Displays candle chart of loaded ticker",
     )
-
     parser.add_argument(
         "-s",
         "--start_date",
@@ -436,6 +435,7 @@ def candle(s_ticker: str, other_args: List[str]):
         default=(datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
         help="Start date for candle data",
     )
+    # TODO: Add option to customize plot even further
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)

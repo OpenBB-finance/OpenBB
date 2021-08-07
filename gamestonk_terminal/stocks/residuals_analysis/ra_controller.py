@@ -63,7 +63,8 @@ class ResidualsController:
     def print_help(self):
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/residuals_analysis"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
+            "/stocks/residuals_analysis"
         )
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
@@ -97,8 +98,6 @@ class ResidualsController:
             print(
                 "   independence  tests independent and identically distributed (BDS)"
             )
-            print("")
-        return
 
     def pick_model(self, other_args: List[str]):
         """Pick model to fit to stock data"""

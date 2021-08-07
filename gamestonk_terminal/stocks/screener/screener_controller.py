@@ -58,7 +58,7 @@ class ScreenerController:
     def print_help(self):
         """Print help"""
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/screener"
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/screener"
         )
         print("\nScreener:")
         print("   cls           clear screen")
