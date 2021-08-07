@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf import stockanalysis_view
 from gamestonk_terminal.etf import stockanalysis_model
-from gamestonk_terminal.etf.screener_model import etf_screener
+from gamestonk_terminal.etf import screener_view
 from gamestonk_terminal.etf import wsj_view
 
 
@@ -269,7 +269,35 @@ class ETFController:
 
     def call_screener(self, other_args):
         """Process screener command"""
-        etf_screener(other_args)
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="etfscr",
+            add_help=False,
+            description="Screens ETFS from a personal scraping github repository.  Data scraped from stockanalysis.com",
+        )
+        parser.add_argument(
+            "--num", type=int, help="Number of etfs to show", dest="num", default=20
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            screener_view.view_screener(
+                num_to_show=ns_parser.num, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_gainers(self, other_args):
         """Process gainers command"""

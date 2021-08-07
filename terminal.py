@@ -94,7 +94,7 @@ What do you want to do?
 >>  economy
 >>  options
 >>  portfolio
->>  etf         :: TEMPORARILY DISABLED
+>>  etf
 >>  forex
 >>  resources
     """

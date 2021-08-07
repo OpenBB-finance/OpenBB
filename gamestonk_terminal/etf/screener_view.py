@@ -1,0 +1,33 @@
+"""ETF Screener view"""
+__docformat__ = "numpy"
+
+import os
+
+from tabulate import tabulate
+
+from gamestonk_terminal.etf import screener_model
+from gamestonk_terminal.helper_funcs import export_data
+
+
+def view_screener(num_to_show: int, export: str):
+
+    screened_data = screener_model.etf_screener()
+    if screened_data.shape[0] > int(num_to_show):
+        screened_data = screened_data.sample(num_to_show)
+    print(
+        tabulate(
+            screened_data.fillna(""),
+            tablefmt="fancy_grid",
+            headers=screened_data.columns,
+            showindex=True,
+            disable_numparse=True,
+        )
+    )
+    print("")
+
+    export_data(
+        export,
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "screeners"),
+        "etfscreener",
+        screened_data,
+    )
