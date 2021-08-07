@@ -10,7 +10,7 @@ from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 from scipy import stats
 import statsmodels.api as sm
-from matplotlib import gridspec
+import matplotlib.gridspec as gridspec
 from statsmodels.graphics.gofplots import qqplot
 from statsmodels.tsa.stattools import adfuller, kpss, bds
 from statsmodels.stats.diagnostic import het_arch
