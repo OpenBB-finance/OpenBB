@@ -12,7 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.options import (
     barchart_view,
     syncretism_view,
-    calculator_model,
+    calculator_view,
     op_helpers,
     yfinance_view,
     yfinance_model,
@@ -85,7 +85,9 @@ class OptionsController:
         print("")
         print(f"Current Ticker: {self.ticker or None}")
         print("   load          load new ticker")
-        print("   info          display option information (volatility, IV rank etc)")
+        print(
+            "   info          display option information (volatility, IV rank etc) [Barchart.com]"
+        )
         print("")
         print("   calc          basic call/put PnL calculator")
         print("")
@@ -147,7 +149,88 @@ class OptionsController:
 
     def call_calc(self, other_args: List[str]):
         """Process calc command"""
-        calculator_model.pnl_calculator(other_args)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="calc",
+            description="Calculate profit or loss for given option settings.",
+        )
+
+        parser.add_argument(
+            "--put",
+            action="store_true",
+            default=False,
+            dest="put",
+            help="Flag to calculate put option",
+        )
+
+        parser.add_argument(
+            "--sell",
+            action="store_true",
+            default=False,
+            dest="sell",
+            help="Flag to get profit chart of selling contract",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--strike",
+            type=float,
+            dest="strike",
+            help="Option strike price",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--premium",
+            type=float,
+            dest="premium",
+            help="Premium price",
+            default=1,
+        )
+
+        parser.add_argument(
+            "-m",
+            "--min",
+            type=float,
+            dest="min",
+            help="Min price to look at",
+            default=-1,
+            required="-M" in other_args,
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            type=float,
+            dest="max",
+            help="Max price to look at",
+            default=-1,
+            required="-m" in other_args,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            if ns_parser.min > 0 and ns_parser.max > 0:
+                pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
+            else:
+                pars = {}
+
+            calculator_view.view_calculator(
+                strike=ns_parser.strike,
+                premium=ns_parser.premium,
+                put=ns_parser.put,
+                sell=ns_parser.sell,
+                **pars,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_unu(self, other_args: List[str]):
         """Process act command"""
