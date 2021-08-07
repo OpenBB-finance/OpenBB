@@ -17,15 +17,15 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     etf_names: List[str]
         List of all available etf names
     """
-
+    r = requests.get("https://api.stockanalysis.com/etf/")
+    soup = bs(r.text, "html.parser").findAll("ul", {"class": "no-spacing"})
+    all_links = soup[0].findAll("li")
     etf_symbols = []
     etf_names = []
-    data = requests.get(
-        "https://stockanalysis.com/_next/data/VDLj2l5sT7aRmdOwKVFT4/etf.json"
-    ).json()
-    for entry in data["pageProps"]["stocks"]:
-        etf_symbols.append(entry["s"])
-        etf_names.append(entry["n"])
+    for link in all_links:
+        etf_symbols.append(link.text.split("-")[0].strip(" "))
+        etf_names.append(link.text.split("-")[1][1:])
+
     return etf_symbols, etf_names
 
 
@@ -73,19 +73,23 @@ def get_etf_holdings(symbol: str):
         Dataframe of holdings
     """
 
-    data = requests.get(
-        f"https://stockanalysis.com/_next/data/VDLj2l5sT7aRmdOwKVFT4/etf/{symbol}/holdings.json"
-    ).json()
+    link = "https://api.stockanalysis.com/etf/spy/holdings/"
+    r = requests.get(link)
+    soup = bs(r.text, "html.parser")
+    soup = soup.find("table")
+    tds = soup.findAll("td")
     tickers = []
-    assets = []
+    for i in tds[1::5]:
+        tickers.append(i.text)
+    percents = []
+    for i in tds[3::5]:
+        percents.append(i.text)
     shares = []
-    for entry in data["pageProps"]["data"]["list"]:
-        tickers.append(entry["symbol"].strip("$"))
-        assets.append(entry["assets"])
-        shares.append(entry["shares"])
-
-    df = pd.DataFrame(data=[tickers, assets, shares]).T
-    df.columns = ["Ticker", "% Holdings", "Shares"]
+    for i in tds[4::5]:
+        shares.append(i.text)
+    df = pd.DataFrame(index=tickers)
+    df["% Of Etf"] = percents
+    df["Shares"] = shares
     return df
 
 
