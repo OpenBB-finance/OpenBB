@@ -209,7 +209,9 @@ def terminal():
         if config_terminal.DEFAULT_CONTEXT in t_controller.CHOICES_MENUS:
             try:
                 print("")
-                t_controller.switch(config_terminal.DEFAULT_CONTEXT.lower())
+                process_input = t_controller.switch(
+                    config_terminal.DEFAULT_CONTEXT.lower()
+                )
             except SystemExit:
                 print("")
         else:
@@ -218,56 +220,57 @@ def terminal():
     t_controller.print_help()
     parsed_stdin = False
 
-    while True:
-        if gtff.ENABLE_QUICK_EXIT:
-            print("Quick exit enabled")
-            break
+    if config_terminal.DEFAULT_CONTEXT and not process_input:
+        while True:
+            if gtff.ENABLE_QUICK_EXIT:
+                print("Quick exit enabled")
+                break
 
-        # Get input command from stdin or user
-        if not parsed_stdin and len(sys.argv) > 1:
-            an_input = " ".join(sys.argv[1:])
-            print(f"{get_flair()}> {an_input}")
-            parsed_stdin = True
+            # Get input command from stdin or user
+            if not parsed_stdin and len(sys.argv) > 1:
+                an_input = " ".join(sys.argv[1:])
+                print(f"{get_flair()}> {an_input}")
+                parsed_stdin = True
 
-        elif session and gtff.USE_PROMPT_TOOLKIT:
-            an_input = session.prompt(
-                f"{get_flair()}> ", completer=t_controller.completer
-            )
+            elif session and gtff.USE_PROMPT_TOOLKIT:
+                an_input = session.prompt(
+                    f"{get_flair()}> ", completer=t_controller.completer
+                )
 
-        else:
-            an_input = input(f"{get_flair()}> ")
+            else:
+                an_input = input(f"{get_flair()}> ")
 
-        # Is command empty
-        if not an_input:
-            print("")
-            continue
+            # Is command empty
+            if not an_input:
+                print("")
+                continue
 
-        # Process list of commands selected by user
-        try:
-            process_input = t_controller.switch(an_input)
-            # None - Keep loop
-            # True - Quit or Reset based on flag
-            # False - Keep loop and show help menu
+            # Process list of commands selected by user
+            try:
+                process_input = t_controller.switch(an_input)
+                # None - Keep loop
+                # True - Quit or Reset based on flag
+                # False - Keep loop and show help menu
 
-            if process_input is not None:
-                # Quit terminal
-                if process_input:
-                    break
+                if process_input is not None:
+                    # Quit terminal
+                    if process_input:
+                        break
 
-                t_controller.print_help()
+                    t_controller.print_help()
 
-        except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            except SystemExit:
+                print("The command selected doesn't exist\n")
+                continue
 
-    if not gtff.ENABLE_QUICK_EXIT:
-        # Check if the user wants to reset application
-        if an_input == "reset" or t_controller.update_succcess:
-            ret_code = reset()
-            if ret_code != 0:
+        if not gtff.ENABLE_QUICK_EXIT:
+            # Check if the user wants to reset application
+            if an_input == "reset" or t_controller.update_succcess:
+                ret_code = reset()
+                if ret_code != 0:
+                    print_goodbye()
+            else:
                 print_goodbye()
-        else:
-            print_goodbye()
 
 
 if __name__ == "__main__":
