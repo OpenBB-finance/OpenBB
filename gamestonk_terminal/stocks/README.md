@@ -2,8 +2,6 @@
 
 * [Commands](#Commands)
    * [Load](#Load)
-   * [Clear](#Clear)
-   * [View](#View)
    * [Quote](#Quote)
    * [Candle](#Candle)
 * [Discover Stocks](#Discover-Stocks-)
@@ -33,20 +31,6 @@ Load stock ticker to perform analysis on. When the data source is 'yf', an India
   * -i : Intraday stock minutes
   * --source : Source of historical data. 'yf' and 'av' available. Default 'yf'
   * -p : Pre/After market hours. Only works for 'yf' source, and intraday data
-
-#### Clear
-```
-usage: clear
-```
-Clear previously loaded stock ticker.
-
-#### View
-```
-view
-```
-Visualise historical data of a stock. Line plot color is configurable in [config_plot](/gamestonk_terminal/config_plot.py)
-
-![AAPL](https://user-images.githubusercontent.com/18151143/125211301-69424800-e273-11eb-853d-0b7a0db8ffb7.png)
 
 #### Quote
 ```
