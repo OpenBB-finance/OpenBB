@@ -291,7 +291,36 @@ class OptionsController:
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
-        barchart_view.print_options_data(self.ticker, other_args)
+
+        if not self.ticker:
+            print("No ticker loaded.\n")
+            return
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="Display option data [Source: Barchart.com]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            barchart_view.print_options_data(
+                ticker=self.ticker, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_disp(self, other_args: List[str]):
         """Process disp command"""
