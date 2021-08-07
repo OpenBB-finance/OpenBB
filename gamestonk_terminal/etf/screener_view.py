@@ -8,6 +8,8 @@ from tabulate import tabulate
 from gamestonk_terminal.etf import screener_model
 from gamestonk_terminal.helper_funcs import export_data
 
+# pylint:disable=no-member
+
 
 def view_screener(num_to_show: int, export: str):
 
