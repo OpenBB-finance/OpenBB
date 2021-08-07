@@ -160,6 +160,7 @@ def view_group_data(other_args: List[str], data_type: str):
         if data_type in ("valuation", "performance"):
             df_group = get_valuation_performance_data(ns_parser.group, data_type)
             print(df_group.to_string())
+            print("")
 
         elif data_type == "spectrum":
             get_spectrum_data(ns_parser.group)
@@ -167,13 +168,13 @@ def view_group_data(other_args: List[str], data_type: str):
             img = Image.open(ns_parser.group + ".jpg")
             img.show()
 
+            print("")
             return ns_parser.group
 
         else:
             print(
-                "Invalid data type. Choose between valuation, performance and spectrum."
+                "Invalid data type. Choose between valuation, performance and spectrum.\n"
             )
-        print("")
         return ""
 
     except SystemExit:
