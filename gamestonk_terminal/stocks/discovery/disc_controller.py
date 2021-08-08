@@ -14,9 +14,6 @@ from gamestonk_terminal.stocks.discovery import (
     fidelity_view,
     seeking_alpha_view,
     short_interest_view,
-    simply_wallst_view,
-    spachero_view,
-    unusual_whales_view,
     yahoo_finance_view,
     finra_ats_view,
     finnhub_view,
@@ -43,9 +40,6 @@ class DiscoveryController:
         "up_earnings",
         "high_short",
         "low_float",
-        "simply_wallst",
-        "spachero",
-        "uwhales",
         "latest",
         "trending",
         "darkpool",
@@ -89,9 +83,6 @@ class DiscoveryController:
         print(
             "   low_float      show low float stocks under 10M shares float [www.lowfloat.com]"
         )
-        print("   simply_wallst  Simply Wall St. research data [Simply Wall St.]")
-        print("   spachero       great website for SPACs research [SpacHero]")
-        print("   uwhales        good website for SPACs research [UnusualWhales]")
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
         print(
@@ -99,12 +90,6 @@ class DiscoveryController:
         )
         print("   darkshort      dark pool short position [Stockgrid.io]")
         print("   shortvol       short interest and days to cover [Stockgrid.io]")
-        print(
-            "   popular        show most popular stocks on social media right now [SentimentInvestor.com]"
-        )
-        print(
-            "   emerging       show stocks that are being talked about more than usual [SentimentInvestor.com]"
-        )
         print("")
 
     def switch(self, an_input: str):
@@ -181,18 +166,6 @@ class DiscoveryController:
     def call_low_float(self, other_args: List[str]):
         """Process low_float command"""
         short_interest_view.low_float_view(other_args)
-
-    def call_simply_wallst(self, other_args: List[str]):
-        """Process simply_wallst command"""
-        simply_wallst_view.simply_wallst_view(other_args)
-
-    def call_spachero(self, other_args: List[str]):
-        """Process spachero command"""
-        spachero_view.spachero_view(other_args)
-
-    def call_uwhales(self, other_args: List[str]):
-        """Process uwhales command"""
-        unusual_whales_view.unusual_whales_view(other_args)
 
     def call_latest(self, other_args: List[str]):
         """Process latest command"""
