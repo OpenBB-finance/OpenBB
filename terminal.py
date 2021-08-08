@@ -223,10 +223,10 @@ def terminal():
         else:
             print("\nInvalid DEFAULT_CONTEXT config selected!", "\n")
 
-    t_controller.print_help()
-    parsed_stdin = False
-
     if not process_input:
+        t_controller.print_help()
+        parsed_stdin = False
+
         while True:
             if gtff.ENABLE_QUICK_EXIT:
                 print("Quick exit enabled")
