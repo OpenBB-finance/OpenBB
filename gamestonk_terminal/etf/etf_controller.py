@@ -333,13 +333,21 @@ class ETFController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
+        parser.add_argument("--preset",
+                            choices = [file.strip(".ini") for file in os.listdir(os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/"))],
+                            default = "etf_config",
+                            help="Preset to use",
+                            dest="preset")
+
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             screener_view.view_screener(
-                num_to_show=ns_parser.num, export=ns_parser.export
+                num_to_show=ns_parser.num,
+                preset = ns_parser.preset,
+                export=ns_parser.export
             )
 
         except Exception as e:

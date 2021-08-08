@@ -11,9 +11,20 @@ from gamestonk_terminal.helper_funcs import export_data
 # pylint:disable=no-member
 
 
-def view_screener(num_to_show: int, export: str):
+def view_screener(num_to_show: int, preset: str, export: str):
+    """Display screener output
 
-    screened_data = screener_model.etf_screener()
+    Parameters
+    ----------
+    num_to_show: int
+        Number of etfs to show
+    preset: str
+        Preset to use
+    export: str
+        Output format of export
+
+    """
+    screened_data = screener_model.etf_screener(preset)
     if screened_data.shape[0] > int(num_to_show):
         screened_data = screened_data.sample(num_to_show)
     print(

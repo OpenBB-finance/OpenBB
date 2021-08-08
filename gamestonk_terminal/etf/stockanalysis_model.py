@@ -100,7 +100,8 @@ def compare_etfs(symbols: List[str]):
     ----------
     symbols : List[str]
         ETF symbols to compare
-     Returns
+
+    Returns
     ----------
     df_compare : pd.DataFrame
         Dataframe of etf comparisons

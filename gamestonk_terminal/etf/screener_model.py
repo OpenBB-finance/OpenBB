@@ -1,12 +1,20 @@
 """Screener model"""
 __docformat__ = "numpy"
 
+import os
 import configparser
 import pandas as pd
 
 
-def etf_screener():
-    """Screens the etfs pulled from my repo, which is updated hourly through the market day
+def etf_screener(preset: str):
+    """
+    Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),
+    which is updated hourly through the market day
+
+    Parameters
+    ----------
+    preset: str
+        Screener to use from presets
 
     Returns
     ----------
@@ -20,10 +28,10 @@ def etf_screener():
         "https://raw.githubusercontent.com/jmaslek/etf_scraper/main/etf_overviews.csv",
         index_col=0,
     )
-    print("ETFs downloaded\n")
 
     cf = configparser.ConfigParser()
-    cf.read("gamestonk_terminal/etf/etf_config.ini")
+    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+    cf.read(path + preset)
     cols = cf.sections()
 
     for col in cols:
