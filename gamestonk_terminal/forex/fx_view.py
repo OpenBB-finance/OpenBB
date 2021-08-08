@@ -2,7 +2,7 @@ from datetime import datetime
 import argparse
 from typing import List
 
-from oandapyV20 import API
+
 import pandas as pd
 import pandas_ta as ta
 import mplfinance as mpf
@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import seaborn as sns
 
-# pylint: disable=C0412
+from oandapyV20 import API
+from oandapyV20.exceptions import V20Error
 from oandapyV20.endpoints import (
     pricing,
     accounts,
@@ -21,8 +22,6 @@ from oandapyV20.endpoints import (
     forexlabs,
 )
 
-# pylint: disable=R0402
-from oandapyV20.exceptions import V20Error
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
