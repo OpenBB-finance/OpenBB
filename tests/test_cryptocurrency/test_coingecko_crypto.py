@@ -57,7 +57,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Co
 
 
 @mock.patch(
-    "gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
+    "gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
 )
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
@@ -83,7 +83,7 @@ class TestCoinGeckoAPI(TestCase):
         self.assertIsInstance(self.coin, Coin)
 
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
+        "gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
     )
     def test_coin_api_load_df_for_ta(self, mock_load):
         """
