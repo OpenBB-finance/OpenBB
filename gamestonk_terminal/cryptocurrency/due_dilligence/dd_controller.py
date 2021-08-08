@@ -1,4 +1,4 @@
-"""Cryptocurrency Overview Controller"""
+"""Cryptocurrency Due diligence Controller"""
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622
 import argparse
@@ -94,7 +94,6 @@ class Controller:
 
     def print_bin(self):
         print("Binance:")
-        print("   events          events related to loaded coin")
         print("   book            show order book")
         print("   balance         show coin balance")
 

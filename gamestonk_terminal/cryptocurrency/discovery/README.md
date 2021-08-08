@@ -1,6 +1,7 @@
-# DISCOVERY MENU
+# DISCOVERY CRYPTO
 
-This menu aims to explore crypto world, and the usage of the following commands along with an example will be exploited below.
+This menu aims to discover crypto currencies. You can find the most tranding coins, top nfts, best defi tokens and many others.
+The usage of the following commands along with an example will be exploited below.
 
 [CoinGecko](#CoinGecko)
 * [cg_coins](#cg_coins)

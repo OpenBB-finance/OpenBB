@@ -22,11 +22,11 @@ class Controller:
         "q",
         "quit",
         "cg_global",
-        "cg_coins",
         "cg_defi",
         "cg_news",
         "cg_stables",
         "cg_nft",
+        "cg_nft_today",
         "cg_exchanges",
         "cg_exrates",
         "cg_platforms",
@@ -67,6 +67,7 @@ class Controller:
         print("   cg_defi            global DeFi market info")
         print("   cg_stables         stablecoins")
         print("   cg_nft             non fungible token market status")
+        print("   cg_nft_today       non fungible token of the day")
         print("   cg_exchanges       top crypto exchanges")
         print("   cg_exrates         coin exchange rates")
         print("   cg_platforms       crypto financial platforms")
@@ -162,8 +163,12 @@ class Controller:
         pycoingecko_view.stablecoins(other_args=other_args)
 
     def call_cg_nft(self, other_args):
-        """Process top_volume command"""
+        """Process nft command"""
         pycoingecko_view.nft_market_status(other_args=other_args)
+
+    def call_cg_nft_today(self, other_args):
+        """Process nft_today command"""
+        pycoingecko_view.nft_of_the_day(other_args=other_args)
 
     def call_cg_products(self, other_args):
         """Process products command"""
