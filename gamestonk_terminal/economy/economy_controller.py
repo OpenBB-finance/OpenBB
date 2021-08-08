@@ -13,10 +13,14 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.economy import fred_view
-from gamestonk_terminal.economy import finnhub_view
-from gamestonk_terminal.economy import cnn_view
-from gamestonk_terminal.economy import wsj_view
+from gamestonk_terminal.economy import (
+    fred_view,
+    finnhub_view,
+    cnn_view,
+    wsj_view,
+    finviz_view,
+    alphavantage_view,
+)
 from gamestonk_terminal.economy.report import report_controller
 
 # pylint: disable=R1710
@@ -24,6 +28,24 @@ from gamestonk_terminal.economy.report import report_controller
 
 class EconomyController:
     """Economy Controller"""
+
+    l_GROUPS = [
+        "Sector",
+        "Industry",
+        "Industry (Basic Materials)",
+        "Industry (Communication Services)",
+        "Industry (Consumer Cyclical)",
+        "Industry (Consumer Defensive)",
+        "Industry (Energy)",
+        "Industry (Financial)",
+        "Industry (Healthcare)",
+        "Industry (Industrials)",
+        "Industry (Real Estate)",
+        "Industry (Technology)",
+        "Industry (Utilities)",
+        "Country (U.S. listed stocks only)",
+        "Capitalization",
+    ]
 
     CHOICES = [
         "cls",
@@ -45,6 +67,11 @@ class EconomyController:
         "currencies",
         "search",
         "series",
+        "valuation",
+        "performance",
+        "spectrum",
+        "map",
+        "rtps",
     ]
 
     CHOICES_MENUS = [
@@ -85,6 +112,13 @@ Wall St. Journal:
     usbonds       US bonds overview
     glbonds       global bonds overview
     currencies    currencies overview
+Finviz:
+    map           S&P500 index stocks map
+    valuation     valuation of sectors, industry, country
+    performance   performance of sectors, industry, country
+    spectrum      spectrum of sectors, industry, country
+Alpha Vantage:
+    rtps          real-time performance sectors
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
@@ -407,6 +441,224 @@ FRED:
         except Exception as e:
             print(e, "\n")
 
+    def call_map(self, other_args: List[str]):
+        """Process map command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="map",
+            description="""
+                Performance index stocks map categorized by sectors and industries.
+                Size represents market cap. Opens web-browser. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            action="store",
+            dest="s_period",
+            type=str,
+            default="1d",
+            choices=["1d", "1w", "1m", "3m", "6m", "1y"],
+            help="Performance period.",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="s_type",
+            type=str,
+            default="sp500",
+            choices=["sp500", "world", "full", "etf"],
+            help="Map filter type.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.map_sp500_view(
+                period=ns_parser.s_period,
+                map_type=ns_parser.s_type,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_valuation(self, other_args: List[str]):
+        """Process valuation command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="valuation",
+            description="""
+                View group (sectors, industry or country) valuation data. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            nargs="+",
+            type=str,
+            default="Sector",
+            dest="group",
+            help="Data group (sector, industry or country)",
+            choices=self.l_GROUPS,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-g")
+                other_args = [other_args[0], " ".join(other_args[1:])]
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view_group_data(
+                group=ns_parser.group,
+                data_type="valuation",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_performance(self, other_args: List[str]):
+        """Process performance command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="performance",
+            description="""
+                View group (sectors, industry or country) performance data. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            nargs="+",
+            type=str,
+            default="Sector",
+            dest="group",
+            help="Data group (sector, industry or country)",
+            choices=self.l_GROUPS,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-g")
+                other_args = [other_args[0], " ".join(other_args[1:])]
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view_group_data(
+                group=ns_parser.group,
+                data_type="performance",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_spectrum(self, other_args: List[str]):
+        """Process spectrum command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spectrum",
+            description="""
+                View group (sectors, industry or country) spectrum data. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            nargs="+",
+            type=str,
+            default="Sector",
+            dest="group",
+            help="Data group (sector, industry or country)",
+            choices=self.l_GROUPS,
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-g")
+                other_args = [other_args[0], " ".join(other_args[1:])]
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view_group_data(
+                group=ns_parser.group,
+                data_type="spectrum",
+                export="",
+            )
+            # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+            # after saving it and displaying it to the user
+            os.remove(ns_parser.group + ".jpg")
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_rtps(self, other_args: List[str]):
+        """Process rtps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rtps",
+            description="""
+                Real-time and historical sector performances calculated from
+                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            alphavantage_view.realtime_performance_sector(
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
     def call_series(self, other_args: List[str]):
         """Process series command"""
         parser = argparse.ArgumentParser(
@@ -449,8 +701,8 @@ FRED:
             if other_args:
                 if "-" not in other_args[0]:
                     other_args.insert(0, "-i")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
 
+            ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
