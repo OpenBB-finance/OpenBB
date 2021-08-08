@@ -41,8 +41,6 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     exchange_rates,
     global_market_info,
     global_defi_info,
-    coin_list,
-    find,
 )
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model import Coin
 
@@ -374,20 +372,4 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
-    ''' # TODO: Fix these
-    def test_coin_coin_list(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
-        coin_list([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
-
-    def test_coin_find(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
-        find(["-c", "bitcoin"])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
-    '''
+    # TODO: Re-add tests for coin_list and find
