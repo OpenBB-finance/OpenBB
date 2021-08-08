@@ -106,7 +106,7 @@ class BehaviouralAnalysisController:
         print("   queries       top related queries with this stock")
         print("   rise          top rising related queries with stock")
         print("SentimentInvestor:")
-        print("   popularsi       show most popular stocks on social media right now")
+        print("   popularsi     show most popular stocks on social media right now")
         print(
             "   emerging      show stocks that are being talked about more than usual"
         )
