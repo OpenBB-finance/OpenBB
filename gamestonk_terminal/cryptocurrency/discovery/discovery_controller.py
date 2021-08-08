@@ -76,10 +76,10 @@ class Controller:
         print("")
         print("CoinPaprika:")
         print("   cp_coins           coins available on CoinPaprika")
-        print("   cp_search          global crypto market info")
+        print("   cp_search          search on CoinPaprika")
         print("")
         print("CoinMarket Cap:")
-        print("   cmc_top            top coins from coinmarketcap")
+        print("   cmc_top            top coins from CoinMarketCap")
 
         print("")
 
@@ -135,11 +135,11 @@ class Controller:
         pycoingecko_view.coin_list(other_args=other_args)
 
     def call_cg_gainers(self, other_args):
-        """Process hold_comp command"""
+        """Process gaienrs command"""
         pycoingecko_view.gainers(other_args)
 
     def call_cg_losers(self, other_args):
-        """Process hold_comp command"""
+        """Process losers command"""
         pycoingecko_view.losers(other_args)
 
     def call_cg_trending(self, other_args):
@@ -155,7 +155,7 @@ class Controller:
         pycoingecko_view.recently_added(other_args=other_args)
 
     def call_cg_most_visited(self, other_args):
-        """Process most_voted command"""
+        """Process most_visited command"""
         pycoingecko_view.discover(category="most_visited", other_args=other_args)
 
     def call_cg_sentiment(self, other_args):
@@ -163,7 +163,7 @@ class Controller:
         pycoingecko_view.discover(category="positive_sentiment", other_args=other_args)
 
     def call_cg_yfarms(self, other_args):
-        """Process yield_farms command"""
+        """Process yfarms command"""
         pycoingecko_view.yfarms(other_args=other_args)
 
     def call_cg_top_volume(self, other_args):
@@ -171,15 +171,15 @@ class Controller:
         pycoingecko_view.top_volume_coins(other_args=other_args)
 
     def call_cg_top_defi(self, other_args):
-        """Process top_volume command"""
+        """Process top_defi command"""
         pycoingecko_view.top_defi_coins(other_args=other_args)
 
     def call_cg_top_dex(self, other_args):
-        """Process top_volume command"""
+        """Process top_dex command"""
         pycoingecko_view.top_dex(other_args=other_args)
 
     def call_cg_top_nft(self, other_args):
-        """Process top_volume command"""
+        """Process top_nft command"""
         pycoingecko_view.top_dex(other_args=other_args)
 
     def call_cmc_top(self, other_args):
@@ -191,7 +191,7 @@ class Controller:
         coinpaprika_view.coins(other_args=other_args)
 
     def call_cp_search(self, other_args):
-        """Process coins command"""
+        """Process search command"""
         coinpaprika_view.search(other_args=other_args)
 
 

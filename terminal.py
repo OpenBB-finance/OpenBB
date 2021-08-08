@@ -21,7 +21,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal
 
 from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.cryptocurrency import crypto_controller
 from gamestonk_terminal.economy import economy_controller
 from gamestonk_terminal.options import options_controller
 
@@ -31,7 +30,7 @@ from gamestonk_terminal.resources import resources_controller
 from gamestonk_terminal.portfolio import portfolio_controller
 
 
-# pylint: disable=too-many-public-methods
+# pylint: disable=too-many-public-methods,import-outside-toplevel
 
 
 class TerminalController:
@@ -170,6 +169,8 @@ What do you want to do?
 
     def call_crypto(self, _):
         """Process crypto command"""
+        from gamestonk_terminal.cryptocurrency import crypto_controller
+
         return crypto_controller.menu()
 
     def call_economy(self, _):

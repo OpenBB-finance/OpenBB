@@ -12,12 +12,14 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 from gamestonk_terminal.cryptocurrency.overview import overview_controller
 from gamestonk_terminal.cryptocurrency.due_dilligence import dd_controller
-from gamestonk_terminal.cryptocurrency.discovery import discovery_controller
+from gamestonk_terminal.cryptocurrency.discovery import (
+    discovery_controller,
+)
 from gamestonk_terminal.cryptocurrency.due_dilligence import (
     finbrain_crypto_view,
 )
 
-from gamestonk_terminal.cryptocurrency import load
+from gamestonk_terminal.cryptocurrency import load, find
 from gamestonk_terminal.cryptocurrency import DD_VIEWS_MAPPING
 from gamestonk_terminal.cryptocurrency.report import report_controller
 
@@ -36,6 +38,7 @@ class CryptoController:
         "chart",
         "load",
         "clear",
+        "find",
     ]
 
     CHOICES_MENUS = [
@@ -90,12 +93,13 @@ class CryptoController:
             load        load a specific cryptocurrency for analysis
             chart       view a candle chart for a specific cryptocurrency
             clear       clear previously loaded coin
+            find        alternate way to search for coins
             finbrain    crypto sentiment from 15+ major news headlines
 
-        >   disc        discover trending cryptocurrencies, \t e.g.: top gainers, losers, top sentiment
-        >   ov          overview of the crypto world, \t e.g.: market cap, DeFi, latest news, top exchanges, stablecoins
-        >   dd          in-depth due-diligence for loaded coin  \t e.g.: coin information, social media, market stats
-        >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
+        >   disc        discover trending cryptocurrencies,  e.g.: top gainers, losers, top sentiment
+        >   ov          overview of the cryptocurrencies,    e.g.: market cap, DeFi, latest news, top exchanges, stables
+        >   dd          due-diligence for loaded coin,       e.g.: coin information, social media, market stats
+        >   ta          technical analysis for loaded coin.  e.g.: ema, macd, rsi, adx, bbands, obv
         >   report      generate automatic report
         """
         print(help_text)
@@ -147,12 +151,14 @@ class CryptoController:
     def call_load(self, other_args):
         """Process load command"""
         try:
-            self.current_coin, self.source = load(self.current_coin, other_args)
+            self.current_coin, self.source = load(
+                coin=self.current_coin, other_args=other_args
+            )
         except TypeError:
             print("Couldn't load data\n")
 
     def call_chart(self, other_args):
-        """Process view command"""
+        """Process chart command"""
         if self.current_coin:
             getattr(DD_VIEWS_MAPPING[self.source], "chart")(
                 self.current_coin, other_args
@@ -162,7 +168,7 @@ class CryptoController:
             print("")
 
     def call_ta(self, other_args):
-        """Process view command"""
+        """Process ta command"""
         if self.current_coin:
             self.current_df, self.current_currency = getattr(
                 DD_VIEWS_MAPPING[self.source], "ta"
@@ -213,7 +219,7 @@ class CryptoController:
             return True
 
     def call_ov(self, _):
-        """Process disc command"""
+        """Process ov command"""
         ov = overview_controller.menu()
         if ov is False:
             self.print_help()
@@ -221,7 +227,7 @@ class CryptoController:
             return True
 
     def call_finbrain(self, other_args):
-        """Process sentiment command"""
+        """Process finbrain command"""
         finbrain_crypto_view.crypto_sentiment_analysis(other_args=other_args)
 
     def call_dd(self, _):
@@ -244,6 +250,10 @@ class CryptoController:
             self.print_help()
         else:
             return True
+
+    def call_find(self, other_args):
+        """Process find command"""
+        find(other_args=other_args)
 
 
 def menu():

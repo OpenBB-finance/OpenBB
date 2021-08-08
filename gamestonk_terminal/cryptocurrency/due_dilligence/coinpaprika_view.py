@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 import argparse
 from typing import List
-import difflib
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -136,90 +135,6 @@ def coins(other_args: List[str]):
             df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
         except Exception:
             df = get_list_of_coins()
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
-        )
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def find(other_args: List[str]):
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="find",
-        description="""
-        Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinPaprika,
-        you can use this command to display coins with similar name, symbol or id to your search query.
-        Example of usage: coin name is something like "kusama". So : find -c kusama -k name -t 25
-        It will search for coin that has similar name to kusama and display top 25 matches.
-        -c, --coin stands for coin - you provide here your search query
-        -k, --key it's a searching key. You can search by symbol, id or name of coin
-        -t, --top it displays top N number of records.
-        """,
-    )
-    parser.add_argument(
-        "-c",
-        "--coin",
-        help="Coin name or id, or symbol",
-        dest="coin",
-        required="-h" not in other_args,
-        type=str,
-    )
-    parser.add_argument(
-        "-k",
-        "--key",
-        dest="key",
-        help="Specify by which column you would like to search: symbol, name, id",
-        type=str,
-        choices=["id", "symbol", "name"],
-        default="name",
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=10,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-
-    try:
-
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-c")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if not ns_parser.coin or ns_parser.coin is None:
-            print(
-                "You didn't provide coin. Please use param -c/--coin <coin name>", "\n"
-            )
-            return
-
-        coins_df = get_list_of_coins()
-        coins_list = coins_df[ns_parser.key].to_list()
-
-        keys = {"name": "title", "symbol": "upper", "id": "lower"}
-
-        key = keys.get(ns_parser.key)
-        coin = getattr(ns_parser.coin, str(key))()
-
-        sim = difflib.get_close_matches(coin, coins_list, ns_parser.top)
-        df = pd.Series(sim).to_frame().reset_index()
-        df.columns = ["index", ns_parser.key]
-        df = df.merge(coins_df, on=ns_parser.key)
         print(
             tabulate(
                 df,

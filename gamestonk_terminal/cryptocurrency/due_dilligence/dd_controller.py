@@ -237,7 +237,7 @@ class Controller:
         binance_view.balance(other_args, self.current_coin)
 
     def call_chart(self, other_args):
-        """Process view command"""
+        """Process chart command"""
         getattr(DD_VIEWS_MAPPING[self.source], "chart")(self.current_coin, other_args)
 
     # paprika
@@ -250,7 +250,7 @@ class Controller:
             print("")
 
     def call_basic(self, other_args):
-        """Process ps command"""
+        """Process basic command"""
         if self.current_coin:
             coinpaprika_view.basic(self.current_coin, other_args)
         else:
@@ -258,7 +258,7 @@ class Controller:
             print("")
 
     def call_mkt(self, other_args):
-        """Process market command"""
+        """Process mkt command"""
         if self.current_coin:
             coinpaprika_view.markets(self.current_coin, other_args)
         else:
