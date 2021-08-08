@@ -41,7 +41,7 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
             )
             return
 
-    df_econ_calendar = df_econ_calendar.fillna("---").head(n=num)
+    df_econ_calendar = df_econ_calendar.fillna("").head(n=num)
 
     d_econ_calendar_map = {
         "actual": "Actual release",
@@ -58,11 +58,15 @@ def economy_calendar_events(country: str, num: int, impact: str, export: str):
         ["time", "event", "impact", "prev", "estimate", "actual", "unit"]
     ].rename(columns=d_econ_calendar_map)
 
+    df_econ_calendar.replace("", float("NaN"), inplace=True)
+    df_econ_calendar.dropna(how="all", axis=1, inplace=True)
+
     print(
         tabulate(
             df_econ_calendar,
             headers=df_econ_calendar.columns,
             showindex=False,
+            floatfmt=".2f",
             tablefmt="fancy_grid",
         )
     )
