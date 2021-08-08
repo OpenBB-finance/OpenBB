@@ -132,7 +132,7 @@ What do you want to do?
 
     def call_po(self, _):
         """Process po command"""
-        ret = po_controller.menu()
+        ret = po_controller.menu([])
         if ret is False:
             self.print_help()
         else:
