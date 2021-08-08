@@ -10,6 +10,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.economy import fred_view
@@ -35,8 +36,6 @@ class EconomyController:
     CHOICES_COMMANDS = [
         "feargreed",
         "events",
-        "custom",
-        "disp",
         "overview",
         "indices",
         "futures",
@@ -44,20 +43,8 @@ class EconomyController:
         "glbonds",
         "futures",
         "currencies",
-    ]
-
-    CHOICES_SHORTCUTS = [
-        "vixcls",
-        "gdp",
-        "unrate",
-        "dgs1",
-        "dgs5",
-        "dgs10",
-        "dgs30",
-        "mortgage30us",
-        "fedfunds",
-        "aaa",
-        "dexcaus",
+        "search",
+        "series",
     ]
 
     CHOICES_MENUS = [
@@ -65,7 +52,6 @@ class EconomyController:
     ]
 
     CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_SHORTCUTS
     CHOICES += CHOICES_MENUS
 
     def __init__(self):
@@ -100,8 +86,8 @@ Wall St. Journal:
     glbonds       global bonds overview
     currencies    currencies overview
 FRED:
-    custom        customized FRED data from https://fred.stlouisfed.org
-    disp          display FRED shortcuts commands
+    search        search FRED series notes
+    series        plot series from https://fred.stlouisfed.org
 
 >   report        generate automatic report
 """
@@ -421,57 +407,105 @@ FRED:
         except Exception as e:
             print(e, "\n")
 
-    def call_custom(self, other_args: List[str]):
-        """Process custom command"""
-        fred_view.display_fred(other_args, "")
+    def call_series(self, other_args: List[str]):
+        """Process series command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="series",
+            description="""
+                Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--id",
+            dest="series_id",
+            required="-h" not in other_args,
+            type=str,
+            help="FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
+        )
+        parser.add_argument(
+            "-s",
+            dest="start_date",
+            type=valid_date,
+            default="2019-01-01",
+            help="Starting date (YYYY-MM-DD) of data",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
 
-    def call_disp(self, _):
-        """Process custom command"""
-        fred_view.display_fred_shortcuts()
+            if not ns_parser:
+                return
 
-    def call_vixcls(self, other_args: List[str]):
-        """Process vixcls command"""
-        fred_view.display_fred(other_args, "VIXCLS")
+            fred_view.display_series(
+                series=ns_parser.series_id,
+                start_date=ns_parser.start_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
-    def call_gdp(self, other_args: List[str]):
-        """Process gdp command"""
-        fred_view.display_fred(other_args, "GDP")
+        except Exception as e:
+            print(e, "\n")
 
-    def call_unrate(self, other_args: List[str]):
-        """Process unrate command"""
-        fred_view.display_fred(other_args, "UNRATE")
+    def call_search(self, other_args: List[str]):
+        """Process search command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="search",
+            description="Print series notes when searching for series. [Source: FRED]",
+        )
+        parser.add_argument(
+            "-s",
+            "--series",
+            action="store",
+            dest="series_term",
+            type=str,
+            required="-h" not in other_args,
+            help="Search for this series term.",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=5,
+            help="Maximum number of series notes to display.",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-s")
 
-    def call_dgs1(self, other_args: List[str]):
-        """Process dgs1 command"""
-        fred_view.display_fred(other_args, "DGS1")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
 
-    def call_dgs5(self, other_args: List[str]):
-        """Process dgs5 command"""
-        fred_view.display_fred(other_args, "DGS5")
+            fred_view.notes(
+                series_term=ns_parser.series_term,
+                num=ns_parser.num,
+            )
 
-    def call_dgs10(self, other_args: List[str]):
-        """Process dgs10 command"""
-        fred_view.display_fred(other_args, "DGS10")
-
-    def call_dgs30(self, other_args: List[str]):
-        """Process dgs30 command"""
-        fred_view.display_fred(other_args, "DGS30")
-
-    def call_mortgage30us(self, other_args: List[str]):
-        """Process mortgage30us command"""
-        fred_view.display_fred(other_args, "MORTGAGE30US")
-
-    def call_fedfunds(self, other_args: List[str]):
-        """Process fedfunds command"""
-        fred_view.display_fred(other_args, "FEDFUNDS")
-
-    def call_aaa(self, other_args: List[str]):
-        """Process aaa command"""
-        fred_view.display_fred(other_args, "AAA")
-
-    def call_dexcaus(self, other_args: List[str]):
-        """Process dexcaus command"""
-        fred_view.display_fred(other_args, "DEXCAUS")
+        except Exception as e:
+            print(e, "\n")
 
     def call_report(self, _):
         """Process report command"""
