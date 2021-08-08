@@ -48,6 +48,7 @@ ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_
 finviz==1.4.2
 finvizfinance==0.9.9; python_version >= "3.5"
 flatbuffers==1.12
+fred==3.1
 fredapi==0.4.3
 frozendict==2.0.3; python_version >= "3.6"
 fundamentalanalysis==0.2.11

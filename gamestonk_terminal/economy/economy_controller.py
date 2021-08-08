@@ -6,12 +6,21 @@ import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+    valid_date,
+)
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.economy import fred_view
-from gamestonk_terminal.economy import finnhub_view
-from gamestonk_terminal.economy import cnn_view
-from gamestonk_terminal.economy import wsj_view
+from gamestonk_terminal.economy import (
+    fred_view,
+    finnhub_view,
+    cnn_view,
+    wsj_view,
+    finviz_view,
+    alphavantage_view,
+)
 from gamestonk_terminal.economy.report import report_controller
 
 # pylint: disable=R1710
@@ -20,7 +29,24 @@ from gamestonk_terminal.economy.report import report_controller
 class EconomyController:
     """Economy Controller"""
 
-    # Command choices
+    d_GROUPS = {
+        "sector": "Sector",
+        "industry": "Industry",
+        "basic materials": "Industry (Basic Materials)",
+        "communication services": "Industry (Communication Services)",
+        "consumer cyclical": "Industry (Consumer Cyclical)",
+        "consumer defensive": "Industry (Consumer Defensive)",
+        "energy": "Industry (Energy)",
+        "financial": "Industry (Financial)",
+        "healthcare": "Industry (Healthcare)",
+        "industrials": "Industry (Industrials)",
+        "real Estate": "Industry (Real Estate)",
+        "technology": "Industry (Technology)",
+        "utilities": "Industry (Utilities)",
+        "country": "Country (U.S. listed stocks only)",
+        "capitalization": "Capitalization",
+    }
+
     CHOICES = [
         "cls",
         "?",
@@ -30,20 +56,8 @@ class EconomyController:
     ]
 
     CHOICES_COMMANDS = [
-        "events",
-        "fred",
-        "vixcls",
-        "gdp",
-        "unrate",
-        "dgs1",
-        "dgs5",
-        "dgs10",
-        "dgs30",
-        "mortgage30us",
-        "fedfunds",
-        "aaa",
-        "dexcaus",
         "feargreed",
+        "events",
         "overview",
         "indices",
         "futures",
@@ -51,6 +65,14 @@ class EconomyController:
         "glbonds",
         "futures",
         "currencies",
+        "search",
+        "series",
+        "valuation",
+        "performance",
+        "spectrum",
+        "map",
+        "rtps",
+        "industry",
     ]
 
     CHOICES_MENUS = [
@@ -71,45 +93,41 @@ class EconomyController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy"
-        )
-        print("")
-        print(">> ECONOMY <<")
-        print("")
-        print("What do you want to do?")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print(" ")
-        print("   feargreed     CNN Fear and Greed Index")
-        print("   events        economic impact events [Finnhub]")
-        print(
-            "   fred          display customized FRED data from https://fred.stlouisfed.org"
-        )
-        print("   vixcls        Volatility Index")
-        print("   gdp           Gross Domestic Product")
-        print("   unrate        Unemployment Rate")
-        print("   dgs1          1-year Treasury Constant Maturity Rate")
-        print("   dgs5          5-year Treasury Constant Maturity Rate")
-        print("   dgs10         10-year Treasury Constant Maturity Rate")
-        print("   dgs30         30-year Treasury Constant Maturity Rate")
-        print("   mortgage30us  30-year Fixed Rate Mortgage Average")
-        print("   fedfunds      Effective Federal Funds Rate")
-        print("   aaa           Moody's Seasoned AAA Corporate Bond Yield")
-        print("   dexcaus       Canada / U.S. Foreign Exchange Rate (CAD per 1 USD)")
-        print("")
-        print("Wall St. Journal:")
-        print("   overview      market data overview")
-        print("   indices       us indices overview")
-        print("   futures       futures overview")
-        print("   usbonds       us bond overview")
-        print("   glbonds       global bonds overview")
-        print("   currencies    currency overview")
-        print("")
-        print(">  report        generate automatic report")
-        print("")
+        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy
+
+>> ECONOMY <<
+
+What do you want to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+CNN:
+    feargreed     CNN Fear and Greed Index
+Finnhub:
+    events        economic impact events
+Wall St. Journal:
+    overview      market data overview
+    indices       US indices overview
+    futures       futures and commodities overview
+    usbonds       US bonds overview
+    glbonds       global bonds overview
+    currencies    currencies overview
+Finviz:
+    map           S&P500 index stocks map
+    valuation     valuation of sectors, industry, country
+    performance   performance of sectors, industry, country
+    spectrum      spectrum of sectors, industry, country
+Alpha Vantage:
+    rtps          real-time performance sectors
+FRED:
+    search        search FRED series notes
+    series        plot series from https://fred.stlouisfed.org
+
+>   report        generate automatic report
+"""
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -157,83 +175,588 @@ class EconomyController:
 
     def call_events(self, other_args: List[str]):
         """Process events command"""
-        finnhub_view.economy_calendar_events(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="events",
+            description="""
+                Output economy impact calendar impact events. [Source: Finnhub]
+            """,
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            action="store",
+            dest="country",
+            type=str,
+            default="US",
+            choices=["NZ", "AU", "ERL", "CA", "EU", "US", "JP", "CN", "GB", "CH"],
+            help="Country from where to get economy calendar impact events",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=10,
+            help="Number economy calendar impact events to display",
+        )
+        parser.add_argument(
+            "-i",
+            "--impact",
+            action="store",
+            dest="impact",
+            type=str,
+            default="all",
+            choices=["low", "medium", "high", "all"],
+            help="Impact of the economy event",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-c")
 
-    def call_fred(self, other_args: List[str]):
-        """Process fred command"""
-        fred_view.display_fred(other_args, "")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
 
-    def call_vixcls(self, other_args: List[str]):
-        """Process vixcls command"""
-        fred_view.display_fred(other_args, "VIXCLS")
+            finnhub_view.economy_calendar_events(
+                country=ns_parser.country,
+                num=ns_parser.num,
+                impact=ns_parser.impact,
+                export=ns_parser.export,
+            )
 
-    def call_gdp(self, other_args: List[str]):
-        """Process gdp command"""
-        fred_view.display_fred(other_args, "GDP")
-
-    def call_unrate(self, other_args: List[str]):
-        """Process unrate command"""
-        fred_view.display_fred(other_args, "UNRATE")
-
-    def call_dgs1(self, other_args: List[str]):
-        """Process dgs1 command"""
-        fred_view.display_fred(other_args, "DGS1")
-
-    def call_dgs5(self, other_args: List[str]):
-        """Process dgs5 command"""
-        fred_view.display_fred(other_args, "DGS5")
-
-    def call_dgs10(self, other_args: List[str]):
-        """Process dgs10 command"""
-        fred_view.display_fred(other_args, "DGS10")
-
-    def call_dgs30(self, other_args: List[str]):
-        """Process dgs30 command"""
-        fred_view.display_fred(other_args, "DGS30")
-
-    def call_mortgage30us(self, other_args: List[str]):
-        """Process mortgage30us command"""
-        fred_view.display_fred(other_args, "MORTGAGE30US")
-
-    def call_fedfunds(self, other_args: List[str]):
-        """Process fedfunds command"""
-        fred_view.display_fred(other_args, "FEDFUNDS")
-
-    def call_aaa(self, other_args: List[str]):
-        """Process aaa command"""
-        fred_view.display_fred(other_args, "AAA")
-
-    def call_dexcaus(self, other_args: List[str]):
-        """Process dexcaus command"""
-        fred_view.display_fred(other_args, "DEXCAUS")
+        except Exception as e:
+            print(e, "\n")
 
     def call_feargreed(self, other_args: List[str]):
         """Process feargreed command"""
-        cnn_view.fear_and_greed_index(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="feargreed",
+            description="""
+                Display CNN Fear And Greed Index from https://money.cnn.com/data/fear-and-greed/.
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--indicator",
+            dest="indicator",
+            required=False,
+            type=str,
+            choices=["jbd", "mv", "pco", "mm", "sps", "spb", "shd", "index"],
+            help="""
+                CNN Fear And Greed indicator or index. From Junk Bond Demand, Market Volatility,
+                Put and Call Options, Market Momentum Stock Price Strength, Stock Price Breadth,
+                Safe Heaven Demand, and Index.
+            """,
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            cnn_view.fear_and_greed_index(indicator=ns_parser.indicator)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        wsj_view.display_overview(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="overview",
+            description="Market overview. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_overview(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_indices(self, other_args: List[str]):
         """Process indices command"""
-        wsj_view.display_indices(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="indices",
+            description="US indices. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_indices(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_futures(self, other_args: List[str]):
         """Process futures command"""
-        wsj_view.display_futures(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="futures",
+            description="Futures/Commodities. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_futures(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_usbonds(self, other_args: List[str]):
         """Process usbonds command"""
-        wsj_view.display_usbonds(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="usbonds",
+            description="US Bonds. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_usbonds(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_glbonds(self, other_args: List[str]):
         """Process glbonds command"""
-        wsj_view.display_glbonds(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="glbonds",
+            description="Global Bonds. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_glbonds(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_currencies(self, other_args: List[str]):
-        """Process curremcies command"""
-        wsj_view.display_currencies(other_args)
+        """Process currencies command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="currencies",
+            description="Currencies. [Source: Wall St. Journal]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            wsj_view.display_currencies(
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_map(self, other_args: List[str]):
+        """Process map command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="map",
+            description="""
+                Performance index stocks map categorized by sectors and industries.
+                Size represents market cap. Opens web-browser. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            action="store",
+            dest="s_period",
+            type=str,
+            default="1d",
+            choices=["1d", "1w", "1m", "3m", "6m", "1y"],
+            help="Performance period.",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="s_type",
+            type=str,
+            default="sp500",
+            choices=["sp500", "world", "full", "etf"],
+            help="Map filter type.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.map_sp500_view(
+                period=ns_parser.s_period,
+                map_type=ns_parser.s_type,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_valuation(self, other_args: List[str]):
+        """Process valuation command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="valuation",
+            description="""
+                View group (sectors, industry or country) valuation data. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            type=str,
+            default="Sector",
+            dest="group",
+            help="Data group (sector, industry or country)",
+            choices=list(self.d_GROUPS.keys()),
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-g")
+                other_args = [other_args[0], " ".join(other_args[1:])]
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view_group_data(
+                s_group=self.d_GROUPS[ns_parser.group],
+                data_type="valuation",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_performance(self, other_args: List[str]):
+        """Process performance command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="performance",
+            description="""
+                View group (sectors, industry or country) performance data. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            type=str,
+            default="Sector",
+            dest="group",
+            help="Data group (sector, industry or country)",
+            choices=list(self.d_GROUPS.keys()),
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-g")
+                other_args = [other_args[0], " ".join(other_args[1:])]
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view_group_data(
+                s_group=self.d_GROUPS[ns_parser.group],
+                data_type="performance",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_spectrum(self, other_args: List[str]):
+        """Process spectrum command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spectrum",
+            description="""
+                View group (sectors, industry or country) spectrum data. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            type=str,
+            default="Sector",
+            dest="group",
+            help="Data group (sector, industry or country)",
+            choices=list(self.d_GROUPS.keys()),
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-g")
+                other_args = [other_args[0], " ".join(other_args[1:])]
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view_group_data(
+                s_group=self.d_GROUPS[ns_parser.group],
+                data_type="spectrum",
+                export="",
+            )
+            # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
+            # after saving it and displaying it to the user
+            os.remove(ns_parser.group + ".jpg")
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_rtps(self, other_args: List[str]):
+        """Process rtps command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rtps",
+            description="""
+                Real-time and historical sector performances calculated from
+                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            alphavantage_view.realtime_performance_sector(
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_series(self, other_args: List[str]):
+        """Process series command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="series",
+            description="""
+                Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--id",
+            dest="series_id",
+            required="-h" not in other_args,
+            type=str,
+            help="FRED Series from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
+        )
+        parser.add_argument(
+            "-s",
+            dest="start_date",
+            type=valid_date,
+            default="2019-01-01",
+            help="Starting date (YYYY-MM-DD) of data",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            fred_view.display_series(
+                series=ns_parser.series_id,
+                start_date=ns_parser.start_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_search(self, other_args: List[str]):
+        """Process search command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="search",
+            description="Print series notes when searching for series. [Source: FRED]",
+        )
+        parser.add_argument(
+            "-s",
+            "--series",
+            action="store",
+            dest="series_term",
+            type=str,
+            required="-h" not in other_args,
+            help="Search for this series term.",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=5,
+            help="Maximum number of series notes to display.",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-s")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            fred_view.notes(
+                series_term=ns_parser.series_term,
+                num=ns_parser.num,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_report(self, _):
         """Process report command"""
