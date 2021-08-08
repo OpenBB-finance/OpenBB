@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-import webbrowser
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -47,34 +46,6 @@ class EconomyController:
         "country": "Country (U.S. listed stocks only)",
         "capitalization": "Capitalization",
     }
-
-    l_INDUSTRY = [
-        "any",
-        "automobiles",
-        "banks",
-        "capital-goods",
-        "commercial-services",
-        "consumer-durables",
-        "consumer-services",
-        "diversified-financials",
-        "energy",
-        "consumer-retailing",
-        "food-beverage-tobacco",
-        "healthcare",
-        "household",
-        "insurance",
-        "materials",
-        "media",
-        "pharmaceuticals-biotech",
-        "real-estate",
-        "retail",
-        "semiconductors",
-        "software",
-        "tech",
-        "telecom",
-        "transportation",
-        "utilities",
-    ]
 
     CHOICES = [
         "cls",
@@ -153,8 +124,6 @@ Alpha Vantage:
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
-Simply Wall St.:
-    industry      open website with industry performers
 
 >   report        generate automatic report
 """
@@ -785,45 +754,6 @@ Simply Wall St.:
                 series_term=ns_parser.series_term,
                 num=ns_parser.num,
             )
-
-        except Exception as e:
-            print(e, "\n")
-
-    def call_industry(self, other_args: List[str]):
-        """Process industry command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="simply_wallst",
-            description="""
-                Simply Wall Street Research. Opens web browser. Although this does not require
-                an API key, it requires a subscription to the website by the user
-                (there's a 14 days free trial). [Source: Simply Wall St.]
-            """,
-        )
-        parser.add_argument(
-            "-i",
-            "--industry",
-            action="store",
-            dest="s_industry",
-            type=str,
-            default="any",
-            help="Industry of interest.",
-            choices=self.l_INDUSTRY,
-        )
-        try:
-            if other_args:
-                if "-" not in other_args[0][0]:
-                    other_args.insert(0, "-i")
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            webbrowser.open(
-                f"https://simplywall.st/stocks/us/{ns_parser.s_industry}?page=1"
-            )
-            print("")
 
         except Exception as e:
             print(e, "\n")

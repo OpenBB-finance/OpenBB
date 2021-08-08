@@ -1,7 +1,7 @@
 """ Fred View """
 __docformat__ = "numpy"
 
-from typing import List
+from typing import List, Tuple
 import pandas as pd
 import fred
 from fredapi import Fred
@@ -21,7 +21,7 @@ def get_series_notes(series_term: str, num: int) -> str:
 
     Returns
     ----------
-    str
+    notes : str
         Series notes output
     """
     fred.key(cfg.API_FRED_KEY)
@@ -48,7 +48,7 @@ def get_series_notes(series_term: str, num: int) -> str:
     return notes
 
 
-def get_series_ids(series_term: str, num: int) -> List[str]:
+def get_series_ids(series_term: str, num: int) -> Tuple[List[str], List[str]]:
     """Get Series IDs. [Source: FRED]
 
     Parameters
@@ -62,19 +62,21 @@ def get_series_ids(series_term: str, num: int) -> List[str]:
     ----------
     List[str]
         List of series IDs
+    List[str]
+        List of series Titles
     """
     fred.key(cfg.API_FRED_KEY)
     d_series = fred.search(series_term)
 
     if "seriess" not in d_series:
-        return []
+        return [], []
 
     if not d_series["seriess"]:
-        return []
+        return [], []
 
     df_series = pd.DataFrame(d_series["seriess"])
     df_series = df_series.sort_values(by=["popularity"], ascending=False).head(num)
-    return df_series["id"].values
+    return df_series["id"].values, df_series["title"].values
 
 
 def get_series_data(series_id: str, start: str):

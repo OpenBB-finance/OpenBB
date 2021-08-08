@@ -66,10 +66,11 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
         p = {}
         success = -1
         success_series = list()
+        success_titles = list()
 
     for serie_term in series.split(","):
         if serie_term:
-            l_series = fred_model.get_series_ids(serie_term, 5)
+            l_series, l_title = fred_model.get_series_ids(serie_term, 5)
 
             if len(l_series) == 0:
                 print(f"No series found for term '{serie_term}'\n")
@@ -78,6 +79,7 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
             print(f"For '{serie_term}', series IDs found: {', '.join(l_series)}.\n")
 
             ser = l_series[0]
+            ser_title = l_title[0]
             df_fred = fred_model.get_series_data(ser, start_date)
 
             if export:
@@ -91,7 +93,7 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
                     tabulate(
                         df_fred.dropna().to_frame(),
                         showindex=True,
-                        headers=[ser],
+                        headers=[f"{ser}: {ser_title}"],
                         tablefmt="fancy_grid",
                         floatfmt=".2f",
                     ),
@@ -101,6 +103,7 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
             else:
                 success += 1
                 success_series.append(ser.upper())
+                success_titles.append(ser_title)
 
                 axes = ax.twinx()
                 axes.spines["right"].set_position(("axes", 1 + success * 0.15))
@@ -122,7 +125,9 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
         plt.xlim(min(l_ts_start), max(l_ts_end))
         plt.gcf().autofmt_xdate()
         plt.xlabel("Time")
-        plt.legend([val for _, val in p.items()], success_series)
+        plt.legend(
+            [val for _, val in p.items()], success_titles, loc="best", prop={"size": 6}
+        )
         plt.gca().spines["left"].set_visible(False)
         if gtff.USE_ION:
             plt.ion()
