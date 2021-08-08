@@ -22,14 +22,6 @@ class TestCoinPaprikaView(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
 
-    def test_all_coins_market_info(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
-        coinpaprika_view.all_coins_market_info([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Displaying data vs USD", capt)
-
     def test_all_coins_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
