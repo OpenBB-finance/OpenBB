@@ -55,23 +55,17 @@ class PortfolioOptimization:
         print("   ?/help        show this menu again")
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
-        print(
-            f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}"
-        )
+        print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
         print("")
         print("   select        select list of tickers to be optimized")
-        print(
-            "   add           add tickers to the list of the tickers to be optimized"
-        )
+        print("   add           add tickers to the list of the tickers to be optimized")
         print(
             "   rmv           remove tickers from the list of the tickers to be optimized"
         )
         print("")
         print("Optimization:")
         print("   equal         equally weighted")
-        print(
-            "   mktcap        weighted according to market cap (property marketCap)"
-        )
+        print("   mktcap        weighted according to market cap (property marketCap)")
         print(
             "   dividend      weighted according to dividend yield (property dividendYield)"
         )
@@ -107,8 +101,7 @@ class PortfolioOptimization:
             print("")
             return None
 
-        (known_args,
-         other_args) = self.po_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.po_parser.parse_known_args(an_input.split())
 
         # Help menu again
         if known_args.cmd == "?":
@@ -120,8 +113,9 @@ class PortfolioOptimization:
             os.system("cls||clear")
             return None
 
-        return getattr(self, "call_" + known_args.cmd,
-                       lambda: "Command not recognized!")(other_args)
+        return getattr(
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        )(other_args)
 
     def call_help(self, _):
         """Process Help command"""
@@ -284,8 +278,8 @@ def menu(tickers: List[str]):
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None
-                 for c in po_controller.CHOICES})
+                {c: None for c in po_controller.CHOICES}
+            )
             an_input = session.prompt(
                 f"{get_flair()} (portfolio)>(po)> ",
                 completer=completer,
