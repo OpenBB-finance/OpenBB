@@ -30,23 +30,23 @@ from gamestonk_terminal.economy.report import report_controller
 class EconomyController:
     """Economy Controller"""
 
-    l_GROUPS = [
-        "Sector",
-        "Industry",
-        "Industry (Basic Materials)",
-        "Industry (Communication Services)",
-        "Industry (Consumer Cyclical)",
-        "Industry (Consumer Defensive)",
-        "Industry (Energy)",
-        "Industry (Financial)",
-        "Industry (Healthcare)",
-        "Industry (Industrials)",
-        "Industry (Real Estate)",
-        "Industry (Technology)",
-        "Industry (Utilities)",
-        "Country (U.S. listed stocks only)",
-        "Capitalization",
-    ]
+    d_GROUPS = {
+        "Sector": "Sector",
+        "Industry": "Industry",
+        "Basic Materials": "Industry (Basic Materials)",
+        "Communication Services": "Industry (Communication Services)",
+        "Consumer Cyclical": "Industry (Consumer Cyclical)",
+        "Consumer Defensive": "Industry (Consumer Defensive)",
+        "Energy": "Industry (Energy)",
+        "Financial": "Industry (Financial)",
+        "Healthcare": "Industry (Healthcare)",
+        "Industrials": "Industry (Industrials)",
+        "Real Estate": "Industry (Real Estate)",
+        "Technology": "Industry (Technology)",
+        "Utilities": "Industry (Utilities)",
+        "Country": "Country (U.S. listed stocks only)",
+        "Capitalization": "Capitalization",
+    }
 
     l_INDUSTRY = [
         "any",
@@ -530,12 +530,11 @@ Simply Wall St.:
         parser.add_argument(
             "-g",
             "--group",
-            nargs="+",
             type=str,
             default="Sector",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=self.l_GROUPS,
+            choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
             "--export",
@@ -556,7 +555,7 @@ Simply Wall St.:
                 return
 
             finviz_view.view_group_data(
-                group=ns_parser.group,
+                s_group=self.d_GROUPS[ns_parser.group],
                 data_type="valuation",
                 export=ns_parser.export,
             )
@@ -577,12 +576,11 @@ Simply Wall St.:
         parser.add_argument(
             "-g",
             "--group",
-            nargs="+",
             type=str,
             default="Sector",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=self.l_GROUPS,
+            choices=list(self.d_GROUPS.keys()),
         )
         parser.add_argument(
             "--export",
@@ -603,7 +601,7 @@ Simply Wall St.:
                 return
 
             finviz_view.view_group_data(
-                group=ns_parser.group,
+                s_group=self.d_GROUPS[ns_parser.group],
                 data_type="performance",
                 export=ns_parser.export,
             )
@@ -624,12 +622,11 @@ Simply Wall St.:
         parser.add_argument(
             "-g",
             "--group",
-            nargs="+",
             type=str,
             default="Sector",
             dest="group",
             help="Data group (sector, industry or country)",
-            choices=self.l_GROUPS,
+            choices=list(self.d_GROUPS.keys()),
         )
         try:
             if other_args:
@@ -642,7 +639,7 @@ Simply Wall St.:
                 return
 
             finviz_view.view_group_data(
-                group=ns_parser.group,
+                s_group=self.d_GROUPS[ns_parser.group],
                 data_type="spectrum",
                 export="",
             )

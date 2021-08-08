@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 import webbrowser
-from typing import List
 from tabulate import tabulate
 from PIL import Image
 from gamestonk_terminal.economy import finviz_model
@@ -30,29 +29,25 @@ def map_sp500_view(period: str, map_type: str):
     print("")
 
 
-def view_group_data(group: List[str], data_type: str, export: str):
+def view_group_data(s_group: str, data_type: str, export: str):
     """View group (sectors, industry or country) valuation/performance/spectrum data
 
     Parameters
     ----------
-    group : List[str]
+    s_group : str
         group between sectors, industry or country
     data_type : str
         select data type to see data between valuation, performance and spectrum
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    if isinstance(group, List):
-        s_group = group[0]
-    else:
-        s_group = str(group)
-
     if data_type in ("valuation", "performance"):
         df_group = finviz_model.get_valuation_performance_data(s_group, data_type)
         print(
             tabulate(
                 df_group.fillna(""),
                 showindex=False,
+                floatfmt=".2f",
                 headers=df_group.columns,
                 tablefmt="fancy_grid",
             ),
