@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -85,9 +86,17 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
             df_fred.index.name = "Date"
 
             if raw:
-                print(ser)
-                print("-" * len(ser))
-                print(df_fred.dropna().to_string(), "\n")
+                df_fred.index = df_fred.index.strftime("%d/%m/%Y")
+                print(
+                    tabulate(
+                        df_fred.dropna().to_frame(),
+                        showindex=True,
+                        headers=[ser],
+                        tablefmt="fancy_grid",
+                        floatfmt=".2f",
+                    ),
+                    "\n",
+                )
 
             else:
                 success += 1
