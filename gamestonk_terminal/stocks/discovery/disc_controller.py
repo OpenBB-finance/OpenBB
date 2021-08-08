@@ -10,10 +10,8 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.discovery import (
-    alpha_vantage_view,
     ark_view,
     fidelity_view,
-    finviz_view,
     seeking_alpha_view,
     short_interest_view,
     simply_wallst_view,
@@ -38,8 +36,6 @@ class DiscoveryController:
         "q",
         "quit",
         "ipo",
-        "map",
-        "rtp_sectors",
         "gainers",
         "losers",
         "orders",
@@ -50,9 +46,6 @@ class DiscoveryController:
         "simply_wallst",
         "spachero",
         "uwhales",
-        "valuation",
-        "performance",
-        "spectrum",
         "latest",
         "trending",
         "darkpool",
@@ -64,7 +57,6 @@ class DiscoveryController:
 
     def __init__(self):
         """Constructor"""
-        self.spectrum_img_to_delete = ""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
         self.disc_parser.add_argument(
             "cmd",
@@ -84,8 +76,6 @@ class DiscoveryController:
         print("   quit           quit to abandon program")
         print("")
         print("   ipo            past and future IPOs [Finnhub]")
-        print("   map            S&P500 index stocks map [Finviz]")
-        print("   rtp_sectors    real-time performance sectors [Alpha Vantage]")
         print("   gainers        show latest top gainers [Yahoo Finance]")
         print("   losers         show latest top losers [Yahoo Finance]")
         print("   orders         orders by Fidelity Customers [Fidelity]")
@@ -102,9 +92,6 @@ class DiscoveryController:
         print("   simply_wallst  Simply Wall St. research data [Simply Wall St.]")
         print("   spachero       great website for SPACs research [SpacHero]")
         print("   uwhales        good website for SPACs research [UnusualWhales]")
-        print("   valuation      valuation of sectors, industry, country [Finviz]")
-        print("   performance    performance of sectors, industry, country [Finviz]")
-        print("   spectrum       spectrum of sectors, industry, country [Finviz]")
         print("   latest         latest news [Seeking Alpha]")
         print("   trending       trending news [Seeking Alpha]")
         print(
@@ -137,14 +124,6 @@ class DiscoveryController:
 
         (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
 
-        # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
-        # after saving it and displaying it to the user
-        if self.spectrum_img_to_delete:
-            # Confirm that file exists
-            if os.path.isfile(self.spectrum_img_to_delete + ".jpg"):
-                os.remove(self.spectrum_img_to_delete + ".jpg")
-                self.spectrum_img_to_delete = ""
-
         # Help menu again
         if known_args.cmd == "?":
             self.print_help()
@@ -174,14 +153,6 @@ class DiscoveryController:
     def call_ipo(self, other_args: List[str]):
         """Process ipo command"""
         finnhub_view.ipo_calendar(other_args)
-
-    def call_map(self, other_args: List[str]):
-        """Process map command"""
-        finviz_view.map_sp500_view(other_args)
-
-    def call_rtp_sectors(self, other_args: List[str]):
-        """Process rtp_sectors command"""
-        alpha_vantage_view.sectors_view(other_args)
 
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
@@ -222,20 +193,6 @@ class DiscoveryController:
     def call_uwhales(self, other_args: List[str]):
         """Process uwhales command"""
         unusual_whales_view.unusual_whales_view(other_args)
-
-    def call_valuation(self, other_args: List[str]):
-        """Process valuation command"""
-        finviz_view.view_group_data(other_args, "valuation")
-
-    def call_performance(self, other_args: List[str]):
-        """Process performance command"""
-        finviz_view.view_group_data(other_args, "performance")
-
-    def call_spectrum(self, other_args: List[str]):
-        """Process spectrum command"""
-        self.spectrum_img_to_delete = finviz_view.view_group_data(
-            other_args, "spectrum"
-        )
 
     def call_latest(self, other_args: List[str]):
         """Process latest command"""

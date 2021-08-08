@@ -208,7 +208,7 @@ def terminal():
     """Terminal Menu"""
 
     bootup()
-
+    process_input = False
     t_controller = TerminalController()
 
     if config_terminal.DEFAULT_CONTEXT:
@@ -226,7 +226,7 @@ def terminal():
     t_controller.print_help()
     parsed_stdin = False
 
-    if config_terminal.DEFAULT_CONTEXT and not process_input:
+    if not process_input:
         while True:
             if gtff.ENABLE_QUICK_EXIT:
                 print("Quick exit enabled")
