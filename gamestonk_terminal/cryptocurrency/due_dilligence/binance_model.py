@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 
-from typing import Tuple, Union
+from typing import Tuple, Union, List
 from collections import defaultdict
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -17,23 +17,33 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.feature_flags import USE_ION as ion
 
 
-def _get_all_binance_pairs() -> list:
-    """Helper methods that returns all available pairs on Binance in format
-    ["EOSETH", "ETHBTC", ....]
+def _get_trading_pairs() -> List[dict]:
+    """Helper method that return all trading pairs on binance.
 
     Returns
     -------
-    list:
-        ["EOSETH", "ETHBTC", ....]
-
+        List[dict]
     """
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-    pairs = client.get_all_tickers()
-    symbols = [p["symbol"] for p in pairs]
-    return symbols
+    ex_info = client.get_exchange_info()["symbols"]
+    trading_pairs = [p for p in ex_info if p["status"] == "TRADING"]
+    return trading_pairs
 
 
-def _get_binance_available_pairs() -> dict:
+def get_all_binance_trading_pairs() -> pd.DataFrame:
+    """Returns all available pairs on Binance in DataFrame format.
+
+    Returns
+    -------
+    pd.DataFrame
+        symbol, baseAsset, quoteAsset
+
+    """
+    trading_pairs = _get_trading_pairs()
+    return pd.DataFrame(trading_pairs)[["symbol", "baseAsset", "quoteAsset"]]
+
+
+def get_binance_available_quotes_for_each_coin() -> dict:
     """Helper methods that for every coin available on Binance add all quote assets.
 
     Returns
@@ -42,10 +52,7 @@ def _get_binance_available_pairs() -> dict:
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
 
     """
-    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-    ex_info = client.get_exchange_info()["symbols"]
-    trading_pairs = [p for p in ex_info if p["status"] == "TRADING"]
-
+    trading_pairs = _get_trading_pairs()
     results = defaultdict(list)
     for pair in trading_pairs:
         results[pair["baseAsset"]].append(pair["quoteAsset"])
@@ -83,7 +90,7 @@ def show_available_pairs_for_given_symbol(
     """
 
     symbol_upper = symbol.upper()
-    pairs = _get_binance_available_pairs()
+    pairs = get_binance_available_quotes_for_each_coin()
     for k, v in pairs.items():
         if k == symbol_upper:
             return k, v

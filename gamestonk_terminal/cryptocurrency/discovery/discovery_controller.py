@@ -11,6 +11,7 @@ from gamestonk_terminal.cryptocurrency.discovery import (
     pycoingecko_view,
     coinpaprika_view,
     coinmarketcap_view,
+    binance_view,
 )
 
 
@@ -38,6 +39,7 @@ class Controller:
         "cg_top_dex",
         "cg_top_nft",
         "cg_coins",
+        "bin_coins",
     ]
 
     def __init__(self):
@@ -80,6 +82,9 @@ class Controller:
         print("")
         print("CoinMarket Cap:")
         print("   cmc_top            top coins from CoinMarketCap")
+        print("")
+        print("Binance:")
+        print("   bin_coins          coins available on Binance")
 
         print("")
 
@@ -135,7 +140,7 @@ class Controller:
         pycoingecko_view.coin_list(other_args=other_args)
 
     def call_cg_gainers(self, other_args):
-        """Process gaienrs command"""
+        """Process gainers command"""
         pycoingecko_view.gainers(other_args)
 
     def call_cg_losers(self, other_args):
@@ -193,6 +198,10 @@ class Controller:
     def call_cp_search(self, other_args):
         """Process search command"""
         coinpaprika_view.search(other_args=other_args)
+
+    def call_bin_coins(self, other_args):
+        """Process bin_coins command"""
+        binance_view.coins(other_args=other_args)
 
 
 def menu():
