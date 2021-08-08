@@ -20,13 +20,14 @@ def realtime_performance_sector(raw: bool, export: str):
     """
     df_sectors = alphavantage_model.get_sector_data()
 
+    # pylint: disable=invalid-sequence-index
+    df_rtp = df_sectors["Rank A: Real-Time Performance"]
+
     if raw:
-        df_sec = df_sectors[["Rank A: Real-Time Performance"]].copy()
-        print(df_sec.to_string())
+        print(df_rtp.to_string())
 
     else:
-        # pylint: disable=invalid-sequence-index
-        df_sectors[["Rank A: Real-Time Performance"]].plot(kind="bar")
+        df_rtp.plot(kind="bar")
         plt.title("Real Time Performance (%) per Sector")
         plt.tight_layout()
         plt.grid()
