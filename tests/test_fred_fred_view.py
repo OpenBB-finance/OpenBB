@@ -27,7 +27,7 @@ Date
 
 
 class TestFredFredView(unittest.TestCase):
-    @mock.patch("gamestonk_terminal.economy.fred_model.Fred.get_series_data")
+    @mock.patch("gamestonk_terminal.economy.fred_model.get_series_data")
     def test_display_fred(self, mock_get_series):
         fred_data = pd.read_csv(StringIO(fred_data_mock), header=0, index_col=0)
 
