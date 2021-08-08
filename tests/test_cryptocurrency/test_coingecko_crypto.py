@@ -4,7 +4,7 @@ import sys
 import io
 import os
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_view import (
+from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_view import (
     load,
     ta,
     chart,
@@ -51,7 +51,7 @@ from gamestonk_terminal.cryptocurrency.overview.pycoingecko_view import (
     global_market_info,
     global_defi_info,
 )
-from gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model import Coin
+from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 # pylint: disable=unused-import
 

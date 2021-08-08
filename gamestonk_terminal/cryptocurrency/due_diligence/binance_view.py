@@ -9,7 +9,7 @@ from tabulate import tabulate
 import numpy as np
 import pandas as pd
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
-from gamestonk_terminal.cryptocurrency.due_dilligence.binance_model import (
+from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     check_valid_binance_str,
     show_available_pairs_for_given_symbol,
     plot_candles,

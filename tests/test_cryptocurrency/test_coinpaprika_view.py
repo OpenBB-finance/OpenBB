@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 import sys
 import io
 
-from gamestonk_terminal.cryptocurrency.due_dilligence.coinpaprika_view import (
+from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import (
     exchanges,
     chart,
     load,

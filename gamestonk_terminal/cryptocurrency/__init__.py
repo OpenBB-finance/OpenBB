@@ -4,10 +4,10 @@ import difflib
 import pandas as pd
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
-from gamestonk_terminal.cryptocurrency.due_dilligence import pycoingecko_model
-from gamestonk_terminal.cryptocurrency.due_dilligence import coinpaprika_view as paprika
-from gamestonk_terminal.cryptocurrency.due_dilligence import binance_view as binance
-from gamestonk_terminal.cryptocurrency.due_dilligence import pycoingecko_view as gecko
+from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_model
+from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_view as paprika
+from gamestonk_terminal.cryptocurrency.due_diligence import binance_view as binance
+from gamestonk_terminal.cryptocurrency.due_diligence import pycoingecko_view as gecko
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_list_of_coins,

@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.feature_flags import USE_ION as ion
-import gamestonk_terminal.cryptocurrency.due_dilligence.coinpaprika_model as paprika
+import gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_list_of_coins,
 )

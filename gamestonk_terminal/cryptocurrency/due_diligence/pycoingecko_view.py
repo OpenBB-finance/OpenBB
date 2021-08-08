@@ -1,4 +1,4 @@
-""" coingecko due dilligence """
+""" coingecko due diligence """
 __docformat__ = "numpy"
 
 import argparse
@@ -13,7 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
-import gamestonk_terminal.cryptocurrency.due_dilligence.pycoingecko_model as gecko
+import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import wrap_text_in_df
 
 register_matplotlib_converters()

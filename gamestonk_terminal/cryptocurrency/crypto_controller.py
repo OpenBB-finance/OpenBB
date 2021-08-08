@@ -11,11 +11,11 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 from gamestonk_terminal.cryptocurrency.overview import overview_controller
-from gamestonk_terminal.cryptocurrency.due_dilligence import dd_controller
+from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
 from gamestonk_terminal.cryptocurrency.discovery import (
     discovery_controller,
 )
-from gamestonk_terminal.cryptocurrency.due_dilligence import (
+from gamestonk_terminal.cryptocurrency.due_diligence import (
     finbrain_crypto_view,
 )
 

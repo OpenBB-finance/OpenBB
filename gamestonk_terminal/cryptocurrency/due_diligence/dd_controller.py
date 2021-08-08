@@ -8,7 +8,7 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.cryptocurrency.due_dilligence import (
+from gamestonk_terminal.cryptocurrency.due_diligence import (
     pycoingecko_view,
     coinpaprika_view,
     binance_view,

@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from gamestonk_terminal.cryptocurrency.due_dilligence.binance_model import (
+from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     _get_trading_pairs,
 )
 
