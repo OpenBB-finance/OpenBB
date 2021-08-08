@@ -1,6 +1,10 @@
 # CRYPTOCURRENCY
 
-This menu aims to explore crypto world, and the usage of the following commands along with an example will be exploited below.
+This menu aims to explore crypto world. You will have access to discovery menu where you can find most popular coins, yield farms, top defi tokens or nfts.
+In overview menu you can find overall crypto statistics, latest news, info about exchanges, stable coins, defi and many others. If you will load given coin from source like coinpaprika, coingecko or binance you will have access to due-diligence menu where you can find more coin related information.
+You can also go to technical analysis menu, or plot a chart for your coin
+The usage of the following commands along with an example will be exploited below.
+
 
 Note that we have added the ability to look at technical analysis in the ta menu.  Data loaded from CoinGecko has no candle data,
 so indicators that rely on anything other than close will fail with an error.
@@ -48,10 +52,6 @@ If you not sure about coin symbol or coin id. You can go to discovery menu and t
 or you can try to use in current menu `find` commands (only available for CoinGecko and CoinPaprika)
 
 
-## chart <a name="chart"></a>
-
-Display chart for loaded coin. Depends from which source you loaded the coin different parameters for chart will be available:
-
 ## disc <a name="disc"></a>
 
 ```
@@ -78,6 +78,9 @@ usage: dd
 Go to due-diligence menu for loaded coin. Depends on source of the data for loaded coin different statistics will be available.
 
 
+## chart <a name="chart"></a>
+
+Display chart for loaded coin. Depends from which source you loaded the coin different parameters for chart will be available:
 
 
 ##### CoinGecko and CoinPaprika:
