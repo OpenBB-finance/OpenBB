@@ -18,7 +18,6 @@ from gamestonk_terminal.stocks.discovery import (
     finra_ats_view,
     finnhub_view,
     stockgrid_view,
-    sentimentinvestor_view,
 )
 
 
@@ -45,8 +44,6 @@ class DiscoveryController:
         "darkpool",
         "darkshort",
         "shortvol",
-        "popular",
-        "emerging",
     ]
 
     def __init__(self):
@@ -186,14 +183,6 @@ class DiscoveryController:
     def call_shortvol(self, other_args: List[str]):
         """Process shortvol command"""
         stockgrid_view.shortvol(other_args)
-
-    def call_popular(self, other_args: List[str]):
-        """Process popular command"""
-        sentimentinvestor_view.sort("AHI", other_args, "popular")
-
-    def call_emerging(self, other_args: List[str]):
-        """Process popular command"""
-        sentimentinvestor_view.sort("RHI", other_args, "emerging")
 
 
 def menu():
