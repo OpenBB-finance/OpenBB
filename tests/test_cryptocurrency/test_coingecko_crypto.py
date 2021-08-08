@@ -53,7 +53,7 @@ from gamestonk_terminal.cryptocurrency.overview.pycoingecko_view import (
 )
 from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 
-# pylint: disable=unused-import
+# pylint: disable=unused-import,F401
 
 
 @mock.patch(
