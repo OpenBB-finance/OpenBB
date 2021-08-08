@@ -10,26 +10,16 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import seaborn as sns
 
-# pylint: disable=R0402
-import oandapyV20.endpoints.pricing as pricing
-
-# pylint: disable=R0402
-import oandapyV20.endpoints.accounts as accounts
-
-# pylint: disable=R0402
-import oandapyV20.endpoints.orders as orders
-
-# pylint: disable=R0402
-import oandapyV20.endpoints.instruments as instruments
-
-# pylint: disable=R0402
-import oandapyV20.endpoints.positions as positions
-
-# pylint: disable=R0402
-import oandapyV20.endpoints.trades as trades
-
-# pylint: disable=R0402
-import oandapyV20.endpoints.forexlabs as labs
+# pylint: disable=C0412
+from oandapyV20.endpoints import (
+    pricing,
+    accounts,
+    orders,
+    instruments,
+    positions,
+    trades,
+    forexlabs,
+)
 
 # pylint: disable=R0402
 from oandapyV20.exceptions import V20Error
@@ -739,7 +729,7 @@ def calendar(instrument, other_args: List[str]):
 
     parameters = {"instrument": instrument, "period": str(ns_parser.days * 86400 * -1)}
     try:
-        request = labs.Calendar(params=parameters)
+        request = forexlabs.Calendar(params=parameters)
         response = client.request(request)
 
         l_data = []
