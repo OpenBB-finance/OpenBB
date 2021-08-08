@@ -1,10 +1,11 @@
 """ Finviz Model """
 __docformat__ = "numpy"
 
+import pandas as pd
 from finvizfinance.group import valuation, performance, spectrum
 
 
-def get_valuation_performance_data(group: str, data_type: str):
+def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:
     """Get group (sectors, industry or country) valuation/performance data
 
     Parameters

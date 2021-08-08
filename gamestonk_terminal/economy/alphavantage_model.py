@@ -1,16 +1,17 @@
 """ Alpha Vantage Model """
 __docformat__ = "numpy"
 
+import pandas as pd
 from alpha_vantage.sectorperformance import SectorPerformances
 from gamestonk_terminal import config_terminal as cfg
 
 
-def get_sector_data():
+def get_sector_data() -> pd.DataFrame:
     """Get real-time performance sector data
 
     Returns
     ----------
-    dF_sectors : pd.Dataframe
+    df_sectors : pd.Dataframe
         Real-time performance data
     """
     sector_perf = SectorPerformances(

@@ -31,21 +31,21 @@ class EconomyController:
     """Economy Controller"""
 
     d_GROUPS = {
-        "Sector": "Sector",
-        "Industry": "Industry",
-        "Basic Materials": "Industry (Basic Materials)",
-        "Communication Services": "Industry (Communication Services)",
-        "Consumer Cyclical": "Industry (Consumer Cyclical)",
-        "Consumer Defensive": "Industry (Consumer Defensive)",
-        "Energy": "Industry (Energy)",
-        "Financial": "Industry (Financial)",
-        "Healthcare": "Industry (Healthcare)",
-        "Industrials": "Industry (Industrials)",
-        "Real Estate": "Industry (Real Estate)",
-        "Technology": "Industry (Technology)",
-        "Utilities": "Industry (Utilities)",
-        "Country": "Country (U.S. listed stocks only)",
-        "Capitalization": "Capitalization",
+        "sector": "Sector",
+        "industry": "Industry",
+        "basic materials": "Industry (Basic Materials)",
+        "communication services": "Industry (Communication Services)",
+        "consumer cyclical": "Industry (Consumer Cyclical)",
+        "consumer defensive": "Industry (Consumer Defensive)",
+        "energy": "Industry (Energy)",
+        "financial": "Industry (Financial)",
+        "healthcare": "Industry (Healthcare)",
+        "industrials": "Industry (Industrials)",
+        "real Estate": "Industry (Real Estate)",
+        "technology": "Industry (Technology)",
+        "utilities": "Industry (Utilities)",
+        "country": "Country (U.S. listed stocks only)",
+        "capitalization": "Capitalization",
     }
 
     l_INDUSTRY = [
@@ -131,6 +131,7 @@ What do you want to do?
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+
 CNN:
     feargreed     CNN Fear and Greed Index
 Finnhub:
@@ -703,7 +704,7 @@ Simply Wall St.:
             dest="series_id",
             required="-h" not in other_args,
             type=str,
-            help="FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
+            help="FRED Series from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3",
         )
         parser.add_argument(
             "-s",

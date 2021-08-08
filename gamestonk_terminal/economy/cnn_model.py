@@ -1,6 +1,7 @@
 """ CNN Model """
 __docformat__ = "numpy"
 
+from typing import Tuple
 from fear_greed_index.CNNFearAndGreedIndex import CNNFearAndGreedIndex
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 register_matplotlib_converters()
 
 
-def get_feargreed_report(indicator: str, fig: plt.figure):
+def get_feargreed_report(indicator: str, fig: plt.figure) -> Tuple[str, plt.figure]:
     """Display CNN Fear And Greed Index.
 
     Parameters

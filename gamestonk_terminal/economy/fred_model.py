@@ -1,6 +1,7 @@
 """ Fred View """
 __docformat__ = "numpy"
 
+from typing import List
 import pandas as pd
 import fred
 from fredapi import Fred
@@ -8,7 +9,7 @@ from fredapi import Fred
 from gamestonk_terminal import config_terminal as cfg
 
 
-def get_series_notes(series_term: str, num: int):
+def get_series_notes(series_term: str, num: int) -> str:
     """Get Series notes. [Source: FRED]
 
     Parameters
@@ -47,7 +48,7 @@ def get_series_notes(series_term: str, num: int):
     return notes
 
 
-def get_series_ids(series_term: str, num: int):
+def get_series_ids(series_term: str, num: int) -> List[str]:
     """Get Series IDs. [Source: FRED]
 
     Parameters
