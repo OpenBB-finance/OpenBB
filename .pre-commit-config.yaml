@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -8,16 +8,16 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 21.5b1
+    rev: 21.7b0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
-    rev: 3.9.1
+    rev: 3.9.2
     hooks:
       - id: flake8
         entry: flake8 --max-line-length=122 --ignore=E203,W503
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.0.0
+    rev: v2.1.0
     hooks:
       - id: codespell
         entry: codespell
@@ -28,7 +28,7 @@ repos:
       - id: mypy
         args: [ --ignore-missing-imports ]
   - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: 'v3.0.0a3'
+    rev: 'v3.0.0a4'
     hooks:
       - id: pylint
         entry: pylint terminal.py gamestonk_terminal tests
@@ -39,7 +39,7 @@ repos:
         args: [ '--baseline', '.secrets.baseline' ]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.18.2
+    rev: v2.23.3
     hooks:
       - id: pyupgrade
         args: [ --py36-plus ]
