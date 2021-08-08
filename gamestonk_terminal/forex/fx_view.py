@@ -1,14 +1,27 @@
+from datetime import datetime
 import argparse
-from oandapyV20 import API
 from typing import List
-import oandapyV20.endpoints.pricing as pricing
-import oandapyV20.endpoints.accounts as accounts
-import oandapyV20.endpoints.orders as orders
-import oandapyV20.endpoints.instruments as instruments
-import oandapyV20.endpoints.positions as positions
-import oandapyV20.endpoints.trades as trades
-import oandapyV20.endpoints.forexlabs as labs
+
+
+import pandas as pd
+import pandas_ta as ta
+import mplfinance as mpf
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import seaborn as sns
+
+from oandapyV20 import API
 from oandapyV20.exceptions import V20Error
+from oandapyV20.endpoints import (
+    pricing,
+    accounts,
+    orders,
+    instruments,
+    positions,
+    trades,
+    forexlabs,
+)
+
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
@@ -17,13 +30,6 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     check_non_negative,
 )
-import pandas as pd
-import pandas_ta as ta
-import mplfinance as mpf
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
-import seaborn as sns
-from datetime import datetime
 
 
 client = API(access_token=cfg.OANDA_TOKEN, environment="live")
@@ -51,6 +57,7 @@ def get_fx_price(accountID, instrument, other_args: List[str]):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -106,6 +113,7 @@ def get_account_summary(accountID, other_args: List[str]):
 
         print("")
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -154,6 +162,7 @@ def list_orders(accountID, other_args: List[str]):
     except KeyError:
         print("No orders were found\n")
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -182,6 +191,7 @@ def get_order_book(instrument, other_args):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -207,6 +217,7 @@ def get_position_book(instrument, other_args):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -241,7 +252,7 @@ def create_order(accountID, instrument, other_args: List[str]):
     ns_parser = parse_known_args_and_warn(parser, other_args)
     if not ns_parser:
         return
-    if "JPY" or "THB" or "HUF" in instrument:
+    if "JPY" in instrument or "THB" in instrument or "HUF" in instrument:
         ns_parser.price = round(ns_parser.price, 3)
     else:
         ns_parser.price = round(ns_parser.price, 5)
@@ -274,6 +285,7 @@ def create_order(accountID, instrument, other_args: List[str]):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
     except Exception as e:
@@ -307,6 +319,7 @@ def cancel_pending_order(accountID, other_args: List[str]):
         print(f"Order {order_id} canceled.")
         print("")
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -347,6 +360,7 @@ def get_pending_orders(accountID, other_args):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -386,6 +400,7 @@ def get_open_positions(accountID, other_args):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
@@ -492,6 +507,7 @@ def close_trade(accountID, other_args: List[str]):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
     except Exception as e:
@@ -599,6 +615,7 @@ def show_candles(accountID, instrument, other_args: List[str]):
         if gtff.USE_ION:
             plt.ion()
 
+        # pylint: disable=W0612
         fig, ax = mpf.plot(
             df,
             type="candle",
@@ -611,11 +628,13 @@ def show_candles(accountID, instrument, other_args: List[str]):
 
         ax[0].set_title(f"{instrument} {ns_parser.granularity}")
         ax[0].legend(legends)
+        # pylint: disable=C0200
         for i in range(0, len(subplot_legends), 2):
             ax[subplot_legends[i]].legend(subplot_legends[i + 1])
 
         print("")
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
     except TypeError as e:
@@ -709,10 +728,11 @@ def calendar(instrument, other_args: List[str]):
 
     parameters = {"instrument": instrument, "period": str(ns_parser.days * 86400 * -1)}
     try:
-        request = labs.Calendar(params=parameters)
+        request = forexlabs.Calendar(params=parameters)
         response = client.request(request)
 
         l_data = []
+        # pylint: disable=C0200
         for i in range(len(response)):
             if "forecast" in response[i]:
                 forecast = response[i]["forecast"]
@@ -765,10 +785,13 @@ def calendar(instrument, other_args: List[str]):
         print("")
 
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["message"], "\n")
 
 
+# pylint: disable=W0613
+# pylint: disable=R1710
 def get_candles_dataframe(accountID, instrument, parameters):
     if not parameters:
         parameters = {
@@ -797,10 +820,12 @@ def get_candles_dataframe(accountID, instrument, parameters):
         df.index = pd.to_datetime(df.index)
         return df
     except V20Error as e:
+        # pylint: disable=W0123
         d_error = eval(e.msg)
         print(d_error["errorMessage"], "\n")
 
 
+# pylint: disable=R1710
 def load(other_args: List[str]):
     """Load a forex instrument to use"""
     parser = argparse.ArgumentParser(
@@ -875,6 +900,7 @@ def book_plot(df, instrument, book_type):
     plt.show()
 
 
+# pylint: disable=R1710
 def format_instrument(instrument, char):
     try:
         if char not in instrument:

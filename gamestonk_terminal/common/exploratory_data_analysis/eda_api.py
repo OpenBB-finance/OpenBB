@@ -11,6 +11,8 @@ from pandas.plotting import register_matplotlib_converters
 import numpy as np
 import seaborn as sns
 import statsmodels.api as sm
+
+# pylint: disable=R0402
 import matplotlib.gridspec as gridspec
 from statsmodels.tsa.seasonal import seasonal_decompose
 from gamestonk_terminal.helper_funcs import (
