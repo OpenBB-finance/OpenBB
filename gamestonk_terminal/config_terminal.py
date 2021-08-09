@@ -54,7 +54,7 @@ DG_TOTP_SECRET = os.getenv("GT_DG_TOTP_SECRET") or None
 
 # https://developer.oanda.com
 OANDA_ACCOUNT_TYPE = (
-    os.getenv("GT_OANDA_ACCOUNT_TYPE") or "REPLACE_ME"
+    os.getenv("GT_OANDA_ACCOUNT_TYPE") or "practice"
 )  # "live" or "practice"
 OANDA_ACCOUNT = os.getenv("GT_OANDA_ACCOUNT") or "REPLACE_ME"
 OANDA_TOKEN = os.getenv("GT_OANDA_TOKEN") or "REPLACE_ME"
