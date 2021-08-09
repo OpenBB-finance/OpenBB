@@ -1,18 +1,13 @@
 """ ARK View """
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
-from colorama import Fore, Style
+import os
 import pandas as pd
+from tabulate import tabulate
+from colorama import Fore, Style
 
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    patch_pandas_text_adjustment,
-    parse_known_args_and_warn,
-)
 from gamestonk_terminal import feature_flags as gtff
-
+from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.discovery import ark_model
 
 
@@ -40,64 +35,45 @@ def direction_color_red_green(val: str) -> str:
     return ret
 
 
-def ark_orders_view(other_args: List[str]):
+def ark_orders_view(num: int, export: str):
     """Prints a table of the last N ARK Orders
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args - ["-n", "10"]
+    num: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="ARK Orders",
-        description="""
-            Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
-        """,
+    df_orders = ark_model.get_ark_orders()
+
+    if df_orders.empty:
+        print("The ARK orders aren't available at the moment.\n")
+        return
+
+    pd.set_option("mode.chained_assignment", None)
+    df_orders = ark_model.add_order_total(df_orders.head(num))
+
+    if gtff.USE_COLOR:
+        df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
+
+    # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
+
+    print("Orders by ARK Investment Management LLC")
+    print(
+        tabulate(
+            df_orders,
+            headers=df_orders.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
     )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=20,
-        help="Last N orders.",
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "arkord",
+        df_orders,
     )
-
-    try:
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_orders = ark_model.get_ark_orders()
-
-        if df_orders.empty:
-            print("The ARK orders aren't available at the moment.\n")
-            return
-
-        pd.set_option("mode.chained_assignment", None)
-        df_orders = ark_model.add_order_total(df_orders.head(ns_parser.n_num))
-
-        if gtff.USE_COLOR:
-            df_orders["direction"] = df_orders["direction"].apply(
-                direction_color_red_green
-            )
-
-            patch_pandas_text_adjustment()
-
-        df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
-
-        pd.set_option("display.max_colwidth", None)
-        pd.set_option("display.max_rows", None)
-        pd.set_option("display.float_format", "{:,.2f}".format)
-        print("")
-        print("Orders by ARK Investment Management LLC")
-        print("")
-        print(df_orders.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")

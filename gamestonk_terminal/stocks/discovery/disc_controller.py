@@ -4,24 +4,28 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+from datetime import datetime
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    check_non_negative,
+    check_positive,
+    valid_date,
+    check_int_range,
+)
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
     seeking_alpha_view,
-    short_interest_view,
-    simply_wallst_view,
-    spachero_view,
-    unusual_whales_view,
-    yahoo_finance_view,
+    shortinterest_view,
+    yahoofinance_view,
     finra_ats_view,
     finnhub_view,
     stockgrid_view,
-    sentimentinvestor_view,
 )
 
 
@@ -35,25 +39,26 @@ class DiscoveryController:
         "help",
         "q",
         "quit",
-        "ipo",
+    ]
+
+    CHOICES_COMMANDS = [
+        "pipo",
+        "fipo",
         "gainers",
         "losers",
-        "orders",
-        "ark_orders",
-        "up_earnings",
-        "high_short",
-        "low_float",
-        "simply_wallst",
-        "spachero",
-        "uwhales",
+        "ford",
+        "arkord",
+        "upcoming",
         "latest",
         "trending",
+        "highshort",
+        "lowfloat",
         "darkpool",
         "darkshort",
         "shortvol",
-        "popular",
-        "emerging",
     ]
+
+    CHOICES += CHOICES_COMMANDS
 
     def __init__(self):
         """Constructor"""
@@ -66,46 +71,38 @@ class DiscoveryController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery"
-        )
-        print("\nDiscovery Mode:")
-        print("   cls            clear screen")
-        print("   ?/help         show this discovery menu again")
-        print("   q              quit this menu, and shows back to main menu")
-        print("   quit           quit to abandon program")
-        print("")
-        print("   ipo            past and future IPOs [Finnhub]")
-        print("   gainers        show latest top gainers [Yahoo Finance]")
-        print("   losers         show latest top losers [Yahoo Finance]")
-        print("   orders         orders by Fidelity Customers [Fidelity]")
-        print(
-            "   ark_orders     orders by ARK Investment Management LLC [www.cathiesark.com]"
-        )
-        print("   up_earnings    upcoming earnings release dates [Seeking Alpha]")
-        print(
-            "   high_short     show top high short interest stocks of over 20% ratio [www.highshortinterest.com]"
-        )
-        print(
-            "   low_float      show low float stocks under 10M shares float [www.lowfloat.com]"
-        )
-        print("   simply_wallst  Simply Wall St. research data [Simply Wall St.]")
-        print("   spachero       great website for SPACs research [SpacHero]")
-        print("   uwhales        good website for SPACs research [UnusualWhales]")
-        print("   latest         latest news [Seeking Alpha]")
-        print("   trending       trending news [Seeking Alpha]")
-        print(
-            "   darkpool       promising tickers based on dark pool shares regression [FINRA]"
-        )
-        print("   darkshort      dark pool short position [Stockgrid.io]")
-        print("   shortvol       short interest and days to cover [Stockgrid.io]")
-        print(
-            "   popular        show most popular stocks on social media right now [SentimentInvestor.com]"
-        )
-        print(
-            "   emerging       show stocks that are being talked about more than usual [SentimentInvestor.com]"
-        )
-        print("")
+        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery
+
+Discovery:
+    cls            clear screen")
+    ?/help         show this menu again")
+    q              quit this menu, and shows back to main menu")
+    quit           quit to abandon program")
+
+Finnhub:
+    pipo           past IPOs dates
+    fipo           future IPOs dates
+Yahoo Finance:
+    gainers        show latest top gainers
+    losers         show latest top losers
+Fidelity:
+    ford           orders by Fidelity Customers
+cathiesark.com:
+    arkord         orders by ARK Investment Management LLC
+Seeking Alpha:
+    upcoming       upcoming earnings release dates
+    latest         latest news
+    trending       trending news
+shortinterest.com
+    highshort      show top high short interest stocks of over 20% ratio
+    lowfloat       show low float stocks under 10M shares float
+FINRA:
+    darkpool       promising tickers based on dark pool shares regression
+Stockgrid:
+    darkshort      dark pool short position
+    shortvol       short interest and days to cover
+"""
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -150,57 +147,534 @@ class DiscoveryController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_ipo(self, other_args: List[str]):
-        """Process ipo command"""
-        finnhub_view.ipo_calendar(other_args)
+    def call_pipo(self, other_args: List[str]):
+        """Process pipo command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pipo",
+            description="""
+                Past IPOs dates. [Source: https://finnhub.io]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_non_negative,
+            default=5,
+            help="Number of past days to look for IPOs.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.past_ipo(
+                num_days_behind=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_fipo(self, other_args: List[str]):
+        """Process fipo command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fipo",
+            description="""
+                Future IPOs dates. [Source: https://finnhub.io]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_non_negative,
+            default=5,
+            help="Number of future days to look for IPOs.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.future_ipo(
+                num_days_ahead=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
-        yahoo_finance_view.gainers_view(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gainers",
+            description="Print up to 25 top ticker gainers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the top gainers stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_gainers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
-        yahoo_finance_view.losers_view(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="losers",
+            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the top losers stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
 
-    def call_orders(self, other_args: List[str]):
-        """Process orders command"""
-        fidelity_view.orders_view(other_args)
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
 
-    def call_ark_orders(self, other_args: List[str]):
-        """Process ark_orders command"""
-        ark_view.ark_orders_view(other_args)
+            yahoofinance_view.display_losers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
 
-    def call_up_earnings(self, other_args: List[str]):
-        """Process up_earnings command"""
-        seeking_alpha_view.earnings_release_dates_view(other_args)
+        except Exception as e:
+            print(e, "\n")
 
-    def call_high_short(self, other_args: List[str]):
-        """Process high_short command"""
-        short_interest_view.high_short_interest_view(other_args)
+    def call_ford(self, other_args: List[str]):
+        """Process ford command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ford",
+            description="""
+                Orders by Fidelity customers. Information shown in the table below
+                is based on the volume of orders entered on the "as of" date shown. Securities
+                identified are not recommended or endorsed by Fidelity and are displayed for
+                informational purposes only. [Source: Fidelity]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top ordered stocks to be printed.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
 
-    def call_low_float(self, other_args: List[str]):
-        """Process low_float command"""
-        short_interest_view.low_float_view(other_args)
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
 
-    def call_simply_wallst(self, other_args: List[str]):
-        """Process simply_wallst command"""
-        simply_wallst_view.simply_wallst_view(other_args)
+            fidelity_view.orders_view(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
 
-    def call_spachero(self, other_args: List[str]):
-        """Process spachero command"""
-        spachero_view.spachero_view(other_args)
+        except Exception as e:
+            print(e, "\n")
 
-    def call_uwhales(self, other_args: List[str]):
-        """Process uwhales command"""
-        unusual_whales_view.unusual_whales_view(other_args)
+    def call_arkord(self, other_args: List[str]):
+        """Process arkord command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="arkord",
+            description="""
+                Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Last N ARK orders.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            ark_view.ark_orders_view(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_upcoming(self, other_args: List[str]):
+        """Process upcoming command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="upcoming",
+            description="""Upcoming earnings release dates. [Source: Seeking Alpha]""",
+        )
+        parser.add_argument(
+            "-p",
+            "--pages",
+            action="store",
+            dest="n_pages",
+            type=check_positive,
+            default=10,
+            help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=1,
+            help="Number of upcoming earnings release dates to display",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            seeking_alpha_view.upcoming_earning_release_dates(
+                num_pages=ns_parser.n_pages,
+                num_earnings=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_latest(self, other_args: List[str]):
         """Process latest command"""
-        seeking_alpha_view.latest_news_view(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="latest",
+            description="""Latest news articles. [Source: Seeking Alpha]""",
+        )
+        parser.add_argument(
+            "-i",
+            "--id",
+            action="store",
+            dest="n_id",
+            type=check_positive,
+            default=-1,
+            help="article ID",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of articles being printed",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="s_date",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            help="starting date of articles",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            seeking_alpha_view.news(
+                news_type="latest",
+                article_id=ns_parser.n_id,
+                num=ns_parser.n_num,
+                start_date=ns_parser.s_date,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
-        seeking_alpha_view.trending_news_view(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trending",
+            description="""Trending news articles. [Source: Seeking Alpha]""",
+        )
+        parser.add_argument(
+            "-i",
+            "--id",
+            action="store",
+            dest="n_id",
+            type=check_positive,
+            default=-1,
+            help="article ID",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of articles being printed",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="s_date",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            help="starting date of articles",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            seeking_alpha_view.news(
+                news_type="trending",
+                article_id=ns_parser.n_id,
+                num=ns_parser.n_num,
+                start_date=ns_parser.s_date,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_highshort(self, other_args: List[str]):
+        """Process highshort command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="highshort",
+            description="""
+                Print top stocks being more heavily shorted. HighShortInterest.com provides
+                a convenient sorted database of stocks which have a short interest of over
+                20 percent. Additional key data such as the float, number of outstanding shares,
+                and company industry is displayed. Data is presented for the Nasdaq Stock Market,
+                the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top stocks to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            shortinterest_view.high_short_interest(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_lowfloat(self, other_args: List[str]):
+        """Process lowfloat command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lowfloat",
+            description="""
+                Print top stocks with lowest float. LowFloat.com provides a convenient
+                sorted database of stocks which have a float of under 10 million shares. Additional key
+                data such as the number of outstanding shares, short interest, and company industry is
+                displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange,
+                the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top stocks to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            shortinterest_view.low_float(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_darkpool(self, other_args: List[str]):
         """Process darkpool command"""
@@ -213,14 +687,6 @@ class DiscoveryController:
     def call_shortvol(self, other_args: List[str]):
         """Process shortvol command"""
         stockgrid_view.shortvol(other_args)
-
-    def call_popular(self, other_args: List[str]):
-        """Process popular command"""
-        sentimentinvestor_view.sort("AHI", other_args, "popular")
-
-    def call_emerging(self, other_args: List[str]):
-        """Process popular command"""
-        sentimentinvestor_view.sort("RHI", other_args, "emerging")
 
 
 def menu():

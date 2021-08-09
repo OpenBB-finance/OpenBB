@@ -22,7 +22,6 @@ def get_ark_orders() -> DataFrame:
         ARK orders data frame with the following columns:
         ticker, date, shares, weight, fund, direction
     """
-
     url_orders = "https://cathiesark.com/ark-funds-combined/trades"
 
     raw_page = requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text
