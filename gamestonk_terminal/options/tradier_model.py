@@ -1,7 +1,7 @@
 """Tradier options model"""
 __docformat__ = "numpy"
 
-from typing import Optional
+from typing import Optional, List
 
 import requests
 import pandas as pd
@@ -98,7 +98,7 @@ def get_historical_options(
 # pylint: disable=no-else-return
 
 
-def option_expirations(ticker: str):
+def option_expirations(ticker: str) -> List[str]:
     """Get available expiration dates for given ticker
 
     Parameters

@@ -19,41 +19,55 @@ from gamestonk_terminal.options import yfinance_model
 
 
 def plot_oi(
-    calls: pd.DataFrame,
-    puts: pd.DataFrame,
     ticker: str,
     expiry: str,
-    ns_parser: argparse.Namespace,
+    min_sp: float,
+    max_sp: float,
+    calls_only: bool,
+    puts_only: bool,
+    export: str,
 ):
     """Plot open interest
 
     Parameters
     ----------
-    calls: pd.DataFrame
-        Dataframe of call options
-    puts: pd.DataFrame
-        Dataframe of put options
     ticker: str
         Ticker
     expiry: str
         Expiry date for options
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    min_sp: float
+        Min strike to consider
+    max_sp: float
+        Max strike to consider
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format to export file
     """
-
+    options = yfinance_model.get_option_chain(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "tr_vol",
+        options,
+    )
+    calls = options.calls
+    puts = options.puts
     current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
 
-    if ns_parser.min == -1:
+    if min_sp == -1:
         min_strike = 0.75 * current_price
     else:
-        min_strike = ns_parser.min
+        min_strike = min_sp
 
-    if ns_parser.max == -1:
+    if max_sp == -1:
         max_strike = 1.25 * current_price
     else:
-        max_strike = ns_parser.max
+        max_strike = max_sp
 
-    if ns_parser.calls and ns_parser.puts:
+    if calls_only and puts_only:
         print("Both flags selected, please select one", "\n")
         return
 
@@ -69,7 +83,7 @@ def plot_oi(
     plt.style.use("classic")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-    if not ns_parser.calls:
+    if not calls_only:
         put_oi.plot(
             x="strike",
             y="openInterest",
@@ -79,7 +93,7 @@ def plot_oi(
             ls="-",
             c="r",
         )
-    if not ns_parser.puts:
+    if not puts_only:
         call_oi.plot(
             x="strike",
             y="openInterest",
