@@ -19,10 +19,11 @@ def high_short_interest(num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df_high_short_interest = shortinterest_model.get_high_short_interest()
+    df_high_short_interest = df_high_short_interest.iloc[1:].head(n=num)
 
     print(
         tabulate(
-            df_high_short_interest.iloc[1:].head(n=num),
+            df_high_short_interest,
             headers=df_high_short_interest.columns,
             floatfmt=".2f",
             showindex=False,
@@ -35,7 +36,7 @@ def high_short_interest(num: int, export: str):
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "lowfloat",
-        df_high_short_interest.head(n=num),
+        df_high_short_interest,
     )
 
 
@@ -50,10 +51,11 @@ def low_float(num: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df_low_float = shortinterest_model.get_low_float()
+    df_low_float = df_low_float.iloc[1:].head(n=num)
 
     print(
         tabulate(
-            df_low_float.iloc[1:].head(n=num),
+            df_low_float,
             headers=df_low_float.columns,
             floatfmt=".2f",
             showindex=False,
@@ -66,7 +68,7 @@ def low_float(num: int, export: str):
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "lowfloat",
-        df_low_float.head(n=num),
+        df_low_float,
     )
 
 
