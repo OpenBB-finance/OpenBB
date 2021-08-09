@@ -9,6 +9,10 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    check_non_negative,
+)
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
@@ -31,7 +35,11 @@ class DiscoveryController:
         "help",
         "q",
         "quit",
-        "ipo",
+    ]
+
+    CHOICES_COMMANDS = [
+        "pipo",
+        "fipo",
         "gainers",
         "losers",
         "orders",
@@ -46,6 +54,8 @@ class DiscoveryController:
         "shortvol",
     ]
 
+    CHOICES += CHOICES_COMMANDS
+
     def __init__(self):
         """Constructor"""
         self.disc_parser = argparse.ArgumentParser(add_help=False, prog="disc")
@@ -57,37 +67,39 @@ class DiscoveryController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery"
-        )
-        print("\nDiscovery Mode:")
-        print("   cls            clear screen")
-        print("   ?/help         show this discovery menu again")
-        print("   q              quit this menu, and shows back to main menu")
-        print("   quit           quit to abandon program")
-        print("")
-        print("   ipo            past and future IPOs [Finnhub]")
-        print("   gainers        show latest top gainers [Yahoo Finance]")
-        print("   losers         show latest top losers [Yahoo Finance]")
-        print("   orders         orders by Fidelity Customers [Fidelity]")
-        print(
-            "   ark_orders     orders by ARK Investment Management LLC [www.cathiesark.com]"
-        )
-        print("   up_earnings    upcoming earnings release dates [Seeking Alpha]")
-        print(
-            "   high_short     show top high short interest stocks of over 20% ratio [www.highshortinterest.com]"
-        )
-        print(
-            "   low_float      show low float stocks under 10M shares float [www.lowfloat.com]"
-        )
-        print("   latest         latest news [Seeking Alpha]")
-        print("   trending       trending news [Seeking Alpha]")
-        print(
-            "   darkpool       promising tickers based on dark pool shares regression [FINRA]"
-        )
-        print("   darkshort      dark pool short position [Stockgrid.io]")
-        print("   shortvol       short interest and days to cover [Stockgrid.io]")
-        print("")
+        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery
+
+Discovery:
+    cls            clear screen")
+    ?/help         show this menu again")
+    q              quit this menu, and shows back to main menu")
+    quit           quit to abandon program")
+
+Finnhub:
+    pipo           past IPOs dates
+    fipo           future IPOs dates
+Yahoo Finance:
+    gainers        show latest top gainers
+    losers         show latest top losers
+Fidelity:
+    orders         orders by Fidelity Customers
+cathiesark.com:
+    ark_orders     orders by ARK Investment Management LLC
+Seeking Alpha:
+    latest         latest news
+    trending       trending news
+    up_earnings    upcoming earnings release dates
+highshortinterest.com:
+    high_short     show top high short interest stocks of over 20% ratio
+lowfloat.com:
+    low_float      show low float stocks under 10M shares float
+FINRA:
+    darkpool       promising tickers based on dark pool shares regression
+Stockgrid:
+    darkshort      dark pool short position
+    shortvol       short interest and days to cover
+"""
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -132,9 +144,93 @@ class DiscoveryController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_ipo(self, other_args: List[str]):
-        """Process ipo command"""
-        finnhub_view.ipo_calendar(other_args)
+    def call_pipo(self, other_args: List[str]):
+        """Process pipo command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pipo",
+            description="""
+                Past IPOs dates. [Source: https://finnhub.io]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_non_negative,
+            default=5,
+            help="Number of past days to look for IPOs.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.past_ipo(
+                num_days_behind=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_fipo(self, other_args: List[str]):
+        """Process fipo command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fipo",
+            description="""
+                Future IPOs dates. [Source: https://finnhub.io]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_non_negative,
+            default=5,
+            help="Number of future days to look for IPOs.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.future_ipo(
+                num_days_ahead=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
