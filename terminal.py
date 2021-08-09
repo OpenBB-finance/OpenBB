@@ -20,8 +20,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal
 
-# from gamestonk_terminal.etf import etf_controller
-
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
@@ -87,7 +85,7 @@ What do you want to do?
 >>  economy
 >>  options
 >>  portfolio
->>  etf         :: TEMPORARILY DISABLED
+>>  etf
 >>  forex
 >>  resources
     """
@@ -182,8 +180,9 @@ What do you want to do?
 
     def call_etf(self, _):
         """Process etf command"""
-        print("Temporarily disabled\n")
-        # return etf_controller.menu()
+        from gamestonk_terminal.etf import etf_controller
+
+        return etf_controller.menu()
 
     def call_forex(self, _):
         """Process fx command"""

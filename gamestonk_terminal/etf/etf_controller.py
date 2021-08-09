@@ -4,19 +4,18 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf.stockanalysis_model import (
-    name_search,
-    open_web,
-    etf_overview,
-    compare_etfs,
-    etf_holdings,
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
 )
-from gamestonk_terminal.etf.screener_model import etf_screener
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.etf import stockanalysis_view
+from gamestonk_terminal.etf import screener_view
 from gamestonk_terminal.etf import wsj_view
 
 
@@ -32,7 +31,6 @@ class ETFController:
     ]
 
     CHOICES_COMMANDS = [
-        "web",
         "search",
         "overview",
         "compare",
@@ -52,29 +50,29 @@ class ETFController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf"
-        )
-        print("")
-        print(">> ETF <<")
-        print("")
-        print("What do you want to do?")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("\nStockAnalysis.com")
-        print("   web           open StockAnalysis.com/etf")
-        print("   search        search ETFs matching name (i.e. BlackRock or Invesco)")
-        print("   overview      get overview of ETF symbol")
-        print("   holdings      get top holdings for ETF")
-        print("   compare       compare overview of multiple ETF")
-        print("   screener      screen etfs based on overview data")
-        print("\nWall St. Journal")
-        print("   gainers       show top gainers")
-        print("   decliners     show top decliners")
-        print("   active        show most active")
-        print("")
+        help_str = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf
+
+>> ETF <<
+
+What do you want to do?
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
+
+StockAnalysis.com:
+    search        search ETFs matching name (i.e. BlackRock or Invesco)
+    overview      get overview of ETF symbol
+    holdings      get top holdings for ETF
+    compare       compare overview of multiple ETF
+    screener      screen etfs based on overview data
+
+Wall St. Journal:
+    gainers       show top gainers
+    decliners     show top decliners
+    active        show most active
+"""
+        print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -120,29 +118,231 @@ class ETFController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_web(self, other_args: List[str]):
-        """Process web command"""
-        open_web(other_args)
-
     def call_search(self, other_args: List[str]):
         """Process search command"""
-        name_search(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="search",
+            description="Search all available etfs for matching input",
+        )
+        parser.add_argument(
+            "-e",
+            "--etf",
+            type=str,
+            dest="search_str",
+            nargs="+",
+            help="String to search for",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-e")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            search_string = " ".join(ns_parser.search_str)
+            stockanalysis_view.view_search(
+                to_match=search_string, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        etf_overview(other_args)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="overview",
+            description="Get overview data for selected etf",
+        )
+        parser.add_argument(
+            "-e",
+            "--etf",
+            type=str,
+            dest="name",
+            help="Symbol to look for",
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-e")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            stockanalysis_view.view_overview(
+                symbol=ns_parser.name, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
-        etf_holdings(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="holdings",
+            description="Look at ETF holdings",
+        )
+        parser.add_argument(
+            "-e",
+            "--etf",
+            type=str,
+            dest="name",
+            help="ETF to get holdings for",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=int,
+            dest="limit",
+            help="Number of holdings to get",
+            default=20,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-e")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stockanalysis_view.view_holdings(
+                symbol=ns_parser.name,
+                num_to_show=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_compare(self, other_args):
         """Process compare command"""
-        compare_etfs(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="compare",
+            description="Compare selected ETFs",
+        )
+        parser.add_argument(
+            "-e",
+            "--etfs",
+            type=str,
+            dest="names",
+            help="Symbols to compare",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-e")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            etf_list = ns_parser.names.upper().split(",")
+            stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_screener(self, other_args):
         """Process screener command"""
-        etf_screener(other_args)
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="screener",
+            add_help=False,
+            description="Screens ETFS from a personal scraping github repository.  Data scraped from stockanalysis.com",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            type=int,
+            help="Number of etfs to show",
+            dest="num",
+            default=20,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        parser.add_argument(
+            "--preset",
+            choices=[
+                file.strip(".ini")
+                for file in os.listdir(
+                    os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+                )
+            ],
+            default="etf_config",
+            help="Preset to use",
+            dest="preset",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            screener_view.view_screener(
+                num_to_show=ns_parser.num,
+                preset=ns_parser.preset,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_gainers(self, other_args):
         """Process gainers command"""
