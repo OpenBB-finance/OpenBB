@@ -58,6 +58,16 @@ class OptionsController:
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
+    POSSIBLE_GREEKS = [
+        "iv",
+        "gamma",
+        "theta",
+        "vega",
+        "delta",
+        "rho",
+        "premium",
+    ]
+
     def __init__(self):
         """Construct data."""
         self.ticker = ""
@@ -426,7 +436,85 @@ Current Expiry: {self.selected_date or None}
 
     def call_grhist(self, other_args: List[str]):
         """Process grhist command"""
-        syncretism_view.historical_greeks(self.ticker, self.selected_date, other_args)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="grhist",
+            description="Plot historical option greeks.",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--strike",
+            dest="strike",
+            type=float,
+            required="--chain" in other_args or "-h" not in other_args,
+            help="Strike price to look at",
+        )
+        parser.add_argument(
+            "--put",
+            dest="put",
+            action="store_true",
+            default=False,
+            help="Flag for showing put option",
+        )
+
+        parser.add_argument(
+            "-g",
+            "--greek",
+            dest="greek",
+            type=str,
+            choices=self.POSSIBLE_GREEKS,
+            default="delta",
+            help="Greek column to select",
+        )
+
+        parser.add_argument(
+            "--chain", dest="chain_id", default="", type=str, help="OCC option symbol"
+        )
+
+        parser.add_argument(
+            "--raw",
+            dest="raw",
+            action="store_true",
+            default=False,
+            help="Display raw data",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}` \n")
+                return
+            if not self.selected_date:
+                print("No expiry loaded.  First use `exp {expiry date}` \n")
+                return
+
+            syncretism_view.view_historical_greeks(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                strike=ns_parser.strike,
+                greek=ns_parser.greek,
+                chain_id=ns_parser.chain_id,
+                put=ns_parser.put,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_load(self, other_args: List[str]):
         """Process load command"""

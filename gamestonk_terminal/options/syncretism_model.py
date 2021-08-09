@@ -8,8 +8,105 @@ import yfinance as yf
 import requests
 import pandas as pd
 
+from gamestonk_terminal.options import yfinance_model
+
+
+def get_historical_greeks(
+    ticker: str, expiry: str, chain_id: str, strike: float, put: bool
+) -> pd.DataFrame:
+    """
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expiry: str
+        Option expiration date
+    chain_id: str
+        OCC option symbol.  Overwrites other inputs
+    strike: float
+        Strike price to look for
+    put: bool
+        Is this a put option?
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Dataframe containing historical greeks
+    """
+
+    if not chain_id:
+        options = yfinance_model.get_option_chain(ticker, expiry)
+
+        if put:
+            options = options.puts
+        else:
+            options = options.calls
+
+        chain_id = options.loc[options.strike == strike, "contractSymbol"].values[0]
+
+    r = requests.get(f"https://api.syncretism.io/ops/historical/{chain_id}")
+
+    if r.status_code != 200:
+        print("Error in request.")
+        return pd.DataFrame()
+
+    history = r.json()
+
+    iv, delta, gamma, theta, rho, vega, premium, price, time = (
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
+
+    for entry in history:
+        time.append(pd.to_datetime(entry["timestamp"], unit="s"))
+        iv.append(entry["impliedVolatility"])
+        gamma.append(entry["gamma"])
+        delta.append(entry["delta"])
+        theta.append(entry["theta"])
+        rho.append(entry["rho"])
+        vega.append(entry["vega"])
+        premium.append(entry["premium"])
+        price.append(entry["regularMarketPrice"])
+
+    data = {
+        "iv": iv,
+        "gamma": gamma,
+        "delta": delta,
+        "theta": theta,
+        "rho": rho,
+        "vega": vega,
+        "premium": premium,
+        "price": price,
+    }
+
+    df = pd.DataFrame(data, index=time)
+    return df
+
 
 def get_screener_output(preset: str, presets_path: str) -> Tuple[pd.DataFrame, str]:
+    """Screen options based on preset filters
+
+    Parameters
+    ----------
+    preset: str
+        Preset file to screen for
+    presets_path: str
+        Path to preset folder
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with screener data, or empty if errors
+    str:
+        String containing error message if supplied
+    """
     d_cols = {
         "contractSymbol": "CS",
         "symbol": "S",
