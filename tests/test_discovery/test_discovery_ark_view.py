@@ -41,4 +41,4 @@ class TestDiscoveryArkView:
             parse_dates=["date"],
         )
 
-        ark_orders_view(["-n", "10"])
+        ark_orders_view(10, "")

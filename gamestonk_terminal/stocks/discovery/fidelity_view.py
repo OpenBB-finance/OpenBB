@@ -7,10 +7,7 @@ from tabulate import tabulate
 from colorama import Fore, Style
 import pandas as pd
 
-from gamestonk_terminal.helper_funcs import (
-    patch_pandas_text_adjustment,
-    export_data,
-)
+from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.stocks.discovery import fidelity_model
@@ -90,8 +87,6 @@ def orders_view(num: int, export: str):
         df_orders["Price Change"] = df_orders["Price Change"].apply(
             price_change_color_red_green
         )
-
-        patch_pandas_text_adjustment()
 
     df_orders = df_orders.head(n=num).iloc[:, :-1]
 

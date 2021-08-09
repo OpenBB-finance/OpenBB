@@ -44,7 +44,7 @@ class DiscoveryController:
         "gainers",
         "losers",
         "ford",
-        "ark_orders",
+        "arkord",
         "up_earnings",
         "high_short",
         "low_float",
@@ -85,7 +85,7 @@ Yahoo Finance:
 Fidelity:
     ford           orders by Fidelity Customers
 cathiesark.com:
-    ark_orders     orders by ARK Investment Management LLC
+    arkord         orders by ARK Investment Management LLC
 Seeking Alpha:
     latest         latest news
     trending       trending news
@@ -316,7 +316,7 @@ Stockgrid:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="orders",
+            prog="ford",
             description="""
                 Orders by Fidelity customers. Information shown in the table below
                 is based on the volume of orders entered on the "as of" date shown. Securities
@@ -354,9 +354,45 @@ Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_ark_orders(self, other_args: List[str]):
-        """Process ark_orders command"""
-        ark_view.ark_orders_view(other_args)
+    def call_arkord(self, other_args: List[str]):
+        """Process arkord command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="arkord",
+            description="""
+                Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Last N ARK orders.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            ark_view.ark_orders_view(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_up_earnings(self, other_args: List[str]):
         """Process up_earnings command"""
