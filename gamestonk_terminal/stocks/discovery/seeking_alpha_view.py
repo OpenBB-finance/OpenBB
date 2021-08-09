@@ -2,77 +2,81 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List
 from datetime import datetime
+from tabulate import tabulate
 import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     valid_date,
+    export_data,
 )
 
 from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 
 
-def earnings_release_dates_view(other_args: List[str]):
-    """Prints a data frame with earnings release dates
+def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: str):
+    """Displays upcoming earnings release dates
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args - ["-p", "20", "-n", "5"]
+    num_pages: int
+        Number of pages to scrap
+    num_earnings: int
+        Number of upcoming earnings release dates
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="up_earnings",
-        description="""Upcoming earnings release dates. [Source: Seeking Alpha]""",
-    )
-    parser.add_argument(
-        "-p",
-        "--pages",
-        action="store",
-        dest="n_pages",
-        type=check_positive,
-        default=10,
-        help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=3,
-        help="Number of upcoming earnings release dates to print",
-    )
     # TODO: Check why there are repeated companies
     # TODO: Create a similar command that returns not only upcoming, but antecipated earnings
     # i.e. companies where expectation on their returns are high
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_earnings = seeking_alpha_model.get_next_earnings(num_pages)
 
-        df_earnings = seeking_alpha_model.get_next_earnings(ns_parser.n_pages)
+    pd.set_option("display.max_colwidth", None)
+    if export:
+        l_earnings = list()
+        l_earnings_dates = list()
 
-        pd.set_option("display.max_colwidth", None)
-        for n_days, earning_date in enumerate(df_earnings.index.unique()):
-            if n_days > (ns_parser.n_num - 1):
-                break
+    for n_days, earning_date in enumerate(df_earnings.index.unique()):
+        if n_days > (num_earnings - 1):
+            break
 
-            print(f"Earning Release on {earning_date.date()}")
-            print("----------------------------------------------")
-            print(
-                df_earnings[earning_date == df_earnings.index][
-                    ["Ticker", "Name"]
-                ].to_string(index=False, header=False)
-            )
-            print("")
+        df_earn = df_earnings[earning_date == df_earnings.index][
+            ["Ticker", "Name"]
+        ].dropna()
 
-    except Exception as e:
-        print(e, "\n")
+        if export:
+            l_earnings_dates.append(earning_date.date())
+            l_earnings.append(df_earn)
+
+        df_earn.index = df_earn["Ticker"].values
+        df_earn.drop(columns=["Ticker"], inplace=True)
+
+        print(
+            tabulate(
+                df_earn,
+                showindex=True,
+                headers=[f"Earnings on {earning_date.date()}"],
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+
+    if export:
+        for i, _ in enumerate(l_earnings):
+            l_earnings[i].reset_index(drop=True, inplace=True)
+        df_data = pd.concat(l_earnings, axis=1, ignore_index=True)
+        df_data.columns = l_earnings_dates
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "upcoming",
+            df_data,
+        )
 
 
 def latest_news_view(other_args: List[str]):

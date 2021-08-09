@@ -45,11 +45,11 @@ class DiscoveryController:
         "losers",
         "ford",
         "arkord",
-        "up_earnings",
-        "high_short",
-        "low_float",
+        "upcoming",
         "latest",
         "trending",
+        "high_short",
+        "low_float",
         "darkpool",
         "darkshort",
         "shortvol",
@@ -87,9 +87,9 @@ Fidelity:
 cathiesark.com:
     arkord         orders by ARK Investment Management LLC
 Seeking Alpha:
+    upcoming       upcoming earnings release dates
     latest         latest news
     trending       trending news
-    up_earnings    upcoming earnings release dates
 highshortinterest.com:
     high_short     show top high short interest stocks of over 20% ratio
 lowfloat.com:
@@ -394,9 +394,53 @@ Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_up_earnings(self, other_args: List[str]):
-        """Process up_earnings command"""
-        seeking_alpha_view.earnings_release_dates_view(other_args)
+    def call_upcoming(self, other_args: List[str]):
+        """Process upcoming command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="upcoming",
+            description="""Upcoming earnings release dates. [Source: Seeking Alpha]""",
+        )
+        parser.add_argument(
+            "-p",
+            "--pages",
+            action="store",
+            dest="n_pages",
+            type=check_positive,
+            default=10,
+            help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=3,
+            help="Number of upcoming earnings release dates to display",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            seeking_alpha_view.upcoming_earning_release_dates(
+                num_pages=ns_parser.n_pages,
+                num_earnings=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_high_short(self, other_args: List[str]):
         """Process high_short command"""
