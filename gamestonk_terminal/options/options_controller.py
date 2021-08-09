@@ -56,6 +56,8 @@ class OptionsController:
 
     CHOICES += CHOICES_COMMANDS
 
+    PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+
     def __init__(self):
         """Construct data."""
         self.ticker = ""
@@ -70,38 +72,37 @@ class OptionsController:
 
     def print_help(self):
         """Print help."""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options"
-        )
-        print("\nOptions:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   disp          display all preset screeners filters")
-        print("   scr           output screener options")
-        print("   unu           show unusual options activity")
-        print("")
-        print(f"Current Ticker: {self.ticker or None}")
-        print("   load          load new ticker")
-        print(
-            "   info          display option information (volatility, IV rank etc) [Barchart.com]"
-        )
-        print("")
-        print("   calc          basic call/put PnL calculator")
-        print("")
-        print(f"Current Expiration: {self.selected_date or None}")
-        print("   exp           see and set expiration dates")
-        print("")
-        if self.selected_date and self.ticker:
-            print("   chains        display option chains with greeks [Tradier]]")
-            print("   oi            plot open interest [Tradier/YF]")
-            print("   vol           plot volume [Tradier/YF]")
-            print("   voi           plot volume and open interest [Tradier/YF]")
-            print("   hist          plot option history [Tradier")
-            print("   grhist        plot option greek history [Syncretism]")
-            print("")
+        print_str = f"""
+https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options
+
+>> OPTIONS <<
+
+What do you want to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+Explore:
+    disp          display all preset screeners filters
+    scr           output screener options [Syncretism.io]
+    unu           show unusual options activity [fdscanner.com]
+    calc          basic call/put PnL calculator
+
+Current Ticker: {self.ticker or None}
+Current Expiry: {self.selected_date or None}
+    load          load new ticker
+    exp           see and set expiration dates
+    info          display option information (volatility, IV rank etc) [Barchart.com]
+
+    chains        display option chains with greeks [Tradier]
+    oi            plot open interest [Tradier/YF]
+    vol           plot volume [Tradier/YF]
+    voi           plot volume and open interest [Tradier/YF]
+    hist          plot option history [Tradier]
+    grhist        plot option greek history [Syncretism.io]
+    """
+        print(print_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -324,11 +325,108 @@ class OptionsController:
 
     def call_disp(self, other_args: List[str]):
         """Process disp command"""
-        syncretism_view.view_available_presets(other_args)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="disp",
+            description="""View available presets under presets folder.""",
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            help="View specific preset",
+            default="",
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir(self.PRESET_PATH)
+                if preset[-4:] == ".ini"
+            ],
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            syncretism_view.view_available_presets(
+                preset=ns_parser.preset, presets_path=self.PRESET_PATH
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_scr(self, other_args: List[str]):
         """Process scr command"""
-        syncretism_view.screener_output(other_args)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="scr",
+            description="""Sreener filter output from https://ops.syncretism.io/index.html.
+        Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration;
+        IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest;
+        Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low;
+        SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money;
+        PC: Price Change; PB: Price-to-book. """,
+        )
+        parser.add_argument(
+            "-p",
+            "--preset",
+            action="store",
+            dest="preset",
+            type=str,
+            default="template",
+            help="Filter presets",
+            choices=[
+                preset.split(".")[0]
+                for preset in os.listdir(self.PRESET_PATH)
+                if preset[-4:] == ".ini"
+            ],
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            type=int,
+            default=-1,
+            help="Number of random entries to show.  Default shows all",
+            dest="n_show",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            syncretism_view.view_screener_output(
+                preset=ns_parser.preset,
+                presets_path=self.PRESET_PATH,
+                n_show=ns_parser.n_show,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_grhist(self, other_args: List[str]):
+        """Process grhist command"""
+        syncretism_view.historical_greeks(self.ticker, self.selected_date, other_args)
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
@@ -412,10 +510,6 @@ class OptionsController:
             yfinance_view.plot_oi(
                 options.calls, options.puts, self.ticker, self.selected_date, parsed
             )
-
-    def call_grhist(self, other_args: List[str]):
-        """Process grhist command"""
-        syncretism_view.historical_greeks(self.ticker, self.selected_date, other_args)
 
 
 def menu():

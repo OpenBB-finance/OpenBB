@@ -10,7 +10,6 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from tabulate import tabulate
-import yfinance as yf
 
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
@@ -18,331 +17,86 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
 )
 from gamestonk_terminal.options import yfinance_model
+from gamestonk_terminal.options import syncretism_model
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
 
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
-
-def view_available_presets(other_args: List[str]):
+def view_available_presets(preset: str, presets_path: str):
     """View available presets.
 
     Parameters
     ----------
-    other_args: List[str]
-        Other arguments to be parsed
+    preset: str
+       Preset to look at
+    presets_path: str
+        Path to presets folder
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="view",
-        description="""View available presets under presets folder.""",
-    )
-    parser.add_argument(
-        "-p",
-        "--preset",
-        action="store",
-        dest="preset",
-        type=str,
-        help="View specific preset",
-        default="",
-        choices=[
-            preset.split(".")[0]
-            for preset in os.listdir(presets_path)
-            if preset[-4:] == ".ini"
-        ],
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if ns_parser.preset:
-            preset_filter = configparser.RawConfigParser()
-            preset_filter.optionxform = str  # type: ignore
-            preset_filter.read(presets_path + ns_parser.preset + ".ini")
-
-            filters_headers = ["FILTER"]
-
-            print("")
-            for filter_header in filters_headers:
-                print(f" - {filter_header} -")
-                d_filters = {**preset_filter[filter_header]}
-                d_filters = {k: v for k, v in d_filters.items() if v}
-                if d_filters:
-                    max_len = len(max(d_filters, key=len))
-                    for key, value in d_filters.items():
-                        print(f"{key}{(max_len-len(key))*' '}: {value}")
-                print("")
-
-        else:
-            presets = [
-                preset.split(".")[0]
-                for preset in os.listdir(presets_path)
-                if preset[-4:] == ".ini"
-            ]
-
-            for preset in presets:
-                with open(
-                    presets_path + preset + ".ini",
-                    encoding="utf8",
-                ) as f:
-                    description = ""
-                    for line in f:
-                        if line.strip() == "[FILTER]":
-                            break
-                        description += line.strip()
-                print(f"\nPRESET: {preset}")
-                print(description.split("Description: ")[1].replace("#", ""))
-            print("")
-    except Exception as e:
-        print(e)
-
-
-def screener_output(other_args: List[str]):
-    """screener filter output"""
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="scr",
-        description="""Sreener filter output from https://ops.syncretism.io/index.html.
-Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration;
-IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest;
-Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low;
-SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money;
-PC: Price Change; PB: Price-to-book. """,
-    )
-    parser.add_argument(
-        "-p",
-        "--preset",
-        action="store",
-        dest="preset",
-        type=str,
-        default="template",
-        help="Filter presets",
-        choices=[
-            preset.split(".")[0]
-            for preset in os.listdir(presets_path)
-            if preset[-4:] == ".ini"
-        ],
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        d_cols = {
-            "contractSymbol": "CS",
-            "symbol": "S",
-            "optType": "T",
-            "strike": "Str",
-            "expiration": "Exp ∨",
-            "impliedVolatility": "IV",
-            "lastPrice": "LP",
-            "bid": "B",
-            "ask": "A",
-            "volume": "V",
-            "openInterest": "OI",
-            "yield": "Y",
-            "monthlyyield": "MY",
-            "regularMarketPrice": "SMP",
-            "regularMarketDayLow": "SMDL",
-            "regularMarketDayHigh": "SMDH",
-            "lastTradeDate": "LU",
-            "lastCrawl": "LC",
-            "inTheMoney": "ITM",
-            "pChange": "PC",
-            "priceToBook": "PB",
-        }
-
+    if preset:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(presets_path + ns_parser.preset + ".ini")
-
-        d_filters = {k: v for k, v in dict(preset_filter["FILTER"]).items() if v}
-        s_filters = str(d_filters)
-        s_filters = s_filters.replace(": '", ": ").replace("',", ",").replace("'}", "}")
-        s_filters = s_filters.replace("'", '"')
-        errors = check_presets(d_filters)
-        if errors:
-            print(errors, "\n")
-            return
-        link = "https://api.syncretism.io/ops"
-
-        res = requests.get(
-            link, headers={"Content-type": "application/json"}, data=s_filters
-        )
-
-        if res.status_code == 200:
-            df_res = pd.DataFrame(res.json())
-
-            if df_res.empty:
-                print(f"No options data found for preset: {ns_parser.preset}", "\n")
-                return
-
-            df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:17]]
-            df_res["Exp ∨"] = df_res["Exp ∨"].apply(
-                lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
-            )
-            df_res["LU"] = df_res["LU"].apply(
-                lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
-            )
-            df_res["Y"] = df_res["Y"].round(3)
-            df_res["MY"] = df_res["MY"].round(3)
-            print(
-                tabulate(
-                    df_res,
-                    headers=df_res.columns,
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            print("Wrong arguments specified. Error " + str(res.status_code))
+        preset_filter.read(presets_path + preset + ".ini")
+        filters_headers = ["FILTER"]
         print("")
 
-    except Exception as e:
-        print(e, "\n")
+        for filter_header in filters_headers:
+            print(f" - {filter_header} -")
+            d_filters = {**preset_filter[filter_header]}
+            d_filters = {k: v for k, v in d_filters.items() if v}
+            if d_filters:
+                max_len = len(max(d_filters, key=len))
+                for key, value in d_filters.items():
+                    print(f"{key}{(max_len-len(key))*' '}: {value}")
+            print("")
+
+    else:
+        presets = [
+            preset.split(".")[0]
+            for preset in os.listdir(presets_path)
+            if preset[-4:] == ".ini"
+        ]
+
+        for preset_i in presets:
+            with open(
+                presets_path + preset_i + ".ini",
+                encoding="utf8",
+            ) as f:
+                description = ""
+                for line in f:
+                    if line.strip() == "[FILTER]":
+                        break
+                    description += line.strip()
+            print(f"\nPRESET: {preset_i}")
+            print(description.split("Description: ")[1].replace("#", ""))
+        print("")
 
 
-# pylint: disable=eval-used
+def view_screener_output(preset: str, presets_path: str, n_show: int, export: str):
 
+    df_res, error_msg = syncretism_model.get_screener_output(preset, presets_path)
 
-def check_presets(preset_dict: dict):
-    """Checks option screener preset values
+    if error_msg:
+        print(error_msg, "\n")
+        return
 
-    Parameters
-    ----------
-    preset_dict: dict
-        Defined presets from configparser
-    Returns
-    -------
-    error: str
-        String of all errors accumulated
-    """
-    float_list = [
-        "min-iv",
-        "max-iv",
-        "min-oi",
-        "max-oi",
-        "min-strike",
-        "max-strike",
-        "min-volume",
-        "max-volume",
-        "min-voi",
-        "max-voi",
-        "min-diff",
-        "max-diff",
-        "min-ask-bid",
-        "max-ask-bid",
-        "min-exp",
-        "max-exp",
-        "min-price",
-        "max-price",
-        "min-price-20d",
-        "max-price-20d",
-        "min-volume-20d",
-        "max-volume-20d",
-        "min-iv-20d",
-        "max-iv-20d",
-        "min-delta-20d",
-        "max-delta-20d",
-        "min-gamma-20d",
-        "max-gamma-20d",
-        "min-theta-20d",
-        "max-theta-20d",
-        "min-vega-20d",
-        "max-vega-20d",
-        "min-rho-20d",
-        "max-rho-20d",
-        "min-price-100d",
-        "max-price-100d",
-        "min-volume-100d",
-        "max-volume-100d",
-        "min-iv-100d",
-        "max-iv-100d",
-        "min-delta-100d",
-        "max-delta-100d",
-        "min-gamma-100d",
-        "max-gamma-100d",
-        "min-theta-100d",
-        "max-theta-100d",
-        "min-vega-100d",
-        "max-vega-100d",
-        "min-rho-100d",
-        "max-rho-100d",
-        "min-sto",
-        "max-sto",
-        "min-yield",
-        "max-yield",
-        "min-myield",
-        "max-myield",
-        "min-delta",
-        "max-delta",
-        "min-gamma",
-        "max-gamma",
-        "min-theta",
-        "max-theta",
-        "min-vega",
-        "max-vega",
-        "min-cap",
-        "max-cap",
-    ]
-    bool_list = ["active", "stock", "etf", "puts", "calls", "itm", "otm", "exclude"]
-    error = ""
-    for key, value in preset_dict.items():
-        if key in float_list:
-            try:
-                float(value)
-                if value.startswith("."):
-                    error += f"{key} : {value} needs to be formatted with leading 0\n"
-            except Exception:
-                error += f"{key} : {value}, should be float\n"
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "scr",
+        df_res,
+    )
 
-        elif key in bool_list:
-            if value not in ["true", "false"]:
-                error += f"{key} : {value},  Should be [true/false]\n"
-
-        elif key == "tickers":
-            for ticker in value.split(","):
-                try:
-                    eval(ticker)
-                    if yf.Ticker(ticker).info["regularMarketPrice"] is None:
-                        error += f"{key} : {ticker} not found on yfinance"
-
-                except NameError:
-                    error += f"{key} : {value}, {ticker} failed"
-
-        elif key == "limit":
-            try:
-                int(value)
-            except Exception:
-                error += f"{key} : {value} , should be integer\n"
-
-        elif key == "order-by":
-            accepted_orders = [
-                "e_desc",
-                "e_asc",
-                "iv_desc",
-                "iv_asc",
-                "md_desc",
-                "md_asc",
-                "lp_desc",
-                "lp_asc",
-            ]
-            if value not in accepted_orders:
-                error += f"{key} : {value} not accepted ordering\n"
-
-    return error
+    if n_show > 0:
+        df_res = df_res.sample(n_show)
+    print(
+        tabulate(
+            df_res,
+            headers=df_res.columns,
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
+    )
 
 
 possible_greeks = [
