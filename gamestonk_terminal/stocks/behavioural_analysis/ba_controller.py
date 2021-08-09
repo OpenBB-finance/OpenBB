@@ -52,6 +52,7 @@ class BehaviouralAnalysisController:
         "historical",
         "emerging",
         "popular",
+        "popularsi",
     ]
 
     def __init__(self, ticker: str, start: datetime):

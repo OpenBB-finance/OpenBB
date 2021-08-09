@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative,
     check_positive,
     valid_date,
+    check_int_range,
 )
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
@@ -247,9 +248,8 @@ Stockgrid:
             "--num",
             action="store",
             dest="num",
-            type=int,
+            type=check_int_range(1, 25),
             default=5,
-            choices=range(1, 25),
             help="Number of the top gainers stocks to retrieve.",
         )
         parser.add_argument(
@@ -261,6 +261,10 @@ Stockgrid:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -286,9 +290,8 @@ Stockgrid:
             "--num",
             action="store",
             dest="num",
-            type=int,
+            type=check_int_range(1, 25),
             default=5,
-            choices=range(1, 25),
             help="Number of the top losers stocks to retrieve.",
         )
         parser.add_argument(
@@ -300,6 +303,10 @@ Stockgrid:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -343,6 +350,10 @@ Stockgrid:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -383,6 +394,10 @@ Stockgrid:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -430,6 +445,10 @@ Stockgrid:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return

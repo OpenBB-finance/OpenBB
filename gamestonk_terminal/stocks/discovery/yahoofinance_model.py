@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 
 
-def get_gainers():
+def get_gainers() -> pd.DataFrame:
     """Get Yahoo Finance gainers
 
     Returns
@@ -18,7 +18,7 @@ def get_gainers():
     return pd.read_html(requests.get(url_gainers).text)[0]
 
 
-def get_losers():
+def get_losers() -> pd.DataFrame:
     """Get Yahoo Finance losers
 
     Returns

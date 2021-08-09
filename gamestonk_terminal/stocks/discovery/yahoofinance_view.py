@@ -18,8 +18,8 @@ def display_gainers(num_stocks: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df_gainers = yahoofinance_model.get_gainers().head(num_stocks)
-    df_gainers.replace("", float("NaN"), inplace=True)
     df_gainers.dropna(how="all", axis=1, inplace=True)
+    df_gainers = df_gainers.replace(float("NaN"), "")
 
     if df_gainers.empty:
         print("No gainers found.")
@@ -54,8 +54,8 @@ def display_losers(num_stocks: int, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     df_losers = yahoofinance_model.get_losers().head(num_stocks)
-    df_losers.replace("", float("NaN"), inplace=True)
     df_losers.dropna(how="all", axis=1, inplace=True)
+    df_losers = df_losers.replace(float("NaN"), "")
 
     if df_losers.empty:
         print("No losers found.")

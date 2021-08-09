@@ -57,7 +57,7 @@ def ark_orders_view(num: int, export: str):
     if gtff.USE_COLOR:
         df_orders["direction"] = df_orders["direction"].apply(direction_color_red_green)
 
-    df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
+    # df_orders["link"] = "https://finviz.com/quote.ashx?t=" + df_orders["ticker"]
 
     print("Orders by ARK Investment Management LLC")
     print(
