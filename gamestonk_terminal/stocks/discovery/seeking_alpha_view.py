@@ -37,6 +37,11 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
         if n_days > (num_earnings - 1):
             break
 
+        # TODO: Potentially extract Market Cap for each Ticker, and sort
+        # by Market Cap. Then cut the number of tickers shown to 10 with
+        # bigger market cap. Didier attempted this with yfinance, but
+        # the computational time involved wasn't worth pursuing that solution.
+
         df_earn = df_earnings[earning_date == df_earnings.index][
             ["Ticker", "Name"]
         ].dropna()

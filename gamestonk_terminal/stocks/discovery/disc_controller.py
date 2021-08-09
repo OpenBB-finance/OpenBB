@@ -433,7 +433,7 @@ Stockgrid:
             action="store",
             dest="n_num",
             type=check_positive,
-            default=3,
+            default=1,
             help="Number of upcoming earnings release dates to display",
         )
         parser.add_argument(
