@@ -231,7 +231,7 @@ def plot_oi(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "tr_vol",
+        "tr_oi",
         options,
     )
     current_price = tradier_model.last_price(ticker)
@@ -403,23 +403,39 @@ def plot_vol(
 
 
 def plot_volume_open_interest(
-    ticker: str, exp_date: str, options: pd.DataFrame, ns_parser: argparse.Namespace
+    ticker: str,
+    expiry: str,
+    min_sp: float,
+    max_sp: float,
+    min_vol: float,
+    export: str,
 ):
     """Plot volume and open interest
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
-    exp_date : str
-        Expiry date of the option
-    Options: pd.DataFrame
-        Options dataframe with both calls and puts
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    ticker: str
+        Stock ticker
+    expiry: str
+        Option expiration
+    min_sp: float
+        Min strike price
+    max_sp: float
+        Max strike price
+    min_vol: float
+        Min volume to consider
+    export: str
+        Format for exporting data
     """
-
     current_price = tradier_model.last_price(ticker)
+    options = tradier_model.get_option_chains(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "tr_voi",
+        options,
+    )
+
     calls = options[options.option_type == "call"][
         ["strike", "volume", "open_interest"]
     ]
@@ -457,7 +473,7 @@ def plot_volume_open_interest(
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
 
-    if ns_parser.min_vol == -1 and ns_parser.min_sp == -1 and ns_parser.max_sp == -1:
+    if min_vol == -1 and min_sp == -1 and max_sp == -1:
         # If no argument provided, we use the percentile 50 to get 50% of upper volume data
         volume_percentile_threshold = 50
         min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
@@ -467,17 +483,17 @@ def plot_volume_open_interest(
         df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
 
     else:
-        if ns_parser.min_vol > -1:
-            df_calls = df_calls[df_calls["oi+v"] > ns_parser.min_vol]
-            df_puts = df_puts[df_puts["oi+v"] < -ns_parser.min_vol]
+        if min_vol > -1:
+            df_calls = df_calls[df_calls["oi+v"] > min_vol]
+            df_puts = df_puts[df_puts["oi+v"] < -min_vol]
 
-        if ns_parser.min_sp > -1:
-            df_calls = df_calls[df_calls["strike"] > ns_parser.min_sp]
-            df_puts = df_puts[df_puts["strike"] > ns_parser.min_sp]
+        if min_sp > -1:
+            df_calls = df_calls[df_calls["strike"] > min_sp]
+            df_puts = df_puts[df_puts["strike"] > min_sp]
 
-        if ns_parser.max_sp > -1:
-            df_calls = df_calls[df_calls["strike"] < ns_parser.max_sp]
-            df_puts = df_puts[df_puts["strike"] < ns_parser.max_sp]
+        if max_sp > -1:
+            df_calls = df_calls[df_calls["strike"] < max_sp]
+            df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
         print(
@@ -546,7 +562,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     plt.title(
-        f"{ticker} volumes for {exp_date} (open interest displayed only during market hours)"
+        f"{ticker} volumes for {expiry} (open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 

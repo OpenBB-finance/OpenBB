@@ -786,22 +786,89 @@ Current Expiry: {self.selected_date or None}
 
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="voi",
+            description="""
+                        Plots Volume + Open Interest of calls vs puts.
+                    """,
+        )
+        parser.add_argument(
+            "-v",
+            "--minv",
+            dest="min_vol",
+            type=float,
+            default=-1,
+            help="minimum volume (considering open interest) threshold of the plot.",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            dest="min_sp",
+            type=float,
+            default=-1,
+            help="minimum strike price to consider in the plot.",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_sp",
+            type=float,
+            default=-1,
+            help="maximum strike price to consider in the plot.",
+        )
+        parser.add_argument(
+            "--source",
+            type=str,
+            default="tr",
+            choices=["tr", "yf"],
+            dest="source",
+            help="Source to get data from",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker and not self.selected_date:
+                print("Ticker and expiration required.\n")
+                return
+
+            if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                tradier_view.plot_volume_open_interest(
+                    ticker=self.ticker,
+                    expiry=self.selected_date,
+                    min_sp=ns_parser.min_sp,
+                    max_sp=ns_parser.max_sp,
+                    min_vol=ns_parser.min_vol,
+                    export=ns_parser.export,
+                )
+            else:
+                yfinance_view.plot_volume_open_interest(
+                    ticker=self.ticker,
+                    expiry=self.selected_date,
+                    min_sp=ns_parser.min_sp,
+                    max_sp=ns_parser.max_sp,
+                    min_vol=ns_parser.min_vol,
+                    export=ns_parser.export,
+                )
+
+        except Exception as e:
+            print(e, "\n")
+            return
+
         if not self.ticker and not self.selected_date:
             print("Ticker and expiration required.")
             return
-        parsed = op_helpers.voi(other_args)
-        if not parsed:
-            return
-        if parsed.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-            options = tradier_model.get_option_chains(self.ticker, self.selected_date)
-            tradier_view.plot_volume_open_interest(
-                self.ticker, self.selected_date, options, parsed
-            )
-        else:
-            options = yfinance_model.get_option_chain(self.ticker, self.selected_date)
-            yfinance_view.plot_volume_open_interest(
-                self.ticker, self.selected_date, options.calls, options.puts, parsed
-            )
 
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
