@@ -694,20 +694,95 @@ Current Expiry: {self.selected_date or None}
 
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
-        if not self.ticker and not self.selected_date:
-            print("Ticker and expiration required.\n")
-            return
-        parsed = op_helpers.vol(other_args)
-        if not parsed:
-            return
-        if parsed.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-            options = tradier_model.get_option_chains(self.ticker, self.selected_date)
-            tradier_view.plot_vol(options, self.ticker, self.selected_date, parsed)
-        else:
-            options = yfinance_model.get_option_chain(self.ticker, self.selected_date)
-            yfinance_view.plot_vol(
-                options.calls, options.puts, self.ticker, self.selected_date, parsed
-            )
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vol",
+            description="Plot volume.  Volume refers to the number of contracts traded today.",
+        )
+
+        parser.add_argument(
+            "-m",
+            "--min",
+            default=-1,
+            type=float,
+            help="Min strike to plot",
+            dest="min",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            default=-1,
+            type=float,
+            help="Max strike to plot",
+            dest="max",
+        )
+
+        parser.add_argument(
+            "--calls",
+            action="store_true",
+            default=False,
+            dest="calls",
+            help="Flag to plot call options only",
+        )
+
+        parser.add_argument(
+            "--puts",
+            action="store_true",
+            default=False,
+            dest="puts",
+            help="Flag to plot put options only",
+        )
+
+        parser.add_argument(
+            "--source",
+            type=str,
+            default="tr",
+            choices=["tr", "yf"],
+            dest="source",
+            help="Source to get data from",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker and not self.selected_date:
+                print("Ticker and expiration required.\n")
+                return
+
+            if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+                tradier_view.plot_vol(
+                    ticker=self.ticker,
+                    expiry=self.selected_date,
+                    min_sp=ns_parser.min,
+                    max_sp=ns_parser.max,
+                    calls_only=ns_parser.calls,
+                    puts_only=ns_parser.puts,
+                    export=ns_parser.export,
+                )
+            else:
+                yfinance_view.plot_vol(
+                    ticker=self.ticker,
+                    expiry=self.selected_date,
+                    min_sp=ns_parser.min,
+                    max_sp=ns_parser.max,
+                    calls_only=ns_parser.calls,
+                    puts_only=ns_parser.puts,
+                    export=ns_parser.export,
+                )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
