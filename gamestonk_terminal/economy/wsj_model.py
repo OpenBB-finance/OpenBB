@@ -5,8 +5,8 @@ import pandas as pd
 
 
 def us_indices() -> pd.DataFrame:
-    """
-    Get the top US indices
+    """Get the top US indices
+
     Returns
     -------
     indices: pd.DataFrame
@@ -42,8 +42,8 @@ def us_indices() -> pd.DataFrame:
 
 
 def market_overview() -> pd.DataFrame:
-    """
-    Scrape data for market overview
+    """Scrape data for market overview
+
     Returns
     -------
     overview: pd.DataFrame
@@ -77,8 +77,8 @@ def market_overview() -> pd.DataFrame:
 
 
 def top_commodities() -> pd.DataFrame:
-    """
-    Scrape data for top commodities
+    """Scrape data for top commodities
+
     Returns
     -------
     commodities: pd.DataFrame
@@ -113,8 +113,8 @@ def top_commodities() -> pd.DataFrame:
 
 
 def us_bonds() -> pd.DataFrame:
-    """
-    Scrape data for us bonds
+    """Scrape data for us bonds
+
     Returns
     -------
     bonds: pd.DataFrame
@@ -150,8 +150,8 @@ def us_bonds() -> pd.DataFrame:
 
 
 def global_bonds() -> pd.DataFrame:
-    """
-    Scrape data for global bonds
+    """Scrape data for global bonds
+
     Returns
     -------
     bonds: pd.DataFrame
@@ -182,8 +182,8 @@ def global_bonds() -> pd.DataFrame:
 
 
 def global_currencies() -> pd.DataFrame:
-    """
-    Scrape data for global currencies
+    """Scrape data for global currencies
+
     Returns
     -------
     currencies: pd.DataFrame
