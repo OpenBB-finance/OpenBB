@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import List, Tuple
+
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup as bs
@@ -29,7 +30,7 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     return etf_symbols, etf_names
 
 
-def get_etf_overview(etf_symbol: str):
+def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
     """Get overview data for selected etf
 
     Parameters
@@ -59,7 +60,7 @@ def get_etf_overview(etf_symbol: str):
     return df
 
 
-def get_etf_holdings(symbol: str):
+def get_etf_holdings(symbol: str) -> pd.DataFrame:
     """Get ETF holdings
 
     Parameters
@@ -93,7 +94,7 @@ def get_etf_holdings(symbol: str):
     return df
 
 
-def compare_etfs(symbols: List[str]):
+def compare_etfs(symbols: List[str]) -> pd.DataFrame:
     """Compare selected ETFs
 
     Parameters
@@ -112,3 +113,25 @@ def compare_etfs(symbols: List[str]):
         df_compare = pd.concat([df_compare, get_etf_overview(symbol)], axis=1)
 
     return df_compare
+
+
+def search_etfs(to_search) -> List[str]:
+    """Search for an etf string in list of ETFs
+
+    Parameters
+    ----------
+    to_search: str
+        String to match
+
+    Returns
+    -------
+    matching_etfs: List[str]
+        List of matching ETF names
+    """
+    all_symbols, all_names = get_all_names_symbols()
+    matching_etfs = [
+        all_symbols[idx] + " - " + etf
+        for idx, etf in enumerate(all_names)
+        if to_search.lower() in etf.lower()
+    ]
+    return matching_etfs

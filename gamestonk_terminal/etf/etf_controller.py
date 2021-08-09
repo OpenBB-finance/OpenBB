@@ -6,18 +6,15 @@ import os
 from typing import List
 
 import matplotlib.pyplot as plt
-import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
-    export_data,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.etf import stockanalysis_view
-from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.etf import screener_view
 from gamestonk_terminal.etf import wsj_view
 
@@ -50,32 +47,32 @@ class ETFController:
         """Constructor"""
         self.etf_parser = argparse.ArgumentParser(add_help=False, prog="etf")
         self.etf_parser.add_argument("cmd", choices=self.CHOICES)
-        self.etf_symbols, self.etf_names = stockanalysis_model.get_all_names_symbols()
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf"
-        )
-        print("")
-        print(">> ETF <<")
-        print("")
-        print("What do you want to do?")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("\nStockAnalysis.com")
-        print("   search        search ETFs matching name (i.e. BlackRock or Invesco)")
-        print("   overview      get overview of ETF symbol")
-        print("   holdings      get top holdings for ETF")
-        print("   compare       compare overview of multiple ETF")
-        print("   screener      screen etfs based on overview data")
-        print("\nWall St. Journal")
-        print("   gainers       show top gainers")
-        print("   decliners     show top decliners")
-        print("   active        show most active")
-        print("")
+        help_str = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf
+
+>> ETF <<
+
+What do you want to do?
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
+
+StockAnalysis.com:
+    search        search ETFs matching name (i.e. BlackRock or Invesco)
+    overview      get overview of ETF symbol
+    holdings      get top holdings for ETF
+    compare       compare overview of multiple ETF
+    screener      screen etfs based on overview data
+
+Wall St. Journal:
+    gainers       show top gainers
+    decliners     show top decliners
+    active        show most active
+"""
+        print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -130,12 +127,13 @@ class ETFController:
             description="Search all available etfs for matching input",
         )
         parser.add_argument(
-            "-n",
-            "--name",
+            "-e",
+            "--etf",
             type=str,
-            dest="name",
-            help="Name to search for",
-            required=True,
+            dest="search_str",
+            nargs="+",
+            help="String to search for",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "--export",
@@ -148,27 +146,16 @@ class ETFController:
         try:
             if other_args:
                 if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+                    other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            matching_etfs = [
-                self.etf_symbols[idx] + " - " + etf
-                for idx, etf in enumerate(self.etf_names)
-                if " ".join(other_args[1:]).lower() in etf.lower()
-            ]
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.abspath(__file__)),
-                "search",
-                pd.DataFrame(data=matching_etfs),
+            search_string = " ".join(ns_parser.search_str)
+            stockanalysis_view.view_search(
+                to_match=search_string, export=ns_parser.export
             )
-            print(*matching_etfs, sep="\n")
-            if len(matching_etfs) == 0:
-                print("No matches found")
-            print("")
 
         except Exception as e:
             print(e, "\n")
@@ -183,8 +170,8 @@ class ETFController:
             description="Get overview data for selected etf",
         )
         parser.add_argument(
-            "-n",
-            "--name",
+            "-e",
+            "--etf",
             type=str,
             dest="name",
             help="Symbol to look for",
@@ -202,20 +189,17 @@ class ETFController:
         try:
             if other_args:
                 if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+                    other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
                 return
 
-            if ns_parser.name.upper() not in self.etf_symbols:
-                print("No matching ETFs found\n")
-                return
-
             stockanalysis_view.view_overview(
                 symbol=ns_parser.name, export=ns_parser.export
             )
+
         except Exception as e:
             print(e, "\n")
 
@@ -228,8 +212,8 @@ class ETFController:
             description="Look at ETF holdings",
         )
         parser.add_argument(
-            "-n",
-            "--name",
+            "-e",
+            "--etf",
             type=str,
             dest="name",
             help="ETF to get holdings for",
@@ -254,7 +238,7 @@ class ETFController:
         try:
             if other_args:
                 if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+                    other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -278,8 +262,8 @@ class ETFController:
             description="Compare selected ETFs",
         )
         parser.add_argument(
-            "-n",
-            "--names",
+            "-e",
+            "--etfs",
             type=str,
             dest="names",
             help="Symbols to compare",
@@ -296,18 +280,13 @@ class ETFController:
         try:
             if other_args:
                 if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+                    other_args.insert(0, "-e")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             etf_list = ns_parser.names.upper().split(",")
-            for etf in etf_list:
-                if etf not in self.etf_symbols:
-                    print(f"{etf} not a known symbol. ")
-                    etf_list.remove(etf)
-
             stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
 
         except Exception as e:
@@ -322,7 +301,12 @@ class ETFController:
             description="Screens ETFS from a personal scraping github repository.  Data scraped from stockanalysis.com",
         )
         parser.add_argument(
-            "--num", type=int, help="Number of etfs to show", dest="num", default=20
+            "-n",
+            "--num",
+            type=int,
+            help="Number of etfs to show",
+            dest="num",
+            default=20,
         )
 
         parser.add_argument(
@@ -333,11 +317,18 @@ class ETFController:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        parser.add_argument("--preset",
-                            choices = [file.strip(".ini") for file in os.listdir(os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/"))],
-                            default = "etf_config",
-                            help="Preset to use",
-                            dest="preset")
+        parser.add_argument(
+            "--preset",
+            choices=[
+                file.strip(".ini")
+                for file in os.listdir(
+                    os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+                )
+            ],
+            default="etf_config",
+            help="Preset to use",
+            dest="preset",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -346,8 +337,8 @@ class ETFController:
 
             screener_view.view_screener(
                 num_to_show=ns_parser.num,
-                preset = ns_parser.preset,
-                export=ns_parser.export
+                preset=ns_parser.preset,
+                export=ns_parser.export,
             )
 
         except Exception as e:

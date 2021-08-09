@@ -30,10 +30,10 @@ Opens StockAnalysis.com/etf.  This site shows all avalaiable ETFs (currently > 2
 
 ## search <a name="search"></a>
 ```python
-usage: search [-n --name] [--export {csv,json,xlsx}]
+usage: search [-e --etf] [--export {csv,json,xlsx}]
 ```
 Search for ETFs matching
-* -n/--name : Name to search for.  Can be a company or other search term
+* -e/--etf : Name to search for.  Can be a company or other search term
 * --export {csv,json,xlsx} : Export to the selected file
 
 Example Usage: Search for all ETFs that deal with AI
@@ -49,9 +49,9 @@ Note that this searches for exact strings in the ETF name.  Searching for SPY wi
 
 ## overview <a name="overview"></a>
 ```python
-usage: overview [-n --name] [--export {csv,json,xlsx}]
+usage: overview [-e --etf] [--export {csv,json,xlsx}]
 ```
-* -n/--name : ETF to get data for
+* -e/--etf : ETF to get data for
 * --export {csv,json,xlsx} : Export to the selected file
 
 Returns the overview of the ETF.  Shows Last Price, Assets, Net Asset Value (NAV), Expense Ratio, PE Ratio, 5Year Beta, Total Dividend and Dividend Yield.
@@ -60,9 +60,9 @@ Example will be a single column from the [compare](#compare) example.
 
 ## holdings <a name="holdings"></a>
 ```python
-usage: overview [-n --name] [-l --limit] [--export {csv,json,xlsx}]
+usage: overview [-e --etf] [-l --limit] [--export {csv,json,xlsx}]
 ```
-* -n/--name : Name of ETF to get data for.
+* -e/--etf : Name of ETF to get data for.
 * -l/--limit : Number of assets to show.  Max 200.  Defaults to 20.
 * --export {csv,json,xlsx} : Export to the selected file
 
@@ -88,9 +88,9 @@ Example:
 
 ## compare <a name="compare"></a>
 ```python
-usage: compare [-n --names] [--export {csv,json,xlsx}]
+usage: compare [-e --etfs] [--export {csv,json,xlsx}]
 ```
-* -n/--names : ETFs to compare.  Input as comma separated (ETF1,ETF2,..)
+* -e/--etfs : ETFs to compare.  Input as comma separated (ETF1,ETF2,..)
 * --export {csv,json,xlsx} : Export to the selected file
 
 Campares the overview of different ETFs.
