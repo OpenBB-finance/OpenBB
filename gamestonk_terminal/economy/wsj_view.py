@@ -1,224 +1,199 @@
 """WSJ view """
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
+import os
 from tabulate import tabulate
-
-from gamestonk_terminal.economy.wsj_model import (
-    market_overview,
-    us_bonds,
-    us_indices,
-    global_bonds,
-    global_currencies,
-    top_commodities,
-)
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.economy import wsj_model
+from gamestonk_terminal.helper_funcs import export_data
 
 
-def display_overview(other_args: List[str]):
-    """Display market overview
+def display_overview(export: str):
+    """Market overview. [Source: Wall St. Journal]
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="overview",
-        description="WSJ market overview",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        data = market_overview()
-        print(
-            tabulate(
-                data,
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
+    df_data = wsj_model.market_overview()
+    if df_data.empty:
+        print("No overview data available\n")
+        return
+
+    print(
+        tabulate(
+            df_data,
+            showindex=False,
+            headers=df_data.columns,
+            floatfmt=".2f",
+            tablefmt="fancy_grid",
         )
-        print("")
+    )
+    print("")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        df_data,
+    )
 
 
-def display_indices(other_args: List[str]):
-    """Display us indices
+def display_indices(export: str):
+    """US indices. [Source: Wall St. Journal]
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="indices",
-        description="WSJ US Indices",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = wsj_model.us_indices()
+    if df_data.empty:
+        print("No indices data available\n")
+        return
 
-        data = us_indices()
-        print(
-            tabulate(
-                data,
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
+    print(
+        tabulate(
+            df_data,
+            showindex=False,
+            headers=df_data.columns,
+            floatfmt=".2f",
+            tablefmt="fancy_grid",
         )
-        print("")
+    )
+    print("")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "indices",
+        df_data,
+    )
 
 
-def display_futures(other_args: List[str]):
-    """Display futures/commodities
+def display_futures(export: str):
+    """Futures/Commodities. [Source: Wall St. Journal]
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="futures",
-        description="WSJ futures/commodities",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        data = top_commodities()
-        print(
-            tabulate(
-                data,
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
+    df_data = wsj_model.top_commodities()
+    if df_data.empty:
+        print("No futures/commodities data available\n")
+        return
+
+    print(
+        tabulate(
+            df_data,
+            showindex=False,
+            headers=df_data.columns,
+            floatfmt=".2f",
+            tablefmt="fancy_grid",
         )
-        print("")
+    )
+    print("")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "futures",
+        df_data,
+    )
 
 
-def display_usbonds(other_args: List[str]):
-    """Display us bonds overview
+def display_usbonds(export: str):
+    """US bonds. [Source: Wall St. Journal]
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="usbonds",
-        description="WSJ US Bonds overview",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = wsj_model.us_bonds()
+    if df_data.empty:
+        print("No US bonds data available\n")
+        return
 
-        data = us_bonds()
-        print(
-            tabulate(
-                data,
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
+    print(
+        tabulate(
+            df_data,
+            showindex=False,
+            headers=df_data.columns,
+            floatfmt=".2f",
+            tablefmt="fancy_grid",
         )
-        print("")
+    )
+    print("")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "usbonds",
+        df_data,
+    )
 
 
-def display_glbonds(other_args: List[str]):
-    """Display global bond overview
+def display_glbonds(export: str):
+    """Global bonds. [Source: Wall St. Journal]
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="glbond",
-        description="WSJ global bond overview",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = wsj_model.global_bonds()
+    if df_data.empty:
+        print("No global bonds data available\n")
+        return
 
-        data = global_bonds()
-        print(
-            tabulate(
-                data,
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
+    print(
+        tabulate(
+            df_data,
+            showindex=False,
+            headers=df_data.columns,
+            floatfmt=".2f",
+            tablefmt="fancy_grid",
         )
-        print("")
+    )
+    print("")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "glbonds",
+        df_data,
+    )
 
 
-def display_currencies(other_args: List[str]):
-    """Display global currencies
+def display_currencies(export: str):
+    """Display currencies. [Source: Wall St. Journal]
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="currencies",
-        description="WSJ currency overview",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = wsj_model.global_currencies()
+    if df_data.empty:
+        print("No currencies data available\n")
+        return
 
-        data = global_currencies()
-        print(
-            tabulate(
-                data,
-                showindex=False,
-                headers=data.columns,
-                floatfmt=".2f",
-                tablefmt="fancy_grid",
-            )
+    print(
+        tabulate(
+            df_data,
+            showindex=False,
+            headers=df_data.columns,
+            floatfmt=".2f",
+            tablefmt="fancy_grid",
         )
-        print("")
+    )
+    print("")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "currencies",
+        df_data,
+    )

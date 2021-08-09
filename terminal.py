@@ -20,18 +20,10 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_terminal
 
-from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.cryptocurrency import crypto_controller
-from gamestonk_terminal.economy import economy_controller
-from gamestonk_terminal.options import options_controller
-
 # from gamestonk_terminal.etf import etf_controller
-from gamestonk_terminal.forex import forex_controller
-from gamestonk_terminal.resources import resources_controller
-from gamestonk_terminal.portfolio import portfolio_controller
 
 
-# pylint: disable=too-many-public-methods
+# pylint: disable=too-many-public-methods,import-outside-toplevel
 
 
 class TerminalController:
@@ -166,18 +158,26 @@ What do you want to do?
     # MENUS
     def call_stocks(self, _):
         """Process stocks command"""
+        from gamestonk_terminal.stocks import stocks_controller
+
         return stocks_controller.menu()
 
     def call_crypto(self, _):
         """Process crypto command"""
+        from gamestonk_terminal.cryptocurrency import crypto_controller
+
         return crypto_controller.menu()
 
     def call_economy(self, _):
         """Process econ command"""
+        from gamestonk_terminal.economy import economy_controller
+
         return economy_controller.menu()
 
     def call_options(self, _):
         """Process op command"""
+        from gamestonk_terminal.options import options_controller
+
         return options_controller.menu()
 
     def call_etf(self, _):
@@ -187,14 +187,20 @@ What do you want to do?
 
     def call_forex(self, _):
         """Process fx command"""
+        from gamestonk_terminal.forex import forex_controller
+
         return forex_controller.menu()
 
     def call_resources(self, _):
         """Process resources command"""
+        from gamestonk_terminal.resources import resources_controller
+
         return resources_controller.menu()
 
     def call_portfolio(self, _):
         """Process portfolio command"""
+        from gamestonk_terminal.portfolio import portfolio_controller
+
         return portfolio_controller.menu()
 
 
@@ -202,72 +208,75 @@ def terminal():
     """Terminal Menu"""
 
     bootup()
-
+    process_input = False
     t_controller = TerminalController()
 
     if config_terminal.DEFAULT_CONTEXT:
         if config_terminal.DEFAULT_CONTEXT in t_controller.CHOICES_MENUS:
             try:
                 print("")
-                t_controller.switch(config_terminal.DEFAULT_CONTEXT.lower())
+                process_input = t_controller.switch(
+                    config_terminal.DEFAULT_CONTEXT.lower()
+                )
             except SystemExit:
                 print("")
         else:
             print("\nInvalid DEFAULT_CONTEXT config selected!", "\n")
 
-    t_controller.print_help()
-    parsed_stdin = False
+    if not process_input:
+        t_controller.print_help()
+        parsed_stdin = False
 
-    while True:
-        if gtff.ENABLE_QUICK_EXIT:
-            print("Quick exit enabled")
-            break
+        while True:
+            if gtff.ENABLE_QUICK_EXIT:
+                print("Quick exit enabled")
+                break
 
-        # Get input command from stdin or user
-        if not parsed_stdin and len(sys.argv) > 1:
-            an_input = " ".join(sys.argv[1:])
-            print(f"{get_flair()}> {an_input}")
-            parsed_stdin = True
+            # Get input command from stdin or user
+            if not parsed_stdin and len(sys.argv) > 1:
+                an_input = " ".join(sys.argv[1:])
+                print(f"{get_flair()}> {an_input}")
+                parsed_stdin = True
 
-        elif session and gtff.USE_PROMPT_TOOLKIT:
-            an_input = session.prompt(
-                f"{get_flair()}> ", completer=t_controller.completer
-            )
+            elif session and gtff.USE_PROMPT_TOOLKIT:
+                an_input = session.prompt(
+                    f"{get_flair()}> ", completer=t_controller.completer
+                )
 
-        else:
-            an_input = input(f"{get_flair()}> ")
+            else:
+                an_input = input(f"{get_flair()}> ")
 
-        # Is command empty
-        if not an_input:
-            print("")
-            continue
+            # Is command empty
+            if not an_input:
+                print("")
+                continue
 
-        # Process list of commands selected by user
-        try:
-            process_input = t_controller.switch(an_input)
-            # None - Keep loop
-            # True - Quit or Reset based on flag
-            # False - Keep loop and show help menu
+            # Process list of commands selected by user
+            try:
+                process_input = t_controller.switch(an_input)
+                # None - Keep loop
+                # True - Quit or Reset based on flag
+                # False - Keep loop and show help menu
 
-            if process_input is not None:
-                # Quit terminal
-                if process_input:
-                    break
+                if process_input is not None:
+                    # Quit terminal
+                    if process_input:
+                        break
 
-                t_controller.print_help()
+                    t_controller.print_help()
 
-        except SystemExit:
-            print("The command selected doesn't exist\n")
-            continue
+            except SystemExit:
+                print("The command selected doesn't exist\n")
+                continue
 
-    if not gtff.ENABLE_QUICK_EXIT:
-        # Check if the user wants to reset application
-        if an_input == "reset" or t_controller.update_succcess:
-            ret_code = reset()
-            if ret_code != 0:
+        if not gtff.ENABLE_QUICK_EXIT:
+            # Check if the user wants to reset application
+            if an_input == "reset" or t_controller.update_succcess:
+                ret_code = reset()
+                if ret_code != 0:
+                    print_goodbye()
+            else:
                 print_goodbye()
-        else:
-            print_goodbye()
 
 
 if __name__ == "__main__":

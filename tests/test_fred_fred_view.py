@@ -5,27 +5,37 @@ from io import StringIO
 import pandas as pd
 
 # pylint: disable=unused-import
-from gamestonk_terminal.economy.fred_view import display_fred  # noqa: F401
+from gamestonk_terminal.economy.fred_view import display_series  # noqa: F401
 
 fred_data_mock = """
-,GDP
-2019-01-01,21115.309
-2019-04-01,21329.877
-2019-07-01,21540.325
-2019-10-01,21747.394
-2020-01-01,21561.139
-2020-04-01,19520.114
-2020-07-01,21170.252
-2020-10-01,21494.731
-2021-01-01,22048.894
+For 'gdp', series IDs found: GDP, GDPC1, M2V, GFDEGDQ188S, PAYEMS.
+
+GDP
+---
+Date
+2019-01-01    21001.591
+2019-04-01    21289.268
+2019-07-01    21505.012
+2019-10-01    21694.458
+2020-01-01    21481.367
+2020-04-01    19477.444
+2020-07-01    21138.574
+2020-10-01    21477.597
+2021-01-01    22038.226
+2021-04-01    22722.581
 """
 
 
 class TestFredFredView(unittest.TestCase):
-    @mock.patch("gamestonk_terminal.economy.fred_view.Fred.get_series")
+    @mock.patch("gamestonk_terminal.economy.fred_model.get_series_data")
     def test_display_fred(self, mock_get_series):
         fred_data = pd.read_csv(StringIO(fred_data_mock), header=0, index_col=0)
 
         mock_get_series.return_value = fred_data
 
-        display_fred(["-t"], "gdp")
+        display_series(
+            series="gdp",
+            start_date="2019-01-01",
+            raw=True,
+            export="",
+        )

@@ -37,12 +37,12 @@ class PortfolioOptimization:
     ]
 
     # pylint: disable=dangerous-default-value
-    def __init__(self):
+    def __init__(self, tickers: List[str]):
         """Construct Portfolio Optimization"""
 
         self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
         self.po_parser.add_argument("cmd", choices=self.CHOICES)
-        self.tickers = list()
+        self.tickers = list(set(tickers))
 
     @staticmethod
     def print_help(tickers: List[str]):
@@ -268,11 +268,11 @@ class PortfolioOptimization:
             print(e, "\n")
 
 
-def menu():
+def menu(tickers: List[str]):
     """Portfolio Optimization Menu"""
     plt.close("all")
-    po_controller = PortfolioOptimization()
-    po_controller.call_help([])
+    po_controller = PortfolioOptimization(tickers)
+    po_controller.call_help(tickers)
 
     while True:
         # Get input command from user

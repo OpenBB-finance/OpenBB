@@ -8,13 +8,14 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
-import scipy.stats as stats
+from scipy import stats
 import statsmodels.api as sm
+
+# pylint: disable=R0402
 import matplotlib.gridspec as gridspec
 from statsmodels.graphics.gofplots import qqplot
 from statsmodels.tsa.stattools import adfuller, kpss, bds
 from statsmodels.stats.diagnostic import het_arch
-from scipy.stats import skewtest, kurtosistest, skew, kurtosis
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
@@ -352,11 +353,11 @@ def normality(
 
         # Kurtosis
         # Measures height and sharpness of the central peak relative to that of a standard bell curve
-        k, kpval = kurtosistest(residuals)
+        k, kpval = stats.kurtosistest(residuals)
 
         # Skewness
         # Measure of the asymmetry of the probability distribution of a random variable about its mean
-        s, spval = skewtest(residuals)
+        s, spval = stats.skewtest(residuals)
 
         # Jarque-Bera goodness of fit test on sample data
         # Tests if the sample data has the skewness and kurtosis matching a normal distribution
@@ -380,9 +381,9 @@ def normality(
         )
 
         print("")
-        kurtosis_val = kurtosis(residuals, fisher=True)
+        kurtosis_val = stats.kurtosis(residuals, fisher=True)
         print("Kurtosis value: %.4f" % kurtosis_val)
-        skew_val = skew(residuals)
+        skew_val = stats.skew(residuals)
         print("Skewness value: %.4f" % skew_val)
         print("")
 
