@@ -1,18 +1,11 @@
 """ Seeking Alpha View """
 __docformat__ = "numpy"
 
-import argparse
 import os
-from typing import List
 from datetime import datetime
 from tabulate import tabulate
 import pandas as pd
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    parse_known_args_and_warn,
-    valid_date,
-    export_data,
-)
+from gamestonk_terminal.helper_funcs import export_data
 
 from gamestonk_terminal.stocks.discovery import seeking_alpha_model
 
@@ -79,166 +72,75 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
         )
 
 
-def latest_news_view(other_args: List[str]):
-    """Prints the latest news article list
+def news(news_type: str, article_id: int, num: int, start_date: datetime, export: str):
+    """Prints the latest news article list. [Source: Seeking Alpha]
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args - ["-i", "123123", "-n", "5"]
+    news_type: str
+        Select between 'latest' or 'trending'
+    article_id: int
+        Article ID. If -1, none is selected
+    num: int
+        Number of articles to display. Only used if article_id is -1.
+    start_date : datetime
+        Date from when to get articles dates. Only used if article_id is -1.
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="latest",
-        description="""Latest news articles. [Source: Seeking Alpha]""",
-    )
-    parser.add_argument(
-        "-i",
-        "--id",
-        action="store",
-        dest="n_id",
-        type=check_positive,
-        default=-1,
-        help="article ID number",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of articles being printed",
-    )
-    parser.add_argument(
-        "-d",
-        "--date",
-        action="store",
-        dest="n_date",
-        type=valid_date,
-        default=datetime.now().strftime("%Y-%m-%d"),
-        help="starting date",
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        # User wants to see all latest news
-        if ns_parser.n_id == -1:
-            articles = seeking_alpha_model.get_article_list(
-                ns_parser.n_date, ns_parser.n_num
-            )
-            for idx, article in enumerate(articles):
-                print(
-                    article["publishedAt"].replace("T", " ").replace("Z", ""),
-                    "-",
-                    article["id"],
-                    "-",
-                    article["title"],
-                )
-                print(article["url"])
-                print("")
-
-                if idx >= ns_parser.n_num - 1:
-                    break
-
-        # User wants to access specific article
+    # User wants to see all latest news
+    if article_id == -1:
+        if news_type == "latest":
+            articles = seeking_alpha_model.get_article_list(start_date, num)
+        elif news_type == "trending":
+            articles = seeking_alpha_model.get_trending_list(num)
         else:
-            article = seeking_alpha_model.get_article_data(ns_parser.n_id)
+            print("Wrong type of news selected", "\n")
+
+        if export:
+            df_articles = pd.DataFrame(articles)
+
+        for idx, article in enumerate(articles):
             print(
-                article["publishedAt"][: article["publishedAt"].rfind(":") - 3].replace(
-                    "T", " "
-                ),
-                " ",
+                article["publishedAt"].replace("T", " ").replace("Z", ""),
+                "-",
+                article["id"],
+                "-",
                 article["title"],
             )
             print(article["url"])
             print("")
-            print(article["content"])
 
-    except Exception as e:
-        print(e, "\n")
+            if idx >= num - 1:
+                break
 
-
-def trending_news_view(other_args: List[str]):
-    """Prints the trending news article list
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args - ["i", "123123", "-n", "5"]
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="trending",
-        description="""Trending news articles. [Source: Seeking Alpha]""",
-    )
-    parser.add_argument(
-        "-i",
-        "--id",
-        action="store",
-        dest="n_id",
-        type=check_positive,
-        default=-1,
-        help="article ID number",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of articles being printed",
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        # User wants to see all trending articles
-        if ns_parser.n_id == -1:
-            articles = seeking_alpha_model.get_trending_list(ns_parser.n_num)
-            for idx, article in enumerate(articles):
-                print(
-                    article["publishedAt"].replace("T", " ").replace("Z", ""),
-                    "-",
-                    article["id"],
-                    "-",
-                    article["title"],
-                )
-                print(article["url"])
-                print("")
-
-                if idx >= ns_parser.n_num - 1:
-                    break
-
-        # User wants to access specific article
+    # User wants to access specific article
+    else:
+        if news_type == "latest":
+            article = seeking_alpha_model.get_article_data(article_id)
+        elif news_type == "trending":
+            article = seeking_alpha_model.get_article_data(article_id)
         else:
-            article = seeking_alpha_model.get_article_data(ns_parser.n_id)
-            print(
-                article["publishedAt"][: article["publishedAt"].rfind(":") - 3].replace(
-                    "T", " "
-                ),
-                " ",
-                article["title"],
-            )
-            print(article["url"])
-            print("")
-            print(article["content"])
+            print("Wrong type of news selected", "\n")
 
-    except Exception as e:
-        print(e, "\n")
+        if export:
+            df_articles = pd.DataFrame(article)
+
+        print(
+            article["publishedAt"][: article["publishedAt"].rfind(":") - 3].replace(
+                "T", " "
+            ),
+            " ",
+            article["title"],
+        )
+        print(article["url"])
+        print("")
+        print(article["content"])
+
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            news_type,
+            df_articles,
+        )

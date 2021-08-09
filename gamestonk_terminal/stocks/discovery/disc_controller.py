@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+from datetime import datetime
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
@@ -13,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
     check_positive,
+    valid_date,
 )
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
@@ -442,6 +444,132 @@ Stockgrid:
         except Exception as e:
             print(e, "\n")
 
+    def call_latest(self, other_args: List[str]):
+        """Process latest command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="latest",
+            description="""Latest news articles. [Source: Seeking Alpha]""",
+        )
+        parser.add_argument(
+            "-i",
+            "--id",
+            action="store",
+            dest="n_id",
+            type=check_positive,
+            default=-1,
+            help="article ID",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of articles being printed",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="s_date",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            help="starting date of articles",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            seeking_alpha_view.news(
+                news_type="latest",
+                article_id=ns_parser.n_id,
+                num=ns_parser.n_num,
+                start_date=ns_parser.s_date,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_trending(self, other_args: List[str]):
+        """Process trending command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trending",
+            description="""Trending news articles. [Source: Seeking Alpha]""",
+        )
+        parser.add_argument(
+            "-i",
+            "--id",
+            action="store",
+            dest="n_id",
+            type=check_positive,
+            default=-1,
+            help="article ID",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of articles being printed",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="s_date",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            help="starting date of articles",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            seeking_alpha_view.news(
+                news_type="trending",
+                article_id=ns_parser.n_id,
+                num=ns_parser.n_num,
+                start_date=ns_parser.s_date,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
     def call_high_short(self, other_args: List[str]):
         """Process high_short command"""
         short_interest_view.high_short_interest_view(other_args)
@@ -449,14 +577,6 @@ Stockgrid:
     def call_low_float(self, other_args: List[str]):
         """Process low_float command"""
         short_interest_view.low_float_view(other_args)
-
-    def call_latest(self, other_args: List[str]):
-        """Process latest command"""
-        seeking_alpha_view.latest_news_view(other_args)
-
-    def call_trending(self, other_args: List[str]):
-        """Process trending command"""
-        seeking_alpha_view.trending_news_view(other_args)
 
     def call_darkpool(self, other_args: List[str]):
         """Process darkpool command"""
