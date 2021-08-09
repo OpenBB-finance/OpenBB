@@ -18,7 +18,7 @@ from gamestonk_terminal.stocks.discovery import (
     fidelity_view,
     seeking_alpha_view,
     short_interest_view,
-    yahoo_finance_view,
+    yahoofinance_view,
     finra_ats_view,
     finnhub_view,
     stockgrid_view,
@@ -234,11 +234,81 @@ Stockgrid:
 
     def call_gainers(self, other_args: List[str]):
         """Process gainers command"""
-        yahoo_finance_view.gainers_view(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gainers",
+            description="Print up to 25 top ticker gainers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=int,
+            default=5,
+            choices=range(1, 25),
+            help="Number of the top gainers stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_gainers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_losers(self, other_args: List[str]):
         """Process losers command"""
-        yahoo_finance_view.losers_view(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="losers",
+            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=int,
+            default=5,
+            choices=range(1, 25),
+            help="Number of the top losers stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_losers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_orders(self, other_args: List[str]):
         """Process orders command"""
