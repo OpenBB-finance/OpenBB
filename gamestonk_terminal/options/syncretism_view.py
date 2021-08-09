@@ -116,7 +116,7 @@ def view_historical_greeks(
     raw: bool,
     export: str,
 ):
-    """Plots histrical greeks for a given option
+    """Plots historical greeks for a given option
 
     Parameters
     ----------

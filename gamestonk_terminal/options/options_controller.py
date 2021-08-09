@@ -534,17 +534,163 @@ Current Expiry: {self.selected_date or None}
             print("Please select a ticker using load {ticker}", "\n")
 
     def call_hist(self, other_args: List[str]):
-        if TRADIER_TOKEN != "REPLACE_ME":
-            tradier_view.display_historical(self.ticker, self.selected_date, other_args)
-        else:
-            print("TRADIER TOKEN not supplied. \n")
+        """Process hist command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hist",
+            description="Gets historical quotes for given option chain",
+        )
+        parser.add_argument(
+            "-s",
+            "--strike",
+            dest="strike",
+            type=float,
+            required="--chain" in other_args or "-h" not in other_args,
+            help="Strike price to look at",
+        )
+        parser.add_argument(
+            "--put",
+            dest="put",
+            action="store_true",
+            default=False,
+            help="Flag for showing put option",
+        )
+        parser.add_argument(
+            "--chain", dest="chain_id", type=str, help="OCC option symbol"
+        )
+
+        parser.add_argument(
+            "--raw",
+            dest="raw",
+            action="store_true",
+            default=False,
+            help="Display raw data",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}` \n")
+                return
+            if not self.selected_date:
+                print("No expiry loaded.  First use `exp {expiry date}` \n")
+                return
+            if TRADIER_TOKEN == "REPLACE_ME":
+                print("TRADIER TOKEN not supplied. \n")
+                return
+
+            tradier_view.display_historical(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                strike=ns_parser.strike,
+                put=ns_parser.put,
+                export=ns_parser.export,
+                raw=ns_parser.raw,
+                chain_id=ns_parser.chain_id,
+            )
+        except Exception as e:
+            print(e, "\n")
+        except SystemExit:
+            print("")
 
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
-        if TRADIER_TOKEN != "REPLACE_ME":
-            tradier_view.display_chains(self.ticker, self.selected_date, other_args)
-        else:
-            print("TRADIER TOKEN not supplied. \n")
+        parser = argparse.ArgumentParser(
+            prog="chains",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display option chains",
+        )
+        parser.add_argument(
+            "--calls",
+            action="store_true",
+            default=False,
+            dest="calls_only",
+            help="Flag to show calls only",
+        )
+        parser.add_argument(
+            "--puts",
+            action="store_true",
+            default=False,
+            dest="puts_only",
+            help="Flag to show puts only",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            dest="min_sp",
+            type=float,
+            default=-1,
+            help="minimum strike price to consider.",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            dest="max_sp",
+            type=float,
+            default=-1,
+            help="maximum strike price to consider.",
+        )
+        parser.add_argument(
+            "-d",
+            "--display",
+            dest="to_display",
+            default=tradier_model.default_columns,
+            type=tradier_view.check_valid_option_chains_headers,
+            help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, "
+            "delta, gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}` \n")
+                return
+            if not self.selected_date:
+                print("No expiry loaded.  First use `exp {expiry date}` \n")
+                return
+            if TRADIER_TOKEN == "REPLACE_ME":
+                print("TRADIER TOKEN not supplied. \n")
+                return
+
+            tradier_view.display_chains(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                to_display=ns_parser.to_display,
+                min_sp=ns_parser.min_sp,
+                max_sp=ns_parser.max_sp,
+                calls_only=ns_parser.calls,
+                puts_only=ns_parser.puts,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+        except SystemExit:
+            print("")
 
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
