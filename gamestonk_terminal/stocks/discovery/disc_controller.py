@@ -20,7 +20,7 @@ from gamestonk_terminal.stocks.discovery import (
     ark_view,
     fidelity_view,
     seeking_alpha_view,
-    short_interest_view,
+    shortinterest_view,
     yahoofinance_view,
     finra_ats_view,
     finnhub_view,
@@ -50,8 +50,8 @@ class DiscoveryController:
         "upcoming",
         "latest",
         "trending",
-        "high_short",
-        "low_float",
+        "highshort",
+        "lowfloat",
         "darkpool",
         "darkshort",
         "shortvol",
@@ -92,10 +92,9 @@ Seeking Alpha:
     upcoming       upcoming earnings release dates
     latest         latest news
     trending       trending news
-highshortinterest.com:
-    high_short     show top high short interest stocks of over 20% ratio
-lowfloat.com:
-    low_float      show low float stocks under 10M shares float
+shortinterest.com
+    highshort      show top high short interest stocks of over 20% ratio
+    lowfloat       show low float stocks under 10M shares float
 FINRA:
     darkpool       promising tickers based on dark pool shares regression
 Stockgrid:
@@ -570,13 +569,93 @@ Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_high_short(self, other_args: List[str]):
-        """Process high_short command"""
-        short_interest_view.high_short_interest_view(other_args)
+    def call_highshort(self, other_args: List[str]):
+        """Process highshort command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="highshort",
+            description="""
+                Print top stocks being more heavily shorted. HighShortInterest.com provides
+                a convenient sorted database of stocks which have a short interest of over
+                20 percent. Additional key data such as the float, number of outstanding shares,
+                and company industry is displayed. Data is presented for the Nasdaq Stock Market,
+                the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top stocks to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
 
-    def call_low_float(self, other_args: List[str]):
-        """Process low_float command"""
-        short_interest_view.low_float_view(other_args)
+            shortinterest_view.high_short_interest(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_lowfloat(self, other_args: List[str]):
+        """Process lowfloat command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lowfloat",
+            description="""
+                Print top stocks with lowest float. LowFloat.com provides a convenient
+                sorted database of stocks which have a float of under 10 million shares. Additional key
+                data such as the number of outstanding shares, short interest, and company industry is
+                displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange,
+                the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top stocks to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            shortinterest_view.low_float(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_darkpool(self, other_args: List[str]):
         """Process darkpool command"""
