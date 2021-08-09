@@ -12,6 +12,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_non_negative,
+    check_positive,
 )
 from gamestonk_terminal.stocks.discovery import (
     ark_view,
@@ -42,7 +43,7 @@ class DiscoveryController:
         "fipo",
         "gainers",
         "losers",
-        "orders",
+        "ford",
         "ark_orders",
         "up_earnings",
         "high_short",
@@ -82,7 +83,7 @@ Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
 Fidelity:
-    orders         orders by Fidelity Customers
+    ford           orders by Fidelity Customers
 cathiesark.com:
     ark_orders     orders by ARK Investment Management LLC
 Seeking Alpha:
@@ -310,9 +311,48 @@ Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_orders(self, other_args: List[str]):
-        """Process orders command"""
-        fidelity_view.orders_view(other_args)
+    def call_ford(self, other_args: List[str]):
+        """Process ford command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="orders",
+            description="""
+                Orders by Fidelity customers. Information shown in the table below
+                is based on the volume of orders entered on the "as of" date shown. Securities
+                identified are not recommended or endorsed by Fidelity and are displayed for
+                informational purposes only. [Source: Fidelity]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top ordered stocks to be printed.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            fidelity_view.orders_view(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_ark_orders(self, other_args: List[str]):
         """Process ark_orders command"""
