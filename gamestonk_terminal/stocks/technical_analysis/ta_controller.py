@@ -218,7 +218,7 @@ class TechnicalAnalysisController:
         momentum.stoch(other_args, self.ticker, self.interval, self.stock)
 
     def call_fisher(self, other_args: List[str]):
-        """Process stoch command"""
+        """Process fisher command"""
         momentum.fisher(other_args, self.ticker, self.interval, self.stock)
 
     def call_adx(self, other_args: List[str]):
