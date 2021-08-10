@@ -1,5 +1,6 @@
 """Cryptocurrency Overview Controller"""
 __docformat__ = "numpy"
+
 # pylint: disable=R0904, C0302, W0622
 import argparse
 import os
@@ -21,28 +22,28 @@ class Controller:
         "help",
         "q",
         "quit",
-        "cg_global",
-        "cg_defi",
-        "cg_news",
-        "cg_stables",
-        "cg_nft",
-        "cg_nft_today",
-        "cg_exchanges",
-        "cg_exrates",
-        "cg_platforms",
-        "cg_products",
-        "cg_indexes",
-        "cg_derivatives",
-        "cg_categories",
-        "cg_hold",
-        "cg_companies",
-        "cp_global",
-        "cp_markets",
-        "cp_exmarkets",
-        "cp_info",
-        "cp_exchanges",
-        "cp_platforms",
-        "cp_contracts",
+        "cgglobal",
+        "cgdefi",
+        "cgnews",
+        "cgstables",
+        "cgnft",
+        "cgnftday",
+        "cgexchanges",
+        "cgexrates",
+        "cgplatforms",
+        "cgproducts",
+        "cgindexes",
+        "cgderivatives",
+        "cgcategories",
+        "cghold",
+        "cgcompanies",
+        "cpglobal",
+        "cpmarkets",
+        "cpexmarkets",
+        "cpinfo",
+        "cpexchanges",
+        "cpplatforms",
+        "cpcontracts",
     ]
 
     def __init__(self):
@@ -62,36 +63,36 @@ class Controller:
 
         print("")
         print("CoinGecko:")
-        print("   cg_global          global crypto market info")
-        print("   cg_news            last news available on CoinGecko")
-        print("   cg_defi            global DeFi market info")
-        print("   cg_stables         stablecoins")
-        print("   cg_nft             non fungible token market status")
-        print("   cg_nft_today       non fungible token of the day")
-        print("   cg_exchanges       top crypto exchanges")
-        print("   cg_exrates         coin exchange rates")
-        print("   cg_platforms       crypto financial platforms")
-        print("   cg_products        crypto financial products")
-        print("   cg_indexes         crypto indexes")
-        print("   cg_derivatives     crypto derivatives")
-        print("   cg_categories      crypto categories")
-        print("   cg_hold            ethereum, bitcoin holdings overview statistics")
-        print("   cg_companies       ethereum, bitcoin holdings by public companies")
+        print("   cgglobal          global crypto market info")
+        print("   cgnews            last news available on CoinGecko")
+        print("   cgdefi            global DeFi market info")
+        print("   cgstables         stablecoins")
+        print("   cgnft             non fungible token market status")
+        print("   cgnftday          non fungible token of the day")
+        print("   cgexchanges       top crypto exchanges")
+        print("   cgexrates         coin exchange rates")
+        print("   cgplatforms       crypto financial platforms")
+        print("   cgproducts        crypto financial products")
+        print("   cgindexes         crypto indexes")
+        print("   cgderivatives     crypto derivatives")
+        print("   cgcategories      crypto categories")
+        print("   cghold            ethereum, bitcoin holdings overview statistics")
+        print("   cgcompanies       ethereum, bitcoin holdings by public companies")
         print("")
         print("CoinPaprika:")
-        print("   cp_global          global crypto market info")
+        print("   cpglobal          global crypto market info")
         print(
-            "   cp_info            basic info about all coins available on CoinPaprika"
+            "   cpinfo            basic info about all coins available on CoinPaprika"
         )
         print(
-            "   cp_markets         market related info about all coins available on CoinPaprika"
+            "   cpmarkets         market related info about all coins available on CoinPaprika"
         )
-        print("   cp_exchanges       list all exchanges")
-        print("   cp_exmarkets       all available markets on given exchange")
+        print("   cpexchanges       list all exchanges")
+        print("   cpexmarkets       all available markets on given exchange")
         print(
-            "   cp_platforms       list blockchain platforms eg. ethereum, solana, kusama, terra"
+            "   cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra"
         )
-        print("   cp_contracts       all smart contracts for given platform")
+        print("   cpcontracts       all smart contracts for given platform")
 
         print("")
 
@@ -142,91 +143,91 @@ class Controller:
         """Process Quit command - quit the program."""
         return True
 
-    def call_cg_hold(self, other_args):
+    def call_cghold(self, other_args):
         """Process hold command"""
         pycoingecko_view.holdings_overview(other_args)
 
-    def call_cg_companies(self, other_args):
+    def call_cgcompanies(self, other_args):
         """Process companies command"""
         pycoingecko_view.holdings_companies_list(other_args)
 
-    def call_cg_news(self, other_args):
+    def call_cgnews(self, other_args):
         """Process news command"""
         pycoingecko_view.news(other_args=other_args)
 
-    def call_cg_categories(self, other_args):
+    def call_cgcategories(self, other_args):
         """Process top_categories command"""
         pycoingecko_view.categories(other_args=other_args)
 
-    def call_cg_stables(self, other_args):
+    def call_cgstables(self, other_args):
         """Process stables command"""
         pycoingecko_view.stablecoins(other_args=other_args)
 
-    def call_cg_nft(self, other_args):
+    def call_cgnft(self, other_args):
         """Process nft command"""
         pycoingecko_view.nft_market_status(other_args=other_args)
 
-    def call_cg_nft_today(self, other_args):
+    def call_cgnftday(self, other_args):
         """Process nft_today command"""
         pycoingecko_view.nft_of_the_day(other_args=other_args)
 
-    def call_cg_products(self, other_args):
+    def call_cgproducts(self, other_args):
         """Process products command"""
         pycoingecko_view.products(other_args=other_args)
 
-    def call_cg_platforms(self, other_args):
+    def call_cgplatforms(self, other_args):
         """Process platforms command"""
         pycoingecko_view.platforms(other_args=other_args)
 
-    def call_cg_exchanges(self, other_args):
+    def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         pycoingecko_view.exchanges(other_args=other_args)
 
-    def call_cg_exrates(self, other_args):
+    def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         pycoingecko_view.exchange_rates(other_args=other_args)
 
-    def call_cg_indexes(self, other_args):
+    def call_cgindexes(self, other_args):
         """Process indexes command"""
         pycoingecko_view.indexes(other_args=other_args)
 
-    def call_cg_derivatives(self, other_args):
+    def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         pycoingecko_view.derivatives(other_args=other_args)
 
-    def call_cg_global(self, other_args):
+    def call_cgglobal(self, other_args):
         """Process global command"""
         pycoingecko_view.global_market_info(other_args=other_args)
 
-    def call_cg_defi(self, other_args):
+    def call_cgdefi(self, other_args):
         """Process defi command"""
         pycoingecko_view.global_defi_info(other_args=other_args)
 
-    def call_cp_global(self, other_args):
+    def call_cpglobal(self, other_args):
         """Process global command"""
         coinpaprika_view.global_market(other_args=other_args)
 
-    def call_cp_markets(self, other_args):
+    def call_cpmarkets(self, other_args):
         """Process markets command"""
         coinpaprika_view.all_coins_market_info(other_args=other_args)
 
-    def call_cp_exmarkets(self, other_args):
+    def call_cpexmarkets(self, other_args):
         """Process ex_markets command"""
         coinpaprika_view.exchange_markets(other_args=other_args)
 
-    def call_cp_info(self, other_args):
+    def call_cpinfo(self, other_args):
         """Process info command"""
         coinpaprika_view.all_coins_info(other_args=other_args)
 
-    def call_cp_exchanges(self, other_args):
+    def call_cpexchanges(self, other_args):
         """Process coins_market command"""
         coinpaprika_view.all_exchanges(other_args=other_args)
 
-    def call_cp_platforms(self, other_args):
+    def call_cpplatforms(self, other_args):
         """Process platforms command"""
         coinpaprika_view.all_platforms(other_args=other_args)
 
-    def call_cp_contracts(self, other_args):
+    def call_cpcontracts(self, other_args):
         """Process contracts command"""
         coinpaprika_view.contracts(other_args=other_args)
 

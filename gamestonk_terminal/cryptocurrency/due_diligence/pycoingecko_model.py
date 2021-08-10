@@ -1,3 +1,6 @@
+"""CoinGecko model"""
+__docformat__ = "numpy"
+
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
@@ -63,6 +66,7 @@ class Coin:
             if symbol.lower() in list(dct.values()):
                 coin = dct.get("id")
                 print(f"Coin found : {coin} with symbol {symbol}\n")
+                break
         if not coin:
             raise ValueError(f"Could not find coin with the given id: {symbol}\n")
         return coin

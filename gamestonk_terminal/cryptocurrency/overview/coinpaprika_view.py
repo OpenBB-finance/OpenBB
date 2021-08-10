@@ -1,4 +1,4 @@
-"""CoinPaprika View"""
+"""CoinPaprika view"""
 __docformat__ = "numpy"
 
 import argparse
@@ -7,7 +7,7 @@ from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
 import gamestonk_terminal.cryptocurrency.overview.coinpaprika_model as paprika
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
 

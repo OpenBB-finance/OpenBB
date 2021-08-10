@@ -1,5 +1,6 @@
-"""CoinPaprika View"""
+"""CoinPaprika view"""
 __docformat__ = "numpy"
+
 import argparse
 from typing import List
 from tabulate import tabulate
@@ -17,7 +18,7 @@ import gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_model as papr
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_list_of_coins,
 )
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
 

@@ -1,11 +1,11 @@
+"""CoinPaprika model"""
+__docformat__ = "numpy"
+
 from datetime import datetime, timedelta
 import textwrap
 import pandas as pd
 from dateutil import parser
-from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import (
-    ENDPOINTS,
-    PaprikaSession,
-)
+from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 
 session = PaprikaSession()
@@ -21,7 +21,7 @@ def get_coin(coin_id="eth-ethereum"):
     -------
     dict with response
     """
-    coin = session.make_request(ENDPOINTS["coin"].format(coin_id))
+    coin = session.make_request(session.ENDPOINTS["coin"].format(coin_id))
     return coin
 
 
@@ -38,7 +38,7 @@ def get_coin_twitter_timeline(coin_id="eth-ethereum"):
         date, user_name, status, retweet_count, like_count
 
     """
-    res = session.make_request(ENDPOINTS["coin_tweeter"].format(coin_id))
+    res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(coin_id))
     if "error" in res:
         print(res)
         return pd.DataFrame()
@@ -81,7 +81,7 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
         id, date , date_to, name, description, is_conference, link, proof_image_link
 
     """
-    res = session.make_request(ENDPOINTS["coin_events"].format(coin_id))
+    res = session.make_request(session.ENDPOINTS["coin_events"].format(coin_id))
     if not res:
         return pd.DataFrame()
     data = pd.DataFrame(res)
@@ -107,7 +107,7 @@ def get_coin_exchanges_by_id(coin_id="eth-ethereum"):
     pandas.DataFrame
         id, name, adjusted_volume_24h_share, fiats
     """
-    res = session.make_request(ENDPOINTS["coin_exchanges"].format(coin_id))
+    res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(coin_id))
     df = pd.DataFrame(res)
     df["fiats"] = df["fiats"].copy().apply(lambda x: len([i["symbol"] for i in x if x]))
     return df
@@ -131,7 +131,7 @@ def get_coin_markets_by_id(coin_id="eth-ethereum", quotes="USD"):
     """
 
     markets = session.make_request(
-        ENDPOINTS["coin_markets"].format(coin_id), quotes=quotes
+        session.ENDPOINTS["coin_markets"].format(coin_id), quotes=quotes
     )
     if "error" in markets:
         print(markets)
@@ -186,7 +186,10 @@ def get_ohlc_historical(coin_id="eth-ethereum", quotes="USD", days=90):
     start = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
 
     data = session.make_request(
-        ENDPOINTS["ohlcv_hist"].format(coin_id), quotes=quotes, start=start, end=end
+        session.ENDPOINTS["ohlcv_hist"].format(coin_id),
+        quotes=quotes,
+        start=start,
+        end=end,
     )
     if "error" in data:
         print(data)
@@ -241,7 +244,7 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
         Metric, Value
     """
     tickers = session.make_request(
-        ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes
+        session.ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes
     )
 
     for key, date in tickers.items():

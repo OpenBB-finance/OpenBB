@@ -1,4 +1,4 @@
-"""CoinPaprika View"""
+"""Binance view"""
 __docformat__ = "numpy"
 
 import argparse

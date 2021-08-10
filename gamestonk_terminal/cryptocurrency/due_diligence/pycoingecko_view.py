@@ -1,4 +1,4 @@
-""" coingecko due diligence """
+"""CoinGecko view"""
 __docformat__ = "numpy"
 
 import argparse
@@ -14,7 +14,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.config_plot import PLOT_DPI
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import wrap_text_in_df
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 
 register_matplotlib_converters()
 

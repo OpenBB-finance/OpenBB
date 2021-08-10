@@ -29,8 +29,6 @@ from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view import (
     top_defi_coins,
     top_dex,
     top_nft,
-    coin_list,
-    find,
 )
 
 
@@ -53,7 +51,7 @@ from gamestonk_terminal.cryptocurrency.overview.pycoingecko_view import (
 )
 from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 
-# pylint: disable=unused-import,F401
+# pylint: disable=unused-import
 
 
 @mock.patch(

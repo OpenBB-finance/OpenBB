@@ -1,6 +1,7 @@
 """Cryptocurrency Controller"""
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622
+
 import argparse
 import os
 import matplotlib.pyplot as plt
@@ -11,7 +12,12 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 from gamestonk_terminal.cryptocurrency.overview import overview_controller
-from gamestonk_terminal.cryptocurrency.due_diligence import dd_controller
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    dd_controller,
+    coinpaprika_view,
+    binance_view,
+    pycoingecko_view,
+)
 from gamestonk_terminal.cryptocurrency.discovery import (
     discovery_controller,
 )
@@ -19,8 +25,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     finbrain_crypto_view,
 )
 
-from gamestonk_terminal.cryptocurrency import load, find
-from gamestonk_terminal.cryptocurrency import DD_VIEWS_MAPPING
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load, find
 from gamestonk_terminal.cryptocurrency.report import report_controller
 
 
@@ -37,7 +42,6 @@ class CryptoController:
         "finbrain",
         "chart",
         "load",
-        "clear",
         "find",
     ]
 
@@ -53,6 +57,12 @@ class CryptoController:
         "bin": "Binance",
         "cg": "CoinGecko",
         "cp": "CoinPaprika",
+    }
+
+    DD_VIEWS_MAPPING = {
+        "cg": pycoingecko_view,
+        "cp": coinpaprika_view,
+        "bin": binance_view,
     }
 
     CHOICES += CHOICES_COMMAND
@@ -73,14 +83,14 @@ class CryptoController:
         """Print help"""
         help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency
 
-        >> CRYPTO <<
+>> CRYPTO <<
 
-        What do you want to do?
-            cls         clear screen
-            ?/help      show this menu again
-            q           quit this menu, and shows back to main menu
-            quit        quit to abandon the program
-                    """
+What do you want to do?
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
+"""
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
         )
@@ -90,18 +100,17 @@ class CryptoController:
             else "\nSource: ?\n"
         )
         help_text += """
-            load        load a specific cryptocurrency for analysis
-            chart       view a candle chart for a specific cryptocurrency
-            clear       clear previously loaded coin
-            find        alternate way to search for coins
-            finbrain    crypto sentiment from 15+ major news headlines
+    load        load a specific cryptocurrency for analysis
+    chart       view a candle chart for a specific cryptocurrency
+    find        alternate way to search for coins
+    finbrain    crypto sentiment from 15+ major news headlines
 
-        >   disc        discover trending cryptocurrencies,  e.g.: top gainers, losers, top sentiment
-        >   ov          overview of the cryptocurrencies,    e.g.: market cap, DeFi, latest news, top exchanges, stables
-        >   dd          due-diligence for loaded coin,       e.g.: coin information, social media, market stats
-        >   ta          technical analysis for loaded coin.  e.g.: ema, macd, rsi, adx, bbands, obv
-        >   report      generate automatic report
-        """
+>   disc        discover trending cryptocurrencies,  e.g.: top gainers, losers, top sentiment
+>   ov          overview of the cryptocurrencies,    e.g.: market cap, DeFi, latest news, top exchanges, stables
+>   dd          due-diligence for loaded coin,       e.g.: coin information, social media, market stats
+>   ta          technical analysis for loaded coin.  e.g.: ema, macd, rsi, adx, bbands, obv
+>   report      generate automatic report
+"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -160,7 +169,7 @@ class CryptoController:
     def call_chart(self, other_args):
         """Process chart command"""
         if self.current_coin:
-            getattr(DD_VIEWS_MAPPING[self.source], "chart")(
+            getattr(self.DD_VIEWS_MAPPING[self.source], "chart")(
                 self.current_coin, other_args
             )
         else:
@@ -171,7 +180,7 @@ class CryptoController:
         """Process ta command"""
         if self.current_coin:
             self.current_df, self.current_currency = getattr(
-                DD_VIEWS_MAPPING[self.source], "ta"
+                self.DD_VIEWS_MAPPING[self.source], "ta"
             )(self.current_coin, other_args)
             if self.current_currency != "" and not self.current_df.empty:
                 try:
@@ -191,21 +200,6 @@ class CryptoController:
             else:
                 return
 
-        else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
-
-    def call_clear(self, _):
-        """Process clear command"""
-        if self.current_coin:
-            print(
-                f"Current coin {self.current_coin} was removed. You can load new coin with load -c <coin>"
-            )
-            print("")
-            self.current_coin = None
-            self.current_currency = None
-            self.current_df = pd.DataFrame()
-            self.source = ""
         else:
             print("No coin selected. Use 'load' to load the coin you want to look at.")
             print("")

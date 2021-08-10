@@ -1,5 +1,6 @@
 """Cryptocurrency Due diligence Controller"""
 __docformat__ = "numpy"
+
 # pylint: disable=R0904, C0302, W0622
 import argparse
 import os
@@ -13,10 +14,9 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinpaprika_view,
     binance_view,
 )
-from gamestonk_terminal.cryptocurrency import DD_VIEWS_MAPPING
 
 
-class Controller:
+class DueDiligenceController:
 
     CHOICES = [
         "?",
@@ -51,6 +51,12 @@ class Controller:
             "book",
             "balance",
         ],
+    }
+
+    DD_VIEWS_MAPPING = {
+        "cg": pycoingecko_view,
+        "cp": coinpaprika_view,
+        "bin": binance_view,
     }
 
     def __init__(self, coin=None, source=None):
@@ -237,7 +243,9 @@ class Controller:
 
     def call_chart(self, other_args):
         """Process chart command"""
-        getattr(DD_VIEWS_MAPPING[self.source], "chart")(self.current_coin, other_args)
+        getattr(self.DD_VIEWS_MAPPING[self.source], "chart")(
+            self.current_coin, other_args
+        )
 
     # paprika
     def call_ps(self, other_args):
@@ -292,7 +300,7 @@ class Controller:
 def menu(coin=None, source=None):
 
     source = source if source else "cg"
-    controller = Controller(coin=coin, source=source)
+    controller = DueDiligenceController(coin=coin, source=source)
     controller.print_help()
 
     while True:

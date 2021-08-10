@@ -1,4 +1,4 @@
-"""CoinMarketCap API"""
+"""CoinMarketCap view"""
 __docformat__ = "numpy"
 
 import argparse

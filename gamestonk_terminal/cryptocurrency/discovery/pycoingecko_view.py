@@ -1,4 +1,4 @@
-""" discovery pycoingecko_view """
+"""CoinGecko view"""
 __docformat__ = "numpy"
 
 import argparse

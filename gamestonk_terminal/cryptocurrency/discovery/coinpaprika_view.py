@@ -1,4 +1,4 @@
-"""CoinPaprika View"""
+"""CoinPaprika view"""
 __docformat__ = "numpy"
 
 import argparse
@@ -96,7 +96,7 @@ def search(other_args: List[str]):
         if category.lower() == "all":
             category = "currencies,exchanges,icos,people,tags"
 
-        df = paprika.search(q=ns_parser.query, c=category)
+        df = paprika.search(query=ns_parser.query, category=category)
 
         if df.empty:
             print(
@@ -179,12 +179,13 @@ def coins(other_args: List[str]):
         if letter and isinstance(letter, str):
             df = df[
                 df[ns_parser.key].str.match(f"^({letter.lower()}|{letter.upper()})")
-            ]
+            ].copy()
 
         try:
             df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
-        except Exception:
-            df = get_list_of_coins()
+        except Exception as e:
+            print(e)
+
         print(
             tabulate(
                 df,

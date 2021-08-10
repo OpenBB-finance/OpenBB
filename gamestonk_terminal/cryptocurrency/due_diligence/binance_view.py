@@ -1,4 +1,4 @@
-"""Binance view functions"""
+"""Binance view"""
 __docformat__ = "numpy"
 
 import argparse

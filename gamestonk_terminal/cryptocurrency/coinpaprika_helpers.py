@@ -1,34 +1,37 @@
+"""CoinPaprika helpers"""
+__docformat__ = "numpy"
+
 import requests
 from requests.adapters import HTTPAdapter
 
-PAPRIKA_BASE_URL = "https://api.coinpaprika.com/v1"
-
-ENDPOINTS = {
-    "global": "/global",
-    "coin": "/coins/{}",
-    "coins": "/coins",
-    "coin_tweeter": "/coins/{}/twitter",
-    "coin_events": "/coins/{}/events",
-    "coin_exchanges": "/coins/{}/exchanges",
-    "coin_markets": "/coins/{}/markets",
-    "ohlcv": "/coins/{}/ohlcv/latest",
-    "ohlcv_hist": "/coins/{}/ohlcv/historical",
-    "people": "/people/{}",
-    "tickers": "/tickers",
-    "ticker_info": "/tickers/{}",
-    "exchanges": "/exchanges",
-    "exchange_info": "/exchanges/{}",
-    "exchange_markets": "/exchanges/{}/markets",
-    "contract_platforms": "/contracts",
-    "contract_platform_addresses": "/contracts/{}",
-    "search": "/search",
-}
-
 
 class PaprikaSession:
+    PAPRIKA_BASE_URL = "https://api.coinpaprika.com/v1"
+
+    ENDPOINTS = {
+        "global": "/global",
+        "coin": "/coins/{}",
+        "coins": "/coins",
+        "coin_tweeter": "/coins/{}/twitter",
+        "coin_events": "/coins/{}/events",
+        "coin_exchanges": "/coins/{}/exchanges",
+        "coin_markets": "/coins/{}/markets",
+        "ohlcv": "/coins/{}/ohlcv/latest",
+        "ohlcv_hist": "/coins/{}/ohlcv/historical",
+        "people": "/people/{}",
+        "tickers": "/tickers",
+        "ticker_info": "/tickers/{}",
+        "exchanges": "/exchanges",
+        "exchange_info": "/exchanges/{}",
+        "exchange_markets": "/exchanges/{}/markets",
+        "contract_platforms": "/contracts",
+        "contract_platform_addresses": "/contracts/{}",
+        "search": "/search",
+    }
+
     def __init__(self, max_retries=5):
         self.session = requests.Session()
-        self.session.mount(PAPRIKA_BASE_URL, HTTPAdapter(max_retries=max_retries))
+        self.session.mount(self.PAPRIKA_BASE_URL, HTTPAdapter(max_retries=max_retries))
 
     def make_request(self, endpoint, payload=None, **kwargs):
         """Helper method that handles request for coinpaprika api.
@@ -48,7 +51,7 @@ class PaprikaSession:
         dict with response data
 
         """
-        url = f"{PAPRIKA_BASE_URL}{endpoint}"
+        url = f"{self.PAPRIKA_BASE_URL}{endpoint}"
         if payload is None:
             payload = {}
         if kwargs:

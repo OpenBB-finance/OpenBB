@@ -1,9 +1,11 @@
+"""CoinPaprika model"""
+__docformat__ = "numpy"
+
 from datetime import datetime
 import textwrap
 import pandas as pd
 from dateutil import parser
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import (
-    ENDPOINTS,
     PaprikaSession,
 )
 
@@ -22,7 +24,7 @@ def get_global_market():
     pandas.DataFrame
         Metric, Value
     """
-    global_markets = session.make_request(ENDPOINTS["global"])
+    global_markets = session.make_request(session.ENDPOINTS["global"])
     global_markets["last_updated"] = datetime.fromtimestamp(
         global_markets["last_updated"]
     )
@@ -46,7 +48,7 @@ def get_list_of_coins():
     pandas.DataFrame
         rank, id, name, symbol, type
     """
-    coins = session.make_request(ENDPOINTS["coins"])
+    coins = session.make_request(session.ENDPOINTS["coins"])
     df = pd.DataFrame(coins)
     df = df[df["is_active"]]
     return df[["rank", "id", "name", "symbol", "type"]]
@@ -102,7 +104,7 @@ def _get_coins_info_helper(quotes="USD"):
        percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
        ath_price, ath_date, percent_from_price_ath
     """
-    tickers = session.make_request(ENDPOINTS["tickers"], quotes=quotes)
+    tickers = session.make_request(session.ENDPOINTS["tickers"], quotes=quotes)
     data = pd.json_normalize(tickers)
     try:
         # data.columns = [col.replace(f"quotes.{quotes}.", f"{quotes.lower()}_") for col in data.columns.tolist()]
@@ -192,7 +194,7 @@ def get_list_of_exchanges(quotes="USD"):
         rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
     """
-    exchanges = session.make_request(ENDPOINTS["exchanges"], quotes=quotes)
+    exchanges = session.make_request(session.ENDPOINTS["exchanges"], quotes=quotes)
     df = pd.json_normalize(exchanges)
     try:
         df.columns = [
@@ -241,7 +243,7 @@ def get_exchanges_market(exchange_id="binance", quotes="USD"):
         category, reported_volume_24h_share, trust_score,
     """
     data = session.make_request(
-        ENDPOINTS["exchange_markets"].format(exchange_id), quotes=quotes
+        session.ENDPOINTS["exchange_markets"].format(exchange_id), quotes=quotes
     )
     if "error" in data:
         print(data)
@@ -270,7 +272,7 @@ def get_all_contract_platforms():
         index, platform_id
     """
 
-    contract_platforms = session.make_request(ENDPOINTS["contract_platforms"])
+    contract_platforms = session.make_request(session.ENDPOINTS["contract_platforms"])
     df = pd.DataFrame(contract_platforms).reset_index()
     df.columns = ["index", "platform_id"]
     df["index"] = df["index"] + 1
@@ -289,7 +291,7 @@ def get_contract_platform(platform_id="eth-ethereum"):
          id, type, active, address
     """
     contract_platforms = session.make_request(
-        ENDPOINTS["contract_platform_addresses"].format(platform_id)
+        session.ENDPOINTS["contract_platform_addresses"].format(platform_id)
     )
 
     return pd.DataFrame(contract_platforms)[["id", "type", "active", "address"]]

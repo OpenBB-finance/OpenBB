@@ -1,5 +1,6 @@
-"""Cryptocurrency Overview Controller"""
+"""Cryptocurrency Discovery Controller"""
 __docformat__ = "numpy"
+
 # pylint: disable=R0904, C0302, W0622
 import argparse
 import os
@@ -15,7 +16,7 @@ from gamestonk_terminal.cryptocurrency.discovery import (
 )
 
 
-class Controller:
+class DiscoveryController:
 
     CHOICES = [
         "?",
@@ -23,23 +24,23 @@ class Controller:
         "help",
         "q",
         "quit",
-        "cp_search",
-        "cp_coins",
-        "cmc_top",
-        "cg_trending",
-        "cg_most_voted",
-        "cg_most_visited",
-        "cg_top_volume",
-        "cg_recently",
-        "cg_sentiment",
-        "cg_gainers",
-        "cg_losers",
-        "cg_yfarms",
-        "cg_top_defi",
-        "cg_top_dex",
-        "cg_top_nft",
-        "cg_coins",
-        "bin_coins",
+        "cpsearch",
+        "cpcoins",
+        "cmctop",
+        "cgtrending",
+        "cgvoted",
+        "cgvisited",
+        "cgvolume",
+        "cgrecently",
+        "cgsentiment",
+        "cggainers",
+        "cglosers",
+        "cgyfarms",
+        "cgdefi",
+        "cgdex",
+        "cgnft",
+        "cgcoins",
+        "bincoins",
     ]
 
     def __init__(self):
@@ -58,33 +59,33 @@ class Controller:
         print("")
 
         print("CoinGecko:")
-        print("   cg_coins           coins available on CoinGecko")
-        print("   cg_trending        trending coins on CoinGecko")
-        print("   cg_most_voted      most voted coins on CoinGecko")
-        print("   cg_most_visited    most visited coins on CoinGecko")
-        print("   cg_top_volume      coins with highest volume on CoinGecko")
-        print("   cg_recently        recently added on CoinGecko")
-        print("   cg_sentiment       coins with most positive sentiment")
+        print("   cgcoins           coins available on CoinGecko")
+        print("   cgtrending        trending coins on CoinGecko")
+        print("   cgvoted           most voted coins on CoinGecko")
+        print("   cgvisited         most visited coins on CoinGecko")
+        print("   cgvolume          coins with highest volume on CoinGecko")
+        print("   cgrecently        recently added on CoinGecko")
+        print("   cgsentiment       coins with most positive sentiment")
         print(
-            "   cg_gainers         top gainers - coins which price gained the most in given period "
+            "   cggainers         top gainers - coins which price gained the most in given period "
         )
         print(
-            "   cg_losers          top losers - coins which price dropped the most in given period "
+            "   cglosers          top losers - coins which price dropped the most in given period "
         )
-        print("   cg_yfarms          top yield farms")
-        print("   cg_top_defi        top defi protocols")
-        print("   cg_top_dex         top decentralized exchanges")
-        print("   cg_top_nft         top non fungible tokens")
+        print("   cgyfarms          top yield farms")
+        print("   cgdefi            top defi protocols")
+        print("   cgdex             top decentralized exchanges")
+        print("   cgnft             top non fungible tokens")
         print("")
         print("CoinPaprika:")
-        print("   cp_coins           coins available on CoinPaprika")
-        print("   cp_search          search on CoinPaprika")
+        print("   cpcoins           coins available on CoinPaprika")
+        print("   cpsearch          search on CoinPaprika")
         print("")
         print("CoinMarket Cap:")
-        print("   cmc_top            top coins from CoinMarketCap")
+        print("   cmctop            top coins from CoinMarketCap")
         print("")
         print("Binance:")
-        print("   bin_coins          coins available on Binance")
+        print("   bincoins          coins available on Binance")
 
         print("")
 
@@ -135,77 +136,77 @@ class Controller:
         """Process Quit command - quit the program."""
         return True
 
-    def call_cg_coins(self, other_args):
+    def call_cgcoins(self, other_args):
         """Process coins command"""
         pycoingecko_view.coin_list(other_args=other_args)
 
-    def call_cg_gainers(self, other_args):
+    def call_cggainers(self, other_args):
         """Process gainers command"""
         pycoingecko_view.gainers(other_args)
 
-    def call_cg_losers(self, other_args):
+    def call_cglosers(self, other_args):
         """Process losers command"""
         pycoingecko_view.losers(other_args)
 
-    def call_cg_trending(self, other_args):
+    def call_cgtrending(self, other_args):
         """Process trending command"""
         pycoingecko_view.discover(category="trending", other_args=other_args)
 
-    def call_cg_most_voted(self, other_args):
+    def call_cgvoted(self, other_args):
         """Process most_voted command"""
         pycoingecko_view.discover(category="most_voted", other_args=other_args)
 
-    def call_cg_recently(self, other_args):
+    def call_cgrecently(self, other_args):
         """Process recently command"""
         pycoingecko_view.recently_added(other_args=other_args)
 
-    def call_cg_most_visited(self, other_args):
+    def call_cgvisited(self, other_args):
         """Process most_visited command"""
         pycoingecko_view.discover(category="most_visited", other_args=other_args)
 
-    def call_cg_sentiment(self, other_args):
+    def call_cgsentiment(self, other_args):
         """Process sentiment command"""
         pycoingecko_view.discover(category="positive_sentiment", other_args=other_args)
 
-    def call_cg_yfarms(self, other_args):
+    def call_cgyfarms(self, other_args):
         """Process yfarms command"""
         pycoingecko_view.yfarms(other_args=other_args)
 
-    def call_cg_top_volume(self, other_args):
+    def call_cgvolume(self, other_args):
         """Process top_volume command"""
         pycoingecko_view.top_volume_coins(other_args=other_args)
 
-    def call_cg_top_defi(self, other_args):
+    def call_cgdefi(self, other_args):
         """Process top_defi command"""
         pycoingecko_view.top_defi_coins(other_args=other_args)
 
-    def call_cg_top_dex(self, other_args):
+    def call_cgdex(self, other_args):
         """Process top_dex command"""
         pycoingecko_view.top_dex(other_args=other_args)
 
-    def call_cg_top_nft(self, other_args):
+    def call_cgnft(self, other_args):
         """Process top_nft command"""
         pycoingecko_view.top_dex(other_args=other_args)
 
-    def call_cmc_top(self, other_args):
+    def call_cmctop(self, other_args):
         """Process top command"""
         coinmarketcap_view.get_cmc_top_n(other_args)
 
-    def call_cp_coins(self, other_args):
+    def call_cpcoins(self, other_args):
         """Process coins command"""
         coinpaprika_view.coins(other_args=other_args)
 
-    def call_cp_search(self, other_args):
+    def call_cpsearch(self, other_args):
         """Process search command"""
         coinpaprika_view.search(other_args=other_args)
 
-    def call_bin_coins(self, other_args):
+    def call_bincoins(self, other_args):
         """Process bin_coins command"""
         binance_view.coins(other_args=other_args)
 
 
 def menu():
-    controller = Controller()
+    controller = DiscoveryController()
     controller.print_help()
 
     while True:

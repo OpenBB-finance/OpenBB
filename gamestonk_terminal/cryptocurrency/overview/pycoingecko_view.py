@@ -1,4 +1,4 @@
-""" pycoingecko_api """
+"""CoinGecko view"""
 __docformat__ = "numpy"
 
 import argparse

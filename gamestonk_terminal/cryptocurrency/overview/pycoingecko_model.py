@@ -1,8 +1,11 @@
+"""CoinGecko model"""
+__docformat__ = "numpy"
+
 import math
 import pandas as pd
 import numpy as np
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     wrap_text_in_df,
     create_df_index,
 )

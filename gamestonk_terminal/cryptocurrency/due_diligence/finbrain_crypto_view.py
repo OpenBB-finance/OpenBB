@@ -1,5 +1,6 @@
 """Finbrain Crypto Sentiment Analysis"""
 __docformat__ = "numpy"
+
 import os
 import argparse
 from typing import List
