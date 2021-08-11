@@ -4,10 +4,6 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 
 The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-<!-- TABLE OF CONTENTS -->
-
-#### Table Of Contents
-
 [How Can I Contribute?](#how-can-i-contribute)
   * [Community/Marketing](#Community/Marketing)
   * [Retail Trader/QA](#retail-trader/qa)
@@ -79,7 +75,6 @@ The steps to contribute are:
 6. Open a Pull Request
 
 
-
 ## Code Architecture
 
 #### Conventions
@@ -97,7 +92,33 @@ The steps to contribute are:
 
 #### Naming Convention
 
+
 #### Docstrings
+
+The docstring format used in `numpy`, an example is shown below:
+```
+def command_foo(var1: str, var2: List[int], var3: bool = False) -> Tuple[int, pd.DataFrame]:
+"""Small description
+
+[Optional: Longer description]
+
+Parameters
+----------
+var1 : str
+    var1 description
+var2 : List[int]
+    var2 description
+var3 : bool, optional
+    var3 description
+
+Returns
+-------
+foo : int
+    returned foo description
+pd.DataFrame
+    dataframe returned
+"""
+```
 
 #### Linters
 
@@ -110,7 +131,7 @@ Attempt to write a concise message under 50 characters to represent what each co
 
 #### Pull Requests
 
-**Labels***
+**Labels**
 
 | Label name | Description | Example
 | --- | --- | --- |
