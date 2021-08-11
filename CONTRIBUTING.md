@@ -106,7 +106,26 @@ The steps to contribute are:
 
 #### Git Commit Messages
 
+Attempt to write a concise message under 50 characters to represent what each commit is about. This makes it easier for us to review the Pull Request.
 
 #### Pull Requests
 
+**Labels***
+
+| Label name | Description | Example
+| --- | --- | --- |
+| `size:XS` | Extra small feature | Add a preset
+| `size:S` | Small T-Shirt size Feature | New single command added 
+| `size:M` | Medium T-Shirt size feature | Multiple commands added from same data source
+| `size:L` | Large T-Shirt size Feature | New category added under context
+| `size:XL` | Extra Large feature | New context added
+
+| Label name | Description |
+| --- | --- |
+| `enhancement` | Enhance existing code
+| `bug` | Fix a bug
+| `docs` | Improvements on documentation
+| `refactor` | Refactor code to follow our convention
+| `tests` | Work on pytests
+| `build` | Fix a github action that is breaking the build
 
