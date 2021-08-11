@@ -10,7 +10,7 @@ from typing import List, Literal, Union
 import argparse
 
 from openpyxl.styles import PatternFill, Alignment, Font
-from openpyxl import Workbook
+from openpyxl import Workbook, worksheet
 from sklearn.linear_model import LinearRegression
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -89,24 +89,24 @@ class CreateExcelFA:
     # If a reviewer thinks I need to refactor please let me know.
 
     def __init__(self, ticker: str, audit: bool):
-        self.audit = audit
-        self.wb = Workbook()
-        self.ws1 = self.wb.active
-        self.ws2 = self.wb.create_sheet("Free Cash Flows")
-        self.ws3 = self.wb.create_sheet("Explanations")
+        self.audit: bool = audit
+        self.wb: Workbook = Workbook()
+        self.ws1: worksheet = self.wb.active
+        self.ws2: worksheet = self.wb.create_sheet("Free Cash Flows")
+        self.ws3: worksheet = self.wb.create_sheet("Explanations")
         self.ws1.title = "Financials"
-        self.ticker = ticker
-        self.now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S").replace("/", "-")
-        self.letter = 0
-        self.is_start = 4
-        self.bs_start = 18
-        self.cf_start = 47
-        self.len_data = 0
-        self.len_pred = 10
+        self.ticker: str = ticker
+        self.now: str = datetime.now().strftime("%m/%d/%Y, %H:%M:%S").replace("/", "-")
+        self.letter: int = 0
+        self.is_start: int = 4
+        self.bs_start: int = 18
+        self.cf_start: int = 47
+        self.len_data: int = 0
+        self.len_pred: int = 10
         self.years: lst_or_n = None
-        self.df_is = self.get_data("IS", self.is_start, True)
-        self.df_bs = self.get_data("BS", self.bs_start, False)
-        self.df_cf = self.get_data("CF", self.cf_start, False)
+        self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
+        self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
+        self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -269,6 +269,7 @@ class CreateExcelFA:
                 "Other Operating Expenses",
             ],
         )
+        self.get_linear("Revenue", "Preferred Dividends")
         self.get_linear("Revenue", "Interest Expense / Income")
         self.get_linear("Revenue", "Other Expense / Income")
         self.get_linear("Operating Income", "Income Tax")
@@ -380,7 +381,8 @@ class CreateExcelFA:
         self.ws2["A5"] = "Net Income"
         self.ws2["A6"] = "Change in NWC"
         self.ws2["A7"] = "Change in Capex"
-        self.ws2["A8"] = "Free Cash Flows"
+        self.ws2["A8"] = "Preferred Dividends"
+        self.ws2["A9"] = "Free Cash Flows"
         for i in range(self.len_pred):
             self.ws2[
                 f"{var.letters[1+i]}4"
@@ -404,10 +406,30 @@ class CreateExcelFA:
             self.ws2[f"{var.letters[1+i]}7"].number_format = var.fmt_acct
             self.ws2[
                 f"{var.letters[1+i]}8"
-            ] = f"={var.letters[1+i]}5-{var.letters[1+i]}6-{var.letters[1+i]}7"
+            ] = f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Preferred Dividends')}"
             self.ws2[f"{var.letters[1+i]}8"].number_format = var.fmt_acct
-            self.ws2[f"{var.letters[1+i]}8"].font = var.bold_font
-            self.ws2[f"{var.letters[1+i]}8"].border = var.thin_border_top
+            self.ws2[
+                f"{var.letters[1+i]}9"
+            ] = f"={var.letters[1+i]}5-{var.letters[1+i]}6-{var.letters[1+i]}7-{var.letters[1+i]}8"
+            self.ws2[f"{var.letters[1+i]}9"].number_format = var.fmt_acct
+            self.ws2[f"{var.letters[1+i]}9"].font = var.bold_font
+            self.ws2[f"{var.letters[1+i]}9"].border = var.thin_border_top
+
+        self.ws2.merge_cells("B12:C12")
+        self.ws2["B12"] = "Discount Rate"
+        self.ws2["B13"] = "Risk Free Rate"
+        self.ws2["C13"] = 0.02
+        self.ws2["D13"] = "Eventually get from 10 year t-bond scraper"
+        self.ws2["B14"] = "Market Rate"
+        self.ws2["C14"] = 0.08
+        self.custom_exp(
+            14, "Average return of the S&P 500 is 8% [Investopedia]", 2, "D"
+        )
+        self.ws2["B15"] = "Beta"
+        self.ws2["C15"] = 1.3
+        self.custom_exp(15, "Beta from yahoo finance", 2, "D")
+        self.ws2["B16"] = "r"
+        self.ws2["C16"] = "=((C12-C11)*C13)+C11"
 
     def create_header(self, ws: Workbook):
         for cell in ws["A1:J1"][0]:
@@ -678,11 +700,16 @@ class CreateExcelFA:
         )
         return ind
 
-    def custom_exp(self, row: int_or_str, text: str):
-        rowT = row if isinstance(row, int) else self.title_to_row(row)
-        col = self.len_pred + self.len_data + 3
-        self.ws1[f"{var.letters[col+2]}{rowT}"] = var.letters[self.letter]
-        self.ws1[f"{var.letters[col+2]}{rowT}"].font = Font(color="FF0000")
+    def custom_exp(self, row: int_or_str, text: str, ws: int = 1, column: str = None):
+        if ws == 1:
+            rowT = row if isinstance(row, int) else self.title_to_row(row)
+            col = self.len_pred + self.len_data + 3
+            self.ws1[f"{var.letters[col+2]}{rowT}"] = var.letters[self.letter]
+            self.ws1[f"{var.letters[col+2]}{rowT}"].font = Font(color="FF0000")
+        if ws == 2:
+            self.ws2[f"{column}{row}"] = var.letters[self.letter]
+            self.ws2[f"{column}{row}"].font = Font(color="FF0000")
+
         self.ws3[f"A{self.letter+4}"] = var.letters[self.letter]
         self.ws3[f"B{self.letter+4}"] = text
         self.letter += 1
