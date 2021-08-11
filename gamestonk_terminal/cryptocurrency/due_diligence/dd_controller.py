@@ -300,14 +300,14 @@ Binance:
 def menu(coin=None, source=None):
 
     source = source if source else "cg"
-    controller = DueDiligenceController(coin=coin, source=source)
-    controller.print_help()
+    dd_controller = DueDiligenceController(coin=coin, source=source)
+    dd_controller.print_help()
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in controller.CHOICES}
+                {c: None for c in dd_controller.CHOICES}
             )
             an_input = session.prompt(
                 f"{get_flair()} (crypto)>(dd)> ",
@@ -317,7 +317,7 @@ def menu(coin=None, source=None):
             an_input = input(f"{get_flair()} (crypto)>(dd)> ")
 
         try:
-            process_input = controller.switch(an_input)
+            process_input = dd_controller.switch(an_input)
 
             if process_input is not None:
                 return process_input

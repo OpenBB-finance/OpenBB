@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
-    wrap_text_in_df,
     percent_to_float,
     create_df_index,
+    wrap_text_in_df,
 )
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     changes_parser,
@@ -35,36 +35,6 @@ CATEGORIES = {
     "positive_sentiment": 2,
     "recently_added": 3,
     "most_visited": 4,
-}
-
-COLUMNS = {
-    "id": "id",
-    "rank": "rank",
-    "name": "name",
-    "symbol": "symbol",
-    "price": "price",
-    "change_1h": "change_1h",
-    "change_24h": "change_24h",
-    "change_7d": "change_7d",
-    "volume_24h": "volume_24h",
-    "market_cap": "market_cap",
-    "country": "country",
-    "total_market_cap": "total_market_cap",
-    "total_volume": "total_volume",
-    "market_cap_percentage": "market_cap_percentage",
-    "company": "company",
-    "ticker": "ticker",
-    "last_added": "added",
-    "title": "title",
-    "author": "author",
-    "posted": "posted",
-    "article": "article",
-    "url": "url",
-    "price_btc": "price_btc",
-    "price_usd": "price_usd",
-    "n_of_coins": "n_of_coins",
-    "exchanges": "exchanges",
-    "change_30d": "change_30d",
 }
 
 
@@ -104,18 +74,18 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
         symbol, name, *_, volume, price, change = clean_row(row)
         try:
             change = percent_to_float(change)
-        except (ValueError, TypeError):
-            ...
+        except (ValueError, TypeError) as e:
+            print(e)
         results.append([symbol, name, volume, price, change, url])
     df = pd.DataFrame(
         results,
         columns=[
-            COLUMNS["symbol"],
-            COLUMNS["name"],
+            "symbol",
+            "name",
             "volume",
-            COLUMNS["price"],
+            "price",
             f"%change_{period}",
-            COLUMNS["url"],
+            "url",
         ],
     )
     df.index = df.index + 1
@@ -162,10 +132,10 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
     return pd.DataFrame(
         results,
         columns=[
-            COLUMNS["name"],
-            COLUMNS["price_btc"],
-            COLUMNS["price_usd"],
-            COLUMNS["url"],
+            "name",
+            "price_btc",
+            "price_usd",
+            "url",
         ],
     )
 
@@ -179,13 +149,13 @@ def get_recently_added_coins() -> pd.DataFrame:
         name, symbol, price, change_1h, change_24h, last_added
     """
     columns = [
-        COLUMNS["name"],
-        COLUMNS["symbol"],
-        COLUMNS["price"],
-        COLUMNS["change_1h"],
-        COLUMNS["change_24h"],
-        COLUMNS["last_added"],
-        COLUMNS["url"],
+        "name",
+        "symbol",
+        "price",
+        "change_1h",
+        "change_24h",
+        "added",
+        "url",
     ]
 
     url = "https://www.coingecko.com/en/coins/recently_added"
@@ -223,8 +193,8 @@ def get_yield_farms() -> pd.DataFrame:
         rank, name, pool, audits, collateral,value_locked, returns_year, returns_hour
     """
     columns = [
-        COLUMNS["rank"],
-        COLUMNS["name"],
+        "rank",
+        "name",
         "pool",
         "audits",
         "collateral",
@@ -284,15 +254,15 @@ def get_top_volume_coins() -> pd.DataFrame:
         rank, name, symbol, price, change_1h, change_24h, change_7d, volume_24h, market_cap
     """
     columns = [
-        COLUMNS["rank"],
-        COLUMNS["name"],
-        COLUMNS["symbol"],
-        COLUMNS["price"],
-        COLUMNS["change_1h"],
-        COLUMNS["change_24h"],
-        COLUMNS["change_7d"],
-        COLUMNS["volume_24h"],
-        COLUMNS["market_cap"],
+        "rank",
+        "name",
+        "symbol",
+        "price",
+        "change_1h",
+        "change_24h",
+        "change_7d",
+        "volume_24h",
+        "market_cap",
     ]
     url = "https://www.coingecko.com/en/coins/high_volume"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -333,18 +303,18 @@ def get_top_defi_coins() -> pd.DataFrame:
     df = pd.DataFrame(
         results,
         columns=[
-            COLUMNS["rank"],
-            COLUMNS["name"],
-            COLUMNS["symbol"],
-            COLUMNS["price"],
-            COLUMNS["change_1h"],
-            COLUMNS["change_24h"],
-            COLUMNS["change_7d"],
-            COLUMNS["volume_24h"],
-            COLUMNS["market_cap"],
+            "rank",
+            "name",
+            "symbol",
+            "price",
+            "change_1h",
+            "change_24h",
+            "change_7d",
+            "volume_24h",
+            "market_cap",
             "fully_diluted_market_cap",
             "market_cap_to_tvl_ratio",
-            COLUMNS["url"],
+            "url",
         ],
     )
     df.drop(
@@ -365,9 +335,9 @@ def get_top_dexes() -> pd.DataFrame:
         name, rank, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
     """
     columns = [
-        COLUMNS["name"],
-        COLUMNS["rank"],
-        COLUMNS["volume_24h"],
+        "name",
+        "rank",
+        "volume_24h",
         "n_coins",
         "n_pairs",
         "visits",
@@ -385,7 +355,7 @@ def get_top_dexes() -> pd.DataFrame:
             row_cleaned.insert(-3, "N/A")
         results.append(row_cleaned)
     df = pd.DataFrame(results)
-    df[COLUMNS["name"]] = df.iloc[:, 1] + " " + df.iloc[:, 2].replace("N/A", "")
+    df["name"] = df.iloc[:, 1] + " " + df.iloc[:, 2].replace("N/A", "")
     df.drop(df.columns[1:3], axis=1, inplace=True)
     df = swap_columns(df)
     df.columns = columns
@@ -423,16 +393,16 @@ def get_top_nfts() -> pd.DataFrame:
     df = pd.DataFrame(
         results,
         columns=[
-            COLUMNS["rank"],
-            COLUMNS["name"],
-            COLUMNS["symbol"],
-            COLUMNS["price"],
-            COLUMNS["change_1h"],
-            COLUMNS["change_24h"],
-            COLUMNS["change_7d"],
-            COLUMNS["volume_24h"],
-            COLUMNS["market_cap"],
-            COLUMNS["url"],
+            "rank",
+            "name",
+            "symbol",
+            "price",
+            "change_1h",
+            "change_24h",
+            "change_7d",
+            "volume_24h",
+            "market_cap",
+            "url",
         ],
     )
     df["rank"] = df["rank"].astype(int)
@@ -450,5 +420,5 @@ def get_coin_list() -> pd.DataFrame:
 
     return pd.DataFrame(
         client.get_coins_list(),
-        columns=[COLUMNS["id"], COLUMNS["symbol"], COLUMNS["name"]],
+        columns=["id", "symbol", "name"],
     ).reset_index()

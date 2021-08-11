@@ -179,7 +179,7 @@ Binance:
 
     def call_cgnft(self, other_args):
         """Process top_nft command"""
-        pycoingecko_view.top_dex(other_args=other_args)
+        pycoingecko_view.top_nft(other_args=other_args)
 
     def call_cmctop(self, other_args):
         """Process top command"""
@@ -199,14 +199,14 @@ Binance:
 
 
 def menu():
-    controller = DiscoveryController()
-    controller.print_help()
+    disc_controller = DiscoveryController()
+    disc_controller.print_help()
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in controller.CHOICES}
+                {c: None for c in disc_controller.CHOICES}
             )
             an_input = session.prompt(
                 f"{get_flair()} (crypto)>(disc)> ",
@@ -216,7 +216,7 @@ def menu():
             an_input = input(f"{get_flair()} (crypto)>(disc)> ")
 
         try:
-            process_input = controller.switch(an_input)
+            process_input = disc_controller.switch(an_input)
 
             if process_input is not None:
                 return process_input

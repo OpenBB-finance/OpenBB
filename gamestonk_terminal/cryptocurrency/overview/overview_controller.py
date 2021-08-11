@@ -54,47 +54,40 @@ class Controller:
 
     def print_help(self):
         """Print help"""
-        print("\nOverview:")
-        print("   cls             clear screen")
-        print("   ?/help          show this menu again")
-        print("   q               quit this menu, and shows back to main menu")
-        print("   quit            quit to abandon program")
-        print("")
+        help_text = """
+Overview:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    q
 
-        print("")
-        print("CoinGecko:")
-        print("   cgglobal          global crypto market info")
-        print("   cgnews            last news available on CoinGecko")
-        print("   cgdefi            global DeFi market info")
-        print("   cgstables         stablecoins")
-        print("   cgnft             non fungible token market status")
-        print("   cgnftday          non fungible token of the day")
-        print("   cgexchanges       top crypto exchanges")
-        print("   cgexrates         coin exchange rates")
-        print("   cgplatforms       crypto financial platforms")
-        print("   cgproducts        crypto financial products")
-        print("   cgindexes         crypto indexes")
-        print("   cgderivatives     crypto derivatives")
-        print("   cgcategories      crypto categories")
-        print("   cghold            ethereum, bitcoin holdings overview statistics")
-        print("   cgcompanies       ethereum, bitcoin holdings by public companies")
-        print("")
-        print("CoinPaprika:")
-        print("   cpglobal          global crypto market info")
-        print(
-            "   cpinfo            basic info about all coins available on CoinPaprika"
-        )
-        print(
-            "   cpmarkets         market related info about all coins available on CoinPaprika"
-        )
-        print("   cpexchanges       list all exchanges")
-        print("   cpexmarkets       all available markets on given exchange")
-        print(
-            "   cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra"
-        )
-        print("   cpcontracts       all smart contracts for given platform")
+CoinGecko:
+    cgglobal          global crypto market info
+    cgnews            last news available on CoinGecko
+    cgdefi            global DeFi market info
+    cgstables         stablecoins
+    cgnft             non fungible token market status
+    cgnftday          non fungible token of the day
+    cgexchanges       top crypto exchanges
+    cgexrates         coin exchange rates
+    cgplatforms       crypto financial platforms
+    cgproducts        crypto financial products
+    cgindexes         crypto indexes
+    cgderivatives     crypto derivatives
+    cgcategories      crypto categories
+    cghold            ethereum, bitcoin holdings overview statistics
+    cgcompanies       ethereum, bitcoin holdings by public companies
+CoinPaprika:
+    cpglobal          global crypto market info
+    cpinfo            basic info about all coins available on CoinPaprika
+    cpmarkets         market related info about all coins available on CoinPaprika
+    cpexchanges       list all exchanges
+    cpexmarkets       all available markets on given exchange
+    cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
+    cpcontracts       all smart contracts for given platform
+"""
 
-        print("")
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -136,7 +129,6 @@ class Controller:
 
     def call_q(self, _):
         """Process Q command - quit the menu."""
-        print("Moving back to (crypto) menu")
         return False
 
     def call_quit(self, _):
@@ -233,14 +225,14 @@ class Controller:
 
 
 def menu():
-    controller = Controller()
-    controller.print_help()
+    overview_controller = Controller()
+    overview_controller.print_help()
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in controller.CHOICES}
+                {c: None for c in overview_controller.CHOICES}
             )
             an_input = session.prompt(
                 f"{get_flair()} (crypto)>(ov)> ",
@@ -250,7 +242,7 @@ def menu():
             an_input = input(f"{get_flair()} (crypto)>(ov)> ")
 
         try:
-            process_input = controller.switch(an_input)
+            process_input = overview_controller.switch(an_input)
 
             if process_input is not None:
                 return process_input

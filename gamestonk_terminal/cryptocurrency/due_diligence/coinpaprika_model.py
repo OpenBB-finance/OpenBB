@@ -259,8 +259,8 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
         if "date" in key or "data" in key:
             try:
                 tickers[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
-            except (KeyError, ValueError, TypeError):
-                ...
+            except (KeyError, ValueError, TypeError) as e:
+                print(e)
         if key == "quotes":
             try:
                 tickers[key][quotes]["ath_date"] = parser.parse(
