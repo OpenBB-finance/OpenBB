@@ -20,7 +20,6 @@ def get_orders() -> Tuple[str, DataFrame]:
         Fidelity orders Dataframe with the following columns:
         Symbol, Buy / Sell Ratio, Price Change, Company, # Buy Orders, # Sell Orders
     """
-
     url_orders = (
         "https://eresearch.fidelity.com/eresearch/gotoBL/fidelityTopOrders.jhtml"
     )

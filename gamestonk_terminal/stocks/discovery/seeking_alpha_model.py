@@ -44,7 +44,6 @@ def get_next_earnings(pages: int) -> DataFrame:
     DataFrame
         Upcoming earnings DataFrame
     """
-
     earnings = list()
     url_next_earnings = "https://seekingalpha.com/earnings/earnings-calendar"
 

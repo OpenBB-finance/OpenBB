@@ -1,303 +1,137 @@
 """Stockanalysis.com/etf Model"""
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
-import webbrowser
+from typing import List, Tuple
+
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup as bs
-from tabulate import tabulate
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
-
-# Run this when called to get all available etfs and names
-r = requests.get("https://stockanalysis.com/etf/")
-soup = bs(r.text, "html.parser").findAll("table", {"class": "SymbolTable_table__3Q2qq"})
-all_links = soup[0].findAll("tr")
-
-etf_symbols = []
-etf_names = []
-for link in all_links:
-    data = link.findAll("td")
-    if data:
-        etf_symbols.append(data[0].find("a").get_text())
-        etf_names.append(data[1].find("span").get_text())
 
 
-def limit_number_of_holdings(num: str) -> int:
-    if int(num) > 200:
-        raise argparse.ArgumentTypeError("Asking for too many holdings")
-    return int(num)
+def get_all_names_symbols() -> Tuple[List[str], List[str]]:
+    """Gets all etf names and symbols
+
+    Returns
+    -------
+    etf_symbols: List[str]:
+        List of all available etf symbols
+    etf_names: List[str]
+        List of all available etf names
+    """
+    r = requests.get("https://api.stockanalysis.com/etf/")
+    soup = bs(r.text, "html.parser").findAll("ul", {"class": "no-spacing"})
+    all_links = soup[0].findAll("li")
+    etf_symbols = []
+    etf_names = []
+    for link in all_links:
+        etf_symbols.append(link.text.split("-")[0].strip(" "))
+        etf_names.append(link.text.split("-")[1][1:])
+
+    return etf_symbols, etf_names
 
 
-def open_web(other_args: List[str]):
-    """Opens webbrowser to the website page
+def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
+    """Get overview data for selected etf
 
     Parameters
     ----------
-    other_args : List[str]
-        Argparse arguments
+    etf_symbol : str
+        Etf symbol to get overview for
+
+    Returns
+    ----------
+    df : pd.DataFrame
+        Dataframe of stock overview data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="web",
-        description="Opens webbrowser to the website page",
-    )
-    parser.add_argument(
-        "-n", "--name", type=str, dest="name", help="Symbol to look for", required=False
-    )
+    r = requests.get(f"https://stockanalysis.com/etf/{etf_symbol}")
+    soup = bs(r.text, "html.parser")  # %%
+    tables = soup.findAll("table")
+    texts = []
+    for tab in tables[:2]:
+        entries = tab.findAll("td")
+        for ent in entries:
+            texts.append(ent.get_text())
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if not ns_parser.name:
-            webbrowser.open("https://stockanalysis.com/etf/")
-            return
-
-        if ns_parser.name.upper() in etf_symbols:
-            webbrowser.open(f"https://stockanalysis.com/etf/{ns_parser.name.lower()}")
-        else:
-            print("ETF symbol not available")
-
-    except Exception as e:
-        print(e, "\n")
+    var_cols = [0, 2, 4, 6, 8, 10, 12, 18, 20, 22, 26, 28, 30, 32]
+    vals = [idx + 1 for idx in var_cols]
+    columns = [texts[idx] for idx in var_cols]
+    data = [texts[idx] for idx in vals]
+    df = pd.DataFrame(data, index=columns, columns=[etf_symbol.upper()])
+    return df
 
 
-def name_search(other_args: List[str]):
-    """Search all available etfs for matching input
+def get_etf_holdings(symbol: str) -> pd.DataFrame:
+    """Get ETF holdings
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+    symbol: str
+        Symbol to get holdings for
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Dataframe of holdings
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="search",
-        description="Search all available etfs for matching input",
-    )
-    parser.add_argument(
-        "-n", "--name", type=str, dest="name", help="Name to search for", required=True
-    )
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args[:2])
-        if not ns_parser:
-            return
-
-        matching_etfs = [
-            etf_symbols[idx] + " - " + etf
-            for idx, etf in enumerate(etf_names)
-            if " ".join(other_args[1:]).lower() in etf.lower()
-        ]
-        print(*matching_etfs, sep="\n")
-        if len(matching_etfs) == 0:
-            print("No matches found")
-        print("")
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
+    link = f"https://api.stockanalysis.com/etf/{symbol}/holdings/"
+    r = requests.get(link)
+    soup = bs(r.text, "html.parser")
+    soup = soup.find("table")
+    tds = soup.findAll("td")
+    tickers = []
+    for i in tds[1::5]:
+        tickers.append(i.text)
+    percents = []
+    for i in tds[3::5]:
+        percents.append(i.text)
+    shares = []
+    for i in tds[4::5]:
+        shares.append(i.text)
+    df = pd.DataFrame(index=tickers)
+    df["% Of Etf"] = percents
+    df["Shares"] = shares
+    return df
 
 
-def etf_overview(other_args: List[str]):
-    """
-    Get overview data for selected etf
-    Parameters
-    ----------
-    other_args : List[str]
-        Argparse arguments
-
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="overview",
-        description="Get overview data for selected etf",
-    )
-    parser.add_argument(
-        "-n", "--name", type=str, dest="name", help="Symbol to look for", required=True
-    )
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if ns_parser.name.upper() not in etf_symbols:
-            print("ETF symbol not available")
-            return
-
-        r1 = requests.get(f"https://stockanalysis.com/etf/{ns_parser.name}")
-        soup1 = bs(r1.text, "html.parser").find("div", {"class": "info"}).findAll("td")
-        column = []
-        value = []
-        column.append("Last Price")
-        value.append(
-            bs(r1.text, "html.parser")
-            .find("div", {"class": "quote"})
-            .find("td", {"id": "qLast"})
-            .text
-        )
-        for row in soup1[:-4:2]:
-            column.append(row.text)
-        for row in soup1[1:-4:2]:
-            value.append(row.text)
-        df = pd.DataFrame(value, index=column, columns=[ns_parser.name.upper()])
-        print(tabulate(df, headers=df.columns, tablefmt="fancy_grid"))
-        print("")
-        return
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def etf_holdings(other_args: List[str]):
-    """Look at ETF holdings
-
-    Parameters
-    ----------
-    other_args: List[str]
-        Argparse arguments
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="holdings",
-        description="Look at ETF holdings",
-    )
-    parser.add_argument(
-        "-n",
-        "--name",
-        type=str,
-        dest="name",
-        help="ETF to get holdings for",
-        required=True,
-    )
-    parser.add_argument(
-        "-l",
-        "--limit",
-        type=limit_number_of_holdings,
-        dest="limit",
-        help="Number of holdings to get",
-        default=20,
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        r1 = requests.get(f"https://stockanalysis.com/etf/{ns_parser.name}/holdings")
-        s1 = (
-            bs(r1.text, "html.parser")
-            .find("table", {"class": "fullholdings"})
-            .find("tbody")
-        )
-        tick, percent, shares = [], [], []
-        for idx, entry in enumerate(s1.findAll("tr"), 1):
-            tick.append(entry.findAll("td")[1].text)
-            percent.append(entry.findAll("td")[3].text)
-            shares.append(entry.findAll("td")[4].text)
-            if idx >= ns_parser.limit:
-                break
-
-        df = pd.DataFrame(data=[tick, percent, shares]).T
-        print(
-            tabulate(
-                df, headers=["Ticker", "% of ETF", "Shares"], tablefmt="fancy_grid"
-            )
-        )
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def compare_etfs(other_args: List[str]):
+def compare_etfs(symbols: List[str]) -> pd.DataFrame:
     """Compare selected ETFs
 
     Parameters
     ----------
-    other_args : List[str]
-        Argparse arguments
+    symbols : List[str]
+        ETF symbols to compare
+
+    Returns
+    ----------
+    df_compare : pd.DataFrame
+        Dataframe of etf comparisons
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="compare",
-        description="Compare selected ETFs",
-    )
-    parser.add_argument(
-        "-n",
-        "--names",
-        type=str,
-        dest="names",
-        help="Symbols to compare",
-        required=True,
-    )
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
+    df_compare = pd.DataFrame()
+    for symbol in symbols:
+        df_compare = pd.concat([df_compare, get_etf_overview(symbol)], axis=1)
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    return df_compare
 
-        to_compare = [name.upper() for name in ns_parser.names.split(",")]
-        df = pd.DataFrame(columns=to_compare)
-        for etf in to_compare:
-            if etf in etf_symbols:
-                r1 = requests.get(f"https://stockanalysis.com/etf/{etf}")
-                soup1 = (
-                    bs(r1.text, "html.parser")
-                    .find("div", {"class": "info"})
-                    .findAll("td")
-                )
-                column = []
-                value = []
-                column.append("Last Price")
-                value.append(
-                    bs(r1.text, "html.parser")
-                    .find("div", {"class": "quote"})
-                    .find("td", {"id": "qLast"})
-                    .text
-                )
-                for row in soup1[:-4:2]:
-                    column.append(row.text)
-                for row in soup1[1:-4:2]:
-                    value.append(row.text)
-                df[etf] = value
-            else:
-                print(f"{etf} not found")
-                df = df.drop(etf, axis=1)
-        df.index = column
-        print(tabulate(df, headers=df.columns, tablefmt="fancy_grid"))
-        print("")
 
-    except Exception as e:
-        print(e, "\n")
+def search_etfs(to_search) -> List[str]:
+    """Search for an etf string in list of ETFs
+
+    Parameters
+    ----------
+    to_search: str
+        String to match
+
+    Returns
+    -------
+    matching_etfs: List[str]
+        List of matching ETF names
+    """
+    all_symbols, all_names = get_all_names_symbols()
+    matching_etfs = [
+        all_symbols[idx] + " - " + etf
+        for idx, etf in enumerate(all_names)
+        if to_search.lower() in etf.lower()
+    ]
+    return matching_etfs

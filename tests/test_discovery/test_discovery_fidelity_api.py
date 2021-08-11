@@ -10,7 +10,7 @@ from gamestonk_terminal.stocks.discovery.fidelity_view import (
 
 class TestDiscoveryFidelityApi(unittest.TestCase):
     def test_orders(self):
-        orders_view([])
+        orders_view(5, "")
 
     def test_buy_sell_ratio_color_red_green(self):
         res = buy_sell_ratio_color_red_green("56% Buys, 44% Sells")
