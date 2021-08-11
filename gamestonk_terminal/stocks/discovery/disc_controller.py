@@ -411,6 +411,7 @@ Stockgrid:
             print(e, "\n")
 
     def call_upcoming(self, other_args: List[str]):
+        # TODO:Change upcoming to nasdaq (requests.get("https://api.nasdaq.com/api/calendar/earnings?date=2021-08-11"))
         """Process upcoming command"""
         parser = argparse.ArgumentParser(
             add_help=False,
