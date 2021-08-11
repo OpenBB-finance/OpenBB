@@ -10,9 +10,11 @@ from typing import List, Literal, Union
 import argparse
 
 from openpyxl.styles import PatternFill, Alignment, Font
+from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from openpyxl import Workbook, worksheet
 from sklearn.linear_model import LinearRegression
 from bs4 import BeautifulSoup
+import yfinance as yf
 import pandas as pd
 import numpy as np
 import requests
@@ -22,7 +24,6 @@ from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 stmt = Literal["IS", "BS", "CF"]
 int_or_str = Union[int, str]
-lst_or_n = Union[List[str], None]
 
 
 def string_float(string: str):
@@ -103,18 +104,20 @@ class CreateExcelFA:
         self.cf_start: int = 47
         self.len_data: int = 0
         self.len_pred: int = 10
-        self.years: lst_or_n = None
+        self.years: List[str] = []
+        self.rounding: int = 0
         self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
+        self.info = yf.Ticker(ticker).info
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
         self.ws2.column_dimensions["A"].width = 22
         for column in var.letters[1:21]:
-            self.ws1.column_dimensions[column].width = 15
+            self.ws1.column_dimensions[column].width = 14
         for column in var.letters[1:21]:
-            self.ws2.column_dimensions[column].width = 15
+            self.ws2.column_dimensions[column].width = 14
         for i in range(50):
             if i != 1:
                 self.ws3[f"A{str(1+i)}"].font = Font(color="FF0000")
@@ -153,7 +156,23 @@ class CreateExcelFA:
         head = table.find("thead")
         columns = head.find_all("th")
 
-        self.years = [x.get_text().strip() for x in columns]
+        if self.years == []:
+            self.years = [x.get_text().strip() for x in columns]
+
+        if self.rounding == 0:
+            phrase = soup.find(
+                "div", attrs={"class": "text-sm pb-1 text-gray-600"}
+            ).get_text()
+            if "thousand" in phrase:
+                self.rounding = 1000
+            elif "millions" in phrase:
+                self.rounding = 1000000
+            elif "billions" in phrase:
+                self.rounding = 1000000000
+            else:
+                raise ValueError(
+                    "Stock Analysis did not specify a proper rounding amount"
+                )
 
         body = table.find("tbody")
         rows = body.find_all("tr")
@@ -383,6 +402,10 @@ class CreateExcelFA:
         self.ws2["A7"] = "Change in Capex"
         self.ws2["A8"] = "Preferred Dividends"
         self.ws2["A9"] = "Free Cash Flows"
+        r = 4
+        c1 = var.letters[self.len_data + 3]
+        c2 = var.letters[self.len_data + 4]
+        c3 = var.letters[self.len_data + 5]
         for i in range(self.len_pred):
             self.ws2[
                 f"{var.letters[1+i]}4"
@@ -415,21 +438,59 @@ class CreateExcelFA:
             self.ws2[f"{var.letters[1+i]}9"].font = var.bold_font
             self.ws2[f"{var.letters[1+i]}9"].border = var.thin_border_top
 
-        self.ws2.merge_cells("B12:C12")
-        self.ws2["B12"] = "Discount Rate"
-        self.ws2["B13"] = "Risk Free Rate"
-        self.ws2["C13"] = 0.02
-        self.ws2["D13"] = "Eventually get from 10 year t-bond scraper"
-        self.ws2["B14"] = "Market Rate"
-        self.ws2["C14"] = 0.08
-        self.custom_exp(
-            14, "Average return of the S&P 500 is 8% [Investopedia]", 2, "D"
+        self.ws2[f"{var.letters[1+self.len_pred]}9"] = (
+            f"=({var.letters[self.len_pred]}9*(1+{c2}" f"{r+6}))/({c2}{r+4}-{c2}{r+6})"
         )
-        self.ws2["B15"] = "Beta"
-        self.ws2["C15"] = 1.3
-        self.custom_exp(15, "Beta from yahoo finance", 2, "D")
-        self.ws2["B16"] = "r"
-        self.ws2["C16"] = "=((C12-C11)*C13)+C11"
+
+        self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
+        self.ws2[f"{c1}{r}"] = "Discount Rate"
+        self.ws2[f"{c1}{r}"].alignment = Alignment(horizontal="center")
+        self.ws2[f"{c1}{r+1}"] = "Risk Free Rate"
+        self.ws2[f"{c2}{r+1}"] = 0.02
+        self.ws2[f"{c2}{r+1}"].number_format = FORMAT_PERCENTAGE_00
+        self.ws2[f"{c3}{r+1}"] = "Eventually get from 10 year t-bond scraper"
+        self.ws2[f"{c1}{r+2}"] = "Market Rate"
+        self.ws2[f"{c2}{r+2}"] = 0.08
+        self.ws2[f"{c2}{r+2}"].number_format = FORMAT_PERCENTAGE_00
+        self.custom_exp(
+            r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
+        )
+        self.ws2[f"{c1}{r+3}"] = "Beta"
+        self.ws2[f"{c2}{r+3}"] = float(self.info["beta"])
+        self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
+        self.ws2[f"{c1}{r+4}"] = "r"
+        self.ws2[f"{c2}{r+4}"] = f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}"
+        self.ws2[f"{c2}{r+4}"].number_format = FORMAT_PERCENTAGE_00
+        self.ws2[f"{c2}{r+4}"].border = var.thin_border_top
+        self.ws2[f"{c2}{r+4}"].font = var.bold_font
+        self.ws2[f"{c1}{r+6}"] = "Long Term Growth"
+        self.ws2[f"{c2}{r+6}"] = 0.04
+        self.ws2[f"{c2}{r+6}"].number_format = FORMAT_PERCENTAGE_00
+
+        self.ws2["A11"] = "Value from Operations"
+        self.ws2["B11"] = f"=NPV({c2}{r+4},B9:{var.letters[self.len_pred+1]}9)"
+        self.ws2["B11"].number_format = var.fmt_acct
+        self.ws2["A12"] = "Cash and Cash Equivalents"
+        self.ws2[
+            "B12"
+        ] = f"=financials!{var.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}"
+        self.ws2["B12"].number_format = var.fmt_acct
+        self.ws2["A13"] = "Intrinsic Value (sum)"
+        self.ws2["B13"] = "=B11+B12"
+        self.ws2["B13"].number_format = var.fmt_acct
+        self.ws2["A14"] = "Debt Obligations"
+        self.ws2[
+            "B14"
+        ] = f"=financials!{var.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}"
+        self.ws2["B14"].number_format = var.fmt_acct
+        self.ws2["A15"] = "Firm value without debt"
+        self.ws2["B15"] = "=B13-B14"
+        self.ws2["B15"].number_format = var.fmt_acct
+        self.ws2["A16"] = "Shares Outstanding"
+        self.ws2["B16"] = int(self.info["sharesOutstanding"])
+        self.ws2["A17"] = "Shares Price"
+        self.ws2["B17"] = f"=(B15*{self.rounding})/B16"
+        self.ws2["B17"].number_format = var.fmt_acct
 
     def create_header(self, ws: Workbook):
         for cell in ws["A1:J1"][0]:
