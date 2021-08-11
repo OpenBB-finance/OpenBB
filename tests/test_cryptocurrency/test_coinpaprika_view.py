@@ -2,30 +2,14 @@ from unittest import TestCase, mock
 import sys
 import io
 
-from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import (
-    exchanges,
-    chart,
-    load,
-    events,
-    twitter,
-    markets,
-    price_supply,
-    basic,
-    ta,
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    coinpaprika_view as dd_coinpaprika_view,
 )
-from gamestonk_terminal.cryptocurrency.discovery.coinpaprika_view import (
-    search,
-    coins,
-    find,
+from gamestonk_terminal.cryptocurrency.discovery import (
+    coinpaprika_view as disc_coinpaprika_view,
 )
-from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import (
-    global_market,
-    exchange_markets,
-    all_exchanges,
-    all_platforms,
-    all_coins_market_info,
-    all_coins_info,
-    contracts,
+from gamestonk_terminal.cryptocurrency.overview import (
+    coinpaprika_view as ov_coinpaprika_view,
 )
 
 
@@ -33,7 +17,7 @@ class TestCoinPaprikaView(TestCase):
     def test_global_markets(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        global_market([])
+        ov_coinpaprika_view.global_market([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("market_cap_usd", capt)
@@ -41,7 +25,7 @@ class TestCoinPaprikaView(TestCase):
     def test_coins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        coins([])
+        disc_coinpaprika_view.coins([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
@@ -49,7 +33,7 @@ class TestCoinPaprikaView(TestCase):
     def test_all_coins_market_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        all_coins_market_info([])
+        ov_coinpaprika_view.all_coins_market_info([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Displaying data vs USD", capt)
@@ -57,7 +41,7 @@ class TestCoinPaprikaView(TestCase):
     def test_all_coins_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        all_coins_info([])
+        ov_coinpaprika_view.all_coins_info([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Displaying data vs USD", capt)
@@ -65,7 +49,7 @@ class TestCoinPaprikaView(TestCase):
     def test_all_exchanges(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        all_exchanges([])
+        ov_coinpaprika_view.all_exchanges([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Displaying data vs USD", capt)
@@ -73,7 +57,7 @@ class TestCoinPaprikaView(TestCase):
     def test_search(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        search(["-q", "bt"])
+        disc_coinpaprika_view.search(["-q", "bt"])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("category", capt)
@@ -81,7 +65,7 @@ class TestCoinPaprikaView(TestCase):
     def test_all_platforms(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        all_platforms([])
+        ov_coinpaprika_view.all_platforms([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("platform_id", capt)
@@ -89,7 +73,7 @@ class TestCoinPaprikaView(TestCase):
     def test_contracts(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        contracts([])
+        ov_coinpaprika_view.contracts([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("active", capt)
@@ -97,7 +81,7 @@ class TestCoinPaprikaView(TestCase):
     def test_find(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        find(["-c", "BTC"])
+        disc_coinpaprika_view.find(["-c", "BTC"])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("index", capt)
@@ -105,7 +89,7 @@ class TestCoinPaprikaView(TestCase):
     def test_twitter(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        twitter("eth-ethereum", [])
+        dd_coinpaprika_view.twitter("eth-ethereum", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Couldn't find", capt)
@@ -113,7 +97,7 @@ class TestCoinPaprikaView(TestCase):
     def test_events(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        events("eth-ethereum", [])
+        dd_coinpaprika_view.events("eth-ethereum", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("description", capt)
@@ -121,7 +105,7 @@ class TestCoinPaprikaView(TestCase):
     def test_exchanges(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        exchanges("btc-bitcoin", [])
+        dd_coinpaprika_view.exchanges("btc-bitcoin", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -129,7 +113,7 @@ class TestCoinPaprikaView(TestCase):
     def test_markets(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        markets("eth-ethereum", [])
+        dd_coinpaprika_view.markets("eth-ethereum", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("exchange", capt)
@@ -139,7 +123,7 @@ class TestCoinPaprikaView(TestCase):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        chart("btc-bitcoin", [])
+        dd_coinpaprika_view.chart("btc-bitcoin", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("\n", capt)
@@ -147,7 +131,7 @@ class TestCoinPaprikaView(TestCase):
     def test_exchange_markets(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        exchange_markets([])
+        ov_coinpaprika_view.exchange_markets([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("base_currency_name", capt)
@@ -155,24 +139,24 @@ class TestCoinPaprikaView(TestCase):
     def price_supply(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        price_supply("btc", [])
+        dd_coinpaprika_view.price_supply("btc", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("asset_platform_id", capt)
 
     def test_load(self):
-        value = load(["-c", "BTC"])
+        value = dd_coinpaprika_view.load(["-c", "BTC"])
         self.assertEqual(value, "btc-bitcoin")
 
-    def test_ta(self):
-        value = ta("eth-ethereum", [])
+    def test_load_ta_data(self):
+        value = dd_coinpaprika_view.load_ta_data("eth-ethereum", [])
         print(value[0])
         self.assertIn("Open", value[0])
 
     def test_basic(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        basic("BTC", [])
+        dd_coinpaprika_view.basic("BTC", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)

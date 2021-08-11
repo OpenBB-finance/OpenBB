@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Tuple
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
@@ -134,8 +134,8 @@ def coins(other_args: List[str]):
 
         try:
             df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
-        except Exception:
-            df = get_list_of_coins()
+        except Exception as e:
+            print(e)
         print(
             tabulate(
                 df,
@@ -698,7 +698,7 @@ def load(other_args: List[str]):
         print(e, "\n")
 
 
-def ta(coin_id: str, other_args: List[str]):
+def load_ta_data(coin_id: str, other_args: List[str]) -> Tuple[pd.DataFrame, str]:
     """Load data for Technical Analysis
 
     Parameters
@@ -707,6 +707,13 @@ def ta(coin_id: str, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
+
+    Returns
+    ----------
+    Tuple[pd.DataFrame, str]
+        dataframe with prices
+        quoted currency
+
     """
     parser = argparse.ArgumentParser(
         add_help=False,

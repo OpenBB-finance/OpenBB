@@ -8,9 +8,6 @@ from dateutil import parser
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 
-session = PaprikaSession()
-
-
 def get_coin(coin_id="eth-ethereum"):
     """Get coin by id
     Parameters
@@ -21,6 +18,7 @@ def get_coin(coin_id="eth-ethereum"):
     -------
     dict with response
     """
+    session = PaprikaSession()
     coin = session.make_request(session.ENDPOINTS["coin"].format(coin_id))
     return coin
 
@@ -38,6 +36,7 @@ def get_coin_twitter_timeline(coin_id="eth-ethereum"):
         date, user_name, status, retweet_count, like_count
 
     """
+    session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(coin_id))
     if "error" in res:
         print(res)
@@ -58,7 +57,8 @@ def get_coin_twitter_timeline(coin_id="eth-ethereum"):
 
 
 def get_coin_events_by_id(coin_id="eth-ethereum"):
-    """
+    """Get all events related to given coin like conferences, start date of futures trading etc.
+
     Example of response from API:
     {
         "id": "17398-cme-april-first-trade",
@@ -81,6 +81,7 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
         id, date , date_to, name, description, is_conference, link, proof_image_link
 
     """
+    session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_events"].format(coin_id))
     if not res:
         return pd.DataFrame()
@@ -90,8 +91,12 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
     )
     data.drop(["id", "proof_image_link"], axis=1, inplace=True)
     for col in ["date", "date_to"]:
-        data[col] = data[col].apply(lambda x: x.replace("T", "\n"))
-        data[col] = data[col].apply(lambda x: x.replace("Z", ""))
+        data[col] = data[col].apply(
+            lambda x: x.replace("T", "\n") if isinstance(x, str) else x
+        )
+        data[col] = data[col].apply(
+            lambda x: x.replace("Z", "") if isinstance(x, str) else x
+        )
     return data
 
 
@@ -107,6 +112,7 @@ def get_coin_exchanges_by_id(coin_id="eth-ethereum"):
     pandas.DataFrame
         id, name, adjusted_volume_24h_share, fiats
     """
+    session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(coin_id))
     df = pd.DataFrame(res)
     df["fiats"] = df["fiats"].copy().apply(lambda x: len([i["symbol"] for i in x if x]))
@@ -129,7 +135,7 @@ def get_coin_markets_by_id(coin_id="eth-ethereum", quotes="USD"):
     -------
     pandas.DataFrame
     """
-
+    session = PaprikaSession()
     markets = session.make_request(
         session.ENDPOINTS["coin_markets"].format(coin_id), quotes=quotes
     )
@@ -185,6 +191,7 @@ def get_ohlc_historical(coin_id="eth-ethereum", quotes="USD", days=90):
     end = datetime.now().strftime("%Y-%m-%d")
     start = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
 
+    session = PaprikaSession()
     data = session.make_request(
         session.ENDPOINTS["ohlcv_hist"].format(coin_id),
         quotes=quotes,
@@ -243,6 +250,7 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
     pandas.DataFrame
         Metric, Value
     """
+    session = PaprikaSession()
     tickers = session.make_request(
         session.ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes
     )

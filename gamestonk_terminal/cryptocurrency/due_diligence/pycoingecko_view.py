@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -130,7 +130,7 @@ def chart(coin: gecko.Coin, other_args: List[str]):
         print(e, "\n")
 
 
-def ta(coin: gecko.Coin, other_args: List[str]):
+def load_ta_data(coin: gecko.Coin, other_args: List[str]) -> Tuple[pd.DataFrame, str]:
     """Load data for Technical Analysis
 
     Parameters
@@ -139,6 +139,12 @@ def ta(coin: gecko.Coin, other_args: List[str]):
         Cryptocurrency
     other_args : List[str]
         argparse arguments
+
+    Returns
+    ----------
+    Tuple[pd.DataFrame, str]
+        dataframe with prices
+        quoted currency
 
     """
     parser = argparse.ArgumentParser(

@@ -73,47 +73,47 @@ class DueDiligenceController:
 
         self._dd_parser.add_argument("cmd", choices=self.CHOICES)
 
-    def print_cp(self):
-        print("CoinPaprika:")
-        print("   basic           basic information about loaded coin")
-        print("   ps              price and supply related metrics for loaded coin")
-        print("   mkt             all markets for loaded coin")
-        print("   ex              all exchanges where loaded coin is listed")
-        print("   twitter         tweets for loaded coin")
-        print("   events          events related to loaded coin")
-
-    def print_cg(self):
-        print("CoinGecko:")
-        print("   info            basic information about loaded coin")
-        print("   market          market stats about loaded coin")
-        print("   ath             all time high related stats for loaded coin")
-        print("   atl             all time low related stats for loaded coin")
-        print("   web             found websites for loaded coin e.g forum, homepage")
-        print(
-            "   social          social portals urls for loaded coin, e.g reddit, twitter"
-        )
-        print(
-            "   score           different kind of scores for loaded coin, e.g developer score, sentiment score"
-        )
-        print("   dev             github, bitbucket coin development statistics")
-        print("   bc              links to blockchain explorers for loaded coin")
-
-    def print_bin(self):
-        print("Binance:")
-        print("   book            show order book")
-        print("   balance         show coin balance")
-
     def print_help(self):
         """Print help"""
-        print("\nDiscovery:")
-        print("   cls             clear screen")
-        print("   ?/help          show this menu again")
-        print("   q               quit this menu, and shows back to main menu")
-        print("   quit            quit to abandon program")
-        print("")
-        getattr(self, f"print_{self.source}")()
-        print("   chart           display chart")
-        print("")
+        help_text = """
+Due Diligence:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
+"""
+        if self.source == "cp":
+            help_text += """
+CoinPaprika:
+   basic           basic information about loaded coin
+   ps              price and supply related metrics for loaded coin
+   mkt             all markets for loaded coin
+   ex              all exchanges where loaded coin is listed
+   twitter         tweets for loaded coin
+   events          events related to loaded coin
+"""
+        if self.source == "cg":
+            help_text += """
+CoinGecko:
+   info            basic information about loaded coin
+   market          market stats about loaded coin
+   ath             all time high related stats for loaded coin
+   atl             all time low related stats for loaded coin
+   web             found websites for loaded coin e.g forum, homepage
+   social          social portals urls for loaded coin, e.g reddit, twitter
+   score           different kind of scores for loaded coin, e.g developer score, sentiment score
+   dev             github, bitbucket coin development statistics
+   bc              links to blockchain explorers for loaded coin
+"""
+        if self.source == "bin":
+            help_text += """
+Binance:
+   book            show order book
+   balance         show coin balance
+"""
+
+        help_text += "   chart           display chart\n"
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input

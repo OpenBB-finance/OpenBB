@@ -4,51 +4,16 @@ import sys
 import io
 import os
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_view import (
-    load,
-    ta,
-    chart,
-    info,
-    web,
-    social,
-    dev,
-    ath,
-    atl,
-    score,
-    bc,
-    market,
+from gamestonk_terminal.cryptocurrency.overview import (
+    pycoingecko_view as ov_pycoingecko_view,
+)
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    pycoingecko_view as dd_pycoingecko_view,
+)
+from gamestonk_terminal.cryptocurrency.discovery import (
+    pycoingecko_view as disc_pycoingecko_view,
 )
 
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_view import (
-    gainers,
-    losers,
-    discover,
-    recently_added,
-    yfarms,
-    top_volume_coins,
-    top_defi_coins,
-    top_dex,
-    top_nft,
-)
-
-
-from gamestonk_terminal.cryptocurrency.overview.pycoingecko_view import (
-    holdings_overview,
-    holdings_companies_list,
-    news,
-    categories,
-    stablecoins,
-    nft_of_the_day,
-    nft_market_status,
-    exchanges,
-    platforms,
-    products,
-    indexes,
-    derivatives,
-    exchange_rates,
-    global_market_info,
-    global_defi_info,
-)
 from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 # pylint: disable=unused-import
@@ -63,7 +28,7 @@ def get_bitcoin(mock_load):
     with open("tests/data/btc_usd_test_data.json") as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    return load(["-c", "bitcoin"])
+    return dd_pycoingecko_view.load(["-c", "bitcoin"])
 
 
 # pylint: disable=R0904
@@ -93,8 +58,8 @@ class TestCoinGeckoAPI(TestCase):
             sample_return = json.load(f)
 
         mock_load.return_value = sample_return
-        coin = load(["-c", "bitcoin"])
-        mock_return, vs = ta(coin, ["--vs", "usd"])
+        coin = dd_pycoingecko_view.load(["-c", "bitcoin"])
+        mock_return, vs = dd_pycoingecko_view.load_ta_data(coin, ["--vs", "usd"])
         print(mock_return, vs)
         self.assertTrue(mock_return.shape == (722, 1))
         self.assertTrue(vs == "usd")
@@ -112,7 +77,7 @@ class TestCoinGeckoAPI(TestCase):
         # pylint: disable=unused-argument
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        chart(self.coin, [])
+        dd_pycoingecko_view.chart(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertEqual("\n", capt)
@@ -120,7 +85,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        info(self.coin, [])
+        dd_pycoingecko_view.info(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("asset_platform_id", capt)
@@ -128,7 +93,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_web(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        web(self.coin, [])
+        dd_pycoingecko_view.web(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("homepage", capt)
@@ -136,7 +101,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_social(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        social(self.coin, [])
+        dd_pycoingecko_view.social(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("telegram", capt)
@@ -144,7 +109,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_dev(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        dev(self.coin, [])
+        dd_pycoingecko_view.dev(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("forks", capt)
@@ -152,7 +117,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_ath(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        ath(self.coin, [])
+        dd_pycoingecko_view.ath(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("ath_date_btc", capt)
@@ -160,7 +125,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_atl(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        atl(self.coin, [])
+        dd_pycoingecko_view.atl(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("atl_date_btc", capt)
@@ -168,7 +133,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_score(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        score(self.coin, [])
+        dd_pycoingecko_view.score(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("twitter_followers", capt)
@@ -176,7 +141,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_bc(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        bc(self.coin, [])
+        dd_pycoingecko_view.bc(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
@@ -184,7 +149,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_market(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        market(self.coin, [])
+        dd_pycoingecko_view.market(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("max_supply", capt)
@@ -192,7 +157,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_holdings_overview(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        holdings_overview([])
+        ov_pycoingecko_view.holdings_overview([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Total Bitcoin Holdings", capt)
@@ -200,7 +165,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_holdings_companies_list(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        holdings_companies_list([])
+        ov_pycoingecko_view.holdings_companies_list([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("country", capt)
@@ -208,7 +173,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_gainers(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        gainers([])
+        disc_pycoingecko_view.gainers([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
@@ -216,7 +181,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_losers(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        losers([])
+        disc_pycoingecko_view.losers([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
@@ -224,7 +189,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_discover(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        discover("trending", [])
+        disc_pycoingecko_view.discover("trending", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("CryptoBlades", capt)
@@ -232,7 +197,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_news(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        news([])
+        ov_pycoingecko_view.news([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("author", capt)
@@ -240,7 +205,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_categories(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        categories([])
+        ov_pycoingecko_view.categories([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Decentralized Finance", capt)
@@ -248,7 +213,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_recently_added(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        recently_added([])
+        disc_pycoingecko_view.recently_added([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
@@ -256,7 +221,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_stablecoins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        stablecoins([])
+        ov_pycoingecko_view.stablecoins([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -264,7 +229,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_yfarms(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        yfarms([])
+        disc_pycoingecko_view.yfarms([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -272,7 +237,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_top_volume_coins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        top_volume_coins([])
+        disc_pycoingecko_view.top_volume_coins([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -280,7 +245,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_top_defi_coins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        top_defi_coins([])
+        disc_pycoingecko_view.top_defi_coins([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -288,7 +253,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_top_dex(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        top_dex([])
+        disc_pycoingecko_view.top_dex([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -296,7 +261,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_top_nft(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        top_nft([])
+        disc_pycoingecko_view.top_nft([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -304,7 +269,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_nft_of_the_day(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        nft_of_the_day([])
+        ov_pycoingecko_view.nft_of_the_day([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
@@ -312,7 +277,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_nft_market_status(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        nft_market_status([])
+        ov_pycoingecko_view.nft_market_status([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
@@ -320,7 +285,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_exchanges(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        exchanges([])
+        ov_pycoingecko_view.exchanges([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -328,7 +293,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_platforms(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        platforms([])
+        ov_pycoingecko_view.platforms([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -336,7 +301,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_products(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        products([])
+        ov_pycoingecko_view.products([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("platform", capt)
@@ -344,7 +309,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_indexes(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        indexes([])
+        ov_pycoingecko_view.indexes([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -352,7 +317,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_derivatives(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        derivatives([])
+        ov_pycoingecko_view.derivatives([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("price", capt)
@@ -360,7 +325,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_exchange_rates(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        exchange_rates([])
+        ov_pycoingecko_view.exchange_rates([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
@@ -368,7 +333,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_global_market_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        global_market_info([])
+        ov_pycoingecko_view.global_market_info([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
@@ -376,7 +341,7 @@ class TestCoinGeckoAPI(TestCase):
     def test_coin_global_defi_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
-        global_defi_info([])
+        ov_pycoingecko_view.global_defi_info([])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)

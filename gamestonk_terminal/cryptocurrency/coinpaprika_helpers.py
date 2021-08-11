@@ -1,6 +1,7 @@
 """CoinPaprika helpers"""
 __docformat__ = "numpy"
 
+from typing import Any, Optional
 import requests
 from requests.adapters import HTTPAdapter
 
@@ -33,7 +34,7 @@ class PaprikaSession:
         self.session = requests.Session()
         self.session.mount(self.PAPRIKA_BASE_URL, HTTPAdapter(max_retries=max_retries))
 
-    def make_request(self, endpoint, payload=None, **kwargs):
+    def make_request(self, endpoint: str, payload: Optional[Any] = None, **kwargs):
         """Helper method that handles request for coinpaprika api.
         It prepares URL for given endpoint and payload if it's part of requests
 

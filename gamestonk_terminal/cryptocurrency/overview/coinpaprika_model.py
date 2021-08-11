@@ -5,15 +5,10 @@ from datetime import datetime
 import textwrap
 import pandas as pd
 from dateutil import parser
-from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import (
-    PaprikaSession,
-)
+from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 
-session = PaprikaSession()
-
-
-def get_global_market():
+def get_global_market() -> pd.DataFrame:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
@@ -24,6 +19,7 @@ def get_global_market():
     pandas.DataFrame
         Metric, Value
     """
+    session = PaprikaSession()
     global_markets = session.make_request(session.ENDPOINTS["global"])
     global_markets["last_updated"] = datetime.fromtimestamp(
         global_markets["last_updated"]
@@ -40,7 +36,7 @@ def get_global_market():
     return df
 
 
-def get_list_of_coins():
+def get_list_of_coins() -> pd.DataFrame:
     """Get list of all available coins on CoinPaprika
 
     Returns
@@ -48,13 +44,14 @@ def get_list_of_coins():
     pandas.DataFrame
         rank, id, name, symbol, type
     """
+    session = PaprikaSession()
     coins = session.make_request(session.ENDPOINTS["coins"])
     df = pd.DataFrame(coins)
     df = df[df["is_active"]]
     return df[["rank", "id", "name", "symbol", "type"]]
 
 
-def _get_coins_info_helper(quotes="USD"):
+def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
     """Helper method that call /tickers endpoint which returns for all coins quoted in provided currency/crypto
 
     {
@@ -104,6 +101,7 @@ def _get_coins_info_helper(quotes="USD"):
        percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
        ath_price, ath_date, percent_from_price_ath
     """
+    session = PaprikaSession()
     tickers = session.make_request(session.ENDPOINTS["tickers"], quotes=quotes)
     data = pd.json_normalize(tickers)
     try:
@@ -111,7 +109,7 @@ def _get_coins_info_helper(quotes="USD"):
         data.columns = [
             col.replace(f"quotes.{quotes}.", "") for col in data.columns.tolist()
         ]
-        data.columns = [col.replace("percent", "pct") for col in data.columns.tolist()]
+        data.columns = [col.replace("percent", "pct") for col in list(data.columns)]
     except KeyError as e:
         print(e)
     data.rename(
@@ -124,7 +122,7 @@ def _get_coins_info_helper(quotes="USD"):
     return data
 
 
-def get_coins_info(quotes="USD"):  # > format big numbers fix
+def get_coins_info(quotes: str = "USD") -> pd.DataFrame:  # > format big numbers fix
     """Returns basic coin information for all coins from CoinPaprika API
     Parameters
     ----------
@@ -152,7 +150,7 @@ def get_coins_info(quotes="USD"):  # > format big numbers fix
     return _get_coins_info_helper(quotes)[cols].sort_values(by="rank")
 
 
-def get_coins_market_info(quotes="USD"):
+def get_coins_market_info(quotes: str = "USD") -> pd.DataFrame:
     """Returns basic coin information for all coins from CoinPaprika API
     Parameters
     ----------
@@ -173,15 +171,13 @@ def get_coins_market_info(quotes="USD"):
         "mcap_change_24h",
         "pct_change_1h",
         "pct_change_24h",
-        # "pct_change_7d",
-        # "pct_change_30d",
         "ath_price",
         "pct_from_ath",
     ]
     return _get_coins_info_helper(quotes=quotes)[cols].sort_values(by="rank")
 
 
-def get_list_of_exchanges(quotes="USD"):
+def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
     """
     List exchanges from CoinPaprika API
     Parameters
@@ -194,6 +190,7 @@ def get_list_of_exchanges(quotes="USD"):
         rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
     """
+    session = PaprikaSession()
     exchanges = session.make_request(session.ENDPOINTS["exchanges"], quotes=quotes)
     df = pd.json_normalize(exchanges)
     try:
@@ -229,8 +226,11 @@ def get_list_of_exchanges(quotes="USD"):
     return df.sort_values(by="rank")
 
 
-def get_exchanges_market(exchange_id="binance", quotes="USD"):
+def get_exchanges_market(
+    exchange_id: str = "binance", quotes: str = "USD"
+) -> pd.DataFrame:
     """List markets by exchange ID
+
     Parameters
     ----------
     exchange_id: identifier of exchange e.g for Binance Exchange -> binance
@@ -242,6 +242,7 @@ def get_exchanges_market(exchange_id="binance", quotes="USD"):
         pair, base_currency_name, quote_currency_name, market_url,
         category, reported_volume_24h_share, trust_score,
     """
+    session = PaprikaSession()
     data = session.make_request(
         session.ENDPOINTS["exchange_markets"].format(exchange_id), quotes=quotes
     )
@@ -263,7 +264,7 @@ def get_exchanges_market(exchange_id="binance", quotes="USD"):
     return df[cols]
 
 
-def get_all_contract_platforms():
+def get_all_contract_platforms() -> pd.DataFrame:
     """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama ...
 
     Returns
@@ -271,7 +272,7 @@ def get_all_contract_platforms():
     pandas.DataFrame
         index, platform_id
     """
-
+    session = PaprikaSession()
     contract_platforms = session.make_request(session.ENDPOINTS["contract_platforms"])
     df = pd.DataFrame(contract_platforms).reset_index()
     df.columns = ["index", "platform_id"]
@@ -279,7 +280,7 @@ def get_all_contract_platforms():
     return df
 
 
-def get_contract_platform(platform_id="eth-ethereum"):
+def get_contract_platform(platform_id="eth-ethereum") -> pd.DataFrame:
     """Gets all contract addresses for given platform
     Parameters
     ----------
@@ -290,6 +291,7 @@ def get_contract_platform(platform_id="eth-ethereum"):
     pandas.DataFrame
          id, type, active, address
     """
+    session = PaprikaSession()
     contract_platforms = session.make_request(
         session.ENDPOINTS["contract_platform_addresses"].format(platform_id)
     )

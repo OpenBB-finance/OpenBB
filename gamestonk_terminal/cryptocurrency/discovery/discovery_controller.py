@@ -51,43 +51,37 @@ class DiscoveryController:
 
     def print_help(self):
         """Print help"""
-        print("\nDiscovery:")
-        print("   cls             clear screen")
-        print("   ?/help          show this menu again")
-        print("   q               quit this menu, and shows back to main menu")
-        print("   quit            quit to abandon program")
-        print("")
+        help_text = """
+Discovery:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
 
-        print("CoinGecko:")
-        print("   cgcoins           coins available on CoinGecko")
-        print("   cgtrending        trending coins on CoinGecko")
-        print("   cgvoted           most voted coins on CoinGecko")
-        print("   cgvisited         most visited coins on CoinGecko")
-        print("   cgvolume          coins with highest volume on CoinGecko")
-        print("   cgrecently        recently added on CoinGecko")
-        print("   cgsentiment       coins with most positive sentiment")
-        print(
-            "   cggainers         top gainers - coins which price gained the most in given period "
-        )
-        print(
-            "   cglosers          top losers - coins which price dropped the most in given period "
-        )
-        print("   cgyfarms          top yield farms")
-        print("   cgdefi            top defi protocols")
-        print("   cgdex             top decentralized exchanges")
-        print("   cgnft             top non fungible tokens")
-        print("")
-        print("CoinPaprika:")
-        print("   cpcoins           coins available on CoinPaprika")
-        print("   cpsearch          search on CoinPaprika")
-        print("")
-        print("CoinMarket Cap:")
-        print("   cmctop            top coins from CoinMarketCap")
-        print("")
-        print("Binance:")
-        print("   bincoins          coins available on Binance")
+CoinGecko:
+    cgcoins           coins available on CoinGecko
+    cgtrending        trending coins on CoinGecko
+    cgvoted           most voted coins on CoinGecko
+    cgvisited         most visited coins on CoinGecko
+    cgvolume          coins with highest volume on CoinGecko
+    cgrecently        recently added on CoinGecko
+    cgsentiment       coins with most positive sentiment
+    cggainers         top gainers - coins which price gained the most in given period
+    cglosers          top losers - coins which price dropped the most in given period
+    cgyfarms          top yield farms
+    cgdefi            top defi protocols
+    cgdex             top decentralized exchanges
+    cgnft             top non fungible tokens
+CoinPaprika:
+    cpcoins           coins available on CoinPaprika
+    cpsearch          search on CoinPaprika
+CoinMarketCap:
+    cmctop            top coins from CoinMarketCap
+Binance:
+    bincoins          coins available on Binance
 
-        print("")
+"""
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -129,7 +123,6 @@ class DiscoveryController:
 
     def call_q(self, _):
         """Process Q command - quit the menu."""
-        print("Moving back to (crypto) menu")
         return False
 
     def call_quit(self, _):

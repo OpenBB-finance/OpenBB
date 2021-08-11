@@ -180,7 +180,7 @@ What do you want to do?
         """Process ta command"""
         if self.current_coin:
             self.current_df, self.current_currency = getattr(
-                self.DD_VIEWS_MAPPING[self.source], "ta"
+                self.DD_VIEWS_MAPPING[self.source], "load_ta_data"
             )(self.current_coin, other_args)
             if self.current_currency != "" and not self.current_df.empty:
                 try:

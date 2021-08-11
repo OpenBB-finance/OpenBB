@@ -6,9 +6,6 @@ import pandas as pd
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 
-session = PaprikaSession()
-
-
 def search(
     query: str, category: Optional[Any] = None, modifier: Optional[Any] = None
 ) -> pd.DataFrame:
@@ -27,6 +24,7 @@ def search(
     pandas.DataFrame
         Metric, Value
     """
+    session = PaprikaSession()
     if category is None:
         category = "currencies,exchanges,icos,people,tags"
     data = session.make_request(
