@@ -59,7 +59,17 @@ If you are the typical retail trader that uses the terminal on a daily basis, th
 
 For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
 
-Steps to contribute:
+The fact that this is an Open Source project makes the possibilities of contributing pretty much unlimited. In here you should consider what do you want to gain out of this experience of contributing, some examples we've seen since the repository is live:
+
+  * Machine Learning engineers working on our prediction models
+  * Data Scientists improving our algoritms to make sense out of the data
+  * Mathematicians exploring our residual analysis menu
+  * Finance students evaluating a DCF spreadsheet from terminal's data
+  * DevOps engineers making the repository more robust and ensuring good practices
+
+Throughout the code we're leaving `# TODO` flags behind for tasks that aren't high priority, but still a good-to-have. So if you would be happy to work on anything, you can search for these on the project and let us know you'll be tackling it.
+
+The steps to contribute are:
 1. Fork the Project
 2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
 3. Commit your Changes (git commit -m 'Add some AmazingFeature')
