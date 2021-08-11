@@ -408,7 +408,7 @@ Stockgrid:
             print(e, "\n")
 
     def call_upcoming(self, other_args: List[str]):
-      #TODO: switch to nasdaq
+        # TODO: switch to nasdaq
         """Process upcoming command"""
         parser = argparse.ArgumentParser(
             add_help=False,
