@@ -556,3 +556,138 @@ def stoch(
 
     except Exception as e:
         print(e, "\n")
+
+
+def fisher(
+    other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame
+):
+    """Fisher Transform
+
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock time interval
+    df_stock: pd.DataFrame
+        Dataframe of prices
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="fisher",
+        description="""
+            The Fisher Transform is a technical indicator created by John F. Ehlers
+            that converts prices into a Gaussian normal distribution.1 The indicator
+            highlights when prices have   moved to an extreme, based on recent prices.
+            This may help in spotting turning points in the price of an asset. It also
+            helps show the trend and isolate the price waves within a trend.
+        """,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--length",
+        action="store",
+        dest="n_length",
+        type=check_positive,
+        default=14,
+        help="length",
+    )
+    parser.add_argument(
+        "-o",
+        "--offset",
+        action="store",
+        dest="n_offset",
+        type=check_positive,
+        default=0,
+        help="offset",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.fisher(
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        # Intraday
+        else:
+            df_ta = ta.fisher(
+                high=df_stock["High"],
+                low=df_stock["Low"],
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax = axes[0]
+        ax.set_title(f"{s_ticker} Fisher Transform")
+        if s_interval == "1440min":
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
+        else:
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=1)
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2 = axes[1]
+        ax2.plot(
+            df_ta.index,
+            df_ta["FISHERT_14_1"].values,
+            "b",
+            lw=2,
+            label="Fisher",
+        )
+        ax2.plot(
+            df_ta.index,
+            df_ta["FISHERTs_14_1"].values,
+            "fuchsia",
+            lw=2,
+            label="Signal",
+        )
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
+        ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor="g", alpha=0.2)
+        ax2.axhline(2, linewidth=3, color="r", ls="--")
+        ax2.axhline(-2, linewidth=3, color="g", ls="--")
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
+        ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor="g", alpha=0.2)
+        ax2.axhline(2, linewidth=3, color="r", ls="--")
+        ax2.axhline(-2, linewidth=3, color="g", ls="--")
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        ax2.set_yticks([-2, 0, 2])
+        ax2.set_yticklabels(["-2 STDEV", "0", "+2 STDEV"])
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
+
+        plt.legend()
+        plt.show()
+
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
