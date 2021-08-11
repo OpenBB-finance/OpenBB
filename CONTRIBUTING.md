@@ -18,6 +18,7 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
   * [Folder Organization](#folder-organization)
   * [MVC Design](#mvc-design)
   * [Tests](#tests)
+  * [Documentation](#Documentation)
 
 [Coding Guidelines](#coding-guidelines)
   * [Naming Convention](naming-convention)
@@ -77,5 +78,35 @@ The steps to contribute are:
 5. Push to your Branch (git push origin feature/AmazingFeature)
 6. Open a Pull Request
 
+
+
+## Code Architecture
+
+#### Conventions
+
+#### Folder Organization
+
+#### MVC Design
+
+#### Tests
+
+#### Documentation
+
+
+## Coding Guidelines
+
+#### Naming Convention
+
+#### Docstrings
+
+#### Linters
+
+
+## Github Guidelines
+
+#### Git Commit Messages
+
+
+#### Pull Requests
 
 
