@@ -634,17 +634,29 @@ def fisher(
         ax = axes[0]
         ax.set_title(f"{s_ticker} Fisher Transform")
         if s_interval == "1440min":
-            ax.plot(df_stock.index, df_stock["Adj Close"].values, "fuchsia", lw=1)
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
         else:
-            ax.plot(df_stock.index, df_stock["Close"].values, "fuchsia", lw=1)
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=1)
         ax.set_xlim(df_stock.index[0], df_stock.index[-1])
         ax.set_ylabel("Share Price ($)")
         ax.grid(b=True, which="major", color="#666666", linestyle="-")
         ax.minorticks_on()
         ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         ax2 = axes[1]
-        ax2.plot(df_ta.index, df_ta["FISHERT_14_1"].values, "b", "0", lw=2)
-        ax2.plot(df_ta.index, df_ta["FISHERTs_14_1"].values, "k", "0", lw=2)
+        ax2.plot(
+            df_ta.index,
+            df_ta["FISHERT_14_1"].values,
+            "b",
+            lw=2,
+            label="Fisher",
+        )
+        ax2.plot(
+            df_ta.index,
+            df_ta["FISHERTs_14_1"].values,
+            "fuchsia",
+            lw=2,
+            label="Signal",
+        )
         ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
         ax2.axhspan(2, plt.gca().get_ylim()[1], facecolor="r", alpha=0.2)
         ax2.axhspan(plt.gca().get_ylim()[0], -2, facecolor="g", alpha=0.2)
@@ -662,6 +674,9 @@ def fisher(
         ax2.grid(b=True, which="major", color="#666666", linestyle="-")
         ax2.minorticks_on()
         ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        ax2.set_yticks([-2, 0, 2])
+        ax2.set_yticklabels(["-2 STDEV", "0", "+2 STDEV"])
 
         if gtff.USE_ION:
             plt.ion()
@@ -669,6 +684,7 @@ def fisher(
         plt.gcf().autofmt_xdate()
         fig.tight_layout(pad=1)
 
+        plt.legend()
         plt.show()
 
         print("")
