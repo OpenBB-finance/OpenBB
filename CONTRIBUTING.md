@@ -19,10 +19,14 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
   * [MVC Design](#mvc-design)
   * [Tests](#tests)
 
-[Coding Guidelines](#coding guidelines)
+[Coding Guidelines](#coding-guidelines)
+  * [Naming Convention](naming-convention)
+  * [Docstrings](#docstrings)
+  * [Linters](#linters)
+
+[Github Guidelines](#github-guidelines)
   * [Git Commit Messages](#git-commit-messages)
   * [Pull Requests](#pull-requests)
-
 
 
 ## How Can I Contribute?
@@ -55,14 +59,13 @@ If you are the typical retail trader that uses the terminal on a daily basis, th
 
 For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
 
-
-Fork the Project
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-Install the pre-commit hooks by running: pre-commit install. Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
-Push to your Branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-Become a Karen 🤷
+Steps to contribute:
+1. Fork the Project
+2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+3. Commit your Changes (git commit -m 'Add some AmazingFeature')
+4. Install the pre-commit hooks by running: pre-commit install. Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
+5. Push to your Branch (git push origin feature/AmazingFeature)
+6. Open a Pull Request
 
 
 
