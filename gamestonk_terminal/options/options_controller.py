@@ -1,10 +1,13 @@
 """Options Controller Module."""
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
+
 
 import argparse
 import os
 from typing import List
 import matplotlib.pyplot as plt
+from colorama import Fore, Style
 
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
@@ -13,7 +16,6 @@ from gamestonk_terminal.options import (
     barchart_view,
     syncretism_view,
     calculator_view,
-    op_helpers,
     yfinance_view,
     yfinance_model,
     tradier_view,
@@ -82,6 +84,7 @@ class OptionsController:
 
     def print_help(self):
         """Print help."""
+        colored = self.ticker and self.selected_date
         print_str = f"""
 https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options
 
@@ -101,17 +104,18 @@ Explore:
 
 Current Ticker: {self.ticker or None}
 Current Expiry: {self.selected_date or None}
+
     load          load new ticker
     exp           see and set expiration dates
+{Fore.RED if not colored else ''}
     info          display option information (volatility, IV rank etc) [Barchart.com]
-
     chains        display option chains with greeks [Tradier]
     oi            plot open interest [Tradier/YF]
     vol           plot volume [Tradier/YF]
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
-    """
+{Style.RESET_ALL if not colored else ''}"""
         print(print_str)
 
     def switch(self, an_input: str):
@@ -518,20 +522,117 @@ Current Expiry: {self.selected_date or None}
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker = op_helpers.load(other_args)
-        if TRADIER_TOKEN == "REPLACE_ME":
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load a ticker into option menu",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args,
+            help="Stock ticker",
+        )
+
+        parser.add_argument(
+            "--source",
+            choices=["tr", "yf"],
+            dest="source",
+            default=None,
+            help="Source to get option expirations from",
+        )
+
+        try:
+            if other_args:
+                if "-t" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-t")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            self.ticker = ns_parser.ticker
+
+        except Exception as e:
+            print(e, "\n")
+            return
+        except SystemExit:
+            print("")
+            return
+
+        if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
             self.expiry_dates = yfinance_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = tradier_model.option_expirations(self.ticker)
 
+        print("")
+
     def call_exp(self, other_args: List[str]):
         """Process exp command"""
-        if self.ticker:
-            self.selected_date = op_helpers.select_option_date(
-                self.expiry_dates, other_args
-            )
-        else:
-            print("Please select a ticker using load {ticker}", "\n")
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="exp",
+            description="See and set expiration date",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="n_date",
+            action="store",
+            type=int,
+            default=-1,
+            choices=range(len(self.expiry_dates)),
+            help="Select index for expiry date.",
+        )
+
+        parser.add_argument(
+            "-D",
+            dest="date",
+            type=str,
+            choices=self.expiry_dates + [""],
+            help="Select date (YYYY-MM-DD)",
+            default="",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-d")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker:
+                print("Please load a ticker using `load {ticker}.\n")
+                return
+            # Print possible expiry dates
+            if ns_parser.n_date == -1 and not ns_parser.date:
+                print("\nAvailable expiry dates:")
+                for i, d in enumerate(self.expiry_dates):
+                    print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+                print("")
+
+            # It means an expiry date was correctly selected
+            else:
+                if ns_parser.date:
+                    if ns_parser.date in self.expiry_dates:
+                        print(f"Expiraration set to {ns_parser.date} \n")
+                        self.selected_date = ns_parser.date
+                    else:
+                        print("Expiration not an option")
+                else:
+                    expiry_date = self.expiry_dates[ns_parser.n_date]
+                    print(f"Expiraration set to {expiry_date} \n")
+                    self.selected_date = expiry_date
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""

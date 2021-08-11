@@ -120,8 +120,12 @@ def option_expirations(ticker: str) -> List[str]:
         },
     )
     if r.status_code == 200:
-        dates = r.json()["expirations"]["date"]
-        return dates
+        try:
+            dates = r.json()["expirations"]["date"]
+            return dates
+        except TypeError:
+            print("Error in tradier JSON response.  Check loaded ticker.\n")
+            return []
     else:
         print("Tradier request failed.  Check token. \n")
         return []

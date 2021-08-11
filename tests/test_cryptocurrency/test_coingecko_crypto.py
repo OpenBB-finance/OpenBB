@@ -291,7 +291,7 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
-    # TODO: fix this test
+    # TODO: Fix this test
     # def test_coin_nft_of_the_day(self):
     #    capturedOutput = io.StringIO()
     #    sys.stdout = capturedOutput
