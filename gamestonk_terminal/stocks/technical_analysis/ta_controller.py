@@ -124,7 +124,7 @@ class TechnicalAnalysisController:
         print("   ad          accumulation/distribution line values")
         print("   obv         on balance volume")
         print("custom:")
-        print("   fib         fibonocci retracement")
+        print("   fib         fibonacci retracement")
         print("")
 
     def switch(self, an_input: str):
