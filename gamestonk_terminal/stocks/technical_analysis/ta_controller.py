@@ -49,6 +49,7 @@ class TechnicalAnalysisController:
         "macd",
         "rsi",
         "stoch",
+        "fisher",
         "adx",
         "aroon",
         "bbands",
@@ -113,6 +114,7 @@ class TechnicalAnalysisController:
         print("   macd        moving average convergence/divergence")
         print("   rsi         relative strength index")
         print("   stoch       stochastic oscillator")
+        print("   fisher      fisher transform")
         print("trend:")
         print("   adx         average directional movement index")
         print("   aroon       aroon indicator")
@@ -122,7 +124,7 @@ class TechnicalAnalysisController:
         print("   ad          accumulation/distribution line values")
         print("   obv         on balance volume")
         print("custom:")
-        print("   fib         fibonocci retracement")
+        print("   fib         fibonacci retracement")
         print("")
 
     def switch(self, an_input: str):
@@ -214,6 +216,10 @@ class TechnicalAnalysisController:
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
         momentum.stoch(other_args, self.ticker, self.interval, self.stock)
+
+    def call_fisher(self, other_args: List[str]):
+        """Process fisher command"""
+        momentum.fisher(other_args, self.ticker, self.interval, self.stock)
 
     def call_adx(self, other_args: List[str]):
         """Process adx command"""

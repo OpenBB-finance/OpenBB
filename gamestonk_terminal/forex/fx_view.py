@@ -31,8 +31,7 @@ from gamestonk_terminal.helper_funcs import (
     check_non_negative,
 )
 
-
-client = API(access_token=cfg.OANDA_TOKEN, environment="live")
+client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
 account = cfg.OANDA_ACCOUNT
 
 
