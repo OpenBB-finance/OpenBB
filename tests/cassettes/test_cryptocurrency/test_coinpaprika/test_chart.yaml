@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/btc-bitcoin/ohlcv/historical?quotes=USD&start=2021-07-13&end=2021-08-12
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 67dbfbf36bbd2b99-ORD
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Aug 2021 19:07:01 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      alt-svc:
+      - h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400, h3=":443";
+        ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1

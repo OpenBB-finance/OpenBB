@@ -6,6 +6,7 @@ import sys
 import io
 
 import pandas as pd
+import vcr
 
 from gamestonk_terminal import terminal_helper
 from gamestonk_terminal.stocks import stocks_helper
@@ -32,26 +33,50 @@ def replace_stdin(target):
 class TestMainHelper(unittest.TestCase):
     start = datetime.now() - timedelta(days=200)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_main/test_main_helper/general1.yaml",
+        record_mode="new_episodes",
+    )
     def test_load(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
         values = stocks_helper.load(
             ["GME"], "GME", self.start, "1440min", pd.DataFrame()
         )
+        sys.stdout = sys.__stdout__
+        capturedOutput.getvalue()
         self.assertEqual(values[0], "GME")
         self.assertNotEqual(values[1], None)
         self.assertEqual(values[2], "1440min")
 
     def test_load_clear(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
         stocks_helper.load(["GME"], "GME", self.start, "1440min", pd.DataFrame())
         values = stocks_helper.clear([], "GME", self.start, "1440min", pd.DataFrame())
+        sys.stdout = sys.__stdout__
+        capturedOutput.getvalue()
         self.assertEqual(values[0], "")
         self.assertEqual(values[1], "")
         self.assertEqual(values[2], "")
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_main/test_main_helper/general1.yaml",
+        record_mode="new_episodes",
+    )
     @patch("matplotlib.pyplot.show")
     def test_candle(self, mock):
         # pylint: disable=unused-argument
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
         stocks_helper.candle("GME", ["GME"])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        print("----------------------------")
+        print(capt)
+        print("----------------------------")
 
+    @vcr.use_cassette("tests/cassettes/test_main/test_main_helper/test_quote.yaml")
     def test_quote(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -63,8 +88,15 @@ class TestMainHelper(unittest.TestCase):
     @patch("matplotlib.pyplot.show")
     def test_view(self, mock):
         # pylint: disable=unused-argument
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
         stocks_helper.view(["GME"], "GME", "1440min", pd.DataFrame())
+        sys.stdout = sys.__stdout__
+        capturedOutput.getvalue()
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_main/test_main_helper/test_check_api_keys.yaml"
+    )
     def test_check_api_keys(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -85,7 +117,6 @@ class TestMainHelper(unittest.TestCase):
     def test_update_terminal(self, mock):
         # pylint: disable=unused-argument
         value = terminal_helper.update_terminal()
-        print(f"Fail value: {value}")
         self.assertEqual(value, 2)
 
     def test_about_us(self):

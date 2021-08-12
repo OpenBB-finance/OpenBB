@@ -1,7 +1,9 @@
 """ econ/fred_view.py tests """
 import unittest
 from unittest import mock
-from io import StringIO
+import sys
+import io
+
 import pandas as pd
 
 # pylint: disable=unused-import
@@ -29,13 +31,17 @@ Date
 class TestFredFredView(unittest.TestCase):
     @mock.patch("gamestonk_terminal.economy.fred_model.get_series_data")
     def test_display_fred(self, mock_get_series):
-        fred_data = pd.read_csv(StringIO(fred_data_mock), header=0, index_col=0)
+        fred_data = pd.read_csv(io.StringIO(fred_data_mock), header=0, index_col=0)
 
         mock_get_series.return_value = fred_data
-
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
         display_series(
             series="gdp",
             start_date="2019-01-01",
             raw=True,
             export="",
         )
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("No series found for term", capt)

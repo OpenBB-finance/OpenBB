@@ -3,6 +3,8 @@ import json
 import sys
 import io
 
+import vcr
+
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     load,
@@ -31,6 +33,7 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     top_defi_coins,
     top_dex,
     top_nft,
+    nft_of_the_day,
     nft_market_status,
     exchanges,
     platforms,
@@ -107,6 +110,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertEqual("\n", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml"
+    )
     def test_coin_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -115,6 +121,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("asset_platform_id", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml"
+    )
     def test_coin_web(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -123,6 +132,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("homepage", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_social.yaml"
+    )
     def test_coin_social(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -131,6 +143,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("telegram", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_dev.yaml"
+    )
     def test_coin_dev(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -139,6 +154,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("forks", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_ath.yaml"
+    )
     def test_coin_ath(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -147,6 +165,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("ath_date_btc", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_atl.yaml"
+    )
     def test_coin_atl(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -155,6 +176,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("atl_date_btc", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_score.yaml"
+    )
     def test_coin_score(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -163,6 +187,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("twitter_followers", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_bc.yaml"
+    )
     def test_coin_bc(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -171,6 +198,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_market.yaml"
+    )
     def test_coin_market(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -179,6 +209,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("max_supply", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_overview.yaml"
+    )
     def test_coin_holdings_overview(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -187,6 +220,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Total Bitcoin Holdings", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_holding_comapnies.yaml"
+    )
     def test_coin_holdings_companies_list(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -195,6 +231,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("country", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_gainers.yaml"
+    )
     def test_coin_gainers(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -203,6 +242,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_losers.yaml"
+    )
     def test_coin_losers(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -211,6 +253,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_discover.yaml"
+    )
     def test_coin_discover(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -219,6 +264,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("CryptoBlades", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_news.yaml"
+    )
     def test_coin_news(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -227,6 +275,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("author", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_categories.yaml"
+    )
     def test_coin_categories(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -235,6 +286,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Decentralized Finance", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_recently_added.yaml"
+    )
     def test_coin_recently_added(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -243,6 +297,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("rank", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_stablecoins.yaml"
+    )
     def test_coin_stablecoins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -251,6 +308,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_yfarms.yaml"
+    )
     def test_coin_yfarms(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -259,6 +319,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_volume_coins.yaml"
+    )
     def test_coin_top_volume_coins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -267,6 +330,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_defi_coins.yaml"
+    )
     def test_coin_top_defi_coins(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -275,6 +341,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_dex.yaml"
+    )
     def test_coin_top_dex(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -283,6 +352,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_nft.yaml"
+    )
     def test_coin_top_nft(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -291,15 +363,20 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
-    # TODO: fix this test
-    # def test_coin_nft_of_the_day(self):
-    #    capturedOutput = io.StringIO()
-    #    sys.stdout = capturedOutput
-    #    nft_of_the_day([])
-    #    sys.stdout = sys.__stdout__
-    #    capt = capturedOutput.getvalue()
-    #    self.assertIn("Metric", capt)
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_of_day.yaml"
+    )
+    def test_coin_nft_of_the_day(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        nft_of_the_day([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("Metric", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_market-status.yaml"
+    )
     def test_coin_nft_market_status(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -308,6 +385,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchanges.yaml"
+    )
     def test_coin_exchanges(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -316,6 +396,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_platforms.yaml"
+    )
     def test_coin_platforms(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -324,6 +407,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_products.yaml"
+    )
     def test_coin_products(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -332,6 +418,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("platform", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_indexes.yaml"
+    )
     def test_coin_indexes(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -340,6 +429,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_derivatives.yaml"
+    )
     def test_coin_derivatives(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -348,6 +440,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("price", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchange_rates.yaml"
+    )
     def test_coin_exchange_rates(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -356,6 +451,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("name", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_market_info.yaml"
+    )
     def test_coin_global_market_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
@@ -364,6 +462,9 @@ class TestCoinGeckoAPI(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Metric", capt)
 
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_defo_info.yaml"
+    )
     def test_coin_global_defi_info(self):
         capturedOutput = io.StringIO()
         sys.stdout = capturedOutput
