@@ -222,12 +222,18 @@ class CreateExcelFA:
         for key, value in df.iteritems():
             rowI = row
             if header:
-                self.ws1[f"{var.letters[column]}{rowI}"] = float(key)
-                self.ws1[f"{var.letters[column]}{rowI}"].font = var.bold_font
+                hp.set_cell(
+                    self.ws1,
+                    f"{var.letters[column]}{rowI}",
+                    float(key),
+                    font=var.bold_font,
+                )
             for item in value:
                 rowI += 1
-                self.ws1[f"{var.letters[column]}{rowI}"] = float(item.replace(",", ""))
-                self.ws1[f"{var.letters[column]}{rowI}"].number_format = var.fmt_acct
+                m = 0 if item is None else float(item.replace(",", ""))
+                hp.set_cell(
+                    self.ws1, f"{var.letters[column]}{rowI}", m, num_form=var.fmt_acct
+                )
             column += 1
 
         return df
