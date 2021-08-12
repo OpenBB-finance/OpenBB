@@ -9,7 +9,7 @@ import math
 from typing import List, Literal, Union
 import argparse
 
-from openpyxl.styles import PatternFill, Alignment, Font
+from openpyxl.styles import Font
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from openpyxl import Workbook, worksheet
 from sklearn.linear_model import LinearRegression
@@ -21,25 +21,10 @@ import requests
 
 import gamestonk_terminal.stocks.fundamental_analysis.excel.variables as var
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.stocks.fundamental_analysis.excel import helper as hp
 
 stmt = Literal["IS", "BS", "CF"]
 int_or_str = Union[int, str]
-
-
-def string_float(string: str):
-    return float(string.replace(",", ""))
-
-
-def insert_row(name: str, index: str, df: pd.DataFrame, row_value: List[str]):
-    pd.options.mode.chained_assignment = None
-    if name not in df.index:
-        row_number = df.index.get_loc(index) + 1
-        df1 = df[0:row_number]
-        df2 = df[row_number:]
-        df1.loc[name] = row_value
-        df_result = pd.concat([df1, df2])
-        return df_result
-    return df
 
 
 def excel(other_args: List[str], ticker: str):
@@ -118,9 +103,7 @@ class CreateExcelFA:
             self.ws1.column_dimensions[column].width = 14
         for column in var.letters[1:21]:
             self.ws2.column_dimensions[column].width = 14
-        for i in range(50):
-            if i != 1:
-                self.ws3[f"A{str(1+i)}"].font = Font(color="FF0000")
+
         self.ws3.column_dimensions["A"].width = 3
         self.create_header(self.ws1)
         self.create_header(self.ws2)
@@ -197,7 +180,7 @@ class CreateExcelFA:
             else:
                 raise ValueError("Dataframe does not have key information.")
             for i, value in enumerate(var.gaap_is[1:]):
-                df = insert_row(var.gaap_is[i + 1], var.gaap_is[i], df, blank_list)
+                df = hp.insert_row(var.gaap_is[i + 1], var.gaap_is[i], df, blank_list)
 
         if statement == "BS":
             if "Cash & Equivalents" in df.index:
@@ -205,7 +188,7 @@ class CreateExcelFA:
             else:
                 raise ValueError("Dataframe does not have key information.")
             for i, value in enumerate(var.gaap_bs[1:]):
-                df = insert_row(var.gaap_bs[i + 1], var.gaap_bs[i], df, blank_list)
+                df = hp.insert_row(var.gaap_bs[i + 1], var.gaap_bs[i], df, blank_list)
 
         if statement == "CF":
             if "Net Income" in df.index:
@@ -213,7 +196,7 @@ class CreateExcelFA:
             else:
                 raise ValueError("Dataframe does not have key information.")
             for i, value in enumerate(var.gaap_cf[1:]):
-                df = insert_row(var.gaap_cf[i + 1], var.gaap_cf[i], df, blank_list)
+                df = hp.insert_row(var.gaap_cf[i + 1], var.gaap_cf[i], df, blank_list)
 
         if self.len_data == 0:
             self.len_data = len(df.columns)
@@ -253,25 +236,34 @@ class CreateExcelFA:
         last_year = self.years[1]
         col = self.len_data + 1
         for i in range(self.len_pred):
-            self.ws1[f"{var.letters[col+i]}4"] = int(last_year) + 1 + i
-            self.ws1[f"{var.letters[col+i]}4"].font = var.bold_font
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col+i]}4",
+                int(last_year) + 1 + i,
+                font=var.bold_font,
+            )
 
         for i in range(41):
             col = self.len_pred + self.len_data + 3
-            self.ws1[f"{var.letters[col]}{3+i}"].fill = PatternFill(
-                fgColor="7fe5cd", fill_type="solid"
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col]}{3+i}",
+                fill=var.green_bg,
+                border=var.thin_border_nr,
             )
-            self.ws1[f"{var.letters[col+1]}{3+i}"].fill = PatternFill(
-                fgColor="7fe5cd", fill_type="solid"
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col+1]}{3+i}",
+                fill=var.green_bg,
+                border=var.thin_border_nl,
             )
-            self.ws1[f"{var.letters[col]}{3+i}"].border = var.thin_border_nr
-            self.ws1[f"{var.letters[col+1]}{3+i}"].border = var.thin_border_nl
 
-        self.ws1[f"{var.letters[col]}3"] = "Linear model"
-        self.ws1[f"{var.letters[col]}3"].alignment = Alignment(horizontal="center")
+        hp.set_cell(
+            self.ws1, f"{var.letters[col]}3", "Linear model", alignment=var.center
+        )
         self.ws1.merge_cells(f"{var.letters[col]}3:{var.letters[col+1]}3")
-        self.ws1[f"{var.letters[col]}4"] = "m"
-        self.ws1[f"{var.letters[col+1]}4"] = "b"
+        hp.set_cell(self.ws1, f"{var.letters[col]}4", "m")
+        hp.set_cell(self.ws1, f"{var.letters[col+1]}4", "b")
         self.get_linear("Date", "Revenue")
         self.get_linear("Revenue", "Cost of Revenue")
         self.get_sum("Gross Profit", "Revenue", [], ["Cost of Revenue"])
@@ -378,10 +370,13 @@ class CreateExcelFA:
         rer = self.title_to_row("Retained Earnings")
         nir = self.title_to_row("Net Income")
         for i in range(self.len_pred):
-            self.ws1[
-                f"{var.letters[col+i]}{rer}"
-            ] = f"={var.letters[col+i]}{nir}+{var.letters[col+i-1]}{rer}"
-            self.ws1[f"{var.letters[col+i]}{rer}"].number_format = var.fmt_acct
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col+i]}{rer}",
+                f"={var.letters[col+i]}{nir}+{var.letters[col+i-1]}{rer}",
+                num_form=var.fmt_acct,
+            )
+
         self.get_linear("Revenue", "Comprehensive Income")
         self.get_sum(
             "Shareholders' Equity",
@@ -407,113 +402,150 @@ class CreateExcelFA:
         c2 = var.letters[self.len_data + 4]
         c3 = var.letters[self.len_data + 5]
         for i in range(self.len_pred):
-            self.ws2[
-                f"{var.letters[1+i]}4"
-            ] = f"=Financials!{var.letters[1+i+self.len_data]}4"
-            self.ws2[f"{var.letters[1+i]}4"].font = var.bold_font
-            self.ws2[
-                f"{var.letters[1+i]}5"
-            ] = f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Net Income')}"
-            self.ws2[f"{var.letters[1+i]}5"].number_format = var.fmt_acct
-            self.ws2[f"{var.letters[1+i]}6"] = (
-                f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Current Assets')}"
-                f"-Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Assets')}"
-                f"-Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Current Liabilities')}"
-                f"+Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Liabilities')}"
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+i]}4",
+                f"=Financials!{var.letters[1+i+self.len_data]}4",
+                font=var.bold_font,
             )
-            self.ws2[f"{var.letters[1+i]}6"].number_format = var.fmt_acct
-            self.ws2[f"{var.letters[1+i]}7"] = (
-                f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Long-Term Assets')}"
-                f"-Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Long-Term Assets')}"
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+i]}5",
+                f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Net Income')}",
+                num_form=var.fmt_acct,
             )
-            self.ws2[f"{var.letters[1+i]}7"].number_format = var.fmt_acct
-            self.ws2[
-                f"{var.letters[1+i]}8"
-            ] = f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Preferred Dividends')}"
-            self.ws2[f"{var.letters[1+i]}8"].number_format = var.fmt_acct
-            self.ws2[
-                f"{var.letters[1+i]}9"
-            ] = f"={var.letters[1+i]}5-{var.letters[1+i]}6-{var.letters[1+i]}7-{var.letters[1+i]}8"
-            self.ws2[f"{var.letters[1+i]}9"].number_format = var.fmt_acct
-            self.ws2[f"{var.letters[1+i]}9"].font = var.bold_font
-            self.ws2[f"{var.letters[1+i]}9"].border = var.thin_border_top
-
-        self.ws2[f"{var.letters[1+self.len_pred]}9"] = (
-            f"=({var.letters[self.len_pred]}9*(1+{c2}" f"{r+6}))/({c2}{r+4}-{c2}{r+6})"
-        )
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+i]}6",
+                (
+                    f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Current Assets')}"
+                    f"-Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Assets')}"
+                    f"-Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Current Liabilities')}"
+                    f"+Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Liabilities')}"
+                ),
+                num_form=var.fmt_acct,
+            )
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+i]}7",
+                (
+                    f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Long-Term Assets')}"
+                    f"-Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Long-Term Assets')}"
+                ),
+                num_form=var.fmt_acct,
+            )
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+i]}8",
+                f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Preferred Dividends')}",
+                num_form=var.fmt_acct,
+            )
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+i]}9",
+                f"={var.letters[1+i]}5-{var.letters[1+i]}6-{var.letters[1+i]}7-{var.letters[1+i]}8",
+                num_form=var.fmt_acct,
+                font=var.bold_font,
+                border=var.thin_border_top,
+            )
+            hp.set_cell(
+                self.ws2,
+                f"{var.letters[1+self.len_pred]}9",
+                f"=({var.letters[self.len_pred]}9*(1+{c2}"
+                f"{r+6}))/({c2}{r+4}-{c2}{r+6})",
+            )
 
         self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
-        self.ws2[f"{c1}{r}"] = "Discount Rate"
-        self.ws2[f"{c1}{r}"].alignment = Alignment(horizontal="center")
-        self.ws2[f"{c1}{r+1}"] = "Risk Free Rate"
-        self.ws2[f"{c2}{r+1}"] = 0.02
-        self.ws2[f"{c2}{r+1}"].number_format = FORMAT_PERCENTAGE_00
-        self.ws2[f"{c3}{r+1}"] = "Eventually get from 10 year t-bond scraper"
-        self.ws2[f"{c1}{r+2}"] = "Market Rate"
-        self.ws2[f"{c2}{r+2}"] = 0.08
-        self.ws2[f"{c2}{r+2}"].number_format = FORMAT_PERCENTAGE_00
+        hp.set_cell(self.ws2, f"{c1}{r}", "Discount Rate", alignment=var.center)
+        hp.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
+        hp.set_cell(self.ws2, f"{c2}{r+1}", 0.02, num_form=FORMAT_PERCENTAGE_00)
+        hp.set_cell(
+            self.ws2, f"{c3}{r+1}", "Eventually get from 10 year t-bond scraper"
+        )
+        hp.set_cell(self.ws2, f"{c1}{r+2}", "Market Rate")
+        hp.set_cell(self.ws2, f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00)
         self.custom_exp(
             r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
         )
-        self.ws2[f"{c1}{r+3}"] = "Beta"
-        self.ws2[f"{c2}{r+3}"] = float(self.info["beta"])
+        hp.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
+        hp.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
         self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
-        self.ws2[f"{c1}{r+4}"] = "r"
-        self.ws2[f"{c2}{r+4}"] = f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}"
-        self.ws2[f"{c2}{r+4}"].number_format = FORMAT_PERCENTAGE_00
-        self.ws2[f"{c2}{r+4}"].border = var.thin_border_top
-        self.ws2[f"{c2}{r+4}"].font = var.bold_font
-        self.ws2[f"{c1}{r+6}"] = "Long Term Growth"
-        self.ws2[f"{c2}{r+6}"] = 0.04
-        self.ws2[f"{c2}{r+6}"].number_format = FORMAT_PERCENTAGE_00
-
-        self.ws2["A11"] = "Value from Operations"
-        self.ws2["B11"] = f"=NPV({c2}{r+4},B9:{var.letters[self.len_pred+1]}9)"
-        self.ws2["B11"].number_format = var.fmt_acct
-        self.ws2["A12"] = "Cash and Cash Equivalents"
-        self.ws2[
-            "B12"
-        ] = f"=financials!{var.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}"
-        self.ws2["B12"].number_format = var.fmt_acct
-        self.ws2["A13"] = "Intrinsic Value (sum)"
-        self.ws2["B13"] = "=B11+B12"
-        self.ws2["B13"].number_format = var.fmt_acct
-        self.ws2["A14"] = "Debt Obligations"
-        self.ws2[
-            "B14"
-        ] = f"=financials!{var.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}"
-        self.ws2["B14"].number_format = var.fmt_acct
-        self.ws2["A15"] = "Firm value without debt"
-        self.ws2["B15"] = "=B13-B14"
-        self.ws2["B15"].number_format = var.fmt_acct
-        self.ws2["A16"] = "Shares Outstanding"
-        self.ws2["B16"] = int(self.info["sharesOutstanding"])
-        self.ws2["A17"] = "Shares Price"
-        self.ws2["B17"] = f"=(B15*{self.rounding})/B16"
-        self.ws2["B17"].number_format = var.fmt_acct
+        hp.set_cell(self.ws2, f"{c1}{r+4}", "r")
+        hp.set_cell(
+            self.ws2,
+            f"{c2}{r+4}",
+            f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}",
+            num_form=FORMAT_PERCENTAGE_00,
+            border=var.thin_border_top,
+            font=var.bold_font,
+        )
+        hp.set_cell(self.ws2, f"{c1}{r+6}", "Long Term Growth")
+        hp.set_cell(self.ws2, f"{c2}{r+6}", 0.04, num_form=FORMAT_PERCENTAGE_00)
+        hp.set_cell(self.ws2, "A11", "Value from Operations")
+        hp.set_cell(
+            self.ws2,
+            "B11",
+            f"=NPV({c2}{r+4},B9:{var.letters[self.len_pred+1]}9)",
+            num_form=var.fmt_acct,
+        )
+        hp.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
+        hp.set_cell(
+            self.ws2,
+            "B12",
+            f"=financials!{var.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
+            num_form=var.fmt_acct,
+        )
+        hp.set_cell(self.ws2, "A13", "Intrinsic Value (sum)")
+        hp.set_cell(self.ws2, "B13", "=B11+B12", num_form=var.fmt_acct)
+        hp.set_cell(self.ws2, "A14", "Debt Obligations")
+        hp.set_cell(
+            self.ws2,
+            "B14",
+            f"=financials!{var.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
+            num_form=var.fmt_acct,
+        )
+        hp.set_cell(self.ws2, "A15", "Firm value without debt")
+        hp.set_cell(self.ws2, "B15", "=B13-B14", num_form=var.fmt_acct)
+        hp.set_cell(self.ws2, "A16", "Shares Outstanding")
+        hp.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
+        hp.set_cell(self.ws2, "A17", "Shares Price")
+        hp.set_cell(
+            self.ws2, "B17", f"=(B15*{self.rounding})/B16", num_form=var.fmt_acct
+        )
 
     def create_header(self, ws: Workbook):
-        for cell in ws["A1:J1"][0]:
-            cell.border = var.thin_border
+        for i in range(10):
+            hp.set_cell(ws, f"{var.letters[i]}1", border=var.thin_border)
+
         ws.merge_cells("A1:J1")
-        ws["A1"] = f"Gamestonk Terminal Analysis: {self.ticker.upper()}"
-        ws["A1"].font = Font(color="04cca8", size=20)
-        ws["A1"].border = var.thin_border
-        ws["A1"].alignment = Alignment(horizontal="center")
-        ws["A2"] = f"DCF for {self.ticker} generated on {self.now}"
+        hp.set_cell(
+            ws,
+            "A1",
+            f"Gamestonk Terminal Analysis: {self.ticker.upper()}",
+            font=Font(color="04cca8", size=20),
+            border=var.thin_border,
+            alignment=var.center,
+        )
+        hp.set_cell(ws, "A2", f"DCF for {self.ticker} generated on {self.now}")
 
     def run_audit(self):
         start = 67
         for i, value in enumerate(var.sum_rows):
-            self.ws1[f"A{start + i}"] = value
+            hp.set_cell(self.ws1, f"A{start + i}", value)
 
         self.ws1.merge_cells(f"A{start-2}:K{start-2}")
-        self.ws1[f"A{start - 2}"].font = Font(color="FF0000")
-        self.ws1[f"A{start - 2}"].alignment = Alignment(horizontal="center")
-        self.ws1[f"A{start - 2}"] = "Financial Statement Audit"
-        self.ws1[
-            f"A{start - 1}"
-        ] = "This report ensures data integrity. Numbers should be 0 (there may be a slight difference due to rounding)."
+        hp.set_cell(
+            self.ws1,
+            f"A{start - 2}",
+            "Financial Statement Audit",
+            font=Font(color="FF0000"),
+            alignment=var.center,
+        )
+        hp.set_cell(
+            self.ws1,
+            f"A{start - 1}",
+            "Audit ensures data integrity. Numbers should be 0 (with slight rounding difference).",
+        )
 
         self.get_sum(start, "Revenue", [], ["Cost of Revenue", "Gross Profit"], True)
         self.get_sum(
@@ -653,7 +685,7 @@ class CreateExcelFA:
             x_df.columns.to_numpy() if x_ind == "Date" else x_df.loc[x_ind].to_numpy()
         )
 
-        vfunc = np.vectorize(string_float)
+        vfunc = np.vectorize(hp.string_float)
         pre_x = vfunc(pre_x)
 
         if x_ind == "Date":
@@ -683,14 +715,24 @@ class CreateExcelFA:
         )
 
         col = self.len_pred + self.len_data + 3
-        self.ws1[f"{var.letters[col]}{row1}"] = float(model.coef_)
-        self.ws1[f"{var.letters[col+1]}{row1}"] = float(model.intercept_)
-        self.ws1[f"{var.letters[col+2]}{row1}"] = var.letters[self.letter]
-        self.ws1[f"{var.letters[col+2]}{row1}"].font = Font(color="FF0000")
-        self.ws3[f"A{self.letter+4}"] = var.letters[self.letter]
-        self.ws3[f"B{self.letter+4}"] = (
-            f"The correlation between {x_ind.lower()} and {y_ind.lower()}"
-            f" is {strength} with a correlation coefficient of {r:.4f}."
+        hp.set_cell(self.ws1, f"{var.letters[col]}{row1}", float(model.coef_))
+        hp.set_cell(self.ws1, f"{var.letters[col+1]}{row1}", float(model.intercept_))
+        hp.set_cell(
+            self.ws1,
+            f"{var.letters[col+2]}{row1}",
+            var.letters[self.letter],
+            font=var.red,
+        )
+        hp.set_cell(
+            self.ws3, f"A{self.letter+4}", var.letters[self.letter], font=var.red
+        )
+        hp.set_cell(
+            self.ws3,
+            f"B{self.letter+4}",
+            (
+                f"The correlation between {x_ind.lower()} and {y_ind.lower()}"
+                f" is {strength} with a correlation coefficient of {r:.4f}."
+            ),
         )
 
         col = self.len_data + 1
@@ -710,11 +752,12 @@ class CreateExcelFA:
                     f"({var.letters[col+i]}{row_n}*{var.letters[col+self.len_pred+2]}{row1})"
                     f"+{var.letters[col+self.len_pred+3]}{row1}"
                 )
-
-            self.ws1[f"{var.letters[col+i]}{row1}"] = (
-                f"=max({base},0)" if no_neg else f"={base}"
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col+i]}{row1}",
+                f"=max({base},0)" if no_neg else f"={base}",
+                num_form=var.fmt_acct,
             )
-            self.ws1[f"{var.letters[col+i]}{row1}"].number_format = var.fmt_acct
 
         self.letter += 1
 
@@ -735,8 +778,12 @@ class CreateExcelFA:
             for item in subtracts:
                 sum_formula += f"-{var.letters[col+i]}{self.title_to_row(item)}"
             rowI = row if isinstance(row, int) else self.title_to_row(row)
-            self.ws1[f"{var.letters[col+i]}{rowI}"] = sum_formula
-            self.ws1[f"{var.letters[col+i]}{rowI}"].number_format = var.fmt_acct
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col+i]}{rowI}",
+                sum_formula,
+                num_form=var.fmt_acct,
+            )
         if text:
             self.custom_exp(row, text)
 
@@ -765,12 +812,19 @@ class CreateExcelFA:
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)
             col = self.len_pred + self.len_data + 3
-            self.ws1[f"{var.letters[col+2]}{rowT}"] = var.letters[self.letter]
-            self.ws1[f"{var.letters[col+2]}{rowT}"].font = Font(color="FF0000")
+            hp.set_cell(
+                self.ws1,
+                f"{var.letters[col+2]}{rowT}",
+                var.letters[self.letter],
+                font=var.red,
+            )
         if ws == 2:
-            self.ws2[f"{column}{row}"] = var.letters[self.letter]
-            self.ws2[f"{column}{row}"].font = Font(color="FF0000")
+            hp.set_cell(
+                self.ws2, f"{column}{row}", var.letters[self.letter], font=var.red
+            )
 
-        self.ws3[f"A{self.letter+4}"] = var.letters[self.letter]
-        self.ws3[f"B{self.letter+4}"] = text
+        hp.set_cell(
+            self.ws3, f"A{self.letter+4}", var.letters[self.letter], font=var.red
+        )
+        hp.set_cell(self.ws3, f"B{self.letter+4}", text)
         self.letter += 1

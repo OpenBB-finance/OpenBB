@@ -1,4 +1,4 @@
-from openpyxl.styles import Border, Side, Font
+from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 
 letters = [
     "A",
@@ -199,6 +199,12 @@ thin_border = Border(
     top=Side(style="thin"),
     bottom=Side(style="thin"),
 )
+
+green_bg = PatternFill(fgColor="7fe5cd", fill_type="solid")
+
+center = Alignment(horizontal="center")
+
+red = Font(color="FF0000")
 
 fmt_acct = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* -_0_0_);_(@"
 
