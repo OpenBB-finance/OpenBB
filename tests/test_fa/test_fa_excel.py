@@ -1,16 +1,17 @@
+""" fundamental_analysis/dcf_model.py tests """
 from unittest import TestCase
 
 import vcr
 
-from gamestonk_terminal.stocks.fundamental_analysis.excel.main import CreateExcelFA
+from gamestonk_terminal.stocks.fundamental_analysis.dcf_model import CreateExcelFA
 import gamestonk_terminal.stocks.fundamental_analysis.excel.variables as var
 
 
 class TestExcelClass(TestCase):
-    @vcr.use_cassette("tests/cassettes/test_covers_all_tickers.yaml")
+    @vcr.use_cassette("tests/cassettes/test_fa/test_covers_all_tickers.yaml")
     def test_covers_all_tickers(self):
         for ticker in var.tickers:
-            excel = CreateExcelFA(ticker, False)
+            excel = CreateExcelFA(ticker, False, False)
             df_is = excel.get_data("IS", 1, True)
             items_is = var.non_gaap_is + var.gaap_is
             for item in df_is.index:

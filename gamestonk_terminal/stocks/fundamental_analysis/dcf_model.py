@@ -1,17 +1,15 @@
-"""
-Known issues:
--The statement of cash flows provided does not tie out.
-This is an issue with data from the website and does not affect my calculations.
-"""
+""" DCF Model """
+__docformat__ = "numpy"
 
-from datetime import datetime
-import math
 from typing import List, Union
+from datetime import datetime
 import argparse
+import math
+import os
 
-from openpyxl.styles import Font
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from openpyxl import Workbook, worksheet
+from openpyxl.styles import Font
 from sklearn.linear_model import LinearRegression
 from bs4 import BeautifulSoup
 import yfinance as yf
@@ -26,7 +24,7 @@ from gamestonk_terminal.stocks.fundamental_analysis.excel import helper as hp
 int_or_str = Union[int, str]
 
 
-def excel(other_args: List[str], ticker: str):
+def dcf(other_args: List[str], ticker: str):
     """Discounted cash flow
 
     Parameters
@@ -39,7 +37,7 @@ def excel(other_args: List[str], ticker: str):
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="excel",
+        prog="dcf",
         description="""
             Generates a completed discounted cash flow statement. The statement uses machine
              learning to predict the future financial statement, and then predicts the future
@@ -53,14 +51,22 @@ def excel(other_args: List[str], ticker: str):
         default=False,
         help="Confirms that the numbers provided are accurate.",
     )
+    parser.add_argument(
+        "-s",
+        "--save",
+        action="store_true",
+        dest="save",
+        default=False,
+        help="Saves the excel in exports/excel.",
+    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        excel_view = CreateExcelFA(ticker, ns_parser.audit)
-        excel_view.create_workbook()
+        dcf_view = CreateExcelFA(ticker, ns_parser.audit, ns_parser.save)
+        dcf_view.create_workbook()
 
     except Exception as e:
         print(e, "\n")
@@ -70,11 +76,10 @@ class CreateExcelFA:
 
     # pylint: disable=R0902
     # pylint: disable=R0912
-    # Pylint is mad because I have too many class attributes and methods.
-    # If a reviewer thinks I need to refactor please let me know.
 
-    def __init__(self, ticker: str, audit: bool):
+    def __init__(self, ticker: str, audit: bool, save: bool):
         self.audit: bool = audit
+        self.save: bool = save
         self.wb: Workbook = Workbook()
         self.ws1: worksheet = self.wb.active
         self.ws2: worksheet = self.wb.create_sheet("Free Cash Flows")
@@ -111,7 +116,15 @@ class CreateExcelFA:
         self.create_dcf()
         if self.audit:
             self.run_audit()
-        self.wb.save("../" + f"{self.ticker}-{self.now}" + ".xlsx")
+        if self.save:
+            export_dir = "/".join(
+                os.path.dirname(os.path.abspath(__file__)).split("/")[:-2]
+            )
+            full_path = os.path.abspath(
+                os.path.join(export_dir, f"exports/excel/{self.ticker}-{self.now}.xlsx")
+            )
+            self.wb.save(full_path)
+        return self.wb
 
     def get_data(self, statement: str, row: int, header: bool):
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
@@ -128,9 +141,10 @@ class CreateExcelFA:
             ignores = var.non_gaap_is
 
         r = requests.get(URL, headers=var.headers)
+
         if "404 - Page Not Found" in r.text:
             raise ValueError("The ticker given is not in the stock analysis website.")
-        soup = BeautifulSoup(r.content, "lxml")
+        soup = BeautifulSoup(r.content, "html.parser")
 
         table = soup.find(
             "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
@@ -517,6 +531,8 @@ class CreateExcelFA:
         hp.set_cell(
             self.ws2, "B17", f"=(B15*{self.rounding})/B16", num_form=var.fmt_acct
         )
+        hp.set_cell(self.ws2, "A18", "Actual Price")
+        hp.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
 
     def create_header(self, ws: Workbook):
         for i in range(10):

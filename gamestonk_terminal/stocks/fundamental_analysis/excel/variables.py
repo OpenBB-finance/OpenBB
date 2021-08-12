@@ -1,3 +1,6 @@
+""" Excel Helpful Variables """
+__docformat__ = "numpy"
+
 from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 
 letters = [

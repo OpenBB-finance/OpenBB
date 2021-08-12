@@ -1,3 +1,6 @@
+""" Excel Helper Functions """
+__docformat__ = "numpy"
+
 from typing import List, Union
 
 import pandas as pd
@@ -7,10 +10,12 @@ opts = Union[int, str, float]
 
 
 def string_float(string: str):
+    """Numpy vectorize function to convert strings to floats"""
     return float(string.replace(",", ""))
 
 
 def insert_row(name: str, index: str, df: pd.DataFrame, row_value: List[str]):
+    """Allows a row to be inserted after a given row in a pandas dataframe"""
     pd.options.mode.chained_assignment = None
     if name not in df.index:
         row_number = df.index.get_loc(index) + 1
@@ -32,7 +37,7 @@ def set_cell(
     alignment: str = None,
     num_form: str = None,
 ):
-    # Could I add kwargs here and somehow make the if statement more dynamic to simplify the code?
+    """Sets the value of the cell to given text and formats based on specified arguments"""
     ws[cell] = text
     if font:
         ws[cell].font = font
