@@ -6,7 +6,7 @@ This is an issue with data from the website and does not affect my calculations.
 
 from datetime import datetime
 import math
-from typing import List, Literal, Union
+from typing import List, Union
 import argparse
 
 from openpyxl.styles import Font
@@ -23,7 +23,6 @@ import gamestonk_terminal.stocks.fundamental_analysis.excel.variables as var
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.stocks.fundamental_analysis.excel import helper as hp
 
-stmt = Literal["IS", "BS", "CF"]
 int_or_str = Union[int, str]
 
 
@@ -55,16 +54,16 @@ def excel(other_args: List[str], ticker: str):
         help="Confirms that the numbers provided are accurate.",
     )
 
-    # try:
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    excel_view = CreateExcelFA(ticker, ns_parser.audit)
-    excel_view.create_workbook()
+        excel_view = CreateExcelFA(ticker, ns_parser.audit)
+        excel_view.create_workbook()
 
-    # except Exception as e:
-    # print(e, "\n")
+    except Exception as e:
+        print(e, "\n")
 
 
 class CreateExcelFA:
@@ -114,7 +113,7 @@ class CreateExcelFA:
             self.run_audit()
         self.wb.save("../" + f"{self.ticker}-{self.now}" + ".xlsx")
 
-    def get_data(self, statement: stmt, row: int, header: bool):
+    def get_data(self, statement: str, row: int, header: bool):
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
         if statement == "BS":
             URL += "balance-sheet/"

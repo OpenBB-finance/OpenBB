@@ -1042,38 +1042,38 @@ def events(coin_id: str, other_args: List[str]):
         default=False,
     )
 
-    # try:
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    df = paprika.get_coin_events_by_id(coin_id)
+        df = paprika.get_coin_events_by_id(coin_id)
 
-    if df.empty:
-        print(f"Couldn't find any events for coin {coin_id}")
-        print("")
-        return
+        if df.empty:
+            print(f"Couldn't find any events for coin {coin_id}")
+            print("")
+            return
 
-    df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
+        df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
 
-    if ns_parser.links is True:
-        df = df[["date", "name", "link"]]
-    else:
-        df.drop("link", axis=1, inplace=True)
+        if ns_parser.links is True:
+            df = df[["date", "name", "link"]]
+        else:
+            df.drop("link", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(ns_parser.top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
+        print(
+            tabulate(
+                df.head(ns_parser.top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
         )
-    )
-    print("")
+        print("")
 
-    # except Exception as e:
-    # print(e, "\n")
+    except Exception as e:
+        print(e, "\n")
 
 
 def exchanges(coin_id: str, other_args: List[str]):
