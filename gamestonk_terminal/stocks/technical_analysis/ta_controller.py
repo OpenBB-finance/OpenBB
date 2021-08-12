@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
     finviz_view,
@@ -79,53 +79,48 @@ class TechnicalAnalysisController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
-            "/stocks/technical_analysis"
-        )
-        s_intraday = (f"Intraday {self.interval }", "Daily")[self.interval == "1440min"]
-
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            print(
-                f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+            str1 = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{s_intraday} Stock: {self.ticker}")
+            str1 = f"\n{s_intraday} Stock: {self.ticker}"
 
-        print("\nTechnical Analysis:")
-        print("   cls         clear screen")
-        print("   ?/help      show this menu again")
-        print("   q           quit this menu, and shows back to main menu")
-        print("   quit        quit to abandon program")
-        print("")
-        print("   view        view historical data and trendlines [Finviz]")
-        print("   summary     technical summary report [FinBrain API]")
-        print(
-            "   recom       recommendation based on Technical Indicators [Tradingview API]"
-        )
-        print("   pr          pattern recognition [Finnhub]")
-        print("")
-        print("overlap:")
-        print("   ema         exponential moving average")
-        print("   sma         simple moving average")
-        print("   vwap        volume weighted average price")
-        print("momentum:")
-        print("   cci         commodity channel index")
-        print("   macd        moving average convergence/divergence")
-        print("   rsi         relative strength index")
-        print("   stoch       stochastic oscillator")
-        print("   fisher      fisher transform")
-        print("trend:")
-        print("   adx         average directional movement index")
-        print("   aroon       aroon indicator")
-        print("volatility:")
-        print("   bbands      bollinger bands")
-        print("volume:")
-        print("   ad          accumulation/distribution line values")
-        print("   obv         on balance volume")
-        print("custom:")
-        print("   fib         fibonacci retracement")
-        print("")
+        help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/technical_analysis
+{str1}
+
+Technical Analysis:
+    cls         clear screen
+    help        show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon program
+
+    view        view historical data and trendlines [Finviz]
+    summary     technical summary report [FinBrain API]
+    recom       recommendation based on Technical Indicators [Tradingview API]
+    pr          pattern recognition [Finnhub]
+
+overlap:
+    ema         exponential moving average
+    sma         simple moving average
+    vwap        volume weighted average price
+momentum:
+    cci         commodity channel index
+    macd        moving average convergence/divergence
+    rsi         relative strength index
+    stoch       stochastic oscillator
+    fisher      fisher transform
+trend:
+    adx         average directional movement index
+    aroon       aroon indicator
+volatility:
+    bbands      bollinger bands
+volume:
+    ad          accumulation/distribution line values
+    obv         on balance volume
+custom:
+    fib         fibonacci retracement
+"""
+        print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -174,19 +169,141 @@ class TechnicalAnalysisController:
     # SPECIFIC
     def call_view(self, other_args: List[str]):
         """Process view command"""
-        finviz_view.view(other_args, self.ticker)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="view",
+            description="""
+            View historical price with trendlines. [Source: Finviz]
+        """,
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
-        finbrain_view.technical_summary_report(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="summary",
+            description="""
+            Technical summary report provided by FinBrain's API.
+            FinBrain Technologies develops deep learning algorithms for financial analysis
+            and prediction, which currently serves traders from more than 150 countries
+            all around the world. [Source:  https://finbrain.tech]
+        """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finbrain_view.technical_summary_report(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
-        tradingview_view.print_recommendation(other_args, self.ticker)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="recom",
+            description="""
+            Print tradingview recommendation based on technical indicators.
+            [Source: https://pypi.org/project/tradingview-ta/]
+        """,
+        )
+        parser.add_argument(
+            "-s",
+            "--screener",
+            action="store",
+            dest="screener",
+            type=str,
+            default="america",
+            choices=["crypto", "forex", "cfd"],
+            help="Screener. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            action="store",
+            dest="exchange",
+            type=str,
+            default="",
+            help="""Set exchange. For Forex use: 'FX_IDC', and for crypto use 'TVC'.
+            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html.
+            By default Alpha Vantage tries to get this data from the ticker. """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=str,
+            default="",
+            choices=["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"],
+            help="""Interval, that corresponds to the recommendation given by tradingview based on technical indicators.
+            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html""",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            tradingview_view.print_recommendation(
+                ticker=self.ticker,
+                screener=ns_parser.screener,
+                exchange=ns_parser.exchange,
+                interval=ns_parser.interval,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_pr(self, other_args: List[str]):
         """Process pr command"""
-        finnhub_view.pattern_recognition_view(other_args, self.ticker)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pr",
+            description="""
+            Display pattern recognition signals on the data. [Source: https://finnhub.io]
+        """,
+        )
+        parser.add_argument(
+            "-r",
+            "--resolution",
+            action="store",
+            dest="resolution",
+            type=str,
+            default="D",
+            choices=["1", "5", "15", "30", "60", "D", "W", "M"],
+            help="Plot resolution to look for pattern signals",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.plot_pattern_recognition(
+                ticker=self.ticker, resolution=ns_parser.resolution
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     # COMMON
     def call_ema(self, other_args: List[str]):
