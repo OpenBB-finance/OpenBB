@@ -18,7 +18,9 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     etf_names: List[str]
         List of all available etf names
     """
-    r = requests.get("https://api.stockanalysis.com/etf/")
+    r = requests.get(
+        "https://api.stockanalysis.com/etf/", headers={"User-Agent": "Mozilla/5.0"}
+    )
     soup = bs(r.text, "html.parser").findAll("ul", {"class": "no-spacing"})
     all_links = soup[0].findAll("li")
     etf_symbols = []
@@ -43,7 +45,10 @@ def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
     df : pd.DataFrame
         Dataframe of stock overview data
     """
-    r = requests.get(f"https://stockanalysis.com/etf/{etf_symbol}")
+    r = requests.get(
+        f"https://stockanalysis.com/etf/{etf_symbol}",
+        headers={"User-Agent": "Mozilla/5.0"},
+    )
     soup = bs(r.text, "html.parser")  # %%
     tables = soup.findAll("table")
     texts = []
@@ -75,7 +80,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
     """
 
     link = f"https://api.stockanalysis.com/etf/{symbol}/holdings/"
-    r = requests.get(link)
+    r = requests.get(link, headers={"User-Agent": "Mozilla/5.0"})
     soup = bs(r.text, "html.parser")
     soup = soup.find("table")
     tds = soup.findAll("td")
