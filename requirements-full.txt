@@ -225,6 +225,7 @@ urllib3==1.26.6; python_version >= "3.6" and python_full_version < "3.0.0" or py
 user-agent==0.1.9
 vadersentiment==3.3.2
 valinvest==0.0.2; python_version >= "3.6"
+vcrpy==4.1.1; python_version >= "3.5"
 wcwidth==0.2.5; python_version >= "3.6" and python_full_version >= "3.6.1"
 webencodings==0.5.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 websocket-client==1.1.0; python_version >= "3.6" and python_version < "4.0"
