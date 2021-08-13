@@ -45,6 +45,7 @@ class TechnicalAnalysisController:
         "ema",
         "sma",
         "vwap",
+        "zlma",
         "cci",
         "macd",
         "rsi",
@@ -56,6 +57,7 @@ class TechnicalAnalysisController:
         "ad",
         "obv",
         "fib",
+        "cg",
     ]
 
     def __init__(
@@ -109,12 +111,14 @@ class TechnicalAnalysisController:
         print("   ema         exponential moving average")
         print("   sma         simple moving average")
         print("   vwap        volume weighted average price")
+        print("   zlma        zero lag moving average")
         print("momentum:")
         print("   cci         commodity channel index")
         print("   macd        moving average convergence/divergence")
         print("   rsi         relative strength index")
         print("   stoch       stochastic oscillator")
         print("   fisher      fisher transform")
+        print("   cg          centre of gravity")
         print("trend:")
         print("   adx         average directional movement index")
         print("   aroon       aroon indicator")
@@ -201,6 +205,10 @@ class TechnicalAnalysisController:
         """Process vwap command"""
         overlap.vwap(other_args, self.ticker, self.interval, self.stock)
 
+    def call_zlma(self, other_args: List[str]):
+        """Process zlma command"""
+        overlap.zlma(other_args, self.ticker, self.interval, self.stock)
+
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
         momentum.cci(other_args, self.ticker, self.interval, self.stock)
@@ -220,6 +228,10 @@ class TechnicalAnalysisController:
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
         momentum.fisher(other_args, self.ticker, self.interval, self.stock)
+
+    def call_cg(self, other_args: List[str]):
+        """Process cg command"""
+        momentum.cg(other_args, self.ticker, self.interval, self.stock)
 
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
