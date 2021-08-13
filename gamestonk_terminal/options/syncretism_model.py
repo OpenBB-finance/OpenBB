@@ -14,7 +14,7 @@ from gamestonk_terminal.options import yfinance_model
 def get_historical_greeks(
     ticker: str, expiry: str, chain_id: str, strike: float, put: bool
 ) -> pd.DataFrame:
-    """
+    """Get histoical option greeks
 
     Parameters
     ----------
@@ -34,7 +34,6 @@ def get_historical_greeks(
     df: pd.DataFrame
         Dataframe containing historical greeks
     """
-
     if not chain_id:
         options = yfinance_model.get_option_chain(ticker, expiry)
 

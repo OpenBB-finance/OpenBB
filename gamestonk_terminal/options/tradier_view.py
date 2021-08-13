@@ -193,9 +193,9 @@ def display_chains(
                 tablefmt="fancy_grid",
                 showindex=False,
                 floatfmt=".2f",
-            )
+            ),
+            "\n",
         )
-        print("")
 
 
 def plot_oi(
@@ -231,7 +231,7 @@ def plot_oi(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "tr_oi",
+        "oi_tr",
         options,
     )
     current_price = tradier_model.last_price(ticker)
@@ -338,7 +338,7 @@ def plot_vol(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "tr_vol",
+        "vol_tr",
         options,
     )
     current_price = tradier_model.last_price(ticker)
@@ -432,7 +432,7 @@ def plot_volume_open_interest(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "tr_voi",
+        "voi_tr",
         options,
     )
 
@@ -625,7 +625,7 @@ def display_historical(
     )
 
     if raw:
-        print(df_hist)
+        print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
 
     op_type = ["call", "put"][put]
 

@@ -29,7 +29,7 @@ def view_available_presets(preset: str, presets_path: str):
     if preset:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(presets_path + preset + ".ini")
+        preset_filter.read(os.path.join(presets_path, preset + ".ini"))
         filters_headers = ["FILTER"]
         print("")
 
@@ -52,7 +52,7 @@ def view_available_presets(preset: str, presets_path: str):
 
         for preset_i in presets:
             with open(
-                presets_path + preset_i + ".ini",
+                os.path.join(presets_path, preset + ".ini"),
                 encoding="utf8",
             ) as f:
                 description = ""
@@ -79,9 +79,7 @@ def view_screener_output(preset: str, presets_path: str, n_show: int, export: st
     export: str
         Format for export file
     """
-
     df_res, error_msg = syncretism_model.get_screener_output(preset, presets_path)
-
     if error_msg:
         print(error_msg, "\n")
         return
@@ -95,6 +93,7 @@ def view_screener_output(preset: str, presets_path: str, n_show: int, export: st
 
     if n_show > 0:
         df_res = df_res.sample(n_show)
+
     print(
         tabulate(
             df_res,
@@ -106,6 +105,9 @@ def view_screener_output(preset: str, presets_path: str, n_show: int, export: st
     )
 
 
+# pylint:disable=too-many-arguments
+
+
 def view_historical_greeks(
     ticker: str,
     expiry: str,
@@ -114,6 +116,7 @@ def view_historical_greeks(
     chain_id: str,
     put: bool,
     raw: bool,
+    n_show: int,
     export: str,
 ):
     """Plots historical greeks for a given option
@@ -133,15 +136,17 @@ def view_historical_greeks(
     put: bool
         Is this a put option?
     raw: bool
-        Print 20 rows to console
+        Print to console
+    n_show: int
+        Number of rows to show in raw
     export: str
         Format to export data
     """
-
     df = syncretism_model.get_historical_greeks(ticker, expiry, chain_id, strike, put)
 
     if raw:
-        print(df.tail(20))
+        print(tabulate(df.tail(n_show), headers=df.columns, tablefmt="fancy_grid"))
+
     if export:
         export_data(
             export,
