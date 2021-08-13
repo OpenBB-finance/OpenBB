@@ -294,6 +294,8 @@ Wall St. Journal:
 
     def call_screener(self, other_args):
         """Process screener command"""
+        # TODO: Change presets to use view/set like in stocks/options
+
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="screener",
