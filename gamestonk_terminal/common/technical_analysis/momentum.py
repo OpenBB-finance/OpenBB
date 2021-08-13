@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from typing import List
 
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 import pandas as pd
@@ -677,6 +678,113 @@ def fisher(
 
         ax2.set_yticks([-2, 0, 2])
         ax2.set_yticklabels(["-2 STDEV", "0", "+2 STDEV"])
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
+
+        plt.legend()
+        plt.show()
+
+        print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def cg(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Centre of Gravity
+
+    Parameters
+    ----------
+    other_args:List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Stock time interval
+    df_stock: pd.DataFrame
+        Dataframe of prices
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="cg",
+        description="""
+            The Center of Gravity indicator, also known as the COD indicator in short,
+            is a useful feature that enables traders to look into the concurrent price
+            fluctuations and try to predict the upcoming ones. According to the main
+            function of the Center of Gravity indicator explained by John Ehlers, traders
+            who use it will be able to closely speculate the upcoming price change of the asset.
+        """,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--length",
+        action="store",
+        dest="n_length",
+        type=check_positive,
+        default=14,
+        help="length",
+    )
+    parser.add_argument(
+        "-o",
+        "--offset",
+        action="store",
+        dest="n_offset",
+        type=check_positive,
+        default=0,
+        help="offset",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.cg(
+                close=df_stock["Adj Close"],
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        # Intraday
+        else:
+            df_ta = ta.cg(
+                close=df_stock["Close"],
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+        ax = axes[0]
+        ax.set_title(f"{s_ticker} Centre of Gravity")
+        if s_interval == "1440min":
+            ax.plot(df_stock.index, df_stock["Adj Close"].values, "k", lw=1)
+        else:
+            ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=1)
+        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax.set_ylabel("Share Price ($)")
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.minorticks_on()
+        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        ax2 = axes[1]
+        ax2.plot(df_ta.index, df_ta.values, "b", lw=2, label="CG")
+        # shift cg 1 bar forward for signal
+        signal = df_ta.values
+        signal = np.roll(signal, 1)
+        ax2.plot(df_ta.index, signal, "g", lw=1, label="Signal")
+
+        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
+        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax2.minorticks_on()
+        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
