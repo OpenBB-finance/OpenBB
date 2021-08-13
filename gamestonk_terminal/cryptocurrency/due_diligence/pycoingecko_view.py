@@ -43,7 +43,7 @@ def load(other_args: List[str]):
     parser.add_argument(
         "-c",
         "--coin",
-        required=True,
+        required="-h" not in other_args,
         type=str,
         dest="coin",
         help="Coin to load data for (symbol or coin id). You can use either symbol of the coin or coinId"
@@ -195,7 +195,13 @@ def load_ta_data(coin: gecko.Coin, other_args: List[str]) -> Tuple[pd.DataFrame,
             return pd.DataFrame(), ""
 
         df = coin.get_coin_market_chart(ns_parser.vs, ns_parser.days)
-        df = df[["price"]].rename(columns={"price": "Close"})
+        df = df["price"].resample("1D").ohlc().ffill()
+        df.columns = [
+            "Open",
+            "High",
+            "Low",
+            "Close",
+        ]
         df.index.name = "date"
         return df, ns_parser.vs
 
@@ -397,11 +403,7 @@ def ath(coin: gecko.Coin, other_args: List[str]):
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="ath",
-        description="""All time high data for loaded coin. You can find there most important metrics regarding
-                    ath of coin price like:
-                    current_price_btc, current_price_eth, current_price_usd, ath_btc, ath_eth, ath_usd,
-                    ath_date_btc, ath_date_eth, ath_date_usd, ath_change_percentage_btc, ath_change_percentage_btc,
-                    ath_change_percentage_eth, ath_change_percentage_usd""",
+        description="""All time high data for loaded coin""",
     )
 
     try:
@@ -441,13 +443,7 @@ def atl(coin: gecko.Coin, other_args: List[str]):
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="atl",
-        description="""
-                        All time low data for loaded coin. You can find there most important metrics regarding
-                        atl of coin price like:
-                        current_price_btc,  ,current_price_eth, current_price_usd, atl_btc, atl_eth, atl_usd,
-                        atl_date_btc, atl_date_eth, atl_date_usd, atl_change_percentage_btc, atl_change_percentage_btc,
-                        atl_change_percentage_eth,  atl_change_percentage_usd
-                        """,
+        description="""All time low data for loaded coin""",
     )
 
     try:

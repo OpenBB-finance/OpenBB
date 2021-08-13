@@ -823,7 +823,7 @@ def find(other_args: List[str]):
         "--coin",
         help="Symbol Name or Id of Coin",
         dest="coin",
-        required=True,
+        required="-h" not in other_args,
         type=str,
     )
     parser.add_argument(

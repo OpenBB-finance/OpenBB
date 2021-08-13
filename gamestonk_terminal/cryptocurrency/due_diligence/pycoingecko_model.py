@@ -1,6 +1,7 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
+import regex as re
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
@@ -233,14 +234,20 @@ class Coin:
         -------
         pandas.DataFrame
         """
+        regx = r'<a href="(.+?)">|</a>'
+
         results = {}
         for attr in BASE_INFO:
             info_obj = self.coin.get(attr)
             if attr == "description":
                 info_obj = info_obj.get("en")
+                info_obj = re.sub(regx, "", info_obj)
+                info_obj = re.sub(r"\r\n\r\n", " ", info_obj)
             results[attr] = info_obj
         results.update(self._get_base_market_data_info())
-        return pd.Series(results).to_frame().reset_index()
+        df = pd.Series(results).to_frame().reset_index()
+        df.columns = ["Metric", "Value"]
+        return df[df["Value"].notna()]
 
     @property
     def market_data(self):

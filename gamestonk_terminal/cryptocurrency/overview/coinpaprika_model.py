@@ -29,8 +29,8 @@ def get_global_market() -> pd.DataFrame:
         if "date" in key:
             try:
                 global_markets[key] = parser.parse(date).strftime("%Y-%m-%d %H:%M:%S")
-            except (KeyError, ValueError, TypeError):
-                ...
+            except (KeyError, ValueError, TypeError) as e:
+                print(e)
     df = pd.Series(global_markets).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
     return df

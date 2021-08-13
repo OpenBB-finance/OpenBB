@@ -60,12 +60,13 @@ def load(
     )
 
     parser.add_argument(
+        "-s",
         "--source",
+        help="Source of data",
         dest="source",
-        choices=["cp", "cg", "bin"],
+        choices=("cp", "cg", "bin"),
         default="cg",
-        help="Source of data.",
-        type=str,
+        required=False,
     )
 
     try:
@@ -78,19 +79,24 @@ def load(
         if not ns_parser:
             return coin, None
 
+        source = ns_parser.source
         current_coin = ""  # type: Optional[Any]
 
-        if ns_parser.source == "cg":
+        for arg in ["--source", source]:
+            if arg in other_args:
+                other_args.remove(arg)
+
+        if source == "cg":
             current_coin = pycoingecko_model.Coin(ns_parser.coin)
-            return current_coin, ns_parser.source
+            return current_coin, source
 
-        if ns_parser.source == "bin":
-            current_coin = binance_view.load(other_args)
-            return current_coin, ns_parser.source
+        if source == "bin":
+            current_coin = binance_view.load(other_args=other_args)
+            return current_coin, source
 
-        if ns_parser.source == "cp":
-            current_coin = coinpaprika_view.load(other_args)
-            return current_coin, ns_parser.source
+        if source == "cp":
+            current_coin = coinpaprika_view.load(other_args=other_args)
+            return current_coin, source
 
         return current_coin, None
 
@@ -139,7 +145,7 @@ def find(other_args: List[str]):
         "--coin",
         help="Symbol Name or Id of Coin",
         dest="coin",
-        required=True,
+        required="-h" not in other_args,
         type=str,
     )
     parser.add_argument(
