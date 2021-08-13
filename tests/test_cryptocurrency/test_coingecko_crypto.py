@@ -1,7 +1,7 @@
 from unittest import mock, TestCase
 import json
-import sys
-import io
+
+import vcr
 
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
@@ -31,6 +31,7 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     top_defi_coins,
     top_dex,
     top_nft,
+    nft_of_the_day,
     nft_market_status,
     exchanges,
     platforms,
@@ -42,8 +43,7 @@ from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
     global_defi_info,
 )
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model import Coin
-
-# pylint: disable=unused-import
+from tests.helpers import check_print
 
 
 @mock.patch(
@@ -62,6 +62,7 @@ class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
     coin = get_bitcoin()
 
+    @check_print()
     def test_coin_api_load(self):
         """
         Mock load function through get_coin_market_chart_by_id.
@@ -71,6 +72,7 @@ class TestCoinGeckoAPI(TestCase):
         self.assertEqual(self.coin.coin_symbol, "bitcoin")
         self.assertIsInstance(self.coin, Coin)
 
+    @check_print()
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view.CoinGeckoAPI.get_coin_market_chart_by_id"
     )
@@ -89,6 +91,10 @@ class TestCoinGeckoAPI(TestCase):
         self.assertTrue(mock_return.shape == (722, 2))
         self.assertTrue(vs == "usd")
 
+    @check_print()
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_get_coins.yaml"
+    )
     def test_get_coins(self):
         """Test that pycoingecko retrieves the major coins"""
         coins = CoinGeckoAPI().get_coins()
@@ -97,279 +103,239 @@ class TestCoinGeckoAPI(TestCase):
         for test in test_coins:
             self.assertIn(test, bitcoin_list)
 
+    @check_print(assert_in="\n")
     @mock.patch("matplotlib.pyplot.show")
     def test_coin_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         chart(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertEqual("\n", capt)
 
+    @check_print(assert_in="asset_platform_id")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml"
+    )
     def test_coin_info(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         info(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("asset_platform_id", capt)
 
+    @check_print(assert_in="homepage")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml"
+    )
     def test_coin_web(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         web(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("homepage", capt)
 
+    @check_print(assert_in="telegram")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_social.yaml"
+    )
     def test_coin_social(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         social(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("telegram", capt)
 
+    @check_print(assert_in="forks")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_dev.yaml"
+    )
     def test_coin_dev(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dev(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("forks", capt)
 
+    @check_print(assert_in="ath_date_btc")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_ath.yaml"
+    )
     def test_coin_ath(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ath(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("ath_date_btc", capt)
 
+    @check_print(assert_in="atl_date_btc")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_atl.yaml"
+    )
     def test_coin_atl(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         atl(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("atl_date_btc", capt)
 
+    @check_print(assert_in="twitter_followers")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_score.yaml"
+    )
     def test_coin_score(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         score(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("twitter_followers", capt)
 
+    @check_print(assert_in="Metric")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_bc.yaml"
+    )
     def test_coin_bc(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         bc(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Metric", capt)
 
+    @check_print(assert_in="max_supply")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_market.yaml"
+    )
     def test_coin_market(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         market(self.coin, [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("max_supply", capt)
 
+    @check_print(assert_in="Total Bitcoin Holdings")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_overview.yaml"
+    )
     def test_coin_holdings_overview(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         holdings_overview([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Total Bitcoin Holdings", capt)
 
+    @check_print(assert_in="country")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_holding_comapnies.yaml"
+    )
     def test_coin_holdings_companies_list(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         holdings_companies_list([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("country", capt)
 
+    @check_print(assert_in="rank")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_gainers.yaml"
+    )
     def test_coin_gainers(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         gainers([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("rank", capt)
 
+    @check_print(assert_in="rank")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_losers.yaml"
+    )
     def test_coin_losers(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         losers([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("rank", capt)
 
+    @check_print(assert_in="CryptoBlades")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_discover.yaml"
+    )
     def test_coin_discover(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         discover("trending", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("CryptoBlades", capt)
 
+    @check_print(assert_in="author")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_news.yaml"
+    )
     def test_coin_news(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         news([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("author", capt)
 
+    @check_print(assert_in="Decentralized Finance")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_categories.yaml"
+    )
     def test_coin_categories(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         categories([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Decentralized Finance", capt)
 
+    @check_print(assert_in="rank")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_recently_added.yaml"
+    )
     def test_coin_recently_added(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         recently_added([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("rank", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_stablecoins.yaml"
+    )
     def test_coin_stablecoins(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         stablecoins([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_yfarms.yaml"
+    )
     def test_coin_yfarms(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         yfarms([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_volume_coins.yaml"
+    )
     def test_coin_top_volume_coins(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         top_volume_coins([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_defi_coins.yaml"
+    )
     def test_coin_top_defi_coins(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         top_defi_coins([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_dex.yaml"
+    )
     def test_coin_top_dex(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         top_dex([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_nft.yaml"
+    )
     def test_coin_top_nft(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         top_nft([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
-    # TODO: fix this test
-    # def test_coin_nft_of_the_day(self):
-    #    capturedOutput = io.StringIO()
-    #    sys.stdout = capturedOutput
-    #    nft_of_the_day([])
-    #    sys.stdout = sys.__stdout__
-    #    capt = capturedOutput.getvalue()
-    #    self.assertIn("Metric", capt)
+    @check_print(assert_in="Metric")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_of_day.yaml"
+    )
+    def test_coin_nft_of_the_day(self):
+        nft_of_the_day([])
 
+    @check_print(assert_in="Metric")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_market-status.yaml"
+    )
     def test_coin_nft_market_status(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         nft_market_status([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Metric", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchanges.yaml"
+    )
     def test_coin_exchanges(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         exchanges([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_platforms.yaml"
+    )
     def test_coin_platforms(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         platforms([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="platform")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_products.yaml"
+    )
     def test_coin_products(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         products([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("platform", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_indexes.yaml"
+    )
     def test_coin_indexes(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         indexes([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="price")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_derivatives.yaml"
+    )
     def test_coin_derivatives(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         derivatives([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("price", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchange_rates.yaml"
+    )
     def test_coin_exchange_rates(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         exchange_rates([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="Metric")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_market_info.yaml"
+    )
     def test_coin_global_market_info(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         global_market_info([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Metric", capt)
 
+    @check_print(assert_in="name")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_defo_info.yaml"
+    )
     def test_coin_global_defi_info(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         global_defi_info([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
-
-    # TODO: Re-add tests for coin_list and find
