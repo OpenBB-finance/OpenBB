@@ -78,7 +78,7 @@ class TestCoinPaprikaView(TestCase):
         capt = capturedOutput.getvalue()
         self.assertIn("Couldn't find", capt)
 
-    # TODO: fix test
+    # TODO: fix this
     # def test_events(self):
     #    capturedOutput = io.StringIO()
     #    sys.stdout = capturedOutput
