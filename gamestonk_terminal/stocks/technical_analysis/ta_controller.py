@@ -206,7 +206,7 @@ class TechnicalAnalysisController:
         overlap.vwap(other_args, self.ticker, self.interval, self.stock)
 
     def call_zlma(self, other_args: List[str]):
-        """Process ema command"""
+        """Process zlma command"""
         overlap.zlma(other_args, self.ticker, self.interval, self.stock)
 
     def call_cci(self, other_args: List[str]):
