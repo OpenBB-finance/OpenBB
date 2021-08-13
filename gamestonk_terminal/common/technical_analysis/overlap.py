@@ -314,3 +314,121 @@ def vwap(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.Dat
 
     except Exception as e:
         print(e, "\n")
+
+
+def zlma(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame):
+    """Plots zero lag moving average (ZLMA)
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Argparse arguments
+    s_ticker: str
+        Ticker
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    """
+
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="zlma",
+        description="""
+            The zero lag exponential moving average (ZLEMA) indicator
+            was created by John Ehlers and Ric Way. The idea is do a
+            regular exponential moving average (EMA) calculation but
+            on a de-lagged data instead of doing it on the regular data.
+            Data is de-lagged by removing the data from "lag" days ago
+            thus removing (or attempting to) the cumulative effect of
+            the moving average.
+        """,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--length",
+        action="store",
+        dest="n_length",
+        type=check_positive,
+        default=10,
+        help="length",
+    )
+    parser.add_argument(
+        "-o",
+        "--offset",
+        action="store",
+        dest="n_offset",
+        type=check_positive,
+        default=0,
+        help="offset",
+    )
+
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        # Daily
+        if s_interval == "1440min":
+            df_ta = ta.zlma(
+                df_stock["Adj Close"],
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        # Intraday
+        else:
+            df_ta = ta.zlma(
+                df_stock["Close"],
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
+            ).dropna()
+
+        fig, _ = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        plt.title(f"{ns_parser.n_length} Day ZLMA on {s_ticker}")
+
+        if s_interval == "1440min":
+            plt.plot(
+                df_stock["Adj Close"].index,
+                df_stock["Adj Close"].values,
+                "fuchsia",
+                lw=1,
+            )
+            plt.xlim(
+                df_stock["Adj Close"].index[0],
+                df_stock["Adj Close"].index[-1],
+            )
+        else:
+            plt.plot(df_stock["Close"].index, df_stock["Close"].values, "k", lw=1)
+            plt.xlim(df_stock["Close"].index[0], df_stock["Close"].index[-1])
+
+        plt.xlabel("Time")
+        plt.ylabel(f"{s_ticker} Price($)")
+        plt.plot(df_ta.index, df_ta.values, c="tab:blue")
+        l_legend = list()
+        l_legend.append(s_ticker)
+        # Pandas series
+        if len(df_ta.shape) == 1:
+            l_legend.append(f"ZLMA {ns_parser.n_length}")
+        # Pandas dataframe
+        else:
+            l_legend.append(df_ta.columns.tolist())
+
+        plt.legend(l_legend)
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+
+        if gtff.USE_ION:
+            plt.ion()
+
+        plt.gcf().autofmt_xdate()
+        fig.tight_layout(pad=1)
+
+        plt.show()
+        print("")
+
+    except Exception as e:
+        print(e, "\n")

@@ -21,7 +21,7 @@ INTERVALS = {
 
 def get_tradingview_recommendation(
     ticker: str, screener: str, exchange: str, interval: str
-) -> str:
+) -> pd.DataFrame:
     """Get tradingview recommendation based on technical indicators
 
     Parameters
@@ -37,8 +37,8 @@ def get_tradingview_recommendation(
 
     Returns
     -------
-    str
-        tradingview recommendation based on technical indicators
+    df_recommendation: pd.DataFrame
+        Dataframe of tradingview recommendations based on technical indicators
     """
 
     if not exchange:
@@ -67,20 +67,15 @@ def get_tradingview_recommendation(
             df_recommendation[["BUY", "NEUTRAL", "SELL"]] = df_recommendation[
                 ["BUY", "NEUTRAL", "SELL"]
             ].astype(int)
-        df_recommendation["-----"] = "-----"
+
         df_recommendation.index.name = "Interval"
-        recommendation = df_recommendation[
-            ["RECOMMENDATION", "-----", "BUY", "NEUTRAL", "SELL"]
-        ].to_string()
 
     else:
         stock_recommendation = TA_Handler(
             symbol=ticker, screener=screener, exchange=exchange, interval=interval
         )
         d_recommendation = stock_recommendation.get_analysis().summary
-        recommendation = f"Interval: {INTERVALS[interval]}\n"
-        recommendation += f"Recommendation: {d_recommendation['RECOMMENDATION']}\n"
-        recommendation += f"{int(d_recommendation['BUY'])} BUY, {int(d_recommendation['NEUTRAL'])} NEUTRAL"
-        recommendation += f", {int(d_recommendation['SELL'])} SELL"
+        df_recommendation = pd.DataFrame.from_dict(d_recommendation, orient="index").T
+        df_recommendation.index = INTERVALS[interv]
 
-    return recommendation
+    return df_recommendation

@@ -1,18 +1,18 @@
 """Finnhub view"""
 __docformat__ = "numpy"
 
+import os
+
 import math
 from datetime import datetime
 import yfinance as yf
 import mplfinance as mpf
 
-from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
-)
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.stocks.technical_analysis import finnhub_model
 
 
-def plot_pattern_recognition(ticker: str, resolution: str):
+def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     """Plot pattern recognition signal
 
     Parameters
@@ -21,9 +21,18 @@ def plot_pattern_recognition(ticker: str, resolution: str):
         Ticker to display pattern recognition on top of the data
     resolution : str
         Resolution of data to get pattern recognition from
+    export: str
+        Format of export file
     """
 
     pattern = finnhub_model.get_pattern_recognition(ticker, resolution)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pr",
+        pattern,
+    )
 
     l_segments = list()
     for i in pattern:
