@@ -4,22 +4,20 @@ from unittest import mock
 from io import StringIO
 import pandas as pd
 
-# pylint: disable=unused-import,no-member
-
-from gamestonk_terminal.test_helper import (  # noqa: F401
-    parameterize_from_file,
-    pytest_generate_tests,
-)
+from gamestonk_terminal.test_helper import parameterize_from_file
 
 from gamestonk_terminal.stocks.discovery.ark_model import (
     get_ark_orders,
     add_order_total,
 )
 
+from tests.helpers import check_print
+
 assertions = unittest.TestCase("__init__")
 
 
 class TestDiscoveryArkModel:
+    @check_print()
     @mock.patch("gamestonk_terminal.stocks.discovery.ark_model.requests")
     @parameterize_from_file(
         "test_get_ark_orders",
@@ -40,6 +38,7 @@ class TestDiscoveryArkModel:
             ret.to_csv().replace("\r\n", "\n"), expected_orders.replace("\r\n", "\n")
         )
 
+    @check_print()
     @mock.patch("gamestonk_terminal.stocks.discovery.ark_model.yf.download")
     @parameterize_from_file(
         "test_add_order_total",

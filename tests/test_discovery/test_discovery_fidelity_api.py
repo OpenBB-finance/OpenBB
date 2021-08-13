@@ -8,9 +8,11 @@ from gamestonk_terminal.stocks.discovery.fidelity_view import (
     price_change_color_red_green,
     orders_view,
 )
+from tests.helpers import check_print
 
 
 class TestDiscoveryFidelityApi(unittest.TestCase):
+    @check_print(assert_in="Symbol")
     @vcr.use_cassette(
         "tests/cassettes/test_discovery/test_discovery_fidelity/test_orders.yaml"
     )
@@ -21,6 +23,7 @@ class TestDiscoveryFidelityApi(unittest.TestCase):
         "tests/cassettes/test_discovery/test_discovery_fidelity/test_buy_sell.yaml"
     )
     def test_buy_sell_ratio_color_red_green(self):
+
         res = buy_sell_ratio_color_red_green("56% Buys, 44% Sells")
 
         assert res == "\x1b[32m56%\x1b[0m Buys, 44% Sells"

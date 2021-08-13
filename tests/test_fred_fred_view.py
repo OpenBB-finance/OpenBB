@@ -1,13 +1,12 @@
 """ econ/fred_view.py tests """
 import unittest
 from unittest import mock
-import sys
 import io
 
 import pandas as pd
 
-# pylint: disable=unused-import
-from gamestonk_terminal.economy.fred_view import display_series  # noqa: F401
+from gamestonk_terminal.economy.fred_view import display_series
+from tests.helpers import check_print
 
 fred_data_mock = """
 For 'gdp', series IDs found: GDP, GDPC1, M2V, GFDEGDQ188S, PAYEMS.
@@ -29,19 +28,15 @@ Date
 
 
 class TestFredFredView(unittest.TestCase):
+    @check_print(assert_in="No series found for term")
     @mock.patch("gamestonk_terminal.economy.fred_model.get_series_data")
     def test_display_fred(self, mock_get_series):
         fred_data = pd.read_csv(io.StringIO(fred_data_mock), header=0, index_col=0)
 
         mock_get_series.return_value = fred_data
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         display_series(
             series="gdp",
             start_date="2019-01-01",
             raw=True,
             export="",
         )
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("No series found for term", capt)

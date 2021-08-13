@@ -3,14 +3,13 @@
 from contextlib import contextmanager
 import unittest
 from unittest import mock
-import io
 import sys
 import json
 
 # pylint: disable=unused-import
 from gamestonk_terminal.stocks.fundamental_analysis import av_view
-
 from gamestonk_terminal import config_terminal as cfg
+from tests.helpers import check_print
 
 
 @contextmanager
@@ -64,72 +63,44 @@ def mocked_requests_get(*args, **kwargs):
 
 
 class TestAVView(unittest.TestCase):
+    @check_print(assert_in="Price to sales ratio")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_av_overview(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.overview([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Price to sales ratio", capt)
 
+    @check_print(assert_in="Market capitalization")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_av_key(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.key([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Market capitalization", capt)
 
+    @check_print(assert_in="Gross profit")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_income_statement(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.income_statement([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Gross profit", capt)
 
+    @check_print(assert_in="Total assets")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_balance_sheet(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.balance_sheet([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Total assets", capt)
 
+    @check_print(assert_in="Operating cashflow")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_cash_flow(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.cash_flow([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Operating cashflow", capt)
 
+    @check_print(assert_in="Reported EPS")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_earnings(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.earnings([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Reported EPS", capt)
 
+    @check_print(assert_in="Mscore Sub Stats")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_fraud(self, mock_get):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         av_view.fraud([], "GME")
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Mscore Sub Stats", capt)

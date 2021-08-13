@@ -2,11 +2,11 @@
 from datetime import datetime, timedelta
 from contextlib import contextmanager
 import unittest
-import io
 import sys
+import io
 
-# pylint: disable=unused-import
 from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
+from tests.helpers import check_print
 
 
 @contextmanager
@@ -22,29 +22,11 @@ class TestFaController(unittest.TestCase):
     menuClass = fa_controller.FundamentalAnalysisController("GME", start, "1440min")  # type: ignore
     choices = fa_controller.FundamentalAnalysisController.CHOICES
 
+    @check_print(assert_in="fraud")
     def test_fa_controller_help(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         self.menuClass.print_help()
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        for item in self.choices:
-            self.assertIn(item, capt)
 
-    def key_metrics_explained(self):
-        # Is this base function ever even used?
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
-        fa_controller.key_metrics_explained([""])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("RETURN ON EQUITY", capt)
-
+    @check_print(assert_in="fraud")
     def test_menu(self):
         with replace_stdin(io.StringIO("q")):
-            capturedOutput = io.StringIO()
-            sys.stdout = capturedOutput
             fa_controller.menu("GME", self.start, "1440min")
-            sys.stdout = sys.__stdout__
-            capt = capturedOutput.getvalue()
-            self.assertIn("fraud", capt)

@@ -4,12 +4,7 @@ from unittest import mock
 from io import StringIO
 import pandas as pd
 
-# pylint: disable=unused-import
-from gamestonk_terminal.test_helper import (  # noqa: F401
-    parameterize_from_file,
-    pytest_generate_tests,
-)
-
+from gamestonk_terminal.test_helper import parameterize_from_file
 from gamestonk_terminal.stocks.discovery.ark_view import ark_orders_view
 
 assertions = unittest.TestCase("__init__")
