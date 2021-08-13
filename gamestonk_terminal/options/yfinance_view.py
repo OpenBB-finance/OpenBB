@@ -1,7 +1,7 @@
 """Yfinance options view"""
 __docformat__ = "numpy"
 
-import argparse
+import os
 from bisect import bisect_left
 
 import matplotlib.pyplot as plt
@@ -12,48 +12,61 @@ import numpy as np
 
 import gamestonk_terminal.feature_flags as gtff
 import gamestonk_terminal.config_plot as cfp
-from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
-)
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.options import op_helpers
+from gamestonk_terminal.options import yfinance_model
 
 
 def plot_oi(
-    calls: pd.DataFrame,
-    puts: pd.DataFrame,
     ticker: str,
     expiry: str,
-    ns_parser: argparse.Namespace,
+    min_sp: float,
+    max_sp: float,
+    calls_only: bool,
+    puts_only: bool,
+    export: str,
 ):
     """Plot open interest
 
     Parameters
     ----------
-    calls: pd.DataFrame
-        Dataframe of call options
-    puts: pd.DataFrame
-        Dataframe of put options
     ticker: str
         Ticker
     expiry: str
         Expiry date for options
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    min_sp: float
+        Min strike to consider
+    max_sp: float
+        Max strike to consider
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format to export file
     """
-
+    options = yfinance_model.get_option_chain(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "oi_yf",
+        options,
+    )
+    calls = options.calls
+    puts = options.puts
     current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
 
-    if ns_parser.min == -1:
+    if min_sp == -1:
         min_strike = 0.75 * current_price
     else:
-        min_strike = ns_parser.min
+        min_strike = min_sp
 
-    if ns_parser.max == -1:
+    if max_sp == -1:
         max_strike = 1.25 * current_price
     else:
-        max_strike = ns_parser.max
+        max_strike = max_sp
 
-    if ns_parser.calls and ns_parser.puts:
+    if calls_only and puts_only:
         print("Both flags selected, please select one", "\n")
         return
 
@@ -69,7 +82,7 @@ def plot_oi(
     plt.style.use("classic")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-    if not ns_parser.calls:
+    if not calls_only:
         put_oi.plot(
             x="strike",
             y="openInterest",
@@ -79,7 +92,7 @@ def plot_oi(
             ls="-",
             c="r",
         )
-    if not ns_parser.puts:
+    if not puts_only:
         call_oi.plot(
             x="strike",
             y="openInterest",
@@ -111,41 +124,55 @@ def plot_oi(
 
 
 def plot_vol(
-    calls: pd.DataFrame,
-    puts: pd.DataFrame,
     ticker: str,
     expiry: str,
-    ns_parser: argparse.Namespace,
+    min_sp: float,
+    max_sp: float,
+    calls_only: bool,
+    puts_only: bool,
+    export: str,
 ):
     """Plot volume
 
     Parameters
     ----------
-    calls: pd.DataFrame
-        Dataframe of call options
-    puts: pd.DataFrame
-        Dataframe of put options
     ticker: str
         Ticker
     expiry: str
         Expiry date for options
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    min_sp: float
+        Min strike to consider
+    max_sp: float
+        Max strike to consider
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format to export file
     """
-
+    options = yfinance_model.get_option_chain(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vol_yf",
+        options,
+    )
+    calls = options.calls
+    puts = options.puts
     current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
 
-    if ns_parser.min == -1:
+    if min_sp == -1:
         min_strike = 0.75 * current_price
     else:
-        min_strike = ns_parser.min
+        min_strike = min_sp
 
-    if ns_parser.max == -1:
+    if max_sp == -1:
         max_strike = 1.25 * current_price
     else:
-        max_strike = ns_parser.max
+        max_strike = max_sp
 
-    if ns_parser.calls and ns_parser.puts:
+    if calls_only and puts_only:
         print("Both flags selected, please select one", "\n")
         return
 
@@ -154,7 +181,7 @@ def plot_vol(
     plt.style.use("classic")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-    if not ns_parser.calls:
+    if not calls_only:
         put_v.plot(
             x="strike",
             y="volume",
@@ -164,7 +191,7 @@ def plot_vol(
             ls="-",
             c="r",
         )
-    if not ns_parser.puts:
+    if not puts_only:
         call_v.plot(
             x="strike",
             y="volume",
@@ -194,27 +221,39 @@ def plot_vol(
 
 def plot_volume_open_interest(
     ticker: str,
-    exp_date: str,
-    calls: pd.DataFrame,
-    puts: pd.DataFrame,
-    ns_parser: argparse.Namespace,
+    expiry: str,
+    min_sp: float,
+    max_sp: float,
+    min_vol: float,
+    export: str,
 ):
     """Plot volume and open interest
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
-    exp_date : str
-        Expiry date of the option
-    calls: pd.DataFrame
-        Option data calls
-    puts: pd.DataFrame
-        Option data puts
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    ticker: str
+        Stock ticker
+    expiry: str
+        Option expiration
+    min_sp: float
+        Min strike price
+    max_sp: float
+        Max strike price
+    min_vol: float
+        Min volume to consider
+    export: str
+        Format for exporting data
     """
 
+    options = yfinance_model.get_option_chain(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "voi_yf",
+        options,
+    )
+    calls = options.calls
+    puts = options.puts
     current_price = float(yf.Ticker(ticker).info["regularMarketPrice"])
 
     # Process Calls Data
@@ -249,7 +288,7 @@ def plot_volume_open_interest(
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
 
-    if ns_parser.min_vol == -1 and ns_parser.min_sp == -1 and ns_parser.max_sp == -1:
+    if min_vol == -1 and min_sp == -1 and max_sp == -1:
         # If no argument provided, we use the percentile 50 to get 50% of upper volume data
         volume_percentile_threshold = 50
         min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
@@ -259,17 +298,17 @@ def plot_volume_open_interest(
         df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
 
     else:
-        if ns_parser.min_vol > -1:
-            df_calls = df_calls[df_calls["oi+v"] > ns_parser.min_vol]
-            df_puts = df_puts[df_puts["oi+v"] < -ns_parser.min_vol]
+        if min_vol > -1:
+            df_calls = df_calls[df_calls["oi+v"] > min_vol]
+            df_puts = df_puts[df_puts["oi+v"] < -min_vol]
 
-        if ns_parser.min_sp > -1:
-            df_calls = df_calls[df_calls["strike"] > ns_parser.min_sp]
-            df_puts = df_puts[df_puts["strike"] > ns_parser.min_sp]
+        if min_sp > -1:
+            df_calls = df_calls[df_calls["strike"] > min_sp]
+            df_puts = df_puts[df_puts["strike"] > min_sp]
 
-        if ns_parser.max_sp > -1:
-            df_calls = df_calls[df_calls["strike"] < ns_parser.max_sp]
-            df_puts = df_puts[df_puts["strike"] < ns_parser.max_sp]
+        if max_sp > -1:
+            df_calls = df_calls[df_calls["strike"] < max_sp]
+            df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
         print(
@@ -338,7 +377,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     plt.title(
-        f"{ticker} volumes for {exp_date} (open interest displayed only during market hours)"
+        f"{ticker} volumes for {expiry} (open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 

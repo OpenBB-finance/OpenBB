@@ -180,10 +180,10 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
     data.drop(["id", "proof_image_link"], axis=1, inplace=True)
     for col in ["date", "date_to"]:
         data[col] = data[col].apply(
-            lambda x: x.replace("T", "\n") if x is not None else ""
+            lambda x: x.replace("T", "\n") if isinstance(x, str) else ""
         )
         data[col] = data[col].apply(
-            lambda x: x.replace("Z", "") if x is not None else ""
+            lambda x: x.replace("Z", "") if isinstance(x, str) else ""
         )
     return data
 

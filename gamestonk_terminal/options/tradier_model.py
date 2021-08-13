@@ -1,6 +1,8 @@
 """Tradier options model"""
 __docformat__ = "numpy"
 
+from typing import Optional, List
+
 import requests
 import pandas as pd
 
@@ -32,10 +34,71 @@ default_columns = [
     "ask",
 ]
 
+
+def get_historical_options(
+    ticker: str, expiry: str, strike: float, put: bool, chain_id: Optional[str]
+) -> pd.DataFrame:
+    """
+    Gets historical option pricing.  This inputs either ticker, expiration, strike or the OCC chain ID and processes
+    the request to tradier for historical premiums.
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    expiry: str
+        Option expiration date
+    put: bool
+        Is this a put option?
+    chain_id: Optional[str]
+        OCC chain ID
+
+    Returns
+    -------
+    df_hist: pd.DataFrame
+        Dataframe of historical option prices
+    """
+    if not chain_id:
+        op_type = ["call", "put"][put]
+        chain = get_option_chains(ticker, expiry)
+
+        try:
+            symbol = chain[(chain.strike == strike) & (chain.option_type == op_type)][
+                "symbol"
+            ].values[0]
+        except IndexError:
+            print(f"Strike: {strike}, Option type: {op_type} not not found \n")
+            return pd.DataFrame
+    else:
+        symbol = chain_id
+
+    response = requests.get(
+        "https://sandbox.tradier.com/v1/markets/history",
+        params={"symbol": {symbol}, "interval": "daily"},
+        headers={
+            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+            "Accept": "application/json",
+        },
+    )
+
+    if response.status_code != 200:
+        print("Error with request")
+        return pd.DataFrame()
+
+    data = response.json()["history"]
+    if not data:
+        print("No historical data available")
+        return pd.DataFrame()
+
+    df_hist = pd.DataFrame(data["day"]).set_index("date")
+    df_hist.index = pd.DatetimeIndex(df_hist.index)
+    return df_hist
+
+
 # pylint: disable=no-else-return
 
 
-def option_expirations(ticker: str):
+def option_expirations(ticker: str) -> List[str]:
     """Get available expiration dates for given ticker
 
     Parameters
@@ -57,8 +120,12 @@ def option_expirations(ticker: str):
         },
     )
     if r.status_code == 200:
-        dates = r.json()["expirations"]["date"]
-        return dates
+        try:
+            dates = r.json()["expirations"]["date"]
+            return dates
+        except TypeError:
+            print("Error in tradier JSON response.  Check loaded ticker.\n")
+            return []
     else:
         print("Tradier request failed.  Check token. \n")
         return []
@@ -150,39 +217,3 @@ def last_price(ticker: str):
     else:
         print("Error getting last price")
         return None
-
-
-def historical_prices(symbol: str) -> pd.DataFrame:
-    """Get historical options prices
-
-    Parameters
-    ----------
-    symbol: str
-        OCC option chain symbol
-
-    Returns
-    -------
-    df_hist: pd.DataFrame
-        Dataframe of historical options
-    """
-    response = requests.get(
-        "https://sandbox.tradier.com/v1/markets/history",
-        params={"symbol": {symbol}, "interval": "daily"},
-        headers={
-            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
-            "Accept": "application/json",
-        },
-    )
-
-    if response.status_code != 200:
-        print("Error with request")
-        return pd.DataFrame()
-
-    data = response.json()["history"]
-    if not data:
-        print("No historical data available")
-        return pd.DataFrame()
-
-    df_hist = pd.DataFrame(data["day"]).set_index("date")
-
-    return df_hist
