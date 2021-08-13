@@ -72,13 +72,11 @@ class DiscoveryController:
     def print_help():
         """Print help"""
         help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery
-
 Discovery:
     cls            clear screen")
     ?/help         show this menu again")
     q              quit this menu, and shows back to main menu")
     quit           quit to abandon program")
-
 Finnhub:
     pipo           past IPOs dates
     fipo           future IPOs dates
@@ -106,7 +104,6 @@ Stockgrid:
 
     def switch(self, an_input: str):
         """Process and dispatch input
-
         Returns
         -------
         True, False or None
@@ -411,6 +408,7 @@ Stockgrid:
             print(e, "\n")
 
     def call_upcoming(self, other_args: List[str]):
+        # TODO: switch to nasdaq
         """Process upcoming command"""
         parser = argparse.ArgumentParser(
             add_help=False,

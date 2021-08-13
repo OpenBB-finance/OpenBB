@@ -15,8 +15,6 @@ from colorama import Fore, Style
 from tabulate import tabulate
 
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_non_negative,
     export_data,
     plot_autoscale,
     patch_pandas_text_adjustment,
@@ -28,7 +26,7 @@ from gamestonk_terminal import feature_flags as gtff
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 
 
-def red_highlight(val):
+def red_highlight(val) -> str:
     """Red highlight
 
     Parameters
@@ -44,7 +42,7 @@ def red_highlight(val):
     return f"{Fore.RED}{val}{Style.RESET_ALL}"
 
 
-def green_highlight(val):
+def green_highlight(val) -> str:
     """Green highlight
 
     Parameters
@@ -82,7 +80,16 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
     return columns
 
 
-def display_chains(ticker: str, expiry: str, other_args: List[str]):
+def display_chains(
+    ticker: str,
+    expiry: str,
+    to_display: List[str],
+    min_sp: float,
+    max_sp: float,
+    calls_only: bool,
+    puts_only: bool,
+    export: str,
+):
     """Display option chain
 
     Parameters
@@ -91,194 +98,155 @@ def display_chains(ticker: str, expiry: str, other_args: List[str]):
         Stock ticker
     expiry: str
         Expiration date of option
-    other_args: List[str]
-        Argparse arguments
+    to_display: List[str]
+        List of columns to display
+    min_sp: float
+        Min strike price to display
+    max_sp: float
+        Max strike price to display
+    calls_only: bool
+        Only display calls
+    puts_only: bool
+        Only display puts
+    export: str
+        Format to  export file
     """
-    parser = argparse.ArgumentParser(
-        prog="chains",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Display option chains",
-    )
-    parser.add_argument(
-        "--calls",
-        action="store_true",
-        default=False,
-        dest="calls_only",
-        help="Flag to show calls only",
-    )
-    parser.add_argument(
-        "--puts",
-        action="store_true",
-        default=False,
-        dest="puts_only",
-        help="Flag to show puts only",
-    )
-    parser.add_argument(
-        "-m",
-        "--min",
-        dest="min_sp",
-        type=check_non_negative,
-        default=-1,
-        help="minimum strike price to consider.",
-    )
-    parser.add_argument(
-        "-M",
-        "--max",
-        dest="max_sp",
-        type=check_non_negative,
-        default=-1,
-        help="maximum strike price to consider.",
-    )
-    parser.add_argument(
-        "-d",
-        "--display",
-        dest="to_display",
-        default=tradier_model.default_columns,
-        type=check_valid_option_chains_headers,
-        help="columns to look at.  Columns can be:  {bid, ask, strike, bidsize, asksize, volume, open_interest, delta, "
-        "gamma, theta, vega, ask_iv, bid_iv, mid_iv} ",
-    )
-    parser.add_argument(
-        "--export",
-        choices=["csv", "json", "xlsx"],
-        default="",
-        dest="export",
-        help="Export dataframe data to csv,json,xlsx file",
-    )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    chains_df = tradier_model.get_option_chains(ticker, expiry)
+    columns = to_display + ["strike", "option_type"]
+    chains_df = chains_df[columns].rename(columns=column_map)
 
-        chains_df = tradier_model.get_option_chains(ticker, expiry)
-        columns = ns_parser.to_display + ["strike", "option_type"]
-        chains_df = chains_df[columns].rename(columns=column_map)
-
-        if ns_parser.min_sp == -1:
-            min_strike = np.percentile(chains_df["strike"], 25)
-        else:
-            min_strike = ns_parser.min_sp
-
-        if ns_parser.max_sp == -1:
-            max_strike = np.percentile(chains_df["strike"], 75)
-        else:
-            max_strike = ns_parser.max_sp
-
-        print(f"The strike prices are displayed between {min_strike} and {max_strike}")
-
-        chains_df = chains_df[chains_df["strike"] >= min_strike]
-        chains_df = chains_df[chains_df["strike"] <= max_strike]
-
-        if ns_parser.export:
-            # Note the extra dirname needed due to the subfolder in options
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                f"chains_{ticker}_{expiry}",
-                chains_df,
-            )
-
-        calls_df = chains_df[chains_df.option_type == "call"].drop(
-            columns=["option_type"]
-        )
-        puts_df = chains_df[chains_df.option_type == "put"].drop(
-            columns=["option_type"]
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "chains",
+            chains_df,
         )
 
-        if ns_parser.calls_only:
-            print(
-                tabulate(
-                    calls_df,
-                    headers=calls_df.columns,
-                    tablefmt="grid",
-                    showindex=False,
-                    floatfmt=".2f",
-                )
+    if min_sp == -1:
+        min_strike = np.percentile(chains_df["strike"], 25)
+    else:
+        min_strike = min_sp
+
+    if max_sp == -1:
+        max_strike = np.percentile(chains_df["strike"], 75)
+    else:
+        max_strike = max_sp
+
+    print(f"The strike prices are displayed between {min_strike} and {max_strike}")
+
+    chains_df = chains_df[chains_df["strike"] >= min_strike]
+    chains_df = chains_df[chains_df["strike"] <= max_strike]
+
+    calls_df = chains_df[chains_df.option_type == "call"].drop(columns=["option_type"])
+    puts_df = chains_df[chains_df.option_type == "put"].drop(columns=["option_type"])
+
+    if calls_only:
+        print(
+            tabulate(
+                calls_df,
+                headers=calls_df.columns,
+                tablefmt="grid",
+                showindex=False,
+                floatfmt=".2f",
             )
+        )
 
-        elif ns_parser.puts_only:
-            print(
-                tabulate(
-                    puts_df,
-                    headers=puts_df.columns,
-                    tablefmt="grid",
-                    showindex=False,
-                    floatfmt=".2f",
-                )
+    elif puts_only:
+        print(
+            tabulate(
+                puts_df,
+                headers=puts_df.columns,
+                tablefmt="grid",
+                showindex=False,
+                floatfmt=".2f",
             )
+        )
 
-        else:
-            puts_df = puts_df[puts_df.columns[::-1]]
-            chain_table = calls_df.merge(puts_df, on="strike")
+    else:
+        puts_df = puts_df[puts_df.columns[::-1]]
+        chain_table = calls_df.merge(puts_df, on="strike")
 
-            if gtff.USE_COLOR:
-                call_cols = [col for col in chain_table if col.endswith("_x")]
-                put_cols = [col for col in chain_table if col.endswith("_y")]
-                patch_pandas_text_adjustment()
-                pd.set_option("display.max_colwidth", 0)
-                pd.set_option("display.max_rows", None)
-                for cc in call_cols:
-                    chain_table[cc] = chain_table[cc].astype(str).apply(green_highlight)
-                for pc in put_cols:
-                    chain_table[pc] = chain_table[pc].astype(str).apply(red_highlight)
-            headers = [
-                col.strip("_x")
-                if col.endswith("_x")
-                else col.strip("_y")
-                if col.endswith("_y")
-                else col
-                for col in chain_table.columns
-            ]
-            print(
-                tabulate(
-                    chain_table,
-                    headers=headers,
-                    tablefmt="fancy_grid",
-                    showindex=False,
-                    floatfmt=".2f",
-                )
-            )
-            print("")
-
-    except Exception as e:
-        print(e, "\n")
+        if gtff.USE_COLOR:
+            call_cols = [col for col in chain_table if col.endswith("_x")]
+            put_cols = [col for col in chain_table if col.endswith("_y")]
+            patch_pandas_text_adjustment()
+            pd.set_option("display.max_colwidth", 0)
+            pd.set_option("display.max_rows", None)
+            for cc in call_cols:
+                chain_table[cc] = chain_table[cc].astype(str).apply(green_highlight)
+            for pc in put_cols:
+                chain_table[pc] = chain_table[pc].astype(str).apply(red_highlight)
+        headers = [
+            col.strip("_x")
+            if col.endswith("_x")
+            else col.strip("_y")
+            if col.endswith("_y")
+            else col
+            for col in chain_table.columns
+        ]
+        print(
+            tabulate(
+                chain_table,
+                headers=headers,
+                tablefmt="fancy_grid",
+                showindex=False,
+                floatfmt=".2f",
+            ),
+            "\n",
+        )
 
 
 def plot_oi(
-    options: pd.DataFrame,
     ticker: str,
     expiry: str,
-    ns_parser: argparse.Namespace,
+    min_sp: float,
+    max_sp: float,
+    calls_only: bool,
+    puts_only: bool,
+    export: str,
 ):
     """Plot open interest
 
     Parameters
     ----------
-    options: pd.DataFrame
-        Options dataframe with both calls and puts
     ticker: str
         Ticker
     expiry: str
         Expiry date for options
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    min_sp: float
+        Min strike to consider
+    max_sp: float
+        Max strike to consider
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format to export file
     """
 
+    options = tradier_model.get_option_chains(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "oi_tr",
+        options,
+    )
     current_price = tradier_model.last_price(ticker)
 
-    if ns_parser.min == -1:
+    if min_sp == -1:
         min_strike = 0.75 * current_price
     else:
-        min_strike = ns_parser.min
+        min_strike = min_sp
 
-    if ns_parser.max == -1:
+    if max_sp == -1:
         max_strike = 1.25 * current_price
     else:
-        max_strike = ns_parser.max
+        max_strike = max_sp
 
-    if ns_parser.calls and ns_parser.puts:
+    if calls_only and puts_only:
         print("Both flags selected, please select one", "\n")
         return
 
@@ -296,7 +264,7 @@ def plot_oi(
     plt.style.use("classic")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-    if not ns_parser.calls:
+    if not calls_only:
         put_oi.plot(
             x="strike",
             y="open_interest",
@@ -306,7 +274,7 @@ def plot_oi(
             ls="-",
             c="r",
         )
-    if not ns_parser.puts:
+    if not puts_only:
         call_oi.plot(
             x="strike",
             y="open_interest",
@@ -338,38 +306,54 @@ def plot_oi(
 
 
 def plot_vol(
-    options: pd.DataFrame,
     ticker: str,
     expiry: str,
-    ns_parser: argparse.Namespace,
+    min_sp: float,
+    max_sp: float,
+    calls_only: bool,
+    puts_only: bool,
+    export: str,
 ):
     """Plot volume
 
     Parameters
     ----------
-    options: pd.DataFrame
-        Options dataframe with both calls and puts
     ticker: str
         Ticker
     expiry: str
         Expiry date for options
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    min_sp: float
+        Min strike to consider
+    max_sp: float
+        Max strike to consider
+    calls_only: bool
+        Show calls only
+    puts_only: bool
+        Show puts only
+    export: str
+        Format to export file
     """
 
+    options = tradier_model.get_option_chains(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "vol_tr",
+        options,
+    )
     current_price = tradier_model.last_price(ticker)
 
-    if ns_parser.min == -1:
+    if min_sp == -1:
         min_strike = 0.75 * current_price
     else:
-        min_strike = ns_parser.min
+        min_strike = min_sp
 
-    if ns_parser.max == -1:
+    if max_sp == -1:
         max_strike = 1.25 * current_price
     else:
-        max_strike = ns_parser.max
+        max_strike = max_sp
 
-    if ns_parser.calls and ns_parser.puts:
+    if calls_only and puts_only:
         print("Both flags selected, please select one", "\n")
         return
 
@@ -380,7 +364,7 @@ def plot_vol(
     plt.style.use("classic")
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
 
-    if not ns_parser.calls:
+    if not calls_only:
         put_v.plot(
             x="strike",
             y="volume",
@@ -390,7 +374,7 @@ def plot_vol(
             ls="-",
             c="r",
         )
-    if not ns_parser.puts:
+    if not puts_only:
         call_v.plot(
             x="strike",
             y="volume",
@@ -419,23 +403,39 @@ def plot_vol(
 
 
 def plot_volume_open_interest(
-    ticker: str, exp_date: str, options: pd.DataFrame, ns_parser: argparse.Namespace
+    ticker: str,
+    expiry: str,
+    min_sp: float,
+    max_sp: float,
+    min_vol: float,
+    export: str,
 ):
     """Plot volume and open interest
 
     Parameters
     ----------
-    ticker : str
-        Main ticker to compare income
-    exp_date : str
-        Expiry date of the option
-    Options: pd.DataFrame
-        Options dataframe with both calls and puts
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    ticker: str
+        Stock ticker
+    expiry: str
+        Option expiration
+    min_sp: float
+        Min strike price
+    max_sp: float
+        Max strike price
+    min_vol: float
+        Min volume to consider
+    export: str
+        Format for exporting data
     """
-
     current_price = tradier_model.last_price(ticker)
+    options = tradier_model.get_option_chains(ticker, expiry)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "voi_tr",
+        options,
+    )
+
     calls = options[options.option_type == "call"][
         ["strike", "volume", "open_interest"]
     ]
@@ -473,7 +473,7 @@ def plot_volume_open_interest(
 
     max_pain = op_helpers.calculate_max_pain(df_opt)
 
-    if ns_parser.min_vol == -1 and ns_parser.min_sp == -1 and ns_parser.max_sp == -1:
+    if min_vol == -1 and min_sp == -1 and max_sp == -1:
         # If no argument provided, we use the percentile 50 to get 50% of upper volume data
         volume_percentile_threshold = 50
         min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
@@ -483,17 +483,17 @@ def plot_volume_open_interest(
         df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
 
     else:
-        if ns_parser.min_vol > -1:
-            df_calls = df_calls[df_calls["oi+v"] > ns_parser.min_vol]
-            df_puts = df_puts[df_puts["oi+v"] < -ns_parser.min_vol]
+        if min_vol > -1:
+            df_calls = df_calls[df_calls["oi+v"] > min_vol]
+            df_puts = df_puts[df_puts["oi+v"] < -min_vol]
 
-        if ns_parser.min_sp > -1:
-            df_calls = df_calls[df_calls["strike"] > ns_parser.min_sp]
-            df_puts = df_puts[df_puts["strike"] > ns_parser.min_sp]
+        if min_sp > -1:
+            df_calls = df_calls[df_calls["strike"] > min_sp]
+            df_puts = df_puts[df_puts["strike"] > min_sp]
 
-        if ns_parser.max_sp > -1:
-            df_calls = df_calls[df_calls["strike"] < ns_parser.max_sp]
-            df_puts = df_puts[df_puts["strike"] < ns_parser.max_sp]
+        if max_sp > -1:
+            df_calls = df_calls[df_calls["strike"] < max_sp]
+            df_puts = df_puts[df_puts["strike"] < max_sp]
 
     if df_calls.empty and df_puts.empty:
         print(
@@ -562,7 +562,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     plt.title(
-        f"{ticker} volumes for {exp_date} (open interest displayed only during market hours)"
+        f"{ticker} volumes for {expiry} (open interest displayed only during market hours)"
     )
     ax.invert_yaxis()
 
@@ -591,115 +591,73 @@ def plot_volume_open_interest(
     print("")
 
 
-def display_historical(ticker: str, expiry: str, other_args: List[str]):
-    """Plot historical option data
+def display_historical(
+    ticker: str,
+    expiry: str,
+    strike: float,
+    put: bool,
+    export: str,
+    raw: bool,
+    chain_id: str,
+):
+    """Plot historical option prices
 
     Parameters
     ----------
     ticker: str
-        Ticker
+        Stock ticker
     expiry: str
-        Expiration of option
-    other_args: List[str]
-        Argparse arguments
+        Expiry date of option
+    strike: float
+        Option strike price
+    put: bool
+        Is this a put option?
+    export: str
+        Format of export file
+    raw: bool
+        Print raw data
+    chain_id: str
+        OCC option symbol
     """
 
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="hist",
-        description="Gets historical quotes for given option chain",
-    )
-    parser.add_argument(
-        "-s",
-        "--strike",
-        dest="strike",
-        type=float,
-        required="--chain" not in other_args or "-h" not in other_args,
-        help="Strike price to look at",
-    )
-    parser.add_argument(
-        "--put",
-        dest="put",
-        action="store_true",
-        default=False,
-        help="Flag for showing put option",
-    )
-    parser.add_argument("--chain", dest="chain_id", type=str, help="OCC option symbol")
-
-    parser.add_argument(
-        "--raw", dest="raw", action="store_true", default=False, help="Display raw data"
+    df_hist = tradier_model.get_historical_options(
+        ticker, expiry, strike, put, chain_id
     )
 
-    parser.add_argument(
-        "--export",
-        choices=["csv", "json", "xlsx"],
-        default="",
-        dest="export",
-        help="Export dataframe data to csv,json,xlsx file",
+    if raw:
+        print(tabulate(df_hist, headers=df_hist.columns, tablefmt="fancy_grid"))
+
+    op_type = ["call", "put"][put]
+
+    mc = mpf.make_marketcolors(
+        up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
     )
 
-    try:
+    s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    if gtff.USE_ION:
+        plt.ion()
 
-        if not ns_parser.chain_id:
-            strike = float(ns_parser.strike)
-            op_type = ["call", "put"][ns_parser.put]
-            chain = tradier_model.get_option_chains(ticker, expiry)
-            try:
-                symbol = chain[
-                    (chain.strike == strike) & (chain.option_type == op_type)
-                ]["symbol"].values[0]
-            except IndexError:
-                print(f"Strike: {strike}, Option type: {op_type} not not found \n")
-                return
-        else:
-            symbol = ns_parser.chain_id
+    mpf.plot(
+        df_hist,
+        type="candle",
+        volume=True,
+        title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
+        style=s,
+        figratio=(10, 7),
+        figscale=1.10,
+        figsize=(plot_autoscale()),
+        update_width_config=dict(
+            candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+        ),
+    )
 
-        df_hist = tradier_model.historical_prices(symbol)
-        df_hist.index = pd.DatetimeIndex(df_hist.index)
+    print("")
 
-        if ns_parser.raw:
-            print(df_hist)
-
-        mc = mpf.make_marketcolors(
-            up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
-        )
-
-        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
-        if gtff.USE_ION:
-            plt.ion()
-
-        mpf.plot(
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "hist",
             df_hist,
-            type="candle",
-            volume=True,
-            title=f"\n{ticker.upper()} {strike} {op_type} expiring {expiry} Historical",
-            style=s,
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
         )
-
-        print("")
-
-        if ns_parser.export:
-            export_data(
-                ns_parser.export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"historical_op_{ticker}_{expiry}_{str(strike).replace('.','p')}_{op_type}",
-                df_hist,
-            )
-
-    except Exception as e:
-        print(e, "\n")
-
-    except SystemExit:
-        print("")
