@@ -213,6 +213,10 @@ def load_ta_data(coin: gecko.Coin, other_args: List[str]) -> Tuple[pd.DataFrame,
         return pd.DataFrame(), ""
 
 
+c = gecko.Coin("btc")
+load_ta_data(c, [])
+
+
 def info(coin: gecko.Coin, other_args: List[str]):
     """Shows basic information about loaded coin
 

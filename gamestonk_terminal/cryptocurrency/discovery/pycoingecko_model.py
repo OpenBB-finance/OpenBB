@@ -91,7 +91,7 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
     df.index = df.index + 1
     df.reset_index(inplace=True)
     df = df.rename(columns={"index": "rank"})
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$")))
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 

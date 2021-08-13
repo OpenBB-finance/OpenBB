@@ -150,7 +150,7 @@ def coins(other_args: List[str]):
     parser.add_argument(
         "-t",
         "--top",
-        default=30,
+        default=15,
         dest="top",
         help="Limit of records",
         type=check_positive,

@@ -896,7 +896,7 @@ def coin_list(other_args: List[str]):
     parser.add_argument(
         "-t",
         "--top",
-        default=100,
+        default=15,
         dest="top",
         help="Limit of records",
         type=check_positive,
@@ -927,8 +927,8 @@ def coin_list(other_args: List[str]):
 
         try:
             df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
-        except Exception:
-            df = gecko.get_coin_list()
+        except Exception as e:
+            print(e)
         print(
             tabulate(
                 df,

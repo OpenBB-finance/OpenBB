@@ -59,9 +59,10 @@ class TestCoinGeckoAPI(TestCase):
 
         mock_load.return_value = sample_return
         coin = dd_pycoingecko_view.load(["-c", "bitcoin"])
-        mock_return, vs = dd_pycoingecko_view.load_ta_data(coin, ["--vs", "usd"])
-        print(mock_return, vs)
-        self.assertTrue(mock_return.shape == (722, 1))
+        mock_return, vs = dd_pycoingecko_view.load_ta_data(
+            coin, ["--vs", "usd", "--days", "30"]
+        )
+        self.assertTrue(mock_return.shape == (31, 4))
         self.assertTrue(vs == "usd")
 
     def test_get_coins(self):
@@ -88,7 +89,7 @@ class TestCoinGeckoAPI(TestCase):
         dd_pycoingecko_view.info(self.coin, [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
-        self.assertIn("asset_platform_id", capt)
+        self.assertIn("market_cap_rank", capt)
 
     def test_coin_web(self):
         capturedOutput = io.StringIO()
