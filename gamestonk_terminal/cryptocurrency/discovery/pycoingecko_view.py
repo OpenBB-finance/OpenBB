@@ -34,7 +34,7 @@ def gainers(other_args: List[str]):
         Shows Largest Gainers - coins which gain the most in given period.
         You can use parameter --period to set which timeframe are you interested in. eg. 1h, 24h, 7d, 14d, 30d, 60d, 1y
         You can look on only top N number of records with --top,
-        You can sort by rank, symbol, name, volume, price, change with --sort and also with --descend flag to set it
+        You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag to set it
         to sort descending.
         There is --links flag, which will display one additional column you all urls for coins.
         """,
@@ -54,7 +54,7 @@ def gainers(other_args: List[str]):
         dest="top",
         type=int,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -62,8 +62,8 @@ def gainers(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
-        choices=["rank", "symbol", "name", "volume", "price", "change"],
+        default="Rank",
+        choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
     )
     parser.add_argument(
         "--descend",
@@ -86,8 +86,8 @@ def gainers(other_args: List[str]):
         if not ns_parser:
             return
 
-        if ns_parser.sortby == "change":
-            sortby = f"%change_{ns_parser.period}"
+        if ns_parser.sortby == "Change":
+            sortby = f"% Change {ns_parser.period}"
         else:
             sortby = ns_parser.sortby
 
@@ -96,7 +96,7 @@ def gainers(other_args: List[str]):
         ).sort_values(by=sortby, ascending=ns_parser.descend)
 
         if not ns_parser.links:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -149,7 +149,7 @@ def losers(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -157,8 +157,8 @@ def losers(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: change",
-        default="rank",
-        choices=["rank", "symbol", "name", "volume", "price", "change"],
+        default="Rank",
+        choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
     )
     parser.add_argument(
         "--descend",
@@ -181,8 +181,8 @@ def losers(other_args: List[str]):
         if not ns_parser:
             return
 
-        if ns_parser.sortby == "change":
-            sortby = f"%change_{ns_parser.period}"
+        if ns_parser.sortby == "Change":
+            sortby = f"% Change {ns_parser.period}"
         else:
             sortby = ns_parser.sortby
 
@@ -191,7 +191,7 @@ def losers(other_args: List[str]):
         ).sort_values(by=sortby, ascending=ns_parser.descend)
 
         if not ns_parser.links:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -230,7 +230,7 @@ def discover(category: str, other_args: List[str]):
         You can sort by rank, name, price_btc, price_usd, using --sort parameter and also with --descend flag
         to sort descending.
         Flag --links will display one additional column with all coingecko urls for listed coins.
-        {category} will display: rank, name, price_usd, price_btc
+        {category} will display: Rank, Name, Price BTC, Price USD
         """,
     )
     parser.add_argument(
@@ -247,8 +247,13 @@ def discover(category: str, other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
-        choices=["rank", "name", "price_usd", "price_btc"],
+        default="Rank",
+        choices=[
+            "Rank",
+            "Name",
+            "Price BTC",
+            "Price USD",
+        ],
     )
     parser.add_argument(
         "--descend",
@@ -274,12 +279,12 @@ def discover(category: str, other_args: List[str]):
         df = gecko.discover_coins(category=category)
         df.index = df.index + 1
         df.reset_index(inplace=True)
-        df.rename(columns={"index": "rank"}, inplace=True)
+        df.rename(columns={"index": "Rank"}, inplace=True)
 
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
 
         if not ns_parser.links:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -309,7 +314,7 @@ def recently_added(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows recently added coins on CoinGecko. You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, symbol, price, change_24h, change_1h, added with --sort
+        You can sort data by Rank, Name, Symbol, Price, Change 1h, Change 24h, Added with --sort
         and also with --descend flag to sort descending.
         Flag --links will display urls""",
     )
@@ -327,8 +332,17 @@ def recently_added(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
-        choices=["rank", "name", "symbol", "price", "change_24h", "change_1h", "added"],
+        default="Rank",
+        choices=[
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change 1h",
+            "Change 24h",
+            "Added",
+            "Url",
+        ],
     )
     parser.add_argument(
         "--descend",
@@ -356,9 +370,9 @@ def recently_added(other_args: List[str]):
         )
 
         if ns_parser.links is True:
-            df = df[["rank", "symbol", "added", "url"]]
+            df = df[["Rank", "Symbol", "Added", "Url"]]
         else:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -394,8 +408,8 @@ def top_defi_coins(other_args: List[str]):
         DeFi or Decentralized Finance refers to financial services that are built
         on top of distributed networks with no central intermediaries.
         You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, symbol, price, change_24h, change_1h, change_7d,
-        volume_24h, market_cap with --sort and also with --descend flag to sort descending.
+        You can sort data by Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d,
+         Volume 24h, Market Cap, Url with --sort and also with --descend flag to sort descending.
         Flag --links will display  urls""",
     )
     parser.add_argument(
@@ -404,7 +418,7 @@ def top_defi_coins(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -412,17 +426,18 @@ def top_defi_coins(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
+        default="Rank",
         choices=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "change_1h",
-            "change_24h",
-            "change_7d",
-            "volume_24h",
-            "market_cap",
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change 1h",
+            "Change 24h",
+            "Change 7d",
+            "Volume 24h",
+            "Market Cap",
+            "Url",
         ],
     )
     parser.add_argument(
@@ -451,9 +466,9 @@ def top_defi_coins(other_args: List[str]):
         )
 
         if ns_parser.links is True:
-            df = df[["rank", "name", "symbol", "url"]]
+            df = df[["Rank", "Name", "Symbol", "Url"]]
         else:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -485,10 +500,10 @@ def top_dex(other_args: List[str]):
         description="""
         Shows Top Decentralized Exchanges on CoinGecko by Trading Volume
         You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
-        most_traded_pairs, market_share_by_volume with --sort and also with --descend flag to sort descending.
+        You can sort data by  Name, Rank, Volume 24h, Number of Coins, Number of Pairs, Visits, Most Traded,
+        Market Share by volume with --sort and also with --descend flag to sort descending.
         Display columns:
-             rank, name, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol""",
+              Name, Rank, Volume 24h, Number of Coins, Number of Pairs, Visits, Most Traded, Market Share by volume""",
     )
     parser.add_argument(
         "-t",
@@ -496,24 +511,24 @@ def top_dex(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
+        help="Sort by given column. Default: Rank",
+        default="Rank",
         choices=[
-            "rank",
-            "name",
-            "volume_24h",
-            "n_coins",
-            "visits",
-            "most_traded",
-            "market_share_by_vol",
-            "n_pairs",
+            "Rank",
+            "Name",
+            "Volume 24h",
+            "Number of coins",
+            "Visits",
+            "Most Traded",
+            "Market Share by volume",
+            "Number of Pairs",
         ],
     )
     parser.add_argument(
@@ -562,8 +577,8 @@ def top_volume_coins(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Coins by Trading Volume.
         You can display only top N number of coins with --top parameter.
-        You can sort data by on of columns rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,
-        market_cap with --sort parameter and also with --descend flag to sort descending.
+        You can sort data by on of columns Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d, Volume 24h,
+        Market Cap with --sort parameter and also with --descend flag to sort descending.
         Displays columns: rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,market_cap""",
     )
     parser.add_argument(
@@ -571,8 +586,8 @@ def top_volume_coins(other_args: List[str]):
         "--top",
         dest="top",
         type=check_positive,
-        help="Top N of records. Default 20",
-        default=20,
+        help="Top N of records. Default 15",
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -580,17 +595,17 @@ def top_volume_coins(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
+        default="Rank",
         choices=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "change_1h",
-            "change_24h",
-            "change_7d",
-            "volume_24h",
-            "market_cap",
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change 1h",
+            "Change 24h",
+            "Change 7d",
+            "Volume 24h",
+            "Market Cap",
         ],
     )
     parser.add_argument(
@@ -645,10 +660,10 @@ def top_nft(other_args: List[str]):
         NFT (Non-fungible Token) refers to digital assets with unique characteristics.
         Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
         You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, symbol, price, change_24h, change_1h, change_7d,
-        volume_24h, market_cap with --sort and also with --descend flag to sort descending.
+        You can sort data by Rank, Name, Symbol, Price, Change 1d, Change 24h, Change 7d, Market Cap
+        with --sort and also with --descend flag to sort descending.
         Flag --links will display urls
-        Displays : rank, name, symbol, price, change_1h, change_24h, change_7d, market_cap, url""",
+        Displays : Rank, Name, Symbol, Price, Change 1d, Change 24h, Change 7d, Market Cap, Url""",
     )
     parser.add_argument(
         "-t",
@@ -656,7 +671,7 @@ def top_nft(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -664,17 +679,17 @@ def top_nft(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
+        default="Rank",
         choices=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "change_1h",
-            "change_24h",
-            "change_7d",
-            "volume_24h",
-            "market_cap",
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change 1h",
+            "Change 24h",
+            "Change 7d",
+            "Volume 24h",
+            "Market Cap",
         ],
     )
     parser.add_argument(
@@ -703,9 +718,9 @@ def top_nft(other_args: List[str]):
         )
 
         if ns_parser.links is True:
-            df = df[["rank", "name", "symbol", "url"]]
+            df = df[["Rank", "Name", "Symbol", "Url"]]
         else:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -738,7 +753,7 @@ def yfarms(other_args: List[str]):
         Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency holdings.
         In simple terms, it means locking up cryptocurrencies and getting rewards.
         You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, value_locked, return_year with --sort parameter
+        You can sort data by Rank, Name,  Value Locked, Return Year with --sort parameter
         and also with --descend flag to sort descending.""",
     )
     parser.add_argument(
@@ -747,7 +762,7 @@ def yfarms(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="Top N of records. Default 20",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -755,8 +770,13 @@ def yfarms(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: rank",
-        default="rank",
-        choices=["rank", "name", "value_locked", "return_year"],
+        default="Rank",
+        choices=[
+            "Rank",
+            "Name",
+            "Value Locked",
+            "Return Year",
+        ],
     )
     parser.add_argument(
         "--descend",

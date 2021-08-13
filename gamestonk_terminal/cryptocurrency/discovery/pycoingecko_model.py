@@ -80,18 +80,18 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
     df = pd.DataFrame(
         results,
         columns=[
-            "symbol",
-            "name",
-            "volume",
-            "price",
-            f"%change_{period}",
-            "url",
+            "Symbol",
+            "Name",
+            "Volume",
+            "Price",
+            f"% Change {period}",
+            "Url",
         ],
     )
     df.index = df.index + 1
     df.reset_index(inplace=True)
-    df = df.rename(columns={"index": "rank"})
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df = df.rename(columns={"index": "Rank"})
+    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -108,7 +108,7 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame:
-        name, price_btc, price_usd, url
+        Name, Price BTC, Price USD, Url
     """
     if category not in CATEGORIES:
         raise ValueError(
@@ -133,10 +133,10 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
     return pd.DataFrame(
         results,
         columns=[
-            "name",
-            "price_btc",
-            "price_usd",
-            "url",
+            "Name",
+            "Price BTC",
+            "Price USD",
+            "Url",
         ],
     )
 
@@ -147,16 +147,16 @@ def get_recently_added_coins() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        name, symbol, price, change_1h, change_24h, last_added
+        Name, Symbol, Price, Change 1h, Change 24h, Added
     """
     columns = [
-        "name",
-        "symbol",
-        "price",
-        "change_1h",
-        "change_24h",
-        "added",
-        "url",
+        "Name",
+        "Symbol",
+        "Price",
+        "Change 1h",
+        "Change 24h",
+        "Added",
+        "Url",
     ]
 
     url = "https://www.coingecko.com/en/coins/recently_added"
@@ -181,8 +181,8 @@ def get_recently_added_coins() -> pd.DataFrame:
     df = replace_qm(pd.DataFrame(results, columns=columns))
     df.index = df.index + 1
     df.reset_index(inplace=True)
-    df.rename(columns={"index": "rank"}, inplace=True)
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df.rename(columns={"index": "Rank"}, inplace=True)
+    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -192,16 +192,16 @@ def get_yield_farms() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        rank, name, pool, audits, collateral,value_locked, returns_year, returns_hour
+        Rank, Name, Pool, Audits, Collateral, Value Locked, Return Year, Return Hour
     """
     columns = [
-        "rank",
-        "name",
-        "pool",
-        "audits",
-        "collateral",
-        "value_locked",
-        "return_year",
+        "Rank",
+        "Name",
+        "Pool",
+        "Audits",
+        "Collateral",
+        "Value Locked",
+        "Return Year",
     ]
     url = "https://www.coingecko.com/en/yield-farming"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -238,11 +238,11 @@ def get_yield_farms() -> pd.DataFrame:
             ]
         )
     df = pd.DataFrame(results, columns=columns).replace({"": None})
-    for col in ["return_year"]:
+    for col in ["Return Year"]:
         df[col] = df[col].apply(
             lambda x: x.replace(" Yearly", "") if isinstance(x, str) else x
         )
-    df["rank"] = df["rank"].astype(int)
+    df["Rank"] = df["Rank"].astype(int)
     df = wrap_text_in_df(df, w=30)
     return df
 
@@ -253,18 +253,18 @@ def get_top_volume_coins() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        rank, name, symbol, price, change_1h, change_24h, change_7d, volume_24h, market_cap
+        Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d, Volume 24h, Market Cap
     """
     columns = [
-        "rank",
-        "name",
-        "symbol",
-        "price",
-        "change_1h",
-        "change_24h",
-        "change_7d",
-        "volume_24h",
-        "market_cap",
+        "Rank",
+        "Name",
+        "Symbol",
+        "Price",
+        "Change 1h",
+        "Change 24h",
+        "Change 7d",
+        "Volume 24h",
+        "Market Cap",
     ]
     url = "https://www.coingecko.com/en/coins/high_volume"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -276,9 +276,9 @@ def get_top_volume_coins() -> pd.DataFrame:
         row_cleaned.pop(3)
         results.append(row_cleaned)
     df = replace_qm(pd.DataFrame(results, columns=columns))
-    df.drop("rank", axis=1, inplace=True)
-    create_df_index(df, "rank")
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df.drop("Rank", axis=1, inplace=True)
+    create_df_index(df, "Rank")
+    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -288,7 +288,8 @@ def get_top_defi_coins() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        rank, name, symbol, price, change_1h, change_24h, change_7d, volume_24h, market_cap, url
+        Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d, Volume 24h, Market Cap, Url
+
     """
     url = "https://www.coingecko.com/en/defi"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -306,27 +307,27 @@ def get_top_defi_coins() -> pd.DataFrame:
     df = pd.DataFrame(
         results,
         columns=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "change_1h",
-            "change_24h",
-            "change_7d",
-            "volume_24h",
-            "market_cap",
-            "fully_diluted_market_cap",
-            "market_cap_to_tvl_ratio",
-            "url",
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change 1h",
+            "Change 24h",
+            "Change 7d",
+            "Volume 24h",
+            "Market Cap",
+            "Fully Diluted Market Cap",
+            "Market Cap to TVL Ratio",
+            "Url",
         ],
     )
     df.drop(
-        ["fully_diluted_market_cap", "market_cap_to_tvl_ratio"],
+        ["Fully Diluted Market Cap", "Market Cap to TVL Ratio"],
         axis=1,
         inplace=True,
     )
-    df["rank"] = df["rank"].astype(int)
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df["Rank"] = df["Rank"].astype(int)
+    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -336,17 +337,17 @@ def get_top_dexes() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        name, rank, volume_24h, n_coins, n_pairs, visits, most_traded, market_share_by_vol
+        Name, Rank, Volume 24h, Number of Coins, Number of Pairs, Visits, Most Traded, Market Share by volume
     """
     columns = [
-        "name",
-        "rank",
-        "volume_24h",
-        "n_coins",
-        "n_pairs",
-        "visits",
-        "most_traded",
-        "market_share_by_vol",
+        "Name",
+        "Rank",
+        "Volume 24h",
+        "Number of Coins",
+        "Number of Pairs",
+        "Visits",
+        "Most Traded",
+        "Market Share by volume",
     ]
     url = "https://www.coingecko.com/en/dex"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -359,19 +360,19 @@ def get_top_dexes() -> pd.DataFrame:
             row_cleaned.insert(-3, "N/A")
         results.append(row_cleaned)
     df = pd.DataFrame(results)
-    df["name"] = df.iloc[:, 1] + " " + df.iloc[:, 2].replace("N/A", "")
+    df["Name"] = df.iloc[:, 1] + " " + df.iloc[:, 2].replace("N/A", "")
     df.drop(df.columns[1:3], axis=1, inplace=True)
     df = swap_columns(df)
     df.columns = columns
-    df["most_traded"] = (
-        df["most_traded"]
+    df["Most Traded"] = (
+        df["Most Traded"]
         .apply(lambda x: x.split("$")[0])
         .str.replace(",", "", regex=True)
         .str.replace(".", "", regex=True)
     )
-    df["most_traded"] = df["most_traded"].apply(lambda x: None if x.isdigit() else x)
-    df["rank"] = df["rank"].astype(int)
-    df.set_index("rank", inplace=True)
+    df["Most Traded"] = df["Most Traded"].apply(lambda x: None if x.isdigit() else x)
+    df["Rank"] = df["Rank"].astype(int)
+    df.set_index("Rank", inplace=True)
     return df.reset_index()
 
 
@@ -381,7 +382,7 @@ def get_top_nfts() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        rank, name, symbol, price, change_1d, change_24h, change_7d, market_cap, url
+        Rank, Name, Symbol, Price, Change 1d, Change 24h, Change 7d, Market Cap, Url
     """
     url = "https://www.coingecko.com/en/nft"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -397,20 +398,20 @@ def get_top_nfts() -> pd.DataFrame:
     df = pd.DataFrame(
         results,
         columns=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "change_1h",
-            "change_24h",
-            "change_7d",
-            "volume_24h",
-            "market_cap",
-            "url",
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change 1h",
+            "Change 24h",
+            "Change 7d",
+            "Volume 24h",
+            "Market Cap",
+            "Url",
         ],
     )
-    df["rank"] = df["rank"].astype(int)
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df["Rank"] = df["Rank"].astype(int)
+    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
