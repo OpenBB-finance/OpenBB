@@ -57,9 +57,9 @@ def holdings_overview(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -124,9 +124,9 @@ def holdings_companies_list(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -167,9 +167,9 @@ def nft_of_the_day(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -211,9 +211,9 @@ def nft_market_status(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -276,9 +276,9 @@ def exchange_rates(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -319,9 +319,9 @@ def global_market_info(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -360,9 +360,9 @@ def global_defi_info(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -433,9 +433,9 @@ def coin_list(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -525,9 +525,9 @@ def stablecoins(other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -556,7 +556,7 @@ def news(other_args: List[str]):
         dest="top",
         type=int,
         help="top N number of news >=10",
-        default=50,
+        default=20,
     )
     parser.add_argument(
         "-s",
@@ -608,9 +608,9 @@ def news(other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -633,7 +633,7 @@ def categories(other_args: List[str]):
         description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
         stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
         "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
-        "To display urls to news use --links flag.",
+        "To display urls use --links flag.",
         Displays: rank, name, change_1h, change_24h, change_7d, market_cap, volume_24h, n_of_coins""",
     )
     parser.add_argument(
@@ -641,7 +641,7 @@ def categories(other_args: List[str]):
         "--top",
         dest="top",
         type=check_positive,
-        help="top N number of news >=10",
+        help="top N number of records",
         default=20,
     )
     parser.add_argument(
@@ -699,9 +699,9 @@ def categories(other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -721,7 +721,7 @@ def exchanges(other_args: List[str]):
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Exchanges
-        You can display only top N number of coins with --top parameter.
+        You can display only top N number exchanges with --top parameter.
         You can sort data by rank, trust_score, id, name, country, established, trade_volume_24h_btc with --sort
         and also with --descend flag to sort descending.
         Flag --links will display urls.
@@ -789,9 +789,9 @@ def exchanges(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -811,7 +811,7 @@ def platforms(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
         e.g Celsius, Nexo, Crypto.com, Aave and others.
-        You can display only top N number of coins with --top parameter.
+        You can display only top N number of platforms with --top parameter.
         You can sort data by rank, name, category, centralized with --sort
         and also with --descend flag to sort descending.
         Displays: rank, name, category, centralized, website_url""",
@@ -857,9 +857,9 @@ def platforms(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -878,7 +878,7 @@ def products(other_args: List[str]):
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
-        You can display only top N number of coins with --top parameter.
+        You can display only top N number of platforms with --top parameter.
         You can sort data by rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage  with --sort
         and also with --descend flag to sort descending.
         Displays: rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage""",
@@ -929,9 +929,9 @@ def products(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -951,7 +951,7 @@ def indexes(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows list of crypto indexes from CoinGecko.
         Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
-        You can display only top N number of coins with --top parameter.
+        You can display only top N number of indexes with --top parameter.
         You can sort data by rank, name, id, market, last, is_multi_asset_composite with --sort
         and also with --descend flag to sort descending.
         Displays: rank, name, id, market, last, is_multi_asset_composite
@@ -998,9 +998,9 @@ def indexes(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -1077,12 +1077,12 @@ def derivatives(other_args: List[str]):
             tabulate(
                 df.head(ns_parser.top),
                 headers=df.columns,
-                floatfmt=".2f",
+                floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")

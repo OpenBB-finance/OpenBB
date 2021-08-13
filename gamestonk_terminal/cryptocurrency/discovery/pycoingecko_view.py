@@ -102,13 +102,12 @@ def gainers(other_args: List[str]):
             tabulate(
                 df.head(ns_parser.top),
                 headers=df.columns,
-                floatfmt=".2f",
+                floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")
 
@@ -198,13 +197,12 @@ def losers(other_args: List[str]):
             tabulate(
                 df.head(ns_parser.top),
                 headers=df.columns,
-                floatfmt=".2f",
+                floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")
 
@@ -287,13 +285,12 @@ def discover(category: str, other_args: List[str]):
             tabulate(
                 df.head(ns_parser.top),
                 headers=df.columns,
-                floatfmt=".5f",
+                floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")
 
@@ -370,9 +367,9 @@ def recently_added(other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -462,12 +459,12 @@ def top_defi_coins(other_args: List[str]):
             tabulate(
                 df.head(ns_parser.top),
                 headers=df.columns,
-                floatfmt=".2f",
+                floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
     except Exception as e:
         print(e, "\n")
 
@@ -543,9 +540,9 @@ def top_dex(other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -617,12 +614,12 @@ def top_volume_coins(other_args: List[str]):
             tabulate(
                 df.head(ns_parser.top),
                 headers=df.columns,
-                floatfmt=".2f",
+                floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -717,9 +714,9 @@ def top_nft(other_args: List[str]):
                 floatfmt=".4f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -784,9 +781,9 @@ def yfarms(other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -866,9 +863,9 @@ def find(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -939,9 +936,9 @@ def coin_list(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")

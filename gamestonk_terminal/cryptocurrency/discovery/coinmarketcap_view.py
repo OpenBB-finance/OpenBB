@@ -93,9 +93,9 @@ def get_cmc_top_n(other_args: List[str]):
                 showindex=False,
                 tablefmt="fancy_grid",
                 floatfmt=".2f",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")

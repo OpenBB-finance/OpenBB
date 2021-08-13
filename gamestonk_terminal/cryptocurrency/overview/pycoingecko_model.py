@@ -17,37 +17,6 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
 )
 
 
-COLUMNS = {
-    "id": "id",
-    "rank": "rank",
-    "name": "name",
-    "symbol": "symbol",
-    "price": "price",
-    "change_1h": "change_1h",
-    "change_24h": "change_24h",
-    "change_7d": "change_7d",
-    "volume_24h": "volume_24h",
-    "market_cap": "market_cap",
-    "country": "country",
-    "total_market_cap": "total_market_cap",
-    "total_volume": "total_volume",
-    "market_cap_percentage": "market_cap_percentage",
-    "company": "company",
-    "ticker": "ticker",
-    "last_added": "added",
-    "title": "title",
-    "author": "author",
-    "posted": "posted",
-    "article": "article",
-    "url": "url",
-    "price_btc": "price_btc",
-    "price_usd": "price_usd",
-    "n_of_coins": "n_of_coins",
-    "exchanges": "exchanges",
-    "change_30d": "change_30d",
-}
-
-
 client = CoinGeckoAPI()
 
 
@@ -107,15 +76,15 @@ def get_companies_assets(endpoint="bitcoin"):
     df = pd.DataFrame(
         results,
         columns=[
-            COLUMNS["rank"],
-            COLUMNS["company"],
-            COLUMNS["ticker"],
-            COLUMNS["country"],
+            "rank",
+            "company",
+            "ticker",
+            "country",
             "total_btc",
             "entry_value",
             "today_value",
             "pct_of_supply",
-            COLUMNS["url"],
+            "url",
         ],
     )
     return df
@@ -138,7 +107,7 @@ def get_news(n: int = 100) -> pd.DataFrame:
     dfs = []
     for page in range(1, n_of_pages):
         url = f"https://www.coingecko.com/en/news?page={page}"
-        rows = scrape_gecko_data(url).find_all(COLUMNS["article"])
+        rows = scrape_gecko_data(url).find_all("article")
         results = []
         for row in rows:
             header = row.find("header")
@@ -153,11 +122,11 @@ def get_news(n: int = 100) -> pd.DataFrame:
             pd.DataFrame(
                 results,
                 columns=[
-                    COLUMNS["title"],
-                    COLUMNS["author"],
-                    COLUMNS["posted"],
-                    COLUMNS["article"],
-                    COLUMNS["url"],
+                    "title",
+                    "author",
+                    "posted",
+                    "article",
+                    "url",
                 ],
             )
         )
@@ -177,15 +146,15 @@ def get_top_crypto_categories():
        rank, name, change_1h, change_7d, market_cap, volume_24h, n_of_coins, url
     """
     columns = [
-        COLUMNS["rank"],
-        COLUMNS["name"],
-        COLUMNS["change_1h"],
-        COLUMNS["change_24h"],
-        COLUMNS["change_7d"],
-        COLUMNS["market_cap"],
-        COLUMNS["volume_24h"],
-        COLUMNS["n_of_coins"],
-        COLUMNS["url"],
+        "rank",
+        "name",
+        "change_1h",
+        "change_24h",
+        "change_7d",
+        "market_cap",
+        "volume_24h",
+        "n_of_coins",
+        "url",
     ]
     url = "https://www.coingecko.com/en/categories"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -230,15 +199,15 @@ def get_stable_coins():
         rank, name, symbol, price, change_24h, exchanges, market_cap, change_30, url
     """
     columns = [
-        COLUMNS["rank"],
-        COLUMNS["name"],
-        COLUMNS["symbol"],
-        COLUMNS["price"],
-        COLUMNS["change_24h"],
-        COLUMNS["exchanges"],
-        COLUMNS["market_cap"],
-        COLUMNS["change_30d"],
-        COLUMNS["url"],
+        "rank",
+        "name",
+        "symbol",
+        "price",
+        "change_24h",
+        "exchanges",
+        "market_cap",
+        "change_30d",
+        "url",
     ]
     url = "https://www.coingecko.com/en/stablecoins"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -276,6 +245,7 @@ def get_stable_coins():
     df = replace_qm(pd.DataFrame(results, columns=columns))
     df.drop("rank", axis=1, inplace=True)
     create_df_index(df, "rank")
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -299,9 +269,9 @@ def get_nft_of_the_day():
     df = (
         pd.Series(
             {
-                COLUMNS["author"]: " ".join(author),
+                "author": " ".join(author),
                 "desc": description,
-                COLUMNS["url"]: GECKO_BASE_URL + row.find("a")["href"],
+                "url": GECKO_BASE_URL + row.find("a")["href"],
                 "img": row.find("img")["src"],
             }
         )
@@ -348,12 +318,12 @@ def get_exchanges():
     df = df[
         [
             "trust_score",
-            COLUMNS["id"],
-            COLUMNS["name"],
-            COLUMNS["country"],
+            "id",
+            "name",
+            "country",
             "year_established",
             "trade_volume_24h_btc",
-            COLUMNS["url"],
+            "url",
         ]
     ]
     create_df_index(df, "rank")
@@ -425,6 +395,7 @@ def get_derivatives():
 
     df.rename(columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True)
     create_df_index(df, "rank")
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -458,7 +429,7 @@ def get_global_info():
 
     total_mcap = results.pop("market_cap_percentage")
     eth, btc = total_mcap.get("btc"), total_mcap.get("eth")
-    for key in [COLUMNS["total_market_cap"], COLUMNS["total_volume"], "updated_at"]:
+    for key in ["total_market_cap", "total_volume", "updated_at"]:
         del results[key]
     results["eth_market_cap_in_pct"] = eth
     results["btc_market_cap_in_pct"] = btc
@@ -480,9 +451,9 @@ def get_global_markets_info():
         total_market_cap, total_volume, market_cap_percentage
     """
     columns = [
-        COLUMNS["total_market_cap"],
-        COLUMNS["total_volume"],
-        COLUMNS["market_cap_percentage"],
+        "total_market_cap",
+        "total_volume",
+        "market_cap_percentage",
     ]
     data = []
     results = client.get_global()

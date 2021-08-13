@@ -165,72 +165,81 @@ Binance:
         if self.current_coin:
             pycoingecko_view.info(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_market(self, other_args):
         """Process market command"""
         if self.current_coin:
             pycoingecko_view.market(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_web(self, other_args):
         """Process web command"""
         if self.current_coin:
             pycoingecko_view.web(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_social(self, other_args):
         """Process social command"""
         if self.current_coin:
             pycoingecko_view.social(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_dev(self, other_args):
         """Process dev command"""
         if self.current_coin:
             pycoingecko_view.dev(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_ath(self, other_args):
         """Process ath command"""
         if self.current_coin:
             pycoingecko_view.ath(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_atl(self, other_args):
         """Process atl command"""
         if self.current_coin:
             pycoingecko_view.atl(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_score(self, other_args):
         """Process score command"""
         if self.current_coin:
             pycoingecko_view.score(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_bc(self, other_args):
         """Process bc command"""
         if self.current_coin:
             pycoingecko_view.bc(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     # binance
     def call_book(self, other_args):
@@ -253,48 +262,54 @@ Binance:
         if self.current_coin:
             coinpaprika_view.price_supply(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_basic(self, other_args):
         """Process basic command"""
         if self.current_coin:
             coinpaprika_view.basic(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_mkt(self, other_args):
         """Process mkt command"""
         if self.current_coin:
             coinpaprika_view.markets(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_ex(self, other_args):
         """Process ex command"""
         if self.current_coin:
             coinpaprika_view.exchanges(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_events(self, other_args):
         """Process events command"""
         if self.current_coin:
             coinpaprika_view.events(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_twitter(self, other_args):
         """Process twitter command"""
         if self.current_coin:
             coinpaprika_view.twitter(self.current_coin, other_args)
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
 
 def menu(coin=None, source=None):

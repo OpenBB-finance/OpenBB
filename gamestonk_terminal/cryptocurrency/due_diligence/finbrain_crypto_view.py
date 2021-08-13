@@ -73,7 +73,7 @@ def crypto_sentiment_analysis(other_args: List[str]):
         )  # Currently only USD pairs are available
 
         if df_sentiment.empty:
-            print(f"Couldn't find Sentiment Data for {coin}")
+            print(f"Couldn't find Sentiment Data for {coin}\n")
             return
 
         plot_sentiment(df_sentiment, coin)
@@ -83,11 +83,11 @@ def crypto_sentiment_analysis(other_args: List[str]):
             print(
                 df_sentiment["Sentiment Analysis"]
                 .apply(sentiment_coloring, last_val=0)
-                .to_string()
+                .to_string(),
+                "\n",
             )
         else:
-            print(df_sentiment.to_string())
-        print("")
+            print(df_sentiment.to_string(), "\n")
 
     except Exception as e:
         print(e, "\n")

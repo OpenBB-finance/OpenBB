@@ -8,11 +8,12 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 from tabulate import tabulate
+import mplfinance as mpf
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.feature_flags import USE_ION as ion
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
 
@@ -111,21 +112,42 @@ def chart(coin: gecko.Coin, other_args: List[str]):
             return
 
         df = coin.get_coin_market_chart(ns_parser.vs, ns_parser.days)
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        df = df["price"].resample("1D").ohlc().ffill()
 
-        plt.plot(df.index, df.price, "-ok", ms=2)
-        plt.xlabel("Time")
-        plt.xlim(df.index[0], df.index[-1])
-        plt.ylabel("Price")
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        plt.title(f"{coin.coin_symbol}/{df['currency'][0]}")
+        df.columns = [
+            "Open",
+            "High",
+            "Low",
+            "Close",
+        ]
+
+        title = (
+            f"\n{coin.coin_symbol}/{ns_parser.vs} from {df.index[0].strftime('%Y/%m/%d')} "
+            f"to {df.index[-1].strftime('%Y/%m/%d')}",
+        )
+
+        mpf.plot(
+            df,
+            type="candle",
+            volume=False,
+            title=str(title[0]) if isinstance(title, tuple) else title,
+            xrotation=20,
+            style="binance",
+            figratio=(10, 7),
+            figscale=1.10,
+            figsize=(plot_autoscale()),
+            update_width_config=dict(
+                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+            ),
+        )
+
+        if ion:
+            plt.ion()
         plt.show()
         print("")
-
     except SystemExit:
         print("")
+
     except Exception as e:
         print(e, "\n")
 
@@ -223,9 +245,9 @@ def info(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except SystemExit:
         print("")
@@ -266,9 +288,9 @@ def web(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except SystemExit:
         print("")
@@ -308,9 +330,9 @@ def social(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except SystemExit:
         print("")
@@ -352,10 +374,9 @@ def dev(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except SystemExit:
         print("")
     except Exception as e:
@@ -397,10 +418,9 @@ def ath(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except SystemExit:
         print("")
     except Exception as e:
@@ -444,10 +464,9 @@ def atl(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except SystemExit:
         print("")
     except Exception as e:
@@ -494,10 +513,9 @@ def score(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except SystemExit:
         print("")
     except Exception as e:
@@ -539,9 +557,9 @@ def bc(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except SystemExit:
         print("")
@@ -589,10 +607,9 @@ def market(coin: gecko.Coin, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except SystemExit:
         print("")
     except Exception as e:

@@ -173,8 +173,9 @@ What do you want to do?
                 self.current_coin, other_args
             )
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_ta(self, other_args):
         """Process ta command"""
@@ -201,8 +202,9 @@ What do you want to do?
                 return
 
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_disc(self, _):
         """Process disc command"""
@@ -233,8 +235,9 @@ What do you want to do?
             else:
                 return True
         else:
-            print("No coin selected. Use 'load' to load the coin you want to look at.")
-            print("")
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     def call_report(self, _):
         """Process report command"""

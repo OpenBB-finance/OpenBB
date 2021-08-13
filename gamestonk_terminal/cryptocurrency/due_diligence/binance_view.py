@@ -129,8 +129,10 @@ def balance(other_args: List[str], coin: str) -> None:
         df.index = ["Free", "Locked"]
         df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
         print(f"You currently have {total} coins and the breakdown is:")
-        print(tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"))
-        print("")
+        print(
+            tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
+            "\n",
+        )
 
     except Exception as e:
         print(e, "\n")

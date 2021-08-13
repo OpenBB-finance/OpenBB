@@ -91,6 +91,7 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
     df.index = df.index + 1
     df.reset_index(inplace=True)
     df = df.rename(columns={"index": "rank"})
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$")))
     return df
 
 
@@ -181,6 +182,7 @@ def get_recently_added_coins() -> pd.DataFrame:
     df.index = df.index + 1
     df.reset_index(inplace=True)
     df.rename(columns={"index": "rank"}, inplace=True)
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -276,6 +278,7 @@ def get_top_volume_coins() -> pd.DataFrame:
     df = replace_qm(pd.DataFrame(results, columns=columns))
     df.drop("rank", axis=1, inplace=True)
     create_df_index(df, "rank")
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -323,6 +326,7 @@ def get_top_defi_coins() -> pd.DataFrame:
         inplace=True,
     )
     df["rank"] = df["rank"].astype(int)
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -406,6 +410,7 @@ def get_top_nfts() -> pd.DataFrame:
         ],
     )
     df["rank"] = df["rank"].astype(int)
+    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 

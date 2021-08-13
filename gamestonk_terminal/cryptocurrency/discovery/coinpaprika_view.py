@@ -100,9 +100,8 @@ def search(other_args: List[str]):
 
         if df.empty:
             print(
-                f"No results for search query '{ns_parser.query}' in category '{ns_parser.category}'"
+                f"No results for search query '{ns_parser.query}' in category '{ns_parser.category}'\n"
             )
-            print("")
             return
 
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
@@ -114,10 +113,9 @@ def search(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")
 
@@ -193,10 +191,9 @@ def coins(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")
 
@@ -277,9 +274,8 @@ def find(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")

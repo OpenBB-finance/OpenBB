@@ -143,9 +143,9 @@ def coins(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -222,9 +222,9 @@ def twitter(coin_id: str, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -293,8 +293,7 @@ def events(coin_id: str, other_args: List[str]):
         df = paprika.get_coin_events_by_id(coin_id)
 
         if df.empty:
-            print(f"Couldn't find any events for coin {coin_id}")
-            print("")
+            print(f"Couldn't find any events for coin {coin_id}\n")
             return
 
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
@@ -311,9 +310,9 @@ def events(coin_id: str, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -385,9 +384,9 @@ def exchanges(coin_id: str, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -477,7 +476,7 @@ def markets(coin_id: str, other_args: List[str]):
         df = paprika.get_coin_markets_by_id(coin_id, vs)
 
         if df.empty:
-            print("There is no data")
+            print("There is no data \n")
             return
 
         df = df.sort_values(by=sort, ascending=ns_parser.descend)
@@ -494,9 +493,9 @@ def markets(coin_id: str, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -636,9 +635,9 @@ def price_supply(coin_id: str, other_args: List[str]):
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
 
     except Exception as e:
         print(e, "\n")
@@ -815,9 +814,8 @@ def basic(coin_id: str, other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
-
     except Exception as e:
         print(e, "\n")
