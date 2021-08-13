@@ -122,13 +122,13 @@ class TestCoinPaprikaView(TestCase):
         value = coinpaprika_view.load(["-c", "BTC"])
         self.assertEqual(value, "btc-bitcoin")
 
-    @check_print()
+    # @check_print()
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_ta.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_ta.yaml",
+        record_mode="new_episodes",
     )
     def test_ta(self):
         value = coinpaprika_view.ta("eth-ethereum", [])
-        print(value[0])
         self.assertIn("Open", value[0])
 
     @check_print(assert_in="Metric")
