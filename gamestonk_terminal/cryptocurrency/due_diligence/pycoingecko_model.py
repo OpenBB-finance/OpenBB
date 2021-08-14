@@ -359,8 +359,8 @@ class Coin:
             if isinstance(x, str)
             else x
         )
+        df["Metric"] = df["Metric"].apply(lambda x: x.replace("Ath", "All Time High"))
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
-        df["Metric"] = df["Metric"].apply(lambda x: x.replace("Ath", "All Time How"))
         return df[df["Value"].notna()]
 
     def all_time_low(self, currency="usd"):
@@ -380,7 +380,7 @@ class Coin:
         ]
         results = {}
         for column in ath_columns:
-            results[f"{column} {currency.upper()}"] = market_data[column].get(currency)
+            results[column] = market_data[column].get(currency)
 
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
@@ -389,8 +389,8 @@ class Coin:
             if isinstance(x, str)
             else x
         )
-        df["Metric"] = df["Metric"] + f" {currency.upper()}"
         df["Metric"] = df["Metric"].apply(lambda x: x.replace("Atl", "All Time Low"))
+        df["Metric"] = df["Metric"] + f" {currency.upper()}"
         return df[df["Value"].notna()]
 
     @property
