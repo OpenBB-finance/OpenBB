@@ -167,13 +167,13 @@ What do you want to do?
         return crypto_controller.menu()
 
     def call_economy(self, _):
-        """Process econ command"""
+        """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
         return economy_controller.menu()
 
     def call_options(self, _):
-        """Process op command"""
+        """Process options command"""
         from gamestonk_terminal.options import options_controller
 
         return options_controller.menu()
@@ -185,7 +185,7 @@ What do you want to do?
         return etf_controller.menu()
 
     def call_forex(self, _):
-        """Process fx command"""
+        """Process forex command"""
         from gamestonk_terminal.forex import forex_controller
 
         return forex_controller.menu()
