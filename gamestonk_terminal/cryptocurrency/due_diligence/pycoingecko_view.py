@@ -229,12 +229,9 @@ def info(coin: gecko.Coin, other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="info",
         description="""
-                        Shows basic information about loaded coin like:
-                        id, name, symbol, asset_platform, description, contract_address,
-                        market_cap_rank, public_interest_score, total_supply, max_supply,
-                        price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d,
-                        current_price_btc, current_price_eth, current_price_usd
-                        """,
+         Shows basic information about loaded coin like:
+         Name, Symbol, Description, Market Cap, Public Interest, Supply, and Price related metrics
+         """,
     )
 
     try:
@@ -406,13 +403,17 @@ def ath(coin: gecko.Coin, other_args: List[str]):
         description="""All time high data for loaded coin""",
     )
 
+    parser.add_argument(
+        "--vs", dest="vs", help="currency", default="usd", choices=["usd", "btc"]
+    )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
 
-        df = coin.all_time_high
+        df = coin.all_time_high(currency=ns_parser.vs)
         print(
             tabulate(
                 df,
@@ -446,13 +447,17 @@ def atl(coin: gecko.Coin, other_args: List[str]):
         description="""All time low data for loaded coin""",
     )
 
+    parser.add_argument(
+        "--vs", dest="vs", help="currency", default="usd", choices=["usd", "btc"]
+    )
+
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
 
         if not ns_parser:
             return
 
-        df = coin.all_time_low
+        df = coin.all_time_low(currency=ns_parser.vs)
         print(
             tabulate(
                 df,
@@ -487,11 +492,8 @@ def score(coin: gecko.Coin, other_args: List[str]):
         description="""
                         In this view you can find different kind of scores for loaded coin.
                         Those scores represents different rankings, sentiment metrics, some user stats and others.
-                        coingecko_rank, coingecko_score, developer_score, community_score, liquidity_score,
-                        sentiment_votes_up_percentage, sentiment_votes_down_percentage, public_interest_score,
-                        facebook_likes, twitter_followers, reddit_average_posts_48h, reddit_average_comments_48h,
-                        reddit_subscribers, reddit_accounts_active_48h, telegram_channel_user_count, alexa_rank,
-                        bing_matches
+                        You will see CoinGecko scores, Developer Scores, Community Scores, Sentiment, Reddit scores
+                        and many others.
                         """,
     )
 
@@ -580,12 +582,7 @@ def market(coin: gecko.Coin, other_args: List[str]):
         prog="market",
         description="""
                         Market data for loaded coin. There you find metrics like:
-                        market_cap_rank, total_supply, max_supply, circulating_supply,
-                        price_change_percentage_24h, price_change_percentage_7d, 'price_change_percentage_30d',
-                        price_change_percentage_60d', 'price_change_percentage_1y', 'market_cap_change_24h',
-                        market_cap_btc', 'market_cap_eth', 'market_cap_usd', 'total_volume_btc', 'total_volume_eth',
-                        total_volume_usd', 'high_24h_btc', 'high_24h_eth', 'high_24h_usd', 'low_24h_btc', 'low_24h_eth',
-                        low_24h_usd'
+                        Market Cap, Supply, Circulating Supply, Price, Volume and many others.
                         """,
     )
 

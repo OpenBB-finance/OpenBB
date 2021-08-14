@@ -8,6 +8,7 @@ from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     wrap_text_in_df,
     create_df_index,
+    replace_underscores_in_column_names,
 )
 from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     replace_qm,
@@ -48,6 +49,9 @@ def get_holdings_overview(endpoint: str = "bitcoin"):
 
     df = pd.Series(kpis).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
+    df["Metric"] = df["Metric"].apply(
+        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+    )
     return df
 
 
@@ -63,7 +67,7 @@ def get_companies_assets(endpoint="bitcoin"):
     Returns
     -------
     pandas.DataFrame
-        rank, company, ticker, country, total_btc, entry_value, today_value, pct_of_supply, url
+        Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
     """
     url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -76,15 +80,15 @@ def get_companies_assets(endpoint="bitcoin"):
     df = pd.DataFrame(
         results,
         columns=[
-            "rank",
-            "company",
-            "ticker",
-            "country",
-            "total_btc",
-            "entry_value",
-            "today_value",
-            "pct_of_supply",
-            "url",
+            "Rank",
+            "Company",
+            "Ticker",
+            "Country",
+            "Total_Btc",
+            "Entry_Value",
+            "Today_Value",
+            "Pct_Supply",
+            "Url",
         ],
     )
     return df
@@ -100,7 +104,7 @@ def get_news(n: int = 100) -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame:
-        title, author, posted, article
+        Title, Author, Posted, Article
     """
 
     n_of_pages = (math.ceil(n / 25) + 1) if n else 2
@@ -122,18 +126,19 @@ def get_news(n: int = 100) -> pd.DataFrame:
             pd.DataFrame(
                 results,
                 columns=[
-                    "title",
-                    "author",
-                    "posted",
-                    "article",
-                    "url",
+                    "Title",
+                    "Author",
+                    "Posted",
+                    "Article",
+                    "Url",
                 ],
             )
         )
     df = pd.concat(dfs, ignore_index=True).head(n)
-    df.drop("article", axis=1, inplace=True)
+    df.drop("Article", axis=1, inplace=True)
     df.index = df.index + 1
     df.reset_index(inplace=True)
+    df.rename(columns={"index": "Index"}, inplace=True)
     return df
 
 
@@ -143,18 +148,18 @@ def get_top_crypto_categories():
     Returns
     -------
     pandas.DataFrame
-       rank, name, change_1h, change_7d, market_cap, volume_24h, n_of_coins, url
+       Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     """
     columns = [
-        "rank",
-        "name",
-        "change_1h",
-        "change_24h",
-        "change_7d",
-        "market_cap",
-        "volume_24h",
-        "n_of_coins",
-        "url",
+        "Rank",
+        "Name",
+        "Change_1h",
+        "Change_24h",
+        "Change_7d",
+        "Market_Cap",
+        "Volume_24h",
+        "Coins",
+        "Url",
     ]
     url = "https://www.coingecko.com/en/categories"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -186,7 +191,7 @@ def get_top_crypto_categories():
         )
 
     df = pd.DataFrame(results, columns=columns)
-    df["rank"] = df["rank"].astype(int)
+    df["Rank"] = df["Rank"].astype(int)
     return df
 
 
@@ -196,18 +201,18 @@ def get_stable_coins():
     Returns
     -------
     pandas.DataFrame
-        rank, name, symbol, price, change_24h, exchanges, market_cap, change_30, url
+        Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
     columns = [
-        "rank",
-        "name",
-        "symbol",
-        "price",
-        "change_24h",
-        "exchanges",
-        "market_cap",
-        "change_30d",
-        "url",
+        "Rank",
+        "Name",
+        "Symbol",
+        "Price",
+        "Change_24h",
+        "Exchanges",
+        "Market_Cap",
+        "Change_30d",
+        "Url",
     ]
     url = "https://www.coingecko.com/en/stablecoins"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -243,9 +248,9 @@ def get_stable_coins():
             ]
         )
     df = replace_qm(pd.DataFrame(results, columns=columns))
-    df.drop("rank", axis=1, inplace=True)
-    create_df_index(df, "rank")
-    df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df.drop("Rank", axis=1, inplace=True)
+    create_df_index(df, "Rank")
+    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
     return df
 
 
@@ -279,6 +284,9 @@ def get_nft_of_the_day():
         .reset_index()
     )
     df.columns = ["Metric", "Value"]
+    df["Metric"] = df["Metric"].apply(
+        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+    )
     df = wrap_text_in_df(df, w=100)
     return df
 
@@ -311,7 +319,7 @@ def get_exchanges():
     Returns
     -------
     pandas.DataFrame
-        trust_score, id, name, country, year_established, trade_volume_24h_btc, url
+        Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
     """
     df = pd.DataFrame(client.get_exchanges_list(per_page=250))
     df.replace({float(np.NaN): None}, inplace=True)
@@ -326,7 +334,16 @@ def get_exchanges():
             "url",
         ]
     ]
-    create_df_index(df, "rank")
+    df.columns = [
+        "Trust_Score",
+        "Id",
+        "Name",
+        "Country",
+        "Year_Established",
+        "Trade_Volume_24h_BTC",
+        "Url",
+    ]
+    create_df_index(df, "Rank")
     return df
 
 
@@ -336,11 +353,12 @@ def get_financial_platforms():
     Returns
     -------
     pandas.DataFrame
-        rank, name, category, centralized, website_url
+        Rank, Name, Category, Centralized, Url
     """
     df = pd.DataFrame(client.get_finance_platforms())
     df.drop("facts", axis=1, inplace=True)
     create_df_index(df, "rank")
+    df.columns = ["Rank", "Name", "Category", "Centralized", "Url"]
     return df
 
 
@@ -350,7 +368,7 @@ def get_finance_products():
     Returns
     -------
     pandas.DataFrame
-       rank,  platform, identifier, supply_rate_percentage, borrow_rate_percentage
+       Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
     """
     df = pd.DataFrame(
         client.get_finance_products(per_page=250),
@@ -361,7 +379,8 @@ def get_finance_products():
             "borrow_rate_percentage",
         ],
     )
-    create_df_index(df, "rank")
+    df.columns = ["Platform", "Identifier", "Supply_Rate", "Borrow_Rate"]
+    create_df_index(df, "Rank")
     return df
 
 
@@ -371,10 +390,11 @@ def get_indexes():
     Returns
     -------
     pandas.DataFrame
-        name, id, market, last, is_multi_asset_composite
+        Name, Id, Market, Last, MultiAsset
     """
     df = pd.DataFrame(client.get_indexes(per_page=250))
-    create_df_index(df, "rank")
+    df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
+    create_df_index(df, "Rank")
     return df
 
 
@@ -384,7 +404,8 @@ def get_derivatives():
     Returns
     -------
     pandas.DataFrame
-        market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, volume_24h
+        Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h,
+
     """
     df = pd.DataFrame(client.get_derivatives(include_tickers="unexpired"))
     df.drop(
@@ -396,6 +417,19 @@ def get_derivatives():
     df.rename(columns={"price_percentage_change_24h": "pct_change_24h"}, inplace=True)
     create_df_index(df, "rank")
     df["price"] = df["price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+
+    df.columns = [
+        "Rank",
+        "Market",
+        "Symbol",
+        "Price",
+        "Pct_Change_24h",
+        "Contract_Type",
+        "Basis",
+        "Spread",
+        "Funding_Rate",
+        "Volume_24h",
+    ]
     return df
 
 
@@ -405,11 +439,12 @@ def get_exchange_rates():
     Returns
     -------
     pandas.DataFrame
-        index, name, unit, value, type
+        Index, Name, Unit, Value, Type
     """
     df = pd.DataFrame(client.get_exchange_rates()["rates"]).T.reset_index()
     df.drop("index", axis=1, inplace=True)
     create_df_index(df, "index")
+    df.columns = ["Index", "Name", "Unit", "Value", "Type"]
     return df
 
 
@@ -436,24 +471,25 @@ def get_global_info():
     results["altcoin_market_cap_in_pct"] = 100 - (float(eth) + float(btc))
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
+    df["Metric"] = df["Metric"].apply(
+        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+    )
     return df
 
 
 def get_global_markets_info():
     """Get global statistics about crypto markets from CoinGecko API like:
-        - total_market_cap
-        - total_volume
-        - market_cap_percentage
+        Market_Cap, Volume, Market_Cap_Percentage
 
     Returns
     -------
     pandas.DataFrame
-        total_market_cap, total_volume, market_cap_percentage
+        Market_Cap, Volume, Market_Cap_Percentage
     """
     columns = [
-        "total_market_cap",
-        "total_volume",
-        "market_cap_percentage",
+        "Market_Cap",
+        "Volume",
+        "Market_Cap_Percentage",
     ]
     data = []
     results = client.get_global()
@@ -482,4 +518,7 @@ def get_global_defi_info():
 
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
+    df["Metric"] = df["Metric"].apply(
+        lambda x: replace_underscores_in_column_names(x) if isinstance(x, str) else x
+    )
     return df

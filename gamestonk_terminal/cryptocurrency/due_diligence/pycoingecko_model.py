@@ -12,6 +12,9 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
     create_dictionary_with_prefixes,
     DENOMINATION,
 )
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
+    replace_underscores_in_column_names,
+)
 
 CHANNELS = {
     "telegram_channel_identifier": "telegram",
@@ -128,7 +131,13 @@ class Coin:
         remove_keys(useless_keys, dev)
         df = pd.Series(dev).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+
+        return df[df["Value"].notna()]
 
     @property
     def blockchain_explorers(self):
@@ -144,7 +153,12 @@ class Coin:
             dct = filter_list(blockchain)
             df = pd.Series(dct).to_frame().reset_index()
             df.columns = ["Metric", "Value"]
-            return df
+            df["Metric"] = df["Metric"].apply(
+                lambda x: replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
+            return df[df["Value"].notna()]
         return None
 
     @property
@@ -172,7 +186,12 @@ class Coin:
         dct = rename_columns_in_dct(social_dct, CHANNELS)
         df = pd.Series(dct).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+        return df[df["Value"].notna()]
 
     @property
     def websites(self):
@@ -191,7 +210,12 @@ class Coin:
         df = pd.Series(websites_dct).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Value"] = df["Value"].apply(lambda x: ",".join(x))
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+        return df[df["Value"].notna()]
 
     @property
     def categories(self):
@@ -247,6 +271,12 @@ class Coin:
         results.update(self._get_base_market_data_info())
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+
         return df[df["Value"].notna()]
 
     @property
@@ -295,10 +325,14 @@ class Coin:
             print(e)
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+        return df[df["Value"].notna()]
 
-    @property
-    def all_time_high(self):
+    def all_time_high(self, currency="usd"):
         """Get all time high data for given coin
 
         Returns
@@ -313,15 +347,23 @@ class Coin:
             "ath_date",
             "ath_change_percentage",
         ]
-        results = create_dictionary_with_prefixes(
-            ath_columns, market_data, DENOMINATION
-        )
+
+        results = {}
+        for column in ath_columns:
+            results[column] = market_data[column].get(currency)
+
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+        df["Metric"] = df["Metric"] + f" {currency.upper()}"
+        df["Metric"] = df["Metric"].apply(lambda x: x.replace("Ath", "All Time How"))
+        return df[df["Value"].notna()]
 
-    @property
-    def all_time_low(self):
+    def all_time_low(self, currency="usd"):
         """Get all time low data for given coin
 
         Returns
@@ -336,12 +378,20 @@ class Coin:
             "atl_date",
             "atl_change_percentage",
         ]
-        results = create_dictionary_with_prefixes(
-            ath_columns, market_data, DENOMINATION
-        )
+        results = {}
+        for column in ath_columns:
+            results[f"{column} {currency.upper()}"] = market_data[column].get(currency)
+
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+        df["Metric"] = df["Metric"] + f" {currency.upper()}"
+        df["Metric"] = df["Metric"].apply(lambda x: x.replace("Atl", "All Time Low"))
+        return df[df["Value"].notna()]
 
     @property
     def scores(self):
@@ -377,7 +427,12 @@ class Coin:
         df.replace({0: ""}, inplace=True)
         df = df.fillna("")
         df.columns = ["Metric", "Value"]
-        return df
+        df["Metric"] = df["Metric"].apply(
+            lambda x: replace_underscores_in_column_names(x)
+            if isinstance(x, str)
+            else x
+        )
+        return df[df["Value"].notna()]
 
     def get_coin_market_chart(self, vs_currency="usd", days=30, **kwargs):
         """Get prices for given coin

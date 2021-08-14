@@ -76,3 +76,7 @@ def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     if isinstance(x, (int, float)) and x < 10 ** 18:
         return long_number_format(x)
     return x
+
+
+def replace_underscores_in_column_names(string: str) -> str:
+    return string.title().replace("_", " ")

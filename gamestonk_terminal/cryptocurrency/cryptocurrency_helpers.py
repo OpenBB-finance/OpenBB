@@ -228,7 +228,6 @@ def find(other_args: List[str]):
                     tablefmt="fancy_grid",
                 )
             )
-
         elif ns_parser.source == "bin":
 
             # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum

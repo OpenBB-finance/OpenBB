@@ -82,7 +82,7 @@ def holdings_companies_list(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Track publicly traded companies around the world that
         are buying ethereum or bitcoin as part of corporate treasury:
-        rank, company, ticker, country, total_btc, entry_value, today_value, pct_of_supply
+        Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
         You can use additional flag --links to see urls to announcement about buying btc or eth by given company.
         In this case you will see only columns like rank, company, url
         """,
@@ -113,9 +113,9 @@ def holdings_companies_list(other_args: List[str]):
         df = gecko.get_companies_assets(endpoint=ns_parser.coin)
 
         if ns_parser.links is True:
-            df = df[["rank", "company", "url"]]
+            df = df[["Rank", "Company", "Url"]]
         else:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -234,7 +234,7 @@ def exchange_rates(other_args: List[str]):
         description="""
         Shows list of crypto, fiats, commodity exchange rates from CoinGecko
         You can look on only top N number of records with --top,
-        You can sort by index,name,unit, value, type, and also use --descend flag to sort descending.""",
+        You can sort by Index, Name, Unit, Value, Type, and also use --descend flag to sort descending.""",
     )
     parser.add_argument(
         "-t",
@@ -242,16 +242,16 @@ def exchange_rates(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: index",
-        default="index",
-        choices=["index", "name", "unit", "value", "type"],
+        help="Sort by given column. Default: Index",
+        default="Index",
+        choices=["Index", "Name", "Unit", "Value", "Type"],
     )
     parser.add_argument(
         "--descend",
@@ -301,9 +301,7 @@ def global_market_info(other_args: List[str]):
         prog="global",
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Shows global statistics about Crypto Market like:
-        active_cryptocurrencies, upcoming_icos, ongoing_icos, ended_icos, markets, market_cap_change_percentage_24h,
-        eth_market_cap_in_pct, btc_market_cap_in_pct, altcoin_market_cap_in_pct""",
+        description="""Shows global statistics about Crypto Market""",
     )
 
     try:
@@ -343,8 +341,7 @@ def global_defi_info(other_args: List[str]):
         DeFi or Decentralized Finance refers to financial services that are built
         on top of distributed networks with no central intermediaries.
         Displays metrics like:
-            defi_market_cap, eth_market_cap, defi_to_eth_ratio, trading_volume_24h, defi_dominance, top_coin_name,
-            top_coin_defi_dominance""",
+            Market Cap, Trading Volume, Defi Dominance, Top Coins...""",
     )
 
     try:
@@ -458,7 +455,7 @@ def stablecoins(other_args: List[str]):
         Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
         like the U.S. dollar or to a commodity's price such as gold.
         You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, symbol, price, change_24h, exchanges, market_cap, change_30d with --sort
+        You can sort data by Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d with --sort
         and also with --descend flag to sort descending.
         Flag --links will display stablecoins urls""",
     )
@@ -468,24 +465,24 @@ def stablecoins(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
+        help="Sort by given column. Default: Rank",
+        default="Rank",
         choices=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "change_24h",
-            "exchanges",
-            "market_cap",
-            "change_30d",
+            "Rank",
+            "Name",
+            "Symbol",
+            "Price",
+            "Change_24h",
+            "Exchanges",
+            "Market_Cap",
+            "Change_30d",
         ],
     )
     parser.add_argument(
@@ -514,9 +511,9 @@ def stablecoins(other_args: List[str]):
         )
 
         if ns_parser.links is True:
-            df = df[["rank", "name", "symbol", "url"]]
+            df = df[["Rank", "Name", "Symbol", "Url"]]
         else:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -546,7 +543,7 @@ def news(other_args: List[str]):
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Shows latest crypto news from CoinGecko. "
-        "You will see index, title, author, posted columns. "
+        "You will see Index, Title, Author, Posted columns. "
         "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
         "To display urls to news use --links flag.",
     )
@@ -556,7 +553,7 @@ def news(other_args: List[str]):
         dest="top",
         type=int,
         help="top N number of news >=10",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -564,8 +561,8 @@ def news(other_args: List[str]):
         dest="sortby",
         type=str,
         help="Sort by given column. Default: index",
-        default="index",
-        choices=["index", "title", "author", "posted"],
+        default="Index",
+        choices=["Index", "Title", "Author", "Posted"],
     )
     parser.add_argument(
         "--descend",
@@ -592,14 +589,14 @@ def news(other_args: List[str]):
             by=ns_parser.sortby, ascending=ns_parser.descend
         )
 
-        df["title"] = df["title"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
+        df["Title"] = df["Title"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=65)) if isinstance(x, str) else x
         )
 
         if not ns_parser.links:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
         else:
-            df = df[["index", "url"]]
+            df = df[["Index", "Url"]]
 
         print(
             tabulate(
@@ -634,7 +631,7 @@ def categories(other_args: List[str]):
         stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
         "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
         "To display urls use --links flag.",
-        Displays: rank, name, change_1h, change_24h, change_7d, market_cap, volume_24h, n_of_coins""",
+        Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
     )
     parser.add_argument(
         "-t",
@@ -642,24 +639,24 @@ def categories(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number of records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
+        help="Sort by given column. Default: Rank",
+        default="Rank",
         choices=[
-            "rank",
-            "name",
-            "change_1h",
-            "change_24h",
-            "change_7d",
-            "market_cap",
-            "volume_24h",
-            "n_of_coins",
+            "Rank",
+            "Name",
+            "Change_1h",
+            "Change_24h",
+            "Change_7d",
+            "Market_Cap",
+            "Volume_24h",
+            "Coins",
         ],
     )
     parser.add_argument(
@@ -688,9 +685,9 @@ def categories(other_args: List[str]):
         )
 
         if not ns_parser.links:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
         else:
-            df = df[["rank", "name", "url"]]
+            df = df[["Rank", "Name", "Url"]]
 
         print(
             tabulate(
@@ -722,10 +719,10 @@ def exchanges(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Exchanges
         You can display only top N number exchanges with --top parameter.
-        You can sort data by rank, trust_score, id, name, country, established, trade_volume_24h_btc with --sort
+        You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with --sort
         and also with --descend flag to sort descending.
         Flag --links will display urls.
-        Displays: rank, trust_score, id, name, country, established, trade_volume_24h_btc""",
+        Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC""",
     )
     parser.add_argument(
         "-t",
@@ -733,23 +730,23 @@ def exchanges(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
+        help="Sort by given column. Default: Rank",
+        default="Rank",
         choices=[
-            "rank",
-            "trust_score",
-            "id",
-            "name",
-            "country",
-            "year_established",
-            "trade_volume_24h_btc",
+            "Rank",
+            "Trust_Score",
+            "Id",
+            "Name",
+            "Country",
+            "Year Established",
+            "Trade_Volume_24h_BTC",
         ],
     )
     parser.add_argument(
@@ -778,9 +775,9 @@ def exchanges(other_args: List[str]):
         )
 
         if ns_parser.links is True:
-            df = df[["rank", "name", "url"]]
+            df = df[["Rank", "Name", "Url"]]
         else:
-            df.drop("url", axis=1, inplace=True)
+            df.drop("Url", axis=1, inplace=True)
 
         print(
             tabulate(
@@ -812,9 +809,9 @@ def platforms(other_args: List[str]):
         description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
         e.g Celsius, Nexo, Crypto.com, Aave and others.
         You can display only top N number of platforms with --top parameter.
-        You can sort data by rank, name, category, centralized with --sort
+        You can sort data by Rank, Name, Category, Centralized with --sort
         and also with --descend flag to sort descending.
-        Displays: rank, name, category, centralized, website_url""",
+        Displays: Rank, Name, Category, Centralized, Url""",
     )
     parser.add_argument(
         "-t",
@@ -822,16 +819,16 @@ def platforms(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
-        choices=["rank", "name", "category", "centralized"],
+        help="Sort by given column. Default: Rank",
+        default="Rank",
+        choices=["Rank", "Name", "Category", "Centralized"],
     )
     parser.add_argument(
         "--descend",
@@ -879,9 +876,9 @@ def products(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
         You can display only top N number of platforms with --top parameter.
-        You can sort data by rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage  with --sort
+        You can sort data by Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate with --sort
         and also with --descend flag to sort descending.
-        Displays: rank, platform, identifier, supply_rate_percentage, borrow_rate_percentage""",
+        Displays: Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate""",
     )
     parser.add_argument(
         "-t",
@@ -889,21 +886,21 @@ def products(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
+        help="Sort by given column. Default: Rank",
+        default="Rank",
         choices=[
-            "rank",
-            "platform",
-            "identifier",
-            "supply_rate_percentage",
-            "borrow_rate_percentage",
+            "Rank",
+            "Platform",
+            "Identifier",
+            "Supply_Rate",
+            "Borrow_Rate",
         ],
     )
     parser.add_argument(
@@ -952,9 +949,9 @@ def indexes(other_args: List[str]):
         description="""Shows list of crypto indexes from CoinGecko.
         Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
         You can display only top N number of indexes with --top parameter.
-        You can sort data by rank, name, id, market, last, is_multi_asset_composite with --sort
+        You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sort
         and also with --descend flag to sort descending.
-        Displays: rank, name, id, market, last, is_multi_asset_composite
+        Displays: Rank, Name, Id, Market, Last, MultiAsset
         """,
     )
     parser.add_argument(
@@ -963,16 +960,16 @@ def indexes(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
-        choices=["rank", "name", "id", "market", "last", "is_multi_asset_composite"],
+        help="Sort by given column. Default: Rank",
+        default="Rank",
+        choices=["Rank", "Name", "Id", "Market", "Last", "MultiAsset"],
     )
     parser.add_argument(
         "--descend",
@@ -1023,10 +1020,10 @@ def derivatives(other_args: List[str]):
         underlying asset. In this case, the primary asset would be a cryptocurrency such as Bitcoin.
         The most popular crypto derivatives are crypto futures, crypto options, and perpetual contracts.
         You can look on only top N number of records with --top,
-        You can sort by rank, market, symbol, price, pct_change_24h, contract_type, basis, spread,
-        funding_rate, volume_24h with --sort and also with --descend flag to set it to sort descending.
+        You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate,
+        Volume_24h with --sort and also with --descend flag to set it to sort descending.
         Displays:
-            rank, market, symbol, price, pct_change_24h, contract_type, basis, spread, funding_rate, volume_24h""",
+            Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h""",
     )
     parser.add_argument(
         "-t",
@@ -1034,26 +1031,26 @@ def derivatives(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
+        help="Sort by given column. Default: Rank",
+        default="Rank",
         choices=[
-            "rank",
-            "market",
-            "symbol",
-            "price",
-            "pct_change_24h",
-            "contract_type",
-            "basis",
-            "spread",
-            "funding_rate",
-            "volume_24h",
+            "Rank",
+            "Market",
+            "Symbol",
+            "Price",
+            "Pct_Change_24h",
+            "Contract_Type",
+            "Basis",
+            "Spread",
+            "Funding_Rate",
+            "Volume_24h",
         ],
     )
     parser.add_argument(
