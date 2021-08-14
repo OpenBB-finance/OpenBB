@@ -1,4 +1,4 @@
-""" DCF Model """
+""" DCF View """
 __docformat__ = "numpy"
 
 from typing import List, Union
@@ -18,7 +18,7 @@ import numpy as np
 import requests
 
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
-import gamestonk_terminal.stocks.fundamental_analysis.dcf_model as md
+from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
 
 int_or_str = Union[int, str]
 
@@ -96,9 +96,9 @@ class CreateExcelFA:
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
         self.ws2.column_dimensions["A"].width = 22
-        for column in md.letters[1:21]:
+        for column in dcf_model.letters[1:21]:
             self.ws1.column_dimensions[column].width = 14
-        for column in md.letters[1:21]:
+        for column in dcf_model.letters[1:21]:
             self.ws2.column_dimensions[column].width = 14
 
         self.ws3.column_dimensions["A"].width = 3
@@ -125,16 +125,16 @@ class CreateExcelFA:
         if statement == "BS":
             URL += "balance-sheet/"
             title = "Balance Sheet"
-            ignores = md.non_gaap_bs
+            ignores = dcf_model.non_gaap_bs
         if statement == "CF":
             URL += "cash-flow-statement/"
             title = "Cash Flows"
-            ignores = md.non_gaap_cf
+            ignores = dcf_model.non_gaap_cf
         if statement == "IS":
             title = "Income Statement"
-            ignores = md.non_gaap_is
+            ignores = dcf_model.non_gaap_is
 
-        r = requests.get(URL, headers=md.headers)
+        r = requests.get(URL, headers=dcf_model.headers)
 
         if "404 - Page Not Found" in r.text:
             raise ValueError("The ticker given is not in the stock analysis website.")
@@ -183,7 +183,7 @@ class CreateExcelFA:
         df = df[df.columns[::-1]]
 
         self.ws1[f"A{row}"] = title
-        self.ws1[f"A{row}"].font = md.bold_font
+        self.ws1[f"A{row}"].font = dcf_model.bold_font
 
         # Refactor in the future
         if statement == "IS":
@@ -191,55 +191,68 @@ class CreateExcelFA:
                 blank_list = ["0" for x in df.loc["Revenue"].to_list()]
             else:
                 raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(md.gaap_is[1:]):
-                df = md.insert_row(md.gaap_is[i + 1], md.gaap_is[i], df, blank_list)
+            for i, value in enumerate(dcf_model.gaap_is[1:]):
+                df = dcf_model.insert_row(
+                    dcf_model.gaap_is[i + 1], dcf_model.gaap_is[i], df, blank_list
+                )
 
         if statement == "BS":
             if "Cash & Equivalents" in df.index:
                 blank_list = ["0" for x in df.loc["Cash & Equivalents"].to_list()]
             else:
                 raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(md.gaap_bs[1:]):
-                df = md.insert_row(md.gaap_bs[i + 1], md.gaap_bs[i], df, blank_list)
+            for i, value in enumerate(dcf_model.gaap_bs[1:]):
+                df = dcf_model.insert_row(
+                    dcf_model.gaap_bs[i + 1], dcf_model.gaap_bs[i], df, blank_list
+                )
 
         if statement == "CF":
             if "Net Income" in df.index:
                 blank_list = ["0" for x in df.loc["Net Income"].to_list()]
             else:
                 raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(md.gaap_cf[1:]):
-                df = md.insert_row(md.gaap_cf[i + 1], md.gaap_cf[i], df, blank_list)
+            for i, value in enumerate(dcf_model.gaap_cf[1:]):
+                df = dcf_model.insert_row(
+                    dcf_model.gaap_cf[i + 1], dcf_model.gaap_cf[i], df, blank_list
+                )
 
         rowI = row + 1
         names = df.index.values.tolist()
 
         for name in names:
             self.ws1[f"A{rowI}"] = name
-            if name in md.sum_rows:
+            if name in dcf_model.sum_rows:
                 length = self.len_data + (self.len_pred if statement != "CF" else 0)
                 for i in range(length):
                     if statement == "CF" and name == "Net Income":
                         pass
                     else:
-                        self.ws1[f"{md.letters[i+1]}{rowI}"].font = md.bold_font
-                        self.ws1[f"{md.letters[i+1]}{rowI}"].border = md.thin_border_top
+                        self.ws1[
+                            f"{dcf_model.letters[i+1]}{rowI}"
+                        ].font = dcf_model.bold_font
+                        self.ws1[
+                            f"{dcf_model.letters[i+1]}{rowI}"
+                        ].border = dcf_model.thin_border_top
             rowI += 1
 
         column = 1
         for key, value in df.iteritems():
             rowI = row
             if header:
-                md.set_cell(
+                dcf_model.set_cell(
                     self.ws1,
-                    f"{md.letters[column]}{rowI}",
+                    f"{dcf_model.letters[column]}{rowI}",
                     float(key),
-                    font=md.bold_font,
+                    font=dcf_model.bold_font,
                 )
             for item in value:
                 rowI += 1
                 m = 0 if item is None else float(item.replace(",", ""))
-                md.set_cell(
-                    self.ws1, f"{md.letters[column]}{rowI}", m, num_form=md.fmt_acct
+                dcf_model.set_cell(
+                    self.ws1,
+                    f"{dcf_model.letters[column]}{rowI}",
+                    m,
+                    num_form=dcf_model.fmt_acct,
                 )
             column += 1
 
@@ -249,34 +262,37 @@ class CreateExcelFA:
         last_year = self.years[1]
         col = self.len_data + 1
         for i in range(self.len_pred):
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col+i]}4",
+                f"{dcf_model.letters[col+i]}4",
                 int(last_year) + 1 + i,
-                font=md.bold_font,
+                font=dcf_model.bold_font,
             )
 
         for i in range(41):
             col = self.len_pred + self.len_data + 3
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col]}{3+i}",
-                fill=md.green_bg,
-                border=md.thin_border_nr,
+                f"{dcf_model.letters[col]}{3+i}",
+                fill=dcf_model.green_bg,
+                border=dcf_model.thin_border_nr,
             )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col+1]}{3+i}",
-                fill=md.green_bg,
-                border=md.thin_border_nl,
+                f"{dcf_model.letters[col+1]}{3+i}",
+                fill=dcf_model.green_bg,
+                border=dcf_model.thin_border_nl,
             )
 
-        md.set_cell(
-            self.ws1, f"{md.letters[col]}3", "Linear model", alignment=md.center
+        dcf_model.set_cell(
+            self.ws1,
+            f"{dcf_model.letters[col]}3",
+            "Linear model",
+            alignment=dcf_model.center,
         )
-        self.ws1.merge_cells(f"{md.letters[col]}3:{md.letters[col+1]}3")
-        md.set_cell(self.ws1, f"{md.letters[col]}4", "m")
-        md.set_cell(self.ws1, f"{md.letters[col+1]}4", "b")
+        self.ws1.merge_cells(f"{dcf_model.letters[col]}3:{dcf_model.letters[col+1]}3")
+        dcf_model.set_cell(self.ws1, f"{dcf_model.letters[col]}4", "m")
+        dcf_model.set_cell(self.ws1, f"{dcf_model.letters[col+1]}4", "b")
         self.get_linear("Date", "Revenue")
         self.get_linear("Revenue", "Cost of Revenue")
         self.get_sum("Gross Profit", "Revenue", [], ["Cost of Revenue"])
@@ -383,11 +399,11 @@ class CreateExcelFA:
         rer = self.title_to_row("Retained Earnings")
         nir = self.title_to_row("Net Income")
         for i in range(self.len_pred):
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col+i]}{rer}",
-                f"={md.letters[col+i]}{nir}+{md.letters[col+i-1]}{rer}",
-                num_form=md.fmt_acct,
+                f"{dcf_model.letters[col+i]}{rer}",
+                f"={dcf_model.letters[col+i]}{nir}+{dcf_model.letters[col+i-1]}{rer}",
+                num_form=dcf_model.fmt_acct,
             )
 
         self.get_linear("Revenue", "Comprehensive Income")
@@ -411,152 +427,158 @@ class CreateExcelFA:
         self.ws2["A8"] = "Preferred Dividends"
         self.ws2["A9"] = "Free Cash Flows"
         r = 4
-        c1 = md.letters[self.len_data + 3]
-        c2 = md.letters[self.len_data + 4]
-        c3 = md.letters[self.len_data + 5]
+        c1 = dcf_model.letters[self.len_data + 3]
+        c2 = dcf_model.letters[self.len_data + 4]
+        c3 = dcf_model.letters[self.len_data + 5]
         for i in range(self.len_pred):
-            md.set_cell(
+            j = 1 + i + self.len_data
+            cols = dcf_model.letters
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+i]}4",
-                f"=Financials!{md.letters[1+i+self.len_data]}4",
-                font=md.bold_font,
+                f"{cols[1+i]}4",
+                f"=Financials!{cols[j]}4",
+                font=dcf_model.bold_font,
             )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+i]}5",
-                f"=Financials!{md.letters[1+i+self.len_data]}{self.title_to_row('Net Income')}",
-                num_form=md.fmt_acct,
+                f"{cols[1+i]}5",
+                f"=Financials!{cols[j]}{self.title_to_row('Net Income')}",
+                num_form=dcf_model.fmt_acct,
             )
-            md.set_cell(
+
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+i]}6",
+                f"{dcf_model.letters[1+i]}6",
                 (
-                    f"=Financials!{md.letters[1+i+self.len_data]}{self.title_to_row('Total Current Assets')}"
-                    f"-Financials!{md.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Assets')}"
-                    f"-Financials!{md.letters[1+i+self.len_data]}{self.title_to_row('Total Current Liabilities')}"
-                    f"+Financials!{md.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Liabilities')}"
+                    f"=Financials!{cols[j]}{self.title_to_row('Total Current Assets')}"
+                    f"-Financials!{cols[j-1]}{self.title_to_row('Total Current Assets')}"
+                    f"-Financials!{cols[j]}{self.title_to_row('Total Current Liabilities')}"
+                    f"+Financials!{cols[j-1]}{self.title_to_row('Total Current Liabilities')}"
                 ),
-                num_form=md.fmt_acct,
+                num_form=dcf_model.fmt_acct,
             )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+i]}7",
+                f"{dcf_model.letters[1+i]}7",
                 (
-                    f"=Financials!{md.letters[1+i+self.len_data]}{self.title_to_row('Total Long-Term Assets')}"
-                    f"-Financials!{md.letters[1+i+self.len_data-1]}{self.title_to_row('Total Long-Term Assets')}"
+                    f"=Financials!{cols[j]}{self.title_to_row('Total Long-Term Assets')}"
+                    f"-Financials!{cols[j-1]}{self.title_to_row('Total Long-Term Assets')}"
                 ),
-                num_form=md.fmt_acct,
+                num_form=dcf_model.fmt_acct,
             )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+i]}8",
-                f"=Financials!{md.letters[1+i+self.len_data]}{self.title_to_row('Preferred Dividends')}",
-                num_form=md.fmt_acct,
+                f"{dcf_model.letters[1+i]}8",
+                f"=Financials!{cols[j]}{self.title_to_row('Preferred Dividends')}",
+                num_form=dcf_model.fmt_acct,
             )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+i]}9",
-                f"={md.letters[1+i]}5-{md.letters[1+i]}6-{md.letters[1+i]}7-{md.letters[1+i]}8",
-                num_form=md.fmt_acct,
-                font=md.bold_font,
-                border=md.thin_border_top,
+                f"{cols[1+i]}9",
+                f"={cols[1+i]}5-{cols[1+i]}6-{cols[1+i]}7-{cols[1+i]}8",
+                num_form=dcf_model.fmt_acct,
+                font=dcf_model.bold_font,
+                border=dcf_model.thin_border_top,
             )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws2,
-                f"{md.letters[1+self.len_pred]}9",
-                f"=({md.letters[self.len_pred]}9*(1+{c2}"
-                f"{r+6}))/({c2}{r+4}-{c2}{r+6})",
+                f"{cols[1+self.len_pred]}9",
+                f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+6}))/({c2}{r+4}-{c2}{r+6})",
             )
 
         self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
-        md.set_cell(self.ws2, f"{c1}{r}", "Discount Rate", alignment=md.center)
-        md.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
-        md.set_cell(self.ws2, f"{c2}{r+1}", 0.02, num_form=FORMAT_PERCENTAGE_00)
-        md.set_cell(
+        dcf_model.set_cell(
+            self.ws2, f"{c1}{r}", "Discount Rate", alignment=dcf_model.center
+        )
+        dcf_model.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
+        dcf_model.set_cell(self.ws2, f"{c2}{r+1}", 0.02, num_form=FORMAT_PERCENTAGE_00)
+        dcf_model.set_cell(
             self.ws2, f"{c3}{r+1}", "Eventually get from 10 year t-bond scraper"
         )
-        md.set_cell(self.ws2, f"{c1}{r+2}", "Market Rate")
-        md.set_cell(self.ws2, f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00)
+        dcf_model.set_cell(self.ws2, f"{c1}{r+2}", "Market Rate")
+        dcf_model.set_cell(self.ws2, f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00)
         self.custom_exp(
             r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
         )
-        md.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
-        md.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
+        dcf_model.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
+        dcf_model.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
         self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
-        md.set_cell(self.ws2, f"{c1}{r+4}", "r")
-        md.set_cell(
+        dcf_model.set_cell(self.ws2, f"{c1}{r+4}", "r")
+        dcf_model.set_cell(
             self.ws2,
             f"{c2}{r+4}",
             f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}",
             num_form=FORMAT_PERCENTAGE_00,
-            border=md.thin_border_top,
-            font=md.bold_font,
+            border=dcf_model.thin_border_top,
+            font=dcf_model.bold_font,
         )
-        md.set_cell(self.ws2, f"{c1}{r+6}", "Long Term Growth")
-        md.set_cell(self.ws2, f"{c2}{r+6}", 0.04, num_form=FORMAT_PERCENTAGE_00)
-        md.set_cell(self.ws2, "A11", "Value from Operations")
-        md.set_cell(
+        dcf_model.set_cell(self.ws2, f"{c1}{r+6}", "Long Term Growth")
+        dcf_model.set_cell(self.ws2, f"{c2}{r+6}", 0.04, num_form=FORMAT_PERCENTAGE_00)
+        dcf_model.set_cell(self.ws2, "A11", "Value from Operations")
+        dcf_model.set_cell(
             self.ws2,
             "B11",
-            f"=NPV({c2}{r+4},B9:{md.letters[self.len_pred+1]}9)",
-            num_form=md.fmt_acct,
+            f"=NPV({c2}{r+4},B9:{dcf_model.letters[self.len_pred+1]}9)",
+            num_form=dcf_model.fmt_acct,
         )
-        md.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
-        md.set_cell(
+        dcf_model.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
+        dcf_model.set_cell(
             self.ws2,
             "B12",
-            f"=financials!{md.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
-            num_form=md.fmt_acct,
+            f"=financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
+            num_form=dcf_model.fmt_acct,
         )
-        md.set_cell(self.ws2, "A13", "Intrinsic Value (sum)")
-        md.set_cell(self.ws2, "B13", "=B11+B12", num_form=md.fmt_acct)
-        md.set_cell(self.ws2, "A14", "Debt Obligations")
-        md.set_cell(
+        dcf_model.set_cell(self.ws2, "A13", "Intrinsic Value (sum)")
+        dcf_model.set_cell(self.ws2, "B13", "=B11+B12", num_form=dcf_model.fmt_acct)
+        dcf_model.set_cell(self.ws2, "A14", "Debt Obligations")
+        dcf_model.set_cell(
             self.ws2,
             "B14",
-            f"=financials!{md.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
-            num_form=md.fmt_acct,
+            f"=financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
+            num_form=dcf_model.fmt_acct,
         )
-        md.set_cell(self.ws2, "A15", "Firm value without debt")
-        md.set_cell(self.ws2, "B15", "=B13-B14", num_form=md.fmt_acct)
-        md.set_cell(self.ws2, "A16", "Shares Outstanding")
-        md.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
-        md.set_cell(self.ws2, "A17", "Shares Price")
-        md.set_cell(
-            self.ws2, "B17", f"=(B15*{self.rounding})/B16", num_form=md.fmt_acct
+        dcf_model.set_cell(self.ws2, "A15", "Firm value without debt")
+        dcf_model.set_cell(self.ws2, "B15", "=B13-B14", num_form=dcf_model.fmt_acct)
+        dcf_model.set_cell(self.ws2, "A16", "Shares Outstanding")
+        dcf_model.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
+        dcf_model.set_cell(self.ws2, "A17", "Shares Price")
+        dcf_model.set_cell(
+            self.ws2, "B17", f"=(B15*{self.rounding})/B16", num_form=dcf_model.fmt_acct
         )
-        md.set_cell(self.ws2, "A18", "Actual Price")
-        md.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
+        dcf_model.set_cell(self.ws2, "A18", "Actual Price")
+        dcf_model.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
 
     def create_header(self, ws: Workbook):
         for i in range(10):
-            md.set_cell(ws, f"{md.letters[i]}1", border=md.thin_border)
+            dcf_model.set_cell(
+                ws, f"{dcf_model.letters[i]}1", border=dcf_model.thin_border
+            )
 
         ws.merge_cells("A1:J1")
-        md.set_cell(
+        dcf_model.set_cell(
             ws,
             "A1",
             f"Gamestonk Terminal Analysis: {self.ticker.upper()}",
             font=Font(color="04cca8", size=20),
-            border=md.thin_border,
-            alignment=md.center,
+            border=dcf_model.thin_border,
+            alignment=dcf_model.center,
         )
-        md.set_cell(ws, "A2", f"DCF for {self.ticker} generated on {self.now}")
+        dcf_model.set_cell(ws, "A2", f"DCF for {self.ticker} generated on {self.now}")
 
     def run_audit(self):
         start = 67
-        for i, value in enumerate(md.sum_rows):
-            md.set_cell(self.ws1, f"A{start + i}", value)
+        for i, value in enumerate(dcf_model.sum_rows):
+            dcf_model.set_cell(self.ws1, f"A{start + i}", value)
 
         self.ws1.merge_cells(f"A{start-2}:K{start-2}")
-        md.set_cell(
+        dcf_model.set_cell(
             self.ws1,
             f"A{start - 2}",
             "Financial Statement Audit",
             font=Font(color="FF0000"),
-            alignment=md.center,
+            alignment=dcf_model.center,
         )
-        md.set_cell(
+        dcf_model.set_cell(
             self.ws1,
             f"A{start - 1}",
             "Audit ensures data integrity. Numbers should be 0 (with slight rounding difference).",
@@ -700,7 +722,7 @@ class CreateExcelFA:
             x_df.columns.to_numpy() if x_ind == "Date" else x_df.loc[x_ind].to_numpy()
         )
 
-        vfunc = np.vectorize(md.string_float)
+        vfunc = np.vectorize(dcf_model.string_float)
         pre_x = vfunc(pre_x)
 
         if x_ind == "Date":
@@ -730,16 +752,25 @@ class CreateExcelFA:
         )
 
         col = self.len_pred + self.len_data + 3
-        md.set_cell(self.ws1, f"{md.letters[col]}{row1}", float(model.coef_))
-        md.set_cell(self.ws1, f"{md.letters[col+1]}{row1}", float(model.intercept_))
-        md.set_cell(
-            self.ws1,
-            f"{md.letters[col+2]}{row1}",
-            md.letters[self.letter],
-            font=md.red,
+        dcf_model.set_cell(
+            self.ws1, f"{dcf_model.letters[col]}{row1}", float(model.coef_)
         )
-        md.set_cell(self.ws3, f"A{self.letter+4}", md.letters[self.letter], font=md.red)
-        md.set_cell(
+        dcf_model.set_cell(
+            self.ws1, f"{dcf_model.letters[col+1]}{row1}", float(model.intercept_)
+        )
+        dcf_model.set_cell(
+            self.ws1,
+            f"{dcf_model.letters[col+2]}{row1}",
+            dcf_model.letters[self.letter],
+            font=dcf_model.red,
+        )
+        dcf_model.set_cell(
+            self.ws3,
+            f"A{self.letter+4}",
+            dcf_model.letters[self.letter],
+            font=dcf_model.red,
+        )
+        dcf_model.set_cell(
             self.ws3,
             f"B{self.letter+4}",
             (
@@ -752,8 +783,8 @@ class CreateExcelFA:
         for i in range(self.len_pred):
             if x_ind == "Date":
                 base = (
-                    f"(({md.letters[col+i]}4-B4)*{md.letters[col+self.len_pred+2]}"
-                    f"{row1})+{md.letters[col+self.len_pred+3]}{row1}"
+                    f"(({dcf_model.letters[col+i]}4-B4)*{dcf_model.letters[col+self.len_pred+2]}"
+                    f"{row1})+{dcf_model.letters[col+self.len_pred+3]}{row1}"
                 )
             else:
                 row_n = (
@@ -762,14 +793,14 @@ class CreateExcelFA:
                     else self.bs_start
                 )
                 base = (
-                    f"({md.letters[col+i]}{row_n}*{md.letters[col+self.len_pred+2]}{row1})"
-                    f"+{md.letters[col+self.len_pred+3]}{row1}"
+                    f"({dcf_model.letters[col+i]}{row_n}*{dcf_model.letters[col+self.len_pred+2]}{row1})"
+                    f"+{dcf_model.letters[col+self.len_pred+3]}{row1}"
                 )
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col+i]}{row1}",
+                f"{dcf_model.letters[col+i]}{row1}",
                 f"=max({base},0)" if no_neg else f"={base}",
-                num_form=md.fmt_acct,
+                num_form=dcf_model.fmt_acct,
             )
 
         self.letter += 1
@@ -785,17 +816,17 @@ class CreateExcelFA:
     ):
         col = 1 if audit else self.len_data + 1
         for i in range(self.len_data if audit else self.len_pred):
-            sum_formula = f"={md.letters[col+i]}{self.title_to_row(first)}"
+            sum_formula = f"={dcf_model.letters[col+i]}{self.title_to_row(first)}"
             for item in adds:
-                sum_formula += f"+{md.letters[col+i]}{self.title_to_row(item)}"
+                sum_formula += f"+{dcf_model.letters[col+i]}{self.title_to_row(item)}"
             for item in subtracts:
-                sum_formula += f"-{md.letters[col+i]}{self.title_to_row(item)}"
+                sum_formula += f"-{dcf_model.letters[col+i]}{self.title_to_row(item)}"
             rowI = row if isinstance(row, int) else self.title_to_row(row)
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col+i]}{rowI}",
+                f"{dcf_model.letters[col+i]}{rowI}",
                 sum_formula,
-                num_form=md.fmt_acct,
+                num_form=dcf_model.fmt_acct,
             )
         if text:
             self.custom_exp(row, text)
@@ -825,17 +856,25 @@ class CreateExcelFA:
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)
             col = self.len_pred + self.len_data + 3
-            md.set_cell(
+            dcf_model.set_cell(
                 self.ws1,
-                f"{md.letters[col+2]}{rowT}",
-                md.letters[self.letter],
-                font=md.red,
+                f"{dcf_model.letters[col+2]}{rowT}",
+                dcf_model.letters[self.letter],
+                font=dcf_model.red,
             )
         if ws == 2:
-            md.set_cell(
-                self.ws2, f"{column}{row}", md.letters[self.letter], font=md.red
+            dcf_model.set_cell(
+                self.ws2,
+                f"{column}{row}",
+                dcf_model.letters[self.letter],
+                font=dcf_model.red,
             )
 
-        md.set_cell(self.ws3, f"A{self.letter+4}", md.letters[self.letter], font=md.red)
-        md.set_cell(self.ws3, f"B{self.letter+4}", text)
+        dcf_model.set_cell(
+            self.ws3,
+            f"A{self.letter+4}",
+            dcf_model.letters[self.letter],
+            font=dcf_model.red,
+        )
+        dcf_model.set_cell(self.ws3, f"B{self.letter+4}", text)
         self.letter += 1

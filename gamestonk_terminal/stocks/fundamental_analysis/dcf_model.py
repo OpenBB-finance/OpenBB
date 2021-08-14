@@ -1,4 +1,4 @@
-""" Excel Model """
+""" DCF Model """
 __docformat__ = "numpy"
 
 from typing import List, Union
