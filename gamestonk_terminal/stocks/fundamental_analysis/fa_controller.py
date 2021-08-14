@@ -7,6 +7,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.stocks.fundamental_analysis import business_insider_view
+from gamestonk_terminal.stocks.fundamental_analysis import dcf_view
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -34,6 +35,7 @@ class FundamentalAnalysisController:
         "q",
         "quit",
         "score",
+        "dcf",
         "screener",
         "fraud",
         "income",
@@ -104,6 +106,7 @@ class FundamentalAnalysisController:
         print(
             "   score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]"
         )
+        print("   dcf           a customizable discounted cash flow created in excel")
         print("")
         print("Yahoo Finance API")
         print("   info          information scope of the company")
@@ -240,6 +243,10 @@ class FundamentalAnalysisController:
     def call_fraud(self, other_args: List[str]):
         """Process fraud command"""
         av_view.fraud(other_args, self.ticker)
+
+    def call_dcf(self, other_args: List[str]):
+        """Process fraud command"""
+        dcf_view.dcf(other_args, self.ticker)
 
     def call_fmp(self, _):
         """Process fmp command"""
