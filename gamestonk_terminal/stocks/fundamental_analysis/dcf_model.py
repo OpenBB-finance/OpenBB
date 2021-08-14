@@ -1,841 +1,281 @@
-""" DCF Model """
+""" Excel Model """
 __docformat__ = "numpy"
 
 from typing import List, Union
-from datetime import datetime
-import argparse
-import math
 
-from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
-from openpyxl import Workbook, worksheet
-from openpyxl.styles import Font
-from sklearn.linear_model import LinearRegression
-from bs4 import BeautifulSoup
-import yfinance as yf
 import pandas as pd
-import numpy as np
-import requests
+from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
+from openpyxl import worksheet
 
-import gamestonk_terminal.stocks.fundamental_analysis.excel.variables as var
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
-from gamestonk_terminal.stocks.fundamental_analysis.excel import helper as hp
-
-int_or_str = Union[int, str]
+opts = Union[int, str, float]
 
 
-def dcf(other_args: List[str], ticker: str):
-    """Discounted cash flow
+def string_float(string: str):
+    """Numpy vectorize function to convert strings to floats"""
+    return float(string.replace(",", ""))
 
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    ticker : str
-        Fundamental analysis ticker symbol
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="dcf",
-        description="""
-            Generates a completed discounted cash flow statement. The statement uses machine
-             learning to predict the future financial statement, and then predicts the future
-             value of the stock based on the predicted financials.""",
+
+def insert_row(name: str, index: str, df: pd.DataFrame, row_value: List[str]):
+    """Allows a row to be inserted after a given row in a pandas dataframe"""
+    pd.options.mode.chained_assignment = None
+    if name not in df.index:
+        row_number = df.index.get_loc(index) + 1
+        df1 = df[0:row_number]
+        df2 = df[row_number:]
+        df1.loc[name] = row_value
+        df_result = pd.concat([df1, df2])
+        return df_result
+    return df
+
+
+def set_cell(
+    ws: worksheet,
+    cell: str,
+    text: opts = None,
+    font: str = None,
+    border: str = None,
+    fill: str = None,
+    alignment: str = None,
+    num_form: str = None,
+):
+    """Sets the value of the cell to given text and formats based on specified arguments"""
+    ws[cell] = text
+    if font:
+        ws[cell].font = font
+    if border:
+        ws[cell].border = border
+    if fill:
+        ws[cell].fill = fill
+    if alignment:
+        ws[cell].alignment = alignment
+    if num_form:
+        ws[cell].number_format = num_form
+
+
+letters = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "AA",
+    "AB",
+    "AC",
+    "AD",
+    "AE",
+    "AF",
+    "AG",
+    "AH",
+    "AI",
+    "AJ",
+    "AK",
+    "AL",
+    "AM",
+    "AN",
+    "AO",
+    "AP",
+    "AQ",
+    "AR",
+    "AS",
+    "AT",
+    "AU",
+    "AV",
+    "AW",
+    "AX",
+    "AY",
+    "AZ",
+]
+non_gaap_is = [
+    "Revenue Growth",
+    "Net Income Common",
+    "Net Income Growth",
+    "Shares Outstanding (Basic)",
+    "Shares Outstanding (Diluted)",
+    "Shares Change",
+    "EPS (Basic)",
+    "EPS (Diluted)",
+    "EPS Growth",
+    "Free Cash Flow Per Share",
+    "Dividend Per Share",
+    "Dividend Growth",
+    "Gross Margin",
+    "Operating Margin",
+    "Profit Margin",
+    "Free Cash Flow Margin",
+    "Effective Tax Rate",
+    "EBITDA",
+    "EBITDA Margin",
+    "EBIT",
+    "EBIT Margin",
+    "Operating Expenses",
+    "Pretax Income",
+]
+gaap_is = [
+    "Revenue",
+    "Cost of Revenue",
+    "Gross Profit",
+    "Selling, General & Admin",
+    "Research & Development",
+    "Other Operating Expenses",
+    "Operating Income",
+    "Interest Expense / Income",
+    "Other Expense / Income",
+    "Income Tax",
+    "Net Income",
+    "Preferred Dividends",
+]
+non_gaap_bs = [
+    "Cash Growth",
+    "Debt Growth",
+    "Net Cash / Debt",
+    "Net Cash / Debt Growth",
+    "Net Cash Per Share",
+    "Working Capital",
+    "Book Value Per Share",
+    "Total Debt",
+]
+gaap_bs = [
+    "Cash & Equivalents",
+    "Short-Term Investments",
+    "Cash & Cash Equivalents",
+    "Receivables",
+    "Inventory",
+    "Other Current Assets",
+    "Total Current Assets",
+    "Property, Plant & Equipment",
+    "Long-Term Investments",
+    "Goodwill and Intangibles",
+    "Other Long-Term Assets",
+    "Total Long-Term Assets",
+    "Total Assets",
+    "Accounts Payable",
+    "Deferred Revenue",
+    "Current Debt",
+    "Other Current Liabilities",
+    "Total Current Liabilities",
+    "Long-Term Debt",
+    "Other Long-Term Liabilities",
+    "Total Long-Term Liabilities",
+    "Total Liabilities",
+    "Common Stock",
+    "Retained Earnings",
+    "Comprehensive Income",
+    "Shareholders' Equity",
+    "Total Liabilities and Equity",
+]
+non_gaap_cf = [
+    "Operating Cash Flow Growth",
+    "Free Cash Flow Growth",
+    "Free Cash Flow Margin",
+    "Free Cash Flow Per Share",
+    "Free Cash Flow",
+]
+
+gaap_cf = [
+    "Net Income",
+    "Depreciation & Amortization",
+    "Share-Based Compensation",
+    "Other Operating Activities",
+    "Operating Cash Flow",
+    "Capital Expenditures",
+    "Acquisitions",
+    "Change in Investments",
+    "Other Investing Activities",
+    "Investing Cash Flow",
+    "Dividends Paid",
+    "Share Issuance / Repurchase",
+    "Debt Issued / Paid",
+    "Other Financing Activities",
+    "Financing Cash Flow",
+    "Net Cash Flow",
+]
+
+sum_rows = [
+    "Gross Profit",
+    "Operating Income",
+    "Net Income",
+    "Cash & Cash Equivalents",
+    "Total Current Assets",
+    "Total Long-Term Assets",
+    "Total Assets",
+    "Total Current Liabilities",
+    "Total Long-Term Liabilities",
+    "Total Liabilities",
+    "Shareholders' Equity",
+    "Total Liabilities and Equity",
+    "Operating Cash Flow",
+    "Investing Cash Flow",
+    "Financing Cash Flow",
+    "Net Cash Flow",
+]
+
+bold_font = Font(bold=True)
+thin_border_top = Border(top=Side(style="thin"))
+
+thin_border_nl = Border(
+    right=Side(style="thin"),
+    top=Side(style="thin"),
+    bottom=Side(style="thin"),
+)
+
+thin_border_nr = Border(
+    left=Side(style="thin"),
+    top=Side(style="thin"),
+    bottom=Side(style="thin"),
+)
+
+thin_border = Border(
+    left=Side(style="thin"),
+    right=Side(style="thin"),
+    top=Side(style="thin"),
+    bottom=Side(style="thin"),
+)
+
+green_bg = PatternFill(fgColor="7fe5cd", fill_type="solid")
+
+center = Alignment(horizontal="center")
+
+red = Font(color="FF0000")
+
+fmt_acct = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* -_0_0_);_(@"
+
+headers = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
     )
-    parser.add_argument(
-        "-a",
-        "--audit",
-        action="store_true",
-        dest="audit",
-        default=False,
-        help="Confirms that the numbers provided are accurate.",
-    )
+}
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        dcf_view = CreateExcelFA(ticker, ns_parser.audit)
-        trypath = dcf_view.create_workbook()
-        print(
-            f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file."
-        )
-
-    except Exception as e:
-        print(e, "\n")
-
-
-class CreateExcelFA:
-
-    # pylint: disable=R0902
-    # pylint: disable=R0912
-
-    def __init__(self, ticker: str, audit: bool):
-        self.audit: bool = audit
-        self.wb: Workbook = Workbook()
-        self.ws1: worksheet = self.wb.active
-        self.ws2: worksheet = self.wb.create_sheet("Free Cash Flows")
-        self.ws3: worksheet = self.wb.create_sheet("Explanations")
-        self.ws1.title = "Financials"
-        self.ticker: str = ticker
-        self.now: str = datetime.now().strftime("%m/%d/%Y, %H:%M:%S").replace("/", "-")
-        self.letter: int = 0
-        self.is_start: int = 4
-        self.bs_start: int = 18
-        self.cf_start: int = 47
-        self.len_data: int = 0
-        self.len_pred: int = 10
-        self.years: List[str] = []
-        self.rounding: int = 0
-        self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
-        self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
-        self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
-        self.info = yf.Ticker(ticker).info
-
-    def create_workbook(self):
-        self.ws1.column_dimensions["A"].width = 25
-        self.ws2.column_dimensions["A"].width = 22
-        for column in var.letters[1:21]:
-            self.ws1.column_dimensions[column].width = 14
-        for column in var.letters[1:21]:
-            self.ws2.column_dimensions[column].width = 14
-
-        self.ws3.column_dimensions["A"].width = 3
-        self.create_header(self.ws1)
-        self.create_header(self.ws2)
-        self.create_header(self.ws3)
-        self.add_estimates()
-        self.create_dcf()
-        if self.audit:
-            self.run_audit()
-
-        trypath = f"../GamestonkTerminal/exports/excel/{self.ticker}-{self.now}.xlsx"
-        self.wb.save(trypath)
-        return trypath
-
-    def get_data(self, statement: str, row: int, header: bool):
-        URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
-        if statement == "BS":
-            URL += "balance-sheet/"
-            title = "Balance Sheet"
-            ignores = var.non_gaap_bs
-        if statement == "CF":
-            URL += "cash-flow-statement/"
-            title = "Cash Flows"
-            ignores = var.non_gaap_cf
-        if statement == "IS":
-            title = "Income Statement"
-            ignores = var.non_gaap_is
-
-        r = requests.get(URL, headers=var.headers)
-
-        if "404 - Page Not Found" in r.text:
-            raise ValueError("The ticker given is not in the stock analysis website.")
-        soup = BeautifulSoup(r.content, "html.parser")
-
-        table = soup.find(
-            "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
-        )
-        head = table.find("thead")
-        columns = head.find_all("th")
-
-        if self.years == []:
-            self.years = [x.get_text().strip() for x in columns]
-            self.len_data = len(self.years) - 1
-
-        if self.rounding == 0:
-            phrase = soup.find(
-                "div", attrs={"class": "text-sm pb-1 text-gray-600"}
-            ).get_text()
-            if "thousand" in phrase:
-                self.rounding = 1000
-            elif "millions" in phrase:
-                self.rounding = 1000000
-            elif "billions" in phrase:
-                self.rounding = 1000000000
-            else:
-                raise ValueError(
-                    "Stock Analysis did not specify a proper rounding amount"
-                )
-
-        body = table.find("tbody")
-        rows = body.find_all("tr")
-
-        all_data = [[x.get_text().strip() for x in y.find_all("td")] for y in rows]
-
-        df = pd.DataFrame(data=all_data)
-        df = df.set_index(0)
-        n = df.shape[1] - self.len_data
-        if n > 0:
-            df = df.iloc[:, :-n]
-        df.columns = self.years[1:]
-
-        for ignore in ignores:
-            if ignore in df.index:
-                df = df.drop([ignore])
-        df = df[df.columns[::-1]]
-
-        self.ws1[f"A{row}"] = title
-        self.ws1[f"A{row}"].font = var.bold_font
-
-        # Refactor in the future
-        if statement == "IS":
-            if "Revenue" in df.index:
-                blank_list = ["0" for x in df.loc["Revenue"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(var.gaap_is[1:]):
-                df = hp.insert_row(var.gaap_is[i + 1], var.gaap_is[i], df, blank_list)
-
-        if statement == "BS":
-            if "Cash & Equivalents" in df.index:
-                blank_list = ["0" for x in df.loc["Cash & Equivalents"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(var.gaap_bs[1:]):
-                df = hp.insert_row(var.gaap_bs[i + 1], var.gaap_bs[i], df, blank_list)
-
-        if statement == "CF":
-            if "Net Income" in df.index:
-                blank_list = ["0" for x in df.loc["Net Income"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(var.gaap_cf[1:]):
-                df = hp.insert_row(var.gaap_cf[i + 1], var.gaap_cf[i], df, blank_list)
-
-        rowI = row + 1
-        names = df.index.values.tolist()
-
-        for name in names:
-            self.ws1[f"A{rowI}"] = name
-            if name in var.sum_rows:
-                length = self.len_data + (self.len_pred if statement != "CF" else 0)
-                for i in range(length):
-                    if statement == "CF" and name == "Net Income":
-                        pass
-                    else:
-                        self.ws1[f"{var.letters[i+1]}{rowI}"].font = var.bold_font
-                        self.ws1[
-                            f"{var.letters[i+1]}{rowI}"
-                        ].border = var.thin_border_top
-            rowI += 1
-
-        column = 1
-        for key, value in df.iteritems():
-            rowI = row
-            if header:
-                hp.set_cell(
-                    self.ws1,
-                    f"{var.letters[column]}{rowI}",
-                    float(key),
-                    font=var.bold_font,
-                )
-            for item in value:
-                rowI += 1
-                m = 0 if item is None else float(item.replace(",", ""))
-                hp.set_cell(
-                    self.ws1, f"{var.letters[column]}{rowI}", m, num_form=var.fmt_acct
-                )
-            column += 1
-
-        return df
-
-    def add_estimates(self):
-        last_year = self.years[1]
-        col = self.len_data + 1
-        for i in range(self.len_pred):
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col+i]}4",
-                int(last_year) + 1 + i,
-                font=var.bold_font,
-            )
-
-        for i in range(41):
-            col = self.len_pred + self.len_data + 3
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col]}{3+i}",
-                fill=var.green_bg,
-                border=var.thin_border_nr,
-            )
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col+1]}{3+i}",
-                fill=var.green_bg,
-                border=var.thin_border_nl,
-            )
-
-        hp.set_cell(
-            self.ws1, f"{var.letters[col]}3", "Linear model", alignment=var.center
-        )
-        self.ws1.merge_cells(f"{var.letters[col]}3:{var.letters[col+1]}3")
-        hp.set_cell(self.ws1, f"{var.letters[col]}4", "m")
-        hp.set_cell(self.ws1, f"{var.letters[col+1]}4", "b")
-        self.get_linear("Date", "Revenue")
-        self.get_linear("Revenue", "Cost of Revenue")
-        self.get_sum("Gross Profit", "Revenue", [], ["Cost of Revenue"])
-        self.get_linear("Revenue", "Selling, General & Admin", True)
-        self.get_linear("Revenue", "Research & Development", True)
-        self.get_linear("Revenue", "Other Operating Expenses")
-        self.get_sum(
-            "Operating Income",
-            "Gross Profit",
-            [],
-            [
-                "Selling, General & Admin",
-                "Research & Development",
-                "Other Operating Expenses",
-            ],
-        )
-        self.get_linear("Revenue", "Preferred Dividends")
-        self.get_linear("Revenue", "Interest Expense / Income")
-        self.get_linear("Revenue", "Other Expense / Income")
-        self.get_linear("Operating Income", "Income Tax")
-        self.get_sum(
-            "Net Income",
-            "Operating Income",
-            [],
-            ["Interest Expense / Income", "Other Expense / Income", "Income Tax"],
-        )
-        self.custom_exp(
-            "Preferred Dividends",
-            "Preferred Dividends are not important in a DCF so we do not attempt to predict them.",
-        )
-        self.get_linear("Revenue", "Cash & Equivalents", True)
-        self.get_linear("Revenue", "Short-Term Investments", True)
-        self.get_sum(
-            "Cash & Cash Equivalents",
-            "Cash & Equivalents",
-            ["Short-Term Investments"],
-            [],
-        )
-        self.get_linear("Revenue", "Receivables", True)
-        self.get_linear("Revenue", "Inventory", True)
-        self.get_linear("Revenue", "Other Current Assets")
-        self.get_sum(
-            "Total Current Assets",
-            "Cash & Cash Equivalents",
-            ["Receivables", "Inventory", "Other Current Assets"],
-            [],
-        )
-        self.get_linear("Revenue", "Property, Plant & Equipment", True)
-        self.get_linear("Revenue", "Long-Term Investments", True)
-        self.get_linear("Revenue", "Goodwill and Intangibles", True)
-        self.get_linear("Revenue", "Other Long-Term Assets")
-        self.get_sum(
-            "Total Long-Term Assets",
-            "Property, Plant & Equipment",
-            [
-                "Long-Term Investments",
-                "Goodwill and Intangibles",
-                "Other Long-Term Assets",
-            ],
-            [],
-        )
-        self.get_sum(
-            "Total Assets", "Total Current Assets", ["Total Long-Term Assets"], []
-        )
-        self.get_linear("Revenue", "Accounts Payable")
-        self.get_linear("Revenue", "Deferred Revenue")
-        self.get_linear("Revenue", "Current Debt")
-        self.get_linear("Revenue", "Other Current Liabilities")
-        self.get_sum(
-            "Total Current Liabilities",
-            "Accounts Payable",
-            ["Deferred Revenue", "Current Debt", "Other Current Liabilities"],
-            [],
-        )
-        self.get_sum(
-            "Long-Term Debt",
-            "Total Assets",
-            [],
-            [
-                "Total Current Liabilities",
-                "Other Long-Term Liabilities",
-                "Shareholders' Equity",
-            ],
-            text=(
-                "This is the plug. For more information on plugs visit https://corporatefina"
-                "nceinstitute.com/resources/questions/model-questions/financial-modeling-plug/"
-            ),
-        )  # This is the plug
-        self.get_linear("Revenue", "Other Long-Term Liabilities")
-        self.get_sum(
-            "Total Long-Term Liabilities",
-            "Long-Term Debt",
-            ["Other Long-Term Liabilities"],
-            [],
-        )
-        self.get_sum(
-            "Total Liabilities",
-            "Total Current Liabilities",
-            ["Total Long-Term Liabilities"],
-            [],
-        )
-        self.get_linear("Revenue", "Common Stock")
-        col = self.len_data + 1
-        rer = self.title_to_row("Retained Earnings")
-        nir = self.title_to_row("Net Income")
-        for i in range(self.len_pred):
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col+i]}{rer}",
-                f"={var.letters[col+i]}{nir}+{var.letters[col+i-1]}{rer}",
-                num_form=var.fmt_acct,
-            )
-
-        self.get_linear("Revenue", "Comprehensive Income")
-        self.get_sum(
-            "Shareholders' Equity",
-            "Common Stock",
-            ["Retained Earnings", "Comprehensive Income"],
-            [],
-        )
-        self.get_sum(
-            "Total Liabilities and Equity",
-            "Total Liabilities",
-            ["Shareholders' Equity"],
-            [],
-        )
-
-    def create_dcf(self):
-        self.ws2["A5"] = "Net Income"
-        self.ws2["A6"] = "Change in NWC"
-        self.ws2["A7"] = "Change in Capex"
-        self.ws2["A8"] = "Preferred Dividends"
-        self.ws2["A9"] = "Free Cash Flows"
-        r = 4
-        c1 = var.letters[self.len_data + 3]
-        c2 = var.letters[self.len_data + 4]
-        c3 = var.letters[self.len_data + 5]
-        for i in range(self.len_pred):
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+i]}4",
-                f"=Financials!{var.letters[1+i+self.len_data]}4",
-                font=var.bold_font,
-            )
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+i]}5",
-                f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Net Income')}",
-                num_form=var.fmt_acct,
-            )
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+i]}6",
-                (
-                    f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Current Assets')}"
-                    f"-Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Assets')}"
-                    f"-Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Current Liabilities')}"
-                    f"+Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Current Liabilities')}"
-                ),
-                num_form=var.fmt_acct,
-            )
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+i]}7",
-                (
-                    f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Total Long-Term Assets')}"
-                    f"-Financials!{var.letters[1+i+self.len_data-1]}{self.title_to_row('Total Long-Term Assets')}"
-                ),
-                num_form=var.fmt_acct,
-            )
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+i]}8",
-                f"=Financials!{var.letters[1+i+self.len_data]}{self.title_to_row('Preferred Dividends')}",
-                num_form=var.fmt_acct,
-            )
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+i]}9",
-                f"={var.letters[1+i]}5-{var.letters[1+i]}6-{var.letters[1+i]}7-{var.letters[1+i]}8",
-                num_form=var.fmt_acct,
-                font=var.bold_font,
-                border=var.thin_border_top,
-            )
-            hp.set_cell(
-                self.ws2,
-                f"{var.letters[1+self.len_pred]}9",
-                f"=({var.letters[self.len_pred]}9*(1+{c2}"
-                f"{r+6}))/({c2}{r+4}-{c2}{r+6})",
-            )
-
-        self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
-        hp.set_cell(self.ws2, f"{c1}{r}", "Discount Rate", alignment=var.center)
-        hp.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
-        hp.set_cell(self.ws2, f"{c2}{r+1}", 0.02, num_form=FORMAT_PERCENTAGE_00)
-        hp.set_cell(
-            self.ws2, f"{c3}{r+1}", "Eventually get from 10 year t-bond scraper"
-        )
-        hp.set_cell(self.ws2, f"{c1}{r+2}", "Market Rate")
-        hp.set_cell(self.ws2, f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00)
-        self.custom_exp(
-            r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
-        )
-        hp.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
-        hp.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
-        self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
-        hp.set_cell(self.ws2, f"{c1}{r+4}", "r")
-        hp.set_cell(
-            self.ws2,
-            f"{c2}{r+4}",
-            f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}",
-            num_form=FORMAT_PERCENTAGE_00,
-            border=var.thin_border_top,
-            font=var.bold_font,
-        )
-        hp.set_cell(self.ws2, f"{c1}{r+6}", "Long Term Growth")
-        hp.set_cell(self.ws2, f"{c2}{r+6}", 0.04, num_form=FORMAT_PERCENTAGE_00)
-        hp.set_cell(self.ws2, "A11", "Value from Operations")
-        hp.set_cell(
-            self.ws2,
-            "B11",
-            f"=NPV({c2}{r+4},B9:{var.letters[self.len_pred+1]}9)",
-            num_form=var.fmt_acct,
-        )
-        hp.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
-        hp.set_cell(
-            self.ws2,
-            "B12",
-            f"=financials!{var.letters[self.len_data]}{self.title_to_row('Cash & Cash Equivalents')}",
-            num_form=var.fmt_acct,
-        )
-        hp.set_cell(self.ws2, "A13", "Intrinsic Value (sum)")
-        hp.set_cell(self.ws2, "B13", "=B11+B12", num_form=var.fmt_acct)
-        hp.set_cell(self.ws2, "A14", "Debt Obligations")
-        hp.set_cell(
-            self.ws2,
-            "B14",
-            f"=financials!{var.letters[self.len_data]}{self.title_to_row('Total Long-Term Liabilities')}",
-            num_form=var.fmt_acct,
-        )
-        hp.set_cell(self.ws2, "A15", "Firm value without debt")
-        hp.set_cell(self.ws2, "B15", "=B13-B14", num_form=var.fmt_acct)
-        hp.set_cell(self.ws2, "A16", "Shares Outstanding")
-        hp.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
-        hp.set_cell(self.ws2, "A17", "Shares Price")
-        hp.set_cell(
-            self.ws2, "B17", f"=(B15*{self.rounding})/B16", num_form=var.fmt_acct
-        )
-        hp.set_cell(self.ws2, "A18", "Actual Price")
-        hp.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
-
-    def create_header(self, ws: Workbook):
-        for i in range(10):
-            hp.set_cell(ws, f"{var.letters[i]}1", border=var.thin_border)
-
-        ws.merge_cells("A1:J1")
-        hp.set_cell(
-            ws,
-            "A1",
-            f"Gamestonk Terminal Analysis: {self.ticker.upper()}",
-            font=Font(color="04cca8", size=20),
-            border=var.thin_border,
-            alignment=var.center,
-        )
-        hp.set_cell(ws, "A2", f"DCF for {self.ticker} generated on {self.now}")
-
-    def run_audit(self):
-        start = 67
-        for i, value in enumerate(var.sum_rows):
-            hp.set_cell(self.ws1, f"A{start + i}", value)
-
-        self.ws1.merge_cells(f"A{start-2}:K{start-2}")
-        hp.set_cell(
-            self.ws1,
-            f"A{start - 2}",
-            "Financial Statement Audit",
-            font=Font(color="FF0000"),
-            alignment=var.center,
-        )
-        hp.set_cell(
-            self.ws1,
-            f"A{start - 1}",
-            "Audit ensures data integrity. Numbers should be 0 (with slight rounding difference).",
-        )
-
-        self.get_sum(start, "Revenue", [], ["Cost of Revenue", "Gross Profit"], True)
-        self.get_sum(
-            start + 1,
-            "Gross Profit",
-            [],
-            [
-                "Selling, General & Admin",
-                "Research & Development",
-                "Other Operating Expenses",
-                "Operating Income",
-            ],
-            True,
-        )
-        self.get_sum(
-            start + 2,
-            "Operating Income",
-            [],
-            [
-                "Interest Expense / Income",
-                "Other Expense / Income",
-                "Income Tax",
-                "Net Income",
-            ],
-            True,
-        )
-        self.get_sum(
-            start + 3,
-            "Cash & Equivalents",
-            ["Short-Term Investments"],
-            ["Cash & Cash Equivalents"],
-            True,
-        )
-        self.get_sum(
-            start + 4,
-            "Cash & Cash Equivalents",
-            ["Receivables", "Inventory", "Other Current Assets"],
-            ["Total Current Assets"],
-            True,
-        )
-        self.get_sum(
-            start + 5,
-            "Property, Plant & Equipment",
-            [
-                "Long-Term Investments",
-                "Goodwill and Intangibles",
-                "Other Long-Term Assets",
-            ],
-            ["Total Long-Term Assets"],
-            True,
-        )
-        self.get_sum(
-            start + 6,
-            "Total Current Assets",
-            ["Total Long-Term Assets"],
-            ["Total Assets"],
-            True,
-        )
-        self.get_sum(
-            start + 7,
-            "Accounts Payable",
-            ["Deferred Revenue", "Current Debt", "Other Current Liabilities"],
-            ["Total Current Liabilities"],
-            True,
-        )
-        self.get_sum(
-            start + 8,
-            "Long-Term Debt",
-            ["Other Long-Term Liabilities"],
-            ["Total Long-Term Liabilities"],
-            True,
-        )
-        self.get_sum(
-            start + 9,
-            "Total Current Liabilities",
-            ["Total Long-Term Liabilities"],
-            ["Total Liabilities"],
-            True,
-        )
-        self.get_sum(
-            start + 10,
-            "Common Stock",
-            ["Retained Earnings", "Comprehensive Income"],
-            ["Shareholders' Equity"],
-            True,
-        )
-        self.get_sum(
-            start + 11,
-            "Total Liabilities",
-            ["Shareholders' Equity"],
-            ["Total Liabilities and Equity"],
-            True,
-        )
-        self.get_sum(
-            start + 12,
-            "Net Income",
-            [
-                "Depreciation & Amortization",
-                "Share-Based Compensation",
-                "Other Operating Activities",
-            ],
-            ["Operating Cash Flow"],
-            True,
-        )
-        self.get_sum(
-            start + 13,
-            "Capital Expenditures",
-            ["Acquisitions", "Change in Investments", "Other Investing Activities"],
-            ["Investing Cash Flow"],
-            True,
-        )
-        self.get_sum(
-            start + 14,
-            "Dividends Paid",
-            [
-                "Share Issuance / Repurchase",
-                "Debt Issued / Paid",
-                "Other Financing Activities",
-            ],
-            ["Financing Cash Flow"],
-            True,
-        )
-        self.get_sum(
-            start + 15,
-            "Operating Cash Flow",
-            ["Investing Cash Flow", "Financing Cash Flow"],
-            ["Net Cash Flow"],
-            True,
-        )
-
-    def get_linear(self, x_ind: str, y_ind: str, no_neg: bool = False):
-        x_type = "IS" if x_ind in self.df_is.index else "BS"
-        y_type = "IS" if y_ind in self.df_is.index else "BS"
-        x_df = self.df_is if x_type == "IS" else self.df_bs
-        y_df = self.df_is if y_type == "IS" else self.df_bs
-        pre_x = (
-            x_df.columns.to_numpy() if x_ind == "Date" else x_df.loc[x_ind].to_numpy()
-        )
-
-        vfunc = np.vectorize(hp.string_float)
-        pre_x = vfunc(pre_x)
-
-        if x_ind == "Date":
-            pre_x = pre_x - np.min(pre_x)
-        x = pre_x.reshape((-1, 1))
-        pre_y = y_df.loc[y_ind].to_numpy()
-        y = vfunc(pre_y)
-        model = LinearRegression().fit(x, y)
-        r_sq = model.score(x, y)
-        r = abs(math.sqrt(r_sq))
-
-        if r > 0.9:
-            strength = "very strong"
-        elif r > 0.7:
-            strength = "strong"
-        elif r > 0.5:
-            strength = "moderate"
-        elif r > 0.3:
-            strength = "weak"
-        else:
-            strength = "very weak"
-
-        row1 = (
-            y_df.index.get_loc(y_ind)
-            + 1
-            + (self.is_start if y_type == "IS" else self.bs_start)
-        )
-
-        col = self.len_pred + self.len_data + 3
-        hp.set_cell(self.ws1, f"{var.letters[col]}{row1}", float(model.coef_))
-        hp.set_cell(self.ws1, f"{var.letters[col+1]}{row1}", float(model.intercept_))
-        hp.set_cell(
-            self.ws1,
-            f"{var.letters[col+2]}{row1}",
-            var.letters[self.letter],
-            font=var.red,
-        )
-        hp.set_cell(
-            self.ws3, f"A{self.letter+4}", var.letters[self.letter], font=var.red
-        )
-        hp.set_cell(
-            self.ws3,
-            f"B{self.letter+4}",
-            (
-                f"The correlation between {x_ind.lower()} and {y_ind.lower()}"
-                f" is {strength} with a correlation coefficient of {r:.4f}."
-            ),
-        )
-
-        col = self.len_data + 1
-        for i in range(self.len_pred):
-            if x_ind == "Date":
-                base = (
-                    f"(({var.letters[col+i]}4-B4)*{var.letters[col+self.len_pred+2]}"
-                    f"{row1})+{var.letters[col+self.len_pred+3]}{row1}"
-                )
-            else:
-                row_n = (
-                    x_df.index.get_loc(x_ind) + 1 + self.is_start
-                    if x_type == "IS"
-                    else self.bs_start
-                )
-                base = (
-                    f"({var.letters[col+i]}{row_n}*{var.letters[col+self.len_pred+2]}{row1})"
-                    f"+{var.letters[col+self.len_pred+3]}{row1}"
-                )
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col+i]}{row1}",
-                f"=max({base},0)" if no_neg else f"={base}",
-                num_form=var.fmt_acct,
-            )
-
-        self.letter += 1
-
-    def get_sum(
-        self,
-        row: int_or_str,
-        first: str,
-        adds: List[str],
-        subtracts: List[str],
-        audit: bool = False,
-        text: str = None,
-    ):
-        col = 1 if audit else self.len_data + 1
-        for i in range(self.len_data if audit else self.len_pred):
-            sum_formula = f"={var.letters[col+i]}{self.title_to_row(first)}"
-            for item in adds:
-                sum_formula += f"+{var.letters[col+i]}{self.title_to_row(item)}"
-            for item in subtracts:
-                sum_formula += f"-{var.letters[col+i]}{self.title_to_row(item)}"
-            rowI = row if isinstance(row, int) else self.title_to_row(row)
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col+i]}{rowI}",
-                sum_formula,
-                num_form=var.fmt_acct,
-            )
-        if text:
-            self.custom_exp(row, text)
-
-    def title_to_row(self, title: str):
-        df = (
-            self.df_is
-            if title in self.df_is.index
-            else self.df_bs
-            if title in self.df_bs.index
-            else self.df_cf
-        )
-        ind = (
-            df.index.get_loc(title)
-            + 1
-            + (
-                self.is_start
-                if title in self.df_is.index
-                else self.bs_start
-                if title in self.df_bs.index
-                else self.cf_start
-            )
-        )
-        return ind
-
-    def custom_exp(self, row: int_or_str, text: str, ws: int = 1, column: str = None):
-        if ws == 1:
-            rowT = row if isinstance(row, int) else self.title_to_row(row)
-            col = self.len_pred + self.len_data + 3
-            hp.set_cell(
-                self.ws1,
-                f"{var.letters[col+2]}{rowT}",
-                var.letters[self.letter],
-                font=var.red,
-            )
-        if ws == 2:
-            hp.set_cell(
-                self.ws2, f"{column}{row}", var.letters[self.letter], font=var.red
-            )
-
-        hp.set_cell(
-            self.ws3, f"A{self.letter+4}", var.letters[self.letter], font=var.red
-        )
-        hp.set_cell(self.ws3, f"B{self.letter+4}", text)
-        self.letter += 1
+tickers = [
+    "AEIS",
+    "AEL",
+    "AEM",
+    "AEMD",
+    "AENZ",
+    "AEO",
+    "AEP",
+    "AER",
+    "AERI",
+    "AES",
+]

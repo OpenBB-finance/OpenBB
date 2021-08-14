@@ -7,7 +7,7 @@ from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.stocks.fundamental_analysis import business_insider_view
-from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
+from gamestonk_terminal.stocks.fundamental_analysis import dcf_view
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -246,7 +246,7 @@ class FundamentalAnalysisController:
 
     def call_dcf(self, other_args: List[str]):
         """Process fraud command"""
-        dcf_model.dcf(other_args, self.ticker)
+        dcf_view.dcf(other_args, self.ticker)
 
     def call_fmp(self, _):
         """Process fmp command"""
