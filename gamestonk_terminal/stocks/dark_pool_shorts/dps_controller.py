@@ -38,14 +38,14 @@ class DarkPoolShortsController:
 
     CHOICES_COMMANDS = [
         "highshort",
-        "darkpool",
+        "dpprom",
         "dppos",
         "shortdtc",
     ]
 
     CHOICES_COMMANDS_WITH_TICKER = [
         "shortint",
-        "dpats",
+        "dpotc",
         "ftd",
         "shortpos",
     ]
@@ -78,7 +78,7 @@ Dark Pool Shorts:
 shortinterest.com
     highshort      show top high short interest stocks of over 20% ratio
 FINRA:
-    darkpool       promising tickers based on dark pool shares regression
+    dpprom         promising tickers based on dark pool shares regression
 Stockgrid:
     dppos          dark pool short position
     shortdtc       short interest and days to cover"""
@@ -87,7 +87,7 @@ Stockgrid:
 Current Ticker: {self.ticker or None}
 
 FINRA:
-    dpats          dark pools (ATS) vs OTC data
+    dpotc          dark pools (ATS) vs OTC data
 SEC:
     ftd            fails-to-deliver data
 Stockgrid:
@@ -183,20 +183,38 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_darkpool(self, other_args: List[str]):
-        """Process darkpool command"""
+    def call_dpprom(self, other_args: List[str]):
+        """Process dpprom command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="darkpool",
-            description="Display barchart of dark pool (ATS) and OTC (Non ATS) data [Source: FINRA]",
+            prog="dpprom",
+            description="Display dark pool (ATS) data of tickers with growing trades activity",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=1_000,
+            help="Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity.",
+        )
+        parser.add_argument(
+            "-t",
+            "--top",
+            action="store",
+            dest="n_top",
+            type=check_positive,
+            default=5,
+            help="List of tickers from most promising with better linear regression slope.",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finra_view.dark_pool(self.ticker)
+            finra_view.darkpool_otc(num=ns_parser.n_num, promising=ns_parser.n_top)
 
         except Exception as e:
             print(e, "\n")
@@ -304,38 +322,20 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_dpats(self, other_args: List[str]):
-        """Process dpats command"""
+    def call_dpotc(self, other_args: List[str]):
+        """Process dpotc command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="darkpool",
-            description="Display dark pool (ATS) data of tickers with growing trades activity",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="n_num",
-            type=check_positive,
-            default=1_000,
-            help="Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity.",
-        )
-        parser.add_argument(
-            "-t",
-            "--top",
-            action="store",
-            dest="n_top",
-            type=check_positive,
-            default=5,
-            help="List of tickers from most promising with better linear regression slope.",
+            prog="dpotc",
+            description="Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finra_view.dpats(ns_parser.n_num, ns_parser.n_top)
+            finra_view.darkpool_ats_otc(ticker=self.ticker)
 
         except Exception as e:
             print(e, "\n")

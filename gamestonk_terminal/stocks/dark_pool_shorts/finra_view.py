@@ -91,7 +91,7 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     plt.show()
 
 
-def dark_pool(ticker: str):
+def darkpool_ats_otc(ticker: str):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data
 
     Parameters
@@ -142,7 +142,7 @@ def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
     plt.show()
 
 
-def dpats(num: int, promising: int):
+def darkpool_otc(num: int, promising: int):
     """Display dark pool (ATS) data of tickers with growing trades activity
 
     Parameters

@@ -7,8 +7,8 @@ import pandas as pd
 from scipy import stats
 
 
-def getFINRAweeks(tier, is_ats) -> List:
-    """Get FINRA weeks
+def getFINRAweeks(tier: str, is_ats: bool) -> List:
+    """Get FINRA weeks. [Source: FINRA]
 
     Parameters
     ----------
@@ -18,7 +18,7 @@ def getFINRAweeks(tier, is_ats) -> List:
         ATS data if true, NON-ATS otherwise
 
     Returns
-    ----------
+    -------
     List
         List of response data
     """
@@ -53,7 +53,29 @@ def getFINRAweeks(tier, is_ats) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-def getFINRAdata_offset(weekStartDate, tier, ticker, is_ats, offset):
+def getFINRAdata_offset(
+    weekStartDate: str, tier: str, ticker: str, is_ats: bool, offset: int
+) -> requests.Response:
+    """Get FINRA data. [Source: FINRA]
+
+    Parameters
+    ----------
+    weekStartDate : str
+        Weekly data to get FINRA data
+    tier : str
+        Stock tier between T1, T2, or OTCE
+    ticker : str
+        Stock ticker to get data from
+    is_ats : bool
+        ATS data if true, NON-ATS otherwise
+    offset : int
+        Offset in getting the data
+
+    Returns
+    -------
+    requests.Response
+        Response from FINRA data
+    """
     req_hdr = {"Accept": "application/json", "Content-Type": "application/json"}
 
     l_cmp_filters = [
@@ -105,7 +127,7 @@ def getFINRAdata_offset(weekStartDate, tier, ticker, is_ats, offset):
 def getFINRAdata(
     weekStartDate: str, tier: str, ticker: str, is_ats: bool
 ) -> Tuple[int, List]:
-    """Get FINRA data
+    """Get FINRA data. [Source: FINRA]
 
     Parameters
     ----------
@@ -119,8 +141,8 @@ def getFINRAdata(
         ATS data if true, NON-ATS otherwise
 
     Returns
-    ----------
-    str
+    -------
+    int
         Status code from request
     List
         List of response data
@@ -186,7 +208,7 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dark Pools (ATS) Data
     Dict
@@ -256,7 +278,7 @@ def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         Stock ticker to get data from
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dark Pools (ATS) Data
     pd.DataFrame
