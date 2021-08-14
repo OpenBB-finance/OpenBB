@@ -11,7 +11,7 @@ class TestExcelClass(TestCase):
     @vcr.use_cassette("tests/cassettes/test_fa/test_covers_all_tickers.yaml")
     def test_covers_all_tickers(self):
         for ticker in var.tickers:
-            excel = CreateExcelFA(ticker, False, False)
+            excel = CreateExcelFA(ticker, False)
             df_is = excel.get_data("IS", 1, True)
             items_is = var.non_gaap_is + var.gaap_is
             for item in df_is.index:

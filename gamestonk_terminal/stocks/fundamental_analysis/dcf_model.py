@@ -5,7 +5,6 @@ from typing import List, Union
 from datetime import datetime
 import argparse
 import math
-import os
 
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from openpyxl import Workbook, worksheet
@@ -51,22 +50,17 @@ def dcf(other_args: List[str], ticker: str):
         default=False,
         help="Confirms that the numbers provided are accurate.",
     )
-    parser.add_argument(
-        "-s",
-        "--save",
-        action="store_true",
-        dest="save",
-        default=False,
-        help="Saves the excel in exports/excel.",
-    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
             return
 
-        dcf_view = CreateExcelFA(ticker, ns_parser.audit, ns_parser.save)
-        dcf_view.create_workbook()
+        dcf_view = CreateExcelFA(ticker, ns_parser.audit)
+        trypath = dcf_view.create_workbook()
+        print(
+            f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file."
+        )
 
     except Exception as e:
         print(e, "\n")
@@ -77,9 +71,8 @@ class CreateExcelFA:
     # pylint: disable=R0902
     # pylint: disable=R0912
 
-    def __init__(self, ticker: str, audit: bool, save: bool):
+    def __init__(self, ticker: str, audit: bool):
         self.audit: bool = audit
-        self.save: bool = save
         self.wb: Workbook = Workbook()
         self.ws1: worksheet = self.wb.active
         self.ws2: worksheet = self.wb.create_sheet("Free Cash Flows")
@@ -116,15 +109,10 @@ class CreateExcelFA:
         self.create_dcf()
         if self.audit:
             self.run_audit()
-        if self.save:
-            export_dir = "/".join(
-                os.path.dirname(os.path.abspath(__file__)).split("/")[:-2]
-            )
-            full_path = os.path.abspath(
-                os.path.join(export_dir, f"exports/excel/{self.ticker}-{self.now}.xlsx")
-            )
-            self.wb.save(full_path)
-        return self.wb
+
+        trypath = f"../GamestonkTerminal/exports/excel/{self.ticker}-{self.now}.xlsx"
+        self.wb.save(trypath)
+        return trypath
 
     def get_data(self, statement: str, row: int, header: bool):
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
