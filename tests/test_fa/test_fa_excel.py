@@ -8,7 +8,9 @@ import gamestonk_terminal.stocks.fundamental_analysis.excel.variables as var
 
 
 class TestExcelClass(TestCase):
-    @vcr.use_cassette("tests/cassettes/test_fa/test_covers_all_tickers.yaml")
+    @vcr.use_cassette(
+        "tests/cassettes/test_fa/test_fa_excel/test_covers_all_tickers.yaml"
+    )
     def test_covers_all_tickers(self):
         for ticker in var.tickers:
             excel = CreateExcelFA(ticker, False)

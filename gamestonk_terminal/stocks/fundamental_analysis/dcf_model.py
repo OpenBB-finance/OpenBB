@@ -88,8 +88,8 @@ class CreateExcelFA:
         self.len_pred: int = 10
         self.years: List[str] = []
         self.rounding: int = 0
-        self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
+        self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
         self.info = yf.Ticker(ticker).info
 
@@ -142,6 +142,7 @@ class CreateExcelFA:
 
         if self.years == []:
             self.years = [x.get_text().strip() for x in columns]
+            self.len_data = len(self.years) - 1
 
         if self.rounding == 0:
             phrase = soup.find(
@@ -165,6 +166,9 @@ class CreateExcelFA:
 
         df = pd.DataFrame(data=all_data)
         df = df.set_index(0)
+        n = df.shape[1] - self.len_data
+        if n > 0:
+            df = df.iloc[:, :-n]
         df.columns = self.years[1:]
 
         for ignore in ignores:
@@ -175,6 +179,7 @@ class CreateExcelFA:
         self.ws1[f"A{row}"] = title
         self.ws1[f"A{row}"].font = var.bold_font
 
+        # Refactor in the future
         if statement == "IS":
             if "Revenue" in df.index:
                 blank_list = ["0" for x in df.loc["Revenue"].to_list()]
@@ -198,9 +203,6 @@ class CreateExcelFA:
                 raise ValueError("Dataframe does not have key information.")
             for i, value in enumerate(var.gaap_cf[1:]):
                 df = hp.insert_row(var.gaap_cf[i + 1], var.gaap_cf[i], df, blank_list)
-
-        if self.len_data == 0:
-            self.len_data = len(df.columns)
 
         rowI = row + 1
         names = df.index.values.tolist()
