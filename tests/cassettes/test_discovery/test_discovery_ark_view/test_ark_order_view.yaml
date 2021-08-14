@@ -6281,4 +6281,122 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/39.0.2171.95 Safari/537.36
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/MKFG?period1=1628654400&period2=1628952034&interval=1d&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"MKFG","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1602163800,"regularMarketTime":1628884802,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":9.43,"chartPreviousClose":10.42,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1628841600,"end":1628861400,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1628861400,"end":1628884800,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1628884800,"end":1628899200,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","ytd","max"]},"timestamp":[1628688600,1628775000,1628861400],"indicators":{"quote":[{"low":[9.970000267028809,9.604000091552734,9.15999984741211],"close":[10.069999694824219,9.829999923706055,9.430000305175781],"volume":[649500,677400,594500],"high":[10.420000076293945,10.270000457763672,9.640000343322754],"open":[10.420000076293945,10.1899995803833,9.479999542236328]}],"adjclose":[{"adjclose":[10.069999694824219,9.829999923706055,9.430000305175781]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1138'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Sat, 14 Aug 2021 14:40:34 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+      x-request-id:
+      - b64848d3-ec92-4a0e-ab79-8def1497fedd
+      x-yahoo-request-id:
+      - b7q0e5lghflf3
+      y-rid:
+      - b7q0e5lghflf3
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/39.0.2171.95 Safari/537.36
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/DDD?period1=1628654400&period2=1628952035&interval=1d&includePrePost=False&events=div%2Csplits
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"DDD","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":574007400,"regularMarketTime":1628884802,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":30.14,"chartPreviousClose":34.44,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1628861400,"start":1628841600,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1628884800,"start":1628861400,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1628899200,"start":1628884800,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1628688600,1628775000,1628861400],"indicators":{"quote":[{"open":[34.59000015258789,33.27000045776367,33.13999938964844],"high":[36.20000076293945,34.029998779296875,33.20000076293945],"low":[32.849998474121094,32.560001373291016,30.030000686645508],"close":[33.84000015258789,33.27000045776367,30.139999389648438],"volume":[10749000,3277700,4293600]}],"adjclose":[{"adjclose":[33.84000015258789,33.27000045776367,30.139999389648438]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1160'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Sat, 14 Aug 2021 14:40:35 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+      x-request-id:
+      - c1b6922b-ad6b-45bf-b6a4-9c46b21a1b75
+      x-yahoo-request-id:
+      - 3n5gq71ghflf3
+      y-rid:
+      - 3n5gq71ghflf3
+    status:
+      code: 200
+      message: OK
 version: 1
