@@ -12,7 +12,6 @@ from gamestonk_terminal.cryptocurrency.discovery import (
     pycoingecko_view,
     coinpaprika_view,
     coinmarketcap_view,
-    binance_view,
 )
 
 
@@ -25,7 +24,6 @@ class DiscoveryController:
         "q",
         "quit",
         "cpsearch",
-        "cpcoins",
         "cmctop",
         "cgtrending",
         "cgvoted",
@@ -40,7 +38,6 @@ class DiscoveryController:
         "cgdex",
         "cgnft",
         "cgcoins",
-        "bincoins",
     ]
 
     def __init__(self):
@@ -73,12 +70,9 @@ CoinGecko:
     cgdex             top decentralized exchanges
     cgnft             top non fungible tokens
 CoinPaprika:
-    cpcoins           coins available on CoinPaprika
     cpsearch          search on CoinPaprika
 CoinMarketCap:
     cmctop            top coins from CoinMarketCap
-Binance:
-    bincoins          coins available on Binance
 
 """
         print(help_text)
@@ -185,17 +179,9 @@ Binance:
         """Process top command"""
         coinmarketcap_view.get_cmc_top_n(other_args)
 
-    def call_cpcoins(self, other_args):
-        """Process coins command"""
-        coinpaprika_view.coins(other_args=other_args)
-
     def call_cpsearch(self, other_args):
         """Process search command"""
         coinpaprika_view.search(other_args=other_args)
-
-    def call_bincoins(self, other_args):
-        """Process bin_coins command"""
-        binance_view.coins(other_args=other_args)
 
 
 def menu():

@@ -12,7 +12,10 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinpaprika_view,
     binance_view,
 )
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
+    get_coin_list,
+    create_mapping_matrix_for_binance,
+)
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_list_of_coins,
 )
@@ -133,7 +136,8 @@ def find(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
-        or CoinPaprika you can use this command to display coins with similar name, symbol or id to your search query.
+        Binance or CoinPaprika you can use this command to display coins with similar name, symbol or id
+        to your search query.
         Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
         It will search for coin that has similar name to polka and display top 25 matches.
         -c, --coin stands for coin - you provide here your search query
@@ -169,7 +173,7 @@ def find(other_args: List[str]):
     parser.add_argument(
         "--source",
         dest="source",
-        choices=["cp", "cg"],
+        choices=["cp", "cg", "bin"],
         default="cg",
         help="Source of data.",
         type=str,
@@ -225,8 +229,37 @@ def find(other_args: List[str]):
                 )
             )
 
+        elif ns_parser.source == "bin":
+
+            # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
+            if len(ns_parser.coin) > 4:
+                ns_parser.key = "id"
+
+            coins_df_gecko = get_coin_list()
+            coins_bin = create_mapping_matrix_for_binance()
+            coins_df_bin = pd.Series(coins_bin).reset_index()
+            coins_df_bin.columns = ["symbol", "id"]
+            coins = pd.merge(
+                coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
+            )
+            coins_list = coins[ns_parser.key].to_list()
+
+            sim = difflib.get_close_matches(ns_parser.coin, coins_list, ns_parser.top)
+            df = pd.Series(sim).to_frame().reset_index()
+            df.columns = ["index", ns_parser.key]
+            df = df.merge(coins, on=ns_parser.key)
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                )
+            )
+
         else:
-            print("Couldn't execute find methods for CoinPaprika or CoinGecko")
+            print("Couldn't execute find methods for CoinPaprika, Binance or CoinGecko")
         print("")
 
     except Exception as e:

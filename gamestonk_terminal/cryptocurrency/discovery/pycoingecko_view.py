@@ -61,7 +61,7 @@ def gainers(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
+        help="Sort by given column. Default: Rank",
         default="Rank",
         choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
     )
@@ -87,7 +87,7 @@ def gainers(other_args: List[str]):
             return
 
         if ns_parser.sortby == "Change":
-            sortby = f"% Change {ns_parser.period}"
+            sortby = f"%Change_{ns_parser.period}"
         else:
             sortby = ns_parser.sortby
 
@@ -129,7 +129,7 @@ def losers(other_args: List[str]):
         Shows Largest Losers - coins which price dropped the most in given period
         You can use parameter --period to set which timeframe are you interested in. eg. 1h, 24h, 7d, 14d, 30d, 60d, 1y
         You can look on only top N number of records with --top,
-        You can sort by rank, symbol, name, volume, price, change with --sort and also with --descend flag
+        You can sort by Rank, Symbol, Name, Volume, Price, Change with --sort and also with --descend flag
         to sort descending.
         Flag --links will display one additional column with all coingecko urls for listed coins.
         """,
@@ -156,7 +156,7 @@ def losers(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: change",
+        help="Sort by given column. Default: Rank",
         default="Rank",
         choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
     )
@@ -182,7 +182,7 @@ def losers(other_args: List[str]):
             return
 
         if ns_parser.sortby == "Change":
-            sortby = f"% Change {ns_parser.period}"
+            sortby = f"%Change_{ns_parser.period}"
         else:
             sortby = ns_parser.sortby
 
@@ -227,10 +227,10 @@ def discover(category: str, other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description=f"""Discover {category} coins.
         Use --top parameter to display only top N number of records,
-        You can sort by rank, name, price_btc, price_usd, using --sort parameter and also with --descend flag
+        You can sort by Rank, Name, Price_BTC, Price_USD, using --sort parameter and also with --descend flag
         to sort descending.
         Flag --links will display one additional column with all coingecko urls for listed coins.
-        {category} will display: Rank, Name, Price BTC, Price USD
+        {category} will display: Rank, Name, Price_BTC, Price_USD
         """,
     )
     parser.add_argument(
@@ -239,7 +239,7 @@ def discover(category: str, other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
@@ -251,8 +251,8 @@ def discover(category: str, other_args: List[str]):
         choices=[
             "Rank",
             "Name",
-            "Price BTC",
-            "Price USD",
+            "Price_BTC",
+            "Price_USD",
         ],
     )
     parser.add_argument(
@@ -314,7 +314,7 @@ def recently_added(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""
         Shows recently added coins on CoinGecko. You can display only top N number of coins with --top parameter.
-        You can sort data by Rank, Name, Symbol, Price, Change 1h, Change 24h, Added with --sort
+        You can sort data by Rank, Name, Symbol, Price, Change_1h, Change_24h, Added with --sort
         and also with --descend flag to sort descending.
         Flag --links will display urls""",
     )
@@ -324,22 +324,22 @@ def recently_added(other_args: List[str]):
         dest="top",
         type=check_positive,
         help="top N number records",
-        default=20,
+        default=15,
     )
     parser.add_argument(
         "-s",
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
+        help="Sort by given column. Default: Rank",
         default="Rank",
         choices=[
             "Rank",
             "Name",
             "Symbol",
             "Price",
-            "Change 1h",
-            "Change 24h",
+            "Change_1h",
+            "Change_24h",
             "Added",
             "Url",
         ],
@@ -408,7 +408,7 @@ def top_defi_coins(other_args: List[str]):
         DeFi or Decentralized Finance refers to financial services that are built
         on top of distributed networks with no central intermediaries.
         You can display only top N number of coins with --top parameter.
-        You can sort data by Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d,
+        You can sort data by Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d,
          Volume 24h, Market Cap, Url with --sort and also with --descend flag to sort descending.
         Flag --links will display  urls""",
     )
@@ -432,11 +432,11 @@ def top_defi_coins(other_args: List[str]):
             "Name",
             "Symbol",
             "Price",
-            "Change 1h",
-            "Change 24h",
-            "Change 7d",
-            "Volume 24h",
-            "Market Cap",
+            "Change_1h",
+            "Change_24h",
+            "Change_7d",
+            "Volume_24h",
+            "Market_Cap",
             "Url",
         ],
     )
@@ -500,10 +500,10 @@ def top_dex(other_args: List[str]):
         description="""
         Shows Top Decentralized Exchanges on CoinGecko by Trading Volume
         You can display only top N number of coins with --top parameter.
-        You can sort data by  Name, Rank, Volume 24h, Number of Coins, Number of Pairs, Visits, Most Traded,
-        Market Share by volume with --sort and also with --descend flag to sort descending.
+        You can sort data by  Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share by
+        volume with --sort and also with --descend flag to sort descending.
         Display columns:
-              Name, Rank, Volume 24h, Number of Coins, Number of Pairs, Visits, Most Traded, Market Share by volume""",
+              Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share""",
     )
     parser.add_argument(
         "-t",
@@ -521,14 +521,14 @@ def top_dex(other_args: List[str]):
         help="Sort by given column. Default: Rank",
         default="Rank",
         choices=[
-            "Rank",
             "Name",
-            "Volume 24h",
-            "Number of coins",
+            "Rank",
+            "Volume_24h",
+            "Coins",
+            "Pairs",
             "Visits",
-            "Most Traded",
-            "Market Share by volume",
-            "Number of Pairs",
+            "Most_Traded",
+            "Market_Share",
         ],
     )
     parser.add_argument(
@@ -577,9 +577,9 @@ def top_volume_coins(other_args: List[str]):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="""Shows Top Coins by Trading Volume.
         You can display only top N number of coins with --top parameter.
-        You can sort data by on of columns Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d, Volume 24h,
-        Market Cap with --sort parameter and also with --descend flag to sort descending.
-        Displays columns: rank, name, symbol, price, change_1h, change_24h, change_7d , volume_24h ,market_cap""",
+        You can sort data by on of columns  Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d,
+        Volume_24h, Market_Cap with --sort parameter and also with --descend flag to sort descending.
+        Displays columns:  Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap""",
     )
     parser.add_argument(
         "-t",
@@ -594,18 +594,18 @@ def top_volume_coins(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
+        help="Sort by given column. Default: Rank",
         default="Rank",
         choices=[
             "Rank",
             "Name",
             "Symbol",
             "Price",
-            "Change 1h",
-            "Change 24h",
-            "Change 7d",
-            "Volume 24h",
-            "Market Cap",
+            "Change_1h",
+            "Change_24h",
+            "Change_7d",
+            "Volume_24h",
+            "Market_Cap",
         ],
     )
     parser.add_argument(
@@ -660,10 +660,10 @@ def top_nft(other_args: List[str]):
         NFT (Non-fungible Token) refers to digital assets with unique characteristics.
         Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
         You can display only top N number of coins with --top parameter.
-        You can sort data by Rank, Name, Symbol, Price, Change 1d, Change 24h, Change 7d, Market Cap
+        You can sort data by Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap
         with --sort and also with --descend flag to sort descending.
         Flag --links will display urls
-        Displays : Rank, Name, Symbol, Price, Change 1d, Change 24h, Change 7d, Market Cap, Url""",
+        Displays : Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap, Url""",
     )
     parser.add_argument(
         "-t",
@@ -678,18 +678,18 @@ def top_nft(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
+        help="Sort by given column. Default: Rank",
         default="Rank",
         choices=[
             "Rank",
             "Name",
             "Symbol",
             "Price",
-            "Change 1h",
-            "Change 24h",
-            "Change 7d",
-            "Volume 24h",
-            "Market Cap",
+            "Change_1h",
+            "Change_24h",
+            "Change_7d",
+            "Volume_24h",
+            "Market_Cap",
         ],
     )
     parser.add_argument(
@@ -753,7 +753,7 @@ def yfarms(other_args: List[str]):
         Yield farming, also referred to as liquidity mining, is a way to generate rewards with cryptocurrency holdings.
         In simple terms, it means locking up cryptocurrencies and getting rewards.
         You can display only top N number of coins with --top parameter.
-        You can sort data by Rank, Name,  Value Locked, Return Year with --sort parameter
+        You can sort data by Rank, Name,  Value_Locked, Return_Year with --sort parameter
         and also with --descend flag to sort descending.""",
     )
     parser.add_argument(
@@ -769,13 +769,13 @@ def yfarms(other_args: List[str]):
         "--sort",
         dest="sortby",
         type=str,
-        help="Sort by given column. Default: rank",
+        help="Sort by given column. Default: Rank",
         default="Rank",
         choices=[
             "Rank",
             "Name",
-            "Value Locked",
-            "Return Year",
+            "Value_Locked",
+            "Return_Year",
         ],
     )
     parser.add_argument(

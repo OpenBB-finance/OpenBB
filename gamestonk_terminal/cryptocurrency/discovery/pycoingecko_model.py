@@ -84,7 +84,7 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
             "Name",
             "Volume",
             "Price",
-            f"% Change {period}",
+            f"%Change_{period}",
             "Url",
         ],
     )
@@ -108,7 +108,7 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame:
-        Name, Price BTC, Price USD, Url
+        Name, Price_BTC, Price_USD, Url
     """
     if category not in CATEGORIES:
         raise ValueError(
@@ -134,8 +134,8 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
         results,
         columns=[
             "Name",
-            "Price BTC",
-            "Price USD",
+            "Price_BTC",
+            "Price_USD",
             "Url",
         ],
     )
@@ -147,14 +147,14 @@ def get_recently_added_coins() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        Name, Symbol, Price, Change 1h, Change 24h, Added
+        Name, Symbol, Price, Change_1h, Change_24h, Added
     """
     columns = [
         "Name",
         "Symbol",
         "Price",
-        "Change 1h",
-        "Change 24h",
+        "Change_1h",
+        "Change_24h",
         "Added",
         "Url",
     ]
@@ -200,8 +200,8 @@ def get_yield_farms() -> pd.DataFrame:
         "Pool",
         "Audits",
         "Collateral",
-        "Value Locked",
-        "Return Year",
+        "Value_Locked",
+        "Return_Year",
     ]
     url = "https://www.coingecko.com/en/yield-farming"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -238,7 +238,7 @@ def get_yield_farms() -> pd.DataFrame:
             ]
         )
     df = pd.DataFrame(results, columns=columns).replace({"": None})
-    for col in ["Return Year"]:
+    for col in ["Return_Year"]:
         df[col] = df[col].apply(
             lambda x: x.replace(" Yearly", "") if isinstance(x, str) else x
         )
@@ -253,18 +253,18 @@ def get_top_volume_coins() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d, Volume 24h, Market Cap
+        Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap
     """
     columns = [
         "Rank",
         "Name",
         "Symbol",
         "Price",
-        "Change 1h",
-        "Change 24h",
-        "Change 7d",
-        "Volume 24h",
-        "Market Cap",
+        "Change_1h",
+        "Change_24h",
+        "Change_7d",
+        "Volume_24h",
+        "Market_Cap",
     ]
     url = "https://www.coingecko.com/en/coins/high_volume"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -288,7 +288,7 @@ def get_top_defi_coins() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change 1h, Change 24h, Change 7d, Volume 24h, Market Cap, Url
+        Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap, Url
 
     """
     url = "https://www.coingecko.com/en/defi"
@@ -311,11 +311,11 @@ def get_top_defi_coins() -> pd.DataFrame:
             "Name",
             "Symbol",
             "Price",
-            "Change 1h",
-            "Change 24h",
-            "Change 7d",
-            "Volume 24h",
-            "Market Cap",
+            "Change_1h",
+            "Change_24h",
+            "Change_7d",
+            "Volume_24h",
+            "Market_Cap",
             "Fully Diluted Market Cap",
             "Market Cap to TVL Ratio",
             "Url",
@@ -337,17 +337,17 @@ def get_top_dexes() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        Name, Rank, Volume 24h, Number of Coins, Number of Pairs, Visits, Most Traded, Market Share by volume
+        Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share
     """
     columns = [
         "Name",
         "Rank",
-        "Volume 24h",
-        "Number of Coins",
-        "Number of Pairs",
+        "Volume_24h",
+        "Coins",
+        "Pairs",
         "Visits",
-        "Most Traded",
-        "Market Share by volume",
+        "Most_Traded",
+        "Market_Share",
     ]
     url = "https://www.coingecko.com/en/dex"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -364,13 +364,13 @@ def get_top_dexes() -> pd.DataFrame:
     df.drop(df.columns[1:3], axis=1, inplace=True)
     df = swap_columns(df)
     df.columns = columns
-    df["Most Traded"] = (
-        df["Most Traded"]
+    df["Most_Traded"] = (
+        df["Most_Traded"]
         .apply(lambda x: x.split("$")[0])
         .str.replace(",", "", regex=True)
         .str.replace(".", "", regex=True)
     )
-    df["Most Traded"] = df["Most Traded"].apply(lambda x: None if x.isdigit() else x)
+    df["Most_Traded"] = df["Most_Traded"].apply(lambda x: None if x.isdigit() else x)
     df["Rank"] = df["Rank"].astype(int)
     df.set_index("Rank", inplace=True)
     return df.reset_index()
@@ -382,7 +382,7 @@ def get_top_nfts() -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change 1d, Change 24h, Change 7d, Market Cap, Url
+        Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap, Url
     """
     url = "https://www.coingecko.com/en/nft"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
@@ -402,11 +402,11 @@ def get_top_nfts() -> pd.DataFrame:
             "Name",
             "Symbol",
             "Price",
-            "Change 1h",
-            "Change 24h",
-            "Change 7d",
-            "Volume 24h",
-            "Market Cap",
+            "Change_1h",
+            "Change_24h",
+            "Change_7d",
+            "Volume_24h",
+            "Market_Cap",
             "Url",
         ],
     )
@@ -428,3 +428,40 @@ def get_coin_list() -> pd.DataFrame:
         client.get_coins_list(),
         columns=["id", "symbol", "name"],
     ).reset_index()
+
+
+def _get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) -> dict:
+    """Helper method to get all coins available on binance exchange
+
+    Parameters
+    ----------
+    exchange_id: str
+        id of exchange
+    page: int
+        number of page. One page contains 100 records
+
+    Returns
+    -------
+    dict
+        dictionary with all trading pairs on binance
+    """
+    binance_coins = client.get_exchanges_tickers_by_id(id=exchange_id, page=page)
+    return binance_coins["tickers"]
+
+
+def create_mapping_matrix_for_binance():
+    """Creates a matrix with all coins available on Binance with corresponding coingecko coin_id.
+
+    Returns
+    -------
+    dict
+        dictionary with all coins: {"ETH" : "ethereum"}
+    """
+    coins_dct = {}
+    for i in range(12):
+        coins = _get_coins_for_given_exchange(page=i)
+        for coin in coins:
+            bin_symbol, gecko_id = coin["base"], coin["coin_id"]
+            if bin_symbol not in coins_dct:
+                coins_dct[bin_symbol] = gecko_id
+    return coins_dct
