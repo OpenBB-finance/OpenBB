@@ -1,0 +1,511 @@
+""" Disc Controller """
+__docformat__ = "numpy"
+
+import argparse
+import os
+from typing import List
+from colorama import Style
+import pandas as pd
+from matplotlib import pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    check_positive,
+)
+from gamestonk_terminal.stocks.dark_pool_shorts import (
+    stockgrid_view,
+    shortinterest_view,
+    quandl_view,
+    sec_view,
+    finra_view,
+)
+
+
+class DarkPoolShortsController:
+    """Dark Pool Shorts Controller"""
+
+    # Command choices
+    CHOICES = [
+        "?",
+        "cls",
+        "help",
+        "q",
+        "quit",
+    ]
+
+    CHOICES_COMMANDS = [
+        "highshort",
+        "darkpool",
+        "dppos",
+        "shortdtc",
+    ]
+
+    CHOICES_COMMANDS_WITH_TICKER = [
+        "shortint",
+        "dpats",
+        "ftd",
+        "shortpos",
+    ]
+
+    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_COMMANDS_WITH_TICKER
+
+    def __init__(self, ticker: str, start: str, stock: pd.DataFrame):
+        """Constructor"""
+        self.ticker = ticker
+        self.start = start
+        self.stock = stock
+
+        self.disc_parser = argparse.ArgumentParser(add_help=False, prog="dps")
+        self.disc_parser.add_argument(
+            "cmd",
+            choices=self.CHOICES,
+        )
+
+    def print_help(self):
+        """Print help"""
+        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/dark_pool_shorts
+
+Dark Pool Shorts:
+    cls            clear screen
+    ?/help         show this menu again
+    q              quit this menu, and shows back to main menu
+    quit           quit to abandon program
+
+shortinterest.com
+    highshort      show top high short interest stocks of over 20% ratio
+FINRA:
+    darkpool       promising tickers based on dark pool shares regression
+Stockgrid:
+    dppos          dark pool short position
+    shortdtc       short interest and days to cover"""
+        help_text += f"""
+{Style.DIM if not self.ticker else ''}
+Current Ticker: {self.ticker or None}
+
+FINRA:
+    dpats          dark pools (ATS) vs OTC data
+SEC:
+    ftd            fails-to-deliver data
+Stockgrid:
+    shortpos       net short vs position
+Quandl/Stockgrid:
+    shortint       price vs short interest volume
+{Style.RESET_ALL if not self.ticker else ''}"""
+        print(help_text)
+
+    def switch(self, an_input: str):
+        """Process and dispatch input
+        Returns
+        -------
+        True, False or None
+            False - quit the menu
+            True - quit the program
+            None - continue in the menu
+        """
+        # Empty command
+        if not an_input:
+            print("")
+            return None
+
+        (known_args, other_args) = self.disc_parser.parse_known_args(an_input.split())
+
+        # Help menu again
+        if known_args.cmd == "?":
+            self.print_help()
+            return None
+
+        # Clear screen
+        if known_args.cmd == "cls":
+            os.system("cls||clear")
+            return None
+
+        return getattr(
+            self, "call_" + known_args.cmd, lambda: "Command not recognized!"
+        )(other_args)
+
+    def call_help(self, _):
+        """Process Help command"""
+        self.print_help()
+
+    def call_q(self, _):
+        """Process Q command - quit the menu"""
+        return False
+
+    def call_quit(self, _):
+        """Process Quit command - quit the program"""
+        return True
+
+    def call_highshort(self, other_args: List[str]):
+        """Process highshort command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="highshort",
+            description="""
+                Print top stocks being more heavily shorted. HighShortInterest.com provides
+                a convenient sorted database of stocks which have a short interest of over
+                20 percent. Additional key data such as the float, number of outstanding shares,
+                and company industry is displayed. Data is presented for the Nasdaq Stock Market,
+                the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top stocks to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            shortinterest_view.high_short_interest(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_darkpool(self, other_args: List[str]):
+        """Process darkpool command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="darkpool",
+            description="Display barchart of dark pool (ATS) and OTC (Non ATS) data [Source: FINRA]",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finra_view.dark_pool(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_dppos(self, other_args: List[str]):
+        """Process dppos command"""
+        parser = argparse.ArgumentParser(
+            prog="dppos",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Get dark pool short positions. [Source: Stockgrid]",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            help="Number of top tickers to show",
+            type=check_positive,
+            default=10,
+            dest="num",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            help="Field for which to sort by, where 'sv': Short Vol. (1M), "
+            "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. (1M), "
+            "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position (1M), "
+            "'dpp_dollar': DP Position ($1B)",
+            choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
+            default="dpp_dollar",
+            dest="sort_field",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascending",
+            action="store_true",
+            default=False,
+            dest="ascending",
+            help="Data in ascending order",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stockgrid_view.dark_pool_short_positions(
+                num=ns_parser.num,
+                sort_field=ns_parser.sort_field,
+                ascending=ns_parser.ascending,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_shortdtc(self, other_args: List[str]):
+        """Process shortdtc command"""
+        parser = argparse.ArgumentParser(
+            prog="shortdtc",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Print short interest and days to cover. [Source: Stockgrid]",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            help="Number of top tickers to show",
+            type=check_positive,
+            default=10,
+            dest="num",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            help="Field for which to sort by, where 'float': Float Short %%, "
+            "'dtc': Days to Cover, 'si': Short Interest",
+            choices=["float", "dtc", "si"],
+            default="float",
+            dest="sort_field",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stockgrid_view.short_interest_days_to_cover(
+                num=ns_parser.num,
+                sort_field=ns_parser.sort_field,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_dpats(self, other_args: List[str]):
+        """Process dpats command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="darkpool",
+            description="Display dark pool (ATS) data of tickers with growing trades activity",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=1_000,
+            help="Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity.",
+        )
+        parser.add_argument(
+            "-t",
+            "--top",
+            action="store",
+            dest="n_top",
+            type=check_positive,
+            default=5,
+            help="List of tickers from most promising with better linear regression slope.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finra_view.dpats(ns_parser.n_num, ns_parser.n_top)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_ftd(self, other_args: List[str]):
+        """Process ftd command"""
+        sec_view.fails_to_deliver(other_args, self.ticker, self.stock)
+
+    def call_shortpos(self, other_args: List[str]):
+        """Process shortpos command"""
+        parser = argparse.ArgumentParser(
+            prog="shortpos",
+            add_help=False,
+            description="Shows Net Short Vol. vs Position. [Source: Stockgrid]",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            help="Number of last open market days to show",
+            type=check_positive,
+            default=10 if "-r" in other_args else 120,
+            dest="num",
+        )
+        parser.add_argument(
+            "-r",
+            action="store_true",
+            default=False,
+            help="Flag to print raw data instead",
+            dest="raw",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stockgrid_view.net_short_position(
+                ticker=self.ticker,
+                num=ns_parser.num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_shortint(self, other_args: List[str]):
+        """Process shortint command"""
+        parser = argparse.ArgumentParser(
+            prog="shortint",
+            add_help=False,
+            description="Shows price vs short interest volume. [Source: Quandl/Stockgrid]",
+        )
+        parser.add_argument(
+            "--source",
+            choices=["quandl", "stockgrid"],
+            default="",
+            dest="stockgrid",
+            help="Source of short interest volume",
+        )
+        if "quandl" in other_args:
+            parser.add_argument(
+                "-n",
+                "--nyse",
+                action="store_true",
+                default=False,
+                dest="b_nyse",
+                help="Data from NYSE flag. Otherwise comes from NASDAQ.",
+            )
+            parser.add_argument(
+                "-d",
+                "--days",
+                action="store",
+                dest="n_days",
+                type=check_positive,
+                default=10,
+                help="Number of latest days to print data.",
+            )
+        else:
+            parser.add_argument(
+                "-n",
+                "--number",
+                help="Number of last open market days to show",
+                type=check_positive,
+                default=10 if "-r" in other_args else 120,
+                dest="num",
+            )
+            parser.add_argument(
+                "-r",
+                action="store_true",
+                default=False,
+                help="Flag to print raw data instead",
+                dest="raw",
+            )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if "quandl" in other_args:
+                quandl_view.short_interest(
+                    ticker=self.ticker,
+                    start=self.start,
+                    nyse=ns_parser.b_nyse,
+                    days=ns_parser.n_days,
+                    export=ns_parser.export,
+                )
+            else:
+                stockgrid_view.short_interest_volume(
+                    ticker=self.ticker,
+                    num=ns_parser.num,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+
+        except Exception as e:
+            print(e, "\n")
+
+
+def menu(ticker: str = "", start: str = "", stock: pd.DataFrame = pd.DataFrame()):
+    """Dark Pool Shorts Menu
+
+    Parameters
+    ----------
+    stock : DataFrame
+        Due diligence stock dataframe
+    ticker : str
+        Due diligence ticker symbol
+    start : str
+        Start date of the stock data
+    """
+    dps_controller = DarkPoolShortsController(ticker, start, stock)
+    dps_controller.call_help(None)
+
+    # Loop forever and ever
+    while True:
+        # Get input command from user
+        if session and gtff.USE_PROMPT_TOOLKIT:
+            completer = NestedCompleter.from_nested_dict(
+                {c: None for c in dps_controller.CHOICES}
+            )
+
+            an_input = session.prompt(
+                f"{get_flair()} (stocks)>(dps)> ",
+                completer=completer,
+            )
+        else:
+            an_input = input(f"{get_flair()} (stocks)>(dps)> ")
+
+        try:
+            plt.close("all")
+
+            process_input = dps_controller.switch(an_input)
+
+            if process_input is not None:
+                return process_input
+
+        except SystemExit:
+            print("The command selected doesn't exist\n")
+            continue

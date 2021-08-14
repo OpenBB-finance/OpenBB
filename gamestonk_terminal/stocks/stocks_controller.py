@@ -25,6 +25,7 @@ from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 from gamestonk_terminal.stocks.residuals_analysis import ra_controller
 from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.stocks.report import report_controller
+from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
 from gamestonk_terminal.options import options_controller
 
@@ -58,6 +59,7 @@ class StocksController:
         "pred",
         "ra",
         "disc",
+        "dps",
         "scr",
         "ins",
         "gov",
@@ -124,6 +126,7 @@ What do you want to do?
         help_text += """
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   gov         government menu, \t\t house trading, contracts, corporate lobbying
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
@@ -213,6 +216,14 @@ What do you want to do?
     def call_disc(self, _):
         """Process disc command"""
         ret = disc_controller.menu()
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_dps(self, _):
+        """Process dps command"""
+        ret = dps_controller.menu(self.ticker, self.start, self.stock)
         if ret is False:
             self.print_help()
         else:

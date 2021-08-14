@@ -5,11 +5,11 @@ import os
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 
-from gamestonk_terminal.stocks.discovery import shortinterest_model
+from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
 
 
-def low_float(num: int, export: str):
-    """Prints top N low float stocks from https://www.lowfloat.com
+def high_short_interest(num: int, export: str):
+    """Prints top N high shorted interest stocks from https://www.highshortinterest.com
 
     Parameters
     ----------
@@ -18,13 +18,13 @@ def low_float(num: int, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df_low_float = shortinterest_model.get_low_float()
-    df_low_float = df_low_float.iloc[1:].head(n=num)
+    df_high_short_interest = shortinterest_model.get_high_short_interest()
+    df_high_short_interest = df_high_short_interest.iloc[1:].head(n=num)
 
     print(
         tabulate(
-            df_low_float,
-            headers=df_low_float.columns,
+            df_high_short_interest,
+            headers=df_high_short_interest.columns,
             floatfmt=".2f",
             showindex=False,
             tablefmt="fancy_grid",
@@ -36,8 +36,5 @@ def low_float(num: int, export: str):
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "lowfloat",
-        df_low_float,
+        df_high_short_interest,
     )
-
-
-# TODO: Add https://www.pennystockflow.com
