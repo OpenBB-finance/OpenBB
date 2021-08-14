@@ -18,7 +18,6 @@ def get_high_short_interest() -> DataFrame:
         High short interest Dataframe with the following columns:
         Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
     """
-
     url_high_short_interested_stocks = "https://www.highshortinterest.com"
 
     text_soup_high_short_interested_stocks = BeautifulSoup(

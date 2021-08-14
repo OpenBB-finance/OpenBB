@@ -18,7 +18,6 @@ def get_low_float() -> DataFrame:
         Low float DataFrame with the following columns:
         Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
     """
-
     url_high_short_interested_stocks = "https://www.lowfloat.com"
 
     text_soup_low_float_stocks = BeautifulSoup(
