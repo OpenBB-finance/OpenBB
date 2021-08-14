@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+from datetime import datetime, timedelta
 from colorama import Style
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -14,6 +15,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
+    valid_date,
 )
 from gamestonk_terminal.stocks.dark_pool_shorts import (
     stockgrid_view,
@@ -342,7 +344,70 @@ Quandl/Stockgrid:
 
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
-        sec_view.fails_to_deliver(other_args, self.ticker, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="ftd",
+            description="""Prints latest fails-to-deliver data. [Source: SEC]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            action="store",
+            dest="start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d"),
+            help="start of datetime to see FTD",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            dest="end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            help="end of datetime to see FTD",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=0,
+            help="number of latest fails-to-deliver being printed",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            sec_view.fails_to_deliver(
+                ticker=self.ticker,
+                stock=self.stock,
+                start=ns_parser.start,
+                end=ns_parser.end,
+                num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_shortpos(self, other_args: List[str]):
         """Process shortpos command"""
