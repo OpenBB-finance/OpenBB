@@ -78,7 +78,9 @@ pyEX = "^0.5.0"
 charset-normalizer = "2.0.1"
 sentiment-investor = "^2.0.0"
 fred = "^3.1"
+openpyxl = "^3.0.7"
 vcrpy = "^4.1.1"
+coverage = "^5.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

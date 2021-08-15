@@ -26,6 +26,7 @@ from gamestonk_terminal.options import (
     tradier_model,
     fdscanner_view,
 )
+from gamestonk_terminal.stocks import stocks_controller
 
 from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.menu import session
@@ -42,7 +43,7 @@ class OptionsController:
         "quit",
     ]
 
-    CHOICES_COMMANDS = [
+    CHOICES_MENUS = [
         "disp",
         "scr",
         "calc",
@@ -58,9 +59,10 @@ class OptionsController:
         "chains",
         "grhist",
         "unu",
+        "stocks",
     ]
 
-    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_MENUS
 
     PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -74,10 +76,18 @@ class OptionsController:
         "premium",
     ]
 
-    def __init__(self):
-        """Construct data."""
-        self.ticker = ""
-        self.expiry_dates = []
+    def __init__(self, ticker):
+        """Constructor"""
+        self.ticker = ticker
+
+        if ticker:
+            if TRADIER_TOKEN == "REPLACE_ME":
+                print("Loaded expiry dates from Yahoo Finance")
+                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+            else:
+                print("Loaded expiry dates from Tradier")
+                self.expiry_dates = tradier_model.option_expirations(self.ticker)
+
         self.selected_date = ""
 
         self.op_parser = argparse.ArgumentParser(add_help=False, prog="options")
@@ -89,8 +99,7 @@ class OptionsController:
     def print_help(self):
         """Print help."""
         colored = self.ticker and self.selected_date
-        print_str = f"""
-https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options
+        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options
 
 >> OPTIONS <<
 
@@ -99,6 +108,13 @@ What do you want to do?
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+
+"""
+        help_text += ">>  stocks        go into stocks context"
+        if self.ticker:
+            help_text += f" with {self.ticker}"
+
+        help_text += f"""
 
 Explore:
     disp          display all preset screeners filters
@@ -120,7 +136,7 @@ Current Expiry: {self.selected_date or None}
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
 {Style.RESET_ALL if not colored else ''}"""
-        print(print_str)
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input.
@@ -1014,10 +1030,14 @@ Current Expiry: {self.selected_date or None}
         except Exception as e:
             print(e, "\n")
 
+    def call_stocks(self, _):
+        """Process stocks command"""
+        return stocks_controller.menu(self.ticker)
 
-def menu():
+
+def menu(ticker: str = ""):
     """Options Menu."""
-    op_controller = OptionsController()
+    op_controller = OptionsController(ticker)
     op_controller.call_help(None)
     while True:
         # Get input command from user

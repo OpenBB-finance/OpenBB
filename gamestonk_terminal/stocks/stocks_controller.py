@@ -11,7 +11,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 
 from gamestonk_terminal.stocks.stocks_helper import load, candle, quote
-
 from gamestonk_terminal.stocks.discovery import disc_controller
 from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.insider import insider_controller
@@ -26,6 +25,8 @@ from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 from gamestonk_terminal.stocks.residuals_analysis import ra_controller
 from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.stocks.report import report_controller
+
+from gamestonk_terminal.options import options_controller
 
 # pylint: disable=R1710
 
@@ -66,13 +67,19 @@ class StocksController:
         "dd",
         "ca",
         "report",
+        "options",
     ]
 
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self):
+    def __init__(self, ticker):
         """Constructor"""
+        self.stock = pd.DataFrame()
+        self.ticker = ticker
+        self.start = ""
+        self.interval = "1440min"
+
         self.stocks_parser = argparse.ArgumentParser(add_help=False, prog="stocks")
         self.stocks_parser.add_argument(
             "cmd",
@@ -81,11 +88,6 @@ class StocksController:
         self.completer = NestedCompleter.from_nested_dict(
             {c: None for c in self.CHOICES}
         )
-
-        self.stock = pd.DataFrame()
-        self.ticker = ""
-        self.start = ""
-        self.interval = "1440min"
 
     def print_help(self):
         """Print help"""
@@ -113,6 +115,13 @@ What do you want to do?
     load        load a specific stock ticker for analysis
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
+
+"""
+        help_text += ">>  options     go into options context"
+        if self.ticker:
+            help_text += f" with {self.ticker}"
+
+        help_text += """
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
@@ -438,10 +447,14 @@ What do you want to do?
         else:
             return True
 
+    def call_options(self, _):
+        """Process options command"""
+        return options_controller.menu(self.ticker)
 
-def menu():
+
+def menu(ticker: str = ""):
     """Stocks Menu"""
-    stocks_controller = StocksController()
+    stocks_controller = StocksController(ticker)
     stocks_controller.call_help(None)
     while True:
         if session and gtff.USE_PROMPT_TOOLKIT:
