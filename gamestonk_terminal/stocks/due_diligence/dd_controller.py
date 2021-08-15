@@ -14,7 +14,6 @@ from gamestonk_terminal.stocks.due_diligence import (
 from gamestonk_terminal.stocks.due_diligence import finviz_view as fvz_view
 from gamestonk_terminal.stocks.due_diligence import market_watch_view as mw_view
 from gamestonk_terminal.stocks.due_diligence import quandl_view as q_view
-from gamestonk_terminal.stocks.due_diligence import reddit_view as r_view
 from gamestonk_terminal.stocks.due_diligence import news_view
 from gamestonk_terminal.stocks.due_diligence import finra_view
 from gamestonk_terminal.stocks.due_diligence import sec_view
@@ -36,7 +35,6 @@ class DueDiligenceController:
         "help",
         "q",
         "quit",
-        "red",
         "short",
         "rating",
         "pt",
@@ -101,7 +99,6 @@ class DueDiligenceController:
         print("   quit          quit to abandon program")
         print("")
         print("   news          latest news of the company [News API]")
-        print("   red           gets due diligence from another user's post [Reddit]")
         print("   analyst       analyst prices and ratings of the company [Finviz]")
         print(
             "   rating        rating of the company from strong sell to strong buy [FMP]"
@@ -168,10 +165,6 @@ class DueDiligenceController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
-
-    def call_red(self, other_args: List[str]):
-        """Process red command"""
-        r_view.due_diligence(other_args, self.ticker)
 
     def call_insider(self, other_args: List[str]):
         """Process insider command"""
