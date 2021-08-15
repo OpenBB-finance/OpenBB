@@ -420,6 +420,16 @@ class CreateExcelFA:
             [],
         )
 
+        dcf_model.set_cell(
+            self.ws1,
+            "A65",
+            (
+                "Warning: Stock Analysis does not have all of the cash flow items included. Operating"
+                ", Financing, and Investing Cash Flows may not add up to total cash flows."
+            ),
+            font=dcf_model.red,
+        )
+
     def create_dcf(self):
         self.ws2["A5"] = "Net Income"
         self.ws2["A6"] = "Change in NWC"
