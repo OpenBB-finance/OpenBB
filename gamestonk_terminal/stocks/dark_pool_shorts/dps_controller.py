@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
 )
+from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.stocks.dark_pool_shorts import (
     stockgrid_view,
     shortinterest_view,
@@ -36,6 +37,7 @@ class DarkPoolShortsController:
         "help",
         "q",
         "quit",
+        "load",
     ]
 
     CHOICES_COMMANDS = [
@@ -69,13 +71,14 @@ class DarkPoolShortsController:
 
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/dark_pool_shorts
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/dark_pool_shorts
 
 Dark Pool Shorts:
     cls            clear screen
     ?/help         show this menu again
     q              quit this menu, and shows back to main menu
     quit           quit to abandon program
+    load           load a specific stock ticker for analysis
 
 shortinterest.com
     highshort      show top high short interest stocks of over 20% ratio
@@ -83,10 +86,9 @@ FINRA:
     dpprom         promising tickers based on dark pool shares regression
 Stockgrid:
     dppos          dark pool short position
-    shortdtc       short interest and days to cover"""
-        help_text += f"""
+    shortdtc       short interest and days to cover
 {Style.DIM if not self.ticker else ''}
-Current Ticker: {self.ticker or None}
+Ticker: {self.ticker or None}
 
 FINRA:
     dpotc          dark pools (ATS) vs OTC data
@@ -140,6 +142,12 @@ Quandl/Stockgrid:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, _, self.stock = load(
+            other_args, self.ticker, self.start, "1440min", self.stock
+        )
 
     def call_highshort(self, other_args: List[str]):
         """Process highshort command"""
