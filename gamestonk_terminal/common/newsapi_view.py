@@ -27,11 +27,11 @@ def news(term: str, num: int):
 
     # Check that the API response was successful
     if response.status_code != 200:
-        print("Invalid News API token\n")
+        print(f"Error in request {response.status_code}. Check News API token", "\n")
 
     else:
         print(
-            f"{response.json()['totalResults']} news articles from {term} were found since {s_from}\n"
+            f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
         )
 
         for idx, article in enumerate(response.json()["articles"]):
@@ -41,8 +41,7 @@ def news(term: str, num: int):
                 article["title"],
             )
             # Unnecessary to use name of the source because contained in link article["source"]["name"]
-            print(article["url"])
-            print("")
+            print(article["url"], "\n")
 
             if idx >= num - 1:
                 break

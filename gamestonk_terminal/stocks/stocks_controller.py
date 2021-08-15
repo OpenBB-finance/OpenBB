@@ -98,7 +98,13 @@ class StocksController:
 
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        if self.ticker and self.start:
+            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+        else:
+            stock_text = f"{s_intraday} Stock: {self.ticker}"
+
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
 
 >> STOCKS <<
 
@@ -107,36 +113,23 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
-            """
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.ticker and self.start:
-            help_text += f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})\n"
-        elif self.ticker:
-            help_text += f"\n{s_intraday} Stock: {self.ticker}\n"
-        else:
-            help_text += "\nStock: ?\n"
 
-        help_text += f"Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}.\n\n"
-        help_text += "    load        load a specific stock ticker for analysis"
-        help_text += f"""{Style.DIM if not self.ticker else ''}
+    load        load a specific stock ticker for analysis
+
+{stock_text}
+Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
+{Style.DIM if not self.ticker else ''}
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
-    {Style.RESET_ALL if not self.ticker else ''}
-"""
-        help_text += ">>  options     go into options context"
-        if self.ticker:
-            help_text += f" with {self.ticker}"
-
-        help_text += """
+{Style.RESET_ALL if not self.ticker else ''}
+>>  options     go into options context {'with ' if self.ticker else ''}{self.ticker}
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   report      generate automatic report,   \t e.g.: dark pool, due diligence"""
-
-        help_text += f"""{Style.DIM if not self.ticker else ''}
+>   report      generate automatic report,   \t e.g.: dark pool, due diligence{Style.DIM if not self.ticker else ''}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
@@ -147,7 +140,7 @@ What do you want to do?
 >   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
 >   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
-    {Style.RESET_ALL if not self.ticker else ''}"""
+{Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
 
     def switch(self, an_input: str):
