@@ -245,7 +245,7 @@ class FundamentalAnalysisController:
         av_view.fraud(other_args, self.ticker)
 
     def call_dcf(self, other_args: List[str]):
-        """Process fraud command"""
+        """Process dcf command"""
         dcf_view.dcf(other_args, self.ticker)
 
     def call_fmp(self, _):

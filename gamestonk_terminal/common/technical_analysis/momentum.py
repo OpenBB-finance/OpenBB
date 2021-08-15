@@ -714,11 +714,11 @@ def cg(other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataF
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="cg",
         description="""
-            The Center of Gravity indicator, also known as the COD indicator in short,
-            is a useful feature that enables traders to look into the concurrent price
-            fluctuations and try to predict the upcoming ones. According to the main
-            function of the Center of Gravity indicator explained by John Ehlers, traders
-            who use it will be able to closely speculate the upcoming price change of the asset.
+            The Center of Gravity indicator, in short, is used to anticipate future price movements
+            and to trade on price reversals as soon as they happen. However, just like other oscillators,
+            the COG indicator returns the best results in range-bound markets and should be avoided when
+            the price is trending. Traders who use it will be able to closely speculate the upcoming
+            price change of the asset.
         """,
     )
 
