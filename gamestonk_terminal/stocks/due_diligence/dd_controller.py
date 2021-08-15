@@ -46,7 +46,6 @@ class DueDiligenceController:
         "insider",
         "news",
         "analyst",
-        "warnings",
         "sec",
         "dp",
         "ftd",
@@ -118,9 +117,6 @@ class DueDiligenceController:
         print("   insider       insider trading of the company [Finviz]")
         print("   sec           SEC filings [Market Watch]")
         print("   short         short interest [Quandl]")
-        print(
-            "   warnings      company warnings according to Sean Seah book [Market Watch]"
-        )
         print("   dp            dark pools (ATS) vs OTC data [FINRA]")
         print("   ftd           fails-to-deliver data [SEC]")
         print("   shortview     price vs short interest volume [Stockgrid.io]")
@@ -212,10 +208,6 @@ class DueDiligenceController:
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
         fmp_view.rating(other_args, self.ticker)
-
-    def call_warnings(self, other_args: List[str]):
-        """Process rating command"""
-        mw_view.sean_seah_warnings(other_args, self.ticker)
 
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
