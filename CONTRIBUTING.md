@@ -136,9 +136,11 @@ T.B.D.
 
 ## Github Guidelines
 
+T.B.D.
+
 #### Git Commit Messages
 
-Attempt to write a concise message under 50 characters to represent what each commit is about. This makes it easier for us to review the Pull Request.
+Attempt to write a concise message under 50 characters to represent what each commit is about. This makes it easier for the team to review the Pull Request.
 
 #### Pull Requests
 
