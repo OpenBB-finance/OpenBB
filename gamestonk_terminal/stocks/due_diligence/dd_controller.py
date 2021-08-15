@@ -15,7 +15,6 @@ from gamestonk_terminal.stocks.due_diligence import finviz_view as fvz_view
 from gamestonk_terminal.stocks.due_diligence import market_watch_view as mw_view
 from gamestonk_terminal.stocks.due_diligence import quandl_view as q_view
 from gamestonk_terminal.stocks.due_diligence import reddit_view as r_view
-from gamestonk_terminal.stocks.due_diligence import news_view
 from gamestonk_terminal.stocks.due_diligence import finra_view
 from gamestonk_terminal.stocks.due_diligence import sec_view
 from gamestonk_terminal.stocks.due_diligence import stockgrid_dd_view as sg_view
@@ -180,10 +179,6 @@ class DueDiligenceController:
     def call_insider(self, other_args: List[str]):
         """Process insider command"""
         fvz_view.insider(other_args, self.ticker)
-
-    def call_news(self, other_args: List[str]):
-        """Process news command"""
-        news_view.news(other_args, self.ticker)
 
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
