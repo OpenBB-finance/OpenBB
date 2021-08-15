@@ -93,7 +93,8 @@ class StocksController:
 
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
+        help_text = """
+https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
 
 >> STOCKS <<
 
