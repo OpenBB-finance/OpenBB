@@ -79,19 +79,29 @@ The steps to contribute are:
 
 #### Conventions
 
+T.B.D.
+
 #### Folder Organization
+
+T.B.D.
 
 #### MVC Design
 
+T.B.D.
+
 #### Tests
+
+T.B.D.
 
 #### Documentation
 
+T.B.D.
 
 ## Coding Guidelines
 
 #### Naming Convention
 
+T.B.D.
 
 #### Docstrings
 
@@ -122,6 +132,7 @@ pd.DataFrame
 
 #### Linters
 
+T.B.D.
 
 ## Github Guidelines
 
