@@ -227,7 +227,7 @@ jobs:
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
-          pip install --requirement requirements.txt
+          pip install --requirement requirements.txt --user
 
       - name: List installed packages (Bash)
         shell: bash -l {0}
