@@ -235,4 +235,83 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.26.0
+    method: GET
+    uri: https://api.coinpaprika.com/v1/coins/eth-ethereum/ohlcv/historical?quotes=USD&start=2021-07-17&end=2021-08-16
+  response:
+    body:
+      string: !!binary |
+        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
+        AA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 67fd81647b884250-LHR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 16 Aug 2021 20:45:16 GMT
+      Expect-CT:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      alt-svc:
+      - h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400, h3=":443";
+        ma=86400
+    status:
+      code: 200
+      message: OK
 version: 1
