@@ -193,7 +193,7 @@ class TestCoinGeckoAPI(TestCase):
         disc_pycoingecko_view.discover("trending", [])
         sys.stdout = sys.__stdout__
         capt = capturedOutput.getvalue()
-        self.assertIn("CryptoBlades", capt)
+        self.assertIn("Rank", capt)
 
     def test_coin_news(self):
         capturedOutput = io.StringIO()
