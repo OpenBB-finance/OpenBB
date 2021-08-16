@@ -22,6 +22,75 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
 )
 
 
+def prepare_all_coins_df():
+    """Helper method which loads coins from all sources: CoinGecko, CoinPaprika, Binance and
+    merge those coins on keys:
+        CoinGecko - > name < - CoinPaprika
+        CoinGecko - > id <- Binance
+
+    Returns
+    -------
+    pd.DataFrame
+        CoinGecko - id for coin in CoinGecko API: uniswap
+        CoinPaprika - id for coin in CoinPaprika API: uni-uniswap
+        Binance - symbol (baseAsset) for coin in Binance API: UNI
+        Symbol: uni
+
+    """
+    gecko_coins_df = get_coin_list()
+    paprika_coins_df = get_list_of_coins()
+    binance_coins_df = load_binance_map().rename(columns={"symbol": "Binance"})
+    gecko_paprika_coins_df = pd.merge(
+        gecko_coins_df, paprika_coins_df, on="name", how="left"
+    )
+    df_merged = pd.merge(
+        left=gecko_paprika_coins_df,
+        right=binance_coins_df,
+        left_on="id_x",
+        right_on="id",
+        how="left",
+    )
+    df_merged.rename(
+        columns={
+            "id_x": "CoinGecko",
+            "symbol_x": "Symbol",
+            "id_y": "CoinPaprika",
+        },
+        inplace=True,
+    )
+
+    return df_merged[["CoinGecko", "CoinPaprika", "Binance", "Symbol"]]
+
+
+def _create_closest_match_df(
+    coin: str, coins: pd.DataFrame, limit: int, cutoff: float
+) -> pd.DataFrame:
+    """Helper method. Creates a DataFrame with best matches for given coin found in given list of coins.
+    Based on difflib.get_close_matches func.
+
+    Parameters
+    ----------
+    coin: str
+        coin you search for
+    coins: list
+        list of coins in which you want to find similarities
+    limit: int
+        limit of matches
+    cutoff: float
+        float between <0, 1>. Show only coins matches with score higher then cutoff.
+
+    Returns
+    -------
+    pd.DataFrame
+        index, id, name, symbol - > depends on source of data.
+    """
+    coins_list = coins["id"].to_list()
+    sim = difflib.get_close_matches(coin, coins_list, limit, cutoff)
+    df = pd.Series(sim).to_frame().reset_index()
+    df.columns = ["index", "id"]
+    return df.merge(coins, on="id")
+
+
 def load(
     coin: str, other_args: List[str]
 ) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Any]:
@@ -330,6 +399,11 @@ def all_coins(other_args: List[str]):
     )
 
     limit, cutoff = 30, 0.75
+    coins_func_map = {
+        "cg": get_coin_list,
+        "cp": get_list_of_coins,
+        "bin": load_binance_map,
+    }
 
     try:
 
@@ -342,68 +416,14 @@ def all_coins(other_args: List[str]):
             return
 
         if "ALL" in other_args:
-            if ns_parser.source == "cg":
-                df = get_coin_list()
-
-            elif ns_parser.source == "cp":
-                df = get_list_of_coins()
-
-            elif ns_parser.source == "bin":
-                df = load_binance_map()
-
+            coins_func = coins_func_map.get(ns_parser.source)
+            if coins_func:
+                df = coins_func()
             else:
-                cg_coins_df = get_coin_list()
-                cp_coins_df = get_list_of_coins()
-                df_cg_cp = pd.merge(cg_coins_df, cp_coins_df, on="name", how="left")
-
-                coins_binance = load_binance_map()
-                coins_binance.columns = ["Binance", "id"]
-                df_merged = pd.merge(
-                    left=df_cg_cp,
-                    right=coins_binance,
-                    left_on="id_x",
-                    right_on="id",
-                    how="left",
-                )
-
-                df_merged.rename(
-                    columns={
-                        "id_x": "CoinGecko",
-                        "symbol_x": "Symbol",
-                        "id_y": "CoinPaprika",
-                    },
-                    inplace=True,
-                )
-
-                df = df_merged[["CoinGecko", "CoinPaprika", "Binance", "Symbol"]]
+                df = prepare_all_coins_df()
 
         elif not ns_parser.source or ns_parser.source not in ["cg", "cp", "bin"]:
-            cg_coins_df = get_coin_list()
-            cp_coins_df = get_list_of_coins()
-            df_cg_cp = pd.merge(cg_coins_df, cp_coins_df, on="name", how="left")
-
-            coins_binance = load_binance_map()
-            coins_binance.columns = ["Binance", "id"]
-            df_merged = pd.merge(
-                left=df_cg_cp,
-                right=coins_binance,
-                left_on="id_x",
-                right_on="id",
-                how="left",
-            )
-
-            df_merged.rename(
-                columns={
-                    "id_x": "CoinGecko",
-                    "symbol_x": "Symbol",
-                    "id_y": "CoinPaprika",
-                },
-                inplace=True,
-            )
-
-            df = df_merged[
-                ["CoinGecko", "CoinPaprika", "Binance", "Symbol"]
-            ].sort_values(by="Binance", ascending=False)
+            df = prepare_all_coins_df()
             cg_coins_list = df["CoinGecko"].to_list()
             sim = difflib.get_close_matches(
                 ns_parser.coin.lower(), cg_coins_list, limit, cutoff
@@ -416,44 +436,29 @@ def all_coins(other_args: List[str]):
         else:
 
             if ns_parser.source == "cg":
-                coins_df = get_coin_list()
-                coins_list = coins_df["id"].to_list()
-                sim = difflib.get_close_matches(
-                    ns_parser.coin.lower(), coins_list, limit, cutoff
+                coins_df = get_coin_list().drop("index", axis=1)
+                df = _create_closest_match_df(
+                    ns_parser.coin.lower(), coins_df, limit, cutoff
                 )
-                df = pd.Series(sim).to_frame().reset_index()
-                df.columns = ["index", "id"]
-                coins_df.drop("index", axis=1, inplace=True)
-                df = df.merge(coins_df, on="id")
                 df = df[["index", "id", "name"]]
 
             elif ns_parser.source == "cp":
                 coins_df = get_list_of_coins()
-                coins_list = coins_df["id"].to_list()
-                sim = difflib.get_close_matches(
-                    ns_parser.coin.lower(), coins_list, limit, cutoff
+                df = _create_closest_match_df(
+                    ns_parser.coin.lower(), coins_df, limit, cutoff
                 )
-                df = pd.Series(sim).to_frame().reset_index()
-                df.columns = ["index", "id"]
-                df = df.merge(coins_df, on="id")
                 df = df[["index", "id", "name"]]
 
             elif ns_parser.source == "bin":
-
                 coins_df_gecko = get_coin_list()
                 coins_df_bin = load_binance_map()
                 coins_df_bin.columns = ["symbol", "id"]
-                coins = pd.merge(
+                coins_df = pd.merge(
                     coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
                 )
-                coins_list = coins["id"].to_list()
-
-                sim = difflib.get_close_matches(
-                    ns_parser.coin, coins_list, limit, cutoff
+                df = _create_closest_match_df(
+                    ns_parser.coin.lower(), coins_df, limit, cutoff
                 )
-                df = pd.Series(sim).to_frame().reset_index()
-                df.columns = ["index", "id"]
-                df = df.merge(coins, on="id")
                 df = df[["index", "symbol", "name"]]
                 df.columns = ["index", "id", "name"]
 
