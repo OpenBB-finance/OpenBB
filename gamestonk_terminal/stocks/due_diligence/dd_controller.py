@@ -12,10 +12,6 @@ from gamestonk_terminal.stocks.due_diligence import (
     business_insider_view,
     finviz_view,
     market_watch_view,
-    quandl_view,
-    finra_view,
-    sec_view,
-    stockgrid_dd_view,
     finnhub_view,
     csimarket_view,
 )
@@ -41,10 +37,6 @@ class DueDiligenceController:
         "est",
         "analyst",
         "sec",
-        "dp",
-        "ftd",
-        "shortview",
-        "darkpos",
         "supplier",
         "customer",
     ]
@@ -106,11 +98,6 @@ class DueDiligenceController:
             "   est           quarter and year analysts earnings estimates [Business Insider]"
         )
         print("   sec           SEC filings [Market Watch]")
-        print("   short         short interest [Quandl]")
-        print("   dp            dark pools (ATS) vs OTC data [FINRA]")
-        print("   ftd           fails-to-deliver data [SEC]")
-        print("   shortview     price vs short interest volume [Stockgrid.io]")
-        print("   darkpos       net short vs position [Stockgrid.io]")
         print("   supplier      list of suppliers [csimarket]")
         print("   customer      list of customers [csimarket]")
         print("")
@@ -184,26 +171,6 @@ class DueDiligenceController:
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
         market_watch_view.sec_fillings(other_args, self.ticker)
-
-    def call_short(self, other_args: List[str]):
-        """Process short command"""
-        quandl_view.short_interest(other_args, self.ticker, self.start)
-
-    def call_dp(self, other_args: List[str]):
-        """Process dp command"""
-        finra_view.dark_pool(other_args, self.ticker)
-
-    def call_ftd(self, other_args: List[str]):
-        """Process ftd command"""
-        sec_view.fails_to_deliver(other_args, self.ticker, self.stock)
-
-    def call_shortview(self, other_args: List[str]):
-        """Process shortview command"""
-        stockgrid_dd_view.shortview(self.ticker, other_args)
-
-    def call_darkpos(self, other_args: List[str]):
-        """Process darkpos command"""
-        stockgrid_dd_view.darkpos(self.ticker, other_args)
 
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
