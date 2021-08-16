@@ -92,6 +92,7 @@ class CreateExcelFA:
         self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
         self.info = yf.Ticker(ticker).info
+        self.bond = dcf_model.get_rf()
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25

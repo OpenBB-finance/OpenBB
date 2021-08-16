@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 from typing import List, Union
 
-import pandas as pd
 from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 from openpyxl import worksheet
+import pandas as pd
+import requests
 
 opts = Union[int, str, float]
 
@@ -50,6 +51,17 @@ def set_cell(
         ws[cell].alignment = alignment
     if num_form:
         ws[cell].number_format = num_form
+
+
+def get_rf():
+    """Uses the fiscaldata.gov API"""
+    base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
+    end = "/v2/accounting/od/avg_interest_rates"
+    response = requests.get(base + end)
+
+    for item in response.json()["data"]:
+        print(item, "\n")
+    return response.content
 
 
 letters = [
