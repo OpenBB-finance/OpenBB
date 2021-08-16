@@ -1,14 +1,16 @@
 """ fundamental_analysis/av_view.py tests """
+import json
+import sys
+import unittest
+
 # Not testing these tests further. I do not have a fmp key
 from contextlib import contextmanager
-import unittest
 from unittest import mock
-import sys
-import json
+
+from gamestonk_terminal import config_terminal as cfg
 
 # pylint: disable=unused-import
 from gamestonk_terminal.stocks.fundamental_analysis import av_view
-from gamestonk_terminal import config_terminal as cfg
 from tests.helpers import check_print
 
 

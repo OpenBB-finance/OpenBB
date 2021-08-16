@@ -2,8 +2,9 @@
 __docformat__ = "numpy"
 
 from typing import List, Tuple
-import pandas as pd
+
 import fred
+import pandas as pd
 from fredapi import Fred
 
 from gamestonk_terminal import config_terminal as cfg
