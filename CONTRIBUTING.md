@@ -93,7 +93,7 @@ T.B.D.
 
 ##### UNIT TESTS
 
-Unit tests minimize errors in coding and quickly find errors when they do arise. Please note the following tools when creating tests for GamestonkTerminal:
+Unit tests minimize errors in code and quickly find errors when they do arise. Please note the following tools when creating tests for GamestonkTerminal:
 
 ###### PYTEST
 
