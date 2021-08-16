@@ -50,6 +50,10 @@ class BehaviouralAnalysisController:
         "metrics",
         "social",
         "historical",
+        "emerging",
+        "popular",
+        "popularsi",
+        "getdd",
     ]
 
     def __init__(self, ticker: str, start: datetime):
@@ -88,6 +92,7 @@ class BehaviouralAnalysisController:
             "   spac_c        show other users spacs announcements from subreddit SPACs community"
         )
         print("   spac          show other users spacs announcements from other subs")
+        print("   getdd         gets due diligence from another user's post")
         print("Stocktwits:")
         print(
             "   bullbear      estimate quick sentiment from last 30 messages on board"
@@ -104,6 +109,10 @@ class BehaviouralAnalysisController:
         print("   queries       top related queries with this stock")
         print("   rise          top rising related queries with stock")
         print("SentimentInvestor:")
+        print("   popularsi     show most popular stocks on social media right now")
+        print(
+            "   emerging      show stocks that are being talked about more than usual"
+        )
         print("   metrics       core social sentiment metrics for this stock")
         print("   social        social media figures for stock popularity")
         print("   historical    plot the past week of data for a selected metric")
@@ -171,6 +180,10 @@ class BehaviouralAnalysisController:
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
         reddit_view.popular_tickers(other_args)
+
+    def call_getdd(self, other_args: List[str]):
+        """Process getdd command"""
+        reddit_view.get_due_diligence(other_args, self.ticker)
 
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
@@ -263,6 +276,14 @@ class BehaviouralAnalysisController:
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         sentimentinvestor_view.historical(self.ticker, other_args)
+
+    def call_popularsi(self, other_args: List[str]):
+        """Process popular command"""
+        sentimentinvestor_view.sort_sentiment("AHI", other_args, "popular")
+
+    def call_emerging(self, other_args: List[str]):
+        """Process emerging command"""
+        sentimentinvestor_view.sort_sentiment("RHI", other_args, "emerging")
 
 
 def menu(ticker: str, start: datetime):

@@ -1,12 +1,11 @@
 import argparse
 import os
+
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.helper_funcs import get_flair
-
-from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-
+from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
@@ -132,7 +131,7 @@ What do you want to do?
 
     def call_po(self, _):
         """Process po command"""
-        ret = po_controller.menu()
+        ret = po_controller.menu([])
         if ret is False:
             self.print_help()
         else:

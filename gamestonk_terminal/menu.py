@@ -1,7 +1,6 @@
 import os
 
 from matplotlib import pyplot
-
 from prompt_toolkit import PromptSession
 from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory
@@ -20,11 +19,11 @@ def inputhook(inputhook_context):
 history_file = os.path.join(os.path.expanduser("~"), ".gamestonk_terminal.his")
 
 try:
-    session = PromptSession(history=FileHistory(history_file))
+    session = PromptSession(history=FileHistory(history_file))  # type: ignore
     set_eventloop_with_inputhook(inputhook)
 # pylint: disable=unused-variable
 except Exception as e:  # noqa: F841
     print(
         "WARNING: Prompt toolkit is turned on but did not initialize successfully. Falling back to input()..."
     )
-    session = None
+    session = None  # type: ignore
