@@ -37,7 +37,7 @@ Increase Gamestonk Terminal reach:
   * Star the repo.
   * Pass the word to your friends/family.
   * Create content (e.g. youtube videos) using Gamestonk Terminal.
-  * Share your terminal graphs and interpretations with other Reddit users ([example](https://www.reddit.com/r/amcstock/comments/of6g83/dark_pool_guy_here_to_kick_off_the_shortened_week/)). 
+  * Share your terminal graphs and interpretations with other Reddit users ([example](https://www.reddit.com/r/amcstock/comments/of6g83/dark_pool_guy_here_to_kick_off_the_shortened_week/)).
   * Join our discord and interact with other users.
 
 #### Retail Trader/QA
@@ -59,7 +59,7 @@ For a 1h coding session where the (old) architecture of the repo is explained wh
 The fact that this is an Open Source project makes the possibilities of contributing pretty much unlimited. In here you should consider what do you want to gain out of this experience of contributing, some examples we've seen since the repository is live:
 
   * Machine Learning engineers working on our prediction models
-  * Data Scientists improving our algoritms to make sense out of the data
+  * Data Scientists improving our algorithms to make sense out of the data
   * Mathematicians exploring our residual analysis menu
   * Finance students evaluating a DCF spreadsheet from terminal's data
   * DevOps engineers making the repository more robust and ensuring good practices
@@ -91,7 +91,42 @@ T.B.D.
 
 #### Tests
 
-T.B.D.
+##### UNIT TESTS
+
+Unit tests minimize errors in code and quickly find errors when they do arise. Please note the following tools when creating tests for GamestonkTerminal:
+
+###### PYTEST
+
+Pytest allows users to quickly create unittests in Python. To use pytest run `pytest tests/`.
+
+###### COVERAGE
+
+Coverage allows users to see how complete unittests are for Python. To use coverage do the following:
+
+1. `coverage run -m pytest`
+2. `coverage html`
+
+To view the tests find the htmlcov folder in the main directory and open the index.html file. This will show a detailed report of testing coverage.
+
+###### VCRPY
+
+VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly speeds up the time it takes to run tests. To use VCRPY do the following:
+
+1. `import vcr`
+1. add `@vcr.use_cassette("tests/cassettes/{test_folder}/{test_class}/{test_name}.yaml")` as a decorator to the test
+
+**Note:** If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
+
+###### check_print
+
+GamestonkTerminal relies on print statements to return data to the user. To check whether necessary information was included in a print statement use the check_print decorator as detailed below:
+
+1. `from tests.helpers import check_print`
+1. add `@check_print(assert_in="foo")` as a decorator to the test
+
+If you do not want to assert an item but your test still prints output, please add `@check_print()` as a decorator to mute print output.
+
+**Note:** Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
 
 #### Documentation
 
@@ -149,7 +184,7 @@ Attempt to write a concise message under 50 characters to represent what each co
 | Label name | Description | Example
 | --- | --- | --- |
 | `size:XS` | Extra small feature | Add a preset
-| `size:S` | Small T-Shirt size Feature | New single command added 
+| `size:S` | Small T-Shirt size Feature | New single command added
 | `size:M` | Medium T-Shirt size feature | Multiple commands added from same data source
 | `size:L` | Large T-Shirt size Feature | New category added under context
 | `size:XL` | Extra Large feature | New context added
@@ -162,4 +197,3 @@ Attempt to write a concise message under 50 characters to represent what each co
 | `refactor` | Refactor code to follow our convention
 | `tests` | Work on pytests
 | `build` | Fix a github action that is breaking the build
-
