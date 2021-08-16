@@ -16,7 +16,10 @@ from gamestonk_terminal.stocks.due_diligence import (
     csimarket_view,
 )
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -30,6 +33,9 @@ class DueDiligenceController:
         "help",
         "q",
         "quit",
+    ]
+
+    CHOICES_COMMANDS = [
         "sec",
         "rating",
         "pt",
@@ -41,19 +47,21 @@ class DueDiligenceController:
         "customer",
     ]
 
+    CHOICES += CHOICES_COMMANDS
+
     def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
         """Constructor
 
         Parameters
         ----------
-        stock : DataFrame
-            Due diligence stock dataframe
         ticker : str
             Due diligence ticker symbol
         start : str
             Start date of the stock data
         interval : str
             Stock data interval
+        stock : DataFrame
+            Due diligence stock dataframe
         """
         self.ticker = ticker
         self.start = start
@@ -68,39 +76,34 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/due_diligence"
-        )
-        intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
-        if self.start:
-            print(
-                f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        if self.ticker and self.start:
+            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{intraday} Stock: {self.ticker}")
+            stock_text = f"{s_intraday} Stock: {self.ticker}"
 
-        print("\nDue Diligence:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   analyst       analyst prices and ratings of the company [Finviz]")
-        print(
-            "   rating        rating of the company from strong sell to strong buy [FMP]"
-        )
-        print("   pt            price targets over time [Business Insider]")
-        print(
-            "   rot           rating over timefrom strong sell to strong buy [Finnhub]"
-        )
-        print(
-            "   est           quarter and year analysts earnings estimates [Business Insider]"
-        )
-        print("   sec           SEC filings [Market Watch]")
-        print("   supplier      list of suppliers [csimarket]")
-        print("   customer      list of customers [csimarket]")
-        print("")
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/due_diligence
+
+Due Diligence:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+{stock_text}
+
+    analyst       analyst prices and ratings of the company [Finviz]
+    rating        rating of the company from strong sell to strong buy [FMP]
+    pt            price targets over time [Business Insider]
+    rot           rating over timefrom strong sell to strong buy [Finnhub]
+    est           quarter and year analysts earnings estimates [Business Insider]
+    sec           SEC filings [Market Watch]
+    supplier      list of suppliers [csimarket]
+    customer      list of customers [csimarket]
+        """
+
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -148,7 +151,32 @@ class DueDiligenceController:
 
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
-        finviz_view.analyst(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="analyst",
+            description="""
+                Print analyst prices and ratings of the company. The following fields are expected:
+                date, analyst, category, price from, price to, and rating. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--no_color",
+            action="store_false",
+            dest="no_color",
+            default=True,
+            help="Remove coloring",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.analyst(ticker=self.ticker, no_color=ns_parser.no_color)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
@@ -186,14 +214,14 @@ def menu(ticker: str, start: str, interval: str, stock: DataFrame):
 
     Parameters
     ----------
-    stock : DataFrame
-        Due diligence stock dataframe
     ticker : str
         Due diligence ticker symbol
     start : str
         Start date of the stock data
     interval : str
         Stock data interval
+    stock : DataFrame
+        Due diligence stock dataframe
     """
 
     dd_controller = DueDiligenceController(ticker, start, interval, stock)

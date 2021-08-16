@@ -1,16 +1,11 @@
-""" FinViz View """
+""" Finviz View """
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
 from colorama import Fore, Style
-import finviz
-import pandas as pd
-from pandas.core.frame import DataFrame
+from tabulate import tabulate
+from gamestonk_terminal.stocks.due_diligence import finviz_model
 from gamestonk_terminal.helper_funcs import (
-    check_positive,
     patch_pandas_text_adjustment,
-    parse_known_args_and_warn,
 )
 
 
@@ -35,130 +30,53 @@ def category_color_red_green(val: str) -> str:
     return val
 
 
-def news(other_args: List[str], ticker: str):
+def news(ticker: str, num: int):
     """Display news for a given stock ticker
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args - ["-n", "10"]
     ticker : str
         Stock ticker
+    num : int
+        Number of latest news being printed
     """
+    d_finviz_news = finviz_model.get_news(ticker)
+    i = 0
+    for s_news_title, s_news_link in {*d_finviz_news}:
+        print(f"-> {s_news_title}")
+        print(f"{s_news_link}\n")
+        i += 1
 
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="news",
-        description="""
-            Prints latest news about company, including title and web link. [Source: Finviz]
-        """,
-    )
+        if i > (num - 1):
+            break
 
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=5,
-        help="Number of latest news being printed.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        d_finviz_news = finviz.get_news(ticker)
-        i = 0
-        for s_news_title, s_news_link in {*d_finviz_news}:
-            print(f"-> {s_news_title}")
-            print(f"{s_news_link}\n")
-            i += 1
-
-            if i > (ns_parser.n_num - 1):
-                break
-
-        print("")
-
-    except Exception as e:
-        print(e)
-        print("")
-        return
+    print("")
 
 
-def analyst_df(ticker: str) -> DataFrame:
-    """[summary]
+def analyst(ticker: str, no_color: bool):
+    """Display analyst ratings. [Source: Finviz]
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-
-    Returns
-    -------
-    DataFrame
-        [description]
+    no_color : bool
+        Select if no color is wanted
     """
+    df_fa = finviz_model.get_analyst_data(ticker)
 
-    try:
-        d_finviz_analyst_price = finviz.get_analyst_price_targets(ticker)
-        df_fa = pd.DataFrame.from_dict(d_finviz_analyst_price)
-        df_fa.set_index("date", inplace=True)
-    except Exception as e:
-        print(e)
-        print("Encountered a potential connectivity issue trying to access Finviz.")
+    if not no_color:
+        df_fa["category"] = df_fa["category"].apply(category_color_red_green)
 
-    return df_fa
+        patch_pandas_text_adjustment()
 
-
-def analyst(other_args, ticker):
-    """Display analyst ratings
-
-    Parameters
-    ----------
-    other_args : [type]
-        argparse other args
-    ticker : [type]
-        Stock ticker
-    """
-
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="analyst",
-        description="""
-            Print analyst prices and ratings of the company. The following fields are expected:
-            date, analyst, category, price from, price to, and rating. [Source: Finviz]
-        """,
+    print(
+        tabulate(
+            df_fa,
+            headers=df_fa.columns,
+            floatfmt=".2f",
+            showindex=True,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
-
-    parser.add_argument(
-        "-c",
-        "--color",
-        action="store",
-        dest="n_color",
-        type=int,
-        choices=[0, 1],
-        default=1,
-        help="Add / remove color",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_fa = analyst_df(ticker)
-
-        if ns_parser.n_color == 1:
-            df_fa["category"] = df_fa["category"].apply(category_color_red_green)
-
-            patch_pandas_text_adjustment()
-
-        print(df_fa)
-        print("")
-
-    except Exception as e:
-        print(e)
-        print("")
-        return
