@@ -41,17 +41,17 @@ class DarkPoolShortsController:
     ]
 
     CHOICES_COMMANDS = [
-        "highshort",
-        "dpprom",
-        "dppos",
-        "shortdtc",
+        "hsi",
+        "prom",
+        "pos",
+        "sidtc",
     ]
 
     CHOICES_COMMANDS_WITH_TICKER = [
         "shortint",
         "dpotc",
         "ftd",
-        "shortpos",
+        "spos",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -81,12 +81,12 @@ Dark Pool Shorts:
     load           load a specific stock ticker for analysis
 
 shortinterest.com
-    highshort      show top high short interest stocks of over 20% ratio
+    hsi            show top high short interest stocks of over 20% ratio
 FINRA:
-    dpprom         promising tickers based on dark pool shares regression
+    prom           promising tickers based on dark pool shares regression
 Stockgrid:
-    dppos          dark pool short position
-    shortdtc       short interest and days to cover
+    pos            dark pool short position
+    sidtc          short interest and days to cover
 {Style.DIM if not self.ticker else ''}
 Ticker: {self.ticker or None}
 
@@ -95,9 +95,9 @@ FINRA:
 SEC:
     ftd            fails-to-deliver data
 Stockgrid:
-    shortpos       net short vs position
+    spos           net short vs position
 Quandl/Stockgrid:
-    shortint       price vs short interest volume
+    psi            price vs short interest volume
 {Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
 
@@ -149,12 +149,12 @@ Quandl/Stockgrid:
             other_args, self.ticker, self.start, "1440min", self.stock
         )
 
-    def call_highshort(self, other_args: List[str]):
-        """Process highshort command"""
+    def call_hsi(self, other_args: List[str]):
+        """Process hsi command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="highshort",
+            prog="hsi",
             description="""
                 Print top stocks being more heavily shorted. HighShortInterest.com provides
                 a convenient sorted database of stocks which have a short interest of over
@@ -193,12 +193,12 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_dpprom(self, other_args: List[str]):
-        """Process dpprom command"""
+    def call_prom(self, other_args: List[str]):
+        """Process prom command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dpprom",
+            prog="prom",
             description="Display dark pool (ATS) data of tickers with growing trades activity",
         )
         parser.add_argument(
@@ -229,10 +229,10 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_dppos(self, other_args: List[str]):
-        """Process dppos command"""
+    def call_pos(self, other_args: List[str]):
+        """Process pos command"""
         parser = argparse.ArgumentParser(
-            prog="dppos",
+            prog="pos",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Get dark pool short positions. [Source: Stockgrid]",
@@ -286,10 +286,10 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_shortdtc(self, other_args: List[str]):
-        """Process shortdtc command"""
+    def call_sidtc(self, other_args: List[str]):
+        """Process sidtc command"""
         parser = argparse.ArgumentParser(
-            prog="shortdtc",
+            prog="sidtc",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Print short interest and days to cover. [Source: Stockgrid]",
@@ -343,6 +343,9 @@ Quandl/Stockgrid:
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
+                return
+            if not self.ticker:
+                print("No ticker loaded.\n")
                 return
 
             finra_view.darkpool_ats_otc(ticker=self.ticker)
@@ -403,6 +406,9 @@ Quandl/Stockgrid:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+            if not self.ticker:
+                print("No ticker loaded.\n")
+                return
 
             sec_view.fails_to_deliver(
                 ticker=self.ticker,
@@ -417,10 +423,10 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_shortpos(self, other_args: List[str]):
-        """Process shortpos command"""
+    def call_spos(self, other_args: List[str]):
+        """Process spos command"""
         parser = argparse.ArgumentParser(
-            prog="shortpos",
+            prog="spos",
             add_help=False,
             description="Shows Net Short Vol. vs Position. [Source: Stockgrid]",
         )
@@ -450,6 +456,9 @@ Quandl/Stockgrid:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+            if not self.ticker:
+                print("No ticker loaded.\n")
+                return
 
             stockgrid_view.net_short_position(
                 ticker=self.ticker,
@@ -461,10 +470,10 @@ Quandl/Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_shortint(self, other_args: List[str]):
-        """Process shortint command"""
+    def call_psi(self, other_args: List[str]):
+        """Process psi command"""
         parser = argparse.ArgumentParser(
-            prog="shortint",
+            prog="psi",
             add_help=False,
             description="Shows price vs short interest volume. [Source: Quandl/Stockgrid]",
         )
@@ -519,6 +528,9 @@ Quandl/Stockgrid:
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
+                return
+            if not self.ticker:
+                print("No ticker loaded.\n")
                 return
 
             if "quandl" in other_args:
