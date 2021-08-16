@@ -2,15 +2,15 @@
 __docformat__ = "numpy"
 
 import os
+
 import matplotlib.pyplot as plt
 import pandas as pd
-
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.common.technical_analysis import trend_indicators_model
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 register_matplotlib_converters()
 
