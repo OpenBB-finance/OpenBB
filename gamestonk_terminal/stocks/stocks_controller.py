@@ -1,31 +1,37 @@
 import argparse
 import os
 from typing import List
+
 import pandas as pd
+from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.helper_funcs import get_flair
-
-from gamestonk_terminal.helper_funcs import b_is_stock_market_open
-from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-
-from gamestonk_terminal.stocks.stocks_helper import load, candle, quote
-
-from gamestonk_terminal.stocks.discovery import disc_controller
-from gamestonk_terminal.stocks.screener import screener_controller
-from gamestonk_terminal.stocks.insider import insider_controller
-from gamestonk_terminal.stocks.government import gov_controller
-from gamestonk_terminal.stocks.due_diligence import dd_controller
-from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
-from gamestonk_terminal.stocks.research import res_controller
-from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+from gamestonk_terminal.common import newsapi_view
+from gamestonk_terminal.helper_funcs import (
+    b_is_stock_market_open,
+    check_positive,
+    get_flair,
+    parse_known_args_and_warn,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.options import options_controller
 from gamestonk_terminal.stocks.backtesting import bt_controller
-from gamestonk_terminal.stocks.technical_analysis import ta_controller
 from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
-from gamestonk_terminal.stocks.residuals_analysis import ra_controller
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
+from gamestonk_terminal.stocks.discovery import disc_controller
+from gamestonk_terminal.stocks.due_diligence import dd_controller
 from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
+from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
+from gamestonk_terminal.stocks.government import gov_controller
+from gamestonk_terminal.stocks.insider import insider_controller
 from gamestonk_terminal.stocks.report import report_controller
+from gamestonk_terminal.stocks.research import res_controller
+from gamestonk_terminal.stocks.residuals_analysis import ra_controller
+from gamestonk_terminal.stocks.screener import screener_controller
+from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
+from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
 # pylint: disable=R1710
 
@@ -48,6 +54,7 @@ class StocksController:
         "load",
         "quote",
         "candle",
+        "news",
     ]
 
     CHOICES_MENUS = [
@@ -57,6 +64,7 @@ class StocksController:
         "pred",
         "ra",
         "disc",
+        "dps",
         "scr",
         "ins",
         "gov",
@@ -66,13 +74,19 @@ class StocksController:
         "dd",
         "ca",
         "report",
+        "options",
     ]
 
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
 
-    def __init__(self):
+    def __init__(self, ticker):
         """Constructor"""
+        self.stock = pd.DataFrame()
+        self.ticker = ticker
+        self.start = ""
+        self.interval = "1440min"
+
         self.stocks_parser = argparse.ArgumentParser(add_help=False, prog="stocks")
         self.stocks_parser.add_argument(
             "cmd",
@@ -82,14 +96,16 @@ class StocksController:
             {c: None for c in self.CHOICES}
         )
 
-        self.stock = pd.DataFrame()
-        self.ticker = ""
-        self.start = ""
-        self.interval = "1440min"
-
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
+
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        if self.ticker and self.start:
+            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+        else:
+            stock_text = f"{s_intraday} Stock: {self.ticker}"
+
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
 
 >> STOCKS <<
 
@@ -98,29 +114,27 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
-            """
-        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-        if self.ticker and self.start:
-            help_text += f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})\n"
-        elif self.ticker:
-            help_text += f"\n{s_intraday} Stock: {self.ticker}\n"
-        else:
-            help_text += "\nStock: ?\n"
 
-        help_text += f"Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}.\n"
-
-        help_text += """
     load        load a specific stock ticker for analysis
+
+{stock_text}
+Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
+{Style.DIM if not self.ticker else ''}
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
+    news        latest news of the company [News API]
+{Style.RESET_ALL if not self.ticker else ''}
+>>  options     go into options context {'with ' if self.ticker else ''}{self.ticker}
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
->   gov         government menu, \t\t house trading, contracts, corporate lobbying
->   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
+>   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
+>   report      generate automatic report,   \t e.g.: dark pool, due diligence{Style.DIM if not self.ticker else ''}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
+>   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
 >   ca          comparison analysis,     \t e.g.: historical, correlation, financials
 >   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
@@ -128,8 +142,7 @@ What do you want to do?
 >   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
 >   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
->   report      generate automatic report,   \t e.g.: dark pool, due diligence
-        """
+{Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -200,10 +213,53 @@ What do you want to do?
             other_args,
         )
 
+    def call_news(self, other_args: List[str]):
+        """Process news command"""
+        if not self.ticker:
+            print("Use 'load <ticker>' prior to this command!", "\n")
+            return
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="news",
+            description="""
+                Prints latest news about company, including date, title and web link. [Source: News API]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="Number of latest news being printed.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            newsapi_view.news(
+                term=self.ticker,
+                num=ns_parser.n_num,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
     # MENUS
     def call_disc(self, _):
         """Process disc command"""
         ret = disc_controller.menu()
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_dps(self, _):
+        """Process dps command"""
+        ret = dps_controller.menu(self.ticker, self.start, self.stock)
         if ret is False:
             self.print_help()
         else:
@@ -219,7 +275,12 @@ What do you want to do?
 
     def call_ins(self, _):
         """Process ins command"""
-        ret = insider_controller.menu()
+        ret = insider_controller.menu(
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+        )
         if ret is False:
             self.print_help()
         else:
@@ -438,10 +499,14 @@ What do you want to do?
         else:
             return True
 
+    def call_options(self, _):
+        """Process options command"""
+        return options_controller.menu(self.ticker)
 
-def menu():
+
+def menu(ticker: str = ""):
     """Stocks Menu"""
-    stocks_controller = StocksController()
+    stocks_controller = StocksController(ticker)
     stocks_controller.call_help(None)
     while True:
         if session and gtff.USE_PROMPT_TOOLKIT:

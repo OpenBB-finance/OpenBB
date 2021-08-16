@@ -4,24 +4,26 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+
 from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.economy import (
+    alphavantage_view,
+    cnn_view,
+    finnhub_view,
+    finviz_view,
+    fred_view,
+    wsj_view,
+)
+from gamestonk_terminal.economy.report import report_controller
 from gamestonk_terminal.helper_funcs import (
+    check_positive,
     get_flair,
     parse_known_args_and_warn,
-    check_positive,
     valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.economy import (
-    fred_view,
-    finnhub_view,
-    cnn_view,
-    wsj_view,
-    finviz_view,
-    alphavantage_view,
-)
-from gamestonk_terminal.economy.report import report_controller
 
 # pylint: disable=R1710
 

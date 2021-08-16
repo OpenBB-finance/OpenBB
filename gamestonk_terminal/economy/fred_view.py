@@ -2,14 +2,16 @@
 __docformat__ = "numpy"
 
 import os
-from tabulate import tabulate
-from pandas.plotting import register_matplotlib_converters
-import pandas as pd
+
 import matplotlib.pyplot as plt
-from gamestonk_terminal.economy import fred_model
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
-from gamestonk_terminal.config_plot import PLOT_DPI
+import pandas as pd
+from pandas.plotting import register_matplotlib_converters
+from tabulate import tabulate
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.economy import fred_model
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 register_matplotlib_converters()
 

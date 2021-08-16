@@ -19,7 +19,7 @@
 * [Backtesting](#Backtesting-)
 * [Government](#Government-)
 
-## Commands 
+## Commands
 
 #### Load
 ```
@@ -144,6 +144,7 @@ Command|Description
 `screener`      |screen info about the company ([Finviz](https://finviz.com/))
 `mgmt`          |management team of the company ([Business Insider](https://markets.businessinsider.com/))
 `score`         |investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham  ([FMP](https://financialmodelingprep.com/))
+`dcf`           |a discounted cash flow with an option to edit in excel
 [Yahoo Finance API](https://finance.yahoo.com/) |
 `info`          |information scope of the company
 `shrs`          |shareholders of the company
@@ -246,7 +247,7 @@ Command|Description
 ------ | --------
 `select`        |select similar companies
 [Polygon](https://polygon.io), [Finhub](https://finnhub.io), [Finviz](https://finviz.com)|
-`get`           |get similar companies 
+`get`           |get similar companies
 [Yahoo Finance](https://finance.yahoo.com/) |
 `historical`    |historical price data comparison
 `hcorr`         |historical price correlation
@@ -264,7 +265,7 @@ Command|Description
 `ownership`       |brief ownership comparison
 `performance`     |brief performance comparison
 `technical`       |brief technical comparison
-   
+
 
 &nbsp;
 
@@ -309,7 +310,7 @@ Command|Description
 view           |view [preset(s)](/gamestonk_terminal/stocks/screener/presets/README.md)
 set            |set one of the [presets](/gamestonk_terminal/stocks/screener/presets/README.md)
 [Yahoo Finance](https://finance.yahoo.com/) |
-historical     |view historical price 
+historical     |view historical price
 [Finviz](https://finviz.com/screener.ashx) |
 overview       |overview (e.g. Sector, Industry, Market Cap, Volume)
 valuation      |valuation (e.g. P/E, PEG, P/S, P/B, EPS this Y)
@@ -393,4 +394,3 @@ Command|Description
 `contracts`             | plot sum of contracts on the ticker
 
 &nbsp;
-

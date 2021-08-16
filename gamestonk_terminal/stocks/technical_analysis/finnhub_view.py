@@ -1,54 +1,39 @@
-import argparse
-from typing import List
+"""Finnhub view"""
+__docformat__ = "numpy"
+
+import os
+
 import math
 from datetime import datetime
-import requests
 import yfinance as yf
 import mplfinance as mpf
-import pandas as pd
-from gamestonk_terminal import config_terminal as cfg
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    plot_autoscale,
-)
+
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.stocks.technical_analysis import finnhub_model
 
 
-def get_pattern_recognition(ticker: str, resolution: str) -> pd.DataFrame:
-    """Get pattern recognition data
-
-    Parameters
-    ----------
-    ticker : str
-        Ticker to get pattern recognition data
-    resolution : str
-        Resolution of data to get pattern recognition from
-
-    Returns
-    -------
-    pd.DataFrame
-        Get datapoints corresponding to pattern signal data
-    """
-    response = requests.get(
-        f"https://finnhub.io/api/v1/scan/pattern?symbol={ticker}&resolution={resolution}&token={cfg.API_FINNHUB_KEY}"
-    )
-    if response.status_code == 200:
-        d_data = response.json()
-        if "points" in d_data:
-            return pd.DataFrame(d_data["points"]).T
-
-    return pd.DataFrame()
-
-
-def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
+def plot_pattern_recognition(ticker: str, resolution: str, export: str):
     """Plot pattern recognition signal
 
     Parameters
     ----------
     ticker : str
         Ticker to display pattern recognition on top of the data
-    pattern : pd.DataFrame
-        Pattern recognition signal data
+    resolution : str
+        Resolution of data to get pattern recognition from
+    export: str
+        Format of export file
     """
+
+    pattern = finnhub_model.get_pattern_recognition(ticker, resolution)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pr",
+        pattern,
+    )
+
     l_segments = list()
     for i in pattern:
         a_part = ("", "")
@@ -102,7 +87,6 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
         start=datetime.utcfromtimestamp(start_time).strftime("%Y-%m-%d"),
         progress=False,
     )
-
     df_stock["date_id"] = (df_stock.index.date - df_stock.index.date.min()).astype(
         "timedelta64[D]"
     )
@@ -138,49 +122,3 @@ def plot_pattern_recognition(ticker: str, pattern: pd.DataFrame):
         print(
             f"Pattern: {pattern[0]['patternname']} ({pattern[0]['patterntype']})", "\n"
         )
-
-
-def pattern_recognition_view(other_args: List[str], ticker: str):
-    """Display pattern recognition signals on the data
-
-    Parameters
-    ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    ticker : str
-        Ticker to display pattern recognition on top of the data
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="pr",
-        description="""
-            Display pattern recognition signals on the data. [Source: https://finnhub.io]
-        """,
-    )
-    parser.add_argument(
-        "-r",
-        "--resolution",
-        action="store",
-        dest="resolution",
-        type=str,
-        default="D",
-        choices=["1", "5", "15", "30", "60", "D", "W", "M"],
-        help="Plot resolution to look for pattern signals",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_pattern = get_pattern_recognition(ticker, ns_parser.resolution)
-
-        if df_pattern.empty:
-            print("No pattern identified in this data", "\n")
-            return
-
-        plot_pattern_recognition(ticker, df_pattern)
-
-    except Exception as e:
-        print(e, "\n")

@@ -5,21 +5,21 @@ __docformat__ = "numpy"
 import argparse
 import os
 import sys
+
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.terminal_helper import (
-    print_goodbye,
-    update_terminal,
-    about_us,
-    bootup,
-    reset,
-    check_api_keys,
-)
+from gamestonk_terminal import config_terminal
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal import config_terminal
-
+from gamestonk_terminal.terminal_helper import (
+    about_us,
+    bootup,
+    check_api_keys,
+    print_goodbye,
+    reset,
+    update_terminal,
+)
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
@@ -167,13 +167,13 @@ What do you want to do?
         return crypto_controller.menu()
 
     def call_economy(self, _):
-        """Process econ command"""
+        """Process economy command"""
         from gamestonk_terminal.economy import economy_controller
 
         return economy_controller.menu()
 
     def call_options(self, _):
-        """Process op command"""
+        """Process options command"""
         from gamestonk_terminal.options import options_controller
 
         return options_controller.menu()
@@ -185,7 +185,7 @@ What do you want to do?
         return etf_controller.menu()
 
     def call_forex(self, _):
-        """Process fx command"""
+        """Process forex command"""
         from gamestonk_terminal.forex import forex_controller
 
         return forex_controller.menu()

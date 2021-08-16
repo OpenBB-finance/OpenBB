@@ -1,14 +1,13 @@
 """ CNN View """
 __docformat__ = "numpy"
 
-from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
-from gamestonk_terminal.helper_funcs import (
-    plot_autoscale,
-)
-from gamestonk_terminal.config_plot import PLOT_DPI
+from pandas.plotting import register_matplotlib_converters
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.economy import cnn_model
+from gamestonk_terminal.helper_funcs import plot_autoscale
 
 register_matplotlib_converters()
 

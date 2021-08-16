@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import pathlib
 from typing import Callable
+
 import yaml
 
 
