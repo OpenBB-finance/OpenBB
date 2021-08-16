@@ -13,11 +13,7 @@ from gamestonk_terminal.stocks.due_diligence import (
 )
 from gamestonk_terminal.stocks.due_diligence import finviz_view as fvz_view
 from gamestonk_terminal.stocks.due_diligence import market_watch_view as mw_view
-from gamestonk_terminal.stocks.due_diligence import quandl_view as q_view
 from gamestonk_terminal.stocks.due_diligence import reddit_view as r_view
-from gamestonk_terminal.stocks.due_diligence import finra_view
-from gamestonk_terminal.stocks.due_diligence import sec_view
-from gamestonk_terminal.stocks.due_diligence import stockgrid_dd_view as sg_view
 from gamestonk_terminal.stocks.due_diligence import finnhub_view
 from gamestonk_terminal.stocks.due_diligence import csimarket_view
 from gamestonk_terminal import feature_flags as gtff
@@ -36,7 +32,7 @@ class DueDiligenceController:
         "q",
         "quit",
         "red",
-        "short",
+        "sec",
         "rating",
         "pt",
         "rot",
@@ -46,11 +42,6 @@ class DueDiligenceController:
         "news",
         "analyst",
         "warnings",
-        "sec",
-        "dp",
-        "ftd",
-        "shortview",
-        "darkpos",
         "supplier",
         "customer",
     ]
@@ -116,14 +107,9 @@ class DueDiligenceController:
         print("   ins           insider activity over time [Business Insider]")
         print("   insider       insider trading of the company [Finviz]")
         print("   sec           SEC filings [Market Watch]")
-        print("   short         short interest [Quandl]")
         print(
             "   warnings      company warnings according to Sean Seah book [Market Watch]"
         )
-        print("   dp            dark pools (ATS) vs OTC data [FINRA]")
-        print("   ftd           fails-to-deliver data [SEC]")
-        print("   shortview     price vs short interest volume [Stockgrid.io]")
-        print("   darkpos       net short vs position [Stockgrid.io]")
         print("   supplier      list of suppliers [csimarket]")
         print("   customer      list of customers [csimarket]")
         print("")
@@ -215,26 +201,6 @@ class DueDiligenceController:
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
         mw_view.sec_fillings(other_args, self.ticker)
-
-    def call_short(self, other_args: List[str]):
-        """Process short command"""
-        q_view.short_interest(other_args, self.ticker, self.start)
-
-    def call_dp(self, other_args: List[str]):
-        """Process dp command"""
-        finra_view.dark_pool(other_args, self.ticker)
-
-    def call_ftd(self, other_args: List[str]):
-        """Process ftd command"""
-        sec_view.fails_to_deliver(other_args, self.ticker, self.stock)
-
-    def call_shortview(self, other_args: List[str]):
-        """Process shortview command"""
-        sg_view.shortview(self.ticker, other_args)
-
-    def call_darkpos(self, other_args: List[str]):
-        """Process darkpos command"""
-        sg_view.darkpos(self.ticker, other_args)
 
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""

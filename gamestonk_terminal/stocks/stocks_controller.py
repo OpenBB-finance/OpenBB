@@ -26,6 +26,7 @@ from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
 from gamestonk_terminal.stocks.residuals_analysis import ra_controller
 from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.stocks.report import report_controller
+from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 
 from gamestonk_terminal.options import options_controller
 
@@ -65,6 +66,7 @@ class StocksController:
         "pred",
         "ra",
         "disc",
+        "dps",
         "scr",
         "ins",
         "gov",
@@ -98,6 +100,7 @@ class StocksController:
 
     def print_help(self):
         """Print help"""
+
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.ticker and self.start:
             stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
@@ -126,6 +129,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >>  options     go into options context {'with ' if self.ticker else ''}{self.ticker}
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
+>   dps         dark pool and short data, \t e.g. darkpool, short interest, ftd
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
@@ -250,6 +254,14 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     def call_disc(self, _):
         """Process disc command"""
         ret = disc_controller.menu()
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_dps(self, _):
+        """Process dps command"""
+        ret = dps_controller.menu(self.ticker, self.start, self.stock)
         if ret is False:
             self.print_help()
         else:
