@@ -62,36 +62,35 @@ class FinancialModelingPrepController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/"
-            "tree/main/gamestonk_terminal/stocks/fundamental_analysis/financial_modeling_prep"
-        )
+        help_text = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
+        help_text += "/stocks/fundamental_analysis/financial_modeling_prep"
+
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-
         if self.start:
-            print(
-                f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+            help_text += f"\n\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{intraday} Stock: {self.ticker}")
+            help_text += f"\n\n{intraday} Stock: {self.ticker}"
 
-        print("\nFinancial Modeling Prep API")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   profile       profile of the company")
-        print("   quote         quote of the company")
-        print("   enterprise    enterprise value of the company over time")
-        print("   dcf           discounted cash flow of the company over time")
-        print("   income        income statements of the company")
-        print("   balance       balance sheet of the company")
-        print("   cash          cash flow statement of the company")
-        print("   metrics       key metrics of the company")
-        print("   ratios        financial ratios of the company")
-        print("   growth        financial statement growth of the company")
-        print("")
+        help_text += """
+
+Financial Modeling Prep:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+    profile       profile of the company
+    quote         quote of the company
+    enterprise    enterprise value of the company over time
+    dcf           discounted cash flow of the company over time
+    income        income statements of the company
+    balance       balance sheet of the company
+    cash          cash flow statement of the company
+    metrics       key metrics of the company
+    ratios        financial ratios of the company
+    growth        financial statement growth of the company
+        """
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input

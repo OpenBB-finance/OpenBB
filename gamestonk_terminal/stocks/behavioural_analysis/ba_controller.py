@@ -53,6 +53,7 @@ class BehaviouralAnalysisController:
         "emerging",
         "popular",
         "popularsi",
+        "getdd",
     ]
 
     def __init__(self, ticker: str, start: datetime):
@@ -91,6 +92,7 @@ class BehaviouralAnalysisController:
             "   spac_c        show other users spacs announcements from subreddit SPACs community"
         )
         print("   spac          show other users spacs announcements from other subs")
+        print("   getdd         gets due diligence from another user's post")
         print("Stocktwits:")
         print(
             "   bullbear      estimate quick sentiment from last 30 messages on board"
@@ -178,6 +180,10 @@ class BehaviouralAnalysisController:
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
         reddit_view.popular_tickers(other_args)
+
+    def call_getdd(self, other_args: List[str]):
+        """Process getdd command"""
+        reddit_view.get_due_diligence(other_args, self.ticker)
 
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""

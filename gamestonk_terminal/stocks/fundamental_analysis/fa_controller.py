@@ -6,8 +6,6 @@ import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.stocks.fundamental_analysis import business_insider_view
-from gamestonk_terminal.stocks.fundamental_analysis import dcf_view
 from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep import (
     fmp_controller,
     fmp_view,
@@ -16,6 +14,9 @@ from gamestonk_terminal.stocks.fundamental_analysis import (
     finviz_view,
     yahoo_finance_view,
     av_view,
+    business_insider_view,
+    dcf_view,
+    market_watch_view,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
@@ -27,13 +28,15 @@ from gamestonk_terminal.menu import session
 class FundamentalAnalysisController:
     """Fundamental Analysis Controller"""
 
-    # Command choices
     CHOICES = [
         "cls",
         "?",
         "help",
         "q",
         "quit",
+    ]
+
+    CHOICES_COMMANDS = [
         "score",
         "dcf",
         "screener",
@@ -54,8 +57,15 @@ class FundamentalAnalysisController:
         "balance",
         "cash",
         "earnings",
+        "warnings",
+    ]
+
+    CHOICES_MENUS = [
         "fmp",
     ]
+
+    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_MENUS
 
     def __init__(self, ticker: str, start: str, interval: str):
         """Constructor
@@ -82,53 +92,48 @@ class FundamentalAnalysisController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
-            "/stocks/fundamental_analysis"
-        )
+        help_text = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
+        help_text += "/stocks/fundamental_analysis"
+
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
-            print(
-                f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+            help_text += f"\n\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{intraday} Stock: {self.ticker}")
+            help_text += f"\n\n{intraday} Stock: {self.ticker}"
 
-        print("\nFundamental Analysis:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   screener      screen info about the company [Finviz]")
-        print("   mgmt          management team of the company [Business Insider]")
-        print(
-            "   score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]"
-        )
-        print("   dcf           a customizable discounted cash flow created in excel")
-        print("")
-        print("Yahoo Finance API")
-        print("   info          information scope of the company")
-        print("   shrs          shareholders of the company")
-        print("   sust          sustainability values of the company")
-        print("   cal           calendar earnings and estimates of the company")
-        print("   web           open web browser of the company")
-        print("   hq            open HQ location of the company")
-        print("")
-        print("Alpha Vantage API:")
-        print("   overview      overview of the company")
-        print("   key           company key metrics")
-        print("   income        income statements of the company")
-        print("   balance       balance sheet of the company")
-        print("   cash          cash flow of the company")
-        print("   earnings      earnings dates and reported EPS")
-        print("   fraud         key fraud ratios")
-        print("")
-        print("Other Sources:")
-        print(">  fmp           Financial Modeling Prep MENU")
-        print("")
+        help_text += """
 
+Fundamental Analysis:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+    screener      screen info about the company [Finviz]
+    mgmt          management team of the company [Business Insider]
+    score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
+    warnings      company warnings according to Sean Seah book [Market Watch]
+    dcf           a customizable discounted cash flow created in excel [stockanalysis]
+Yahoo Finance:
+    info          information scope of the company
+    shrs          shareholders of the company
+    sust          sustainability values of the company
+    cal           calendar earnings and estimates of the company
+    web           open web browser of the company
+    hq            open HQ location of the company
+Alpha Vantage:
+    overview      overview of the company
+    key           company key metrics
+    income        income statements of the company
+    balance       balance sheet of the company
+    cash          cash flow of the company
+    earnings      earnings dates and reported EPS
+    fraud         key fraud ratios
+Other Sources:
+>   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
+        """
+        print(help_text)
         # No longer used, but keep for future:
         # print("")
         # print("Market Watch API - DEPRECATED")
@@ -247,6 +252,10 @@ class FundamentalAnalysisController:
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
         dcf_view.dcf(other_args, self.ticker)
+
+    def call_warnings(self, other_args: List[str]):
+        """Process warnings command"""
+        market_watch_view.sean_seah_warnings(other_args, self.ticker)
 
     def call_fmp(self, _):
         """Process fmp command"""

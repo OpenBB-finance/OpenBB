@@ -31,6 +31,7 @@ def suppliers(ticker: str, other_args: List[str]):
         if not ns_parser:
             return
 
+        # TODO: This link has a lot more data that we can display
         url_supply_chain = f"https://csimarket.com/stocks/competitionNO3.php?supply&code={ticker.upper()}"
         text_supplier_chain = BeautifulSoup(requests.get(url_supply_chain).text, "lxml")
 
@@ -70,6 +71,7 @@ def customers(ticker: str, other_args: List[str]):
         if not ns_parser:
             return
 
+        # TODO: This link has a lot more data that we can display
         url_customer_chain = (
             f"https://csimarket.com/stocks/custexNO.php?markets&code={ticker.upper()}"
         )
