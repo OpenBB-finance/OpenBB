@@ -115,7 +115,7 @@ VCRPY allows us to save data from request methods to a .YAML file. This increase
 1. `import vcr`
 1. add `@vcr.use_cassette("tests/cassettes/{test_folder}/{test_class}/{test_name}.yaml")` as a decorator to the test
 
-**Note:** _If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
+**Note:** If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
 
 ###### check_print
 
@@ -126,7 +126,7 @@ GamestonkTerminal relies on print statements to return data to the user. To chec
 
 If you do not want to assert an item but your test still prints output, please add `@check_print()` as a decorator to mute print output.
 
-**Note:** _Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
+**Note:** Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
 
 #### Documentation
 
