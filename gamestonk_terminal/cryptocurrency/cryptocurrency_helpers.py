@@ -15,6 +15,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_coin_list,
     create_mapping_matrix_for_binance,
+    load_binance_map,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_list_of_coins,
@@ -260,6 +261,221 @@ def find(other_args: List[str]):
         else:
             print("Couldn't execute find methods for CoinPaprika, Binance or CoinGecko")
         print("")
+
+    except Exception as e:
+        print(e, "\n")
+
+
+def all_coins(other_args: List[str]):
+    """Find similar coin by coin name,symbol or id.
+
+    If you don't remember exact name or id of the Coin at CoinGecko or CoinPaprika
+    you can use this command to display coins with similar name, symbol or id to your search query.
+    Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+    It will search for coin that has similar name to polka and display top 25 matches.
+      -c, --coin stands for coin - you provide here your search query
+      -t, --top it displays top N number of records.
+
+    Parameters
+    ----------
+    other_args: List[str]
+        Arguments to pass to argparse
+    """
+    parser = argparse.ArgumentParser(
+        prog="coins",
+        add_help=False,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description="""Shows list of coins available on CoinGecko, CoinPaprika and Binance.
+        If you provide name of coin then in result you will see ids of coins with best match for all mentioned services.
+        If you provide ALL keyword in your search query, then all coins will be displayed. To move over the coins you
+        can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
+        from 100 to 130 will be displayed. By default skip = 0, limit = 10.
+        If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
+        If you want to search only in given source then use --source flag. E.g. if you want to find coin with name
+        uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
+        """,
+    )
+    parser.add_argument(
+        "-c",
+        "--coin",
+        help="Coin you search for",
+        dest="coin",
+        required="-h" not in other_args,
+        type=str,
+    )
+    parser.add_argument(
+        "-s",
+        "--skip",
+        default=0,
+        dest="skip",
+        help="Skip n of records",
+        type=check_positive,
+    )
+
+    parser.add_argument(
+        "-l",
+        "--limit",
+        default=10,
+        dest="top",
+        help="Limit of records",
+        type=check_positive,
+    )
+
+    parser.add_argument(
+        "--source",
+        dest="source",
+        required=False,
+        help="Source of data.",
+        type=str,
+    )
+
+    limit, cutoff = 30, 0.75
+
+    try:
+
+        if other_args:
+            if not other_args[0][0] == "-":
+                other_args.insert(0, "-c")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if "ALL" in other_args:
+            if ns_parser.source == "cg":
+                df = get_coin_list()
+
+            elif ns_parser.source == "cp":
+                df = get_list_of_coins()
+
+            elif ns_parser.source == "bin":
+                df = load_binance_map()
+
+            else:
+                cg_coins_df = get_coin_list()
+                cp_coins_df = get_list_of_coins()
+                df_cg_cp = pd.merge(cg_coins_df, cp_coins_df, on="name", how="left")
+
+                coins_binance = load_binance_map()
+                coins_binance.columns = ["Binance", "id"]
+                df_merged = pd.merge(
+                    left=df_cg_cp,
+                    right=coins_binance,
+                    left_on="id_x",
+                    right_on="id",
+                    how="left",
+                )
+
+                df_merged.rename(
+                    columns={
+                        "id_x": "CoinGecko",
+                        "symbol_x": "Symbol",
+                        "id_y": "CoinPaprika",
+                    },
+                    inplace=True,
+                )
+
+                df = df_merged[["CoinGecko", "CoinPaprika", "Binance", "Symbol"]]
+
+        elif not ns_parser.source or ns_parser.source not in ["cg", "cp", "bin"]:
+            cg_coins_df = get_coin_list()
+            cp_coins_df = get_list_of_coins()
+            df_cg_cp = pd.merge(cg_coins_df, cp_coins_df, on="name", how="left")
+
+            coins_binance = load_binance_map()
+            coins_binance.columns = ["Binance", "id"]
+            df_merged = pd.merge(
+                left=df_cg_cp,
+                right=coins_binance,
+                left_on="id_x",
+                right_on="id",
+                how="left",
+            )
+
+            df_merged.rename(
+                columns={
+                    "id_x": "CoinGecko",
+                    "symbol_x": "Symbol",
+                    "id_y": "CoinPaprika",
+                },
+                inplace=True,
+            )
+
+            df = df_merged[
+                ["CoinGecko", "CoinPaprika", "Binance", "Symbol"]
+            ].sort_values(by="Binance", ascending=False)
+            cg_coins_list = df["CoinGecko"].to_list()
+            sim = difflib.get_close_matches(
+                ns_parser.coin.lower(), cg_coins_list, limit, cutoff
+            )
+            df_matched = pd.Series(sim).to_frame().reset_index()
+            df_matched.columns = ["index", "CoinGecko"]
+            df = df.merge(df_matched, on="CoinGecko")
+            df.drop("index", axis=1, inplace=True)
+
+        else:
+
+            if ns_parser.source == "cg":
+                coins_df = get_coin_list()
+                coins_list = coins_df["id"].to_list()
+                sim = difflib.get_close_matches(
+                    ns_parser.coin.lower(), coins_list, limit, cutoff
+                )
+                df = pd.Series(sim).to_frame().reset_index()
+                df.columns = ["index", "id"]
+                coins_df.drop("index", axis=1, inplace=True)
+                df = df.merge(coins_df, on="id")
+                df = df[["index", "id", "name"]]
+
+            elif ns_parser.source == "cp":
+                coins_df = get_list_of_coins()
+                coins_list = coins_df["id"].to_list()
+                sim = difflib.get_close_matches(
+                    ns_parser.coin.lower(), coins_list, limit, cutoff
+                )
+                df = pd.Series(sim).to_frame().reset_index()
+                df.columns = ["index", "id"]
+                df = df.merge(coins_df, on="id")
+                df = df[["index", "id", "name"]]
+
+            elif ns_parser.source == "bin":
+
+                coins_df_gecko = get_coin_list()
+                coins_df_bin = load_binance_map()
+                coins_df_bin.columns = ["symbol", "id"]
+                coins = pd.merge(
+                    coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
+                )
+                coins_list = coins["id"].to_list()
+
+                sim = difflib.get_close_matches(
+                    ns_parser.coin, coins_list, limit, cutoff
+                )
+                df = pd.Series(sim).to_frame().reset_index()
+                df.columns = ["index", "id"]
+                df = df.merge(coins, on="id")
+                df = df[["index", "symbol", "name"]]
+                df.columns = ["index", "id", "name"]
+
+            else:
+                df = pd.DataFrame(columns=["index", "id", "symbol"])
+                print("Couldn't find any coins")
+            print("")
+
+        try:
+            df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
+        except Exception as e:
+            print(e)
+
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
 
     except Exception as e:
         print(e, "\n")

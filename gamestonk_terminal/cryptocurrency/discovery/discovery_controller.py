@@ -13,6 +13,7 @@ from gamestonk_terminal.cryptocurrency.discovery import (
     coinpaprika_view,
     coinmarketcap_view,
 )
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import all_coins
 
 
 class DiscoveryController:
@@ -23,6 +24,7 @@ class DiscoveryController:
         "help",
         "q",
         "quit",
+        "coins",
         "cpsearch",
         "cmctop",
         "cgtrending",
@@ -37,7 +39,6 @@ class DiscoveryController:
         "cgdefi",
         "cgdex",
         "cgnft",
-        "cgcoins",
     ]
 
     def __init__(self):
@@ -54,9 +55,9 @@ Discovery:
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    coins       search for coins on CoinGecko, Binance, CoinPaprika
 
 CoinGecko:
-    cgcoins           coins available on CoinGecko
     cgtrending        trending coins on CoinGecko
     cgvoted           most voted coins on CoinGecko
     cgvisited         most visited coins on CoinGecko
@@ -123,9 +124,9 @@ CoinMarketCap:
         """Process Quit command - quit the program."""
         return True
 
-    def call_cgcoins(self, other_args):
+    def call_coins(self, other_args):
         """Process coins command"""
-        pycoingecko_view.coin_list(other_args=other_args)
+        all_coins(other_args=other_args)
 
     def call_cggainers(self, other_args):
         """Process gainers command"""
