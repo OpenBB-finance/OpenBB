@@ -59,7 +59,7 @@ Overview:
     cls         clear screen
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
-    q
+    quit        quit to abandon the program
 
 CoinGecko:
     cgglobal          global crypto market info
