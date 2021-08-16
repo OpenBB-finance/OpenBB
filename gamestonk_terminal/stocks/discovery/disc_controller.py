@@ -23,9 +23,7 @@ from gamestonk_terminal.stocks.discovery import (
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
-    finra_ats_view,
     finnhub_view,
-    stockgrid_view,
 )
 
 
@@ -51,11 +49,7 @@ class DiscoveryController:
         "upcoming",
         "latest",
         "trending",
-        "highshort",
         "lowfloat",
-        "darkpool",
-        "darkshort",
-        "shortvol",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -72,6 +66,7 @@ class DiscoveryController:
     def print_help():
         """Print help"""
         help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery
+
 Discovery:
     cls            clear screen")
     ?/help         show this menu again")
@@ -92,13 +87,7 @@ Seeking Alpha:
     latest         latest news
     trending       trending news
 shortinterest.com
-    highshort      show top high short interest stocks of over 20% ratio
     lowfloat       show low float stocks under 10M shares float
-FINRA:
-    darkpool       promising tickers based on dark pool shares regression
-Stockgrid:
-    darkshort      dark pool short position
-    shortvol       short interest and days to cover
 """
         print(help_text)
 
@@ -586,50 +575,6 @@ Stockgrid:
         except Exception as e:
             print(e, "\n")
 
-    def call_highshort(self, other_args: List[str]):
-        """Process highshort command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="highshort",
-            description="""
-                Print top stocks being more heavily shorted. HighShortInterest.com provides
-                a convenient sorted database of stocks which have a short interest of over
-                20 percent. Additional key data such as the float, number of outstanding shares,
-                and company industry is displayed. Data is presented for the Nasdaq Stock Market,
-                the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]
-            """,
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="n_num",
-            type=check_positive,
-            default=10,
-            help="Number of top stocks to print.",
-        )
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            shortinterest_view.high_short_interest(
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
     def call_lowfloat(self, other_args: List[str]):
         """Process lowfloat command"""
         parser = argparse.ArgumentParser(
@@ -673,18 +618,6 @@ Stockgrid:
 
         except Exception as e:
             print(e, "\n")
-
-    def call_darkpool(self, other_args: List[str]):
-        """Process darkpool command"""
-        finra_ats_view.dark_pool(other_args)
-
-    def call_darkshort(self, other_args: List[str]):
-        """Process darkshort command"""
-        stockgrid_view.darkshort(other_args)
-
-    def call_shortvol(self, other_args: List[str]):
-        """Process shortvol command"""
-        stockgrid_view.shortvol(other_args)
 
 
 def menu():
