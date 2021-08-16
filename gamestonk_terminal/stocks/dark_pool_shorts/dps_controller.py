@@ -48,7 +48,7 @@ class DarkPoolShortsController:
     ]
 
     CHOICES_COMMANDS_WITH_TICKER = [
-        "shortint",
+        "psi",
         "dpotc",
         "ftd",
         "spos",
