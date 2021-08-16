@@ -1,39 +1,37 @@
 import argparse
 import os
 from typing import List
+
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
+from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.helper_funcs import b_is_stock_market_open
-from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-
 from gamestonk_terminal.common import newsapi_view
-from gamestonk_terminal.stocks.stocks_helper import load, candle, quote
-from gamestonk_terminal.stocks.discovery import disc_controller
-from gamestonk_terminal.stocks.screener import screener_controller
-from gamestonk_terminal.stocks.insider import insider_controller
-from gamestonk_terminal.stocks.government import gov_controller
-from gamestonk_terminal.stocks.due_diligence import dd_controller
-from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
-from gamestonk_terminal.stocks.research import res_controller
-from gamestonk_terminal.stocks.comparison_analysis import ca_controller
-from gamestonk_terminal.stocks.backtesting import bt_controller
-from gamestonk_terminal.stocks.technical_analysis import ta_controller
-from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
-from gamestonk_terminal.stocks.residuals_analysis import ra_controller
-from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
-from gamestonk_terminal.stocks.report import report_controller
-from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
-
-from gamestonk_terminal.options import options_controller
-
 from gamestonk_terminal.helper_funcs import (
+    b_is_stock_market_open,
     check_positive,
+    get_flair,
     parse_known_args_and_warn,
 )
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.options import options_controller
+from gamestonk_terminal.stocks.backtesting import bt_controller
+from gamestonk_terminal.stocks.behavioural_analysis import ba_controller
+from gamestonk_terminal.stocks.comparison_analysis import ca_controller
+from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
+from gamestonk_terminal.stocks.discovery import disc_controller
+from gamestonk_terminal.stocks.due_diligence import dd_controller
+from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
+from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
+from gamestonk_terminal.stocks.government import gov_controller
+from gamestonk_terminal.stocks.insider import insider_controller
+from gamestonk_terminal.stocks.report import report_controller
+from gamestonk_terminal.stocks.research import res_controller
+from gamestonk_terminal.stocks.residuals_analysis import ra_controller
+from gamestonk_terminal.stocks.screener import screener_controller
+from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
+from gamestonk_terminal.stocks.technical_analysis import ta_controller
 
 # pylint: disable=R1710
 

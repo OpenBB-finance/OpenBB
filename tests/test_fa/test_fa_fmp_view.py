@@ -1,8 +1,9 @@
 """ fundamental_analysis/financial_modeling_prep/fmp_view.py tests """
+import sys
+import unittest
+
 # Not testing these tests further. I do not have a fmp key
 from contextlib import contextmanager
-import unittest
-import sys
 
 import vcr
 

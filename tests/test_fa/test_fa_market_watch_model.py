@@ -2,14 +2,14 @@
 import unittest
 from unittest import mock
 
+from gamestonk_terminal.stocks.fundamental_analysis.market_watch_model import (
+    prepare_df_financials,
+)
+
 # pylint: disable=unused-import
 from gamestonk_terminal.test_helper import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
-)
-
-from gamestonk_terminal.stocks.fundamental_analysis.market_watch_model import (
-    prepare_df_financials,
 )
 
 assertions = unittest.TestCase("__init__")

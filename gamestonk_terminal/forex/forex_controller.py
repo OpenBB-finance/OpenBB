@@ -1,18 +1,20 @@
 import argparse
 import os
 from typing import List
+
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.forex import fx_view
+
 from gamestonk_terminal import config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.forex import fx_view
+from gamestonk_terminal.forex.behavioural_analysis import ba_controller
+from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
+from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.menu import session
 
 # from gamestonk_terminal.stocks.due_diligence import news_view, reddit_view
 
-from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
-from gamestonk_terminal.forex.behavioural_analysis import ba_controller
 
 account = cfg.OANDA_ACCOUNT
 

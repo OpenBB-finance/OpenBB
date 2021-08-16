@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 env_files = [f for f in os.listdir() if f.endswith(".env")]
@@ -9,7 +10,7 @@ if env_files:
 DEFAULT_CONTEXT = ""
 
 # By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
+PAPERMILL_NOTEBOOK_REPORT_PORT = "8892"
 
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"

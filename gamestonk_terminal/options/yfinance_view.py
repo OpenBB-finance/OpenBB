@@ -5,16 +5,15 @@ import os
 from bisect import bisect_left
 
 import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-import yfinance as yf
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import yfinance as yf
 
-import gamestonk_terminal.feature_flags as gtff
 import gamestonk_terminal.config_plot as cfp
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
-from gamestonk_terminal.options import op_helpers
-from gamestonk_terminal.options import yfinance_model
+import gamestonk_terminal.feature_flags as gtff
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.options import op_helpers, yfinance_model
 
 
 def plot_oi(

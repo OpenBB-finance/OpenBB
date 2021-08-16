@@ -1,18 +1,18 @@
 """Finbrain Crypto Sentiment Analysis"""
 __docformat__ = "numpy"
-import os
 import argparse
+import os
 from typing import List
+
 import pandas as pd
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
     get_sentiment,
     plot_sentiment,
     sentiment_coloring,
 )
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 

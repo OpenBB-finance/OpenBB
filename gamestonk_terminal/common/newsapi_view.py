@@ -2,7 +2,9 @@
 __docformat__ = "numpy"
 
 from datetime import datetime, timedelta
+
 import requests
+
 from gamestonk_terminal import config_terminal as cfg
 
 

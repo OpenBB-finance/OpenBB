@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import os
 
-from tabulate import tabulate
 import pandas as pd
+from tabulate import tabulate
 
-from gamestonk_terminal.options import fdscanner_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.options import fdscanner_model
 
 
 def display_options(num: int, sort_column: pd.Timestamp, export: str, ascending: bool):
