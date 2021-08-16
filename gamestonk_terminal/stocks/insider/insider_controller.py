@@ -5,13 +5,21 @@ import os
 import argparse
 import configparser
 from typing import List
+import pandas as pd
+from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.stocks.insider import openinsider_view
+from gamestonk_terminal.stocks.insider import (
+    openinsider_view,
+    businessinsider_view,
+    finviz_view,
+)
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+
+# pylint: disable=inconsistent-return-statements,too-many-public-methods
 
 
 class InsiderController:
@@ -47,10 +55,29 @@ class InsiderController:
         "tist",
         "tispw",
         "tispm",
+        "act",
+        "lins",
     ]
 
-    def __init__(self):
-        """Constructor"""
+    def __init__(self, ticker: str, start: str, interval: str, stock: pd.DataFrame):
+        """Constructor
+
+        Parameters
+        ----------
+        stock : DataFrame
+            Due diligence stock dataframe
+        ticker : str
+            Due diligence ticker symbol
+        start : str
+            Start date of the stock data
+        interval : str
+            Stock data interval
+        """
+        self.ticker = ticker
+        self.start = start
+        self.interval = interval
+        self.stock = stock
+
         self.preset = "template"
         self.insider_parser = argparse.ArgumentParser(add_help=False, prog="ins")
         self.insider_parser.add_argument(
@@ -60,46 +87,50 @@ class InsiderController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/insider"
-        )
-        print("\nInsider Trading:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   view          view available presets")
-        print("   set           set one of the available presets")
-        print("")
-        print(f"PRESET: {self.preset}")
-        print("")
-        print("   filter        filter insiders based on preset")
-        print("")
-        print("Latest:")
-        print("   lcb           latest cluster boys")
-        print("   lpsb          latest penny stock buys")
-        print("   lit           latest insider trading (all filings)")
-        print("   lip           latest insider purchases")
-        print("   blip          big latest insider purchases ($25k+)")
-        print("   blop          big latest officer purchases ($25k+)")
-        print("   blcp          big latest CEO/CFO purchases ($25k+)")
-        print("   lis           latest insider sales")
-        print("   blis          big latest insider sales ($100k+)")
-        print("   blos          big latest officer sales ($100k+)")
-        print("   blcs          big latest CEO/CFO sales ($100k+)")
-        print("")
-        print("Top:")
-        print("   topt          top officer purchases today")
-        print("   toppw         top officer purchases past week")
-        print("   toppm         top officer purchases past month")
-        print("   tipt          top insider purchases today")
-        print("   tippw         top insider purchases past week")
-        print("   tippm         top insider purchases past month")
-        print("   tist          top insider sales today")
-        print("   tispw         top insider sales past week")
-        print("   tispm         top insider sales past month")
-        print("")
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/insider
+
+Insider Trading:")
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+    view          view available presets
+    set           set one of the available presets
+
+    PRESET: {self.preset}
+
+    filter        filter insiders based on preset
+
+Latest:
+    lcb           latest cluster boys
+    lpsb          latest penny stock buys
+    lit           latest insider trading (all filings)
+    lip           latest insider purchases
+    blip          big latest insider purchases ($25k+)
+    blop          big latest officer purchases ($25k+)
+    blcp          big latest CEO/CFO purchases ($25k+)
+    lis           latest insider sales
+    blis          big latest insider sales ($100k+)
+    blos          big latest officer sales ($100k+)
+    blcs          big latest CEO/CFO sales ($100k+)
+Top:
+    topt          top officer purchases today
+    toppw         top officer purchases past week
+    toppm         top officer purchases past month
+    tipt          top insider purchases today
+    tippw         top insider purchases past week
+    tippm         top insider purchases past month
+    tist          top insider sales today
+    tispw         top insider sales past week
+    tispm         top insider sales past month
+{Style.DIM if not self.ticker else ''}
+Ticker: {self.ticker}
+
+    act           insider activity over time [Business Insider]
+    lins          last insider trading of the company [Finviz]
+{Style.RESET_ALL if not self.ticker else ''}"""
+        print(help_text)
 
     @staticmethod
     def view_available_presets(other_args: List[str]):
@@ -359,11 +390,26 @@ class InsiderController:
         """Process top-insider-sales-of-the-month"""
         return openinsider_view.print_insider_data(other_args, "tispm")
 
+    def call_act(self, other_args: List[str]):
+        """Process act command"""
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}` \n")
+            return
+        return businessinsider_view.insider_activity(
+            other_args, self.stock, self.ticker, self.start, self.interval
+        )
 
-def menu():
+    def call_lins(self, other_args: List[str]):
+        """Process lins command"""
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}` \n")
+            return
+        return finviz_view.last_insider_activity(other_args, self.ticker)
+
+
+def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
     """Insider Menu"""
-
-    ins_controller = InsiderController()
+    ins_controller = InsiderController(ticker, start, interval, stock)
     ins_controller.call_help(None)
 
     while True:

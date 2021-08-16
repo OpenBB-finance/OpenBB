@@ -7,15 +7,14 @@ from typing import List
 from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.stocks.due_diligence import business_insider_view as bi_view
 from gamestonk_terminal.stocks.due_diligence import (
-    financial_modeling_prep_view as fmp_view,
+    financial_modeling_prep_view,
+    business_insider_view,
+    finviz_view,
+    market_watch_view,
+    finnhub_view,
+    csimarket_view,
 )
-from gamestonk_terminal.stocks.due_diligence import finviz_view as fvz_view
-from gamestonk_terminal.stocks.due_diligence import market_watch_view as mw_view
-from gamestonk_terminal.stocks.due_diligence import reddit_view as r_view
-from gamestonk_terminal.stocks.due_diligence import finnhub_view
-from gamestonk_terminal.stocks.due_diligence import csimarket_view
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -31,17 +30,13 @@ class DueDiligenceController:
         "help",
         "q",
         "quit",
-        "red",
         "sec",
         "rating",
         "pt",
         "rot",
         "est",
-        "ins",
-        "insider",
-        "news",
         "analyst",
-        "warnings",
+        "sec",
         "supplier",
         "customer",
     ]
@@ -91,8 +86,6 @@ class DueDiligenceController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-        print("   news          latest news of the company [News API]")
-        print("   red           gets due diligence from another user's post [Reddit]")
         print("   analyst       analyst prices and ratings of the company [Finviz]")
         print(
             "   rating        rating of the company from strong sell to strong buy [FMP]"
@@ -104,12 +97,7 @@ class DueDiligenceController:
         print(
             "   est           quarter and year analysts earnings estimates [Business Insider]"
         )
-        print("   ins           insider activity over time [Business Insider]")
-        print("   insider       insider trading of the company [Finviz]")
         print("   sec           SEC filings [Market Watch]")
-        print(
-            "   warnings      company warnings according to Sean Seah book [Market Watch]"
-        )
         print("   supplier      list of suppliers [csimarket]")
         print("   customer      list of customers [csimarket]")
         print("")
@@ -158,21 +146,13 @@ class DueDiligenceController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_red(self, other_args: List[str]):
-        """Process red command"""
-        r_view.due_diligence(other_args, self.ticker)
-
-    def call_insider(self, other_args: List[str]):
-        """Process insider command"""
-        fvz_view.insider(other_args, self.ticker)
-
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
-        fvz_view.analyst(other_args, self.ticker)
+        finviz_view.analyst(other_args, self.ticker)
 
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
-        bi_view.price_target_from_analysts(
+        business_insider_view.price_target_from_analysts(
             other_args, self.stock, self.ticker, self.start, self.interval
         )
 
@@ -182,25 +162,15 @@ class DueDiligenceController:
 
     def call_est(self, other_args: List[str]):
         """Process est command"""
-        bi_view.estimates(other_args, self.ticker)
-
-    def call_ins(self, other_args: List[str]):
-        """Process ins command"""
-        bi_view.insider_activity(
-            other_args, self.stock, self.ticker, self.start, self.interval
-        )
+        business_insider_view.estimates(other_args, self.ticker)
 
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
-        fmp_view.rating(other_args, self.ticker)
-
-    def call_warnings(self, other_args: List[str]):
-        """Process rating command"""
-        mw_view.sean_seah_warnings(other_args, self.ticker)
+        financial_modeling_prep_view.rating(other_args, self.ticker)
 
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
-        mw_view.sec_fillings(other_args, self.ticker)
+        market_watch_view.sec_fillings(other_args, self.ticker)
 
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
