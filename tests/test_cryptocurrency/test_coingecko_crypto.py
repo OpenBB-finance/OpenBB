@@ -58,9 +58,8 @@ class TestCoinGeckoAPI(TestCase):
             sample_return = json.load(f)
 
         mock_load.return_value = sample_return
-        coin = dd_pycoingecko_view.load(["-c", "bitcoin"])
         mock_return, vs = dd_pycoingecko_view.load_ta_data(
-            coin, ["--vs", "usd", "--days", "30"]
+            self.coin, ["--vs", "usd", "--days", "30"]
         )
         self.assertTrue(mock_return.shape == (31, 4))
         self.assertTrue(vs == "usd")
