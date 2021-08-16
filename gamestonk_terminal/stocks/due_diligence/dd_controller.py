@@ -14,7 +14,6 @@ from gamestonk_terminal.stocks.due_diligence import (
 from gamestonk_terminal.stocks.due_diligence import finviz_view as fvz_view
 from gamestonk_terminal.stocks.due_diligence import market_watch_view as mw_view
 from gamestonk_terminal.stocks.due_diligence import reddit_view as r_view
-from gamestonk_terminal.stocks.due_diligence import news_view
 from gamestonk_terminal.stocks.due_diligence import finnhub_view
 from gamestonk_terminal.stocks.due_diligence import csimarket_view
 from gamestonk_terminal import feature_flags as gtff
