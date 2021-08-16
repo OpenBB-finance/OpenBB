@@ -1,23 +1,14 @@
-""" FINRA View """
+""" FINRA Model """
 __docformat__ = "numpy"
 
-import argparse
 from typing import List, Tuple, Dict
 import requests
-from scipy import stats
 import pandas as pd
-from matplotlib import pyplot as plt
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    plot_autoscale,
-    check_positive,
-)
+from scipy import stats
 
 
-def getFINRAweeks(tier, is_ats) -> List:
-    """Get FINRA weeks
+def getFINRAweeks(tier: str, is_ats: bool) -> List:
+    """Get FINRA weeks. [Source: FINRA]
 
     Parameters
     ----------
@@ -27,7 +18,7 @@ def getFINRAweeks(tier, is_ats) -> List:
         ATS data if true, NON-ATS otherwise
 
     Returns
-    ----------
+    -------
     List
         List of response data
     """
@@ -62,7 +53,29 @@ def getFINRAweeks(tier, is_ats) -> List:
     return response.json() if response.status_code == 200 else list()
 
 
-def getFINRAdata(weekStartDate, tier, ticker, is_ats, offset):
+def getFINRAdata_offset(
+    weekStartDate: str, tier: str, ticker: str, is_ats: bool, offset: int
+) -> requests.Response:
+    """Get FINRA data. [Source: FINRA]
+
+    Parameters
+    ----------
+    weekStartDate : str
+        Weekly data to get FINRA data
+    tier : str
+        Stock tier between T1, T2, or OTCE
+    ticker : str
+        Stock ticker to get data from
+    is_ats : bool
+        ATS data if true, NON-ATS otherwise
+    offset : int
+        Offset in getting the data
+
+    Returns
+    -------
+    requests.Response
+        Response from FINRA data
+    """
     req_hdr = {"Accept": "application/json", "Content-Type": "application/json"}
 
     l_cmp_filters = [
@@ -111,6 +124,81 @@ def getFINRAdata(weekStartDate, tier, ticker, is_ats, offset):
     )
 
 
+def getFINRAdata(
+    weekStartDate: str, tier: str, ticker: str, is_ats: bool
+) -> Tuple[int, List]:
+    """Get FINRA data. [Source: FINRA]
+
+    Parameters
+    ----------
+    weekStartDate : str
+        Weekly data to get FINRA data
+    tier : str
+        Stock tier between T1, T2, or OTCE
+    ticker : str
+        Stock ticker to get data from
+    is_ats : bool
+        ATS data if true, NON-ATS otherwise
+
+    Returns
+    -------
+    int
+        Status code from request
+    List
+        List of response data
+    """
+    req_hdr = {"Accept": "application/json", "Content-Type": "application/json"}
+
+    l_cmp_filters = [
+        {
+            "compareType": "EQUAL",
+            "fieldName": "weekStartDate",
+            "fieldValue": weekStartDate,
+        },
+        {"compareType": "EQUAL", "fieldName": "tierIdentifier", "fieldValue": tier},
+        {
+            "compareType": "EQUAL",
+            "description": "",
+            "fieldName": "summaryTypeCode",
+            "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
+        },
+    ]
+
+    if ticker:
+        l_cmp_filters.append(
+            {
+                "compareType": "EQUAL",
+                "fieldName": "issueSymbolIdentifier",
+                "fieldValue": ticker,
+            }
+        )
+
+    req_data = {
+        "compareFilters": l_cmp_filters,
+        "delimiter": "|",
+        "fields": [
+            "issueSymbolIdentifier",
+            "totalWeeklyShareQuantity",
+            "totalWeeklyTradeCount",
+            "lastUpdateDate",
+        ],
+        "limit": 5000,
+        "quoteValues": False,
+        "sortFields": ["totalWeeklyShareQuantity"],
+    }
+
+    response = requests.post(
+        "https://api.finra.org/data/group/otcMarket/name/weeklySummary",
+        headers=req_hdr,
+        json=req_data,
+    )
+
+    return (
+        response.status_code,
+        response.json() if response.status_code == 200 else list(),
+    )
+
+
 def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
     """Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
@@ -120,7 +208,7 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dark Pools (ATS) Data
     Dict
@@ -133,12 +221,16 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
         print(f"Processing Tier {tier} ...")
         for d_week in getFINRAweeks(tier, is_ats=True):
             offset = 0
-            response = getFINRAdata(d_week["weekStartDate"], tier, "", True, offset)
+            response = getFINRAdata_offset(
+                d_week["weekStartDate"], tier, "", True, offset
+            )
             l_data = response.json()
 
             while len(response.json()) == 5000:
                 offset += 5000
-                response = getFINRAdata(d_week["weekStartDate"], tier, "", True, offset)
+                response = getFINRAdata_offset(
+                    d_week["weekStartDate"], tier, "", True, offset
+                )
                 l_data += response.json()
 
             df_ats_week = pd.DataFrame(l_data)
@@ -177,88 +269,59 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
     return df_ats, d_ats_reg
 
 
-def plot_dark_pools(ats: pd.DataFrame, top_ats_tickers: List):
-    """Plots promising tickers based on growing ATS data
+def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Get all FINRA data associated with a ticker
 
     Parameters
     ----------
-    ats : pd.DataFrame
+    ticker : str
+        Stock ticker to get data from
+
+    Returns
+    -------
+    pd.DataFrame
         Dark Pools (ATS) Data
-    top_ats_tickers : List
-        List of tickers from most promising with better linear regression slope
+    pd.DataFrame
+        OTC (Non-ATS) Data
     """
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    tiers = ["T1", "T2", "OTCE"]
 
-    for symbol in top_ats_tickers:
-        plt.plot(
-            pd.to_datetime(
-                ats[ats["issueSymbolIdentifier"] == symbol]["weekStartDate"]
-            ),
-            ats[ats["issueSymbolIdentifier"] == symbol]["totalWeeklyShareQuantity"]
-            / 1_000_000,
-        )
+    l_data = list()
+    for tier in tiers:
+        for d_week in getFINRAweeks(tier, is_ats=True):
+            status_code, response = getFINRAdata(
+                d_week["weekStartDate"], tier, ticker, True
+            )
+            if status_code == 200:
+                if response:
+                    d_data = response[0]
+                    d_data.update(d_week)
+                    l_data.append(d_data)
+                else:
+                    break
 
-    plt.legend(top_ats_tickers)
-    plt.ylabel("Total Weekly Shares [Million]")
-    plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
-    plt.title("Dark Pool (ATS) growing tickers")
-    plt.gcf().autofmt_xdate()
-    plt.xlabel("Weeks")
+    df_ats = pd.DataFrame(l_data)
+    if not df_ats.empty:
+        df_ats = df_ats.sort_values("weekStartDate")
+        df_ats = df_ats.set_index("weekStartDate")
 
-    if gtff.USE_ION:
-        plt.ion()
+    l_data = list()
+    for tier in tiers:
+        for d_week in getFINRAweeks(tier, is_ats=False):
+            status_code, response = getFINRAdata(
+                d_week["weekStartDate"], tier, ticker, False
+            )
+            if status_code == 200:
+                if response:
+                    d_data = response[0]
+                    d_data.update(d_week)
+                    l_data.append(d_data)
+                else:
+                    break
 
-    plt.show()
+    df_otc = pd.DataFrame(l_data)
+    if not df_otc.empty:
+        df_otc = df_otc.sort_values("weekStartDate")
+        df_otc = df_otc.set_index("weekStartDate")
 
-
-def dark_pool(other_args: List[str]):
-    """Display dark pool (ATS) data of tickers with growing trades activity
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="darkpool",
-        description="Display dark pool (ATS) data of tickers with growing trades activity",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=1000,
-        help="Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity.",
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        action="store",
-        dest="n_top",
-        type=check_positive,
-        default=5,
-        help="List of tickers from most promising with better linear regression slope.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_ats, d_ats_reg = getATSdata(ns_parser.n_num)
-
-        top_ats_tickers = list(
-            dict(
-                sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)
-            ).keys()
-        )[: ns_parser.n_top]
-
-        plot_dark_pools(df_ats, top_ats_tickers)
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    return df_ats, df_otc

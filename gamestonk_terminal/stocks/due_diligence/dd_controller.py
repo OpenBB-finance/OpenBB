@@ -30,7 +30,7 @@ class DueDiligenceController:
         "help",
         "q",
         "quit",
-        "short",
+        "sec",
         "rating",
         "pt",
         "rot",
