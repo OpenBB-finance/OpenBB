@@ -51,13 +51,13 @@ class TechnicalAnalysisController:
         "rsi",
         "stoch",
         "fisher",
+        "cg",
         "adx",
         "aroon",
         "bbands",
         "ad",
         "obv",
         "fib",
-        "cg",
     ]
 
     def __init__(

@@ -16,6 +16,8 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
     - exponential moving average
   * [sma](#sma)
     - simple moving average
+  * [zlma](#zlma)
+    - zero lag moving average
   * [vwap](#vwap)
     - volume weighted average price
 
@@ -28,6 +30,10 @@ This menu aims to perform a technical analysis on a pre-loaded ticker chart, and
     - relative strength index
   * [stoch](#stoch)
     - stochastic oscillator
+  * [fisher](#fisher)
+    - fisher transform
+  * [cg](#cg)
+    - centre of gravity
 
 [TREND](#TREND)
   * [adx](#adx)

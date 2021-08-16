@@ -167,10 +167,6 @@ class DueDiligenceController:
         """Process insider command"""
         fvz_view.insider(other_args, self.ticker)
 
-    def call_news(self, other_args: List[str]):
-        """Process news command"""
-        news_view.news(other_args, self.ticker)
-
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
         fvz_view.analyst(other_args, self.ticker)
