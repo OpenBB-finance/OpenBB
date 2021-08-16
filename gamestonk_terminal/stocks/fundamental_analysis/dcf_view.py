@@ -548,7 +548,28 @@ class CreateExcelFA:
             num_form=dcf_model.fmt_acct,
         )
         dcf_model.set_cell(self.ws2, "A15", "Firm value without debt")
-        dcf_model.set_cell(self.ws2, "B15", "=B13-B14", num_form=dcf_model.fmt_acct)
+        dcf_model.set_cell(
+            self.ws2,
+            "B15",
+            (
+                f"=max(B13-B14,"
+                f"Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')})"
+            ),
+            num_form=dcf_model.fmt_acct,
+        )
+        dcf_model.set_cell(
+            self.ws2,
+            "C15",
+            (
+                f"=if((B13-B14)>"
+                f"(Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')}),"
+                '"","Note: Total assets minus total liabilities exceeds projected firm value without debt.'
+                ' Value shown is total assets minus total liabilities.")'
+            ),
+            font=dcf_model.red,
+        )
         dcf_model.set_cell(self.ws2, "A16", "Shares Outstanding")
         dcf_model.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
         dcf_model.set_cell(self.ws2, "A17", "Shares Price")
@@ -557,6 +578,8 @@ class CreateExcelFA:
         )
         dcf_model.set_cell(self.ws2, "A18", "Actual Price")
         dcf_model.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
+
+        # Handle unexpected situation:
 
     def create_header(self, ws: Workbook):
         for i in range(10):
