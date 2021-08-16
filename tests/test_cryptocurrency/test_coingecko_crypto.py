@@ -1,48 +1,48 @@
-from unittest import mock, TestCase
 import json
+from unittest import TestCase, mock
 
 import vcr
-
 from pycoingecko import CoinGeckoAPI
+
+from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model import Coin
 from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
-    load,
-    ta,
-    chart,
-    info,
-    web,
-    social,
-    dev,
     ath,
     atl,
-    score,
     bc,
-    market,
-    holdings_overview,
-    holdings_companies_list,
-    gainers,
-    losers,
-    discover,
-    news,
     categories,
+    chart,
+    derivatives,
+    dev,
+    discover,
+    exchange_rates,
+    exchanges,
+    gainers,
+    global_defi_info,
+    global_market_info,
+    holdings_companies_list,
+    holdings_overview,
+    indexes,
+    info,
+    load,
+    losers,
+    market,
+    news,
+    nft_market_status,
+    nft_of_the_day,
+    platforms,
+    products,
     recently_added,
+    score,
+    social,
     stablecoins,
-    yfarms,
-    top_volume_coins,
+    ta,
     top_defi_coins,
     top_dex,
     top_nft,
-    nft_of_the_day,
-    nft_market_status,
-    exchanges,
-    platforms,
-    products,
-    indexes,
-    derivatives,
-    exchange_rates,
-    global_market_info,
-    global_defi_info,
+    top_volume_coins,
+    web,
+    yfarms,
 )
-from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model import Coin
 from tests.helpers import check_print
 
 

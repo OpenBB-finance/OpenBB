@@ -9,14 +9,9 @@ import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import (
-    get_flair,
-    parse_known_args_and_warn,
-)
+from gamestonk_terminal.etf import screener_view, stockanalysis_view, wsj_view
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.etf import stockanalysis_view
-from gamestonk_terminal.etf import screener_view
-from gamestonk_terminal.etf import wsj_view
 
 
 class ETFController:

@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from finvizfinance.group import valuation, performance, spectrum
+from finvizfinance.group import performance, spectrum, valuation
 
 
 def get_valuation_performance_data(group: str, data_type: str) -> pd.DataFrame:

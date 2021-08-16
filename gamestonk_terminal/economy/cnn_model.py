@@ -2,9 +2,10 @@
 __docformat__ = "numpy"
 
 from typing import Tuple
+
+import matplotlib.pyplot as plt
 from fear_greed_index.CNNFearAndGreedIndex import CNNFearAndGreedIndex
 from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
 
 register_matplotlib_converters()
 

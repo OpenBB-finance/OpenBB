@@ -5,21 +5,21 @@ __docformat__ = "numpy"
 import argparse
 import os
 import sys
+
 from prompt_toolkit.completion import NestedCompleter
 
-from gamestonk_terminal.terminal_helper import (
-    print_goodbye,
-    update_terminal,
-    about_us,
-    bootup,
-    reset,
-    check_api_keys,
-)
+from gamestonk_terminal import config_terminal
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal import config_terminal
-
+from gamestonk_terminal.terminal_helper import (
+    about_us,
+    bootup,
+    check_api_keys,
+    print_goodbye,
+    reset,
+    update_terminal,
+)
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 

@@ -4,7 +4,9 @@ __docformat__ = "numpy"
 import argparse
 import os
 import webbrowser
+
 from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
