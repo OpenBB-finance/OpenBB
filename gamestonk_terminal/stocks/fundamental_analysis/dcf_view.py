@@ -91,8 +91,8 @@ class CreateExcelFA:
         self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
         self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
-        self.info = yf.Ticker(ticker).info
-        self.bond = dcf_model.get_rf()
+        self.info: pd.DataFrame = yf.Ticker(ticker).info
+        self.t_bill: float = dcf_model.get_rf()
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -502,7 +502,12 @@ class CreateExcelFA:
             self.ws2, f"{c1}{r}", "Discount Rate", alignment=dcf_model.center
         )
         dcf_model.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
-        dcf_model.set_cell(self.ws2, f"{c2}{r+1}", 0.02, num_form=FORMAT_PERCENTAGE_00)
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+1}",
+            float(self.t_bill) / 100,
+            num_form=FORMAT_PERCENTAGE_00,
+        )
         dcf_model.set_cell(
             self.ws2, f"{c3}{r+1}", "Eventually get from 10 year t-bond scraper"
         )

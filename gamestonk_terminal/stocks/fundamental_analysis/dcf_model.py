@@ -57,11 +57,10 @@ def get_rf():
     """Uses the fiscaldata.gov API"""
     base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
     end = "/v2/accounting/od/avg_interest_rates"
-    response = requests.get(base + end)
-
-    for item in response.json()["data"]:
-        print(item, "\n")
-    return response.content
+    filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
+    response = requests.get(base + end + filters)
+    latest = response.json()["data"][0]
+    return latest["avg_interest_rate_amt"]
 
 
 letters = [
