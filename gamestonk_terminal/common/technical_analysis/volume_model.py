@@ -2,21 +2,21 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
 from datetime import timedelta
+from typing import List
 
 import matplotlib.pyplot as plt
-import pandas_ta as ta
 import pandas as pd
-
+import pandas_ta as ta
 from pandas.plotting import register_matplotlib_converters
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     parse_known_args_and_warn,
     plot_autoscale,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 

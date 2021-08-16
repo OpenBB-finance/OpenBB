@@ -3,18 +3,18 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import pandas as pd
+
 import matplotlib.pyplot as plt
+import pandas as pd
 from tabulate import tabulate
 
+from gamestonk_terminal import config_plot as cfp
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     valid_date,
 )
-
-from gamestonk_terminal import config_plot as cfp
-from gamestonk_terminal import feature_flags as gtff
 
 
 def fibinocci_retracement(other_args: List[str], data: pd.DataFrame, ticker: str):

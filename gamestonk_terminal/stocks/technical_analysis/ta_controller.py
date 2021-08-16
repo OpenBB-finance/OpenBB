@@ -10,7 +10,11 @@ import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive_list,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
     finviz_view,
@@ -20,11 +24,11 @@ from gamestonk_terminal.stocks.technical_analysis import (
 )
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
-    momentum,
-    overlap,
+    momentum_model,
+    overlap_view,
     trend_indicators,
-    volatility,
-    volume,
+    volatility_model,
+    volume_model,
 )
 
 
@@ -205,7 +209,6 @@ custom:
             all around the world. [Source:  https://finbrain.tech]
         """,
         )
-
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -305,7 +308,6 @@ custom:
             choices=["1", "5", "15", "30", "60", "D", "W", "M"],
             help="Plot resolution to look for pattern signals",
         )
-
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -332,43 +334,220 @@ custom:
     # COMMON
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
-        overlap.ema(other_args, self.s_stock, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ema",
+            description="""
+            The Exponential Moving Average is a staple of technical
+            analysis and is used in countless technical indicators. In a Simple Moving
+            Average, each value in the time period carries equal weight, and values outside
+            of the time period are not included in the average. However, the Exponential
+            Moving Average is a cumulative calculation, including all data. Past values have
+            a diminishing contribution to the average, while more recent values have a greater
+            contribution. This method allows the moving average to be more responsive to changes
+            in the data.
+        """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20, 50],
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma="EMA",
+                s_ticker=self.s_stock,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
-        overlap.sma(other_args, self.s_stock, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sma",
+            description="""
+                Moving Averages are used to smooth the data in an array to
+                help eliminate noise and identify trends. The Simple Moving Average is literally
+                the simplest form of a moving average. Each output value is the average of the
+                previous n values. In a Simple Moving Average, each value in the time period carries
+                equal weight, and values outside of the time period are not included in the average.
+                This makes it less responsive to recent changes in the data, which can be useful for
+                filtering out those changes.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20, 50],
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
-    def call_vwap(self, other_args: List[str]):
-        """Process vwap command"""
-        overlap.vwap(other_args, self.s_stock, self.interval, self.stock)
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma="SMA",
+                s_ticker=self.s_stock,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_zlma(self, other_args: List[str]):
         """Process zlma command"""
-        overlap.zlma(other_args, self.s_stock, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="zlma",
+            description="""
+                The zero lag exponential moving average (ZLEMA) indicator
+                was created by John Ehlers and Ric Way. The idea is do a
+                regular exponential moving average (EMA) calculation but
+                on a de-lagged data instead of doing it on the regular data.
+                Data is de-lagged by removing the data from "lag" days ago
+                thus removing (or attempting to) the cumulative effect of
+                the moving average.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20],
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma="ZLMA",
+                s_ticker=self.s_stock,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_vwap(self, other_args: List[str]):
+        """Process vwap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vwap",
+            description="""
+                The Volume Weighted Average Price that measures the average typical price
+                by volume.  It is typically used with intraday charts to identify general direction.
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            # Daily
+            if self.interval == "1440min":
+                print("VWAP should be used with intraday data. \n")
+                return
+
+            overlap_view.view_vwap(
+                s_ticker=self.s_stock,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
-        momentum.cci(other_args, self.s_stock, self.interval, self.stock)
+        momentum_model.cci(other_args, self.s_stock, self.interval, self.stock)
 
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
-        momentum.macd(other_args, self.s_stock, self.interval, self.stock)
+        momentum_model.macd(other_args, self.s_stock, self.interval, self.stock)
 
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
-        momentum.rsi(other_args, self.s_stock, self.interval, self.stock)
+        momentum_model.rsi(other_args, self.s_stock, self.interval, self.stock)
 
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
-        momentum.stoch(other_args, self.s_stock, self.interval, self.stock)
+        momentum_model.stoch(other_args, self.s_stock, self.interval, self.stock)
 
     def call_fisher(self, other_args: List[str]):
         """Process fisher command"""
-        momentum.fisher(other_args, self.s_stock, self.interval, self.stock)
+        momentum_model.fisher(other_args, self.s_stock, self.interval, self.stock)
 
     def call_cg(self, other_args: List[str]):
         """Process cg command"""
-        momentum.cg(other_args, self.s_stock, self.interval, self.stock)
+        momentum_model.cg(other_args, self.s_stock, self.interval, self.stock)
 
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
@@ -380,15 +559,15 @@ custom:
 
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
-        volatility.bbands(other_args, self.s_stock, self.interval, self.stock)
+        volatility_model.bbands(other_args, self.s_stock, self.interval, self.stock)
 
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
-        volume.ad(other_args, self.s_stock, self.interval, self.stock)
+        volume_model.ad(other_args, self.s_stock, self.interval, self.stock)
 
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
-        volume.obv(other_args, self.s_stock, self.interval, self.stock)
+        volume_model.obv(other_args, self.s_stock, self.interval, self.stock)
 
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
