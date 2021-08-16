@@ -13,14 +13,12 @@ from gamestonk_terminal.stocks.due_diligence import (
     finviz_view,
     market_watch_view,
     quandl_view,
-    news_view,
     finra_view,
     sec_view,
     stockgrid_dd_view,
     finnhub_view,
     csimarket_view,
 )
-
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -41,7 +39,6 @@ class DueDiligenceController:
         "pt",
         "rot",
         "est",
-        "news",
         "analyst",
         "sec",
         "dp",
@@ -97,7 +94,6 @@ class DueDiligenceController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
-        print("   news          latest news of the company [News API]")
         print("   analyst       analyst prices and ratings of the company [Finviz]")
         print(
             "   rating        rating of the company from strong sell to strong buy [FMP]"
@@ -162,10 +158,6 @@ class DueDiligenceController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
-
-    def call_news(self, other_args: List[str]):
-        """Process news command"""
-        news_view.news(other_args, self.ticker)
 
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
