@@ -295,6 +295,10 @@ Start by selecting a context that you would like to work with.  If you want to r
 ```
 stocks
 ```
+Alternatively, you can set a default context to be loaded in the confif_terminal file by setting
+```
+DEFAULT_CONTEXT = "stocks"
+```
 
 From this menu, you can load a ticker of interest (note the -t is optional):
 ```
