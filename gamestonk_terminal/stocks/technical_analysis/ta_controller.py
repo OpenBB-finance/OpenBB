@@ -16,6 +16,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive_list,
     check_positive,
+    valid_date,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.technical_analysis import (
@@ -854,9 +855,58 @@ custom:
 
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
-        custom_indicators_view.fibinocci_retracement(
-            other_args, self.stock, self.s_stock
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fib",
+            description="Calculates the fibinocci retracement levels",
         )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            type=int,
+            help="Days to lookback for retracement",
+            default=120,
+        )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            custom_indicators_view.fibinocci_retracement(
+                s_ticker=self.s_stock,
+                df_stock=self.stock,
+                period=ns_parser.period,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(s_stock: str, start: datetime, interval: str, stock: pd.DataFrame):
