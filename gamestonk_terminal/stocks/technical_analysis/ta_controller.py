@@ -5,6 +5,7 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
@@ -29,7 +30,7 @@ from gamestonk_terminal.common.technical_analysis import (
     overlap_view,
     trend_indicators_view,
     volatility_view,
-    volume_model,
+    volume_view,
 )
 
 
@@ -763,11 +764,93 @@ custom:
 
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
-        volume_model.ad(other_args, self.s_stock, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ad",
+            description="""
+                The Accumulation/Distribution Line is similar to the On Balance
+                Volume (OBV), which sums the volume times +1/-1 based on whether the close is
+                higher than the previous close. The Accumulation/Distribution indicator, however
+                multiplies the volume by the close location value (CLV). The CLV is based on the
+                movement of the issue within a single bar and can be +1, -1 or zero. \n \n
+                The Accumulation/Distribution Line is interpreted by looking for a divergence in
+                the direction of the indicator relative to price. If the Accumulation/Distribution
+                Line is trending upward it indicates that the price may follow. Also, if the
+                Accumulation/Distribution Line becomes flat while the price is still rising (or falling)
+                then it signals an impending flattening of the price.
+            """,
+        )
+        parser.add_argument(
+            "--open",
+            action="store_true",
+            default=False,
+            dest="b_use_open",
+            help="uses open value of stock",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            volume_view.plot_ad(
+                s_ticker=self.s_stock,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                use_open=ns_parser.b_use_open,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
-        volume_model.obv(other_args, self.s_stock, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="obv",
+            description="""
+                The On Balance Volume (OBV) is a cumulative total of the up and
+                down volume. When the close is higher than the previous close, the volume is added
+                to the running total, and when the close is lower than the previous close, the volume
+                is subtracted from the running total. \n \n To interpret the OBV, look for the OBV
+                to move with the price or precede price moves. If the price moves before the OBV,
+                then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the
+                OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            volume_view.plot_obv(
+                s_ticker=self.s_stock,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
