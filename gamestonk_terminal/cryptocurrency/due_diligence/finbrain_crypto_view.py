@@ -1,18 +1,19 @@
 """Finbrain Crypto Sentiment Analysis"""
 __docformat__ = "numpy"
-import argparse
+
 import os
+import argparse
 from typing import List
-
 import pandas as pd
-
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
     get_sentiment,
     plot_sentiment,
     sentiment_coloring,
 )
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -72,7 +73,7 @@ def crypto_sentiment_analysis(other_args: List[str]):
         )  # Currently only USD pairs are available
 
         if df_sentiment.empty:
-            print(f"Couldn't find Sentiment Data for {coin}")
+            print(f"Couldn't find Sentiment Data for {coin}\n")
             return
 
         plot_sentiment(df_sentiment, coin)
@@ -82,11 +83,11 @@ def crypto_sentiment_analysis(other_args: List[str]):
             print(
                 df_sentiment["Sentiment Analysis"]
                 .apply(sentiment_coloring, last_val=0)
-                .to_string()
+                .to_string(),
+                "\n",
             )
         else:
-            print(df_sentiment.to_string())
-        print("")
+            print(df_sentiment.to_string(), "\n")
 
     except Exception as e:
         print(e, "\n")

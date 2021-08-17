@@ -1,13 +1,57 @@
+"""CoinGecko helpers"""
+__docformat__ = "numpy"
+
 import json
 import datetime as dt
 from datetime import timezone
-from typing import Sequence, Optional, Any, Dict, Tuple
+from typing import Sequence, Optional, Any, Dict, Tuple, Union
 import textwrap
+import requests
+from bs4 import BeautifulSoup
 import pandas as pd
 from dateutil import parser
 
 
-def replace_underscores_to_newlines(cols: list, line: int = 13):
+GECKO_BASE_URL = "https://www.coingecko.com"
+
+DENOMINATION = ("usd", "btc", "eth")
+
+
+def get_btc_price() -> float:
+    """Get BTC/USD price from CoinGecko API
+
+    Returns
+    -------
+    str
+        latest bitcoin price in usd.
+    """
+    req = requests.get(
+        "https://api.coingecko.com/api/v3/simple/"
+        "price?ids=bitcoin&vs_currencies=usd&include_market_cap"
+        "=false&include_24hr_vol"
+        "=false&include_24hr_change=false&include_last_updated_at=false"
+    )
+    return req.json()["bitcoin"]["usd"]
+
+
+def scrape_gecko_data(url: str) -> BeautifulSoup:
+    """Helper method that scrape Coin Gecko site.
+
+    Parameters
+    ----------
+    url : str
+        coin gecko url to scrape e.g: "https://www.coingecko.com/en/discover"
+
+    Returns
+    -------
+        BeautifulSoup object
+    """
+
+    req = requests.get(url)
+    return BeautifulSoup(req.text, features="lxml")
+
+
+def replace_underscores_to_newlines(cols: list, line: int = 13) -> list:
     """Helper method that replace underscores to white space and breaks it to new line
 
     Parameters
@@ -26,7 +70,7 @@ def replace_underscores_to_newlines(cols: list, line: int = 13):
     ]
 
 
-def find_discord(item: list):
+def find_discord(item: list) -> Union[str, Any]:
     if isinstance(item, list) and len(item) > 0:
         discord = [chat for chat in item if "discord" in chat]
         if len(discord) > 0:
@@ -48,14 +92,14 @@ def filter_list(lst: list) -> list:
     return lst
 
 
-def calculate_time_delta(date: dt.datetime):
+def calculate_time_delta(date: dt.datetime) -> int:
     now = dt.datetime.now(timezone.utc)
     if not isinstance(date, dt.datetime):
         date = parser.parse(date)
     return (now - date).days
 
 
-def get_eth_addresses_for_cg_coins(file):  # pragma: no cover
+def get_eth_addresses_for_cg_coins(file) -> pd.DataFrame:  # pragma: no cover
     with open(file) as f:
         data = json.load(f)
         df = pd.DataFrame(data)
@@ -65,19 +109,19 @@ def get_eth_addresses_for_cg_coins(file):  # pragma: no cover
         return df
 
 
-def clean_question_marks(dct: dict):
+def clean_question_marks(dct: dict) -> None:
     if isinstance(dct, dict):
         for k, v in dct.items():
             if v == "?":
                 dct[k] = None
 
 
-def replace_qm(df):
+def replace_qm(df: pd.DataFrame) -> pd.DataFrame:
     df.replace({"?": None, " ?": None}, inplace=True)
     return df
 
 
-def get_url(url, elem):  # pragma: no cover
+def get_url(url: str, elem: BeautifulSoup):  # pragma: no cover
     return url + elem.find("a")["href"]
 
 
