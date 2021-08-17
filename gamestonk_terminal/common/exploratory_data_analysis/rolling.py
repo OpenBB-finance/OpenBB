@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import matplotlib
 import matplotlib.pyplot as plt
 import pandas_ta as ta
 import pandas as pd
