@@ -19,6 +19,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 
@@ -93,14 +94,20 @@ Due Diligence:
 
 {stock_text}
 
-    analyst       analyst prices and ratings of the company [Finviz]
-    rating        rating of the company from strong sell to strong buy [FMP]
-    pt            price targets over time [Business Insider]
-    rot           rating over timefrom strong sell to strong buy [Finnhub]
-    est           quarter and year analysts earnings estimates [Business Insider]
-    sec           SEC filings [Market Watch]
-    supplier      list of suppliers [csimarket]
-    customer      list of customers [csimarket]
+Finviz:
+    analyst       analyst prices and ratings of the company
+FMP:
+    rating        rating of the company from strong sell to strong buy
+Finnhub:
+    rot           rating over timefrom strong sell to strong buy
+Business Insider:
+    pt            price targets over time
+    est           quarter and year analysts earnings estimates
+Market Watch:
+    sec           SEC filings
+csimarket:
+    supplier      list of suppliers
+    customer      list of customers
         """
 
         print(help_text)
@@ -167,7 +174,6 @@ Due Diligence:
             default=True,
             help="Remove coloring",
         )
-
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -180,17 +186,59 @@ Due Diligence:
 
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
-        business_insider_view.price_target_from_analysts(
-            other_args, self.stock, self.ticker, self.start, self.interval
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="pt",
+            description="""Prints price target from analysts. [Source: Business Insider]""",
         )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of latest price targets from analysts to print.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            business_insider_view.price_target_from_analysts(
+                ticker=self.ticker,
+                start=self.start,
+                interval=self.interval,
+                stock=self.stock,
+                num=ns_parser.n_num,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_est(self, other_args: List[str]):
+        """Process est command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="est",
+            description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            business_insider_view.estimates(
+                ticker=self.ticker,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_rot(self, other_args: List[str]):
         """Process rot command"""
         finnhub_view.rating_over_time(other_args, self.ticker)
-
-    def call_est(self, other_args: List[str]):
-        """Process est command"""
-        business_insider_view.estimates(other_args, self.ticker)
 
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
