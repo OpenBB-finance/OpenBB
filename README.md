@@ -291,21 +291,30 @@ Note that it is not necessary to have a valid Alpha Vantage key to get daily OHL
 
 ### Usage
 
-Start by loading a ticker of interest:
+Start by selecting a context that you would like to work with.  If you want to research stocks, you would start with
+```
+stocks
+```
+Alternatively, you can set a default context to be loaded in the confif_terminal file by setting
+```
+DEFAULT_CONTEXT = "stocks"
+```
+
+From this menu, you can load a ticker of interest (note the -t is optional):
 ```
 load -t GME
 ```
-The menu will expand to all its menus since a ticker has been loaded.
+At this point, all available menus will be in full color and available to use.
 
-View the historical data of this stock:
+To look at the candle chart of your stock, run:
 ```
-view
+candle
 ```
 Slice the historical data by loading ticker and setting a starting point, e.g.
 ```
 load -t GME -s 2020-06-04
 ```
-Enter in technical analysis menu with
+To perform technical analysis, first enter the menu
 ```
 ta
 ```
@@ -325,6 +334,8 @@ sma -l 10
 Example:
 
 <img src='/images/usage.gif' width="1000">
+
+To return to the stocks menu to perform more research in a different menu, just use the `q` command.  From the stocks menu, using `q` again will return you to the main menu where you can enter a different context (crypto for example).
 
 
 <!-- CONTRIBUTING -->
