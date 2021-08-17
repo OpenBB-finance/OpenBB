@@ -143,20 +143,19 @@ def spread(
 def quantile(
     other_args: List[str], s_ticker: str, s_interval: str, df_stock: pd.DataFrame
 ):
-    """Median & Quantile
+    """Overlay Median & Quantile
 
     Parameters
     ----------
-    other_args:List[str]
+    other_args: List[str]
         Argparse arguments
     s_ticker: str
         Ticker
     s_interval: str
-        Stock time interval
+        Data interval
     df_stock: pd.DataFrame
-        Dataframe of prices
+        Dataframe of dates and prices
     """
-
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -170,7 +169,7 @@ def quantile(
 
             By default, q is set at 0.5, which effectively is median. Change q to
             get the desired quantile (0<q<1).
-        """,
+         """,
     )
 
     parser.add_argument(
@@ -182,6 +181,7 @@ def quantile(
         default=14,
         help="length",
     )
+
     parser.add_argument(
         "-o",
         "--offset",
@@ -206,7 +206,12 @@ def quantile(
         if not ns_parser:
             return
 
-        # Daily
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        if s_interval == "1440min":
+            plt.plot(df_stock.index, df_stock["Adj Close"].values, color="fuchsia")
+        else:
+            plt.plot(df_stock.index, df_stock["Close"].values, color="fuchsia")
+        ax.set_title(f"{s_ticker} Median & Quantile")
         if s_interval == "1440min":
             df_ta_ = ta.median(
                 close=df_stock["Adj Close"],
@@ -214,13 +219,11 @@ def quantile(
                 offset=ns_parser.n_offset,
             ).dropna()
             df_ta = ta.quantile(
-                close=df_stock["Adj Close"],
+                df_stock["Adj Close"],
                 length=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 q=ns_parser.f_quantile,
             ).dropna()
-
-        # Intraday
         else:
             df_ta_ = ta.median(
                 close=df_stock["Adj Close"],
@@ -228,31 +231,21 @@ def quantile(
                 offset=ns_parser.n_offset,
             ).dropna()
             df_ta = ta.quantile(
-                close=df_stock["Close"],
-                length=ns_parser.n_length,
+                df_stock["Close"],
+                ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 q=ns_parser.f_quantile,
             ).dropna()
+        plt.plot(df_ta_.index, df_ta_.values, "g", lw=1, label="median")
+        plt.plot(df_ta.index, df_ta.values, "b", lw=1, label="quantile")
 
-        fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax = axes[0]
-        ax.set_title(f"{s_ticker} Quantile")
-        if s_interval == "1440min":
-            ax.plot(df_stock.index, df_stock["Adj Close"].values, "fuchsia", lw=1)
-        else:
-            ax.plot(df_stock.index, df_stock["Close"].values, "fuchsia", lw=1)
-        ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax.set_ylabel("Share Price ($)")
-        ax.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax.minorticks_on()
-        ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-        ax2 = axes[1]
-        ax2.plot(df_ta_.index, df_ta_.values, "g", lw=1, label="median")
-        ax2.plot(df_ta.index, df_ta.values, "b", lw=1, label="quantile")
-        ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-        ax2.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax2.minorticks_on()
-        ax2.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.title(f"Median & Quantile on {s_ticker}")
+        plt.xlim(df_stock.index[0], df_stock.index[-1])
+        plt.xlabel("Time")
+        plt.ylabel(f"{s_ticker} Price ($)")
+        plt.grid(b=True, which="major", color="#666666", linestyle="-")
+        plt.minorticks_on()
+        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
@@ -262,7 +255,6 @@ def quantile(
 
         plt.legend()
         plt.show()
-
         print("")
 
     except Exception as e:
