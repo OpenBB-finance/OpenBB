@@ -116,7 +116,7 @@ def check_positive(value) -> int:
     return ivalue
 
 
-def check_proportion_range(num: float) -> float:
+def check_proportion_range(num) -> float:
     """Checks if float is between 0 and 1. If so, return it.
 
     Parameters
@@ -136,7 +136,7 @@ def check_proportion_range(num: float) -> float:
     maxi = 1.0
     mini = 0.0
     if num < mini or num > maxi:
-        raise argparse.ArgumentTypeError(f"must be in range [{mini},{maxi}]")
+        raise argparse.ArgumentTypeError("Value must be between 0 and 1")
     return num
 
 
