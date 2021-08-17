@@ -10,8 +10,8 @@ from tabulate import tabulate
 
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.common.technical_analysis import custom_indicators_model
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 
 def fibinocci_retracement(

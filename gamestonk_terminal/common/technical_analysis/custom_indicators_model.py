@@ -1,7 +1,8 @@
 """Custom Indicator Models"""
 __docformat__ = "numpy"
 
-from typing import Tuple, Any
+from typing import Any, Tuple
+
 import pandas as pd
 
 
