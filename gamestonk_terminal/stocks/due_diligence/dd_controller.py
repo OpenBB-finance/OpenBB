@@ -192,6 +192,12 @@ csimarket:
             description="""Prints price target from analysts. [Source: Business Insider]""",
         )
         parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
             "-n",
             "--num",
             action="store",
@@ -199,6 +205,14 @@ csimarket:
             type=check_positive,
             default=10,
             help="Number of latest price targets from analysts to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
         )
 
         try:
@@ -212,6 +226,8 @@ csimarket:
                 interval=self.interval,
                 stock=self.stock,
                 num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
             )
 
         except Exception as e:
@@ -224,6 +240,14 @@ csimarket:
             prog="est",
             description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -231,6 +255,7 @@ csimarket:
 
             business_insider_view.estimates(
                 ticker=self.ticker,
+                export=ns_parser.export,
             )
 
         except Exception as e:
