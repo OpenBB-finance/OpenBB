@@ -1,139 +1,162 @@
 from unittest import TestCase, mock
+import sys
+import io
 
-import vcr
-
-from gamestonk_terminal.cryptocurrency.coinpaprika import coinpaprika_view
-from tests.helpers import check_print
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    coinpaprika_view as dd_coinpaprika_view,
+)
+from gamestonk_terminal.cryptocurrency.discovery import (
+    coinpaprika_view as disc_coinpaprika_view,
+)
+from gamestonk_terminal.cryptocurrency.overview import (
+    coinpaprika_view as ov_coinpaprika_view,
+)
 
 
 class TestCoinPaprikaView(TestCase):
-    @check_print(assert_in="market_cap_usd")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_global_markets.yaml"
-    )
     def test_global_markets(self):
-        coinpaprika_view.global_market([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.global_market([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("market_cap_usd", capt)
 
-    @check_print(assert_in="rank")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_coins.yaml"
-    )
     def test_coins(self):
-        coinpaprika_view.coins([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        disc_coinpaprika_view.coins([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("rank", capt)
 
-    @check_print(assert_in="Displaying data vs USD")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_all_coins_info.yaml"
-    )
+    def test_all_coins_market_info(self):
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.all_coins_market_info([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("Displaying data vs USD", capt)
+
     def test_all_coins_info(self):
-        coinpaprika_view.all_coins_info([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.all_coins_info([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("Displaying data vs USD", capt)
 
-    @check_print(assert_in="Displaying data vs USD")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_all_exchanges.yaml"
-    )
     def test_all_exchanges(self):
-        coinpaprika_view.all_exchanges([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.all_exchanges([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("Displaying data vs USD", capt)
 
-    @check_print(assert_in="category")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_search.yaml"
-    )
     def test_search(self):
-        coinpaprika_view.search(["-q", "bt"])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        disc_coinpaprika_view.search(["-q", "bt"])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("category", capt)
 
-    @check_print(assert_in="platform_id")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_all_platforms.yaml"
-    )
     def test_all_platforms(self):
-        coinpaprika_view.all_platforms([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.all_platforms([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("platform_id", capt)
 
-    @check_print(assert_in="active")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_contracts.yaml"
-    )
     def test_contracts(self):
-        coinpaprika_view.contracts([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.contracts([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("active", capt)
 
-    @check_print(assert_in="index")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_find.yaml"
-    )
     def test_find(self):
-        coinpaprika_view.find(["-c", "BTC"])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        disc_coinpaprika_view.find(["-c", "BTC"])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("index", capt)
 
-    @check_print(assert_in="Couldn't find")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_twitter.yaml"
-    )
     def test_twitter(self):
-        coinpaprika_view.twitter("eth-ethereum", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.twitter("eth-ethereum", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("Couldn't find", capt)
 
-    @check_print(assert_in="description")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_events.yaml"
-    )
     def test_events(self):
-        coinpaprika_view.events("eth-ethereum", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.events("eth-ethereum", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("description", capt)
 
-    @check_print(assert_in="name")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_exchanges.yaml"
-    )
     def test_exchanges(self):
-        coinpaprika_view.exchanges("btc-bitcoin", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.exchanges("btc-bitcoin", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("name", capt)
 
-    @check_print(assert_in="exchange")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_markets.yaml"
-    )
     def test_markets(self):
-        coinpaprika_view.markets("eth-ethereum", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.markets("eth-ethereum", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("exchange", capt)
 
-    @check_print(assert_in="\n")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_chart.yaml"
-    )
     @mock.patch("matplotlib.pyplot.show")
     def test_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        coinpaprika_view.chart("btc-bitcoin", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.chart("btc-bitcoin", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("\n", capt)
 
-    @check_print(assert_in="base_currency_name")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_exchange_markets.yaml"
-    )
     def test_exchange_markets(self):
-        coinpaprika_view.exchange_markets([])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        ov_coinpaprika_view.exchange_markets([])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("base_currency_name", capt)
 
-    @check_print(assert_in="asset_platform_id")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_price_supply.yaml"
-    )
     def price_supply(self):
-        coinpaprika_view.price_supply("btc", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.price_supply("btc", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("asset_platform_id", capt)
 
-    @check_print()
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_load.yaml"
-    )
     def test_load(self):
-        value = coinpaprika_view.load(["-c", "BTC"])
+        value = dd_coinpaprika_view.load(["-c", "BTC"])
         self.assertEqual(value, "btc-bitcoin")
 
-    # @check_print()
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_ta.yaml",
-        record_mode="new_episodes",
-    )
-    def test_ta(self):
-        value = coinpaprika_view.ta("eth-ethereum", [])
+    def test_load_ta_data(self):
+        value = dd_coinpaprika_view.load_ta_data("eth-ethereum", [])
+        print(value[0])
         self.assertIn("Open", value[0])
 
-    @check_print(assert_in="Metric")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coinpaprika/test_basic.yaml"
-    )
     def test_basic(self):
-        coinpaprika_view.basic("BTC", [])
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        dd_coinpaprika_view.basic("BTC", [])
+        sys.stdout = sys.__stdout__
+        capt = capturedOutput.getvalue()
+        self.assertIn("Metric", capt)
