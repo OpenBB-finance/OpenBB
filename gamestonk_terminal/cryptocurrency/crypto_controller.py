@@ -179,6 +179,7 @@ What do you want to do?
 
     def call_ta(self, other_args):
         """Process ta command"""
+        # TODO: Play with this to get correct usage
         if self.current_coin:
             self.current_df, self.current_currency = getattr(
                 self.DD_VIEWS_MAPPING[self.source], "load_ta_data"
@@ -187,7 +188,7 @@ What do you want to do?
                 try:
                     quit = ta_controller.menu(
                         stock=self.current_df,
-                        ticker=self.current_coin,
+                        s_stock=self.current_coin,
                         start=self.current_df.index[0],
                         interval="",
                     )
