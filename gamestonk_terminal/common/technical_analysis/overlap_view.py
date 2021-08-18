@@ -29,7 +29,7 @@ def view_ma(
 
     Parameters
     ----------
-    ma: str
+    ma_type: str
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
     s_ticker : str
         Ticker
@@ -37,7 +37,7 @@ def view_ma(
         Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
-    window_length : int
+    window_length : List[int]
         Length of EMA window
     export : str
         Format to export data
@@ -63,7 +63,7 @@ def view_ma(
             df_ta = overlap_model.zlma(s_interval, df_stock, win)
             l_legend.append(f"ZLMA {win}")
 
-    price_df = price_df.join(df_ta)
+        price_df = price_df.join(df_ta)
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.set_title(f"{s_ticker} {ma_type.upper()}")
@@ -91,8 +91,8 @@ def view_ma(
 
     export_data(
         export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"{ma_type}{window_length}",
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        f"{ma_type.lower()}{'_'.join([str(win) for win in window_length])}",
         price_df,
     )
 
@@ -142,7 +142,7 @@ def view_vwap(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: st
 
     export_data(
         export,
-        os.path.dirname(os.path.abspath(__file__)),
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "VWAP",
         df_vwap,
     )

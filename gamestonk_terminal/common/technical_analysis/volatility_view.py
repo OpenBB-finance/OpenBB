@@ -77,4 +77,9 @@ def view_bbands(
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "bbands", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "bbands",
+        df_ta,
+    )

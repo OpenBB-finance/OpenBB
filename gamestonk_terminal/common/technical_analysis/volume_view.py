@@ -97,7 +97,12 @@ def plot_ad(
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "ad", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "ad",
+        df_ta,
+    )
 
 
 def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str):
@@ -177,4 +182,9 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "obv", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "obv",
+        df_ta,
+    )

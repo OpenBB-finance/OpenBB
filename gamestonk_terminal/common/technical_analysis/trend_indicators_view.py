@@ -80,7 +80,12 @@ def plot_adx(
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "adx", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "adx",
+        df_ta,
+    )
 
 
 def plot_aroon(
@@ -151,4 +156,9 @@ def plot_aroon(
 
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "aroon", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "aroon",
+        df_ta,
+    )

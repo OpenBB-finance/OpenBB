@@ -87,4 +87,9 @@ def fibinocci_retracement(
     )
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "fib", df_fib)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "fib",
+        df_fib,
+    )

@@ -77,7 +77,12 @@ def plot_cci(
 
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cci", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "cci",
+        df_ta,
+    )
 
 
 def view_macd(
@@ -144,7 +149,12 @@ def view_macd(
 
     plt.show()
     print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "macd", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "macd",
+        df_ta,
+    )
 
 
 def view_rsi(
@@ -210,7 +220,12 @@ def view_rsi(
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "rsi", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "rsi",
+        df_ta,
+    )
 
 
 def view_stoch(
@@ -282,7 +297,12 @@ def view_stoch(
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "stoch", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "stoch",
+        df_ta,
+    )
 
 
 def view_fisher(
@@ -357,7 +377,12 @@ def view_fisher(
 
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "fisher", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "fisher",
+        df_ta,
+    )
 
 
 def view_cg(
@@ -409,4 +434,9 @@ def view_cg(
     plt.show()
     print("")
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cg", df_ta)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "cg",
+        df_ta,
+    )
