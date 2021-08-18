@@ -1,30 +1,26 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
+from typing import List
+from datetime import datetime, timedelta, time as Time
 import os
 import random
 import re
 import sys
-from datetime import datetime
-from datetime import time as Time
-from datetime import timedelta
-from typing import List
-
+import pandas as pd
+from pytz import timezone
+from prettytable import PrettyTable
 import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
-import pandas as pd
-import pandas.io.formats.format
-from colorama import Fore, Style
 from holidays import US as holidaysUS
+from colorama import Fore, Style
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
-from prettytable import PrettyTable
-from pytz import timezone
+import pandas.io.formats.format
 from screeninfo import get_monitors
-
-from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal import config_plot as cfgPlot
 
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
@@ -118,6 +114,30 @@ def check_positive(value) -> int:
     if ivalue <= 0:
         raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
     return ivalue
+
+
+def check_proportion_range(num) -> float:
+    """Checks if float is between 0 and 1. If so, return it.
+
+    Parameters
+    ----------
+    num: float
+        Input float
+    Returns
+    -------
+    num: float
+        Input number if conditions are met
+    Raises
+    -------
+    argparse.ArgumentTypeError
+        Input number not between min and max values
+    """
+    num = float(num)
+    maxi = 1.0
+    mini = 0.0
+    if num < mini or num > maxi:
+        raise argparse.ArgumentTypeError("Value must be between 0 and 1")
+    return num
 
 
 def valid_date(s: str) -> datetime:
