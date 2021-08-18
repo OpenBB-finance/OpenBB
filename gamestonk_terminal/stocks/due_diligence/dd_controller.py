@@ -8,7 +8,7 @@ from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.stocks.due_diligence import (
-    financial_modeling_prep_view,
+    fmp_view,
     business_insider_view,
     finviz_view,
     market_watch_view,
@@ -267,7 +267,41 @@ csimarket:
 
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
-        financial_modeling_prep_view.rating(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rating",
+            description="""
+                Based on specific ratios, prints information whether the company
+                is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
+                P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of regions to plot that show highest interest.",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            fmp_view.rating(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
