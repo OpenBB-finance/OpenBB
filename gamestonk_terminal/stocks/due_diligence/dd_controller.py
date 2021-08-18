@@ -11,7 +11,7 @@ from gamestonk_terminal.stocks.due_diligence import (
     fmp_view,
     business_insider_view,
     finviz_view,
-    market_watch_view,
+    marketwatch_view,
     finnhub_view,
     csimarket_view,
 )
@@ -305,7 +305,40 @@ csimarket:
 
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
-        market_watch_view.sec_fillings(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="sec",
+            description="""
+                Prints SEC filings of the company. The following fields are expected: Filing Date,
+                Document Date, Type, Category, Amended, and Link. [Source: Market Watch]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of latest SEC filings.",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            marketwatch_view.sec_filings(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
