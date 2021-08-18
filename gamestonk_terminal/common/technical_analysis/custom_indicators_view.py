@@ -48,8 +48,7 @@ def fibinocci_retracement(
     ) = custom_indicators_model.calculate_fib_levels(
         df_stock, period, start_date, end_date
     )
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "fib", df_fib)
+
     levels = df_fib.Price
     fig, ax = plt.subplots(figsize=(plot_autoscale()), dpi=cfp.PLOT_DPI)
 
@@ -87,3 +86,5 @@ def fibinocci_retracement(
         )
     )
     print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "fib", df_fib)

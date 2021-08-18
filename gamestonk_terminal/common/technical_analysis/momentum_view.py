@@ -42,8 +42,7 @@ def plot_cci(
         Format to export data
     """
     df_ta = momentum_model.cci(s_interval, df_stock, length, scalar)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "cci", df_ta)
+
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} CCI")
@@ -78,6 +77,8 @@ def plot_cci(
 
     print("")
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cci", df_ta)
+
 
 def view_macd(
     s_ticker: str,
@@ -108,8 +109,7 @@ def view_macd(
         Format to export data
     """
     df_ta = momentum_model.macd(s_interval, df_stock, n_fast, n_slow, n_signal)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "macd", df_ta)
+
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} MACD")
@@ -144,6 +144,7 @@ def view_macd(
 
     plt.show()
     print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "macd", df_ta)
 
 
 def view_rsi(
@@ -175,8 +176,7 @@ def view_rsi(
         Format to export data
     """
     df_ta = momentum_model.rsi(s_interval, df_stock, length, scalar, drift)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "rsi", df_ta)
+
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     if s_interval == "1440min":
@@ -210,6 +210,8 @@ def view_rsi(
     plt.show()
     print("")
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "rsi", df_ta)
+
 
 def view_stoch(
     s_ticker: str,
@@ -242,8 +244,7 @@ def view_stoch(
     df_ta = momentum_model.stoch(
         s_interval, df_stock, fastkperiod, slowdperiod, slowkperiod
     )
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "stoch", df_ta)
+
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     if s_interval == "1440min":
@@ -281,6 +282,8 @@ def view_stoch(
     plt.show()
     print("")
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "stoch", df_ta)
+
 
 def view_fisher(
     s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
@@ -301,8 +304,7 @@ def view_fisher(
         Format to export data
     """
     df_ta = momentum_model.fisher(s_interval, df_stock, length)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "stoch", df_ta)
+
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Fisher Transform")
@@ -355,6 +357,8 @@ def view_fisher(
 
     print("")
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "fisher", df_ta)
+
 
 def view_cg(
     s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
@@ -375,8 +379,7 @@ def view_cg(
         Format to export data
     """
     df_ta = momentum_model.cg(s_interval, df_stock, length)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "cg", df_ta)
+
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Centre of Gravity")
@@ -405,3 +408,5 @@ def view_cg(
     plt.legend()
     plt.show()
     print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cg", df_ta)

@@ -44,8 +44,6 @@ def plot_adx(
         Format to export data
     """
     df_ta = trend_indicators_model.adx(s_interval, df_stock, length, scalar, drift)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "adx", df_ta)
 
     fig, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax0 = ax[0]
@@ -82,6 +80,8 @@ def plot_adx(
     plt.show()
     print("")
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "adx", df_ta)
+
 
 def plot_aroon(
     s_ticker: str,
@@ -107,8 +107,6 @@ def plot_aroon(
         Scalar variable
     """
     df_ta = trend_indicators_model.aroon(df_stock, length, scalar)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "aroon", df_ta)
 
     fig, ax = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax0 = ax[0]
@@ -152,3 +150,5 @@ def plot_aroon(
     plt.gcf().autofmt_xdate()
 
     print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "aroon", df_ta)

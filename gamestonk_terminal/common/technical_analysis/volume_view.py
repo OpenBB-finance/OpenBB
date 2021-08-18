@@ -35,8 +35,6 @@ def plot_ad(
         Format to export data as
     """
     df_ta = volume_model.ad(df_stock, use_open)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "ad", df_ta)
 
     bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
 
@@ -99,6 +97,8 @@ def plot_ad(
     plt.show()
     print("")
 
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "ad", df_ta)
+
 
 def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str):
     """Plot OBV tecnhical inticator
@@ -115,8 +115,6 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
         Format to export data as
     """
     df_ta = volume_model.obv(s_interval, df_stock)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "obv", df_ta)
 
     bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
 
@@ -178,3 +176,5 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
 
     plt.show()
     print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "obv", df_ta)

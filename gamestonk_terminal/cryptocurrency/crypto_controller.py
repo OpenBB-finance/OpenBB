@@ -188,7 +188,7 @@ What do you want to do?
                 try:
                     quit = ta_controller.menu(
                         stock=self.current_df,
-                        s_stock=self.current_coin,
+                        ticker=self.current_coin,
                         start=self.current_df.index[0],
                         interval="",
                     )

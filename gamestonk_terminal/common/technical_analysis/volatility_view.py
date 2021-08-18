@@ -16,7 +16,7 @@ register_matplotlib_converters()
 
 
 def view_bbands(
-    s_stock: str,
+    ticker: str,
     s_interval: str,
     df_stock: pd.DataFrame,
     length: int,
@@ -28,7 +28,7 @@ def view_bbands(
 
     Parameters
     ----------
-    s_stock : str
+    ticker : str
         Ticker
     s_interval : str
         Interval of stock data
@@ -44,8 +44,6 @@ def view_bbands(
         Format of export file
     """
     df_ta = volatility_model.bbands(s_interval, df_stock, length, n_std, mamode)
-    if export:
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "bbands", df_ta)
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if s_interval == "1440min":
@@ -55,12 +53,12 @@ def view_bbands(
     ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "r", lw=2)
     ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
     ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "g", lw=2)
-    ax.set_title(f"{s_stock} Bollinger Bands")
+    ax.set_title(f"{ticker} Bollinger Bands")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xlabel("Time")
     ax.set_ylabel("Share Price ($)")
 
-    ax.legend([s_stock, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
     ax.fill_between(
         df_ta.index,
         df_ta.iloc[:, 0].values,
@@ -78,3 +76,5 @@ def view_bbands(
 
     plt.show()
     print("")
+
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "bbands", df_ta)

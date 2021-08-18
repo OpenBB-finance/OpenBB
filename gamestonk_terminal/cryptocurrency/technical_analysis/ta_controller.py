@@ -1,4 +1,4 @@
-"""Technical Analysis Controller Module"""
+"""Crypto Technical Analysis Controller Module"""
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
@@ -40,12 +40,8 @@ class TechnicalAnalysisController:
     """Technical Analysis Controller class"""
 
     # Command choices
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES_COMMANDS = [
         "view",
         "summary",
         "recom",
@@ -68,15 +64,17 @@ class TechnicalAnalysisController:
         "fib",
     ]
 
+    CHOICES += CHOICES_COMMANDS
+
     def __init__(
         self,
-        s_stock: str,
+        ticker: str,
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
     ):
         """Constructor"""
-        self.s_stock = s_stock
+        self.ticker = ticker
         self.start = start
         self.interval = interval
         self.stock = stock
@@ -91,12 +89,12 @@ class TechnicalAnalysisController:
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            str1 = f"\n{s_intraday} Stock: {self.s_stock} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            str1 = f"\n{s_intraday} Stock: {self.s_stock}"
+            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
 
         help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/technical_analysis
-{str1}
+{stock_str}
 
 Technical Analysis:
     cls         clear screen
@@ -109,27 +107,27 @@ Technical Analysis:
     recom       recommendation based on Technical Indicators [Tradingview API]
     pr          pattern recognition [Finnhub]
 
-overlap:
+Overlap:
     ema         exponential moving average
     sma         simple moving average
     zlma        zero lag moving average"
     vwap        volume weighted average price
-momentum:
+Momentum:
     cci         commodity channel index
     macd        moving average convergence/divergence
     rsi         relative strength index
     stoch       stochastic oscillator
     fisher      fisher transform
     cg          centre of gravity
-trend:
+Trend:
     adx         average directional movement index
     aroon       aroon indicator
-volatility:
+Volatility:
     bbands      bollinger bands
-volume:
+Volume:
     ad          accumulation/distribution line values
     obv         on balance volume
-custom:
+Custom:
     fib         fibonacci retracement
 """
         print(help_str)
@@ -186,16 +184,14 @@ custom:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="view",
-            description="""
-            View historical price with trendlines. [Source: Finviz]
-        """,
+            description="""View historical price with trendlines. [Source: Finviz]""",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finviz_view.view(self.s_stock)
+            finviz_view.view(self.ticker)
 
         except Exception as e:
             print(e, "\n")
@@ -210,7 +206,7 @@ custom:
             Technical summary report provided by FinBrain's API.
             FinBrain Technologies develops deep learning algorithms for financial analysis
             and prediction, which currently serves traders from more than 150 countries
-            all around the world. [Source:  https://finbrain.tech]
+            all around the world. [Source:  Finbrain]
         """,
         )
         try:
@@ -218,7 +214,7 @@ custom:
             if not ns_parser:
                 return
 
-            finbrain_view.technical_summary_report(self.s_stock)
+            finbrain_view.technical_summary_report(self.ticker)
 
         except Exception as e:
             print(e, "\n")
@@ -232,7 +228,7 @@ custom:
             prog="recom",
             description="""
             Print tradingview recommendation based on technical indicators.
-            [Source: https://pypi.org/project/tradingview-ta/]
+            [Source: Tradingview]
         """,
         )
         parser.add_argument(
@@ -281,7 +277,7 @@ custom:
             if not ns_parser:
                 return
             tradingview_view.print_recommendation(
-                ticker=self.s_stock,
+                ticker=self.ticker,
                 screener=ns_parser.screener,
                 exchange=ns_parser.exchange,
                 interval=ns_parser.interval,
@@ -299,8 +295,7 @@ custom:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="pr",
             description="""
-            Display pattern recognition signals on the data. [Source: https://finnhub.io]
-        """,
+            Display pattern recognition signals on the data. [Source: Finnhub]""",
         )
         parser.add_argument(
             "-r",
@@ -327,7 +322,7 @@ custom:
                 return
 
             finnhub_view.plot_pattern_recognition(
-                ticker=self.s_stock,
+                ticker=self.ticker,
                 resolution=ns_parser.resolution,
                 export=ns_parser.export,
             )
@@ -361,7 +356,7 @@ custom:
             dest="n_length",
             type=check_positive_list,
             default=[20, 50],
-            help="length",
+            help="Window lengths.  Multiple values indicated as comma separated values.",
         )
         parser.add_argument(
             "--export",
@@ -373,13 +368,17 @@ custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             overlap_view.view_ma(
-                ma="EMA",
-                s_ticker=self.s_stock,
+                ma_type="EMA",
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 window_length=ns_parser.n_length,
@@ -412,7 +411,7 @@ custom:
             dest="n_length",
             type=check_positive_list,
             default=[20, 50],
-            help="length",
+            help="Window lengths.  Multiple values indicated as comma separated values. ",
         )
         parser.add_argument(
             "--export",
@@ -424,13 +423,16 @@ custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             overlap_view.view_ma(
-                ma="SMA",
-                s_ticker=self.s_stock,
+                ma_type="SMA",
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 window_length=ns_parser.n_length,
@@ -463,7 +465,7 @@ custom:
             dest="n_length",
             type=check_positive_list,
             default=[20],
-            help="length",
+            help="Window lengths.  Multiple values indicated as comma separated values.",
         )
         parser.add_argument(
             "--export",
@@ -475,13 +477,17 @@ custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             overlap_view.view_ma(
-                ma="ZLMA",
-                s_ticker=self.s_stock,
+                ma_type="ZLMA",
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 window_length=ns_parser.n_length,
@@ -521,7 +527,7 @@ custom:
                 return
 
             overlap_view.view_vwap(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 export=ns_parser.export,
@@ -579,7 +585,7 @@ custom:
                 return
 
             momentum_view.plot_cci(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -650,7 +656,7 @@ custom:
                 return
 
             momentum_view.view_macd(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 n_fast=ns_parser.n_fast,
@@ -718,7 +724,7 @@ custom:
                 return
 
             momentum_view.view_rsi(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -786,7 +792,7 @@ custom:
             if not ns_parser:
                 return
             momentum_view.view_stoch(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 fastkperiod=ns_parser.n_fastkperiod,
@@ -836,7 +842,7 @@ custom:
                 return
 
             momentum_view.view_fisher(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -883,7 +889,7 @@ custom:
             if not ns_parser:
                 return
             momentum_view.view_cg(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -947,7 +953,7 @@ custom:
                 return
 
             trend_indicators_view.plot_adx(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -1021,7 +1027,7 @@ custom:
                 return
 
             trend_indicators_view.plot_aroon(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -1092,7 +1098,7 @@ custom:
             if not ns_parser:
                 return
             volatility_view.view_bbands(
-                s_stock=self.s_stock,
+                ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -1145,7 +1151,7 @@ custom:
                 return
 
             volume_view.plot_ad(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
@@ -1185,7 +1191,7 @@ custom:
                 return
 
             volume_view.plot_obv(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
                 export=ns_parser.export,
@@ -1239,7 +1245,7 @@ custom:
                 return
 
             custom_indicators_view.fibinocci_retracement(
-                s_ticker=self.s_stock,
+                s_ticker=self.ticker,
                 df_stock=self.stock,
                 period=ns_parser.period,
                 start_date=ns_parser.start,
@@ -1250,10 +1256,10 @@ custom:
             print(e, "\n")
 
 
-def menu(s_stock: str, start: datetime, interval: str, stock: pd.DataFrame):
+def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
     """Technical Analysis Menu"""
 
-    ta_controller = TechnicalAnalysisController(s_stock, start, interval, stock)
+    ta_controller = TechnicalAnalysisController(ticker, start, interval, stock)
     ta_controller.call_help(None)
 
     while True:

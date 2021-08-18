@@ -18,7 +18,7 @@ register_matplotlib_converters()
 
 
 def view_ma(
-    ma: str,
+    ma_type: str,
     s_ticker: str,
     s_interval: str,
     df_stock: pd.DataFrame,
@@ -53,33 +53,26 @@ def view_ma(
 
     l_legend = [s_ticker]
     for win in window_length:
-        if ma == "EMA":
+        if ma_type == "EMA":
             df_ta = overlap_model.ema(s_interval, df_stock, win)
-            price_df = price_df.join(df_ta)
             l_legend.append(f"EMA {win}")
-        elif ma == "SMA":
+        elif ma_type == "SMA":
             df_ta = overlap_model.sma(s_interval, df_stock, win)
-            price_df = price_df.join(df_ta)
             l_legend.append(f"SMA {win}")
-        elif ma == "ZLMA":
+        elif ma_type == "ZLMA":
             df_ta = overlap_model.zlma(s_interval, df_stock, win)
-            price_df = price_df.join(df_ta)
             l_legend.append(f"ZLMA {win}")
 
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            f"{ma}{window_length}",
-            price_df,
-        )
+    price_df = price_df.join(df_ta)
+
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.set_title(f"{window_length} Day {ma.upper()} on {s_ticker}")
+    ax.set_title(f"{s_ticker} {ma_type.upper()}")
 
     ax.plot(price_df.index, price_df["Price"], lw=3, c="k")
 
     ax.set_xlabel("Time")
-    ax.set_ylabel(f"{s_ticker} Price($)")
+    ax.set_xlim([price_df.index[0], price_df.index[-1]])
+    ax.set_ylabel(f"{s_ticker} Price")
 
     for idx in range(1, price_df.shape[1]):
         ax.plot(price_df.iloc[:, idx])
@@ -95,6 +88,13 @@ def view_ma(
 
     plt.show()
     print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{ma_type}{window_length}",
+        price_df,
+    )
 
 
 def view_vwap(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str):
@@ -118,14 +118,6 @@ def view_vwap(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: st
     day_df = df_stock[df_stock.Day == df_stock.Day[-1]]
 
     df_vwap = overlap_model.vwap(day_df)
-
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "vwap",
-            df_vwap,
-        )
     mc = mpf.make_marketcolors(
         up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
     )
@@ -147,3 +139,10 @@ def view_vwap(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: st
 
     plt.show()
     print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "VWAP",
+        df_vwap,
+    )
