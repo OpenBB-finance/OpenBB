@@ -8,7 +8,7 @@ from datetime import datetime
 import pandas as pd
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.common.exploratory_data_analysis import eda_api
+from gamestonk_terminal.common.exploratory_data_analysis import eda_api, rolling
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -33,6 +33,9 @@ class EdaController:
         "decompose",
         "cusum",
         "acf",
+        "spread",
+        "quantile",
+        "skew",
     ]
 
     def __init__(
@@ -79,7 +82,13 @@ class EdaController:
         print("   cdf           cumulative distribution function")
         print("   bwy           box and whisker yearly plot")
         print("   bwm           box and whisker monthly plot")
+        print("")
+        print("Rolling Metrics")
         print("   rolling       rolling mean and std deviation")
+        print("   spread        variance and std deviation")
+        print("   quantile      median and quantile")
+        print("   skew          skewness of distribution")
+        print("")
         print("   decompose     decomposition in cyclic-trend, season, and residuals")
         print("   cusum         detects abrupt changes using cumulative sum algorithm")
         print("   acf           (partial) auto-correlation function differentials")
@@ -167,6 +176,18 @@ class EdaController:
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
         eda_api.acf(other_args, self.ticker, self.stock, self.start)
+
+    def call_spread(self, other_args: List[str]):
+        """Process spread command"""
+        rolling.spread(other_args, self.ticker, self.interval, self.stock)
+
+    def call_quantile(self, other_args: List[str]):
+        """Process quantile command"""
+        rolling.quantile(other_args, self.ticker, self.interval, self.stock)
+
+    def call_skew(self, other_args: List[str]):
+        """Process skew command"""
+        rolling.skew(other_args, self.ticker, self.interval, self.stock)
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
