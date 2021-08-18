@@ -1,25 +1,38 @@
-"""Technical Analysis Controller Module"""
+"""Crypto Technical Analysis Controller Module"""
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import argparse
 import os
 from typing import List
 from datetime import datetime
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive_list,
+    check_positive,
+    valid_date,
+)
 from gamestonk_terminal.menu import session
-
+from gamestonk_terminal.stocks.technical_analysis import (
+    finviz_view,
+    finbrain_view,
+    finnhub_view,
+    tradingview_view,
+)
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
-    momentum,
-    overlap,
-    trend_indicators,
-    volatility,
-    volume,
+    momentum_view,
+    overlap_view,
+    trend_indicators_view,
+    volatility_view,
+    volume_view,
 )
 
 
@@ -27,19 +40,22 @@ class TechnicalAnalysisController:
     """Technical Analysis Controller class"""
 
     # Command choices
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES_COMMANDS = [
+        "view",
+        "summary",
+        "recom",
+        "pr",
         "ema",
         "sma",
         "vwap",
+        "zlma",
         "cci",
         "macd",
         "rsi",
         "stoch",
+        "fisher",
+        "cg",
         "adx",
         "aroon",
         "bbands",
@@ -47,6 +63,8 @@ class TechnicalAnalysisController:
         "obv",
         "fib",
     ]
+
+    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -69,44 +87,50 @@ class TechnicalAnalysisController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/technical_analysis"
-        )
-        s_intraday = (f"Intraday {self.interval }", "Daily")[self.interval == "1440min"]
-
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            print(
-                f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{s_intraday} Stock: {self.ticker}")
+            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
 
-        print("\nTechnical Analysis:")
-        print("   cls         clear screen")
-        print("   ?/help      show this menu again")
-        print("   q           quit this menu, and shows back to main menu")
-        print("   quit        quit to abandon program")
-        print("")
-        print("overlap:")
-        print("   ema         exponential moving average")
-        print("   sma         simple moving average")
-        print("   vwap        volume weighted average price")
-        print("momentum:")
-        print("   cci         commodity channel index")
-        print("   macd        moving average convergence/divergence")
-        print("   rsi         relative strength index")
-        print("   stoch       stochastic oscillator")
-        print("trend:")
-        print("   adx         average directional movement index")
-        print("   aroon       aroon indicator")
-        print("volatility:")
-        print("   bbands      bollinger bands")
-        print("volume:")
-        print("   ad          accumulation/distribution line values")
-        print("   obv         on balance volume")
-        print("custom:")
-        print("   fib         fibonocci retracement")
-        print("")
+        help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/technical_analysis
+{stock_str}
+
+Technical Analysis:
+    cls         clear screen
+    help        show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon program
+
+    view        view historical data and trendlines [Finviz]
+    summary     technical summary report [FinBrain API]
+    recom       recommendation based on Technical Indicators [Tradingview API]
+    pr          pattern recognition [Finnhub]
+
+Overlap:
+    ema         exponential moving average
+    sma         simple moving average
+    zlma        zero lag moving average"
+    vwap        volume weighted average price
+Momentum:
+    cci         commodity channel index
+    macd        moving average convergence/divergence
+    rsi         relative strength index
+    stoch       stochastic oscillator
+    fisher      fisher transform
+    cg          centre of gravity
+Trend:
+    adx         average directional movement index
+    aroon       aroon indicator
+Volatility:
+    bbands      bollinger bands
+Volume:
+    ad          accumulation/distribution line values
+    obv         on balance volume
+Custom:
+    fib         fibonacci retracement
+"""
+        print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -152,59 +176,1084 @@ class TechnicalAnalysisController:
         """Process Quit command - quit the program"""
         return True
 
+    # SPECIFIC
+    def call_view(self, other_args: List[str]):
+        """Process view command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="view",
+            description="""View historical price with trendlines. [Source: Finviz]""",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.view(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_summary(self, other_args: List[str]):
+        """Process summary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="summary",
+            description="""
+            Technical summary report provided by FinBrain's API.
+            FinBrain Technologies develops deep learning algorithms for financial analysis
+            and prediction, which currently serves traders from more than 150 countries
+            all around the world. [Source:  Finbrain]
+        """,
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finbrain_view.technical_summary_report(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_recom(self, other_args: List[str]):
+        """Process recom command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="recom",
+            description="""
+            Print tradingview recommendation based on technical indicators.
+            [Source: Tradingview]
+        """,
+        )
+        parser.add_argument(
+            "-s",
+            "--screener",
+            action="store",
+            dest="screener",
+            type=str,
+            default="america",
+            choices=["crypto", "forex", "cfd"],
+            help="Screener. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            action="store",
+            dest="exchange",
+            type=str,
+            default="",
+            help="""Set exchange. For Forex use: 'FX_IDC', and for crypto use 'TVC'.
+            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html.
+            By default Alpha Vantage tries to get this data from the ticker. """,
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
+            type=str,
+            default="",
+            choices=["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"],
+            help="""Interval, that corresponds to the recommendation given by tradingview based on technical indicators.
+            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html""",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            tradingview_view.print_recommendation(
+                ticker=self.ticker,
+                screener=ns_parser.screener,
+                exchange=ns_parser.exchange,
+                interval=ns_parser.interval,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_pr(self, other_args: List[str]):
+        """Process pr command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pr",
+            description="""
+            Display pattern recognition signals on the data. [Source: Finnhub]""",
+        )
+        parser.add_argument(
+            "-r",
+            "--resolution",
+            action="store",
+            dest="resolution",
+            type=str,
+            default="D",
+            choices=["1", "5", "15", "30", "60", "D", "W", "M"],
+            help="Plot resolution to look for pattern signals",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.plot_pattern_recognition(
+                ticker=self.ticker,
+                resolution=ns_parser.resolution,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    # COMMON
+    # TODO: Go through all models and make sure all needed columns are in dfs
     def call_ema(self, other_args: List[str]):
         """Process ema command"""
-        overlap.ema(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ema",
+            description="""
+            The Exponential Moving Average is a staple of technical
+            analysis and is used in countless technical indicators. In a Simple Moving
+            Average, each value in the time period carries equal weight, and values outside
+            of the time period are not included in the average. However, the Exponential
+            Moving Average is a cumulative calculation, including all data. Past values have
+            a diminishing contribution to the average, while more recent values have a greater
+            contribution. This method allows the moving average to be more responsive to changes
+            in the data.
+        """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20, 50],
+            help="Window lengths.  Multiple values indicated as comma separated values.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma_type="EMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_sma(self, other_args: List[str]):
         """Process sma command"""
-        overlap.sma(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sma",
+            description="""
+                Moving Averages are used to smooth the data in an array to
+                help eliminate noise and identify trends. The Simple Moving Average is literally
+                the simplest form of a moving average. Each output value is the average of the
+                previous n values. In a Simple Moving Average, each value in the time period carries
+                equal weight, and values outside of the time period are not included in the average.
+                This makes it less responsive to recent changes in the data, which can be useful for
+                filtering out those changes.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20, 50],
+            help="Window lengths.  Multiple values indicated as comma separated values. ",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma_type="SMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_zlma(self, other_args: List[str]):
+        """Process zlma command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="zlma",
+            description="""
+                The zero lag exponential moving average (ZLEMA) indicator
+                was created by John Ehlers and Ric Way. The idea is do a
+                regular exponential moving average (EMA) calculation but
+                on a de-lagged data instead of doing it on the regular data.
+                Data is de-lagged by removing the data from "lag" days ago
+                thus removing (or attempting to) the cumulative effect of
+                the moving average.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20],
+            help="Window lengths.  Multiple values indicated as comma separated values.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma_type="ZLMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_vwap(self, other_args: List[str]):
         """Process vwap command"""
-        overlap.vwap(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vwap",
+            description="""
+                The Volume Weighted Average Price that measures the average typical price
+                by volume.  It is typically used with intraday charts to identify general direction.
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            # Daily
+            if self.interval == "1440min":
+                print("VWAP should be used with intraday data. \n")
+                return
+
+            overlap_view.view_vwap(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cci(self, other_args: List[str]):
         """Process cci command"""
-        momentum.cci(other_args, self.ticker, self.interval, self.stock)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cci",
+            description="""
+                The CCI is designed to detect beginning and ending market trends.
+                The range of 100 to -100 is the normal trading range. CCI values outside of this
+                range indicate overbought or oversold conditions. You can also look for price
+                divergence in the CCI. If the price is making new highs, and the CCI is not,
+                then a price correction is likely.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "-s",
+            "--scalar",
+            action="store",
+            dest="n_scalar",
+            type=check_positive,
+            default=0.015,
+            help="scalar",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            momentum_view.plot_cci(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_macd(self, other_args: List[str]):
         """Process macd command"""
-        momentum.macd(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="macd",
+            description="""
+                The Moving Average Convergence Divergence (MACD) is the difference
+                between two Exponential Moving Averages. The Signal line is an Exponential Moving
+                Average of the MACD. \n \n The MACD signals trend changes and indicates the start
+                of new trend direction. High values indicate overbought conditions, low values
+                indicate oversold conditions. Divergence with the price indicates an end to the
+                current trend, especially if the MACD is at extreme high or low values. When the MACD
+                line crosses above the signal line a buy signal is generated. When the MACD crosses
+                below the signal line a sell signal is generated. To confirm the signal, the MACD
+                should be above zero for a buy, and below zero for a sell.
+            """,
+        )
+
+        parser.add_argument(
+            "-f",
+            "--fast",
+            action="store",
+            dest="n_fast",
+            type=check_positive,
+            default=12,
+            help="The short period.",
+        )
+        parser.add_argument(
+            "-s",
+            "--slow",
+            action="store",
+            dest="n_slow",
+            type=check_positive,
+            default=26,
+            help="The long period.",
+        )
+        parser.add_argument(
+            "--signal",
+            action="store",
+            dest="n_signal",
+            type=check_positive,
+            default=9,
+            help="The signal period.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            momentum_view.view_macd(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                n_fast=ns_parser.n_fast,
+                n_slow=ns_parser.n_slow,
+                n_signal=ns_parser.n_signal,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_rsi(self, other_args: List[str]):
         """Process rsi command"""
-        momentum.rsi(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsi",
+            description="""
+                The Relative Strength Index (RSI) calculates a ratio of the
+                recent upward price movements to the absolute price movement. The RSI ranges
+                from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when
+                the value is over 70/below 30. You can also look for divergence with price. If
+                the price is making new highs/lows, and the RSI is not, it indicates a reversal.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "-s",
+            "--scalar",
+            action="store",
+            dest="n_scalar",
+            type=check_positive,
+            default=100,
+            help="scalar",
+        )
+        parser.add_argument(
+            "-d",
+            "--drift",
+            action="store",
+            dest="n_drift",
+            type=check_positive,
+            default=1,
+            help="drift",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            momentum_view.view_rsi(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                drift=ns_parser.n_drift,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_stoch(self, other_args: List[str]):
         """Process stoch command"""
-        momentum.stoch(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stoch",
+            description="""
+                The Stochastic Oscillator measures where the close is in relation
+                to the recent trading range. The values range from zero to 100. %D values over 75
+                indicate an overbought condition; values under 25 indicate an oversold condition.
+                When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses
+                below, it is a sell signal. The Raw %K is generally considered too erratic to use
+                for crossover signals.
+            """,
+        )
+
+        parser.add_argument(
+            "-k",
+            "--fastkperiod",
+            action="store",
+            dest="n_fastkperiod",
+            type=check_positive,
+            default=14,
+            help="The time period of the fastk moving average",
+        )
+        parser.add_argument(
+            "-d",
+            "--slowdperiod",
+            action="store",
+            dest="n_slowdperiod",
+            type=check_positive,
+            default=3,
+            help="The time period of the slowd moving average",
+        )
+        parser.add_argument(
+            "--slowkperiod",
+            action="store",
+            dest="n_slowkperiod",
+            type=check_positive,
+            default=3,
+            help="The time period of the slowk moving average",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            momentum_view.view_stoch(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                fastkperiod=ns_parser.n_fastkperiod,
+                slowdperiod=ns_parser.n_slowdperiod,
+                slowkperiod=ns_parser.n_slowkperiod,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_fisher(self, other_args: List[str]):
+        """Process fisher command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fisher",
+            description="""
+                The Fisher Transform is a technical indicator created by John F. Ehlers
+                that converts prices into a Gaussian normal distribution.1 The indicator
+                highlights when prices have   moved to an extreme, based on recent prices.
+                This may help in spotting turning points in the price of an asset. It also
+                helps show the trend and isolate the price waves within a trend.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            momentum_view.view_fisher(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_cg(self, other_args: List[str]):
+        """Process cg command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cg",
+            description="""
+                The Center of Gravity indicator, in short, is used to anticipate future price movements
+                and to trade on price reversals as soon as they happen. However, just like other oscillators,
+                the COG indicator returns the best results in range-bound markets and should be avoided when
+                the price is trending. Traders who use it will be able to closely speculate the upcoming
+                price change of the asset.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            momentum_view.view_cg(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_adx(self, other_args: List[str]):
         """Process adx command"""
-        trend_indicators.adx(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="adx",
+            description="""
+            The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
+            The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
+            a high number to be a strong trend, and a low number, a weak trend.
+        """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "-s",
+            "--scalar",
+            action="store",
+            dest="n_scalar",
+            type=check_positive,
+            default=100,
+            help="scalar",
+        )
+        parser.add_argument(
+            "-d",
+            "--drift",
+            action="store",
+            dest="n_drift",
+            type=check_positive,
+            default=1,
+            help="drift",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            trend_indicators_view.plot_adx(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                drift=ns_parser.n_drift,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_aroon(self, other_args: List[str]):
         """Process aroon command"""
-        trend_indicators.aroon(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="aroon",
+            description="""
+                The word aroon is Sanskrit for "dawn's early light." The Aroon
+                indicator attempts to show when a new trend is dawning. The indicator consists
+                of two lines (Up and Down) that measure how long it has been since the highest
+                high/lowest low has occurred within an n period range. \n \n When the Aroon Up is
+                staying between 70 and 100 then it indicates an upward trend. When the Aroon Down
+                is staying between 70 and 100 then it indicates an downward trend. A strong upward
+                trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
+                Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while
+                the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above
+                the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=25,
+            help="length",
+        )
+        parser.add_argument(
+            "-s",
+            "--scalar",
+            action="store",
+            dest="n_scalar",
+            type=check_positive,
+            default=100,
+            help="scalar",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=check_positive,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            trend_indicators_view.plot_aroon(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_bbands(self, other_args: List[str]):
         """Process bbands command"""
-        volatility.bbands(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bbands",
+            description="""
+                Bollinger Bands consist of three lines. The middle band is a simple
+                moving average (generally 20 periods) of the typical price (TP). The upper and lower
+                bands are F standard deviations (generally 2) above and below the middle band.
+                The bands widen and narrow when the volatility of the price is higher or lower,
+                respectively. \n \nBollinger Bands do not, in themselves, generate buy or sell signals;
+                they are an indicator of overbought or oversold conditions. When the price is near the
+                upper or lower band it indicates that a reversal may be imminent. The middle band
+                becomes a support or resistance level. The upper and lower bands can also be
+                interpreted as price targets. When the price bounces off of the lower band and crosses
+                the middle band, then the upper band becomes the price target.
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=5,
+            help="length",
+        )
+        parser.add_argument(
+            "-s",
+            "--std",
+            action="store",
+            dest="n_std",
+            type=check_positive,
+            default=2,
+            help="std",
+        )
+        parser.add_argument(
+            "-m",
+            "--mamode",
+            action="store",
+            dest="s_mamode",
+            default="sma",
+            help="mamode",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            volatility_view.view_bbands(
+                ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                n_std=ns_parser.n_std,
+                mamode=ns_parser.s_mamode,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_ad(self, other_args: List[str]):
         """Process ad command"""
-        volume.ad(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ad",
+            description="""
+                The Accumulation/Distribution Line is similar to the On Balance
+                Volume (OBV), which sums the volume times +1/-1 based on whether the close is
+                higher than the previous close. The Accumulation/Distribution indicator, however
+                multiplies the volume by the close location value (CLV). The CLV is based on the
+                movement of the issue within a single bar and can be +1, -1 or zero. \n \n
+                The Accumulation/Distribution Line is interpreted by looking for a divergence in
+                the direction of the indicator relative to price. If the Accumulation/Distribution
+                Line is trending upward it indicates that the price may follow. Also, if the
+                Accumulation/Distribution Line becomes flat while the price is still rising (or falling)
+                then it signals an impending flattening of the price.
+            """,
+        )
+        parser.add_argument(
+            "--open",
+            action="store_true",
+            default=False,
+            dest="b_use_open",
+            help="uses open value of stock",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            volume_view.plot_ad(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                use_open=ns_parser.b_use_open,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_obv(self, other_args: List[str]):
         """Process obv command"""
-        volume.obv(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="obv",
+            description="""
+                The On Balance Volume (OBV) is a cumulative total of the up and
+                down volume. When the close is higher than the previous close, the volume is added
+                to the running total, and when the close is lower than the previous close, the volume
+                is subtracted from the running total. \n \n To interpret the OBV, look for the OBV
+                to move with the price or precede price moves. If the price moves before the OBV,
+                then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the
+                OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            volume_view.plot_obv(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_fib(self, other_args: List[str]):
         """Process fib command"""
-        custom_indicators_view.fibinocci_retracement(
-            other_args, self.stock, self.ticker
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fib",
+            description="Calculates the fibinocci retracement levels",
         )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            type=int,
+            help="Days to lookback for retracement",
+            default=120,
+        )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            custom_indicators_view.fibinocci_retracement(
+                s_ticker=self.ticker,
+                df_stock=self.stock,
+                period=ns_parser.period,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
@@ -220,11 +1269,11 @@ def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
                 {c: None for c in ta_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (crypto)>(ta)> ",
+                f"{get_flair()} (stocks)>(ta)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(ta)> ")
+            an_input = input(f"{get_flair()} (stocks)>(ta)> ")
 
         try:
             plt.close("all")

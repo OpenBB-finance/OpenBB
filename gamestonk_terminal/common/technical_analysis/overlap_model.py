@@ -1,0 +1,122 @@
+"""Overlap Technical Analysis"""
+___docformat__ = "numpy"
+
+import pandas as pd
+import pandas_ta as ta
+
+
+def ema(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataFrame:
+    """Gets exponential moving average (EMA) for stock
+
+    Parameters
+    ----------
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    window_length: int
+        Length of EMA window
+
+    Returns
+    ----------
+    df_ta: pd.DataFrame
+        Dataframe containing prices and EMA
+    """
+    # Daily
+    if s_interval == "1440min":
+        df_ta = ta.ema(df_stock["Adj Close"], length=window_length).dropna()
+
+    # Intraday
+    else:
+        df_ta = ta.ema(
+            df_stock["Close"],
+            length=window_length,
+        ).dropna()
+
+    return pd.DataFrame(df_ta)
+
+
+def sma(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataFrame:
+    """Gets simple moving average (EMA) for stock
+
+    Parameters
+    ----------
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    window_length: int
+        Length of SMA window
+
+    Returns
+    ----------
+    df_ta: pd.DataFrame
+        Dataframe containing prices and SMA
+    """
+    # Daily
+    if s_interval == "1440min":
+        df_ta = ta.sma(df_stock["Adj Close"], length=window_length).dropna()
+
+    # Intraday
+    else:
+        df_ta = ta.sma(
+            df_stock["Close"],
+            length=window_length,
+        ).dropna()
+
+    return pd.DataFrame(df_ta)
+
+
+def zlma(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataFrame:
+    """Gets zero-lagged exponential moving average (ZLEMA) for stock
+
+    Parameters
+    ----------
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    window_length: int
+        Length of EMA window
+
+    Returns
+    ----------
+    df_ta: pd.DataFrame
+        Dataframe containing prices and EMA
+    """
+    # Daily
+    if s_interval == "1440min":
+        df_ta = ta.zlma(df_stock["Adj Close"], length=window_length).dropna()
+
+    # Intraday
+    else:
+        df_ta = ta.zlma(
+            df_stock["Close"],
+            length=window_length,
+        ).dropna()
+
+    return pd.DataFrame(df_ta)
+
+
+def vwap(day_df: pd.DataFrame) -> pd.DataFrame:
+    """Gets volume weighted average price (VWAP)
+
+    Parameters
+    ----------
+    day_df: pd.DataFrame
+        Dataframe of dates and prices for the last trading day
+
+    Returns
+    ----------
+    df_vwap: pd.DataFrame
+        Dataframe with VWAP data
+    """
+
+    df_vwap = ta.vwap(
+        high=day_df["High"],
+        low=day_df["Low"],
+        close=day_df["Close"],
+        volume=day_df["Volume"],
+    )
+
+    return pd.DataFrame(df_vwap)

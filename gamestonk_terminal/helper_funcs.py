@@ -108,6 +108,20 @@ def check_non_negative(value) -> int:
     return ivalue
 
 
+def check_positive_list(value) -> List[int]:
+    """Argparse type to return list of positive ints"""
+    list_of_nums = value.split(",")
+    list_of_pos = []
+    for ivalue in list_of_nums:
+        ival = int(ivalue)
+        if ival <= 0:
+            raise argparse.ArgumentTypeError(
+                f"{value} is an invalid positive int value"
+            )
+        list_of_pos.append(ival)
+    return list_of_pos
+
+
 def check_positive(value) -> int:
     """Argparse type to check positive int"""
     ivalue = int(value)
