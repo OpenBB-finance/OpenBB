@@ -1127,7 +1127,6 @@ Custom:
                 between the upper and lower bands represents the Donchian Channel.
                 """,
         )
-
         parser.add_argument(
             "-lu",
             "--length_upper",
@@ -1137,7 +1136,6 @@ Custom:
             default=20,
             help="length",
         )
-
         parser.add_argument(
             "-ll",
             "--length_lower",
@@ -1147,7 +1145,6 @@ Custom:
             default=20,
             help="length",
         )
-
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],

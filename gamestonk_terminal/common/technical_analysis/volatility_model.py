@@ -7,7 +7,7 @@ import pandas_ta as ta
 
 def bbands(
     s_interval: str, df_stock: pd.DataFrame, length: int, n_std: float, mamode: str
-):
+) -> pd.DataFrame:
     """Calculate Bollinger Bands
 
     Parameters
@@ -53,7 +53,7 @@ def donchian(
     df_stock: pd.DataFrame,
     upper_length: int,
     lower_length: int,
-):
+) -> pd.DataFrame:
     """Calculate Donchian Channels
 
     Parameters

@@ -123,7 +123,7 @@ def view_donchian(
     ax.set_title(f"{ticker} donchian")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax.set_xlabel("Time")
-    ax.set_ylabel("Share Price ($)")
+    ax.set_ylabel("Price ($)")
 
     ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
     ax.fill_between(
