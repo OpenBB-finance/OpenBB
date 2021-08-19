@@ -22,7 +22,7 @@ from gamestonk_terminal.stocks.comparison_analysis import ca_controller
 from gamestonk_terminal.stocks.dark_pool_shorts import dps_controller
 from gamestonk_terminal.stocks.discovery import disc_controller
 from gamestonk_terminal.stocks.due_diligence import dd_controller
-from gamestonk_terminal.stocks.exploratory_data_analysis import eda_controller
+from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
 from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 from gamestonk_terminal.stocks.government import gov_controller
 from gamestonk_terminal.stocks.insider import insider_controller
@@ -60,7 +60,7 @@ class StocksController:
     CHOICES_MENUS = [
         "ta",
         "ba",
-        "eda",
+        "qa",
         "pred",
         "ra",
         "disc",
@@ -139,7 +139,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
->   eda         exploratory data analysis,\t e.g.: decompose, cusum, residuals analysis
+>   qa          quantitative alaysis,    \t e.g.: decompose, cusum, residuals analysis
 >   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {Style.RESET_ALL if not self.ticker else ''}"""
@@ -436,8 +436,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         else:
             return True
 
-    def call_eda(self, _):
-        """Process eda command"""
+    def call_qa(self, _):
+        """Process qa command"""
         if not self.ticker:
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
@@ -447,7 +447,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Load daily data to use this menu!", "\n")
             return
 
-        ret = eda_controller.menu(
+        ret = qa_controller.menu(
             self.ticker,
             self.start,
             self.interval,
