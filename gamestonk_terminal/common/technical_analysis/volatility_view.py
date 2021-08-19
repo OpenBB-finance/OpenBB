@@ -83,3 +83,72 @@ def view_bbands(
         "bbands",
         df_ta,
     )
+
+
+def view_donchian(
+    ticker: str,
+    s_interval: str,
+    df_stock: pd.DataFrame,
+    upper_length: int,
+    lower_length: int,
+    export: str,
+):
+    """Show donchian channels
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker
+    s_interval : str
+        Interval of stock data
+    df_stock : pd.DataFrame
+        Dataframe of stock prices
+    upper_length : int
+        Length of window to calculate upper channel
+    lower_length : int
+        Length of window to calculate lower channel
+    export : str
+        Format of export file
+    """
+    df_ta = volatility_model.donchian(df_stock, upper_length, lower_length)
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if s_interval == "1440min":
+        ax.plot(df_stock.index, df_stock["Adj Close"].values, color="k", lw=3)
+    else:
+        ax.plot(df_stock.index, df_stock["Close"].values, color="k", lw=3)
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
+    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")
+    ax.set_title(f"{ticker} donchian")
+    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Price ($)")
+
+    ax.legend([ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    ax.fill_between(
+        df_ta.index,
+        df_ta.iloc[:, 0].values,
+        df_ta.iloc[:, 2].values,
+        alpha=0.1,
+        color="b",
+    )
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+
+    if gtff.USE_ION:
+        plt.ion()
+
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout(pad=1)
+
+    plt.legend()
+
+    plt.show()
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "donchian",
+        df_ta,
+    )
