@@ -50,7 +50,6 @@ def bbands(
 
 
 def donchian(
-    s_interval: str,
     df_stock: pd.DataFrame,
     upper_length: int,
     lower_length: int,
