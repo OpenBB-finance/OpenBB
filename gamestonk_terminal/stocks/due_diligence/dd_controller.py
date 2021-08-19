@@ -357,11 +357,37 @@ csimarket:
 
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
-        csimarket_view.suppliers(self.ticker, other_args)
+        parser = argparse.ArgumentParser(
+            prog="supplier",
+            add_help=False,
+            description="List of suppliers from ticker provided. [Source: CSIMarket]",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            csimarket_view.suppliers(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_customer(self, other_args: List[str]):
         """Process customer command"""
-        csimarket_view.customers(self.ticker, other_args)
+        parser = argparse.ArgumentParser(
+            prog="customer",
+            add_help=False,
+            description="List of customers from ticker provided. [Source: CSIMarket]",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            csimarket_view.customers(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: str, interval: str, stock: DataFrame):
