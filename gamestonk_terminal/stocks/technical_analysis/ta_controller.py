@@ -1128,7 +1128,7 @@ Custom:
                 """,
         )
         parser.add_argument(
-            "-lu",
+            "-u",
             "--length_upper",
             action="store",
             dest="n_length_upper",
@@ -1137,7 +1137,7 @@ Custom:
             help="length",
         )
         parser.add_argument(
-            "-ll",
+            "-l",
             "--length_lower",
             action="store",
             dest="n_length_lower",
