@@ -263,7 +263,22 @@ csimarket:
 
     def call_rot(self, other_args: List[str]):
         """Process rot command"""
-        finnhub_view.rating_over_time(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rot",
+            description="""
+                Rating over time. [Source: Finnhub]
+            """,
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.rating_over_time(ticker=self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
