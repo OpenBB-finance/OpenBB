@@ -110,7 +110,7 @@ def view_donchian(
     export : str
         Format of export file
     """
-    df_ta = volatility_model.donchian(s_interval, df_stock, upper_length, lower_length)
+    df_ta = volatility_model.donchian(df_stock, upper_length, lower_length)
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if s_interval == "1440min":
