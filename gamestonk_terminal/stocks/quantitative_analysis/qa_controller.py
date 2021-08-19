@@ -8,9 +8,14 @@ from datetime import datetime
 import pandas as pd
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.common.quantitative_analysis import qa_api, rolling
+from gamestonk_terminal.common.quantitative_analysis import qa_api, rolling_view
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    check_positive,
+    check_proportion_range,
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -174,15 +179,157 @@ Rolling Metrics:
 
     def call_spread(self, other_args: List[str]):
         """Process spread command"""
-        rolling.spread(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spread",
+            description="""
+
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            rolling_view.view_spread(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_quantile(self, other_args: List[str]):
         """Process quantile command"""
-        rolling.quantile(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quantile",
+            description="""
+                The quantiles are values which divide the distribution such that
+                there is a given proportion of observations below the quantile.
+                For example, the median is a quantile. The median is the central
+                value of the distribution, such that half the points are less than
+                or equal to it and half are greater than or equal to it.
+
+                By default, q is set at 0.5, which effectively is median. Change q to
+                get the desired quantile (0<q<1).
+            """,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+
+        parser.add_argument(
+            "-q",
+            "--quantile",
+            action="store",
+            dest="f_quantile",
+            type=check_proportion_range,
+            default=0.5,
+            help="quantile",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            rolling_view.view_quantile(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                quantile=ns_parser.f_quantile,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_skew(self, other_args: List[str]):
         """Process skew command"""
-        rolling.skew(other_args, self.ticker, self.interval, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="skew",
+            description="""
+                Skewness is a measure of asymmetry or distortion of symmetric
+                distribution. It measures the deviation of the given distribution
+                of a random variable from a symmetric distribution, such as normal
+                distribution. A normal distribution is without any skewness, as it is
+                symmetrical on both sides. Hence, a curve is regarded as skewed if
+                it is shifted towards the right or the left.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            rolling_view.view_skew(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
