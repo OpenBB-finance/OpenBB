@@ -1,21 +1,22 @@
 """Screener Controller Module"""
 __docformat__ = "numpy"
 
-import os
 import argparse
 import configparser
+import os
 from typing import List
+
 import matplotlib.pyplot as plt
-from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_int_range,
+    get_flair,
     parse_known_args_and_warn,
 )
-from gamestonk_terminal.stocks.screener import finviz_view
-from gamestonk_terminal.stocks.screener import yahoo_finance_view
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.stocks.screener import finviz_view, yahoofinance_view
+from prompt_toolkit.completion import NestedCompleter
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -32,6 +33,8 @@ class ScreenerController:
         "help",
         "q",
         "quit",
+        "shorted",
+        "under",
         "view",
         "set",
         "historical",
@@ -66,6 +69,11 @@ class ScreenerController:
         print("   q             quit this menu, and shows back to main menu")
         print("   quit          quit to abandon program")
         print("")
+        print("Yahoo Finance:")
+        print("   shorted       most shorted stocks")
+        print("   under         most undervalued growth stocks")
+        print("")
+        print("Finviz:")
         print("   view          view available presets")
         print("   set           set one of the available presets")
         print("")
@@ -253,7 +261,7 @@ class ScreenerController:
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        self.screen_tickers = yahoo_finance_view.historical(other_args, self.preset)
+        self.screen_tickers = yahoofinance_view.historical(other_args, self.preset)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
@@ -288,6 +296,90 @@ class ScreenerController:
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
         return po_controller.menu(self.screen_tickers)
+
+    def call_shorted(self, other_args: List[str]):
+        """Process shorted command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shorted",
+            description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the most shorted stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_most_shorted(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_under(self, other_args: List[str]):
+        """Process under command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="under",
+            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the undervalued stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_undervalued(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu():
