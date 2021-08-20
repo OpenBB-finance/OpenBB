@@ -5,10 +5,15 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+
 import pandas as pd
 from matplotlib import pyplot as plt
+
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.common.quantitative_analysis import qa_api, rolling_view
+from gamestonk_terminal.common.quantitative_analysis import (
+    qa_view,
+    rolling_view,
+)
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -29,8 +34,7 @@ class QaController:
         "summary",
         "hist",
         "cdf",
-        "bwy",
-        "bwm",
+        "bw",
         "rolling",
         "decompose",
         "cusum",
@@ -80,8 +84,7 @@ Quantitative Analysis:
     summary       brief summary statistics
     hist          histogram with density plot
     cdf           cumulative distribution function
-    bwy           box and whisker yearly plot
-    bwm           box and whisker monthly plot
+    bw           box and whisker plot
 
 Rolling Metrics:
     rolling       rolling mean and std deviation
@@ -141,41 +144,315 @@ Rolling Metrics:
 
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
-        qa_api.summary(other_args, self.stock)
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="summary",
+            description="""
+                Summary statistics
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.view_summary(df_stock=self.stock, export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
-        qa_api.hist(other_args, self.ticker, self.stock, self.start)
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="hist",
+            description="""
+                Histogram (default returns) with depicted density and rug
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--prices",
+            action="store_true",
+            help="Flag to show prices not returns",
+            default=False,
+            dest="prices",
+        )
+        parser.add_argument(
+            "-b", "--bins", type=check_positive, default=15, dest="n_bins"
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            qa_view.show_hist(
+                s_ticker=self.ticker,
+                df_stock=self.stock,
+                start=self.start,
+                prices=ns_parser.prices,
+                bins=ns_parser.n_bins,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
-        qa_api.cumulative_distribution_function(
-            other_args, self.ticker, self.stock, self.start
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="cdf",
+            description="""
+                Cumulative distribution function
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--prices",
+            action="store_true",
+            help="Flag to show prices not returns",
+            default=False,
+            dest="prices",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
         )
 
-    def call_bwy(self, other_args: List[str]):
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.show_cdf(
+                s_ticker=self.ticker,
+                df_stock=self.stock,
+                start=self.start,
+                prices=ns_parser.prices,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_bw(self, other_args: List[str]):
         """Process bwy command"""
-        qa_api.bwy(other_args, self.ticker, self.stock, self.start)
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="bw",
+            description="""
+                Box and Whisker plot
+            """,
+        )
+        parser.add_argument(
+            "-y",
+            "--yearly",
+            action="store_true",
+            default=False,
+            dest="year",
+            help="Flag to show yearly bw plot",
+        )
+        parser.add_argument(
+            "-p",
+            "--prices",
+            action="store_true",
+            default=False,
+            dest="prices",
+            help="Flag to show prices on plot",
+        )
 
-    def call_bwm(self, other_args: List[str]):
-        """Process bwm command"""
-        qa_api.bwm(other_args, self.ticker, self.stock, self.start)
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            qa_view.show_bw(
+                s_ticker=self.ticker,
+                start=self.start,
+                df_stock=self.stock,
+                yearly=ns_parser.year,
+                prices=ns_parser.prices,
+            )
 
-    def call_rolling(self, other_args: List[str]):
-        """Process rolling command"""
-        qa_api.rolling(other_args, self.ticker, self.stock)
+        except Exception as e:
+            print(e, "\n")
 
     def call_decompose(self, other_args: List[str]):
         """Process decompose command"""
-        qa_api.decompose(other_args, self.ticker, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="decompose",
+            description="""
+                Decompose time series as:
+                - Additive Time Series = Level + CyclicTrend + Residual + Seasonality
+                - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
+            """,
+        )
+        parser.add_argument(
+            "-m",
+            "--multiplicative",
+            action="store_true",
+            default=False,
+            dest="multiplicative",
+            help="decompose using multiplicative model instead of additive",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.show_seasonal(
+                s_ticker=self.ticker,
+                df_stock=self.stock,
+                multiplicative=ns_parser.multiplicative,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
-        qa_api.cusum(other_args, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="cusum",
+            description="""
+                Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--threshold",
+            dest="threshold",
+            type=float,
+            default=(
+                max(self.stock["Adj Close"].values)
+                - min(self.stock["Adj Close"].values)
+            )
+            / 40,
+            help="threshold",
+        )
+        parser.add_argument(
+            "-d",
+            "--drift",
+            dest="drift",
+            type=float,
+            default=(
+                max(self.stock["Adj Close"].values)
+                - min(self.stock["Adj Close"].values)
+            )
+            / 80,
+            help="drift",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.show_cusum(
+                df_stock=self.stock,
+                threshold=ns_parser.threshold,
+                drift=ns_parser.drift,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
-        qa_api.acf(other_args, self.ticker, self.stock, self.start)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="acf",
+            description="""
+                Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--lags",
+            dest="lags",
+            type=check_positive,
+            default=15,
+            help="maximum lags to display in plots",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            qa_view.show_acf(
+                s_ticker=self.ticker,
+                start=self.start,
+                df_stock=self.stock,
+                lags=ns_parser.lags,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_rolling(self, other_args: List[str]):
+        """Process rolling command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rolling",
+            description="""
+                Rolling mean and std deviation
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="Window length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            rolling_view.view_mean_std(
+                s_ticker=self.ticker,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_spread(self, other_args: List[str]):
         """Process spread command"""
@@ -194,7 +471,7 @@ Rolling Metrics:
             dest="n_length",
             type=check_positive,
             default=14,
-            help="length",
+            help="Window length",
         )
         parser.add_argument(
             "--export",

@@ -3,8 +3,35 @@ __docformat__ = "numpy"
 
 from typing import Tuple
 
-import pandas_ta as ta
 import pandas as pd
+import pandas_ta as ta
+
+
+def rolling_avg(
+    df_stock: pd.DataFrame, length: int
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Return rolling mean and standard deviation
+
+    Parameters
+    ----------
+    df_stock : pd.DataFrame
+        Dataframe of prices
+    length : int
+        Length of rolling window
+
+    Returns
+    -------
+    pd.DataFrame :
+        Dataframe of rolling mean
+    pd.DataFrame :
+        Dataframe of rolling standard deviation
+    """
+    df_stock = df_stock["Adj Close"]
+
+    rolling_mean = df_stock.rolling(length, center=True, min_periods=1).mean()
+    rolling_std = df_stock.rolling(length, center=True, min_periods=1).std()
+
+    return pd.DataFrame(rolling_mean), pd.DataFrame(rolling_std)
 
 
 def spread(
