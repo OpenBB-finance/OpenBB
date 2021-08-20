@@ -1372,7 +1372,7 @@ Custom:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="fib",
-            description="Calculates the fibinocci retracement levels",
+            description="Calculates the fibonacci retracement levels",
         )
         parser.add_argument(
             "-p",
