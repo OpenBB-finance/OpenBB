@@ -67,6 +67,68 @@ def sma(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataF
     return pd.DataFrame(df_ta)
 
 
+def wma(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataFrame:
+    """Gets weighted moving average (WMA) for stock
+
+    Parameters
+    ----------
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    window_length: int
+        Length of SMA window
+
+    Returns
+    ----------
+    df_ta: pd.DataFrame
+        Dataframe containing prices and WMA
+    """
+    # Daily
+    if s_interval == "1440min":
+        df_ta = ta.wma(df_stock["Adj Close"], length=window_length).dropna()
+
+    # Intraday
+    else:
+        df_ta = ta.wma(
+            df_stock["Close"],
+            length=window_length,
+        ).dropna()
+
+    return pd.DataFrame(df_ta)
+
+
+def hma(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataFrame:
+    """Gets hull moving average (HMA) for stock
+
+    Parameters
+    ----------
+    s_interval: str
+        Data interval
+    df_stock: pd.DataFrame
+        Dataframe of dates and prices
+    window_length: int
+        Length of SMA window
+
+    Returns
+    ----------
+    df_ta: pd.DataFrame
+        Dataframe containing prices and HMA
+    """
+    # Daily
+    if s_interval == "1440min":
+        df_ta = ta.hma(df_stock["Adj Close"], length=window_length).dropna()
+
+    # Intraday
+    else:
+        df_ta = ta.hma(
+            df_stock["Close"],
+            length=window_length,
+        ).dropna()
+
+    return pd.DataFrame(df_ta)
+
+
 def zlma(s_interval: str, df_stock: pd.DataFrame, window_length: int) -> pd.DataFrame:
     """Gets zero-lagged exponential moving average (ZLEMA) for stock
 
