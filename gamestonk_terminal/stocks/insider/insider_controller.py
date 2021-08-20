@@ -104,7 +104,7 @@ class InsiderController:
         """Print help"""
         help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/insider
 
-Insider Trading:")
+Insider Trading:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
