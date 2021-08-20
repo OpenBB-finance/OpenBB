@@ -5,6 +5,8 @@ import os
 import random
 from typing import List
 
+from pandas.plotting import register_matplotlib_converters
+from tabulate import tabulate
 import matplotlib.pyplot as plt
 import yfinance as yf
 from finvizfinance.screener import ticker
@@ -17,8 +19,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.stocks.screener import finviz_view, yahoofinance_model
-from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 
 register_matplotlib_converters()
 
