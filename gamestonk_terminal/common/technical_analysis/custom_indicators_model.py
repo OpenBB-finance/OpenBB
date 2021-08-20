@@ -9,7 +9,7 @@ import pandas as pd
 def calculate_fib_levels(
     df_stock: pd.DataFrame, period: int, open_date: Any, close_date: Any
 ) -> Tuple[pd.DataFrame, pd.Timestamp, pd.Timestamp, float, float]:
-    """Calculate Fibinocci levels
+    """Calculate Fibonacci levels
 
     Parameters
     ----------

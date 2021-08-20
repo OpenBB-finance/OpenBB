@@ -14,7 +14,7 @@ from gamestonk_terminal.common.technical_analysis import custom_indicators_model
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 
-def fibinocci_retracement(
+def fibonacci_retracement(
     s_ticker: str,
     df_stock: pd.DataFrame,
     period: int,
@@ -22,7 +22,7 @@ def fibinocci_retracement(
     end_date: Any,
     export: str,
 ):
-    """Calculate fibinocci retracement levels
+    """Calculate fibonacci retracement levels
 
     Parameters
     ----------

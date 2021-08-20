@@ -412,7 +412,7 @@ def get_top_nfts() -> pd.DataFrame:
         ],
     )
     df["Rank"] = df["Rank"].astype(int)
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df["Price"] = df["Price"].apply(lambda x: x.strip("$").replace(",", ""))
     return df
 
 

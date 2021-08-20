@@ -48,6 +48,8 @@ class TechnicalAnalysisController:
         "pr",
         "ema",
         "sma",
+        "wma",
+        "hma",
         "vwap",
         "zlma",
         "cci",
@@ -111,7 +113,9 @@ Technical Analysis:
 Overlap:
     ema         exponential moving average
     sma         simple moving average
-    zlma        zero lag moving average"
+    wma         weighted moving average
+    hma         hull moving average
+    zlma        zero lag moving average
     vwap        volume weighted average price
 Momentum:
     cci         commodity channel index
@@ -434,6 +438,108 @@ Custom:
 
             overlap_view.view_ma(
                 ma_type="SMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_wma(self, other_args: List[str]):
+        """Process wma command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wma",
+            description="""
+                A Weighted Moving Average puts more weight on recent data and less on past data.
+                This is done by multiplying each bar’s price by a weighting factor. Because of its
+                unique calculation, WMA will follow prices more closely than a corresponding Simple
+                Moving Average.
+                        """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[20, 50],
+            help="Window lengths.  Multiple values indicated as comma separated values. ",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma_type="WMA",
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                window_length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_hma(self, other_args: List[str]):
+        """Process hma command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hma",
+            description="""
+                The Hull Moving Average solves the age old dilemma of making a moving average
+                more responsive to current price activity whilst maintaining curve smoothness.
+                In fact the HMA almost eliminates lag altogether and manages to improve smoothing
+                at the same time.
+                        """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive_list,
+            default=[10, 20],
+            help="Window lengths.  Multiple values indicated as comma separated values. ",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            overlap_view.view_ma(
+                ma_type="HMA",
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
@@ -1266,7 +1372,7 @@ Custom:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="fib",
-            description="Calculates the fibinocci retracement levels",
+            description="Calculates the fibonacci retracement levels",
         )
         parser.add_argument(
             "-p",
@@ -1304,7 +1410,7 @@ Custom:
             if not ns_parser:
                 return
 
-            custom_indicators_view.fibinocci_retracement(
+            custom_indicators_view.fibonacci_retracement(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 period=ns_parser.period,
