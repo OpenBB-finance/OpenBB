@@ -112,9 +112,9 @@ Technical Analysis:
 
 Overlap:
     ema         exponential moving average
+    sma         simple moving average
     wma         weighted moving average
     hma         hull moving average
-    sma         simple moving average
     zlma        zero lag moving average
     vwap        volume weighted average price
 Momentum:
