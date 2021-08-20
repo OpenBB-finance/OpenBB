@@ -7,6 +7,7 @@ import os
 from typing import List
 
 import matplotlib.pyplot as plt
+from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     check_int_range,
@@ -16,7 +17,6 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.stocks.screener import finviz_view, yahoofinance_view
-from prompt_toolkit.completion import NestedCompleter
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
