@@ -54,20 +54,20 @@ class TestOptimizerView(TestCase):
     def test_efficient_risk(self):
         optimizer_view.efficient_risk(["TSLA", "GME"], [])
 
-    @check_print(assert_in="TSLA")
-    @vcr.use_cassette(
-        "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
-        record_mode="new_episodes",
-    )
-    def test_efficient_return(self):
-        optimizer_view.efficient_return(["TSLA", "GME"], [])
+    # @check_print(assert_in="TSLA")
+    # @vcr.use_cassette(
+    #     "tests/cassettes/test_port_opt/test_opt_view/general1.yaml",
+    #     record_mode="new_episodes",
+    # )
+    # def test_efficiet_return(self):
+    #     optimizer_view.efficient_return(["TSLA", "GME"], [])
 
-    @check_print(assert_in="\n")
-    @vcr.use_cassette(
-        "tests/cassettes/test_port_opt/test_opt_view/test_show_eff.yaml",
-        record_mode="new_episodes",
-    )
-    @mock.patch("matplotlib.pyplot.show")
-    def test_show_ef(self, mock_mlp):
-        # pylint: disable=unused-argument
-        optimizer_view.show_ef(["TSLA", "GME"], [])
+    # @check_print(assert_in="\n")
+    # @vcr.use_cassette(
+    #     "tests/cassettes/test_port_opt/test_opt_view/test_show_eff.yaml",
+    #     record_mode="new_episodes",
+    # )
+    # @mock.patch("matplotlib.pyplot.show")
+    # def test_show_ef(self, mock_mlp):
+    #     # pylint: disable=unused-argument
+    #     optimizer_view.show_ef(["TSLA", "GME"], [])
