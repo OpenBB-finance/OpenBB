@@ -6,19 +6,16 @@ import random
 from typing import List
 
 from pandas.plotting import register_matplotlib_converters
-from tabulate import tabulate
 import matplotlib.pyplot as plt
 import yfinance as yf
 from finvizfinance.screener import ticker
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
-    export_data,
     parse_known_args_and_warn,
     plot_autoscale,
     valid_date,
 )
-from gamestonk_terminal.stocks.screener import finviz_view, yahoofinance_model
 
 register_matplotlib_converters()
 
@@ -193,73 +190,3 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
     except Exception as e:
         print(e, "\n")
         return []
-
-
-def display_most_shorted(num_stocks: int, export: str):
-    """Display most shorted stocks screener. [Source: Yahoo Finance]
-    Parameters
-    ----------
-    num_stocks: int
-        Number of stocks to display
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-    df = yahoofinance_model.get_most_shorted().head(num_stocks)
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-
-    if df.empty:
-        print("No data found.")
-    else:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
-        )
-    print("")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shorted",
-        df,
-    )
-
-
-def display_undervalued(num_stocks: int, export: str):
-    """Display most undervalued growth stock. [Source: Yahoo Finance]
-    Parameters
-    ----------
-    num_stocks: int
-        Number of stocks to display
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-    df = yahoofinance_model.get_undervalued().head(num_stocks)
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-
-    if df.empty:
-        print("No data found.")
-    else:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            )
-        )
-    print("")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "undervalued",
-        df,
-    )

@@ -17,17 +17,3 @@ def get_most_shorted() -> pd.DataFrame:
     data = pd.read_html(requests.get(url).text)[0]
     data = data.iloc[:, :-1]
     return data
-
-
-def get_undervalued() -> pd.DataFrame:
-    """Get Yahoo Finance undervalued growth stocks
-    Returns
-    -------
-    pd.DataFrame
-        Undervalued stocks
-    """
-    url = "https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks"
-
-    data = pd.read_html(requests.get(url).text)[0]
-    data = data.iloc[:, :-1]
-    return data

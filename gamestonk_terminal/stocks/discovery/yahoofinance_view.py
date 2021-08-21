@@ -77,3 +77,38 @@ def display_losers(num_stocks: int, export: str):
         "losers",
         df_losers,
     )
+
+
+def display_undervalued(num_stocks: int, export: str):
+    """Display most undervalued growth stock. [Source: Yahoo Finance]
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_undervalued().head(num_stocks)
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        print("No data found.")
+    else:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "undervalued",
+        df,
+    )
