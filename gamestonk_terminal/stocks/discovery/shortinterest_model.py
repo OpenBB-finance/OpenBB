@@ -27,7 +27,7 @@ def get_low_float() -> DataFrame:
         "lxml",
     )
 
-    a_low_float_header = list()
+    a_low_float_header = []
     for low_float_header in text_soup_low_float_stocks.findAll(
         "td", {"class": "tblhdr"}
     ):
@@ -37,7 +37,7 @@ def get_low_float() -> DataFrame:
 
     stock_list_tr = text_soup_low_float_stocks.find_all("tr")
 
-    low_float_data = list()
+    low_float_data = []
     for a_stock in stock_list_tr:
         a_stock_txt = a_stock.text
 
@@ -49,7 +49,7 @@ def get_low_float() -> DataFrame:
         if len(low_float_data) == 8:
             df_low_float.loc[len(df_low_float.index)] = low_float_data[:-1]
 
-        low_float_data = list()
+        low_float_data = []
 
     return df_low_float
 
@@ -72,7 +72,7 @@ def get_today_hot_penny_stocks() -> DataFrame:
         "lxml",
     )
 
-    a_penny_stock_header = list()
+    a_penny_stock_header = []
     for penny_stock_header in text_soup_penny_stock_stocks.findAll(
         "td", {"class": "tblhdr"}
     ):
@@ -80,7 +80,7 @@ def get_today_hot_penny_stocks() -> DataFrame:
 
     df_penny = pd.DataFrame(columns=a_penny_stock_header)
 
-    first_penny = list()
+    first_penny = []
     for idx, penny_stock_header in enumerate(text_soup_penny_stock_stocks.findAll("a")):
         if idx == 0:
             continue
@@ -97,7 +97,7 @@ def get_today_hot_penny_stocks() -> DataFrame:
 
     df_penny.loc[0] = first_penny
 
-    a_penny_stock = list()
+    a_penny_stock = []
     penny_idx = 1
     for idx, penny_stock in enumerate(
         text_soup_penny_stock_stocks.findAll("td", {"class": "tdi"})
@@ -107,6 +107,6 @@ def get_today_hot_penny_stocks() -> DataFrame:
         if (idx + 1) % 6 == 0:
             df_penny.loc[penny_idx] = a_penny_stock
             penny_idx += 1
-            a_penny_stock = list()
+            a_penny_stock = []
 
     return df_penny

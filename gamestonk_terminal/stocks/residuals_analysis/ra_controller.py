@@ -52,7 +52,7 @@ class ResidualsController:
 
         self.model_name: str = "None"
         self.model: pd.Series = None
-        self.residuals: List[float] = list()
+        self.residuals: List[float] = []
 
         self.ra_parser = argparse.ArgumentParser(add_help=False, prog="ra")
         self.ra_parser.add_argument(
