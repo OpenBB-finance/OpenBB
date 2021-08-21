@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from datetime import timedelta
-
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -140,9 +140,19 @@ def plot_adosc(
     else:
         bar_width = timedelta(minutes=int(s_interval.split("m")[0]))
 
+    divisor = 1000000
+    df_vol = df_stock["Volume"].dropna()
+    df_vol = df_vol.values / divisor
     df_ta = volume_model.adosc(df_stock, use_open, fast, slow)
+    df_cal = df_ta.values
+    df_cal = df_cal / divisor
 
-    fig, axes = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, axes = plt.subplots(
+        3,
+        1,
+        figsize=plot_autoscale(),
+        dpi=PLOT_DPI,
+    )
     ax = axes[0]
     ax.set_title(f"{s_ticker} AD Oscillator")
     if s_interval == "1440min":
@@ -150,15 +160,16 @@ def plot_adosc(
     else:
         ax.plot(df_stock.index, df_stock["Close"].values, "fuchsia", lw=1)
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Price ($)")
+    ax.set_ylabel("Price")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax1 = axes[1]
-    ax1.set_ylabel("Volume")
+    ax1.set_ylabel("Volume [M]")
+
     if s_interval == "1440min":
         ax1.bar(
             df_stock.index,
-            df_stock["Volume"].values,
+            df_vol,
             color=bar_colors,
             alpha=0.8,
             width=0.3,
@@ -166,7 +177,7 @@ def plot_adosc(
     else:
         ax1.bar(
             df_stock.index,
-            df_stock["Volume"].values,
+            df_vol,
             color=bar_colors,
             alpha=0.8,
             width=bar_width,
@@ -174,8 +185,9 @@ def plot_adosc(
     ax1.set_xlim(df_stock.index[0], df_stock.index[-1])
 
     ax2 = axes[2]
-    ax2.set_ylabel("AD osc")
-    ax2.plot(df_ta.index, df_ta.values, "b", lw=2, label="AD Osc")
+    ax2.set_ylabel("AD Osc [M]")
+
+    ax2.plot(df_ta.index, df_cal, "b", lw=2, label="AD Osc")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax2.grid(b=True, which="major", color="#666666", linestyle="-")
 
