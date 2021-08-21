@@ -1,21 +1,24 @@
-import os
+"""Yahoo Finance View"""
+__docformat__ = "numpy"
 import argparse
-from typing import List
-import random
-import datetime
 import configparser
+import datetime
+import os
+import random
+from typing import List
+
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 import yfinance as yf
 from finvizfinance.screener import ticker
-from gamestonk_terminal.stocks.screener import finviz_view
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
     valid_date,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.stocks.screener import finviz_view
 
 register_matplotlib_converters()
 
