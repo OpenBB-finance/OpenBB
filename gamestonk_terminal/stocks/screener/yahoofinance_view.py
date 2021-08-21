@@ -1,3 +1,5 @@
+"""Yahoo Finance View"""
+__docformat__ = "numpy"
 import argparse
 import configparser
 import datetime
@@ -16,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     valid_date,
 )
+from gamestonk_terminal.stocks.screener import finviz_view
 
 register_matplotlib_converters()
 
