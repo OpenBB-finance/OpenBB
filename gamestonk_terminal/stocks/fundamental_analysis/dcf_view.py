@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 from typing import List, Union
 from datetime import datetime
+from pathlib import Path
 import argparse
 import math
 import os
@@ -57,10 +58,7 @@ def dcf(other_args: List[str], ticker: str):
             return
 
         dcf_view = CreateExcelFA(ticker, ns_parser.audit)
-        trypath = dcf_view.create_workbook()
-        print(
-            f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file.\n"
-        )
+        dcf_view.create_workbook()
 
     except Exception as e:
         print(e, "\n")
@@ -79,7 +77,7 @@ class CreateExcelFA:
         self.ws3: worksheet = self.wb.create_sheet("Explanations")
         self.ws1.title = "Financials"
         self.ticker: str = ticker
-        self.now: str = datetime.now().strftime("%Y/%m/%d %H:%M:%S").replace("/", "-")
+        self.now: str = datetime.now().strftime("%Y-%m-%d")
         self.letter: int = 0
         self.is_start: int = 4
         self.bs_start: int = 18
@@ -119,8 +117,15 @@ class CreateExcelFA:
             "excel",
             f"{self.ticker} {self.now}.xlsx",
         )
-        self.wb.save(trypath)
-        return trypath
+
+        my_file = Path(trypath)
+        if my_file.is_file():
+            print("Analysis already ran. Please move file to rerun.")
+        else:
+            self.wb.save(trypath)
+            print(
+                f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
+            )
 
     def get_data(self, statement: str, row: int, header: bool):
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
