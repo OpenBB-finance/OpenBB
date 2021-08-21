@@ -29,3 +29,18 @@ def get_losers() -> pd.DataFrame:
     url_losers = "https://finance.yahoo.com/screener/predefined/day_losers"
 
     return pd.read_html(requests.get(url_losers).text)[0]
+
+
+def get_undervalued() -> pd.DataFrame:
+    """Get Yahoo Finance undervalued growth stocks
+
+    Returns
+    -------
+    pd.DataFrame
+        Undervalued stocks
+    """
+    url = "https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks"
+
+    data = pd.read_html(requests.get(url).text)[0]
+    data = data.iloc[:, :-1]
+    return data

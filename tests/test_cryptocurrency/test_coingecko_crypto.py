@@ -25,7 +25,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Co
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
     print(os.getcwd())
-    with open("tests/data/btc_usd_test_data.json") as f:
+    with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
     return dd_pycoingecko_view.load(["-c", "bitcoin"])
@@ -54,7 +54,7 @@ class TestCoinGeckoAPI(TestCase):
         Mock returns a dict saved as .json
         """
 
-        with open("tests/data/btc_usd_test_data.json") as f:
+        with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
             sample_return = json.load(f)
 
         mock_load.return_value = sample_return

@@ -60,7 +60,7 @@ def management(other_args: List[str], ticker: str):
             print("")
             return
 
-        l_titles = list()
+        l_titles = []
         for s_title in found_h2s["Management"].findAll(
             "td", {"class": "table__td text-right"}
         ):
@@ -69,7 +69,7 @@ def management(other_args: List[str], ticker: str):
             ):
                 l_titles.append(s_title.text.strip())
 
-        l_names = list()
+        l_names = []
         for s_name in found_h2s["Management"].findAll(
             "td", {"class": "table__td table--allow-wrap"}
         ):

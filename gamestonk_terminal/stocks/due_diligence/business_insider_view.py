@@ -173,8 +173,8 @@ def estimates(other_args: List[str], ticker: str):
             "lxml",
         )
 
-        l_estimates_year_header = list()
-        l_estimates_quarter_header = list()
+        l_estimates_year_header = []
+        l_estimates_quarter_header = []
         for estimates_header in text_soup_market_business_insider.findAll(
             "th", {"class": "table__th text-right"}
         ):
@@ -186,13 +186,13 @@ def estimates(other_args: List[str], ticker: str):
             ):
                 l_estimates_quarter_header.append(s_estimates_header)
 
-        l_estimates_year_metric = list()
+        l_estimates_year_metric = []
         for estimates_year_metric in text_soup_market_business_insider.findAll(
             "td", {"class": "table__td black"}
         ):
             l_estimates_year_metric.append(estimates_year_metric.text)
 
-        l_estimates_quarter_metric = list()
+        l_estimates_quarter_metric = []
         for estimates_quarter_metric in text_soup_market_business_insider.findAll(
             "td", {"class": "table__td font-color-dim-gray"}
         ):
@@ -201,7 +201,7 @@ def estimates(other_args: List[str], ticker: str):
         d_metric_year = dict()
         d_metric_quarter_earnings = dict()
         d_metric_quarter_revenues = dict()
-        l_metrics = list()
+        l_metrics = []
         n_metrics = 0
         b_year = True
         for idx, metric_value in enumerate(
@@ -218,13 +218,13 @@ def estimates(other_args: List[str], ticker: str):
                 if n_metrics > len(l_estimates_year_metric) - 1:
                     b_year = False
                     n_metrics = 0
-                    l_metrics = list()
+                    l_metrics = []
                     idx_y = idx
 
                 # Add value to dictionary
                 if (idx + 1) % len(l_estimates_year_header) == 0:
                     d_metric_year[l_estimates_year_metric[n_metrics]] = l_metrics
-                    l_metrics = list()
+                    l_metrics = []
                     n_metrics += 1
 
             if not b_year:
@@ -245,7 +245,7 @@ def estimates(other_args: List[str], ticker: str):
                         d_metric_quarter_revenues[
                             l_estimates_quarter_metric[n_metrics - 4]
                         ] = l_metrics
-                    l_metrics = list()
+                    l_metrics = []
                     n_metrics += 1
 
         df_year_estimates = pd.DataFrame.from_dict(
@@ -265,8 +265,8 @@ def estimates(other_args: List[str], ticker: str):
         )
         # df_quarter_revenues.index.name = 'Revenues'
 
-        l_quarter = list()
-        l_date = list()
+        l_quarter = []
+        l_date = []
         for quarter_title in df_quarter_earnings.columns:
             l_quarter.append(re.split("  ending", quarter_title)[0])
             if len(re.split("  ending", quarter_title)) == 2:

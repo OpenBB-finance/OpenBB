@@ -41,7 +41,7 @@ def get_ratings() -> List[dict]:
         Ratings list
     """
 
-    ratings = list()
+    ratings = []
     url_ratings = "https://www.marketbeat.com/ratings/"
 
     text_soup_ratings = BeautifulSoup(

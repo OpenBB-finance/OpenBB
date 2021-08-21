@@ -72,7 +72,7 @@ def get_fails_to_deliver(
     # Filter by start and end dates for FTD
     else:
         base_url = "https://www.sec.gov/files/data/fails-deliver-data/cnsfails"
-        ftd_dates = list()
+        ftd_dates = []
 
         for y in range(start.year, end.year + 1):
             if y < end.year:
