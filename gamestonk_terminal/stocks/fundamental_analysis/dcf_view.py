@@ -51,19 +51,19 @@ def dcf(other_args: List[str], ticker: str):
         help="Confirms that the numbers provided are accurate.",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    # try:
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-        dcf_view = CreateExcelFA(ticker, ns_parser.audit)
-        trypath = dcf_view.create_workbook()
-        print(
-            f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file.\n"
-        )
+    dcf_view = CreateExcelFA(ticker, ns_parser.audit)
+    trypath = dcf_view.create_workbook()
+    print(
+        f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file.\n"
+    )
 
-    except Exception as e:
-        print(e, "\n")
+    # except Exception as e:
+    # print(e, "\n")
 
 
 class CreateExcelFA:
@@ -93,6 +93,7 @@ class CreateExcelFA:
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
         self.info: pd.DataFrame = yf.Ticker(ticker).info
         self.t_bill: float = dcf_model.get_rf()
+        self.r_ff: int = dcf_model.get_fama_coe(self.ticker)
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -494,13 +495,28 @@ class CreateExcelFA:
             dcf_model.set_cell(
                 self.ws2,
                 f"{cols[1+self.len_pred]}9",
-                f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+6}))/({c2}{r+4}-{c2}{r+6})",
+                f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+15}))/({c2}{r+11}-{c2}{r+15})",
+                num_form=dcf_model.fmt_acct,
             )
 
-        self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
         dcf_model.set_cell(
-            self.ws2, f"{c1}{r}", "Discount Rate", alignment=dcf_model.center
+            self.ws2,
+            f"{c1}{r-2}",
+            "Note: We do not allow r values to go below 0.5%.",
+            font=dcf_model.red,
         )
+        self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
+        for x in [c1, c2]:
+            dcf_model.set_cell(self.ws2, f"{x}{r}", border=dcf_model.thin_border_bottom)
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c1}{r}",
+            "Discount Rate",
+            alignment=dcf_model.center,
+            border=dcf_model.thin_border_bottom,
+        )
+
+        # CAPM
         dcf_model.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
         dcf_model.set_cell(
             self.ws2,
@@ -508,9 +524,7 @@ class CreateExcelFA:
             float(self.t_bill) / 100,
             num_form=FORMAT_PERCENTAGE_00,
         )
-        dcf_model.set_cell(
-            self.ws2, f"{c3}{r+1}", "Eventually get from 10 year t-bond scraper"
-        )
+        self.custom_exp(r + 1, "Pulled from US Treasurey.", 2, f"{c3}")
         dcf_model.set_cell(self.ws2, f"{c1}{r+2}", "Market Rate")
         dcf_model.set_cell(self.ws2, f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00)
         self.custom_exp(
@@ -519,22 +533,71 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
         dcf_model.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
         self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
-        dcf_model.set_cell(self.ws2, f"{c1}{r+4}", "r")
+        dcf_model.set_cell(self.ws2, f"{c1}{r+4}", "r (CAPM)")
         dcf_model.set_cell(
             self.ws2,
             f"{c2}{r+4}",
-            f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}",
+            f"=max((({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1},0.005)",
             num_form=FORMAT_PERCENTAGE_00,
             border=dcf_model.thin_border_top,
             font=dcf_model.bold_font,
         )
-        dcf_model.set_cell(self.ws2, f"{c1}{r+6}", "Long Term Growth")
-        dcf_model.set_cell(self.ws2, f"{c2}{r+6}", 0.04, num_form=FORMAT_PERCENTAGE_00)
+
+        # Fama French
+        dcf_model.set_cell(self.ws2, f"{c1}{r+7}", "Fama French")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+7}",
+            f"=max({self.r_ff},0.005)",
+            num_form=FORMAT_PERCENTAGE_00,
+        )
+        self.custom_exp(
+            r + 7,
+            (
+                "Calculated using the Fama and French Three-Factor model. For more"
+                "information visit https://www.investopedia.com/terms/f/famaandfrenchthreefactormodel.asp."
+            ),
+            2,
+            f"{c3}",
+        )
+
+        # Decide
+        for x in [c1, c2]:
+            dcf_model.set_cell(
+                self.ws2, f"{x}{r+9}", border=dcf_model.thin_border_bottom
+            )
+        self.ws2.merge_cells(f"{c1}{r+9}:{c2}{r+9}")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c1}{r+9}",
+            "Choose model",
+            border=dcf_model.thin_border_bottom,
+            alignment=dcf_model.center,
+            num_form=FORMAT_PERCENTAGE_00,
+        )
+        dcf_model.set_cell(self.ws2, f"{c1}{r+10}", "Model")
+        dcf_model.set_cell(self.ws2, f"{c2}{r+10}", "Fama French")
+        dcf_model.set_cell(self.ws2, f"{c3}{r+10}", "Type 'Fama French' or 'CAPM'")
+        dcf_model.set_cell(self.ws2, f"{c1}{r+11}", "r")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+11}",
+            f'=if({c2}{r+10}="Fama French",{c2}{r+7},if({c2}{r+10}="CAPM",{c2}{r+4},"Invalid Selection"))',
+            num_form=FORMAT_PERCENTAGE_00,
+        )
+
+        dcf_model.set_cell(self.ws2, f"{c1}{r+15}", "Long Term Growth")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+15}",
+            f"=min(0.04,{c2}{r+11}*0.9)",
+            num_form=FORMAT_PERCENTAGE_00,
+        )
         dcf_model.set_cell(self.ws2, "A11", "Value from Operations")
         dcf_model.set_cell(
             self.ws2,
             "B11",
-            f"=NPV({c2}{r+4},B9:{dcf_model.letters[self.len_pred+1]}9)",
+            f"=NPV({c2}{r+11},B9:{dcf_model.letters[self.len_pred+1]}9)",
             num_form=dcf_model.fmt_acct,
         )
         dcf_model.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
