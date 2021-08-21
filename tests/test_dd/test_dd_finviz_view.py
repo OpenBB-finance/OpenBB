@@ -3,8 +3,7 @@ import unittest
 
 import vcr
 
-from gamestonk_terminal.stocks.due_diligence.finviz_view import analyst
-
+from gamestonk_terminal.stocks.due_diligence.finviz_model import get_analyst_data
 from tests.helpers import check_print
 
 
@@ -15,4 +14,5 @@ class TestDdFinvizApi(unittest.TestCase):
         record_mode="new_episodes",
     )
     def test_analyst(self):
-        analyst([], "PLTR")
+        df = get_analyst_data(ticker="PLTR")
+        print(df.to_string())

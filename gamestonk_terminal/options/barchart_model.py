@@ -1,8 +1,8 @@
 """Barchart Model"""
 __docformat__ = "numpy"
 
-import requests
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 
 

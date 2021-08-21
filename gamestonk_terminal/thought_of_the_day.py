@@ -1,9 +1,10 @@
 """ Thought of The Day """
 __docformat__ = "numpy"
 
-import re
 import random
+import re
 from typing import Dict
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -62,7 +63,7 @@ class ThoughtOfTheDay:
             "div"
         )
 
-        page_count = list()
+        page_count = []
         for a_page_ref in find_navigation.find_all("a", href=True):
             page_count.append(a_page_ref.text.strip("\n"))
 

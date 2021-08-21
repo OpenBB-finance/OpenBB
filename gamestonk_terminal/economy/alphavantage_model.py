@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import pandas as pd
 from alpha_vantage.sectorperformance import SectorPerformances
+
 from gamestonk_terminal import config_terminal as cfg
 
 

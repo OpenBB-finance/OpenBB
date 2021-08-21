@@ -1,60 +1,36 @@
 from unittest import mock, TestCase
 import json
+import os
 
 import vcr
-
 from pycoingecko import CoinGeckoAPI
-from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view import (
-    load,
-    ta,
-    chart,
-    info,
-    web,
-    social,
-    dev,
-    ath,
-    atl,
-    score,
-    bc,
-    market,
-    holdings_overview,
-    holdings_companies_list,
-    gainers,
-    losers,
-    discover,
-    news,
-    categories,
-    recently_added,
-    stablecoins,
-    yfarms,
-    top_volume_coins,
-    top_defi_coins,
-    top_dex,
-    top_nft,
-    nft_of_the_day,
-    nft_market_status,
-    exchanges,
-    platforms,
-    products,
-    indexes,
-    derivatives,
-    exchange_rates,
-    global_market_info,
-    global_defi_info,
+from gamestonk_terminal.cryptocurrency.overview import (
+    pycoingecko_view as ov_pycoingecko_view,
 )
-from gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_coin_model import Coin
+from gamestonk_terminal.cryptocurrency.due_diligence import (
+    pycoingecko_view as dd_pycoingecko_view,
+)
+from gamestonk_terminal.cryptocurrency.discovery import (
+    pycoingecko_view as disc_pycoingecko_view,
+)
+
+from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
+
 from tests.helpers import check_print
+
+# pylint: disable=unused-import
 
 
 @mock.patch(
-    "gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view.CoinGeckoAPI.get_coin_market_chart_by_id"
+    "gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
 )
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
-    with open("tests/data/btc_usd_test_data.json") as f:
+    print(os.getcwd())
+    with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    return load(["-c", "bitcoin"])
+    return dd_pycoingecko_view.load(["-c", "bitcoin"])
 
 
 # pylint: disable=R0904
@@ -62,7 +38,6 @@ class TestCoinGeckoAPI(TestCase):
     # pylint: disable = no-value-for-parameter
     coin = get_bitcoin()
 
-    @check_print()
     def test_coin_api_load(self):
         """
         Mock load function through get_coin_market_chart_by_id.
@@ -72,9 +47,8 @@ class TestCoinGeckoAPI(TestCase):
         self.assertEqual(self.coin.coin_symbol, "bitcoin")
         self.assertIsInstance(self.coin, Coin)
 
-    @check_print()
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.coingecko.pycoingecko_view.CoinGeckoAPI.get_coin_market_chart_by_id"
+        "gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model.CoinGeckoAPI.get_coin_market_chart_by_id"
     )
     def test_coin_api_load_df_for_ta(self, mock_load):
         """
@@ -82,13 +56,14 @@ class TestCoinGeckoAPI(TestCase):
         Mock returns a dict saved as .json
         """
 
-        with open("tests/data/btc_usd_test_data.json") as f:
+        with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
             sample_return = json.load(f)
 
         mock_load.return_value = sample_return
-        coin = load(["-c", "bitcoin"])
-        mock_return, vs = ta(coin, ["--vs", "usd"])
-        self.assertTrue(mock_return.shape == (722, 2))
+        mock_return, vs = dd_pycoingecko_view.load_ta_data(
+            self.coin, ["--vs", "usd", "--days", "30"]
+        )
+        self.assertTrue(mock_return.shape == (31, 4))
         self.assertTrue(vs == "usd")
 
     @check_print()
@@ -108,23 +83,23 @@ class TestCoinGeckoAPI(TestCase):
     @mock.patch("matplotlib.pyplot.show")
     def test_coin_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        chart(self.coin, [])
+        dd_pycoingecko_view.chart(self.coin, [])
 
-    @check_print(assert_in="asset_platform_id")
+    @check_print(assert_in="Market Cap Rank")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml",
         record_mode="new_episodes",
     )
     def test_coin_info(self):
-        info(self.coin, [])
+        dd_pycoingecko_view.info(self.coin, [])
 
-    @check_print(assert_in="homepage")
+    @check_print(assert_in="Homepage")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml",
         record_mode="new_episodes",
     )
     def test_coin_web(self):
-        web(self.coin, [])
+        dd_pycoingecko_view.web(self.coin, [])
 
     @check_print(assert_in="telegram")
     @vcr.use_cassette(
@@ -132,7 +107,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_social(self):
-        social(self.coin, [])
+        dd_pycoingecko_view.social(self.coin, [])
 
     @check_print(assert_in="forks")
     @vcr.use_cassette(
@@ -140,7 +115,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_dev(self):
-        dev(self.coin, [])
+        dd_pycoingecko_view.dev(self.coin, [])
 
     @check_print(assert_in="ath_date_btc")
     @vcr.use_cassette(
@@ -148,7 +123,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_ath(self):
-        ath(self.coin, [])
+        dd_pycoingecko_view.ath(self.coin, [])
 
     @check_print(assert_in="atl_date_btc")
     @vcr.use_cassette(
@@ -156,7 +131,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_atl(self):
-        atl(self.coin, [])
+        dd_pycoingecko_view.atl(self.coin, [])
 
     @check_print(assert_in="twitter_followers")
     @vcr.use_cassette(
@@ -164,7 +139,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_score(self):
-        score(self.coin, [])
+        dd_pycoingecko_view.score(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -172,7 +147,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_bc(self):
-        bc(self.coin, [])
+        dd_pycoingecko_view.bc(self.coin, [])
 
     @check_print(assert_in="max_supply")
     @vcr.use_cassette(
@@ -180,7 +155,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_market(self):
-        market(self.coin, [])
+        dd_pycoingecko_view.market(self.coin, [])
 
     @check_print(assert_in="Total Bitcoin Holdings")
     @vcr.use_cassette(
@@ -188,7 +163,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_holdings_overview(self):
-        holdings_overview([])
+        ov_pycoingecko_view.holdings_overview([])
 
     @check_print(assert_in="country")
     @vcr.use_cassette(
@@ -196,7 +171,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_holdings_companies_list(self):
-        holdings_companies_list([])
+        ov_pycoingecko_view.holdings_companies_list([])
 
     @check_print(assert_in="rank")
     @vcr.use_cassette(
@@ -204,7 +179,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_gainers(self):
-        gainers([])
+        disc_pycoingecko_view.gainers([])
 
     @check_print(assert_in="rank")
     @vcr.use_cassette(
@@ -212,7 +187,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_losers(self):
-        losers([])
+        disc_pycoingecko_view.losers([])
 
     @check_print(assert_in="CryptoBlades")
     @vcr.use_cassette(
@@ -220,7 +195,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_discover(self):
-        discover("trending", [])
+        disc_pycoingecko_view.discover("trending", [])
 
     @check_print(assert_in="author")
     @vcr.use_cassette(
@@ -228,7 +203,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_news(self):
-        news([])
+        ov_pycoingecko_view.news([])
 
     @check_print(assert_in="Decentralized Finance")
     @vcr.use_cassette(
@@ -236,7 +211,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_categories(self):
-        categories([])
+        ov_pycoingecko_view.categories([])
 
     @check_print(assert_in="rank")
     @vcr.use_cassette(
@@ -244,7 +219,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_recently_added(self):
-        recently_added([])
+        disc_pycoingecko_view.recently_added([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -252,7 +227,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_stablecoins(self):
-        stablecoins([])
+        ov_pycoingecko_view.stablecoins([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -260,7 +235,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_yfarms(self):
-        yfarms([])
+        disc_pycoingecko_view.yfarms([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -268,7 +243,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_top_volume_coins(self):
-        top_volume_coins([])
+        disc_pycoingecko_view.top_volume_coins([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -276,7 +251,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_top_defi_coins(self):
-        top_defi_coins([])
+        disc_pycoingecko_view.top_defi_coins([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -284,23 +259,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_top_dex(self):
-        top_dex([])
-
-    @check_print(assert_in="name")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_nft.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_top_nft(self):
-        top_nft([])
-
-    @check_print(assert_in="Metric")
-    @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_of_day.yaml",
-        record_mode="new_episodes",
-    )
-    def test_coin_nft_of_the_day(self):
-        nft_of_the_day([])
+        disc_pycoingecko_view.top_dex([])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -308,7 +267,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_nft_market_status(self):
-        nft_market_status([])
+        ov_pycoingecko_view.nft_market_status([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -316,7 +275,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_exchanges(self):
-        exchanges([])
+        ov_pycoingecko_view.exchanges([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -324,7 +283,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_platforms(self):
-        platforms([])
+        ov_pycoingecko_view.platforms([])
 
     @check_print(assert_in="platform")
     @vcr.use_cassette(
@@ -332,7 +291,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_products(self):
-        products([])
+        ov_pycoingecko_view.products([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -340,7 +299,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_indexes(self):
-        indexes([])
+        ov_pycoingecko_view.indexes([])
 
     @check_print(assert_in="price")
     @vcr.use_cassette(
@@ -348,7 +307,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_derivatives(self):
-        derivatives([])
+        ov_pycoingecko_view.derivatives([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -356,7 +315,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_exchange_rates(self):
-        exchange_rates([])
+        ov_pycoingecko_view.exchange_rates([])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -364,7 +323,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_global_market_info(self):
-        global_market_info([])
+        ov_pycoingecko_view.global_market_info([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
@@ -372,4 +331,6 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_global_defi_info(self):
-        global_defi_info([])
+        ov_pycoingecko_view.global_defi_info([])
+
+    # TODO: Re-add tests for coin_list and find

@@ -5,9 +5,9 @@ import vcr
 
 # pylint: disable=unused-import
 from gamestonk_terminal.stocks.fundamental_analysis.yahoo_finance_view import (  # noqa: F401
+    calendar_earnings,
     info,
     sustainability,
-    calendar_earnings,
 )
 from tests.helpers import check_print
 

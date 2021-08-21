@@ -2,13 +2,13 @@
 import unittest
 from unittest import mock
 
+from gamestonk_terminal.stocks.discovery.seeking_alpha_model import get_next_earnings
+
 # pylint: disable=unused-import
 from gamestonk_terminal.test_helper import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )
-
-from gamestonk_terminal.stocks.discovery.seeking_alpha_model import get_next_earnings
 
 assertions = unittest.TestCase("__init__")
 

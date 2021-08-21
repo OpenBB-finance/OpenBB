@@ -2,14 +2,14 @@
 import unittest
 from unittest import mock
 
+# from gamestonk_terminal.stocks.dark_pool_shorts.shortinterest_model import get_high_short_interest
+from gamestonk_terminal.stocks.discovery.shortinterest_model import get_low_float
+
 # pylint: disable=unused-import
 from gamestonk_terminal.test_helper import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
 )
-
-# from gamestonk_terminal.stocks.dark_pool_shorts.shortinterest_model import get_high_short_interest
-from gamestonk_terminal.stocks.discovery.shortinterest_model import get_low_float
 
 assertions = unittest.TestCase("__init__")
 

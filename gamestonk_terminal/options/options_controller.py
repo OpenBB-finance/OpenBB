@@ -6,30 +6,30 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+
 import matplotlib.pyplot as plt
 from colorama import Style
-
 from prompt_toolkit.completion import NestedCompleter
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_terminal import TRADIER_TOKEN
 from gamestonk_terminal.helper_funcs import (
+    check_positive,
     get_flair,
     parse_known_args_and_warn,
-    check_positive,
 )
-from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.options import (
     barchart_view,
-    syncretism_view,
     calculator_view,
-    yfinance_view,
-    yfinance_model,
-    tradier_view,
-    tradier_model,
     fdscanner_view,
+    syncretism_view,
+    tradier_model,
+    tradier_view,
+    yfinance_model,
+    yfinance_view,
 )
 from gamestonk_terminal.stocks import stocks_controller
-
-from gamestonk_terminal.config_terminal import TRADIER_TOKEN
-from gamestonk_terminal.menu import session
 
 
 class OptionsController:

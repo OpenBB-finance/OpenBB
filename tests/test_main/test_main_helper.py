@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
-from contextlib import contextmanager
-import unittest
-from unittest.mock import patch
 import sys
+import unittest
+from contextlib import contextmanager
+from datetime import datetime, timedelta
+from unittest.mock import patch
 
 import pandas as pd
 import vcr

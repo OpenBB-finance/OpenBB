@@ -1,5 +1,6 @@
-import requests
 import pandas as pd
+import requests
+
 from gamestonk_terminal import config_terminal as cfg
 
 

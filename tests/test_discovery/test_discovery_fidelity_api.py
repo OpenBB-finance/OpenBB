@@ -5,8 +5,8 @@ import vcr
 
 from gamestonk_terminal.stocks.discovery.fidelity_view import (
     buy_sell_ratio_color_red_green,
-    price_change_color_red_green,
     orders_view,
+    price_change_color_red_green,
 )
 from tests.helpers import check_print
 
