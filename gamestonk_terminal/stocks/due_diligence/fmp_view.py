@@ -1,11 +1,13 @@
 """ Financial Modeling Prep View """
 __docformat__ = "numpy"
 
+import os
 from tabulate import tabulate
+from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.due_diligence import fmp_model
 
 
-def rating(ticker: str, num: int):
+def rating(ticker: str, num: int, export: str):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
@@ -13,15 +15,17 @@ def rating(ticker: str, num: int):
     ticker : str
         Stock ticker
     num : int
-        Number of ratings to display
+        Number of last days ratings to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    df_fa = fmp_model.get_rating(ticker)
+    df = fmp_model.get_rating(ticker)
 
     # TODO: This could be displayed in a nice rating plot over time
     # TODO: Add coloring to table
 
-    if not df_fa.empty:
-        l_recoms = [col for col in df_fa.columns if "Recommendation" in col]
+    if not df.empty:
+        l_recoms = [col for col in df.columns if "Recommendation" in col]
         l_recoms_show = [
             recom.replace("rating", "")
             .replace("Details", "")
@@ -31,7 +35,7 @@ def rating(ticker: str, num: int):
         l_recoms_show[0] = "Rating"
         print(
             tabulate(
-                df_fa[l_recoms].head(num),
+                df[l_recoms].head(num),
                 headers=l_recoms_show,
                 floatfmt=".2f",
                 showindex=True,
@@ -39,3 +43,10 @@ def rating(ticker: str, num: int):
             )
         )
     print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rot",
+        df,
+    )

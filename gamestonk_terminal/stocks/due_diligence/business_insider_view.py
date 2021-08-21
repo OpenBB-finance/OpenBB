@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import os
 from pandas.core.frame import DataFrame
-import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -48,7 +47,6 @@ def price_target_from_analysts(
     df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
 
     if raw:
-        pd.set_option("display.max_colwidth", None)
         df_analyst_data.index = df_analyst_data.index.strftime("%d/%m/%Y")
         print(
             tabulate(
@@ -85,8 +83,6 @@ def price_target_from_analysts(
         plt.xlabel("Time")
         plt.ylabel("Share Price")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()

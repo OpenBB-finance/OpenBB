@@ -66,6 +66,15 @@ def get_estimates(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
     ----------
     ticker : str
         Ticker to get analysts' estimates
+
+    Returns
+    -------
+    df_year_estimates : pd.DataFrame
+        Year estimates
+    df_quarter_earnings : pd.DataFrame
+        Quarter earnings estimates
+    df_quarter_revenues : pd.DataFrame
+        Quarter revenues estimates
     """
     url_market_business_insider = (
         f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"

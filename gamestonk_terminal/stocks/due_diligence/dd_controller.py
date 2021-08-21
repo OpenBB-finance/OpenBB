@@ -97,9 +97,9 @@ Due Diligence:
 Finviz:
     analyst       analyst prices and ratings of the company
 FMP:
-    rating        rating of the company from strong sell to strong buy
+    rating        rating over time (daily)
 Finnhub:
-    rot           rating over timefrom strong sell to strong buy
+    rot           number of analysts ratings over time (monthly)
 Business Insider:
     pt            price targets over time
     est           quarter and year analysts earnings estimates
@@ -167,19 +167,19 @@ csimarket:
             """,
         )
         parser.add_argument(
-            "-n",
-            "--no_color",
-            action="store_false",
-            dest="no_color",
-            default=True,
-            help="Remove coloring",
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finviz_view.analyst(ticker=self.ticker, no_color=ns_parser.no_color)
+            finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
 
         except Exception as e:
             print(e, "\n")
@@ -267,15 +267,47 @@ csimarket:
             add_help=False,
             prog="rot",
             description="""
-                Rating over time. [Source: Finnhub]
+                Rating over time (monthly). [Source: Finnhub]
             """,
         )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of last months",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finnhub_view.rating_over_time(ticker=self.ticker)
+            finnhub_view.rating_over_time(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
@@ -298,7 +330,15 @@ csimarket:
             dest="n_num",
             type=check_positive,
             default=10,
-            help="number of regions to plot that show highest interest.",
+            help="number of last days to display ratings",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
         )
 
         try:
@@ -313,6 +353,7 @@ csimarket:
             fmp_view.rating(
                 ticker=self.ticker,
                 num=ns_parser.n_num,
+                export=ns_parser.export,
             )
 
         except Exception as e:
@@ -337,6 +378,14 @@ csimarket:
             default=5,
             help="number of latest SEC filings.",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
         try:
             if other_args:
@@ -350,6 +399,7 @@ csimarket:
             marketwatch_view.sec_filings(
                 ticker=self.ticker,
                 num=ns_parser.n_num,
+                export=ns_parser.export,
             )
 
         except Exception as e:
@@ -362,12 +412,23 @@ csimarket:
             add_help=False,
             description="List of suppliers from ticker provided. [Source: CSIMarket]",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            csimarket_view.suppliers(self.ticker)
+            csimarket_view.suppliers(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
@@ -379,12 +440,23 @@ csimarket:
             add_help=False,
             description="List of customers from ticker provided. [Source: CSIMarket]",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            csimarket_view.customers(self.ticker)
+            csimarket_view.customers(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")

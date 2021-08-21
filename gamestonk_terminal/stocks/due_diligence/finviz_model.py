@@ -2,30 +2,9 @@
 __docformat__ = "numpy"
 
 from typing import Dict
-from colorama import Fore, Style
 import finviz
 import pandas as pd
 from pandas.core.frame import DataFrame
-
-
-def category_color_red_green(val: str) -> str:
-    """Add color to analyst rating
-
-    Parameters
-    ----------
-    val : str
-        Analyst rating - Upgrade/Downgrade
-
-    Returns
-    -------
-    str
-        Analyst rating with color
-    """
-    if val == "Upgrade":
-        return Fore.GREEN + val + Style.RESET_ALL
-    if val == "Downgrade":
-        return Fore.RED + val + Style.RESET_ALL
-    return val
 
 
 def get_news(ticker: str) -> Dict:

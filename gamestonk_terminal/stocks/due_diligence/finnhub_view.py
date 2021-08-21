@@ -1,11 +1,13 @@
 """ Finnhub View """
 __docformat__ = "numpy"
 
+import os
+from tabulate import tabulate
 import pandas as pd
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.stocks.due_diligence import finnhub_model
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
 
@@ -21,7 +23,6 @@ def plot_rating_over_time(rot: pd.DataFrame, ticker: str):
         Rating over time
     ticker : str
         Ticker associated with ratings
-
     """
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -48,22 +49,56 @@ def plot_rating_over_time(rot: pd.DataFrame, ticker: str):
     plt.show()
 
 
-def rating_over_time(ticker: str):
-    """Rating over time
+def rating_over_time(ticker: str, num: int, raw: bool, export: str):
+    """Rating over time (monthly). [Source: Finnhub]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker : str
         Ticker to get ratings from
+    num : int
+        Number of last months ratings to show
+    raw : bool
+        Display raw data only
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-
     df_rot = finnhub_model.get_rating_over_time(ticker)
 
     if df_rot.empty:
         print("No ratings over time found", "\n")
         return
 
-    plot_rating_over_time(df_rot, ticker)
+    if raw:
+        d_cols = {
+            "strongSell": "Strong Sell",
+            "sell": "Sell",
+            "hold": "Hold",
+            "buy": "Buy",
+            "strongBuy": "Strong Buy",
+        }
+        df_rot_raw = (
+            df_rot[["period", "strongSell", "sell", "hold", "buy", "strongBuy"]]
+            .rename(columns=d_cols)
+            .head(num)
+        )
+        print(
+            tabulate(
+                df_rot_raw,
+                headers=df_rot_raw.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    else:
+        plot_rating_over_time(df_rot.head(num), ticker)
+
     print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rot",
+        df_rot,
+    )
