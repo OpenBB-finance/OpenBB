@@ -33,6 +33,7 @@ def get_losers() -> pd.DataFrame:
 
 def get_undervalued() -> pd.DataFrame:
     """Get Yahoo Finance undervalued growth stocks
+
     Returns
     -------
     pd.DataFrame

@@ -6,7 +6,8 @@ import requests
 
 
 def get_most_shorted() -> pd.DataFrame:
-    """Get Yahoo Finance most shorted stock screener
+    """Get most shorted stock screener [Source: Yahoo Finance]
+
     Returns
     -------
     pd.DataFrame

@@ -1,13 +1,15 @@
+""" Yahoo Finance View """
 __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
-from governance.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
 def display_most_shorted(num_stocks: int, export: str):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
+
     Parameters
     ----------
     num_stocks: int

@@ -17,7 +17,7 @@ def display_gainers(num_stocks: int, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df_gainers = yahoofinance_model.get_gainers().head(num_stocks)
+    df_gainers = yahoofinance_model.get_gainers()
     df_gainers.dropna(how="all", axis=1, inplace=True)
     df_gainers = df_gainers.replace(float("NaN"), "")
 
@@ -26,7 +26,7 @@ def display_gainers(num_stocks: int, export: str):
     else:
         print(
             tabulate(
-                df_gainers,
+                df_gainers.head(num_stocks),
                 headers=df_gainers.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -53,7 +53,7 @@ def display_losers(num_stocks: int, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df_losers = yahoofinance_model.get_losers().head(num_stocks)
+    df_losers = yahoofinance_model.get_losers()
     df_losers.dropna(how="all", axis=1, inplace=True)
     df_losers = df_losers.replace(float("NaN"), "")
 
@@ -62,7 +62,7 @@ def display_losers(num_stocks: int, export: str):
     else:
         print(
             tabulate(
-                df_losers,
+                df_losers.head(num_stocks),
                 headers=df_losers.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -81,6 +81,7 @@ def display_losers(num_stocks: int, export: str):
 
 def display_undervalued(num_stocks: int, export: str):
     """Display most undervalued growth stock. [Source: Yahoo Finance]
+
     Parameters
     ----------
     num_stocks: int
@@ -88,7 +89,7 @@ def display_undervalued(num_stocks: int, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = yahoofinance_model.get_undervalued().head(num_stocks)
+    df = yahoofinance_model.get_undervalued()
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
 
@@ -97,7 +98,7 @@ def display_undervalued(num_stocks: int, export: str):
     else:
         print(
             tabulate(
-                df,
+                df.head(num_stocks),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
