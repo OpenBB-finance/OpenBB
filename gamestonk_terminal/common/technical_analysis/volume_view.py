@@ -3,11 +3,9 @@ __docformat__ = "numpy"
 
 import os
 from datetime import timedelta
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import volume_model
 from gamestonk_terminal.config_plot import PLOT_DPI
