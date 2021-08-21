@@ -93,7 +93,8 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print()
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_get_coins.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_get_coins.yaml",
+        record_mode="new_episodes"
     )
     def test_get_coins(self):
         """Test that pycoingecko retrieves the major coins"""
@@ -111,49 +112,56 @@ class TestCoinGeckoAPI(TestCase):
 
     @check_print(assert_in="asset_platform_id")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_info(self):
         info(self.coin, [])
 
     @check_print(assert_in="homepage")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_web(self):
         web(self.coin, [])
 
     @check_print(assert_in="telegram")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_social.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_social.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_social(self):
         social(self.coin, [])
 
     @check_print(assert_in="forks")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_dev.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_dev.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_dev(self):
         dev(self.coin, [])
 
     @check_print(assert_in="ath_date_btc")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_ath.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_ath.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_ath(self):
         ath(self.coin, [])
 
     @check_print(assert_in="atl_date_btc")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_atl.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_atl.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_atl(self):
         atl(self.coin, [])
 
     @check_print(assert_in="twitter_followers")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_score.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_score.yaml",
+        record_mode="new_episodes"
     )
     def test_coin_score(self):
         score(self.coin, [])
