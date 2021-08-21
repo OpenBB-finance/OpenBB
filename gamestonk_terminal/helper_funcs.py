@@ -108,12 +108,50 @@ def check_non_negative(value) -> int:
     return ivalue
 
 
+def check_positive_list(value) -> List[int]:
+    """Argparse type to return list of positive ints"""
+    list_of_nums = value.split(",")
+    list_of_pos = []
+    for ivalue in list_of_nums:
+        ival = int(ivalue)
+        if ival <= 0:
+            raise argparse.ArgumentTypeError(
+                f"{value} is an invalid positive int value"
+            )
+        list_of_pos.append(ival)
+    return list_of_pos
+
+
 def check_positive(value) -> int:
     """Argparse type to check positive int"""
     ivalue = int(value)
     if ivalue <= 0:
         raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
     return ivalue
+
+
+def check_proportion_range(num) -> float:
+    """Checks if float is between 0 and 1. If so, return it.
+
+    Parameters
+    ----------
+    num: float
+        Input float
+    Returns
+    -------
+    num: float
+        Input number if conditions are met
+    Raises
+    -------
+    argparse.ArgumentTypeError
+        Input number not between min and max values
+    """
+    num = float(num)
+    maxi = 1.0
+    mini = 0.0
+    if num < mini or num > maxi:
+        raise argparse.ArgumentTypeError("Value must be between 0 and 1")
+    return num
 
 
 def valid_date(s: str) -> datetime:
@@ -344,7 +382,7 @@ def divide_chunks(data, n):
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     """gets the next stock market day. Checks against weekends and holidays"""
     n_days = 0
-    l_pred_days = list()
+    l_pred_days = []
     years: list = []
     holidays: list = []
     while n_days < n_next_days:
@@ -674,7 +712,7 @@ def get_last_time_market_was_open(dt):
 
 
 def find_tickers(submission):
-    ls_text = list()
+    ls_text = []
     ls_text.append(submission.selftext)
     ls_text.append(submission.title)
 
@@ -682,7 +720,7 @@ def find_tickers(submission):
     for comment in submission.comments.list():
         ls_text.append(comment.body)
 
-    l_tickers_found = list()
+    l_tickers_found = []
     for s_text in ls_text:
         for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
             l_tickers_found.append(s_ticker.strip())

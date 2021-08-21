@@ -1,30 +1,30 @@
 """Main helper"""
 __docformat__ = "numpy"
 import argparse
-from typing import List
 from datetime import datetime, timedelta
+from typing import List
+
 import matplotlib.pyplot as plt
-from numpy.core.fromnumeric import transpose
-import pandas as pd
-from alpha_vantage.timeseries import TimeSeries
 import mplfinance as mpf
-import yfinance as yf
-import pytz
+import pandas as pd
 import pyEX
+import pytz
+import yfinance as yf
+from alpha_vantage.timeseries import TimeSeries
+from numpy.core.fromnumeric import transpose
 from tabulate import tabulate
-
-# pylint: disable=no-member,too-many-branches,C0302
-
-from gamestonk_terminal.helper_funcs import (
-    valid_date,
-    parse_known_args_and_warn,
-    plot_autoscale,
-)
 
 from gamestonk_terminal import config_plot as cfgPlot
 from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.technical_analysis import trendline_api as trend
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    plot_autoscale,
+    valid_date,
+)
+
+# pylint: disable=no-member,too-many-branches,C0302
 
 
 def clear(
@@ -366,7 +366,7 @@ def load(
 
                 df_stock_candidate.sort_index(ascending=True, inplace=True)
 
-                new_index = list()
+                new_index = []
                 for idx in range(len(df_stock_candidate)):
                     dt_time = datetime.strptime(
                         df_stock_candidate.index[idx][1], "%H:%M"

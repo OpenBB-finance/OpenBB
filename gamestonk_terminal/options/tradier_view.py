@@ -2,26 +2,26 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
-from bisect import bisect_left
 import os
+from bisect import bisect_left
+from typing import List
 
+import matplotlib.pyplot as plt
+import mplfinance as mpf
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
-import mplfinance as mpf
 from colorama import Fore, Style
 from tabulate import tabulate
 
-from gamestonk_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    patch_pandas_text_adjustment,
-)
-from gamestonk_terminal.options import op_helpers, tradier_model
 from gamestonk_terminal import config_plot as cfp
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    patch_pandas_text_adjustment,
+    plot_autoscale,
+)
+from gamestonk_terminal.options import op_helpers, tradier_model
 
 column_map = {"mid_iv": "iv", "open_interest": "oi", "volume": "vol"}
 

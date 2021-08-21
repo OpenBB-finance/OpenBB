@@ -2,10 +2,12 @@
 __docformat__ = "numpy"
 
 import os
+
 import matplotlib.pyplot as plt
-from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.economy import alphavantage_model
+
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.economy import alphavantage_model
+from gamestonk_terminal.helper_funcs import export_data
 
 
 def realtime_performance_sector(raw: bool, export: str):

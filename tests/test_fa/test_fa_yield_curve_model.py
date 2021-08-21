@@ -1,19 +1,20 @@
 """ fundamental_analysis/yield_curve_model.py tests """
+import unittest
 from datetime import datetime
 from io import StringIO
-import unittest
 from unittest import mock
+
 import pandas as pd
+
+from gamestonk_terminal.stocks.fundamental_analysis.yield_curve_model import (
+    get_yield_curve,
+    get_yield_curve_year,
+)
 
 # pylint: disable=unused-import
 from gamestonk_terminal.test_helper import (  # noqa: F401
     parameterize_from_file,
     pytest_generate_tests,
-)
-
-from gamestonk_terminal.stocks.fundamental_analysis.yield_curve_model import (
-    get_yield_curve,
-    get_yield_curve_year,
 )
 
 assertions = unittest.TestCase("__init__")
@@ -37,7 +38,7 @@ class TestFaYieldCurveModel:
         expected_result,
     ):
 
-        rets = list()
+        rets = []
         for a_ret in mock_get_yield_curve_year_rets:
             rets.append(
                 pd.read_csv(StringIO(a_ret), header=0, index_col=0, parse_dates=True)

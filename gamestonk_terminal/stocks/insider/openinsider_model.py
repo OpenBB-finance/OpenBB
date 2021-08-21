@@ -1246,9 +1246,9 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
         print("No insider trading found.")
         return pd.DataFrame()
 
-    l_filing_link = list()
-    l_ticker_link = list()
-    l_insider_link = list()
+    l_filing_link = []
+    l_ticker_link = []
+    l_insider_link = []
 
     idx = 0
     for val in text_soup_open_insider.find_all("tbody")[1].find_all("a"):
@@ -1264,19 +1264,19 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
             l_insider_link.append("http://openinsider.com" + val["href"])
             idx = 0
 
-    l_X = list()
-    l_filing_date = list()
-    l_trading_date = list()
-    l_ticker = list()
-    l_company = list()
-    l_insider = list()
-    l_title = list()
-    l_trade_type = list()
-    l_price = list()
-    l_quantity = list()
-    l_owned = list()
-    l_delta_own = list()
-    l_value = list()
+    l_X = []
+    l_filing_date = []
+    l_trading_date = []
+    l_ticker = []
+    l_company = []
+    l_insider = []
+    l_title = []
+    l_trade_type = []
+    l_price = []
+    l_quantity = []
+    l_owned = []
+    l_delta_own = []
+    l_value = []
 
     idx = 0
     for val in text_soup_open_insider.find_all("tbody")[1].find_all("td"):

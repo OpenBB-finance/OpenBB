@@ -28,8 +28,8 @@ def get_orders() -> Tuple[str, DataFrame]:
         requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text, "lxml"
     )
 
-    l_orders = list()
-    l_orders_vals = list()
+    l_orders = []
+    l_orders_vals = []
     idx = 0
     order_list = text_soup_url_orders.findAll(
         "td",
@@ -59,7 +59,7 @@ def get_orders() -> Tuple[str, DataFrame]:
         # Add value to dictionary
         if (idx + 1) % 8 == 0:
             l_orders.append(l_orders_vals)
-            l_orders_vals = list()
+            l_orders_vals = []
             idx = 0
 
     df_orders = pd.DataFrame(

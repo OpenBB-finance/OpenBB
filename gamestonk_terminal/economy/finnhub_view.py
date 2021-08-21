@@ -1,5 +1,7 @@
 import os
+
 from tabulate import tabulate
+
 from gamestonk_terminal.economy import finnhub_model
 from gamestonk_terminal.helper_funcs import export_data
 

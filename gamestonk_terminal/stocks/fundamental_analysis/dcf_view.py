@@ -39,8 +39,8 @@ def dcf(other_args: List[str], ticker: str):
         prog="dcf",
         description="""
             Generates a completed discounted cash flow statement. The statement uses machine
-             learning to predict the future financial statement, and then predicts the future
-             value of the stock based on the predicted financials.""",
+            learning to predict the future financial statement, and then predicts the future
+            value of the stock based on the predicted financials.""",
     )
     parser.add_argument(
         "-a",

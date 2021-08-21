@@ -1,11 +1,11 @@
 """StockAnalysis.com view functions"""
 __docformat__ = "numpy"
 
-from typing import List
 import os
+from typing import List
 
-from tabulate import tabulate
 import pandas as pd
+from tabulate import tabulate
 
 from gamestonk_terminal.etf import stockanalysis_model
 from gamestonk_terminal.helper_funcs import export_data

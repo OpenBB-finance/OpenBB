@@ -1,7 +1,6 @@
 import os
 
 from matplotlib import pyplot
-
 from prompt_toolkit import PromptSession
 from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory

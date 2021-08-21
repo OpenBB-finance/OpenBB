@@ -1,14 +1,16 @@
 """ fundamental_analysis/av_view.py tests """
+import json
+import sys
+import unittest
+
 # Not testing these tests further. I do not have a fmp key
 from contextlib import contextmanager
-import unittest
 from unittest import mock
-import sys
-import json
+
+from gamestonk_terminal import config_terminal as cfg
 
 # pylint: disable=unused-import
 from gamestonk_terminal.stocks.fundamental_analysis import av_view
-from gamestonk_terminal import config_terminal as cfg
 from tests.helpers import check_print
 
 
@@ -32,7 +34,7 @@ def mocked_requests_get(*args, **kwargs):
 
     base = "https://www.alphavantage.co/query?function="
     if args[0] == f"{base}OVERVIEW&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open("tests/data/json/fa_av_overview.json") as f:
+        with open("tests/data/json/fa_av_overview.json", encoding="utf8") as f:
             data = json.load(f)
         return MockResponse(data, 200)
 
@@ -40,22 +42,22 @@ def mocked_requests_get(*args, **kwargs):
         args[0]
         == f"{base}INCOME_STATEMENT&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     ):
-        with open("tests/data/json/fa_av_income.json") as f:
+        with open("tests/data/json/fa_av_income.json", encoding="utf8") as f:
             data = json.load(f)
         return MockResponse(data, 200)
 
     if args[0] == f"{base}BALANCE_SHEET&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open("tests/data/json/fa_av_balance.json") as f:
+        with open("tests/data/json/fa_av_balance.json", encoding="utf8") as f:
             data = json.load(f)
         return MockResponse(data, 200)
 
     if args[0] == f"{base}CASH_FLOW&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open("tests/data/json/fa_av_cash.json") as f:
+        with open("tests/data/json/fa_av_cash.json", encoding="utf8") as f:
             data = json.load(f)
         return MockResponse(data, 200)
 
     if args[0] == f"{base}EARNINGS&symbol=GME&apikey={cfg.API_KEY_ALPHAVANTAGE}":
-        with open("tests/data/json/fa_av_earnings.json") as f:
+        with open("tests/data/json/fa_av_earnings.json", encoding="utf8") as f:
             data = json.load(f)
         return MockResponse(data, 200)
 

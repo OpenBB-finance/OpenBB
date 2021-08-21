@@ -3,8 +3,8 @@ from unittest import TestCase
 
 import vcr
 
-from gamestonk_terminal.stocks.fundamental_analysis.dcf_view import CreateExcelFA
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
+from gamestonk_terminal.stocks.fundamental_analysis.dcf_view import CreateExcelFA
 
 
 class TestExcelClass(TestCase):
