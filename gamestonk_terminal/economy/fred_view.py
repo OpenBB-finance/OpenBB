@@ -44,7 +44,7 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
         Export dataframe data to csv,json,xlsx file
     """
     if export:
-        l_series_fred = list()
+        l_series_fred = []
 
     if not raw:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -63,12 +63,12 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
             "tab:cyan",
         ]
 
-        l_ts_start = list()
-        l_ts_end = list()
+        l_ts_start = []
+        l_ts_end = []
         p = {}
         success = -1
-        success_series = list()
-        success_titles = list()
+        success_series = []
+        success_titles = []
 
     for serie_term in series.split(","):
         if serie_term:

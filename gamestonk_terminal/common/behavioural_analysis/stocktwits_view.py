@@ -147,7 +147,7 @@ def trending(other_args: List[str]):
 
         result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
         if result.status_code == 200:
-            l_symbols = list()
+            l_symbols = []
             for symbol in result.json()["symbols"]:
                 l_symbols.append(
                     [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]

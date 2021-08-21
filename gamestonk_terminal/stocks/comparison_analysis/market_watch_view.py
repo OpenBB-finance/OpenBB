@@ -389,7 +389,7 @@ def prepare_df_financials(
     )
 
     # Define financials columns
-    a_financials_header = list()
+    a_financials_header = []
     for financials_header in text_soup_financials.findAll(
         "th", {"class": "overflow__heading"}
     ):
@@ -412,7 +412,7 @@ def prepare_df_financials(
     )
 
     for a_row in financials_rows:
-        constructed_row = list()
+        constructed_row = []
         financial_columns = a_row.findAll(
             "td", {"class": ["overflow__cell", "overflow__cell fixed--column"]}
         )

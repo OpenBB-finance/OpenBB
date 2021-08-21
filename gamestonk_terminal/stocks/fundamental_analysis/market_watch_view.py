@@ -319,7 +319,7 @@ def sean_seah_warnings(other_args: List[str], ticker: str):
         )
 
         # Define financials columns
-        a_financials_header = list()
+        a_financials_header = []
         for financials_header in text_soup_financials.findAll(
             "th", {"class": "overflow__heading"}
         ):
@@ -367,7 +367,7 @@ def sean_seah_warnings(other_args: List[str], ticker: str):
         )
 
         # Define financials columns
-        a_financials_header = list()
+        a_financials_header = []
         for financials_header in text_soup_financials.findAll(
             "th", {"class": "overflow__heading"}
         ):

@@ -44,12 +44,14 @@ class DiscoveryController:
         "fipo",
         "gainers",
         "losers",
+        "under",
         "ford",
         "arkord",
         "upcoming",
         "latest",
         "trending",
         "lowfloat",
+        "hotpenny",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -78,6 +80,7 @@ Finnhub:
 Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
+    under          undervalued growth stocks
 Fidelity:
     ford           orders by Fidelity Customers
 cathiesark.com:
@@ -87,7 +90,9 @@ Seeking Alpha:
     latest         latest news
     trending       trending news
 shortinterest.com
-    lowfloat       show low float stocks under 10M shares float
+    lowfloat       low float stocks under 10M shares float
+pennystockflow.com
+    hotpenny       today's hot penny stocks
 """
         print(help_text)
 
@@ -298,6 +303,48 @@ shortinterest.com
                 return
 
             yahoofinance_view.display_losers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_under(self, other_args: List[str]):
+        """Process under command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="under",
+            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the undervalued stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_undervalued(
                 num_stocks=ns_parser.num,
                 export=ns_parser.export,
             )
@@ -612,6 +659,52 @@ shortinterest.com
                 return
 
             shortinterest_view.low_float(
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_hotpenny(self, other_args: List[str]):
+        """Process hotpenny command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hotpenny",
+            description="""
+                This site provides a list of todays most active and hottest penny stocks. While not for everyone, penny
+                stocks can be exciting and rewarding investments in many ways. With penny stocks, you can get more bang
+                for the buck. You can turn a few hundred dollars into thousands, just by getting in on the right penny
+                stock at the right time. Penny stocks are increasing in popularity. More and more investors of all age
+                groups and skill levels are getting involved, and the dollar amounts they are putting into these
+                speculative investments are representing a bigger portion of their portfolios.
+                [Source: www.pennystockflow.com]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of top stocks to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            shortinterest_view.hot_penny_stocks(
                 num=ns_parser.n_num,
                 export=ns_parser.export,
             )

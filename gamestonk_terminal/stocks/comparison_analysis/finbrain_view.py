@@ -165,7 +165,7 @@ def get_sentiments(similar: List[str]) -> pd.DataFrame:
     """
 
     df_sentiment = pd.DataFrame()
-    dates_sentiment = list()
+    dates_sentiment = []
     for ticker in similar:
         result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         if result.status_code == 200:

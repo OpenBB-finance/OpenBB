@@ -63,6 +63,7 @@ class TechnicalAnalysisController:
         "bbands",
         "donchian",
         "ad",
+        "adosc",
         "obv",
         "fib",
     ]
@@ -131,7 +132,8 @@ Volatility:
     bbands      bollinger bands
     donchian    donchian channels
 Volume:
-    ad          accumulation/distribution line values
+    ad          accumulation/distribution line
+    adosc       chaikin oscillator
     obv         on balance volume
 Custom:
     fib         fibonacci retracement
@@ -1321,6 +1323,73 @@ Custom:
                 s_interval=self.interval,
                 df_stock=self.stock,
                 use_open=ns_parser.b_use_open,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_adosc(self, other_args: List[str]):
+        """Process adosc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="adosc",
+            description="""
+                 Acummulation/Distribution Oscillator, also known as the Chaikin Oscillator
+                 is essentially a momentum indicator, but of the Accumulation-Distribution line
+                 rather than merely price. It looks at both the strength of price moves and the
+                 underlying buying and selling pressure during a given time period. The oscillator
+                 reading above zero indicates net buying pressure, while one below zero registers
+                 net selling pressure. Divergence between the indicator and pure price moves are
+                 the most common signals from the indicator, and often flag market turning points.
+            """,
+        )
+        parser.add_argument(
+            "--open",
+            action="store_true",
+            default=False,
+            dest="b_use_open",
+            help="uses open value of stock",
+        )
+        parser.add_argument(
+            "-f",
+            "--fast_length",
+            action="store",
+            dest="n_length_fast",
+            type=check_positive,
+            default=3,
+            help="fast length",
+        )
+        parser.add_argument(
+            "-s",
+            "--slow_length",
+            action="store",
+            dest="n_length_slow",
+            type=check_positive,
+            default=10,
+            help="slow length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            volume_view.plot_adosc(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                use_open=ns_parser.b_use_open,
+                fast=ns_parser.n_length_fast,
+                slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
             )
         except Exception as e:

@@ -16,9 +16,11 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     valid_date,
+    check_int_range,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.stocks.dark_pool_shorts import (
+    yahoofinance_view,
     stockgrid_view,
     shortinterest_view,
     quandl_view,
@@ -41,6 +43,7 @@ class DarkPoolShortsController:
     ]
 
     CHOICES_COMMANDS = [
+        "shorted",
         "hsi",
         "prom",
         "pos",
@@ -80,7 +83,9 @@ Dark Pool Shorts:
     quit           quit to abandon program
     load           load a specific stock ticker for analysis
 
-shortinterest.com
+Yahoo Finance:
+    shorted        show most shorted stocks
+shortinterest.com:
     hsi            show top high short interest stocks of over 20% ratio
 FINRA:
     prom           promising tickers based on dark pool shares regression
@@ -148,6 +153,48 @@ Quandl/Stockgrid:
         self.ticker, self.start, _, self.stock = load(
             other_args, self.ticker, self.start, "1440min", self.stock
         )
+
+    def call_shorted(self, other_args: List[str]):
+        """Process shorted command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shorted",
+            description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the most shorted stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_most_shorted(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_hsi(self, other_args: List[str]):
         """Process hsi command"""
