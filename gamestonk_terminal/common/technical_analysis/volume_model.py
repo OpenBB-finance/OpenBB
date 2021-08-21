@@ -39,6 +39,43 @@ def ad(df_stock: pd.DataFrame, use_open: bool) -> pd.DataFrame:
     return pd.DataFrame(df_ta)
 
 
+def adosc(df_stock: pd.DataFrame, use_open: bool, fast: int, slow: int) -> pd.DataFrame:
+    """Calculate AD oscillator technical indicator
+
+    Parameters
+    ----------
+    df_stock : pd.DataFrame
+        Dataframe of prices
+    use_open : bool
+        Whether to use open prices
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with technical indicator
+    """
+    if use_open:
+        df_ta = ta.adosc(
+            high=df_stock["High"],
+            low=df_stock["Low"],
+            close=df_stock["Close"],
+            volume=df_stock["Volume"],
+            open_=df_stock["Open"],
+            fast=fast,
+            slow=slow,
+        ).dropna()
+    else:
+        df_ta = ta.adosc(
+            high=df_stock["High"],
+            low=df_stock["Low"],
+            close=df_stock["Close"],
+            volume=df_stock["Volume"],
+            fast=fast,
+            slow=slow,
+        ).dropna()
+    return pd.DataFrame(df_ta)
+
+
 def obv(s_interval: str, df_stock: pd.DataFrame) -> pd.DataFrame:
     """On Balance Volume
 
