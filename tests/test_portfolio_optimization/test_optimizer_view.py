@@ -9,7 +9,8 @@ from tests.helpers import check_print
 class TestOptimizerView(TestCase):
     @check_print(assert_in="TSLA")
     @vcr.use_cassette(
-        "tests/cassettes/test_port_opt/test_opt_view/test_equal_weights.yaml"
+        "tests/cassettes/test_port_opt/test_opt_view/test_equal_weights.yaml",
+        record_mode="new_episodes",
     )
     def test_equal_weights(self):
         optimizer_view.equal_weight(["TSLA", "GME"], [])

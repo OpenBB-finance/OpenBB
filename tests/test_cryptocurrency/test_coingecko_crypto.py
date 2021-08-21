@@ -94,7 +94,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print()
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_get_coins.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_get_coins(self):
         """Test that pycoingecko retrieves the major coins"""
@@ -113,7 +113,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="asset_platform_id")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_info.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_info(self):
         info(self.coin, [])
@@ -121,7 +121,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="homepage")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_web.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_web(self):
         web(self.coin, [])
@@ -129,7 +129,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="telegram")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_social.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_social(self):
         social(self.coin, [])
@@ -137,7 +137,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="forks")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_dev.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_dev(self):
         dev(self.coin, [])
@@ -145,7 +145,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="ath_date_btc")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_ath.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_ath(self):
         ath(self.coin, [])
@@ -153,7 +153,7 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="atl_date_btc")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_atl.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_atl(self):
         atl(self.coin, [])
@@ -161,189 +161,215 @@ class TestCoinGeckoAPI(TestCase):
     @check_print(assert_in="twitter_followers")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_score.yaml",
-        record_mode="new_episodes"
+        record_mode="new_episodes",
     )
     def test_coin_score(self):
         score(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_bc.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_bc.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_bc(self):
         bc(self.coin, [])
 
     @check_print(assert_in="max_supply")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_market.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_market.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_market(self):
         market(self.coin, [])
 
     @check_print(assert_in="Total Bitcoin Holdings")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_overview.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_overview.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_holdings_overview(self):
         holdings_overview([])
 
     @check_print(assert_in="country")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_holding_comapnies.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_holding_comapnies.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_holdings_companies_list(self):
         holdings_companies_list([])
 
     @check_print(assert_in="rank")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_gainers.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_gainers.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_gainers(self):
         gainers([])
 
     @check_print(assert_in="rank")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_losers.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_losers.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_losers(self):
         losers([])
 
     @check_print(assert_in="CryptoBlades")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_discover.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_discover.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_discover(self):
         discover("trending", [])
 
     @check_print(assert_in="author")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_news.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_news.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_news(self):
         news([])
 
     @check_print(assert_in="Decentralized Finance")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_categories.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_categories.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_categories(self):
         categories([])
 
     @check_print(assert_in="rank")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_recently_added.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_recently_added.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_recently_added(self):
         recently_added([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_stablecoins.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_stablecoins.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_stablecoins(self):
         stablecoins([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_yfarms.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_yfarms.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_yfarms(self):
         yfarms([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_volume_coins.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_volume_coins.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_top_volume_coins(self):
         top_volume_coins([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_defi_coins.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_defi_coins.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_top_defi_coins(self):
         top_defi_coins([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_dex.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_dex.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_top_dex(self):
         top_dex([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_nft.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_top_nft.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_top_nft(self):
         top_nft([])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_of_day.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_of_day.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_nft_of_the_day(self):
         nft_of_the_day([])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_market-status.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_nft_market-status.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_nft_market_status(self):
         nft_market_status([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchanges.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchanges.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_exchanges(self):
         exchanges([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_platforms.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_platforms.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_platforms(self):
         platforms([])
 
     @check_print(assert_in="platform")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_products.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_products.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_products(self):
         products([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_indexes.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_indexes.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_indexes(self):
         indexes([])
 
     @check_print(assert_in="price")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_derivatives.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_derivatives.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_derivatives(self):
         derivatives([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchange_rates.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_exchange_rates.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_exchange_rates(self):
         exchange_rates([])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_market_info.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_market_info.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_global_market_info(self):
         global_market_info([])
 
     @check_print(assert_in="name")
     @vcr.use_cassette(
-        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_defo_info.yaml"
+        "tests/cassettes/test_cryptocurrency/test_coingecko/test_coin_global_defo_info.yaml",
+        record_mode="new_episodes",
     )
     def test_coin_global_defi_info(self):
         global_defi_info([])

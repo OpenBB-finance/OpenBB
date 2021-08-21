@@ -9,6 +9,9 @@ from tests.helpers import check_print
 
 class TestDdFinancialModelingPrepView(unittest.TestCase):
     @check_print(assert_in="Invalid API KEY")
-    @vcr.use_cassette("tests/cassettes/test_dd/test_financial_model/test_rating.yaml")
+    @vcr.use_cassette(
+        "tests/cassettes/test_dd/test_financial_model/test_rating.yaml",
+        record_mode="new_episodes",
+    )
     def test_rating(self):
         rating([], "PLTR")

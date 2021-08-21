@@ -51,19 +51,19 @@ def dcf(other_args: List[str], ticker: str):
         help="Confirms that the numbers provided are accurate.",
     )
 
-    # try:
-    ns_parser = parse_known_args_and_warn(parser, other_args)
-    if not ns_parser:
-        return
+    try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-    dcf_view = CreateExcelFA(ticker, ns_parser.audit)
-    trypath = dcf_view.create_workbook()
-    print(
-        f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file.\n"
-    )
+        dcf_view = CreateExcelFA(ticker, ns_parser.audit)
+        trypath = dcf_view.create_workbook()
+        print(
+            f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file.\n"
+        )
 
-    # except Exception as e:
-    # print(e, "\n")
+    except Exception as e:
+        print(e, "\n")
 
 
 class CreateExcelFA:
@@ -79,7 +79,7 @@ class CreateExcelFA:
         self.ws3: worksheet = self.wb.create_sheet("Explanations")
         self.ws1.title = "Financials"
         self.ticker: str = ticker
-        self.now: str = datetime.now().strftime("%m/%d/%Y %H:%M:%S").replace("/", "-")
+        self.now: str = datetime.now().strftime("%Y/%m/%d %H:%M:%S").replace("/", "-")
         self.letter: int = 0
         self.is_start: int = 4
         self.bs_start: int = 18
