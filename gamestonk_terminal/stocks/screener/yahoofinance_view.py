@@ -115,8 +115,8 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
             else:
                 screen.set_filter(filters_dict=d_filters)
 
-        l_min = list()
-        l_leg = list()
+        l_min = []
+        l_leg = []
         plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         l_stocks = screen.ScreenerView(verbose=0)
@@ -131,7 +131,7 @@ def historical(other_args: List[str], preset_loaded: str) -> List[str]:
             print(", ".join(l_stocks))
 
         while l_stocks:
-            l_parsed_stocks = list()
+            l_parsed_stocks = []
             for symbol in l_stocks:
                 try:
                     df_similar_stock = yf.download(

@@ -366,7 +366,7 @@ def load(
 
                 df_stock_candidate.sort_index(ascending=True, inplace=True)
 
-                new_index = list()
+                new_index = []
                 for idx in range(len(df_stock_candidate)):
                     dt_time = datetime.strptime(
                         df_stock_candidate.index[idx][1], "%H:%M"

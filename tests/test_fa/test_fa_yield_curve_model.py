@@ -38,7 +38,7 @@ class TestFaYieldCurveModel:
         expected_result,
     ):
 
-        rets = list()
+        rets = []
         for a_ret in mock_get_yield_curve_year_rets:
             rets.append(
                 pd.read_csv(StringIO(a_ret), header=0, index_col=0, parse_dates=True)
