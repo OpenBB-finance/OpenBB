@@ -1,4 +1,4 @@
-"""Screener Controller Module"""
+"""Insider Controller Module"""
 __docformat__ = "numpy"
 
 import os
@@ -411,12 +411,60 @@ Ticker: {self.ticker}
 
     def call_act(self, other_args: List[str]):
         """Process act command"""
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-        return businessinsider_view.insider_activity(
-            other_args, self.stock, self.ticker, self.start, self.interval
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="act",
+            description="""Prints insider activity over time [Source: Business Insider]""",
         )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of latest insider activity.",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}` \n")
+                return
+
+            businessinsider_view.insider_activity(
+                stock=self.stock,
+                ticker=self.ticker,
+                start=self.start,
+                interval=self.interval,
+                num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
