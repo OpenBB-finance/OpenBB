@@ -43,7 +43,6 @@ class DueDiligenceController:
         "rot",
         "est",
         "analyst",
-        "sec",
         "supplier",
         "customer",
     ]

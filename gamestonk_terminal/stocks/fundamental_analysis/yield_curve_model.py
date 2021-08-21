@@ -72,7 +72,7 @@ def get_yield_curve_year(year: str) -> DataFrame:
 
     yield_table = text_soup_yield_curve.find_all("table", {"class": "t-chart"})[0]
 
-    a_yield_table_header = list()
+    a_yield_table_header = []
     for yield_table_header_col in yield_table.find("tr", {"class": None}).find_all(
         "th"
     ):
@@ -81,7 +81,7 @@ def get_yield_curve_year(year: str) -> DataFrame:
     df_yield_curve = pd.DataFrame(columns=a_yield_table_header)
 
     for yield_table_row in yield_table.find_all("tr", {"class": ["oddrow", "evenrow"]}):
-        a_yield_row = list()
+        a_yield_row = []
         for idx, yield_table_col in enumerate(yield_table_row.find_all("td")):
             if idx == 0:
                 a_yield_row.append(datetime.strptime(yield_table_col.text, "%m/%d/%y"))

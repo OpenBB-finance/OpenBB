@@ -58,8 +58,8 @@ def watchlist(other_args: List[str]):
 
         d_submission: Dict = {}
         d_watchlist_tickers: Dict = {}
-        l_watchlist_links = list()
-        l_watchlist_author = list()
+        l_watchlist_links = []
+        l_watchlist_author = []
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -237,8 +237,8 @@ def popular_tickers(other_args: List[str]):
 
         # d_submission = {}
         d_watchlist_tickers: Dict = {}
-        # l_watchlist_links = list()
-        l_watchlist_author = list()
+        # l_watchlist_links = []
+        l_watchlist_author = []
 
         praw_api = praw.Reddit(
             client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -419,8 +419,8 @@ def spac_community(other_args: List[str]):
 
         d_submission: Dict = {}
         d_watchlist_tickers: Dict = {}
-        l_watchlist_links = list()
-        l_watchlist_author = list()
+        l_watchlist_links = []
+        l_watchlist_author = []
 
         # psaw_api = PushshiftAPI()
 
@@ -543,8 +543,8 @@ def spac(other_args: List[str]):
 
         d_submission: Dict = {}
         d_watchlist_tickers: Dict = {}
-        l_watchlist_links = list()
-        l_watchlist_author = list()
+        l_watchlist_links = []
+        l_watchlist_author = []
 
         # n_ts_after = int(
         #    (datetime.today() - timedelta(days=ns_parser.n_days)).timestamp()
@@ -696,7 +696,7 @@ def wsb_community(other_args: List[str]):
         )
 
         d_submission: Dict = {}
-        l_watchlist_links = list()
+        l_watchlist_links = []
 
         # psaw_api = PushshiftAPI()
 

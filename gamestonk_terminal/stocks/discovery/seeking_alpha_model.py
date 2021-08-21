@@ -44,7 +44,7 @@ def get_next_earnings(pages: int) -> DataFrame:
     DataFrame
         Upcoming earnings DataFrame
     """
-    earnings = list()
+    earnings = []
     url_next_earnings = "https://seekingalpha.com/earnings/earnings-calendar"
 
     for idx in range(0, pages):
@@ -54,7 +54,7 @@ def get_next_earnings(pages: int) -> DataFrame:
         )
 
         for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
-            stocks = list()
+            stocks = []
             for a_stock in stock_rows.contents[:3]:
                 stocks.append(a_stock.text)
             earnings.append(stocks)
@@ -157,7 +157,7 @@ def get_trending_list(num: int) -> list:
         Trending articles list
     """
 
-    articles = list()
+    articles = []
     url_articles = "https://seekingalpha.com/news/trending_news"
     response = requests.get(url_articles, headers={"User-Agent": get_user_agent()})
 
