@@ -1,20 +1,14 @@
 """ Business Insider View """
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
-import json
-import re
+import os
 from pandas.core.frame import DataFrame
-import requests
-import matplotlib.pyplot as plt
-import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+from tabulate import tabulate
+from gamestonk_terminal.stocks.due_diligence import business_insider_model
 from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    get_user_agent,
-    parse_known_args_and_warn,
+    export_data,
 )
 from gamestonk_terminal import feature_flags as gtff
 
@@ -22,78 +16,49 @@ register_matplotlib_converters()
 
 
 def price_target_from_analysts(
-    other_args: List[str], stock: DataFrame, ticker: str, start: str, interval: str
+    ticker: str,
+    start: str,
+    interval: str,
+    stock: DataFrame,
+    num: int,
+    raw: bool,
+    export: str,
 ):
-    """Display analysts' price targets for a given stock
+    """Display analysts' price targets for a given stock. [Source: Business Insider]
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args - ["-n", "10"]
-    stock : DataFrame
-        Due diligence stock dataframe
     ticker : str
         Due diligence ticker symbol
     start : str
         Start date of the stock data
     interval : str
         Stock data interval
+    stock : DataFrame
+        Due diligence stock dataframe
+    num : int
+        Number of latest price targets from analysts to print
+    raw : bool
+        Display raw data only
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
 
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="pt",
-        description="""Prints price target from analysts. [Source: Business Insider]""",
-    )
+    df_analyst_data = business_insider_model.get_price_target_from_analysts(ticker)
 
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of latest price targets from analysts to print.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
-        )
-        text_soup_market_business_insider = BeautifulSoup(
-            requests.get(
-                url_market_business_insider, headers={"User-Agent": get_user_agent()}
-            ).text,
-            "lxml",
+    if raw:
+        df_analyst_data.index = df_analyst_data.index.strftime("%d/%m/%Y")
+        print(
+            tabulate(
+                df_analyst_data.sort_index(ascending=False).head(num),
+                headers=df_analyst_data.columns,
+                floatfmt=".2f",
+                showindex=True,
+                tablefmt="fancy_grid",
+            )
         )
 
-        d_analyst_data = None
-        for script in text_soup_market_business_insider.find_all("script"):
-            # Get Analyst data
-            if "window.analyseChartConfigs.push" in str(script):
-                # Extract config data:
-                s_analyst_data = (
-                    str(script).split("config: ", 1)[1].split(",\r\n", 1)[0]
-                )
-                d_analyst_data = json.loads(s_analyst_data)
-                break
-
-        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
-        df_analyst_data = df_analyst_data[
-            ["DateLabel", "Company", "InternalRating", "PriceTarget"]
-        ]
-        df_analyst_data.columns = ["Date", "Company", "Rating", "Price Target"]
-        # df_analyst_data
-        df_analyst_data["Rating"].replace(
-            {"gut": "BUY", "neutral": "HOLD", "schlecht": "SELL"}, inplace=True
-        )
-        df_analyst_data["Date"] = pd.to_datetime(df_analyst_data["Date"])
-        df_analyst_data = df_analyst_data.set_index("Date")
-
+    else:
         # Slice start of ratings
         if start:
             df_analyst_data = df_analyst_data[start:]  # type: ignore
@@ -116,195 +81,85 @@ def price_target_from_analysts(
         plt.title(f"{ticker} (Time Series) and Price Target")
         plt.xlim(stock.index[0], stock.index[-1])
         plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
+        plt.ylabel("Share Price")
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
 
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
-        print("")
+    print("")
 
-        pd.set_option("display.max_colwidth", None)
-        print(
-            df_analyst_data.sort_index(ascending=False)
-            .head(ns_parser.n_num)
-            .to_string()
-        )
-        print("")
-
-    except Exception as e:
-        print(e)
-        print("")
-        return
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pt",
+        df_analyst_data,
+    )
 
 
-def estimates(other_args: List[str], ticker: str):
-    """Display analysts' estimates for a given ticker
+def estimates(ticker: str, export: str):
+    """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args
     ticker : str
-        Due diligence ticker symbol
+        Ticker to get analysts' estimates
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
+    (
+        df_year_estimates,
+        df_quarter_earnings,
+        df_quarter_revenues,
+    ) = business_insider_model.get_estimates(ticker)
 
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="est",
-        description="""Yearly estimates and quarter earnings/revenues [Source: Business Insider]""",
+    print(
+        tabulate(
+            df_year_estimates,
+            headers=df_year_estimates.columns,
+            floatfmt=".2f",
+            showindex=True,
+            tablefmt="fancy_grid",
+        ),
     )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
+    print("")
+    print(
+        tabulate(
+            df_quarter_earnings,
+            headers=df_quarter_earnings.columns,
+            floatfmt=".2f",
+            showindex=True,
+            tablefmt="fancy_grid",
+        ),
+    )
+    print("")
+    print(
+        tabulate(
+            df_quarter_revenues,
+            headers=df_quarter_revenues.columns,
+            floatfmt=".2f",
+            showindex=True,
+            tablefmt="fancy_grid",
         )
-        text_soup_market_business_insider = BeautifulSoup(
-            requests.get(
-                url_market_business_insider, headers={"User-Agent": get_user_agent()}
-            ).text,
-            "lxml",
-        )
+    )
+    print("")
 
-        l_estimates_year_header = []
-        l_estimates_quarter_header = []
-        for estimates_header in text_soup_market_business_insider.findAll(
-            "th", {"class": "table__th text-right"}
-        ):
-            s_estimates_header = estimates_header.text.strip()
-            if s_estimates_header.isdigit():
-                l_estimates_year_header.append(s_estimates_header)
-            elif ("in %" not in s_estimates_header) and (
-                "Job" not in s_estimates_header
-            ):
-                l_estimates_quarter_header.append(s_estimates_header)
-
-        l_estimates_year_metric = []
-        for estimates_year_metric in text_soup_market_business_insider.findAll(
-            "td", {"class": "table__td black"}
-        ):
-            l_estimates_year_metric.append(estimates_year_metric.text)
-
-        l_estimates_quarter_metric = []
-        for estimates_quarter_metric in text_soup_market_business_insider.findAll(
-            "td", {"class": "table__td font-color-dim-gray"}
-        ):
-            l_estimates_quarter_metric.append(estimates_quarter_metric.text)
-
-        d_metric_year = dict()
-        d_metric_quarter_earnings = dict()
-        d_metric_quarter_revenues = dict()
-        l_metrics = []
-        n_metrics = 0
-        b_year = True
-        for idx, metric_value in enumerate(
-            text_soup_market_business_insider.findAll(
-                "td", {"class": "table__td text-right"}
-            )
-        ):
-
-            if b_year:
-                # YEAR metrics
-                l_metrics.append(metric_value.text.strip())
-
-                # Check if we have processed all year metrics
-                if n_metrics > len(l_estimates_year_metric) - 1:
-                    b_year = False
-                    n_metrics = 0
-                    l_metrics = []
-                    idx_y = idx
-
-                # Add value to dictionary
-                if (idx + 1) % len(l_estimates_year_header) == 0:
-                    d_metric_year[l_estimates_year_metric[n_metrics]] = l_metrics
-                    l_metrics = []
-                    n_metrics += 1
-
-            if not b_year:
-                # QUARTER metrics
-                l_metrics.append(metric_value.text.strip())
-
-                # Check if we have processed all quarter metrics
-                if n_metrics > len(l_estimates_quarter_metric) - 1:
-                    break
-
-                # Add value to dictionary
-                if (idx - idx_y + 1) % len(l_estimates_quarter_header) == 0:
-                    if n_metrics < 4:
-                        d_metric_quarter_earnings[
-                            l_estimates_quarter_metric[n_metrics]
-                        ] = l_metrics
-                    else:
-                        d_metric_quarter_revenues[
-                            l_estimates_quarter_metric[n_metrics - 4]
-                        ] = l_metrics
-                    l_metrics = []
-                    n_metrics += 1
-
-        df_year_estimates = pd.DataFrame.from_dict(
-            d_metric_year, orient="index", columns=l_estimates_year_header
-        )
-        df_year_estimates.index.name = "YEARLY ESTIMATES"
-        df_quarter_earnings = pd.DataFrame.from_dict(
-            d_metric_quarter_earnings,
-            orient="index",
-            columns=l_estimates_quarter_header,
-        )
-        # df_quarter_earnings.index.name = 'Earnings'
-        df_quarter_revenues = pd.DataFrame.from_dict(
-            d_metric_quarter_revenues,
-            orient="index",
-            columns=l_estimates_quarter_header,
-        )
-        # df_quarter_revenues.index.name = 'Revenues'
-
-        l_quarter = []
-        l_date = []
-        for quarter_title in df_quarter_earnings.columns:
-            l_quarter.append(re.split("  ending", quarter_title)[0])
-            if len(re.split("  ending", quarter_title)) == 2:
-                l_date.append(
-                    "ending " + re.split("  ending", quarter_title)[1].strip()
-                )
-            else:
-                l_date.append("-")
-
-        df_quarter_earnings.columns = l_quarter
-        df_quarter_earnings.loc["Date"] = l_date
-        df_quarter_earnings = df_quarter_earnings.reindex(
-            ["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"]
-        )
-
-        df_quarter_revenues.columns = l_quarter
-        df_quarter_revenues.loc["Date"] = l_date
-        df_quarter_revenues = df_quarter_revenues.reindex(
-            ["Date", "No. of Analysts", "Average Estimate", "Year Ago", "Publish Date"]
-        )
-
-        print(df_year_estimates.to_string())
-        print("")
-        print("QUARTER ESTIMATES EARNINGS")
-        print(df_quarter_earnings.to_string())
-        print("")
-        print("QUARTER ESTIMATES REVENUES")
-        print(df_quarter_revenues.to_string())
-        print("")
-
-        print(
-            text_soup_market_business_insider.find(
-                "div", {"class": "text_right instrument-description"}
-            ).text.strip()
-        )
-        print("")
-
-    except Exception as e:
-        print(e)
-        print("")
-        return
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pt_year",
+        df_year_estimates,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pt_qtr_earnings",
+        df_quarter_earnings,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pt_qtr_revenues",
+        df_quarter_revenues,
+    )
