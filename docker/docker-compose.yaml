@@ -4,28 +4,58 @@ services:
     build:
       context: ..
       dockerfile: docker/gst-python.dockerfile
-    image: gst/gst-python:1.0.0
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-python:${GST_DOCKER_PYTHON_VERSION}"
   gst-deps:
     build:
       context: ..
       dockerfile: docker/gst-deps.dockerfile
-    image: gst/gst-deps:1.0.0
+      args:
+        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
+        GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-deps:${GST_DOCKER_DEPS_VERSION}"
   gst-poetry-deps:
     build:
       context: ..
       dockerfile: docker/gst-poetry-deps.dockerfile
-    image: gst/gst-poetry-deps:1.0.0
+      args:
+        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
+        GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-deps:${GST_DOCKER_POETRY_DEPS_VERSION}"
+  gst-poetry-full-deps:
+    build:
+      context: ..
+      dockerfile: docker/gst-poetry-full-deps.dockerfile
+      args:
+        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
+        GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-full-deps:${GST_DOCKER_POETRY_FULL_DEPS_VERSION}"
   gst:
     build:
       context: ..
       dockerfile: docker/gst.dockerfile
-    image: gst/gst:1.1.0
+      args:
+        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
+        GST_DOCKER_DEPS_VERSION: ${GST_DOCKER_DEPS_VERSION}
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst:${GST_DOCKER_GST_VERSION}"
     tty: true
     env_file: setenv
   gst-poetry:
     build:
       context: ..
       dockerfile: docker/gst-poetry.dockerfile
-    image: gst/gst-poetry:1.1.0
+      args:
+        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
+        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_DEPS_VERSION}
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry:${GST_DOCKER_POETRY_VERSION}"
+    tty: true
+    env_file: setenv
+  gst-poetry-full:
+    build:
+      context: ..
+      dockerfile: docker/gst-poetry-full.dockerfile
+      args:
+        GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
+        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_FULL_DEPS_VERSION}
+    image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-full:${GST_DOCKER_POETRY_FULL_VERSION}"
     tty: true
     env_file: setenv
