@@ -1,105 +1,71 @@
 """ Business Insider View """
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
-from pandas.core.frame import DataFrame
-import requests
-import matplotlib.pyplot as plt
+import os
 import pandas as pd
+from tabulate import tabulate
+import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
-from bs4 import BeautifulSoup
 from gamestonk_terminal.helper_funcs import (
-    check_positive,
+    export_data,
     get_next_stock_market_days,
-    get_user_agent,
-    parse_known_args_and_warn,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.stocks.insider import businessinsider_model
 
 register_matplotlib_converters()
 
 
 def insider_activity(
-    other_args: List[str], stock: DataFrame, ticker: str, start: str, interval: str
+    stock: pd.DataFrame,
+    ticker: str,
+    start: str,
+    interval: str,
+    num: int,
+    raw: bool,
+    export: str,
 ):
-    """Display insider activity
+    """Display insider activity. [Source: Business Insider]
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args - ["-n", "10"]
-    stock : DataFrame
-        Due diligence stock dataframe
+    stock : pd.DataFrame
+        Stock dataframe
     ticker : str
         Due diligence ticker symbol
     start : str
         Start date of the stock data
     interval : str
         Stock data interval
+    num : int
+        Number of latest days of inside activity
+    raw: bool
+        Print to console
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        prog="ins",
-        description="""Prints insider activity over time [Source: Business Insider]""",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of latest insider activity.",
-    )
+    df_ins = businessinsider_model.get_insider_activity(ticker)
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    if start:
+        df_insider = df_ins[start:].copy()  # type: ignore
+    else:
+        df_insider = df_ins.copy()
 
-        url_market_business_insider = (
-            f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
-        )
-        text_soup_market_business_insider = BeautifulSoup(
-            requests.get(
-                url_market_business_insider, headers={"User-Agent": get_user_agent()}
-            ).text,
-            "lxml",
-        )
+    if raw:
+        df_insider.index = pd.to_datetime(df_insider.index).date
 
-        d_insider = dict()
-        l_insider_vals = []
-        for idx, insider_val in enumerate(
-            text_soup_market_business_insider.findAll(
-                "td", {"class": "table__td text-center"}
+        print(
+            tabulate(
+                df_insider.sort_index(ascending=False)
+                .head(n=num)
+                .applymap(lambda x: x.replace(".00", "").replace(",", "")),
+                headers=df_insider.columns,
+                showindex=True,
+                tablefmt="fancy_grid",
             )
-        ):
-            # print(insider_val.text.strip())
-
-            l_insider_vals.append(insider_val.text.strip())
-
-            # Add value to dictionary
-            if (idx + 1) % 6 == 0:
-                # Check if we are still parsing insider trading activity
-                if "/" not in l_insider_vals[0]:
-                    break
-                d_insider[(idx + 1) // 6] = l_insider_vals
-                l_insider_vals = []
-
-        df_insider = pd.DataFrame.from_dict(
-            d_insider,
-            orient="index",
-            columns=["Date", "Shares Traded", "Shares Held", "Price", "Type", "Option"],
         )
 
-        df_insider["Date"] = pd.to_datetime(df_insider["Date"])
-        df_insider = df_insider.set_index("Date")
-        df_insider = df_insider.sort_index(ascending=True)
-
-        if start:
-            df_insider = df_insider[start:]  # type: ignore
-
+    else:
         _, ax = plt.subplots()
 
         if interval == "1440min":
@@ -110,7 +76,7 @@ def insider_activity(
         plt.title(f"{ticker.upper()} (Time Series) and Price Target")
 
         plt.xlabel("Time")
-        plt.ylabel("Share Price ($)")
+        plt.ylabel("Share Price")
 
         df_insider["Trade"] = df_insider.apply(
             lambda row: (1, -1)[row.Type == "Sell"]
@@ -192,27 +158,18 @@ def insider_activity(
             )
 
         plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+        plt.gcf().autofmt_xdate()
 
         if gtff.USE_ION:
             plt.ion()
 
         plt.show()
 
-        l_names = []
-        for s_name in text_soup_market_business_insider.findAll(
-            "a", {"onclick": "silentTrackPI()"}
-        ):
-            l_names.append(s_name.text.strip())
-        df_insider["Insider"] = l_names
+    print("")
 
-        print(
-            df_insider.sort_index(ascending=False).head(n=ns_parser.n_num).to_string()
-        )
-        print("")
-
-    except Exception as e:
-        print(e)
-        print("")
-        return
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "act",
+        df_insider,
+    )
