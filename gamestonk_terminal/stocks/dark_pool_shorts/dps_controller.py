@@ -1,4 +1,4 @@
-""" Disc Controller """
+""" Dark Pool Shorts Controller """
 __docformat__ = "numpy"
 
 import argparse
@@ -546,7 +546,7 @@ Quandl/Stockgrid:
                 action="store",
                 dest="n_days",
                 type=check_positive,
-                default=10,
+                default=10 if "-r" in other_args else 120,
                 help="Number of latest days to print data.",
             )
         else:
@@ -558,13 +558,13 @@ Quandl/Stockgrid:
                 default=10 if "-r" in other_args else 120,
                 dest="num",
             )
-            parser.add_argument(
-                "-r",
-                action="store_true",
-                default=False,
-                help="Flag to print raw data instead",
-                dest="raw",
-            )
+        parser.add_argument(
+            "-r",
+            action="store_true",
+            default=False,
+            help="Flag to print raw data instead",
+            dest="raw",
+        )
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -583,9 +583,9 @@ Quandl/Stockgrid:
             if "quandl" in other_args:
                 quandl_view.short_interest(
                     ticker=self.ticker,
-                    start=self.start,
                     nyse=ns_parser.b_nyse,
                     days=ns_parser.n_days,
+                    raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
             else:
