@@ -22,6 +22,7 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
   * [Linters](#linters)
 
 [Github Guidelines](#github-guidelines)
+  * [Pre Commit Hooks](#pre-commit-hooks)
   * [Git Commit Messages](#git-commit-messages)
   * [Pull Requests](#pull-requests)
 
@@ -135,13 +136,16 @@ T.B.D.
 
 ## Coding Guidelines
 
+When in doubt, follow https://www.python.org/dev/peps/pep-0008/.
+
 #### Naming Convention
 
-T.B.D.
+* The name of the variables must be descriptive of what they stand for. I.e. `ticker` is descriptive, `aux` is not.
+* Single character variables **must** be avoided. Except if they correspond to the iterator of a loop.
 
 #### Docstrings
 
-The docstring format used in `numpy`, an example is shown below:
+The docstring format used in **numpy**, an example is shown below:
 ```
 def command_foo(var1: str, var2: List[int], var3: bool = False) -> Tuple[int, pd.DataFrame]:
 """Small description
@@ -168,33 +172,54 @@ pd.DataFrame
 
 #### Linters
 
-T.B.D.
+The following linters are used by our codebase:
+
+| Linter | Description |
+| --- | --- |
+| bandit | security analyzer |
+| black | code formatter |
+| codespell | spelling checker |
+| flake8 | style guide enforcer |
+| mypy | static typing checker |
+| pyupgrade | upgrade syntax for newer versions |
+| safety | checks security vulnerabilities |
+| pylint | bug and quality checker |
 
 ## Github Guidelines
 
-T.B.D.
+#### Pre Commit Hooks
+
+Git hook scripts are useful for identifying simple issues before submission to code review. We run our hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. By pointing these issues out before code review, this allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
+
+Install the pre-commit hooks by running: `pre-commit install`.
 
 #### Git Commit Messages
 
 Attempt to write a concise message under 50 characters to represent what each commit is about. This makes it easier for the team to review the Pull Request.
 
+If your PR solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that these get linked.
+
 #### Pull Requests
 
-**Labels**
+A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
+
+As a reviewers, you should select: @DidierRLopes and @jmaslek.
+
+A label **must** be selected from the following types:
 
 | Label name | Description | Example
 | --- | --- | --- |
-| `size:XS` | Extra small feature | Add a preset
-| `size:S` | Small T-Shirt size Feature | New single command added
-| `size:M` | Medium T-Shirt size feature | Multiple commands added from same data source
-| `size:L` | Large T-Shirt size Feature | New category added under context
-| `size:XL` | Extra Large feature | New context added
-
-| Label name | Description |
-| --- | --- |
-| `enhancement` | Enhance existing code
-| `bug` | Fix a bug
-| `docs` | Improvements on documentation
-| `refactor` | Refactor code to follow our convention
-| `tests` | Work on pytests
-| `build` | Fix a github action that is breaking the build
+| `feat XS` | Extra small feature | Add a preset
+| `feat S` | Small T-Shirt size Feature | New single command added
+| `feat M` | Medium T-Shirt size feature | Multiple commands added from same data source
+| `feat L` | Large T-Shirt size Feature | New category added under context
+| `feat XL` | Extra Large feature | New context added
+| `enhancement` | Enhancement | Add new parameter to existing command
+| `bug` | Fix a bug | Fixes terminal crashing or warning message
+| `build` | Build-related work | Fix a github action that is breaking the build
+| `tests` | Test-related work | Add/improve tests
+| `docs` | Improvements on documentation | Add/improve documentation
+| `refactor` | Refactor code | Changing argparse location
+| `docker` | Docker-related work | Add/improve docker
+| `help wanted` | Extra attention is needed | When a contributor needs help
+| `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet
