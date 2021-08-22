@@ -28,4 +28,4 @@ jobs:
           user_name: DidierRLopes
           user_email: dro.lopes@campus.fct.unl.pt
           publish_branch: main
-        #   cname: example.com
+          #   cname: example.com
