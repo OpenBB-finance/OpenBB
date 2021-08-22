@@ -266,12 +266,33 @@ Quandl/Stockgrid:
             default=5,
             help="List of tickers from most promising with better linear regression slope.",
         )
+        parser.add_argument(
+            "--tier",
+            action="store",
+            dest="tier",
+            type=str,
+            choices=["T1", "T2", "OTCE"],
+            default="",
+            help="Tier to process data from.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finra_view.darkpool_otc(num=ns_parser.n_num, promising=ns_parser.n_top)
+            finra_view.darkpool_otc(
+                num=ns_parser.n_num,
+                promising=ns_parser.n_top,
+                tier=ns_parser.tier,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
