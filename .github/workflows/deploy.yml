@@ -6,8 +6,9 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-        run: |
-          cd website
+        
+      - name: Move to website
+        run: cd website
 
       - name: Setup hugo
         uses: peaceiris/actions-hugo@v2
