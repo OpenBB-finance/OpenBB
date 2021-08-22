@@ -6,9 +6,6 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-        
-      - name: Move to website
-        run: cd website
 
       - name: Setup hugo
         uses: peaceiris/actions-hugo@v2
@@ -16,6 +13,7 @@ jobs:
           hugo-version: "0.85.0"
 
       - name: Build
+        working-directory: ./website
         # remove --minify tag if you do not need it
         # docs: https://gohugo.io/hugo-pipes/minification/
         run: hugo
