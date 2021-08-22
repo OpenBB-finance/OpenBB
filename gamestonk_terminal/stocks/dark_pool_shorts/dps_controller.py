@@ -408,6 +408,13 @@ Quandl/Stockgrid:
             prog="dpotc",
             description="Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -416,7 +423,10 @@ Quandl/Stockgrid:
                 print("No ticker loaded.\n")
                 return
 
-            finra_view.darkpool_ats_otc(ticker=self.ticker)
+            finra_view.darkpool_ats_otc(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
