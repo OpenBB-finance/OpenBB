@@ -1,0 +1,658 @@
+:root,
+:root[color-mode="light"] {
+  --code-max-height: auto;
+
+  @include light_mode;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    @include light_mode;
+  }
+}
+
+:root[color-mode="dark"] {
+  @include dark_mode;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark_mode;
+  }
+}
+
+html {
+  font-size: $font-size-base;
+  letter-spacing: 0.33px;
+  scroll-behavior: smooth;
+
+  &.color-toggle-hidden {
+    #gdoc-dark-mode {
+      .gdoc_brightness_auto,
+      .gdoc_brightness_dark,
+      .gdoc_brightness_light {
+        display: none;
+      }
+    }
+  }
+
+  &.color-toggle-light {
+    #gdoc-dark-mode {
+      .gdoc_brightness_light {
+        display: inline-block;
+      }
+      .gdoc_brightness_auto,
+      .gdoc_brightness_dark {
+        display: none;
+      }
+    }
+  }
+
+  &.color-toggle-dark {
+    #gdoc-dark-mode {
+      .gdoc_brightness_dark {
+        display: inline-block;
+      }
+      .gdoc_brightness_auto,
+      .gdoc_brightness_light {
+        display: none;
+      }
+    }
+  }
+
+  &.color-toggle-auto {
+    #gdoc-dark-mode {
+      .gdoc_brightness_light {
+        display: none;
+      }
+      .gdoc_brightness_dark {
+        display: none;
+      }
+      .gdoc_brightness_auto {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+html,
+body {
+  min-width: $body-min-width;
+  overflow-x: hidden;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  box-sizing: border-box;
+  * {
+    box-sizing: inherit;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: $body-font-weight;
+  display: flex;
+  align-items: center;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1rem !important;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link-color);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--link-color-visited);
+  }
+}
+
+img {
+  vertical-align: middle;
+}
+
+#gdoc-dark-mode {
+  cursor: pointer;
+}
+
+.fake-link:hover {
+  background-image: linear-gradient(var(--link-color), var(--link-color));
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  text-decoration: none;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  color: var(--body-font-color);
+  background: var(--body-background);
+
+  font-weight: $body-font-weight;
+}
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: $padding-16;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  top: 0.125em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+  position: relative;
+}
+
+.gdoc-header {
+  background: var(--header-background);
+  color: var(--header-font-color);
+  border-bottom: 0.3em solid var(--footer-background);
+
+  &__link,
+  &__link:visited {
+    color: var(--header-font-color);
+  }
+
+  &__link:hover {
+    text-decoration: none;
+  }
+
+  .icon {
+    width: $font-size-32;
+    height: $font-size-32;
+  }
+}
+
+.gdoc-brand {
+  font-size: $font-size-32;
+
+  &__img {
+    margin-right: $padding-16;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.gdoc-menu-header {
+  &__items {
+    display: inline-block;
+  }
+
+  &__control {
+    display: none;
+
+    .icon {
+      cursor: pointer;
+    }
+  }
+}
+
+.gdoc-nav {
+  flex: 0 0 $menu-width;
+  font-size: $font-size-14;
+
+  nav {
+    width: $menu-width;
+    padding: $padding-16 $padding-32 $padding-16 0;
+
+    > ul > li > * {
+      font-weight: normal;
+    }
+
+    > :first-child {
+      margin-top: 0;
+    }
+  }
+
+  &__control {
+    display: none;
+    margin: 0;
+    padding: 0;
+
+    .icon {
+      cursor: pointer;
+    }
+
+    .icon.gdoc_menu {
+      display: inline-block;
+    }
+
+    .icon.gdoc_arrow_back {
+      display: none;
+    }
+  }
+
+  &__list {
+    padding-left: 1em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    user-select: none;
+
+    ul {
+      padding-left: $padding-16;
+    }
+
+    li {
+      margin: $padding-8 0;
+    }
+
+    .icon {
+      margin-right: $padding-4;
+    }
+  }
+
+  &__toggle {
+    display: none;
+
+    & ~ label {
+      cursor: pointer;
+
+      .icon {
+        font-size: 0.7rem;
+      }
+    }
+
+    &:not(:checked) {
+      & ~ ul,
+      & ~ label .icon.gdoc_keyborad_arrow_down {
+        display: none;
+      }
+      & ~ label .icon.gdoc_keyborad_arrow_left {
+        display: block;
+      }
+    }
+
+    &:checked {
+      & ~ ul,
+      & ~ label .icon.gdoc_keyborad_arrow_down {
+        display: block;
+      }
+
+      & ~ label .icon.gdoc_keyborad_arrow_left {
+        display: none;
+      }
+    }
+  }
+
+  &--main > ul > li > span,
+  &--main > ul > li > span > a,
+  &--main > ul > li > label,
+  &--main > ul > li > label > a {
+    font-weight: bold;
+  }
+
+  &--more {
+    padding-top: $padding-8;
+  }
+}
+
+.gdoc-nav__entry,
+.gdoc-search__entry {
+  flex: 1;
+  color: var(--body-font-color);
+
+  &:hover,
+  &.is-active {
+    text-decoration: underline;
+    text-decoration-style: dashed !important;
+  }
+
+  &:visited {
+    color: var(--body-font-color);
+  }
+}
+
+.gdoc-page {
+  min-width: $body-min-width;
+  flex-grow: 1;
+  padding: $padding-16 0;
+
+  &__header,
+  &__footer {
+    margin-bottom: $padding-16 * 1.2;
+
+    .icon {
+      color: var(--control-icons);
+    }
+
+    a,
+    a:visited {
+      color: var(--link-color);
+    }
+  }
+
+  &__header {
+    background: var(--accent-color-lite);
+    padding: $padding-8 $padding-16;
+    border-radius: $border-radius;
+  }
+
+  &__footer {
+    margin-top: $padding-32;
+
+    a:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__nav {
+    &:hover {
+      background-image: linear-gradient(var(--link-color), var(--link-color));
+      background-position: 0 100%;
+      background-size: 100% 1px;
+      background-repeat: no-repeat;
+    }
+    &--prev:before {
+      font-family: GeekdocIcons;
+      content: "\ea13";
+    }
+    &--next:after {
+      font-family: GeekdocIcons;
+      content: "\ea02";
+    }
+  }
+
+  &__anchorwrap {
+    &:hover .gdoc-page__anchor .icon {
+      color: var(--control-icons);
+    }
+  }
+
+  &__anchor {
+    min-width: 30px;
+
+    &--left {
+      position: absolute;
+      margin-left: -25px;
+      text-align: left;
+    }
+
+    &--right {
+      text-align: right;
+    }
+
+    .icon {
+      width: 1.4rem;
+      height: 1.4rem;
+      color: transparent;
+    }
+  }
+}
+
+.gdoc-post {
+  word-wrap: break-word;
+  border-top: 1px dashed $gray-600;
+  padding: $padding-32 0;
+  line-height: 1.5em;
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &__header {
+    h1 {
+      margin-top: 0;
+    }
+
+    a,
+    a:visited {
+      color: var(--body-font-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      background: none;
+      text-decoration: underline;
+      color: var(--body-font-color);
+    }
+  }
+
+  &__date {
+    margin: 1em 0;
+
+    .icon {
+      font-size: 1.2em;
+    }
+  }
+
+  &:first-child {
+    border-top: 0;
+
+    h1 {
+      margin-top: 0;
+    }
+  }
+
+  &__readmore {
+    margin: 1.5rem 0 2rem 0;
+
+    a:after {
+      font-family: GeekdocIcons;
+      content: "\ea02";
+    }
+
+    a,
+    a:hover,
+    a:visited {
+      color: var(--link-color);
+      text-decoration: none !important;
+    }
+  }
+}
+
+.gdoc-footer {
+  background: var(--footer-background);
+  color: var(--footer-font-color);
+
+  .fake-link:hover {
+    background-image: linear-gradient(
+      var(--footer-link-color),
+      var(--footer-link-color)
+    );
+  }
+
+  &__item {
+    line-height: 2em;
+
+    &--row {
+      margin-right: 1em;
+    }
+  }
+
+  &__link {
+    color: var(--footer-link-color);
+
+    &:visited {
+      color: var(--footer-link-color-visited);
+    }
+  }
+}
+
+.gdoc-search {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    top: 0.625em;
+    left: $padding-16 * 0.5;
+    color: var(--control-icons);
+    width: $font-size-16;
+    height: $font-size-16;
+  }
+
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+
+  &__input {
+    width: 100%;
+    padding: $padding-8;
+    padding-left: $padding-32;
+
+    border: $border-1 solid var(--accent-color);
+    border-radius: $border-radius;
+
+    background: var(--accent-color-lite);
+    color: var(--body-font-color);
+
+    &:required + &__spinner {
+      display: block;
+    }
+  }
+
+  &__spinner {
+    position: absolute;
+    margin: $padding-8;
+    right: 0;
+    top: 0;
+
+    width: $padding-16;
+    height: $padding-16;
+
+    border: $border-1 solid transparent;
+    border-top-color: var(--body-font-color);
+    border-radius: 50%;
+
+    @include spin(1s);
+  }
+
+  &__list {
+    visibility: hidden;
+    background: var(--body-background);
+    border-radius: $border-radius;
+    box-shadow: 0 1px 3px 0 var(--accent-color),
+      0 1px 2px 0 var(--accent-color-lite);
+    position: absolute;
+    margin: 0;
+    padding: $padding-8;
+    list-style: none;
+    left: 0;
+    top: calc(100% + #{$padding-8});
+    width: 100%;
+    z-index: 2;
+
+    ul {
+      list-style: none;
+      margin-top: $padding-8;
+      padding-left: 0;
+    }
+
+    li {
+      margin: $padding-4 0;
+    }
+
+    > li > span {
+      font-weight: bold;
+    }
+
+    > li + li {
+      margin-top: $padding-8;
+    }
+
+    .icon {
+      margin-right: $padding-4;
+    }
+  }
+
+  &:focus-within &__list.has-hits,
+  &__list.has-hits:active {
+    visibility: visible;
+  }
+}
+
+.gdoc-error {
+  padding: $padding-16 * 6 $padding-16;
+  margin: 0 auto;
+  max-width: 45em;
+
+  .icon {
+    width: $font-size-128;
+    height: $font-size-128;
+    color: var(--body-font-color);
+  }
+
+  &__link,
+  &__link:visited {
+    color: var(--link-color);
+  }
+
+  &__message {
+    padding-left: $padding-16 * 4;
+  }
+
+  &__line {
+    padding: $padding-8 0;
+  }
+
+  &__title {
+    font-size: $font-size-64;
+  }
+
+  &__code {
+    font-weight: bolder;
+  }
+}
+
+.gdoc-toc {
+  // Classes to hide nested levels of ToC/Menu
+  &__level--1 ul ul,
+  &__level--2 ul ul ul,
+  &__level--3 ul ul ul ul,
+  &__level--4 ul ul ul ul ul,
+  &__level--5 ul ul ul ul ul ul,
+  &__level--6 ul ul ul ul ul ul ul {
+    display: none;
+  }
+
+  a,
+  a:visited {
+    color: var(--link-color);
+  }
+}
+
+// Responsive styles
+.gdoc-nav nav,
+.gdoc-page,
+.markdown {
+  transition: 0.2s ease-in-out;
+  transition-property: transform, margin-left, opacity;
+  will-change: transform, margin-left;
+}
+
+// Breadcrumbs styles
+.breadcrumb {
+  display: inline;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline;
+  }
+}

@@ -1,0 +1,8 @@
+*.html
+.drone.yml
+search*.js
+_normalize.css
+.lighthouseci/
+themes/
+static/js/
+src/favicon/

@@ -1,0 +1,12 @@
+<div class="flex flex-wrap justify-center">
+    {{ range .Site.Data.sprites.geekdoc }}
+    <div class="flex flex-grid icon-grid">
+        <div class="flex align-center justify-center icon-grid__line">
+            <svg class="icon gdoc_{{ . }}"><use xlink:href="#gdoc_{{ . }}"></use></svg>
+        </div>
+        <div class="flex align-center justify-center icon-grid__line icon-grid__line--text">
+            <span>#gdoc_{{ (replace . "_" "_<wbr>") | safeHTML }}</span>
+        </div>
+    </div>
+    {{ end }}
+</div>

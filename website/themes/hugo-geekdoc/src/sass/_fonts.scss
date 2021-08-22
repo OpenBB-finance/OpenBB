@@ -1,0 +1,75 @@
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("fonts/LiberationSans-Bold.woff2") format("woff2"),
+    url("fonts/LiberationSans-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("fonts/LiberationSans-BoldItalic.woff2") format("woff2"),
+    url("fonts/LiberationSans-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("fonts/LiberationSans-Italic.woff2") format("woff2"),
+    url("fonts/LiberationSans-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("fonts/LiberationSans.woff2") format("woff2"),
+    url("fonts/LiberationSans.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Liberation Mono";
+  src: url("fonts/LiberationMono.woff2") format("woff2"),
+    url("fonts/LiberationMono.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Metropolis";
+  src: url("fonts/Metropolis.woff2") format("woff2"),
+    url("fonts/Metropolis.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GeekdocIcons";
+  src: url("fonts/GeekdocIcons.woff2") format("woff2"),
+    url("fonts/GeekdocIcons.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Liberation Sans", sans-serif;
+}
+
+code,
+.gdoc-error__title {
+  font-family: "Liberation Mono", monospace;
+}
+
+.gdoc-header {
+  font-family: "Metropolis", sans-serif;
+}

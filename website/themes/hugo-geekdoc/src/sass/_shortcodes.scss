@@ -1,0 +1,145 @@
+// {{< expand "Label" "icon" >}}
+.gdoc-expand {
+  margin-top: $padding-16;
+  margin-bottom: $padding-16;
+
+  border: $border-1 solid var(--accent-color);
+  border-radius: $border-radius;
+
+  overflow: hidden;
+
+  &__head {
+    background: var(--accent-color-lite);
+    padding: $padding-8 $padding-16;
+    cursor: pointer;
+  }
+
+  &__content {
+    display: none;
+    padding: $padding-16;
+  }
+
+  &__control:checked + &__content {
+    display: block;
+  }
+
+  .gdoc-page__anchor {
+    display: none;
+  }
+}
+
+// {{< tabs >}}
+.gdoc-tabs {
+  margin-top: $padding-16;
+  margin-bottom: $padding-16;
+
+  border: $border-1 solid var(--accent-color);
+  border-radius: $border-radius;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  &__label {
+    display: inline-block;
+    padding: $padding-8 $padding-16;
+    border-bottom: $border-1 transparent;
+    cursor: pointer;
+  }
+
+  &__content {
+    order: 999; //Move content blocks to the end
+    width: 100%;
+    border-top: $border-1 solid var(--accent-color-lite);
+    padding: $padding-16;
+    display: none;
+  }
+
+  &__control:checked + &__label {
+    border-bottom: $border-2 solid var(--link-color);
+  }
+  &__control:checked + &__label + &__content {
+    display: block;
+  }
+
+  .gdoc-page__anchor {
+    display: none;
+  }
+}
+
+// {{< columns >}}
+.gdoc-columns {
+  margin-left: -$padding-16;
+  margin-right: -$padding-16;
+
+  &__content {
+    margin: $padding-16 0;
+    min-width: $body-min-width * 0.66;
+    padding: 0 $padding-16;
+  }
+
+  .gdoc-page__anchor {
+    display: none;
+  }
+}
+
+// {{< button >}}
+.gdoc-button {
+  $root: &;
+
+  display: inline-block;
+  background: var(--accent-color-lite);
+  border: $border-1 solid var(--accent-color);
+  border-radius: $border-radius;
+  margin: $padding-8 0;
+  cursor: pointer;
+
+  &__link {
+    display: inline-block;
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  &:hover {
+    background: var(--button-background);
+    border-color: var(--button-border-color);
+    color: $gray-100;
+  }
+
+  &--regular {
+    font-size: $font-size-base;
+
+    #{$root}__link {
+      padding: $padding-4 $padding-8;
+    }
+  }
+
+  &--large {
+    font-size: $font-size-20;
+
+    #{$root}__link {
+      padding: $padding-8 $padding-16;
+    }
+  }
+}
+
+// {{< hint >}}
+.gdoc-hint {
+  @each $name, $color in $hint-colors {
+    &.#{$name} {
+      border-left-color: $color;
+      background-color: scale-color($color, $lightness: 95%, $saturation: -30%);
+      color: $body-font-color;
+    }
+  }
+
+  .gdoc-page__anchor {
+    display: none;
+  }
+}
+
+// {{< mermaid >}}
+.gdoc-mermaid {
+  font-family: "Liberation Sans", sans-serif;
+}
