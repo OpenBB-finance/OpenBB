@@ -236,7 +236,6 @@ ___
 * [x] Add binance (@jmaslek) [PR #428](#https://github.com/DidierRLopes/GamestonkTerminal/pull/428)
 * [x] Add crypto ta (@jmaslek) [PR #452](https://github.com/GamestonkTerminal/GamestonkTerminal/pull/452)
 
-
 **NEXT**
 * [ ] Add [Coinpaprika](https://coinpaprika.com/api/)
 * [ ] Add top altcoin lists
