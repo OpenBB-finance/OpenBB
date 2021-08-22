@@ -24,7 +24,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.DEPLOY_TOKEN }}
-          external_repository: GamestonkTerminal/GamestonkTerminal.github.io
+          external_repository: gamestonkterminal.github.io
           publish_dir: ./public
           #   keep_files: true
           user_name: DidierRLopes
