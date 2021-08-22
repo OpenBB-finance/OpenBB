@@ -5,9 +5,9 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 [How Can I Contribute?](#how-can-i-contribute)
-  * [Community/Marketing](#Community/Marketing)
-  * [Retail Trader/QA](#retail-trader/qa)
-  * [Programmer](#programmer)
+  * [Community - Marketing](#community---marketing)
+  * [Retail Trader - Quality Assurance](#retail-trader---quality-assurance)
+  * [Programmer - Data Scientist](#programmer---data-scientist)
 
 [Code Architecture](#code-architecture)
   * [Conventions](#conventions)
@@ -37,7 +37,7 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
 
 When contributing to this repository, feel free to discuss the change you wish to make via discord https://discord.gg/Up2QGbMKHY!
 
-#### Community/Marketing
+#### Community - Marketing
 
 Increase Gamestonk Terminal reach:
 
@@ -47,7 +47,7 @@ Increase Gamestonk Terminal reach:
   * Share your terminal graphs and interpretations with other Reddit users ([example](https://www.reddit.com/r/amcstock/comments/of6g83/dark_pool_guy_here_to_kick_off_the_shortened_week/)).
   * Join our discord and interact with other users.
 
-#### Retail Trader/QA
+#### Retail Trader - Quality Assurance
 
 If you are the typical retail trader that uses the terminal on a daily basis, there are a lot of ways you can con contribute:
 
@@ -59,7 +59,7 @@ If you are the typical retail trader that uses the terminal on a daily basis, th
   * Contact interesting people in our behalf towards partnerships which will provide our user base with more data.
   * Reach out to developers/mathematicians/data scientists/finance people to help us build the #1 Retail Trader terminal.
 
-#### Programmers
+#### Programmer - Data Scientist
 
 For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
 
@@ -86,11 +86,40 @@ The steps to contribute are:
 
 #### Conventions
 
-T.B.D.
+|**Item**|**Description**|
+|:-|:-|
+|Context|Group of `categories` focused on one intrument (`stocks`, `crypto`, `economy`) <br />|
+|Category|Group of `actions` <br /> There are the specialized categories, specific to each product : `due_diligence`, `discovery`<br />Then there are common categories which are not specific to one product : `technical_analysis`, `prediction`|
+|Action|Operation on one or no `instrument` that retrieves data.|
+
 
 #### Folder Organization
 
-T.B.D.
+The following layout is expected: `/<context>/<category>/<actions_file>.py`
+
+If there are sub-categories, the layout will be: `/<context>/<category>/<sub-category>/<actions_file>.py`
+    
+**Example:**
+```
+ape_core/common/technical_analysis/overlap_api.py
+ape_core/stock/instrument_stock.py
+              /context_stock.py
+              /due_diligence/category_due_diligence.py
+                            /marketwatch_api.py
+                            /finra_api.py
+              /technical_analysis/category_technical_analysis.py
+                                 /tradingview_api.py
+
+```
+
+Within the `context` folder, like `stock` one can expect:
+  * `context_stock.py`: Defines `ContextStock` class.
+  * `instrument_stock.py`: Defines `InstrumentStock` class.
+  * Multiple `categories` folders, like `discovery, due_diligence`.
+    
+Within the `category` folder, like `discovery` one can expect:
+  * `category_discovery.py`: Defines `CategoryDiscovery` class.
+  * Multiple `action_files` files, like `yahoo_finance_api, marketwatch_api`
 
 #### MVC Design
 
