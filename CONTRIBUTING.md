@@ -86,11 +86,11 @@ The steps to contribute are:
 
 #### Conventions
 
-|**Item**|**Description**|
-|:-|:-|
-|Context|Group of `categories` focused on one intrument (`stocks`, `crypto`, `economy`) <br />|
-|Category|Group of `actions` <br /> There are the specialized categories, specific to each product : `due_diligence`, `discovery`<br />Then there are common categories which are not specific to one product : `technical_analysis`, `prediction`|
-|Action|Operation on one or no `instrument` that retrieves data.|
+|**Item**|**Description**|**Example**|
+|:-|:-|:-|
+|**CONTEXT**|Specific instrument *world* to analyse. | `stocks`, `crypto`, `economy` |
+|**CATEGORY**|Group of `actions` to do on the instrument <br /> There are the specialized categories, specific to each product and there are common categories which are not specific to one product : `technical_analysis`, `prediction`| `due_diligence`,  `technical_analysis`, `insider` |
+|**ACTION**|Operation on one or no `instrument` that retrieves data.| `rating`, `supplier`, `sentiment` |
 
 
 #### Folder Organization
