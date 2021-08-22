@@ -13,8 +13,14 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
   * [Conventions](#conventions)
   * [Folder Organization](#folder-organization)
   * [MVC Design](#mvc-design)
-  * [Tests](#tests)
-  * [Documentation](#Documentation)
+
+[Tests](#tests)
+  * [Pytest](#pytest)
+  * [Coverage](#coverage)
+  * [VCR](#vcr)
+  * [check_print](#check_print)
+
+[Documentation](#Documentation)
 
 [Coding Guidelines](#coding-guidelines)
   * [Naming Convention](naming-convention)
@@ -90,27 +96,24 @@ T.B.D.
 
 T.B.D.
 
-#### Tests
+## Tests
 
-##### UNIT TESTS
+Unit tests minimize errors in code and quickly find errors when they do arise.
 
-
-Unit tests minimize errors in code and quickly find errors when they do arise. Please note the following tools when creating tests for GamestonkTerminal:
-
-###### PYTEST
+##### Pytest
 
 Pytest allows users to quickly create unittests in Python. To use pytest run `pytest tests/`.
 
-###### COVERAGE
+##### Coverage
 
 Coverage allows users to see how complete unittests are for Python. To use coverage do the following:
 
 1. `coverage run -m pytest`
 2. `coverage html`
 
-To view the tests find the htmlcov folder in the main directory and open the index.html file. This will show a detailed report of testing coverage.
+To view the tests find the htmlcov folder in the main directory and open the *index.html* file. This will show a detailed report of testing coverage.
 
-###### VCRPY
+##### VCR
 
 VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly speeds up the time it takes to run tests. To use VCRPY do the following:
 
@@ -119,18 +122,18 @@ VCRPY allows us to save data from request methods to a .YAML file. This increase
 
 **Note:** If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
 
-###### check_print
+##### check_print
 
 GamestonkTerminal relies on print statements to return data to the user. To check whether necessary information was included in a print statement use the check_print decorator as detailed below:
 
-1. `from tests.helpers import check_print`
-1. add `@check_print(assert_in="foo")` as a decorator to the test
+* `from tests.helpers import check_print`
+* Add `@check_print(assert_in="foo")` as a decorator to the test
 
 If you do not want to assert an item but your test still prints output, please add `@check_print()` as a decorator to mute print output.
 
 **Note:** Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
 
-#### Documentation
+## Documentation
 
 T.B.D.
 
