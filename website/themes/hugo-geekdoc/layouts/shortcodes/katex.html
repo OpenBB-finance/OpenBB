@@ -1,0 +1,14 @@
+{{ if not (.Page.Scratch.Get "katex") }}
+<!-- Include katext only first time -->
+<link rel="stylesheet" href="{{ index .Site.Data.assets "katex.min.css" | relURL }}" />
+<script defer src="{{ index .Site.Data.assets "js/katex.min.js" | relURL }}"></script>
+<script defer src="{{ index .Site.Data.assets "js/auto-render.min.js" | relURL }}"></script>
+<script defer src="{{ index .Site.Data.assets "js/katex-loader.min.js" | relURL }}"></script>
+{{ .Page.Scratch.Set "katex" true }}
+{{ end }}
+
+<span class="gdoc-katex katex{{ with .Get "class" }} {{ . }}{{ end }}">
+  {{ cond (in .Params "display") "\\[" "\\(" -}}
+  {{- trim .Inner "\n" -}}
+  {{- cond (in .Params "display") "\\]" "\\)" }}
+</span>

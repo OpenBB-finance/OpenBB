@@ -1,0 +1,48 @@
+{{ $current := . }}
+{{ template "tree-nav" dict "sect" .Site.Home.Sections "current" $current }}
+
+<!-- templates -->
+{{ define "tree-nav" }}
+    {{ $current := .current }}
+
+    <ul class="gdoc-nav__list">
+        {{ range .sect.GroupBy "Weight" }}
+            {{ range .ByTitle }}
+            {{ if not .Params.GeekdocHidden }}
+
+            {{ $numberOfPages := (add (len .Pages) (len .Sections)) }}
+            {{ $isParent := and (ne $numberOfPages 0) (not .Params.GeekdocFlatSection) }}
+            {{ $isCurrent := eq $current . }}
+            {{ $isAncestor := .IsAncestor $current }}
+            {{ $id := substr (sha1 .Permalink) 0 8 }}
+            {{ $doCollapse := and $isParent (or .Params.GeekdocCollapseSection (default false .Site.Params.GeekdocCollapseAllSections)) }}
+
+            <li>
+            {{ if $doCollapse }}
+            <input type="checkbox" id="{{ printf "navtree-%s" $id }}" class="gdoc-nav__toggle" {{ if or $isCurrent $isAncestor }}checked{{ end }}>
+            <label for="{{ printf "navtree-%s" $id }}" class="flex justify-between">
+            {{ end }}
+            {{ if or .Content .Params.GeekdocFlatSection }}
+                <span class="flex">
+                    <a href="{{ .RelPermalink }}" class="gdoc-nav__entry {{ if eq $current . }}is-active{{ end }}">
+                        {{ partial "title" . }}
+                    </a>
+                </span>
+            {{ else }}
+                <span class="flex">{{ partial "title" . }}</span>
+            {{ end }}
+            {{ if $doCollapse }}
+                <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+                <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            {{ end }}
+
+            {{ if $isParent }}
+                {{ template "tree-nav" dict "sect" .Pages "current" $current}}
+            {{ end }}
+            </li>
+            {{ end }}
+            {{ end }}
+        {{ end }}
+    </ul>
+{{ end }}
