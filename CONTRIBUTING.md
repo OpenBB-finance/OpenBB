@@ -89,28 +89,40 @@ The steps to contribute are:
 |**Item**|**Description**|**Example**|
 |:-|:-|:-|
 |**CONTEXT**|Specific instrument *world* to analyse. | `stocks`, `crypto`, `economy` |
-|**CATEGORY**|Group of `actions` to do on the instrument <br /> There are the specialized categories, specific to each product and there are common categories which are not specific to one product : `technical_analysis`, `prediction`| `due_diligence`,  `technical_analysis`, `insider` |
-|**ACTION**|Operation on one or no `instrument` that retrieves data.| `rating`, `supplier`, `sentiment` |
+|**CATEGORY**|Group of similar COMMANDS to do on the instrument <br /> There are the specialized categories, specific to each CONTEXT and there are common categories which are not specific to one CONTEXT. | `due_diligence`,  `technical_analysis`, `insider` |
+|**COMMAND**|Operation on one or no instrument that retrieves data in form of string, table or plot.| `rating`, `supplier`, `sentiment` |
 
 
 #### Folder Organization
 
-The following layout is expected: `/<context>/<category>/<actions_file>.py`
+The following layout is expected: `/<context>/<category>/<command_files>`
 
-If there are sub-categories, the layout will be: `/<context>/<category>/<sub-category>/<actions_file>.py`
+If there are sub-categories, the layout will be: `/<context>/<category>/<sub-category>/<command_files>`
     
 **Example:**
 ```
-ape_core/common/technical_analysis/overlap_api.py
-ape_core/stock/instrument_stock.py
-              /context_stock.py
-              /due_diligence/category_due_diligence.py
-                            /marketwatch_api.py
-                            /finra_api.py
-              /technical_analysis/category_technical_analysis.py
-                                 /tradingview_api.py
+gamestonk_terminal/common/technical_analysis/overlap_view.py
+                                            /overlap_model.py
+                  /stocks/stocks_controller.py
+                         /stocks_helper.py
+                         /due_diligence/dd_controller.py
+                                       /marketwatch_view.py
+                                       /marketwatch_model.py
+                                       /finviz_view.py
+                                       /finviz_model.py
+                         /technical_analysis/ta_controller.py
+                                            /tradingview_view.py
+                                            /tradingview_model.py
+                  /crypto/crypto_controller.py
+                         /crypto_helper.py
+                         /due_diligence/dd_controller.py
+                                       /binance_view.py
+                                       /binance_model.py
+                         /technical_analysis/ta_controller.py
 
 ```
+
+helpers can always be added when necessary
 
 Within the `context` folder, like `stock` one can expect:
   * `context_stock.py`: Defines `ContextStock` class.
