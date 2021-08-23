@@ -15,7 +15,7 @@
 [![Bugs Open][bugs-open-shield]][bugs-open-url]
 [![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
-[![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
+[![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
 [![GitHub release](https://img.shields.io/github/release/GamestonkTerminal/GamestonkTerminal.svg?maxAge=3600)](https://github.com/GamestonkTerminal/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -34,9 +34,9 @@
   <p align="center">
     The next best thing after Bloomberg Terminal. #weliketheterminal
     <br />
-    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
     &nbsp · &nbsp
-    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/README.md"><strong>FEATURES »</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/gamestonk_terminal/README.md"><strong>FEATURES »</strong></a>
     <br />
     <br />
     <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D">Report Bug</a>
@@ -171,7 +171,7 @@ After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk T
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
+**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
 
