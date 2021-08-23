@@ -101,9 +101,7 @@ If there are sub-categories, the layout will be: `/<context>/<category>/<sub-cat
     
 **Example:**
 ```
-gamestonk_terminal/common/technical_analysis/overlap_view.py
-                                            /overlap_model.py
-                  /stocks/stocks_controller.py
+gamestonk_terminal/stocks/stocks_controller.py
                          /stocks_helper.py
                          /due_diligence/dd_controller.py
                                        /marketwatch_view.py
@@ -119,19 +117,20 @@ gamestonk_terminal/common/technical_analysis/overlap_view.py
                                        /binance_view.py
                                        /binance_model.py
                          /technical_analysis/ta_controller.py
+                  /common/technical_analysis/overlap_view.py
+                                            /overlap_model.py
 
 ```
 
-helpers can always be added when necessary
+Where:
 
-Within the `context` folder, like `stock` one can expect:
-  * `context_stock.py`: Defines `ContextStock` class.
-  * `instrument_stock.py`: Defines `InstrumentStock` class.
-  * Multiple `categories` folders, like `discovery, due_diligence`.
-    
-Within the `category` folder, like `discovery` one can expect:
-  * `category_discovery.py`: Defines `CategoryDiscovery` class.
-  * Multiple `action_files` files, like `yahoo_finance_api, marketwatch_api`
+|**Context**|**Category**|**File**|**Description**|
+|:-|:-|:-|:-|
+|`stocks/`|  | `stocks_controller.py` | Manages **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data, or, more importantly, redirecting to the selected _category_.  | 
+|`stocks/`|  | `stocks_helper.py` | Helper to `stocks_controller.py`. This file is meant to implement `commands` needed by `stocks_controller.py` | 
+|`stocks/`| `due_diligence/` | `dd_controller.py` | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data. | 
+
+
 
 #### MVC Design
 
