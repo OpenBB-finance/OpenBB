@@ -1,6 +1,0 @@
----
-default: True
-MD013: False
-MD041: False
-MD004:
-  style: dash
