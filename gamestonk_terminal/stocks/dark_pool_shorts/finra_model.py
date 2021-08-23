@@ -286,7 +286,7 @@ def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     tiers = ["T1", "T2", "OTCE"]
 
-    l_data = list()
+    l_data = []
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=True):
             status_code, response = getFINRAdata(
@@ -305,7 +305,7 @@ def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         df_ats = df_ats.sort_values("weekStartDate")
         df_ats = df_ats.set_index("weekStartDate")
 
-    l_data = list()
+    l_data = []
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=False):
             status_code, response = getFINRAdata(

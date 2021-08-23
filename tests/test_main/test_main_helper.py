@@ -65,7 +65,10 @@ class TestMainHelper(unittest.TestCase):
         stocks_helper.candle("GME", [])
 
     @check_print(assert_in="Price")
-    @vcr.use_cassette("tests/cassettes/test_main/test_main_helper/test_quote.yaml")
+    @vcr.use_cassette(
+        "tests/cassettes/test_main/test_main_helper/test_quote.yaml",
+        record_mode="new_episodes",
+    )
     def test_quote(self):
         stocks_helper.quote(["GME"], "GME")
 
@@ -77,7 +80,8 @@ class TestMainHelper(unittest.TestCase):
 
     @check_print(assert_in="ALPHA")
     @vcr.use_cassette(
-        "tests/cassettes/test_main/test_main_helper/test_check_api_keys.yaml"
+        "tests/cassettes/test_main/test_main_helper/test_check_api_keys.yaml",
+        record_mode="new_episodes",
     )
     def test_check_api_keys(self):
         terminal_helper.check_api_keys()

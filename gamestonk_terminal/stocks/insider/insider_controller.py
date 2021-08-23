@@ -1,4 +1,4 @@
-"""Screener Controller Module"""
+"""Insider Controller Module"""
 __docformat__ = "numpy"
 
 import os
@@ -8,9 +8,14 @@ from typing import List
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.stocks.insider import (
     openinsider_view,
     businessinsider_view,
@@ -31,10 +36,14 @@ class InsiderController:
         "?",
         "help",
         "q",
+        "quit",
+        "load",
+    ]
+
+    CHOICES_COMMANDS = [
         "view",
         "set",
         "filter",
-        "quit",
         "lcb",
         "lpsb",
         "lit",
@@ -55,9 +64,15 @@ class InsiderController:
         "tist",
         "tispw",
         "tispm",
+    ]
+
+    CHOICES_COMMANDS_WITH_TICKER = [
         "act",
         "lins",
     ]
+
+    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_COMMANDS_WITH_TICKER
 
     def __init__(self, ticker: str, start: str, interval: str, stock: pd.DataFrame):
         """Constructor
@@ -89,17 +104,16 @@ class InsiderController:
         """Print help"""
         help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/insider
 
-Insider Trading:")
+Insider Trading:
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    load          load a specific stock ticker for analysis
 
+PRESET: {self.preset}
     view          view available presets
     set           set one of the available presets
-
-    PRESET: {self.preset}
-
     filter        filter insiders based on preset
 
 Latest:
@@ -126,7 +140,6 @@ Top:
     tispm         top insider sales past month
 {Style.DIM if not self.ticker else ''}
 Ticker: {self.ticker}
-
     act           insider activity over time [Business Insider]
     lins          last insider trading of the company [Finviz]
 {Style.RESET_ALL if not self.ticker else ''}"""
@@ -298,6 +311,12 @@ Ticker: {self.ticker}
         """Process Quit command - quit the program"""
         return True
 
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, _, _, _ = load(
+            other_args, self.ticker, self.start, "1440min", self.stock
+        )
+
     def call_view(self, other_args: List[str]):
         """Process view command"""
         self.view_available_presets(other_args)
@@ -392,19 +411,105 @@ Ticker: {self.ticker}
 
     def call_act(self, other_args: List[str]):
         """Process act command"""
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-        return businessinsider_view.insider_activity(
-            other_args, self.stock, self.ticker, self.start, self.interval
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="act",
+            description="""Prints insider activity over time [Source: Business Insider]""",
         )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of latest insider activity.",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}` \n")
+                return
+
+            businessinsider_view.insider_activity(
+                stock=self.stock,
+                ticker=self.ticker,
+                start=self.start,
+                interval=self.interval,
+                num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_lins(self, other_args: List[str]):
         """Process lins command"""
-        if not self.ticker:
-            print("No ticker loaded.  First use `load {ticker}` \n")
-            return
-        return finviz_view.last_insider_activity(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="lins",
+            description="""
+                Prints information about inside traders. The following fields are expected: Date, Relationship,
+                Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of latest inside traders.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}` \n")
+                return
+
+            finviz_view.last_insider_activity(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):

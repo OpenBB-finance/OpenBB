@@ -1,5 +1,7 @@
 FROM python:3.8-slim-buster
 
+LABEL org.opencontainers.image.source https://github.com/GamestonkTerminal/GamestonkTerminal
+
 RUN  apt-get update && apt-get -y install --no-install-recommends \
   gcc \
   g++ \
@@ -18,6 +20,7 @@ RUN  apt-get update && apt-get -y install --no-install-recommends \
   libxt6 \
   libgl1-mesa-glx \
   libpng16-16 \
+  procps \
   python3-tk && \
   apt-get -y autoremove && \
   apt-get clean && \

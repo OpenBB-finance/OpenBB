@@ -1,0 +1,12 @@
+{{ if default true .Site.Params.GeekdocSearch }}
+{{ .Scratch.Set "geekdocSearchConfig" .Site.Params.GeekdocSearchConfig }}
+<!-- Remove after https://github.com/gohugoio/hugo/issues/6331 -->
+{{ $searchJSFile := printf "js/%s.search.js" .Language.Lang }}
+{{ $searchJS := resources.Get "js/search.js" | resources.ExecuteAsTemplate $searchJSFile . | resources.Minify | fingerprint }}
+<script defer src="{{ $searchJS.RelPermalink }}"></script>
+{{ end }}
+
+{{ if default true .Site.Params.GeekdocAnchorCopy }}
+<script defer src="{{ index .Site.Data.assets "js/clipboard.min.js" | relURL }}"></script>
+<script defer src="{{ index .Site.Data.assets "js/clipboard-loader.min.js" | relURL }}"></script>
+{{ end }}

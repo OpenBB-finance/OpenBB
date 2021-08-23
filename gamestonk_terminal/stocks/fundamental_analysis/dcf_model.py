@@ -1,11 +1,18 @@
 """ DCF Model """
 __docformat__ = "numpy"
 
+from urllib.request import urlopen
 from typing import List, Union
+from zipfile import ZipFile
+from io import BytesIO
 
-import pandas as pd
+from sklearn.linear_model import LinearRegression
 from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 from openpyxl import worksheet
+import yfinance as yf
+import pandas as pd
+import requests
+
 
 opts = Union[int, str, float]
 
@@ -39,7 +46,8 @@ def set_cell(
     num_form: str = None,
 ):
     """Sets the value of the cell to given text and formats based on specified arguments"""
-    ws[cell] = text
+    if text:
+        ws[cell] = text
     if font:
         ws[cell].font = font
     if border:
@@ -50,6 +58,79 @@ def set_cell(
         ws[cell].alignment = alignment
     if num_form:
         ws[cell].number_format = num_form
+
+
+def get_rf():
+    """Uses the fiscaldata.gov API to get most recent T-Bill rate"""
+    base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
+    end = "/v2/accounting/od/avg_interest_rates"
+    filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
+    response = requests.get(base + end + filters)
+    latest = response.json()["data"][0]
+    return latest["avg_interest_rate_amt"]
+
+
+def get_fama_raw():
+    """Gets base Fama French data to calculate risk"""
+    with urlopen(
+        "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+    ) as url:
+
+        # Download Zipfile and create pandas DataFrame
+        with ZipFile(BytesIO(url.read())) as zipfile:
+            with zipfile.open("F-F_Research_Data_Factors.CSV") as zip_open:
+                df = pd.read_csv(
+                    zip_open,
+                    header=0,
+                    names=["Date", "MKT-RF", "SMB", "HML", "RF"],
+                    skiprows=3,
+                )
+
+    df = df[df["Date"].apply(lambda x: len(str(x).strip()) == 6)]
+    df["Date"] = df["Date"].astype(str) + "01"
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y%m%d")
+    df["MKT-RF"] = pd.to_numeric(df["MKT-RF"], downcast="float")
+    df["SMB"] = pd.to_numeric(df["SMB"], downcast="float")
+    df["HML"] = pd.to_numeric(df["HML"], downcast="float")
+    df["RF"] = pd.to_numeric(df["RF"], downcast="float")
+    df["MKT-RF"] = df["MKT-RF"] / 100
+    df["SMB"] = df["SMB"] / 100
+    df["HML"] = df["HML"] / 100
+    df["RF"] = df["RF"] / 100
+    df = df.set_index("Date")
+    return df
+
+
+def get_historical_5(ticker: str):
+    """Get 5 year monthly historical performance for a ticker with dividends filtered"""
+    tick = yf.Ticker(ticker)
+    df = tick.history(period="5y", interval="1mo")
+    df = df[df.index.to_series().apply(lambda x: x.day == 1)]
+    df = df.drop(["Dividends", "Stock Splits"], axis=1)
+    df = df.dropna()
+    return df
+
+
+def get_fama_coe(ticker: str):
+    """Use Fama and French to get the cost of equity for a company"""
+    df_f = get_fama_raw()
+    df_h = get_historical_5(ticker)
+    df = df_h.join(df_f)
+    df = df.dropna()
+    df["Monthly Return"] = df["Close"].pct_change()
+    df["Excess Monthly Return"] = df["Monthly Return"] - df["RF"]
+    df = df.dropna()
+    x = df[["MKT-RF", "SMB", "HML"]]
+    y = df["Excess Monthly Return"]
+
+    model = LinearRegression().fit(x, y)
+    coefs = model.coef_
+    return (
+        df["RF"].mean()
+        + coefs[0] * df["MKT-RF"].mean()
+        + coefs[1] * df["SMB"].mean()
+        + coefs[2] * df["HML"].mean()
+    ) * 12
 
 
 letters = [
@@ -232,6 +313,7 @@ sum_rows = [
 
 bold_font = Font(bold=True)
 thin_border_top = Border(top=Side(style="thin"))
+thin_border_bottom = Border(bottom=Side(style="thin"))
 
 thin_border_nl = Border(
     right=Side(style="thin"),

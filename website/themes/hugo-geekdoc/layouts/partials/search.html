@@ -1,0 +1,9 @@
+{{ if default true .Site.Params.GeekdocSearch }}
+    <div class="gdoc-search">
+        <svg class="icon gdoc_search"><use xlink:href="#gdoc_search"></use></svg>
+        <input type="text" id="gdoc-search-input" class="gdoc-search__input" placeholder="Search..."
+            aria-label="Search" maxlength="64" />
+        <div class="gdoc-search__spinner spinner hidden"></div>
+        <ul id="gdoc-search-results" class="gdoc-search__list"></ul>
+    </div>
+{{ end }}

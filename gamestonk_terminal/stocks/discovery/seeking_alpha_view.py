@@ -30,8 +30,8 @@ def upcoming_earning_release_dates(num_pages: int, num_earnings: int, export: st
 
     pd.set_option("display.max_colwidth", None)
     if export:
-        l_earnings = list()
-        l_earnings_dates = list()
+        l_earnings = []
+        l_earnings_dates = []
 
     for n_days, earning_date in enumerate(df_earnings.index.unique()):
         if n_days > (num_earnings - 1):

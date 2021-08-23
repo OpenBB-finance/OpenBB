@@ -382,7 +382,7 @@ def divide_chunks(data, n):
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     """gets the next stock market day. Checks against weekends and holidays"""
     n_days = 0
-    l_pred_days = list()
+    l_pred_days = []
     years: list = []
     holidays: list = []
     while n_days < n_next_days:
@@ -712,7 +712,7 @@ def get_last_time_market_was_open(dt):
 
 
 def find_tickers(submission):
-    ls_text = list()
+    ls_text = []
     ls_text.append(submission.selftext)
     ls_text.append(submission.title)
 
@@ -720,7 +720,7 @@ def find_tickers(submission):
     for comment in submission.comments.list():
         ls_text.append(comment.body)
 
-    l_tickers_found = list()
+    l_tickers_found = []
     for s_text in ls_text:
         for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
             l_tickers_found.append(s_ticker.strip())

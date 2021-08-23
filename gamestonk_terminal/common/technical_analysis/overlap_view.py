@@ -24,8 +24,8 @@ def view_ma(
     df_stock: pd.DataFrame,
     window_length: List[int],
     export: str,
-):
-    """Plots EMA technical indicator
+) -> pd.DataFrame:
+    """Plots MA technical indicator
 
     Parameters
     ----------
@@ -59,6 +59,12 @@ def view_ma(
         elif ma_type == "SMA":
             df_ta = overlap_model.sma(s_interval, df_stock, win)
             l_legend.append(f"SMA {win}")
+        elif ma_type == "WMA":
+            df_ta = overlap_model.wma(s_interval, df_stock, win)
+            l_legend.append(f"WMA {win}")
+        elif ma_type == "HMA":
+            df_ta = overlap_model.hma(s_interval, df_stock, win)
+            l_legend.append(f"HMA {win}")
         elif ma_type == "ZLMA":
             df_ta = overlap_model.zlma(s_interval, df_stock, win)
             l_legend.append(f"ZLMA {win}")
