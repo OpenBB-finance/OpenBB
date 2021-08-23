@@ -41,7 +41,8 @@ def view_summary(df_stock: pd.DataFrame, export: str):
     print(
         tabulate(
             summary, headers=summary.columns, tablefmt="fancy_grid", floatfmt=".3f"
-        )
+        ),
+        "\n",
     )
     export_data(
         export,
@@ -51,7 +52,7 @@ def view_summary(df_stock: pd.DataFrame, export: str):
     )
 
 
-def show_hist(
+def view_hist(
     s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, prices: bool, bins: int
 ):
     """Generate histogram.
@@ -90,7 +91,7 @@ def show_hist(
     print("")
 
 
-def show_cdf(
+def view_cdf(
     s_ticker: str,
     start: pd.Timestamp,
     df_stock: pd.DataFrame,
@@ -178,7 +179,7 @@ def show_cdf(
     )
 
 
-def show_bw(
+def view_bw(
     s_ticker: str,
     start: pd.Timestamp,
     df_stock: pd.DataFrame,
@@ -246,7 +247,7 @@ def show_bw(
     print("")
 
 
-def show_acf(s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, lags: int):
+def view_acf(s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, lags: int):
     """Show Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
@@ -296,7 +297,7 @@ def show_acf(s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, lags: i
     print("")
 
 
-def show_cusum(df_stock: pd.DataFrame, threshold: float, drift: float):
+def view_cusum(df_stock: pd.DataFrame, threshold: float, drift: float):
     """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
@@ -317,7 +318,7 @@ def show_cusum(df_stock: pd.DataFrame, threshold: float, drift: float):
     print("")
 
 
-def show_seasonal(
+def view_seasonal(
     s_ticker: str, df_stock: pd.DataFrame, multiplicative: bool, export: str
 ):
     """[summary]
@@ -373,7 +374,7 @@ def show_seasonal(
 
     if gtff.USE_ION:
         plt.ion()
-    fig.tight_layout()
+
     plt.show()
     print("")
 

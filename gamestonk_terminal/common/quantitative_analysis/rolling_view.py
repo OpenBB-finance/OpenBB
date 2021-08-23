@@ -34,7 +34,11 @@ def view_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export: st
     rolling_mean, rolling_std = rolling_model.rolling_avg(df_stock, length)
     fig, axMean = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     axMean.plot(
-        df_stock.index, df_stock.values, label=s_ticker, linewidth=2, color="black"
+        df_stock["Adj Close"].index,
+        df_stock["Adj Close"].values,
+        label=s_ticker,
+        linewidth=2,
+        color="black",
     )
     axMean.plot(rolling_mean, linestyle="--", linewidth=3, color="blue")
     axMean.set_xlabel("Time")

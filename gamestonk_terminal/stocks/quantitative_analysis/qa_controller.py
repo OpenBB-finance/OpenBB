@@ -15,6 +15,7 @@ from gamestonk_terminal.common.quantitative_analysis import (
     rolling_view,
 )
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     check_positive,
@@ -28,7 +29,7 @@ class QaController:
     """Quantitative Analysis Controller class"""
 
     # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit"]
+    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
 
     CHOICES_COMMANDS = [
         "summary",
@@ -80,21 +81,22 @@ Quantitative Analysis:
     help        show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
+    load        load new ticker
+    summary     brief summary statistics of loaded stock [Default: Returns]
 
-    summary       brief summary statistics
-    hist          histogram with density plot
-    cdf           cumulative distribution function
-    bw           box and whisker plot
-
+Plots:
+    hist        histogram with density plot [Default: Returns]
+    cdf         cumulative distribution function [Default: Returns]
+    bw          box and whisker plot [Default: Returns]
+    acf         (partial) auto-correlation function differentials of prices
 Rolling Metrics:
-    rolling       rolling mean and std deviation
-    spread        variance and std deviation
-    quantile      median and quantile
-    skew          skewness of distribution
-
-    decompose     decomposition in cyclic-trend, season, and residuals
-    cusum         detects abrupt changes using cumulative sum algorithm
-    acf           (partial) auto-correlation function differentials
+    rolling     rolling mean and std deviation of prices
+    spread      rolling variance and std deviation of prices
+    quantile    rolling median and quantile of prices
+    skew        rolling skewness of distribution of prices
+Advanced Algorithms:
+    decompose   decomposition in cyclic-trend, season, and residuals of prices
+    cusum       detects abrupt changes using cumulative sum algorithm of prices
         """
         print(help_str)
 
@@ -129,6 +131,14 @@ Rolling Metrics:
         return getattr(
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.interval, self.stock = load(
+            other_args, self.ticker, self.start, self.interval, self.stock
+        )
+        if "." in self.ticker:
+            self.ticker = self.ticker.split(".")[0]
 
     def call_help(self, _):
         """Process Help command"""
@@ -195,7 +205,7 @@ Rolling Metrics:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            qa_view.show_hist(
+            qa_view.view_hist(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 start=self.start,
@@ -238,7 +248,7 @@ Rolling Metrics:
             if not ns_parser:
                 return
 
-            qa_view.show_cdf(
+            qa_view.view_cdf(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 start=self.start,
@@ -280,7 +290,7 @@ Rolling Metrics:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            qa_view.show_bw(
+            qa_view.view_bw(
                 s_ticker=self.ticker,
                 start=self.start,
                 df_stock=self.stock,
@@ -323,7 +333,7 @@ Rolling Metrics:
             if not ns_parser:
                 return
 
-            qa_view.show_seasonal(
+            qa_view.view_seasonal(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 multiplicative=ns_parser.multiplicative,
@@ -371,7 +381,7 @@ Rolling Metrics:
             if not ns_parser:
                 return
 
-            qa_view.show_cusum(
+            qa_view.view_cusum(
                 df_stock=self.stock,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -401,7 +411,7 @@ Rolling Metrics:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            qa_view.show_acf(
+            qa_view.view_acf(
                 s_ticker=self.ticker,
                 start=self.start,
                 df_stock=self.stock,
