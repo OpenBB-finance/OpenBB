@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /categories/*
-Disallow: /tags/*
-Sitemap: https://geekdocs.de/sitemap.xml
