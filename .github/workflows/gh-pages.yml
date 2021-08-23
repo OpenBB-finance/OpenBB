@@ -24,4 +24,4 @@ jobs:
         if: github.ref == 'refs/heads/master'
         with:
           personal_token: ${{ secrets.DEPLOY_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./website/public
