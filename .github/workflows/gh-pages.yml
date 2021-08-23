@@ -12,7 +12,7 @@ jobs:
         with:
           hugo-version: '0.87.0'
           extended: true
-      
+
       - name: Build
         # remove --minify tag if you do not need it
         # docs: https://gohugo.io/hugo-pipes/minification/
@@ -21,7 +21,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         with:
           personal_token: ${{ secrets.DEPLOY_TOKEN }}
           publish_dir: ./website/public
