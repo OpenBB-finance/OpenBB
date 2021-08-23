@@ -1,0 +1,37 @@
+---
+baseURL: https://geekdocs.de/
+title: Geekdocs
+theme: hugo-geekdoc
+pygmentsUseClasses: true
+pygmentsCodeFences: true
+timeout: 180000
+pluralizeListTitles: false
+
+# Geekdoc configuration
+disablePathToLower: true
+enableGitInfo: true
+
+# Needed for mermaid shortcodes
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    startLevel: 1
+    endLevel: 9
+
+params:
+  # geekdocMenuBundle: true
+  geekdocToC: 3
+
+  geekdocRepo: https://github.com/thegeeklab/hugo-geekdoc
+  geekdocEditPath: edit/main/exampleSite/content
+
+  geekdocSearch: true
+  geekdocSearchShowParent: true
+
+  geekdocLegalNotice: https://thegeeklab.de/legal-notice/#contact-information
+  geekdocPrivacyPolicy: https://thegeeklab.de/legal-notice/#privacy-policy
+
+  geekdocImageLazyLoading: true
+  geekdocDarkModeDim: true

@@ -1,0 +1,49 @@
+@media print {
+  .gdoc-nav,
+  .gdoc-footer .container span:not(:first-child),
+  .editpage {
+    display: none;
+  }
+
+  .gdoc-footer {
+    border-top: $border-1 solid $gray-300;
+  }
+
+  .gdoc-markdown pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  .chroma code {
+    border: $border-1 solid $gray-300;
+    padding: $padding-8 !important;
+    font-weight: normal !important;
+  }
+
+  .gdoc-markdown code {
+    font-weight: bold;
+  }
+
+  a,
+  a:visited {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  .gdoc-toc {
+    flex: none;
+
+    nav {
+      position: relative;
+      width: auto;
+    }
+  }
+
+  .wrapper {
+    display: block;
+
+    main {
+      display: block;
+    }
+  }
+}

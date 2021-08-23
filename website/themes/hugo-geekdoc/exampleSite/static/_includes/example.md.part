@@ -1,0 +1,7 @@
+_**Example Mardown include**_
+
+File including a simple Markdown table.
+
+| Head 1 | Head 2 | Head 3 |
+| ------ | ------ | ------ |
+| 1      | 2      | 3      |

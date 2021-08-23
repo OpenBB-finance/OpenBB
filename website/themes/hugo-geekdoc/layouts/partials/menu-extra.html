@@ -1,0 +1,31 @@
+{{ $current := .current }}
+{{ template "menu-extra" dict "sect" .source "current" $current "site" $current.Site "target" .target }}
+
+<!-- template -->
+{{ define "menu-extra" }}
+{{ $current := .current }}
+{{ $site := .site }}
+{{ $target := .target }}
+{{ $sect := .sect }}
+
+{{ range sort (default (seq 0) $sect) "weight" }}
+    {{ if isset . "ref" }}
+        {{ $this := $site.GetPage .ref }}
+        {{ $isCurrent := eq $current $this }}
+        {{ $icon := default false .icon }}
+
+        {{ if not .icon }}
+        {{ errorf "Missing 'icon' attribute in data file for '%s' menu item '%s'" $target .name }}
+        {{ end }}
+
+        {{ if eq $target "header" }}
+        <a href="{{ if .external }}{{ .ref }}{{ else }}{{ relref $current .ref }}{{ end }}" class="gdoc-header__link">
+            <svg class="icon {{ .icon }}">
+                <title>{{ .name }}</title>
+                <use xlink:href="#{{ .icon }}"></use>
+            </svg>
+        </a>
+        {{ end }}
+    {{ end }}
+{{ end }}
+{{ end }}
