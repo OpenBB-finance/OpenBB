@@ -10,12 +10,12 @@ jobs:
       - name: Setup hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: "0.87.0"
+          hugo-version: "0.85.0"
 
       - name: Build
         # remove --minify tag if you do not need it
         # docs: https://gohugo.io/hugo-pipes/minification/
-        working-directory: ./website
+        working-directory: /website
         run: hugo
 
       - name: Deploy
