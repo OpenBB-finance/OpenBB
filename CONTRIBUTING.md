@@ -111,18 +111,18 @@ gamestonk_terminal/stocks/stocks_controller.py
                          /technical_analysis/ta_controller.py
                                             /tradingview_view.py
                                             /tradingview_model.py
+                  /common/technical_analysis/overlap_view.py
+                                            /overlap_model.py
                   /crypto/crypto_controller.py
                          /crypto_helper.py
                          /due_diligence/dd_controller.py
                                        /binance_view.py
                                        /binance_model.py
                          /technical_analysis/ta_controller.py
-                  /common/technical_analysis/overlap_view.py
-                                            /overlap_model.py
 
 ```
 
-Where:
+With:
 
 |**Context**|**Category**|**File**|**Description**|
 |:-|:-|:-|:-|
@@ -136,7 +136,8 @@ Where:
 |`stocks/`| `technical_analysis/` | `ta_controller.py` | Manages **technical_analysis** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data. | 
 |`stocks/`| `technical_analysis/` | `tradingview_view.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `ta_controller.py` using the arguments given by the user and will output either a string, table or plot. | 
 |`stocks/`| `technical_analysis/` | `tradingview_model.py` | This file contains functions that rely on **TradingView** data. These functions represent _commands_ that belong to **technical_analysis** _category_ from **stocks** _context_. These functions are called by `tradingview_view.py` and will return data to be processed in either a string, dictionary or dataframe format. | 
-
+|`common/`| `technical_analysis/` | `overlap_view.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are proving a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. | 
+|`common/`| `technical_analysis/` | `overlap_model.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `overlap_view.py`, and will return data to be processed in either a string, dictionary or dataframe format. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are getting the sentiment of an instrument, we  should ensure that these functions accept both a "GME" or a "BTC", for `stocks` and `crypto`, respectively. | 
 
 
 #### MVC Design
