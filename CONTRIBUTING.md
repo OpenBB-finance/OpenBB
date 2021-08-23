@@ -93,7 +93,7 @@ The steps to contribute are:
 |**COMMAND**|Operation on one or no instrument that retrieves data in form of string, table or plot.| `rating`, `supplier`, `sentiment` |
 
 
-#### Folder Organization
+#### Model-View-Controller
 
 The following layout is expected: `/<context>/<category>/<command_files>`
 
@@ -139,10 +139,6 @@ With:
 |`common/`| `technical_analysis/` | `overlap_view.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are proving a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. | 
 |`common/`| `technical_analysis/` | `overlap_model.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `overlap_view.py`, and will return data to be processed in either a string, dictionary or dataframe format. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are getting the sentiment of an instrument, we  should ensure that these functions accept both a "GME" or a "BTC", for `stocks` and `crypto`, respectively. | 
 
-
-#### MVC Design
-
-T.B.D.
 
 ## Tests
 
