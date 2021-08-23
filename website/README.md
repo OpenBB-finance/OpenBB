@@ -1,3 +1,3 @@
-# GamestonkTerminal Commands Documentation
+# Gamestonk Terminal Commands
 
-https://gamestonkterminal.github.io/
+https://gamestonkterminal.github.io/GamestonkTerminal/
