@@ -1,13 +1,15 @@
 """ FINRA View """
 __docformat__ = "numpy"
 
+import os
 from typing import List
 import pandas as pd
 from matplotlib import pyplot as plt
+import matplotlib.dates as mdates
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
 
 
 def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
@@ -83,6 +85,8 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     plt.ylabel("Shares per Trade")
     plt.grid(b=True, which="major", color="#666666", linestyle="-", alpha=0.2)
     plt.gcf().autofmt_xdate()
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=4))
     plt.xlabel("Weeks")
 
     if gtff.USE_ION:
@@ -91,13 +95,15 @@ def plot_dark_pools(ticker: str, ats: pd.DataFrame, otc: pd.DataFrame):
     plt.show()
 
 
-def darkpool_ats_otc(ticker: str):
-    """Display barchart of dark pool (ATS) and OTC (Non ATS) data
+def darkpool_ats_otc(ticker: str, export: str):
+    """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
     Parameters
     ----------
     ticker : str
         Stock ticker
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
     df_ats, df_otc = finra_model.getTickerFINRAdata(ticker)
 
@@ -106,6 +112,19 @@ def darkpool_ats_otc(ticker: str):
 
     plot_dark_pools(ticker, df_ats, df_otc)
     print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dpotc_ats",
+        df_ats,
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dpotc_otc",
+        df_otc,
+    )
 
 
 def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
@@ -142,8 +161,8 @@ def plot_dark_pools_ats(ats: pd.DataFrame, top_ats_tickers: List):
     plt.show()
 
 
-def darkpool_otc(num: int, promising: int):
-    """Display dark pool (ATS) data of tickers with growing trades activity
+def darkpool_otc(num: int, promising: int, tier: str, export: str):
+    """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
     Parameters
     ----------
@@ -153,8 +172,12 @@ def darkpool_otc(num: int, promising: int):
     promising : int
         Number of tickers to display from most promising with
         better linear regression slope
+    tier : int
+        Tier to process data from
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    df_ats, d_ats_reg = finra_model.getATSdata(num)
+    df_ats, d_ats_reg = finra_model.getATSdata(num, tier)
 
     top_ats_tickers = list(
         dict(sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)).keys()
@@ -162,3 +185,10 @@ def darkpool_otc(num: int, promising: int):
 
     plot_dark_pools_ats(df_ats, top_ats_tickers)
     print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "prom",
+        df_ats,
+    )

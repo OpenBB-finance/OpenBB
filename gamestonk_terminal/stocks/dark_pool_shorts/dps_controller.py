@@ -1,4 +1,4 @@
-""" Disc Controller """
+""" Dark Pool Shorts Controller """
 __docformat__ = "numpy"
 
 import argparse
@@ -266,12 +266,33 @@ Quandl/Stockgrid:
             default=5,
             help="List of tickers from most promising with better linear regression slope.",
         )
+        parser.add_argument(
+            "--tier",
+            action="store",
+            dest="tier",
+            type=str,
+            choices=["T1", "T2", "OTCE"],
+            default="",
+            help="Tier to process data from.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            finra_view.darkpool_otc(num=ns_parser.n_num, promising=ns_parser.n_top)
+            finra_view.darkpool_otc(
+                num=ns_parser.n_num,
+                promising=ns_parser.n_top,
+                tier=ns_parser.tier,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
@@ -387,6 +408,13 @@ Quandl/Stockgrid:
             prog="dpotc",
             description="Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -395,7 +423,10 @@ Quandl/Stockgrid:
                 print("No ticker loaded.\n")
                 return
 
-            finra_view.darkpool_ats_otc(ticker=self.ticker)
+            finra_view.darkpool_ats_otc(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
@@ -546,7 +577,7 @@ Quandl/Stockgrid:
                 action="store",
                 dest="n_days",
                 type=check_positive,
-                default=10,
+                default=10 if "-r" in other_args else 120,
                 help="Number of latest days to print data.",
             )
         else:
@@ -558,13 +589,13 @@ Quandl/Stockgrid:
                 default=10 if "-r" in other_args else 120,
                 dest="num",
             )
-            parser.add_argument(
-                "-r",
-                action="store_true",
-                default=False,
-                help="Flag to print raw data instead",
-                dest="raw",
-            )
+        parser.add_argument(
+            "-r",
+            action="store_true",
+            default=False,
+            help="Flag to print raw data instead",
+            dest="raw",
+        )
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -583,9 +614,9 @@ Quandl/Stockgrid:
             if "quandl" in other_args:
                 quandl_view.short_interest(
                     ticker=self.ticker,
-                    start=self.start,
                     nyse=ns_parser.b_nyse,
                     days=ns_parser.n_days,
+                    raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
             else:
