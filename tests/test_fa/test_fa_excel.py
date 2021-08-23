@@ -9,7 +9,8 @@ from gamestonk_terminal.stocks.fundamental_analysis.dcf_view import CreateExcelF
 
 class TestExcelClass(TestCase):
     @vcr.use_cassette(
-        "tests/cassettes/test_fa/test_fa_excel/test_covers_all_tickers.yaml"
+        "tests/cassettes/test_fa/test_fa_excel/test_covers_all_tickers.yaml",
+        record_mode="new_episodes",
     )
     def test_covers_all_tickers(self):
         for ticker in dcf_model.tickers:

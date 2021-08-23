@@ -1,0 +1,16 @@
+---
+main:
+  - name: Stocks
+    ref: "/stocks"
+    sub:
+      - name: Load
+        ref: "/stocks/load"
+      - name: Candle
+        ref: "/stocks/candle"
+      - name: Discover Stocks
+        ref: "/stocks/discover_stocks"
+        sub:
+          - name: ipo
+            ref: "/stocks/discover_stocks/ipo"
+          - name: map
+            ref: "/stocks/discover_stocks/map"

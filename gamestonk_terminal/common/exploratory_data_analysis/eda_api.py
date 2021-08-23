@@ -305,7 +305,7 @@ def bwm(other_args: List[str], ticker: str, stock: pd.DataFrame, start: datetime
             "Nov",
             "Dec",
         ]
-        l_ticks = list()
+        l_ticks = []
         for val in box_plot.get_xticklabels():
             l_ticks.append(l_months[int(val.get_text()) - 1])
         box_plot.set_xticklabels(l_ticks)

@@ -1,0 +1,13 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark" />
+
+{{ $description := default (default .Site.Title .Site.Params.description) (default .Summary .Description) }}
+{{ $keywords := default .Site.Params.Keywords .Keywords }}
+
+{{ with $description }}
+    <meta name="description" content="{{ . }}">
+{{ end }}
+{{ with $keywords }}
+    <meta name="keywords" content="{{ delimit . "," }}">
+{{ end }}

@@ -1,21 +1,21 @@
 """Screener Controller Module"""
 __docformat__ = "numpy"
 
-import os
 import argparse
 import configparser
+import os
 from typing import List
+
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
-from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    get_flair,
     parse_known_args_and_warn,
 )
-from gamestonk_terminal.stocks.screener import finviz_view
-from gamestonk_terminal.stocks.screener import yahoo_finance_view
+from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.stocks.screener import finviz_view, yahoofinance_view
 
 presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
@@ -253,7 +253,7 @@ class ScreenerController:
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        self.screen_tickers = yahoo_finance_view.historical(other_args, self.preset)
+        self.screen_tickers = yahoofinance_view.historical(other_args, self.preset)
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""

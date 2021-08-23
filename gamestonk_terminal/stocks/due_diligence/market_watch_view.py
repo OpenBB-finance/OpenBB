@@ -59,7 +59,7 @@ def sec_fillings(other_args: List[str], ticker: str):
             "lxml",
         )
 
-        # a_financials_header = list()
+        # a_financials_header = []
         df_financials = None
         b_ready_to_process_info = False
         soup_financials = text_soup_financials.findAll("tr", {"class": "table__row"})

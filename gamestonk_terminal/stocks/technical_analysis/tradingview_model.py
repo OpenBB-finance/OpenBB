@@ -48,7 +48,7 @@ def get_tradingview_recommendation(
 
     if not interval:
         df_recommendation = pd.DataFrame()
-        index_recommendation = list()
+        index_recommendation = []
         for interv in ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]:
             # If the returned data was successful
             if result.status_code == 200:

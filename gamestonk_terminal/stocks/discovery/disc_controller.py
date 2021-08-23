@@ -44,6 +44,7 @@ class DiscoveryController:
         "fipo",
         "gainers",
         "losers",
+        "under",
         "ford",
         "arkord",
         "upcoming",
@@ -79,6 +80,7 @@ Finnhub:
 Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
+    under          undervalued growth stocks
 Fidelity:
     ford           orders by Fidelity Customers
 cathiesark.com:
@@ -301,6 +303,48 @@ pennystockflow.com
                 return
 
             yahoofinance_view.display_losers(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_under(self, other_args: List[str]):
+        """Process under command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="under",
+            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the undervalued stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_undervalued(
                 num_stocks=ns_parser.num,
                 export=ns_parser.export,
             )
