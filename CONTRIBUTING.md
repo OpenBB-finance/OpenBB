@@ -11,8 +11,7 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
 
 [Code Architecture](#code-architecture)
   * [Conventions](#conventions)
-  * [Folder Organization](#folder-organization)
-  * [MVC Design](#mvc-design)
+  * [Model-View-Controller](#model---view---controller)
 
 [Tests](#tests)
   * [Pytest](#pytest)
