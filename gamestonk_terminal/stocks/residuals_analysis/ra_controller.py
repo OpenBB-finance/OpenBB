@@ -18,12 +18,8 @@ class ResidualsController:
     """Residuals Controller class"""
 
     # Command choices
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES_COMMANDS = [
         "pick",
         "fit",
         "res",
@@ -36,6 +32,7 @@ class ResidualsController:
         "unitroot",
         "independence",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,

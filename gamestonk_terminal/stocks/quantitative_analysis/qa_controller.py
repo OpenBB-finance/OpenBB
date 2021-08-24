@@ -43,6 +43,13 @@ class QaController:
         "spread",
         "quantile",
         "skew",
+        "normality",
+        "qqplot",
+        "unitroot",
+        "indep",
+        "goodness",
+        "arch",
+        "unitroot",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -89,12 +96,17 @@ Plots:
     cdf         cumulative distribution function [Default: Returns]
     bw          box and whisker plot [Default: Returns]
     acf         (partial) auto-correlation function differentials of prices
+    qqplot      residuals against standard normal curve
 Rolling Metrics:
     rolling     rolling mean and std deviation of prices
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
-Advanced Algorithms:
+Statistics:
+    normality   normality statistics and tests
+    arch        autoregressive conditional heteroscedasticity
+    unitroot    unit root test for stationarity (ADF, KPSS)
+Other Algorithms:
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
         """
@@ -305,6 +317,7 @@ Advanced Algorithms:
         """Process decompose command"""
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="decompose",
             description="""
                 Decompose time series as:
@@ -346,6 +359,7 @@ Advanced Algorithms:
         """Process cusum command"""
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cusum",
             description="""
                 Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
@@ -393,6 +407,7 @@ Advanced Algorithms:
         """Process acf command"""
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="acf",
             description="""
                 Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
@@ -426,6 +441,7 @@ Advanced Algorithms:
 
         parser = argparse.ArgumentParser(
             add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rolling",
             description="""
                 Rolling mean and std deviation
@@ -615,6 +631,137 @@ Advanced Algorithms:
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_normality(self, other_args: List[str]):
+        """Process normality command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="normality",
+            description="""
+                Normality tests
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--prices",
+            action="store_true",
+            help="Flag to show prices not returns",
+            default=False,
+            dest="prices",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.view_normality(
+                df_stock=self.stock, prices=ns_parser.prices, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_qqplot(self, other_args: List[str]):
+        """Process qqplot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="qqplot",
+            description="""
+                Display QQ plot vs normal quantiles
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--prices",
+            action="store_true",
+            help="Flag to show prices not returns",
+            default=False,
+            dest="prices",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.view_qqplot(
+                s_ticker=self.ticker, df_stock=self.stock, prices=ns_parser.prices
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_unitroot(self, other_args: List[str]):
+        """Process unitroot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="unitroot",
+            description="""
+                Unit root test / stationarity (ADF, KPSS)
+            """,
+        )
+        parser.add_argument(
+            "-p",
+            "--prices",
+            action="store_true",
+            help="Flag to show prices not returns",
+            default=False,
+            dest="prices",
+        )
+        parser.add_argument(
+            "-r",
+            "--fuller_reg",
+            help="Type of regression.  Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order",
+            choices=["c", "ct", "ctt", "nc"],
+            default="c",
+            type=str,
+            dest="fuller_reg",
+        )
+        parser.add_argument(
+            "-k",
+            "--kps_reg",
+            help="Type of regression.  Can be ‘c’,’ct'",
+            choices=["c", "ct"],
+            type=str,
+            dest="kpss_reg",
+            default="c",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.view_unitroot(
+                df_stock=self.stock,
+                prices=ns_parser.prices,
+                fuller_reg=ns_parser.fuller_reg,
+                kpss_reg=ns_parser.kpss_reg,
+                export=ns_parser.export,
+            )
+
         except Exception as e:
             print(e, "\n")
 

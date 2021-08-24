@@ -71,6 +71,7 @@ def load_csv_portfolio(other_args: List[str]) -> Tuple[str, pd.DataFrame]:
         full_path = os.path.abspath(
             os.path.join(
                 "gamestonk_terminal",
+                "portfolio",
                 "portfolio_analysis",
                 "portfolios",
                 f"{ns_parser.path}.csv",

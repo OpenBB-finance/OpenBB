@@ -1,6 +1,9 @@
 import os
 from distutils.util import strtobool
 
+# Use tabulate to print dataframes
+USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "True"))
+
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "False"))
 

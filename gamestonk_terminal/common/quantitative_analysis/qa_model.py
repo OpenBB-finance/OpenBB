@@ -1,11 +1,14 @@
 """Quantitative Analysis Models"""
 __docformat__ = "numpy"
 
+import warnings
 from typing import Any, Tuple
 
 import pandas as pd
 import statsmodels.api as sm
+from scipy import stats
 from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller, kpss
 
 
 def summary(df_stock: pd.DataFrame) -> pd.DataFrame:
@@ -61,3 +64,109 @@ def seasonal_decomposition(
     )
 
     return result, pd.DataFrame(cycle), pd.DataFrame(trend)
+
+
+def normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
+    """
+    Look at the distribution of returns and generate statistics on the relation to the normal curve.
+    This function calculates skew and kurtosis (the third and fourth moments) and performs both
+    a Jarque-Bera and Shapiro Wilk test to determine if data is normally distributed.
+
+    Parameters
+    ----------
+    df_stock : pd.DataFrame
+        DataFrame of prices
+    prices : bool
+        Whether to look at prices instead of returns
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing statistics of normality
+    """
+    if prices:
+        data = df_stock["Adj Close"]
+    else:
+        data = df_stock["Adj Close"].pct_change().dropna()
+    # Kurtosis
+    # Measures height and sharpness of the central peak relative to that of a standard bell curve
+    k, kpval = stats.kurtosistest(data)
+
+    # Skewness
+    # Measure of the asymmetry of the probability distribution of a random variable about its mean
+    s, spval = stats.skewtest(data)
+
+    # Jarque-Bera goodness of fit test on sample data
+    # Tests if the sample data has the skewness and kurtosis matching a normal distribution
+    jb, jbpval = stats.jarque_bera(data)
+
+    # Shapiro
+    # The Shapiro-Wilk test tests the null hypothesis that the data was drawn from a normal distribution.
+    sh, shpval = stats.shapiro(data)
+
+    # Kolmogorov-Smirnov
+    # The one-sample test compares the underlying distribution F(x) of a sample against a given distribution G(x).
+    # Comparing to normal here.
+    ks, kspval = stats.kstest(data, "norm")
+
+    l_statistic = [k, s, jb, sh, ks]
+    l_pvalue = [kpval, spval, jbpval, shpval, kspval]
+
+    return pd.DataFrame(
+        [l_statistic, l_pvalue],
+        columns=[
+            "Kurtosis",
+            "Skewness",
+            "Jarque-Bera",
+            "Shapiro-Wilk",
+            "Kolmogorov-Smirnov",
+        ],
+        index=["Statistic", "p-value"],
+    )
+
+
+def unitroot(
+    df_stock: pd.DataFrame, prices: bool, fuller_reg: str, kpss_reg: str
+) -> pd.DataFrame:
+    """Calculate test statistics for unit roots
+
+    Parameters
+    ----------
+    df_prices : pd.DataFrame
+        DataFrame of prices
+    prices : bool
+        Whether to perform test on prices instead of returns
+    fuller_reg : str
+        Type of regression of ADF test
+    kpss_reg : str
+        Type of regression for KPSS test
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with results of ADF test and KPSS test
+    """
+    if prices:
+        data = df_stock["Adj Close"]
+    else:
+        data = df_stock["Adj Close"].pct_change().dropna()
+
+    # The Augmented Dickey-Fuller test
+    # Used to test for a unit root in a univariate process in the presence of serial correlation.
+    result = adfuller(data, regression=fuller_reg)
+    cols = ["Test Statistic", "P-Value", "NLags", "Nobs", "ICBest"]
+    vals = [result[0], result[1], result[2], result[3], result[5]]
+    data = pd.DataFrame(data=vals, index=cols, columns=["ADF"])
+
+    # Kwiatkowski-Phillips-Schmidt-Shin test
+    # Test for level or trend stationarity
+    # This test seems to produce an Interpolation Error which says
+    # The test statistic is outside of the range of p-values available in the
+    # look-up table. The actual p-value is greater than the p-value returned.
+    # Wrap this in catch_warnings to prevent
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        res2 = kpss(data, regression=kpss_reg, nlags="auto")
+    vals2 = [res2[0], res2[1], res2[2], "", ""]
+    data["KPSS"] = vals2
+    return data

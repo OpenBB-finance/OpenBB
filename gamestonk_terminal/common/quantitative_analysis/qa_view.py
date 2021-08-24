@@ -8,9 +8,12 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
+from colorama import Fore, Style
 from detecta import detect_cusum
 from matplotlib import gridspec
 from pandas.plotting import register_matplotlib_converters
+from scipy import stats
+from statsmodels.graphics.gofplots import qqplot
 from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
@@ -19,6 +22,11 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 register_matplotlib_converters()
+
+
+def color_red(val):
+    """Adds red to dataframe"""
+    return Fore.RED + str(val) + Style.RESET_ALL
 
 
 def view_summary(df_stock: pd.DataFrame, export: str):
@@ -395,4 +403,115 @@ def view_seasonal(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "summary",
         cycle.join(trend),
+    )
+
+
+def view_normality(df_stock: pd.DataFrame, prices: bool, export: str):
+    """View normality statistics
+
+    Parameters
+    ----------
+    df_stock : pd.DataFrame
+        [description]
+    prices : bool
+        [description]
+    export : str
+        [description]
+    """
+    normal = qa_model.normality(df_stock, prices)
+    stats1 = normal.copy()
+    stats1.loc[:, stats1.iloc[1, :] > 0.05] = stats1.loc[
+        :, stats1.iloc[1, :] > 0.05
+    ].apply(lambda x: color_red(x[0]), axis=1)
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                stats1,
+                showindex=True,
+                headers=normal.columns,
+                tablefmt="fancy_grid",
+                floatfmt=".4f",
+            ),
+            "\n",
+        )
+    else:
+        print(normal.round(4).to_string(), "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "normality",
+        normal,
+    )
+
+
+def view_qqplot(s_ticker: str, df_stock: pd.DataFrame, prices: bool):
+    """Show QQ plot for returns against normal quantiles
+
+    Parameters
+    ----------
+    s_ticker : str
+        Stock ticker
+    df_stock : pd.DataFrame
+        Dataframe of prices
+    prices : bool
+        Flag to show prices instead of returns
+    """
+    if prices:
+        data = df_stock["Adj Close"]
+    else:
+        data = df_stock["Adj Close"].pct_change().dropna()
+    showing = ["Returns", "Price"][prices]
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    qqplot(data, stats.distributions.norm, fit=True, line="45", ax=ax)
+    ax.set_title(f"Q-Q plot for {s_ticker} {showing}")
+    ax.set_ylabel("Sample quantiles")
+    ax.set_xlabel("Theoretical quantiles")
+    ax.grid(True)
+
+    if gtff.USE_ION:
+        plt.ion()
+    fig.tight_layout(pad=1)
+    plt.show()
+    print("")
+
+
+def view_unitroot(
+    df_stock: pd.DataFrame, prices: bool, fuller_reg: str, kpss_reg: str, export: str
+):
+    """Show unit root test calculations
+
+    Parameters
+    ----------
+    df_stock : pd.DataFrame
+        DataFrame of prices
+    prices : bool
+        Whether to perform test on prices instead of returns
+    fuller_reg : str
+        Type of regression of ADF test
+    kpss_reg : str
+        Type of regression for KPSS test
+    export : str
+        Format for exporting data
+    """
+    data = qa_model.unitroot(df_stock, prices, fuller_reg, kpss_reg)
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                data,
+                showindex=True,
+                headers=data.columns,
+                tablefmt="fancy_grid",
+                floatfmt=".4f",
+            ),
+            "\n",
+        )
+    else:
+        print(data.round(4).to_string(), "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "unitroot",
+        data,
     )
