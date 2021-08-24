@@ -46,9 +46,7 @@ class QaController:
         "normality",
         "qqplot",
         "unitroot",
-        "indep",
         "goodness",
-        "arch",
         "unitroot",
     ]
 
@@ -96,15 +94,14 @@ Plots:
     cdf         cumulative distribution function [Default: Returns]
     bw          box and whisker plot [Default: Returns]
     acf         (partial) auto-correlation function differentials of prices
-    qqplot      residuals against standard normal curve
+    qqplot      residuals against standard normal curve [Default: Returns]
 Rolling Metrics:
     rolling     rolling mean and std deviation of prices
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
 Statistics:
-    normality   normality statistics and tests
-    arch        autoregressive conditional heteroscedasticity
+    normality   normality statistics and tests [Default: Returns]
     unitroot    unit root test for stationarity (ADF, KPSS)
 Other Algorithms:
     decompose   decomposition in cyclic-trend, season, and residuals of prices
