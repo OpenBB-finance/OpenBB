@@ -1309,6 +1309,7 @@ Custom:
             action="store",
             dest="s_mamode",
             default="ema",
+            choices=["ema", "sma", "wma", "hma", "zlma"],
             help="mamode",
         )
         parser.add_argument(
