@@ -62,6 +62,7 @@ class TechnicalAnalysisController:
         "aroon",
         "bbands",
         "donchian",
+        "kc",
         "ad",
         "adosc",
         "obv",
@@ -131,6 +132,7 @@ Trend:
 Volatility:
     bbands      bollinger bands
     donchian    donchian channels
+    kc          keltner channels
 Volume:
     ad          accumulation/distribution line
     adosc       chaikin oscillator
@@ -1114,15 +1116,6 @@ Custom:
             help="scalar",
         )
         parser.add_argument(
-            "-o",
-            "--offset",
-            action="store",
-            dest="n_offset",
-            type=check_positive,
-            default=0,
-            help="offset",
-        )
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -1275,6 +1268,82 @@ Custom:
                 export=ns_parser.export,
             )
 
+        except Exception as e:
+            print(e, "\n")
+
+    def call_kc(self, other_args: List[str]):
+        """Process kc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="kc",
+            description="""
+                 Keltner Channels are volatility-based bands that are placed
+                 on either side of an asset's price and can aid in determining
+                 the direction of a trend.The Keltner channel uses the average
+                 true range (ATR) or volatility, with breaks above or below the top
+                 and bottom barriers signaling a continuation.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=20,
+            help="Window length",
+        )
+        parser.add_argument(
+            "-s",
+            "--scalar",
+            action="store",
+            dest="n_scalar",
+            type=check_positive,
+            default=2,
+            help="scalar",
+        )
+        parser.add_argument(
+            "-m",
+            "--mamode",
+            action="store",
+            dest="s_mamode",
+            default="ema",
+            help="mamode",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            volatility_view.view_kc(
+                s_ticker=self.ticker,
+                s_interval=self.interval,
+                df_stock=self.stock,
+                length=ns_parser.n_length,
+                scalar=ns_parser.n_scalar,
+                mamode=ns_parser.s_mamode,
+                offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
         except Exception as e:
             print(e, "\n")
 

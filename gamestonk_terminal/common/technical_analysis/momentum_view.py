@@ -333,20 +333,20 @@ def view_fisher(
     else:
         ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=1)
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Share Price ($)")
+    ax.set_ylabel("Price")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax2 = axes[1]
     ax2.plot(
         df_ta.index,
-        df_ta["FISHERT_14_1"].values,
+        df_ta.iloc[:, 0].values,
         "b",
         lw=2,
         label="Fisher",
     )
     ax2.plot(
         df_ta.index,
-        df_ta["FISHERTs_14_1"].values,
+        df_ta.iloc[:, 1].values,
         "fuchsia",
         lw=2,
         label="Signal",

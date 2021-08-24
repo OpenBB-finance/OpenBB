@@ -152,3 +152,74 @@ def view_donchian(
         "donchian",
         df_ta,
     )
+
+
+def view_kc(
+    s_ticker: str,
+    s_interval: str,
+    df_stock: pd.DataFrame,
+    length: int,
+    scalar: float,
+    mamode: str,
+    offset: int,
+    export: str,
+):
+    """View Keltner Channels Indicator
+
+    Parameters
+    ----------
+    s_ticker : str
+        Ticker
+    s_interval : str
+        Interval of data
+    df_stock : pd.DataFrame
+        Dataframe of stock prices
+    length : int
+        Length of window
+    mamode: str
+        Type of filter
+    offset : int
+        Offset value
+    export : str
+        Format to export data
+    """
+    df_ta = volatility_model.kc(s_interval, df_stock, length, scalar, mamode, offset)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    if s_interval == "1440min":
+        ax.plot(df_stock.index, df_stock["Adj Close"].values, color="fuchsia")
+    else:
+        ax.plot(df_stock.index, df_stock["Close"].values, color="fuchsia")
+    ax.plot(df_ta.index, df_ta.iloc[:, 0].values, "b", lw=1.5, label="upper")
+    ax.plot(df_ta.index, df_ta.iloc[:, 1].values, "b", lw=1.5, ls="--")
+    ax.plot(df_ta.index, df_ta.iloc[:, 2].values, "b", lw=1.5, label="lower")
+    ax.set_title(f"{s_ticker} Keltner Channels")
+    ax.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Price")
+
+    ax.legend([s_ticker, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
+    ax.fill_between(
+        df_ta.index,
+        df_ta.iloc[:, 0].values,
+        df_ta.iloc[:, 2].values,
+        alpha=0.1,
+        color="b",
+    )
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+
+    if gtff.USE_ION:
+        plt.ion()
+
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout(pad=1)
+
+    plt.legend()
+    plt.show()
+
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "kc",
+        df_ta,
+    )
