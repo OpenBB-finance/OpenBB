@@ -5,38 +5,24 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 The following is a set of guidelines for contributing to Gamestonk Terminal. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 [How Can I Contribute?](#how-can-i-contribute)
-  * [Community - Marketing](#community---marketing)
-  * [Retail Trader - Quality Assurance](#retail-trader---quality-assurance)
-  * [Programmer - Data Scientist](#programmer---data-scientist)
+  * [Community](#community)
+  * [Retail Trader](#retail-trader)
+  * [Software Developer](#software-developer)
 
-[Code Architecture](#code-architecture)
-  * [Conventions](#conventions)
-  * [Model-View-Controller](#model---view---controller)
+[Development Process](#development-process)
+  1. [Select feature](#select-feature)
+  2. [Understand Code Structure](#understand-code-structure)
+  3. [Follow Coding Guidelines](#follow-coding-guidelines)
+  4. [Remember Coding Style](#check-coding-style)
+  5. [Write Code and Commit](#write-code-and-commit)
+  6. [Add a Test](#add-a-test)
+  7. [Write Documentation](#add-documentation)
+  8. [Open a Pull Request](#open-a-pull-request)
+  9. [Review Process](#review-process)
 
-[Tests](#tests)
-  * [Pytest](#pytest)
-  * [Coverage](#coverage)
-  * [VCR](#vcr)
-  * [check_print](#check_print)
+# How Can I Contribute?
 
-[Documentation](#Documentation)
-
-[Coding Guidelines](#coding-guidelines)
-  * [Naming Convention](naming-convention)
-  * [Docstrings](#docstrings)
-  * [Linters](#linters)
-
-[Github Guidelines](#github-guidelines)
-  * [Pre Commit Hooks](#pre-commit-hooks)
-  * [Git Commit Messages](#git-commit-messages)
-  * [Pull Requests](#pull-requests)
-
-
-## How Can I Contribute?
-
-When contributing to this repository, feel free to discuss the change you wish to make via discord https://discord.gg/Up2QGbMKHY!
-
-#### Community - Marketing
+#### Community
 
 Increase Gamestonk Terminal reach:
 
@@ -46,7 +32,7 @@ Increase Gamestonk Terminal reach:
   * Share your terminal graphs and interpretations with other Reddit users ([example](https://www.reddit.com/r/amcstock/comments/of6g83/dark_pool_guy_here_to_kick_off_the_shortened_week/)).
   * Join our discord and interact with other users.
 
-#### Retail Trader - Quality Assurance
+#### Retail Trader
 
 If you are the typical retail trader that uses the terminal on a daily basis, there are a lot of ways you can con contribute:
 
@@ -58,9 +44,9 @@ If you are the typical retail trader that uses the terminal on a daily basis, th
   * Contact interesting people in our behalf towards partnerships which will provide our user base with more data.
   * Reach out to developers/mathematicians/data scientists/finance people to help us build the #1 Retail Trader terminal.
 
-#### Programmer - Data Scientist
+#### Software Developer
 
-For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check https://www.youtube.com/watch?v=9BMI9cleTTg.
+For a 1h coding session where the (old) architecture of the repo is explained while a new feature is added, check [here](https://www.youtube.com/watch?v=9BMI9cleTTg).
 
 The fact that this is an Open Source project makes the possibilities of contributing pretty much unlimited. In here you should consider what do you want to gain out of this experience of contributing, some examples we've seen since the repository is live:
 
@@ -70,29 +56,21 @@ The fact that this is an Open Source project makes the possibilities of contribu
   * Finance students evaluating a DCF spreadsheet from terminal's data
   * DevOps engineers making the repository more robust and ensuring good practices
 
-Throughout the code we're leaving `# TODO` flags behind for tasks that aren't high priority, but still a good-to-have. So if you would be happy to work on anything, you can search for these on the project and let us know you'll be tackling it.
+# Development Process
 
-The steps to contribute are:
-1. Fork the Project
-2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
-3. Commit your Changes (git commit -m 'Add some AmazingFeature')
-4. Install the pre-commit hooks by running: pre-commit install. Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
-5. Push to your Branch (git push origin feature/AmazingFeature)
-6. Open a Pull Request
+## Select Feature
 
+ - Pick a feature you want to implement or a bug.
+ - If out are out of ideas, look into our [issues](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) or search for `# TODO` in our repository.
+ - Feel free to discuss what you'll be working on via discord https://discord.gg/Up2QGbMKHY, to avoid duplicate work.
 
-## Code Architecture
-
-#### Conventions
+## Understand Code Structure
 
 |**Item**|**Description**|**Example**|
 |:-|:-|:-|
 |**CONTEXT**|Specific instrument *world* to analyse. | `stocks`, `crypto`, `economy` |
 |**CATEGORY**|Group of similar COMMANDS to do on the instrument <br /> There are the specialized categories, specific to each CONTEXT and there are common categories which are not specific to one CONTEXT. | `due_diligence`,  `technical_analysis`, `insider` |
 |**COMMAND**|Operation on one or no instrument that retrieves data in form of string, table or plot.| `rating`, `supplier`, `sentiment` |
-
-
-#### Model-View-Controller
 
 The following layout is expected: `/<context>/<category>/<command_files>`
 
@@ -138,52 +116,13 @@ With:
 |`common/`| `technical_analysis/` | `overlap_view.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `ta_controller.py`, from **MULTIPLE** _contexts_, using the arguments given by the user and will output either a string, table or plot. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are proving a dataframe to these functions, we should make sure that `stocks/ta_controller.py` and `crypto/ta_controller` use the same formatting. | 
 |`common/`| `technical_analysis/` | `overlap_model.py` | This file contains functions that rely on **overlap** data. In this case **overlap** is not a data source, but the type of technical analysis performed. These functions represent _commands_ that belong to **technical_analysis** _category_ from **MULTIPLE** _contexts_. These functions are called by `overlap_view.py`, and will return data to be processed in either a string, dictionary or dataframe format. Due to the fact that this file is **common** to multiple _contexts_ the functions need to be generic enough to accomodate for this. E.g. if we are getting the sentiment of an instrument, we  should ensure that these functions accept both a "GME" or a "BTC", for `stocks` and `crypto`, respectively. | 
 
-## Documentation
 
-`hugo server -D`. T.B.A.
+## Follow Coding Guidelines
 
-## Tests
+T.B.D. explain what each model/view/controller should have.
 
-Unit tests minimize errors in code and quickly find errors when they do arise.
 
-##### Pytest
-
-Pytest allows users to quickly create unittests in Python. To use pytest run `pytest tests/`.
-
-##### Coverage
-
-Coverage allows users to see how complete unittests are for Python. To use coverage do the following:
-
-1. `coverage run -m pytest`
-2. `coverage html`
-
-To view the tests find the htmlcov folder in the main directory and open the *index.html* file. This will show a detailed report of testing coverage.
-
-##### VCR
-
-VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly speeds up the time it takes to run tests. To use VCRPY do the following:
-
-1. `import vcr`
-1. add `@vcr.use_cassette("tests/cassettes/{test_folder}/{test_class}/{test_name}.yaml")` as a decorator to the test
-
-**Note:** If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
-
-##### check_print
-
-GamestonkTerminal relies on print statements to return data to the user. To check whether necessary information was included in a print statement use the check_print decorator as detailed below:
-
-* `from tests.helpers import check_print`
-* Add `@check_print(assert_in="foo")` as a decorator to the test
-
-If you do not want to assert an item but your test still prints output, please add `@check_print()` as a decorator to mute print output.
-
-**Note:** Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
-
-## Documentation
-
-T.B.D.
-
-## Coding Guidelines
+## Remember Coding Style
 
 When in doubt, follow https://www.python.org/dev/peps/pep-0008/.
 
@@ -234,7 +173,10 @@ The following linters are used by our codebase:
 | safety | checks security vulnerabilities |
 | pylint | bug and quality checker |
 
-## Github Guidelines
+
+## Write Code and Commit
+
+At this stage it is assumed that you have already forked the project and are ready to start working.
 
 #### Pre Commit Hooks
 
@@ -242,17 +184,64 @@ Git hook scripts are useful for identifying simple issues before submission to c
 
 Install the pre-commit hooks by running: `pre-commit install`.
 
-#### Git Commit Messages
+#### Git Process
 
-Attempt to write a concise message under 50 characters to represent what each commit is about. This makes it easier for the team to review the Pull Request.
+1. Create your Feature Branch, e.g. `git checkout -b feature/AmazingFeature`
+2. Check the files you have touched using `git status`
+3. Stage the files you want to commit, e.g. `git add gamestonk_terminal/stocks/stocks_controller.py gamestonk_terminal/stocks/stocks_helperr.py`. Note: **DON'T** add `config_terminal.py` or `.env` files with personal information, or even `feature_flags.py` which is user-dependent.
+4. Write a concise commit message under 50 characters, e.g. `git commit -m "meaningful commit message"`. If your PR solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need to go back to step 3 to add these.
 
-If your PR solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that these get linked.
 
-#### Pull Requests
+## Add a Test
+
+Unit tests minimize errors in code and quickly find errors when they do arise.
+
+##### Pytest
+
+Pytest allows users to quickly create unittests in Python. To use pytest run `pytest tests/`.
+
+##### Coverage
+
+Coverage allows users to see how complete unittests are for Python. To use coverage do the following:
+
+1. `coverage run -m pytest`
+2. `coverage html`
+
+To view the tests find the htmlcov folder in the main directory and open the *index.html* file. This will show a detailed report of testing coverage.
+
+##### VCR
+
+VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly speeds up the time it takes to run tests. To use VCRPY do the following:
+
+1. `import vcr`
+1. add `@vcr.use_cassette("tests/cassettes/{test_folder}/{test_class}/{test_name}.yaml")` as a decorator to the test
+
+**Note:** If you see an error related to VCRPY add the attribute `record_mode="new_episodes"` to the decorator.
+
+##### check_print
+
+GamestonkTerminal relies on print statements to return data to the user. To check whether necessary information was included in a print statement use the check_print decorator as detailed below:
+
+* `from tests.helpers import check_print`
+* Add `@check_print(assert_in="foo")` as a decorator to the test
+
+If you do not want to assert an item but your test still prints output, please add `@check_print()` as a decorator to mute print output.
+
+**Note:** Ensure `@check_print()` is above `@vcr.use_cassette` when using both.
+
+
+## Add Documentation
+
+`hugo server -D`. T.B.A.
+
+
+## Open a Pull Request
+
+Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
 
 A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
 
-As a reviewers, you should select: @DidierRLopes and @jmaslek.
+As reviewers, you should select: @DidierRLopes and @jmaslek.
 
 A label **must** be selected from the following types:
 
@@ -272,3 +261,10 @@ A label **must** be selected from the following types:
 | `docker` | Docker-related work | Add/improve docker
 | `help wanted` | Extra attention is needed | When a contributor needs help
 | `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet
+
+
+## Review Process
+
+As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
+
+In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills. Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for better visibility, or suggesting an optimization improvement.
