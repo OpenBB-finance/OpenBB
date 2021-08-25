@@ -45,6 +45,8 @@ class DiscoveryController:
         "gainers",
         "losers",
         "under",
+        "gtech",
+        "active",
         "ford",
         "arkord",
         "upcoming",
@@ -81,6 +83,8 @@ Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
     under          undervalued growth stocks
+    gtech          tech stocks with revenue and earnings growth more than 25%
+    active         most active stocks by intraday trade volume
 Fidelity:
     ford           orders by Fidelity Customers
 cathiesark.com:
@@ -241,7 +245,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the top gainers stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -283,7 +287,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the top losers stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -316,7 +320,7 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="under",
-            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+            description="Print up to 25 top undervalued tickers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-n",
@@ -325,7 +329,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the undervalued stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -345,6 +349,90 @@ pennystockflow.com
                 return
 
             yahoofinance_view.display_undervalued(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_gtech(self, other_args: List[str]):
+        """Process gtech command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gtech",
+            description="Print up to 25 top growth tech tickers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of stocks to display.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_gtech(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_active(self, other_args: List[str]):
+        """Process active command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="active",
+            description="Print up to 25 top active tickers. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of stocks to display.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_active(
                 num_stocks=ns_parser.num,
                 export=ns_parser.export,
             )

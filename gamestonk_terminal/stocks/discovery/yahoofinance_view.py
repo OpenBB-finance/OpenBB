@@ -113,3 +113,75 @@ def display_undervalued(num_stocks: int, export: str):
         "undervalued",
         df,
     )
+
+
+def display_gtech(num_stocks: int, export: str):
+    """Display growth technology stocks. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_gtech()
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        print("No data found.")
+    else:
+        print(
+            tabulate(
+                df.head(num_stocks),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "gtech",
+        df,
+    )
+
+
+def display_active(num_stocks: int, export: str):
+    """Display most active stocks. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_active()
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        print("No data found.")
+    else:
+        print(
+            tabulate(
+                df.head(num_stocks),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "active",
+        df,
+    )
