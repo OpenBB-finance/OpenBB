@@ -380,7 +380,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -445,7 +445,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -509,7 +509,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
