@@ -283,6 +283,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -327,6 +331,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -436,6 +444,7 @@ Custom:
             if other_args:
                 if "-l" not in other_args and "-h" not in other_args:
                     other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -487,6 +496,7 @@ Custom:
             if other_args:
                 if "-l" not in other_args and "-h" not in other_args:
                     other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -538,6 +548,7 @@ Custom:
             if other_args:
                 if "-l" not in other_args and "-h" not in other_args:
                     other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -629,6 +640,10 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -692,6 +707,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -763,6 +782,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -831,6 +854,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -900,6 +927,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -949,6 +980,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -997,9 +1032,14 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+
             momentum_view.view_cg(
                 s_ticker=self.ticker,
                 s_interval=self.interval,
@@ -1060,6 +1100,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1125,6 +1169,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1197,9 +1245,14 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+
             volatility_view.view_bbands(
                 ticker=self.ticker,
                 s_interval=self.interval,
@@ -1256,9 +1309,14 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+
             volatility_view.view_donchian(
                 ticker=self.ticker,
                 s_interval=self.interval,
@@ -1331,6 +1389,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1384,6 +1446,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1449,6 +1515,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1491,6 +1561,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1545,6 +1619,10 @@ Custom:
         )
 
         try:
+            if other_args:
+                if "-l" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-l")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
