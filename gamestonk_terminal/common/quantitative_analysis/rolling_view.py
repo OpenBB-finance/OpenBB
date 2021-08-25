@@ -15,7 +15,7 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 register_matplotlib_converters()
 
 
-def view_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export: str):
+def display_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export: str):
     """View rolling spread
 
     Parameters
@@ -72,7 +72,7 @@ def view_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export: st
     )
 
 
-def view_spread(
+def display_spread(
     s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
 ):
     """View rolling spread
@@ -134,7 +134,7 @@ def view_spread(
     )
 
 
-def view_quantile(
+def display_quantile(
     s_ticker: str,
     s_interval: str,
     df_stock: pd.DataFrame,
@@ -193,7 +193,7 @@ def view_quantile(
     )
 
 
-def view_skew(
+def display_skew(
     s_ticker: str, s_interval: str, df_stock: pd.DataFrame, length: int, export: str
 ):
     """View rolling skew

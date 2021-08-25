@@ -28,7 +28,6 @@ from gamestonk_terminal.stocks.government import gov_controller
 from gamestonk_terminal.stocks.insider import insider_controller
 from gamestonk_terminal.stocks.report import report_controller
 from gamestonk_terminal.stocks.research import res_controller
-from gamestonk_terminal.stocks.residuals_analysis import ra_controller
 from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
@@ -62,7 +61,6 @@ class StocksController:
         "ba",
         "qa",
         "pred",
-        "ra",
         "disc",
         "dps",
         "scr",
@@ -411,24 +409,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         ret = ba_controller.menu(
             self.ticker,
             self.start,
-        )
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
-
-    def call_ra(self, _):
-        """Process ra command"""
-        if not self.ticker:
-            print("Use 'load <ticker>' prior to this command!", "\n")
-            return
-
-        ret = ra_controller.menu(
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
         )
 
         if ret is False:

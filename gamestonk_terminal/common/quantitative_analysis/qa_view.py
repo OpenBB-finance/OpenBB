@@ -23,13 +23,16 @@ from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 
 register_matplotlib_converters()
 
+# TODO : Since these are common/ they should be independent of 'stock' info.
+# df_stock should be replaced with a generic df and a column variable
+
 
 def color_red(val):
     """Adds red to dataframe"""
     return Fore.RED + str(val) + Style.RESET_ALL
 
 
-def view_summary(df_stock: pd.DataFrame, export: str):
+def display_summary(df_stock: pd.DataFrame, export: str):
     """Show summary statistics
 
     Parameters
@@ -60,8 +63,12 @@ def view_summary(df_stock: pd.DataFrame, export: str):
     )
 
 
-def view_hist(
-    s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, prices: bool, bins: int
+def display_hist(
+    s_ticker: str,
+    start: pd.Timestamp,
+    df_stock: pd.DataFrame,
+    prices: bool,
+    bins: int,
 ):
     """Generate histogram.
 
@@ -99,7 +106,7 @@ def view_hist(
     print("")
 
 
-def view_cdf(
+def display_cdf(
     s_ticker: str,
     start: pd.Timestamp,
     df_stock: pd.DataFrame,
@@ -187,7 +194,7 @@ def view_cdf(
     )
 
 
-def view_bw(
+def display_bw(
     s_ticker: str,
     start: pd.Timestamp,
     df_stock: pd.DataFrame,
@@ -255,7 +262,7 @@ def view_bw(
     print("")
 
 
-def view_acf(s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, lags: int):
+def display_acf(s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, lags: int):
     """Show Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
@@ -305,7 +312,7 @@ def view_acf(s_ticker: str, start: pd.Timestamp, df_stock: pd.DataFrame, lags: i
     print("")
 
 
-def view_cusum(df_stock: pd.DataFrame, threshold: float, drift: float):
+def display_cusum(df_stock: pd.DataFrame, threshold: float, drift: float):
     """Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
@@ -326,7 +333,7 @@ def view_cusum(df_stock: pd.DataFrame, threshold: float, drift: float):
     print("")
 
 
-def view_seasonal(
+def display_seasonal(
     s_ticker: str, df_stock: pd.DataFrame, multiplicative: bool, export: str
 ):
     """[summary]
@@ -406,7 +413,7 @@ def view_seasonal(
     )
 
 
-def view_normality(df_stock: pd.DataFrame, prices: bool, export: str):
+def display_normality(df_stock: pd.DataFrame, prices: bool, export: str):
     """View normality statistics
 
     Parameters
@@ -445,7 +452,7 @@ def view_normality(df_stock: pd.DataFrame, prices: bool, export: str):
     )
 
 
-def view_qqplot(s_ticker: str, df_stock: pd.DataFrame, prices: bool):
+def display_qqplot(s_ticker: str, df_stock: pd.DataFrame, prices: bool):
     """Show QQ plot for returns against normal quantiles
 
     Parameters
@@ -476,7 +483,7 @@ def view_qqplot(s_ticker: str, df_stock: pd.DataFrame, prices: bool):
     print("")
 
 
-def view_unitroot(
+def display_unitroot(
     df_stock: pd.DataFrame, prices: bool, fuller_reg: str, kpss_reg: str, export: str
 ):
     """Show unit root test calculations

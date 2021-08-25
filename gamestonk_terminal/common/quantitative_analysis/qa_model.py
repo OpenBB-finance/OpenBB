@@ -10,6 +10,9 @@ from scipy import stats
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
 
+# TODO : Since these are common/ they should be independent of 'stock' info.
+# df_stock should be replaced with a generic df and a column variable
+
 
 def summary(df_stock: pd.DataFrame) -> pd.DataFrame:
     """Print summary statistics

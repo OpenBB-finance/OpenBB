@@ -29,7 +29,7 @@ class QaController:
     """Quantitative Analysis Controller class"""
 
     # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
+    CHOICES = ["?", "cls", "help", "q", "quit", "load", "pick"]
 
     CHOICES_COMMANDS = [
         "summary",
@@ -64,6 +64,7 @@ class QaController:
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.target = "dpr"
         self.qa_parser = argparse.ArgumentParser(add_help=False, prog="qa")
         self.qa_parser.add_argument(
             "cmd",
@@ -77,9 +78,8 @@ class QaController:
             stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_str = f"\n{s_intraday} Stock: {self.ticker}"
-
+        targets = {"dpr": "Daily Percentage Returns", "p": "Prices"}
         help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/quantitative_analysis
-{stock_str}
 
 Quantitative Analysis:
     cls         clear screen
@@ -87,23 +87,27 @@ Quantitative Analysis:
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
     load        load new ticker
-    summary     brief summary statistics of loaded stock [Default: Returns]
+    pick        pick new target variable
 
+{stock_str}
+Target: {targets[self.target]}
+
+Statistics:
+    summary     brief summary statistics of loaded stock.
+    normality   normality statistics and tests
+    unitroot    unit root test for stationarity (ADF, KPSS)
 Plots:
-    hist        histogram with density plot [Default: Returns]
-    cdf         cumulative distribution function [Default: Returns]
-    bw          box and whisker plot [Default: Returns]
+    hist        histogram with density plot
+    cdf         cumulative distribution function
+    bw          box and whisker plot
     acf         (partial) auto-correlation function differentials of prices
-    qqplot      residuals against standard normal curve [Default: Returns]
+    qqplot      residuals against standard normal curve
 Rolling Metrics:
     rolling     rolling mean and std deviation of prices
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
-Statistics:
-    normality   normality statistics and tests [Default: Returns]
-    unitroot    unit root test for stationarity (ADF, KPSS)
-Other Algorithms:
+Other:
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
         """
@@ -161,6 +165,37 @@ Other Algorithms:
         """Process Quit command - quit the program"""
         return True
 
+    def call_pick(self, other_args: List[str]):
+        """Process pick command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="pick",
+            description="""
+                Change target variable
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--target",
+            dest="target",
+            choices=["dpr", "p"],
+            help="Select variable to analyze",
+        )
+        try:
+            if other_args:
+                if "-t" not in other_args and "-h" not in other_args:
+                    other_args.insert(0, "-t")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            self.target = ns_parser.target
+            print("")
+
+        except Exception as e:
+            print(e, "\n")
+
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -184,7 +219,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            qa_view.view_summary(df_stock=self.stock, export=ns_parser.export)
+            qa_view.display_summary(df_stock=self.stock, export=ns_parser.export)
 
         except Exception as e:
             print(e, "\n")
@@ -196,16 +231,8 @@ Other Algorithms:
             add_help=False,
             prog="hist",
             description="""
-                Histogram (default returns) with depicted density and rug
+                Histogram with density and rug
             """,
-        )
-        parser.add_argument(
-            "-p",
-            "--prices",
-            action="store_true",
-            help="Flag to show prices not returns",
-            default=False,
-            dest="prices",
         )
         parser.add_argument(
             "-b", "--bins", type=check_positive, default=15, dest="n_bins"
@@ -214,11 +241,11 @@ Other Algorithms:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            qa_view.view_hist(
+            qa_view.display_hist(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 start=self.start,
-                prices=ns_parser.prices,
+                prices=self.target == "p",
                 bins=ns_parser.n_bins,
             )
 
@@ -236,14 +263,6 @@ Other Algorithms:
             """,
         )
         parser.add_argument(
-            "-p",
-            "--prices",
-            action="store_true",
-            help="Flag to show prices not returns",
-            default=False,
-            dest="prices",
-        )
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -257,11 +276,11 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            qa_view.view_cdf(
+            qa_view.display_cdf(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 start=self.start,
-                prices=ns_parser.prices,
+                prices=self.target == "p",
                 export=ns_parser.export,
             )
 
@@ -286,25 +305,17 @@ Other Algorithms:
             dest="year",
             help="Flag to show yearly bw plot",
         )
-        parser.add_argument(
-            "-p",
-            "--prices",
-            action="store_true",
-            default=False,
-            dest="prices",
-            help="Flag to show prices on plot",
-        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            qa_view.view_bw(
+            qa_view.display_bw(
                 s_ticker=self.ticker,
                 start=self.start,
                 df_stock=self.stock,
                 yearly=ns_parser.year,
-                prices=ns_parser.prices,
+                prices=self.target == "p",
             )
 
         except Exception as e:
@@ -343,7 +354,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            qa_view.view_seasonal(
+            qa_view.display_seasonal(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 multiplicative=ns_parser.multiplicative,
@@ -392,7 +403,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            qa_view.view_cusum(
+            qa_view.display_cusum(
                 df_stock=self.stock,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -423,7 +434,7 @@ Other Algorithms:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            qa_view.view_acf(
+            qa_view.display_acf(
                 s_ticker=self.ticker,
                 start=self.start,
                 df_stock=self.stock,
@@ -467,7 +478,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            rolling_view.view_mean_std(
+            rolling_view.display_mean_std(
                 s_ticker=self.ticker,
                 df_stock=self.stock,
                 length=ns_parser.n_length,
@@ -510,7 +521,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            rolling_view.view_spread(
+            rolling_view.display_spread(
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
@@ -571,7 +582,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            rolling_view.view_quantile(
+            rolling_view.display_quantile(
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
@@ -621,7 +632,7 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            rolling_view.view_skew(
+            rolling_view.display_skew(
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
@@ -642,14 +653,6 @@ Other Algorithms:
             """,
         )
         parser.add_argument(
-            "-p",
-            "--prices",
-            action="store_true",
-            help="Flag to show prices not returns",
-            default=False,
-            dest="prices",
-        )
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -663,8 +666,8 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            qa_view.view_normality(
-                df_stock=self.stock, prices=ns_parser.prices, export=ns_parser.export
+            qa_view.display_normality(
+                df_stock=self.stock, prices=self.target == "p", export=ns_parser.export
             )
 
         except Exception as e:
@@ -680,22 +683,14 @@ Other Algorithms:
                 Display QQ plot vs normal quantiles
             """,
         )
-        parser.add_argument(
-            "-p",
-            "--prices",
-            action="store_true",
-            help="Flag to show prices not returns",
-            default=False,
-            dest="prices",
-        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            qa_view.view_qqplot(
-                s_ticker=self.ticker, df_stock=self.stock, prices=ns_parser.prices
+            qa_view.display_qqplot(
+                s_ticker=self.ticker, df_stock=self.stock, prices=self.target == "p"
             )
 
         except Exception as e:
@@ -710,14 +705,6 @@ Other Algorithms:
             description="""
                 Unit root test / stationarity (ADF, KPSS)
             """,
-        )
-        parser.add_argument(
-            "-p",
-            "--prices",
-            action="store_true",
-            help="Flag to show prices not returns",
-            default=False,
-            dest="prices",
         )
         parser.add_argument(
             "-r",
@@ -751,9 +738,9 @@ Other Algorithms:
             if not ns_parser:
                 return
 
-            qa_view.view_unitroot(
+            qa_view.display_unitroot(
                 df_stock=self.stock,
-                prices=ns_parser.prices,
+                prices=self.target == "p",
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
