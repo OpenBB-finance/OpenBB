@@ -20,7 +20,7 @@ class TestCoinPaprikaView(TestCase):
 
     @check_print(assert_in="rank")
     def test_coins(self):
-        disc_coinpaprika_view.coins([])
+        disc_coinpaprika_view.display_coins([])
 
     @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_market_info(self):
@@ -36,7 +36,7 @@ class TestCoinPaprikaView(TestCase):
 
     @check_print(assert_in="category")
     def test_search(self):
-        disc_coinpaprika_view.search(["-q", "bt"])
+        disc_coinpaprika_view.display_search_results(["-q", "bt"])
 
     @check_print(assert_in="platform_id")
     def test_all_platforms(self):
@@ -45,10 +45,6 @@ class TestCoinPaprikaView(TestCase):
     @check_print(assert_in="active")
     def test_contracts(self):
         ov_coinpaprika_view.contracts([])
-
-    @check_print(assert_in="index")
-    def test_find(self):
-        disc_coinpaprika_view.find(["-c", "BTC"])
 
     @check_print(assert_in="Couldn't find")
     def test_twitter(self):

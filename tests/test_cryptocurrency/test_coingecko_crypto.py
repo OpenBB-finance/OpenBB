@@ -178,7 +178,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_gainers(self):
-        disc_pycoingecko_view.gainers([])
+        disc_pycoingecko_view.display_gainers([])
 
     @check_print(assert_in="Rank")
     @vcr.use_cassette(
@@ -186,7 +186,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_losers(self):
-        disc_pycoingecko_view.losers([])
+        disc_pycoingecko_view.display_losers([])
 
     @check_print(assert_in="CryptoBlades")
     @vcr.use_cassette(
@@ -194,7 +194,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_discover(self):
-        disc_pycoingecko_view.discover("trending", [])
+        disc_pycoingecko_view.display_discover("trending", [])
 
     @check_print(assert_in="═════════════")
     @vcr.use_cassette(
@@ -218,7 +218,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_recently_added(self):
-        disc_pycoingecko_view.recently_added([])
+        disc_pycoingecko_view.display_recently_added([])
 
     @check_print(assert_in="════")
     @vcr.use_cassette(
@@ -234,7 +234,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_yfarms(self):
-        disc_pycoingecko_view.yfarms([])
+        disc_pycoingecko_view.display_yieldfarms([])
 
     @check_print(assert_in="════════")
     @vcr.use_cassette(
@@ -242,7 +242,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_top_volume_coins(self):
-        disc_pycoingecko_view.top_volume_coins([])
+        disc_pycoingecko_view.display_top_volume_coins([])
 
     @check_print(assert_in="═════════")
     @vcr.use_cassette(
@@ -250,7 +250,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_top_defi_coins(self):
-        disc_pycoingecko_view.top_defi_coins([])
+        disc_pycoingecko_view.display_top_defi_coins([])
 
     @check_print(assert_in="════════")
     @vcr.use_cassette(
@@ -258,7 +258,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_top_dex(self):
-        disc_pycoingecko_view.top_dex([])
+        disc_pycoingecko_view.display_top_dex([])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(

@@ -3,11 +3,10 @@ __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import pandas as pd
 from tabulate import tabulate
-from coinmarketcapapi import CoinMarketCapAPI
-import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from gamestonk_terminal.cryptocurrency.discovery import coinmarketcap_model
+
 
 sort_options = ["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"]
 
@@ -20,9 +19,9 @@ sort_map = {
 }
 
 
-def get_cmc_top_n(other_args: List[str]):
-    """
-    Shows top n coins from coinmarketcap.com
+def display_cmc_top_coins(other_args: List[str]) -> None:
+    """Shows top n coins from coinmarketcap.com [Source: CoinMarketCap]
+
     Parameters
     ----------
     other_args: List[str]
@@ -64,25 +63,11 @@ def get_cmc_top_n(other_args: List[str]):
         if not ns_parser:
             return
 
-        cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
-        ratings = cmc.cryptocurrency_listings_latest().data
+        df = coinmarketcap_model.get_cmc_top_n()
 
-        symbol, rank, price, pchange1d, mkt_cap = [], [], [], [], []
-        for coin in ratings:
-            symbol.append(coin["symbol"])
-            rank.append(coin["cmc_rank"])
-            price.append(coin["quote"]["USD"]["price"])
-            pchange1d.append(coin["quote"]["USD"]["percent_change_24h"])
-            mkt_cap.append(coin["quote"]["USD"]["market_cap"] / (10 ** 9))
-
-        df = pd.DataFrame(data=[symbol, rank, price, pchange1d, mkt_cap]).transpose()
-        df.columns = [
-            "Symbol",
-            "CMC_Rank",
-            "Last Price",
-            "1 Day Pct Change",
-            "Market Cap ($B)",
-        ]
+        if df.empty:
+            print("No Data Found\n")
+            return
 
         df = df.sort_values(by=sort_map[ns_parser.sortby], ascending=ns_parser.descend)
 

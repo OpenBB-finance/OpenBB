@@ -130,59 +130,63 @@ CoinMarketCap:
 
     def call_cggainers(self, other_args):
         """Process gainers command"""
-        pycoingecko_view.gainers(other_args)
+        pycoingecko_view.display_gainers(other_args)
 
     def call_cglosers(self, other_args):
         """Process losers command"""
-        pycoingecko_view.losers(other_args)
+        pycoingecko_view.display_losers(other_args)
 
     def call_cgtrending(self, other_args):
         """Process trending command"""
-        pycoingecko_view.discover(category="trending", other_args=other_args)
+        pycoingecko_view.display_discover(category="trending", other_args=other_args)
 
     def call_cgvoted(self, other_args):
         """Process most_voted command"""
-        pycoingecko_view.discover(category="most_voted", other_args=other_args)
+        pycoingecko_view.display_discover(category="most_voted", other_args=other_args)
 
     def call_cgrecently(self, other_args):
         """Process recently command"""
-        pycoingecko_view.recently_added(other_args=other_args)
+        pycoingecko_view.display_recently_added(other_args=other_args)
 
     def call_cgvisited(self, other_args):
         """Process most_visited command"""
-        pycoingecko_view.discover(category="most_visited", other_args=other_args)
+        pycoingecko_view.display_discover(
+            category="most_visited", other_args=other_args
+        )
 
     def call_cgsentiment(self, other_args):
         """Process sentiment command"""
-        pycoingecko_view.discover(category="positive_sentiment", other_args=other_args)
+        pycoingecko_view.display_discover(
+            category="positive_sentiment", other_args=other_args
+        )
 
     def call_cgyfarms(self, other_args):
         """Process yfarms command"""
-        pycoingecko_view.yfarms(other_args=other_args)
+        pycoingecko_view.display_yieldfarms(other_args=other_args)
 
     def call_cgvolume(self, other_args):
         """Process top_volume command"""
-        pycoingecko_view.top_volume_coins(other_args=other_args)
+        pycoingecko_view.display_top_volume_coins(other_args=other_args)
 
     def call_cgdefi(self, other_args):
         """Process top_defi command"""
-        pycoingecko_view.top_defi_coins(other_args=other_args)
+        pycoingecko_view.display_top_defi_coins(other_args=other_args)
 
     def call_cgdex(self, other_args):
         """Process top_dex command"""
-        pycoingecko_view.top_dex(other_args=other_args)
+        pycoingecko_view.display_top_dex(other_args=other_args)
 
     def call_cgnft(self, other_args):
         """Process top_nft command"""
-        pycoingecko_view.top_nft(other_args=other_args)
+        pycoingecko_view.display_top_nft(other_args=other_args)
 
     def call_cmctop(self, other_args):
         """Process top command"""
-        coinmarketcap_view.get_cmc_top_n(other_args)
+        coinmarketcap_view.display_cmc_top_coins(other_args)
 
     def call_cpsearch(self, other_args):
         """Process search command"""
-        coinpaprika_view.search(other_args=other_args)
+        coinpaprika_view.display_search_results(other_args=other_args)
 
 
 def menu():

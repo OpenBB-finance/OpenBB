@@ -14,7 +14,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 )
 from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_coin_list,
-    create_mapping_matrix_for_binance,
+    get_mapping_matrix_for_binance,
     load_binance_map,
 )
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
@@ -305,7 +305,7 @@ def find(other_args: List[str]):
                 ns_parser.key = "id"
 
             coins_df_gecko = get_coin_list()
-            coins_bin = create_mapping_matrix_for_binance()
+            coins_bin = get_mapping_matrix_for_binance()
             coins_df_bin = pd.Series(coins_bin).reset_index()
             coins_df_bin.columns = ["symbol", "id"]
             coins = pd.merge(

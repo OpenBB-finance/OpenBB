@@ -9,7 +9,7 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
-import gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model as gecko
+from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 
 register_matplotlib_converters()
 
@@ -18,7 +18,7 @@ register_matplotlib_converters()
 # pylint: disable=R0904, C0302
 
 
-def gainers(other_args: List[str]):
+def display_gainers(other_args: List[str]) -> None:
     """Shows Largest Gainers - coins which gain the most in given period from www.coingecko.com
 
     Parameters
@@ -91,7 +91,7 @@ def gainers(other_args: List[str]):
         else:
             sortby = ns_parser.sortby
 
-        df = gecko.get_gainers_or_losers(
+        df = pycoingecko_model.get_gainers_or_losers(
             period=ns_parser.period, typ="gainers"
         ).sort_values(by=sortby, ascending=ns_parser.descend)
 
@@ -112,7 +112,7 @@ def gainers(other_args: List[str]):
         print(e, "\n")
 
 
-def losers(other_args: List[str]):
+def display_losers(other_args: List[str]) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time from www.coingecko.com
 
     Parameters
@@ -186,7 +186,7 @@ def losers(other_args: List[str]):
         else:
             sortby = ns_parser.sortby
 
-        df = gecko.get_gainers_or_losers(
+        df = pycoingecko_model.get_gainers_or_losers(
             period=ns_parser.period, typ="losers"
         ).sort_values(by=sortby, ascending=ns_parser.descend)
 
@@ -207,7 +207,7 @@ def losers(other_args: List[str]):
         print(e, "\n")
 
 
-def discover(category: str, other_args: List[str]):
+def display_discover(category: str, other_args: List[str]):
     """Discover coins by different categories
         - Most voted coins
         - Most popular coins
@@ -276,7 +276,7 @@ def discover(category: str, other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.discover_coins(category=category)
+        df = pycoingecko_model.get_discovered_coins(category=category)
         df.index = df.index + 1
         df.reset_index(inplace=True)
         df.rename(columns={"index": "Rank"}, inplace=True)
@@ -300,7 +300,7 @@ def discover(category: str, other_args: List[str]):
         print(e, "\n")
 
 
-def recently_added(other_args: List[str]):
+def display_recently_added(other_args: List[str]):
     """Shows recently added coins from "https://www.coingecko.com/en/coins/recently_added"
 
     Parameters
@@ -365,7 +365,7 @@ def recently_added(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_recently_added_coins().sort_values(
+        df = pycoingecko_model.get_recently_added_coins().sort_values(
             by=ns_parser.sortby, ascending=ns_parser.descend
         )
 
@@ -389,7 +389,7 @@ def recently_added(other_args: List[str]):
         print(e, "\n")
 
 
-def top_defi_coins(other_args: List[str]):
+def display_top_defi_coins(other_args: List[str]):
     """Shows Top 100 DeFi Coins by Market Capitalization from "https://www.coingecko.com/en/defi"
     DeFi or Decentralized Finance refers to financial services that are built
     on top of distributed networks with no central intermediaries.
@@ -461,7 +461,7 @@ def top_defi_coins(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_defi_coins().sort_values(
+        df = pycoingecko_model.get_top_defi_coins().sort_values(
             by=ns_parser.sortby, ascending=ns_parser.descend
         )
 
@@ -484,7 +484,7 @@ def top_defi_coins(other_args: List[str]):
         print(e, "\n")
 
 
-def top_dex(other_args: List[str]):
+def display_top_dex(other_args: List[str]):
     """Shows Top Decentralized Exchanges on CoinGecko by Trading Volume from "https://www.coingecko.com/en/dex"
 
     Parameters
@@ -544,7 +544,7 @@ def top_dex(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_dexes().sort_values(
+        df = pycoingecko_model.get_top_dexes().sort_values(
             by=ns_parser.sortby, ascending=ns_parser.descend
         )
 
@@ -563,7 +563,7 @@ def top_dex(other_args: List[str]):
         print(e, "\n")
 
 
-def top_volume_coins(other_args: List[str]):
+def display_top_volume_coins(other_args: List[str]):
     """Shows Top 100 Coins by Trading Volume from "https://www.coingecko.com/en/yield-farming"
 
     Parameters
@@ -621,7 +621,7 @@ def top_volume_coins(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_volume_coins().sort_values(
+        df = pycoingecko_model.get_top_volume_coins().sort_values(
             by=ns_parser.sortby, ascending=ns_parser.descend
         )
 
@@ -640,7 +640,7 @@ def top_volume_coins(other_args: List[str]):
         print(e, "\n")
 
 
-def top_nft(other_args: List[str]):
+def display_top_nft(other_args: List[str]):
     """Shows Top 100 NFT Coins by Market Capitalization from "https://www.coingecko.com/en/nft"
     Top 100 NFT Coins by Market Capitalization
     NFT (Non-fungible Token) refers to digital assets with unique characteristics.
@@ -713,7 +713,7 @@ def top_nft(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_top_nfts().sort_values(
+        df = pycoingecko_model.get_top_nfts().sort_values(
             by=ns_parser.sortby, ascending=ns_parser.descend
         )
 
@@ -737,7 +737,7 @@ def top_nft(other_args: List[str]):
         print(e, "\n")
 
 
-def yfarms(other_args: List[str]):
+def display_yieldfarms(other_args: List[str]):
     """Shows Top Yield Farming Pools by Value Locked from "https://www.coingecko.com/en/yield-farming"
 
     Parameters
@@ -791,7 +791,7 @@ def yfarms(other_args: List[str]):
         if not ns_parser:
             return
 
-        df = gecko.get_yield_farms()
+        df = pycoingecko_model.get_yield_farms()
         df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
 
         print(
@@ -809,7 +809,7 @@ def yfarms(other_args: List[str]):
         print(e, "\n")
 
 
-def find(other_args: List[str]):
+def display_found_coins(other_args: List[str]):
     """Find similar coin by coin name,symbol or id.
 
     If you don't remember exact name or id of the Coin at CoinGecko,
@@ -869,86 +869,13 @@ def find(other_args: List[str]):
         if not ns_parser:
             return
 
-        coins_df = gecko.get_coin_list()
+        coins_df = pycoingecko_model.get_coin_list()
         coins_list = coins_df[ns_parser.key].to_list()
         sim = difflib.get_close_matches(ns_parser.coin, coins_list, ns_parser.top)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", ns_parser.key]
         coins_df.drop("index", axis=1, inplace=True)
         df = df.merge(coins_df, on=ns_parser.key)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def coin_list(other_args: List[str]):
-    """Shows list of coins available on CoinGecko
-
-    Parameters
-    ----------
-    other_args: List[str]
-        Arguments to pass to argparse
-    """
-    parser = argparse.ArgumentParser(
-        prog="coins",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Shows list of coins available on CoinGecko",
-    )
-    parser.add_argument(
-        "-s",
-        "--skip",
-        default=0,
-        dest="skip",
-        help="Skip n of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=15,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument("-l", "--letter", dest="letter", help="First letters", type=str)
-    parser.add_argument(
-        "-k",
-        "--key",
-        dest="key",
-        help="Search in column symbol, name, id",
-        type=str,
-        choices=["id", "symbol", "name"],
-        default="symbol",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df = gecko.get_coin_list()
-
-        letter = ns_parser.letter
-        if letter and isinstance(letter, str):
-            if letter.isalpha():
-                letter = letter.lower()
-            df = df[df[ns_parser.key].str.startswith(letter)]
-
-        try:
-            df = df[ns_parser.skip : ns_parser.skip + ns_parser.top]
-        except Exception as e:
-            print(e)
         print(
             tabulate(
                 df,
