@@ -119,7 +119,167 @@ With:
 
 ## Follow Coding Guidelines
 
-T.B.D. explain what each model/view/controller should have.
+Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files will be implemented.
+
+#### Model
+
+1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
+2. Add the documentation header
+3. Do the necessary imports to get the data
+4. Define a function starting with `get_`
+5. In that function:
+  1. Use typing hints
+  2. Write a descriptive description where at the end the source is specified
+  3. Obtain the data and return it. Sometimes the model can contain a more complex logic to it, if the scraping is not straightforward. If the data is returned directly by an API, we still want to wrap it around a model function to keep consistency across codebase and be more future proof.
+
+```
+""" Yahoo Finance Model """
+__docformat__ = "numpy"
+
+import pandas as pd
+import requests
+
+
+def get_most_shorted() -> pd.DataFrame:
+    """Get most shorted stock screener [Source: Yahoo Finance]
+
+    Returns
+    -------
+    pd.DataFrame
+        Most Shorted Stocks
+    """
+    url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
+
+    data = pd.read_html(requests.get(url).text)[0]
+    data = data.iloc[:, :-1]
+    return data
+```
+
+Note: As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks or a specific context.
+
+#### View
+
+1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
+2. Add the documentation header
+3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from same data source.
+4. Define a function starting with either `print_`, `display_` or `plot_`. Based on wether the output is a string, a table or a plot, respectively.
+5. In this function:
+  1. Use typing hints
+  2. Write a descriptive description where at the end the source is specified
+  3. Get the data from the `_model` and parse it to be output in a more meaningful way. 
+  4. Ensure that the data that comes through is reasonable, i.e. at least that we aren't displaying an empty dataframe.
+  5. Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can have all the data rather than the short amount of information we may show to the user. Thus, in order to do so `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
+  6. Always add a new line at the end, this allows for an additional line between 2 commands and makes it easier for the user to visualize what is happening.
+  7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
+
+```
+""" Yahoo Finance View """
+__docformat__ = "numpy"
+
+import os
+from tabulate import tabulate
+from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
+
+
+def display_most_shorted(num_stocks: int, export: str):
+    """Display most shorted stocks screener. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_most_shorted()
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        print("No data found.")
+    else:
+        print(
+            tabulate(
+                df.head(num_stocks),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shorted",
+        df,
+    )
+
+```
+
+Note: As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks or a specific context. The arguments will need to be parsed by `stocks_controller,py` and the other controller this function shares the data output with.
+
+#### Controller
+
+1. Import `_view` associated with command we want to allow user to select.
+2. Add command name to variable `CHOICES` from `DarkPoolShortsController` class.
+3. Add command name and description to `print_help()`. In addition, an additional line above must contain the Source of information. E.g.
+```
+Yahoo Finance:
+    shorted        show most shorted stocks
+```
+3. Add a method to `DarkPoolShortsController` class with name: `call_` followed by command name.
+   1. This method must start defining a parser with arguments `add_help=False` and `formatter_class=argparse.ArgumentDefaultsHelpFormatter`. In addition `prog` must have the same name as the command, and `description` should be self-explanatory ending with a mention of the data source.
+   2. Add parser arguments after defining parser. One important argument to add is the export capability. All commands should be able to export data.
+   3. Initialize a try-catch block. This is so that if there is an issue the terminal doesn't crash and the user can keep using it.
+   4. If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of args provided by the user. This makes the terminal usage being faster.
+   5. Parse known args from list of arguments and values provided by the user.
+   6. Call the function contained in a `_view.py` file with the arguments parsed by argparse.
+```
+def call_shorted(self, other_args: List[str]):
+        """Process shorted command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shorted",
+            description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the most shorted stocks to retrieve.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_most_shorted(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+```
 
 
 ## Remember Coding Style
@@ -183,6 +343,10 @@ At this stage it is assumed that you have already forked the project and are rea
 Git hook scripts are useful for identifying simple issues before submission to code review. We run our hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. By pointing these issues out before code review, this allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
 
 Install the pre-commit hooks by running: `pre-commit install`.
+
+#### Coding
+
+Although the Coding Guidelines section has been already explained. It is worth mentioning that if you want to be faster at developing a new feature, you may implement it first on a `jupyter notebook` and then carry it accross to the terminal. This is mostly useful when the feature relies on scraping data from a website, or implementing a Neural Network model.
 
 #### Git Process
 
