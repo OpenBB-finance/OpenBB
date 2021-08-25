@@ -13,7 +13,7 @@ The following is a set of guidelines for contributing to Gamestonk Terminal. The
   1. [Select feature](#select-feature)
   2. [Understand Code Structure](#understand-code-structure)
   3. [Follow Coding Guidelines](#follow-coding-guidelines)
-  4. [Remember Coding Style](#check-coding-style)
+  4. [Remember Coding Style](#remember-coding-style)
   5. [Write Code and Commit](#write-code-and-commit)
   6. [Add a Test](#add-a-test)
   7. [Write Documentation](#add-documentation)
@@ -232,7 +232,68 @@ If you do not want to assert an item but your test still prints output, please a
 
 ## Add Documentation
 
-`hugo server -D`. T.B.A.
+#### Structure
+
+This is the structure that the documentation has:
+```
+website/content/_index.md
+               /stocks/_index.md
+                      /load/_index.md
+                      /candle/_index.md
+                      /discovery/_index.md
+                                /ipo/_index.md
+```
+
+#### New Command
+
+To add a new command, there are two main actions that need to be done:
+
+1. Create a directory with the name of the command and a `_index.md` file within. Examples:
+    * When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
+    * When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
+
+2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example (with white background) of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format). Example:
+
+---
+```shell
+usage: ipo [-p PAST_DAYS] [-f FUTURE_DAYS]
+```
+
+Past and future IPOs. [Source: https://finnhub.io]
+* -p : Number of past days to look for IPOs. Default 0.
+* -f : Number of future days to look for IPOs. Default 10.
+
+<IMAGE HERE - Use drag and drop hint mentioned above>
+ 
+---
+ 
+3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
+
+```
+---
+main:
+  - name: stocks
+    ref: "/stocks"
+    sub:
+      - name: load
+        ref: "/stocks/load"
+      - name: candle
+        ref: "/stocks/candle"
+      - name: discovery
+        ref: "/stocks/discovery"
+        sub:
+          - name: ipo
+            ref: "/stocks/discovery/ipo"
+          - name: map
+            ref: "/stocks/discovery/map"
+ ```
+
+#### Run Hugo Server
+
+0. Make sure Hugo is installed. See https://gohugo.io/getting-started/installing/.
+1. Go into the website directory, i.e. `cd website`
+2. Run the server locally with `hugo server -D`
+3. Open the web server at http://localhost:1313/GamestonkTerminal/, or where it says that the Web Server is available at.
 
 
 ## Open a Pull Request
