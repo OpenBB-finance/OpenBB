@@ -83,8 +83,8 @@ Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
     under          undervalued growth stocks
-    gtech          highest growth technology stocks
-    active         most active stocks
+    gtech          tech stocks with revenue and earnings growth more than 25%
+    active         most active stocks by intraday trade volume
 Fidelity:
     ford           orders by Fidelity Customers
 cathiesark.com:
@@ -245,7 +245,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the top gainers stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -287,7 +287,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the top losers stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -320,7 +320,7 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="under",
-            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+            description="Print up to 25 top undervalued tickers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-n",
@@ -329,7 +329,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the undervalued stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -362,7 +362,7 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gtech",
-            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+            description="Print up to 25 top growth tech tickers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-n",
@@ -371,7 +371,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the undervalued stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",
@@ -404,7 +404,7 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="active",
-            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+            description="Print up to 25 top active tickers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-n",
@@ -413,7 +413,7 @@ pennystockflow.com
             dest="num",
             type=check_int_range(1, 25),
             default=5,
-            help="Number of the undervalued stocks to retrieve.",
+            help="Number of stocks to display.",
         )
         parser.add_argument(
             "--export",

@@ -47,7 +47,7 @@ def get_undervalued() -> pd.DataFrame:
 
 
 def get_gtech() -> pd.DataFrame:
-    """Get Yahoo Finance growth technology stocks
+    """Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 
     Returns
     -------
@@ -62,7 +62,7 @@ def get_gtech() -> pd.DataFrame:
 
 
 def get_active() -> pd.DataFrame:
-    """Get Yahoo Finance most active stocks
+    """Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]
 
     Returns
     -------
