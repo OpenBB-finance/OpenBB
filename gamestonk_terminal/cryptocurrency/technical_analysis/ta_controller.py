@@ -361,6 +361,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values.",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -383,7 +392,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -416,6 +426,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values. ",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -437,7 +456,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -470,6 +490,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values.",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -492,7 +521,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -509,6 +539,15 @@ Custom:
                 The Volume Weighted Average Price that measures the average typical price
                 by volume.  It is typically used with intraday charts to identify general direction.
             """,
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
         )
         parser.add_argument(
             "--export",
@@ -532,6 +571,7 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 

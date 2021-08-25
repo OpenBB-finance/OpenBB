@@ -22,7 +22,8 @@ def view_ma(
     s_ticker: str,
     s_interval: str,
     df_stock: pd.DataFrame,
-    window_length: List[int],
+    length: List[int],
+    offset: int,
     export: str,
 ) -> pd.DataFrame:
     """Plots MA technical indicator
@@ -37,7 +38,7 @@ def view_ma(
         Interval of data
     df_stock : pd.DataFrame
         Dataframe of prices
-    window_length : List[int]
+    length : List[int]
         Length of EMA window
     export : str
         Format to export data
@@ -52,21 +53,21 @@ def view_ma(
         )
 
     l_legend = [s_ticker]
-    for win in window_length:
+    for win in length:
         if ma_type == "EMA":
-            df_ta = overlap_model.ema(s_interval, df_stock, win)
+            df_ta = overlap_model.ema(s_interval, df_stock, win, offset)
             l_legend.append(f"EMA {win}")
         elif ma_type == "SMA":
-            df_ta = overlap_model.sma(s_interval, df_stock, win)
+            df_ta = overlap_model.sma(s_interval, df_stock, win, offset)
             l_legend.append(f"SMA {win}")
         elif ma_type == "WMA":
-            df_ta = overlap_model.wma(s_interval, df_stock, win)
+            df_ta = overlap_model.wma(s_interval, df_stock, win, offset)
             l_legend.append(f"WMA {win}")
         elif ma_type == "HMA":
-            df_ta = overlap_model.hma(s_interval, df_stock, win)
+            df_ta = overlap_model.hma(s_interval, df_stock, win, offset)
             l_legend.append(f"HMA {win}")
         elif ma_type == "ZLMA":
-            df_ta = overlap_model.zlma(s_interval, df_stock, win)
+            df_ta = overlap_model.zlma(s_interval, df_stock, win, offset)
             l_legend.append(f"ZLMA {win}")
 
         price_df = price_df.join(df_ta)
@@ -98,12 +99,14 @@ def view_ma(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-        f"{ma_type.lower()}{'_'.join([str(win) for win in window_length])}",
+        f"{ma_type.lower()}{'_'.join([str(win) for win in length])}",
         price_df,
     )
 
 
-def view_vwap(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str):
+def view_vwap(
+    s_ticker: str, s_interval: str, df_stock: pd.DataFrame, offset: int, export: str
+):
     """Plots EMA technical indicator
 
     Parameters
@@ -123,7 +126,7 @@ def view_vwap(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: st
 
     day_df = df_stock[df_stock.Day == df_stock.Day[-1]]
 
-    df_vwap = overlap_model.vwap(day_df)
+    df_vwap = overlap_model.vwap(day_df, offset)
     mc = mpf.make_marketcolors(
         up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
     )
