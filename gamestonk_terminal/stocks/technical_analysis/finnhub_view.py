@@ -34,7 +34,7 @@ def plot_pattern_recognition(ticker: str, resolution: str, export: str):
         pattern,
     )
 
-    l_segments = list()
+    l_segments = []
     for i in pattern:
         a_part = ("", "")
         if "aprice" in pattern[i]:

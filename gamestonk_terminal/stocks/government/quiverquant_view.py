@@ -838,7 +838,7 @@ def qtr_contracts(other_args: List[str]):
         ]
 
         max_amount = 0
-        quarter_ticks = list()
+        quarter_ticks = []
         for symbol in tickers:
             amounts = (
                 df_contracts[df_contracts["Ticker"] == symbol]

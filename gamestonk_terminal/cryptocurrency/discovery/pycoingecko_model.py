@@ -412,7 +412,7 @@ def get_top_nfts() -> pd.DataFrame:
         ],
     )
     df["Rank"] = df["Rank"].astype(int)
-    df["Price"] = df["Price"].apply(lambda x: float(x.strip("$").replace(",", "")))
+    df["Price"] = df["Price"].apply(lambda x: x.strip("$").replace(",", ""))
     return df
 
 
@@ -477,7 +477,7 @@ def load_binance_map() -> pd.DataFrame:
         symbol, id
     """
     path = os.path.abspath(__file__ + "/../../")
-    with open(path + "/data/binance_gecko_map.json") as f:
+    with open(path + "/data/binance_gecko_map.json", encoding="utf8") as f:
         coins = json.load(f)
 
     coins_df = pd.Series(coins).reset_index()

@@ -27,7 +27,7 @@ def get_high_short_interest() -> DataFrame:
         "lxml",
     )
 
-    a_high_short_interest_header = list()
+    a_high_short_interest_header = []
     for high_short_interest_header in text_soup_high_short_interested_stocks.findAll(
         "td", {"class": "tblhdr"}
     ):
@@ -39,7 +39,7 @@ def get_high_short_interest() -> DataFrame:
 
     stock_list_tr = text_soup_high_short_interested_stocks.find_all("tr")
 
-    shorted_stock_data = list()
+    shorted_stock_data = []
     for a_stock in stock_list_tr:
         a_stock_txt = a_stock.text
 
@@ -53,6 +53,6 @@ def get_high_short_interest() -> DataFrame:
                 len(df_high_short_interest.index)
             ] = shorted_stock_data[:-1]
 
-        shorted_stock_data = list()
+        shorted_stock_data = []
 
     return df_high_short_interest

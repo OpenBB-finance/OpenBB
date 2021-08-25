@@ -135,7 +135,7 @@ def historical(
             l_stocks = similar[:]
 
             while l_stocks:
-                l_parsed_stocks = list()
+                l_parsed_stocks = []
                 for symbol in l_stocks:
                     try:
                         df_similar_stock = yf.download(

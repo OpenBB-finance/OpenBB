@@ -1,8 +1,8 @@
 """Technical Analysis Trendline Module"""
 __docformat__ = "numpy"
 
-from pandas.core.frame import DataFrame
 import yfinance as yf
+from pandas.core.frame import DataFrame
 from scipy.stats import linregress
 
 

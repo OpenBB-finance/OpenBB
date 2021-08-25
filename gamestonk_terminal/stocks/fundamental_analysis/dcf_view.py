@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 from typing import List, Union
 from datetime import datetime
+from pathlib import Path
 import argparse
 import math
 import os
@@ -57,10 +58,7 @@ def dcf(other_args: List[str], ticker: str):
             return
 
         dcf_view = CreateExcelFA(ticker, ns_parser.audit)
-        trypath = dcf_view.create_workbook()
-        print(
-            f"Analysis successfully ran for {ticker}\nPlease look in {trypath} for the file.\n"
-        )
+        dcf_view.create_workbook()
 
     except Exception as e:
         print(e, "\n")
@@ -79,7 +77,7 @@ class CreateExcelFA:
         self.ws3: worksheet = self.wb.create_sheet("Explanations")
         self.ws1.title = "Financials"
         self.ticker: str = ticker
-        self.now: str = datetime.now().strftime("%m/%d/%Y %H:%M:%S").replace("/", "-")
+        self.now: str = datetime.now().strftime("%Y-%m-%d")
         self.letter: int = 0
         self.is_start: int = 4
         self.bs_start: int = 18
@@ -91,7 +89,9 @@ class CreateExcelFA:
         self.df_bs: pd.DataFrame = self.get_data("BS", self.bs_start, False)
         self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
-        self.info = yf.Ticker(ticker).info
+        self.info: pd.DataFrame = yf.Ticker(ticker).info
+        self.t_bill: float = dcf_model.get_rf()
+        self.r_ff: int = dcf_model.get_fama_coe(self.ticker)
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -117,8 +117,15 @@ class CreateExcelFA:
             "excel",
             f"{self.ticker} {self.now}.xlsx",
         )
-        self.wb.save(trypath)
-        return trypath
+
+        my_file = Path(trypath)
+        if my_file.is_file():
+            print("Analysis already ran. Please move file to rerun.")
+        else:
+            self.wb.save(trypath)
+            print(
+                f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
+            )
 
     def get_data(self, statement: str, row: int, header: bool):
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
@@ -493,18 +500,36 @@ class CreateExcelFA:
             dcf_model.set_cell(
                 self.ws2,
                 f"{cols[1+self.len_pred]}9",
-                f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+6}))/({c2}{r+4}-{c2}{r+6})",
+                f"=({cols[self.len_pred]}9*(1+{c2}" f"{r+15}))/({c2}{r+11}-{c2}{r+15})",
+                num_form=dcf_model.fmt_acct,
             )
 
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c1}{r-2}",
+            "Note: We do not allow r values to go below 0.5%.",
+            font=dcf_model.red,
+        )
         self.ws2.merge_cells(f"{c1}{r}:{c2}{r}")
+        for x in [c1, c2]:
+            dcf_model.set_cell(self.ws2, f"{x}{r}", border=dcf_model.thin_border_bottom)
         dcf_model.set_cell(
-            self.ws2, f"{c1}{r}", "Discount Rate", alignment=dcf_model.center
+            self.ws2,
+            f"{c1}{r}",
+            "Discount Rate",
+            alignment=dcf_model.center,
+            border=dcf_model.thin_border_bottom,
         )
+
+        # CAPM
         dcf_model.set_cell(self.ws2, f"{c1}{r+1}", "Risk Free Rate")
-        dcf_model.set_cell(self.ws2, f"{c2}{r+1}", 0.02, num_form=FORMAT_PERCENTAGE_00)
         dcf_model.set_cell(
-            self.ws2, f"{c3}{r+1}", "Eventually get from 10 year t-bond scraper"
+            self.ws2,
+            f"{c2}{r+1}",
+            float(self.t_bill) / 100,
+            num_form=FORMAT_PERCENTAGE_00,
         )
+        self.custom_exp(r + 1, "Pulled from US Treasurey.", 2, f"{c3}")
         dcf_model.set_cell(self.ws2, f"{c1}{r+2}", "Market Rate")
         dcf_model.set_cell(self.ws2, f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00)
         self.custom_exp(
@@ -513,22 +538,71 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws2, f"{c1}{r+3}", "Beta")
         dcf_model.set_cell(self.ws2, f"{c2}{r+3}", float(self.info["beta"]))
         self.custom_exp(r + 3, "Beta from yahoo finance", 2, f"{c3}")
-        dcf_model.set_cell(self.ws2, f"{c1}{r+4}", "r")
+        dcf_model.set_cell(self.ws2, f"{c1}{r+4}", "r (CAPM)")
         dcf_model.set_cell(
             self.ws2,
             f"{c2}{r+4}",
-            f"=(({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1}",
+            f"=max((({c2}{r+2}-{c2}{r+1})*{c2}{r+3})+{c2}{r+1},0.005)",
             num_form=FORMAT_PERCENTAGE_00,
             border=dcf_model.thin_border_top,
             font=dcf_model.bold_font,
         )
-        dcf_model.set_cell(self.ws2, f"{c1}{r+6}", "Long Term Growth")
-        dcf_model.set_cell(self.ws2, f"{c2}{r+6}", 0.04, num_form=FORMAT_PERCENTAGE_00)
+
+        # Fama French
+        dcf_model.set_cell(self.ws2, f"{c1}{r+7}", "Fama French")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+7}",
+            f"=max({self.r_ff},0.005)",
+            num_form=FORMAT_PERCENTAGE_00,
+        )
+        self.custom_exp(
+            r + 7,
+            (
+                "Calculated using the Fama and French Three-Factor model. For more"
+                "information visit https://www.investopedia.com/terms/f/famaandfrenchthreefactormodel.asp."
+            ),
+            2,
+            f"{c3}",
+        )
+
+        # Decide
+        for x in [c1, c2]:
+            dcf_model.set_cell(
+                self.ws2, f"{x}{r+9}", border=dcf_model.thin_border_bottom
+            )
+        self.ws2.merge_cells(f"{c1}{r+9}:{c2}{r+9}")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c1}{r+9}",
+            "Choose model",
+            border=dcf_model.thin_border_bottom,
+            alignment=dcf_model.center,
+            num_form=FORMAT_PERCENTAGE_00,
+        )
+        dcf_model.set_cell(self.ws2, f"{c1}{r+10}", "Model")
+        dcf_model.set_cell(self.ws2, f"{c2}{r+10}", "Fama French")
+        dcf_model.set_cell(self.ws2, f"{c3}{r+10}", "Type 'Fama French' or 'CAPM'")
+        dcf_model.set_cell(self.ws2, f"{c1}{r+11}", "r")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+11}",
+            f'=if({c2}{r+10}="Fama French",{c2}{r+7},if({c2}{r+10}="CAPM",{c2}{r+4},"Invalid Selection"))',
+            num_form=FORMAT_PERCENTAGE_00,
+        )
+
+        dcf_model.set_cell(self.ws2, f"{c1}{r+15}", "Long Term Growth")
+        dcf_model.set_cell(
+            self.ws2,
+            f"{c2}{r+15}",
+            f"=min(0.04,{c2}{r+11}*0.9)",
+            num_form=FORMAT_PERCENTAGE_00,
+        )
         dcf_model.set_cell(self.ws2, "A11", "Value from Operations")
         dcf_model.set_cell(
             self.ws2,
             "B11",
-            f"=NPV({c2}{r+4},B9:{dcf_model.letters[self.len_pred+1]}9)",
+            f"=NPV({c2}{r+11},B9:{dcf_model.letters[self.len_pred+1]}9)",
             num_form=dcf_model.fmt_acct,
         )
         dcf_model.set_cell(self.ws2, "A12", "Cash and Cash Equivalents")
@@ -548,7 +622,28 @@ class CreateExcelFA:
             num_form=dcf_model.fmt_acct,
         )
         dcf_model.set_cell(self.ws2, "A15", "Firm value without debt")
-        dcf_model.set_cell(self.ws2, "B15", "=B13-B14", num_form=dcf_model.fmt_acct)
+        dcf_model.set_cell(
+            self.ws2,
+            "B15",
+            (
+                f"=max(B13-B14,"
+                f"Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')})"
+            ),
+            num_form=dcf_model.fmt_acct,
+        )
+        dcf_model.set_cell(
+            self.ws2,
+            "C15",
+            (
+                f"=if((B13-B14)>"
+                f"(Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Assets')}"
+                f"-Financials!{dcf_model.letters[self.len_data]}{self.title_to_row('Total Liabilities')}),"
+                '"","Note: Total assets minus total liabilities exceeds projected firm value without debt.'
+                ' Value shown is total assets minus total liabilities.")'
+            ),
+            font=dcf_model.red,
+        )
         dcf_model.set_cell(self.ws2, "A16", "Shares Outstanding")
         dcf_model.set_cell(self.ws2, "B16", int(self.info["sharesOutstanding"]))
         dcf_model.set_cell(self.ws2, "A17", "Shares Price")
@@ -557,6 +652,8 @@ class CreateExcelFA:
         )
         dcf_model.set_cell(self.ws2, "A18", "Actual Price")
         dcf_model.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
+
+        # Handle unexpected situation:
 
     def create_header(self, ws: Workbook):
         for i in range(10):

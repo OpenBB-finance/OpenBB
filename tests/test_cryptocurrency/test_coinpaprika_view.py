@@ -1,6 +1,4 @@
 from unittest import TestCase, mock
-import sys
-import io
 
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinpaprika_view as dd_coinpaprika_view,
@@ -12,137 +10,75 @@ from gamestonk_terminal.cryptocurrency.overview import (
     coinpaprika_view as ov_coinpaprika_view,
 )
 
+from tests.helpers import check_print
+
 
 class TestCoinPaprikaView(TestCase):
+    @check_print(assert_in="market_cap_usd")
     def test_global_markets(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.global_market([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("market_cap_usd", capt)
 
+    @check_print(assert_in="rank")
     def test_coins(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         disc_coinpaprika_view.coins([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("rank", capt)
 
+    @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_market_info(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.all_coins_market_info([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Displaying data vs USD", capt)
 
+    @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_info(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.all_coins_info([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Displaying data vs USD", capt)
 
+    @check_print(assert_in="Displaying data vs USD")
     def test_all_exchanges(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.all_exchanges([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Displaying data vs USD", capt)
 
+    @check_print(assert_in="category")
     def test_search(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         disc_coinpaprika_view.search(["-q", "bt"])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("category", capt)
 
+    @check_print(assert_in="platform_id")
     def test_all_platforms(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.all_platforms([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("platform_id", capt)
 
+    @check_print(assert_in="active")
     def test_contracts(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.contracts([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("active", capt)
 
+    @check_print(assert_in="index")
     def test_find(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         disc_coinpaprika_view.find(["-c", "BTC"])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("index", capt)
 
+    @check_print(assert_in="Couldn't find")
     def test_twitter(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.twitter("eth-ethereum", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Couldn't find", capt)
 
+    @check_print(assert_in="description")
     def test_events(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.events("eth-ethereum", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("description", capt)
 
+    @check_print(assert_in="name")
     def test_exchanges(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.exchanges("btc-bitcoin", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("name", capt)
 
+    @check_print(assert_in="exchange")
     def test_markets(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.markets("eth-ethereum", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("exchange", capt)
 
+    @check_print(assert_in="\n")
     @mock.patch("matplotlib.pyplot.show")
     def test_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.chart("btc-bitcoin", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("\n", capt)
 
+    @check_print(assert_in="base_currency_name")
     def test_exchange_markets(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         ov_coinpaprika_view.exchange_markets([])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("base_currency_name", capt)
 
+    @check_print(assert_in="asset_platform_id")
     def price_supply(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.price_supply("btc", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("asset_platform_id", capt)
 
     def test_load(self):
         value = dd_coinpaprika_view.load(["-c", "BTC"])
@@ -153,10 +89,6 @@ class TestCoinPaprikaView(TestCase):
         print(value[0])
         self.assertIn("Open", value[0])
 
+    @check_print(assert_in="Metric")
     def test_basic(self):
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
         dd_coinpaprika_view.basic("BTC", [])
-        sys.stdout = sys.__stdout__
-        capt = capturedOutput.getvalue()
-        self.assertIn("Metric", capt)

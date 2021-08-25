@@ -1,0 +1,19 @@
+<nav>
+    {{ partial "search" . }}
+
+    <section class="gdoc-nav--main">
+        <h2>Navigation</h2>
+        {{ if .Site.Params.GeekdocMenuBundle }}
+            {{ partial "menu-bundle" (dict "current" . "source" .Site.Data.menu.main.main) }}
+        {{ else }}
+            {{ partial "menu-filetree" . }}
+        {{ end }}
+    </section>
+
+    <section class="gdoc-nav--more">
+        {{ if .Site.Data.menu.more.more }}
+            <h2>More</h2>
+            {{ partial "menu-bundle" (dict "current" . "source" .Site.Data.menu.more.more) }}
+        {{ end }}
+    </section>
+</nav>

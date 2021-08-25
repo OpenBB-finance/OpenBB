@@ -8,15 +8,19 @@ from pandas.core.frame import DataFrame
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal.stocks.due_diligence import (
-    financial_modeling_prep_view,
+    fmp_view,
     business_insider_view,
     finviz_view,
-    market_watch_view,
+    marketwatch_view,
     finnhub_view,
     csimarket_view,
 )
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -30,30 +34,34 @@ class DueDiligenceController:
         "help",
         "q",
         "quit",
+    ]
+
+    CHOICES_COMMANDS = [
         "sec",
         "rating",
         "pt",
         "rot",
         "est",
         "analyst",
-        "sec",
         "supplier",
         "customer",
     ]
+
+    CHOICES += CHOICES_COMMANDS
 
     def __init__(self, ticker: str, start: str, interval: str, stock: DataFrame):
         """Constructor
 
         Parameters
         ----------
-        stock : DataFrame
-            Due diligence stock dataframe
         ticker : str
             Due diligence ticker symbol
         start : str
             Start date of the stock data
         interval : str
             Stock data interval
+        stock : DataFrame
+            Due diligence stock dataframe
         """
         self.ticker = ticker
         self.start = start
@@ -68,39 +76,40 @@ class DueDiligenceController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/due_diligence"
-        )
-        intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
-        if self.start:
-            print(
-                f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+        s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
+        if self.ticker and self.start:
+            stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{intraday} Stock: {self.ticker}")
+            stock_text = f"{s_intraday} Stock: {self.ticker}"
 
-        print("\nDue Diligence:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   analyst       analyst prices and ratings of the company [Finviz]")
-        print(
-            "   rating        rating of the company from strong sell to strong buy [FMP]"
-        )
-        print("   pt            price targets over time [Business Insider]")
-        print(
-            "   rot           rating over timefrom strong sell to strong buy [Finnhub]"
-        )
-        print(
-            "   est           quarter and year analysts earnings estimates [Business Insider]"
-        )
-        print("   sec           SEC filings [Market Watch]")
-        print("   supplier      list of suppliers [csimarket]")
-        print("   customer      list of customers [csimarket]")
-        print("")
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/due_diligence
+
+Due Diligence:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+{stock_text}
+
+Finviz:
+    analyst       analyst prices and ratings of the company
+FMP:
+    rating        rating over time (daily)
+Finnhub:
+    rot           number of analysts ratings over time (monthly)
+Business Insider:
+    pt            price targets over time
+    est           quarter and year analysts earnings estimates
+Market Watch:
+    sec           SEC filings
+csimarket:
+    supplier      list of suppliers
+    customer      list of customers
+        """
+
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -148,37 +157,308 @@ class DueDiligenceController:
 
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
-        finviz_view.analyst(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="analyst",
+            description="""
+                Print analyst prices and ratings of the company. The following fields are expected:
+                date, analyst, category, price from, price to, and rating. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_view.analyst(ticker=self.ticker, export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
-        business_insider_view.price_target_from_analysts(
-            other_args, self.stock, self.ticker, self.start, self.interval
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="pt",
+            description="""Prints price target from analysts. [Source: Business Insider]""",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="Number of latest price targets from analysts to print.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
         )
 
-    def call_rot(self, other_args: List[str]):
-        """Process rot command"""
-        finnhub_view.rating_over_time(other_args, self.ticker)
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            business_insider_view.price_target_from_analysts(
+                ticker=self.ticker,
+                start=self.start,
+                interval=self.interval,
+                stock=self.stock,
+                num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_est(self, other_args: List[str]):
         """Process est command"""
-        business_insider_view.estimates(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="est",
+            description="""Yearly estimates and quarter earnings/revenues. [Source: Business Insider]""",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            business_insider_view.estimates(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_rot(self, other_args: List[str]):
+        """Process rot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rot",
+            description="""
+                Rating over time (monthly). [Source: Finnhub]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of last months",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finnhub_view.rating_over_time(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_rating(self, other_args: List[str]):
         """Process rating command"""
-        financial_modeling_prep_view.rating(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rating",
+            description="""
+                Based on specific ratios, prints information whether the company
+                is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
+                P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of last days to display ratings",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            fmp_view.rating(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_sec(self, other_args: List[str]):
         """Process sec command"""
-        market_watch_view.sec_fillings(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="sec",
+            description="""
+                Prints SEC filings of the company. The following fields are expected: Filing Date,
+                Document Date, Type, Category, Amended, and Link. [Source: Market Watch]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="number of latest SEC filings.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            marketwatch_view.sec_filings(
+                ticker=self.ticker,
+                num=ns_parser.n_num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_supplier(self, other_args: List[str]):
         """Process supplier command"""
-        csimarket_view.suppliers(self.ticker, other_args)
+        parser = argparse.ArgumentParser(
+            prog="supplier",
+            add_help=False,
+            description="List of suppliers from ticker provided. [Source: CSIMarket]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            csimarket_view.suppliers(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_customer(self, other_args: List[str]):
         """Process customer command"""
-        csimarket_view.customers(self.ticker, other_args)
+        parser = argparse.ArgumentParser(
+            prog="customer",
+            add_help=False,
+            description="List of customers from ticker provided. [Source: CSIMarket]",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            csimarket_view.customers(
+                ticker=self.ticker,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: str, interval: str, stock: DataFrame):
@@ -186,14 +466,14 @@ def menu(ticker: str, start: str, interval: str, stock: DataFrame):
 
     Parameters
     ----------
-    stock : DataFrame
-        Due diligence stock dataframe
     ticker : str
         Due diligence ticker symbol
     start : str
         Start date of the stock data
     interval : str
         Stock data interval
+    stock : DataFrame
+        Due diligence stock dataframe
     """
 
     dd_controller = DueDiligenceController(ticker, start, interval, stock)

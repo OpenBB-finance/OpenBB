@@ -199,13 +199,15 @@ def getFINRAdata(
     )
 
 
-def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
+def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame, Dict]:
     """Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
     Parameters
     ----------
     num_tickers_to_filter : int
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
+    tier_ats : int
+        Tier to process data from
 
     Returns
     -------
@@ -214,7 +216,10 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
     Dict
         Tickers from Dark Pools with better regression slope
     """
-    tiers = ["T1", "T2", "OTCE"]
+    if tier_ats:
+        tiers = [tier_ats]
+    else:
+        tiers = ["T1", "T2", "OTCE"]
     df_ats = pd.DataFrame()
 
     for tier in tiers:
@@ -286,7 +291,7 @@ def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     tiers = ["T1", "T2", "OTCE"]
 
-    l_data = list()
+    l_data = []
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=True):
             status_code, response = getFINRAdata(
@@ -305,7 +310,7 @@ def getTickerFINRAdata(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
         df_ats = df_ats.sort_values("weekStartDate")
         df_ats = df_ats.set_index("weekStartDate")
 
-    l_data = list()
+    l_data = []
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=False):
             status_code, response = getFINRAdata(
