@@ -283,10 +283,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -331,9 +327,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -699,10 +692,6 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -767,10 +756,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -842,10 +827,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -987,10 +968,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
