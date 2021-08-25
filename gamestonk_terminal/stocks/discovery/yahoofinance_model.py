@@ -44,3 +44,32 @@ def get_undervalued() -> pd.DataFrame:
     data = pd.read_html(requests.get(url).text)[0]
     data = data.iloc[:, :-1]
     return data
+
+
+def get_gtech() -> pd.DataFrame:
+    """Get Yahoo Finance growth technology stocks
+
+    Returns
+    -------
+    pd.DataFrame
+        Growth technology stocks
+    """
+    url = "https://finance.yahoo.com/screener/predefined/growth_technology_stocks"
+
+    data = pd.read_html(requests.get(url).text)[0]
+    data = data.iloc[:, :-1]
+    return data
+
+
+def get_active() -> pd.DataFrame:
+    """Get Yahoo Finance most active stocks
+
+    Returns
+    -------
+    pd.DataFrame
+        Most active stocks
+    """
+    url = "https://finance.yahoo.com/screener/predefined/most_actives"
+
+    data = pd.read_html(requests.get(url).text)[0]
+    return data
