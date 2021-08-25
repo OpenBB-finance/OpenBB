@@ -162,7 +162,7 @@ Note: As explained before, it is possible that this file needs to be created und
 1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
 2. Add the documentation header
 3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from same data source.
-4. Define a function starting with either `print_`, `display_` or `plot_`. Based on wether the output is a string, a table or a plot, respectively.
+4. Define a function starting with `display_`
 5. In this function:
   1. Use typing hints
   2. Write a descriptive description where at the end the source is specified
