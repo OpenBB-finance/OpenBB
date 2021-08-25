@@ -3,27 +3,30 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-from typing import List, Union
 from datetime import datetime
-import pandas as pd
+from typing import List, Union
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
-    get_flair,
     check_positive,
+    get_flair,
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+
+# pylint: disable=wrong-import-position
+from gamestonk_terminal.stocks.backtesting import bt_view  # noqa: E402
 from gamestonk_terminal.stocks.stocks_helper import load
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
 # Save current matplotlib backend
 default_backend = mpl.get_backend()
-# pylint: disable=wrong-import-position
-from gamestonk_terminal.stocks.backtesting import bt_view  # noqa: E402
 
 # Restore backend matplotlib used
 mpl.use(default_backend)
@@ -148,6 +151,14 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
             help="Flag to not show buy and hold comparison",
             dest="no_bench",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -160,6 +171,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
                 ema_length=ns_parser.length,
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
+                export=ns_parser.export,
             )
 
         except Exception as e:
@@ -210,6 +222,14 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
             dest="shortable",
             help="Flag that disables the short sell",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -228,6 +248,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
                 shortable=ns_parser.shortable,
+                export=ns_parser.export,
             )
         except Exception as e:
             print(e, "\n")
@@ -286,6 +307,14 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
             dest="shortable",
             help="Flag that disables the short sell",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -305,6 +334,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
                 shortable=ns_parser.shortable,
+                export=ns_parser.export,
             )
         except Exception as e:
             print(e, "\n")

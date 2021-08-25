@@ -1,14 +1,15 @@
 """Backtesting Model"""
 __docformat__ = "numpy"
 
-from typing import Union
 from datetime import datetime
+from typing import Union
+
 import bt
-from bt import Backtest
-from bt.backtest import Result
 import pandas as pd
 import pandas_ta as ta
 import yfinance as yf
+from bt import Backtest
+from bt.backtest import Result
 
 
 def get_data(ticker: str, start_date: Union[str, datetime]) -> pd.DataFrame:
