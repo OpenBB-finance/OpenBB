@@ -325,7 +325,8 @@ pennystockflow.com
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="under",
             description="""
-                Print up to 25 stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
+                Print up to 25 undervalued stocks with revenue and earnings growth in excess of 25%.
+                [Source: Yahoo Finance]
             """,
         )
         parser.add_argument(
@@ -369,7 +370,7 @@ pennystockflow.com
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gtech",
             description="""
-                Print up to 25 top tech growth with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
+                Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
             """,
         )
         parser.add_argument(
