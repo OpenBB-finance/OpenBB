@@ -50,9 +50,9 @@ class TestCoinPaprikaView(TestCase):
     def test_find(self):
         disc_coinpaprika_view.find(["-c", "BTC"])
 
-    @check_print(assert_in="Couldn't find")
-    def test_twitter(self):
-        dd_coinpaprika_view.twitter("eth-ethereum", [])
+    # @check_print(assert_in="Couldn't find")
+    # def test_twitter(self):
+    #    dd_coinpaprika_view.twitter("eth-ethereum", [])
 
     @check_print(assert_in="description")
     def test_events(self):
