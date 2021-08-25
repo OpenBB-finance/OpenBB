@@ -15,7 +15,7 @@
 [![Bugs Open][bugs-open-shield]][bugs-open-url]
 [![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
-[![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
+[![Build Status](https://github.com/GamestonkTerminal/GamestonkTerminal/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/GamestonkTerminal/GamestonkTerminal/actions)
 [![GitHub release](https://img.shields.io/github/release/GamestonkTerminal/GamestonkTerminal.svg?maxAge=3600)](https://github.com/GamestonkTerminal/GamestonkTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -34,9 +34,9 @@
   <p align="center">
     The next best thing after Bloomberg Terminal. #weliketheterminal
     <br />
-    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/ROADMAP.md"><strong>≪  ROADMAP</strong></a>
     &nbsp · &nbsp
-    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/README.md"><strong>FEATURES »</strong></a>
+    <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/gamestonk_terminal/README.md"><strong>FEATURES »</strong></a>
     <br />
     <br />
     <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D">Report Bug</a>
@@ -83,15 +83,6 @@ Gamestonk Terminal provides a modern Python-based integrated environment for inv
 
 As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup, and numerous third-party APIs).
 
-## Donation
-
-Gamestonk Terminal is a free Open-Source Software. This means that the entire codebase is public, and any user can use it for free.
-
-A small team of us are consistently working to provide as many updates to the project as we can, and this is done out of hours, often late nights to improve this tool. Whilst we don't earn any money from Gamestonk Terminal, we want to make sure that all our users can make the best investments from our software. As we continue to build on this project, we would really appreciate any type of donation or support so we can buy more coffees to fuel us even more!
-
-Here's our Patreon page: https://www.patreon.com/gamestonkterminal
-
-There are many ways to help support GST. If you want to help, non-monetarily, join our [discord](https://discord.gg/Up2QGbMKHY). Sharing the terminal with friends would also go a long way. Thanks in advance ape.
 
 ## Getting Started
 
@@ -171,7 +162,7 @@ After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk T
 
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
-**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
+**TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>
 
 ### Advanced User Install - Machine Learning
 
@@ -441,6 +432,6 @@ Feel free to share loss porn, memes or any questions at:
 [bugs-closed-shield]: https://img.shields.io/github/issues-closed/GamestonkTerminal/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=success
 [bugs-closed-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aclosed
 [license-shield]: https://img.shields.io/github/license/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/LICENSE.txt
+[license-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/DidierRLopes

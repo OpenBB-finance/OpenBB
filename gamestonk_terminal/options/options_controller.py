@@ -705,7 +705,7 @@ Current Expiry: {self.selected_date or None}
             "--calls",
             action="store_true",
             default=False,
-            dest="calls_only",
+            dest="calls",
             help="Flag to show calls only",
         )
         parser.add_argument(
@@ -713,7 +713,7 @@ Current Expiry: {self.selected_date or None}
             "--puts",
             action="store_true",
             default=False,
-            dest="puts_only",
+            dest="puts",
             help="Flag to show puts only",
         )
         parser.add_argument(
@@ -846,7 +846,7 @@ Current Expiry: {self.selected_date or None}
                     min_sp=ns_parser.min,
                     max_sp=ns_parser.max,
                     calls_only=ns_parser.calls,
-                    puts_only=ns_parser.puts,
+                    puts_only=ns_parser.puts_only,
                     export=ns_parser.export,
                 )
             else:

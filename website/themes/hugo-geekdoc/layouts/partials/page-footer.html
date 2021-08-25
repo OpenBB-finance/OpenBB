@@ -1,0 +1,60 @@
+{{ $current := . }}
+{{ $site := .Site }}
+{{ $current.Scratch.Set "prev" false }}
+{{ $current.Scratch.Set "getNext" false }}
+
+{{ $current.Scratch.Set "nextPage" false }}
+{{ $current.Scratch.Set "prevPage" false }}
+
+{{ template "menu_nextprev" dict "sect" $.Site.Data.menu.main.main "current" $current "site" $site }}
+
+{{ define "menu_nextprev" }}
+    {{ $current := .current }}
+    {{ $site := .site }}
+
+    {{ range sort (default (seq 0) .sect) "weight" }}
+        {{ $current.Scratch.Set "current" $current }}
+        {{ $current.Scratch.Set "site" $site }}
+
+        {{ $ref := default false .ref }}
+        {{ if $ref}}
+            {{ $site := $current.Scratch.Get "site" }}
+            {{ $this := $site.GetPage .ref }}
+            {{ $current := $current.Scratch.Get "current" }}
+
+            {{ if $current.Scratch.Get "getNext" }}
+                {{ $current.Scratch.Set "nextPage" (dict "name" .name "this" $this) }}
+                {{ $current.Scratch.Set "getNext" false }}
+            {{ end }}
+
+            {{ if eq $current $this }}
+                {{ $current.Scratch.Set "prevPage" ($current.Scratch.Get "prev") }}
+                {{ $current.Scratch.Set "getNext" true }}
+            {{ end }}
+
+            {{ $current.Scratch.Set "prev" (dict "name" .name "this" $this) }}
+        {{ end }}
+
+        {{ $sub := default false .sub }}
+        {{ if $sub }}
+            {{ template "menu_nextprev" dict "sect" $sub "current" ($current.Scratch.Get "current") "site" ($current.Scratch.Get "site") }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+
+<div class="gdoc-page__footer flex flex-wrap justify-between">
+    {{ $showPrevNext := (and (default true .Site.Params.GeekdocNextPrev) .Site.Params.GeekdocMenuBundle) }}
+    {{ if $showPrevNext }}
+        <span class="gdoc-page__nav">
+            {{ with ($current.Scratch.Get "prevPage") }}
+                <a class="gdoc-page__nav--prev flex align-center" href="{{.this.RelPermalink}}" title="{{ .name }}"> {{ .name }}</a>
+            {{ end }}
+        </span>
+        <span class="gdoc-page__nav">
+            {{ with ($current.Scratch.Get "nextPage") }}
+                <a class="gdoc-page__nav--next flex align-center" href="{{.this.RelPermalink}}" title="{{ .name }}">{{ .name }} </a>
+            {{ end }}
+        </span>
+    {{ end }}
+</div>

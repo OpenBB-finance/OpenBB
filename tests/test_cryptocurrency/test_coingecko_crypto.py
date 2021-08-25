@@ -42,7 +42,6 @@ class TestCoinGeckoAPI(TestCase):
         """
         Mock load function through get_coin_market_chart_by_id.
         Mock returns a dict saved as .json
-
         """
         self.assertEqual(self.coin.coin_symbol, "bitcoin")
         self.assertIsInstance(self.coin, Coin)

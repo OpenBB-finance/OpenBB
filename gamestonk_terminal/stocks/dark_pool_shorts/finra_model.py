@@ -199,13 +199,15 @@ def getFINRAdata(
     )
 
 
-def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
+def getATSdata(num_tickers_to_filter: int, tier_ats: str) -> Tuple[pd.DataFrame, Dict]:
     """Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
     Parameters
     ----------
     num_tickers_to_filter : int
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
+    tier_ats : int
+        Tier to process data from
 
     Returns
     -------
@@ -214,7 +216,10 @@ def getATSdata(num_tickers_to_filter: int) -> Tuple[pd.DataFrame, Dict]:
     Dict
         Tickers from Dark Pools with better regression slope
     """
-    tiers = ["T1", "T2", "OTCE"]
+    if tier_ats:
+        tiers = [tier_ats]
+    else:
+        tiers = ["T1", "T2", "OTCE"]
     df_ats = pd.DataFrame()
 
     for tier in tiers:

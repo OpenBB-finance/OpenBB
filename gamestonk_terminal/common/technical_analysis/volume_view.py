@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from datetime import timedelta
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -32,7 +33,6 @@ def plot_ad(
     export: str
         Format to export data as
     """
-    df_ta = volume_model.ad(df_stock, use_open)
 
     bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
 
@@ -40,6 +40,13 @@ def plot_ad(
         bar_width = timedelta(days=1)
     else:
         bar_width = timedelta(minutes=int(s_interval.split("m")[0]))
+
+    divisor = 1_000_000
+    df_vol = df_stock["Volume"].dropna()
+    df_vol = df_vol.values / divisor
+    df_ta = volume_model.ad(df_stock, use_open)
+    df_cal = df_ta.values
+    df_cal = df_cal / divisor
 
     fig, axes = plt.subplots(
         3,
@@ -55,15 +62,15 @@ def plot_ad(
         ax.plot(df_stock.index, df_stock["Close"].values, "k", lw=2)
     ax.set_title(f"{s_ticker} AD")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Share Price ($)")
+    ax.set_ylabel("Price")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
     ax2 = axes[1]
-    ax2.set_ylabel("Volume")
+    ax2.set_ylabel("Volume [M]")
     if s_interval == "1440min":
         ax2.bar(
             df_stock.index,
-            df_stock["Volume"].values,
+            df_vol,
             color=bar_colors,
             alpha=0.8,
             width=0.3,
@@ -71,7 +78,7 @@ def plot_ad(
     else:
         ax2.bar(
             df_stock.index,
-            df_stock["Volume"].values,
+            df_vol,
             color=bar_colors,
             alpha=0.8,
             width=bar_width,
@@ -79,11 +86,11 @@ def plot_ad(
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
 
     ax3 = axes[2]
-    ax3.plot(df_ta.index, df_ta.values, "b", lw=1)
+    ax3.set_ylabel("A/D [M]")
+    ax3.set_xlabel("Time")
+    ax3.plot(df_ta.index, df_cal, "b", lw=1)
     ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax3.axhline(0, linewidth=2, color="k", ls="--")
-    ax3.set_ylabel("A/D")
-    ax3.set_xlabel("Time")
     ax3.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
@@ -111,7 +118,7 @@ def plot_adosc(
     slow: int,
     use_open: bool,
     export: str,
-) -> pd.DataFrame:
+):
     """Display AD Osc Indicator
 
     Parameters
@@ -138,7 +145,7 @@ def plot_adosc(
     else:
         bar_width = timedelta(minutes=int(s_interval.split("m")[0]))
 
-    divisor = 1000000
+    divisor = 1_000_000
     df_vol = df_stock["Volume"].dropna()
     df_vol = df_vol.values / divisor
     df_ta = volume_model.adosc(df_stock, use_open, fast, slow)
@@ -184,7 +191,7 @@ def plot_adosc(
 
     ax2 = axes[2]
     ax2.set_ylabel("AD Osc [M]")
-
+    ax2.set_xlabel("Time")
     ax2.plot(df_ta.index, df_cal, "b", lw=2, label="AD Osc")
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax2.grid(b=True, which="major", color="#666666", linestyle="-")
@@ -220,14 +227,20 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
     export: str
         Format to export data as
     """
-    df_ta = volume_model.obv(s_interval, df_stock)
-
     bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df_stock.iterrows()]
 
     if s_interval == "1440min":
         bar_width = timedelta(days=1)
     else:
         bar_width = timedelta(minutes=int(s_interval.split("m")[0]))
+
+    divisor = 1_000_000
+    df_vol = df_stock["Volume"].dropna()
+    df_vol = df_vol.values / divisor
+    df_ta = volume_model.obv(s_interval, df_stock)
+    df_cal = df_ta.values
+    df_cal = df_cal / divisor
+
     fig, axes = plt.subplots(
         3,
         1,
@@ -243,17 +256,17 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
 
     ax.set_title(f"{s_ticker} OBV")
     ax.set_xlim(df_stock.index[0], df_stock.index[-1])
-    ax.set_ylabel("Share Price ($)")
+    ax.set_ylabel("Price")
     ax.grid(b=True, which="major", color="#666666", linestyle="-")
     ax.minorticks_on()
     ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     ax2 = axes[1]
     ax2.set_xlim(df_stock.index[0], df_stock.index[-1])
-
+    ax2.set_ylabel("Volume [M]")
     if s_interval == "1440min":
         ax2.bar(
             df_stock.index,
-            df_stock["Volume"].values,
+            df_vol,
             color=bar_colors,
             alpha=0.8,
             width=bar_width,
@@ -261,15 +274,16 @@ def plot_obv(s_ticker: str, s_interval: str, df_stock: pd.DataFrame, export: str
     else:
         ax2.bar(
             df_stock.index,
-            df_stock["Volume"].values,
+            df_vol,
             color=bar_colors,
             alpha=0.8,
             width=bar_width,
         )
     ax3 = axes[2]
-    ax3.plot(df_ta.index, df_ta.values, "b", lw=1)
-    ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
+    ax3.set_ylabel("OBV [M]")
     ax3.set_xlabel("Time")
+    ax3.plot(df_ta.index, df_cal, "b", lw=1)
+    ax3.set_xlim(df_stock.index[0], df_stock.index[-1])
     ax3.grid(b=True, which="major", color="#666666", linestyle="-")
     ax3.minorticks_on()
     ax3.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)

@@ -81,3 +81,58 @@ def donchian(
     ).dropna()
 
     return df_ta
+
+
+def kc(
+    s_interval: str,
+    df_stock: pd.DataFrame,
+    length: int,
+    scalar: float,
+    mamode: str,
+    offset: int,
+) -> pd.DataFrame:
+    """Keltner Channels
+
+    Parameters
+    ----------
+    s_interval : str
+        Interval of stock data
+    df_stock : pd.DataFrame
+        Dataframe of prices
+    length : int
+        Length of window
+    mamode: str
+        Type of filter
+    offset : int
+        Offset value
+
+    Returns
+    -------
+    df_en : pd.DataFrame
+        Dataframe of rolling kc
+    """
+    # Daily
+    if s_interval == "1440min":
+        df_kc = ta.kc(
+            high=df_stock["High"],
+            low=df_stock["Low"],
+            close=df_stock["Adj Close"],
+            length=length,
+            scalar=scalar,
+            mamode=mamode,
+            offset=offset,
+        ).dropna()
+
+    # Intraday
+    else:
+        df_kc = ta.kc(
+            high=df_stock["High"],
+            low=df_stock["Low"],
+            close=df_stock["Close"],
+            length=length,
+            scalar=scalar,
+            mamode=mamode,
+            offset=offset,
+        ).dropna()
+
+    return df_kc
