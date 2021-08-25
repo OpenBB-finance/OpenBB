@@ -188,7 +188,7 @@ Install the pre-commit hooks by running: `pre-commit install`.
 
 1. Create your Feature Branch, e.g. `git checkout -b feature/AmazingFeature`
 2. Check the files you have touched using `git status`
-3. Stage the files you want to commit, e.g. `git add gamestonk_terminal/stocks/stocks_controller.py gamestonk_terminal/stocks/stocks_helperr.py`. Note: **DON'T** add `config_terminal.py` or `.env` files with personal information, or even `feature_flags.py` which is user-dependent.
+3. Stage the files you want to commit, e.g. `git add gamestonk_terminal/stocks/stocks_controller.py gamestonk_terminal/stocks/stocks_helper.py`. Note: **DON'T** add `config_terminal.py` or `.env` files with personal information, or even `feature_flags.py` which is user-dependent.
 4. Write a concise commit message under 50 characters, e.g. `git commit -m "meaningful commit message"`. If your PR solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need to go back to step 3 to add these.
 
 
@@ -267,4 +267,6 @@ A label **must** be selected from the following types:
 
 As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
 
-In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills. Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for better visibility, or suggesting an optimization improvement.
+In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills. 
+
+Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for better visibility, or suggesting a speed optimization improvement.
