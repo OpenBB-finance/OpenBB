@@ -151,6 +151,7 @@ def display_rsi_strategy(
     fig.tight_layout()
     if gtff.USE_ION:
         plt.ion()
+    plt.show()
     print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "rsi_corss", res.stats

@@ -76,7 +76,7 @@ def ema_strategy(
     ----------
     ticker : str
         Stock ticker
-    df_stock : pd.Dataframe
+    df_stock : pd.DataFrame
         Dataframe of prices
     ema_length : int
         Length of ema window
@@ -93,7 +93,7 @@ def ema_strategy(
     ticker = ticker.lower()
     ema = pd.DataFrame()
     start_date = df_stock.index[0]
-    prices = df_stock["Adj Close"]
+    prices = pd.DataFrame(df_stock["Adj Close"])
     prices.columns = [ticker]
     ema[ticker] = ta.ema(prices[ticker], ema_length)
     bt_strategy = bt.Strategy(
@@ -119,7 +119,7 @@ def ema_strategy(
 
 def ema_cross_strategy(
     ticker: str,
-    df_stock: pd.Dataframe,
+    df_stock: pd.DataFrame,
     short_length: int,
     long_length: int,
     spy_bt: bool = True,
@@ -132,7 +132,7 @@ def ema_cross_strategy(
     ----------
     ticker : str
         Stock ticker
-    df_stock : pd.Dataframe
+    df_stock : pd.DataFrame
         Dataframe of prices
     short_length : int
         Length of short ema window
@@ -152,7 +152,7 @@ def ema_cross_strategy(
     """
     ticker = ticker.lower()
     start_date = df_stock.index[0]
-    prices = df_stock["Adj Close"]
+    prices = pd.DataFrame(df_stock["Adj Close"])
     prices.columns = [ticker]
     short_ema = pd.DataFrame(ta.ema(prices[ticker], short_length))
     short_ema.columns = [ticker]
@@ -189,7 +189,7 @@ def ema_cross_strategy(
 
 def rsi_strategy(
     ticker: str,
-    df_stock: pd.Dataframe,
+    df_stock: pd.DataFrame,
     periods: int,
     low_rsi: int,
     high_rsi: int,
@@ -203,7 +203,7 @@ def rsi_strategy(
     ----------
     ticker : str
         Stock ticker
-    df_stock : pd.Dataframe
+    df_stock : pd.DataFrame
         Dataframe of prices
     periods : int
         Number of periods for RSI calculati
@@ -225,7 +225,7 @@ def rsi_strategy(
     """
     ticker = ticker.lower()
     start_date = df_stock.index[0]
-    prices = df_stock["Adj Close"]
+    prices = pd.DataFrame(df_stock["Adj Close"])
     prices.columns = [ticker]
     rsi = pd.DataFrame(ta.rsi(prices[ticker], periods))
     rsi.columns = [ticker]
