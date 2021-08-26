@@ -1,4 +1,4 @@
-"""Exploratory Data Analysis Controller Module"""
+"""Quantitative Analysis Controller Module"""
 __docformat__ = "numpy"
 
 import argparse
@@ -75,9 +75,9 @@ class QaController:
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"{s_intraday} Stock: {self.ticker}"
         targets = {"dpr": "Daily Percentage Returns", "p": "Prices"}
         help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/quantitative_analysis
 

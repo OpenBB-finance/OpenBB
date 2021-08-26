@@ -7,7 +7,7 @@ import pandas as pd
 import pandas_ta as ta
 
 
-def rolling_avg(
+def get_rolling_avg(
     df_stock: pd.DataFrame, length: int
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Return rolling mean and standard deviation
@@ -34,7 +34,7 @@ def rolling_avg(
     return pd.DataFrame(rolling_mean), pd.DataFrame(rolling_std)
 
 
-def spread(
+def get_spread(
     s_interval: str, df_stock: pd.DataFrame, length: int
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Standard Deviation and Variance
@@ -78,7 +78,7 @@ def spread(
     return pd.DataFrame(df_sd), pd.DataFrame(df_var)
 
 
-def quantile(
+def get_quantile(
     s_interval: str, df_stock: pd.DataFrame, length: int, quantile_pct: float
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Overlay Median & Quantile
@@ -119,7 +119,7 @@ def quantile(
     return pd.DataFrame(df_med), pd.DataFrame(df_quantile)
 
 
-def skew(s_interval: str, df_stock: pd.DataFrame, length: int) -> pd.DataFrame:
+def get_skew(s_interval: str, df_stock: pd.DataFrame, length: int) -> pd.DataFrame:
     """Skewness Indicator
 
     Parameters
@@ -139,7 +139,6 @@ def skew(s_interval: str, df_stock: pd.DataFrame, length: int) -> pd.DataFrame:
     # Daily
     if s_interval == "1440min":
         df_skew = ta.skew(close=df_stock["Adj Close"], length=length).dropna()
-
     # Intraday
     else:
         df_skew = ta.skew(close=df_stock["Close"], length=length).dropna()

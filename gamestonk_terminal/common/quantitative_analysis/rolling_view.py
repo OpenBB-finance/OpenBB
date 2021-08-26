@@ -31,7 +31,7 @@ def display_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export:
     export : str
         Format to export data
     """
-    rolling_mean, rolling_std = rolling_model.rolling_avg(df_stock, length)
+    rolling_mean, rolling_std = rolling_model.get_rolling_avg(df_stock, length)
     fig, axMean = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     axMean.plot(
         df_stock["Adj Close"].index,
@@ -47,7 +47,12 @@ def display_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export:
     axMean.tick_params(axis="y", labelcolor="blue")
     axStd = axMean.twinx()
     axStd.plot(
-        rolling_std, label="Rolling std", linestyle="--", color="green", linewidth=3
+        rolling_std,
+        label="Rolling std",
+        linestyle="--",
+        color="green",
+        linewidth=3,
+        alpha=0.6,
     )
     axStd.set_ylabel("Std Deviation")
     axStd.legend(["Rolling std"], loc=1)
@@ -56,12 +61,13 @@ def display_mean_std(s_ticker: str, df_stock: pd.DataFrame, length: int, export:
     axMean.set_title(
         "Rolling mean and std with window " + str(length) + " applied to " + s_ticker
     )
-    plt.xlim([df_stock.index[0], df_stock.index[-1]])
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    axMean.set_xlim([df_stock.index[0], df_stock.index[-1]])
+    axMean.grid(b=True, which="major", color="#666666", linestyle="-")
 
     if gtff.USE_ION:
         plt.ion()
     fig.tight_layout(pad=1)
+    plt.gcf().autofmt_xdate()
     plt.show()
     print("")
     export_data(
@@ -90,7 +96,7 @@ def display_spread(
     export : str
         Format to export data
     """
-    df_sd, df_var = rolling_model.spread(s_interval, df_stock, length)
+    df_sd, df_var = rolling_model.get_spread(s_interval, df_stock, length)
     fig, axes = plt.subplots(3, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Spread")
@@ -159,7 +165,9 @@ def display_quantile(
     export : str
         Format to export data
     """
-    df_med, df_quantile = rolling_model.quantile(s_interval, df_stock, length, quantile)
+    df_med, df_quantile = rolling_model.get_quantile(
+        s_interval, df_stock, length, quantile
+    )
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     if s_interval == "1440min":
         ax.plot(df_stock.index, df_stock["Adj Close"].values, color="fuchsia")
@@ -211,7 +219,7 @@ def display_skew(
     export : str
         Format to export data
     """
-    df_skew = rolling_model.skew(s_interval, df_stock, length)
+    df_skew = rolling_model.get_skew(s_interval, df_stock, length)
     fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax = axes[0]
     ax.set_title(f"{s_ticker} Skewness Indicator")

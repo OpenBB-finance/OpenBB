@@ -1,4 +1,4 @@
-"""Quantitative Analysis Models"""
+"""Quantitative Analysis Model"""
 __docformat__ = "numpy"
 
 import warnings
@@ -14,7 +14,7 @@ from statsmodels.tsa.stattools import adfuller, kpss
 # df_stock should be replaced with a generic df and a column variable
 
 
-def summary(df_stock: pd.DataFrame) -> pd.DataFrame:
+def get_summary(df_stock: pd.DataFrame) -> pd.DataFrame:
     """Print summary statistics
 
     Parameters
@@ -33,7 +33,7 @@ def summary(df_stock: pd.DataFrame) -> pd.DataFrame:
     return df_stats
 
 
-def seasonal_decomposition(
+def get_seasonal_decomposition(
     df_stock: pd.DataFrame, multiplicative: bool
 ) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
     """Perform seasonal decomposition
@@ -69,7 +69,7 @@ def seasonal_decomposition(
     return result, pd.DataFrame(cycle), pd.DataFrame(trend)
 
 
-def normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
+def get_normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
     """
     Look at the distribution of returns and generate statistics on the relation to the normal curve.
     This function calculates skew and kurtosis (the third and fourth moments) and performs both
@@ -128,7 +128,7 @@ def normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
     )
 
 
-def unitroot(
+def get_unitroot(
     df_stock: pd.DataFrame, prices: bool, fuller_reg: str, kpss_reg: str
 ) -> pd.DataFrame:
     """Calculate test statistics for unit roots

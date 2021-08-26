@@ -1,7 +1,8 @@
-"""Quantitative Analysis Views"""
+"""Quantitative Analysis View"""
 __docformat__ = "numpy"
 
 import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -27,8 +28,8 @@ register_matplotlib_converters()
 # df_stock should be replaced with a generic df and a column variable
 
 
-def color_red(val):
-    """Adds red to dataframe"""
+def color_red(val: Any) -> str:
+    """Adds red to dataframe value"""
     return Fore.RED + str(val) + Style.RESET_ALL
 
 
@@ -47,7 +48,7 @@ def display_summary(df_stock: pd.DataFrame, export: str):
     df_stock["Returns"] = df_stock["Adj Close"].pct_change()
     df_stock = df_stock.dropna()
 
-    summary = qa_model.summary(df_stock)
+    summary = qa_model.get_summary(df_stock)
 
     print(
         tabulate(
@@ -128,12 +129,10 @@ def display_cdf(
     export : str
         Format to export cdf
     """
-
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     if prices:
         stock = df_stock["Adj Close"]
-
     else:
         stock = df_stock["Adj Close"].pct_change().dropna()
 
@@ -359,7 +358,7 @@ def display_seasonal(
 
     plt.title(s_ticker + " (Time-Series)")
 
-    result, cycle, trend = qa_model.seasonal_decomposition(stock, multiplicative)
+    result, cycle, trend = qa_model.get_seasonal_decomposition(stock, multiplicative)
 
     # Multiplicative model
     fig.add_subplot(spec[1, :4])
@@ -419,13 +418,13 @@ def display_normality(df_stock: pd.DataFrame, prices: bool, export: str):
     Parameters
     ----------
     df_stock : pd.DataFrame
-        [description]
+        DataFrame of prices
     prices : bool
-        [description]
+        Flag to display prices
     export : str
-        [description]
+        Format to export data
     """
-    normal = qa_model.normality(df_stock, prices)
+    normal = qa_model.get_normality(df_stock, prices)
     stats1 = normal.copy()
     stats1.loc[:, stats1.iloc[1, :] > 0.05] = stats1.loc[
         :, stats1.iloc[1, :] > 0.05
@@ -501,7 +500,7 @@ def display_unitroot(
     export : str
         Format for exporting data
     """
-    data = qa_model.unitroot(df_stock, prices, fuller_reg, kpss_reg)
+    data = qa_model.get_unitroot(df_stock, prices, fuller_reg, kpss_reg)
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
