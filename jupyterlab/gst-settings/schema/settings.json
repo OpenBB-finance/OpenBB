@@ -1,0 +1,31 @@
+{
+  "title": "Gamestonk settings",
+  "description": "Settings for Gamestonk Terminal extension.",
+  "type": "object",
+  "properties": {
+      "IEX_KEY": {
+          "type": "string",
+          "title": "IEX KEY",
+          "description": "To log in IEX",
+          "default": ""
+      },
+      "DG_USERNAME": {
+          "type": "string",
+          "title": "IEX KEY",
+          "description": "To log in IEX",
+          "default": ""
+      },
+      "DG_PASSWORD": {
+          "type": "string",
+          "title": "IEX KEY",
+          "description": "To log in IEX",
+          "default": ""
+      },
+      "DG_TOTP_SECRET": {
+          "type": "string",
+          "title": "IEX KEY",
+          "description": "To log in IEX",
+          "default": ""
+      }
+  }
+}

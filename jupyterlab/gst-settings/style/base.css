@@ -1,0 +1,31 @@
+.gamestonkSettings {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.settingsForm {
+  width: 85%;
+  height: 100%;
+  padding-top: var(--jp-private-launcher-top-padding);
+  padding-left: var(--jp-private-launcher-side-padding);
+  padding-right: var(--jp-private-launcher-side-padding);
+  box-sizing: border-box;
+}
+
+.settingsLabel {
+  font-size: 24px;
+}
+
+.gamestonkSettingsWidget {
+  color: var(--jp-ui-font-color1);
+  background: var(--jp-layout-color1);
+  font-size: 16px;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  text-align: left;
+}
