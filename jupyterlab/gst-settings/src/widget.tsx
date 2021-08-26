@@ -1,7 +1,7 @@
 import { ReactWidget } from '@jupyterlab/apputils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { useState } from 'react';
-import TextInput from './components/TextInput';
+import FormInput from './components/FormInput';
 
 /**
  * Gamestonk Terminal Settings Menu
@@ -12,48 +12,116 @@ import TextInput from './components/TextInput';
  * @returns - JSX.Element Settings form component
  */
 export function GamestonkTerminalSettingsComponent({ s }: any): JSX.Element {
-  const [token, setToken] = useState(s.get('IEX_KEY').composite as string);
-  const [password, setPassword] = useState(
-    s.get('DG_PASSWORD').composite as string
-  );
+  const getSectionState = (section: string) => {
+    const env_values = s.schema.properties;
+    const values: any = [];
+
+    Object.keys(env_values[section].default).forEach((element) => {
+      values.push({
+        key: element,
+        value: env_values[section].default[element],
+      });
+    });
+    return values;
+  }
+
+  const [featureFlags, setFeatureFlags] = useState(getSectionState("FEATURE_FLAGS"));
+  const [appSettings, setAppSettings] = useState(getSectionState("GENERAL"));
+  const [apiKeys, setApiKeys] = useState(getSectionState("API_KEYS"));
+
+  const onFeatureFlagsChange = (index: any, item: any) => {
+    featureFlags[index] = item;
+  };
+
+  const onAppSettingsChange = (index: any, item: any) => {
+    appSettings[index] = item;
+  };
+
+  const onApiKeysChange = (index: any, item: any) => {
+    apiKeys[index] = item;
+  };
 
   /**
-   * handleSubmit
-   *
-   * @param event - Form submission event
+   * @param event
    */
   function handleSubmit(event: any) {
     console.log(event);
     event.preventDefault();
-    s.set('IEX_KEY', token);
-    s.set('DG_PASSWORD', password);
-    alert(token + '\n' + password);
+    setFeatureFlags(event.target.value);
+    setAppSettings(event.target.value);
+    setApiKeys(event.target.value);
+    // s.set('IEX_KEY', token);
+    // s.set('DG_PASSWORD', password);
+    alert(featureFlags);
   }
 
   return (
     <div className="gamestonkSettings">
-      <form className="settingsForm" onSubmit={handleSubmit}>
-        <fieldset>
-          <TextInput name={'token'} value={token} updateFuction={setToken} />
-          <label className="settingsLabel" htmlFor="password">
-            Password:
-          </label>
-          <br />
-          <input
-            type="password"
-            id="password-input"
-            name="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            data-form-required
-          />
-          <br />
-          <br />
-          <input type="submit" value="Submit" />
+    <div className="settingsForm">
+      <form onSubmit={handleSubmit}>
+        <fieldset id="featureFlags">
+          <p className="settingsSectionLabel">Feature Flags</p>
+          <div className="fieldSetData">
+          {featureFlags.map((item: any, index: any) => (
+            <FormInput
+              itemParent={item}
+              index={index}
+              onChangeParent={onFeatureFlagsChange}
+            />
+          ))}
+          </div>
+          <div className="container">
+          <div className="center">
+          <button className="settingsSectionButton" onClick={handleSubmit}>Update Flags</button>
+            </div>
+            </div>
         </fieldset>
       </form>
+      <br/>
+      <br/>
+
+      <form onSubmit={handleSubmit}>
+        <fieldset id="appSettings">
+          <p className="settingsSectionLabel">Configurations</p>
+          <div className="fieldSetData">
+          {appSettings.map((item: any, index: any) => (
+            <FormInput
+              itemParent={item}
+              index={index}
+              onChangeParent={onAppSettingsChange}
+            />
+          ))}
+          </div>
+          <div className="container">
+          <div className="center">
+          <button className="settingsSectionButton" onClick={handleSubmit}>Update Configurations</button>
+          </div>
+          </div>
+        </fieldset>
+      </form>
+      <br/>
+      <br/>
+
+      <form onSubmit={handleSubmit}>
+        <fieldset id="apiKeys">
+          <p className="settingsSectionLabel">API keys</p>
+          <div className="fieldSetData">
+          {apiKeys.map((item: any, index: any) => (
+            <FormInput
+              itemParent={item}
+              index={index}
+              onChangeParent={onApiKeysChange}
+            />
+          ))}
+          </div>
+          <div className="container">
+          <div className="center">
+          <button className="settingsSectionButton" onClick={handleSubmit}>Update API keys</button>
+          </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
     </div>
   );
 }
