@@ -1,6 +1,7 @@
 """CoinGecko view"""
 __docformat__ = "numpy"
 
+import os
 import argparse
 from typing import List, Tuple
 
@@ -12,10 +13,12 @@ import mplfinance as mpf
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     plot_autoscale,
+    export_data,
 )
 from gamestonk_terminal.feature_flags import USE_ION as ion
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
+
 
 register_matplotlib_converters()
 
@@ -213,397 +216,291 @@ def load_ta_data(coin: gecko.Coin, other_args: List[str]) -> Tuple[pd.DataFrame,
         return pd.DataFrame(), ""
 
 
-def info(coin: gecko.Coin, other_args: List[str]):
-    """Shows basic information about loaded coin
+def display_info(coin: gecko.Coin, export: str) -> None:
+    """Shows basic information about loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
-
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="info",
-        description="""
-         Shows basic information about loaded coin like:
-         Name, Symbol, Description, Market Cap, Public Interest, Supply, and Price related metrics
-         """,
+
+    df = wrap_text_in_df(coin.base_info, w=80)
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        df = wrap_text_in_df(coin.base_info, w=80)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "info",
+        df,
+    )
 
 
-def web(coin: gecko.Coin, other_args: List[str]):
-    """Shows found websites corresponding to loaded coin
+def display_web(coin: gecko.Coin, export: str) -> None:
+    """Shows found websites corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
 
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="web",
-        description="""Websites found for given Coin. You can find there urls to
-                       homepage, forum, announcement site and others.""",
+
+    df = coin.websites
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        df = coin.websites
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "web",
+        df,
+    )
 
 
-def social(coin: gecko.Coin, other_args: List[str]):
-    """Shows social media corresponding to loaded coin
+def display_social(coin: gecko.Coin, export: str) -> None:
+    """Shows social media corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
+
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="social",
-        description="""Shows social media corresponding to loaded coin. You can find there name of
-                    telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.""",
+
+    df = coin.social_media
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "social",
+        df,
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if not ns_parser:
-            return
-
-        df = coin.social_media
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
-
-
-def dev(coin: gecko.Coin, other_args: List[str]):
-    """Shows developers data for loaded coin
+def display_dev(coin: gecko.Coin, export: str) -> None:
+    """Shows developers data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
+
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="dev",
-        description="""Developers data for loaded coin. If the development data is available you can see
-                       how the code development of given coin is going on.
-                       There are some statistics that shows number of stars, forks, subscribers, pull requests,
-                       commits, merges, contributors on github.""",
+
+    df = coin.developers_data
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dev",
+        df,
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if not ns_parser:
-            return
-
-        df = coin.developers_data
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
-
-
-def ath(coin: gecko.Coin, other_args: List[str]):
-    """Shows all time high data for loaded coin
+def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
+    """Shows all time high data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+
+    currency: str
+        currency vs which coin ath will be displayed: usd or btc
+    export : str
+        Export dataframe data to csv,json,xlsx file
+
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="ath",
-        description="""All time high data for loaded coin""",
+
+    df = coin.all_time_high(currency=currency)
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    parser.add_argument(
-        "--vs", dest="vs", help="currency", default="usd", choices=["usd", "btc"]
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ath",
+        df,
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if not ns_parser:
-            return
-
-        df = coin.all_time_high(currency=ns_parser.vs)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
-
-
-def atl(coin: gecko.Coin, other_args: List[str]):
-    """Shows all time low data for loaded coin
+def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
+    """Shows all time low data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+
+    currency: str
+        currency vs which coin ath will be displayed: usd or btc
+    export : str
+        Export dataframe data to csv,json,xlsx file
+
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="atl",
-        description="""All time low data for loaded coin""",
+
+    df = coin.all_time_low(currency=currency)
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    parser.add_argument(
-        "--vs", dest="vs", help="currency", default="usd", choices=["usd", "btc"]
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "atl",
+        df,
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if not ns_parser:
-            return
-
-        df = coin.all_time_low(currency=ns_parser.vs)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
-
-
-def score(coin: gecko.Coin, other_args: List[str]):
-    """Shows different kind of scores for loaded coin
+def display_score(coin: gecko.Coin, export: str) -> None:
+    """Shows different kind of scores for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
+
 
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="score",
-        description="""
-                        In this view you can find different kind of scores for loaded coin.
-                        Those scores represents different rankings, sentiment metrics, some user stats and others.
-                        You will see CoinGecko scores, Developer Scores, Community Scores, Sentiment, Reddit scores
-                        and many others.
-                        """,
+    df = coin.scores
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        df = coin.scores
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "score",
+        df,
+    )
 
 
-def bc(coin: gecko.Coin, other_args: List[str]):
-    """Shows urls to blockchain explorers
+def display_bc(coin: gecko.Coin, export: str) -> None:
+    """Shows urls to blockchain explorers. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
 
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="bc",
-        description="""
-                        Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io
-                        in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
-                        """,
+
+    df = coin.blockchain_explorers
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "bc",
+        df,
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        if not ns_parser:
-            return
-
-        df = coin.blockchain_explorers
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
-
-
-def market(coin: gecko.Coin, other_args: List[str]):
-    """Shows market data for loaded coin
+def display_market(coin: gecko.Coin, export: str) -> None:
+    """Shows market data for loaded coin. [Source: CoinGecko]
 
     Parameters
     ----------
     coin : gecko_coin.Coin
         Cryptocurrency
-    other_args : List[str]
-        argparse arguments
+    export : str
+        Export dataframe data to csv,json,xlsx file
 
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="market",
-        description="""
-                        Market data for loaded coin. There you find metrics like:
-                        Market Cap, Supply, Circulating Supply, Price, Volume and many others.
-                        """,
+
+    df = coin.market_data
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        df = coin.market_data
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    except SystemExit:
-        print("")
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "market",
+        df,
+    )

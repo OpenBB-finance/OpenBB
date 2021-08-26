@@ -90,7 +90,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_info(self):
-        dd_pycoingecko_view.info(self.coin, [])
+        dd_pycoingecko_view.display_info(self.coin, [])
 
     @check_print(assert_in="Homepage")
     @vcr.use_cassette(
@@ -98,7 +98,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_web(self):
-        dd_pycoingecko_view.web(self.coin, [])
+        dd_pycoingecko_view.display_web(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -106,7 +106,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_social(self):
-        dd_pycoingecko_view.social(self.coin, [])
+        dd_pycoingecko_view.display_social(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -114,7 +114,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_dev(self):
-        dd_pycoingecko_view.dev(self.coin, [])
+        dd_pycoingecko_view.display_dev(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -122,7 +122,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_ath(self):
-        dd_pycoingecko_view.ath(self.coin, [])
+        dd_pycoingecko_view.display_ath(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -130,7 +130,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_atl(self):
-        dd_pycoingecko_view.atl(self.coin, [])
+        dd_pycoingecko_view.display_atl(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -138,7 +138,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_score(self):
-        dd_pycoingecko_view.score(self.coin, [])
+        dd_pycoingecko_view.display_score(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -146,7 +146,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_bc(self):
-        dd_pycoingecko_view.bc(self.coin, [])
+        dd_pycoingecko_view.display_bc(self.coin, [])
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -154,7 +154,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_market(self):
-        dd_pycoingecko_view.market(self.coin, [])
+        dd_pycoingecko_view.display_market(self.coin, [])
 
     @check_print(assert_in="Total Bitcoin Holdings")
     @vcr.use_cassette(

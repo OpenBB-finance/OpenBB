@@ -122,7 +122,7 @@ def show_available_pairs_for_given_symbol(
     return None, []
 
 
-def plot_order_book(bids: np.array, asks: np.array, coin: str):
+def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
     """
     Plots Bid/Ask
     Parameters
@@ -156,7 +156,7 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str):
     print("")
 
 
-def plot_candles(candles_df: pd.DataFrame, title: str):
+def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
     """
     Plot candle chart from dataframe
     Parameters

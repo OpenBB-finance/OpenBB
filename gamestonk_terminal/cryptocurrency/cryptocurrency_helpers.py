@@ -22,7 +22,7 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
 )
 
 
-def prepare_all_coins_df():
+def prepare_all_coins_df() -> pd.DataFrame:
     """Helper method which loads coins from all sources: CoinGecko, CoinPaprika, Binance and
     merge those coins on keys:
         CoinGecko - > name < - CoinPaprika
@@ -184,7 +184,7 @@ def load(
         return coin, None
 
 
-def find(other_args: List[str]):
+def find(other_args: List[str]) -> None:
     """Find similar coin by coin name,symbol or id.
 
     If you don't remember exact name or id of the Coin at CoinGecko or CoinPaprika
@@ -335,7 +335,7 @@ def find(other_args: List[str]):
         print(e, "\n")
 
 
-def all_coins(other_args: List[str]):
+def all_coins(other_args: List[str]) -> None:
     """Find similar coin by coin name,symbol or id.
 
     If you don't remember exact name or id of the Coin at CoinGecko or CoinPaprika

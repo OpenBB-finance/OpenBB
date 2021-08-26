@@ -3,12 +3,17 @@ __docformat__ = "numpy"
 
 import argparse
 
+import os
 from typing import List, Tuple, Union
 from binance.client import Client
 from tabulate import tabulate
 import numpy as np
 import pandas as pd
-from gamestonk_terminal.helper_funcs import check_positive, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    check_positive,
+    parse_known_args_and_warn,
+    export_data,
+)
 from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     check_valid_binance_str,
     show_available_pairs_for_given_symbol,
@@ -18,124 +23,83 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
 import gamestonk_terminal.config_terminal as cfg
 
 
-def order_book(other_args: List[str], coin: str) -> None:
+def display_order_book(coin: str, limit: int, currency: str, export: str) -> None:
     """Get order book for currency
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
+
     coin: str
-        Coin to get symbol of
+        Cryptocurrency
+    limit: int
+        Limit parameter. Adjusts the weight
+    currency: str
+        Quote currency (what to view coin vs)
+    export: str
+        Export dataframe data to csv,json,xlsx
+
 
     """
-    limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-    _, quotes = show_available_pairs_for_given_symbol(coin)
 
-    parser = argparse.ArgumentParser(
-        prog="book",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Get the order book for selected coin",
-    )
-    parser.add_argument(
-        "-l",
-        "--limit",
-        dest="limit",
-        help="Limit parameter.  Adjusts the weight",
-        default=100,
-        type=int,
-        choices=limit_list,
-    )
+    pair = coin + currency
 
-    parser.add_argument(
-        "--vs",
-        help="Quote currency (what to view coin vs)",
-        dest="vs",
-        type=str,
-        default="USDT",
-        choices=quotes,
+    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+    market_book = client.get_order_book(symbol=pair, limit=limit)
+    bids = np.asarray(market_book["bids"], dtype=float)
+    asks = np.asarray(market_book["asks"], dtype=float)
+    bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
+    asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
+    plot_order_book(bids, asks, coin)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "book",
+        pd.DataFrame(market_book),
     )
 
-    try:
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pair = coin + ns_parser.vs
-
-        client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-        market_book = client.get_order_book(symbol=pair, limit=ns_parser.limit)
-        bids = np.asarray(market_book["bids"], dtype=float)
-        asks = np.asarray(market_book["asks"], dtype=float)
-        bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
-        asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
-        plot_order_book(bids, asks, coin)
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def balance(other_args: List[str], coin: str) -> None:
+def display_balance(coin: str, currency: str, export: str) -> None:
     """Get account holdings for asset
 
     Parameters
     ----------
-    other_args: List[str]
-        Argparse arguments
     coin: str
-        Coin to get symbol of
+        Cryptocurrency
+    currency: str
+        Quote currency (what to view coin vs)
+    export: str
+        Export dataframe data to csv,json,xlsx
 
     """
 
-    _, quotes = show_available_pairs_for_given_symbol(coin)
+    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
 
-    parser = argparse.ArgumentParser(
-        prog="balance",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Chart",
+    pair = coin + currency
+    current_balance = client.get_asset_balance(asset=pair)
+    if current_balance is None:
+        print("Check loaded coin")
+        return
+
+    print("")
+    amounts = [float(current_balance["free"]), float(current_balance["locked"])]
+    total = np.sum(amounts)
+    df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))
+    df.columns = ["Amount"]
+    df.index = ["Free", "Locked"]
+    df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
+    print(f"You currently have {total} coins and the breakdown is:")
+    print(
+        tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
+        "\n",
     )
 
-    parser.add_argument(
-        "--vs",
-        help="Quote currency (what to view coin vs)",
-        dest="vs",
-        type=str,
-        default="USDT",
-        choices=quotes,
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "book",
+        df,
     )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-
-        if not ns_parser:
-            return
-
-        client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-
-        pair = coin + ns_parser.vs
-        current_balance = client.get_asset_balance(asset=pair)
-        if current_balance is None:
-            print("Check loaded coin")
-            return
-
-        print("")
-        amounts = [float(current_balance["free"]), float(current_balance["locked"])]
-        total = np.sum(amounts)
-        df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))
-        df.columns = ["Amount"]
-        df.index = ["Free", "Locked"]
-        df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
-        print(f"You currently have {total} coins and the breakdown is:")
-        print(
-            tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
 
 
 def load(other_args: List[str]) -> Union[str, None]:

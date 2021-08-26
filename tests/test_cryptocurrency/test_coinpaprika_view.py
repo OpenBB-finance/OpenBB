@@ -18,10 +18,6 @@ class TestCoinPaprikaView(TestCase):
     def test_global_markets(self):
         ov_coinpaprika_view.global_market([])
 
-    @check_print(assert_in="rank")
-    def test_coins(self):
-        disc_coinpaprika_view.display_coins([])
-
     @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_market_info(self):
         ov_coinpaprika_view.all_coins_market_info([])
@@ -36,7 +32,9 @@ class TestCoinPaprikaView(TestCase):
 
     @check_print(assert_in="category")
     def test_search(self):
-        disc_coinpaprika_view.display_search_results(["-q", "bt"])
+        disc_coinpaprika_view.display_search_results(
+            query="btc", category="all", top=10, sortby="id", export="", descend=False
+        )
 
     @check_print(assert_in="platform_id")
     def test_all_platforms(self):
