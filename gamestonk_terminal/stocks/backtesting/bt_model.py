@@ -8,17 +8,16 @@ import bt
 import pandas as pd
 import pandas_ta as ta
 import yfinance as yf
-from bt import Backtest
-from bt.backtest import Result
 
 
 def get_data(ticker: str, start_date: Union[str, datetime]) -> pd.DataFrame:
     """Function to replace bt.get,  Gets Adjusted close of ticker using yfinance
+
     Parameters
     ----------
     ticker: str
         Ticker to get data for
-    start_date:
+    start_date: Union[str, datetime]
         Start date
 
     Returns
@@ -32,23 +31,25 @@ def get_data(ticker: str, start_date: Union[str, datetime]) -> pd.DataFrame:
     return prices
 
 
-def buy_and_hold(ticker: str, start_date: Union[str, datetime], name: str) -> Backtest:
-    """
-    Generates a buy and hold backtest object for the given ticker
+def buy_and_hold(
+    ticker: str, start_date: Union[str, datetime], name: str
+) -> bt.Backtest:
+    """Generates a buy and hold backtest object for the given ticker
+
     Parameters
     ----------
     ticker: str
         Stock to test
     start: Union[str, datetime]
         Backtest start date.  Can be either string or datetime
-    name:
+    name: str
         Name of the backtest (for labeling purposes)
 
     Returns
     -------
-    bt.Backtest object for buy and hold strategy
+    bt.Backtest
+        Backtest object for buy and hold strategy
     """
-    # prices = bt.get(ticker, start=start)
     prices = get_data(ticker, start_date)
     bt_strategy = bt.Strategy(
         name,
@@ -64,19 +65,19 @@ def buy_and_hold(ticker: str, start_date: Union[str, datetime], name: str) -> Ba
 
 def ema_strategy(
     ticker: str,
-    start_date: Union[str, datetime],
+    df_stock: pd.DataFrame,
     ema_length: int,
     spy_bt: bool = True,
     no_bench: bool = False,
-) -> Result:
+) -> bt.backtest.Result:
     """Perform backtest for simple EMA strategy.  Buys when price>EMA(l)
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-    start_date : Union[str, datetime]
-        Start date of backtest
+    df_stock : pd.Dataframe
+        Dataframe of prices
     ema_length : int
         Length of ema window
     spy_bt : bool
@@ -86,12 +87,14 @@ def ema_strategy(
 
     Returns
     -------
-    Result
+    bt.backtest.Result
         Backtest results
     """
     ticker = ticker.lower()
     ema = pd.DataFrame()
-    prices = get_data(ticker, start_date)
+    start_date = df_stock.index[0]
+    prices = df_stock["Adj Close"]
+    prices.columns = [ticker]
     ema[ticker] = ta.ema(prices[ticker], ema_length)
     bt_strategy = bt.Strategy(
         "AboveEMA",
@@ -116,21 +119,21 @@ def ema_strategy(
 
 def ema_cross_strategy(
     ticker: str,
-    start_date: Union[str, datetime],
+    df_stock: pd.Dataframe,
     short_length: int,
     long_length: int,
     spy_bt: bool = True,
     no_bench: bool = False,
     shortable: bool = True,
-) -> Result:
-    """Perform backtest for simple EMA strategy.  Buys when price>EMA(l)
+) -> bt.backtest.Result:
+    """Perform backtest for simple EMA strategy. Buys when price>EMA(l)
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-    start_date : Union[str, datetime]
-        Start date of backtest
+    df_stock : pd.Dataframe
+        Dataframe of prices
     short_length : int
         Length of short ema window
     long_length : int
@@ -148,7 +151,9 @@ def ema_cross_strategy(
         Backtest results
     """
     ticker = ticker.lower()
-    prices = get_data(ticker, start_date)
+    start_date = df_stock.index[0]
+    prices = df_stock["Adj Close"]
+    prices.columns = [ticker]
     short_ema = pd.DataFrame(ta.ema(prices[ticker], short_length))
     short_ema.columns = [ticker]
     long_ema = pd.DataFrame(ta.ema(prices[ticker], long_length))
@@ -184,22 +189,22 @@ def ema_cross_strategy(
 
 def rsi_strategy(
     ticker: str,
-    start_date: Union[str, datetime],
+    df_stock: pd.Dataframe,
     periods: int,
     low_rsi: int,
     high_rsi: int,
     spy_bt: bool = True,
     no_bench: bool = False,
     shortable: bool = True,
-) -> Result:
-    """Perform backtest for simple EMA strategy.  Buys when price>EMA(l)
+) -> bt.backtest.Result:
+    """Perform backtest for simple EMA strategy. Buys when price>EMA(l)
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-    start_date : Union[str, datetime]
-        Start date of backtest
+    df_stock : pd.Dataframe
+        Dataframe of prices
     periods : int
         Number of periods for RSI calculati
     low_rsi : int
@@ -219,7 +224,9 @@ def rsi_strategy(
         Backtest results
     """
     ticker = ticker.lower()
-    prices = get_data(ticker, start_date)
+    start_date = df_stock.index[0]
+    prices = df_stock["Adj Close"]
+    prices.columns = [ticker]
     rsi = pd.DataFrame(ta.rsi(prices[ticker], periods))
     rsi.columns = [ticker]
 

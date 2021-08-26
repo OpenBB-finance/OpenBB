@@ -18,15 +18,14 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-
-# pylint: disable=wrong-import-position
-from gamestonk_terminal.stocks.backtesting import bt_view  # noqa: E402
 from gamestonk_terminal.stocks.stocks_helper import load
 
 # This code below aims to fix an issue with the fnn module, used by bt module
 # which forces matplotlib backend to be 'agg' which doesn't allow to plot
 # Save current matplotlib backend
 default_backend = mpl.get_backend()
+# pylint: disable=wrong-import-position
+from gamestonk_terminal.stocks.backtesting import bt_view  # noqa: E402
 
 # Restore backend matplotlib used
 mpl.use(default_backend)
@@ -39,13 +38,10 @@ class BacktestingController:
     CHOICES_COMMANDS = ["ema", "ema_cross", "rsi"]
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(
-        self,
-        ticker: str,
-        start: Union[datetime, str],
-    ):
+    def __init__(self, ticker: str, start: Union[datetime, str], stock: pd.DataFrame):
         self.ticker = ticker
         self.start = start
+        self.stock = stock
         self.bt_parser = argparse.ArgumentParser(add_help=False, prog="bt")
         self.bt_parser.add_argument(
             "cmd",
@@ -54,7 +50,7 @@ class BacktestingController:
 
     def print_help(self):
         """Print help"""
-        print_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/backtesting"
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/backtesting"
 Backtesting:
     cls         clear screen
     ?/help      show this menu again
@@ -64,11 +60,11 @@ Backtesting:
 
 Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
 
-    ema         buy when price exceeds EMA(l)")
-    ema_cross   buy when EMA(short) > EMA(long) ")
-    rsi         buy when RSI < low and sell when RSI > high")
+    ema         buy when price exceeds EMA(l)
+    ema_cross   buy when EMA(short) > EMA(long)
+    rsi         buy when RSI < low and sell when RSI > high
         """
-        print(print_str)
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -116,7 +112,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, _, _ = load(
+        self.ticker, self.start, self.stock, _ = load(
             other_args, self.ticker, self.start, "1440", pd.DataFrame()
         )
         if "." in self.ticker:
@@ -167,7 +163,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
 
             bt_view.display_simple_ema(
                 ticker=self.ticker,
-                start_date=self.start,
+                df_stock=self.stock,
                 ema_length=ns_parser.length,
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
@@ -242,7 +238,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
 
             bt_view.display_ema_cross(
                 ticker=self.ticker,
-                start_date=self.start,
+                df_stock=self.stock,
                 short_ema=ns_parser.short,
                 long_ema=ns_parser.long,
                 spy_bt=ns_parser.spy,
@@ -258,7 +254,7 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rsi_strat",
+            prog="rsi",
             description="""Strategy that buys when the stock is less than a threshold
             and shorts when it exceeds a threshold.""",
         )
@@ -325,9 +321,9 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
                 print("Low RSI value is higher than Low RSI value\n")
                 return
 
-            bt_view.display_rsi_strat(
+            bt_view.display_rsi_strategy(
                 ticker=self.ticker,
-                start_date=self.start,
+                df_stock=self.stock,
                 periods=ns_parser.periods,
                 low_rsi=ns_parser.low,
                 high_rsi=ns_parser.high,
@@ -340,10 +336,10 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
             print(e, "\n")
 
 
-def menu(ticker: str, start: Union[str, datetime]):
+def menu(ticker: str, start: Union[str, datetime], stock: pd.DataFrame):
     """Backtesting Menu"""
     plt.close("all")
-    bt_controller = BacktestingController(ticker, start)
+    bt_controller = BacktestingController(ticker, start, stock)
     bt_controller.call_help(None)
 
     while True:

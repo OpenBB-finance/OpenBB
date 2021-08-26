@@ -2,12 +2,10 @@
 __docformat__ = "numpy"
 
 import os
-from datetime import datetime
-from typing import Union
 
-import bt
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
 from gamestonk_terminal import feature_flags as gtff
@@ -20,31 +18,9 @@ register_matplotlib_converters()
 np.seterr(divide="ignore")
 
 
-def plot_bt(res: bt.backtest.Result, plot_title: str):
-    """
-    Plot the bt result
-    Parameters
-    ----------
-    res: bt.backtest.Result
-        Result after a bt backtest is run
-    plot_title: str
-        Title of plot
-
-    """
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    res.plot(title=plot_title, ax=ax)
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.minorticks_on()
-    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    fig.tight_layout()
-    if gtff.USE_ION:
-        plt.ion()
-    plt.show()
-
-
 def display_simple_ema(
     ticker: str,
-    start_date: Union[str, datetime],
+    df_stock: pd.DataFrame,
     ema_length: int,
     spy_bt: bool = True,
     no_bench: bool = False,
@@ -56,8 +32,8 @@ def display_simple_ema(
     ----------
     ticker : str
         Stock ticker
-    start_date : Union[str, datetime]
-        Start date of backtest
+    df_stock : pd.Dataframe
+        Dataframe of prices
     ema_length : int
         Length of ema window
     spy_bt : bool
@@ -67,8 +43,15 @@ def display_simple_ema(
     export : bool
         Format to export backtest results
     """
-    res = bt_model.ema_strategy(ticker, start_date, ema_length, spy_bt, no_bench)
-    plot_bt(res, f"Equity for EMA({ema_length})")
+    res = bt_model.ema_strategy(ticker, df_stock, ema_length, spy_bt, no_bench)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.set_xlim([df_stock.index[0], df_stock.index[-1]])
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
     print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "simple_ema", res.stats
@@ -77,7 +60,7 @@ def display_simple_ema(
 
 def display_ema_cross(
     ticker: str,
-    start_date: Union[str, datetime],
+    df_stock: pd.DataFrame,
     short_ema: int,
     long_ema: int,
     spy_bt: bool = True,
@@ -91,8 +74,8 @@ def display_ema_cross(
     ----------
     ticker : str
         Stock ticker
-    start_date : Union[str, datetime]
-        Start date of backtest
+    df_stock : pd.Dataframe
+        Dataframe of prices
     short_ema : int
         Length of short ema window
     long_ema : int
@@ -107,9 +90,16 @@ def display_ema_cross(
         Format to export data
     """
     res = bt_model.ema_cross_strategy(
-        ticker, start_date, short_ema, long_ema, spy_bt, no_bench, shortable
+        ticker, df_stock, short_ema, long_ema, spy_bt, no_bench, shortable
     )
-    plot_bt(res, f"EMA Cross for EMA({short_ema})/EMA({long_ema})")
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    res.plot(title=f"EMA Cross for EMA({short_ema})/EMA({long_ema})", ax=ax)
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.set_xlim([df_stock.index[0], df_stock.index[-1]])
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+    plt.show()
     print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "ema_cross", res.stats
@@ -117,9 +107,9 @@ def display_ema_cross(
 
 
 # pylint:disable=too-many-arguments
-def display_rsi_strat(
+def display_rsi_strategy(
     ticker: str,
-    start_date: Union[str, datetime],
+    df_stock: pd.DataFrame,
     periods: int,
     low_rsi: int,
     high_rsi: int,
@@ -134,8 +124,8 @@ def display_rsi_strat(
     ----------
     ticker : str
         Stock ticker
-    start_date : Union[str, datetime]
-        Start date of backtest
+    df_stock : pd.Dataframe
+        Dataframe of prices
     periods : int
         Number of periods for RSI calculati
     low_rsi : int
@@ -152,9 +142,15 @@ def display_rsi_strat(
         Format to export backtest results
     """
     res = bt_model.rsi_strategy(
-        ticker, start_date, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable
+        ticker, df_stock, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable
     )
-    plot_bt(res, f"RSI Strategy between ({low_rsi}, {high_rsi})")
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    res.plot(title=f"RSI Strategy between ({low_rsi}, {high_rsi})", ax=ax)
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.set_xlim([df_stock.index[0], df_stock.index[-1]])
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
     print(res.display(), "\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "rsi_corss", res.stats
