@@ -3,8 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-from datetime import datetime
-from typing import List, Union
+from typing import List
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -38,9 +37,8 @@ class BacktestingController:
     CHOICES_COMMANDS = ["ema", "ema_cross", "rsi"]
     CHOICES += CHOICES_COMMANDS
 
-    def __init__(self, ticker: str, start: Union[datetime, str], stock: pd.DataFrame):
+    def __init__(self, ticker: str, stock: pd.DataFrame):
         self.ticker = ticker
-        self.start = start
         self.stock = stock
         self.bt_parser = argparse.ArgumentParser(add_help=False, prog="bt")
         self.bt_parser.add_argument(
@@ -58,7 +56,7 @@ Backtesting:
     quit        quit to abandon program
     load        load new ticker to analyze
 
-Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
+Current Ticker: {self.ticker.upper()}
 
     ema         buy when price exceeds EMA(l)
     ema_cross   buy when EMA(short) > EMA(long)
@@ -112,8 +110,8 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.stock, _ = load(
-            other_args, self.ticker, self.start, "1440", pd.DataFrame()
+        self.ticker, _, self.stock, _ = load(
+            other_args, self.ticker, "", "1440", pd.DataFrame()
         )
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
@@ -336,10 +334,10 @@ Current Ticker: {self.ticker.upper()} from {self.start.strftime('%Y-%m-%d')}
             print(e, "\n")
 
 
-def menu(ticker: str, start: Union[str, datetime], stock: pd.DataFrame):
+def menu(ticker: str, stock: pd.DataFrame):
     """Backtesting Menu"""
     plt.close("all")
-    bt_controller = BacktestingController(ticker, start, stock)
+    bt_controller = BacktestingController(ticker, stock)
     bt_controller.call_help(None)
 
     while True:

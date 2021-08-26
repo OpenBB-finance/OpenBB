@@ -1,23 +1,20 @@
 """Backtesting Model"""
 __docformat__ = "numpy"
 
-from datetime import datetime
-from typing import Union
-
 import bt
 import pandas as pd
 import pandas_ta as ta
 import yfinance as yf
 
 
-def get_data(ticker: str, start_date: Union[str, datetime]) -> pd.DataFrame:
+def get_data(ticker: str, start_date: str) -> pd.DataFrame:
     """Function to replace bt.get,  Gets Adjusted close of ticker using yfinance
 
     Parameters
     ----------
     ticker: str
         Ticker to get data for
-    start_date: Union[str, datetime]
+    start_date: str
         Start date
 
     Returns
@@ -31,16 +28,14 @@ def get_data(ticker: str, start_date: Union[str, datetime]) -> pd.DataFrame:
     return prices
 
 
-def buy_and_hold(
-    ticker: str, start_date: Union[str, datetime], name: str
-) -> bt.Backtest:
+def buy_and_hold(ticker: str, start_date: str, name: str) -> bt.Backtest:
     """Generates a buy and hold backtest object for the given ticker
 
     Parameters
     ----------
     ticker: str
         Stock to test
-    start: Union[str, datetime]
+    start:str
         Backtest start date.  Can be either string or datetime
     name: str
         Name of the backtest (for labeling purposes)
