@@ -44,7 +44,7 @@ class DiscoveryController:
         "fipo",
         "gainers",
         "losers",
-        "under",
+        "ugs",
         "gtech",
         "active",
         "ulc",
@@ -84,7 +84,7 @@ Finnhub:
 Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
-    under          potentially undervalued large cap stocks
+    ugs            undervalued stocks with revenue and earnings growth in excess of 25%
     gtech          tech stocks with revenue and earnings growth more than 25%
     active         most active stocks by intraday trade volume
     ulc            potentially undervalued large cap stocks
@@ -318,12 +318,12 @@ pennystockflow.com
         except Exception as e:
             print(e, "\n")
 
-    def call_under(self, other_args: List[str]):
-        """Process under command"""
+    def call_ugs(self, other_args: List[str]):
+        """Process ugs command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="under",
+            prog="ugs",
             description="""
                 Print up to 25 undervalued stocks with revenue and earnings growth in excess of 25%.
                 [Source: Yahoo Finance]
@@ -355,7 +355,7 @@ pennystockflow.com
             if not ns_parser:
                 return
 
-            yahoofinance_view.display_undervalued(
+            yahoofinance_view.display_ugs(
                 num_stocks=ns_parser.num,
                 export=ns_parser.export,
             )

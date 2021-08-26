@@ -31,7 +31,7 @@ def get_losers() -> pd.DataFrame:
     return pd.read_html(requests.get(url_losers).text)[0]
 
 
-def get_undervalued() -> pd.DataFrame:
+def get_ugs() -> pd.DataFrame:
     """Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios. [Source: Yahoo Finance]
 
     Returns

@@ -79,7 +79,7 @@ def display_losers(num_stocks: int, export: str):
     )
 
 
-def display_undervalued(num_stocks: int, export: str):
+def display_ugs(num_stocks: int, export: str):
     """Display most undervalued growth stock. [Source: Yahoo Finance]
 
     Parameters
@@ -89,7 +89,7 @@ def display_undervalued(num_stocks: int, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = yahoofinance_model.get_undervalued()
+    df = yahoofinance_model.get_ugs()
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
 
@@ -110,7 +110,7 @@ def display_undervalued(num_stocks: int, export: str):
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "undervalued",
+        "ugs",
         df,
     )
 
@@ -206,7 +206,7 @@ def display_ulc(num_stocks: int, export: str):
     else:
         print(
             tabulate(
-                df.head(num_stocks),
+                df.head(num_stocks).dropna(),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
@@ -242,7 +242,7 @@ def display_asc(num_stocks: int, export: str):
     else:
         print(
             tabulate(
-                df.head(num_stocks),
+                df.head(num_stocks).dropna(),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
