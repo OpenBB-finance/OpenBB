@@ -1,15 +1,14 @@
-import { ReactWidget } from '@jupyterlab/apputils';
-import { ISettingRegistry } from '@jupyterlab/settingregistry';
-import { useState } from 'react';
-import FormInput from './components/FormInput';
+import { ReactWidget } from "@jupyterlab/apputils";
+import { ISettingRegistry } from "@jupyterlab/settingregistry";
+import FormInput from "./components/FormInput";
 
 /**
  * Gamestonk Terminal Settings Menu
  *
  * @class GamestonkTerminalSettingsComponent (name)
- * @param root0 - s: Settings object
- * @param root0.s - s: Accissible settings object
- * @returns - JSX.Element Settings form component
+ * @param {} root0 - s: Settings object
+ * @param {} root0.s - s: Accessible settings object
+ * @returns {} JSX.Element Settings form component
  */
 export function GamestonkTerminalSettingsComponent({ s }: any): JSX.Element {
   const getSectionState = (section: string) => {
@@ -23,11 +22,11 @@ export function GamestonkTerminalSettingsComponent({ s }: any): JSX.Element {
       });
     });
     return values;
-  }
+  };
 
-  const [featureFlags, setFeatureFlags] = useState(getSectionState("FEATURE_FLAGS"));
-  const [appSettings, setAppSettings] = useState(getSectionState("GENERAL"));
-  const [apiKeys, setApiKeys] = useState(getSectionState("API_KEYS"));
+  const featureFlags = getSectionState("FEATURE_FLAGS");
+  const appSettings = getSectionState("APP_SETTINGS");
+  const apiKeys = getSectionState("API_KEYS");
 
   const onFeatureFlagsChange = (index: any, item: any) => {
     featureFlags[index] = item;
@@ -42,86 +41,117 @@ export function GamestonkTerminalSettingsComponent({ s }: any): JSX.Element {
   };
 
   /**
-   * @param event
+   * @param event - Update button click event
    */
   function handleSubmit(event: any) {
-    console.log(event);
     event.preventDefault();
-    setFeatureFlags(event.target.value);
-    setAppSettings(event.target.value);
-    setApiKeys(event.target.value);
-    // s.set('IEX_KEY', token);
-    // s.set('DG_PASSWORD', password);
-    alert(featureFlags);
+
+    const featureFlagsObject = {} as any;
+    featureFlags.forEach((flag: any) => {
+      featureFlagsObject[flag.key] = flag["value"];
+    });
+    s.set("FEATURE_FLAGS", featureFlagsObject);
+
+    const apiKeysObject = {} as any;
+    apiKeys.forEach((apiKey: any) => {
+      apiKeysObject[apiKey.key] = apiKey["value"];
+    });
+    s.set("API_KEYS", apiKeysObject);
+
+    const appSettingsObject = {} as any;
+    appSettings.forEach((appSetting: any) => {
+      appSettingsObject[appSetting.key] = appSetting["value"];
+    });
+    s.set("APP_SETTINGS", appSettingsObject);
+
+    alert("Settings updated.");
   }
 
   return (
     <div className="gamestonkSettings">
-    <div className="settingsForm">
-      <form onSubmit={handleSubmit}>
-        <fieldset id="featureFlags">
-          <p className="settingsSectionLabel">Feature Flags</p>
-          <div className="fieldSetData">
-          {featureFlags.map((item: any, index: any) => (
-            <FormInput
-              itemParent={item}
-              index={index}
-              onChangeParent={onFeatureFlagsChange}
-            />
-          ))}
-          </div>
-          <div className="container">
-          <div className="center">
-          <button className="settingsSectionButton" onClick={handleSubmit}>Update Flags</button>
+      <div className="settingsForm">
+        <form>
+          <fieldset id="featureFlags">
+            <p className="settingsSectionLabel">Feature Flags</p>
+            <div className="fieldSetData">
+              {featureFlags.map((item: any, index: any) => (
+                <FormInput
+                  key={index}
+                  itemParent={item}
+                  index={index}
+                  onChangeParent={onFeatureFlagsChange}
+                />
+              ))}
             </div>
+            <div className="container">
+              <div className="center">
+                <button
+                  className="settingsSectionButton"
+                  onClick={handleSubmit}
+                >
+                  Update Flags
+                </button>
+              </div>
             </div>
-        </fieldset>
-      </form>
-      <br/>
-      <br/>
+          </fieldset>
+        </form>
+        <br />
+        <br />
 
-      <form onSubmit={handleSubmit}>
-        <fieldset id="appSettings">
-          <p className="settingsSectionLabel">Configurations</p>
-          <div className="fieldSetData">
-          {appSettings.map((item: any, index: any) => (
-            <FormInput
-              itemParent={item}
-              index={index}
-              onChangeParent={onAppSettingsChange}
-            />
-          ))}
-          </div>
-          <div className="container">
-          <div className="center">
-          <button className="settingsSectionButton" onClick={handleSubmit}>Update Configurations</button>
-          </div>
-          </div>
-        </fieldset>
-      </form>
-      <br/>
-      <br/>
+        <form onSubmit={handleSubmit}>
+          <fieldset id="appSettings">
+            <p className="settingsSectionLabel">Configurations</p>
+            <div className="fieldSetData">
+              {appSettings.map((item: any, index: any) => (
+                <FormInput
+                  key={index}
+                  itemParent={item}
+                  index={index}
+                  onChangeParent={onAppSettingsChange}
+                />
+              ))}
+            </div>
+            <div className="container">
+              <div className="center">
+                <button
+                  className="settingsSectionButton"
+                  onClick={handleSubmit}
+                >
+                  Update Configurations
+                </button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <br />
+        <br />
 
-      <form onSubmit={handleSubmit}>
-        <fieldset id="apiKeys">
-          <p className="settingsSectionLabel">API keys</p>
-          <div className="fieldSetData">
-          {apiKeys.map((item: any, index: any) => (
-            <FormInput
-              itemParent={item}
-              index={index}
-              onChangeParent={onApiKeysChange}
-            />
-          ))}
-          </div>
-          <div className="container">
-          <div className="center">
-          <button className="settingsSectionButton" onClick={handleSubmit}>Update API keys</button>
-          </div>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit}>
+          <fieldset id="apiKeys">
+            <p className="settingsSectionLabel">API keys</p>
+            <div className="fieldSetData">
+              {apiKeys.map((item: any, index: any) => (
+                <FormInput
+                  key={index}
+                  itemParent={item}
+                  index={index}
+                  onChangeParent={onApiKeysChange}
+                />
+              ))}
+            </div>
+            <div className="container">
+              <div className="center">
+                <button
+                  className="settingsSectionButton"
+                  onClick={handleSubmit}
+                >
+                  Update API keys
+                </button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
   );
 }
@@ -138,7 +168,7 @@ export class TerminalSettingsWidget extends ReactWidget {
   s: ISettingRegistry.ISettings;
   constructor(s: ISettingRegistry.ISettings) {
     super();
-    this.addClass('gamestonkSettingsWidget');
+    this.addClass("gamestonkSettingsWidget");
     this.s = s;
   }
 
