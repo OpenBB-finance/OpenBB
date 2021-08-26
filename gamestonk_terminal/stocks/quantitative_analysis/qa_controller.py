@@ -6,6 +6,7 @@ import os
 from typing import List
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
@@ -60,11 +61,17 @@ class QaController:
         stock: pd.DataFrame,
     ):
         """Constructor"""
+        stock["Returns"] = stock["Adj Close"].pct_change()
+        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
+            stock["Adj Close"].shift(1)
+        )
+        stock = stock.rename(columns={"Adj Close": "AdjClose"})
+        stock = stock.dropna()
         self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.target = "dpr"
+        self.target = "Returns"
         self.qa_parser = argparse.ArgumentParser(add_help=False, prog="qa")
         self.qa_parser.add_argument(
             "cmd",
@@ -78,7 +85,6 @@ class QaController:
             stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
-        targets = {"dpr": "Daily Percentage Returns", "p": "Prices"}
         help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/quantitative_analysis
 
 Quantitative Analysis:
@@ -90,7 +96,7 @@ Quantitative Analysis:
     pick        pick new target variable
 
 {stock_str}
-Target: {targets[self.target]}
+Target Column: {self.target}
 
 Statistics:
     summary     brief summary statistics of loaded stock.
@@ -147,11 +153,18 @@ Other:
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.interval, self.stock = load(
+        self.ticker, self.start, self.interval, stock = load(
             other_args, self.ticker, self.start, self.interval, self.stock
         )
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
+        stock["Returns"] = stock["Adj Close"].pct_change()
+        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
+            stock["Adj Close"].shift(1)
+        )
+        stock = stock.rename(columns={"Adj Close": "AdjClose"})
+        stock = stock.dropna()
+        self.stock = stock
 
     def call_help(self, _):
         """Process Help command"""
@@ -179,7 +192,7 @@ Other:
             "-t",
             "--target",
             dest="target",
-            choices=["dpr", "p"],
+            choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
         try:
@@ -219,7 +232,7 @@ Other:
             if not ns_parser:
                 return
 
-            qa_view.display_summary(df_stock=self.stock, export=ns_parser.export)
+            qa_view.display_summary(df=self.stock, export=ns_parser.export)
 
         except Exception as e:
             print(e, "\n")
@@ -241,11 +254,11 @@ Other:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+
             qa_view.display_hist(
-                s_ticker=self.ticker,
-                df_stock=self.stock,
-                start=self.start,
-                prices=self.target == "p",
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 bins=ns_parser.n_bins,
             )
 
@@ -277,10 +290,9 @@ Other:
                 return
 
             qa_view.display_cdf(
-                s_ticker=self.ticker,
-                df_stock=self.stock,
-                start=self.start,
-                prices=self.target == "p",
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 export=ns_parser.export,
             )
 
@@ -311,11 +323,10 @@ Other:
             if not ns_parser:
                 return
             qa_view.display_bw(
-                s_ticker=self.ticker,
-                start=self.start,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 yearly=ns_parser.year,
-                prices=self.target == "p",
             )
 
         except Exception as e:
@@ -355,8 +366,9 @@ Other:
                 return
 
             qa_view.display_seasonal(
-                s_ticker=self.ticker,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
             )
@@ -379,8 +391,8 @@ Other:
             dest="threshold",
             type=float,
             default=(
-                max(self.stock["Adj Close"].values)
-                - min(self.stock["Adj Close"].values)
+                max(self.stock[self.target].values)
+                - min(self.stock[self.target].values)
             )
             / 40,
             help="threshold",
@@ -391,8 +403,8 @@ Other:
             dest="drift",
             type=float,
             default=(
-                max(self.stock["Adj Close"].values)
-                - min(self.stock["Adj Close"].values)
+                max(self.stock[self.target].values)
+                - min(self.stock[self.target].values)
             )
             / 80,
             help="drift",
@@ -404,7 +416,8 @@ Other:
                 return
 
             qa_view.display_cusum(
-                df_stock=self.stock,
+                df=self.stock,
+                target=self.target,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
             )
@@ -434,10 +447,15 @@ Other:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+            if self.target != "AdjClose":
+                print(
+                    "Target not AdjClose.  For best results, use `pick AdjClose` first."
+                )
+
             qa_view.display_acf(
-                s_ticker=self.ticker,
-                start=self.start,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 lags=ns_parser.lags,
             )
 
@@ -479,8 +497,9 @@ Other:
                 return
 
             rolling_view.display_mean_std(
-                s_ticker=self.ticker,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -522,9 +541,9 @@ Other:
                 return
 
             rolling_view.display_spread(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -583,9 +602,9 @@ Other:
                 return
 
             rolling_view.display_quantile(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 length=ns_parser.n_length,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
@@ -633,9 +652,9 @@ Other:
                 return
 
             rolling_view.display_skew(
-                s_ticker=self.ticker,
-                s_interval=self.interval,
-                df_stock=self.stock,
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
                 length=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -667,7 +686,7 @@ Other:
                 return
 
             qa_view.display_normality(
-                df_stock=self.stock, prices=self.target == "p", export=ns_parser.export
+                df=self.stock, target=self.target, export=ns_parser.export
             )
 
         except Exception as e:
@@ -689,9 +708,7 @@ Other:
             if not ns_parser:
                 return
 
-            qa_view.display_qqplot(
-                s_ticker=self.ticker, df_stock=self.stock, prices=self.target == "p"
-            )
+            qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
 
         except Exception as e:
             print(e, "\n")
@@ -739,8 +756,8 @@ Other:
                 return
 
             qa_view.display_unitroot(
-                df_stock=self.stock,
-                prices=self.target == "p",
+                df=self.stock,
+                target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,

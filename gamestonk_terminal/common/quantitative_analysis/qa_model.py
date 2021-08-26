@@ -14,34 +14,30 @@ from statsmodels.tsa.stattools import adfuller, kpss
 # df_stock should be replaced with a generic df and a column variable
 
 
-def get_summary(df_stock: pd.DataFrame) -> pd.DataFrame:
+def get_summary(df: pd.DataFrame) -> pd.DataFrame:
     """Print summary statistics
 
     Parameters
     ----------
-    other_args : str
-        Command line arguments to be processed with argparse
-    ticker : str
-        Ticker of the stock
-    stock : pd.DataFrame
-        Stock data
+    df : pd.DataFrame
+        Dataframe to get summary statistics for
     """
 
-    df_stats = df_stock.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
+    df_stats = df.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
     df_stats.loc["var"] = df_stats.loc["std"] ** 2
 
     return df_stats
 
 
 def get_seasonal_decomposition(
-    df_stock: pd.DataFrame, multiplicative: bool
+    df: pd.DataFrame, multiplicative: bool
 ) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
     """Perform seasonal decomposition
 
     Parameters
     ----------
     df_stock : pd.DataFrame
-        Dataframe of prices
+        Dataframe of targeted data
     multiplicative : bool
         Boolean to indicate multiplication instead of addition
 
@@ -61,7 +57,7 @@ def get_seasonal_decomposition(
 
     model = ["additive", "multiplicative"][multiplicative]
 
-    result = seasonal_decompose(df_stock, model=model, period=seasonal_periods)
+    result = seasonal_decompose(df, model=model, period=seasonal_periods)
     cycle, trend = sm.tsa.filters.hpfilter(
         result.trend[result.trend.notna().values], lamb=lamb
     )
@@ -69,7 +65,7 @@ def get_seasonal_decomposition(
     return result, pd.DataFrame(cycle), pd.DataFrame(trend)
 
 
-def get_normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
+def get_normality(data: pd.DataFrame) -> pd.DataFrame:
     """
     Look at the distribution of returns and generate statistics on the relation to the normal curve.
     This function calculates skew and kurtosis (the third and fourth moments) and performs both
@@ -77,20 +73,14 @@ def get_normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
 
     Parameters
     ----------
-    df_stock : pd.DataFrame
-        DataFrame of prices
-    prices : bool
-        Whether to look at prices instead of returns
+    df : pd.DataFrame
+        Dataframe of targeted data
 
     Returns
     -------
     pd.DataFrame
         Dataframe containing statistics of normality
     """
-    if prices:
-        data = df_stock["Adj Close"]
-    else:
-        data = df_stock["Adj Close"].pct_change().dropna()
     # Kurtosis
     # Measures height and sharpness of the central peak relative to that of a standard bell curve
     k, kpval = stats.kurtosistest(data)
@@ -128,17 +118,13 @@ def get_normality(df_stock: pd.DataFrame, prices: bool) -> pd.DataFrame:
     )
 
 
-def get_unitroot(
-    df_stock: pd.DataFrame, prices: bool, fuller_reg: str, kpss_reg: str
-) -> pd.DataFrame:
+def get_unitroot(df: pd.DataFrame, fuller_reg: str, kpss_reg: str) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 
     Parameters
     ----------
-    df_prices : pd.DataFrame
-        DataFrame of prices
-    prices : bool
-        Whether to perform test on prices instead of returns
+    df : pd.DataFrame
+        DataFrame of target variable
     fuller_reg : str
         Type of regression of ADF test
     kpss_reg : str
@@ -149,14 +135,9 @@ def get_unitroot(
     pd.DataFrame
         Dataframe with results of ADF test and KPSS test
     """
-    if prices:
-        data = df_stock["Adj Close"]
-    else:
-        data = df_stock["Adj Close"].pct_change().dropna()
-
     # The Augmented Dickey-Fuller test
     # Used to test for a unit root in a univariate process in the presence of serial correlation.
-    result = adfuller(data, regression=fuller_reg)
+    result = adfuller(df, regression=fuller_reg)
     cols = ["Test Statistic", "P-Value", "NLags", "Nobs", "ICBest"]
     vals = [result[0], result[1], result[2], result[3], result[5]]
     data = pd.DataFrame(data=vals, index=cols, columns=["ADF"])
@@ -169,7 +150,7 @@ def get_unitroot(
     # Wrap this in catch_warnings to prevent
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        res2 = kpss(data, regression=kpss_reg, nlags="auto")
+        res2 = kpss(df, regression=kpss_reg, nlags="auto")
     vals2 = [res2[0], res2[1], res2[2], "", ""]
     data["KPSS"] = vals2
     return data
