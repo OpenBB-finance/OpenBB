@@ -79,7 +79,7 @@ def display_losers(num_stocks: int, export: str):
     )
 
 
-def display_undervalued(num_stocks: int, export: str):
+def display_ugs(num_stocks: int, export: str):
     """Display most undervalued growth stock. [Source: Yahoo Finance]
 
     Parameters
@@ -89,7 +89,7 @@ def display_undervalued(num_stocks: int, export: str):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = yahoofinance_model.get_undervalued()
+    df = yahoofinance_model.get_ugs()
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
 
@@ -110,7 +110,7 @@ def display_undervalued(num_stocks: int, export: str):
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "undervalued",
+        "ugs",
         df,
     )
 
@@ -183,5 +183,77 @@ def display_active(num_stocks: int, export: str):
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "active",
+        df,
+    )
+
+
+def display_ulc(num_stocks: int, export: str):
+    """Display potentially undervalued large cap stocks. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_ulc()
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        print("No data found.")
+    else:
+        print(
+            tabulate(
+                df.head(num_stocks).dropna(),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ulc",
+        df,
+    )
+
+
+def display_asc(num_stocks: int, export: str):
+    """Display small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_asc()
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        print("No data found.")
+    else:
+        print(
+            tabulate(
+                df.head(num_stocks).dropna(),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
+        )
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "asc",
         df,
     )
