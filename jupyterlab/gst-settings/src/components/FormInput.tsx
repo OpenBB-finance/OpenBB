@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 /**
- * @param root0
- * @param root0.key
- * @param root0.value
- * @param root0.itemParent
- * @param root0.index
- * @param root0.onChangeParent
+ * Generic input form
+ *
+ * @class      FormInput (name)
+ * @param {} arg1 Arguments
+ * @param {} arg1.itemParent      The item parent
+ * @param {} arg1.index           The item index
+ * @param {} arg1.onChangeParent  On change parent function
+ * @returns {} Gemeric input form
  */
 export default function FormInput({
   itemParent,
@@ -17,12 +19,20 @@ export default function FormInput({
   index: number;
   onChangeParent: any;
 }): any {
-  const [item, setItem] = useState({key:itemParent.key, value:itemParent.value})
-  console.log(item)
+  const [item, setItem] = useState({
+    key: itemParent.key,
+    value: itemParent.value,
+  });
   const onChange = (event: any) => {
-    const newValue = event.target.value;
+    const newValue =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+
     setItem((prevState) => {
-      const newItem = { ...prevState, value: newValue };
+      const value = item.value;
+      value.value = newValue;
+      const newItem = { ...prevState, value: value };
       onChangeParent(index, newItem);
       return newItem;
     });
@@ -30,7 +40,18 @@ export default function FormInput({
   return (
     <>
       <label className="inputFieldLabel">{item.value.title}</label>
-      <input type={item.value.form} value={item.value.default} onChange={onChange}/>
+      <input
+        type={item.value.form}
+        checked={
+          item.value.form === "checkbox"
+            ? item.value.value === ""
+              ? item.value.default
+              : item.value.value
+            : false
+        }
+        value={item.value.value === "" ? item.value.default : item.value.value}
+        onChange={onChange}
+      />
     </>
   );
 }

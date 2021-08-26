@@ -1,35 +1,35 @@
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin,
-} from '@jupyterlab/application';
+} from "@jupyterlab/application";
 
-import { ICommandPalette } from '@jupyterlab/apputils';
-import { MainAreaWidget } from '@jupyterlab/apputils';
+import { ICommandPalette } from "@jupyterlab/apputils";
+import { MainAreaWidget } from "@jupyterlab/apputils";
 
-import { ILauncher } from '@jupyterlab/launcher';
-import { ISettingRegistry } from '@jupyterlab/settingregistry';
+import { ILauncher } from "@jupyterlab/launcher";
+import { ISettingRegistry } from "@jupyterlab/settingregistry";
 
-import { IMainMenu } from '@jupyterlab/mainmenu';
+import { IMainMenu } from "@jupyterlab/mainmenu";
 
-import { LabIcon } from '@jupyterlab/ui-components';
-import svgIconStr from '../style/settings-icon.svg';
+import { LabIcon } from "@jupyterlab/ui-components";
+import svgIconStr from "../style/settings-icon.svg";
 
-import { TerminalSettingsWidget } from './widget';
+import { TerminalSettingsWidget } from "./widget";
 
-const CATEGORY = 'Gamestonk Terminal';
+const CATEGORY = "Gamestonk Terminal";
 
 /**
  * The command IDs used by the react-widget plugin.
  */
 namespace CommandIDs {
-  export const create = 'gamestonk:settings';
+  export const create = "gamestonk:settings";
 }
 
 /**
  * Initialization data for the react-widget extension.
  */
 const extension: JupyterFrontEndPlugin<void> = {
-  id: 'gst:settings',
+  id: "gst:settings",
   autoStart: true,
   optional: [ILauncher, IMainMenu, ICommandPalette, ISettingRegistry],
   activate: async (
@@ -43,22 +43,22 @@ const extension: JupyterFrontEndPlugin<void> = {
 
     const command = CommandIDs.create;
     const icon = new LabIcon({
-      name: 'launcher:gst-settings-icon',
+      name: "launcher:gst-settings-icon",
       svgstr: svgIconStr,
     });
 
-    const s = await settings.load('@gamestonk/settings:settings');
+    const s = await settings.load("@gamestonk/settings:settings");
 
     commands.addCommand(command, {
-      caption: 'Edit Gamestonk Terminal Settings',
-      label: 'Settings',
-      icon: (args) => (args['isPalette'] ? null : icon),
+      caption: "Edit Gamestonk Terminal Settings",
+      label: "Settings",
+      icon: (args) => (args["isPalette"] ? null : icon),
       execute: () => {
         const content = new TerminalSettingsWidget(s);
         const widget = new MainAreaWidget<TerminalSettingsWidget>({ content });
-        widget.title.label = 'Gamestonk Settings';
+        widget.title.label = "Gamestonk Settings";
         widget.title.icon = icon;
-        app.shell.add(widget, 'main', { activate: true, mode: 'split-right' });
+        app.shell.add(widget, "main", { activate: true, mode: "split-right" });
       },
     });
 
@@ -83,7 +83,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     if (menu) {
       menu.fileMenu.newMenu.addGroup([{ command }], 30);
     }
-    console.log('Added !');
+    console.log("Added Gamestonk Settings Exstension.");
   },
 };
 

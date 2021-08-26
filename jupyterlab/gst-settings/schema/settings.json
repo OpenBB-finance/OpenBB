@@ -16,7 +16,8 @@
                     "form": "checkbox",
                     "title": "Clear after command",
                     "description": "Use clear console after each command",
-                    "default": false
+                    "default": false,
+                    "value": ""
                 },
                 "GTFF_USE_COLOR":
                 {
@@ -24,7 +25,8 @@
                     "form": "checkbox",
                     "title": "Colors",
                     "description": "Use coloring features",
-                    "default": true
+                    "default": true,
+                    "value": ""
                 },
                 "GTFF_USE_FLAIR":
                 {
@@ -32,7 +34,8 @@
                     "form": "text",
                     "title": "Console flair",
                     "description": "Select console flair (choose from config_terminal.py list)",
-                    "default": "stars"
+                    "default": "stars",
+                    "value": ""
                 },
                 "GTFF_USE_ION":
                 {
@@ -40,7 +43,8 @@
                     "form": "checkbox",
                     "title": "Interactive charts",
                     "description": "Enable interactive matplotlib",
-                    "default": true
+                    "default": true,
+                    "value": ""
                 },
                 "GTFF_USE_PROMPT_TOOLKIT":
                 {
@@ -48,7 +52,8 @@
                     "form": "checkbox",
                     "title": "Autocomplete",
                     "description": "Enable Prompt Toolkit",
-                    "default": true
+                    "default": true,
+                    "value": ""
                 },
                 "GTFF_ENABLE_PREDICT":
                 {
@@ -56,7 +61,8 @@
                     "form": "checkbox",
                     "title": "Prediction menu",
                     "description": "Enable Prediction features",
-                    "default": true
+                    "default": true,
+                    "value": ""
                 },
                 "GTFF_USE_PLOT_AUTOSCALING":
                 {
@@ -64,7 +70,8 @@
                     "form": "checkbox",
                     "title": "Plot autoscaling",
                     "description": "Enable plot autoscaling",
-                    "default": false
+                    "default": false,
+                    "value": ""
                 },
                 "GTFF_ENABLE_THOUGHTS_DAY":
                 {
@@ -72,7 +79,8 @@
                     "form": "checkbox",
                     "title": "Thoughts of the day",
                     "description": "Enable thoughts of the day",
-                    "default": false
+                    "default": false,
+                    "value": ""
                 },
                 "GTFF_ENABLE_QUICK_EXIT":
                 {
@@ -80,11 +88,12 @@
                     "form": "checkbox",
                     "title": "Quick exit",
                     "description": "Quick exit for testing",
-                    "default": false
+                    "default": false,
+                    "value": ""
                 }
             }
         },
-        "GENERAL":
+        "APP_SETTINGS":
         {
             "title": "General",
             "description": "Application settings for the Gamestonk Terminal.",
@@ -96,7 +105,8 @@
                     "form": "number",
                     "title": "Papermill port",
                     "description": "Papermill port",
-                    "default": 8892
+                    "default": 8892,
+                    "value": ""
                 },
                 "TERMINAL_PATH":
                 {
@@ -104,7 +114,8 @@
                     "form": "text",
                     "title": "Custom terminal path",
                     "description": "Path to the terminal.py",
-                    "default": null
+                    "default": "",
+                    "value": ""
                 },
                 "PATH_TO_SELENIUM_DRIVER":
                 {
@@ -112,7 +123,8 @@
                     "form": "text",
                     "title": "Path to webdriver",
                     "description": "Path to the selenium driver",
-                    "default": null
+                    "default": "",
+                    "value": ""
                 },
                 "WEBDRIVER_TO_USE":
                 {
@@ -120,7 +132,8 @@
                     "form": "text",
                     "title": "Webdriver",
                     "description": "Selenium browser drivers can be found at https://selenium-python.readthedocs.io/installation.html",
-                    "default": "chrome"
+                    "default": "chrome",
+                    "value": ""
                 }
             }
         },
@@ -136,7 +149,8 @@
                     "form": "text",
                     "title": "Alphavantage",
                     "description": "https://www.alphavantage.co",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_KEY_FINANCIALMODELINGPREP":
                 {
@@ -144,7 +158,8 @@
                     "form": "text",
                     "title": "financialmodelingprep",
                     "description": "https://financialmodelingprep.com/developer",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_KEY_QUANDL":
                 {
@@ -152,7 +167,8 @@
                     "form": "text",
                     "title": "quandl",
                     "description": "https://www.quandl.com/tools/api",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_REDDIT_CLIENT_ID":
                 {
@@ -160,7 +176,8 @@
                     "form": "text",
                     "title": "Reddit client ID",
                     "description": "https://www.reddit.com/prefs/apps",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_REDDIT_CLIENT_SECRET":
                 {
@@ -168,7 +185,8 @@
                     "form": "password",
                     "title": "Reddit client secret",
                     "description": "https://www.reddit.com/prefs/apps",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_REDDIT_USERNAME":
                 {
@@ -176,7 +194,8 @@
                     "form": "text",
                     "title": "Reddit username",
                     "description": "https://www.reddit.com/prefs/apps",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_REDDIT_USER_AGENT":
                 {
@@ -184,7 +203,8 @@
                     "form": "text",
                     "title": "Reddit user agent",
                     "description": "https://www.reddit.com/prefs/apps",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_REDDIT_PASSWORD":
                 {
@@ -192,7 +212,8 @@
                     "form": "password",
                     "title": "Reddit password",
                     "description": "https://www.reddit.com/prefs/apps",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_POLYGON_KEY":
                 {
@@ -200,7 +221,8 @@
                     "form": "text",
                     "title": "Polygon",
                     "description": "https://polygon.io",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_TWITTER_KEY":
                 {
@@ -208,7 +230,8 @@
                     "form": "text",
                     "title": "Twitter key",
                     "description": "https://developer.twitter.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_TWITTER_SECRET_KEY":
                 {
@@ -216,7 +239,8 @@
                     "form": "password",
                     "title": "Twitter secret",
                     "description": "https://developer.twitter.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_TWITTER_BEARER_TOKEN":
                 {
@@ -224,7 +248,8 @@
                     "form": "text",
                     "title": "Twitter token",
                     "description": "https://developer.twitter.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_FRED_KEY":
                 {
@@ -232,7 +257,8 @@
                     "form": "text",
                     "title": "FRED",
                     "description": "https://fred.stlouisfed.org/docs/api/api_key.html",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_NEWS_TOKEN":
                 {
@@ -240,7 +266,8 @@
                     "form": "text",
                     "title": "NewsAPI",
                     "description": "https://newsapi.org",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_RH_USERNAME":
                 {
@@ -248,7 +275,8 @@
                     "form": "text",
                     "title": "Robinhood username",
                     "description": "Robinhood",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_RH_PASSWORD":
                 {
@@ -256,7 +284,8 @@
                     "form": "password",
                     "title": "Robinhood password",
                     "description": "Robinhood",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_DG_USERNAME":
                 {
@@ -264,7 +293,8 @@
                     "form": "text",
                     "title": "Degiro username",
                     "description": "Degiro",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_DG_PASSWORD":
                 {
@@ -272,7 +302,8 @@
                     "form": "text",
                     "title": "Degiro password",
                     "description": "Degiro",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_DG_TOTP_SECRET":
                 {
@@ -280,7 +311,8 @@
                     "form": "password",
                     "title": "Degiro secret",
                     "description": "Degiro",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_OANDA_ACCOUNT_TYPE":
                 {
@@ -288,7 +320,8 @@
                     "form": "text",
                     "title": "Oanda account type",
                     "description": "https://developer.oanda.com",
-                    "default": "practice"
+                    "default": "practice",
+                    "value": ""
                 },
                 "GT_OANDA_ACCOUNT":
                 {
@@ -296,7 +329,8 @@
                     "form": "text",
                     "title": "Oanda account",
                     "description": "https://developer.oanda.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_OANDA_TOKEN":
                 {
@@ -304,7 +338,8 @@
                     "form": "text",
                     "title": "Oanda token",
                     "description": "https://developer.oanda.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_TRADIER_TOKEN":
                 {
@@ -312,7 +347,8 @@
                     "form": "text",
                     "title": "Tradier token",
                     "description": "https://tradier.com/products/market-data-api",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_CMC_KEY":
                 {
@@ -320,7 +356,8 @@
                     "form": "text",
                     "title": "Coinmarketcap key",
                     "description": "https://coinmarketcap.com/api/",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_BINANCE_KEY":
                 {
@@ -328,7 +365,8 @@
                     "form": "text",
                     "title": "Binance key",
                     "description": "https://www.binance.com/en/",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_BINANCE_SECRET":
                 {
@@ -336,7 +374,8 @@
                     "form": "password",
                     "title": "Binance secret",
                     "description": "Binance secret",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_FINNHUB_KEY":
                 {
@@ -344,7 +383,8 @@
                     "form": "text",
                     "title": "Finnhub key",
                     "description": "https://finnhub.io",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_IEX_KEY":
                 {
@@ -352,7 +392,8 @@
                     "form": "text",
                     "title": "IEX Cloud key",
                     "description": "https://iexcloud.io",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_SENTIMENTINVESTOR_KEY":
                 {
@@ -360,7 +401,8 @@
                     "form": "text",
                     "title": "Sentimentinvestor key",
                     "description": "https://www.sentimentinvestor.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 },
                 "GT_API_SENTIMENTINVESTOR_TOKEN":
                 {
@@ -368,7 +410,8 @@
                     "form": "text",
                     "title": "Sentimentinvestor token",
                     "description": "https://www.sentimentinvestor.com",
-                    "default": "REPLACE_ME"
+                    "default": "REPLACE_ME",
+                    "value": ""
                 }
             }
         }
