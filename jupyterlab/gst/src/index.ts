@@ -37,8 +37,8 @@ namespace PluginOptions {
     name: PluginOptions.ICON_NAME,
     svgstr: appStr,
   });
-  export const SETTINGS_SCHEMA = '@gamestonk/jupyterlab-terminal:config'
-  
+  export const SETTINGS_SCHEMA = "@gamestonk/settings:settings";
+
   // TO CHANGE
   export const VENV_REPOSITORY = 'D:/code/python/venvs/gst-venv';
 }

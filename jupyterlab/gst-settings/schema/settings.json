@@ -146,7 +146,7 @@
                 "GT_API_KEY_ALPHAVANTAGE":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Alphavantage",
                     "description": "https://www.alphavantage.co",
                     "default": "REPLACE_ME",
@@ -155,7 +155,7 @@
                 "GT_API_KEY_FINANCIALMODELINGPREP":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "financialmodelingprep",
                     "description": "https://financialmodelingprep.com/developer",
                     "default": "REPLACE_ME",
@@ -164,7 +164,7 @@
                 "GT_API_KEY_QUANDL":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "quandl",
                     "description": "https://www.quandl.com/tools/api",
                     "default": "REPLACE_ME",
@@ -173,7 +173,7 @@
                 "GT_API_REDDIT_CLIENT_ID":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Reddit client ID",
                     "description": "https://www.reddit.com/prefs/apps",
                     "default": "REPLACE_ME",
@@ -191,7 +191,7 @@
                 "GT_API_REDDIT_USERNAME":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Reddit username",
                     "description": "https://www.reddit.com/prefs/apps",
                     "default": "REPLACE_ME",
@@ -200,7 +200,7 @@
                 "GT_API_REDDIT_USER_AGENT":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Reddit user agent",
                     "description": "https://www.reddit.com/prefs/apps",
                     "default": "REPLACE_ME",
@@ -218,7 +218,7 @@
                 "GT_API_POLYGON_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Polygon",
                     "description": "https://polygon.io",
                     "default": "REPLACE_ME",
@@ -227,7 +227,7 @@
                 "GT_API_TWITTER_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Twitter key",
                     "description": "https://developer.twitter.com",
                     "default": "REPLACE_ME",
@@ -245,7 +245,7 @@
                 "GT_API_TWITTER_BEARER_TOKEN":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Twitter token",
                     "description": "https://developer.twitter.com",
                     "default": "REPLACE_ME",
@@ -254,7 +254,7 @@
                 "GT_API_FRED_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "FRED",
                     "description": "https://fred.stlouisfed.org/docs/api/api_key.html",
                     "default": "REPLACE_ME",
@@ -263,7 +263,7 @@
                 "GT_API_NEWS_TOKEN":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "NewsAPI",
                     "description": "https://newsapi.org",
                     "default": "REPLACE_ME",
@@ -272,7 +272,7 @@
                 "GT_RH_USERNAME":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Robinhood username",
                     "description": "Robinhood",
                     "default": "REPLACE_ME",
@@ -290,7 +290,7 @@
                 "GT_DG_USERNAME":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Degiro username",
                     "description": "Degiro",
                     "default": "REPLACE_ME",
@@ -299,7 +299,7 @@
                 "GT_DG_PASSWORD":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Degiro password",
                     "description": "Degiro",
                     "default": "REPLACE_ME",
@@ -317,7 +317,7 @@
                 "GT_OANDA_ACCOUNT_TYPE":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Oanda account type",
                     "description": "https://developer.oanda.com",
                     "default": "practice",
@@ -326,7 +326,7 @@
                 "GT_OANDA_ACCOUNT":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Oanda account",
                     "description": "https://developer.oanda.com",
                     "default": "REPLACE_ME",
@@ -335,7 +335,7 @@
                 "GT_OANDA_TOKEN":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Oanda token",
                     "description": "https://developer.oanda.com",
                     "default": "REPLACE_ME",
@@ -344,7 +344,7 @@
                 "GT_API_TRADIER_TOKEN":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Tradier token",
                     "description": "https://tradier.com/products/market-data-api",
                     "default": "REPLACE_ME",
@@ -353,7 +353,7 @@
                 "GT_API_CMC_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Coinmarketcap key",
                     "description": "https://coinmarketcap.com/api/",
                     "default": "REPLACE_ME",
@@ -362,7 +362,7 @@
                 "GT_API_BINANCE_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Binance key",
                     "description": "https://www.binance.com/en/",
                     "default": "REPLACE_ME",
@@ -380,7 +380,7 @@
                 "GT_API_FINNHUB_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Finnhub key",
                     "description": "https://finnhub.io",
                     "default": "REPLACE_ME",
@@ -389,7 +389,7 @@
                 "GT_API_IEX_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "IEX Cloud key",
                     "description": "https://iexcloud.io",
                     "default": "REPLACE_ME",
@@ -398,7 +398,7 @@
                 "GT_API_SENTIMENTINVESTOR_KEY":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Sentimentinvestor key",
                     "description": "https://www.sentimentinvestor.com",
                     "default": "REPLACE_ME",
@@ -407,7 +407,7 @@
                 "GT_API_SENTIMENTINVESTOR_TOKEN":
                 {
                     "type": "string",
-                    "form": "text",
+                    "form": "password",
                     "title": "Sentimentinvestor token",
                     "description": "https://www.sentimentinvestor.com",
                     "default": "REPLACE_ME",

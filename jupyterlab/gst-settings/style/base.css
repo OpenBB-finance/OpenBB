@@ -50,19 +50,32 @@ form input[type="number" i] {
 }
 
 .settingsSectionButton {
-  font-size: 16px;
+  display:inline-block;
   height: 36px;
-  margin-top: 32px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 3px;
-  border-width: 1px;
-  border-color: lightgrey;
+  width: 13em;
+  margin:0.1em;
+  padding: 0.2em 1.45em;
+  border:0.05em solid #CCCCCC;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-size: 16px;
+  font-weight: lighter;
+  color:#000000;
+  background-color:#CCCCCC;
+  text-align:center;
+  position:relative;
+}
+.settingsSectionButton:hover{
+  border-color:#7a7a7a;
+}
+.settingsSectionButton:active{
+  background-color:#999999;
 }
 
 .container {
   height: 64px;
   position: relative;
+  margin-top: 1em;
 }
 
 .center {
