@@ -19,8 +19,7 @@ import { TerminalManager } from "@jupyterlab/services";
 
 import { Terminal } from "@jupyterlab/terminal";
 
-
-import logoStr from '../style/icon_64x64.svg';
+import appStr from "../style/terminal.svg";
 
 namespace PluginOptions {
   // TO CHANGE
@@ -36,7 +35,7 @@ namespace PluginOptions {
   export const PALETTE_CATEGORY = "Gamestonk Terminal extension";
   export const ICON = new LabIcon({
     name: PluginOptions.ICON_NAME,
-    svgstr: logoStr,
+    svgstr: appStr,
   });
   export const SETTINGS_SCHEMA = '@gamestonk/jupyterlab-terminal:config'
   
