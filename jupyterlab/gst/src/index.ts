@@ -43,7 +43,7 @@ namespace PluginOptions {
   export const VENV_REPOSITORY = 'D:/code/python/venvs/gst-venv';
 }
 
-/** 
+/**
  * Initialization data for the @gamestonk/jupyterlab-terminal extension.
  */
 const plugin: JupyterFrontEndPlugin<void> = {
@@ -56,6 +56,14 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
 export default plugin;
 
+/**
+ * @param app
+ * @param browserFactory
+ * @param palette
+ * @param launcher
+ * @param menu
+ * @param settings_registry
+ */
 async function activate(
   app: JupyterFrontEnd,
   browserFactory: IFileBrowserFactory,

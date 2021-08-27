@@ -19,14 +19,14 @@ import { TerminalSettingsWidget } from "./widget";
 const CATEGORY = "Gamestonk Terminal";
 
 /**
- * The command IDs used by the react-widget plugin.
+ * The command IDs used by the Gamestonk Settings plugin.
  */
 namespace CommandIDs {
   export const create = "gamestonk:settings";
 }
 
 /**
- * Initialization data for the react-widget extension.
+ * Initialization data for the Gamestonk Settings extension.
  */
 const extension: JupyterFrontEndPlugin<void> = {
   id: "gst:settings",
