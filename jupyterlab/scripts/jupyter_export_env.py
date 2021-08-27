@@ -5,11 +5,10 @@ import subprocess
 
 settings = json.load(sys.stdin)
 
-print('settings', settings)
+print("settings", settings)
 
 for key, value in settings.items():
-    if not isinstance(value, dict) \
-        and not isinstance(value, list):
+    if not isinstance(value, dict) and not isinstance(value, list):
         os.environ[key] = value
 
 from terminal import terminal
