@@ -25,14 +25,14 @@ namespace PluginOptions {
   // TO CHANGE
   export const BREAK_LINE = "\r\n";
 
-  export const CMD_OPEN =  '@gamestonk/jupyterlab-terminal:open';
+  export const CMD_OPEN = "gamestonk:terminal";
 
   // TO CHANGE
   export const GAMESTONK_DIRECTORY = 'D:/code/python/thirdparty/GamestonkTerminal';
 
-  export const ICON_NAME = 'gamestonk:terminal-icon';
-  export const ID = '@gamestonk/jupyterlab-terminal:plugin';
   export const PALETTE_CATEGORY = "Gamestonk Terminal extension";
+  export const ICON_NAME = "gamestonk:terminal";
+  export const ID = "@gamestonk/terminal";
   export const ICON = new LabIcon({
     name: PluginOptions.ICON_NAME,
     svgstr: appStr,
