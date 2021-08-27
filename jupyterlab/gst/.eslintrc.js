@@ -31,7 +31,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/quotes': [
       'error',
-      'single',
+      'double',
       { avoidEscape: true, allowTemplateLiterals: false },
     ],
     curly: ['error', 'all'],
