@@ -1,10 +1,16 @@
 ---
 more:
   - name: "View Source"
-    ref: "https://github.com/GamestonkTerminal/GamestonkTerminal/website"
+    ref: "https://github.com/GamestonkTerminal/GamestonkTerminal"
     external: true
     icon: "gdoc_github"
   - name: "License"
     ref: "https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/LICENSE"
     external: true
     icon: "scales-of-justice"
+  - name: "Contributing"
+    ref: "https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/CONTRIBUTING.md"
+    external: true
+    icon: "gdoc_heart"
+
+
