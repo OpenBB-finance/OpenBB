@@ -7,7 +7,7 @@ import pandas as pd
 from gamestonk_terminal.helper_funcs import long_number_format
 
 
-def wrap_text_in_df(df: pd.DataFrame, w=55) -> pd.DataFrame:  # pragma: no cover
+def wrap_text_in_df(df: pd.DataFrame, w: int = 55) -> pd.DataFrame:  # pragma: no cover
     """
     Parameters
     ----------
@@ -49,7 +49,7 @@ def percent_to_float(s: str) -> float:
     return float(s[:i] + "." + s[i:])
 
 
-def create_df_index(df: pd.DataFrame, name="rank") -> None:
+def create_df_index(df: pd.DataFrame, name: str = "rank") -> None:
     """Helper method that creates new index for given data frame, with provided index name
     Parameters
     ----------

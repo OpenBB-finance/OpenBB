@@ -79,7 +79,7 @@ def load(other_args: List[str]):
         return None
 
 
-def chart(coin: gecko.Coin, other_args: List[str]):
+def plot_chart(coin: gecko.Coin, other_args: List[str]):
     """Plots chart for loaded cryptocurrency
 
     Parameters
@@ -227,7 +227,7 @@ def display_info(coin: gecko.Coin, export: str) -> None:
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = wrap_text_in_df(coin.base_info, w=80)
+    df = wrap_text_in_df(coin.get_base_info, w=80)
     print(
         tabulate(
             df,
@@ -259,7 +259,7 @@ def display_web(coin: gecko.Coin, export: str) -> None:
 
     """
 
-    df = coin.websites
+    df = coin.get_websites
     print(
         tabulate(
             df,
@@ -291,7 +291,7 @@ def display_social(coin: gecko.Coin, export: str) -> None:
 
     """
 
-    df = coin.social_media
+    df = coin.get_social_media
     print(
         tabulate(
             df,
@@ -322,7 +322,7 @@ def display_dev(coin: gecko.Coin, export: str) -> None:
 
     """
 
-    df = coin.developers_data
+    df = coin.get_developers_data
     print(
         tabulate(
             df,
@@ -356,7 +356,7 @@ def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
 
     """
 
-    df = coin.all_time_high(currency=currency)
+    df = coin.get_all_time_high(currency=currency)
     print(
         tabulate(
             df,
@@ -391,7 +391,7 @@ def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
 
     """
 
-    df = coin.all_time_low(currency=currency)
+    df = coin.get_all_time_low(currency=currency)
     print(
         tabulate(
             df,
@@ -423,7 +423,7 @@ def display_score(coin: gecko.Coin, export: str) -> None:
 
 
     """
-    df = coin.scores
+    df = coin.get_scores
     print(
         tabulate(
             df,
@@ -455,7 +455,7 @@ def display_bc(coin: gecko.Coin, export: str) -> None:
 
     """
 
-    df = coin.blockchain_explorers
+    df = coin.get_blockchain_explorers
     print(
         tabulate(
             df,
@@ -486,7 +486,7 @@ def display_market(coin: gecko.Coin, export: str) -> None:
 
     """
 
-    df = coin.market_data
+    df = coin.get_market_data
     print(
         tabulate(
             df,

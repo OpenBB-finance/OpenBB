@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+import os
 from typing import List, Tuple
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
@@ -12,6 +13,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
     plot_autoscale,
+    export_data,
 )
 from gamestonk_terminal.feature_flags import USE_ION as ion
 import gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_model as paprika
@@ -151,358 +153,225 @@ def coins(other_args: List[str]):
         print(e, "\n")
 
 
-def twitter(coin_id: str, other_args: List[str]):
-    """Get twitter timeline for given coin id. Not more than last 50 tweets
+def display_twitter(
+    coin_id: str, top: int, sortby: str, descend: bool, export: str
+) -> None:
+    """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
     Parameters
     ----------
     coin_id: str
         Identifier of coin for CoinPaprika API
-    other_args: List[str]
-        Arguments to pass to argparse
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
 
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="twitter",
-        description="""Show last 10 tweets for given coin.
-        You can display only top N number of tweets with --top parameter.
-        You can sort data by date, user_name, status, retweet_count, like_count --sort parameter
-        and also with --descend flag to sort descending.
-        Displays:
-            date, user_name, status, retweet_count, like_count
-        """,
+
+    df = paprika.get_coin_twitter_timeline(coin_id)
+
+    if df.empty:
+        print(f"Couldn't find any tweets for coin {coin_id}", "\n")
+        return
+
+    df = df.sort_values(by=sortby, ascending=descend)
+    # Remove unicode chars (it breaks pretty tables)
+    df["status"] = df["status"].apply(
+        lambda text: "".join(i if ord(i) < 128 else "" for i in text)
     )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=10,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: date",
-        default="date",
-        choices=["date", "user_name", "status", "retweet_count", "like_count"],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=False,
+    print(
+        tabulate(
+            df.head(top),
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df = paprika.get_coin_twitter_timeline(coin_id)
-
-        if df.empty:
-            print(f"Couldn't find any tweets for coin {coin_id}", "\n")
-            return
-
-        df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
-        # Remove unicode chars (it breaks pretty tables)
-        df["status"] = df["status"].apply(
-            lambda text: "".join(i if ord(i) < 128 else "" for i in text)
-        )
-        print(
-            tabulate(
-                df.head(ns_parser.top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "twitter",
+        df,
+    )
 
 
-def events(coin_id: str, other_args: List[str]):
-    """Get all events for given coin id.
+def display_events(
+    coin_id: str, top: int, sortby: str, descend: bool, links: bool, export: str
+) -> None:
+    """Get all events for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
     coin_id: str
         Identifier of coin for CoinPaprika API
-    other_args: List[str]
-        Arguments to pass to argparse
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    links: bool
+        Flag to display urls
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        prog="events",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Show information about most important coins events. Most of coins doesn't have any events.
-        You can display only top N number of events with --top parameter.
-        You can sort data by id, date , date_to, name, description, is_conference --sort parameter
-        and also with --descend flag to sort descending.
-        You can use additional flag --links to see urls for each event
-        Displays:
-            date , date_to, name, description, is_conference, link, proof_image_link""",
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=10,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: date",
-        default="date",
-        choices=["date", "date_to", "name", "description", "is_conference"],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=False,
-    )
-    parser.add_argument(
-        "-l",
-        "--links",
-        dest="links",
-        action="store_true",
-        help="Flag to show urls. If you will use that flag you will see only date, name, link columns",
-        default=False,
+
+    df = paprika.get_coin_events_by_id(coin_id)
+
+    if df.empty:
+        print(f"Couldn't find any events for coin {coin_id}\n")
+        return
+
+    df = df.sort_values(by=sortby, ascending=descend)
+
+    df_data = df.copy()
+
+    if links is True:
+        df = df[["date", "name", "link"]]
+    else:
+        df.drop("link", axis=1, inplace=True)
+
+    print(
+        tabulate(
+            df.head(top),
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df = paprika.get_coin_events_by_id(coin_id)
-
-        if df.empty:
-            print(f"Couldn't find any events for coin {coin_id}\n")
-            return
-
-        df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
-
-        if ns_parser.links is True:
-            df = df[["date", "name", "link"]]
-        else:
-            df.drop("link", axis=1, inplace=True)
-
-        print(
-            tabulate(
-                df.head(ns_parser.top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "events",
+        df_data,
+    )
 
 
-def exchanges(coin_id: str, other_args: List[str]):
-    """Get all exchanges for given coin id.
+def display_exchanges(
+    coin_id: str, top: int, sortby: str, descend: bool, export: str
+) -> None:
+    """Get all exchanges for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
     coin_id: str
         Identifier of coin for CoinPaprika API
-    other_args: List[str]
-        Arguments to pass to argparse
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="ex",
-        description="""Get all exchanges found for given coin.
-        You can display only top N number of exchanges with --top parameter.
-        You can sort data by  id, name, adjusted_volume_24h_share, fiats --sort parameter
-        and also with --descend flag to sort descending.
-        Displays:
-            id, name, adjusted_volume_24h_share, fiats""",
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=10,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: date",
-        default="adjusted_volume_24h_share",
-        choices=["id", "name", "adjusted_volume_24h_share", "fiats"],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=False,
+
+    df = paprika.get_coin_exchanges_by_id(coin_id)
+
+    if df.empty:
+        print("No data found", "\n")
+        return
+
+    df = df.sort_values(by=sortby, ascending=descend)
+
+    print(
+        tabulate(
+            df.head(top),
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df = paprika.get_coin_exchanges_by_id(coin_id)
-
-        if df.empty:
-            print("No data found", "\n")
-            return
-
-        df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
-
-        print(
-            tabulate(
-                df.head(ns_parser.top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ex",
+        df,
+    )
 
 
-def markets(coin_id: str, other_args: List[str]):
-    """Get all markets for given coin id.
+def display_markets(
+    coin_id: str,
+    currency: str,
+    top: int,
+    sortby: str,
+    descend: bool,
+    links: bool,
+    export: str,
+) -> None:
+    """Get all markets for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
     coin_id: str
         Identifier of coin for CoinPaprika API
-    other_args: List[str]
-        Arguments to pass to argparse
+    currency: str
+        Quoted currency
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    links: bool
+        Flag to display urls
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        prog="mkt",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Get all markets found for given coin.
-        You can display only top N number of markets with --top parameter.
-        You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter
-        and also with --descend flag to sort descending.
-        You can use additional flag --links to see urls for each market
-        Displays:
-            exchange, pair, trust_score, volume, price, pct_volume_share,""",
-    )
-    parser.add_argument(
-        "--vs",
-        help="Quoted currency. Default USD",
-        dest="vs",
-        default="USD",
-        type=str,
-        choices=CURRENCIES,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=20,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: pct_volume_share",
-        default="pct_volume_share",
-        choices=[
-            "pct_volume_share",
-            "exchange",
-            "pair",
-            "trust_score",
-            "volume",
-            "price",
-        ],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=False,
-    )
-    parser.add_argument(
-        "-l",
-        "--links",
-        dest="links",
-        action="store_true",
-        help="""Flag to show urls. If you will use that flag you will see only:
-        exchange, pair, trust_score, market_url columns""",
-        default=False,
+
+    if sortby in ["volume", "price"]:
+        sortby = f"{str(currency).lower()}_{sortby}"
+
+    df = paprika.get_coin_markets_by_id(coin_id, currency)
+
+    if df.empty:
+        print("There is no data \n")
+        return
+
+    df = df.sort_values(by=sortby, ascending=descend)
+
+    df_data = df.copy()
+
+    if links is True:
+        df = df[["exchange", "pair", "trust_score", "market_url"]]
+    else:
+        df.drop("market_url", axis=1, inplace=True)
+
+    print(
+        tabulate(
+            df.head(top),
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        vs = ns_parser.vs
-        sort = ns_parser.sortby
-        if sort in ["volume", "price"]:
-            sort = f"{str(vs).lower()}_{sort}"
-
-        df = paprika.get_coin_markets_by_id(coin_id, vs)
-
-        if df.empty:
-            print("There is no data \n")
-            return
-
-        df = df.sort_values(by=sort, ascending=ns_parser.descend)
-
-        if ns_parser.links is True:
-            df = df[["exchange", "pair", "trust_score", "market_url"]]
-        else:
-            df.drop("market_url", axis=1, inplace=True)
-
-        print(
-            tabulate(
-                df.head(ns_parser.top),
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mkt",
+        df_data,
+    )
 
 
-def chart(coin_id: str, other_args: List[str]):
-    """Plots chart for loaded cryptocurrency
+def plot_chart(coin_id: str, other_args: List[str]):
+    """Plots chart for loaded cryptocurrency [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -591,60 +460,48 @@ def chart(coin_id: str, other_args: List[str]):
         print(e, "\n")
 
 
-def price_supply(coin_id: str, other_args: List[str]):
-    """Get ticker information for single coin
+def display_price_supply(coin_id: str, currency: str, export: str) -> None:
+    """Get ticker information for single coin [Source: CoinPaprika]
 
     Parameters
     ----------
     coin_id: str
         Identifier of coin for CoinPaprika API
-    other_args: List[str]
-        Arguments to pass to argparse
+    currency: str
+        Quoted currency
+    export: str
+        Export dataframe data to csv,json,xlsx
+
     """
-    parser = argparse.ArgumentParser(
-        prog="ps",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Get price and supply related metrics for given coin.""",
+
+    df = paprika.get_tickers_info_for_coin(coin_id, currency)
+
+    if df.empty:
+        print("No data found", "\n")
+        return
+
+    df = df.applymap(lambda x: long_number_format_with_type_check(x))
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".2f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
-    parser.add_argument(
-        "--vs",
-        help="Quoted currency. Default USD",
-        dest="vs",
-        default="USD",
-        type=str,
-        choices=CURRENCIES,
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ps",
+        df,
     )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df = paprika.get_tickers_info_for_coin(coin_id, ns_parser.vs)
-
-        if df.empty:
-            print("No data found", "\n")
-            return
-
-        df = df.applymap(lambda x: long_number_format_with_type_check(x))
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".2f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-
-    except Exception as e:
-        print(e, "\n")
 
 
 def load(other_args: List[str]):
-    """Select coin from CoinPaprika
+    """Select coin from CoinPaprika [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -774,48 +631,38 @@ def load_ta_data(coin_id: str, other_args: List[str]) -> Tuple[pd.DataFrame, str
         return pd.DataFrame(), ""
 
 
-def basic(coin_id: str, other_args: List[str]):
+def display_basic(coin_id: str, export: str) -> None:
     """Get basic information for coin. Like:
-        name, symbol, rank, type, description, platform, proof_type,
-        contract, tags, parent
+        name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.  [Source: CoinPaprika]
 
     Parameters
     ----------
     coin_id: str
         Identifier of coin for CoinPaprika API
-    other_args: List[str]
-        Arguments to pass to argparse
+    export: str
+        Export dataframe data to csv,json,xlsx
 
     """
-    parser = argparse.ArgumentParser(
-        prog="basic",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Get basic information for coin. Like:
-            name, symbol, rank, type, description, platform, proof_type,
-            contract, tags, parent""",
+
+    df = paprika.basic_coin_info(coin_id)
+
+    if df.empty:
+        print("No data available\n")
+        return
+
+    print(
+        tabulate(
+            df,
+            headers=df.columns,
+            floatfmt=".0f",
+            showindex=False,
+            tablefmt="fancy_grid",
+        ),
+        "\n",
     )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df = paprika.basic_coin_info(coin_id)
-
-        if df.empty:
-            print("No data available\n")
-            return
-
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".0f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "basic",
+        df,
+    )

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import json
 import datetime as dt
 from datetime import timezone
-from typing import Sequence, Optional, Any, Dict, Tuple, Union
+from typing import Sequence, Optional, Any, Dict, Tuple, Union, List
 import textwrap
 import requests
 from bs4 import BeautifulSoup
@@ -70,7 +70,7 @@ def replace_underscores_to_newlines(cols: list, line: int = 13) -> list:
     ]
 
 
-def find_discord(item: list) -> Union[str, Any]:
+def find_discord(item: Optional[List[Any]]) -> Union[str, Any]:
     if isinstance(item, list) and len(item) > 0:
         discord = [chat for chat in item if "discord" in chat]
         if len(discord) > 0:
@@ -86,7 +86,7 @@ def join_list_elements(elem):
     return None
 
 
-def filter_list(lst: list) -> list:
+def filter_list(lst: Optional[List[Any]]) -> Optional[List[Any]]:
     if isinstance(lst, list) and len(lst) > 0:
         return [i for i in lst if i != ""]
     return lst
@@ -125,7 +125,7 @@ def get_url(url: str, elem: BeautifulSoup):  # pragma: no cover
     return url + elem.find("a")["href"]
 
 
-def clean_row(row):
+def clean_row(row: BeautifulSoup) -> list:
     """Helper method that cleans whitespaces and newlines in text returned from BeautifulSoup
     Parameters
     ----------
@@ -139,11 +139,13 @@ def clean_row(row):
     return [r for r in row.text.strip().split("\n") if r not in ["", " "]]
 
 
-def convert(word):
+def convert(word: str) -> str:
     return "".join(x.capitalize() or "_" for x in word.split("_") if word.isalpha())
 
 
-def collateral_auditors_parse(args):  # pragma: no cover
+def collateral_auditors_parse(
+    args: Any,
+) -> Tuple[Any, Any]:  # pragma: no cover
     try:
         if args and args[0] == "N/A":
             collateral = args[1:]
@@ -158,14 +160,14 @@ def collateral_auditors_parse(args):  # pragma: no cover
         return [], []
 
 
-def swap_columns(df):
+def swap_columns(df: pd.DataFrame) -> pd.DataFrame:
     cols = list(df.columns)
     cols = [cols[-1]] + cols[:-1]
     df = df[cols]
     return df
 
 
-def changes_parser(changes):
+def changes_parser(changes: list) -> list:
     if isinstance(changes, list) and len(changes) < 3:
         for _ in range(3 - len(changes)):
             changes.append(None)
@@ -174,13 +176,13 @@ def changes_parser(changes):
     return changes
 
 
-def remove_keys(entries, the_dict):
+def remove_keys(entries: tuple, the_dict: Dict[Any, Any]) -> None:
     for key in entries:
         if key in the_dict:
             del the_dict[key]
 
 
-def rename_columns_in_dct(dct, mapper):
+def rename_columns_in_dct(dct: dict, mapper: dict) -> dict:
     return {mapper.get(k, v): v for k, v in dct.items()}
 
 
@@ -189,7 +191,7 @@ def create_dictionary_with_prefixes(
 ):  # type: ignore
     results = {}
     for column in columns:
-        ath_data = dct.get(column)
+        ath_data = dct.get(column, {})
         for element in ath_data:  # type: ignore
             if constrains:  # type: ignore
                 if element in constrains:  # type: ignore

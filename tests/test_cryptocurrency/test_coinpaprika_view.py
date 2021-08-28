@@ -16,19 +16,25 @@ from tests.helpers import check_print
 class TestCoinPaprikaView(TestCase):
     @check_print(assert_in="market_cap_usd")
     def test_global_markets(self):
-        ov_coinpaprika_view.global_market([])
+        ov_coinpaprika_view.display_global_market(export="")
 
     @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_market_info(self):
-        ov_coinpaprika_view.all_coins_market_info([])
+        ov_coinpaprika_view.display_all_coins_market_info(
+            currency="USD", sortby="rank", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_info(self):
-        ov_coinpaprika_view.all_coins_info([])
+        ov_coinpaprika_view.display_all_coins_info(
+            currency="USD", sortby="rank", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="Displaying data vs USD")
     def test_all_exchanges(self):
-        ov_coinpaprika_view.all_exchanges([])
+        ov_coinpaprika_view.display_all_exchanges(
+            currency="USD", sortby="rank", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="category")
     def test_search(self):
@@ -38,41 +44,71 @@ class TestCoinPaprikaView(TestCase):
 
     @check_print(assert_in="platform_id")
     def test_all_platforms(self):
-        ov_coinpaprika_view.all_platforms([])
+        ov_coinpaprika_view.display_all_platforms(export="")
 
     @check_print(assert_in="active")
     def test_contracts(self):
-        ov_coinpaprika_view.contracts([])
+        ov_coinpaprika_view.display_contracts(
+            platform="eth-ethereum", sortby="id", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="Couldn't find")
     def test_twitter(self):
-        dd_coinpaprika_view.twitter("eth-ethereum", [])
+        dd_coinpaprika_view.display_twitter(
+            coin_id="eth-ethereum", sortby="date", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="description")
     def test_events(self):
-        dd_coinpaprika_view.events("eth-ethereum", [])
+        dd_coinpaprika_view.display_events(
+            coin_id="eth-ethereum",
+            sortby="date",
+            descend=True,
+            top=15,
+            export="",
+            links=False,
+        )
 
     @check_print(assert_in="name")
     def test_exchanges(self):
-        dd_coinpaprika_view.exchanges("btc-bitcoin", [])
+        dd_coinpaprika_view.display_exchanges(
+            coin_id="eth-ethereum", sortby="id", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="exchange")
     def test_markets(self):
-        dd_coinpaprika_view.markets("eth-ethereum", [])
+        dd_coinpaprika_view.display_markets(
+            coin_id="eth-ethereum",
+            sortby="exchange",
+            descend=True,
+            top=15,
+            export="",
+            links=False,
+            currency="USD",
+        )
 
     @check_print(assert_in="\n")
     @mock.patch("matplotlib.pyplot.show")
     def test_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        dd_coinpaprika_view.chart("btc-bitcoin", [])
+        dd_coinpaprika_view.plot_chart("btc-bitcoin", [])
 
     @check_print(assert_in="base_currency_name")
     def test_exchange_markets(self):
-        ov_coinpaprika_view.exchange_markets([])
+        ov_coinpaprika_view.display_exchange_markets(
+            exchange="binance",
+            sortby="exchange_id",
+            descend=True,
+            top=15,
+            export="",
+            links=False,
+        )
 
     @check_print(assert_in="asset_platform_id")
     def price_supply(self):
-        dd_coinpaprika_view.price_supply("btc", [])
+        dd_coinpaprika_view.display_price_supply(
+            "eth-ethereum", currency="btc", export=""
+        )
 
     def test_load(self):
         value = dd_coinpaprika_view.load(["-c", "BTC"])
@@ -85,4 +121,4 @@ class TestCoinPaprikaView(TestCase):
 
     @check_print(assert_in="Metric")
     def test_basic(self):
-        dd_coinpaprika_view.basic("BTC", [])
+        dd_coinpaprika_view.display_basic(coin_id="bit-bitcoin", export="")

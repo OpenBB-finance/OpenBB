@@ -16,10 +16,12 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
+    check_positive,
 )
 from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     show_available_pairs_for_given_symbol,
 )
+from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
 
 
 class DueDiligenceController:
@@ -214,8 +216,8 @@ Binance:
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog="market",
                 description="""
-                                    Market data for loaded coin. There you find metrics like:
-                                    Market Cap, Supply, Circulating Supply, Price, Volume and many others.
+                Market data for loaded coin. There you find metrics like:
+                Market Cap, Supply, Circulating Supply, Price, Volume and many others.
                                     """,
             )
             parser.add_argument(
@@ -285,7 +287,7 @@ Binance:
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog="social",
                 description="""Shows social media corresponding to loaded coin. You can find there name of
-                                telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.""",
+                telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.""",
             )
 
             parser.add_argument(
@@ -617,7 +619,7 @@ Binance:
 
     def call_chart(self, other_args):
         """Process chart command"""
-        getattr(self.DD_VIEWS_MAPPING[self.source], "chart")(
+        getattr(self.DD_VIEWS_MAPPING[self.source], "plot_chart")(
             self.current_coin, other_args
         )
 
@@ -625,7 +627,42 @@ Binance:
     def call_ps(self, other_args):
         """Process ps command"""
         if self.current_coin:
-            coinpaprika_view.price_supply(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                prog="ps",
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                description="""Get price and supply related metrics for given coin.""",
+            )
+            parser.add_argument(
+                "--vs",
+                help="Quoted currency. Default USD",
+                dest="vs",
+                default="USD",
+                type=str,
+                choices=CURRENCIES,
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                coinpaprika_view.display_price_supply(
+                    self.current_coin, ns_parser.vs, ns_parser.export
+                )
+
+            except Exception as e:
+                print(e, "\n")
+
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -634,7 +671,24 @@ Binance:
     def call_basic(self, other_args):
         """Process basic command"""
         if self.current_coin:
-            coinpaprika_view.basic(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                prog="basic",
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                description="""Get basic information for coin. Like:
+                    name, symbol, rank, type, description, platform, proof_type,
+                    contract, tags, parent""",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                coinpaprika_view.display_basic(self.current_coin, ns_parser.export)
+
+            except Exception as e:
+                print(e, "\n")
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -643,7 +697,94 @@ Binance:
     def call_mkt(self, other_args):
         """Process mkt command"""
         if self.current_coin:
-            coinpaprika_view.markets(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                prog="mkt",
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                description="""Get all markets found for given coin.
+                    You can display only top N number of markets with --top parameter.
+                    You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter
+                    and also with --descend flag to sort descending.
+                    You can use additional flag --links to see urls for each market
+                    Displays:
+                        exchange, pair, trust_score, volume, price, pct_volume_share,""",
+            )
+            parser.add_argument(
+                "--vs",
+                help="Quoted currency. Default USD",
+                dest="vs",
+                default="USD",
+                type=str,
+                choices=CURRENCIES,
+            )
+            parser.add_argument(
+                "-t",
+                "--top",
+                default=20,
+                dest="top",
+                help="Limit of records",
+                type=check_positive,
+            )
+            parser.add_argument(
+                "-s",
+                "--sort",
+                dest="sortby",
+                type=str,
+                help="Sort by given column. Default: pct_volume_share",
+                default="pct_volume_share",
+                choices=[
+                    "pct_volume_share",
+                    "exchange",
+                    "pair",
+                    "trust_score",
+                    "volume",
+                    "price",
+                ],
+            )
+            parser.add_argument(
+                "--descend",
+                action="store_false",
+                help="Flag to sort in descending order (lowest first)",
+                dest="descend",
+                default=False,
+            )
+            parser.add_argument(
+                "-l",
+                "--links",
+                dest="links",
+                action="store_true",
+                help="""Flag to show urls. If you will use that flag you will see only:
+                    exchange, pair, trust_score, market_url columns""",
+                default=False,
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                coinpaprika_view.display_markets(
+                    coin_id=self.current_coin,
+                    currency=ns_parser.vs,
+                    top=ns_parser.top,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    links=ns_parser.links,
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e, "\n")
+
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -652,7 +793,66 @@ Binance:
     def call_ex(self, other_args):
         """Process ex command"""
         if self.current_coin:
-            coinpaprika_view.exchanges(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="ex",
+                description="""Get all exchanges found for given coin.
+                    You can display only top N number of exchanges with --top parameter.
+                    You can sort data by  id, name, adjusted_volume_24h_share, fiats --sort parameter
+                    and also with --descend flag to sort descending.
+                    Displays:
+                        id, name, adjusted_volume_24h_share, fiats""",
+            )
+            parser.add_argument(
+                "-t",
+                "--top",
+                default=10,
+                dest="top",
+                help="Limit of records",
+                type=check_positive,
+            )
+            parser.add_argument(
+                "-s",
+                "--sort",
+                dest="sortby",
+                type=str,
+                help="Sort by given column. Default: date",
+                default="adjusted_volume_24h_share",
+                choices=["id", "name", "adjusted_volume_24h_share", "fiats"],
+            )
+            parser.add_argument(
+                "--descend",
+                action="store_false",
+                help="Flag to sort in descending order (lowest first)",
+                dest="descend",
+                default=False,
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                coinpaprika_view.display_exchanges(
+                    coin_id=self.current_coin,
+                    top=ns_parser.top,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e, "\n")
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -661,7 +861,75 @@ Binance:
     def call_events(self, other_args):
         """Process events command"""
         if self.current_coin:
-            coinpaprika_view.events(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                prog="events",
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                description="""
+                Show information about most important coins events. Most of coins doesn't have any events.
+                You can display only top N number of events with --top parameter.
+                You can sort data by id, date , date_to, name, description, is_conference --sort parameter
+                and also with --descend flag to sort descending.
+                You can use additional flag --links to see urls for each event
+                Displays:
+                    date , date_to, name, description, is_conference, link, proof_image_link""",
+            )
+            parser.add_argument(
+                "-t",
+                "--top",
+                default=10,
+                dest="top",
+                help="Limit of records",
+                type=check_positive,
+            )
+            parser.add_argument(
+                "-s",
+                "--sort",
+                dest="sortby",
+                type=str,
+                help="Sort by given column. Default: date",
+                default="date",
+                choices=["date", "date_to", "name", "description", "is_conference"],
+            )
+            parser.add_argument(
+                "--descend",
+                action="store_false",
+                help="Flag to sort in descending order (lowest first)",
+                dest="descend",
+                default=False,
+            )
+            parser.add_argument(
+                "-l",
+                "--links",
+                dest="links",
+                action="store_true",
+                help="Flag to show urls. If you will use that flag you will see only date, name, link columns",
+                default=False,
+            )
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+                coinpaprika_view.display_events(
+                    coin_id=self.current_coin,
+                    top=ns_parser.top,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    links=ns_parser.links,
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e, "\n")
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -670,7 +938,67 @@ Binance:
     def call_twitter(self, other_args):
         """Process twitter command"""
         if self.current_coin:
-            coinpaprika_view.twitter(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="twitter",
+                description="""Show last 10 tweets for given coin.
+                    You can display only top N number of tweets with --top parameter.
+                    You can sort data by date, user_name, status, retweet_count, like_count --sort parameter
+                    and also with --descend flag to sort descending.
+                    Displays:
+                        date, user_name, status, retweet_count, like_count
+                    """,
+            )
+            parser.add_argument(
+                "-t",
+                "--top",
+                default=10,
+                dest="top",
+                help="Limit of records",
+                type=check_positive,
+            )
+            parser.add_argument(
+                "-s",
+                "--sort",
+                dest="sortby",
+                type=str,
+                help="Sort by given column. Default: date",
+                default="date",
+                choices=["date", "user_name", "status", "retweet_count", "like_count"],
+            )
+            parser.add_argument(
+                "--descend",
+                action="store_false",
+                help="Flag to sort in descending order (lowest first)",
+                dest="descend",
+                default=False,
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                coinpaprika_view.display_twitter(
+                    coin_id=self.current_coin,
+                    top=ns_parser.top,
+                    sortby=ns_parser.sortby,
+                    descend=ns_parser.descend,
+                    export=ns_parser.export,
+                )
+
+            except Exception as e:
+                print(e, "\n")
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"

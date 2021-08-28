@@ -184,6 +184,7 @@ def load(
         return coin, None
 
 
+# TODO: Find better algorithm then difflib.get_close_matches to find most similar coins
 def find(other_args: List[str]) -> None:
     """Find similar coin by coin name,symbol or id.
 

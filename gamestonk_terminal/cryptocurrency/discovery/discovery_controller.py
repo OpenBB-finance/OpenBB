@@ -1089,6 +1089,15 @@ CoinMarketCap:
             default=True,
         )
 
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:

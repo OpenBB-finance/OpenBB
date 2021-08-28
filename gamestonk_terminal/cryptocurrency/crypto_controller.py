@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 from gamestonk_terminal.cryptocurrency.overview import overview_controller
@@ -24,6 +24,7 @@ from gamestonk_terminal.cryptocurrency.discovery import (
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     finbrain_crypto_view,
 )
+from gamestonk_terminal.cryptocurrency.due_diligence.finbrain_crypto_view import COINS
 
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load, find
 from gamestonk_terminal.cryptocurrency.report import report_controller
@@ -169,7 +170,7 @@ What do you want to do?
     def call_chart(self, other_args):
         """Process chart command"""
         if self.current_coin:
-            getattr(self.DD_VIEWS_MAPPING[self.source], "chart")(
+            getattr(self.DD_VIEWS_MAPPING[self.source], "plot_chart")(
                 self.current_coin, other_args
             )
         else:
@@ -225,7 +226,48 @@ What do you want to do?
 
     def call_finbrain(self, other_args):
         """Process finbrain command"""
-        finbrain_crypto_view.crypto_sentiment_analysis(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="finbrain",
+            description="""FinBrain collects the news headlines from 15+ major financial news
+                           sources on a daily basis and analyzes them to generate sentiment scores
+                           for more than 4500 US stocks. FinBrain Technologies develops deep learning
+                           algorithms for financial analysis and prediction, which currently serves
+                           traders from more than 150 countries all around the world.
+                           [Source:  https://finbrain.tech]""",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            default="BTC",
+            type=str,
+            dest="coin",
+            help="Symbol of coin to load data for, ~100 symbols are available",
+            choices=COINS,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            finbrain_crypto_view.display_crypto_sentiment_analysis(
+                coin=ns_parser.coin, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_dd(self, _):
         """Process dd command"""

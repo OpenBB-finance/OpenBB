@@ -24,7 +24,7 @@ import gamestonk_terminal.config_terminal as cfg
 
 
 def display_order_book(coin: str, limit: int, currency: str, export: str) -> None:
-    """Get order book for currency
+    """Get order book for currency. [Source: Binance]
 
     Parameters
     ----------
@@ -60,7 +60,7 @@ def display_order_book(coin: str, limit: int, currency: str, export: str) -> Non
 
 
 def display_balance(coin: str, currency: str, export: str) -> None:
-    """Get account holdings for asset
+    """Get account holdings for asset. [Source: Binance]
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ def display_balance(coin: str, currency: str, export: str) -> None:
 
 
 def load(other_args: List[str]) -> Union[str, None]:
-    """Define current_coin from binance
+    """Define current_coin from binance. [Source: Binance]
 
     Parameters
     ----------
@@ -150,8 +150,8 @@ def load(other_args: List[str]) -> Union[str, None]:
         return None
 
 
-def chart(coin: str, other_args: List[str]) -> Tuple[str, str, pd.DataFrame]:
-    """Define current_coin from binance
+def display_chart(coin: str, other_args: List[str]) -> Tuple[str, str, pd.DataFrame]:
+    """Define current_coin from binance. [Source: Binance]
 
     Parameters
     ----------
@@ -270,7 +270,7 @@ def chart(coin: str, other_args: List[str]) -> Tuple[str, str, pd.DataFrame]:
 
 
 def ta(coin: str, other_args: List[str]) -> Tuple[pd.DataFrame, str]:
-    """Define current_coin from binance
+    """Define current_coin from binance. [Source: Binance]
 
     Parameters
     ----------

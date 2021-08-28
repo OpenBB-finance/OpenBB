@@ -1,6 +1,7 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
+from typing import Union, Any, Dict, List, Optional
 import regex as re
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
@@ -40,20 +41,20 @@ BASE_INFO = [
 class Coin:
     """Coin class, it holds loaded coin"""
 
-    def __init__(self, symbol):
+    def __init__(self, symbol: str):
         self.client = CoinGeckoAPI()
         self._coin_list = self.client.get_coins_list()
         self.coin_symbol = self._validate_coin(symbol)
 
         if self.coin_symbol:
-            self.coin = self._get_coin_info()
+            self.coin: Dict[Any, Any] = self._get_coin_info()
 
     def __str__(self):
         return f"{self.coin_symbol}"
 
-    def _validate_coin(self, symbol):
+    def _validate_coin(self, symbol: str) -> str:
         """Validate if given coin symbol or id exists in list of available coins on CoinGecko.
-        If yes it returns coin id.
+        If yes it returns coin id. [Source: CoinGecko]
 
         Parameters
         ----------
@@ -62,7 +63,8 @@ class Coin:
 
         Returns
         -------
-        id of the coin on CoinGecko service.
+        str
+            id of the coin on CoinGecko service.
 
         """
         coin = None
@@ -75,55 +77,60 @@ class Coin:
             raise ValueError(f"Could not find coin with the given id: {symbol}\n")
         return coin
 
-    def coin_list(self):
-        """
+    def coin_list(self) -> list:
+        """List all available coins
         Returns
         -------
-        list of all available coin ids
+        list
+            list of all available coin ids
         """
         return [token.get("id") for token in self._coin_list]
 
-    def _get_coin_info(self):
+    def _get_coin_info(self) -> dict:
         """Helper method which fetch the coin information by id from CoinGecko API like:
          (name, price, market, ... including exchange tickers)
 
         Returns
         -------
         dict
+            Coin information
         """
         params = dict(localization="false", tickers="false", sparkline=True)
         return self.client.get_coin_by_id(self.coin_symbol, **params)
 
-    def _get_links(self):
+    def _get_links(self) -> Dict:
         """Helper method that extracts links from coin
 
         Returns
         -------
         dict
+            Links related to coin
         """
-        return self.coin.get("links")
+        return self.coin.get("links", {})
 
     @property
-    def repositories(self):
+    def get_repositories(self) -> Optional[Any]:
         """Get list of all repositories for given coin
 
         Returns
         -------
-        list with repositories
+        list
+            Repositories related to coin
         """
         return self._get_links().get("repos_url")
 
     @property
-    def developers_data(self):
+    def get_developers_data(self) -> pd.DataFrame:
         """Get coin development data from GitHub or BitBucket like:
             number of pull requests, contributor etc
 
         Returns
         -------
         pandas.DataFrame
-            Metric, Value
+            Developers Data
+            Columns: Metric, Value
         """
-        dev = self.coin.get("developer_data")
+        dev = self.coin.get("developer_data", {})
         useless_keys = (
             "code_additions_deletions_4_weeks",
             "last_4_weeks_commit_activity_series",
@@ -140,13 +147,14 @@ class Coin:
         return df[df["Value"].notna()]
 
     @property
-    def blockchain_explorers(self):
+    def get_blockchain_explorers(self) -> Union[pd.DataFrame, Any]:
         """Get list of URLs to blockchain explorers for given coin:
 
         Returns
         -------
         pandas.DataFrame
-            Metric, Value
+            Blockchain Explorers
+            Columns: Metric, Value
         """
         blockchain = self._get_links().get("blockchain_site")
         if blockchain:
@@ -162,13 +170,14 @@ class Coin:
         return None
 
     @property
-    def social_media(self):
+    def get_social_media(self) -> pd.DataFrame:
         """Get list of URLs to social media like twitter, facebook, reddit...
 
         Returns
         -------
         pandas.DataFrame
-            Metric, Value
+            Urls to social media
+            Columns: Metric, Value
         """
         social_dct = {}
         links = self._get_links()
@@ -176,7 +185,7 @@ class Coin:
             channel
         ) in CHANNELS.keys():  # pylint: disable=consider-iterating-dictionary)
             if channel in links:
-                value = links.get(channel)
+                value = links.get(channel, "")
                 if channel == "twitter_screen_name":
                     value = "https://twitter.com/" + value
                 elif channel == "bitcointalk_thread_identifier" and value is not None:
@@ -194,13 +203,14 @@ class Coin:
         return df[df["Value"].notna()]
 
     @property
-    def websites(self):
+    def get_websites(self) -> pd.DataFrame:
         """Get list of URLs to websites like homepage of coin, forum,
 
         Returns
         -------
         pandas.DataFrame
-            Metric, Value
+            Urls to website, homepage, forum
+            Columns: Metric, Value
         """
         websites_dct = {}
         links = self._get_links()
@@ -218,23 +228,25 @@ class Coin:
         return df[df["Value"].notna()]
 
     @property
-    def categories(self):
+    def get_categories(self) -> Union[Dict[Any, Any], List[Any]]:
         """Coins categories
         Returns
         -------
         list/dict
+            Coin categories
         """
-        return self.coin.get("categories")
+        return self.coin.get("categories", {})
 
-    def _get_base_market_data_info(self):
+    def _get_base_market_data_info(self) -> dict:
         """Helper method that fetches all the base market/price information about given coin
 
         Returns
         -------
         dict
+            All market related information for given coin
         """
         market_dct = {}
-        market_data = self.coin.get("market_data")
+        market_data = self.coin.get("market_data", {})
         for stat in [
             "total_supply",
             "max_supply",
@@ -251,18 +263,19 @@ class Coin:
         return market_dct
 
     @property
-    def base_info(self):
+    def get_base_info(self) -> pd.DataFrame:
         """Get all the base information about given coin
 
         Returns
         -------
         pandas.DataFrame
+            Base information about coin
         """
         regx = r'<a href="(.+?)">|</a>'
 
         results = {}
         for attr in BASE_INFO:
-            info_obj = self.coin.get(attr)
+            info_obj = self.coin.get(attr, {})
             if attr == "description":
                 info_obj = info_obj.get("en")
                 info_obj = re.sub(regx, "", info_obj)
@@ -280,15 +293,16 @@ class Coin:
         return df[df["Value"].notna()]
 
     @property
-    def market_data(self):
+    def get_market_data(self) -> pd.DataFrame:
         """Get all the base market information about given coin
 
         Returns
         -------
         pandas.DataFrame
+            Base market information about coin
             Metric,Value
         """
-        market_data = self.coin.get("market_data")
+        market_data = self.coin.get("market_data", {})
         market_columns_denominated = [
             "market_cap",
             "fully_diluted_valuation",
@@ -332,15 +346,18 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
-    def all_time_high(self, currency="usd"):
+    def get_all_time_high(self, currency: str = "usd") -> pd.DataFrame:
         """Get all time high data for given coin
 
         Returns
         -------
         pandas.DataFrame
+            All time high price data
             Metric,Value
         """
-        market_data = self.coin.get("market_data")
+        market_data = self.coin.get("market_data", {})
+        if market_data == {}:
+            return pd.DataFrame()
         ath_columns = [
             "current_price",
             "ath",
@@ -363,15 +380,19 @@ class Coin:
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
         return df[df["Value"].notna()]
 
-    def all_time_low(self, currency="usd"):
+    def get_all_time_low(self, currency: str = "usd") -> pd.DataFrame:
         """Get all time low data for given coin
 
         Returns
         -------
         pandas.DataFrame
+            All time low price data
             Metric,Value
         """
-        market_data = self.coin.get("market_data")
+        market_data = self.coin.get("market_data", {})
+        if market_data == {}:
+            return pd.DataFrame()
+
         ath_columns = [
             "current_price",
             "atl",
@@ -394,12 +415,13 @@ class Coin:
         return df[df["Value"].notna()]
 
     @property
-    def scores(self):
+    def get_scores(self) -> pd.DataFrame:
         """Get different kind of scores for given coin
 
         Returns
         -------
         pandas.DataFrame
+            Social, community, sentiment scores for coin
             Metric,Value
         """
         score_columns = [
@@ -418,9 +440,9 @@ class Coin:
         single_stats = {col: self.coin.get(col) for col in score_columns[:-2]}
         nested_stats = {}
         for col in score_columns[-2:]:
-            _dct = self.coin.get(col)
+            _dct = self.coin.get(col, {})
             for k, _ in _dct.items():
-                nested_stats[k] = _dct.get(k)
+                nested_stats[k] = _dct.get(k, {})
 
         single_stats.update(nested_stats)
         df = pd.Series(single_stats).reset_index()
@@ -434,7 +456,9 @@ class Coin:
         )
         return df[df["Value"].notna()]
 
-    def get_coin_market_chart(self, vs_currency="usd", days=30, **kwargs):
+    def get_coin_market_chart(
+        self, vs_currency: str = "usd", days: int = 30, **kwargs: Any
+    ) -> pd.DataFrame:
         """Get prices for given coin
 
         Parameters
@@ -448,7 +472,8 @@ class Coin:
         Returns
         -------
         pandas.DataFrame
-            time, price, currency
+            Prices for given coin
+            Columns: time, price, currency
         """
         prices = self.client.get_coin_market_chart_by_id(
             self.coin_symbol, vs_currency, days, **kwargs
@@ -460,7 +485,7 @@ class Coin:
         df["currency"] = vs_currency
         return df
 
-    def get_ohlc(self, vs_currency="usd", days=90):
+    def get_ohlc(self, vs_currency: str = "usd", days: int = 90) -> pd.DataFrame:
         """Get Open, High, Low, Close prices for given coin
 
         Parameters
@@ -474,7 +499,8 @@ class Coin:
         Returns
         -------
         pandas.DataFrame
-            time, price, currency
+            OHLC data for coin
+            Columns: time, price, currency
         """
 
         prices = self.client.get_coin_ohlc_by_id(self.coin_symbol, vs_currency, days)
