@@ -372,10 +372,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             print("Use 'load <ticker>' prior to this command!", "\n")
             return
 
-        ret = bt_controller.menu(
-            self.ticker,
-            self.start,
-        )
+        ret = bt_controller.menu(self.ticker, self.stock)
 
         if ret is False:
             self.print_help()
