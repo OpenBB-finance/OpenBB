@@ -16,7 +16,7 @@ sort_map = {
 
 
 def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> None:
-    """Shows top n coins from coinmarketcap.com [Source: CoinMarketCap]
+    """Shows top n coins. [Source: CoinMarketCap]
 
     Parameters
     ----------

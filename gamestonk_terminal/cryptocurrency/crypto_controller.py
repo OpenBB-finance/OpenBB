@@ -8,7 +8,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 from gamestonk_terminal.cryptocurrency.overview import overview_controller
@@ -293,7 +297,84 @@ What do you want to do?
 
     def call_find(self, other_args):
         """Process find command"""
-        find(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="find",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Find similar coin by coin name,symbol or id. If you don't remember exact name or id of the Coin at CoinGecko,
+            Binance or CoinPaprika you can use this command to display coins with similar name, symbol or id
+            to your search query.
+            Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+            It will search for coin that has similar name to polka and display top 25 matches.
+            -c, --coin stands for coin - you provide here your search query
+            -k, --key it's a searching key. You can search by symbol, id or name of coin
+            -t, --top it displays top N number of records.""",
+        )
+        parser.add_argument(
+            "-c",
+            "--coin",
+            help="Symbol Name or Id of Coin",
+            dest="coin",
+            required="-h" not in other_args,
+            type=str,
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            dest="key",
+            help="Specify by which column you would like to search: symbol, name, id",
+            type=str,
+            choices=["id", "symbol", "name"],
+            default="symbol",
+        )
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=10,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "--source",
+            dest="source",
+            choices=["cp", "cg", "bin"],
+            default="cg",
+            help="Source of data.",
+            type=str,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-c")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            find(
+                coin=ns_parser.coin,
+                source=ns_parser.source,
+                key=ns_parser.key,
+                top=ns_parser.top,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu():

@@ -7,7 +7,7 @@ import gamestonk_terminal.config_terminal as cfg
 
 
 def get_cmc_top_n() -> pd.DataFrame:
-    """Shows top n coins from coinmarketcap.com [Source: CoinMarketCap]
+    """Shows top n coins. [Source: CoinMarketCap]
 
 
     Returns

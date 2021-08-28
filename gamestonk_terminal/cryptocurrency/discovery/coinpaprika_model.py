@@ -9,7 +9,7 @@ from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 def get_search_results(
     query: str, category: Optional[Any] = None, modifier: Optional[Any] = None
 ) -> pd.DataFrame:
-    """Search CoinPaprika [Source: CoinPaprika]
+    """Search CoinPaprika. [Source: CoinPaprika]
 
     Parameters
     ----------

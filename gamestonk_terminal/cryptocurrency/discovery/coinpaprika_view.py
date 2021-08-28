@@ -10,7 +10,7 @@ import gamestonk_terminal.cryptocurrency.discovery.coinpaprika_model as paprika
 def display_search_results(
     query: str, category: str, top: int, sortby: str, descend: bool, export: str
 ) -> None:
-    """Search over CoinPaprika API [Source: CoinPaprika]
+    """Search over CoinPaprika. [Source: CoinPaprika]
 
     Parameters
     ----------
