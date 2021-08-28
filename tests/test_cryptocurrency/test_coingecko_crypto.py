@@ -122,7 +122,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_ath(self):
-        dd_pycoingecko_view.display_ath(self.coin, export="")
+        dd_pycoingecko_view.display_ath(self.coin, export="", currency="usd")
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -130,7 +130,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_atl(self):
-        dd_pycoingecko_view.display_atl(self.coin, export="")
+        dd_pycoingecko_view.display_atl(self.coin, export="", currency="usd")
 
     @check_print(assert_in="Metric")
     @vcr.use_cassette(
@@ -162,7 +162,7 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_holdings_overview(self):
-        ov_pycoingecko_view.display_holdings_overview(coin="ethereum", export="")
+        ov_pycoingecko_view.display_holdings_overview(coin="bitcoin", export="")
 
     @check_print(assert_in="═══════")
     @vcr.use_cassette(
@@ -170,7 +170,9 @@ class TestCoinGeckoAPI(TestCase):
         record_mode="new_episodes",
     )
     def test_coin_holdings_companies_list(self):
-        ov_pycoingecko_view.display_holdings_companies_list(coin="ethereum", export="")
+        ov_pycoingecko_view.display_holdings_companies_list(
+            coin="ethereum", export="", links=False
+        )
 
     @check_print(assert_in="Rank")
     @vcr.use_cassette(
@@ -201,7 +203,7 @@ class TestCoinGeckoAPI(TestCase):
         disc_pycoingecko_view.display_discover(
             category="trending",
             top=15,
-            sortby="Change",
+            sortby="Rank",
             descend=True,
             links=False,
             export="",
@@ -352,7 +354,7 @@ class TestCoinGeckoAPI(TestCase):
     )
     def test_coin_exchange_rates(self):
         ov_pycoingecko_view.display_exchange_rates(
-            top=15, sortby="Rank", descend=True, export=""
+            top=15, sortby="Index", descend=True, export=""
         )
 
     @check_print(assert_in="Metric")
