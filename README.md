@@ -83,15 +83,6 @@ Gamestonk Terminal provides a modern Python-based integrated environment for inv
 
 As a modern Python-based environment, GamestonkTerminal opens access to numerous Python data libraries in Data Science (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition (Beautiful Soup, and numerous third-party APIs).
 
-## Donation
-
-Gamestonk Terminal is a free Open-Source Software. This means that the entire codebase is public, and any user can use it for free.
-
-A small team of us are consistently working to provide as many updates to the project as we can, and this is done out of hours, often late nights to improve this tool. Whilst we don't earn any money from Gamestonk Terminal, we want to make sure that all our users can make the best investments from our software. As we continue to build on this project, we would really appreciate any type of donation or support so we can buy more coffees to fuel us even more!
-
-Here's our Patreon page: https://www.patreon.com/gamestonkterminal
-
-There are many ways to help support GST. If you want to help, non-monetarily, join our [discord](https://discord.gg/Up2QGbMKHY). Sharing the terminal with friends would also go a long way. Thanks in advance ape.
 
 ## Getting Started
 

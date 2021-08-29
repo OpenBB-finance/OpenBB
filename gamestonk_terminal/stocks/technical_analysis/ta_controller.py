@@ -283,10 +283,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -331,9 +327,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -377,6 +370,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values.",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -387,7 +389,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -399,7 +401,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -432,6 +435,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values. ",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -442,7 +454,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -454,7 +466,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -484,6 +497,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values. ",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -494,7 +516,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -506,7 +528,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -536,6 +559,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values. ",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -546,7 +578,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -558,7 +590,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -591,6 +624,15 @@ Custom:
             help="Window lengths.  Multiple values indicated as comma separated values.",
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -601,7 +643,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -613,7 +655,8 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
-                window_length=ns_parser.n_length,
+                length=ns_parser.n_length,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -632,6 +675,15 @@ Custom:
             """,
         )
         parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -640,10 +692,6 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -657,6 +705,7 @@ Custom:
                 s_ticker=self.ticker,
                 s_interval=self.interval,
                 df_stock=self.stock,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )
 
@@ -707,10 +756,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -782,10 +827,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -855,7 +896,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -927,10 +968,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -981,7 +1018,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1033,7 +1070,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1101,7 +1138,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1170,7 +1207,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1246,7 +1283,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1309,10 +1346,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1390,7 +1423,7 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
+                if "-" not in other_args[0]:
                     other_args.insert(0, "-l")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1446,10 +1479,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1515,10 +1544,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1561,10 +1586,6 @@ Custom:
         )
 
         try:
-            if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -1620,8 +1641,8 @@ Custom:
 
         try:
             if other_args:
-                if "-l" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-l")
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-p")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:

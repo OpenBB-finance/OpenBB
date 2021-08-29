@@ -62,7 +62,7 @@ What do you want to do?
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
 
->   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally
+>   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally, degiro
 >   pa          portfolio analysis, \t\t analyses your custom portfolio
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
         """
