@@ -15,7 +15,11 @@ from gamestonk_terminal.cryptocurrency.discovery import (
 )
 
 from gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
-
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    plot_chart,
+    load,
+    load_ta_data,
+)
 from tests.helpers import check_print
 
 # pylint: disable=unused-import
@@ -30,7 +34,8 @@ def get_bitcoin(mock_load):
     with open("tests/data/btc_usd_test_data.json", encoding="utf8") as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    return dd_pycoingecko_view.load(["-c", "bitcoin"])
+    coin, _ = load(coin="bitcoin", source="cg")
+    return coin
 
 
 # pylint: disable=R0904
@@ -59,8 +64,11 @@ class TestCoinGeckoAPI(TestCase):
             sample_return = json.load(f)
 
         mock_load.return_value = sample_return
-        mock_return, vs = dd_pycoingecko_view.load_ta_data(
-            self.coin, ["--vs", "usd", "--days", "30"]
+        mock_return, vs = load_ta_data(
+            coin=self.coin,
+            source="cg",
+            currency="usd",
+            days=30,
         )
         self.assertTrue(mock_return.shape == (31, 4))
         self.assertTrue(vs == "usd")
@@ -82,7 +90,7 @@ class TestCoinGeckoAPI(TestCase):
     @mock.patch("matplotlib.pyplot.show")
     def test_coin_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        dd_pycoingecko_view.plot_chart(self.coin, [])
+        plot_chart(coin=self.coin, source="cg", currency="usd", days=30)
 
     @check_print(assert_in="Market Cap Rank")
     @vcr.use_cassette(

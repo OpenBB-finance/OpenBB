@@ -9,6 +9,11 @@ from gamestonk_terminal.cryptocurrency.discovery import (
 from gamestonk_terminal.cryptocurrency.overview import (
     coinpaprika_view as ov_coinpaprika_view,
 )
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    plot_chart,
+    load,
+    load_ta_data,
+)
 
 from tests.helpers import check_print
 
@@ -91,7 +96,7 @@ class TestCoinPaprikaView(TestCase):
     @mock.patch("matplotlib.pyplot.show")
     def test_chart(self, mock_matplot):
         # pylint: disable=unused-argument
-        dd_coinpaprika_view.plot_chart("btc-bitcoin", [])
+        plot_chart(coin="btc-bitcoin", source="cp", currency="USD", days=30)
 
     @check_print(assert_in="base_currency_name")
     def test_exchange_markets(self):
@@ -111,11 +116,19 @@ class TestCoinPaprikaView(TestCase):
         )
 
     def test_load(self):
-        value = dd_coinpaprika_view.load(["-c", "BTC"])
-        self.assertEqual(value, "btc-bitcoin")
+        value = load(
+            coin="BTC",
+            source="cp",
+        )
+        self.assertEqual(value[0], "btc-bitcoin")
 
     def test_load_ta_data(self):
-        value = dd_coinpaprika_view.load_ta_data("eth-ethereum", [])
+        value = load_ta_data(
+            coin="eth-ethereum",
+            source="cp",
+            currency="USD",
+            days=30,
+        )
         print(value[0])
         self.assertIn("Open", value[0])
 

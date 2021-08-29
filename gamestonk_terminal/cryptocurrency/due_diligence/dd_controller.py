@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 import pandas as pd
+from binance.client import Client
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
@@ -22,6 +23,8 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     show_available_pairs_for_given_symbol,
 )
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart
+import gamestonk_terminal.config_terminal as cfg
 
 
 class DueDiligenceController:
@@ -619,9 +622,127 @@ Binance:
 
     def call_chart(self, other_args):
         """Process chart command"""
-        getattr(self.DD_VIEWS_MAPPING[self.source], "plot_chart")(
-            self.current_coin, other_args
-        )
+        if self.current_coin:
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="ta",
+                description="""Loads data for technical analysis. You can specify currency vs which you want
+                to show chart and also number of days to get data for.
+                By default currency: usd and days: 30.
+                E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
+                in last 90 days range use `ta --vs btc --days 90`""",
+            )
+
+            if self.source == "cp":
+                parser.add_argument(
+                    "--vs",
+                    default="usd",
+                    dest="vs",
+                    help="Currency to display vs coin",
+                    choices=["usd", "btc", "BTC", "USD"],
+                    type=str,
+                )
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                    type=check_positive,
+                )
+
+            if self.source == "cg":
+                parser.add_argument(
+                    "--vs", default="usd", dest="vs", help="Currency to display vs coin"
+                )
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                )
+
+            if self.source == "bin":
+                client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+                interval_map = {
+                    "1day": client.KLINE_INTERVAL_1DAY,
+                    "3day": client.KLINE_INTERVAL_3DAY,
+                    "1hour": client.KLINE_INTERVAL_1HOUR,
+                    "2hour": client.KLINE_INTERVAL_2HOUR,
+                    "4hour": client.KLINE_INTERVAL_4HOUR,
+                    "6hour": client.KLINE_INTERVAL_6HOUR,
+                    "8hour": client.KLINE_INTERVAL_8HOUR,
+                    "12hour": client.KLINE_INTERVAL_12HOUR,
+                    "1week": client.KLINE_INTERVAL_1WEEK,
+                    "1min": client.KLINE_INTERVAL_1MINUTE,
+                    "3min": client.KLINE_INTERVAL_3MINUTE,
+                    "5min": client.KLINE_INTERVAL_5MINUTE,
+                    "15min": client.KLINE_INTERVAL_15MINUTE,
+                    "30min": client.KLINE_INTERVAL_30MINUTE,
+                    "1month": client.KLINE_INTERVAL_1MONTH,
+                }
+
+                _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+                parser.add_argument(
+                    "--vs",
+                    help="Quote currency (what to view coin vs)",
+                    dest="vs",
+                    type=str,
+                    default="USDT",
+                    choices=quotes,
+                )
+
+                parser.add_argument(
+                    "-i",
+                    "--interval",
+                    help="Interval to get data",
+                    choices=list(interval_map.keys()),
+                    dest="interval",
+                    default="1day",
+                    type=str,
+                )
+                parser.add_argument(
+                    "-l",
+                    "--limit",
+                    dest="limit",
+                    default=100,
+                    help="Number to get",
+                    type=check_positive,
+                )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                if self.source == "bin":
+                    limit = ns_parser.limit
+                    interval = ns_parser.interval
+                    days = 0
+                else:
+                    limit = 0
+                    interval = "1day"
+                    days = ns_parser.days
+
+                plot_chart(
+                    coin=self.current_coin,
+                    limit=limit,
+                    interval=interval,
+                    days=days,
+                    currency=ns_parser.vs,
+                    source=self.source,
+                )
+
+            except Exception as e:
+                print(e, "\n")
+
+        else:
+            print(
+                "No coin selected. Use 'load' to load the coin you want to look at.\n"
+            )
 
     # paprika
     def call_ps(self, other_args):
@@ -678,6 +799,15 @@ Binance:
                 description="""Get basic information for coin. Like:
                     name, symbol, rank, type, description, platform, proof_type,
                     contract, tags, parent""",
+            )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
             )
 
             try:

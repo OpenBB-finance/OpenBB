@@ -197,7 +197,7 @@ CoinMarketCap:
             if not ns_parser:
                 return
 
-            cryptocurrency_helpers.all_coins(
+            cryptocurrency_helpers.display_all_coins(
                 coin=ns_parser.coin,
                 source=ns_parser.source,
                 top=ns_parser.top,

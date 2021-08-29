@@ -7,6 +7,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
+from binance.client import Client
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -30,8 +31,17 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
 )
 from gamestonk_terminal.cryptocurrency.due_diligence.finbrain_crypto_view import COINS
 
-from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import load, find
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
+    load,
+    find,
+    load_ta_data,
+    plot_chart,
+)
 from gamestonk_terminal.cryptocurrency.report import report_controller
+from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
+    show_available_pairs_for_given_symbol,
+)
+import gamestonk_terminal.config_terminal as cfg
 
 
 class CryptoController:
@@ -165,18 +175,180 @@ What do you want to do?
     def call_load(self, other_args):
         """Process load command"""
         try:
-            self.current_coin, self.source = load(
-                coin=self.current_coin, other_args=other_args
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="load",
+                description="Load crypto currency to perform analysis on. "
+                "Available data sources are CoinGecko, CoinPaprika, and Binance"
+                "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
             )
+            parser.add_argument(
+                "-c",
+                "--coin",
+                help="Coin to get",
+                dest="coin",
+                type=str,
+                required="-h" not in other_args,
+            )
+
+            parser.add_argument(
+                "-s",
+                "--source",
+                help="Source of data",
+                dest="source",
+                choices=("cp", "cg", "bin"),
+                default="cg",
+                required=False,
+            )
+
+            try:
+                if other_args:
+                    if not other_args[0][0] == "-":
+                        other_args.insert(0, "-c")
+
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    self.current_coin, self.source = self.current_coin, None
+                    return
+
+                source = ns_parser.source
+
+                for arg in ["--source", source]:
+                    if arg in other_args:
+                        other_args.remove(arg)
+
+                self.current_coin, self.source = load(
+                    coin=ns_parser.coin, source=ns_parser.source
+                )
+
+            except Exception as e:
+                print(e, "\n")
+                self.current_coin, self.source = self.current_coin, None
+
         except TypeError:
             print("Couldn't load data\n")
 
     def call_chart(self, other_args):
         """Process chart command"""
         if self.current_coin:
-            getattr(self.DD_VIEWS_MAPPING[self.source], "plot_chart")(
-                self.current_coin, other_args
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="ta",
+                description="""Loads data for technical analysis. You can specify currency vs which you want
+                to show chart and also number of days to get data for.
+                By default currency: usd and days: 30.
+                E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
+                in last 90 days range use `ta --vs btc --days 90`""",
             )
+
+            if self.source == "cp":
+                parser.add_argument(
+                    "--vs",
+                    default="usd",
+                    dest="vs",
+                    help="Currency to display vs coin",
+                    choices=["usd", "btc", "BTC", "USD"],
+                    type=str,
+                )
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                    type=check_positive,
+                )
+
+            if self.source == "cg":
+                parser.add_argument(
+                    "--vs", default="usd", dest="vs", help="Currency to display vs coin"
+                )
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                )
+
+            if self.source == "bin":
+                client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+                interval_map = {
+                    "1day": client.KLINE_INTERVAL_1DAY,
+                    "3day": client.KLINE_INTERVAL_3DAY,
+                    "1hour": client.KLINE_INTERVAL_1HOUR,
+                    "2hour": client.KLINE_INTERVAL_2HOUR,
+                    "4hour": client.KLINE_INTERVAL_4HOUR,
+                    "6hour": client.KLINE_INTERVAL_6HOUR,
+                    "8hour": client.KLINE_INTERVAL_8HOUR,
+                    "12hour": client.KLINE_INTERVAL_12HOUR,
+                    "1week": client.KLINE_INTERVAL_1WEEK,
+                    "1min": client.KLINE_INTERVAL_1MINUTE,
+                    "3min": client.KLINE_INTERVAL_3MINUTE,
+                    "5min": client.KLINE_INTERVAL_5MINUTE,
+                    "15min": client.KLINE_INTERVAL_15MINUTE,
+                    "30min": client.KLINE_INTERVAL_30MINUTE,
+                    "1month": client.KLINE_INTERVAL_1MONTH,
+                }
+
+                _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+                parser.add_argument(
+                    "--vs",
+                    help="Quote currency (what to view coin vs)",
+                    dest="vs",
+                    type=str,
+                    default="USDT",
+                    choices=quotes,
+                )
+
+                parser.add_argument(
+                    "-i",
+                    "--interval",
+                    help="Interval to get data",
+                    choices=list(interval_map.keys()),
+                    dest="interval",
+                    default="1day",
+                    type=str,
+                )
+                parser.add_argument(
+                    "-l",
+                    "--limit",
+                    dest="limit",
+                    default=100,
+                    help="Number to get",
+                    type=check_positive,
+                )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                if self.source == "bin":
+                    limit = ns_parser.limit
+                    interval = ns_parser.interval
+                    days = 0
+                else:
+                    limit = 0
+                    interval = "1day"
+                    days = ns_parser.days
+
+                plot_chart(
+                    coin=self.current_coin,
+                    limit=limit,
+                    interval=interval,
+                    days=days,
+                    currency=ns_parser.vs,
+                    source=self.source,
+                )
+
+            except Exception as e:
+                print(e, "\n")
+
         else:
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
@@ -186,9 +358,122 @@ What do you want to do?
         """Process ta command"""
         # TODO: Play with this to get correct usage
         if self.current_coin:
-            self.current_df, self.current_currency = getattr(
-                self.DD_VIEWS_MAPPING[self.source], "load_ta_data"
-            )(self.current_coin, other_args)
+            parser = argparse.ArgumentParser(
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                prog="ta",
+                description="""Loads data for technical analysis. You can specify currency vs which you want
+                                   to show chart and also number of days to get data for.
+                                   By default currency: usd and days: 30.
+                                   E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
+                                   in last 90 days range use `ta --vs btc --days 90`""",
+            )
+
+            if self.source == "cp":
+                parser.add_argument(
+                    "--vs",
+                    default="usd",
+                    dest="vs",
+                    help="Currency to display vs coin",
+                    choices=["usd", "btc", "BTC", "USD"],
+                    type=str,
+                )
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                    type=check_positive,
+                )
+
+            if self.source == "cg":
+                parser.add_argument(
+                    "--vs", default="usd", dest="vs", help="Currency to display vs coin"
+                )
+                parser.add_argument(
+                    "-d",
+                    "--days",
+                    default=30,
+                    dest="days",
+                    help="Number of days to get data for",
+                )
+
+            if self.source == "bin":
+                client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+                interval_map = {
+                    "1day": client.KLINE_INTERVAL_1DAY,
+                    "3day": client.KLINE_INTERVAL_3DAY,
+                    "1hour": client.KLINE_INTERVAL_1HOUR,
+                    "2hour": client.KLINE_INTERVAL_2HOUR,
+                    "4hour": client.KLINE_INTERVAL_4HOUR,
+                    "6hour": client.KLINE_INTERVAL_6HOUR,
+                    "8hour": client.KLINE_INTERVAL_8HOUR,
+                    "12hour": client.KLINE_INTERVAL_12HOUR,
+                    "1week": client.KLINE_INTERVAL_1WEEK,
+                    "1min": client.KLINE_INTERVAL_1MINUTE,
+                    "3min": client.KLINE_INTERVAL_3MINUTE,
+                    "5min": client.KLINE_INTERVAL_5MINUTE,
+                    "15min": client.KLINE_INTERVAL_15MINUTE,
+                    "30min": client.KLINE_INTERVAL_30MINUTE,
+                    "1month": client.KLINE_INTERVAL_1MONTH,
+                }
+
+                _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+                parser.add_argument(
+                    "--vs",
+                    help="Quote currency (what to view coin vs)",
+                    dest="vs",
+                    type=str,
+                    default="USDT",
+                    choices=quotes,
+                )
+
+                parser.add_argument(
+                    "-i",
+                    "--interval",
+                    help="Interval to get data",
+                    choices=list(interval_map.keys()),
+                    dest="interval",
+                    default="1day",
+                    type=str,
+                )
+                parser.add_argument(
+                    "-l",
+                    "--limit",
+                    dest="limit",
+                    default=100,
+                    help="Number to get",
+                    type=check_positive,
+                )
+
+            try:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+
+                if not ns_parser:
+                    return
+
+                if self.source == "bin":
+                    limit = ns_parser.limit
+                    interval = ns_parser.interval
+                    days = 0
+                else:
+                    limit = 0
+                    interval = "1day"
+                    days = ns_parser.days
+
+                self.current_df, self.current_currency = load_ta_data(
+                    coin=self.current_coin,
+                    source=self.source,
+                    currency=ns_parser.vs,
+                    days=days,
+                    limit=limit,
+                    interval=interval,
+                )
+
+            except Exception as e:
+                print(e, "\n")
+
             if self.current_currency != "" and not self.current_df.empty:
                 try:
                     quit = ta_controller.menu(
