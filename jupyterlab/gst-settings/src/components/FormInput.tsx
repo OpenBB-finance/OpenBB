@@ -41,6 +41,7 @@ export default function FormInput({
     <>
       <label className="inputFieldLabel">{item.value.title}</label>
       <input
+        className={item.value.title}
         type={item.value.form}
         checked={
           item.value.form === "checkbox"

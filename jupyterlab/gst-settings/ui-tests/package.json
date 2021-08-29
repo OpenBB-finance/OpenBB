@@ -1,0 +1,13 @@
+{
+  "name": "@jupyterlab-examples/react-widget-tests",
+  "version": "0.1.0",
+  "description": "Integration test for react-widget example",
+  "repository": "https://github.com/jupyterlab/extension-examples",
+  "author": "Project Jupyter Contributors",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.13.1",
+    "typescript": "~4.1.3"
+  }
+}
