@@ -251,7 +251,7 @@ def display_global_defi_info(export: str) -> None:
 def display_stablecoins(
     sortby: str, descend: bool, top: int, links: bool, export: str
 ) -> None:
-    """Shows stablecoins data from "https://www.coingecko.com/en/stablecoins"
+    """Shows stablecoins data from "https://www.coingecko.com/en/stablecoins". [Source: CoinGecko]
 
     Parameters
     ----------
@@ -298,7 +298,7 @@ def display_stablecoins(
 def display_news(
     sortby: str, descend: bool, top: int, links: bool, export: str
 ) -> None:
-    """Shows latest crypto news from www.coingecko.com
+    """Shows latest crypto news. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -351,7 +351,7 @@ def display_categories(
 ) -> None:
     """Shows top cryptocurrency categories by market capitalization from https://www.coingecko.com/en/categories
 
-    The cryptocurrency category ranking is based on market capitalization.
+    The cryptocurrency category ranking is based on market capitalization. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -398,7 +398,7 @@ def display_categories(
 def display_exchanges(
     sortby: str, descend: bool, top: int, links: bool, export: str
 ) -> None:
-    """Shows list of top exchanges from CoinGecko
+    """Shows list of top exchanges from CoinGecko. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -441,7 +441,7 @@ def display_exchanges(
 
 
 def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None:
-    """Shows list of financial platforms from CoinGecko
+    """Shows list of financial platforms. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -476,7 +476,7 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
 
 
 def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
-    """Shows list of financial products from CoinGecko
+    """Shows list of financial products. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -510,7 +510,7 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
 
 
 def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
-    """Shows list of crypto indexes from CoinGecko
+    """Shows list of crypto indexes. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -546,7 +546,7 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
 
 
 def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> None:
-    """Shows  list of crypto derivatives from CoinGecko
+    """Shows  list of crypto derivatives. [Source: CoinGecko]
 
     Parameters
     ----------

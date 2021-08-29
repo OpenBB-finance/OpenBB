@@ -78,7 +78,8 @@ class Coin:
         return coin
 
     def coin_list(self) -> list:
-        """List all available coins
+        """List all available coins [Source: CoinGecko]
+
         Returns
         -------
         list
@@ -88,7 +89,7 @@ class Coin:
 
     def _get_coin_info(self) -> dict:
         """Helper method which fetch the coin information by id from CoinGecko API like:
-         (name, price, market, ... including exchange tickers)
+         (name, price, market, ... including exchange tickers) [Source: CoinGecko]
 
         Returns
         -------
@@ -99,7 +100,7 @@ class Coin:
         return self.client.get_coin_by_id(self.coin_symbol, **params)
 
     def _get_links(self) -> Dict:
-        """Helper method that extracts links from coin
+        """Helper method that extracts links from coin [Source: CoinGecko]
 
         Returns
         -------
@@ -110,7 +111,7 @@ class Coin:
 
     @property
     def get_repositories(self) -> Optional[Any]:
-        """Get list of all repositories for given coin
+        """Get list of all repositories for given coin [Source: CoinGecko]
 
         Returns
         -------
@@ -122,7 +123,7 @@ class Coin:
     @property
     def get_developers_data(self) -> pd.DataFrame:
         """Get coin development data from GitHub or BitBucket like:
-            number of pull requests, contributor etc
+            number of pull requests, contributor etc [Source: CoinGecko]
 
         Returns
         -------
@@ -148,7 +149,7 @@ class Coin:
 
     @property
     def get_blockchain_explorers(self) -> Union[pd.DataFrame, Any]:
-        """Get list of URLs to blockchain explorers for given coin:
+        """Get list of URLs to blockchain explorers for given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -171,7 +172,7 @@ class Coin:
 
     @property
     def get_social_media(self) -> pd.DataFrame:
-        """Get list of URLs to social media like twitter, facebook, reddit...
+        """Get list of URLs to social media like twitter, facebook, reddit... [Source: CoinGecko]
 
         Returns
         -------
@@ -204,7 +205,7 @@ class Coin:
 
     @property
     def get_websites(self) -> pd.DataFrame:
-        """Get list of URLs to websites like homepage of coin, forum,
+        """Get list of URLs to websites like homepage of coin, forum. [Source: CoinGecko]
 
         Returns
         -------
@@ -229,7 +230,8 @@ class Coin:
 
     @property
     def get_categories(self) -> Union[Dict[Any, Any], List[Any]]:
-        """Coins categories
+        """Coins categories. [Source: CoinGecko]
+
         Returns
         -------
         list/dict
@@ -238,7 +240,7 @@ class Coin:
         return self.coin.get("categories", {})
 
     def _get_base_market_data_info(self) -> dict:
-        """Helper method that fetches all the base market/price information about given coin
+        """Helper method that fetches all the base market/price information about given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -264,7 +266,7 @@ class Coin:
 
     @property
     def get_base_info(self) -> pd.DataFrame:
-        """Get all the base information about given coin
+        """Get all the base information about given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -294,7 +296,7 @@ class Coin:
 
     @property
     def get_market_data(self) -> pd.DataFrame:
-        """Get all the base market information about given coin
+        """Get all the base market information about given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -347,7 +349,7 @@ class Coin:
         return df[df["Value"].notna()]
 
     def get_all_time_high(self, currency: str = "usd") -> pd.DataFrame:
-        """Get all time high data for given coin
+        """Get all time high data for given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -381,7 +383,7 @@ class Coin:
         return df[df["Value"].notna()]
 
     def get_all_time_low(self, currency: str = "usd") -> pd.DataFrame:
-        """Get all time low data for given coin
+        """Get all time low data for given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -416,7 +418,7 @@ class Coin:
 
     @property
     def get_scores(self) -> pd.DataFrame:
-        """Get different kind of scores for given coin
+        """Get different kind of scores for given coin. [Source: CoinGecko]
 
         Returns
         -------
@@ -459,7 +461,7 @@ class Coin:
     def get_coin_market_chart(
         self, vs_currency: str = "usd", days: int = 30, **kwargs: Any
     ) -> pd.DataFrame:
-        """Get prices for given coin
+        """Get prices for given coin. [Source: CoinGecko]
 
         Parameters
         ----------
@@ -486,7 +488,7 @@ class Coin:
         return df
 
     def get_ohlc(self, vs_currency: str = "usd", days: int = 90) -> pd.DataFrame:
-        """Get Open, High, Low, Close prices for given coin
+        """Get Open, High, Low, Close prices for given coin. [Source: CoinGecko]
 
         Parameters
         ----------
