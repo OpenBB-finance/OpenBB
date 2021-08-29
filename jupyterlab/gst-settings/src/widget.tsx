@@ -11,14 +11,25 @@ import FormInput from "./components/FormInput";
  * @returns {} JSX.Element Settings form component
  */
 export function GamestonkTerminalSettingsComponent({ s }: any): JSX.Element {
+  /**
+   * Get the section settings values.
+   *
+   * The section settings are taken from the user space (`s.user` if section keys
+   * exist there) or from the default values of the settings schema.
+   *
+   * @param  section  The section name
+   * @returns   The state of the section settings.
+   */
   const getSectionState = (section: string) => {
-    const env_values = s.schema.properties;
-    const values: any = [];
-
-    Object.keys(env_values[section].default).forEach((element) => {
+    const values: Array<Record<string, unknown>> = [];
+    Object.keys(s.schema.properties[section].default).forEach((element) => {
+      const settingsValue =
+        typeof s.user[section] === "undefined"
+          ? s.schema.properties[section].default[element]
+          : s.user[section][element];
       values.push({
         key: element,
-        value: env_values[section].default[element],
+        value: settingsValue,
       });
     });
     return values;
