@@ -28,9 +28,9 @@ namespace PluginOptions {
   export const CMD_OPEN = "gamestonk:terminal";
 
   // TO CHANGE
-  export const GAMESTONK_DIRECTORY = 'D:/code/python/thirdparty/GamestonkTerminal';
+  // export const GAMESTONK_DIRECTORY = "../..";
 
-  export const PALETTE_CATEGORY = "Gamestonk Terminal extension";
+  export const PALETTE_CATEGORY = "Gamestonk Terminal";
   export const ICON_NAME = "gamestonk:terminal";
   export const ID = "@gamestonk/terminal";
   export const ICON = new LabIcon({
@@ -38,9 +38,6 @@ namespace PluginOptions {
     svgstr: appStr,
   });
   export const SETTINGS_SCHEMA = "@gamestonk/settings:settings";
-
-  // TO CHANGE
-  export const VENV_REPOSITORY = 'D:/code/python/venvs/gst-venv';
 }
 
 /**
@@ -74,25 +71,32 @@ async function activate(
 ): Promise<void> {
   console.log(browserFactory);
   const { commands } = app;
+
   const command = PluginOptions.CMD_OPEN;
+
   commands.addCommand(PluginOptions.CMD_OPEN, {
     label: (args) =>
       args["isPalette"] ? "New Gamestonk Terminal" : "Gamestonk Terminal",
     caption: "Create a new Python file",
     icon: (args) => (args["isPalette"] ? undefined : PluginOptions.ICON),
-    execute: async (args) => {
+    execute: async () => {
       // Load settings
       let settings_properties = "";
+      let terminalPath;
       if (settings_registry) {
         const settings = await settings_registry
           .load(PluginOptions.SETTINGS_SCHEMA)
-          .then((settings) => {
+          .then((settings: ISettingRegistry.ISettings): any => {
             return settings;
           });
 
         settings_properties = JSON.stringify(settings.user);
-        console.log('settings', settings);
-        console.log('settings', settings_properties);
+        console.log("settings", settings);
+        console.log("settings", settings_properties);
+
+        terminalPath = settings.user.APP_SETTINGS.TERMINAL_PATH.value === ""
+            ? settings.user.APP_SETTINGS.TERMINAL_PATH.default
+            : settings.user.APP_SETTINGS.TERMINAL_PATH.value;
       }
 
       const manager = new TerminalManager();
@@ -100,16 +104,16 @@ async function activate(
       const terminal = new Terminal(session, { theme: "dark" });
       terminal.title.closable = true;
 
+      // session.send({
+      //   type: "stdin",
+      //   content: [
+      //     `echo '${settings_properties}' | python ${PluginOptions.GAMESTONK_DIRECTORY}/jupyterlab/scripts/jupyter_export_env.py${PluginOptions.BREAK_LINE}`,
+      //   ],
+      // });
       session.send({
         type: "stdin",
         content: [
-          `cd ${PluginOptions.GAMESTONK_DIRECTORY}${PluginOptions.BREAK_LINE}`,
-        ],
-      });
-      session.send({
-        type: "stdin",
-        content: [
-          `echo '${settings_properties}' | ${PluginOptions.VENV_REPOSITORY}/bin/python ${PluginOptions.GAMESTONK_DIRECTORY}/jupyterlab/scripts/jupyter_export_env.py${PluginOptions.BREAK_LINE}`,
+          `${terminalPath}${PluginOptions.BREAK_LINE}`,
         ],
       });
       return terminal;

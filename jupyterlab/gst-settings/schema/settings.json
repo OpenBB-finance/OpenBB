@@ -114,7 +114,7 @@
                     "form": "text",
                     "title": "Custom terminal path",
                     "description": "Path to the terminal.py",
-                    "default": "",
+                    "default": "./terminal",
                     "value": ""
                 },
                 "PATH_TO_SELENIUM_DRIVER":
