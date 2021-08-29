@@ -22,6 +22,7 @@ jupyterlab/*/*.bundle.*
 jupyterlab/*/lib/
 jupyterlab/*/*/labextension/
 jupyterlab/*/node_modules/
+jupyterlab/*/*/node_modules/
 jupyterlab/*/*.egg-info/
 jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
