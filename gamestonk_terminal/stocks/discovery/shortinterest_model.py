@@ -67,7 +67,10 @@ def get_today_hot_penny_stocks() -> DataFrame:
 
     text_soup_penny_stock_stocks = BeautifulSoup(
         requests.get(
-            url_penny_stock_stocks, headers={"User-Agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1"}
+            url_penny_stock_stocks,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1"
+            },
         ).text,
         "lxml",
     )
@@ -78,19 +81,15 @@ def get_today_hot_penny_stocks() -> DataFrame:
     ):
         a_penny_stock_header.append(penny_stock_header.text)
 
-
     l_stocks = list()
     for penny_stock in text_soup_penny_stock_stocks.find_all("a", href=True):
         if penny_stock.text:
             l_stocks.append(penny_stock.text)
-    l_stocks
 
     a_penny_stock = list()
     penny_idx = 0
     d_stocks = {}
-    for idx, penny_stock in enumerate(text_soup_penny_stock_stocks.findAll(
-        "td", {"align": "right"}
-    )):
+    for penny_stock in text_soup_penny_stock_stocks.findAll("td", {"align": "right"}):
         a_penny_stock.append(penny_stock.text)
 
         if len(a_penny_stock) == 5:
