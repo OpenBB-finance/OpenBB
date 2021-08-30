@@ -44,9 +44,11 @@ class DiscoveryController:
         "fipo",
         "gainers",
         "losers",
-        "under",
+        "ugs",
         "gtech",
         "active",
+        "ulc",
+        "asc",
         "ford",
         "arkord",
         "upcoming",
@@ -82,9 +84,11 @@ Finnhub:
 Yahoo Finance:
     gainers        show latest top gainers
     losers         show latest top losers
-    under          undervalued growth stocks
+    ugs            undervalued stocks with revenue and earnings growth in excess of 25%
     gtech          tech stocks with revenue and earnings growth more than 25%
     active         most active stocks by intraday trade volume
+    ulc            potentially undervalued large cap stocks
+    asc            small cap stocks with earnings growth rates better than 25%
 Fidelity:
     ford           orders by Fidelity Customers
 cathiesark.com:
@@ -236,7 +240,7 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gainers",
-            description="Print up to 25 top ticker gainers. [Source: Yahoo Finance]",
+            description="Print up to 25 top gainers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-n",
@@ -278,7 +282,7 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="losers",
-            description="Print up to 25 top ticker losers. [Source: Yahoo Finance]",
+            description="Print up to 25 top losers. [Source: Yahoo Finance]",
         )
         parser.add_argument(
             "-n",
@@ -314,13 +318,16 @@ pennystockflow.com
         except Exception as e:
             print(e, "\n")
 
-    def call_under(self, other_args: List[str]):
-        """Process under command"""
+    def call_ugs(self, other_args: List[str]):
+        """Process ugs command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="under",
-            description="Print up to 25 top undervalued tickers. [Source: Yahoo Finance]",
+            prog="ugs",
+            description="""
+                Print up to 25 undervalued stocks with revenue and earnings growth in excess of 25%.
+                [Source: Yahoo Finance]
+            """,
         )
         parser.add_argument(
             "-n",
@@ -348,7 +355,7 @@ pennystockflow.com
             if not ns_parser:
                 return
 
-            yahoofinance_view.display_undervalued(
+            yahoofinance_view.display_ugs(
                 num_stocks=ns_parser.num,
                 export=ns_parser.export,
             )
@@ -362,7 +369,9 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="gtech",
-            description="Print up to 25 top growth tech tickers. [Source: Yahoo Finance]",
+            description="""
+                Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
+            """,
         )
         parser.add_argument(
             "-n",
@@ -404,7 +413,9 @@ pennystockflow.com
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="active",
-            description="Print up to 25 top active tickers. [Source: Yahoo Finance]",
+            description="""
+                Print up to 25 top most actively traded intraday tickers. [Source: Yahoo Finance]
+            """,
         )
         parser.add_argument(
             "-n",
@@ -433,6 +444,94 @@ pennystockflow.com
                 return
 
             yahoofinance_view.display_active(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_ulc(self, other_args: List[str]):
+        """Process ulc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ulc",
+            description="""
+                Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the stocks to display.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_ulc(
+                num_stocks=ns_parser.num,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_asc(self, other_args: List[str]):
+        """Process asc command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="asc",
+            description="""
+                Print up to 25 small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_int_range(1, 25),
+            default=5,
+            help="Number of the stocks to display.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-n")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoofinance_view.display_asc(
                 num_stocks=ns_parser.num,
                 export=ns_parser.export,
             )
