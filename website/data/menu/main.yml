@@ -3,14 +3,70 @@ main:
   - name: Stocks
     ref: "/stocks"
     sub:
-      - name: Load
+      - name: load
         ref: "/stocks/load"
-      - name: Candle
+      - name: candle
         ref: "/stocks/candle"
-      - name: Discover Stocks
-        ref: "/stocks/discover_stocks"
+      - name: Discovery
+        ref: "/stocks/discovery"
         sub:
           - name: ipo
-            ref: "/stocks/discover_stocks/ipo"
+            ref: "/stocks/discovery/ipo"
           - name: map
-            ref: "/stocks/discover_stocks/map"
+            ref: "/stocks/discovery/map"
+      - name: Dark Pool Shorts
+        ref: "/stocks/dark_pool_shorts"
+      - name: Fundamental Analysis
+        ref: "/stocks/fundamental_analysis"
+      - name: Due Diligence
+        ref: "/stocks/due_diligence"
+      - name: Comparison Analysis
+        ref: "/stocks/comparison_analysis"
+      - name: Insider
+        ref: "/stocks/insider"
+      - name: Government
+        ref: "/stocks/government"
+      - name: Screener
+        ref: "/stocks/screener"
+      - name: Report
+        ref: "/stocks/report"
+  - name: Options
+    ref: "/options"
+  - name: Economy
+    ref: "/economy"
+    sub:
+      - name: report
+        ref: "/stocks/report"
+  - name: Forex
+    ref: "/forex"
+  - name: Portfolio
+    ref: "/portfolio"
+    sub:
+      - name: Brokers
+        ref: "/portfolio/brokers"
+      - name: Portfolio Analysis
+        ref: "/portfolio/portfolio_analysis"
+      - name: Portfolio Optimization
+        ref: "/portfolio/portfolio_optimization"
+  - name: Cryptocurrency
+    ref: "/cryptocurrency"
+    sub:
+      - name: Discovery
+        ref: "/cryptocurrency/discovery"
+      - name: Due Diligence
+        ref: "/cryptocurrency/due_diligence"
+      - name: Overview
+        ref: "/cryptocurrency/overview"
+      - name: Report
+        ref: "/cryptocurrency/report"
+  - name: Common
+    ref: "/common"
+    sub:
+      - name: Behavioural Analysis
+        ref: "/common/behavioural_analysis"
+      - name: Technical Analysis
+        ref: "/common/technical_analysis"
+      - name: Quantitative Analysis
+        ref: "/common/quantitative_analysis"
+      - name: Prediction Techniques
+        ref: "/common/prediction_techniques"

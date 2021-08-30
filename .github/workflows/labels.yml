@@ -10,7 +10,7 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: "bug, build, do not merge, docker, docs, duplicate, enhancement, feat XS, feat S, feat M, feat L, feat XL, help wanted, refactor, tests"
+          labels: "website, bug, build, do not merge, docker, docs, duplicate, enhancement, feat XS, feat S, feat M, feat L, feat XL, help wanted, refactor, tests"
       - uses: mheap/github-action-required-labels@v1
         with:
           mode: exactly
