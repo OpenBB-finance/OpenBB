@@ -7,7 +7,7 @@ from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import (
     export_data,
 )
-import gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_model as paprika
+from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
@@ -83,7 +83,7 @@ def display_twitter(
 
     """
 
-    df = paprika.get_coin_twitter_timeline(coin_id)
+    df = coinpaprika_model.get_coin_twitter_timeline(coin_id)
 
     if df.empty:
         print(f"Couldn't find any tweets for coin {coin_id}", "\n")
@@ -134,7 +134,7 @@ def display_events(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_coin_events_by_id(coin_id)
+    df = coinpaprika_model.get_coin_events_by_id(coin_id)
 
     if df.empty:
         print(f"Couldn't find any events for coin {coin_id}\n")
@@ -187,7 +187,7 @@ def display_exchanges(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_coin_exchanges_by_id(coin_id)
+    df = coinpaprika_model.get_coin_exchanges_by_id(coin_id)
 
     if df.empty:
         print("No data found", "\n")
@@ -246,7 +246,7 @@ def display_markets(
     if sortby in ["volume", "price"]:
         sortby = f"{str(currency).lower()}_{sortby}"
 
-    df = paprika.get_coin_markets_by_id(coin_id, currency)
+    df = coinpaprika_model.get_coin_markets_by_id(coin_id, currency)
 
     if df.empty:
         print("There is no data \n")
@@ -294,7 +294,7 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
 
     """
 
-    df = paprika.get_tickers_info_for_coin(coin_id, currency)
+    df = coinpaprika_model.get_tickers_info_for_coin(coin_id, currency)
 
     if df.empty:
         print("No data found", "\n")
@@ -333,7 +333,7 @@ def display_basic(coin_id: str, export: str) -> None:
 
     """
 
-    df = paprika.basic_coin_info(coin_id)
+    df = coinpaprika_model.basic_coin_info(coin_id)
 
     if df.empty:
         print("No data available\n")

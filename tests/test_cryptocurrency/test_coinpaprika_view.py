@@ -1,5 +1,7 @@
 from unittest import TestCase, mock
 
+import pandas as pd
+
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinpaprika_view as dd_coinpaprika_view,
 )
@@ -58,7 +60,11 @@ class TestCoinPaprikaView(TestCase):
         )
 
     @check_print(assert_in="Couldn't find")
-    def test_twitter(self):
+    @mock.patch(
+        "gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_model.get_coin_twitter_timeline"
+    )
+    def test_twitter(self, mock_value):
+        mock_value.return_value = pd.DataFrame()
         dd_coinpaprika_view.display_twitter(
             coin_id="eth-ethereum", sortby="date", descend=True, top=15, export=""
         )
