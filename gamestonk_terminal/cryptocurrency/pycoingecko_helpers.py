@@ -10,6 +10,8 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from dateutil import parser
+from requests.adapters import HTTPAdapter, RetryError
+from urllib3.util.retry import Retry
 
 
 GECKO_BASE_URL = "https://www.coingecko.com"
@@ -34,6 +36,41 @@ def get_btc_price() -> float:
     return req.json()["bitcoin"]["usd"]
 
 
+def _retry_session(
+    url: str, retries: int = 3, backoff_factor: float = 1.0
+) -> requests.Session:
+    """Helper methods that retries to make request to CoinGecko
+
+
+    Parameters
+    ----------
+    url: str
+        Url to mount a session
+    retries: int
+        How many retries
+    backoff_factor: float
+        Backoff schema - time periods between retry
+
+    Returns
+    -------
+    requests.Session
+        Mounted session
+
+    """
+    session = requests.Session()
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        status_forcelist=[500, 502, 503, 504],
+        backoff_factor=backoff_factor,
+        method_whitelist=False,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount(url, adapter)
+    return session
+
+
 def scrape_gecko_data(url: str) -> BeautifulSoup:
     """Helper method that scrape Coin Gecko site.
 
@@ -46,8 +83,15 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     -------
         BeautifulSoup object
     """
+    session = _retry_session("https://www.coingecko.com")
+    try:
+        req = session.get(url)
+    except Exception as error:
+        raise RetryError(
+            "Connection error. Couldn't connect to CoinGecko and scrape the data. "
+            "Please visit CoinGecko site, and check if it's not under maintenance"
+        ) from error
 
-    req = requests.get(url)
     return BeautifulSoup(req.text, features="lxml")
 
 

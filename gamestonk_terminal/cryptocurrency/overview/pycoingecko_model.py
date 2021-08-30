@@ -18,10 +18,7 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
 )
 
 
-client = CoinGeckoAPI()
-
-
-def get_holdings_overview(endpoint: str = "bitcoin"):
+def get_holdings_overview(endpoint: str = "bitcoin") -> pd.DataFrame:
     """Scrapes overview of public companies that holds ethereum or bitcoin
     from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}" [Source: CoinGecko]
 
@@ -321,6 +318,7 @@ def get_exchanges() -> pd.DataFrame:
     pandas.DataFrame
         Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
     """
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_exchanges_list(per_page=250))
     df.replace({float(np.NaN): None}, inplace=True)
     df = df[
@@ -355,6 +353,7 @@ def get_financial_platforms() -> pd.DataFrame:
     pandas.DataFrame
         Rank, Name, Category, Centralized, Url
     """
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_finance_platforms())
     df.drop("facts", axis=1, inplace=True)
     create_df_index(df, "rank")
@@ -370,6 +369,7 @@ def get_finance_products() -> pd.DataFrame:
     pandas.DataFrame
        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
     """
+    client = CoinGeckoAPI()
     df = pd.DataFrame(
         client.get_finance_products(per_page=250),
         columns=[
@@ -392,6 +392,7 @@ def get_indexes() -> pd.DataFrame:
     pandas.DataFrame
         Name, Id, Market, Last, MultiAsset
     """
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_indexes(per_page=250))
     df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
     create_df_index(df, "Rank")
@@ -407,6 +408,7 @@ def get_derivatives() -> pd.DataFrame:
         Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h,
 
     """
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_derivatives(include_tickers="unexpired"))
     df.drop(
         ["index", "last_traded_at", "expired_at", "index_id", "open_interest"],
@@ -441,6 +443,7 @@ def get_exchange_rates() -> pd.DataFrame:
     pandas.DataFrame
         Index, Name, Unit, Value, Type
     """
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_exchange_rates()["rates"]).T.reset_index()
     df.drop("index", axis=1, inplace=True)
     create_df_index(df, "index")
@@ -462,6 +465,7 @@ def get_global_info() -> pd.DataFrame:
     pandas.DataFrame
         Metric, Value
     """
+    client = CoinGeckoAPI()
     results = client.get_global()
 
     total_mcap = results.pop("market_cap_percentage")
@@ -496,6 +500,7 @@ def get_global_markets_info() -> pd.DataFrame:
         "Market_Cap_Percentage",
     ]
     data = []
+    client = CoinGeckoAPI()
     results = client.get_global()
     for key in columns:
         data.append(results.get(key))
@@ -513,6 +518,7 @@ def get_global_defi_info() -> pd.DataFrame:
     pandas.DataFrame
         Metric, Value
     """
+    client = CoinGeckoAPI()
     results = client.get_global_decentralized_finance_defi()
     for key, value in results.items():
         try:

@@ -39,8 +39,6 @@ CATEGORIES = {
     "most_visited": 4,
 }
 
-client = CoinGeckoAPI()
-
 
 def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
     """Scrape data about top gainers - coins which gain the most in given period and
@@ -114,6 +112,7 @@ def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
         Most voted, most trending, recently added, most positive sentiment coins.
         Columns: Name, Price_BTC, Price_USD, Url
     """
+
     if category not in CATEGORIES:
         raise ValueError(
             f"Wrong category name\nPlease chose one from list: {CATEGORIES.keys()}"
@@ -435,7 +434,7 @@ def get_coin_list() -> pd.DataFrame:
         Coins available on CoinGecko
         Columns: id, symbol, name
     """
-
+    client = CoinGeckoAPI()
     return pd.DataFrame(
         client.get_coins_list(),
         columns=["id", "symbol", "name"],
@@ -457,6 +456,7 @@ def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) ->
     dict
         dictionary with all trading pairs on binance
     """
+    client = CoinGeckoAPI()
     binance_coins = client.get_exchanges_tickers_by_id(id=exchange_id, page=page)
     return binance_coins["tickers"]
 
