@@ -661,29 +661,201 @@ Finviz:
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        finviz_compare_view.screener(other_args, "overview", self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="overview",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_compare_view.screener(
+                ticker=self.ticker,
+                similar=self.similar,
+                data_type="overview",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
-        finviz_compare_view.screener(other_args, "valuation", self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="valuation",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_compare_view.screener(
+                ticker=self.ticker,
+                similar=self.similar,
+                data_type="valuation",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
-        finviz_compare_view.screener(other_args, "financial", self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="financial",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_compare_view.screener(
+                ticker=self.ticker,
+                similar=self.similar,
+                data_type="financial",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
-        finviz_compare_view.screener(other_args, "ownership", self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ownership",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_compare_view.screener(
+                ticker=self.ticker,
+                similar=self.similar,
+                data_type="ownership",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
-        finviz_compare_view.screener(
-            other_args, "performance", self.ticker, self.similar
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="performance",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_compare_view.screener(
+                ticker=self.ticker,
+                similar=self.similar,
+                data_type="performance",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
-        finviz_compare_view.screener(other_args, "technical", self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="technical",
+            description="""
+                Prints screener data of similar companies. [Source: Finviz]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finviz_compare_view.screener(
+                ticker=self.ticker,
+                similar=self.similar,
+                data_type="technical",
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""

@@ -1,68 +1,50 @@
 """ Finviz Comparison View """
 __docformat__ = "numpy"
 
-import argparse
 from typing import List
+import os
 
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from tabulate import tabulate
+
+from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_model
+from gamestonk_terminal import feature_flags as gtff
 
 
-def screener(other_args: List[str], data_type: str, ticker: str, similar: List[str]):
+def screener(data_type: str, ticker: str, similar: List[str], export: str = ""):
     """Screener
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    data_type : str
-        Data type string between: overview, valuation, financial, ownership, performance, technical
     ticker : str
         Main ticker to compare income
     similar : List[str]
         Similar companies to compare income with
+    data_type : str
+        Screener to use.  One of {overview, valuation, financial, ownership, performance, technical}
+    export : str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog=data_type,
-        description="""
-            Prints screener data of similar companies. [Source: Finviz]
-        """,
-    )
-    parser.add_argument(
-        "-s",
-        "--similar",
-        dest="l_similar",
-        type=lambda s: [str(item).upper() for item in s.split(",")],
-        default=similar,
-        help="similar companies to compare with.",
-    )
-    parser.add_argument(
-        "-a",
-        "--also",
-        dest="l_also",
-        type=lambda s: [str(item).upper() for item in s.split(",")],
-        default=[],
-        help="apart from loaded similar companies also compare with.",
-    )
+    all_tickers = [ticker, *similar]
+    df_screen = finviz_compare_model.get_comparison_data(data_type, all_tickers)
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        l_similar = ns_parser.l_similar
-        l_similar += ns_parser.l_also
-
-        # Add main ticker to similar list of companies
-        l_similar = [ticker] + l_similar
-
-        df_screen = finviz_compare_model.get_comparison_data(data_type, l_similar)
-
-        if not df_screen.empty:
+    if df_screen.empty:
+        print("No screened data found.")
+    else:
+        if gtff.USE_TABULATE_DF:
+            # TODO: figure out right way to use different floatfmts across different cols
+            print(
+                tabulate(
+                    df_screen,
+                    headers=df_screen.columns,
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                )
+            )
+        else:
             print(df_screen.to_string())
-        print("")
 
-    except Exception as e:
-        print(e, "\n")
+    print("")
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), data_type, df_screen
+    )
