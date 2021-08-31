@@ -10,7 +10,11 @@ from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_non_negative,
+)
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.stocks.comparison_analysis import polygon_model, finnhub_model
 from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_view
@@ -20,6 +24,7 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     finviz_compare_view,
     finviz_compare_model,
 )
+from gamestonk_terminal.stocks.comparison_analysis import ml_model
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.menu import session
 
@@ -50,6 +55,7 @@ class ComparisonAnalysisController:
         "ownership",
         "performance",
         "technical",
+        "tsne",
     ]
     CHOICES_MENUS = ["po"]
     CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
@@ -112,6 +118,8 @@ Comparison Analysis:
     add           add more companies to current selected (max 10 total)
     select        reset and select similar companies
 
+Custom Machine Learning Comparisons:
+    tsne          run TSNE on all SP500 stocks and returns 10 closest tickers
 Yahoo Finance:
     historical    historical price data comparison
     hcorr         historical price correlation
@@ -141,6 +149,37 @@ Finviz:
         )
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
+
+    def call_tsne(self, other_args: List[str]):
+        """Process tsne command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tsne",
+            description="""Get similar companies to compare with using sklearn TSNE.""",
+        )
+        parser.add_argument(
+            "-l",
+            "--learnrate",
+            default=200,
+            dest="lr",
+            type=check_non_negative,
+            help="TSNE Learning rate.  Typical values are between 50 and 200",
+        )
+        parser.add_argument(
+            "-p", "--no_plot", action="store_true", default=False, dest="no_plot"
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            self.similar = ml_model.get_sp500_comps_tsne(
+                self.ticker, lr=ns_parser.lr, no_plot=ns_parser.no_plot
+            )
+            print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
+        except Exception as e:
+            print(e, "\n")
 
     def call_get(self, other_args: List[str]):
         """Process get command"""
