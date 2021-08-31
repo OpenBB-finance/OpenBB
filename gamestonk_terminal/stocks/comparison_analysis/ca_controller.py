@@ -5,20 +5,21 @@ import argparse
 import os
 import random
 from typing import List
-from datetime import datetime
-import requests
 import pandas as pd
 from matplotlib import pyplot as plt
-from finvizfinance.screener.overview import Overview
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.stocks.comparison_analysis import polygon_model, finnhub_model
 from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_view
-from gamestonk_terminal.stocks.comparison_analysis import market_watch_view
+from gamestonk_terminal.stocks.comparison_analysis import marketwatch_view
 from gamestonk_terminal.stocks.comparison_analysis import finbrain_view
-from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_view
+from gamestonk_terminal.stocks.comparison_analysis import (
+    finviz_compare_view,
+    finviz_compare_model,
+)
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.menu import session
 
@@ -29,14 +30,13 @@ class ComparisonAnalysisController:
     """Comparison Analysis Controller class"""
 
     # Command choices
-    CHOICES = [
-        "?",
-        "cls",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["?", "cls", "help", "q", "quit"]
+
+    CHOICES_COMMANDS = [
+        "load",
         "get",
         "select",
+        "add",
         "historical",
         "hcorr",
         "income",
@@ -50,13 +50,14 @@ class ComparisonAnalysisController:
         "ownership",
         "performance",
         "technical",
-        "po",
     ]
+    CHOICES_MENUS = ["po"]
+    CHOICES += CHOICES_COMMANDS + CHOICES_MENUS
 
     def __init__(
         self,
         ticker: str,
-        start: datetime,
+        start: str,
         interval: str,
         stock: pd.DataFrame,
     ):
@@ -66,7 +67,7 @@ class ComparisonAnalysisController:
         ----------
         ticker : str
             Stock ticker
-        start : datetime
+        start : str
             Start time
         interval : str
             Time interval
@@ -89,61 +90,60 @@ class ComparisonAnalysisController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
-            "/stocks/comparison_analysis"
-        )
-
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-
         if self.start:
-            print(
-                f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{s_intraday} Stock: {self.ticker}")
+            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+        help_str = f"""
+https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/comparison_analysis
 
-        if self.similar:
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
+{stock_str}
+Similar Companies: {', '.join(self.similar) or None}
 
-        print("\nComparison Analysis Mode:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   get           get similar companies")
-        print("   select        select similar companies")
-        print("")
-        print("   historical    historical price data comparison")
-        print("   hcorr         historical price correlation")
-        print("   income        income financials comparison")
-        print("   balance       balance financials comparison")
-        print("   cashflow      cashflow comparison")
-        print("   sentiment     sentiment analysis comparison")
-        print("   scorr         sentiment correlation")
-        print("")
-        print("   overview      brief overview comparison")
-        print("   valuation     brief valuation comparison")
-        print("   financial     brief financial comparison")
-        print("   ownership     brief ownership comparison")
-        print("   performance   brief performance comparison")
-        print("   technical     brief technical comparison")
-        print("")
+Comparison Analysis:
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
 
-        if self.similar:
-            print(">  po          portfolio optimization for selected tickers")
-            print("")
-        return
+    load          load new base ticker
+    get           get similar companies
+    add           add more companies to current selected (max 10 total)
+    select        reset and select similar companies
 
-    def get_similar_companies(self, other_args: List[str]):
-        """Get similar companies. [Source: Polygon API]
+Yahoo Finance:
+    historical    historical price data comparison
+    hcorr         historical price correlation
+Market Watch:
+    income        income financials comparison
+    balance       balance financials comparison
+    cashflow      cashflow comparison
+Finnbrain:
+    sentiment     sentiment analysis comparison
+    scorr         sentiment correlation
+Finviz:
+    overview      brief overview comparison
+    valuation     brief valuation comparison
+    financial     brief financial comparison
+    ownership     brief ownership comparison
+    performance   brief performance comparison
+    technical     brief technical comparison
 
-        Parameters
-        ----------
-        other_args : List[str]
-            argparse other args
+    >po          portfolio optimization for selected tickers
         """
+        print(help_str)
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.stock, self.interval = load(
+            other_args, self.ticker, self.start, self.interval, self.stock
+        )
+        if "." in self.ticker:
+            self.ticker = self.ticker.split(".")[0]
+
+    def call_get(self, other_args: List[str]):
+        """Process get command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -173,38 +173,22 @@ class ComparisonAnalysisController:
             )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-s")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-s")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             if ns_parser.source == "polygon":
-                result = requests.get(
-                    f"https://api.polygon.io/v1/meta/symbols/{self.ticker.upper()}/company?&apiKey={cfg.API_POLYGON_KEY}"
+                self.similar, self.user = polygon_model.get_similar_companies(
+                    self.ticker
                 )
-
-                if result.status_code == 200:
-                    self.similar = result.json()["similar"]
-                    self.user = "Polygon"
-                else:
-                    print(result.json()["error"])
 
             elif ns_parser.source == "finnhub":
-                result = requests.get(
-                    f"https://finnhub.io/api/v1/stock/peers?symbol={self.ticker}&token={cfg.API_FINNHUB_KEY}"
+                self.similar, self.user = finnhub_model.get_similar_companies(
+                    self.ticker
                 )
-
-                if result.status_code == 200:
-                    d_peers = result.json()
-
-                    if d_peers:
-                        self.similar = d_peers
-                        self.user = "Finnhub"
-                    else:
-                        print("Similar companies not found.")
 
             else:
                 if ns_parser.b_no_country:
@@ -212,12 +196,9 @@ class ComparisonAnalysisController:
                 else:
                     compare_list = ["Sector", "Industry", "Country"]
 
-                self.similar = (
-                    Overview()
-                    .compare(self.ticker, compare_list, verbose=0)["Ticker"]
-                    .to_list()
+                self.similar, self.user = finviz_compare_model.get_similar_companies(
+                    self.ticker, compare_list
                 )
-                self.user = "Finviz"
 
             if self.ticker.upper() in self.similar:
                 self.similar.remove(self.ticker.upper())
@@ -230,20 +211,49 @@ class ComparisonAnalysisController:
                 )
 
             if self.similar:
-                print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}")
-            print("")
+                print(
+                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
+                )
 
         except Exception as e:
             print(e, "\n")
 
-    def select_similar_companies(self, other_args: List[str]):
-        """Select similar companies, e.g. NIO,XPEV,LI
+    def call_add(self, other_args: List[str]):
+        """Process add command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="add",
+            description="""Add similar companies to compare with.""",
+        )
+        parser.add_argument(
+            "-s",
+            "--similar",
+            dest="l_similar",
+            type=lambda s: [str(item).upper() for item in s.split(",")],
+            default=[],
+            help="similar companies to compare with.",
+        )
 
-        Parameters
-        ----------
-        other_args : List[str]
-            argparse other args
-        """
+        try:
+            # For the case where a user uses: 'add NIO,XPEV,LI'
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-s")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            # Add sets to avoid duplicates
+            self.similar = list(set(self.similar + ns_parser.l_similar))
+            if len(self.similar) > 10:
+                self.similar = list(random.sample(set(self.similar), 10))
+            self.user = "Custom"
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
+        except Exception as e:
+            print(e, "\n")
+
+    def call_select(self, other_args: List[str]):
+        """Process select command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -261,17 +271,16 @@ class ComparisonAnalysisController:
 
         try:
             # For the case where a user uses: 'select NIO,XPEV,LI'
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-s")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-s")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             self.similar = ns_parser.l_similar
-            self.user = "User"
-            print("")
+            self.user = "Custom"
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
         except Exception as e:
             print(e, "\n")
@@ -320,37 +329,253 @@ class ComparisonAnalysisController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_get(self, other_args: List[str]):
-        """Process get command"""
-        self.get_similar_companies(other_args)
-
-    def call_select(self, other_args: List[str]):
-        """Process select command"""
-        self.select_similar_companies(other_args)
-
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        yahoo_finance_view.historical(
-            other_args, self.stock, self.ticker, self.start, self.interval, self.similar
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="historical",
+            description="""Historical price comparison between similar companies.
+            """,
         )
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="type_candle",
+            type=str,
+            choices=["o", "h", "l", "c", "a"],
+            default="a",  # in case it's adjusted close
+            help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
+        )
+        parser.add_argument(
+            "-s",
+            "--no-scale",
+            action="store_false",
+            dest="no_scale",
+            default=True,
+            help="Flag to not put all prices on same 0-1 scale",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            if self.interval != "1440min":
+                print(
+                    "Intraday historical data analysis comparison is not yet available."
+                )
+                # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
+            else:
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                yahoo_finance_view.display_historical(
+                    ticker=self.ticker,
+                    similar_tickers=self.similar,
+                    start=self.start,
+                    candle_type=ns_parser.type_candle,
+                    normalize=ns_parser.no_scale,
+                    export=ns_parser.export,
+                )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
-        yahoo_finance_view.correlation(
-            other_args, self.stock, self.ticker, self.start, self.interval, self.similar
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="corr",
+            description=""" Correlation heatmap based on historical price comparison between similar
+            companies.
+            """,
         )
+        parser.add_argument(
+            "-t",
+            "--type",
+            action="store",
+            dest="type_candle",
+            type=str,
+            choices=["o", "h", "l", "c", "a"],
+            default="a",  # in case it's adjusted close
+            help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoo_finance_view.display_correlation(
+                ticker=self.ticker,
+                similar_tickers=self.similar,
+                start=self.start,
+                candle_type=ns_parser.type_candle,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_income(self, other_args: List[str]):
         """Process income command"""
-        market_watch_view.compare_income(other_args, self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="income",
+            description="""
+                Prints either yearly or quarterly income statement the company, and compares
+                it against similar companies.
+            """,
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter financial data flag.",
+        )
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            dest="s_timeframe",
+            type=str,
+            default=None,
+            help="Specify yearly/quarterly timeframe. Default is last.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            marketwatch_view.display_income_comparison(
+                ticker=self.ticker,
+                similar=self.similar,
+                timeframe=ns_parser.s_timeframe,
+                quarter=ns_parser.b_quarter,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
-        market_watch_view.compare_balance(other_args, self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="balance",
+            description="""
+                Prints either yearly or quarterly balance statement the company, and compares
+                it against similar companies..
+            """,
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter financial data flag.",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            dest="s_timeframe",
+            type=str,
+            default=None,
+            help="Specify yearly/quarterly timeframe. Default is last.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            marketwatch_view.display_balance_comparison(
+                ticker=self.ticker,
+                similar=self.similar,
+                timeframe=ns_parser.s_timeframe,
+                quarter=ns_parser.b_quarter,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
-        market_watch_view.compare_cashflow(other_args, self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cashflow",
+            description="""
+                Prints either yearly or quarterly cashflow statement the company, and compares
+                it against similar companies.
+            """,
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter financial data flag.",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            dest="s_timeframe",
+            type=str,
+            default=None,
+            help="Specify yearly/quarterly timeframe. Default is last.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            marketwatch_view.display_cashflow_comparison(
+                ticker=self.ticker,
+                similar=self.similar,
+                timeframe=ns_parser.s_timeframe,
+                quarter=ns_parser.b_quarter,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
@@ -391,14 +616,14 @@ class ComparisonAnalysisController:
         return po_controller.menu([self.ticker] + self.similar)
 
 
-def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
+def menu(ticker: str, start: str, interval: str, stock: pd.DataFrame):
     """Comparison Analysis Menu
 
     Parameters
     ----------
     ticker : str
         Stock ticker
-    start : datetime
+    start : str
         Time start
     interval : str
         Time interval

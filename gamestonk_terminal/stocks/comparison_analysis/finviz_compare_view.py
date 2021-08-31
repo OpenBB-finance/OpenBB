@@ -1,55 +1,11 @@
-""" Finviz View """
+""" Finviz Comparison View """
 __docformat__ = "numpy"
 
 import argparse
 from typing import List
-import pandas as pd
-from finvizfinance.screener import (
-    technical,
-    overview,
-    valuation,
-    financial,
-    ownership,
-    performance,
-)
-from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-)
 
-
-def get_comparison_data(data_type: str, similar: List[str]):
-    """Screener Overview
-
-    Parameters
-    ----------
-    data_type : str
-        Data type between: overview, valuation, financial, ownership, performance, technical
-
-    Returns
-    ----------
-    pd.DataFrame
-        Dataframe with overview, valuation, financial, ownership, performance or technical
-    """
-    if data_type == "overview":
-        screen = overview.Overview()
-    elif data_type == "valuation":
-        screen = valuation.Valuation()
-    elif data_type == "financial":
-        screen = financial.Financial()
-    elif data_type == "ownership":
-        screen = ownership.Ownership()
-    elif data_type == "performance":
-        screen = performance.Performance()
-    elif data_type == "technical":
-        screen = technical.Technical()
-    else:
-        print("Invalid selected screener type")
-        return pd.DataFrame()
-
-    screen.set_filter(ticker=",".join(similar))
-    df_screen = screen.ScreenerView(verbose=0)
-
-    return df_screen
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
+from gamestonk_terminal.stocks.comparison_analysis import finviz_compare_model
 
 
 def screener(other_args: List[str], data_type: str, ticker: str, similar: List[str]):
@@ -102,7 +58,7 @@ def screener(other_args: List[str], data_type: str, ticker: str, similar: List[s
         # Add main ticker to similar list of companies
         l_similar = [ticker] + l_similar
 
-        df_screen = get_comparison_data(data_type, l_similar)
+        df_screen = finviz_compare_model.get_comparison_data(data_type, l_similar)
 
         if not df_screen.empty:
             print(df_screen.to_string())
