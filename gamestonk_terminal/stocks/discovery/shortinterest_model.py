@@ -67,46 +67,37 @@ def get_today_hot_penny_stocks() -> DataFrame:
 
     text_soup_penny_stock_stocks = BeautifulSoup(
         requests.get(
-            url_penny_stock_stocks, headers={"User-Agent": get_user_agent()}
+            url_penny_stock_stocks,
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1"
+            },
         ).text,
         "lxml",
     )
 
-    a_penny_stock_header = []
+    a_penny_stock_header = list()
     for penny_stock_header in text_soup_penny_stock_stocks.findAll(
         "td", {"class": "tblhdr"}
     ):
         a_penny_stock_header.append(penny_stock_header.text)
 
-    df_penny = pd.DataFrame(columns=a_penny_stock_header)
+    l_stocks = list()
+    for penny_stock in text_soup_penny_stock_stocks.find_all("a", href=True):
+        if penny_stock.text:
+            l_stocks.append(penny_stock.text)
 
-    first_penny = []
-    for idx, penny_stock_header in enumerate(text_soup_penny_stock_stocks.findAll("a")):
-        if idx == 0:
-            continue
-        if idx > 1:
-            break
-        first_penny.append(penny_stock_header.text)
-
-    for idx, first_penny_stock in enumerate(
-        text_soup_penny_stock_stocks.findAll("td", {"align": "right"})
-    ):
-        first_penny.append(first_penny_stock.text)
-        if idx > 3:
-            break
-
-    df_penny.loc[0] = first_penny
-
-    a_penny_stock = []
-    penny_idx = 1
-    for idx, penny_stock in enumerate(
-        text_soup_penny_stock_stocks.findAll("td", {"class": "tdi"})
-    ):
+    a_penny_stock = list()
+    penny_idx = 0
+    d_stocks = {}
+    for penny_stock in text_soup_penny_stock_stocks.findAll("td", {"align": "right"}):
         a_penny_stock.append(penny_stock.text)
 
-        if (idx + 1) % 6 == 0:
-            df_penny.loc[penny_idx] = a_penny_stock
+        if len(a_penny_stock) == 5:
+            d_stocks[l_stocks[penny_idx]] = a_penny_stock
             penny_idx += 1
-            a_penny_stock = []
+            a_penny_stock = list()
+
+    df_penny = pd.DataFrame.from_dict(d_stocks).T
+    df_penny.columns = a_penny_stock_header[1:]
 
     return df_penny
