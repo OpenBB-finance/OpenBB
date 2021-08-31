@@ -119,7 +119,7 @@ Market Watch:
     income        income financials comparison
     balance       balance financials comparison
     cashflow      cashflow comparison
-Finnbrain:
+Finbrain:
     sentiment     sentiment analysis comparison
     scorr         sentiment correlation
 Finviz:
@@ -579,11 +579,85 @@ Finviz:
 
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
-        finbrain_view.sentiment_compare(other_args, self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sentiment_compare",
+            description="""
+                FinBrain's sentiment comparison across similar tickers.
+            """,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            default=False,
+            help="Display raw sentiment data",
+            dest="raw",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finbrain_view.display_sentiment_compare(
+                ticker=self.ticker,
+                similar=self.similar,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
-        finbrain_view.sentiment_correlation(other_args, self.ticker, self.similar)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sentiment_compare",
+            description="""
+                FinBrain's sentiment correlation across similar tickers.
+            """,
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            action="store_true",
+            default=False,
+            help="Display raw sentiment data",
+            dest="raw",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            finbrain_view.display_sentiment_correlation(
+                ticker=self.ticker,
+                similar=self.similar,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
