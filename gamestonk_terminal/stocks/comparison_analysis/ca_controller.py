@@ -5,28 +5,31 @@ import argparse
 import os
 import random
 from typing import List
+
+from colorama import Style
 import pandas as pd
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative,
     get_flair,
     parse_known_args_and_warn,
-    check_non_negative,
+)
+from gamestonk_terminal.menu import session
+from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.stocks.comparison_analysis import (
+    finbrain_view,
+    finnhub_model,
+    finviz_compare_model,
+    finviz_compare_view,
+    marketwatch_view,
+    ml_model,
+    polygon_model,
+    yahoo_finance_view,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
-from gamestonk_terminal.stocks.comparison_analysis import polygon_model, finnhub_model
-from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_view
-from gamestonk_terminal.stocks.comparison_analysis import marketwatch_view
-from gamestonk_terminal.stocks.comparison_analysis import finbrain_view
-from gamestonk_terminal.stocks.comparison_analysis import (
-    finviz_compare_view,
-    finviz_compare_model,
-)
-from gamestonk_terminal.stocks.comparison_analysis import ml_model
-from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.menu import session
 
 # pylint: disable=E1121
 
@@ -96,6 +99,7 @@ class ComparisonAnalysisController:
 
     def print_help(self):
         """Print help"""
+        show_yf = bool(not self.ticker or not self.similar)
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
             stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
@@ -120,9 +124,9 @@ Comparison Analysis:
 
 Custom Machine Learning Comparisons:
     tsne          run TSNE on all SP500 stocks and returns 10 closest tickers
-Yahoo Finance:
+{Style.DIM if show_yf else Style.NORMAL}Yahoo Finance:
     historical    historical price data comparison
-    hcorr         historical price correlation
+    hcorr         historical price correlation {Style.RESET_ALL}
 Market Watch:
     income        income financials comparison
     balance       balance financials comparison
@@ -138,13 +142,13 @@ Finviz:
     performance   brief performance comparison
     technical     brief technical comparison
 
-    >po          portfolio optimization for selected tickers
+>po               portfolio optimization for selected tickers
         """
         print(help_str)
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, self.start, self.stock, self.interval = load(
+        self.ticker, self.start, self.interval, self.stock = load(
             other_args, self.ticker, self.start, self.interval, self.stock
         )
         if "." in self.ticker:
@@ -415,6 +419,12 @@ Finviz:
                 if not ns_parser:
                     return
 
+                if not self.similar or not self.ticker:
+                    print(
+                        "Please make sure there are both a loaded ticker and similar tickers selected. \n"
+                    )
+                    return
+
                 yahoo_finance_view.display_historical(
                     ticker=self.ticker,
                     similar_tickers=self.similar,
@@ -451,6 +461,12 @@ Finviz:
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
+                return
+
+            if not self.similar or not self.ticker:
+                print(
+                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
+                )
                 return
 
             yahoo_finance_view.display_correlation(

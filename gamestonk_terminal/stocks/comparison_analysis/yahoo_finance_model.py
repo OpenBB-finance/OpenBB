@@ -46,3 +46,19 @@ def get_historical(
     return yf.download(all_tickers, start=start, progress=False, threads=False)[
         d_candle_types[candle_type]
     ].dropna(axis=1)
+
+
+def get_1y_sp500() -> pd.DataFrame:
+    """
+    Gets the last year of Adj Close prices for all current SP 500 stocks.
+    They are scraped daily using yfinance at https://github.com/jmaslek/daily_sp_500
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing last 1 year of closes for all SP500 stocks.
+    """
+    return pd.read_csv(
+        "https://raw.githubusercontent.com/jmaslek/daily_sp_500/main/SP500_prices_1yr.csv",
+        index_col=0,
+    )

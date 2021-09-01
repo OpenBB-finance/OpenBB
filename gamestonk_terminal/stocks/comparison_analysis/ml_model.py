@@ -9,6 +9,7 @@ from sklearn.preprocessing import normalize
 from sklearn.manifold import TSNE
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
+from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_model
 
 
 def get_sp500_comps_tsne(
@@ -34,14 +35,11 @@ def get_sp500_comps_tsne(
     List[str]
         List of the 10 closest stocks due to TSNE
     """
-    close_vals = pd.read_csv(
-        "https://raw.githubusercontent.com/jmaslek/daily_sp_500/main/SP500_prices_1yr.csv",
-        index_col=0,
-    )
-
+    close_vals = yahoo_finance_model.get_1y_sp500()
     if ticker not in close_vals.columns:
-        close_vals[ticker] = yf.download(ticker, period="1y", progress=False)
-
+        close_vals[ticker] = yf.download(
+            ticker, start=close_vals.index[0], progress=False
+        )["Adj Close"]
     rets = (
         close_vals.fillna(method="ffill").fillna(method="bfill").pct_change().dropna().T
     )
@@ -66,5 +64,4 @@ def get_sp500_comps_tsne(
     x0, y0 = data.loc[ticker]
     data["dist"] = (data.X - x0) ** 2 + (data.Y - y0) ** 2
     data = data.sort_values(by="dist")
-    similar = data.iloc[1:11].index.to_list()
-    return similar
+    return data.iloc[1:11].index.to_list()
