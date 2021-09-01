@@ -427,10 +427,10 @@ Feel free to share loss porn, memes or any questions at:
 [stars-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/stargazers
 [issues-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge&color=blue
 [issues-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues
-[bugs-open-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=yellow
-[bugs-open-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aopen
-[bugs-closed-shield]: https://img.shields.io/github/issues-closed/GamestonkTerminal/GamestonkTerminal/type%3Abug.svg?style=for-the-badge&color=success
-[bugs-closed-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Atype%3Abug+is%3Aclosed
+[bugs-open-shield]: https://img.shields.io/github/issues/GamestonkTerminal/GamestonkTerminal/bug.svg?style=for-the-badge&color=yellow
+[bugs-open-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aopen
+[bugs-closed-shield]: https://img.shields.io/github/issues-closed/GamestonkTerminal/GamestonkTerminal/bug.svg?style=for-the-badge&color=success
+[bugs-closed-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
 [license-shield]: https://img.shields.io/github/license/GamestonkTerminal/GamestonkTerminal.svg?style=for-the-badge
 [license-url]: https://github.com/GamestonkTerminal/GamestonkTerminal/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
