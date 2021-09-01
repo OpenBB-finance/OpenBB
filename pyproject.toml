@@ -33,7 +33,7 @@ matplotlib = "^3.3.3"
 plotly = "^4.14.3"
 colorama = "^0.4.4"
 papermill = "^2.3.2"
-pmdarima = {version = "1.8.0", optional = false}
+pmdarima = "1.8.0"
 holidays = "^0.10"
 prompt-toolkit = "^3.0.16"
 jupyter = "^1.0.0"
@@ -81,6 +81,7 @@ fred = "^3.1"
 openpyxl = "^3.0.7"
 vcrpy = "^4.1.1"
 coverage = "^5.5"
+jupyterlab = {version = "^3.1.10", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -94,7 +95,7 @@ pyupgrade = "^2.11.0"
 Sphinx = "4.1.1"
 
 [tool.poetry.extras]
-prediction = ["tensorflow", "pmdarima", "transformers", "torch"]
+prediction = ["tensorflow", "jupyterlab"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
