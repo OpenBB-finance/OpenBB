@@ -11,6 +11,9 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_model
 
+# pylint:disable=no-member
+# pylint:disable=unsupported-assignment-operation
+
 
 def get_sp500_comps_tsne(
     ticker: str, lr: int = 200, no_plot: bool = False
