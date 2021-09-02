@@ -70,6 +70,9 @@ def get_1y_sp500() -> pd.DataFrame:
     )
 
 
+# pylint:disable=E1137,E1101
+
+
 def get_sp500_comps_tsne(
     ticker: str, lr: int = 200, no_plot: bool = False
 ) -> List[str]:
