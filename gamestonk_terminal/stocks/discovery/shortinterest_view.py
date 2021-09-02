@@ -57,7 +57,7 @@ def hot_penny_stocks(num: int, export: str):
             df_penny_stocks.head(num),
             headers=df_penny_stocks.columns,
             floatfmt=".2f",
-            showindex=False,
+            showindex=True,
             tablefmt="fancy_grid",
         ),
         "\n",
