@@ -1,6 +1,6 @@
 """Comparison Analysis Controller Module"""
 __docformat__ = "numpy"
-
+# pylint:disable=too-many-lines
 import argparse
 import os
 import random
@@ -25,9 +25,9 @@ from gamestonk_terminal.stocks.comparison_analysis import (
     finviz_compare_model,
     finviz_compare_view,
     marketwatch_view,
-    ml_model,
     polygon_model,
     yahoo_finance_view,
+    yahoo_finance_model,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 
@@ -42,7 +42,9 @@ class ComparisonAnalysisController:
 
     CHOICES_COMMANDS = [
         "load",
-        "get",
+        "getpoly",
+        "getfinnhub",
+        "getfinviz",
         "select",
         "add",
         "historical",
@@ -99,12 +101,12 @@ class ComparisonAnalysisController:
 
     def print_help(self):
         """Print help"""
-        show_yf = bool(not self.ticker or not self.similar)
+        all_loaded = bool(not self.ticker or not self.similar)
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
 https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/comparison_analysis
 
@@ -118,13 +120,15 @@ Comparison Analysis:
     quit          quit to abandon program
 
     load          load new base ticker
-    get           get similar companies
     add           add more companies to current selected (max 10 total)
     select        reset and select similar companies
 
-Custom Machine Learning Comparisons:
+Get Similar:
     tsne          run TSNE on all SP500 stocks and returns 10 closest tickers
-{Style.DIM if show_yf else Style.NORMAL}Yahoo Finance:
+    getpoly       get similar stocks from polygon API
+    getfinnhub    get similar stocks from finnhub API
+    getfinviz     get similar stocks from finviz API
+{Style.DIM if all_loaded else Style.NORMAL}Yahoo Finance:
     historical    historical price data comparison
     hcorr         historical price correlation {Style.RESET_ALL}
 Market Watch:
@@ -132,8 +136,8 @@ Market Watch:
     balance       balance financials comparison
     cashflow      cashflow comparison
 Finbrain:
-    sentiment     sentiment analysis comparison
-    scorr         sentiment correlation
+    sentiment     sentiment analysis comparison {Style.DIM if all_loaded else Style.NORMAL}
+    scorr         sentiment correlation{Style.RESET_ALL}
 Finviz:
     overview      brief overview comparison
     valuation     brief valuation comparison
@@ -142,7 +146,7 @@ Finviz:
     performance   brief performance comparison
     technical     brief technical comparison
 
->po               portfolio optimization for selected tickers
+>   po            portfolio optimization for selected tickers
         """
         print(help_str)
 
@@ -178,70 +182,105 @@ Finviz:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            self.similar = ml_model.get_sp500_comps_tsne(
+            self.similar = yahoo_finance_model.get_sp500_comps_tsne(
                 self.ticker, lr=ns_parser.lr, no_plot=ns_parser.no_plot
             )
             print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
         except Exception as e:
             print(e, "\n")
 
-    def call_get(self, other_args: List[str]):
+    def call_getfinviz(self, other_args: List[str]):
+        """Process getfinviz command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="getfinviz",
+            description="""Get similar companies from finviz to compare with.""",
+        )
+        parser.add_argument(
+            "--nocountry",
+            action="store_true",
+            default=False,
+            dest="b_no_country",
+            help="Similar stocks from finviz using only Industry and Sector.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if ns_parser.b_no_country:
+                compare_list = ["Sector", "Industry"]
+            else:
+                compare_list = ["Sector", "Industry", "Country"]
+
+            self.similar, self.user = finviz_compare_model.get_similar_companies(
+                self.ticker, compare_list
+            )
+
+            if self.ticker.upper() in self.similar:
+                self.similar.remove(self.ticker.upper())
+
+            if len(self.similar) > 10:
+                random.shuffle(self.similar)
+                self.similar = sorted(self.similar[:10])
+                print(
+                    "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
+                )
+
+            if self.similar:
+                print(
+                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
+                )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="get",
-            description="""Get similar companies to compare with.""",
+            prog="getpoly",
+            description="""Get similar companies from polygon to compare with.""",
         )
-        parser.add_argument(
-            "-s",
-            "--source",
-            action="store",
-            default="finviz",
-            dest="source",
-            choices=["polygon", "finnhub", "finviz"],
-            help="source that provides similar companies",
-        )
-
-        # If source is finviz the user may want to get
-        # similar companies based on Industry and Sector only, and not
-        # on the fact that they are based on the same country
-        if "finviz" in other_args or not other_args:
-            parser.add_argument(
-                "--nocountry",
-                action="store_true",
-                default=False,
-                dest="b_no_country",
-                help="Similar stocks from finviz using only Industry and Sector.",
-            )
 
         try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-s")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            self.similar, self.user = polygon_model.get_similar_companies(self.ticker)
 
+            if self.ticker.upper() in self.similar:
+                self.similar.remove(self.ticker.upper())
+
+            if len(self.similar) > 10:
+                random.shuffle(self.similar)
+                self.similar = sorted(self.similar[:10])
+                print(
+                    "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
+                )
+
+            if self.similar:
+                print(
+                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
+                )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_getfinnhub(self, other_args: List[str]):
+        """Process get command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="getfinnhub",
+            description="""Get similar companies from finnhubto compare with.""",
+        )
+        try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            if ns_parser.source == "polygon":
-                self.similar, self.user = polygon_model.get_similar_companies(
-                    self.ticker
-                )
-
-            elif ns_parser.source == "finnhub":
-                self.similar, self.user = finnhub_model.get_similar_companies(
-                    self.ticker
-                )
-
-            else:
-                if ns_parser.b_no_country:
-                    compare_list = ["Sector", "Industry"]
-                else:
-                    compare_list = ["Sector", "Industry", "Country"]
-
-                self.similar, self.user = finviz_compare_model.get_similar_companies(
-                    self.ticker, compare_list
-                )
+            self.similar, self.user = finnhub_model.get_similar_companies(self.ticker)
 
             if self.ticker.upper() in self.similar:
                 self.similar.remove(self.ticker.upper())
@@ -705,6 +744,11 @@ Finviz:
             if not ns_parser:
                 return
 
+            if not self.similar or not self.ticker:
+                print(
+                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
+                )
+                return
             finbrain_view.display_sentiment_correlation(
                 ticker=self.ticker,
                 similar=self.similar,
