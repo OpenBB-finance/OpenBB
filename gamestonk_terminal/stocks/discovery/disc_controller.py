@@ -5,7 +5,6 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
-import webbrowser
 
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
@@ -61,7 +60,6 @@ class DiscoveryController:
         "lowfloat",
         "hotpenny",
         "rtearn",
-        "gwsweb",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -86,7 +84,6 @@ Discovery:
     quit           quit to abandon program
 Geek of Wall St:
     rtearn         realtime earnings from https://thegeekofwallstreet.com/
-    gwsweb         open web browser for tableau visualization
 Finnhub:
     pipo           past IPOs dates
     fipo           future IPOs dates
@@ -154,26 +151,6 @@ pennystockflow.com
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
-
-    def call_gwsweb(self, other_args: List[str]):
-        """Process gwsweb command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gwsweb",
-            description="""
-                Open webbrowser to geek of wall st
-            """,
-        )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            webbrowser.open("https://thegeekofwallstreet.com/realtime-earnings-data/")
-            print("")
-        except Exception as e:
-            print(e, "\n")
 
     def call_rtearn(self, other_args: List[str]):
         """Process rtearn command"""

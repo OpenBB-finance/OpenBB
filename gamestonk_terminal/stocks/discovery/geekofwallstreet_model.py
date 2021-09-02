@@ -6,8 +6,19 @@ import requests
 import pandas as pd
 
 
-def download_file_from_google_drive(file_id):
-    """Custom function from rkornmeyer for pulling csv from google drive"""
+def download_file_from_google_drive(file_id: str) -> bytes:
+    """Custom function from rkornmeyer for pulling csv from google drive
+
+    Parameters
+    ----------
+    file_id : str
+        File id to pull from google drive
+
+    Returns
+    -------
+    bytes
+        Content from request response
+    """
 
     def get_confirm_token(response):
         for key, value in response.cookies.items():
