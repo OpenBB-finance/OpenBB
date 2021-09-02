@@ -53,9 +53,12 @@ def display_historical(
     export : str, optional
         Format to export historical prices, by default ""
     """
+    ordered_tickers = [ticker, *similar_tickers]
     df_similar = yahoo_finance_model.get_historical(
         ticker, similar_tickers, start, candle_type
     )
+    # To plot with ticker first
+    df_similar = df_similar[ordered_tickers]
 
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     # This puts everything on 0-1 scale for visualizing
@@ -104,9 +107,13 @@ def display_correlation(
     candle_type : str, optional
         OHLCA column to use, by default "a" for Adjusted Close
     """
+    ordered_tickers = [ticker, *similar_tickers]
     df_similar = yahoo_finance_model.get_historical(
         ticker, similar_tickers, start, candle_type
     )
+    # To plot with ticker first
+    df_similar = df_similar[ordered_tickers]
+
     mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
     mask[np.triu_indices(len(mask))] = True
 
