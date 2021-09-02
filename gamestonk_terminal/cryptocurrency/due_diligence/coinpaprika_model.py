@@ -21,6 +21,7 @@ def get_coin(coin_id: str = "eth-ethereum") -> dict:
     dict
         Coin response
     """
+
     session = PaprikaSession()
     coin = session.make_request(session.ENDPOINTS["coin"].format(coin_id))
     return coin
@@ -38,8 +39,8 @@ def get_coin_twitter_timeline(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     pandas.DataFrame
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
-
     """
+
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(coin_id))
     if "error" in res:
@@ -84,8 +85,8 @@ def get_coin_events_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
     pandas.DataFrame
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
-
     """
+
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_events"].format(coin_id))
     if not res:
@@ -119,6 +120,7 @@ def get_coin_exchanges_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
         All exchanges for given coin
         Columns: id, name, adjusted_volume_24h_share, fiats
     """
+
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(coin_id))
     df = pd.DataFrame(res)
@@ -147,6 +149,7 @@ def get_coin_markets_by_id(
     pandas.DataFrame
         All markets for given coin and currency
     """
+
     session = PaprikaSession()
     markets = session.make_request(
         session.ENDPOINTS["coin_markets"].format(coin_id), quotes=quotes
@@ -195,8 +198,8 @@ def get_ohlc_historical(
     -------
     pandas.DataFrame
         Open/High/Low/Close values with volume and market_cap.
-
     """
+
     if quotes.lower() not in ["usd", "btc"]:
         quotes = "USD"
 
@@ -262,7 +265,7 @@ def get_tickers_info_for_coin(
     coin_id: str
         Id of coin from CoinPaprika
     quotes: str
-        Coma separated quotes to return e.g quotes = USD, BTC
+        Comma separated quotes to return e.g quotes = USD, BTC
 
     Returns
     -------
@@ -270,6 +273,7 @@ def get_tickers_info_for_coin(
         Most important ticker related information
         Columns: Metric, Value
     """
+
     session = PaprikaSession()
     tickers = session.make_request(
         session.ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes
@@ -314,8 +318,8 @@ def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
     -------
     Tuple[str,str]
         coin id, coin symbol
-
     """
+
     coin_found, symbol = None, None
     if coin in coins_dct:
         coin_found = coin
@@ -344,8 +348,8 @@ def basic_coin_info(coin_id: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         Metric, Value
-
     """
+
     coin = get_coin(coin_id)
     tags = coin.get("tags") or []
     keys = [

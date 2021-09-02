@@ -65,8 +65,8 @@ class Coin:
         -------
         str
             id of the coin on CoinGecko service.
-
         """
+
         coin = None
         for dct in self._coin_list:
             if symbol.lower() in list(dct.values()):
@@ -85,6 +85,7 @@ class Coin:
         list
             list of all available coin ids
         """
+
         return [token.get("id") for token in self._coin_list]
 
     def _get_coin_info(self) -> dict:
@@ -96,6 +97,7 @@ class Coin:
         dict
             Coin information
         """
+
         params = dict(localization="false", tickers="false", sparkline=True)
         return self.client.get_coin_by_id(self.coin_symbol, **params)
 
@@ -107,6 +109,7 @@ class Coin:
         dict
             Links related to coin
         """
+
         return self.coin.get("links", {})
 
     @property
@@ -118,6 +121,7 @@ class Coin:
         list
             Repositories related to coin
         """
+
         return self._get_links().get("repos_url")
 
     @property
@@ -131,6 +135,7 @@ class Coin:
             Developers Data
             Columns: Metric, Value
         """
+
         dev = self.coin.get("developer_data", {})
         useless_keys = (
             "code_additions_deletions_4_weeks",
@@ -157,6 +162,7 @@ class Coin:
             Blockchain Explorers
             Columns: Metric, Value
         """
+
         blockchain = self._get_links().get("blockchain_site")
         if blockchain:
             dct = filter_list(blockchain)
@@ -180,6 +186,7 @@ class Coin:
             Urls to social media
             Columns: Metric, Value
         """
+
         social_dct = {}
         links = self._get_links()
         for (
@@ -213,6 +220,7 @@ class Coin:
             Urls to website, homepage, forum
             Columns: Metric, Value
         """
+
         websites_dct = {}
         links = self._get_links()
         sites = ["homepage", "official_forum_url", "announcement_url"]
@@ -237,6 +245,7 @@ class Coin:
         list/dict
             Coin categories
         """
+
         return self.coin.get("categories", {})
 
     def _get_base_market_data_info(self) -> dict:
@@ -273,6 +282,7 @@ class Coin:
         pandas.DataFrame
             Base information about coin
         """
+
         regx = r'<a href="(.+?)">|</a>'
 
         results = {}
@@ -304,6 +314,7 @@ class Coin:
             Base market information about coin
             Metric,Value
         """
+
         market_data = self.coin.get("market_data", {})
         market_columns_denominated = [
             "market_cap",
@@ -357,6 +368,7 @@ class Coin:
             All time high price data
             Metric,Value
         """
+
         market_data = self.coin.get("market_data", {})
         if market_data == {}:
             return pd.DataFrame()
@@ -391,6 +403,7 @@ class Coin:
             All time low price data
             Metric,Value
         """
+
         market_data = self.coin.get("market_data", {})
         if market_data == {}:
             return pd.DataFrame()
@@ -426,6 +439,7 @@ class Coin:
             Social, community, sentiment scores for coin
             Metric,Value
         """
+
         score_columns = [
             "coingecko_rank",
             "coingecko_score",
@@ -477,6 +491,7 @@ class Coin:
             Prices for given coin
             Columns: time, price, currency
         """
+
         prices = self.client.get_coin_market_chart_by_id(
             self.coin_symbol, vs_currency, days, **kwargs
         )

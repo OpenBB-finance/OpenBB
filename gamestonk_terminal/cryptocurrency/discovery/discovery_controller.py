@@ -144,6 +144,7 @@ CoinMarketCap:
             uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
                 """,
         )
+
         parser.add_argument(
             "-c",
             "--coin",
@@ -152,6 +153,7 @@ CoinMarketCap:
             required="-h" not in other_args,
             type=str,
         )
+
         parser.add_argument(
             "-s",
             "--skip",
@@ -224,6 +226,7 @@ CoinMarketCap:
             There is --links flag, which will display one additional column you all urls for coins.
             """,
         )
+
         parser.add_argument(
             "-p",
             "--period",
@@ -233,6 +236,7 @@ CoinMarketCap:
             default="1h",
             choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -241,6 +245,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -250,6 +255,7 @@ CoinMarketCap:
             default="Rank",
             choices=["Rank", "Symbol", "Name", "Volume", "Price", "Change"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -257,6 +263,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -306,6 +313,7 @@ CoinMarketCap:
            Flag --links will display one additional column with all coingecko urls for listed coins.
             """,
         )
+
         parser.add_argument(
             "-p",
             "--period",
@@ -315,6 +323,7 @@ CoinMarketCap:
             default="1h",
             choices=["1h", "24h", "7d", "14d", "30d", "60d", "1y"],
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -323,6 +332,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -339,6 +349,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -369,6 +380,7 @@ CoinMarketCap:
                 links=ns_parser.links,
                 export=ns_parser.export,
             )
+
         except Exception as e:
             print(e, "\n")
 
@@ -394,6 +406,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -408,6 +421,7 @@ CoinMarketCap:
                 "Price_USD",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -415,6 +429,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -464,6 +479,7 @@ CoinMarketCap:
                 voted will display: Rank, Name, Price_BTC, Price_USD
                 """,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -472,6 +488,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -486,6 +503,7 @@ CoinMarketCap:
                 "Price_USD",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -493,6 +511,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -540,6 +559,7 @@ CoinMarketCap:
                 and also with --descend flag to sort descending.
                 Flag --links will display urls""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -548,6 +568,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -566,6 +587,7 @@ CoinMarketCap:
                 "Url",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -573,6 +595,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -622,6 +645,7 @@ CoinMarketCap:
             visited will display: Rank, Name, Price_BTC, Price_USD
             """,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -630,6 +654,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -644,6 +669,7 @@ CoinMarketCap:
                 "Price_USD",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -651,6 +677,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -701,6 +728,7 @@ CoinMarketCap:
             sentiment will display: Rank, Name, Price_BTC, Price_USD
             """,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -709,6 +737,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -723,6 +752,7 @@ CoinMarketCap:
                 "Price_USD",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -730,6 +760,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -780,6 +811,7 @@ CoinMarketCap:
             and also with --descend flag to sort descending.
                 """,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -788,6 +820,7 @@ CoinMarketCap:
             help="Top N of records. Default 20",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -802,6 +835,7 @@ CoinMarketCap:
                 "Return_Year",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -846,6 +880,7 @@ CoinMarketCap:
                 Volume_24h, Market_Cap with --sort parameter and also with --descend flag to sort descending.
                 Displays columns:  Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -854,6 +889,7 @@ CoinMarketCap:
             help="Top N of records. Default 15",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -873,6 +909,7 @@ CoinMarketCap:
                 "Market_Cap",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -880,6 +917,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -918,6 +956,7 @@ CoinMarketCap:
                 Volume 24h, Market Cap, Url with --sort and also with --descend flag to sort descending.
                Flag --links will display  urls""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -926,6 +965,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -946,6 +986,7 @@ CoinMarketCap:
                 "Url",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -953,6 +994,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -1001,6 +1043,7 @@ CoinMarketCap:
             Display columns:
                   Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1009,6 +1052,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1027,6 +1071,7 @@ CoinMarketCap:
                 "Market_Share",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1074,6 +1119,7 @@ CoinMarketCap:
                 Flag --links will display urls
                 Displays : Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap, Url""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1082,6 +1128,7 @@ CoinMarketCap:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1101,6 +1148,7 @@ CoinMarketCap:
                 "Market_Cap",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1108,6 +1156,7 @@ CoinMarketCap:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -1150,6 +1199,7 @@ CoinMarketCap:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="This gets the top ranked coins from coinmarketcap.com",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1158,6 +1208,7 @@ CoinMarketCap:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1167,6 +1218,7 @@ CoinMarketCap:
             default="CMC_Rank",
             choices=["Symbol", "CMC_Rank", "LastPrice", "DayPctChange", "MarketCap"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1213,6 +1265,7 @@ CoinMarketCap:
             Displays:
                 id, name, category""",
         )
+
         parser.add_argument(
             "-q",
             "--query",
@@ -1221,6 +1274,7 @@ CoinMarketCap:
             type=str,
             required="-h" not in other_args,
         )
+
         parser.add_argument(
             "-c",
             "--cat",
@@ -1237,6 +1291,7 @@ CoinMarketCap:
                 "all",
             ],
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1245,6 +1300,7 @@ CoinMarketCap:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1254,6 +1310,7 @@ CoinMarketCap:
             default="id",
             choices=["category", "id", "name"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",

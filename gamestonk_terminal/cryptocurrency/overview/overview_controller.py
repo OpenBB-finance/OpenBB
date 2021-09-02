@@ -155,6 +155,7 @@ CoinPaprika:
                 Total Bitcoin Holdings, Total Value (USD), Public Companies Bitcoin Dominance, Companies
                 """,
         )
+
         parser.add_argument(
             "-c",
             "--coin",
@@ -198,6 +199,7 @@ CoinPaprika:
             In this case you will see only columns like rank, company, url
             """,
         )
+
         parser.add_argument(
             "-c",
             "--coin",
@@ -207,6 +209,7 @@ CoinPaprika:
             default="bitcoin",
             choices=["ethereum", "bitcoin"],
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -248,6 +251,7 @@ CoinPaprika:
             "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
             "To display urls to news use --links flag.",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -256,6 +260,7 @@ CoinPaprika:
             help="top N number of news >=10",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -265,6 +270,7 @@ CoinPaprika:
             default="Index",
             choices=["Index", "Title", "Author", "Posted"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -272,6 +278,7 @@ CoinPaprika:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -317,6 +324,7 @@ CoinPaprika:
             "To display urls use --links flag.",
             Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -325,6 +333,7 @@ CoinPaprika:
             help="top N number of records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -343,6 +352,7 @@ CoinPaprika:
                 "Coins",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -350,6 +360,7 @@ CoinPaprika:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -397,6 +408,7 @@ CoinPaprika:
                 and also with --descend flag to sort descending.
                 Flag --links will display stablecoins urls""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -405,6 +417,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -423,6 +436,7 @@ CoinPaprika:
                 "Change_30d",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -430,6 +444,7 @@ CoinPaprika:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -541,6 +556,7 @@ CoinPaprika:
                 and also with --descend flag to sort descending.
                 Displays: Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -549,6 +565,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -564,6 +581,7 @@ CoinPaprika:
                 "Borrow_Rate",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -609,6 +627,7 @@ CoinPaprika:
                 and also with --descend flag to sort descending.
                 Displays: Rank, Name, Category, Centralized, Url""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -617,6 +636,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -626,6 +646,7 @@ CoinPaprika:
             default="Rank",
             choices=["Rank", "Name", "Category", "Centralized"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -671,6 +692,7 @@ CoinPaprika:
                 Flag --links will display urls.
                 Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -679,6 +701,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -703,6 +726,7 @@ CoinPaprika:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -748,6 +772,7 @@ CoinPaprika:
                 You can look on only top N number of records with --top,
                 You can sort by Index, Name, Unit, Value, Type, and also use --descend flag to sort descending.""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -756,6 +781,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -765,6 +791,7 @@ CoinPaprika:
             default="Index",
             choices=["Index", "Name", "Unit", "Value", "Type"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -810,6 +837,7 @@ CoinPaprika:
             Displays: Rank, Name, Id, Market, Last, MultiAsset
                 """,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -818,6 +846,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -827,6 +856,7 @@ CoinPaprika:
             default="Rank",
             choices=["Rank", "Name", "Id", "Market", "Last", "MultiAsset"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -834,6 +864,7 @@ CoinPaprika:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -874,6 +905,7 @@ CoinPaprika:
                Displays:
                    Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h""",
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -882,6 +914,7 @@ CoinPaprika:
             help="top N number records",
             default=15,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -902,6 +935,7 @@ CoinPaprika:
                 "Volume_24h",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -909,6 +943,7 @@ CoinPaprika:
             dest="descend",
             default=True,
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -940,6 +975,7 @@ CoinPaprika:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global statistics about Crypto Market""",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -971,6 +1007,7 @@ CoinPaprika:
                Displays metrics like:
                    Market Cap, Trading Volume, Defi Dominance, Top Coins...""",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1035,6 +1072,7 @@ CoinPaprika:
                pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
                 """,
         )
+
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default USD",
@@ -1043,6 +1081,7 @@ CoinPaprika:
             type=str,
             choices=CURRENCIES,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1051,6 +1090,7 @@ CoinPaprika:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1071,6 +1111,7 @@ CoinPaprika:
                 "pct_from_ath",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1119,6 +1160,7 @@ CoinPaprika:
                     exchange_id, pair, base_currency_name, quote_currency_name, market_url,
                     category, reported_volume_24h_share, trust_score,""",
         )
+
         parser.add_argument(
             "-e",
             "--exchange",
@@ -1127,6 +1169,7 @@ CoinPaprika:
             default="binance",
             type=str,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1135,6 +1178,7 @@ CoinPaprika:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1152,6 +1196,7 @@ CoinPaprika:
                 "market_url",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1159,6 +1204,7 @@ CoinPaprika:
             dest="descend",
             default=False,
         )
+
         parser.add_argument(
             "-l",
             "--links",
@@ -1210,6 +1256,7 @@ CoinPaprika:
                     total_supply, max_supply, market_cap, beta_value, ath_price
                 """,
         )
+
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default USD",
@@ -1218,6 +1265,7 @@ CoinPaprika:
             type=str,
             choices=CURRENCIES,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1226,6 +1274,7 @@ CoinPaprika:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1247,6 +1296,7 @@ CoinPaprika:
                 "beta_value",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1294,6 +1344,7 @@ CoinPaprika:
                    rank, name, currencies, markets, fiats, confidence, volume_24h,
                    volume_7d ,volume_30d, sessions_per_month""",
         )
+
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default USD",
@@ -1302,6 +1353,7 @@ CoinPaprika:
             type=str,
             choices=CURRENCIES,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1310,6 +1362,7 @@ CoinPaprika:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1330,6 +1383,7 @@ CoinPaprika:
                 "sessions_per_month",
             ],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -1407,6 +1461,7 @@ CoinPaprika:
                    id, type, active, address
                """,
         )
+
         parser.add_argument(
             "-p",
             "--platform",
@@ -1416,6 +1471,7 @@ CoinPaprika:
             type=str,
             choices=platforms,
         )
+
         parser.add_argument(
             "-t",
             "--top",
@@ -1424,6 +1480,7 @@ CoinPaprika:
             help="Limit of records",
             type=check_positive,
         )
+
         parser.add_argument(
             "-s",
             "--sort",
@@ -1433,6 +1490,7 @@ CoinPaprika:
             default="id",
             choices=["id", "type", "active", "address"],
         )
+
         parser.add_argument(
             "--descend",
             action="store_false",

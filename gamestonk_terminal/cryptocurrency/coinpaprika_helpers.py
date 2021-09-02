@@ -52,8 +52,8 @@ class PaprikaSession:
         Returns
         -------
         dict with response data
-
         """
+
         url = f"{self.PAPRIKA_BASE_URL}{endpoint}"
         if payload is None:
             payload = {}

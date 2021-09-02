@@ -233,6 +233,7 @@ Custom:
             [Source: Tradingview]
         """,
         )
+
         parser.add_argument(
             "-s",
             "--screener",
@@ -243,6 +244,7 @@ Custom:
             choices=["crypto", "forex", "cfd"],
             help="Screener. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html",
         )
+
         parser.add_argument(
             "-e",
             "--exchange",
@@ -254,6 +256,7 @@ Custom:
             See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html.
             By default Alpha Vantage tries to get this data from the ticker. """,
         )
+
         parser.add_argument(
             "-i",
             "--interval",
@@ -265,6 +268,7 @@ Custom:
             help="""Interval, that corresponds to the recommendation given by tradingview based on technical indicators.
             See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html""",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -299,6 +303,7 @@ Custom:
             description="""
             Display pattern recognition signals on the data. [Source: Finnhub]""",
         )
+
         parser.add_argument(
             "-r",
             "--resolution",
@@ -309,6 +314,7 @@ Custom:
             choices=["1", "5", "15", "30", "60", "D", "W", "M"],
             help="Plot resolution to look for pattern signals",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -351,6 +357,7 @@ Custom:
             in the data.
         """,
         )
+
         parser.add_argument(
             "-l",
             "--length",
@@ -360,6 +367,7 @@ Custom:
             default=[20, 50],
             help="Window lengths.  Multiple values indicated as comma separated values.",
         )
+
         parser.add_argument(
             "-o",
             "--offset",
@@ -369,6 +377,7 @@ Custom:
             default=0,
             help="offset",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -416,6 +425,7 @@ Custom:
                 filtering out those changes.
             """,
         )
+
         parser.add_argument(
             "-l",
             "--length",
@@ -425,6 +435,7 @@ Custom:
             default=[20, 50],
             help="Window lengths.  Multiple values indicated as comma separated values. ",
         )
+
         parser.add_argument(
             "-o",
             "--offset",
@@ -434,6 +445,7 @@ Custom:
             default=0,
             help="offset",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -480,6 +492,7 @@ Custom:
                 the moving average.
             """,
         )
+
         parser.add_argument(
             "-l",
             "--length",
@@ -489,6 +502,7 @@ Custom:
             default=[20],
             help="Window lengths.  Multiple values indicated as comma separated values.",
         )
+
         parser.add_argument(
             "-o",
             "--offset",
@@ -498,6 +512,7 @@ Custom:
             default=0,
             help="offset",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -540,6 +555,7 @@ Custom:
                 by volume.  It is typically used with intraday charts to identify general direction.
             """,
         )
+
         parser.add_argument(
             "-o",
             "--offset",
@@ -549,6 +565,7 @@ Custom:
             default=0,
             help="offset",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -603,6 +620,7 @@ Custom:
             default=14,
             help="length",
         )
+
         parser.add_argument(
             "-s",
             "--scalar",
@@ -612,6 +630,7 @@ Custom:
             default=0.015,
             help="scalar",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -666,6 +685,7 @@ Custom:
             default=12,
             help="The short period.",
         )
+
         parser.add_argument(
             "-s",
             "--slow",
@@ -675,6 +695,7 @@ Custom:
             default=26,
             help="The long period.",
         )
+
         parser.add_argument(
             "--signal",
             action="store",
@@ -683,6 +704,7 @@ Custom:
             default=9,
             help="The signal period.",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -733,6 +755,7 @@ Custom:
             default=14,
             help="length",
         )
+
         parser.add_argument(
             "-s",
             "--scalar",
@@ -742,6 +765,7 @@ Custom:
             default=100,
             help="scalar",
         )
+
         parser.add_argument(
             "-d",
             "--drift",
@@ -751,6 +775,7 @@ Custom:
             default=1,
             help="drift",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -803,6 +828,7 @@ Custom:
             default=14,
             help="The time period of the fastk moving average",
         )
+
         parser.add_argument(
             "-d",
             "--slowdperiod",
@@ -812,6 +838,7 @@ Custom:
             default=3,
             help="The time period of the slowd moving average",
         )
+
         parser.add_argument(
             "--slowkperiod",
             action="store",
@@ -820,6 +847,7 @@ Custom:
             default=3,
             help="The time period of the slowk moving average",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -869,6 +897,7 @@ Custom:
             default=14,
             help="length",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -917,6 +946,7 @@ Custom:
             default=14,
             help="length",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -953,6 +983,7 @@ Custom:
             a high number to be a strong trend, and a low number, a weak trend.
         """,
         )
+
         parser.add_argument(
             "-l",
             "--length",
@@ -962,6 +993,7 @@ Custom:
             default=14,
             help="length",
         )
+
         parser.add_argument(
             "-s",
             "--scalar",
@@ -971,6 +1003,7 @@ Custom:
             default=100,
             help="scalar",
         )
+
         parser.add_argument(
             "-d",
             "--drift",
@@ -980,6 +1013,7 @@ Custom:
             default=1,
             help="drift",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1036,6 +1070,7 @@ Custom:
             default=25,
             help="length",
         )
+
         parser.add_argument(
             "-s",
             "--scalar",
@@ -1045,6 +1080,7 @@ Custom:
             default=100,
             help="scalar",
         )
+
         parser.add_argument(
             "-o",
             "--offset",
@@ -1054,6 +1090,7 @@ Custom:
             default=0,
             help="offset",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1109,6 +1146,7 @@ Custom:
             default=5,
             help="length",
         )
+
         parser.add_argument(
             "-s",
             "--std",
@@ -1118,6 +1156,7 @@ Custom:
             default=2,
             help="std",
         )
+
         parser.add_argument(
             "-m",
             "--mamode",
@@ -1126,6 +1165,7 @@ Custom:
             default="sma",
             help="mamode",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1167,6 +1207,7 @@ Custom:
                 between the upper and lower bands represents the Donchian Channel.
                 """,
         )
+
         parser.add_argument(
             "-u",
             "--length_upper",
@@ -1176,6 +1217,7 @@ Custom:
             default=20,
             help="length",
         )
+
         parser.add_argument(
             "-l",
             "--length_lower",
@@ -1185,6 +1227,7 @@ Custom:
             default=20,
             help="length",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1229,6 +1272,7 @@ Custom:
                 then it signals an impending flattening of the price.
             """,
         )
+
         parser.add_argument(
             "--open",
             action="store_true",
@@ -1236,6 +1280,7 @@ Custom:
             dest="b_use_open",
             help="uses open value of stock",
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1276,6 +1321,7 @@ Custom:
                 OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
             """,
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -1308,6 +1354,7 @@ Custom:
             prog="fib",
             description="Calculates the fibinocci retracement levels",
         )
+
         parser.add_argument(
             "-p",
             "--period",
@@ -1316,6 +1363,7 @@ Custom:
             help="Days to lookback for retracement",
             default=120,
         )
+
         parser.add_argument(
             "--start",
             dest="start",
@@ -1323,6 +1371,7 @@ Custom:
             help="Starting date to select",
             required="--end" in other_args,
         )
+
         parser.add_argument(
             "--end",
             dest="end",
@@ -1330,6 +1379,7 @@ Custom:
             help="Ending date to select",
             required="--start" in other_args,
         )
+
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],

@@ -97,7 +97,6 @@ class ReportController:
 
     def call_ov(self, other_args: List[str], _):
         """Process ov command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -106,6 +105,7 @@ class ReportController:
                     Run crypto market report
                 """,
         )
+
         parser.add_argument(
             "-m",
             "--mode",

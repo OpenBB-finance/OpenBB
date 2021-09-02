@@ -47,8 +47,8 @@ def prepare_all_coins_df() -> pd.DataFrame:
         CoinPaprika - id for coin in CoinPaprika API: uni-uniswap
         Binance - symbol (baseAsset) for coin in Binance API: UNI
         Symbol: uni
-
     """
+
     gecko_coins_df = get_coin_list()
     paprika_coins_df = get_list_of_coins()
     binance_coins_df = load_binance_map().rename(columns={"symbol": "Binance"})
@@ -96,6 +96,7 @@ def _create_closest_match_df(
     pd.DataFrame
         index, id, name, symbol - > depends on source of data.
     """
+
     coins_list = coins["id"].to_list()
     sim = difflib.get_close_matches(coin, coins_list, limit, cutoff)
     df = pd.Series(sim).to_frame().reset_index()
@@ -126,7 +127,6 @@ def load(
     Tuple[Union[str, pycoingecko_model.Coin], Any]
         - str or Coin object for provided coin
         - str with source of the loaded data. CoinGecko, CoinPaprika, or Binance
-
     """
 
     current_coin = ""  # type: Optional[Any]
@@ -202,6 +202,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
             "find",
             df,
         )
+
     elif source == "cp":
         coins_df = get_list_of_coins()
         coins_list = coins_df[key].to_list()
@@ -231,6 +232,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
             "find",
             df,
         )
+
     elif source == "bin":
 
         # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
@@ -297,7 +299,6 @@ def display_all_coins(
         Flag to show all sources of data
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     limit, cutoff = 30, 0.75
@@ -398,7 +399,6 @@ def load_ta_data(
     Tuple[pd.DataFrame, str]
         dataframe with prices
         quoted currency
-
     """
 
     limit = kwargs.get("limit", 100)
@@ -513,7 +513,6 @@ def plot_chart(
     Tuple[pd.DataFrame, str]
         dataframe with prices
         quoted currency
-
     """
 
     limit = kwargs.get("limit", 100)

@@ -27,6 +27,7 @@ def get_btc_price() -> float:
     str
         latest bitcoin price in usd.
     """
+
     req = requests.get(
         "https://api.coingecko.com/api/v3/simple/"
         "price?ids=bitcoin&vs_currencies=usd&include_market_cap"
@@ -55,8 +56,8 @@ def _retry_session(
     -------
     requests.Session
         Mounted session
-
     """
+
     session = requests.Session()
     retry = Retry(
         total=retries,
@@ -83,6 +84,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     -------
         BeautifulSoup object
     """
+
     session = _retry_session("https://www.coingecko.com")
     try:
         req = session.get(url)
@@ -108,6 +110,7 @@ def replace_underscores_to_newlines(cols: list, line: int = 13) -> list:
     -------
         list of column names with replaced underscores
     """
+
     return [
         textwrap.fill(c.replace("_", " "), line, break_long_words=False)
         for c in list(cols)
@@ -178,8 +181,8 @@ def clean_row(row: BeautifulSoup) -> list:
     Returns
     -------
         list of elements
-
     """
+
     return [r for r in row.text.strip().split("\n") if r not in ["", " "]]
 
 

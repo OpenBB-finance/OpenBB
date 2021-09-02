@@ -33,7 +33,6 @@ def display_gainers(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     if sortby == "Change":
@@ -86,7 +85,6 @@ def display_losers(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     if sortby == "Change":
@@ -133,7 +131,6 @@ def display_discover(
     ----------
     category: str
         one from list: [trending, most_voted, positive_sentiment, most_visited]
-
     top: int
         Number of records to display
     sortby: str
@@ -245,7 +242,6 @@ def display_top_defi_coins(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = pycoingecko_model.get_top_defi_coins().sort_values(
@@ -292,7 +288,6 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = pycoingecko_model.get_top_dexes().sort_values(by=sortby, ascending=descend)
@@ -375,7 +370,6 @@ def display_top_nft(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = pycoingecko_model.get_top_nfts().sort_values(by=sortby, ascending=descend)

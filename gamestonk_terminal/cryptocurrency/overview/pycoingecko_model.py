@@ -32,6 +32,7 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> pd.DataFrame:
     pandas.DataFrame
         Metric, Value
     """
+
     url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
     rows = scrape_gecko_data(url).find_all(
         "span", class_="overview-box d-inline-block p-3 mr-2"
@@ -66,6 +67,7 @@ def get_companies_assets(endpoint: str = "bitcoin") -> pd.DataFrame:
     pandas.DataFrame
         Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
     """
+
     url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
     results = []
@@ -147,6 +149,7 @@ def get_top_crypto_categories() -> pd.DataFrame:
     pandas.DataFrame
        Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     """
+
     columns = [
         "Rank",
         "Name",
@@ -200,6 +203,7 @@ def get_stable_coins() -> pd.DataFrame:
     pandas.DataFrame
         Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
+
     columns = [
         "Rank",
         "Name",
@@ -256,9 +260,10 @@ def get_nft_of_the_day() -> pd.DataFrame:
 
     Returns
     -------
-        pandas.DataFrame
-            metric, value
+    pandas.DataFrame
+        metric, value
     """
+
     url = "https://www.coingecko.com/en/nft"
     soup = scrape_gecko_data(url)
     row = soup.find("div", class_="tw-px-4 tw-py-5 sm:tw-p-6")
@@ -296,6 +301,7 @@ def get_nft_market_status() -> pd.DataFrame:
     pandas.DataFrame
         Metric, Value
     """
+
     url = "https://www.coingecko.com/en/nft"
     rows = scrape_gecko_data(url).find_all(
         "span", class_="overview-box d-inline-block p-3 mr-2"
@@ -318,6 +324,7 @@ def get_exchanges() -> pd.DataFrame:
     pandas.DataFrame
         Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
     """
+
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_exchanges_list(per_page=250))
     df.replace({float(np.NaN): None}, inplace=True)
@@ -353,6 +360,7 @@ def get_financial_platforms() -> pd.DataFrame:
     pandas.DataFrame
         Rank, Name, Category, Centralized, Url
     """
+
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_finance_platforms())
     df.drop("facts", axis=1, inplace=True)
@@ -369,6 +377,7 @@ def get_finance_products() -> pd.DataFrame:
     pandas.DataFrame
        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
     """
+
     client = CoinGeckoAPI()
     df = pd.DataFrame(
         client.get_finance_products(per_page=250),
@@ -392,6 +401,7 @@ def get_indexes() -> pd.DataFrame:
     pandas.DataFrame
         Name, Id, Market, Last, MultiAsset
     """
+
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_indexes(per_page=250))
     df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
@@ -406,8 +416,8 @@ def get_derivatives() -> pd.DataFrame:
     -------
     pandas.DataFrame
         Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h,
-
     """
+
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_derivatives(include_tickers="unexpired"))
     df.drop(
@@ -443,6 +453,7 @@ def get_exchange_rates() -> pd.DataFrame:
     pandas.DataFrame
         Index, Name, Unit, Value, Type
     """
+
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_exchange_rates()["rates"]).T.reset_index()
     df.drop("index", axis=1, inplace=True)
@@ -465,6 +476,7 @@ def get_global_info() -> pd.DataFrame:
     pandas.DataFrame
         Metric, Value
     """
+
     client = CoinGeckoAPI()
     results = client.get_global()
 
@@ -494,6 +506,7 @@ def get_global_markets_info() -> pd.DataFrame:
     pandas.DataFrame
         Market_Cap, Volume, Market_Cap_Percentage
     """
+
     columns = [
         "Market_Cap",
         "Volume",
@@ -518,6 +531,7 @@ def get_global_defi_info() -> pd.DataFrame:
     pandas.DataFrame
         Metric, Value
     """
+
     client = CoinGeckoAPI()
     results = client.get_global_decentralized_finance_defi()
     for key, value in results.items():

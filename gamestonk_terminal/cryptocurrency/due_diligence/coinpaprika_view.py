@@ -80,7 +80,6 @@ def display_twitter(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coinpaprika_model.get_coin_twitter_timeline(coin_id)
@@ -330,7 +329,6 @@ def display_basic(coin_id: str, export: str) -> None:
         Identifier of coin for CoinPaprika API
     export: str
         Export dataframe data to csv,json,xlsx
-
     """
 
     df = coinpaprika_model.basic_coin_info(coin_id)

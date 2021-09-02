@@ -128,6 +128,7 @@ def show_available_pairs_for_given_symbol(
 def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
     """
     Plots Bid/Ask. [Source: Binance]
+
     Parameters
     ----------
     bids : np.array
@@ -137,10 +138,8 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
     coin : str
         Coin being plotted
 
-    Returns
-    -------
-
     """
+
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
@@ -160,8 +159,8 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
 
 
 def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
-    """
-    Plot candle chart from dataframe. [Source: Binance]
+    """Plot candle chart from dataframe. [Source: Binance]
+
     Parameters
     ----------
     candles_df: pd.DataFrame
@@ -169,6 +168,7 @@ def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
     title: str
         title of graph
     """
+
     mpf.plot(
         candles_df,
         type="candle",

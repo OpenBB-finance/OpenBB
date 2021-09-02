@@ -183,6 +183,7 @@ What do you want to do?
                 "Available data sources are CoinGecko, CoinPaprika, and Binance"
                 "By default main source used for analysis is CoinGecko (cg). To change it use --source flag",
             )
+
             parser.add_argument(
                 "-c",
                 "--coin",
@@ -236,7 +237,7 @@ What do you want to do?
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="ta",
+                prog="chart",
                 description="""Loads data for technical analysis. You can specify currency vs which you want
                 to show chart and also number of days to get data for.
                 By default currency: usd and days: 30.
@@ -253,6 +254,7 @@ What do you want to do?
                     choices=["usd", "btc", "BTC", "USD"],
                     type=str,
                 )
+
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -266,6 +268,7 @@ What do you want to do?
                 parser.add_argument(
                     "--vs", default="usd", dest="vs", help="Currency to display vs coin"
                 )
+
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -295,6 +298,7 @@ What do you want to do?
                 }
 
                 _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+
                 parser.add_argument(
                     "--vs",
                     help="Quote currency (what to view coin vs)",
@@ -313,6 +317,7 @@ What do you want to do?
                     default="1day",
                     type=str,
                 )
+
                 parser.add_argument(
                     "-l",
                     "--limit",
@@ -378,6 +383,7 @@ What do you want to do?
                     choices=["usd", "btc", "BTC", "USD"],
                     type=str,
                 )
+
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -391,6 +397,7 @@ What do you want to do?
                 parser.add_argument(
                     "--vs", default="usd", dest="vs", help="Currency to display vs coin"
                 )
+
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -438,6 +445,7 @@ What do you want to do?
                     default="1day",
                     type=str,
                 )
+
                 parser.add_argument(
                     "-l",
                     "--limit",
@@ -519,13 +527,9 @@ What do you want to do?
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="finbrain",
-            description="""FinBrain collects the news headlines from 15+ major financial news
-                           sources on a daily basis and analyzes them to generate sentiment scores
-                           for more than 4500 US stocks. FinBrain Technologies develops deep learning
-                           algorithms for financial analysis and prediction, which currently serves
-                           traders from more than 150 countries all around the world.
-                           [Source:  https://finbrain.tech]""",
+            description="""Display sentiment analysis from FinBrain for chosen Cryptocurrencies""",
         )
+
         parser.add_argument(
             "-c",
             "--coin",
@@ -596,6 +600,7 @@ What do you want to do?
             -k, --key it's a searching key. You can search by symbol, id or name of coin
             -t, --top it displays top N number of records.""",
         )
+
         parser.add_argument(
             "-c",
             "--coin",
@@ -604,6 +609,7 @@ What do you want to do?
             required="-h" not in other_args,
             type=str,
         )
+
         parser.add_argument(
             "-k",
             "--key",
@@ -613,6 +619,7 @@ What do you want to do?
             choices=["id", "symbol", "name"],
             default="symbol",
         )
+
         parser.add_argument(
             "-t",
             "--top",

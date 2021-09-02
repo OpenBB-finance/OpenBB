@@ -279,7 +279,6 @@ def display_exchange_markets(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = paprika.get_exchanges_market(exchange_id=exchange)
@@ -362,7 +361,6 @@ def display_contracts(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = paprika.get_contract_platform(platform)

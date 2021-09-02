@@ -57,7 +57,6 @@ def display_web(coin: gecko.Coin, export: str) -> None:
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_websites
@@ -89,7 +88,6 @@ def display_social(coin: gecko.Coin, export: str) -> None:
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_social_media
@@ -120,7 +118,6 @@ def display_dev(coin: gecko.Coin, export: str) -> None:
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_developers_data
@@ -154,7 +151,6 @@ def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
         currency vs which coin ath will be displayed: usd or btc
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_all_time_high(currency=currency)
@@ -189,7 +185,6 @@ def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
         currency vs which coin ath will be displayed: usd or btc
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_all_time_low(currency=currency)
@@ -221,9 +216,8 @@ def display_score(coin: gecko.Coin, export: str) -> None:
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
-
-
     """
+
     df = coin.get_scores
     print(
         tabulate(
@@ -253,7 +247,6 @@ def display_bc(coin: gecko.Coin, export: str) -> None:
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_blockchain_explorers
@@ -284,7 +277,6 @@ def display_market(coin: gecko.Coin, export: str) -> None:
         Cryptocurrency
     export : str
         Export dataframe data to csv,json,xlsx file
-
     """
 
     df = coin.get_market_data

@@ -24,6 +24,7 @@ def display_holdings_overview(coin: str, export: str) -> None:
     export: str
         Export dataframe data to csv,json,xlsx
     """
+
     df = gecko.get_holdings_overview(endpoint=coin)
     print(
         tabulate(
@@ -57,7 +58,6 @@ def display_holdings_companies_list(coin: str, links: bool, export: str) -> None
         Display urls
     export: str
         Export dataframe data to csv,json,xlsx
-
     """
 
     df = gecko.get_companies_assets(endpoint=coin)
@@ -128,7 +128,6 @@ def display_nft_market_status(export: str) -> None:
     ----------
     export: str
         Export dataframe data to csv,json,xlsx
-
     """
 
     df = gecko.get_nft_market_status()

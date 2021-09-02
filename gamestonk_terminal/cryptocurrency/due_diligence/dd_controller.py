@@ -223,6 +223,7 @@ Binance:
                 Market Cap, Supply, Circulating Supply, Price, Volume and many others.
                                     """,
             )
+
             parser.add_argument(
                 "--export",
                 choices=["csv", "json", "xlsx"],
@@ -535,6 +536,7 @@ Binance:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Get the order book for selected coin",
         )
+
         parser.add_argument(
             "-l",
             "--limit",
@@ -643,6 +645,7 @@ Binance:
                     choices=["usd", "btc", "BTC", "USD"],
                     type=str,
                 )
+
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -656,6 +659,7 @@ Binance:
                 parser.add_argument(
                     "--vs", default="usd", dest="vs", help="Currency to display vs coin"
                 )
+
                 parser.add_argument(
                     "-d",
                     "--days",
@@ -685,6 +689,7 @@ Binance:
                 }
 
                 _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+
                 parser.add_argument(
                     "--vs",
                     help="Quote currency (what to view coin vs)",
@@ -703,6 +708,7 @@ Binance:
                     default="1day",
                     type=str,
                 )
+
                 parser.add_argument(
                     "-l",
                     "--limit",
@@ -754,6 +760,7 @@ Binance:
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 description="""Get price and supply related metrics for given coin.""",
             )
+
             parser.add_argument(
                 "--vs",
                 help="Quoted currency. Default USD",
@@ -839,6 +846,7 @@ Binance:
                     Displays:
                         exchange, pair, trust_score, volume, price, pct_volume_share,""",
             )
+
             parser.add_argument(
                 "--vs",
                 help="Quoted currency. Default USD",
@@ -847,6 +855,7 @@ Binance:
                 type=str,
                 choices=CURRENCIES,
             )
+
             parser.add_argument(
                 "-t",
                 "--top",
@@ -855,6 +864,7 @@ Binance:
                 help="Limit of records",
                 type=check_positive,
             )
+
             parser.add_argument(
                 "-s",
                 "--sort",
@@ -871,6 +881,7 @@ Binance:
                     "price",
                 ],
             )
+
             parser.add_argument(
                 "--descend",
                 action="store_false",
@@ -878,6 +889,7 @@ Binance:
                 dest="descend",
                 default=False,
             )
+
             parser.add_argument(
                 "-l",
                 "--links",
@@ -934,6 +946,7 @@ Binance:
                     Displays:
                         id, name, adjusted_volume_24h_share, fiats""",
             )
+
             parser.add_argument(
                 "-t",
                 "--top",
@@ -942,6 +955,7 @@ Binance:
                 help="Limit of records",
                 type=check_positive,
             )
+
             parser.add_argument(
                 "-s",
                 "--sort",
@@ -951,6 +965,7 @@ Binance:
                 default="adjusted_volume_24h_share",
                 choices=["id", "name", "adjusted_volume_24h_share", "fiats"],
             )
+
             parser.add_argument(
                 "--descend",
                 action="store_false",
@@ -1004,6 +1019,7 @@ Binance:
                 Displays:
                     date , date_to, name, description, is_conference, link, proof_image_link""",
             )
+
             parser.add_argument(
                 "-t",
                 "--top",
@@ -1012,6 +1028,7 @@ Binance:
                 help="Limit of records",
                 type=check_positive,
             )
+
             parser.add_argument(
                 "-s",
                 "--sort",
@@ -1021,6 +1038,7 @@ Binance:
                 default="date",
                 choices=["date", "date_to", "name", "description", "is_conference"],
             )
+
             parser.add_argument(
                 "--descend",
                 action="store_false",
@@ -1028,6 +1046,7 @@ Binance:
                 dest="descend",
                 default=False,
             )
+
             parser.add_argument(
                 "-l",
                 "--links",
@@ -1036,6 +1055,7 @@ Binance:
                 help="Flag to show urls. If you will use that flag you will see only date, name, link columns",
                 default=False,
             )
+
             parser.add_argument(
                 "--export",
                 choices=["csv", "json", "xlsx"],
@@ -1080,6 +1100,7 @@ Binance:
                         date, user_name, status, retweet_count, like_count
                     """,
             )
+
             parser.add_argument(
                 "-t",
                 "--top",
@@ -1088,6 +1109,7 @@ Binance:
                 help="Limit of records",
                 type=check_positive,
             )
+
             parser.add_argument(
                 "-s",
                 "--sort",
@@ -1097,6 +1119,7 @@ Binance:
                 default="date",
                 choices=["date", "user_name", "status", "retweet_count", "like_count"],
             )
+
             parser.add_argument(
                 "--descend",
                 action="store_false",

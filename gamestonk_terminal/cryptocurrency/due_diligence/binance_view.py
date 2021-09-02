@@ -29,8 +29,6 @@ def display_order_book(coin: str, limit: int, currency: str, export: str) -> Non
         Quote currency (what to view coin vs)
     export: str
         Export dataframe data to csv,json,xlsx
-
-
     """
 
     pair = coin + currency
@@ -62,7 +60,6 @@ def display_balance(coin: str, currency: str, export: str) -> None:
         Quote currency (what to view coin vs)
     export: str
         Export dataframe data to csv,json,xlsx
-
     """
 
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)

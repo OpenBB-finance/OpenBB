@@ -29,6 +29,7 @@ def get_search_results(
         Search Results
         Columns: Metric, Value
     """
+
     session = PaprikaSession()
     if category is None:
         category = "currencies,exchanges,icos,people,tags"
