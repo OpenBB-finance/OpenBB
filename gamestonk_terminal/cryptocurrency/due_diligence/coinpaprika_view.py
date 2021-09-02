@@ -11,6 +11,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -93,16 +94,19 @@ def display_twitter(
     df["status"] = df["status"].apply(
         lambda text: "".join(i if ord(i) < 128 else "" for i in text)
     )
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -148,16 +152,19 @@ def display_events(
     else:
         df.drop("link", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -194,16 +201,19 @@ def display_exchanges(
 
     df = df.sort_values(by=sortby, ascending=descend)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -260,16 +270,19 @@ def display_markets(
     else:
         df.drop("market_url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -300,16 +313,20 @@ def display_price_supply(coin_id: str, currency: str, export: str) -> None:
         return
 
     df = df.applymap(lambda x: long_number_format_with_type_check(x))
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -337,16 +354,20 @@ def display_basic(coin_id: str, export: str) -> None:
         print("No data available\n")
         return
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

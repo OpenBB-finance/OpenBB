@@ -9,7 +9,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 import gamestonk_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
-
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -29,16 +29,20 @@ def display_info(coin: gecko.Coin, export: str) -> None:
     """
 
     df = wrap_text_in_df(coin.get_base_info, w=80)
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -60,16 +64,20 @@ def display_web(coin: gecko.Coin, export: str) -> None:
     """
 
     df = coin.get_websites
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -91,16 +99,21 @@ def display_social(coin: gecko.Coin, export: str) -> None:
     """
 
     df = coin.get_social_media
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -121,16 +134,21 @@ def display_dev(coin: gecko.Coin, export: str) -> None:
     """
 
     df = coin.get_developers_data
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -154,16 +172,20 @@ def display_ath(coin: gecko.Coin, currency: str, export: str) -> None:
     """
 
     df = coin.get_all_time_high(currency=currency)
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -188,16 +210,20 @@ def display_atl(coin: gecko.Coin, currency: str, export: str) -> None:
     """
 
     df = coin.get_all_time_low(currency=currency)
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -219,16 +245,20 @@ def display_score(coin: gecko.Coin, export: str) -> None:
     """
 
     df = coin.get_scores
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -250,16 +280,21 @@ def display_bc(coin: gecko.Coin, export: str) -> None:
     """
 
     df = coin.get_blockchain_explorers
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -280,16 +315,20 @@ def display_market(coin: gecko.Coin, export: str) -> None:
     """
 
     df = coin.get_market_data
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,

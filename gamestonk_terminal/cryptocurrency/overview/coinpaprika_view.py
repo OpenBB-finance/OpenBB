@@ -9,7 +9,7 @@ import gamestonk_terminal.cryptocurrency.overview.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
-
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -80,16 +80,21 @@ def display_global_market(export: str) -> None:
     df = paprika.get_global_market()
     df_data = df.copy()
     df["Value"] = df["Value"].apply(lambda x: long_number_format_with_type_check(x))
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".1f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -131,18 +136,22 @@ def display_all_coins_market_info(
 
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
-    print("")
-    print(f"Displaying data vs {currency}")
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".3f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    print(f"\nDisplaying data vs {currency}")
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".3f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -187,16 +196,20 @@ def display_all_coins_info(
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
 
     print(f"\nDisplaying data vs {currency}")
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".3f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".3f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -241,16 +254,20 @@ def display_all_exchanges(
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
     print(f"\nDisplaying data vs {currency}")
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -296,16 +313,19 @@ def display_exchange_markets(
     else:
         df.drop("market_url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -325,16 +345,20 @@ def display_all_platforms(export: str) -> None:
     """
 
     df = paprika.get_all_contract_platforms()
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -370,16 +394,20 @@ def display_contracts(
         return
 
     df = df.sort_values(by=sortby, ascending=descend)
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,

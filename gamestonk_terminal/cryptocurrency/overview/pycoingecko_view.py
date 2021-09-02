@@ -7,6 +7,7 @@ from pandas.plotting import register_matplotlib_converters
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
 import gamestonk_terminal.cryptocurrency.overview.pycoingecko_model as gecko
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -26,16 +27,20 @@ def display_holdings_overview(coin: str, export: str) -> None:
     """
 
     df = gecko.get_holdings_overview(endpoint=coin)
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -67,16 +72,19 @@ def display_holdings_companies_list(coin: str, links: bool, export: str) -> None
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -99,16 +107,20 @@ def display_nft_of_the_day(export: str) -> None:
     """
 
     df = gecko.get_nft_of_the_day()
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -131,16 +143,20 @@ def display_nft_market_status(export: str) -> None:
     """
 
     df = gecko.get_nft_market_status()
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -166,16 +182,20 @@ def display_exchange_rates(sortby: str, descend: bool, top: int, export: str) ->
     """
 
     df = gecko.get_exchange_rates().sort_values(by=sortby, ascending=descend)
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -200,16 +220,21 @@ def display_global_market_info(export: str) -> None:
     """
 
     df = gecko.get_global_info()
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -228,16 +253,20 @@ def display_global_defi_info(export: str) -> None:
     """
 
     df = gecko.get_global_defi_info()
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".1f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -275,16 +304,19 @@ def display_stablecoins(
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -326,16 +358,19 @@ def display_news(
     else:
         df = df[["Index", "Url"]]
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -375,16 +410,19 @@ def display_categories(
     else:
         df = df[["Rank", "Name", "Url"]]
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -420,16 +458,19 @@ def display_exchanges(
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".1f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -455,16 +496,20 @@ def display_platforms(sortby: str, descend: bool, top: int, export: str) -> None
     """
 
     df = gecko.get_financial_platforms().sort_values(by=sortby, ascending=descend)
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -490,16 +535,21 @@ def display_products(sortby: str, descend: bool, top: int, export: str) -> None:
     """
 
     df = gecko.get_finance_products().sort_values(by=sortby, ascending=descend)
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -525,16 +575,19 @@ def display_indexes(sortby: str, descend: bool, top: int, export: str) -> None:
 
     df = gecko.get_indexes().sort_values(by=sortby, ascending=descend)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -561,16 +614,19 @@ def display_derivatives(sortby: str, descend: bool, top: int, export: str) -> No
 
     df = gecko.get_derivatives().sort_values(by=sortby, ascending=descend)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,

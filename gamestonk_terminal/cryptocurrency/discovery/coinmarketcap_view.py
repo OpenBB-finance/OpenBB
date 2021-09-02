@@ -5,6 +5,7 @@ import os
 from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import coinmarketcap_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal import feature_flags as gtff
 
 sort_map = {
     "Symbol": "Symbol",
@@ -39,16 +40,19 @@ def display_cmc_top_coins(top: int, sortby: str, descend: bool, export: str) -> 
 
     df = df.sort_values(by=sort_map[sortby], ascending=descend)
 
-    print(
-        tabulate(
-            df.iloc[:top, :],
-            headers=df.columns,
-            showindex=False,
-            tablefmt="fancy_grid",
-            floatfmt=".2f",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.iloc[:top, :],
+                headers=df.columns,
+                showindex=False,
+                tablefmt="fancy_grid",
+                floatfmt=".2f",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,

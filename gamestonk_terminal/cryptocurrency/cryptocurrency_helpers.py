@@ -32,6 +32,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
 )
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
+from gamestonk_terminal import feature_flags as gtff
 
 
 def prepare_all_coins_df() -> pd.DataFrame:
@@ -187,15 +188,20 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         df.columns = ["index", key]
         coins_df.drop("index", axis=1, inplace=True)
         df = df.merge(coins_df, on=key)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                )
             )
-        )
+        else:
+            print(df.to_string, "\n")
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -216,15 +222,19 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins_df, on=key)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                )
             )
-        )
+        else:
+            print(df.to_string, "\n")
 
         export_data(
             export,
@@ -252,15 +262,20 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df,
+                    headers=df.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                )
             )
-        )
+        else:
+            print(df.to_string, "\n")
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -357,15 +372,20 @@ def display_all_coins(
     except Exception as e:
         print(e)
 
-    print(
-        tabulate(
-            df,
-            headers=df.columns,
-            floatfmt=".1f",
-            showindex=False,
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            )
         )
-    )
+
+    else:
+        print(df.to_string, "\n")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

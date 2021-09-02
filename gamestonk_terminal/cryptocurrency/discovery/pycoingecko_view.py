@@ -6,6 +6,7 @@ from pandas.plotting import register_matplotlib_converters
 from tabulate import tabulate
 from gamestonk_terminal.cryptocurrency.discovery import pycoingecko_model
 from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -47,16 +48,19 @@ def display_gainers(
     if not links:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -99,16 +103,19 @@ def display_losers(
     if not links:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -155,16 +162,19 @@ def display_discover(
     if not links:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -204,16 +214,19 @@ def display_recently_added(
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -255,16 +268,19 @@ def display_top_defi_coins(
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -292,16 +308,19 @@ def display_top_dex(top: int, sortby: str, descend: bool, export: str) -> None:
 
     df = pycoingecko_model.get_top_dexes().sort_values(by=sortby, ascending=descend)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".2f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".2f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -330,16 +349,19 @@ def display_top_volume_coins(top: int, sortby: str, descend: bool, export: str) 
         by=sortby, ascending=descend
     )
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -381,16 +403,19 @@ def display_top_nft(
     else:
         df.drop("Url", axis=1, inplace=True)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".4f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".4f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
@@ -421,16 +446,19 @@ def display_yieldfarms(top: int, sortby: str, descend: bool, export: str) -> Non
 
     df = df.sort_values(by=sortby, ascending=descend)
 
-    print(
-        tabulate(
-            df.head(top),
-            headers=df.columns,
-            floatfmt=".0f",
-            showindex=False,
-            tablefmt="fancy_grid",
-        ),
-        "\n",
-    )
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(top),
+                headers=df.columns,
+                floatfmt=".0f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,

@@ -13,6 +13,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     plot_order_book,
 )
 import gamestonk_terminal.config_terminal as cfg
+from gamestonk_terminal import feature_flags as gtff
 
 
 def display_order_book(coin: str, limit: int, currency: str, export: str) -> None:
@@ -78,10 +79,14 @@ def display_balance(coin: str, currency: str, export: str) -> None:
     df.index = ["Free", "Locked"]
     df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
     print(f"You currently have {total} coins and the breakdown is:")
-    print(
-        tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
-        "\n",
-    )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(df, headers=df.columns, showindex=True, tablefmt="fancy_grid"),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
 
     export_data(
         export,
