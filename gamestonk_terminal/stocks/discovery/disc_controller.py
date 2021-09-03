@@ -83,7 +83,7 @@ Discovery:
     q              quit this menu, and shows back to main menu
     quit           quit to abandon program
 Geek of Wall St:
-    rtearn         realtime earnings from https://thegeekofwallstreet.com/
+    rtearn         realtime earnings from and expected moves
 Finnhub:
     pipo           past IPOs dates
     fipo           future IPOs dates
@@ -159,7 +159,7 @@ pennystockflow.com
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="rtearn",
             description="""
-                Realtime earnings data
+                Realtime earnings data and expected moves. [Source: https://thegeekofwallstreet.com]
             """,
         )
         parser.add_argument(
@@ -177,6 +177,7 @@ pennystockflow.com
                 return
 
             geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
+
         except Exception as e:
             print(e, "\n")
 

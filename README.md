@@ -400,6 +400,7 @@ Feel free to share loss porn, memes or any questions at:
 * **Chavithra** and **Deel18** : for Degiro's integration.
 * **Traceabl3** : By adding several preset screeners
 * **jpp** : Responsible by developing `Crypto` menu
+* **rkornmeyer** : Provides realtime earnings data on https://thegeekofwallstreet.com/
 
 <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
