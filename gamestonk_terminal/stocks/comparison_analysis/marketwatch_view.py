@@ -1,14 +1,17 @@
 """ Comparison Analysis Marketwatch View """
 __docformat__ = "numpy"
 
-
 import os
 from typing import List
 
 from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import export_data, financials_colored_values
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    financials_colored_values,
+    patch_pandas_text_adjustment,
+)
 from gamestonk_terminal.stocks.comparison_analysis import marketwatch_model
 
 
@@ -50,6 +53,7 @@ def display_income_comparison(
         df_financials_compared = df_financials_compared.applymap(
             financials_colored_values
         )
+        patch_pandas_text_adjustment()
 
     if not quarter:
         df_financials_compared.index.name = timeframe
@@ -106,6 +110,7 @@ def display_balance_comparison(
         df_financials_compared = df_financials_compared.applymap(
             financials_colored_values
         )
+        patch_pandas_text_adjustment()
 
     if not quarter:
         df_financials_compared.index.name = timeframe
@@ -163,6 +168,7 @@ def display_cashflow_comparison(
         df_financials_compared = df_financials_compared.applymap(
             financials_colored_values
         )
+        patch_pandas_text_adjustment()
 
     if not quarter:
         df_financials_compared.index.name = timeframe
