@@ -9,6 +9,8 @@ import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.discovery import geekofwallstreet_model as gwt_model
 
+# pylint:disable=no-member
+
 
 def display_realtime_earnings(export: str = ""):
     """Displays real time earnings data from geekofwallstreet.com
