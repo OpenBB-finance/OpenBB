@@ -84,15 +84,20 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     -------
         BeautifulSoup object
     """
-
+    headers = {"User-Agent": "Mozilla/5.0"}
     session = _retry_session("https://www.coingecko.com")
     try:
-        req = session.get(url)
+        req = session.get(url, headers=headers, timeout=5)
     except Exception as error:
         raise RetryError(
             "Connection error. Couldn't connect to CoinGecko and scrape the data. "
             "Please visit CoinGecko site, and check if it's not under maintenance"
         ) from error
+
+    if req.status_code >= 400:
+        raise Exception(
+            f"Couldn't connect to {url}. Status code: {req.status_code}. Reason: {req.reason}"
+        )
 
     return BeautifulSoup(req.text, features="lxml")
 
