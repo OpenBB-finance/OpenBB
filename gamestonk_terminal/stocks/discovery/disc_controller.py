@@ -5,8 +5,10 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
@@ -24,6 +26,7 @@ from gamestonk_terminal.stocks.discovery import (
     shortinterest_view,
     yahoofinance_view,
     finnhub_view,
+    geekofwallstreet_view,
 )
 
 
@@ -56,6 +59,7 @@ class DiscoveryController:
         "trending",
         "lowfloat",
         "hotpenny",
+        "rtearn",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -74,10 +78,12 @@ class DiscoveryController:
         help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery
 
 Discovery:
-    cls            clear screen")
-    ?/help         show this menu again")
-    q              quit this menu, and shows back to main menu")
-    quit           quit to abandon program")
+    cls            clear screen
+    ?/help         show this menu again
+    q              quit this menu, and shows back to main menu
+    quit           quit to abandon program
+Geek of Wall St:
+    rtearn         realtime earnings from and expected moves
 Finnhub:
     pipo           past IPOs dates
     fipo           future IPOs dates
@@ -145,6 +151,35 @@ pennystockflow.com
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_rtearn(self, other_args: List[str]):
+        """Process rtearn command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rtearn",
+            description="""
+                Realtime earnings data and expected moves. [Source: https://thegeekofwallstreet.com]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            geekofwallstreet_view.display_realtime_earnings(ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_pipo(self, other_args: List[str]):
         """Process pipo command"""
@@ -218,9 +253,8 @@ pennystockflow.com
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:

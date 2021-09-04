@@ -1,18 +1,21 @@
 """ Comparison Analysis Yahoo Finance View """
 __docformat__ = "numpy"
 
-import argparse
+import os
+from datetime import datetime, timedelta
 from typing import List
-from datetime import datetime
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
-import yfinance as yf
 import seaborn as sns
+from pandas.plotting import register_matplotlib_converters
+from sklearn.preprocessing import MinMaxScaler
 
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, plot_autoscale
 from gamestonk_terminal.config_plot import PLOT_DPI
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.stocks.comparison_analysis import yahoo_finance_model
+
 
 register_matplotlib_converters()
 
@@ -25,282 +28,105 @@ d_candle_types = {
 }
 
 
-def check_one_of_ohlca(type_candles: str) -> str:
-    """Convert a candle type
-
-    Parameters
-    ----------
-    type_candles : str
-        OHLCA candle type
-
-    Returns
-    -------
-    str
-        Converted candle type
-
-    Raises
-    ------
-    argparse.ArgumentTypeError
-        Unknown candle type
-    """
-
-    if type_candles in ("o", "h", "l", "c", "a"):
-        return type_candles
-
-    raise argparse.ArgumentTypeError("The type of candles specified is not recognized")
-
-
-def historical(
-    other_args: List[str],
-    df_stock: pd.DataFrame,
+def display_historical(
     ticker: str,
-    start: datetime,
-    interval: str,
-    similar: List[str],
+    similar_tickers: List[str],
+    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    candle_type: str = "a",
+    normalize: bool = True,
+    export: str = "",
 ):
-    """Display historical data from Yahoo Finance
+    """Display historical stock prices
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    df_stock : pd.DataFrame
-        Stock data
     ticker : str
-        Ticker symbol
-    start : datetime
-        Time start
-    interval : str
-        Time interval
-    similar : List[str]
+        Base ticker
+    similar_tickers : List[str]
         List of similar tickers
+    start : str, optional
+        Start date of comparison, by default 1 year ago
+    candle_type : str, optional
+        OHLCA column to use, by default "a" for Adjusted Close
+    normalize : bool, optional
+        Boolean to normalize all stock prices using MinMax defaults True
+    export : str, optional
+        Format to export historical prices, by default ""
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="historical",
-        description="""Historical price comparison between similar companies [Source: Yahoo Finance]
-        """,
+    ordered_tickers = [ticker, *similar_tickers]
+    df_similar = yahoo_finance_model.get_historical(
+        ticker, similar_tickers, start, candle_type
     )
-    parser.add_argument(
-        "-s",
-        "--similar",
-        dest="l_similar",
-        type=lambda s: [str(item) for item in s.split(",")],
-        default=[],
-        help="similar companies to compare with.",
+    # To plot with ticker first
+    df_similar = df_similar[ordered_tickers]
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    # This puts everything on 0-1 scale for visualizing
+    if normalize:
+        mm_scale = MinMaxScaler()
+        df_similar = pd.DataFrame(
+            mm_scale.fit_transform(df_similar),
+            columns=df_similar.columns,
+            index=df_similar.index,
+        )
+    df_similar.plot(ax=ax)
+    ax.set_title(f"Similar companies to {ticker}")
+    ax.plot(df_similar.index, df_similar[ticker].values)
+    ax.set_xlabel("Time")
+    ax.set_ylabel(f"{['','Normalized'][normalize]} Share Price {['($)',''][normalize]}")
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    # ensures that the historical data starts from same datapoint
+    ax.set_xlim([df_similar.index[0], df_similar.index[-1]])
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout()
+    plt.show()
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
     )
-    parser.add_argument(
-        "-a",
-        "--also",
-        dest="l_also",
-        type=lambda s: [str(item) for item in s.split(",")],
-        default=[],
-        help="apart from loaded similar companies also compare with.",
-    )
-    parser.add_argument(
-        "-t",
-        "--type",
-        action="store",
-        dest="type_candle",
-        type=check_one_of_ohlca,
-        default="a",  # in case it's adjusted close
-        help=("type of candles: o-open, h-high, l-low, c-close, a-adjusted close."),
-    )
-
-    try:
-        if interval != "1440min":
-            print("Intraday historical data analysis comparison is not yet available.")
-            # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
-        else:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            if ns_parser.l_similar:
-                similar = ns_parser.l_similar
-
-            similar += ns_parser.l_also
-
-            plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            plt.title(f"Similar companies to {ticker}")
-            df_stock = yf.download(ticker, start=start, progress=False, threads=False)
-            plt.plot(
-                df_stock.index, df_stock[d_candle_types[ns_parser.type_candle]].values
-            )
-            # plt.plot(df_stock.index, df_stock["Adj Close"].values, lw=2)
-            l_min = [df_stock.index[0]]
-            l_leg = [ticker]
-
-            l_stocks = similar[:]
-
-            while l_stocks:
-                l_parsed_stocks = []
-                for symbol in l_stocks:
-                    try:
-                        df_similar_stock = yf.download(
-                            symbol, start=start, progress=False, threads=False
-                        )
-                        if not df_similar_stock.empty:
-                            plt.plot(
-                                df_similar_stock.index,
-                                df_similar_stock[
-                                    d_candle_types[ns_parser.type_candle]
-                                ].values,
-                            )
-                            l_min.append(df_similar_stock.index[0])
-                            l_leg.append(symbol)
-
-                        l_parsed_stocks.append(symbol)
-                    except Exception as e:
-                        print("")
-                        print(e)
-                        print(
-                            "Disregard previous error, which is due to API Rate limits from Yahoo Finance."
-                        )
-                        print(
-                            f"Because we like '{symbol}', and we won't leave without getting data from it."
-                        )
-
-                for parsed_stock in l_parsed_stocks:
-                    l_stocks.remove(parsed_stock)
-
-            plt.xlabel("Time")
-            plt.ylabel("Share Price ($)")
-            plt.legend(l_leg)
-            plt.grid(b=True, which="major", color="#666666", linestyle="-")
-            plt.minorticks_on()
-            plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-            # ensures that the historical data starts from same datapoint
-            plt.xlim([max(l_min), df_stock.index[-1]])
-            plt.show()
-        print("")
-
-    except SystemExit:
-        print("Similar companies need to be provided", "\n")
-    except Exception as e:
-        print(e, "\n")
+    print("")
 
 
-def correlation(other_args, df_stock, ticker, start, interval, similar):
+def display_correlation(
+    ticker: str,
+    similar_tickers: List[str],
+    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    candle_type: str = "a",
+):
     """
     Correlation heatmap based on historical price comparison
     between similar companies. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    other_args : [type]
-        Command line arguments to be processed with argparse
-    df_stock : pd.DataFrame
-        Stock data
     ticker : str
-        Ticker symbol
-    start : datetime
-        Time start
-    interval : str
-        Time interval
-    similar : [type]
+        Base ticker
+    similar_tickers : List[str]
         List of similar tickers
+    start : str, optional
+        Start date of comparison, by default 1 year ago
+    candle_type : str, optional
+        OHLCA column to use, by default "a" for Adjusted Close
     """
-
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="corr",
-        description=""" Correlation heatmap based on historical price comparison between similar
-        companies. [Source: Yahoo Finance]
-        """,
+    ordered_tickers = [ticker, *similar_tickers]
+    df_similar = yahoo_finance_model.get_historical(
+        ticker, similar_tickers, start, candle_type
     )
-    parser.add_argument(
-        "-s",
-        "--similar",
-        dest="l_similar",
-        type=lambda s: [str(item) for item in s.split(",")],
-        default=[],
-        help="similar companies to compare with.",
+    # To plot with ticker first
+    df_similar = df_similar[ordered_tickers]
+
+    mask = np.zeros((df_similar.shape[1], df_similar.shape[1]), dtype=bool)
+    mask[np.triu_indices(len(mask))] = True
+
+    sns.heatmap(
+        df_similar.corr(),
+        cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
+        cmap="RdYlGn",
+        linewidths=1,
+        annot=True,
+        vmin=-1,
+        vmax=1,
+        mask=mask,
     )
-    parser.add_argument(
-        "-a",
-        "--also",
-        dest="l_also",
-        type=lambda s: [str(item) for item in s.split(",")],
-        default=[],
-        help="apart from loaded similar companies also compare with.",
-    )
-    parser.add_argument(
-        "-t",
-        "--type",
-        action="store",
-        dest="type_candle",
-        type=check_one_of_ohlca,
-        default="a",  # in case it's adjusted close
-        help=("type of data: o-open, h-high, l-low, c-close, a-adjusted close"),
-    )
-
-    try:
-        if interval != "1440min":
-            print("Intraday historical data analysis comparison is not yet available.")
-            # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
-        else:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            if ns_parser.l_similar:
-                similar = ns_parser.l_similar
-
-            similar += ns_parser.l_also
-
-            if not similar:
-                print("Provide at least a similar company for correlation")
-            else:
-                d_stock = {}
-                d_stock[ticker] = yf.download(ticker, start=start, progress=False)
-                l_min = [d_stock[ticker].index[0]]
-
-                for symbol in similar:
-                    d_stock[symbol] = yf.download(symbol, start=start, progress=False)
-                    if not d_stock[symbol].empty:
-                        l_min.append(d_stock[symbol].index[0])
-
-                min_start_date = max(l_min)
-
-                df_stock = d_stock[ticker][
-                    d_candle_types[ns_parser.type_candle]
-                ].rename(ticker)
-
-                for symbols in d_stock.items():
-                    symbol = symbols[0]
-                    if symbol != ticker:
-                        if not d_stock[symbol].empty:
-                            df_stock = pd.concat(
-                                [
-                                    df_stock,
-                                    d_stock[symbol][
-                                        d_candle_types[ns_parser.type_candle]
-                                    ].rename(symbol),
-                                ],
-                                axis=1,
-                            )
-
-                mask = np.zeros((df_stock.shape[1], df_stock.shape[1]), dtype=bool)
-                mask[np.triu_indices(len(mask))] = True
-
-                sns.heatmap(
-                    df_stock[min_start_date:].corr(),
-                    cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
-                    cmap="RdYlGn",
-                    linewidths=1,
-                    annot=True,
-                    vmin=-1,
-                    vmax=1,
-                    mask=mask,
-                )
-                plt.title("Correlation Heatmap")
-                plt.show()
-        print("")
-
-    except SystemExit:
-        print("Similar companies need to be provided", "\n")
-    except Exception as e:
-        print(e, "\n")
+    plt.title("Correlation Heatmap")
+    plt.show()
+    print("")

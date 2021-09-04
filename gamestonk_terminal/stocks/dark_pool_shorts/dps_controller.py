@@ -562,33 +562,21 @@ Quandl/Stockgrid:
             dest="stockgrid",
             help="Source of short interest volume",
         )
-        if "quandl" in other_args:
-            parser.add_argument(
-                "-n",
-                "--nyse",
-                action="store_true",
-                default=False,
-                dest="b_nyse",
-                help="Data from NYSE flag. Otherwise comes from NASDAQ.",
-            )
-            parser.add_argument(
-                "-d",
-                "--days",
-                action="store",
-                dest="n_days",
-                type=check_positive,
-                default=10 if "-r" in other_args else 120,
-                help="Number of latest days to print data.",
-            )
-        else:
-            parser.add_argument(
-                "-n",
-                "--number",
-                help="Number of last open market days to show",
-                type=check_positive,
-                default=10 if "-r" in other_args else 120,
-                dest="num",
-            )
+        parser.add_argument(
+            "--nyse",
+            action="store_true",
+            default=False,
+            dest="b_nyse",
+            help="ONLY QUANDL SOURCE. Data from NYSE flag. Otherwise comes from NASDAQ.",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            help="Number of last open market days to show",
+            type=check_positive,
+            default=10 if "-r" in other_args else 120,
+            dest="num",
+        )
         parser.add_argument(
             "-r",
             action="store_true",
@@ -615,7 +603,7 @@ Quandl/Stockgrid:
                 quandl_view.short_interest(
                     ticker=self.ticker,
                     nyse=ns_parser.b_nyse,
-                    days=ns_parser.n_days,
+                    days=ns_parser.num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
