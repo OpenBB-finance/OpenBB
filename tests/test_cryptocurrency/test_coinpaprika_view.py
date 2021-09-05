@@ -55,11 +55,11 @@ class TestCoinPaprikaView(TestCase):
     def test_all_platforms(self):
         ov_coinpaprika_view.display_all_platforms(export="")
 
-    @check_print(assert_in="active")
-    def test_contracts(self):
-        ov_coinpaprika_view.display_contracts(
-            platform="eth-ethereum", sortby="id", descend=True, top=15, export=""
-        )
+    # @check_print(assert_in="active")
+    # def test_contracts(self):
+    #    ov_coinpaprika_view.display_contracts(
+    #        platform="eth-ethereum", sortby="id", descend=True, top=15, export=""
+    #    )
 
     @check_print(assert_in="Couldn't find")
     @mock.patch(
