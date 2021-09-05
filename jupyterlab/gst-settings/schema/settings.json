@@ -10,7 +10,7 @@
             "description": "Feature flags for the Gamestonk Terminal.",
             "default":
             {
-                "GTFF_USE_CLEARl_AFTER_CMD":
+                "GTFF_USE_CLEAR_AFTER_CMD":
                 {
                     "type": "bool",
                     "form": "checkbox",
@@ -108,13 +108,22 @@
                     "default": 8892,
                     "value": ""
                 },
+                "PYTHON_PATH":
+                {
+                    "type": "string",
+                    "form": "text",
+                    "title": "Python executable",
+                    "description": "Path to the python in your custom environmen",
+                    "default": "python",
+                    "value": ""
+                },
                 "TERMINAL_PATH":
                 {
                     "type": "string",
                     "form": "text",
-                    "title": "Custom terminal path",
+                    "title": "Terminal path",
                     "description": "Path to the terminal.py",
-                    "default": "./terminal",
+                    "default": "GamestonkTerminal/terminal.py",
                     "value": ""
                 },
                 "PATH_TO_SELENIUM_DRIVER":

@@ -20,20 +20,19 @@ export function GamestonkTerminalSettingsComponent({ s }: any): JSX.Element {
    * @param  section  The section name
    * @returns   The state of the section settings.
    */
-  const getSectionState = (section: string) => {
-    const values: Array<Record<string, unknown>> = [];
-    Object.keys(s.schema.properties[section].default).forEach((element) => {
-      const settingsValue =
-        typeof s.user[section] === "undefined"
-          ? s.schema.properties[section].default[element]
-          : s.user[section][element];
-      values.push({
-        key: element,
-        value: settingsValue,
-      });
-    });
-    return values;
-  };
+  function getSectionState(section: string): Record<string, unknown>[] {
+        const values: Array<Record<string, unknown>> = [];
+        Object.keys(s.schema.properties[section].default).forEach((element) => {
+            const settingsValue = typeof s.user[section] === "undefined"
+                ? s.schema.properties[section].default[element]
+                : s.user[section][element];
+            values.push({
+                key: element,
+                value: settingsValue,
+            });
+        });
+        return values;
+    }
 
   const featureFlags = getSectionState("FEATURE_FLAGS");
   const appSettings = getSectionState("APP_SETTINGS");

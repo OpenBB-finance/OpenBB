@@ -111,8 +111,6 @@ const extension: JupyterFrontEndPlugin<void> = {
                 ? setting.value.default
                 : setting.value.value;
             if (setting.value.type === "bool" && settingValue !== undefined) {
-              console.log(settingValue)
-              console.log(setting)
               settingValue = String(settingValue)[0].toUpperCase() + String(settingValue).slice(1);
             };
             launchCommand = `${launchCommand}${settingValue}\n`;
