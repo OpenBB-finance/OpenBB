@@ -1,7 +1,7 @@
 import json
 import os.path as osp
 
-from ._version import __version__
+from ._version import __version__  # noqa: F401
 
 HERE = osp.abspath(osp.dirname(__file__))
 
