@@ -12,13 +12,15 @@ def get_global_market() -> pd.DataFrame:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
-    market_cap_change_24h, volume_24h_change_24h, last_updated,
+    market_cap_change_24h, volume_24h_change_24h, last_updated.   [Source: CoinPaprika]
 
     Returns
     -------
     pandas.DataFrame
+        Most important global crypto statistics
         Metric, Value
     """
+
     session = PaprikaSession()
     global_markets = session.make_request(session.ENDPOINTS["global"])
     global_markets["last_updated"] = datetime.fromtimestamp(
@@ -37,13 +39,15 @@ def get_global_market() -> pd.DataFrame:
 
 
 def get_list_of_coins() -> pd.DataFrame:
-    """Get list of all available coins on CoinPaprika
+    """Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
 
     Returns
     -------
     pandas.DataFrame
+        Available coins on CoinPaprika
         rank, id, name, symbol, type
     """
+
     session = PaprikaSession()
     coins = session.make_request(session.ENDPOINTS["coins"])
     df = pd.DataFrame(coins)
@@ -88,9 +92,11 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
                 }
     }
 
+    [Source: CoinPaprika]
+
     Parameters
     ----------
-    quotes: Coma separated quotes to return e.g quotes=USD,BTC
+    quotes: Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
     -------
@@ -101,6 +107,7 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
        percent_change_24h, percent_change_7d, percent_change_30d, percent_change_1y,
        ath_price, ath_date, percent_from_price_ath
     """
+
     session = PaprikaSession()
     tickers = session.make_request(session.ENDPOINTS["tickers"], quotes=quotes)
     data = pd.json_normalize(tickers)
@@ -123,10 +130,12 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
 
 
 def get_coins_info(quotes: str = "USD") -> pd.DataFrame:  # > format big numbers fix
-    """Returns basic coin information for all coins from CoinPaprika API
+    """Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
+
     Parameters
     ----------
-    quotes: Coma separated quotes to return e.g quotes=USD,BTC
+    quotes: str
+        Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
     -------
@@ -134,6 +143,7 @@ def get_coins_info(quotes: str = "USD") -> pd.DataFrame:  # > format big numbers
         rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
         max_supply, market_cap, beta_value, ath_price,
     """
+
     cols = [
         "rank",
         "name",
@@ -151,10 +161,12 @@ def get_coins_info(quotes: str = "USD") -> pd.DataFrame:  # > format big numbers
 
 
 def get_coins_market_info(quotes: str = "USD") -> pd.DataFrame:
-    """Returns basic coin information for all coins from CoinPaprika API
+    """Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
+
     Parameters
     ----------
-    quotes: Coma separated quotes to return e.g quotes=USD,BTC
+    quotes: str
+        Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
     -------
@@ -162,6 +174,7 @@ def get_coins_market_info(quotes: str = "USD") -> pd.DataFrame:
         rank, name, symbol, price, volume_24h, mcap_change_24h,
         pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
     """
+
     cols = [
         "rank",
         "name",
@@ -179,10 +192,12 @@ def get_coins_market_info(quotes: str = "USD") -> pd.DataFrame:
 
 def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
     """
-    List exchanges from CoinPaprika API
+    List exchanges from CoinPaprika API [Source: CoinPaprika]
+
     Parameters
     ----------
-    quotes: Coma separated quotes to return e.g quotes=USD,BTC
+    quotes: str
+        Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
     -------
@@ -190,6 +205,7 @@ def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
         rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
     """
+
     session = PaprikaSession()
     exchanges = session.make_request(session.ENDPOINTS["exchanges"], quotes=quotes)
     df = pd.json_normalize(exchanges)
@@ -229,12 +245,14 @@ def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
 def get_exchanges_market(
     exchange_id: str = "binance", quotes: str = "USD"
 ) -> pd.DataFrame:
-    """List markets by exchange ID
+    """List markets by exchange ID [Source: CoinPaprika]
 
     Parameters
     ----------
-    exchange_id: identifier of exchange e.g for Binance Exchange -> binance
-    quotes: Coma separated quotes to return e.g quotes=USD,BTC
+    exchange_id: str
+        identifier of exchange e.g for Binance Exchange -> binance
+    quotes: str
+        Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
     -------
@@ -242,6 +260,7 @@ def get_exchanges_market(
         pair, base_currency_name, quote_currency_name, market_url,
         category, reported_volume_24h_share, trust_score,
     """
+
     session = PaprikaSession()
     data = session.make_request(
         session.ENDPOINTS["exchange_markets"].format(exchange_id), quotes=quotes
@@ -265,13 +284,14 @@ def get_exchanges_market(
 
 
 def get_all_contract_platforms() -> pd.DataFrame:
-    """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama ...
+    """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama ... [Source: CoinPaprika]
 
     Returns
     -------
     pandas.DataFrame
         index, platform_id
     """
+
     session = PaprikaSession()
     contract_platforms = session.make_request(session.ENDPOINTS["contract_platforms"])
     df = pd.DataFrame(contract_platforms).reset_index()
@@ -280,17 +300,19 @@ def get_all_contract_platforms() -> pd.DataFrame:
     return df
 
 
-def get_contract_platform(platform_id="eth-ethereum") -> pd.DataFrame:
-    """Gets all contract addresses for given platform
+def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
+    """Gets all contract addresses for given platform [Source: CoinPaprika]
     Parameters
     ----------
-    platform_id: Blockchain platform like eth-ethereum
+    platform_id: str
+        Blockchain platform like eth-ethereum
 
     Returns
     -------
     pandas.DataFrame
          id, type, active, address
     """
+
     session = PaprikaSession()
     contract_platforms = session.make_request(
         session.ENDPOINTS["contract_platform_addresses"].format(platform_id)

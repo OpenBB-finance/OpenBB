@@ -18,12 +18,9 @@ from gamestonk_terminal.cryptocurrency.pycoingecko_helpers import (
 )
 
 
-client = CoinGeckoAPI()
-
-
-def get_holdings_overview(endpoint: str = "bitcoin"):
+def get_holdings_overview(endpoint: str = "bitcoin") -> pd.DataFrame:
     """Scrapes overview of public companies that holds ethereum or bitcoin
-    from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}"
+    from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}" [Source: CoinGecko]
 
     Parameters
     ----------
@@ -35,6 +32,7 @@ def get_holdings_overview(endpoint: str = "bitcoin"):
     pandas.DataFrame
         Metric, Value
     """
+
     url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
     rows = scrape_gecko_data(url).find_all(
         "span", class_="overview-box d-inline-block p-3 mr-2"
@@ -55,9 +53,9 @@ def get_holdings_overview(endpoint: str = "bitcoin"):
     return df
 
 
-def get_companies_assets(endpoint="bitcoin"):
+def get_companies_assets(endpoint: str = "bitcoin") -> pd.DataFrame:
     """Scrapes list of companies that holds ethereum or bitcoin
-    from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}"
+    from "https://www.coingecko.com/en/public-companies-{bitcoin/ethereum}" [Source: CoinGecko]
 
     Parameters
     ----------
@@ -69,6 +67,7 @@ def get_companies_assets(endpoint="bitcoin"):
     pandas.DataFrame
         Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
     """
+
     url = f"https://www.coingecko.com/en/public-companies-{endpoint}"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
     results = []
@@ -95,7 +94,7 @@ def get_companies_assets(endpoint="bitcoin"):
 
 
 def get_news(n: int = 100) -> pd.DataFrame:
-    """Scrapes news from "https://www.coingecko.com/en/news?page={}"
+    """Scrapes news from "https://www.coingecko.com/en/news?page={}" [Source: CoinGecko]
 
     Parameters
     ----------
@@ -142,14 +141,15 @@ def get_news(n: int = 100) -> pd.DataFrame:
     return df
 
 
-def get_top_crypto_categories():
-    """Scrapes top crypto categories from "https://www.coingecko.com/en/categories"
+def get_top_crypto_categories() -> pd.DataFrame:
+    """Scrapes top crypto categories from "https://www.coingecko.com/en/categories" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
        Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     """
+
     columns = [
         "Rank",
         "Name",
@@ -195,14 +195,15 @@ def get_top_crypto_categories():
     return df
 
 
-def get_stable_coins():
-    """Scrapes stable coins data from "https://www.coingecko.com/en/stablecoins"
+def get_stable_coins() -> pd.DataFrame:
+    """Scrapes stable coins data from "https://www.coingecko.com/en/stablecoins" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
+
     columns = [
         "Rank",
         "Name",
@@ -254,14 +255,15 @@ def get_stable_coins():
     return df
 
 
-def get_nft_of_the_day():
-    """Scrapes data about nft of the day.
+def get_nft_of_the_day() -> pd.DataFrame:
+    """Scrapes data about nft of the day. [Source: CoinGecko]
 
     Returns
     -------
-        pandas.DataFrame
-            metric, value
+    pandas.DataFrame
+        metric, value
     """
+
     url = "https://www.coingecko.com/en/nft"
     soup = scrape_gecko_data(url)
     row = soup.find("div", class_="tw-px-4 tw-py-5 sm:tw-p-6")
@@ -270,7 +272,7 @@ def get_nft_of_the_day():
         if len(author) > 3:
             author, description = author[:3], author[3]
     except (ValueError, IndexError):
-        return {}
+        return pd.DataFrame()
     df = (
         pd.Series(
             {
@@ -291,14 +293,15 @@ def get_nft_of_the_day():
     return df
 
 
-def get_nft_market_status():
-    """Scrapes overview data of nft markets from "https://www.coingecko.com/en/nft"
+def get_nft_market_status() -> pd.DataFrame:
+    """Scrapes overview data of nft markets from "https://www.coingecko.com/en/nft" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Metric, Value
     """
+
     url = "https://www.coingecko.com/en/nft"
     rows = scrape_gecko_data(url).find_all(
         "span", class_="overview-box d-inline-block p-3 mr-2"
@@ -313,14 +316,16 @@ def get_nft_market_status():
     return df
 
 
-def get_exchanges():
-    """Get list of top exchanges from CoinGecko API
+def get_exchanges() -> pd.DataFrame:
+    """Get list of top exchanges from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
     """
+
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_exchanges_list(per_page=250))
     df.replace({float(np.NaN): None}, inplace=True)
     df = df[
@@ -347,14 +352,16 @@ def get_exchanges():
     return df
 
 
-def get_financial_platforms():
-    """Get list of financial platforms from CoinGecko API
+def get_financial_platforms() -> pd.DataFrame:
+    """Get list of financial platforms from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Rank, Name, Category, Centralized, Url
     """
+
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_finance_platforms())
     df.drop("facts", axis=1, inplace=True)
     create_df_index(df, "rank")
@@ -362,7 +369,7 @@ def get_financial_platforms():
     return df
 
 
-def get_finance_products():
+def get_finance_products() -> pd.DataFrame:
     """Get list of financial products from CoinGecko API
 
     Returns
@@ -370,6 +377,8 @@ def get_finance_products():
     pandas.DataFrame
        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
     """
+
+    client = CoinGeckoAPI()
     df = pd.DataFrame(
         client.get_finance_products(per_page=250),
         columns=[
@@ -384,29 +393,32 @@ def get_finance_products():
     return df
 
 
-def get_indexes():
-    """Get list of crypto indexes from CoinGecko API
+def get_indexes() -> pd.DataFrame:
+    """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Name, Id, Market, Last, MultiAsset
     """
+
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_indexes(per_page=250))
     df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
     create_df_index(df, "Rank")
     return df
 
 
-def get_derivatives():
-    """Get list of crypto derivatives from CoinGecko API
+def get_derivatives() -> pd.DataFrame:
+    """Get list of crypto derivatives from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h,
-
     """
+
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_derivatives(include_tickers="unexpired"))
     df.drop(
         ["index", "last_traded_at", "expired_at", "index_id", "open_interest"],
@@ -433,14 +445,16 @@ def get_derivatives():
     return df
 
 
-def get_exchange_rates():
-    """Get list of crypto, fiats, commodity exchange rates from CoinGecko API
+def get_exchange_rates() -> pd.DataFrame:
+    """Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Index, Name, Unit, Value, Type
     """
+
+    client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_exchange_rates()["rates"]).T.reset_index()
     df.drop("index", axis=1, inplace=True)
     create_df_index(df, "index")
@@ -448,18 +462,22 @@ def get_exchange_rates():
     return df
 
 
-def get_global_info():
+def get_global_info() -> pd.DataFrame:
     """Get global statistics about crypto from CoinGecko API like:
         - market cap change
         - number of markets
         - icos
         - number of active crypto
 
+    [Source: CoinGecko]
+
     Returns
     -------
     pandas.DataFrame
         Metric, Value
     """
+
+    client = CoinGeckoAPI()
     results = client.get_global()
 
     total_mcap = results.pop("market_cap_percentage")
@@ -477,21 +495,25 @@ def get_global_info():
     return df
 
 
-def get_global_markets_info():
+def get_global_markets_info() -> pd.DataFrame:
     """Get global statistics about crypto markets from CoinGecko API like:
         Market_Cap, Volume, Market_Cap_Percentage
+
+    [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Market_Cap, Volume, Market_Cap_Percentage
     """
+
     columns = [
         "Market_Cap",
         "Volume",
         "Market_Cap_Percentage",
     ]
     data = []
+    client = CoinGeckoAPI()
     results = client.get_global()
     for key in columns:
         data.append(results.get(key))
@@ -501,14 +523,16 @@ def get_global_markets_info():
     return df.reset_index()
 
 
-def get_global_defi_info():
-    """Get global statistics about Decentralized Finances from CoinGecko API like:
+def get_global_defi_info() -> pd.DataFrame:
+    """Get global statistics about Decentralized Finances [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Metric, Value
     """
+
+    client = CoinGeckoAPI()
     results = client.get_global_decentralized_finance_defi()
     for key, value in results.items():
         try:

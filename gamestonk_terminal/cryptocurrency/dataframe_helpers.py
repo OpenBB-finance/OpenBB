@@ -7,7 +7,7 @@ import pandas as pd
 from gamestonk_terminal.helper_funcs import long_number_format
 
 
-def wrap_text_in_df(df: pd.DataFrame, w=55) -> pd.DataFrame:  # pragma: no cover
+def wrap_text_in_df(df: pd.DataFrame, w: int = 55) -> pd.DataFrame:  # pragma: no cover
     """
     Parameters
     ----------
@@ -19,8 +19,8 @@ def wrap_text_in_df(df: pd.DataFrame, w=55) -> pd.DataFrame:  # pragma: no cover
     Returns
     -------
     pd.DataFrame
-
     """
+
     return df.applymap(
         lambda x: "\n".join(textwrap.wrap(x, width=w)) if isinstance(x, str) else x
     )
@@ -36,6 +36,7 @@ def percent_to_float(s: str) -> float:
     -------
     float
     """
+
     s = str(float(s.rstrip("%")))
     i = s.find(".")
     if i == -1:
@@ -49,7 +50,7 @@ def percent_to_float(s: str) -> float:
     return float(s[:i] + "." + s[i:])
 
 
-def create_df_index(df: pd.DataFrame, name="rank") -> None:
+def create_df_index(df: pd.DataFrame, name: str = "rank") -> None:
     """Helper method that creates new index for given data frame, with provided index name
     Parameters
     ----------
@@ -58,6 +59,7 @@ def create_df_index(df: pd.DataFrame, name="rank") -> None:
     name: str
         index name
     """
+
     df.index = df.index + 1
     df.reset_index(inplace=True)
     df.rename(columns={"index": name}, inplace=True)
@@ -66,13 +68,17 @@ def create_df_index(df: pd.DataFrame, name="rank") -> None:
 def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     """Helper which checks if type of x is int or float and it's smaller then 10^18.
     If yes it apply long_num_format
+
     Parameters
     ----------
     x: int/float
         number to apply long_number_format method
     Returns
     -------
+    Union[str, Any]
+
     """
+
     if isinstance(x, (int, float)) and x < 10 ** 18:
         return long_number_format(x)
     return x

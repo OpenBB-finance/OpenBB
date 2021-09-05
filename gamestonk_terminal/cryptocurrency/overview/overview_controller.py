@@ -6,11 +6,19 @@ import argparse
 import os
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     coinpaprika_view,
+)
+from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
+from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
+    get_all_contract_platforms,
 )
 
 
@@ -137,91 +145,1384 @@ CoinPaprika:
 
     def call_cghold(self, other_args):
         """Process hold command"""
-        pycoingecko_view.holdings_overview(other_args)
+        parser = argparse.ArgumentParser(
+            prog="hold",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+                Shows overview of public companies that holds ethereum or bitcoin.
+                You can find there most important metrics like:
+                Total Bitcoin Holdings, Total Value (USD), Public Companies Bitcoin Dominance, Companies
+                """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="companies with ethereum or bitcoin",
+            default="bitcoin",
+            choices=["ethereum", "bitcoin"],
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            pycoingecko_view.display_holdings_overview(
+                coin=ns_parser.coin, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgcompanies(self, other_args):
         """Process companies command"""
-        pycoingecko_view.holdings_companies_list(other_args)
+        parser = argparse.ArgumentParser(
+            prog="companies",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Track publicly traded companies around the world that
+            are buying ethereum or bitcoin as part of corporate treasury:
+            Rank, Company, Ticker, Country, Total_Btc, Entry_Value, Today_Value, Pct_Supply, Url
+            You can use additional flag --links to see urls to announcement about buying btc or eth by given company.
+            In this case you will see only columns like rank, company, url
+            """,
+        )
+
+        parser.add_argument(
+            "-c",
+            "--coin",
+            dest="coin",
+            type=str,
+            help="companies with ethereum or bitcoin",
+            default="bitcoin",
+            choices=["ethereum", "bitcoin"],
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls. If you will use that flag you will see only rank, company, url columns",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_holdings_companies_list(
+                coin=ns_parser.coin, export=ns_parser.export, links=ns_parser.links
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgnews(self, other_args):
         """Process news command"""
-        pycoingecko_view.news(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="news",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Shows latest crypto news from CoinGecko. "
+            "You will see Index, Title, Author, Posted columns. "
+            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
+            "To display urls to news use --links flag.",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=int,
+            help="top N number of news >=10",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: index",
+            default="Index",
+            choices=["Index", "Title", "Author", "Posted"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            pycoingecko_view.display_news(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.links,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
-        pycoingecko_view.categories(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="categories",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
+            stablecoins, defi, solana ecosystem, polkadot ecosystem and many others.
+            "You can sort by each of column above, using --sort parameter and also do it descending with --descend flag"
+            "To display urls use --links flag.",
+            Displays: Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h, Coins,""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number of records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=[
+                "Rank",
+                "Name",
+                "Change_1h",
+                "Change_24h",
+                "Change_7d",
+                "Market_Cap",
+                "Volume_24h",
+                "Coins",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            pycoingecko_view.display_categories(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.links,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgstables(self, other_args):
         """Process stables command"""
-        pycoingecko_view.stablecoins(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="stables",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows stablecoins by market capitalization.
+                Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference
+                like the U.S. dollar or to a commodity's price such as gold.
+                You can display only top N number of coins with --top parameter.
+                You can sort data by Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d with --sort
+                and also with --descend flag to sort descending.
+                Flag --links will display stablecoins urls""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=[
+                "Rank",
+                "Name",
+                "Symbol",
+                "Price",
+                "Change_24h",
+                "Exchanges",
+                "Market_Cap",
+                "Change_30d",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_stablecoins(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.links,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgnft(self, other_args):
         """Process nft command"""
-        pycoingecko_view.nft_market_status(other_args=other_args)
+
+        parser = argparse.ArgumentParser(
+            prog="nft",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows NFT market status
+                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+                Displays: NFT Market Cap, 24h Trading Volume, NFT Dominance vs Global market, Theta Network NFT Dominance
+                """,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_nft_market_status(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgnftday(self, other_args):
-        """Process nft_today command"""
-        pycoingecko_view.nft_of_the_day(other_args=other_args)
+        """Process nftday command"""
+        parser = argparse.ArgumentParser(
+            prog="nftday",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows NFT of the day
+                NFT (Non-fungible Token) refers to digital assets with unique characteristics.
+                Examples of NFT include crypto artwork, collectibles, game items, financial products, and more.
+                With nft_today command you will display:
+                    author, description, url, img url for NFT which was chosen on CoinGecko as a nft of the day.""",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_nft_of_the_day(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgproducts(self, other_args):
         """Process products command"""
-        pycoingecko_view.products(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="products",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
+                You can display only top N number of platforms with --top parameter.
+                You can sort data by Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate with --sort
+                and also with --descend flag to sort descending.
+                Displays: Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=[
+                "Rank",
+                "Platform",
+                "Identifier",
+                "Supply_Rate",
+                "Borrow_Rate",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_products(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
-        pycoingecko_view.platforms(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="platforms",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
+                e.g Celsius, Nexo, Crypto.com, Aave and others.
+                You can display only top N number of platforms with --top parameter.
+                You can sort data by Rank, Name, Category, Centralized with --sort
+                and also with --descend flag to sort descending.
+                Displays: Rank, Name, Category, Centralized, Url""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=["Rank", "Name", "Category", "Centralized"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_platforms(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
-        pycoingecko_view.exchanges(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="exchanges",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows Top Crypto Exchanges
+                You can display only top N number exchanges with --top parameter.
+                You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with --sort
+                and also with --descend flag to sort descending.
+                Flag --links will display urls.
+                Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=[
+                "Rank",
+                "Trust_Score",
+                "Id",
+                "Name",
+                "Country",
+                "Year Established",
+                "Trade_Volume_24h_BTC",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="Flag to show urls",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_exchanges(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.links,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
-        pycoingecko_view.exchange_rates(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="exrates",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+                Shows list of crypto, fiats, commodity exchange rates from CoinGecko
+                You can look on only top N number of records with --top,
+                You can sort by Index, Name, Unit, Value, Type, and also use --descend flag to sort descending.""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Index",
+            default="Index",
+            choices=["Index", "Name", "Unit", "Value", "Type"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            pycoingecko_view.display_exchange_rates(
+                sortby=ns_parser.sortby,
+                top=ns_parser.top,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgindexes(self, other_args):
         """Process indexes command"""
-        pycoingecko_view.indexes(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="indexes",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows list of crypto indexes from CoinGecko.
+            Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap.
+            You can display only top N number of indexes with --top parameter.
+            You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sort
+            and also with --descend flag to sort descending.
+            Displays: Rank, Name, Id, Market, Last, MultiAsset
+                """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=["Rank", "Name", "Id", "Market", "Last", "MultiAsset"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_indexes(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
-        pycoingecko_view.derivatives(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="derivatives",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows list of crypto derivatives from CoinGecko
+               Crypto derivatives are secondary contracts or financial tools that derive their value from a primary
+               underlying asset. In this case, the primary asset would be a cryptocurrency such as Bitcoin.
+               The most popular crypto derivatives are crypto futures, crypto options, and perpetual contracts.
+               You can look on only top N number of records with --top,
+               You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate,
+               Volume_24h with --sort and also with --descend flag to set it to sort descending.
+               Displays:
+                   Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h""",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: Rank",
+            default="Rank",
+            choices=[
+                "Rank",
+                "Market",
+                "Symbol",
+                "Price",
+                "Pct_Change_24h",
+                "Contract_Type",
+                "Basis",
+                "Spread",
+                "Funding_Rate",
+                "Volume_24h",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            pycoingecko_view.display_derivatives(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgglobal(self, other_args):
         """Process global command"""
-        pycoingecko_view.global_market_info(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="global",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows global statistics about Crypto Market""",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_global_market_info(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cgdefi(self, other_args):
         """Process defi command"""
-        pycoingecko_view.global_defi_info(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="defi",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Shows global DeFi statistics
+               DeFi or Decentralized Finance refers to financial services that are built
+               on top of distributed networks with no central intermediaries.
+               Displays metrics like:
+                   Market Cap, Trading Volume, Defi Dominance, Top Coins...""",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            pycoingecko_view.display_global_defi_info(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpglobal(self, other_args):
         """Process global command"""
-        coinpaprika_view.global_market(other_args=other_args)
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="global",
+            description="""Show most important global crypto statistics like: Market Cap, Volume,
+            Number of cryptocurrencies, All Time High, All Time Low""",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            coinpaprika_view.display_global_market(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpmarkets(self, other_args):
         """Process markets command"""
-        coinpaprika_view.all_coins_market_info(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="markets",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
+            You can display only top N number of coins with --top parameter.
+            You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h,
+            ath_price, pct_from_ath, --sort parameter and also with --descend flag to sort descending.
+            Displays:
+               rank, name, symbol, price, volume_24h, mcap_change_24h,
+               pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
+                """,
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quoted currency. Default USD",
+            dest="vs",
+            default="USD",
+            type=str,
+            choices=CURRENCIES,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=15,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: rank",
+            default="rank",
+            choices=[
+                "rank",
+                "name",
+                "symbol",
+                "price",
+                "volume_24h",
+                "mcap_change_24h",
+                "pct_change_1h",
+                "pct_change_24h",
+                "ath_price",
+                "pct_from_ath",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            coinpaprika_view.display_all_coins_market_info(
+                currency=ns_parser.vs,
+                top=ns_parser.top,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpexmarkets(self, other_args):
-        """Process ex_markets command"""
-        coinpaprika_view.exchange_markets(other_args=other_args)
+        """Process exmarkets command"""
+        parser = argparse.ArgumentParser(
+            prog="exmarkets",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Get all exchange markets found for given exchange
+                You can display only top N number of records with --top parameter.
+                You can sort data by pair, base_currency_name, quote_currency_name, market_url, category,
+                reported_volume_24h_share, trust_score --sort parameter and also with --descend flag to sort descending.
+                You can use additional flag --links to see urls for each market
+                Displays:
+                    exchange_id, pair, base_currency_name, quote_currency_name, market_url,
+                    category, reported_volume_24h_share, trust_score,""",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            help="Identifier of exchange e.g for Binance Exchange -> binance",
+            dest="exchange",
+            default="binance",
+            type=str,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=10,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: reported_volume_24h_share",
+            default="reported_volume_24h_share",
+            choices=[
+                "pair",
+                "base_currency_name",
+                "quote_currency_name",
+                "category",
+                "reported_volume_24h_share",
+                "trust_score",
+                "market_url",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-l",
+            "--links",
+            dest="links",
+            action="store_true",
+            help="""Flag to show urls. If you will use that flag you will see only:
+                exchange, pair, trust_score, market_url columns""",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            coinpaprika_view.display_exchange_markets(
+                exchange=ns_parser.exchange,
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                links=ns_parser.links,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpinfo(self, other_args):
         """Process info command"""
-        coinpaprika_view.all_coins_info(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""Show basic coin information for all coins from CoinPaprika API
+                You can display only top N number of coins with --top parameter.
+                You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
+                market_cap, beta_value, ath_price --sort parameter and also with --descend flag to sort descending.
+                Displays:
+                    rank, name, symbol, price, volume_24h, circulating_supply,
+                    total_supply, max_supply, market_cap, beta_value, ath_price
+                """,
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quoted currency. Default USD",
+            dest="vs",
+            default="USD",
+            type=str,
+            choices=CURRENCIES,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=20,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: rank",
+            default="rank",
+            choices=[
+                "rank",
+                "name",
+                "symbol",
+                "price",
+                "volume_24h",
+                "circulating_supply",
+                "total_supply",
+                "max_supply",
+                "ath_price",
+                "market_cap",
+                "beta_value",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            coinpaprika_view.display_all_coins_info(
+                currency=ns_parser.vs,
+                top=ns_parser.top,
+                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpexchanges(self, other_args):
         """Process coins_market command"""
-        coinpaprika_view.all_exchanges(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="exchanges",
+            description="""Show all exchanges from CoinPaprika
+               You can display only top N number of coins with --top parameter.
+               You can sort data by  rank, name, currencies, markets, fiats, confidence,
+               volume_24h,volume_7d ,volume_30d, sessions_per_month --sort parameter
+               and also with --descend flag to sort descending.
+               Displays:
+                   rank, name, currencies, markets, fiats, confidence, volume_24h,
+                   volume_7d ,volume_30d, sessions_per_month""",
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quoted currency. Default USD",
+            dest="vs",
+            default="USD",
+            type=str,
+            choices=CURRENCIES,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=20,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: rank",
+            default="rank",
+            choices=[
+                "rank",
+                "name",
+                "currencies",
+                "markets",
+                "fiats",
+                "confidence",
+                "volume_24h",
+                "volume_7d",
+                "volume_30d",
+                "sessions_per_month",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            coinpaprika_view.display_all_exchanges(
+                currency=ns_parser.vs,
+                top=ns_parser.top,
+                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
-        coinpaprika_view.all_platforms(other_args=other_args)
+        parser = argparse.ArgumentParser(
+            prog="platforms",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            coinpaprika_view.display_all_platforms(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cpcontracts(self, other_args):
         """Process contracts command"""
-        coinpaprika_view.contracts(other_args=other_args)
+        platforms = get_all_contract_platforms()["platform_id"].tolist()
+
+        parser = argparse.ArgumentParser(
+            prog="contracts",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Gets all contract addresses for given platform.
+               Provide platform id with -p/--platform parameter
+               You can display only top N number of smart contracts with --top parameter.
+               You can sort data by id, type, active, address  --sort parameter
+               and also with --descend flag to sort descending.
+
+               Displays:
+                   id, type, active, address
+               """,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--platform",
+            help="Blockchain platform like eth-ethereum",
+            dest="platform",
+            default="eth-ethereum",
+            type=str,
+            choices=platforms,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=15,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column",
+            default="id",
+            choices=["id", "type", "active", "address"],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            coinpaprika_view.display_contracts(
+                platform=ns_parser.platform,
+                top=ns_parser.top,
+                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu():

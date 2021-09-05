@@ -1,16 +1,15 @@
 """CoinPaprika view"""
 __docformat__ = "numpy"
 
-import argparse
-from typing import List
+import os
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn, check_positive
+from gamestonk_terminal.helper_funcs import export_data
 import gamestonk_terminal.cryptocurrency.overview.coinpaprika_model as paprika
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
     long_number_format_with_type_check,
 )
-
+from gamestonk_terminal import feature_flags as gtff
 
 register_matplotlib_converters()
 
@@ -66,34 +65,23 @@ CURRENCIES = [
 # EXCHANGES = paprika.get_list_of_exchanges()
 
 
-def global_market(other_args: List[str]):
+def display_global_market(export: str) -> None:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
-    market_cap_change_24h, volume_24h_change_24h, last_updated,
+    market_cap_change_24h, volume_24h_change_24h, last_updated [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="global",
-        description="""Show most important global crypto statistics like:
-        market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
-        market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
-        market_cap_change_24h, volume_24h_change_24h, last_updated.""",
-    )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df = paprika.get_global_market()
+    df_data = df.copy()
+    df["Value"] = df["Value"].apply(lambda x: long_number_format_with_type_check(x))
 
-        df = paprika.get_global_market()
-        df["Value"] = df["Value"].apply(lambda x: long_number_format_with_type_check(x))
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
                 df,
@@ -101,434 +89,264 @@ def global_market(other_args: List[str]):
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "global",
+        df_data,
+    )
 
 
-def all_coins_market_info(other_args: List[str]):
-    """Displays basic market information for all coins from CoinPaprika API
+def display_all_coins_market_info(
+    currency: str, sortby: str, descend: bool, top: int, export: str
+) -> None:
+    """Displays basic market information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
+    currency: str
+        Quoted currency
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    links: bool
+        Flag to display urls
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        prog="markets",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
-        You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h,
-        ath_price, pct_from_ath, --sort parameter and also with --descend flag to sort descending.
-        Displays:
-           rank, name, symbol, price, volume_24h, mcap_change_24h,
-           pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
-        """,
-    )
-    parser.add_argument(
-        "--vs",
-        help="Quoted currency. Default USD",
-        dest="vs",
-        default="USD",
-        type=str,
-        choices=CURRENCIES,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=20,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
-        choices=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "volume_24h",
-            "mcap_change_24h",
-            "pct_change_1h",
-            "pct_change_24h",
-            "ath_price",
-            "pct_from_ath",
-        ],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=True,
+
+    df = paprika.get_coins_market_info(quotes=currency).sort_values(
+        by=sortby, ascending=descend
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = df.copy()
 
-        df = paprika.get_coins_market_info(quotes=ns_parser.vs).sort_values(
-            by=ns_parser.sortby, ascending=ns_parser.descend
-        )
+    if df.empty:
+        print("No data found", "\n")
+        return
 
-        if df.empty:
-            print("No data found", "\n")
-            return
+    cols = [col for col in df.columns if col != "rank"]
+    df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
 
-        cols = [col for col in df.columns if col != "rank"]
-        df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
-        print("")
-        print(f"Displaying data vs {ns_parser.vs}")
+    print(f"\nDisplaying data vs {currency}")
+
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(ns_parser.top),
+                df.head(top),
                 headers=df.columns,
                 floatfmt=".3f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "markets",
+        df_data,
+    )
 
 
-def all_coins_info(other_args: List[str]):
-    """Displays basic coin information for all coins from CoinPaprika API
+def display_all_coins_info(
+    currency: str, sortby: str, descend: bool, top: int, export: str
+) -> None:
+    """Displays basic coin information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
+    currency: str
+        Quoted currency
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    links: bool
+        Flag to display urls
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="info",
-        description="""Show basic coin information for all coins from CoinPaprika API
-        You can display only top N number of coins with --top parameter.
-        You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
-        market_cap, beta_value, ath_price --sort parameter and also with --descend flag to sort descending.
-        Displays:
-            rank, name, symbol, price, volume_24h, circulating_supply,
-            total_supply, max_supply, market_cap, beta_value, ath_price
-        """,
-    )
-    parser.add_argument(
-        "--vs",
-        help="Quoted currency. Default USD",
-        dest="vs",
-        default="USD",
-        type=str,
-        choices=CURRENCIES,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=20,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
-        choices=[
-            "rank",
-            "name",
-            "symbol",
-            "price",
-            "volume_24h",
-            "circulating_supply",
-            "total_supply",
-            "max_supply",
-            "ath_price",
-            "market_cap",
-            "beta_value",
-        ],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=True,
+
+    df = paprika.get_coins_info(quotes=currency).sort_values(
+        by=sortby, ascending=descend
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = df.copy()
 
-        df = paprika.get_coins_info(quotes=ns_parser.vs).sort_values(
-            by=ns_parser.sortby, ascending=ns_parser.descend
-        )
+    if df.empty:
+        print("Not data found", "\n")
+        return
 
-        if df.empty:
-            print("Not data found", "\n")
-            return
+    cols = [col for col in df.columns if col != "rank"]
+    df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
 
-        cols = [col for col in df.columns if col != "rank"]
-        df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
+    print(f"\nDisplaying data vs {currency}")
 
-        print("")
-        print(f"Displaying data vs {ns_parser.vs}")
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(ns_parser.top),
+                df.head(top),
                 headers=df.columns,
                 floatfmt=".3f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "info",
+        df_data,
+    )
 
 
-def all_exchanges(other_args: List[str]):
-    """List exchanges from CoinPaprika API
+def display_all_exchanges(
+    currency: str, sortby: str, descend: bool, top: int, export: str
+) -> None:
+    """List exchanges from CoinPaprika API. [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
+    currency: str
+        Quoted currency
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    links: bool
+        Flag to display urls
+    export : str
+        Export dataframe data to csv,json,xlsx file
 
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="exchanges",
-        description="""Show all exchanges from CoinPaprika
-        You can display only top N number of coins with --top parameter.
-        You can sort data by  rank, name, currencies, markets, fiats, confidence,
-        volume_24h,volume_7d ,volume_30d, sessions_per_month --sort parameter
-        and also with --descend flag to sort descending.
-        Displays:
-            rank, name, currencies, markets, fiats, confidence, volume_24h,
-            volume_7d ,volume_30d, sessions_per_month""",
-    )
-    parser.add_argument(
-        "--vs",
-        help="Quoted currency. Default USD",
-        dest="vs",
-        default="USD",
-        type=str,
-        choices=CURRENCIES,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=20,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: rank",
-        default="rank",
-        choices=[
-            "rank",
-            "name",
-            "currencies",
-            "markets",
-            "fiats",
-            "confidence",
-            "volume_24h",
-            "volume_7d",
-            "volume_30d",
-            "sessions_per_month",
-        ],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=True,
+
+    df = paprika.get_list_of_exchanges(quotes=currency).sort_values(
+        by=sortby, ascending=descend
     )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_data = df.copy()
 
-        df = paprika.get_list_of_exchanges(quotes=ns_parser.vs).sort_values(
-            by=ns_parser.sortby, ascending=ns_parser.descend
-        )
+    if df.empty:
+        print("No data found", "\n")
+        return
 
-        if df.empty:
-            print("No data found", "\n")
-            return
+    cols = [col for col in df.columns if col != "rank"]
+    df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
+    print(f"\nDisplaying data vs {currency}")
 
-        cols = [col for col in df.columns if col != "rank"]
-        df[cols] = df[cols].applymap(lambda x: long_number_format_with_type_check(x))
-        print("")
-        print(f"Displaying data vs {ns_parser.vs}")
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(ns_parser.top),
+                df.head(top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "exchanges",
+        df_data,
+    )
 
 
-def exchange_markets(other_args: List[str]):
-    """Get all markets for given exchange
+def display_exchange_markets(
+    exchange: str, sortby: str, descend: bool, top: int, links: bool, export: str
+) -> None:
+    """Get all markets for given exchange [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
-
+    exchange: str
+        Exchange identifier e.g Binance
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    links: bool
+        Flag to display urls
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        prog="exmarkets",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Get all exchange markets found for given exchange
-        You can display only top N number of records with --top parameter.
-        You can sort data by pair, base_currency_name, quote_currency_name, market_url, category,
-        reported_volume_24h_share, trust_score --sort parameter and also with --descend flag to sort descending.
-        You can use additional flag --links to see urls for each market
-        Displays:
-            exchange_id, pair, base_currency_name, quote_currency_name, market_url,
-            category, reported_volume_24h_share, trust_score,""",
-    )
-    parser.add_argument(
-        "-e",
-        "--exchange",
-        help="Identifier of exchange e.g for Binance Exchange -> binance",
-        dest="exchange",
-        default="binance",
-        type=str,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=10,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column. Default: reported_volume_24h_share",
-        default="reported_volume_24h_share",
-        choices=[
-            "pair",
-            "base_currency_name",
-            "quote_currency_name",
-            "category",
-            "reported_volume_24h_share",
-            "trust_score",
-            "market_url",
-        ],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=False,
-    )
-    parser.add_argument(
-        "-l",
-        "--links",
-        dest="links",
-        action="store_true",
-        help="""Flag to show urls. If you will use that flag you will see only:
-        exchange, pair, trust_score, market_url columns""",
-        default=False,
-    )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df = paprika.get_exchanges_market(exchange_id=exchange)
 
-        df = paprika.get_exchanges_market(exchange_id=ns_parser.exchange)
+    df_data = df.copy()
 
-        if df.empty:
-            print("No data found", "\n")
-            return
+    if df.empty:
+        print("No data found", "\n")
+        return
 
-        df = df.sort_values(by=ns_parser.sortby, ascending=ns_parser.descend)
+    df = df.sort_values(by=sortby, ascending=descend)
 
-        if ns_parser.links is True:
-            df = df[["exchange_id", "pair", "trust_score", "market_url"]]
-        else:
-            df.drop("market_url", axis=1, inplace=True)
+    if links is True:
+        df = df[["exchange_id", "pair", "trust_score", "market_url"]]
+    else:
+        df.drop("market_url", axis=1, inplace=True)
 
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(ns_parser.top),
+                df.head(top),
                 headers=df.columns,
                 floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "exmarkets",
+        df_data,
+    )
 
 
-def all_platforms(other_args: List[str]):
-    """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
+def display_all_platforms(export: str) -> None:
+    """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama. [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    parser = argparse.ArgumentParser(
-        prog="platforms",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
-    )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df = paprika.get_all_contract_platforms()
 
-        df = paprika.get_all_contract_platforms()
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
                 df,
@@ -536,94 +354,64 @@ def all_platforms(other_args: List[str]):
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "platforms",
+        df,
+    )
 
 
-def contracts(other_args: List[str]):
-    """Gets all contract addresses for given platform
+def display_contracts(
+    platform: str, sortby: str, descend: bool, top: int, export: str
+) -> None:
+    """Gets all contract addresses for given platform. [Source: CoinPaprika]
 
     Parameters
     ----------
-    other_args: List[str]
-        Arguments to pass to argparse
+    platform: str
+        Blockchain platform like eth-ethereum
+    top: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
+    descend: bool
+        Flag to sort data descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-    platforms = paprika.get_all_contract_platforms()["platform_id"].tolist()
 
-    parser = argparse.ArgumentParser(
-        prog="contracts",
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="""Gets all contract addresses for given platform.
-        Provide platform id with -p/--platform parameter
-        You can display only top N number of smart contracts with --top parameter.
-        You can sort data by id, type, active, address  --sort parameter
-        and also with --descend flag to sort descending.
+    df = paprika.get_contract_platform(platform)
 
-        Displays:
-            id, type, active, address
-        """,
-    )
-    parser.add_argument(
-        "-p",
-        "--platform",
-        help="Blockchain platform like eth-ethereum",
-        dest="platform",
-        default="eth-ethereum",
-        type=str,
-        choices=platforms,
-    )
-    parser.add_argument(
-        "-t",
-        "--top",
-        default=20,
-        dest="top",
-        help="Limit of records",
-        type=check_positive,
-    )
-    parser.add_argument(
-        "-s",
-        "--sort",
-        dest="sortby",
-        type=str,
-        help="Sort by given column",
-        default="id",
-        choices=["id", "type", "active", "address"],
-    )
-    parser.add_argument(
-        "--descend",
-        action="store_false",
-        help="Flag to sort in descending order (lowest first)",
-        dest="descend",
-        default=True,
-    )
+    if df.empty:
+        print(f"Nothing found for platform: {platform}", "\n")
+        return
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df = df.sort_values(by=sortby, ascending=descend)
 
-        df = paprika.get_contract_platform(ns_parser.platform)
-
-        if df.empty:
-            print(f"Nothing found for platform: {ns_parser.platform}", "\n")
-            return
-
-        df = df.sort_values(ns_parser.sortby, ascending=ns_parser.descend)
+    if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(ns_parser.top),
+                df.head(top),
                 headers=df.columns,
                 floatfmt=".0f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
-        print("")
+    else:
+        print(df.to_string, "\n")
 
-    except Exception as e:
-        print(e, "\n")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "contracts",
+        df,
+    )

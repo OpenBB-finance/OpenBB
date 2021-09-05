@@ -1,6 +1,7 @@
 """CoinPaprika model"""
 __docformat__ = "numpy"
 
+from typing import Tuple, Optional, Any
 from datetime import datetime, timedelta
 import textwrap
 import pandas as pd
@@ -8,23 +9,26 @@ from dateutil import parser
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 
-def get_coin(coin_id="eth-ethereum"):
-    """Get coin by id
+def get_coin(coin_id: str = "eth-ethereum") -> dict:
+    """Get coin by id [Source: CoinPaprika]
+
     Parameters
     ----------
     coin_id: str
         id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
     Returns
     -------
-    dict with response
+    dict
+        Coin response
     """
+
     session = PaprikaSession()
     coin = session.make_request(session.ENDPOINTS["coin"].format(coin_id))
     return coin
 
 
-def get_coin_twitter_timeline(coin_id="eth-ethereum"):
-    """Get twitter timeline for given coin id. Not more than last 50 tweets
+def get_coin_twitter_timeline(coin_id: str = "eth-ethereum") -> pd.DataFrame:
+    """Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -33,9 +37,10 @@ def get_coin_twitter_timeline(coin_id="eth-ethereum"):
     Returns
     -------
     pandas.DataFrame
-        date, user_name, status, retweet_count, like_count
-
+        Twitter timeline for given coin.
+        Columns: date, user_name, status, retweet_count, like_count
     """
+
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_tweeter"].format(coin_id))
     if "error" in res:
@@ -56,8 +61,8 @@ def get_coin_twitter_timeline(coin_id="eth-ethereum"):
     return df
 
 
-def get_coin_events_by_id(coin_id="eth-ethereum"):
-    """Get all events related to given coin like conferences, start date of futures trading etc.
+def get_coin_events_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
+    """Get all events related to given coin like conferences, start date of futures trading etc. [Source: CoinPaprika]
 
     Example of response from API:
     {
@@ -78,9 +83,10 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
     Returns
     -------
     pandas.DataFrame
-        id, date , date_to, name, description, is_conference, link, proof_image_link
-
+        Events found for given coin
+        Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
     """
+
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_events"].format(coin_id))
     if not res:
@@ -100,18 +106,21 @@ def get_coin_events_by_id(coin_id="eth-ethereum"):
     return data
 
 
-def get_coin_exchanges_by_id(coin_id="eth-ethereum"):
-    """Get all exchanges for given coin id.
+def get_coin_exchanges_by_id(coin_id: str = "eth-ethereum") -> pd.DataFrame:
+    """Get all exchanges for given coin id. [Source: CoinPaprika]
 
     Parameters
     ----------
-    coin_id: Identifier of Coin from CoinPaprika
+    coin_id: str
+        Identifier of Coin from CoinPaprika
 
     Returns
     -------
     pandas.DataFrame
-        id, name, adjusted_volume_24h_share, fiats
+        All exchanges for given coin
+        Columns: id, name, adjusted_volume_24h_share, fiats
     """
+
     session = PaprikaSession()
     res = session.make_request(session.ENDPOINTS["coin_exchanges"].format(coin_id))
     df = pd.DataFrame(res)
@@ -119,13 +128,17 @@ def get_coin_exchanges_by_id(coin_id="eth-ethereum"):
     return df
 
 
-def get_coin_markets_by_id(coin_id="eth-ethereum", quotes="USD"):
-    """
+def get_coin_markets_by_id(
+    coin_id: str = "eth-ethereum", quotes: str = "USD"
+) -> pd.DataFrame:
+    """All markets for given coin and currency [Source: CoinPaprika]
 
     Parameters
     ----------
-    coin_id: Coin Parpika identifier of coin e.g. eth-ethereum
-    quotes: Comma separated list of quotes to return.
+    coin_id: str
+        Coin Parpika identifier of coin e.g. eth-ethereum
+    quotes: str
+        Comma separated list of quotes to return.
         Example: quotes=USD,BTC
         Allowed values:
         BTC, ETH, USD, EUR, PLN, KRW, GBP, CAD, JPY, RUB, TRY, NZD, AUD, CHF, UAH, HKD, SGD, NGN, PHP, MXN, BRL,
@@ -134,7 +147,9 @@ def get_coin_markets_by_id(coin_id="eth-ethereum", quotes="USD"):
     Returns
     -------
     pandas.DataFrame
+        All markets for given coin and currency
     """
+
     session = PaprikaSession()
     markets = session.make_request(
         session.ENDPOINTS["coin_markets"].format(coin_id), quotes=quotes
@@ -151,8 +166,8 @@ def get_coin_markets_by_id(coin_id="eth-ethereum", quotes="USD"):
             "trust_score": r.get("trust_score"),
             "pct_volume_share": r.get("adjusted_volume_24h_share"),
         }
-        quotes = r.get("quotes")
-        for k, v in quotes.items():
+        _quotes: dict = r.get("quotes")
+        for k, v in _quotes.items():
             dct[f"{k.lower()}_price"] = v.get("price")
             dct[f"{k.lower()}_volume"] = v.get("volume_24h")
         dct["market_url"] = r.get("market_url")
@@ -161,9 +176,11 @@ def get_coin_markets_by_id(coin_id="eth-ethereum", quotes="USD"):
     return pd.DataFrame(data)
 
 
-def get_ohlc_historical(coin_id="eth-ethereum", quotes="USD", days=90):
+def get_ohlc_historical(
+    coin_id: str = "eth-ethereum", quotes: str = "USD", days: int = 90
+) -> pd.DataFrame:
     """
-    Open/High/Low/Close values with volume and market_cap.
+    Open/High/Low/Close values with volume and market_cap. [Source: CoinPaprika]
     Request example: https://api.coinpaprika.com/v1/coins/btc-bitcoin/ohlcv/historical?start=2019-01-01&end=2019-01-20
     if the last day is current day it can an change with every request until actual close of the day at 23:59:59
 
@@ -180,8 +197,9 @@ def get_ohlc_historical(coin_id="eth-ethereum", quotes="USD", days=90):
     Returns
     -------
     pandas.DataFrame
-
+        Open/High/Low/Close values with volume and market_cap.
     """
+
     if quotes.lower() not in ["usd", "btc"]:
         quotes = "USD"
 
@@ -204,8 +222,10 @@ def get_ohlc_historical(coin_id="eth-ethereum", quotes="USD", days=90):
     return pd.DataFrame(data)
 
 
-def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
-    """Get all most important ticker related information for given coin id
+def get_tickers_info_for_coin(
+    coin_id: str = "btc-bitcoin", quotes: str = "USD"
+) -> pd.DataFrame:
+    """Get all most important ticker related information for given coin id [Source: CoinPaprika]
     {
         "id": "btc-bitcoin",
         "name": "Bitcoin",
@@ -242,14 +262,18 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
 
     Parameters
     ----------
-    coin_id: Id of coin from CoinPaprika
-    quotes: Coma separated quotes to return e.g quotes = USD, BTC
+    coin_id: str
+        Id of coin from CoinPaprika
+    quotes: str
+        Comma separated quotes to return e.g quotes = USD, BTC
 
     Returns
     -------
     pandas.DataFrame
-        Metric, Value
+        Most important ticker related information
+        Columns: Metric, Value
     """
+
     session = PaprikaSession()
     tickers = session.make_request(
         session.ENDPOINTS["ticker_info"].format(coin_id), quotes=quotes
@@ -280,19 +304,22 @@ def get_tickers_info_for_coin(coin_id="btc-bitcoin", quotes="USD"):
     return df
 
 
-def validate_coin(coin: str, coins_dct: dict):
-    """Helper method that validates if proper coin id or symbol was provided
+def validate_coin(coin: str, coins_dct: dict) -> Tuple[str, Optional[Any]]:
+    """Helper method that validates if proper coin id or symbol was provided [Source: CoinPaprika]
 
     Parameters
     ----------
-    coin: id or symbol of coin for CoinPaprika
-    coins_dct: dictionary of coins
+    coin: str
+        id or symbol of coin for CoinPaprika
+    coins_dct: dict
+        dictionary of coins
 
     Returns
     -------
-    coin id, coin symbol
-
+    Tuple[str,str]
+        coin id, coin symbol
     """
+
     coin_found, symbol = None, None
     if coin in coins_dct:
         coin_found = coin
@@ -309,7 +336,20 @@ def validate_coin(coin: str, coins_dct: dict):
     return coin_found, symbol
 
 
-def basic_coin_info(coin_id: str):
+def basic_coin_info(coin_id: str) -> pd.DataFrame:
+    """Basic coin information [Source: CoinPaprika]
+
+    Parameters
+    ----------
+    coin_id: str
+        Coin id
+
+    Returns
+    -------
+    pd.DataFrame
+        Metric, Value
+    """
+
     coin = get_coin(coin_id)
     tags = coin.get("tags") or []
     keys = [
