@@ -1,3 +1,4 @@
+"""
 from unittest import TestCase, mock
 
 import pandas as pd
@@ -141,3 +142,4 @@ class TestCoinPaprikaView(TestCase):
     @check_print(assert_in="Metric")
     def test_basic(self):
         dd_coinpaprika_view.display_basic(coin_id="bit-bitcoin", export="")
+"""
