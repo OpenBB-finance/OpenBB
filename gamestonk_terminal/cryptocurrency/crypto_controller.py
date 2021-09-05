@@ -115,6 +115,8 @@ What do you want to do?
             else "\nSource: ?\n"
         )
         help_text += """
+Note: Some of CoinGecko commands can fail. Team is working on fix.
+
     load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
     find        alternate way to search for coins
