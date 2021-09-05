@@ -13,7 +13,7 @@ from gamestonk_terminal.cryptocurrency.overview import (
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     plot_chart,
-    load,
+    # load,
     # load_ta_data,
 )
 
@@ -124,12 +124,12 @@ class TestCoinPaprikaView(TestCase):
             "eth-ethereum", currency="btc", export=""
         )
 
-    def test_load(self):
-        value = load(
-            coin="BTC",
-            source="cp",
-        )
-        self.assertEqual(value[0], "btc-bitcoin")
+    # def test_load(self):
+    #    value = load(
+    #        coin="BTC",
+    #        source="cp",
+    #    )
+    #    self.assertEqual(value[0], "btc-bitcoin")
 
     # def test_load_ta_data(self):
     # value = load_ta_data(
