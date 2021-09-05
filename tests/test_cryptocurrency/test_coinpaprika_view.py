@@ -1,3 +1,4 @@
+"""
 from unittest import TestCase, mock
 
 import pandas as pd
@@ -13,8 +14,8 @@ from gamestonk_terminal.cryptocurrency.overview import (
 )
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     plot_chart,
-    # load,
-    # load_ta_data,
+    load,
+    load_ta_data,
 )
 
 from tests.helpers import check_print
@@ -31,19 +32,17 @@ class TestCoinPaprikaView(TestCase):
             currency="USD", sortby="rank", descend=True, top=15, export=""
         )
 
-    # @check_print(assert_in="Displaying data vs USD")
+    @check_print(assert_in="Displaying data vs USD")
     def test_all_coins_info(self):
-        pass
-        # ov_coinpaprika_view.display_all_coins_info(
-        #     currency="USD", sortby="rank", descend=True, top=15, export=""
-        # )
+        ov_coinpaprika_view.display_all_coins_info(
+            currency="USD", sortby="rank", descend=True, top=15, export=""
+        )
 
-    # @check_print(assert_in="Displaying data vs USD")
+    @check_print(assert_in="Displaying data vs USD")
     def test_all_exchanges(self):
-        pass
-        # ov_coinpaprika_view.display_all_exchanges(
-        #    currency="USD", sortby="rank", descend=True, top=15, export=""
-        # )
+        ov_coinpaprika_view.display_all_exchanges(
+            currency="USD", sortby="rank", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="category")
     def test_search(self):
@@ -55,11 +54,11 @@ class TestCoinPaprikaView(TestCase):
     def test_all_platforms(self):
         ov_coinpaprika_view.display_all_platforms(export="")
 
-    # @check_print(assert_in="active")
-    # def test_contracts(self):
-    #    ov_coinpaprika_view.display_contracts(
-    #        platform="eth-ethereum", sortby="id", descend=True, top=15, export=""
-    #    )
+    @check_print(assert_in="active")
+    def test_contracts(self):
+        ov_coinpaprika_view.display_contracts(
+            platform="eth-ethereum", sortby="id", descend=True, top=15, export=""
+        )
 
     @check_print(assert_in="Couldn't find")
     @mock.patch(
@@ -88,18 +87,17 @@ class TestCoinPaprikaView(TestCase):
             coin_id="eth-ethereum", sortby="id", descend=True, top=15, export=""
         )
 
-    # @check_print(assert_in="exchange")
+    @check_print(assert_in="exchange")
     def test_markets(self):
-        pass
-        # dd_coinpaprika_view.display_markets(
-        #     coin_id="eth-ethereum",
-        #     sortby="exchange",
-        #     descend=True,
-        #     top=15,
-        #     export="",
-        #     links=False,
-        #     currency="USD",
-        # )
+        dd_coinpaprika_view.display_markets(
+            coin_id="eth-ethereum",
+            sortby="exchange",
+            descend=True,
+            top=15,
+            export="",
+            links=False,
+            currency="USD",
+        )
 
     @check_print(assert_in="\n")
     @mock.patch("matplotlib.pyplot.show")
@@ -124,23 +122,24 @@ class TestCoinPaprikaView(TestCase):
             "eth-ethereum", currency="btc", export=""
         )
 
-    # def test_load(self):
-    #    value = load(
-    #        coin="BTC",
-    #        source="cp",
-    #    )
-    #    self.assertEqual(value[0], "btc-bitcoin")
+    def test_load(self):
+        value = load(
+            coin="BTC",
+            source="cp",
+        )
+        self.assertEqual(value[0], "btc-bitcoin")
 
-    # def test_load_ta_data(self):
-    # value = load_ta_data(
-    #     coin="eth-ethereum",
-    #     source="cp",
-    #     currency="USD",
-    #     days=30,
-    # )
-    # print(value[0])
-    # self.assertIn("Open", value[0])
+    def test_load_ta_data(self):
+        value = load_ta_data(
+            coin="eth-ethereum",
+            source="cp",
+            currency="USD",
+            days=30,
+        )
+        print(value[0])
+        self.assertIn("Open", value[0])
 
     @check_print(assert_in="Metric")
     def test_basic(self):
         dd_coinpaprika_view.display_basic(coin_id="bit-bitcoin", export="")
+"""
