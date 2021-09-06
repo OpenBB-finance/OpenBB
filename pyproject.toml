@@ -37,6 +37,7 @@ pmdarima = "1.8.0"
 holidays = "^0.10"
 prompt-toolkit = "^3.0.16"
 jupyter = "^1.0.0"
+jupyterlab = "^3.1.10"
 mplfinance = "^0.12.7-alpha.7"
 seaborn = "^0.11.0"
 scipy = "~1.5.4"
@@ -78,7 +79,6 @@ fred = "^3.1"
 openpyxl = "^3.0.7"
 vcrpy = "^4.1.1"
 coverage = "^5.5"
-jupyterlab = {version = "^3.1.10", optional = true}
 tensorflow = {version = "2.6.0", optional = true}
 
 [tool.poetry.dev-dependencies]
