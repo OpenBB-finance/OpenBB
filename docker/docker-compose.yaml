@@ -28,6 +28,7 @@ services:
       args:
         GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
         GST_DOCKER_PYTHON_VERSION: ${GST_DOCKER_PYTHON_VERSION}
+        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_DEPS_VERSION}
     image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-full-deps:${GST_DOCKER_POETRY_FULL_DEPS_VERSION}"
   gst:
     build:
@@ -65,7 +66,7 @@ services:
       dockerfile: docker/gst-poetry-full.dockerfile
       args:
         GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_FULL_DEPS_VERSION}
+        GST_DOCKER_POETRY_FULL_DEPS_VERSION: ${GST_DOCKER_POETRY_FULL_DEPS_VERSION}
     image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-full:${GST_DOCKER_POETRY_FULL_VERSION}"
     tty: true
     env_file: setenv
