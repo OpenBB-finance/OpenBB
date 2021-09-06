@@ -108,7 +108,7 @@
                     "default": 8892,
                     "value": ""
                 },
-                "PYTHON_PATH":
+                "PYTHON_BINARY":
                 {
                     "type": "string",
                     "form": "text",
