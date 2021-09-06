@@ -25,7 +25,7 @@ data_files_spec = [
         str(lab_path.relative_to(HERE)),
         "**",
     ),
-    ("share/jupyter/labextensions/%s" % labext_name, str("."), "install.json"),
+    ("share/jupyter/labextensions/%s" % labext_name, ".", "install.json"),
 ]
 
 long_description = (HERE / "README.md").read_text()
