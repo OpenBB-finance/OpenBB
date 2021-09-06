@@ -12,6 +12,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import config_terminal
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1732
 
@@ -96,7 +97,36 @@ class ReportController:
 
     def call_ov(self, other_args: List[str], _):
         """Process ov command"""
-        crypto_market_view.crypto_market_report(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="co",
+            description="""
+                    Run crypto market report
+                """,
+        )
+
+        parser.add_argument(
+            "-m",
+            "--mode",
+            action="store",
+            dest="mode",
+            default="html",
+            choices=["ipynb", "html"],
+            help="Output mode to show report. ipynb will allow to add information to the report.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            crypto_market_view.crypto_market_report(mode=ns_parser.mode)
+
+        except Exception as e:
+            print(e, "\n")
+        except SystemExit:
+            print("")
 
 
 def print_help():

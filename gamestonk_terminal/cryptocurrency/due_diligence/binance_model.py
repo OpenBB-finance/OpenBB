@@ -19,7 +19,7 @@ from gamestonk_terminal.feature_flags import USE_ION as ion
 
 def _get_trading_pairs() -> List[dict]:
     """Helper method that return all trading pairs on binance. Other methods are use this data as an input for e.g
-    building dataframe with all coins, or to build dict of all trading pairs.
+    building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]
 
     Returns
     -------
@@ -55,12 +55,14 @@ def _get_trading_pairs() -> List[dict]:
 def get_all_binance_trading_pairs() -> pd.DataFrame:
     """Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset
     example row: ETHBTC | ETH | BTC
+    [Source: Binance]
 
 
     Returns
     -------
     pd.DataFrame
-        symbol, baseAsset, quoteAsset
+        All available pairs on Binance
+        Columns: symbol, baseAsset, quoteAsset
 
     """
     trading_pairs = _get_trading_pairs()
@@ -68,11 +70,12 @@ def get_all_binance_trading_pairs() -> pd.DataFrame:
 
 
 def get_binance_available_quotes_for_each_coin() -> dict:
-    """Helper methods that for every coin available on Binance add all quote assets.
+    """Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
 
     Returns
     -------
     dict:
+        Aall quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
 
     """
@@ -84,7 +87,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 
 
 def check_valid_binance_str(symbol: str) -> str:
-    """Check if symbol is in defined binance"""
+    """Check if symbol is in defined binance. [Source: Binance]"""
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
     try:
         client.get_avg_price(symbol=symbol.upper())
@@ -98,7 +101,7 @@ def check_valid_binance_str(symbol: str) -> str:
 def show_available_pairs_for_given_symbol(
     symbol: str = "ETH",
 ) -> Tuple[Union[str, None], list]:
-    """Return all available quoted assets for given symbol.
+    """Return all available quoted assets for given symbol. [Source: Binance]
 
     Parameters
     ----------
@@ -122,9 +125,10 @@ def show_available_pairs_for_given_symbol(
     return None, []
 
 
-def plot_order_book(bids: np.array, asks: np.array, coin: str):
+def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
     """
-    Plots Bid/Ask
+    Plots Bid/Ask. [Source: Binance]
+
     Parameters
     ----------
     bids : np.array
@@ -134,10 +138,8 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str):
     coin : str
         Coin being plotted
 
-    Returns
-    -------
-
     """
+
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
     ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
@@ -156,20 +158,17 @@ def plot_order_book(bids: np.array, asks: np.array, coin: str):
     print("")
 
 
-def plot_candles(candles_df: pd.DataFrame, title: str):
-    """
-    Plot candle chart from dataframe
+def plot_candles(candles_df: pd.DataFrame, title: str) -> None:
+    """Plot candle chart from dataframe. [Source: Binance]
+
     Parameters
     ----------
     candles_df: pd.DataFrame
         Dataframe containing time and OHLVC
     title: str
         title of graph
-
-    Returns
-    -------
-
     """
+
     mpf.plot(
         candles_df,
         type="candle",
