@@ -1,5 +1,18 @@
 # Jupyter Lab Extensions for using Gamestonk Terminal
 
+1. Only bash is supported (only macOS, Linux and WSL). No support for Windows powershell or command prompt.
+2. The input values are not escaped
+
+## Installation
+
+To install the Terminal Launcher and the Settings Extensions run the following commands from the [root folder of the project](/):
+
+```bash
+pip install -e jupyterlab/gst
+pip install -e jupyterlab/gst-settings
+jupyter labextension install jupyterlab/gst
+jupyter labextension install jupyterlab/gst-settings
+```
 
 ## Development setup
 
