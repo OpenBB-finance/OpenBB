@@ -30,11 +30,13 @@ class PaprikaSession:
         "search": "/search",
     }
 
-    def __init__(self, max_retries=5):
+    def __init__(self, max_retries: int = 5):
         self.session = requests.Session()
         self.session.mount(self.PAPRIKA_BASE_URL, HTTPAdapter(max_retries=max_retries))
 
-    def make_request(self, endpoint: str, payload: Optional[Any] = None, **kwargs):
+    def make_request(
+        self, endpoint: str, payload: Optional[Any] = None, **kwargs: Any
+    ) -> dict:
         """Helper method that handles request for coinpaprika api.
         It prepares URL for given endpoint and payload if it's part of requests
 
@@ -50,8 +52,8 @@ class PaprikaSession:
         Returns
         -------
         dict with response data
-
         """
+
         url = f"{self.PAPRIKA_BASE_URL}{endpoint}"
         if payload is None:
             payload = {}

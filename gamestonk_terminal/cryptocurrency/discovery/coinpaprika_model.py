@@ -6,24 +6,30 @@ import pandas as pd
 from gamestonk_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 
 
-def search(
+def get_search_results(
     query: str, category: Optional[Any] = None, modifier: Optional[Any] = None
 ) -> pd.DataFrame:
-    """Search CoinPaprika
+    """Search CoinPaprika. [Source: CoinPaprika]
+
     Parameters
     ----------
-    query:  phrase for search
-    category:  one or more categories (comma separated) to search.
+    query:  str
+        phrase for search
+    category:  Optional[Any]
+        one or more categories (comma separated) to search.
         Available options: currencies|exchanges|icos|people|tags
         Default: currencies,exchanges,icos,people,tags
-    modifier: set modifier for search results. Available options: symbol_search -
+    modifier: Optional[Any]
+        set modifier for search results. Available options: symbol_search -
         search only by symbol (works for currencies only)
 
     Returns
     -------
     pandas.DataFrame
-        Metric, Value
+        Search Results
+        Columns: Metric, Value
     """
+
     session = PaprikaSession()
     if category is None:
         category = "currencies,exchanges,icos,people,tags"

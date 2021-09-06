@@ -39,12 +39,10 @@ CATEGORIES = {
     "most_visited": 4,
 }
 
-client = CoinGeckoAPI()
 
-
-def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
+def get_gainers_or_losers(period: str = "1h", typ: str = "gainers") -> pd.DataFrame:
     """Scrape data about top gainers - coins which gain the most in given period and
-    top losers - coins that lost the most in given period of time.
+    top losers - coins that lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
     ----------
@@ -55,8 +53,10 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        symbol, name, volume, price, change_{period}, url
+        Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
+        Columns: Symbol, Name, Volume, Price, %Change_{period}, Url
     """
+
     category = {
         "gainers": 0,
         "losers": 1,
@@ -96,12 +96,13 @@ def get_gainers_or_losers(period="1h", typ="gainers") -> pd.DataFrame:
     return df
 
 
-def discover_coins(category: str = "trending") -> pd.DataFrame:
-    """Scrapes data from "https://www.coingecko.com/en/discover"
+def get_discovered_coins(category: str = "trending") -> pd.DataFrame:
+    """Scrapes data from "https://www.coingecko.com/en/discover" [Source: CoinGecko]
         - Most voted coins
         - Most popular coins
         - Recently added coins
         - Most positive sentiment coins
+
     Parameters
     ----------
     category: str
@@ -109,8 +110,10 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame:
-        Name, Price_BTC, Price_USD, Url
+        Most voted, most trending, recently added, most positive sentiment coins.
+        Columns: Name, Price_BTC, Price_USD, Url
     """
+
     if category not in CATEGORIES:
         raise ValueError(
             f"Wrong category name\nPlease chose one from list: {CATEGORIES.keys()}"
@@ -144,12 +147,15 @@ def discover_coins(category: str = "trending") -> pd.DataFrame:
 
 def get_recently_added_coins() -> pd.DataFrame:
     """Scrape recently added coins on CoinGecko from "https://www.coingecko.com/en/coins/recently_added"
+    [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        Name, Symbol, Price, Change_1h, Change_24h, Added
+        Recently Added Coins on CoinGecko
+        Columns: Name, Symbol, Price, Change_1h, Change_24h, Added
     """
+
     columns = [
         "Name",
         "Symbol",
@@ -188,13 +194,15 @@ def get_recently_added_coins() -> pd.DataFrame:
 
 
 def get_yield_farms() -> pd.DataFrame:
-    """Scrapes yield farms data from "https://www.coingecko.com/en/yield-farming"
+    """Scrapes yield farms data from "https://www.coingecko.com/en/yield-farming" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Pool, Audits, Collateral, Value Locked, Return Year, Return Hour
+        Top Yield Farms
+        Columns: Rank, Name, Pool, Audits, Collateral, Value Locked, Return Year, Return Hour
     """
+
     columns = [
         "Rank",
         "Name",
@@ -249,13 +257,15 @@ def get_yield_farms() -> pd.DataFrame:
 
 
 def get_top_volume_coins() -> pd.DataFrame:
-    """Scrapes top coins by trading volume "https://www.coingecko.com/en/coins/high_volume"
+    """Scrapes top coins by trading volume "https://www.coingecko.com/en/coins/high_volume" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap
+        Top Coins by Trading Volume
+        Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap
     """
+
     columns = [
         "Rank",
         "Name",
@@ -284,14 +294,15 @@ def get_top_volume_coins() -> pd.DataFrame:
 
 
 def get_top_defi_coins() -> pd.DataFrame:
-    """Scrapes top decentralized finance coins "https://www.coingecko.com/en/defi"
+    """Scrapes top decentralized finance coins "https://www.coingecko.com/en/defi" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap, Url
-
+        Top Decentralized Finance Coins
+        Columns: Rank, Name, Symbol, Price, Change_1h, Change_24h, Change_7d, Volume_24h, Market_Cap, Url
     """
+
     url = "https://www.coingecko.com/en/defi"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
     results = []
@@ -333,13 +344,15 @@ def get_top_defi_coins() -> pd.DataFrame:
 
 
 def get_top_dexes() -> pd.DataFrame:
-    """Scrapes top decentralized exchanges from "https://www.coingecko.com/en/dex"
+    """Scrapes top decentralized exchanges from "https://www.coingecko.com/en/dex" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share
+        Top Decentralized Crypto Exchanges
+        Columns: Name, Rank, Volume_24h, Coins, Pairs, Visits, Most_Traded, Market_Share
     """
+
     columns = [
         "Name",
         "Rank",
@@ -378,13 +391,15 @@ def get_top_dexes() -> pd.DataFrame:
 
 
 def get_top_nfts() -> pd.DataFrame:
-    """Scrapes top nfts from "https://www.coingecko.com/en/nft"
+    """Scrapes top nfts from "https://www.coingecko.com/en/nft" [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap, Url
+        Top NFTs (Non-Fungible Tokens)
+        Columns: Rank, Name, Symbol, Price, Change_1d, Change_24h, Change_7d, Market_Cap, Url
     """
+
     url = "https://www.coingecko.com/en/nft"
     rows = scrape_gecko_data(url).find("tbody").find_all("tr")
     results = []
@@ -417,22 +432,24 @@ def get_top_nfts() -> pd.DataFrame:
 
 
 def get_coin_list() -> pd.DataFrame:
-    """Get list of coins available on CoinGecko
+    """Get list of coins available on CoinGecko [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
-        id, symbol, name
+        Coins available on CoinGecko
+        Columns: id, symbol, name
     """
 
+    client = CoinGeckoAPI()
     return pd.DataFrame(
         client.get_coins_list(),
         columns=["id", "symbol", "name"],
     ).reset_index()
 
 
-def _get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) -> dict:
-    """Helper method to get all coins available on binance exchange
+def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) -> dict:
+    """Helper method to get all coins available on binance exchange [Source: CoinGecko]
 
     Parameters
     ----------
@@ -446,21 +463,24 @@ def _get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) -
     dict
         dictionary with all trading pairs on binance
     """
+
+    client = CoinGeckoAPI()
     binance_coins = client.get_exchanges_tickers_by_id(id=exchange_id, page=page)
     return binance_coins["tickers"]
 
 
-def create_mapping_matrix_for_binance():
-    """Creates a matrix with all coins available on Binance with corresponding coingecko coin_id.
+def get_mapping_matrix_for_binance() -> dict:
+    """Creates a matrix with all coins available on Binance with corresponding coingecko coin_id. [Source: CoinGecko]
 
     Returns
     -------
     dict
         dictionary with all coins: {"ETH" : "ethereum"}
     """
+
     coins_dct = {}
     for i in range(12):
-        coins = _get_coins_for_given_exchange(page=i)
+        coins = get_coins_for_given_exchange(page=i)
         for coin in coins:
             bin_symbol, gecko_id = coin["base"], coin["coin_id"]
             if bin_symbol not in coins_dct:
@@ -469,13 +489,14 @@ def create_mapping_matrix_for_binance():
 
 
 def load_binance_map() -> pd.DataFrame:
-    """Loads a data with all coins available on Binance with corresponding coingecko coin_ids.
+    """Loads a data with all coins available on Binance with corresponding coingecko coin_ids. [Source: CoinGecko]
 
     Returns
     -------
     pd.DataFrame
-        symbol, id
+        Columns: symbol, id
     """
+
     path = os.path.abspath(__file__ + "/../../")
     with open(path + "/data/binance_gecko_map.json", encoding="utf8") as f:
         coins = json.load(f)
