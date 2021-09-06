@@ -4,7 +4,6 @@ import {
 } from "@jupyterlab/application";
 
 import { ICommandPalette } from "@jupyterlab/apputils";
-// import { MainAreaWidget } from "@jupyterlab/apputils";
 
 import { ILauncher } from "@jupyterlab/launcher";
 import { IMainMenu } from "@jupyterlab/mainmenu";
@@ -39,20 +38,22 @@ namespace CommandIDs {
  * @param section.s
  * @returns   The state of the section settings.
  */
-function getSectionState({ section, s }: { section: string; s: any }): any {
+function getSettingsAsArray({ s }: { s: any }): any {
   const values: Array<Record<string, unknown>> = [];
-  Object.keys(s.schema.properties[section].default).forEach(
-    (element: string) => {
-      const settingsValue =
-        typeof s.user[section] === "undefined"
-          ? s.schema.properties[section].default[element]
-          : s.user[section][element];
-      values.push({
-        key: element,
-        value: settingsValue,
-      });
-    }
-  );
+  for (const section of ["APP_SETTINGS", "FEATURE_FLAGS", "API_KEYS"]) {
+    Object.keys(s.schema.properties[section].default).forEach(
+      (element: string) => {
+        const settingsValue =
+          typeof s.user[section] === "undefined"
+            ? s.schema.properties[section].default[element]
+            : s.user[section][element];
+        values.push({
+          key: element,
+          value: settingsValue,
+        });
+      }
+    );
+  }
   return values;
 }
 
@@ -86,68 +87,52 @@ const extension: JupyterFrontEndPlugin<void> = {
       caption: "New Gamestonk Terminal",
       icon: (args) => (args["isPalette"] ? null : icon),
       execute: async () => {
-        const appSettings = getSectionState({ section: "APP_SETTINGS", s: s });
-        const featureFlags = getSectionState({
-          section: "FEATURE_FLAGS",
-          s: s,
-        });
-        const apiKeys = getSectionState({ section: "API_KEYS", s: s });
+        const appSettings = getSettingsAsArray({ s: s });
+        let settingsAsBashVariablesString = "";
 
-        /**
-         * @param root0
-         * @param root0.launchCommand
-         * @param root0.settingsArray
-         */
-        function appendLaunchCommand({
-          launchCommand,
-          settingsArray,
-        }: {
-          launchCommand: string;
-          settingsArray: any;
-        }): string {
-          for (const setting of settingsArray) {
-            var settingValue: string =
-              setting.value.value === ""
-                ? setting.value.default
-                : setting.value.value;
-            if (setting.value.type === "bool" && settingValue !== undefined) {
-              settingValue = String(settingValue)[0].toUpperCase() + String(settingValue).slice(1);
-            };
-            launchCommand = `${launchCommand}${settingValue}\n`;
-          }
-          return launchCommand;
+        for (const appSetting of appSettings) {
+          settingsAsBashVariablesString = `${settingsAsBashVariablesString} && export ${
+            appSetting.key
+          }=${
+            appSetting.value.value === ""
+              ? appSetting.value.default
+              : appSetting.value.value
+          }`;
         }
-
-        let launchCommand =
-          " source GamestonkTerminal/jupyterlab/scripts/terminal_env.sh\n";
-
-        launchCommand = appendLaunchCommand({
-          launchCommand: launchCommand,
-          settingsArray: appSettings,
-        });
-        launchCommand = appendLaunchCommand({
-          launchCommand: launchCommand,
-          settingsArray: featureFlags,
-        });
-        launchCommand = appendLaunchCommand({
-          launchCommand: launchCommand,
-          settingsArray: apiKeys,
-        });
 
         const manager = new TerminalManager();
         const session = await manager.startNew();
         const terminal = new Terminal(session, { theme: "dark" });
         terminal.title.closable = true;
 
-        const customPython: string = "GamestonkTerminal/venv/bin/python";
-        // const customPython: ITerminalSettingsInterface = appSettings.find(
-        //   (i: ITerminalSettingsInterface) => i.key === "CUSTOM_PYTHON"
-        // );
+        session.send({
+          type: "stdin",
+          content: ["clear\n"],
+        });
+
+        await new Promise((f) => setTimeout(f, 1000));
+
+        session.send({
+          type: "stdin",
+          content: [`clear${settingsAsBashVariablesString}\nclear\n`],
+        });
+
+        const pythonBinarySetting: ITerminalSettingsInterface = appSettings.find(
+          (i: ITerminalSettingsInterface) => i.key === "PYTHON_BINARY"
+        );
         const terminalPath: ITerminalSettingsInterface = appSettings.find(
           (i: ITerminalSettingsInterface) => i.key === "TERMINAL_PATH"
         );
 
-        launchCommand = `${launchCommand}${customPython} ${terminalPath.value.value}\n`;
+        const launchCommand = `${
+          pythonBinarySetting.value.value === ""
+            ? pythonBinarySetting.value.default
+            : pythonBinarySetting.value.value
+        } ${
+          terminalPath.value.value === ""
+            ? terminalPath.value.default
+            : terminalPath.value.value
+        }\n`;
 
         session.send({
           type: "stdin",

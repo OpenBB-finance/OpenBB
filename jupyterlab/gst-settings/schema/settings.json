@@ -123,7 +123,7 @@
                     "form": "text",
                     "title": "Terminal path",
                     "description": "Path to the terminal.py",
-                    "default": "GamestonkTerminal/terminal.py",
+                    "default": "terminal.py",
                     "value": ""
                 },
                 "PATH_TO_SELENIUM_DRIVER":
