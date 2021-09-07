@@ -17,7 +17,7 @@ def display_gwei_fees(export: str) -> None:
     print("Current ETH gas fees (gwei):\n")
     # for fee in fees:
     #    print(f'\b {fee.label} ({fee.duration}): {fee.value} gwei')
-    print(df_fees.to_string(index=False))
+    print(df_fees.to_string(index=False), "\n")
 
     export_data(
         export,
