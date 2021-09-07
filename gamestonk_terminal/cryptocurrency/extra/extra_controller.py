@@ -1,9 +1,9 @@
-"""Papermill Controller Module"""
+"""Extra Controller Module"""
 __docformat__ = "numpy"
 
-import requests
-import argparse
 import os
+import argparse
+import requests
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -32,7 +32,8 @@ class ExtraController:
 
     def __init__(self):
         """Constructor"""
-        self.extra_parser = argparse.ArgumentParser(add_help=False, prog="extra")
+        self.extra_parser = argparse.ArgumentParser(
+            add_help=False, prog="extra")
         self.extra_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
@@ -89,7 +90,8 @@ class ExtraController:
 
     def call_gwei(self, _):
         """Process gwei command"""
-        r = requests.get("https://www.gasnow.org/api/v3/gas/price").json()["data"]
+        r = requests.get(
+            "https://www.gasnow.org/api/v3/gas/price").json()["data"]
         fast = int(r["fast"] / 1_000_000_000)
         fastest = int(r["rapid"] / 1_000_000_000)
         average = int(r["standard"] / 1_000_000_000)
