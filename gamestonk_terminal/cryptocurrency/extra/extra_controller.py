@@ -3,12 +3,14 @@ __docformat__ = "numpy"
 
 import os
 import argparse
-import requests
+from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+
+from gamestonk_terminal.cryptocurrency.extra import gasnow_view
 
 # pylint: disable=R1732
 
@@ -87,22 +89,34 @@ class ExtraController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_gwei(self, _):
+    def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
-        r = requests.get("https://www.gasnow.org/api/v3/gas/price").json()["data"]
-        fast = int(r["fast"] / 1_000_000_000)
-        fastest = int(r["rapid"] / 1_000_000_000)
-        average = int(r["standard"] / 1_000_000_000)
-        low = int(r["slow"] / 1_000_000_000)
-        print(
-            f"""
-        Current ETH gas prices (gwei):
-            Fastest  (~15 sec):     {fastest} gwei
-            Fast     (~1 min):      {fast} gwei
-            Standard (~3 min):      {average} gwei
-            Slow     (>10 min):     {low} gwei
-        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="extra",
+            description="""Display ETH gas fees""",
         )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            gasnow_view.display_gwei_fees(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def print_help():
