@@ -38,6 +38,7 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     plot_chart,
 )
 from gamestonk_terminal.cryptocurrency.report import report_controller
+from gamestonk_terminal.cryptocurrency.extra import extra_controller
 from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     show_available_pairs_for_given_symbol,
 )
@@ -66,6 +67,7 @@ class CryptoController:
         "ov",
         "disc",
         "report",
+        "extra"
     ]
 
     SOURCES = {
@@ -127,6 +129,7 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 >   dd          due-diligence for loaded coin,       e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin.  e.g.: ema, macd, rsi, adx, bbands, obv
 >   report      generate automatic report
+>   extra       more information about crypto        e.g.: eth gas fees
 """
         print(help_text)
 
@@ -580,6 +583,15 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
     def call_report(self, _):
         """Process report command"""
         ret = report_controller.menu()
+
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_extra(self, _):
+        """Process extra command"""
+        ret = extra_controller.menu()
 
         if ret is False:
             self.print_help()
