@@ -32,8 +32,7 @@ class ExtraController:
 
     def __init__(self):
         """Constructor"""
-        self.extra_parser = argparse.ArgumentParser(
-            add_help=False, prog="extra")
+        self.extra_parser = argparse.ArgumentParser(add_help=False, prog="extra")
         self.extra_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
@@ -90,19 +89,20 @@ class ExtraController:
 
     def call_gwei(self, _):
         """Process gwei command"""
-        r = requests.get(
-            "https://www.gasnow.org/api/v3/gas/price").json()["data"]
+        r = requests.get("https://www.gasnow.org/api/v3/gas/price").json()["data"]
         fast = int(r["fast"] / 1_000_000_000)
         fastest = int(r["rapid"] / 1_000_000_000)
         average = int(r["standard"] / 1_000_000_000)
         low = int(r["slow"] / 1_000_000_000)
-        print(f'''
+        print(
+            f"""
         Current ETH gas prices (gwei):
             Fastest  (~15 sec):     {fastest} gwei
             Fast     (~1 min):      {fast} gwei
             Standard (~3 min):      {average} gwei
             Slow     (>10 min):     {low} gwei
-        ''')
+        """
+        )
 
 
 def print_help():

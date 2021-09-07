@@ -61,14 +61,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = [
-        "ta",
-        "dd",
-        "ov",
-        "disc",
-        "report",
-        "extra"
-    ]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "report", "extra"]
 
     SOURCES = {
         "bin": "Binance",
