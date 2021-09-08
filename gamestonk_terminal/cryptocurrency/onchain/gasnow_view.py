@@ -2,7 +2,7 @@ import os
 
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.cryptocurrency.extra.gasnow_model import get_gwei_fees
+from gamestonk_terminal.cryptocurrency.onchain.gasnow_model import get_gwei_fees
 from gamestonk_terminal import feature_flags as gtff
 
 

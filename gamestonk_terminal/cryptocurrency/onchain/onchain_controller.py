@@ -1,4 +1,4 @@
-"""Extra Controller Module"""
+"""Onchain Controller Module"""
 __docformat__ = "numpy"
 
 import os
@@ -10,13 +10,13 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 
-from gamestonk_terminal.cryptocurrency.extra import gasnow_view
+from gamestonk_terminal.cryptocurrency.onchain import gasnow_view
 
 # pylint: disable=R1732
 
 
-class ExtraController:
-    """Extra Controller class"""
+class OnchainController:
+    """Onchain Controller class"""
 
     CHOICES = [
         "cls",
@@ -34,8 +34,8 @@ class ExtraController:
 
     def __init__(self):
         """Constructor"""
-        self.extra_parser = argparse.ArgumentParser(add_help=False, prog="extra")
-        self.extra_parser.add_argument(
+        self.onchain_parser = argparse.ArgumentParser(add_help=False, prog="onchain")
+        self.onchain_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
@@ -61,7 +61,9 @@ class ExtraController:
             print("")
             return None
 
-        (known_args, other_args) = self.extra_parser.parse_known_args(an_input.split())
+        (known_args, other_args) = self.onchain_parser.parse_known_args(
+            an_input.split()
+        )
 
         # Help menu again
         if known_args.cmd == "?":
@@ -94,7 +96,7 @@ class ExtraController:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="extra",
+            prog="onchain",
             description="""
                 Display ETH gas fees
                 [Source: https://www.gasnow.org]
@@ -125,9 +127,9 @@ class ExtraController:
 def print_help():
     """Print help"""
     print(
-        "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency/extra"
+        "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency/onchain"
     )
-    print("\nExtra:")
+    print("\nOnchain:")
     print("   cls           clear screen")
     print("   ?/help        show this menu again")
     print("   q             quit this menu, and shows back to main menu")
@@ -138,25 +140,25 @@ def print_help():
 
 
 def menu():
-    """Extra Menu"""
-    extra_controller = ExtraController()
-    extra_controller.call_help(None)
+    """Onchain Menu"""
+    onchain_controller = OnchainController()
+    onchain_controller.call_help(None)
 
     while True:
         # Get input command from user
         if session and gtff.USE_PROMPT_TOOLKIT:
             completer = NestedCompleter.from_nested_dict(
-                {c: None for c in extra_controller.CHOICES}
+                {c: None for c in onchain_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (crypto)>(extra)> ",
+                f"{get_flair()} (crypto)>(onchain)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (crypto)>(extra)> ")
+            an_input = input(f"{get_flair()} (crypto)>(onchain)> ")
 
         try:
-            process_input = extra_controller.switch(an_input)
+            process_input = onchain_controller.switch(an_input)
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
