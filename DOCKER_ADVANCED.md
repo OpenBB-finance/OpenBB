@@ -40,6 +40,8 @@ For help setting up the X-Server, I will go through this now:
 
 0. Install X Quartz from  https://www.xquartz.org/
 1. With X Quartz open: go to Preferences -> Security and make sure both options are enabled.
+![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
+
 
 ### Adding the display for Docker
 
