@@ -56,6 +56,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
+        <li><a href="#dock-install">Docker Install</a></li>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
@@ -88,7 +89,7 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ### Docker Installation - *new and improved*
 
-0. First step is to make sure docker desktop is installed.  Install likes can be found [here](#https://www.docker.com/products/docker-desktop).  To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
+0. First step is to make sure docker desktop is installed.  Install links can be found [here](https://www.docker.com/products/docker-desktop).  To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
 `docker info`.  If you get the following you are not running the docker desktop:
 ```bash
 Server:
@@ -113,13 +114,13 @@ ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2
 
 2. Run a container
 
-You are now ready to run the terminal.  
+You are now ready to run the terminal.
 
 ```docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest```
 
 This will open up the terminal in your command prompt or terminal.  Note that this has provided now environment file, so you will not be able to view plots or use keys at this stage.
 
-To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the [Advanced Docker Guide?].
+To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
 ### Install
 
