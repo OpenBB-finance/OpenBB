@@ -30,7 +30,7 @@ def get_gwei_fees() -> pd.DataFrame:
                     ["Standard", int(data["standard"] / 1_000_000_000), "~3 min"],
                     ["Slow", int(data["slow"] / 1_000_000_000), ">10 min"],
                 ],
-                columns=["Label", "Fee (gwei)", "Duration"],
+                columns=["Tx Type", "Fee (gwei)", "Duration"],
             )
         except TypeError:
             print("Error in gasnow JSON response.\n")
