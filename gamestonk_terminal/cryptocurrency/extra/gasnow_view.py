@@ -5,6 +5,7 @@ from gamestonk_terminal.cryptocurrency.extra.gasnow_model import get_gwei_fees
 
 def display_gwei_fees(export: str) -> None:
     """Current gwei fees
+    [Source: https://www.gasnow.org]
 
     Parameters
     ----------
@@ -15,8 +16,6 @@ def display_gwei_fees(export: str) -> None:
     df_fees = get_gwei_fees()
 
     print("Current ETH gas fees (gwei):\n")
-    # for fee in fees:
-    #    print(f'\b {fee.label} ({fee.duration}): {fee.value} gwei')
     print(df_fees.to_string(index=False), "\n")
 
     export_data(

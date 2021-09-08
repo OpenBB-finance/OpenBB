@@ -95,7 +95,10 @@ class ExtraController:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="extra",
-            description="""Display ETH gas fees""",
+            description="""
+                Display ETH gas fees
+                [Source: https://www.gasnow.org]
+            """,
         )
 
         parser.add_argument(
