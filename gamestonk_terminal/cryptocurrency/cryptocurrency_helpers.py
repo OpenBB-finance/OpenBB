@@ -5,6 +5,7 @@ import os
 from typing import Tuple, Any, Optional, Union
 import difflib
 import pandas as pd
+import numpy as np
 from binance.client import Client
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -13,6 +14,7 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
 )
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     pycoingecko_model,
     coinpaprika_model,
@@ -30,6 +32,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     show_available_pairs_for_given_symbol,
     plot_candles,
 )
+from gamestonk_terminal.cryptocurrency.discovery import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal import feature_flags as gtff
@@ -668,3 +671,75 @@ def plot_chart(
             plt.ion()
         plt.show()
         print("")
+
+    if source == "cb":
+        assert isinstance(coin, str)
+        pair = f"{coin}-{currency}"
+
+        if coinbase_model.check_validity_of_product(pair):
+            print(f"{coin} loaded vs {currency.upper()}")
+
+            df = coinbase_model.get_candles(
+                product_id=pair,
+                interval=interval,
+            ).head(limit)
+
+            df = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
+                "Time0", axis=1
+            )
+            title = (
+                f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
+            )
+            mpf.plot(
+                df,
+                type="candle",
+                volume=True,
+                ylabel_lower="Volume",
+                title=str(title[0]) if isinstance(title, tuple) else title,
+                xrotation=20,
+                style="binance",
+                figratio=(10, 7),
+                figscale=1.10,
+                figsize=(plot_autoscale()),
+                update_width_config=dict(
+                    candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                ),
+            )
+
+            if ion:
+                plt.ion()
+            plt.show()
+            print("")
+
+
+def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
+    """
+    Plots Bid/Ask. Can be used for Coinbase and Binance
+
+    Parameters
+    ----------
+    bids : np.array
+        array of bids with columns: price, size, cumulative size
+    asks : np.array
+        array of asks with columns: price, size, cumulative size
+    coin : str
+        Coin being plotted
+
+    """
+
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
+    ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
+    ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
+    ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    plt.legend(loc=0)
+    plt.xlabel("Price")
+    plt.ylabel("Size (Coins) ")
+    plt.title(f"Order Book for {coin}")
+    if ion:
+        plt.ion()
+    plt.show()
+    print("")

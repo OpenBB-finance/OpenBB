@@ -9,9 +9,7 @@ import pandas as pd
 from gamestonk_terminal.helper_funcs import (
     export_data,
 )
-from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
-    plot_order_book,
-)
+from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 
