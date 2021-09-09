@@ -103,7 +103,7 @@ Open the docker desktop app in this case.
 docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
 ```
 
-Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary).
+Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary).  The first time this is run, it will take a few minutes.  Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
 ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
 
 Once the download is complete, confirm that the image has been created by doing `docker images`.  You should see something similar to
@@ -122,7 +122,7 @@ This will open up the terminal in your command prompt or terminal.  Note that th
 
 To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
-### Install
+### Local Install - Anaconda and Python
 
 If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
