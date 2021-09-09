@@ -56,6 +56,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
+        <li><a href="#dock-install">Docker Install</a></li>
         <li><a href="#install">Install</a></li>
         <li><a href="#advanced-user-install---machine-learning">Advanced User Install - Machine Learning</a></li>
         <li><a href="#update-terminal">Update Terminal</a></li>
@@ -86,7 +87,42 @@ As a modern Python-based environment, GamestonkTerminal opens access to numerous
 
 ## Getting Started
 
-### Install
+### Docker Installation - *new and improved*
+
+0. First step is to make sure docker desktop is installed.  Install links can be found [here](https://www.docker.com/products/docker-desktop).  To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
+`docker info`.  If you get the following you are not running the docker desktop:
+```bash
+Server:
+ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+```
+Open the docker desktop app in this case.
+
+1. Download the latest docker image.
+
+```bash
+docker pull ghcr.io/gamestonkterminal/gst-poetry:latest
+```
+
+Upon running this the first time, you should see the various layers downloading (note the random series of letters numbers will vary).  The first time this is run, it will take a few minutes.  Subsequent updates will be much faster, as the changes will be in the MB instead of GB.
+![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
+
+Once the download is complete, confirm that the image has been created by doing `docker images`.  You should see something similar to
+```bash
+REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
+ghcr.io/gamestonkterminal/gst-poetry   latest    e2bbeebcc73c   42 hours ago   2.02GB
+```
+
+2. Run a container
+
+You are now ready to run the terminal.
+
+```docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest```
+
+This will open up the terminal in your command prompt or terminal.  Note that this has provided now environment file, so you will not be able to view plots or use keys at this stage.
+
+To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the [Advanced Docker Setup](/DOCKER_ADVANCED.md).
+
+### Local Install - Anaconda and Python
 
 If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
@@ -183,24 +219,6 @@ ENABLE_PREDICT = os.getenv("GTFF_ENABLE_PREDICT") or True
 ```
 poetry install -E prediction
 ```
-
-*If you would like to set up a docker image:*
-
-* Build the docker:
-
-```
-docker-compose -f docker/docker-compose.yaml build gst-python
-docker-compose -f docker/docker-compose.yaml build gst-poetry-deps
-docker-compose -f docker/docker-compose.yaml build gst-poetry
-```
-
-* Run it:
-
-```
-docker run -it --env-file=docker/setenv --rm gst/gst-poetry:1.1.0
-```
-
-Note: Remember to customize your docker/setenv.
 
 ### Update Terminal
 
