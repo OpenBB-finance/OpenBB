@@ -732,7 +732,9 @@ def find_tickers(submission):
     return l_tickers_found
 
 
-def export_data(export_type: str, dir_path: str, func_name: str, df: pd.DataFrame):
+def export_data(
+    export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
+):
     """Export data to a file.
 
     Parameters
@@ -763,6 +765,14 @@ def export_data(export_type: str, dir_path: str, func_name: str, df: pd.DataFram
             df.to_json(full_path)
         elif export_type in "xlsx":
             df.to_excel(full_path, index=True, header=True)
+        elif export_type == "png":
+            plt.savefig(full_path)
+        elif export_type == "jpg":
+            plt.savefig(full_path)
+        elif export_type == "pdf":
+            plt.savefig(full_path)
+        elif export_type == "svg":
+            plt.savefig(full_path)
         else:
             print("Wrong export file specified.\n")
 

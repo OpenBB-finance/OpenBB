@@ -263,6 +263,14 @@ FRED:
                 Safe Heaven Demand, and Index.
             """,
         )
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file",
+        )
         try:
             if other_args:
                 if "-" not in other_args[0]:
@@ -272,7 +280,10 @@ FRED:
             if not ns_parser:
                 return
 
-            cnn_view.fear_and_greed_index(indicator=ns_parser.indicator)
+            cnn_view.fear_and_greed_index(
+                indicator=ns_parser.indicator,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
@@ -595,10 +606,18 @@ FRED:
             "-g",
             "--group",
             type=str,
-            default="Sector",
+            default="sector",
             dest="group",
             help="Data group (sector, industry or country)",
             choices=list(self.d_GROUPS.keys()),
+        )
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file",
         )
         try:
             if other_args:
@@ -641,11 +660,13 @@ FRED:
         )
         parser.add_argument(
             "--export",
-            choices=["csv", "json", "xlsx"],
+            choices=["csv", "json", "xlsx"]
+            if "--raw" in other_args
+            else ["png", "jpg", "pdf", "svg"],
             default="",
             type=str,
             dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+            help="Export data to csv,json,xlsx or png,jpg,pdf,svg file",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -692,11 +713,13 @@ FRED:
         )
         parser.add_argument(
             "--export",
-            choices=["csv", "json", "xlsx"],
+            choices=["csv", "json", "xlsx"]
+            if "--raw" in other_args
+            else ["png", "jpg", "pdf", "svg"],
             default="",
             type=str,
             dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
+            help="Export data to csv,json,xlsx or png,jpg,pdf,svg file",
         )
         try:
             if other_args:

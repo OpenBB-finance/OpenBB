@@ -41,7 +41,7 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
     raw : bool
         Output only raw data
     export : str
-        Export dataframe data to csv,json,xlsx file
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
     if export:
         l_series_fred = []
@@ -91,16 +91,19 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
 
             if raw:
                 df_fred.index = df_fred.index.strftime("%d/%m/%Y")
-                print(
-                    tabulate(
-                        df_fred.dropna().to_frame(),
-                        showindex=True,
-                        headers=[f"{ser}: {ser_title}"],
-                        tablefmt="fancy_grid",
-                        floatfmt=".2f",
-                    ),
-                    "\n",
-                )
+                if gtff.USE_TABULATE_DF:
+                    print(
+                        tabulate(
+                            df_fred.dropna().to_frame(),
+                            showindex=True,
+                            headers=[f"{ser}: {ser_title}"],
+                            tablefmt="fancy_grid",
+                            floatfmt=".2f",
+                        ),
+                        "\n",
+                    )
+                else:
+                    print(df_fred.dropna().to_frame().to_string(), "\n")
 
             else:
                 success += 1
@@ -131,11 +134,16 @@ def display_series(series: str, start_date: str, raw: bool, export: str):
             [val for _, val in p.items()], success_titles, loc="best", prop={"size": 6}
         )
         plt.gca().spines["left"].set_visible(False)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "series",
+        )
         if gtff.USE_ION:
             plt.ion()
         plt.show()
 
-    if export:
+    if export and raw:
         df_data = pd.concat(l_series_fred, axis=1)
         df_data.columns = success_series
 
