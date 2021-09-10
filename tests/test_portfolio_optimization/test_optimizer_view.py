@@ -13,7 +13,7 @@ class TestOptimizerView(TestCase):
         record_mode="new_episodes",
     )
     def test_equal_weights(self):
-        optimizer_view.equal_weight(["TSLA", "GME"], [])
+        optimizer_view.display_equal_weight(["TSLA", "GME"], [])
 
     @check_print(assert_in="TSLA")
     @vcr.use_cassette(
@@ -21,7 +21,9 @@ class TestOptimizerView(TestCase):
         record_mode="new_episodes",
     )
     def test_property_weighting(self):
-        optimizer_view.property_weighting(["TSLA", "GME"], ["-p", "previousClose"])
+        optimizer_view.display_property_weighting(
+            ["TSLA", "GME"], ["-p", "previousClose"]
+        )
 
     @check_print(assert_in="TSLA")
     @vcr.use_cassette(

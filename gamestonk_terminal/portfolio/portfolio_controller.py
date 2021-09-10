@@ -25,13 +25,6 @@ class PortfolioController:
     ]
 
     CHOICES_MENUS = [
-        "load",
-        "quote",
-        "candle",
-        "view",
-    ]
-
-    CHOICES_MENUS = [
         "bro",
         "pa",
         "po",

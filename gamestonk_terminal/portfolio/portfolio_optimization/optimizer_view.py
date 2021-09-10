@@ -2,28 +2,28 @@
 __docformat__ = "numpy"
 
 import argparse
+import math
 from typing import List
+
 import matplotlib.pyplot as plt
 import numpy as np
-import yfinance as yf
-from pypfopt import plotting
-from pypfopt import risk_models
-from pypfopt import expected_returns
-from pypfopt import EfficientFrontier
+import pandas as pd
+from pypfopt import EfficientFrontier, expected_returns, plotting, risk_models
+from tabulate import tabulate
+
+from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import (
+    check_non_negative,
     parse_known_args_and_warn,
     plot_autoscale,
-    check_non_negative,
 )
-from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_helper import (
-    process_stocks,
+from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
+from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_model import (
     prepare_efficient_frontier,
-    pie_chart_weights,
-    display_weights,
-    check_valid_property_type,
+    process_stocks,
 )
-from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal import feature_flags as gtff
+
 
 period_choices = [
     "1d",
@@ -54,160 +54,81 @@ d_period = {
 }
 
 
-def equal_weight(stocks: List[str], other_args: List[str]):
+def display_weights(weights: dict):
+    """Print weights in a nice format
+
+    Parameters
+    ----------
+    weights: dict
+        weights to display.  Keys are stocks.  Values are either weights or values
+    """
+    if not weights:
+        return
+    weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
+    if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
+        weight_df["value"] = (weight_df["value"] * 100).astype(str).apply(
+            lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5]
+        ) + " %"
+    else:
+        weight_df["value"] = (
+            weight_df["value"]
+            .astype(str)
+            .apply(lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5])
+            + " $"
+        )
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                weight_df, headers=["Value"], showindex=True, tablefmt="fancy_grid"
+            )
+        )
+    else:
+        print(weight_df.to_string(header=False))
+    print("")
+
+
+def display_equal_weight(stocks: List[str], value: float, pie: bool = False):
     """Equally weighted portfolio, where weight = 1/# of stocks
 
     Parameters
     ----------
     stocks: List[str]
         List of tickers to be included in optimization
-
-    Returns
-    -------
-    weights : dict
-        Dictionary of weights where keys are the tickers
-
+    value : float
+        Amount of money to allocate. 1 indicates percentage of portfolio
+    pie : bool, optional
+        Display a pie chart of values
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="equal",
-        description="Returns an equally weighted portfolio",
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        default=1,
-        type=float,
-        dest="value",
-        help="Amount to allocate to portfolio",
-    )
-    parser.add_argument(
-        "--pie",
-        action="store_true",
-        dest="pie",
-        default=False,
-        help="Display a pie chart for weights",
-    )
+    values = optimizer_model.get_equal_weights(stocks, value)
+    if pie:
+        pie_chart_weights(values, "Equally Weighted Portfolio")
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        values = {}
-        for stock in stocks:
-            values[stock] = ns_parser.value * round(1 / len(stocks), 5)
-        if ns_parser.pie:
-            pie_chart_weights(values, "Equally Weighted Portfolio")
-        else:
-            display_weights(values)
-            print("")
-
-    except Exception as e:
-        print(e, "\n")
+    display_weights(values)
 
 
-def property_weighting(stocks: List[str], other_args: List[str]):
-    """Weighted portfolio where each weight is the relative fraction of a specified info property.
+def display_property_weighting(
+    stocks: List[str], s_property: str, value: float = 1.0, pie: bool = False
+):
+    """Display portfolio weighted by selected property
 
     Parameters
     ----------
-    stocks: List[str]
-        List of tickers to be included in optimization
-    other_args : List[str]
-        Command line arguments to be processed with argparse
+    stocks : List[str]
+        Stocks in portfolio
+    s_property : str
+        Property to get weighted portfolio of
+    value : float, optional
+        Amount to allocate.  Returns percentages if set to 1.
+    pie : bool, optional
+        Display weights as a pie chart
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="property",
-        description="Returns a portfolio that is weighted based on a selected property info",
-    )
-    parser.add_argument(
-        "-p",
-        "--property",
-        required=bool("-h" not in other_args),
-        type=check_valid_property_type,
-        dest="property",
-        help="""Property info to weigh. Use one of:
-        previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield,
-        payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets,
-        regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency, averageVolume10days,
-        expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply, regularMarketDayLow,
-        priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply, openInterest, marketCap,
-        volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months, dayLow, ask, ytdReturn, askSize,
-        volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield, fiftyTwoWeekLow, bid, dividendYield,
-        bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year, profitMargins, enterpriseToEbitda,
-        52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth, sharesOutstanding, fundInceptionDate,
-        annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut, fundFamily, lastFiscalYearEnd,
-        heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook,
-        heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue,
-        threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating,
-        earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth,
-        impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.""",
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        default=1,
-        type=float,
-        dest="value",
-        help="Amount to allocate to portfolio",
-    )
-    parser.add_argument(
-        "--pie",
-        action="store_true",
-        dest="pie",
-        default=False,
-        help="Display a pie chart for weights",
-    )
+    values = optimizer_model.get_property_weights(stocks, s_property, value)
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        weights = {}
-        prop = {}
-        prop_sum = 0
-        for stock in stocks:
-            stock_prop = yf.Ticker(stock).info[ns_parser.property]
-            if stock_prop is None:
-                stock_prop = 0
-            prop[stock] = stock_prop
-            prop_sum += stock_prop
-
-        if prop_sum == 0:
-            print(
-                f"No {ns_parser.property} was found on list of tickers provided", "\n"
-            )
-            return
-
-        for k, v in prop.items():
-            weights[k] = round(v / prop_sum, 5) * ns_parser.value
-
-        if ns_parser.pie:
-            pie_chart_weights(
-                weights, "Weighted Portfolio based on " + ns_parser.property
-            )
-        else:
-            display_weights(weights)
-            print("")
-
-    except Exception as e:
-        print(e, "\n")
+    if pie:
+        pie_chart_weights(values, "Weighted Portfolio based on " + s_property)
+    else:
+        display_weights(values)
 
 
 def max_sharpe(stocks: List[str], other_args: List[str]):
@@ -250,9 +171,8 @@ def max_sharpe(stocks: List[str], other_args: List[str]):
         help="Display a pie chart for weights",
     )
 
-    if other_args:
-        if "-" not in other_args[0]:
-            other_args.insert(0, "-r")
+    if other_args and "-" not in other_args[0]:
+        other_args.insert(0, "-r")
 
     parser.add_argument(
         "-r",
@@ -426,9 +346,8 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
             help="Display a pie chart for weights. Only if neutral flag is left False.",
         )
 
-    if other_args:
-        if "-" not in other_args[0]:
-            other_args.insert(0, "-r")
+    if other_args and "-" not in other_args[0]:
+        other_args.insert(0, "-r")
 
     parser.add_argument(
         "-r",
@@ -463,12 +382,11 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
             key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
         }
 
-        if not ns_parser.market_neutral:
-            if ns_parser.pie:
-                pie_chart_weights(weights, s_title)
-                ef.portfolio_performance(verbose=True)
-                print("")
-                return
+        if not ns_parser.market_neutral and ns_parser.pie:
+            pie_chart_weights(weights, s_title)
+            ef.portfolio_performance(verbose=True)
+            print("")
+            return
 
         print(s_title)
         display_weights(weights)
@@ -769,3 +687,101 @@ def show_ef(stocks: List[str], other_args: List[str]):
 
     except Exception as e:
         print(e, "\n")
+
+
+def my_autopct(x):
+    """Function for autopct of plt.pie.  This results in values not being printed in the pie if they are 'too small'"""
+    if x > 4:
+        return f"{x:.2f} %"
+
+    return ""
+
+
+def pie_chart_weights(weights: dict, title_opt: str):
+    """Show a pie chart of holdings
+
+    Parameters
+    ----------
+    weights: dict
+        Weights to display, where keys are tickers, and values are either weights or values if -v specified
+    title: str
+        Title to be used on the plot title
+    """
+    if not weights:
+        return
+
+    init_stocks = list(weights.keys())
+    init_sizes = list(weights.values())
+    stocks = []
+    sizes = []
+    for stock, size in zip(init_stocks, init_sizes):
+        if size > 0:
+            stocks.append(stock)
+            sizes.append(size)
+
+    total_size = np.sum(sizes)
+
+    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    if math.isclose(sum(sizes), 1, rel_tol=0.1):
+        wedges, _, autotexts = plt.pie(
+            sizes,
+            labels=stocks,
+            autopct=my_autopct,
+            textprops=dict(color="k"),
+            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
+            normalize=True,
+        )
+        plt.setp(autotexts, color="white", fontweight="bold")
+    else:
+        wedges, _, autotexts = plt.pie(
+            sizes,
+            labels=stocks,
+            autopct="",
+            textprops=dict(color="k"),
+            wedgeprops={"linewidth": 3.0, "edgecolor": "white"},
+            normalize=True,
+        )
+        plt.setp(autotexts, color="white", fontweight="bold")
+        for i, a in enumerate(autotexts):
+            if sizes[i] / total_size > 0.05:
+                a.set_text(f"{sizes[i]:.2f}")
+            else:
+                a.set_text("")
+
+    plt.axis("equal")
+
+    leg1 = plt.legend(
+        wedges,
+        [str(s) for s in stocks],
+        title="  Ticker",
+        loc="upper left",
+        bbox_to_anchor=(0.80, 0, 0.5, 1),
+        frameon=False,
+    )
+    leg2 = plt.legend(
+        wedges,
+        [
+            f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
+            for s in sizes
+        ],
+        title=" ",
+        loc="upper left",
+        handlelength=0,
+        bbox_to_anchor=(0.91, 0, 0.5, 1),
+        frameon=False,
+    )
+    plt.gca().add_artist(leg1)
+    plt.gca().add_artist(leg2)
+
+    plt.setp(autotexts, size=8, weight="bold")
+
+    plt.gca().set_title(title_opt, pad=20)
+
+    if gtff.USE_ION:
+        plt.ion()
+
+    plt.tight_layout()
+
+    plt.show()
+    print("")

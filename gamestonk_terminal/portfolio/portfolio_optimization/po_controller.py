@@ -9,17 +9,16 @@ from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_view
+from gamestonk_terminal.portfolio.portfolio_optimization import (
+    optimizer_view,
+    optimizer_helper,
+)
 
 
 class PortfolioOptimization:
 
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES_COMMANDS = [
         "select",
         "add",
         "rmv",
@@ -35,6 +34,7 @@ class PortfolioOptimization:
         "ef",
         "yolo",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     # pylint: disable=dangerous-default-value
     def __init__(self, tickers: List[str]):
@@ -47,43 +47,38 @@ class PortfolioOptimization:
     @staticmethod
     def print_help(tickers: List[str]):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_optimization"
-        )
-        print("\nPortfolio Optimization:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
-        print("")
-        print("   select        select list of tickers to be optimized")
-        print("   add           add tickers to the list of the tickers to be optimized")
-        print(
-            "   rmv           remove tickers from the list of the tickers to be optimized"
-        )
-        print("")
-        print("Optimization:")
-        print("   equal         equally weighted")
-        print("   mktcap        weighted according to market cap (property marketCap)")
-        print(
-            "   dividend      weighted according to dividend yield (property dividendYield)"
-        )
-        print("   property      weight according to selected info property")
-        print("")
-        print("Mean Variance Optimization:")
-        print(
-            "   maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)"
-        )
-        print("   minvol        optimizes for minimum volatility")
-        print(
-            "   maxquadutil   maximises the quadratic utility, given some risk aversion"
-        )
-        print("   effret        maximises return for a given target risk")
-        print("   effrisk       minimises risk for a given target return")
-        print("")
-        print("   ef            show the efficient frontier")
-        print("")
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_optimization"
+
+>>PORTFOLIO OPTIMIZATION<<
+
+What would you like to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+Current Tickers: {('None', ', '.join(tickers))[bool(tickers)]}
+
+    select        select list of tickers to be optimized
+    add           add tickers to the list of the tickers to be optimized
+    rmv           remove tickers from the list of the tickers to be optimized"
+
+Optimization:
+    equal         equally weighted
+    mktcap        weighted according to market cap (property marketCap)
+    dividend      weighted according to dividend yield (property dividendYield)
+    property      weight according to selected info property
+
+Mean Variance Optimization:
+    maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio
+    minvol        optimizes for minimum volatility
+    maxquadutil   maximises the quadratic utility, given some risk aversion
+    effret        maximises return for a given target risk
+    effrisk       minimises risk for a given target return
+
+    ef            show the efficient frontier
+        """
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -144,21 +139,185 @@ class PortfolioOptimization:
 
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
-        optimizer_view.equal_weight(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="equal",
+            description="Returns an equally weighted portfolio",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            optimizer_view.display_equal_weight(
+                stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
-        other_args.insert(0, "marketCap")
-        optimizer_view.property_weighting(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mktcap",
+            description="Returns a portfolio that is weighted based on Market Cap.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if len(self.tickers) < 2:
+                print("Please have at least 2 stocks selected to perform calculations.")
+                return
+
+            optimizer_view.display_property_weighting(
+                self.tickers,
+                s_property="marketCap",
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
-        other_args.insert(0, "dividendYield")
-        optimizer_view.property_weighting(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dividend",
+            description="Returns a portfolio that is weighted based dividend yield.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if len(self.tickers) < 2:
+                print("Please have at least 2 stocks selected to perform calculations.")
+                return
+
+            optimizer_view.display_property_weighting(
+                self.tickers,
+                s_property="dividendYield",
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_property(self, other_args: List[str]):
         """Process property command"""
-        optimizer_view.property_weighting(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="property",
+            description="Returns a portfolio that is weighted based on selected property.",
+        )
+        parser.add_argument(
+            "-p",
+            "--property",
+            required=bool("-h" not in other_args),
+            type=optimizer_helper.check_valid_property_type,
+            dest="property",
+            help="""Property info to weigh. Use one of:
+            previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield,
+            payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets,
+            regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency,
+            averageVolume10days,expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply,
+            regularMarketDayLow, priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply,
+            openInterest,marketCap, volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months,
+            dayLow, ask, ytdReturn,askSize,volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield,
+            fiftyTwoWeekLow, bid,dividendYield,bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year,
+            profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth,
+            sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut
+            heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook,
+            heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue,fundFamily,
+            threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating,
+            earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth,
+            impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.""",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if len(self.tickers) < 2:
+                print("Please have at least 2 stocks selected to perform calculations.")
+                return
+
+            optimizer_view.display_property_weighting(
+                self.tickers,
+                s_property=ns_parser.property,
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
@@ -187,8 +346,7 @@ class PortfolioOptimization:
     def call_yolo(self, _):
         # Easter egg :)
         print("DFV YOLO")
-        print({"GME": 200})
-        print("")
+        print("GME: ALL", "\n")
 
     def add_stocks(self, other_args: List[str]):
         """Add ticker or Select tickes for portfolio to be optimized"""
