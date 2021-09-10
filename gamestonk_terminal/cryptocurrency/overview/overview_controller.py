@@ -20,6 +20,7 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCI
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
+from gamestonk_terminal.cryptocurrency.overview import coinbase_view
 
 
 class Controller:
@@ -52,6 +53,7 @@ class Controller:
         "cpexchanges",
         "cpplatforms",
         "cpcontracts",
+        "cbpairs",
     ]
 
     def __init__(self):
@@ -93,6 +95,8 @@ CoinPaprika:
     cpexmarkets       all available markets on given exchange
     cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
     cpcontracts       all smart contracts for given platform
+Coinbase:
+    cbpairs           info about available trading pairs on Coinbase
 """
 
         print(help_text)
@@ -1519,6 +1523,75 @@ CoinPaprika:
                 descend=ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_cbpairs(self, other_args):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            prog="cbpairs",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Shows available trading pairs on Coinbase ",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=int,
+            help="top N number of news >=10",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: id",
+            default="id",
+            choices=[
+                "id",
+                "display_name",
+                "base_currency",
+                "quote_currency",
+                "base_min_size",
+                "base_max_size",
+                "min_market_funds",
+                "max_market_funds",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            coinbase_view.display_trading_pairs(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
             )
 
         except Exception as e:

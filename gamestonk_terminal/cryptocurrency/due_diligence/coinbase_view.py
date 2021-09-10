@@ -3,71 +3,36 @@ __docformat__ = "numpy"
 
 import os
 from typing import Optional
+import pandas as pd
 from tabulate import tabulate
 from pandas.plotting import register_matplotlib_converters
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.cryptocurrency.discovery import coinbase_model
-from gamestonk_terminal.helper_funcs import long_number_format
+from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 
 register_matplotlib_converters()
 
 
-def display_trading_pairs(export: str) -> None:
-    """Displays a list of available currency pairs for trading. [Source: Coinbase]
-
-    Parameters
-    ----------
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-
-    df = coinbase_model.get_trading_pairs()
-    df_data = df.copy()
-
-    for col in [
-        "base_min_size",
-        "base_max_size",
-        "min_market_funds",
-        "max_market_funds",
-    ]:
-        df[col] = df[col].apply(lambda x: long_number_format(x))
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df,
-                headers=df.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
-    else:
-        print(df.to_string, "\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "pairs",
-        df_data,
-    )
-
-
-def display_order_book(product_id: str) -> None:
+def display_order_book(product_id: str, export: str = "") -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
     ----------
     product_id: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
-
+    export : str
+        Export dataframe data to csv,json,xlsx file
     """
-
-    bids, asks, pair = coinbase_model.get_order_book(product_id)
+    bids, asks, pair, market_book = coinbase_model.get_order_book(product_id)
     plot_order_book(bids, asks, pair)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "book",
+        pd.DataFrame(market_book),
+    )
 
 
 def display_trades(
@@ -95,7 +60,7 @@ def display_trades(
             tabulate(
                 df,
                 headers=df.columns,
-                floatfmt=".1f",
+                floatfmt=".3f",
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -112,7 +77,7 @@ def display_trades(
     )
 
 
-def display_candles(product_id: str, interval: str, export):
+def display_candles(product_id: str, interval: str, export) -> None:
     """Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
     Parameters
@@ -145,13 +110,24 @@ def display_candles(product_id: str, interval: str, export):
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "pairs",
+        "candles",
         df_data,
     )
 
 
-def display_currencies(export: str):
-    df = coinbase_model.get_all_currencies()
+def display_stats(product_id: str, export: str) -> None:
+    """Get 24 hr stats for the product. Volume is in base currency units.
+    Open, high and low are in quote currency units.  [Source: Coinbase]
+
+    Parameters
+    ----------
+    product_id: str
+        Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = coinbase_model.get_product_stats(product_id)
     df_data = df.copy()
 
     if gtff.USE_TABULATE_DF:
@@ -159,7 +135,7 @@ def display_currencies(export: str):
             tabulate(
                 df,
                 headers=df.columns,
-                floatfmt=".1f",
+                floatfmt=".3f",
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -171,6 +147,6 @@ def display_currencies(export: str):
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "pairs",
+        "stats",
         df_data,
     )

@@ -63,32 +63,18 @@ def make_coinbase_request(
     return response.json()
 
 
-def get_trading_pairs() -> pd.DataFrame:
-    """Get a list of available currency pairs for trading. [Source: Coinbase]
-
-    base_min_size - min order size
-    base_max_size - max order size
-    min_market_funds -  min funds allowed in a market order.
-    max_market_funds - max funds allowed in a market order.
-
-    Returns
-    -------
-    pd.DataFrame
-        Available trading pairs on Coinbase
-    """
-
-    columns = [
-        "id",
-        "display_name",
-        "base_currency",
-        "quote_currency",
-        "base_min_size",
-        "base_max_size",
-        "min_market_funds",
-        "max_market_funds",
-    ]
+def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:
     pairs = make_coinbase_request("/products")
-    return pd.DataFrame(pairs)[columns]
+    df = pd.DataFrame(pairs)[["base_currency", "quote_currency"]]
+
+    if not isinstance(symbol, str):
+        print(
+            f"You did not provide correct symbol {symbol}. Symbol needs to be a string.\n"
+        )
+        return symbol, []
+
+    coin_df = df[df["base_currency"] == symbol.upper()]
+    return symbol, coin_df["quote_currency"].to_list()
 
 
 def get_trading_pair_info(product_id: str) -> pd.DataFrame:
@@ -112,7 +98,7 @@ def get_trading_pair_info(product_id: str) -> pd.DataFrame:
     return df
 
 
-def get_order_book(product_id: str) -> Tuple[np.array, np.array, str]:
+def get_order_book(product_id: str) -> Tuple[np.array, np.array, str, dict]:
     """Get orders book for chosen trading pair. [Source: Coinbase]
 
     Parameters
@@ -122,21 +108,35 @@ def get_order_book(product_id: str) -> Tuple[np.array, np.array, str]:
 
     Returns
     -------
-    Tuple[np.array, np.array, str]
+    Tuple[np.array, np.array, str, dict]
         array with bid prices, order sizes and cumulative order sizes
         array with ask prices, order sizes and cumulative order sizes
         trading pair
+        dict with raw data
     """
+
+    # TODO: Order with price much higher then current price. E.g current price 200 USD, sell order with 10000 USD
+    #  makes chart look very ugly (bad scaling). Think about removing outliers or add log scale ?
 
     product_id = check_validity_of_product(product_id)
     market_book = make_coinbase_request(f"/products/{product_id}/book?level=2")
-    bids = np.asarray(market_book["bids"], dtype=float)
-    asks = np.asarray(market_book["asks"], dtype=float)
+
+    size = min(
+        len(market_book["bids"]), len(market_book["asks"])
+    )  # arrays needs to have equal size.
+
+    market_book["bids"] = market_book["bids"][:size]
+    market_book["asks"] = market_book["asks"][:size]
+    market_book.pop("sequence")
+
+    bids = np.asarray(market_book["bids"], dtype=float)[:size]
+    asks = np.asarray(market_book["asks"], dtype=float)[:size]
+
     bids = np.insert(bids, 3, (bids[:, 1] * bids[:, 2]).cumsum(), axis=1)
     asks = np.insert(asks, 3, np.flipud(asks[:, 1] * asks[:, 2]).cumsum(), axis=1)
     bids = np.delete(bids, 2, axis=1)
     asks = np.delete(asks, 2, axis=1)
-    return bids, asks, product_id
+    return bids, asks, product_id, market_book
 
 
 def get_trades(
@@ -175,7 +175,7 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
     product_id: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     interval: str
-        Time interval. One from 1m, 5m ,15m, 1h, 6h, 24h
+        Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
 
     Returns
     -------
@@ -183,34 +183,44 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
         Candles for chosen trading pair.
     """
 
-    intervals_map = {
-        "1m": 60,
-        "5m": 300,
-        "15m": 900,
-        "1h": 3600,
-        "6h": 21600,
-        "24h": 86400,
+    interval_map = {
+        "1min": 60,
+        "5min": 300,
+        "15min": 900,
+        "1hour": 3600,
+        "6hour": 21600,
+        "24hour": 86400,
+        "1day": 86400,
     }
-    if interval not in intervals_map:
-        print(f"Wrong interval. Please use on from {list(intervals_map.keys())}\n")
+    if interval not in interval_map:
+        print(f"Wrong interval. Please use on from {list(interval_map.keys())}\n")
         return pd.DataFrame()
 
-    interval_num: int = intervals_map[interval]
+    granularity: int = interval_map[interval]
 
     product_id = check_validity_of_product(product_id)
     candles = make_coinbase_request(
-        f"/products/{product_id}/candles", params={"granularity": interval_num}
+        f"/products/{product_id}/candles", params={"granularity": granularity}
     )
     df = pd.DataFrame(candles)
     df.columns = [
         "Time0",
-        "Open",
-        "High",
         "Low",
+        "High",
+        "Open",
         "Close",
         "Volume",
     ]
-    return df
+    return df[
+        [
+            "Time0",
+            "Open",
+            "High",
+            "Low",
+            "Close",
+            "Volume",
+        ]
+    ]
 
 
 def get_product_stats(product_id: str) -> pd.DataFrame:
@@ -233,25 +243,3 @@ def get_product_stats(product_id: str) -> pd.DataFrame:
     df = pd.Series(product).reset_index()
     df.columns = ["Metric", "Value"]
     return df
-
-
-def get_all_currencies() -> pd.DataFrame:
-    """List available currencies on Coinbase. [Source: Coinbase]
-
-    Returns
-    -------
-    pd.DataFrame
-        List of currencies available on Coinbase
-    """
-
-    currencies = make_coinbase_request("/currencies")
-    return pd.DataFrame(
-        [
-            {
-                "id": coin["id"],
-                "name": coin["name"],
-                "type": coin["details"]["type"],
-            }
-            for coin in currencies
-        ]
-    )
