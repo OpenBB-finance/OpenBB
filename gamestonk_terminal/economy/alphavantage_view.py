@@ -45,8 +45,6 @@ def realtime_performance_sector(raw: bool, export: str):
         plt.title("Real Time Performance (%) per Sector")
         plt.tight_layout()
         plt.grid()
-        if gtff.USE_ION:
-            plt.ion()
 
     print("")
 
@@ -58,4 +56,6 @@ def realtime_performance_sector(raw: bool, export: str):
     )
 
     if not raw:
+        if gtff.USE_ION:
+            plt.ion()
         plt.show()
