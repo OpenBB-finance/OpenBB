@@ -196,6 +196,10 @@ python terminal.py
 
 After you've installed Gamestonk Terminal, you'll find a file named "Gamestonk Terminal.bat". You can use this file to open Gamestonk Terminal quicker. This file can be moved to your desktop if you'd like. If you run into issues while trying to run the batch file. If you run into issues with the batch files, edit the file and check to see if the directories match up. This file assumes you used the default directories when installing.
 
+10. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
+
+You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+
 **NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst` before you call `python terminal.py` again.
 
 **TROUBLESHOOT:** If you are having troubles to install, check our *newest* <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/blob/master/TROUBLESHOOT.md"><strong>troubleshoot page</strong></a>

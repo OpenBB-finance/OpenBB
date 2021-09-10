@@ -26,7 +26,7 @@ repos:
     rev: 'v0.812'
     hooks:
       - id: mypy
-        args: [ --ignore-missing-imports ]
+        args: [ --ignore-missing-imports --exclude '/setup\.py$' ]
   - repo: https://github.com/pre-commit/mirrors-pylint
     rev: 'v3.0.0a4'
     hooks:
