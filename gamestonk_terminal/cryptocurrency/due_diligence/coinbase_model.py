@@ -33,19 +33,18 @@ class CoinbaseProAuth(AuthBase):
             hmac_key = base64.b64decode(self.secret_key)
             signature = hmac.new(hmac_key, message, hashlib.sha256)
             signature_b64 = base64.b64encode(signature.digest())
-            request.headers.update(
-                {
-                    "CB-ACCESS-SIGN": signature_b64,
-                    "CB-ACCESS-TIMESTAMP": timestamp,
-                    "CB-ACCESS-KEY": self.api_key,
-                    "CB-ACCESS-PASSPHRASE": self.passphrase,
-                    "Content-Type": "application/json",
-                }
-            )
         except binascii.Error:
-            print(
-                "Your secret key has wrong format. Number of characters need to be multiply of 4"
-            )
+            signature_b64 = ""
+
+        request.headers.update(
+            {
+                "CB-ACCESS-SIGN": signature_b64,
+                "CB-ACCESS-TIMESTAMP": timestamp,
+                "CB-ACCESS-KEY": self.api_key,
+                "CB-ACCESS-PASSPHRASE": self.passphrase,
+                "Content-Type": "application/json",
+            }
+        )
         return request
 
 
@@ -120,7 +119,7 @@ def make_coinbase_request(
     response = requests.get(url + endpoint, params=params, auth=auth)
 
     if not 200 <= response.status_code < 300:
-        raise CoinbaseApiException("Could not call api: Reason: %s" % response.text)
+        raise CoinbaseApiException("Invalid Authentication: %s" % response.text)
     try:
         return response.json()
     except ValueError as e:
@@ -166,7 +165,7 @@ def _check_account_validity(account: str) -> Union[str, Any]:
     if account in list(accounts.values()):
         return account
 
-    print("Wrong account id or coin symbol\n")
+    print("Wrong account id or coin symbol")
     return None
 
 
@@ -236,7 +235,6 @@ def get_account_history(account: str) -> pd.DataFrame:
 
     resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
     if not resp:
-        print(f"Couldn't find any history for {account}\n")
         return pd.DataFrame()
     return pd.json_normalize(resp)
 
@@ -263,7 +261,6 @@ def get_account(account: str):
     )
 
     resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
-    print(resp)
     return pd.DataFrame(resp)
 
 
@@ -301,7 +298,6 @@ def get_orders() -> pd.DataFrame:
     )
     resp = make_coinbase_request("/orders", auth=auth)
     if not resp:
-        print("No orders found for your account\n")
         df = pd.DataFrame(
             columns=[
                 "product_id",
@@ -341,7 +337,6 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
         params["type"] = "deposit"
     resp = make_coinbase_request("/transfers", auth=auth, params=params)
     if not resp:
-        print("No deposits found for your account\n")
         return pd.DataFrame()
 
     if deposit_type == "internal_deposit":
@@ -364,14 +359,6 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
     else:
         df = pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
     return df
-
-
-print(get_account("SOL"))
-
-print(get_deposits())
-print(get_orders())
-print(get_account_history("SOL"))
-print(get_accounts())
 
 
 def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:

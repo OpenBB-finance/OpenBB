@@ -153,7 +153,7 @@ def display_stats(product_id: str, export: str) -> None:
 
 
 def display_account(
-    account: str, show_all: bool = True, export: str = "", limit: int = 20
+    account: str, show_all: bool = True, export: str = "", limit: int = 30
 ) -> None:
     """Display list of all your trading accounts. [Source: Coinbase]
 
@@ -168,11 +168,17 @@ def display_account(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
-    if show_all:
+    if not account or show_all:
         df = coinbase_model.get_accounts().head(limit)
     else:
         df = coinbase_model.get_account(account)
+
+    if df.empty:
+        print(
+            f"Your account {account} doesn't have any funds or you provide wrong account name or id. "
+            f"To check all your accounts use command account --all\n"
+        )
+        return
 
     df_data = df.copy()
 
@@ -214,6 +220,13 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
     df = coinbase_model.get_account_history(account)
     df_data = df.copy()
 
+    if df.empty:
+        print(
+            f"Your account {account} doesn't have any funds or you provide wrong account name or id. "
+            f"To check all your accounts use command account --all\n"
+        )
+        return
+
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
@@ -237,7 +250,7 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
 
 
 def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> None:
-    """Display last N trades for chosen trading pair. [Source: Coinbase]
+    """List your current open orders [Source: Coinbase]
 
     Parameters
     ----------
@@ -252,6 +265,11 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
     """
 
     df = coinbase_model.get_orders()
+
+    if df.empty:
+        print("No orders found for your account\n")
+        return
+
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
@@ -298,6 +316,11 @@ def display_deposits(
     """
 
     df = coinbase_model.get_deposits(deposit_type=deposite_type)
+
+    if df.empty:
+        print("No deposits found for your account\n")
+        return
+
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
