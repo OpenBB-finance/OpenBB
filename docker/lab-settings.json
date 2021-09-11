@@ -114,7 +114,7 @@
                     "form": "text",
                     "title": "Python executable",
                     "description": "Path to the python in your custom environment",
-                    "default": "python",
+                    "default": "poetry run python",
                     "value": ""
                 },
                 "TERMINAL_PATH":
