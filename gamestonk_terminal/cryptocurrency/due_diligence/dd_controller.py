@@ -974,7 +974,7 @@ Coinbase:
             print(e, "\n")
 
     def call_deposits(self, other_args):
-        """Process orders command"""
+        """Process deposits command"""
         parser = argparse.ArgumentParser(
             prog="deposits",
             add_help=False,
@@ -1053,7 +1053,7 @@ Coinbase:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="ta",
+                prog="chart",
                 description="""Display chart for loaded coin. You can specify currency vs which you want
                 to show chart and also number of days to get data for.""",
             )

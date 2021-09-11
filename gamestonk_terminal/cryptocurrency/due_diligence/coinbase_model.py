@@ -339,7 +339,10 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
     if not resp:
         return pd.DataFrame()
 
-    if deposit_type == "internal_deposit":
+    if isinstance(resp, tuple):
+        resp = resp[0]
+
+    if deposit_type == "deposit":
         df = pd.json_normalize(resp)[
             [
                 "type",
@@ -520,6 +523,9 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
             "Volume",
         ]
     ]
+
+
+get_candles("ETH-BTC", "1day")
 
 
 def get_product_stats(product_id: str) -> pd.DataFrame:
