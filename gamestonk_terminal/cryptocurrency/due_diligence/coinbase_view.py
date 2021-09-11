@@ -150,3 +150,175 @@ def display_stats(product_id: str, export: str) -> None:
         "stats",
         df_data,
     )
+
+
+def display_account(
+    account: str, show_all: bool = True, export: str = "", limit: int = 20
+) -> None:
+    """Display list of all your trading accounts. [Source: Coinbase]
+
+    Parameters
+    ----------
+    account: str
+        Symbol or account id
+    show_all: bool
+        Indicate if you want to show all your accounts or only one.
+    limit: int
+        For all accounts display only top n
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    if show_all:
+        df = coinbase_model.get_accounts().head(limit)
+    else:
+        df = coinbase_model.get_account(account)
+
+    df_data = df.copy()
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".3f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "account",
+        df_data,
+    )
+
+
+def display_history(account: str, export: str = "", limit: int = 20) -> None:
+    """Display account history. [Source: Coinbase]
+
+    Parameters
+    ----------
+    account: str
+        Symbol or account id
+    limit: int
+        For all accounts display only top n
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = coinbase_model.get_account_history(account)
+    df_data = df.copy()
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(limit),
+                headers=df.columns,
+                floatfmt=".3f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.head(limit).to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "history",
+        df_data,
+    )
+
+
+def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> None:
+    """Display last N trades for chosen trading pair. [Source: Coinbase]
+
+    Parameters
+    ----------
+    limit: int
+        Last <limit> of trades. Maximum is 1000.
+    sortby: str
+        Key to sort by
+    descend: bool
+        Flag to sort descending
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = coinbase_model.get_orders()
+    df_data = df.copy()
+
+    df = df.sort_values(by=sortby, ascending=descend).head(limit)
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".3f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "orders",
+        df_data,
+    )
+
+
+def display_deposits(
+    limit: int, sortby: str, deposite_type: str, descend: bool, export: str = ""
+) -> None:
+    """Display last N trades for chosen trading pair. [Source: Coinbase]
+
+    Parameters
+    ----------
+    limit: int
+        Last <limit> of trades. Maximum is 1000.
+    sortby: str
+        Key to sort by
+    descend: bool
+        Flag to sort descending
+    deposite_type: str
+        internal_deposits (transfer between portfolios) or deposit
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = coinbase_model.get_deposits(deposit_type=deposite_type)
+    df_data = df.copy()
+
+    df = df.sort_values(by=sortby, ascending=descend).head(limit)
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".3f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "orders",
+        df_data,
+    )

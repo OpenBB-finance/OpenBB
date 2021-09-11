@@ -2,11 +2,73 @@
 __docformat__ = "numpy"
 
 import argparse
+import binascii
 
-from typing import Optional, Any, Tuple
+from typing import Optional, Any, Tuple, Union
+import hmac
+import hashlib
+import time
+import base64
 import pandas as pd
 import requests
 import numpy as np
+from requests.auth import AuthBase
+import gamestonk_terminal.config_terminal as cfg
+
+
+class CoinbaseProAuth(AuthBase):
+    """Authorize CoinbasePro requests. Source: https://docs.pro.coinbase.com/?python#signing-a-message"""
+
+    def __init__(self, api_key, secret_key, passphrase):
+        self.api_key = api_key
+        self.secret_key = secret_key
+        self.passphrase = passphrase
+
+    def __call__(self, request):
+        timestamp = str(time.time())
+        message = timestamp + request.method + request.path_url + (request.body or "")
+        message = message.encode("ascii")
+
+        try:
+            hmac_key = base64.b64decode(self.secret_key)
+            signature = hmac.new(hmac_key, message, hashlib.sha256)
+            signature_b64 = base64.b64encode(signature.digest())
+            request.headers.update(
+                {
+                    "CB-ACCESS-SIGN": signature_b64,
+                    "CB-ACCESS-TIMESTAMP": timestamp,
+                    "CB-ACCESS-KEY": self.api_key,
+                    "CB-ACCESS-PASSPHRASE": self.passphrase,
+                    "Content-Type": "application/json",
+                }
+            )
+        except binascii.Error:
+            print(
+                "Your secret key has wrong format. Number of characters need to be multiply of 4"
+            )
+        return request
+
+
+class CoinbaseRequestException(Exception):
+    """Coinbase Request Exception object"""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.message = message
+
+    def __str__(self) -> str:
+        return "CoinbaseRequestException: %s" % self.message
+
+
+class CoinbaseApiException(Exception):
+    """Coinbase API Exception object"""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.message = message
+
+    def __str__(self) -> str:
+        return "CoinbaseApiException: %s" % self.message
 
 
 def check_validity_of_product(product_id: str) -> str:
@@ -21,13 +83,13 @@ def check_validity_of_product(product_id: str) -> str:
     Returns
     -------
     str
-        product_id
+        pair of coins in format COIN-COIN
     """
 
     products = [pair["id"] for pair in make_coinbase_request("/products")]
     if product_id.upper() not in products:
         raise argparse.ArgumentTypeError(
-            f"You provided wrong product_id {product_id}. "
+            f"You provided wrong pair of coins {product_id}. "
             f"It should be provided as a pair in format COIN-COIN e.g UNI-USD"
         )
     return product_id.upper()
@@ -56,11 +118,260 @@ def make_coinbase_request(
 
     url = "https://api.pro.coinbase.com"
     response = requests.get(url + endpoint, params=params, auth=auth)
-    if response.status_code != 200:
-        raise Exception(
-            f"Couldn't call the api. Status: {response.status_code} Reason: {response.reason}. "
+
+    if not 200 <= response.status_code < 300:
+        raise CoinbaseApiException("Could not call api: Reason: %s" % response.text)
+    try:
+        return response.json()
+    except ValueError as e:
+        raise CoinbaseRequestException("Invalid Response: %s" % response.text) from e
+
+
+def _get_account_coin_dict() -> dict:
+    """Helper method that returns dictionary with all symbols and account ids in dictionary format. [Source: Coinbase]
+
+    Returns
+    -------
+    dict:
+        Your accounts in coinbase
+        {'1INCH': '0c29b708-d73b-4e1c-a58c-9c261cb4bedb', 'AAVE': '0712af66-c069-45b5-84ae-7b2347c2fd24', ..}
+
+    """
+    auth = CoinbaseProAuth(
+        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+    )
+    accounts = make_coinbase_request("/accounts", auth=auth)
+    return {acc["currency"]: acc["id"] for acc in accounts}
+
+
+def _check_account_validity(account: str) -> Union[str, Any]:
+    """Helper methods that checks if given account exists. [Source: Coinbase]
+
+    Parameters
+    ----------
+    account: str
+        coin or account id
+
+    Returns
+    -------
+    Union[str, Any]
+        Your account id or None
+    """
+
+    accounts = _get_account_coin_dict()
+
+    if account in list(accounts.keys()):
+        return accounts[account]
+
+    if account in list(accounts.values()):
+        return account
+
+    print("Wrong account id or coin symbol\n")
+    return None
+
+
+def get_accounts() -> pd.DataFrame:
+    """Get list of all your trading accounts. [Source: Coinbase]
+
+    Single account information:
+    {
+        "id": "71452118-efc7-4cc4-8780-a5e22d4baa53",
+        "currency": "BTC",
+        "balance": "0.0000000000000000",
+        "available": "0.0000000000000000",
+        "hold": "0.0000000000000000",
+        "profile_id": "75da88c5-05bf-4f54-bc85-5c775bd68254"
+    }
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with all your trading accounts.
+    """
+
+    auth = CoinbaseProAuth(
+        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+    )
+    resp = make_coinbase_request("/accounts", auth=auth)
+    if not resp:
+        return pd.DataFrame()
+    return pd.DataFrame(resp)[["id", "currency", "balance", "available", "hold"]]
+
+
+def get_account_history(account: str) -> pd.DataFrame:
+    """Get your account history. Account activity either increases or decreases your account balance. [Source: Coinbase]
+
+    Example api response:
+        {
+            "id": "100",
+            "created_at": "2014-11-07T08:19:27.028459Z",
+            "amount": "0.001",
+            "balance": "239.669",
+            "type": "fee",
+            "details": {
+                "order_id": "d50ec984-77a8-460a-b958-66f114b0de9b",
+                "trade_id": "74",
+                "product_id": "BTC-USD"
+            }
+        }
+
+
+    Parameters
+    ----------
+    account: str
+        id ("71452118-efc7-4cc4-8780-a5e22d4baa53") or currency (BTC)
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with account history.
+    """
+
+    auth = CoinbaseProAuth(
+        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+    )
+
+    account = _check_account_validity(account)
+    if not account:
+        return pd.DataFrame()
+
+    resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
+    if not resp:
+        print(f"Couldn't find any history for {account}\n")
+        return pd.DataFrame()
+    return pd.json_normalize(resp)
+
+
+def get_account(account: str):
+    """
+    Parameters
+    ----------
+    account: str
+        id ("71452118-efc7-4cc4-8780-a5e22d4baa53") or currency (BTC)
+
+    Returns
+    -------
+    pd.DataFrame
+        Account data
+    """
+
+    account = _check_account_validity(account)
+    if not account:
+        return pd.DataFrame()
+
+    auth = CoinbaseProAuth(
+        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+    )
+
+    resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
+    print(resp)
+    return pd.DataFrame(resp)
+
+
+def get_orders() -> pd.DataFrame:
+    """List your current open orders. Only open or un-settled orders are returned. [Source: Coinbase]
+
+    Example response from API:
+
+    {
+        "id": "d0c5340b-6d6c-49d9-b567-48c4bfca13d2",
+        "price": "0.10000000",
+        "size": "0.01000000",
+        "product_id": "BTC-USD",
+        "side": "buy",
+        "stp": "dc",
+        "type": "limit",
+        "time_in_force": "GTC",
+        "post_only": false,
+        "created_at": "2016-12-08T20:02:28.53864Z",
+        "fill_fees": "0.0000000000000000",
+        "filled_size": "0.00000000",
+        "executed_value": "0.0000000000000000",
+        "status": "open",
+        "settled": false
+    }
+
+    Returns
+    -------
+    pd.DataFrame
+        Open orders in your account
+    """
+
+    auth = CoinbaseProAuth(
+        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+    )
+    resp = make_coinbase_request("/orders", auth=auth)
+    if not resp:
+        print("No orders found for your account\n")
+        df = pd.DataFrame(
+            columns=[
+                "product_id",
+                "side",
+                "price",
+                "size",
+                "type",
+                "created_at",
+                "status",
+            ]
         )
-    return response.json()
+        return df
+    return pd.DataFrame(resp)[
+        ["product_id", "side", "price", "size", "type", "created_at", "status"]
+    ]
+
+
+def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
+    """Get a list of deposits for your account. [Source: Coinbase]
+
+    Parameters
+    ----------
+    deposit_type: str
+        internal_deposits (transfer between portfolios) or deposit
+
+    Returns
+    -------
+    pd.DataFrame
+        List of deposits
+    """
+
+    auth = CoinbaseProAuth(
+        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
+    )
+    params = {"type": deposit_type}
+    if deposit_type not in ["internal_deposit", "deposit"]:
+        params["type"] = "deposit"
+    resp = make_coinbase_request("/transfers", auth=auth, params=params)
+    if not resp:
+        print("No deposits found for your account\n")
+        return pd.DataFrame()
+
+    if deposit_type == "internal_deposit":
+        df = pd.json_normalize(resp)[
+            [
+                "type",
+                "created_at",
+                "amount",
+                "details.crypto_address",
+                "details.destination_tag_name",
+            ]
+        ]
+        df.rename(
+            columns={
+                "details.crypto_address": "crypto_address",
+                "details.destination_tag_name": "destination_tag",
+            },
+            inplace=True,
+        )
+    else:
+        df = pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
+    return df
+
+
+print(get_account("SOL"))
+
+print(get_deposits())
+print(get_orders())
+print(get_account_history("SOL"))
+print(get_accounts())
 
 
 def show_available_pairs_for_given_symbol(symbol: str = "ETH") -> Tuple[str, list]:
@@ -95,6 +406,7 @@ def get_trading_pair_info(product_id: str) -> pd.DataFrame:
     pair = make_coinbase_request(f"/products/{product_id}")
     df = pd.Series(pair).to_frame().reset_index()
     df.columns = ["Metric", "Value"]
+    print(df)
     return df
 
 
