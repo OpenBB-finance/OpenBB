@@ -46,25 +46,23 @@ class ResourceCollectionController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/resources"
-        )
-        print("")
-        print(">> RESOURCES <<")
-        print("")
-        print("What do you want to do?")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("   hfletters     hedge fund letters or reports")
-        print("   arxiv         open-access archive for academic articles")
-        print("   finra         self-regulatory organization")
-        print("   edgar         online public database from SEC")
-        print("   fred          economic research data")
-        print("   learn         trading analysis, tips and resources")
-        print("")
+        help_str = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/resources"
+
+>> RESOURCES <<
+What do you want to do?
+   cls           clear screen
+   ?/help        show this menu again
+   q             quit this menu, and shows back to main menu
+   quit          quit to abandon program
+
+   hfletters     hedge fund letters or reports
+   arxiv         open-access archive for academic articles
+   finra         self-regulatory organization
+   edgar         online public database from SEC
+   fred          economic research data
+   learn         trading analysis, tips and resources
+        """
+        print(help_str)
 
     def switch(self, an_input: str):
         """Process and dispatch input

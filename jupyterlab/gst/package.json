@@ -1,0 +1,88 @@
+{
+  "name": "@gamestonk/terminal",
+  "version": "0.1.0",
+  "description": "Gamestonk terminal launcher",
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension"
+  ],
+  "homepage": "https://github.com/GamestonkTerminal/GamestonkTerminal",
+  "bugs": {
+    "url": "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+  },
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Gamestonk Contibuters",
+    "email": ""
+  },
+  "files": [
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}",
+    "style/index.js"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "style": "style/index.css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GamestonkTerminal/GamestonkTerminal.git"
+  },
+  "scripts": {
+    "build": "jlpm run build:lib && jlpm run build:labextension:dev",
+    "build:all": "jlpm run build:lib && jlpm run build:labextension",
+    "build:labextension": "jupyter labextension build .",
+    "build:labextension:dev": "jupyter labextension build --development True .",
+    "build:lib": "tsc",
+    "build:prod": "jlpm run clean && jlpm run build:lib && jlpm run build:labextension",
+    "clean": "jlpm run clean:lib",
+    "clean:all": "jlpm run clean:lib && jlpm run clean:labextension",
+    "clean:labextension": "rimraf gamestonk_terminal_launcher/labextension",
+    "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
+    "eslint": "eslint . --ext .ts,.tsx --fix",
+    "eslint:check": "eslint . --ext .ts,.tsx",
+    "install:extension": "jlpm run build",
+    "prepare": "jlpm run clean && jlpm run build:prod",
+    "watch": "run-p watch:src watch:labextension",
+    "watch:labextension": "jupyter labextension watch .",
+    "watch:src": "tsc -w"
+  },
+  "dependencies": {
+    "@jupyterlab/application": "^3.1.7",
+    "@jupyterlab/apputils": "^3.1.7",
+    "@jupyterlab/filebrowser": "^3.1.7",
+    "@jupyterlab/launcher": "^3.1.7",
+    "@jupyterlab/mainmenu": "^3.1.7",
+    "@jupyterlab/running": "^3.1.7",
+    "@jupyterlab/services": "^6.1.7",
+    "@jupyterlab/settingregistry": "^3.1.7",
+    "@jupyterlab/terminal": "^3.1.7",
+    "@jupyterlab/translation": "^3.1.7",
+    "@jupyterlab/ui-components": "^3.1.7",
+    "@lumino/algorithm": "^1.6.2"
+  },
+  "devDependencies": {
+    "@jupyterlab/builder": "^3.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-jsdoc": "^36.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.18.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.1.1",
+    "rimraf": "^3.0.2",
+    "typescript": "~4.1.3"
+  },
+  "sideEffects": [
+    "style/*.css",
+    "style/*.svg",
+    "style/index.js"
+  ],
+  "jupyterlab": {
+    "extension": true,
+    "outputDir": "gamestonk_terminal_launcher/labextension"
+  },
+  "styleModule": "style/index.js"
+}

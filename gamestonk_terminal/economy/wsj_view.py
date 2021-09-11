@@ -5,6 +5,7 @@ import os
 
 from tabulate import tabulate
 
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import wsj_model
 from gamestonk_terminal.helper_funcs import export_data
 
@@ -22,15 +23,18 @@ def display_overview(export: str):
         print("No overview data available\n")
         return
 
-    print(
-        tabulate(
-            df_data,
-            showindex=False,
-            headers=df_data.columns,
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_data,
+                showindex=False,
+                headers=df_data.columns,
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            )
         )
-    )
+    else:
+        print(df_data.to_string(index=False))
     print("")
 
     export_data(
@@ -54,15 +58,18 @@ def display_indices(export: str):
         print("No indices data available\n")
         return
 
-    print(
-        tabulate(
-            df_data,
-            showindex=False,
-            headers=df_data.columns,
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_data,
+                showindex=False,
+                headers=df_data.columns,
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            )
         )
-    )
+    else:
+        print(df_data.to_string(index=False))
     print("")
 
     export_data(
@@ -86,15 +93,18 @@ def display_futures(export: str):
         print("No futures/commodities data available\n")
         return
 
-    print(
-        tabulate(
-            df_data,
-            showindex=False,
-            headers=df_data.columns,
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_data,
+                showindex=False,
+                headers=df_data.columns,
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            )
         )
-    )
+    else:
+        print(df_data.to_string(index=False))
     print("")
 
     export_data(
@@ -118,15 +128,18 @@ def display_usbonds(export: str):
         print("No US bonds data available\n")
         return
 
-    print(
-        tabulate(
-            df_data,
-            showindex=False,
-            headers=df_data.columns,
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_data,
+                showindex=False,
+                headers=df_data.columns,
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            )
         )
-    )
+    else:
+        print(df_data.to_string(index=False))
     print("")
 
     export_data(
@@ -150,15 +163,18 @@ def display_glbonds(export: str):
         print("No global bonds data available\n")
         return
 
-    print(
-        tabulate(
-            df_data,
-            showindex=False,
-            headers=df_data.columns,
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_data,
+                showindex=False,
+                headers=df_data.columns,
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            )
         )
-    )
+    else:
+        print(df_data.to_string(index=False))
     print("")
 
     export_data(
@@ -182,15 +198,18 @@ def display_currencies(export: str):
         print("No currencies data available\n")
         return
 
-    print(
-        tabulate(
-            df_data,
-            showindex=False,
-            headers=df_data.columns,
-            floatfmt=".2f",
-            tablefmt="fancy_grid",
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_data,
+                showindex=False,
+                headers=df_data.columns,
+                floatfmt=".2f",
+                tablefmt="fancy_grid",
+            )
         )
-    )
+    else:
+        print(df_data.to_string(index=False))
     print("")
 
     export_data(

@@ -40,6 +40,7 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
 from gamestonk_terminal.cryptocurrency.report import report_controller
 from gamestonk_terminal.cryptocurrency.due_diligence import binance_model
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
+from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 import gamestonk_terminal.config_terminal as cfg
 
 
@@ -59,13 +60,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = [
-        "ta",
-        "dd",
-        "ov",
-        "disc",
-        "report",
-    ]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "report", "onchain"]
 
     SOURCES = {
         "bin": "Binance",
@@ -122,10 +117,11 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
     find        alternate way to search for coins
     finbrain    crypto sentiment from 15+ major news headlines
 
->   disc        discover trending cryptocurrencies,  e.g.: top gainers, losers, top sentiment
->   ov          overview of the cryptocurrencies,    e.g.: market cap, DeFi, latest news, top exchanges, stables
->   dd          due-diligence for loaded coin,       e.g.: coin information, social media, market stats
->   ta          technical analysis for loaded coin.  e.g.: ema, macd, rsi, adx, bbands, obv
+>   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
+>   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+>   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+>   onchain     information on different blockchains,   e.g.: eth gas fees
 >   report      generate automatic report
 """
         print(help_text)
@@ -725,6 +721,15 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
     def call_report(self, _):
         """Process report command"""
         ret = report_controller.menu()
+
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_onchain(self, _):
+        """Process onchain command"""
+        ret = onchain_controller.menu()
 
         if ret is False:
             self.print_help()

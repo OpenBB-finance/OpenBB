@@ -732,7 +732,9 @@ def find_tickers(submission):
     return l_tickers_found
 
 
-def export_data(export_type: str, dir_path: str, func_name: str, df: pd.DataFrame):
+def export_data(
+    export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
+):
     """Export data to a file.
 
     Parameters
@@ -753,17 +755,32 @@ def export_data(export_type: str, dir_path: str, func_name: str, df: pd.DataFram
         full_path = os.path.abspath(
             os.path.join(
                 export_dir,
-                f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}.{export_type}",
+                f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}",
             )
         )
 
-        if export_type == "csv":
-            df.to_csv(full_path)
-        elif export_type == "json":
-            df.to_json(full_path)
-        elif export_type in "xlsx":
-            df.to_excel(full_path, index=True, header=True)
-        else:
-            print("Wrong export file specified.\n")
+        if "," not in export_type:
+            export_type += ","
 
-        print(f"Saved file: {full_path}\n")
+        for exp_type in export_type.split(","):
+            if exp_type:
+                saved_path = f"{full_path}.{exp_type}"
+
+                if exp_type == "csv":
+                    df.to_csv(saved_path)
+                elif exp_type == "json":
+                    df.to_json(saved_path)
+                elif exp_type in "xlsx":
+                    df.to_excel(saved_path, index=True, header=True)
+                elif exp_type == "png":
+                    plt.savefig(saved_path)
+                elif exp_type == "jpg":
+                    plt.savefig(saved_path)
+                elif exp_type == "pdf":
+                    plt.savefig(saved_path)
+                elif exp_type == "svg":
+                    plt.savefig(saved_path)
+                else:
+                    print("Wrong export file specified.\n")
+
+                print(f"Saved file: {saved_path}\n")
