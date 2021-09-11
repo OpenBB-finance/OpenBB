@@ -298,7 +298,8 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
                 floatfmt=".1f",
                 showindex=False,
                 tablefmt="fancy_grid",
-            )
+            ),
+            "\n",
         )
     else:
         print(df.to_string, "\n")

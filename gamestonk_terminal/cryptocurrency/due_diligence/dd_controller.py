@@ -540,7 +540,6 @@ Coinbase:
     # binance
     def call_book(self, other_args):
         """Process book command"""
-
         if self.current_coin:
             parser = argparse.ArgumentParser(
                 prog="book",
@@ -672,7 +671,6 @@ Coinbase:
 
     def call_trades(self, other_args):
         """Process trades command"""
-
         parser = argparse.ArgumentParser(
             prog="trades",
             add_help=False,
