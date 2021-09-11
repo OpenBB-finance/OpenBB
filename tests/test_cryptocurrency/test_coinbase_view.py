@@ -1,8 +1,9 @@
 from unittest import mock, TestCase
-
+import vcr
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     coinbase_view,
 )
+from gamestonk_terminal.cryptocurrency.overview import coinbase_view as ov_coinbase_view
 from tests.helpers import check_print
 
 # pylint: disable=unused-import
@@ -16,9 +17,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
     )
-    def test_display_candles(
-        self, mock_validity, mock_request
-    ):  # pragma: allowlist secret
+    def test_display_candles(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
         mock_request.return_value = [
             [1631318400, 0.0715, 0.07314, 0.07155, 0.07245, 5957.08396321],
@@ -34,9 +33,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
     )
-    def test_display_stats(
-        self, mock_validity, mock_request
-    ):  # pragma: allowlist secret
+    def test_display_stats(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
         mock_request.return_value = {
             "open": "3245.61000000",
@@ -55,9 +52,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
     )
-    def test_display_trades(
-        self, mock_validity, mock_request
-    ):  # pragma: allowlist secret
+    def test_display_trades(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
         mock_request.return_value = [
             {
@@ -84,9 +79,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
     )
-    def test_display_orders(
-        self, mock_validity, mock_request
-    ):  # pragma: allowlist secret
+    def test_display_orders(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
         mock_request.return_value = [
             {
@@ -144,9 +137,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
     @mock.patch(
         "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
     )
-    def test_display_deposits(
-        self, mock_validity, mock_request
-    ):  # pragma: allowlist secret
+    def test_display_deposits(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
         mock_request.return_value = (
             [
@@ -252,3 +243,11 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
             "currency": "USD",
         }
         coinbase_view.display_account("ETH", False)
+
+    @check_print(assert_in="base_currency")
+    @vcr.use_cassette(
+        "tests/cassettes/test_cryptocurrency/test_coinbase/test_trading_pairs.yaml",
+        record_mode="new_episodes",
+    )
+    def test_display_trading_pairs(self):
+        ov_coinbase_view.display_trading_pairs(10, "base_currency", False, "")

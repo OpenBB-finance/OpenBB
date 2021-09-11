@@ -239,8 +239,9 @@ def get_account_history(account: str) -> pd.DataFrame:
     return pd.json_normalize(resp)
 
 
-def get_account(account: str):
-    """
+def get_account(account: str) -> pd.DataFrame:
+    """Get single account information. [Source: Coinbase]
+
     Parameters
     ----------
     account: str
@@ -261,7 +262,9 @@ def get_account(account: str):
     )
 
     resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
-    return pd.Series(resp).to_frame().reset_index()
+    df = pd.Series(resp).to_frame().reset_index()
+    df.columns = ["Metric", "Value"]
+    return df
 
 
 def get_orders() -> pd.DataFrame:
