@@ -11,10 +11,10 @@
   "bugs": {
     "url": "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
   },
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "author": {
     "name": "Gamestonk Contibuters",
-    "email": ""
+    "email": "dro.lopes@campus.fct.unl.pt"
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
