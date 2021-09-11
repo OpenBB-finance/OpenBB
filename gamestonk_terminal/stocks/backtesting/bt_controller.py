@@ -110,7 +110,7 @@ Current Ticker: {self.ticker.upper()}
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, _, self.stock, _ = load(
+        self.ticker, _, _, self.stock = load(
             other_args, self.ticker, "", "1440", pd.DataFrame()
         )
         if "." in self.ticker:
