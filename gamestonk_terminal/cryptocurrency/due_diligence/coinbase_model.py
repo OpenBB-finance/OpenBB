@@ -261,7 +261,7 @@ def get_account(account: str):
     )
 
     resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
-    return pd.DataFrame(resp)
+    return pd.Series(resp).to_frame().reset_index()
 
 
 def get_orders() -> pd.DataFrame:

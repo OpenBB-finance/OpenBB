@@ -197,3 +197,58 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
         coinbase_view.display_deposits(
             2, "created_at", "deposit", descend=True, export=""
         )
+
+    @check_print(assert_in="balance")
+    @mock.patch(
+        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.make_coinbase_request"
+    )
+    @mock.patch(
+        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model._check_account_validity"
+    )
+    def test_display_history(self, mock_validity, mock_request):
+        mock_validity.return_value = "ETH"
+        mock_request.return_value = [
+            {
+                "id": "100",
+                "created_at": "2014-11-07T08:19:27.028459Z",
+                "amount": "0.001",
+                "balance": "239.669",
+                "type": "fee",
+                "details": {
+                    "order_id": "d50ec984-77a8-460a-b958-66f114b0de9b",
+                    "trade_id": "74",
+                    "product_id": "ETH-USD",
+                },
+            },
+            {
+                "id": "111",
+                "created_at": "2014-11-07T08:19:27.028459Z",
+                "amount": "0.001",
+                "balance": "239.669",
+                "type": "fee",
+                "details": {
+                    "order_id": "d50ec984-77a8-460a-b958-66f114b0de9b",
+                    "trade_id": "75",
+                    "product_id": "ETH-USD",
+                },
+            },
+        ]
+        coinbase_view.display_history("ETH", "", 2)
+
+    @check_print(assert_in="balance")
+    @mock.patch(
+        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.make_coinbase_request"
+    )
+    @mock.patch(
+        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model._check_account_validity"
+    )
+    def test_display_account(self, mock_validity, mock_request):
+        mock_validity.return_value = "ETH"
+        mock_request.return_value = {
+            "id": "a1b2c3d4",
+            "balance": "1.100",
+            "holds": "0.100",
+            "available": "1.00",
+            "currency": "USD",
+        }
+        coinbase_view.display_account("ETH", False)

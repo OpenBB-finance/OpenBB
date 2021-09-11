@@ -342,6 +342,6 @@ def display_deposits(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "orders",
+        "deposits",
         df_data,
     )
