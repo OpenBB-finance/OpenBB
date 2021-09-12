@@ -41,7 +41,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     });
 
     commands.addCommand(command, {
-      label: 'Documentation',
+      label: 'Gamestonk Documentation',
       icon: icon,
       execute: (args: any) => {
         window.open(
