@@ -11,7 +11,7 @@
             "id": "jp-mainmenu-file-new",
             "items": [
               {
-                "command": "jlab-examples:create-new-python-file",
+                "command": "gamestonk:documentation",
                 "rank": 30
               }
             ]

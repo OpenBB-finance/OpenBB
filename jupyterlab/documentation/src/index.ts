@@ -5,8 +5,6 @@ import {
 
 import { ICommandPalette } from '@jupyterlab/apputils';
 
-import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-
 import { ILauncher } from '@jupyterlab/launcher';
 
 import { IMainMenu } from "@jupyterlab/mainmenu";
@@ -24,11 +22,9 @@ namespace CommandIDs {
 const extension: JupyterFrontEndPlugin<void> = {
   id: 'documentation',
   autoStart: true,
-  requires: [IFileBrowserFactory],
   optional: [ILauncher, ICommandPalette],
   activate: (
     app: JupyterFrontEnd,
-    browserFactory: IFileBrowserFactory,
     launcher: ILauncher | null,
     menu: IMainMenu | null,
     palette: ICommandPalette | null
