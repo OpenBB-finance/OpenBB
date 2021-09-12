@@ -1,7 +1,7 @@
 {
-  "name": "@gamestonk/settings",
+  "name": "@gamestonk/documentation",
   "version": "0.1.0",
-  "description": "Gamestonk settings launcher",
+  "description": "Gamestonk terminal documentation",
   "keywords": [
     "jupyter",
     "jupyterlab",
@@ -13,13 +13,12 @@
   },
   "license": "MIT",
   "author": {
-    "name": "Gamestonk Contributors",
+    "name": "Project Jupyter Contributors",
     "email": "dro.lopes@campus.fct.unl.pt"
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}",
-    "style/index.js",
+    "style/**/*.{css,eot,js,gif,html,jpg,json,png,svg,woff2,ttf}",
     "schema/**/*.json"
   ],
   "main": "lib/index.js",
@@ -27,7 +26,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jupyterlab/extension-examples.git"
+    "url": "https://github.com/GamestonkTerminal/GamestonkTerminal.git"
   },
   "scripts": {
     "build": "jlpm run build:lib && jlpm run build:labextension:dev",
@@ -38,7 +37,7 @@
     "build:prod": "jlpm run clean && jlpm run build:lib && jlpm run build:labextension",
     "clean": "jlpm run clean:lib",
     "clean:all": "jlpm run clean:lib && jlpm run clean:labextension",
-    "clean:labextension": "rimraf gamestonk_terminal_settings/labextension",
+    "clean:labextension": "rimraf gamestonk_terminal_documentation/labextension",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
@@ -51,9 +50,7 @@
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/launcher": "^3.1.0",
-    "@jupyterlab/mainmenu": "^3.1.7",
-    "@jupyterlab/settingregistry": "^3.1.8",
-    "@jupyterlab/ui-components": "^3.1.0"
+    "@jupyterlab/mainmenu": "^3.1.7"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.1.0",
@@ -71,11 +68,12 @@
   },
   "sideEffects": [
     "style/*.css",
+    "style/*.svg",
     "style/index.js"
   ],
   "jupyterlab": {
     "extension": true,
-    "outputDir": "gamestonk_terminal_settings/labextension",
+    "outputDir": "gamestonk_terminal_documentation/labextension",
     "schemaDir": "schema"
   },
   "styleModule": "style/index.js"

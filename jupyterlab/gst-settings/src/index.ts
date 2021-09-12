@@ -83,7 +83,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     if (menu) {
       menu.fileMenu.newMenu.addGroup([{ command }], 30);
     }
-    console.log("Added Gamestonk Settings Exstension.");
+    console.log("Added Gamestonk Settings Extension.");
   },
 };
 
