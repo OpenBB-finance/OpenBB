@@ -17,6 +17,7 @@ from gamestonk_terminal.portfolio.brokers import (
     ally_api,
 )
 from gamestonk_terminal.portfolio.brokers.degiro import degiro_controller
+from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_controller
 from gamestonk_terminal.portfolio.brokers.brokers_helpers import (
     merge_brokers_holdings,
     print_brokers_holdings,
@@ -40,6 +41,7 @@ class BrokersController:
         "quit",
         "rhhold",
         "rhhist",
+        "cb",
     ]
 
     BROKERS = [
@@ -66,6 +68,8 @@ class BrokersController:
             "   ally - Ally Invest\n"
             "   alp  - Alpaca\n"
             "   rh   - Robinhood\n"
+            "\nCrypto Exchanges Supported:\n"
+            "   cb   - Coinbase Pro\n"
             "\nPortfolio:\n"
             "   cls           clear screen\n"
             "   ?/help        show this menu again\n"
@@ -87,6 +91,8 @@ class BrokersController:
             "   rhhist        plot rh brokers holdings history\n"
             "\nDegiro:\n"
             ">  degiro        degiro standalone menu\n"
+            "\nCoinbase:\n"
+            ">  cb            coinbase standalone menu\n"
             "\nMerge:\n"
             "   login         login to your brokers\n"
             "   hold          view net holdings across all logins\n"
@@ -198,6 +204,12 @@ class BrokersController:
     def call_degiro(self, _):
         """Process degiro command."""
         if degiro_controller.menu():
+            return True
+        print("")
+
+    def call_cb(self, _):
+        """Process degiro command."""
+        if coinbase_controller.menu():
             return True
         print("")
 

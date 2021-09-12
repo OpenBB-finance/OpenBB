@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model import (
+from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
     make_coinbase_request,
 )
 

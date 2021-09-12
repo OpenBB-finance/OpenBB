@@ -1,10 +1,14 @@
 from unittest import mock, TestCase
 import vcr
 from gamestonk_terminal.cryptocurrency.due_diligence import (
-    coinbase_view,
+    coinbase_view as dd_coinbase_view,
+)
+from gamestonk_terminal.portfolio.brokers.coinbase import (
+    coinbase_view as bro_coinbase_view,
 )
 from gamestonk_terminal.cryptocurrency.overview import coinbase_view as ov_coinbase_view
 from tests.helpers import check_print
+
 
 # pylint: disable=unused-import
 
@@ -24,7 +28,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
             [1631232000, 0.07088, 0.07476, 0.07382, 0.07159, 13264.33844153],
             [1631145600, 0.07369, 0.07669, 0.07599, 0.07378, 12462.35265359],
         ]
-        coinbase_view.display_candles("ETH-BTC", "1day", "")
+        dd_coinbase_view.display_candles("ETH-BTC", "1day", "")
 
     @check_print(assert_in="Value")
     @mock.patch(
@@ -43,7 +47,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
             "last": "3333.19000000",
             "volume_30day": "1019451.11188405",
         }
-        coinbase_view.display_stats("ETH-USDT", "")
+        dd_coinbase_view.display_stats("ETH-USDT", "")
 
     @check_print(assert_in="price")
     @mock.patch(
@@ -70,14 +74,14 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
                 "side": "sell",
             },
         ]
-        coinbase_view.display_trades("ETH-USDT", limit=100, side=None, export="")
+        dd_coinbase_view.display_trades("ETH-USDT", limit=100, side=None, export="")
 
     @check_print(assert_in="product_id")
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.make_coinbase_request"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model.make_coinbase_request"
     )
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model._check_account_validity"
     )
     def test_display_orders(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
@@ -128,14 +132,14 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
                 "settled": False,
             },
         ]
-        coinbase_view.display_orders(2, "created_at", descend=True, export="")
+        bro_coinbase_view.display_orders(2, "created_at", descend=True, export="")
 
     @check_print(assert_in="crypto_address")
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.make_coinbase_request"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model.make_coinbase_request"
     )
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.check_validity_of_product"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model._check_account_validity"
     )
     def test_display_deposits(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
@@ -185,16 +189,16 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
                 },
             ],
         )
-        coinbase_view.display_deposits(
+        bro_coinbase_view.display_deposits(
             2, "created_at", "deposit", descend=True, export=""
         )
 
     @check_print(assert_in="balance")
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.make_coinbase_request"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model.make_coinbase_request"
     )
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model._check_account_validity"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model._check_account_validity"
     )
     def test_display_history(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
@@ -224,14 +228,14 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
                 },
             },
         ]
-        coinbase_view.display_history("ETH", "", 2)
+        bro_coinbase_view.display_history("ETH", "", 2)
 
     @check_print(assert_in="balance")
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model.make_coinbase_request"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model.make_coinbase_request"
     )
     @mock.patch(
-        "gamestonk_terminal.cryptocurrency.due_diligence.coinbase_model._check_account_validity"
+        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model._check_account_validity"
     )
     def test_display_account(self, mock_validity, mock_request):
         mock_validity.return_value = "ETH"
@@ -242,7 +246,7 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
             "available": "1.00",
             "currency": "USD",
         }
-        coinbase_view.display_account("ETH", False)
+        bro_coinbase_view.display_account("ETH", False)
 
     @check_print(assert_in="base_currency")
     @vcr.use_cassette(
