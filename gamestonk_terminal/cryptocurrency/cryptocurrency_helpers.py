@@ -40,8 +40,9 @@ def _load_coin_map(file_name: str) -> pd.DataFrame:
     if file_name.split(".")[1] != "json":
         raise TypeError("Please load json file")
 
-    path = os.path.abspath(__file__ + "/../")
-    with open(path + f"/data/{file_name}", encoding="utf8") as f:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(current_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
         coins = json.load(f)
 
     coins_df = pd.Series(coins).reset_index()

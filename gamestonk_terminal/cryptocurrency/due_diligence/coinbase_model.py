@@ -236,7 +236,17 @@ def get_account_history(account: str) -> pd.DataFrame:
     resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
     if not resp:
         return pd.DataFrame()
-    return pd.json_normalize(resp)
+    df = pd.json_normalize(resp)
+
+    try:
+        df.columns = [
+            col.replace("details.", "") if "details" in col else col
+            for col in df.columns
+        ]
+    except Exception as e:
+        print(e)
+
+    return df
 
 
 def get_account(account: str) -> pd.DataFrame:
@@ -526,9 +536,6 @@ def get_candles(product_id: str, interval: str = "24h") -> pd.DataFrame:
             "Volume",
         ]
     ]
-
-
-get_candles("ETH-BTC", "1day")
 
 
 def get_product_stats(product_id: str) -> pd.DataFrame:
