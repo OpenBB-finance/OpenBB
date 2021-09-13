@@ -1,43 +1,19 @@
 """ Portfolio Optimization Functions"""
 __docformat__ = "numpy"
 
-import argparse
 import math
 from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pypfopt import EfficientFrontier, expected_returns, plotting, risk_models
+from pypfopt import plotting
 from tabulate import tabulate
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
-from gamestonk_terminal.helper_funcs import (
-    check_non_negative,
-    parse_known_args_and_warn,
-    plot_autoscale,
-)
+from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
-from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_model import (
-    prepare_efficient_frontier,
-    process_stocks,
-)
-
-
-period_choices = [
-    "1d",
-    "5d",
-    "1mo",
-    "3mo",
-    "6mo",
-    "1y",
-    "2y",
-    "5y",
-    "10y",
-    "ytd",
-    "max",
-]
 
 d_period = {
     "1d": "[1 Day]",
@@ -53,38 +29,59 @@ d_period = {
     "max": "[All-time]",
 }
 
+# pylint:disable=no-member
 
-def display_weights(weights: dict):
+
+def display_weights(weights: dict, market_neutral: bool = False):
     """Print weights in a nice format
 
     Parameters
     ----------
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values
+    market_neutral : bool
+        Flag indicating shorting allowed (negative weights)
     """
     if not weights:
         return
     weight_df = pd.DataFrame.from_dict(data=weights, orient="index", columns=["value"])
-    if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
-        weight_df["value"] = (weight_df["value"] * 100).astype(str).apply(
-            lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5]
-        ) + " %"
-    else:
-        weight_df["value"] = (
-            weight_df["value"]
-            .astype(str)
-            .apply(lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5])
-            + " $"
-        )
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                weight_df, headers=["Value"], showindex=True, tablefmt="fancy_grid"
+    if not market_neutral:
+        if math.isclose(weight_df.sum()["value"], 1, rel_tol=0.1):
+            weight_df["value"] = (weight_df["value"] * 100).astype(str).apply(
+                lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5]
+            ) + " %"
+        else:
+            weight_df["value"] = (
+                weight_df["value"]
+                .astype(str)
+                .apply(lambda s: " " + s[:4] if s.find(".") == 1 else "" + s[:5])
+                + " $"
             )
-        )
+
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    weight_df, headers=["Value"], showindex=True, tablefmt="fancy_grid"
+                )
+            )
+        else:
+            print(weight_df.to_string(header=False))
+
     else:
-        print(weight_df.to_string(header=False))
+        tot_value = weight_df["value"].abs().mean()
+        header = "Value ($)" if tot_value > 1.01 else "Value (%)"
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    weight_df,
+                    headers=[header],
+                    showindex=True,
+                    tablefmt="fancy_grid",
+                    floatfmt=".2f",
+                ),
+            )
+        else:
+            print(weight_df.to_string(header=False))
     print("")
 
 
@@ -131,482 +128,198 @@ def display_property_weighting(
         display_weights(values)
 
 
-def max_sharpe(stocks: List[str], other_args: List[str]):
-    """Return a portfolio that maximises the Sharpe Ratio
+def display_max_sharpe(
+    stocks: List[str],
+    period: str,
+    value: float = 1.0,
+    rfrate: float = 0.02,
+    pie: bool = False,
+):
+    """Display portfolio that maximizes Sharpe Ratio over stocks
 
     Parameters
     ----------
     stocks : List[str]
-        List of the stocks to be included in the weights
-    other_args : List[str]
-        argparse other args
+        List of portfolio tickers
+    period : str
+        Period to look at returns from
+    value : float, optional
+        Amount to allocate to portfolio, by default 1.0
+    rfrate : float, optional
+        Risk Free Rate, by default 0.02
+    pie : bool, optional
+        Boolean to show weights as a pie chart, by default False
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="maxsharpe",
-        description="Maximise the Sharpe Ratio",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
-    parser.add_argument(
-        "--pie",
-        action="store_true",
-        dest="pie",
-        default=False,
-        help="Display a pie chart for weights",
-    )
-
-    if other_args and "-" not in other_args[0]:
-        other_args.insert(0, "-r")
-
-    parser.add_argument(
-        "-r",
-        "--risk-free-rate",
-        type=float,
-        dest="risk_free_rate",
-        default=0.02,
-        help="""Risk-free rate of borrowing/lending. The period of the risk-free rate
-                should correspond to the frequency of expected returns.""",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        period = ns_parser.period
-        stock_prices = process_stocks(stocks, period)
-        ef = prepare_efficient_frontier(stock_prices)
-
-        sp = d_period[ns_parser.period]
-
-        ef_opt = dict(ef.max_sharpe(ns_parser.risk_free_rate))
-        s_title = f"{sp} Weights that maximize Sharpe ratio with risk free level of {ns_parser.risk_free_rate}"
-
-        weights = {
-            key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
-        }
-
-        if ns_parser.pie:
-            pie_chart_weights(weights, s_title)
-        else:
-            print(s_title)
-            display_weights(weights)
-            print("")
-
-        ef.portfolio_performance(verbose=True)
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def min_volatility(stocks: List[str], other_args: List[str]):
-    """Return a portfolio that optimizes for minimum volatility
-
-    Parameters
-    ----------
-    stocks : List[str]
-        List of the stocks to be included in the weights
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="min_volatility",
-        description="Optimizes for minimum volatility",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
-    parser.add_argument(
-        "--pie",
-        action="store_true",
-        dest="pie",
-        default=False,
-        help="Display a pie chart for weights",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        period = ns_parser.period
-        stock_prices = process_stocks(stocks, period)
-        ef = prepare_efficient_frontier(stock_prices)
-
-        sp = d_period[ns_parser.period]
-
-        ef_opt = dict(ef.min_volatility())
-        s_title = f"{sp} Weights that minimize volatility"
-
-        weights = {
-            key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
-        }
-
-        if ns_parser.pie:
-            pie_chart_weights(weights, s_title)
-        else:
-            print(s_title)
-            display_weights(weights)
-            print("")
-
-        ef.portfolio_performance(verbose=True)
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def max_quadratic_utility(stocks: List[str], other_args: List[str]):
-    """Return a portfolio that maximises the quadratic utility, given some risk aversion
-
-    Parameters
-    ----------
-    stocks : List[str]
-        List of the stocks to be included in the weights
-    other_args : List[str]
-        argparse other args
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="max_quadratic_utility",
-        description="Maximises the quadratic utility, given some risk aversion",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
-    parser.add_argument(
-        "-n",
-        "--market-neutral",
-        action="store_true",
-        default=False,
-        dest="market_neutral",
-        help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
-        Requires negative lower weight bound.""",
-    )
-    if "-n" not in other_args:
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights. Only if neutral flag is left False.",
-        )
-
-    if other_args and "-" not in other_args[0]:
-        other_args.insert(0, "-r")
-
-    parser.add_argument(
-        "-r",
-        "--risk-aversion",
-        type=float,
-        dest="risk_aversion",
-        default=1,
-        help="risk aversion parameter",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        period = ns_parser.period
-        stock_prices = process_stocks(stocks, period)
-        ef = prepare_efficient_frontier(stock_prices)
-
-        sp = d_period[ns_parser.period]
-
-        ef_opt = dict(
-            ef.max_quadratic_utility(ns_parser.risk_aversion, ns_parser.market_neutral)
-        )
-        s_title = f"{sp} Weights that maximise the quadratic utility with risk aversion of {ns_parser.risk_aversion}"
-
-        weights = {
-            key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
-        }
-
-        if not ns_parser.market_neutral and ns_parser.pie:
-            pie_chart_weights(weights, s_title)
-            ef.portfolio_performance(verbose=True)
-            print("")
-            return
-
-        print(s_title)
+    s_title = f"{d_period[period]} Weights that maximize Sharpe ratio with risk free level of {rfrate}"
+    ef_opt, ef = optimizer_model.get_maxsharpe_portfolio(stocks, period, rfrate)
+    weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
+    if pie:
+        pie_chart_weights(weights, s_title)
+    else:
+        print("\n", s_title)
         display_weights(weights)
-        print("")
+    ef.portfolio_performance(verbose=True)
+    print("")
+
+
+def display_min_volatility(
+    stocks: List[str], period: str = "3mo", value: float = 1.0, pie: bool = False
+):
+    """Display portfolio with minimum volatility
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio tickers
+    period : str
+        Period to look at returns from
+    value : float, optional
+        Amount to allocate to portfolio, by default 1.0
+    pie : bool, optional
+        Boolean to show weights as a pie chart, by default False
+    """
+    s_title = f"{d_period[period]} Weights that minimize volatility"
+    ef_opt, ef = optimizer_model.get_minvol_portfolio(stocks, period)
+    weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
+    if pie:
+        pie_chart_weights(weights, s_title)
+    else:
+        print("\n", s_title)
+        display_weights(weights)
+    ef.portfolio_performance(verbose=True)
+    print("")
+
+
+def display_max_quadratic_utility(
+    stocks: List[str],
+    period: str = "3mo",
+    value: float = 1.0,
+    risk_aversion: float = 1.0,
+    market_neutral: bool = False,
+    pie: bool = False,
+):
+    """Display portfolio weights that maximize utility function given some risk aversion
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio tickers
+    period : str, optional
+        Period to get data for, by default "3mo"
+    value : float, optional
+        Amount to allocate to portfolio, by default 1.0
+    risk_aversion : float, optional
+        Max risk aversion for optimization, by default 1.0
+    market_neutral : bool, optional
+        Boolean to allow for shorting, by default False
+    pie : bool, optional
+        Boolean to display weights as pie chart by default False
+    """
+    s_title = f"{d_period[period]} Weights that maximise the quadratic utility with risk aversion of {risk_aversion}"
+    ef_opt, ef = optimizer_model.get_maxquadutil_portfolio(
+        stocks, period, risk_aversion, market_neutral
+    )
+    weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
+
+    if not market_neutral and pie:
+        pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
         print("")
-
-    except Exception as e:
-        print(e, "\n")
         return
 
-
-def efficient_risk(stocks: List[str], other_args: List[str]):
-    """Return a portfolio that maximises return for a target risk. The resulting portfolio will have
-    a volatility less than the target (but not guaranteed to be equal)
-
-    stocks : List[str]
-        List of the stocks to be included in the weights
-    other_args : List[str]
-        argparse other args
-    """
-
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="effrisk",
-        description="""Maximise return for a target risk. The resulting portfolio will have
-        a volatility less than the target (but not guaranteed to be equal)""",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
-    parser.add_argument(
-        "-n",
-        "--market-neutral",
-        action="store_true",
-        default=False,
-        dest="market_neutral",
-        help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
-        Requires negative lower weight bound.""",
-    )
-    if "-n" not in other_args:
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights. Only if neutral flag is left False.",
-        )
-
-    if other_args:
-        if "-" not in other_args[0]:
-            other_args.insert(0, "-t")
-    parser.add_argument(
-        "-t",
-        "--target-volatility",
-        type=float,
-        dest="target_volatility",
-        default=0.1,
-        help="The desired maximum volatility of the resulting portfolio",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        period = ns_parser.period
-        stock_prices = process_stocks(stocks, period)
-        ef = prepare_efficient_frontier(stock_prices)
-
-        sp = d_period[ns_parser.period]
-
-        ef_opt = dict(
-            ef.efficient_risk(ns_parser.target_volatility, ns_parser.market_neutral)
-        )
-        s_title = f"{sp} Weights that maximize return with a maximum volatility of {ns_parser.target_volatility}"
-
-        weights = {
-            key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
-        }
-
-        if not ns_parser.market_neutral:
-            if ns_parser.pie:
-                pie_chart_weights(weights, s_title)
-                ef.portfolio_performance(verbose=True)
-                return
-
-        print(s_title)
-        display_weights(weights)
-        print("")
-        ef.portfolio_performance(verbose=True)
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    print(s_title)
+    display_weights(weights, market_neutral)
+    ef.portfolio_performance(verbose=True)
+    print("")
 
 
-def efficient_return(stocks: List[str], other_args: List[str]):
-    """Displays a portfolio that minimises volatility for a given target return ('Markowitz portfolio')
+def display_efficient_risk(
+    stocks: List[str],
+    period: str = "3mo",
+    value: float = 1.0,
+    target_volatility: float = 1.0,
+    market_neutral: bool = False,
+    pie: bool = False,
+):
+    """Displays portfolio that maximizes returns at given volatility
 
     Parameters
     ----------
     stocks : List[str]
-        List of the stocks to be included in the weights
-    other_args : List[str]
-        argparse other args
+        List of portfolio tickers
+    period : str, optional
+        Period to get data for, by default "3mo"
+    value : float, optional
+        Amount to allocate to portfolio, by default 1.0
+    target_volatility : float, optional
+        Target volatility level, by default 0.1
+    market_neutral : bool, optional
+        Boolean to allow for shorting, by default False
+    pie : bool, optional
+        Boolean to display weights as pie chart by default False
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="effret",
-        description="Calculate the 'Markowitz portfolio', minimising volatility for a given target return",
+    s_title = f"{d_period[period]} Weights that maximise returns at target volatility: {target_volatility}"
+    ef_opt, ef = optimizer_model.get_efficient_risk_portfolio(
+        stocks, period, target_volatility, market_neutral
     )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
-    parser.add_argument(
-        "-n",
-        "--market-neutral",
-        action="store_true",
-        default=False,
-        dest="market_neutral",
-        help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
-        Requires negative lower weight bound.""",
-    )
-    if "-n" not in other_args:
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights. Only if neutral flag is left False.",
-        )
+    weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
 
-    if other_args:
-        if "-" not in other_args[0]:
-            other_args.insert(0, "-t")
-
-    parser.add_argument(
-        "-t",
-        "--target-return",
-        type=float,
-        dest="target_return",
-        default=0.1,
-        help="the desired return of the resulting portfolio",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
-
-        period = ns_parser.period
-        stock_prices = process_stocks(stocks, period)
-        ef = prepare_efficient_frontier(stock_prices)
-
-        sp = d_period[ns_parser.period]
-
-        ef_opt = dict(
-            ef.efficient_return(ns_parser.target_return, ns_parser.market_neutral)
-        )
-        s_title = f"{sp} Weights that minimise volatility for a given target return of {ns_parser.target_return}"
-
-        weights = {
-            key: ns_parser.value * round(value, 5) for key, value in ef_opt.items()
-        }
-
-        if not ns_parser.market_neutral:
-            if ns_parser.pie:
-                pie_chart_weights(weights, s_title)
-                ef.portfolio_performance(verbose=True)
-                print("")
-                return
-
-        print(s_title)
-        display_weights(weights)
-        print("")
+    if not market_neutral and pie:
+        pie_chart_weights(weights, s_title)
         ef.portfolio_performance(verbose=True)
         print("")
+        return
 
-    except Exception as e:
-        print(e, "\n")
+    print(s_title)
+    display_weights(weights, market_neutral)
+    ef.portfolio_performance(verbose=True)
+    print("")
 
 
-def show_ef(stocks: List[str], other_args: List[str]):
+def display_efficient_return(
+    stocks: List[str],
+    period: str = "3mo",
+    value: float = 1.0,
+    target_return: float = 1.0,
+    market_neutral: bool = False,
+    pie: bool = False,
+):
+    """Displays portfolio that minimizes volatility at given return
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio tickers
+    period : str, optional
+        Period to get data for, by default "3mo"
+    value : float, optional
+        Amount to allocate to portfolio, by default 1.0
+    target_return : float, optional
+        Target return level, by default 0.1
+    market_neutral : bool, optional
+        Boolean to allow for shorting, by default False
+    pie : bool, optional
+        Boolean to display weights as pie chart by default False
+    """
+    s_title = f"{d_period[period]} Weights that minimizes volatility at target return: {target_return}"
+    ef_opt, ef = optimizer_model.get_efficient_return_portfolio(
+        stocks, period, target_return, market_neutral
+    )
+    weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
+
+    if not market_neutral and pie:
+        pie_chart_weights(weights, s_title)
+        ef.portfolio_performance(verbose=True)
+        print("")
+        return
+
+    print(s_title)
+    display_weights(weights, market_neutral)
+    ef.portfolio_performance(verbose=True)
+    print("")
+
+
+def display_ef(stocks: List[str], period: str = "3mo", n_portfolios: int = 300):
     """Display efficient frontier
 
     Parameters
@@ -616,77 +329,27 @@ def show_ef(stocks: List[str], other_args: List[str]):
     other_args : List[str]
         argparse other args
     """
-
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="ef",
-        description="""This function plots random portfolios based
-                    on their risk and returns and shows the efficient frontier.""",
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ef, rets, stds = optimizer_model.generate_random_portfolios(
+        stocks, period, n_portfolios
     )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-n",
-        "--number-portfolios",
-        default=300,
-        type=check_non_negative,
-        dest="n_port",
-        help="number of portfolios to simulate",
-    )
+    sharpes = rets / stds
+    ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
+    plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
+    # Find the tangency portfolio
+    ef.max_sharpe()
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
+    ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
+    ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
+    ax.legend()
+    fig.tight_layout()
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-n")
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-        if len(stocks) < 2:
-            print("Please have at least 2 loaded tickers to calculate weights.\n")
-            return
+    if gtff.USE_ION:
+        plt.ion()
 
-        stock_prices = process_stocks(stocks, ns_parser.period)
-        mu = expected_returns.mean_historical_return(stock_prices)
-        S = risk_models.sample_cov(stock_prices)
-        ef = EfficientFrontier(mu, S)
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        # Generate random portfolios
-        n_samples = ns_parser.n_port
-        w = np.random.dirichlet(np.ones(len(mu)), n_samples)
-        rets = w.dot(mu)
-        stds = np.sqrt(np.diag(w @ S @ w.T))
-        sharpes = rets / stds
-        ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
-
-        plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
-        # Find the tangency portfolio
-        ef.max_sharpe()
-        ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
-        ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
-
-        ax.set_title(f"Efficient Frontier simulating {ns_parser.n_port} portfolios")
-        ax.legend()
-        plt.tight_layout()
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.minorticks_on()
-        plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    plt.show()
+    print("")
 
 
 def my_autopct(x):

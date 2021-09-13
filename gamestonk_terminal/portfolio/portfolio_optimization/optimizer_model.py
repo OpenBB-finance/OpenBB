@@ -1,12 +1,14 @@
 """ Portfolio Optimization Helper Functions """
 __docformat__ = "numpy"
 
-from typing import List, Dict
+from typing import List, Dict, Tuple
+
+import numpy as np
 import pandas as pd
 import yfinance as yf
 from pypfopt.efficient_frontier import EfficientFrontier
-from pypfopt import risk_models
-from pypfopt import expected_returns
+from pypfopt import expected_returns, risk_models
+from gamestonk_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 
 
 def get_equal_weights(stocks: List[str], value: float = 1.0) -> Dict:
@@ -62,29 +64,147 @@ def get_property_weights(
     return {k: value * v / prop_sum for k, v in prop.items()}
 
 
-def process_stocks(list_of_stocks: List[str], period: str = "3mo") -> pd.DataFrame:
-    """Get adjusted closing price for each stock in the list
+def get_maxsharpe_portfolio(
+    stocks: List[str], period: str = "3mo", rfrate: float = 0.02
+) -> Tuple[Dict, EfficientFrontier]:
+    """Generate weights for max sharpe portfolio
 
     Parameters
     ----------
-    list_of_stocks: List[str]
-        List of tickers to get historical data for
-    period: str
-        Period to get data from yfinance
+    stocks : List[str]
+        List of portfolio tickers
+    period : str, optional
+        Period to get stock data, by default "3mo"
+    rfrate : float, optional
+        Risk free rate, by default 0.02
 
     Returns
     -------
-    stock_closes: DataFrame
-        DataFrame containing daily (adjusted) close prices for each stock in list
+    Dict
+        Dictionary of tickers and weights
+    EfficientFrontier
+        EfficientFrontier object
     """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period)
+    ef = prepare_efficient_frontier(stock_prices)
+    return dict(ef.max_sharpe(rfrate)), ef
 
-    stock_prices = yf.download(
-        list_of_stocks, period=period, progress=False, group_by="ticker"
-    )
-    stock_closes = pd.DataFrame(index=stock_prices.index)
-    for stock in list_of_stocks:
-        stock_closes[stock] = stock_prices[stock]["Adj Close"]
-    return stock_closes
+
+def get_minvol_portfolio(
+    stocks: List[str], period: str = "3mo"
+) -> Tuple[Dict, EfficientFrontier]:
+    """Generate weights for minimum voltaility portfolio
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio tickers
+    period : str, optional
+        Period to get stock data, by default "3mo"
+
+    Returns
+    -------
+    Dict
+        Dictionary of tickers and weights
+    EfficientFrontier
+        EfficientFrontier object
+    """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period)
+    ef = prepare_efficient_frontier(stock_prices)
+    return dict(ef.min_volatility()), ef
+
+
+def get_maxquadutil_portfolio(
+    stocks: List[str],
+    period: str = "3mo",
+    risk_aversion: float = 1.0,
+    market_neutral: bool = False,
+) -> Tuple[Dict, EfficientFrontier]:
+    """Get portfolio maximizing quadratic ultility at a given risk aversion
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio stocks
+    period : str, optional
+        Period to get stock data, by default "3mo"
+    risk_aversion : float, optional
+        Risk aversion level, by default 1.0
+    market_neutral : bool, optional
+        Whether portfolio is market neutral, by default False
+
+    Returns
+    -------
+    Dict
+        Dictionary of portfolio weights
+    EfficientFrontier
+        EfficientFrontier object
+    """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period)
+    ef = prepare_efficient_frontier(stock_prices)
+    return ef.max_quadratic_utility(risk_aversion, market_neutral), ef
+
+
+def get_efficient_risk_portfolio(
+    stocks: List[str],
+    period: str = "3mo",
+    target_vol: float = 0.1,
+    market_neutral: bool = False,
+) -> Tuple[Dict, EfficientFrontier]:
+    """Get portfolio that maximizes returns at given volatility
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio stocks
+    period : str, optional
+        Period to get stock data, by default "3mo"
+    target_vol : float, optional
+        Target volatility level, by default 0.1
+    market_neutral : bool, optional
+        Whether portfolio is market neutral, by default False
+
+    Returns
+    -------
+    Dict
+        Dictionary of weights
+    EfficientFrontier
+        Efficient Frontier object
+    """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period)
+    ef = prepare_efficient_frontier(stock_prices)
+    return ef.efficient_risk(target_vol, market_neutral), ef
+
+
+def get_efficient_return_portfolio(
+    stocks: List[str],
+    period: str = "3mo",
+    target_return: float = 0.1,
+    market_neutral: bool = False,
+) -> Tuple[Dict, EfficientFrontier]:
+    """Get portfolio that minimizes volatility at given return
+
+    Parameters
+    ----------
+    stocks : List[str]
+        List of portfolio stocks
+    period : str, optional
+        Period to get stock data, by default "3mo"
+    target_return : float, optional
+        Target return level, by default 0.1
+    market_neutral : bool, optional
+        Whether portfolio is market neutral, by default False
+
+    Returns
+    -------
+    Dict
+        Dictionary of weights
+    EfficientFrontier
+        Efficient Frontier object
+    """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period)
+    ef = prepare_efficient_frontier(stock_prices)
+    return ef.efficient_return(target_return, market_neutral), ef
 
 
 def prepare_efficient_frontier(stock_prices: pd.DataFrame):
@@ -104,3 +224,31 @@ def prepare_efficient_frontier(stock_prices: pd.DataFrame):
     mu = expected_returns.mean_historical_return(stock_prices)
     S = risk_models.sample_cov(stock_prices)
     return EfficientFrontier(mu, S)
+
+
+def generate_random_portfolios(
+    stocks: List[str], period: str = "3mo", n_portfolios: int = 300
+):
+    """[summary]
+
+    Parameters
+    ----------
+    stocks : List[str]
+        [description]
+    period : str, optional
+        [description], by default "3mo"
+    n_portfolios : int, optional
+        [description], by default 300
+    """
+    stock_prices = yahoo_finance_model.process_stocks(stocks, period)
+    mu = expected_returns.mean_historical_return(stock_prices)
+    S = risk_models.sample_cov(stock_prices)
+    ef = EfficientFrontier(mu, S)
+
+    # Generate random portfolios
+    n_samples = n_portfolios
+    w = np.random.dirichlet(np.ones(len(mu)), n_samples)
+    rets = w.dot(mu)
+    stds = np.sqrt(np.diag(w @ S @ w.T))
+
+    return ef, rets, stds

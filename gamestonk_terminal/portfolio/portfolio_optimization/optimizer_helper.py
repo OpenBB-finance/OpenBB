@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 
+# These are all the possible yfinance properties
 l_valid_property_infos = [
     "previousClose",
     "regularMarketOpen",
