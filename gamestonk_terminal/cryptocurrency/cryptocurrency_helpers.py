@@ -2,9 +2,11 @@
 __docformat__ = "numpy"
 
 import os
+import json
 from typing import Tuple, Any, Optional, Union
 import difflib
 import pandas as pd
+import numpy as np
 from binance.client import Client
 import matplotlib.pyplot as plt
 from tabulate import tabulate
@@ -13,15 +15,12 @@ from gamestonk_terminal.helper_funcs import (
     plot_autoscale,
     export_data,
 )
+from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     pycoingecko_model,
     coinpaprika_model,
 )
-from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import (
-    get_coin_list,
-    get_mapping_matrix_for_binance,
-    load_binance_map,
-)
+from gamestonk_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_list_of_coins,
 )
@@ -30,9 +29,33 @@ from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
     show_available_pairs_for_given_symbol,
     plot_candles,
 )
+
+from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.feature_flags import USE_ION as ion
 from gamestonk_terminal import feature_flags as gtff
+
+
+def _load_coin_map(file_name: str) -> pd.DataFrame:
+    if file_name.split(".")[1] != "json":
+        raise TypeError("Please load json file")
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(current_dir, "data", file_name)
+    with open(path, encoding="utf8") as f:
+        coins = json.load(f)
+
+    coins_df = pd.Series(coins).reset_index()
+    coins_df.columns = ["symbol", "id"]
+    return coins_df
+
+
+def load_binance_map():
+    return _load_coin_map("binance_gecko_map.json")
+
+
+def load_coinbase_map():
+    return _load_coin_map("coinbase_gecko_map.json")
 
 
 def prepare_all_coins_df() -> pd.DataFrame:
@@ -47,12 +70,17 @@ def prepare_all_coins_df() -> pd.DataFrame:
         CoinGecko - id for coin in CoinGecko API: uniswap
         CoinPaprika - id for coin in CoinPaprika API: uni-uniswap
         Binance - symbol (baseAsset) for coin in Binance API: UNI
+        Coinbase - symbol for coin in Coinbase Pro API e.g UNI
         Symbol: uni
     """
 
     gecko_coins_df = get_coin_list()
     paprika_coins_df = get_list_of_coins()
+
+    # TODO: Think about scheduled job, that once a day will update data
+
     binance_coins_df = load_binance_map().rename(columns={"symbol": "Binance"})
+    coinbase_coins_df = load_coinbase_map().rename(columns={"symbol": "Coinbase"})
     gecko_paprika_coins_df = pd.merge(
         gecko_coins_df, paprika_coins_df, on="name", how="left"
     )
@@ -72,7 +100,15 @@ def prepare_all_coins_df() -> pd.DataFrame:
         inplace=True,
     )
 
-    return df_merged[["CoinGecko", "CoinPaprika", "Binance", "Symbol"]]
+    df_merged = pd.merge(
+        left=df_merged,
+        right=coinbase_coins_df,
+        left_on="CoinGecko",
+        right_on="id",
+        how="left",
+    )
+
+    return df_merged[["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "Symbol"]]
 
 
 def _create_closest_match_df(
@@ -109,7 +145,7 @@ def load(
     coin: str,
     source: str,
 ) -> Tuple[Union[Optional[str], pycoingecko_model.Coin], Any]:
-    """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika and Binance.
+    """Load cryptocurrency from given source. Available sources are: CoinGecko, CoinPaprika, Coinbase and Binance.
 
     Loading coin from Binance and CoinPaprika means validation if given coins exists in chosen source,
     if yes then id of the coin is returned as a string.
@@ -151,6 +187,17 @@ def load(
         current_coin, _ = coinpaprika_model.validate_coin(coin, paprika_coins_dict)
         return current_coin, source
 
+    if source == "cb":
+        coinbase_coin = coin.upper()
+        current_coin, pairs = coinbase_model.show_available_pairs_for_given_symbol(
+            coinbase_coin
+        )
+        if len(pairs) > 0:
+            print(f"Coin found : {current_coin}\n")
+        else:
+            print(f"Couldn't find coin with symbol {current_coin}\n")
+        return current_coin, source
+
     return current_coin, None
 
 
@@ -158,7 +205,7 @@ def load(
 def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     """Find similar coin by coin name,symbol or id.
 
-    If you don't remember exact name or id of the Coin at CoinGecko or CoinPaprika
+    If you don't remember exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
     you can use this command to display coins with similar name, symbol or id to your search query.
     Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
     It will search for coin that has similar name to polka and display top 25 matches.
@@ -175,7 +222,7 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     key: str
         Searching key (symbol, id, name)
     source: str
-        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin)
+        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -183,76 +230,35 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
     if source == "cg":
         coins_df = get_coin_list()
         coins_list = coins_df[key].to_list()
+        if key in ["symbol", "id"]:
+            coin = coin.lower()
         sim = difflib.get_close_matches(coin, coins_list, top)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         coins_df.drop("index", axis=1, inplace=True)
         df = df.merge(coins_df, on=key)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            print(df.to_string, "\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "find",
-            df,
-        )
-
     elif source == "cp":
         coins_df = get_list_of_coins()
         coins_list = coins_df[key].to_list()
-
         keys = {"name": "title", "symbol": "upper", "id": "lower"}
 
-        key = keys[key]
-        coin = getattr(coin, str(key))()
+        func_key = keys[key]
+        coin = getattr(coin, str(func_key))()
 
         sim = difflib.get_close_matches(coin, coins_list, top)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins_df, on=key)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            print(df.to_string, "\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "find",
-            df,
-        )
-
     elif source == "bin":
 
         # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
-        if len(coin) > 4:
+        if len(coin) > 5:
             key = "id"
 
         coins_df_gecko = get_coin_list()
-        coins_bin = get_mapping_matrix_for_binance()
-        coins_df_bin = pd.Series(coins_bin).reset_index()
-        coins_df_bin.columns = ["symbol", "id"]
+        coins_df_bin = load_binance_map()
         coins = pd.merge(
             coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
         )
@@ -263,29 +269,48 @@ def find(source: str, coin: str, key: str, top: int, export: str) -> None:
         df.columns = ["index", key]
         df = df.merge(coins, on=key)
 
-        if gtff.USE_TABULATE_DF:
-            print(
-                tabulate(
-                    df,
-                    headers=df.columns,
-                    floatfmt=".1f",
-                    showindex=False,
-                    tablefmt="fancy_grid",
-                )
-            )
-        else:
-            print(df.to_string, "\n")
+    elif source == "cb":
+        if len(coin) > 5:
+            key = "id"
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "find",
-            df,
+        coins_df_gecko = get_coin_list()
+        coins_df_bin = load_coinbase_map()
+        coins = pd.merge(
+            coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
         )
+        coins_list = coins[key].to_list()
+
+        sim = difflib.get_close_matches(coin, coins_list, top)
+        df = pd.Series(sim).to_frame().reset_index()
+        df.columns = ["index", key]
+        df = df.merge(coins, on=key)
 
     else:
-        print("Couldn't execute find methods for CoinPaprika, Binance or CoinGecko")
-    print("")
+        print(
+            "Couldn't execute find methods for CoinPaprika, Binance, Coinbase or CoinGecko\n"
+        )
+        df = pd.DataFrame()
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df,
+                headers=df.columns,
+                floatfmt=".1f",
+                showindex=False,
+                tablefmt="fancy_grid",
+            ),
+            "\n",
+        )
+    else:
+        print(df.to_string, "\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "find",
+        df,
+    )
 
 
 def display_all_coins(
@@ -293,7 +318,7 @@ def display_all_coins(
 ) -> None:
     """Find similar coin by coin name,symbol or id.
 
-    If you don't remember exact name or id of the Coin at CoinGecko or CoinPaprika
+    If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
     you can use this command to display coins with similar name, symbol or id to your search query.
     Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25
     It will search for coin that has similar name to polka and display top 25 matches.
@@ -307,7 +332,7 @@ def display_all_coins(
     coin: str
         Cryptocurrency
     source: str
-        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin)
+        Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
     skip: int
         Skip N number of records
     show_all: bool
@@ -315,12 +340,13 @@ def display_all_coins(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
+    sources = ["cg", "cp", "bin", "cb"]
     limit, cutoff = 30, 0.75
     coins_func_map = {
         "cg": get_coin_list,
         "cp": get_list_of_coins,
         "bin": load_binance_map,
+        "cb": load_coinbase_map,
     }
 
     if show_all:
@@ -330,7 +356,7 @@ def display_all_coins(
         else:
             df = prepare_all_coins_df()
 
-    elif not source or source not in ["cg", "cp", "bin"]:
+    elif not source or source not in sources:
         df = prepare_all_coins_df()
         cg_coins_list = df["CoinGecko"].to_list()
         sim = difflib.get_close_matches(coin.lower(), cg_coins_list, limit, cutoff)
@@ -357,6 +383,17 @@ def display_all_coins(
             coins_df_bin.columns = ["symbol", "id"]
             coins_df = pd.merge(
                 coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
+            )
+            df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
+            df = df[["index", "symbol", "name"]]
+            df.columns = ["index", "id", "name"]
+
+        elif source == "cb":
+            coins_df_gecko = get_coin_list()
+            coins_df_cb = load_coinbase_map()
+            coins_df_cb.columns = ["symbol", "id"]
+            coins_df = pd.merge(
+                coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
             )
             df = _create_closest_match_df(coin.lower(), coins_df, limit, cutoff)
             df = df[["index", "symbol", "name"]]
@@ -417,7 +454,7 @@ def load_ta_data(
     Returns
     ----------
     Tuple[pd.DataFrame, str]
-        dataframe with prices
+        df with prices
         quoted currency
     """
 
@@ -504,6 +541,24 @@ def load_ta_data(
         ]
         df.index.name = "date"
         return df, currency
+
+    if source == "cb":
+        assert isinstance(coin, str)
+        coin, currency = coin.upper(), currency.upper()
+        pair = f"{coin}-{currency}"
+
+        if coinbase_model.check_validity_of_product(pair):
+            print(f"{coin} loaded vs {currency}")
+
+            df = coinbase_model.get_candles(
+                product_id=pair,
+                interval=interval or "24hour",
+            ).head(limit)
+
+            df_coin = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
+                "Time0", axis=1
+            )
+            return df_coin, currency
 
     return pd.DataFrame(), currency
 
@@ -668,3 +723,79 @@ def plot_chart(
             plt.ion()
         plt.show()
         print("")
+
+    if source == "cb":
+        assert isinstance(coin, str)
+        coin, currency = coin.upper(), currency.upper()
+        pair = f"{coin}-{currency}"
+
+        if coinbase_model.check_validity_of_product(pair):
+            print(f"{coin} loaded vs {currency}")
+
+            df = coinbase_model.get_candles(
+                product_id=pair,
+                interval=interval or "24hour",
+            ).head(limit)
+            df = df.astype(float).iloc[:, :6]
+            df.sort_values(by="Time0", inplace=True, ascending=True)
+            df = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
+                "Time0", axis=1
+            )
+
+            title = (
+                f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
+            )
+            df["Volume"] = df["Volume"] / 1_000
+            mpf.plot(
+                df,
+                type="candle",
+                volume=True,
+                ylabel_lower="Volume [1K]",
+                title=str(title[0]) if isinstance(title, tuple) else title,
+                xrotation=20,
+                style="binance",
+                figratio=(10, 7),
+                figscale=1.10,
+                figsize=(plot_autoscale()),
+                update_width_config=dict(
+                    candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                ),
+            )
+
+            if ion:
+                plt.ion()
+            plt.show()
+            print("")
+
+
+def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
+    """
+    Plots Bid/Ask. Can be used for Coinbase and Binance
+
+    Parameters
+    ----------
+    bids : np.array
+        array of bids with columns: price, size, cumulative size
+    asks : np.array
+        array of asks with columns: price, size, cumulative size
+    coin : str
+        Coin being plotted
+
+    """
+
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
+    ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
+    ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
+    ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    plt.legend(loc=0)
+    plt.xlabel("Price")
+    plt.ylabel("Size (Coins) ")
+    plt.title(f"Order Book for {coin}")
+    if ion:
+        plt.ion()
+    plt.show()
+    print("")

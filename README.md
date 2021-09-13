@@ -266,6 +266,7 @@ These are the ones where a key is necessary:
 * SentimentInvestor: https://sentimentinvestor.com
 * Tradier: https://developer.tradier.com/getting_started
 * Twitter: https://developer.twitter.com
+* Coinbase Pro API: https://docs.pro.coinbase.com/
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
@@ -288,6 +289,7 @@ Alternatively, you can also set them to the following environment variables:
 | [SentimentInvestor](https://sentimentinvestor.com) | GT_API_SENTIMENTINVESTOR_TOKEN <br> GT_API_SENTIMENTINVESTOR_KEY |
 | [Tradier](https://developer.tradier.com) | GT_TRADIER_TOKEN |
 | [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
+| [Coinbase](https://docs.pro.coinbase.com/) | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE |
 
 Example:
 ```

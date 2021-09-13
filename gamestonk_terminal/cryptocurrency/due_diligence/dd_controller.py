@@ -13,15 +13,16 @@ from gamestonk_terminal.cryptocurrency.due_diligence import (
     pycoingecko_view,
     coinpaprika_view,
     binance_view,
+    coinbase_model,
+    binance_model,
+    coinbase_view,
 )
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
 )
-from gamestonk_terminal.cryptocurrency.due_diligence.binance_model import (
-    show_available_pairs_for_given_symbol,
-)
+
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
 from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import plot_chart
 import gamestonk_terminal.config_terminal as cfg
@@ -62,6 +63,7 @@ class DueDiligenceController:
             "book",
             "balance",
         ],
+        "cb": ["book", "trades", "stats"],
     }
 
     DD_VIEWS_MAPPING = {
@@ -121,6 +123,13 @@ CoinGecko:
 Binance:
    book            show order book
    balance         show coin balance
+"""
+        if self.source == "cb":
+            help_text += """
+Coinbase:
+   book            show order book
+   trades          show last trades
+   stats           show coin stats
 """
 
         help_text += "   chart           display chart\n"
@@ -527,69 +536,103 @@ Binance:
     # binance
     def call_book(self, other_args):
         """Process book command"""
-        limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
-        _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
-
-        parser = argparse.ArgumentParser(
-            prog="book",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Get the order book for selected coin",
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            help="Limit parameter.  Adjusts the weight",
-            default=100,
-            type=int,
-            choices=limit_list,
-        )
-
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            type=str,
-            default="USDT",
-            choices=quotes,
-        )
-
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        try:
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            binance_view.display_order_book(
-                coin=self.current_coin,
-                limit=ns_parser.limit,
-                currency=ns_parser.vs,
-                export=ns_parser.export,
+        if self.current_coin:
+            parser = argparse.ArgumentParser(
+                prog="book",
+                add_help=False,
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+                description="Get the order book for selected coin",
             )
 
-        except Exception as e:
-            print(e, "\n")
+            if self.source == "bin":
+
+                limit_list = [5, 10, 20, 50, 100, 500, 1000, 5000]
+                _, quotes = binance_model.show_available_pairs_for_given_symbol(
+                    self.current_coin
+                )
+
+                parser.add_argument(
+                    "-l",
+                    "--limit",
+                    dest="limit",
+                    help="Limit parameter.  Adjusts the weight",
+                    default=100,
+                    type=int,
+                    choices=limit_list,
+                )
+
+                parser.add_argument(
+                    "--vs",
+                    help="Quote currency (what to view coin vs)",
+                    dest="vs",
+                    type=str,
+                    default="USDT",
+                    choices=quotes,
+                )
+
+            if self.source == "cb":
+                _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
+                    self.current_coin
+                )
+                if len(quotes) < 0:
+                    print(
+                        f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
+                    )
+                    return
+
+                parser.add_argument(
+                    "--vs",
+                    help="Quote currency (what to view coin vs)",
+                    dest="vs",
+                    type=str,
+                    default="USDT" if "USDT" in quotes else quotes[0],
+                    choices=quotes,
+                )
+
+            parser.add_argument(
+                "--export",
+                choices=["csv", "json", "xlsx"],
+                default="",
+                type=str,
+                dest="export",
+                help="Export dataframe data to csv,json,xlsx file",
+            )
+
+            try:
+
+                ns_parser = parse_known_args_and_warn(parser, other_args)
+                if not ns_parser:
+                    return
+
+                if self.source == "bin":
+                    binance_view.display_order_book(
+                        coin=self.current_coin,
+                        limit=ns_parser.limit,
+                        currency=ns_parser.vs,
+                        export=ns_parser.export,
+                    )
+
+                elif self.source == "cb":
+                    pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+                    coinbase_view.display_order_book(
+                        product_id=pair,
+                        export=ns_parser.export,
+                    )
+
+            except Exception as e:
+                print(e, "\n")
 
     def call_balance(self, other_args):
         """Process balance command"""
-        _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+        _, quotes = binance_model.show_available_pairs_for_given_symbol(
+            self.current_coin
+        )
 
         parser = argparse.ArgumentParser(
             prog="balance",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Chart",
+            description="Display balance",
         )
 
         parser.add_argument(
@@ -622,18 +665,131 @@ Binance:
         except Exception as e:
             print(e, "\n")
 
+    def call_trades(self, other_args):
+        """Process trades command"""
+        parser = argparse.ArgumentParser(
+            prog="trades",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Show last trades on Coinbase",
+        )
+
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
+            self.current_coin
+        )
+        if len(quotes) < 0:
+            print(
+                f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
+            )
+            return
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT" if "USDT" in quotes else quotes[0],
+            choices=quotes,
+        )
+
+        parser.add_argument(
+            "--side",
+            help="Side of trade: buy, sell, all",
+            dest="side",
+            type=str,
+            default="all",
+            choices=["all", "buy", "sell"],
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            default=15,
+            dest="top",
+            help="Limit of records",
+            type=check_positive,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+            if ns_parser.side.upper() == "all":
+                side = None
+            else:
+                side = ns_parser.side
+
+            coinbase_view.display_trades(
+                product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_stats(self, other_args):
+        """Process stats command"""
+        _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
+            self.current_coin
+        )
+
+        parser = argparse.ArgumentParser(
+            prog="stats",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Display coin stats",
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs)",
+            dest="vs",
+            type=str,
+            default="USDT" if "USDT" in quotes else quotes[0],
+            choices=quotes,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+            coinbase_view.display_stats(pair, ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
+
     def call_chart(self, other_args):
         """Process chart command"""
         if self.current_coin:
             parser = argparse.ArgumentParser(
                 add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="ta",
-                description="""Loads data for technical analysis. You can specify currency vs which you want
-                to show chart and also number of days to get data for.
-                By default currency: usd and days: 30.
-                E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
-                in last 90 days range use `ta --vs btc --days 90`""",
+                prog="chart",
+                description="""Display chart for loaded coin. You can specify currency vs which you want
+                to show chart and also number of days to get data for.""",
             )
 
             if self.source == "cp":
@@ -688,7 +844,9 @@ Binance:
                     "1month": client.KLINE_INTERVAL_1MONTH,
                 }
 
-                _, quotes = show_available_pairs_for_given_symbol(self.current_coin)
+                _, quotes = binance_model.show_available_pairs_for_given_symbol(
+                    self.current_coin
+                )
 
                 parser.add_argument(
                     "--vs",
@@ -718,13 +876,61 @@ Binance:
                     type=check_positive,
                 )
 
+            if self.source == "cb":
+                interval_map = {
+                    "1min": 60,
+                    "5min": 300,
+                    "15min": 900,
+                    "1hour": 3600,
+                    "6hour": 21600,
+                    "24hour": 86400,
+                    "1day": 86400,
+                }
+
+                _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
+                    self.current_coin
+                )
+                if len(quotes) < 0:
+                    print(
+                        f"Couldn't find any quoted coins for provided symbol {self.current_coin}"
+                    )
+                    return
+
+                parser.add_argument(
+                    "--vs",
+                    help="Quote currency (what to view coin vs)",
+                    dest="vs",
+                    type=str,
+                    default="USDT" if "USDT" in quotes else quotes[0],
+                    choices=quotes,
+                )
+
+                parser.add_argument(
+                    "-i",
+                    "--interval",
+                    help="Interval to get data",
+                    choices=list(interval_map.keys()),
+                    dest="interval",
+                    default="1day",
+                    type=str,
+                )
+
+                parser.add_argument(
+                    "-l",
+                    "--limit",
+                    dest="limit",
+                    default=100,
+                    help="Number to get",
+                    type=check_positive,
+                )
+
             try:
                 ns_parser = parse_known_args_and_warn(parser, other_args)
 
                 if not ns_parser:
                     return
 
-                if self.source == "bin":
+                if self.source in ["bin", "cb"]:
                     limit = ns_parser.limit
                     interval = ns_parser.interval
                     days = 0
