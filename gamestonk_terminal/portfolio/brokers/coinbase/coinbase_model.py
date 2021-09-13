@@ -35,7 +35,9 @@ def get_accounts() -> pd.DataFrame:
     resp = make_coinbase_request("/accounts", auth=auth)
     if not resp:
         return pd.DataFrame()
-    return pd.DataFrame(resp)[["id", "currency", "balance", "available", "hold"]]
+
+    df = pd.DataFrame(resp)
+    return df[["id", "currency", "balance", "available", "hold"]]
 
 
 def get_account_history(account: str) -> pd.DataFrame:
@@ -87,34 +89,6 @@ def get_account_history(account: str) -> pd.DataFrame:
     except Exception as e:
         print(e)
 
-    return df
-
-
-def get_account(account: str) -> pd.DataFrame:
-    """Get single account information. [Source: Coinbase]
-
-    Parameters
-    ----------
-    account: str
-        id ("71452118-efc7-4cc4-8780-a5e22d4baa53") or currency (BTC)
-
-    Returns
-    -------
-    pd.DataFrame
-        Account data
-    """
-
-    account = _check_account_validity(account)
-    if not account:
-        return pd.DataFrame()
-
-    auth = CoinbaseProAuth(
-        cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
-    )
-
-    resp = make_coinbase_request(f"/accounts/{account}/holds", auth=auth)
-    df = pd.Series(resp).to_frame().reset_index()
-    df.columns = ["Metric", "Value"]
     return df
 
 
@@ -197,22 +171,7 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
         resp = resp[0]
 
     if deposit_type == "deposit":
-        df = pd.json_normalize(resp)[
-            [
-                "type",
-                "created_at",
-                "amount",
-                "details.crypto_address",
-                "details.destination_tag_name",
-            ]
-        ]
-        df.rename(
-            columns={
-                "details.crypto_address": "crypto_address",
-                "details.destination_tag_name": "destination_tag",
-            },
-            inplace=True,
-        )
+        df = pd.json_normalize(resp)
     else:
         df = pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
     return df

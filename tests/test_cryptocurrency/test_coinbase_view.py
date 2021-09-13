@@ -230,24 +230,6 @@ class TestCoinbaseView(TestCase):  # pragma: allowlist secret
         ]
         bro_coinbase_view.display_history("ETH", "", 2)
 
-    @check_print(assert_in="balance")
-    @mock.patch(
-        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model.make_coinbase_request"
-    )
-    @mock.patch(
-        "gamestonk_terminal.portfolio.brokers.coinbase.coinbase_model._check_account_validity"
-    )
-    def test_display_account(self, mock_validity, mock_request):
-        mock_validity.return_value = "ETH"
-        mock_request.return_value = {
-            "id": "a1b2c3d4",
-            "balance": "1.100",
-            "holds": "0.100",
-            "available": "1.00",
-            "currency": "USD",
-        }
-        bro_coinbase_view.display_account("ETH", False)
-
     @check_print(assert_in="base_currency")
     @vcr.use_cassette(
         "tests/cassettes/test_cryptocurrency/test_coinbase/test_trading_pairs.yaml",

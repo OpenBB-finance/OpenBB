@@ -109,25 +109,6 @@ Coinbase:
         )
 
         parser.add_argument(
-            "-a",
-            "--acc",
-            dest="account",
-            help="Symbol of coin of account or id",
-            type=str,
-            default="BTC",
-            required=False,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            help="Limit parameter.",
-            default=20,
-            type=check_positive,
-        )
-
-        parser.add_argument(
             "--all",
             action="store_true",
             help="Flag to display all your account",
@@ -154,9 +135,7 @@ Coinbase:
             if not ns_parser:
                 return
 
-            coinbase_view.display_account(
-                ns_parser.account, ns_parser.all, ns_parser.export, ns_parser.limit
-            )
+            coinbase_view.display_account(ns_parser.all, ns_parser.export)
 
         except Exception as e:
             print(e, "\n")

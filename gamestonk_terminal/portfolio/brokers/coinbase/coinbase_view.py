@@ -8,31 +8,26 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_model
 
 
-def display_account(
-    account: str, show_all: bool = True, export: str = "", limit: int = 30
-) -> None:
+def display_account(show_all: bool = True, export: str = "") -> None:
     """Display list of all your trading accounts. [Source: Coinbase]
 
     Parameters
     ----------
-    account: str
-        Symbol or account id
     show_all: bool
         Indicate if you want to show all your accounts or only one.
-    limit: int
-        For all accounts display only top n
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    if not account or show_all:
-        df = coinbase_model.get_accounts().head(limit)
+    if show_all:
+        df = coinbase_model.get_accounts()
     else:
-        df = coinbase_model.get_account(account)
+        df = coinbase_model.get_accounts()
+        df.balance = df["balance"].astype(float)
+        df = df[df.balance > 0]
 
     if df.empty:
         print(
-            f"Your account {account} doesn't have any funds or you provide wrong account name or id. "
-            f"To check all your accounts use command account --all\n"
+            "No funds found on you account. To display all wallets (including 0 balance) use account --all\n"
         )
         return
 
