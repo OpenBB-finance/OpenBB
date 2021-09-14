@@ -82,14 +82,14 @@ What do you want to do?
     about       about us
     q(uit)      to abandon the program
 
->>  (s)tocks
->>  (c)rypto
->>  (e)conomy
->>  (o)ptions
->>  (p)ortfolio
+>>  stocks
+>>  crypto
+>>  economy
+>>  options
+>>  portfolio
 >>  etf
->>  (f)orex
->>  (r)esources
+>>  forex
+>>  resources
     """
         print(help_text)
 
