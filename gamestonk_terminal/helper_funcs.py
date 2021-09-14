@@ -27,39 +27,6 @@ if cfgPlot.BACKEND is not None:
     matplotlib.use(cfgPlot.BACKEND)
 
 
-def check_valid_path(path: str) -> str:
-    """Argparse type function to test is path is valid
-
-    Parameters
-    ----------
-    path: str
-        Path supplied
-
-    Returns
-    -------
-    path: str
-        Valid path
-
-    Raises
-    -------
-    argparse.ArgumentTypeError
-        Given path does not exist
-    """
-    if not os.path.exists(
-        os.path.abspath(
-            os.path.join(
-                "gamestonk_terminal",
-                "portfolio",
-                "portfolio_analysis",
-                "portfolios",
-                f"{path}.csv",
-            )
-        )
-    ):
-        raise argparse.ArgumentTypeError("Path does not exist")
-    return path
-
-
 def check_int_range(mini: int, maxi: int):
     """Checks if argparse argument is an int between 2 values.
 
