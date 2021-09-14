@@ -1,0 +1,99 @@
+.gamestonkSettingsWidget {
+  color: var(--jp-ui-font-color1);
+  background: var(--jp-layout-color1);
+  font-size: 16px;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  text-align: left;
+}
+
+.gamestonkSettings {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    display: inline;
+    justify-content: center;
+}
+
+.settingsForm {
+  min-width: 542px;
+  min-width: 542px;
+  width: 85%;
+  height: 100%;
+  padding-top: var(--jp-private-launcher-top-padding);
+  padding-left: var(--jp-private-launcher-side-padding);
+  padding-right: var(--jp-private-launcher-side-padding);
+  box-sizing: border-box;
+}
+
+.inputFieldLabel {
+  font-size: 16px;
+}
+
+form fieldset {
+  padding: 6%;
+  border: 1px solid var(--jp-border-color2);
+}
+
+form input[type="text" i],
+form input[type="number" i] {
+  border: 1px solid var(--jp-border-color2);
+}
+
+.settingsSectionLabel {
+  font-size: var(--jp-ui-font-size2);
+  font-weight: normal;
+  color: var(--jp-ui-font-color1);
+  margin-bottom: 5%;
+}
+
+.settingsSectionButton {
+  display:inline-block;
+  height: 36px;
+  width: 13em;
+  margin:0.1em;
+  padding: 0.2em 1.45em;
+  border:0.05em solid #CCCCCC;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-size: 16px;
+  font-weight: lighter;
+  color:#000000;
+  background-color:#CCCCCC;
+  text-align:center;
+  position:relative;
+}
+.settingsSectionButton:hover{
+  border-color:#7a7a7a;
+}
+.settingsSectionButton:active{
+  background-color:#999999;
+}
+
+.container {
+  height: 64px;
+  position: relative;
+  margin-top: 1em;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.settingsSectionUpdateButton {
+}
+
+div.fieldSetData {
+    display:grid;
+    grid-template-columns: 50% 50%;
+    grid-gap:5px;
+}
+div.fieldSetData label       { text-align:right; }
+div.fieldSetData label:after { content: ":"; }

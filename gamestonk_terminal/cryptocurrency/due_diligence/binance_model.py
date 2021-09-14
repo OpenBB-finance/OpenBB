@@ -8,12 +8,10 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
-import numpy as np
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 import gamestonk_terminal.config_terminal as cfg
 from gamestonk_terminal.helper_funcs import plot_autoscale
-from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.feature_flags import USE_ION as ion
 
 
@@ -123,39 +121,6 @@ def show_available_pairs_for_given_symbol(
             return k, v
     print(f"Couldn't find anything for symbol {symbol_upper}")
     return None, []
-
-
-def plot_order_book(bids: np.array, asks: np.array, coin: str) -> None:
-    """
-    Plots Bid/Ask. [Source: Binance]
-
-    Parameters
-    ----------
-    bids : np.array
-        array of bids with columns: price, size, cumulative size
-    asks : np.array
-        array of asks with columns: price, size, cumulative size
-    coin : str
-        Coin being plotted
-
-    """
-
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax.plot(bids[:, 0], bids[:, 2], "g", label="bids")
-    ax.fill_between(bids[:, 0], bids[:, 2], color="g", alpha=0.4)
-    ax.plot(asks[:, 0], asks[:, 2], "r", label="asks")
-    ax.fill_between(asks[:, 0], asks[:, 2], color="r", alpha=0.4)
-    plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
-    plt.legend(loc=0)
-    plt.xlabel("Price")
-    plt.ylabel("Size (Coins) ")
-    plt.title(f"Order Book for {coin}")
-    if ion:
-        plt.ion()
-    plt.show()
-    print("")
 
 
 def plot_candles(candles_df: pd.DataFrame, title: str) -> None:

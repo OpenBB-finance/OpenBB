@@ -1,8 +1,6 @@
 """CoinGecko model"""
 __docformat__ = "numpy"
 
-import os
-import json
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import (
@@ -469,8 +467,15 @@ def get_coins_for_given_exchange(exchange_id: str = "binance", page: int = 1) ->
     return binance_coins["tickers"]
 
 
-def get_mapping_matrix_for_binance() -> dict:
+def get_mapping_matrix_for_exchange(exchange_id: str, pages: int = 12) -> dict:
     """Creates a matrix with all coins available on Binance with corresponding coingecko coin_id. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    exchange_id: str
+        id of exchange: binance
+    pages: int
+        number of pages. One page contains 100 records
 
     Returns
     -------
@@ -479,28 +484,10 @@ def get_mapping_matrix_for_binance() -> dict:
     """
 
     coins_dct = {}
-    for i in range(12):
-        coins = get_coins_for_given_exchange(page=i)
+    for i in range(pages):
+        coins = get_coins_for_given_exchange(exchange_id=exchange_id, page=i)
         for coin in coins:
             bin_symbol, gecko_id = coin["base"], coin["coin_id"]
             if bin_symbol not in coins_dct:
                 coins_dct[bin_symbol] = gecko_id
     return coins_dct
-
-
-def load_binance_map() -> pd.DataFrame:
-    """Loads a data with all coins available on Binance with corresponding coingecko coin_ids. [Source: CoinGecko]
-
-    Returns
-    -------
-    pd.DataFrame
-        Columns: symbol, id
-    """
-
-    path = os.path.abspath(__file__ + "/../../")
-    with open(path + "/data/binance_gecko_map.json", encoding="utf8") as f:
-        coins = json.load(f)
-
-    coins_df = pd.Series(coins).reset_index()
-    coins_df.columns = ["symbol", "id"]
-    return coins_df

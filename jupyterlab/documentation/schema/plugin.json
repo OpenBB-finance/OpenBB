@@ -1,0 +1,25 @@
+{
+  "title": "Gamestonk Terminal Documentation",
+  "description": "Gamestonk Terminal Documentation.",
+  "jupyter.lab.menus": {
+    "main": [
+      {
+        "id": "jp-mainmenu-file",
+        "items": [
+          {
+            "type": "submenu",
+            "id": "jp-mainmenu-file-new",
+            "items": [
+              {
+                "command": "gamestonk:documentation",
+                "rank": 30
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
