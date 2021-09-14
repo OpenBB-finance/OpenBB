@@ -249,7 +249,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             if not ns_parser:
                 return
 
-            s_date = ns_parser.n_start_date.stftime("%Y-%m-%d")
+            s_date = ns_parser.n_start_date.strftime("%Y-%m-%d")
             newsapi_view.news(
                 term=self.ticker,
                 num=ns_parser.n_num,
