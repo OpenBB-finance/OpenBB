@@ -453,7 +453,7 @@ Mean Variance Optimization:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="maxquadutily",
+            prog="maxquadutil",
             description="Maximises the quadratic utility, given some risk aversion",
         )
         parser.add_argument(

@@ -1,4 +1,4 @@
-""" Portfolio Optimization Functions"""
+"""Optimization View"""
 __docformat__ = "numpy"
 
 import math

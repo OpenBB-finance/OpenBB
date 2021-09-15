@@ -1,4 +1,4 @@
-"""Custom Portfolio View"""
+"""Portfolio View"""
 __docformat__ = "numpy"
 
 import pandas as pd

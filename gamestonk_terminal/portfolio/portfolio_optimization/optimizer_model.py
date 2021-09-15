@@ -1,4 +1,4 @@
-""" Portfolio Optimization Helper Functions """
+"""Optimization Model"""
 __docformat__ = "numpy"
 
 from typing import List, Dict, Tuple

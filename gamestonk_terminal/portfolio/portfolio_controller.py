@@ -1,3 +1,6 @@
+"""Portfolio Controller"""
+__docformat__ = "numpy"
+
 import argparse
 import os
 

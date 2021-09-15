@@ -1,4 +1,4 @@
-"""Portfolio parser module"""
+"""Portfolio Model"""
 __docformat__ = "numpy"
 
 from tabulate import tabulate

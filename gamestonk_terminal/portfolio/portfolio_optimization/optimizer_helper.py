@@ -1,4 +1,4 @@
-"""Portfolio helpers"""
+"""Optimization helpers"""
 __docformat__ = "numpy"
 
 import argparse

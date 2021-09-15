@@ -1,3 +1,4 @@
+"""Portffolio Analysis Controller"""
 __docformat__ = "numpy"
 
 import argparse
@@ -18,10 +19,10 @@ from gamestonk_terminal.portfolio.portfolio_analysis import (
     portfolio_view,
 )
 
-portfolios_path = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "portfolios/"
-)
-possible_paths = [Path(port).stem for port in os.listdir(portfolios_path)]
+portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
+possible_paths = [
+    Path(port).stem for port in os.listdir(portfolios_path) if port.endswith(".csv")
+]
 
 
 class PortfolioController:
@@ -113,8 +114,9 @@ Portfolio: {self.portfolio_name or None}
         """Process Quit command - quit the program"""
         return True
 
+    # TODO: allow loading other files than csv
     def call_load(self, other_args):
-        """Process csv command"""
+        """Process load command"""
         parser = argparse.ArgumentParser(
             prog="load",
             add_help=False,
@@ -122,7 +124,8 @@ Portfolio: {self.portfolio_name or None}
             description="Function to get portfolio from predefined csv file inside portfolios folder",
         )
         parser.add_argument(
-            "-s" "--sector",
+            "-s",
+            "--sector",
             action="store_true",
             default=False,
             help="Add sector to dataframe",
@@ -132,7 +135,7 @@ Portfolio: {self.portfolio_name or None}
             "--no_last_price",
             action="store_false",
             default=True,
-            help="Dont add last price from yfinance",
+            help="Don't add last price from yfinance",
             dest="last_price",
         )
         parser.add_argument(
@@ -163,12 +166,11 @@ Portfolio: {self.portfolio_name or None}
                 last_price=ns_parser.last_price,
                 show_nan=ns_parser.show_nan,
             )
+            if not self.portfolio.empty:
+                print(f"Successfully loaded: {self.portfolio_name}\n")
 
         except Exception as e:
             print(e)
-
-        if not self.portfolio.empty:
-            print(f"Successfully loaded: {self.portfolio_name}\n")
 
     def call_group(self, other_args):
         """Process group command"""
