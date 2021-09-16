@@ -42,6 +42,7 @@ class TerminalController:
         "keys",
     ]
 
+    CHOICES_SHORTHAND_MENUS = ["s", "e", "c", "p", "f", "o", "r"]
     CHOICES_MENUS = [
         "stocks",
         "economy",
@@ -55,6 +56,7 @@ class TerminalController:
 
     CHOICES += CHOICES_COMMANDS
     CHOICES += CHOICES_MENUS
+    CHOICES += CHOICES_SHORTHAND_MENUS
 
     def __init__(self):
         """Constructor"""
@@ -160,11 +162,19 @@ What do you want to do?
 
         return stocks_controller.menu()
 
+    def call_s(self, _):
+        """Process stocks command"""
+        return self.call_stocks(_)
+
     def call_crypto(self, _):
         """Process crypto command"""
         from gamestonk_terminal.cryptocurrency import crypto_controller
 
         return crypto_controller.menu()
+
+    def call_c(self, _):
+        """Process crypto command"""
+        return self.call_crypto(_)
 
     def call_economy(self, _):
         """Process economy command"""
@@ -172,11 +182,19 @@ What do you want to do?
 
         return economy_controller.menu()
 
+    def call_e(self, _):
+        """Process economy command"""
+        return self.call_economy(_)
+
     def call_options(self, _):
         """Process options command"""
         from gamestonk_terminal.options import options_controller
 
         return options_controller.menu()
+
+    def call_o(self, _):
+        """Process options command"""
+        return self.call_options(_)
 
     def call_etf(self, _):
         """Process etf command"""
@@ -190,17 +208,29 @@ What do you want to do?
 
         return forex_controller.menu()
 
+    def call_f(self, _):
+        """Process forex command"""
+        return self.call_forex(_)
+
     def call_resources(self, _):
         """Process resources command"""
         from gamestonk_terminal.resources import resources_controller
 
         return resources_controller.menu()
 
+    def call_r(self, _):
+        """Process resources command"""
+        return self.call_resources(_)
+
     def call_portfolio(self, _):
         """Process portfolio command"""
         from gamestonk_terminal.portfolio import portfolio_controller
 
         return portfolio_controller.menu()
+
+    def call_p(self, _):
+        """Process portfolio command"""
+        return self.call_portfolio(_)
 
 
 def terminal():

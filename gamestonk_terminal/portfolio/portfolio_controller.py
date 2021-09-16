@@ -1,3 +1,6 @@
+"""Portfolio Controller"""
+__docformat__ = "numpy"
+
 import argparse
 import os
 
@@ -22,13 +25,6 @@ class PortfolioController:
         "help",
         "q",
         "quit",
-    ]
-
-    CHOICES_MENUS = [
-        "load",
-        "quote",
-        "candle",
-        "view",
     ]
 
     CHOICES_MENUS = [
