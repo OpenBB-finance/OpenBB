@@ -353,7 +353,7 @@ main:
             ref: "/stocks/comparison_analysis/performance"
           - name: technical
             ref: "/stocks/comparison_analysis/technical"
-      - name: Backtesting
+      - name: bt
         ref: "/stocks/backtesting"
         sub:
           - name: ema
@@ -362,7 +362,60 @@ main:
             ref: "/stocks/backtesting/ema_cross"
           - name: rsi
             ref: "/stocks/backtesting/rsi"
-      - name: behavioural_analysis
+      - name: ta
+        ref: "/common/technical_analysis"
+        sub:
+          - name: view
+            ref: "/stocks/technical_analysis/view"
+          - name: summary
+            ref: "/stocks/technical_analysis/summary"
+          - name: recom
+            ref: "/stocks/technical_analysis/recom"
+          - name: pr
+            ref: "/stocks/technical_analysis/pr"
+          - name: ema
+            ref: "/stocks/technical_analysis/ema"
+          - name: sma
+            ref: "/stocks/technical_analysis/sma"
+          - name: wma
+            ref: "/stocks/technical_analysis/wma"
+          - name: hma
+            ref: "/stocks/technical_analysis/hma"
+          - name: zlma
+            ref: "/stocks/technical_analysis/zlma"
+          - name: vwap
+            ref: "/stocks/technical_analysis/vwap"
+          - name: cci
+            ref: "/stocks/technical_analysis/cci"
+          - name: macd
+            ref: "/stocks/technical_analysis/macd"
+          - name: rsi
+            ref: "/stocks/technical_analysis/rsi"
+          - name: stoch
+            ref: "/stocks/technical_analysis/stoch"
+          - name: fisher
+            ref: "/stocks/technical_analysis/fisher"
+          - name: cg
+            ref: "/stocks/technical_analysis/cg"
+          - name: adx
+            ref: "/stocks/technical_analysis/adx"
+          - name: aroon
+            ref: "/stocks/technical_analysis/aroon"
+          - name: bbands
+            ref: "/stocks/technical_analysis/bbands"
+          - name: donchian
+            ref: "/stocks/technical_analysis/donchian"
+          - name: kc
+            ref: "/stocks/technical_analysis/kc"
+          - name: ad
+            ref: "/stocks/technical_analysis/ad"
+          - name: adosc
+            ref: "/stocks/technical_analysis/adosc"
+          - name: obv
+            ref: "/stocks/technical_analysis/obv"
+          - name: fib
+            ref: "/stocks/technical_analysis/fib"
+      - name: ba
         ref: "/stocks/behavioural_analysis"
         sub:
           - name: finbrain
@@ -379,6 +432,8 @@ main:
             ref: "/stocks/behavioural_analysis/spac_c"
           - name: spac
             ref: "/stocks/behavioural_analysis/spac"
+          - name: getdd
+            ref: "/stocks/behavioural_analysis/getdd"
           - name: bullbear
             ref: "/stocks/behavioural_analysis/bullbear"
           - name: messages
@@ -399,16 +454,117 @@ main:
             ref: "/stocks/behavioural_analysis/queries"
           - name: rise
             ref: "/stocks/behavioural_analysis/rise"
+          - name: popularsi
+            ref: "/stocks/behavioural_analysis/popularsi"
+          - name: emerging
+            ref: "/stocks/behavioural_analysis/emerging"
           - name: metrics
             ref: "/stocks/behavioural_analysis/metrics"
           - name: social
             ref: "/stocks/behavioural_analysis/social"
           - name: historical
             ref: "/stocks/behavioural_analysis/historical"
+      - name: qa
+        ref: "/common/quantitative_analysis"
+        sub:
+          - name: load
+            ref: "/stocks/quantitative_analysis/load"
+          - name: pick
+            ref: "/stocks/quantitative_analysis/pick"
+          - name: summary
+            ref: "/stocks/quantitative_analysis/summary"
+          - name: normality
+            ref: "/stocks/quantitative_analysis/normality"
+          - name: unitroot
+            ref: "/stocks/quantitative_analysis/unitroot"
+          - name: hist
+            ref: "/stocks/quantitative_analysis/hist"
+          - name: cdf
+            ref: "/stocks/quantitative_analysis/cdf"
+          - name: bw
+            ref: "/stocks/quantitative_analysis/bw"
+          - name: acf
+            ref: "/stocks/quantitative_analysis/acf"
+          - name: qqplot
+            ref: "/stocks/quantitative_analysis/qqplot"
+          - name: rolling
+            ref: "/stocks/quantitative_analysis/rolling"
+          - name: spread
+            ref: "/stocks/quantitative_analysis/spread"
+          - name: quantile
+            ref: "/stocks/quantitative_analysis/quantile"
+          - name: skew
+            ref: "/stocks/quantitative_analysis/skew"
+          - name: decompose
+            ref: "/stocks/quantitative_analysis/decompose"
+          - name: cusum
+            ref: "/stocks/quantitative_analysis/cusum"
+      - name: pred
+        ref: "/common/prediction_techniques"
+        sub:
+          - name: ets
+            ref: "/stocks/prediction_techniques/ets"
+          - name: knn
+            ref: "/stocks/prediction_techniques/knn"
+          - name: linear
+            ref: "/stocks/prediction_techniques/linear"
+          - name: quadratic
+            ref: "/stocks/prediction_techniques/quadratic"
+          - name: cubic
+            ref: "/stocks/prediction_techniques/cubic"
+          - name: regression
+            ref: "/stocks/prediction_techniques/regression"
+          - name: arima
+            ref: "/stocks/prediction_techniques/arima"
+          - name: mlp
+            ref: "/stocks/prediction_techniques/mlp"
+          - name: rnn
+            ref: "/stocks/prediction_techniques/rnn"
+          - name: lstm
+            ref: "/stocks/prediction_techniques/lstm"
+          - name: conv1d
+            ref: "/stocks/prediction_techniques/conv1d"
       - name: report
         ref: "/stocks/report"
-  - name: Forex
+  - name: forex
     ref: "/forex"
+  - name: resources
+    ref: "/resources"
+  - name: economy
+    ref: "/economy"
+    sub:
+      - name: feargreed
+        ref: "/economy/feargreed"
+      - name: events
+        ref: "/economy/events"
+      - name: overview
+        ref: "/economy/overview"
+      - name: indices
+        ref: "/economy/indices"
+      - name: futures
+        ref: "/economy/futures"
+      - name: usbonds
+        ref: "/economy/usbonds"
+      - name: glbonds
+        ref: "/economy/glbonds"
+      - name: currencies
+        ref: "/economy/currencies"
+      - name: map
+        ref: "/economy/map"
+      - name: valuation
+        ref: "/economy/valuation"
+      - name: performance
+        ref: "/economy/performance"
+      - name: spectrum
+        ref: "/economy/spectrum"
+      - name: rtps
+        ref: "/economy/rtps"
+      - name: search
+        ref: "/economy/search"
+      - name: series
+        ref: "/economy/series"
+      - name: report
+        ref: "/economy/report"
   - name: Portfolio
     ref: "/portfolio"
     sub:

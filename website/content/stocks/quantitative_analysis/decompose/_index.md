@@ -1,12 +1,19 @@
 ```text
-usage: decompose [-m]
+usage: decompose [-m] [--export {csv,json,xlsx}] [-h]
 ```
 
 Decompose time series as:
- - Additive Time Series = Level + CyclicTrend + Residual + Seasonality
- - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
+- Additive Time Series = Level + CyclicTrend + Residual + Seasonality
+- Multiplicative Time Series = Level * CyclicTrend *
+Residual * Seasonality
 
-* -m : multiplicative model. Default additive.
+```
+optional arguments:
+  -m, --multiplicative  decompose using multiplicative model instead of additive (default: False)
+  --export {csv,json,xlsx}
+                        Export dataframe data to csv,json,xlsx file (default: )
+  -h, --help            show this help message (default: False)
+```
 
 ![decompose](https://user-images.githubusercontent.com/25267873/112729282-4c337480-8f23-11eb-913c-f30e5c0ef459.png)
 

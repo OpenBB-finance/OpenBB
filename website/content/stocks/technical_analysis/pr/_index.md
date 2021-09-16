@@ -1,9 +1,17 @@
 ```
-usage: pr [-r {1,5,15,30,60,D,W,M}]
+usage: pr [-r {1,5,15,30,60,D,W,M}] [--export {csv,json,xlsx}] [-h]
 ```
+
 Display pattern recognition signals on the data. [Source: https://finnhub.io]
 
-* -r : Plot resolution to look for pattern signals. Default 'D'.
+```
+optional arguments:
+  -r {1,5,15,30,60,D,W,M}, --resolution {1,5,15,30,60,D,W,M}
+                        Plot resolution to look for pattern signals (default: D)
+  --export {csv,json,xlsx}
+                        Export dataframe data to csv,json,xlsx file (default: )
+  -h, --help            show this help message (default: False)
+```
 
 ![pr](https://user-images.githubusercontent.com/25267873/116812520-06338700-ab47-11eb-8db4-8f5e940507ed.png)
 
