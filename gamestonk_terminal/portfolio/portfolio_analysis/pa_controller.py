@@ -175,7 +175,7 @@ Portfolio: {self.portfolio_name or None}
     def call_group(self, other_args):
         """Process group command"""
         parser = argparse.ArgumentParser(
-            prog="groupby",
+            prog="group",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Displays portfolio grouped by a given column",
