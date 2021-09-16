@@ -1,8 +1,6 @@
 """ News View """
 __docformat__ = "numpy"
 
-from datetime import datetime, timedelta
-
 import requests
 
 from gamestonk_terminal import config_terminal as cfg
@@ -11,8 +9,8 @@ from gamestonk_terminal import config_terminal as cfg
 def news(
     term: str,
     num: int,
-    s_from: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
-    show_newest: bool = True,
+    s_from: str,
+    show_newest: bool,
 ):
     """Display news for a given title. [Source: NewsAPI]
 
@@ -25,7 +23,7 @@ def news(
     s_from: str
         date to start searching articles from formatted YYYY-MM-DD
     show_newest: bool
-        flag to show oldest news first instead
+        flag to show newest articles first
     """
     # TODO: Add argument to specify news source being used
 

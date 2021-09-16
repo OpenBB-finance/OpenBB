@@ -2,6 +2,7 @@ import argparse
 import os
 from typing import List
 
+from datetime import datetime, timedelta
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -235,31 +236,35 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             help="Number of latest news being printed.",
         )
         parser.add_argument(
-            "-s",
-            "--start",
+            "-d",
+            "--date",
             action="store",
             dest="n_start_date",
             type=valid_date,
+            default=datetime.now() - timedelta(days=7),
             help="The starting date (format YYYY-MM-DD) to search articles from",
         )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            choices=["newest", "oldest"],
+            dest="n_sort",
+            default="newest",
+            help="Sort by newest articles first or oldest first (default newest)",
+        )
+
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            if ns_parser.n_start_date:
-                newsapi_view.news(
-                    term=self.ticker,
-                    num=ns_parser.n_num,
-                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                    show_newest=False,
-                )
-
-            else:
-                newsapi_view.news(
-                    term=self.ticker,
-                    num=ns_parser.n_num,
-                )
+            newsapi_view.news(
+                term=self.ticker,
+                num=ns_parser.n_num,
+                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                show_newest=ns_parser.n_sort == "newest",
+            )
 
         except Exception as e:
             print(e, "\n")
