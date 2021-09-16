@@ -35,7 +35,10 @@ def news(term: str, num: int, s_from: str):
     )
 
     # Check that the API response was successful
-    if response.status_code != 200:
+    if response.status_code == 426:
+        print(f"Error in request: {response.json()['message']}", "\n")
+
+    elif response.status_code != 200:
         print(f"Error in request {response.status_code}. Check News API token", "\n")
 
     else:
