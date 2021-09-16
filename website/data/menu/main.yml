@@ -11,7 +11,7 @@ main:
         ref: "/stocks/quote"
       - name: news
         ref: "/stocks/news"
-      - name: disc
+      - name: discovery
         ref: "/stocks/discovery"
         sub:
           - name: rtearn
@@ -48,7 +48,7 @@ main:
             ref: "/stocks/discovery/lowfloat"
           - name: hotpenny
             ref: "/stocks/discovery/hotpenny"
-      - name: dps
+      - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
         sub:
           - name: shorted
@@ -69,7 +69,7 @@ main:
             ref: "/stocks/dark_pool_shorts/spos"
           - name: psi
             ref: "/stocks/dark_pool_shorts/psi"
-      - name: scr
+      - name: screener
         ref: "/stocks/screener"
         sub:
           - name: view
@@ -92,7 +92,7 @@ main:
             ref: "/stocks/screener/technical"
           - name: signals
             ref: "/stocks/screener/signals"
-      - name: ins
+      - name: insider trading
         ref: "/stocks/insider"
         sub:
           - name: load
@@ -147,7 +147,7 @@ main:
             ref: "/stocks/insider/lins"
           - name: act
             ref: "/stocks/insider/act"
-      - name: gov
+      - name: government
         ref: "/stocks/government"
         sub:
           - name: last_congress
@@ -190,7 +190,7 @@ main:
             ref: "/stocks/government/qtr_contracts_hist"
           - name: lobbying
             ref: "/stocks/government/lobbying"
-      - name: fa
+      - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:
           - name: screener
@@ -229,7 +229,7 @@ main:
             ref: "/stocks/fundamental_analysis/earnings"
           - name: fraud
             ref: "/stocks/fundamental_analysis/fraud"
-          - name: fmp
+          - name: financial modeling prep
             ref: "/stocks/fundamental_analysis/fmp"
             sub:
               - name: profile
@@ -252,7 +252,7 @@ main:
                 ref: "/stocks/fundamental_analysis/fmp/ratios"
               - name: growth
                 ref: "/stocks/fundamental_analysis/fmp/growth"
-      - name: res
+      - name: research
         ref: "/stocks/research"
         sub:
           - name: macroaxis
@@ -291,7 +291,7 @@ main:
             ref: "/stocks/research/newsfilter"
           - name: stockanalysis
             ref: "/stocks/research/stockanalysis"
-      - name: dd
+      - name: due diligence
         ref: "/stocks/due_diligence"
         sub:
           - name: analyst
@@ -310,7 +310,7 @@ main:
             ref: "/stocks/due_diligence/supplier"
           - name: customer
             ref: "/stocks/due_diligence/customer"
-      - name: ca
+      - name: comparison analysis
         ref: "/stocks/comparison_analysis"
         sub:
           - name: load
@@ -353,7 +353,7 @@ main:
             ref: "/stocks/comparison_analysis/performance"
           - name: technical
             ref: "/stocks/comparison_analysis/technical"
-      - name: bt
+      - name: backtesting
         ref: "/stocks/backtesting"
         sub:
           - name: ema
@@ -362,7 +362,7 @@ main:
             ref: "/stocks/backtesting/ema_cross"
           - name: rsi
             ref: "/stocks/backtesting/rsi"
-      - name: ta
+      - name: technical analysis
         ref: "/common/technical_analysis"
         sub:
           - name: view
@@ -415,7 +415,7 @@ main:
             ref: "/stocks/technical_analysis/obv"
           - name: fib
             ref: "/stocks/technical_analysis/fib"
-      - name: ba
+      - name: behavioural analysis
         ref: "/stocks/behavioural_analysis"
         sub:
           - name: finbrain
@@ -464,7 +464,7 @@ main:
             ref: "/stocks/behavioural_analysis/social"
           - name: historical
             ref: "/stocks/behavioural_analysis/historical"
-      - name: qa
+      - name: quantitative analysis
         ref: "/common/quantitative_analysis"
         sub:
           - name: load
@@ -499,7 +499,7 @@ main:
             ref: "/stocks/quantitative_analysis/decompose"
           - name: cusum
             ref: "/stocks/quantitative_analysis/cusum"
-      - name: pred
+      - name: prediction techniques
         ref: "/common/prediction_techniques"
         sub:
           - name: ets
@@ -565,15 +565,90 @@ main:
         ref: "/economy/series"
       - name: report
         ref: "/economy/report"
-  - name: Portfolio
+  - name: options
+    ref: "/options"
+    sub:
+      - name: disp
+        ref: "/options/disp"
+      - name: scr
+        ref: "/options/scr"
+      - name: unu
+        ref: "/options/unu"
+      - name: calc
+        ref: "/options/calc"
+      - name: load
+        ref: "/options/load"
+      - name: exp
+        ref: "/options/exp"
+      - name: info
+        ref: "/options/info"
+      - name: chains
+        ref: "/options/chains"
+      - name: oi
+        ref: "/options/oi"
+      - name: vol
+        ref: "/options/vol"
+      - name: voi
+        ref: "/options/voi"
+      - name: hist
+        ref: "/options/hist"
+      - name: grhist
+        ref: "/options/grhist"
+  - name: etf
+    ref: "/etf"
+    sub:
+      - name: search
+        ref: "/etf/search"
+      - name: overview
+        ref: "/etf/overview"
+      - name: holdings
+        ref: "/etf/holdings"
+      - name: compare
+        ref: "/etf/compare"
+      - name: screener
+        ref: "/etf/screener"
+      - name: gainers
+        ref: "/etf/gainers"
+      - name: decliners
+        ref: "/etf/decliners"
+      - name: active
+        ref: "/etf/active"
+  - name: portfolio
     ref: "/portfolio"
     sub:
-      - name: Brokers
+      - name: brokers
         ref: "/portfolio/brokers"
-      - name: Portfolio Analysis
+      - name: portfolio analysis
         ref: "/portfolio/portfolio_analysis"
-      - name: Portfolio Optimization
+      - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
+        sub:
+        - name: select
+          ref: "/portfolio/portfolio_optimization/select"
+        - name: add
+          ref: "/portfolio/portfolio_optimization/add"
+        - name: rmv
+          ref: "/portfolio/portfolio_optimization/rmv"
+        - name: equal
+          ref: "/portfolio/portfolio_optimization/equal"
+        - name: mktcap
+          ref: "/portfolio/portfolio_optimization/mktcap"
+        - name: dividend
+          ref: "/portfolio/portfolio_optimization/dividend"
+        - name: property
+          ref: "/portfolio/portfolio_optimization/property"
+        - name: maxhsarpe
+          ref: "/portfolio/portfolio_optimization/maxsharpe"
+        - name: minvol
+          ref: "/portfolio/portfolio_optimization/minvol"
+        - name: maxquadutil
+          ref: "/portfolio/portfolio_optimization/maxquadutil"
+        - name: effret
+          ref: "/portfolio/portfolio_optimization/effret"
+        - name: effrisk
+          ref: "/portfolio/portfolio_optimization/effrisk"
+        - name: ef
+          ref: "/portfolio/portfolio_optimization/ef"
   - name: Cryptocurrency
     ref: "/cryptocurrency"
     sub:
