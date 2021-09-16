@@ -9,7 +9,8 @@ from gamestonk_terminal import config_terminal as cfg
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal.forex.behavioural_analysis import ba_controller
-from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
+
+# from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 
@@ -50,7 +51,7 @@ class ForexController:
     ]
 
     CHOICES_MENUS = [
-        "eda",
+        # "eda",
         "ba",
     ]
 
@@ -100,9 +101,9 @@ class ForexController:
                 "   reddit        search reddit for posts about the loaded instrument"
             )
             print("")
-            print(
-                ">  eda         exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
-            )
+            # print(
+            #    ">  eda         exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
+            # )
             print(
                 ">  ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
             )
@@ -208,16 +209,16 @@ class ForexController:
 
     # TODO: Add news and reddit commands back
 
-    def call_eda(self, _):
-        try:
-            df = fx_view.get_candles_dataframe(account, self.instrument, None)
-            df = df.rename(columns={"Close": "Adj Close"})
-            instrument = self.instrument
-            s_start = pd.to_datetime(df.index.values[0])
-            s_interval = "1440min"
-            eda_controller.menu(df, instrument, s_start, s_interval)
-        except AttributeError:
-            print("No data found, do you have your oanda API keys set?")
+    # def call_eda(self, _):
+    #    try:
+    #        df = fx_view.get_candles_dataframe(account, self.instrument, None)
+    #        df = df.rename(columns={"Close": "Adj Close"})
+    #        instrument = self.instrument
+    #        s_start = pd.to_datetime(df.index.values[0])
+    #        s_interval = "1440min"
+    #        eda_controller.menu(df, instrument, s_start, s_interval)
+    #    except AttributeError:
+    #        print("No data found, do you have your oanda API keys set?")
 
     def call_ba(self, _):
         instrument = fx_view.format_instrument(self.instrument, " ")
