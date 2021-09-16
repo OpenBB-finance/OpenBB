@@ -138,7 +138,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
->   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)

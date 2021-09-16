@@ -275,7 +275,7 @@ class BehaviouralAnalysisController:
 
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
-        sentimentinvestor_view.sort_sentiment("AHI", other_args, "popular")
+        sentimentinvestor_view.sort_sentiment("AHI", other_args, "popularsi")
 
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""

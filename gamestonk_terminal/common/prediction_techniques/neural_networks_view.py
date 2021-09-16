@@ -264,8 +264,8 @@ def rnn(other_args: List[str], s_ticker: str, df_stock: pd.DataFrame):
     """
     try:
         ns_parser = parse_args(
-            prog="lstm",
-            description="""Long-Short Term Memory. """,
+            prog="rnn",
+            description="""Recurrent Neural Network. """,
             other_args=other_args,
         )
         if not ns_parser:
