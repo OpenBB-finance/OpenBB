@@ -8,7 +8,12 @@ import requests
 from gamestonk_terminal import config_terminal as cfg
 
 
-def news(term: str, num: int, s_from: str):
+def news(
+    term: str,
+    num: int,
+    s_from: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+    show_newest: bool = True,
+):
     """Display news for a given title. [Source: NewsAPI]
 
     Parameters
@@ -19,15 +24,10 @@ def news(term: str, num: int, s_from: str):
         number of articles to display
     s_from: str
         date to start searching articles from formatted YYYY-MM-DD
+    show_newest: bool
+        flag to show oldest news first instead
     """
     # TODO: Add argument to specify news source being used
-
-    if s_from:
-        show_newest = False
-
-    else:
-        show_newest = True
-        s_from = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
 
     response = requests.get(
         f"https://newsapi.org/v2/everything?q={term}&from={s_from}"

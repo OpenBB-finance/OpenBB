@@ -248,16 +248,18 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 return
 
             if ns_parser.n_start_date:
-                s_date = ns_parser.n_start_date.strftime("%Y-%m-%d")
+                newsapi_view.news(
+                    term=self.ticker,
+                    num=ns_parser.n_num,
+                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    show_newest=False,
+                )
 
             else:
-                s_date = ""
-
-            newsapi_view.news(
-                term=self.ticker,
-                num=ns_parser.n_num,
-                s_from=s_date,
-            )
+                newsapi_view.news(
+                    term=self.ticker,
+                    num=ns_parser.n_num,
+                )
 
         except Exception as e:
             print(e, "\n")
