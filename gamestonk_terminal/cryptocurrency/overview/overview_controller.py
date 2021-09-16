@@ -150,7 +150,7 @@ Coinbase:
     def call_cghold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
-            prog="hold",
+            prog="cghold",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -193,7 +193,7 @@ Coinbase:
     def call_cgcompanies(self, other_args):
         """Process companies command"""
         parser = argparse.ArgumentParser(
-            prog="companies",
+            prog="cgcompanies",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Track publicly traded companies around the world that
@@ -247,7 +247,7 @@ Coinbase:
     def call_cgnews(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
-            prog="news",
+            prog="cgnews",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Shows latest crypto news from CoinGecko. "
@@ -319,7 +319,7 @@ Coinbase:
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
-            prog="categories",
+            prog="cgcategories",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
@@ -401,7 +401,7 @@ Coinbase:
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
-            prog="stables",
+            prog="cgstables",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows stablecoins by market capitalization.
@@ -487,7 +487,7 @@ Coinbase:
         """Process nft command"""
 
         parser = argparse.ArgumentParser(
-            prog="nft",
+            prog="cgnft",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows NFT market status
@@ -519,7 +519,7 @@ Coinbase:
     def call_cgnftday(self, other_args):
         """Process nftday command"""
         parser = argparse.ArgumentParser(
-            prog="nftday",
+            prog="cgnftday",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows NFT of the day
@@ -551,7 +551,7 @@ Coinbase:
     def call_cgproducts(self, other_args):
         """Process products command"""
         parser = argparse.ArgumentParser(
-            prog="products",
+            prog="cgproducts",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
@@ -621,7 +621,7 @@ Coinbase:
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
-            prog="platforms",
+            prog="cgplatforms",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
@@ -686,7 +686,7 @@ Coinbase:
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
-            prog="exchanges",
+            prog="cgexchanges",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Exchanges
@@ -768,7 +768,7 @@ Coinbase:
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
-            prog="exrates",
+            prog="cgexrates",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -830,7 +830,7 @@ Coinbase:
     def call_cgindexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
-            prog="indexes",
+            prog="cgindexes",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto indexes from CoinGecko.
@@ -896,7 +896,7 @@ Coinbase:
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
-            prog="derivatives",
+            prog="cgderivatives",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto derivatives from CoinGecko
@@ -974,7 +974,7 @@ Coinbase:
     def call_cgglobal(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
-            prog="global",
+            prog="cgglobal",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global statistics about Crypto Market""",
@@ -1002,7 +1002,7 @@ Coinbase:
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
-            prog="defi",
+            prog="cgdefi",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global DeFi statistics
@@ -1037,7 +1037,7 @@ Coinbase:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="global",
+            prog="cpglobal",
             description="""Show most important global crypto statistics like: Market Cap, Volume,
             Number of cryptocurrencies, All Time High, All Time Low""",
         )
@@ -1064,7 +1064,7 @@ Coinbase:
     def call_cpmarkets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
-            prog="markets",
+            prog="cpmarkets",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
@@ -1152,7 +1152,7 @@ Coinbase:
     def call_cpexmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
-            prog="exmarkets",
+            prog="cpexmarkets",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Get all exchange markets found for given exchange
@@ -1250,7 +1250,7 @@ Coinbase:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="info",
+            prog="cpinfo",
             description="""Show basic coin information for all coins from CoinPaprika API
                 You can display only top N number of coins with --top parameter.
                 You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
@@ -1338,7 +1338,7 @@ Coinbase:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="exchanges",
+            prog="cpexchanges",
             description="""Show all exchanges from CoinPaprika
                You can display only top N number of coins with --top parameter.
                You can sort data by  rank, name, currencies, markets, fiats, confidence,
@@ -1423,7 +1423,7 @@ Coinbase:
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
-            prog="platforms",
+            prog="cpplatforms",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
@@ -1452,7 +1452,7 @@ Coinbase:
         platforms = get_all_contract_platforms()["platform_id"].tolist()
 
         parser = argparse.ArgumentParser(
-            prog="contracts",
+            prog="cpcontracts",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Gets all contract addresses for given platform.

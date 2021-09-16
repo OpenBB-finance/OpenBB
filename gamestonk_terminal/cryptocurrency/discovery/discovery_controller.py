@@ -78,7 +78,6 @@ CoinPaprika:
     cpsearch          search on CoinPaprika
 CoinMarketCap:
     cmctop            top coins from CoinMarketCap
-
 """
         print(help_text)
 
@@ -214,7 +213,7 @@ CoinMarketCap:
     def call_cggainers(self, other_args):
         """Process gainers command"""
         parser = argparse.ArgumentParser(
-            prog="gainers",
+            prog="cggainers",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -301,7 +300,7 @@ CoinMarketCap:
     def call_cglosers(self, other_args):
         """Process losers command"""
         parser = argparse.ArgumentParser(
-            prog="losers",
+            prog="cglosers",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -387,7 +386,7 @@ CoinMarketCap:
     def call_cgtrending(self, other_args):
         """Process trending command"""
         parser = argparse.ArgumentParser(
-            prog="trending",
+            prog="cgtrending",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Discover trending coins.
@@ -468,7 +467,7 @@ CoinMarketCap:
     def call_cgvoted(self, other_args):
         """Process voted command"""
         parser = argparse.ArgumentParser(
-            prog="voted",
+            prog="cgvoted",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Discover most voted coins.
@@ -550,7 +549,7 @@ CoinMarketCap:
     def call_cgrecently(self, other_args):
         """Process recently command"""
         parser = argparse.ArgumentParser(
-            prog="recently",
+            prog="cgrecently",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -633,7 +632,7 @@ CoinMarketCap:
     def call_cgvisited(self, other_args):
         """Process most_visited command"""
         parser = argparse.ArgumentParser(
-            prog="visited",
+            prog="cgvisited",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -716,7 +715,7 @@ CoinMarketCap:
     def call_cgsentiment(self, other_args):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
-            prog="sentiment",
+            prog="cgsentiment",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -799,7 +798,7 @@ CoinMarketCap:
     def call_cgyfarms(self, other_args):
         """Process yfarms command"""
         parser = argparse.ArgumentParser(
-            prog="yfarms",
+            prog="cgyfarms",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -871,7 +870,7 @@ CoinMarketCap:
     def call_cgvolume(self, other_args):
         """Process volume command"""
         parser = argparse.ArgumentParser(
-            prog="volume",
+            prog="cgvolume",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Coins by Trading Volume.
@@ -945,7 +944,7 @@ CoinMarketCap:
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
-            prog="defi",
+            prog="cgdefi",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top DeFi Coins by Market Capitalization
@@ -1032,7 +1031,7 @@ CoinMarketCap:
     def call_cgdex(self, other_args):
         """Process dex command"""
         parser = argparse.ArgumentParser(
-            prog="dex",
+            prog="cgdex",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -1107,7 +1106,7 @@ CoinMarketCap:
     def call_cgnft(self, other_args):
         """Process nft command"""
         parser = argparse.ArgumentParser(
-            prog="nft",
+            prog="cgnft",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top NFT Coins by Market Capitalization
@@ -1256,7 +1255,7 @@ CoinMarketCap:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="search",
+            prog="cpsearch",
             description="""Search over CoinPaprika API
             You can display only top N number of results with --top parameter.
             You can sort data by id, name , category --sort parameter and also with --descend flag to sort descending.
