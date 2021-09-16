@@ -313,7 +313,7 @@ def min_volatility(stocks: List[str], other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="min_volatility",
+        prog="minvol",
         description="Optimizes for minimum volatility",
     )
     parser.add_argument(
@@ -389,7 +389,7 @@ def max_quadratic_utility(stocks: List[str], other_args: List[str]):
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="max_quadratic_utility",
+        prog="maxquadutil",
         description="Maximises the quadratic utility, given some risk aversion",
     )
     parser.add_argument(
