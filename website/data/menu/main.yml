@@ -252,8 +252,107 @@ main:
                 ref: "/stocks/fundamental_analysis/fmp/ratios"
               - name: growth
                 ref: "/stocks/fundamental_analysis/fmp/growth"
-      - name: report
-        ref: "/stocks/report"
+      - name: res
+        ref: "/stocks/research"
+        sub:
+          - name: macroaxis
+            ref: "/stocks/research/macroaxis"
+          - name: yahoo
+            ref: "/stocks/research/yahoo"
+          - name: finviz
+            ref: "/stocks/research/finviz"
+          - name: marketwatch
+            ref: "/stocks/research/marketwatch"
+          - name: fool
+            ref: "/stocks/research/fool"
+          - name: businessinsider
+            ref: "/stocks/research/businessinsider"
+          - name: fmp
+            ref: "/stocks/research/fmp"
+          - name: fidelity
+            ref: "/stocks/research/fidelity"
+          - name: tradingview
+            ref: "/stocks/research/tradingview"
+          - name: marketchameleon
+            ref: "/stocks/research/marketchameleon"
+          - name: stockrow
+            ref: "/stocks/research/stockrow"
+          - name: barchart
+            ref: "/stocks/research/barchart"
+          - name: grufity
+            ref: "/stocks/research/grufity"
+          - name: fintel
+            ref: "/stocks/research/fintel"
+          - name: zacks
+            ref: "/stocks/research/zacks"
+          - name: macrotrends
+            ref: "/stocks/research/macrotrends"
+          - name: newsfilter
+            ref: "/stocks/research/newsfilter"
+          - name: stockanalysis
+            ref: "/stocks/research/stockanalysis"
+      - name: dd
+        ref: "/stocks/due_diligence"
+        sub:
+          - name: analyst
+            ref: "/stocks/due_diligence/analyst"
+          - name: rating
+            ref: "/stocks/due_diligence/rating"
+          - name: rot
+            ref: "/stocks/due_diligence/rot"
+          - name: pt
+            ref: "/stocks/due_diligence/pt"
+          - name: est
+            ref: "/stocks/due_diligence/est"
+          - name: sec
+            ref: "/stocks/due_diligence/sec"
+          - name: supplier
+            ref: "/stocks/due_diligence/supplier"
+          - name: customer
+            ref: "/stocks/due_diligence/customer"
+      - name: ca
+        ref: "/stocks/comparison_analysis"
+        sub:
+          - name: load
+            ref: "/stocks/comparison_analysis/load"
+          - name: select
+            ref: "/stocks/comparison_analysis/select"
+          - name: add
+            ref: "/stocks/comparison_analysis/add"
+          - name: tsne
+            ref: "/stocks/comparison_analysis/tsne"
+          - name: getpoly
+            ref: "/stocks/comparison_analysis/getpoly"
+          - name: getfinnhub
+            ref: "/stocks/comparison_analysis/getfinnhub"
+          - name: getfinviz
+            ref: "/stocks/comparison_analysis/getfinviz"
+          - name: historical
+            ref: "/stocks/comparison_analysis/historical"
+          - name: hcorr
+            ref: "/stocks/comparison_analysis/hcorr"
+          - name: income
+            ref: "/stocks/comparison_analysis/income"
+          - name: balance
+            ref: "/stocks/comparison_analysis/balance"
+          - name: cashflow
+            ref: "/stocks/comparison_analysis/cashflow"
+          - name: sentiment
+            ref: "/stocks/comparison_analysis/sentiment"
+          - name: scorr
+            ref: "/stocks/comparison_analysis/scorr"
+          - name: overview
+            ref: "/stocks/comparison_analysis/overview"
+          - name: valuation
+            ref: "/stocks/comparison_analysis/valuation"
+          - name: financial
+            ref: "/stocks/comparison_analysis/financial"
+          - name: ownership
+            ref: "/stocks/comparison_analysis/ownership"
+          - name: performance
+            ref: "/stocks/comparison_analysis/performance"
+          - name: technical
+            ref: "/stocks/comparison_analysis/technical"
       - name: Backtesting
         ref: "/stocks/backtesting"
         sub:
@@ -306,80 +405,8 @@ main:
             ref: "/stocks/behavioural_analysis/social"
           - name: historical
             ref: "/stocks/behavioural_analysis/historical"
-      - name: Due Diligence
-        ref: "/stocks/due_diligence"
-        sub:
-          - name: news
-            ref: "/stocks/due_diligence/news"
-          - name: red
-            ref: "/stocks/due_diligence/red"
-          - name: analyst
-            ref: "/stocks/due_diligence/analyst"
-          - name: rating
-            ref: "/stocks/due_diligence/rating"
-          - name: pt
-            ref: "/stocks/due_diligence/pt"
-          - name: rot
-            ref: "/stocks/due_diligence/rot"
-          - name: est
-            ref: "/stocks/due_diligence/est"
-          - name: ins
-            ref: "/stocks/due_diligence/ins"
-          - name: insider
-            ref: "/stocks/due_diligence/insider"
-          - name: sec
-            ref: "/stocks/due_diligence/sec"
-          - name: short
-            ref: "/stocks/due_diligence/short"
-          - name: warnings
-            ref: "/stocks/due_diligence/warnings"
-          - name: dp
-            ref: "/stocks/due_diligence/dp"
-          - name: ftd
-            ref: "/stocks/due_diligence/ftd"
-          - name: shortview
-            ref: "/stocks/due_diligence/shortview"
-          - name: darkpos
-            ref: "/stocks/due_diligence/darkpos"
-          - name: supplier
-            ref: "/stocks/due_diligence/supplier"
-          - name: customer
-            ref: "/stocks/due_diligence/customer"
-      - name: Comparison Analysis
-        ref: "/stocks/comparison_analysis"
-        sub:
-          - name: po
-            ref: "/stocks/comparison_analysis/po"
-          - name: get
-            ref: "/stocks/comparison_analysis/get"
-          - name: select
-            ref: "/stocks/comparison_analysis/select"
-          - name: historical
-            ref: "/stocks/comparison_analysis/historical"
-          - name: hcorr
-            ref: "/stocks/comparison_analysis/hcorr"
-          - name: income
-            ref: "/stocks/comparison_analysis/income"
-          - name: balance
-            ref: "/stocks/comparison_analysis/balance"
-          - name: cashflow
-            ref: "/stocks/comparison_analysis/cashflow"
-          - name: sentiment
-            ref: "/stocks/comparison_analysis/sentiment"
-          - name: scorr
-            ref: "/stocks/comparison_analysis/scorr"
-          - name: overview
-            ref: "/stocks/comparison_analysis/overview"
-          - name: valuation
-            ref: "/stocks/comparison_analysis/valuation"
-          - name: financial
-            ref: "/stocks/comparison_analysis/financial"
-          - name: ownership
-            ref: "/stocks/comparison_analysis/ownership"
-          - name: performance
-            ref: "/stocks/comparison_analysis/performance"
-          - name: technical
-            ref: "/stocks/comparison_analysis/technical"
+      - name: report
+        ref: "/stocks/report"
   - name: Forex
     ref: "/forex"
   - name: Portfolio

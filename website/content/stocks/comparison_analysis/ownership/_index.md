@@ -1,10 +1,14 @@
 ```text
-usage: ownership [-s L_SIMILAR] [-a L_ALSO]
+usage: ownership [--export {csv,json,xlsx}] [-h]
 ```
 
-Prints screener data of similar companies. Some of the fields shown are: Float, Insider Own, Short Ratio. [Source: Finviz]
+Prints screener data of similar companies. [Source: Finviz]
 
-* -s : similar companies to compare with. Default pre-loaded ones.
-* -a : apart from loaded similar companies also compare with.
+```
+optional arguments:
+  --export {csv,json,xlsx}
+                        Export dataframe data to csv,json,xlsx file (default: )
+  -h, --help            show this help message (default: False)
+```
 
 <img width="1064" alt="ownership" src="https://user-images.githubusercontent.com/25267873/114103694-7bea6100-98c1-11eb-8261-49cca9b8a34c.png">

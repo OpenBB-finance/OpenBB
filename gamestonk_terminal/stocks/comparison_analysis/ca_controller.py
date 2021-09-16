@@ -479,7 +479,7 @@ Finviz:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="corr",
+            prog="hcorr",
             description=""" Correlation heatmap based on historical price comparison between similar
             companies.
             """,
@@ -573,7 +573,7 @@ Finviz:
             prog="balance",
             description="""
                 Prints either yearly or quarterly balance statement the company, and compares
-                it against similar companies..
+                it against similar companies.
             """,
         )
         parser.add_argument(

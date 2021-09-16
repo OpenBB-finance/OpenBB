@@ -100,7 +100,6 @@ class FundamentalAnalysisController:
             help_text = f"\n\n{intraday} Stock: {self.ticker}"
 
         help_text += """
-
 Fundamental Analysis:
     cls           clear screen
     ?/help        show this menu again

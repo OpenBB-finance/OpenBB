@@ -1,11 +1,14 @@
 ```text
-usage: hcorr [-s L_SIMILAR] [-a L_ALSO] [-t TYPE_CANDLE]
+usage: corr [-t {o,h,l,c,a}] [-h]
 ```
 
-Historical price correlation between similar companies [Source: Yahoo Finance]
+Correlation heatmap based on historical price comparison between similar companies.
 
-* -s : similar companies to compare with. Default pre-loaded ones.
-* -a : apart from loaded similar companies also compare with.
-* -t : type of candles: o-open, h-high, l-low, c-close, a-adjusted close. Default 'a'.
+```
+optional arguments:
+  -t {o,h,l,c,a}, --type {o,h,l,c,a}
+                        Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close. (default: a)
+  -h, --help            show this help message (default: False)
+```
 
 ![corr](https://user-images.githubusercontent.com/25267873/110699596-efc41b80-81e6-11eb-924f-8739058aa54e.png)

@@ -76,7 +76,6 @@ class DiscoveryController:
     def print_help():
         """Print help"""
         help_text = """
-
 Discovery:
     cls            clear screen
     ?/help         show this menu again

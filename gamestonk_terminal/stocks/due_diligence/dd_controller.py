@@ -84,7 +84,6 @@ class DueDiligenceController:
             stock_text = f"{s_intraday} Stock: {self.ticker}"
 
         help_text = f"""
-
 Due Diligence:
     cls           clear screen
     ?/help        show this menu again
