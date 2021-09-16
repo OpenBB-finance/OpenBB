@@ -7,19 +7,36 @@ from typing import List
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_non_negative,
+)
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_view
+from gamestonk_terminal.portfolio.portfolio_optimization import (
+    optimizer_view,
+    optimizer_helper,
+)
+
+period_choices = [
+    "1d",
+    "5d",
+    "1mo",
+    "3mo",
+    "6mo",
+    "1y",
+    "2y",
+    "5y",
+    "10y",
+    "ytd",
+    "max",
+]
 
 
 class PortfolioOptimization:
 
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES_COMMANDS = [
         "select",
         "add",
         "rmv",
@@ -35,6 +52,7 @@ class PortfolioOptimization:
         "ef",
         "yolo",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     # pylint: disable=dangerous-default-value
     def __init__(self, tickers: List[str]):
@@ -47,43 +65,38 @@ class PortfolioOptimization:
     @staticmethod
     def print_help(tickers: List[str]):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_optimization"
-        )
-        print("\nPortfolio Optimization:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print(f"\nCurrent Tickers: {('None', ', '.join(tickers))[bool(tickers)]}")
-        print("")
-        print("   select        select list of tickers to be optimized")
-        print("   add           add tickers to the list of the tickers to be optimized")
-        print(
-            "   rmv           remove tickers from the list of the tickers to be optimized"
-        )
-        print("")
-        print("Optimization:")
-        print("   equal         equally weighted")
-        print("   mktcap        weighted according to market cap (property marketCap)")
-        print(
-            "   dividend      weighted according to dividend yield (property dividendYield)"
-        )
-        print("   property      weight according to selected info property")
-        print("")
-        print("Mean Variance Optimization:")
-        print(
-            "   maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio)"
-        )
-        print("   minvol        optimizes for minimum volatility")
-        print(
-            "   maxquadutil   maximises the quadratic utility, given some risk aversion"
-        )
-        print("   effret        maximises return for a given target risk")
-        print("   effrisk       minimises risk for a given target return")
-        print("")
-        print("   ef            show the efficient frontier")
-        print("")
+        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_optimization"
+
+>>PORTFOLIO OPTIMIZATION<<
+
+What would you like to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+Current Tickers: {('None', ', '.join(tickers))[bool(tickers)]}
+
+    select        select list of tickers to be optimized
+    add           add tickers to the list of the tickers to be optimized
+    rmv           remove tickers from the list of the tickers to be optimized"
+
+Optimization:
+    equal         equally weighted
+    mktcap        weighted according to market cap (property marketCap)
+    dividend      weighted according to dividend yield (property dividendYield)
+    property      weight according to selected info property
+
+Mean Variance Optimization:
+    maxsharpe     optimizes for maximal Sharpe ratio (a.k.a the tangency portfolio
+    minvol        optimizes for minimum volatility
+    maxquadutil   maximises the quadratic utility, given some risk aversion
+    effret        maximises return for a given target risk
+    effrisk       minimises risk for a given target return
+
+    ef            show the efficient frontier
+        """
+        print(help_text)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -144,51 +157,583 @@ class PortfolioOptimization:
 
     def call_equal(self, other_args: List[str]):
         """Process equal command"""
-        optimizer_view.equal_weight(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="equal",
+            description="Returns an equally weighted portfolio",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            optimizer_view.display_equal_weight(
+                stocks=self.tickers, value=ns_parser.value, pie=ns_parser.pie
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
-        other_args.insert(0, "marketCap")
-        optimizer_view.property_weighting(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mktcap",
+            description="Returns a portfolio that is weighted based on Market Cap.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if len(self.tickers) < 2:
+                print("Please have at least 2 stocks selected to perform calculations.")
+                return
+
+            optimizer_view.display_property_weighting(
+                self.tickers,
+                s_property="marketCap",
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_dividend(self, other_args: List[str]):
         """Process dividend command"""
-        other_args.insert(0, "dividendYield")
-        optimizer_view.property_weighting(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dividend",
+            description="Returns a portfolio that is weighted based dividend yield.",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if len(self.tickers) < 2:
+                print("Please have at least 2 stocks selected to perform calculations.")
+                return
+
+            optimizer_view.display_property_weighting(
+                self.tickers,
+                s_property="dividendYield",
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_property(self, other_args: List[str]):
         """Process property command"""
-        optimizer_view.property_weighting(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="property",
+            description="Returns a portfolio that is weighted based on selected property.",
+        )
+        parser.add_argument(
+            "-p",
+            "--property",
+            required=bool("-h" not in other_args),
+            type=optimizer_helper.check_valid_property_type,
+            dest="property",
+            help="""Property info to weigh. Use one of:
+            previousClose, regularMarketOpen, twoHundredDayAverage, trailingAnnualDividendYield,
+            payoutRatio, volume24Hr, regularMarketDayHigh, navPrice, averageDailyVolume10Day, totalAssets,
+            regularMarketPreviousClose, fiftyDayAverage, trailingAnnualDividendRate, open, toCurrency,
+            averageVolume10days,expireDate, yield, algorithm, dividendRate, exDividendDate, beta, circulatingSupply,
+            regularMarketDayLow, priceHint, currency, trailingPE, regularMarketVolume, lastMarket, maxSupply,
+            openInterest,marketCap, volumeAllCurrencies, strikePrice, averageVolume, priceToSalesTrailing12Months,
+            dayLow, ask, ytdReturn,askSize,volume, fiftyTwoWeekHigh, forwardPE, fromCurrency, fiveYearAvgDividendYield,
+            fiftyTwoWeekLow, bid,dividendYield,bidSize, dayHigh, annualHoldingsTurnover, enterpriseToRevenue, beta3Year,
+            profitMargins, enterpriseToEbitda, 52WeekChange, morningStarRiskRating, forwardEps, revenueQuarterlyGrowth,
+            sharesOutstanding, fundInceptionDate, annualReportExpenseRatio, bookValue, sharesShort, sharesPercentSharesOut
+            heldPercentInstitutions, netIncomeToCommon, trailingEps, lastDividendValue, SandP52WeekChange, priceToBook,
+            heldPercentInsiders, shortRatio, sharesShortPreviousMonthDate, floatShares, enterpriseValue,fundFamily,
+            threeYearAverageReturn, lastSplitFactor, legalType, lastDividendDate, morningStarOverallRating,
+            earningsQuarterlyGrowth, pegRatio, lastCapGain, shortPercentOfFloat, sharesShortPriorMonth,
+            impliedSharesOutstanding, fiveYearAverageReturn, and regularMarketPrice.""",
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            default=1,
+            type=float,
+            dest="value",
+            help="Amount to allocate to portfolio",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if len(self.tickers) < 2:
+                print("Please have at least 2 stocks selected to perform calculations.")
+                return
+
+            optimizer_view.display_property_weighting(
+                self.tickers,
+                s_property=ns_parser.property,
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_maxsharpe(self, other_args: List[str]):
         """Process maxsharpe command"""
-        optimizer_view.max_sharpe(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="maxsharpe",
+            description="Maximise the Sharpe Ratio",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3mo",
+            dest="period",
+            help="period to get yfinance data from",
+            choices=period_choices,
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            dest="value",
+            help="Amount to allocate to portfolio",
+            type=float,
+            default=1.0,
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-free-rate",
+            type=float,
+            dest="risk_free_rate",
+            default=0.02,
+            help="""Risk-free rate of borrowing/lending. The period of the risk-free rate
+                should correspond to the frequency of expected returns.""",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            optimizer_view.display_max_sharpe(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                value=ns_parser.value,
+                rfrate=ns_parser.risk_free_rate,
+                pie=ns_parser.pie,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_minvol(self, other_args: List[str]):
         """Process minvol command"""
-        optimizer_view.min_volatility(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="minvol",
+            description="Optimizes for minimum volatility",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3mo",
+            dest="period",
+            help="period to get yfinance data from",
+            choices=period_choices,
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            dest="value",
+            help="Amount to allocate to portfolio",
+            type=float,
+            default=1.0,
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            optimizer_view.display_min_volatility(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                value=ns_parser.value,
+                pie=ns_parser.pie,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_maxquadutil(self, other_args: List[str]):
         """Process maxquadutil command"""
-        optimizer_view.max_quadratic_utility(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="maxquadutil",
+            description="Maximises the quadratic utility, given some risk aversion",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3mo",
+            dest="period",
+            help="period to get yfinance data from",
+            choices=period_choices,
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            dest="value",
+            help="Amount to allocate to portfolio",
+            type=float,
+            default=1.0,
+        )
+        parser.add_argument(
+            "-n",
+            "--market-neutral",
+            action="store_true",
+            default=False,
+            dest="market_neutral",
+            help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
+            Requires negative lower weight bound.""",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights. Only if neutral flag is left False.",
+        )
+        parser.add_argument(
+            "-r",
+            "--risk-aversion",
+            type=float,
+            dest="risk_aversion",
+            default=1.0,
+            help="risk aversion parameter",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            if ns_parser.pie and ns_parser.market_neutral:
+                print(
+                    "Cannot show pie chart for market neutral due to negative weights."
+                )
+                return
+
+            optimizer_view.display_max_quadratic_utility(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                value=ns_parser.value,
+                risk_aversion=ns_parser.risk_aversion,
+                market_neutral=ns_parser.market_neutral,
+                pie=ns_parser.pie,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_effrisk(self, other_args: List[str]):
         """Process effrisk command"""
-        optimizer_view.efficient_risk(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="effrisk",
+            description="""Maximise return for a target risk. The resulting portfolio will have
+            a volatility less than the target (but not guaranteed to be equal)""",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3mo",
+            dest="period",
+            help="period to get yfinance data from",
+            choices=period_choices,
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            dest="value",
+            help="Amount to allocate to portfolio",
+            type=float,
+            default=1.0,
+        )
+        parser.add_argument(
+            "-n",
+            "--market-neutral",
+            action="store_true",
+            default=False,
+            dest="market_neutral",
+            help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
+            Requires negative lower weight bound.""",
+        )
+
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights. Only if neutral flag is left False.",
+        )
+
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-t")
+        parser.add_argument(
+            "-t",
+            "--target-volatility",
+            type=float,
+            dest="target_volatility",
+            default=0.1,
+            help="The desired maximum volatility of the resulting portfolio",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            if ns_parser.pie and ns_parser.market_neutral:
+                print(
+                    "Cannot show pie chart for market neutral due to negative weights."
+                )
+                return
+
+            optimizer_view.display_efficient_risk(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                value=ns_parser.value,
+                target_volatility=ns_parser.target_volatility,
+                market_neutral=ns_parser.market_neutral,
+                pie=ns_parser.pie,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_effret(self, other_args: List[str]):
         """Process effret command"""
-        optimizer_view.efficient_return(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="effret",
+            description="Calculate the 'Markowitz portfolio', minimising volatility for a given target return",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3mo",
+            dest="period",
+            help="period to get yfinance data from",
+            choices=period_choices,
+        )
+        parser.add_argument(
+            "-v",
+            "--value",
+            dest="value",
+            help="Amount to allocate to portfolio",
+            type=float,
+            default=1.0,
+        )
+        parser.add_argument(
+            "-n",
+            "--market-neutral",
+            action="store_true",
+            default=False,
+            dest="market_neutral",
+            help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
+            Requires negative lower weight bound.""",
+        )
+        parser.add_argument(
+            "--pie",
+            action="store_true",
+            dest="pie",
+            default=False,
+            help="Display a pie chart for weights. Only if neutral flag is left False.",
+        )
+
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-t")
+
+        parser.add_argument(
+            "-t",
+            "--target-return",
+            type=float,
+            dest="target_return",
+            default=0.1,
+            help="the desired return of the resulting portfolio",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            if ns_parser.pie and ns_parser.market_neutral:
+                print(
+                    "Cannot show pie chart for market neutral due to negative weights."
+                )
+                return
+
+            optimizer_view.display_efficient_return(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                value=ns_parser.value,
+                target_return=ns_parser.target_return,
+                market_neutral=ns_parser.market_neutral,
+                pie=ns_parser.pie,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_ef(self, other_args):
         """Process ef command"""
-        optimizer_view.show_ef(self.tickers, other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ef",
+            description="""This function plots random portfolios based
+                        on their risk and returns and shows the efficient frontier.""",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            default="3mo",
+            dest="period",
+            help="period to get yfinance data from",
+            choices=period_choices,
+        )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-n")
+        parser.add_argument(
+            "-n",
+            "--number-portfolios",
+            default=300,
+            type=check_non_negative,
+            dest="n_port",
+            help="number of portfolios to simulate",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if len(self.tickers) < 2:
+                print("Please have at least 2 loaded tickers to calculate weights.\n")
+                return
+
+            optimizer_view.display_ef(
+                stocks=self.tickers,
+                period=ns_parser.period,
+                n_portfolios=ns_parser.n_port,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_yolo(self, _):
         # Easter egg :)
         print("DFV YOLO")
-        print({"GME": 200})
-        print("")
+        print("GME: ALL", "\n")
 
     def add_stocks(self, other_args: List[str]):
         """Add ticker or Select tickes for portfolio to be optimized"""
