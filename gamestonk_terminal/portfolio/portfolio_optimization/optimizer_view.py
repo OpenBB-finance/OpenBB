@@ -215,28 +215,6 @@ def display_max_quadratic_utility(
     pie : bool, optional
         Boolean to display weights as pie chart by default False
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="minvol",
-        description="Optimizes for minimum volatility",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
     s_title = f"{d_period[period]} Weights that maximise the quadratic utility with risk aversion of {risk_aversion}"
     ef_opt, ef = optimizer_model.get_maxquadutil_portfolio(
         stocks, period, risk_aversion, market_neutral
@@ -280,59 +258,6 @@ def display_efficient_risk(
     pie : bool, optional
         Boolean to display weights as pie chart by default False
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="maxquadutil",
-        description="Maximises the quadratic utility, given some risk aversion",
-    )
-    parser.add_argument(
-        "-p",
-        "--period",
-        default="3mo",
-        dest="period",
-        help="period to get yfinance data from",
-        choices=period_choices,
-    )
-    parser.add_argument(
-        "-v",
-        "--value",
-        dest="value",
-        help="Amount to allocate to portfolio",
-        type=float,
-        default=1.0,
-    )
-    parser.add_argument(
-        "-n",
-        "--market-neutral",
-        action="store_true",
-        default=False,
-        dest="market_neutral",
-        help="""whether the portfolio should be market neutral (weights sum to zero), defaults to False.
-        Requires negative lower weight bound.""",
-    )
-    if "-n" not in other_args:
-        parser.add_argument(
-            "--pie",
-            action="store_true",
-            dest="pie",
-            default=False,
-            help="Display a pie chart for weights. Only if neutral flag is left False.",
-        )
-
-    if other_args:
-        if "-" not in other_args[0]:
-            other_args.insert(0, "-r")
-
-    parser.add_argument(
-        "-r",
-        "--risk-aversion",
-        type=float,
-        dest="risk_aversion",
-        default=1,
-        help="risk aversion parameter",
-    )
-
     s_title = f"{d_period[period]} Weights that maximise returns at target volatility: {target_volatility}"
     ef_opt, ef = optimizer_model.get_efficient_risk_portfolio(
         stocks, period, target_volatility, market_neutral
