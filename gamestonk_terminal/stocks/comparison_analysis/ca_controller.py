@@ -108,8 +108,6 @@ class ComparisonAnalysisController:
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
-https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/comparison_analysis
-
 {stock_str}
 Similar Companies: {', '.join(self.similar) or None}
 
@@ -481,7 +479,7 @@ Finviz:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="corr",
+            prog="hcorr",
             description=""" Correlation heatmap based on historical price comparison between similar
             companies.
             """,
@@ -575,7 +573,7 @@ Finviz:
             prog="balance",
             description="""
                 Prints either yearly or quarterly balance statement the company, and compares
-                it against similar companies..
+                it against similar companies.
             """,
         )
         parser.add_argument(

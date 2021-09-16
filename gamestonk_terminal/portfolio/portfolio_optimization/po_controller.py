@@ -65,8 +65,7 @@ class PortfolioOptimization:
     @staticmethod
     def print_help(tickers: List[str]):
         """Print help"""
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_optimization"
-
+        help_text = f"""
 >>PORTFOLIO OPTIMIZATION<<
 
 What would you like to do?

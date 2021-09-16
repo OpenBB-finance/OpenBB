@@ -24,7 +24,7 @@ def show_top_mover(sort_type: str, other_args: List[str]):
     """
 
     parser = argparse.ArgumentParser(
-        prog="etfmovers",
+        prog=sort_type,
         description="Displays top ETF/Mutual fund movers from wsj.com/market-data",
         add_help=False,
     )

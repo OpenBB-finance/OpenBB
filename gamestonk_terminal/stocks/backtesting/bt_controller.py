@@ -48,7 +48,7 @@ class BacktestingController:
 
     def print_help(self):
         """Print help"""
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/backtesting"
+        help_text = f"""
 Backtesting:
     cls         clear screen
     ?/help      show this menu again

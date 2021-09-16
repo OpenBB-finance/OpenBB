@@ -20,12 +20,6 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.stocks.technical_analysis import (
-    finviz_view,
-    finbrain_view,
-    finnhub_view,
-    tradingview_view,
-)
 from gamestonk_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,
@@ -42,10 +36,6 @@ class TechnicalAnalysisController:
     # Command choices
     CHOICES = ["cls", "?", "help", "q", "quit"]
     CHOICES_COMMANDS = [
-        "view",
-        "summary",
-        "recom",
-        "pr",
         "ema",
         "sma",
         "vwap",
@@ -94,7 +84,7 @@ class TechnicalAnalysisController:
         else:
             stock_str = f"\n{s_intraday} Stock: {self.ticker}"
 
-        help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/technical_analysis
+        help_str = f"""
 {stock_str}
 
 Technical Analysis:
@@ -102,11 +92,6 @@ Technical Analysis:
     help        show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon program
-
-    view        view historical data and trendlines [Finviz]
-    summary     technical summary report [FinBrain API]
-    recom       recommendation based on Technical Indicators [Tradingview API]
-    pr          pattern recognition [Finnhub]
 
 Overlap:
     ema         exponential moving average
@@ -178,167 +163,6 @@ Custom:
         """Process Quit command - quit the program"""
         return True
 
-    # SPECIFIC
-    def call_view(self, other_args: List[str]):
-        """Process view command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="view",
-            description="""View historical price with trendlines. [Source: Finviz]""",
-        )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            finviz_view.view(self.ticker)
-
-        except Exception as e:
-            print(e, "\n")
-
-    def call_summary(self, other_args: List[str]):
-        """Process summary command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="summary",
-            description="""
-            Technical summary report provided by FinBrain's API.
-            FinBrain Technologies develops deep learning algorithms for financial analysis
-            and prediction, which currently serves traders from more than 150 countries
-            all around the world. [Source:  Finbrain]
-        """,
-        )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            finbrain_view.technical_summary_report(self.ticker)
-
-        except Exception as e:
-            print(e, "\n")
-
-    def call_recom(self, other_args: List[str]):
-        """Process recom command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="recom",
-            description="""
-            Print tradingview recommendation based on technical indicators.
-            [Source: Tradingview]
-        """,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--screener",
-            action="store",
-            dest="screener",
-            type=str,
-            default="america",
-            choices=["crypto", "forex", "cfd"],
-            help="Screener. See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html",
-        )
-
-        parser.add_argument(
-            "-e",
-            "--exchange",
-            action="store",
-            dest="exchange",
-            type=str,
-            default="",
-            help="""Set exchange. For Forex use: 'FX_IDC', and for crypto use 'TVC'.
-            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html.
-            By default Alpha Vantage tries to get this data from the ticker. """,
-        )
-
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=str,
-            default="",
-            choices=["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"],
-            help="""Interval, that corresponds to the recommendation given by tradingview based on technical indicators.
-            See https://python-tradingview-ta.readthedocs.io/en/latest/usage.html""",
-        )
-
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            tradingview_view.print_recommendation(
-                ticker=self.ticker,
-                screener=ns_parser.screener,
-                exchange=ns_parser.exchange,
-                interval=ns_parser.interval,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
-    def call_pr(self, other_args: List[str]):
-        """Process pr command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="pr",
-            description="""
-            Display pattern recognition signals on the data. [Source: Finnhub]""",
-        )
-
-        parser.add_argument(
-            "-r",
-            "--resolution",
-            action="store",
-            dest="resolution",
-            type=str,
-            default="D",
-            choices=["1", "5", "15", "30", "60", "D", "W", "M"],
-            help="Plot resolution to look for pattern signals",
-        )
-
-        parser.add_argument(
-            "--export",
-            choices=["csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export dataframe data to csv,json,xlsx file",
-        )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            finnhub_view.plot_pattern_recognition(
-                ticker=self.ticker,
-                resolution=ns_parser.resolution,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
-    # COMMON
     # TODO: Go through all models and make sure all needed columns are in dfs
     def call_ema(self, other_args: List[str]):
         """Process ema command"""

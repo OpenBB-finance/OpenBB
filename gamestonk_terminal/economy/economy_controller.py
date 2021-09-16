@@ -95,8 +95,7 @@ class EconomyController:
     @staticmethod
     def print_help():
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/economy
-
+        help_text = """
 >> ECONOMY <<
 
 What do you want to do?

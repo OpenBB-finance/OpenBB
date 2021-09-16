@@ -69,10 +69,6 @@ class BehaviouralAnalysisController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
-            "/stocks/behavioural_analysis"
-        )
         print("\nBehavioural Analysis:")
         print("   cls           clear screen")
         print("   ?/help        show this menu again")
@@ -279,7 +275,7 @@ class BehaviouralAnalysisController:
 
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
-        sentimentinvestor_view.sort_sentiment("AHI", other_args, "popular")
+        sentimentinvestor_view.sort_sentiment("AHI", other_args, "popularsi")
 
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""

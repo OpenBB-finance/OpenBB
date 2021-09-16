@@ -45,8 +45,7 @@ class ETFController:
 
     def print_help(self):
         """Print help"""
-        help_str = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/etf
-
+        help_str = """
 >> ETF <<
 
 What do you want to do?

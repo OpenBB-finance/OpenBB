@@ -85,7 +85,7 @@ class QaController:
             stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
-        help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/quantitative_analysis
+        help_str = f"""
 
 Quantitative Analysis:
     cls         clear screen
@@ -158,13 +158,15 @@ Other:
         )
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
-        stock["Returns"] = stock["Adj Close"].pct_change()
-        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
-            stock["Adj Close"].shift(1)
-        )
-        stock = stock.rename(columns={"Adj Close": "AdjClose"})
-        stock = stock.dropna()
-        self.stock = stock
+
+        if "-h" not in other_args:
+            stock["Returns"] = stock["Adj Close"].pct_change()
+            stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
+                stock["Adj Close"].shift(1)
+            )
+            stock = stock.rename(columns={"Adj Close": "AdjClose"})
+            stock = stock.dropna()
+            self.stock = stock
 
     def call_help(self, _):
         """Process Help command"""

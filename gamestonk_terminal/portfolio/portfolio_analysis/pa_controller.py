@@ -51,8 +51,7 @@ class PortfolioController:
 
     def print_help(self):
         """Print help"""
-        help_string = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio_analysis
-
+        help_string = f"""
 >>PORTFOLIO ANALYSIS<<
 
 What would you like to do?
