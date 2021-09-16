@@ -2,7 +2,6 @@ import argparse
 import os
 from typing import List
 
-from datetime import datetime, timedelta
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -241,7 +240,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             action="store",
             dest="n_start_date",
             type=valid_date,
-            default=datetime.now() - timedelta(days=7),
             help="The starting date (format YYYY-MM-DD) to search articles from",
         )
         try:
@@ -249,7 +247,12 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             if not ns_parser:
                 return
 
-            s_date = ns_parser.n_start_date.strftime("%Y-%m-%d")
+            if ns_parser.n_start_date:
+                s_date = ns_parser.n_start_date.strftime("%Y-%m-%d")
+
+            else:
+                s_date = ""
+
             newsapi_view.news(
                 term=self.ticker,
                 num=ns_parser.n_num,

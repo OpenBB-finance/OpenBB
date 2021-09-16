@@ -1,6 +1,8 @@
 """ News View """
 __docformat__ = "numpy"
 
+from datetime import datetime, timedelta
+
 import requests
 
 from gamestonk_terminal import config_terminal as cfg
@@ -20,6 +22,13 @@ def news(term: str, num: int, s_from: str):
     """
     # TODO: Add argument to specify news source being used
 
+    if s_from:
+        show_newest = False
+
+    else:
+        show_newest = True
+        s_from = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+
     response = requests.get(
         f"https://newsapi.org/v2/everything?q={term}&from={s_from}"
         f"&sortBy=publishedAt&language=en&apiKey={cfg.API_NEWS_TOKEN}",
@@ -34,7 +43,13 @@ def news(term: str, num: int, s_from: str):
             f"{response.json()['totalResults']} news articles for {term} were found since {s_from}\n"
         )
 
-        for idx, article in enumerate(response.json()["articles"]):
+        if show_newest:
+            articles = response.json()["articles"]
+
+        else:
+            articles = response.json()["articles"][::-1]
+
+        for idx, article in enumerate(articles):
             print(
                 article["publishedAt"].replace("T", " ").replace("Z", ""),
                 " ",
