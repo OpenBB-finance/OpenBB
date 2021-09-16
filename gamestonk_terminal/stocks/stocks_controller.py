@@ -103,7 +103,7 @@ class StocksController:
         else:
             stock_text = f"{s_intraday} Stock: {self.ticker}"
 
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
+        help_text = f"""
 
 >> STOCKS <<
 

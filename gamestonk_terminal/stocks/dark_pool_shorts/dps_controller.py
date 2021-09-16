@@ -74,8 +74,7 @@ class DarkPoolShortsController:
 
     def print_help(self):
         """Print help"""
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/dark_pool_shorts
-
+        help_text = f"""
 Dark Pool Shorts:
     cls            clear screen
     ?/help         show this menu again

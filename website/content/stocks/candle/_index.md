@@ -1,10 +1,14 @@
----
-resources:
-  - name: what_is_a_stock_chart
-    src: "what_is_a_stock_chart.png"
-    title: What Is A Stock Chart
-    params:
-      credits: "[Stockstotrade.com](https://stockstotrade.com/what-is-a-stock-chart-infographic/)"
----
+```
+usage: candle [-s S_START] [-h]
+```
 
-{{< img name="what_is_a_stock_chart" lazy=false >}}
+Displays candle chart of loaded ticker
+
+```
+optional arguments:
+  -s S_START, --start_date S_START
+                        Start date for candle data (default: 2021-03-19)
+  -h, --help            show this help message (default: False)
+```
+
+![nio](https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png)

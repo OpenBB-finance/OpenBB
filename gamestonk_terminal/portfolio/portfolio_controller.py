@@ -52,7 +52,7 @@ class PortfolioController:
 
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio
+        help_text = """
 
 >> PORTFOLIO <<
 

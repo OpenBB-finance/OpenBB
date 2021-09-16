@@ -295,10 +295,8 @@ def balance_sheet(other_args: List[str], ticker: str):
     )
 
     try:
-        (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
-
-        if l_unknown_args:
-            print(f"The following args couldn't be interpreted: {l_unknown_args}\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
             return
 
         if ns_parser.n_num == 1:

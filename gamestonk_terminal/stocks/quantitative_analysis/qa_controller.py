@@ -85,7 +85,7 @@ class QaController:
             stock_str = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
-        help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/quantitative_analysis
+        help_str = f"""
 
 Quantitative Analysis:
     cls         clear screen

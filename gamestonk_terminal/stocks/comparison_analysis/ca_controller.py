@@ -108,8 +108,6 @@ class ComparisonAnalysisController:
         else:
             stock_str = f"{s_intraday} Stock: {self.ticker}"
         help_str = f"""
-https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/comparison_analysis
-
 {stock_str}
 Similar Companies: {', '.join(self.similar) or None}
 

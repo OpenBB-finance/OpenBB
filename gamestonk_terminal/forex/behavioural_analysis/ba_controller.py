@@ -51,9 +51,6 @@ class BehaviouralAnalysisController:
     @staticmethod
     def print_help():
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/behavioural_analysis"
-        )
         print("\nBehavioural Analysis:")
         print("   cls           clear screen")
         print("   ?/help        show this menu again")

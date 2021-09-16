@@ -75,7 +75,7 @@ class DiscoveryController:
     @staticmethod
     def print_help():
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/discovery
+        help_text = """
 
 Discovery:
     cls            clear screen

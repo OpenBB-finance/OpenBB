@@ -61,9 +61,6 @@ class GovController:
 
     def print_help(self):
         """Print help"""
-        print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/government"
-        )
         print("\nGovernment:")
         print("   cls                  clear screen")
         print("   ?/help               show this menu again")

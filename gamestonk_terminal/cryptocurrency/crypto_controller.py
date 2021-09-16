@@ -91,8 +91,7 @@ class CryptoController:
 
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency
-
+        help_text = """
 >> CRYPTO <<
 
 What do you want to do?
@@ -637,6 +636,7 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
                     if quit is not None:
                         if quit is True:
                             return quit
+                        self.print_help()
 
                 except (ValueError, KeyError) as e:
                     print(e)

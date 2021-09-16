@@ -46,7 +46,7 @@ class ResourceCollectionController:
     @staticmethod
     def print_help():
         """Print help"""
-        help_str = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/resources"
+        help_str = """
 
 >> RESOURCES <<
 What do you want to do?
