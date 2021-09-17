@@ -245,13 +245,12 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             help="The starting date (format YYYY-MM-DD) to search articles from",
         )
         parser.add_argument(
-            "-s",
-            "--sort",
-            action="store",
-            choices=["newest", "oldest"],
-            dest="n_sort",
-            default="newest",
-            help="Sort by newest articles first or oldest first (default newest)",
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help="Show oldest articles first",
         )
 
         try:
@@ -263,7 +262,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 term=self.ticker,
                 num=ns_parser.n_num,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                show_newest=ns_parser.n_sort == "newest",
+                show_newest=ns_parser.n_oldest,
             )
 
         except Exception as e:
