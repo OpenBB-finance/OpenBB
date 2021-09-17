@@ -2,6 +2,7 @@ import argparse
 import os
 from typing import List
 
+from datetime import datetime, timedelta
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -31,6 +32,7 @@ from gamestonk_terminal.stocks.research import res_controller
 from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
+from gamestonk_terminal.helper_funcs import valid_date
 
 # pylint: disable=R1710
 
@@ -232,6 +234,24 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=5,
             help="Number of latest news being printed.",
         )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="n_start_date",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=7),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
+        )
+        parser.add_argument(
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help="Show oldest articles first",
+        )
+
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -240,6 +260,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             newsapi_view.news(
                 term=self.ticker,
                 num=ns_parser.n_num,
+                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                show_newest=ns_parser.n_oldest,
             )
 
         except Exception as e:
