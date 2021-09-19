@@ -53,6 +53,6 @@ xhost + $IP
 
 Now we can run the docker container, adding the display to the environment:
 ```bach
-docker run -it --rm --env-file=path/to/file -e DISPLAY=$IP:0 ghcr.io/gamestonkterminal/gst-poetry:latest
+docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/gamestonkterminal/gst-poetry:latest
 ```
 This container will be able to display all the same plots as the terminal interface.
