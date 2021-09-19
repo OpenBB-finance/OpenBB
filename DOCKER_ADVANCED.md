@@ -6,6 +6,8 @@ In order to pass your API keys to the docker container, they must first be set i
 
 The file should contain something such as:
 ```
+DISPLAY=
+
 GT_API_KEY_FINANCIALMODELINGPREP=qwerty123456
 ...
 GT_API_POLYGON_KEY=qwerty123456
@@ -30,20 +32,23 @@ In order to run the docker container with the environment variables, make sure t
 docker run -it --rm --env-file=path/to/setenv ghcr.io/gamestonkterminal/gst-poetry:latest
 ```
 
-## X-Server
+## Display
 
-In order to display plots in the docker container, we need to configure our XServer. Users familiar with Docker can just set the DISPLAY variable in their file described above.
+In order to display plots in the docker container, we can configure our XServer.
+
+Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
+
+### X-Server
 
 For help setting up the X-Server, I will go through this now:
 
-### Setting up X Quartz/X11
+#### Setting up X Quartz/X11
 
 0. Install X Quartz from  https://www.xquartz.org/
 1. With X Quartz open: go to Preferences -> Security and make sure both options are enabled.
 ![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
 
-
-### Adding the display for Docker
+#### Adding the display for Docker
 
 From the command prompt or terminal, run the following to add your local configuration to the list of allowed access control:
 ```bash
@@ -55,4 +60,5 @@ Now we can run the docker container, adding the display to the environment:
 ```bach
 docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/gamestonkterminal/gst-poetry:latest
 ```
+
 This container will be able to display all the same plots as the terminal interface.
