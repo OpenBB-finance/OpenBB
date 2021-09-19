@@ -47,7 +47,7 @@ For help setting up the X-Server, I will go through this now:
 
 From the command prompt or terminal, run the following to add your local configuration to the list of allowed access control:
 ```bash
-IP=$(ifconfig en1 | grep inet | awk '$1=="inet" {print $2}')
+IP=$(ifconfig | grep inet | grep -v -e "127.0.0.1" | awk '$1=="inet" {print $2}')
 xhost + $IP
 ```
 
