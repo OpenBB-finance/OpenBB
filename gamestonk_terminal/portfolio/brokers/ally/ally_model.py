@@ -67,3 +67,44 @@ def get_balances() -> pd.DataFrame:
     """
     a = ally.Ally()
     return a.balances(dataframe=True)
+
+
+def get_stock_quote(ticker: str) -> pd.DataFrame:
+    """Gets quote for stock ticker
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get.  Can be in form of 'tick1,tick2...'
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of ticker quote
+    """
+    a = ally.Ally()
+    return a.quote(
+        ticker,
+        fields=["last", "bid", "ask", "opn", "dollar_value", "chg", "vl"],
+        dataframe=True,
+    )
+
+
+def get_top_movers(list_type: str, exchange: str) -> pd.DataFrame:
+    """
+    Gets top lists from ally Invest API.  Documentation for parameters below:
+    https://www.ally.com/api/invest/documentation/market-toplists-get/
+
+    Parameters
+    ----------
+    list_type : str
+        Which list to get data for
+    exchange : str
+        Which exchange to look at
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of top movers
+    """
+    a = ally.Ally()
+    return a.toplists(list_type, exchange, dataframe=True)

@@ -25,13 +25,14 @@ class AllyController:
     ]
 
     ALLY_CHOICES = ["holdings", "history", "balances"]
+    ALLY_STOCK_CHOICES = ["quote", "movers"]
 
     def __init__(self):
         """CONSTRUCTOR"""
 
         self._ally_parser = argparse.ArgumentParser(add_help=False, prog="ally")
         self.CHOICES.extend(self.ALLY_CHOICES)
-
+        self.CHOICES.extend(self.ALLY_STOCK_CHOICES)
         self._ally_parser.add_argument("cmd", choices=self.CHOICES)
 
     def print_help(self):
@@ -46,6 +47,10 @@ Ally:
     holdings    show account holdings
     history     show history of your account
     balances    show balance details of account
+
+Stock Information:
+    quote       get stock quote
+    movers      get ranked lists of movers
 """
 
         print(help_text)
@@ -171,6 +176,94 @@ Ally:
             if not ns_parser:
                 return
             ally_view.display_balances(export=ns_parser.export)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_quote(self, other_args: List[str]):
+        """Process balances command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ally_quote",
+            description="""Get stock quote""",
+        )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-t")
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            help="Ticker to get quote for. Can be in form of 'tick1,tick2...'",
+            type=str,
+            dest="ticker",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            ally_view.display_stock_quote(ns_parser.ticker)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_movers(self, other_args: List[str]):
+        """Process movers command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ally_movers",
+            description="""Get stock movers""",
+        )
+        parser.add_argument(
+            "-l",
+            "--list",
+            help="List to get movers of",
+            choices=[
+                "toplosers",
+                "toppctlosers",
+                "topvolume",
+                "topactive",
+                "topgainers",
+                "toppctgainers",
+            ],
+            default="topactive",
+            dest="list_type",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            help="""Exchange to look at.  Can be
+            A:American Stock Exchange.
+            N:New York Stock Exchange.
+            Q:NASDAQ
+            U:NASDAQ Bulletin Board
+            V:NASDAQ OTC Other""",
+            choices=["A", "N", "Q", "U", "V"],
+            default="N",
+            dest="exchange",
+        )
+        parser.add_argument(
+            "-n", "--num", help="Number to show", type=int, default=15, dest="num"
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            ally_view.display_top_lists(
+                list_type=ns_parser.list_type,
+                exchange=ns_parser.exchange,
+                num_to_show=ns_parser.num,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")

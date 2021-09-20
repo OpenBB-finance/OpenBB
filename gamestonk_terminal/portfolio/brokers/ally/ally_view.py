@@ -99,3 +99,63 @@ def display_balances(export: str = ""):
     else:
         print(balances.to_string())
     print("")
+
+
+def display_stock_quote(ticker: str):
+    """Displays stock quote for ticker/tickers
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get.  Can be in form of 'tick1,tick2...'
+    """
+    quote = ally_model.get_stock_quote(ticker)
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                quote, tablefmt="fancy_grid", headers=quote.columns, showindex=True
+            )
+        )
+    else:
+        print(quote.to_string())
+    print("")
+
+
+def display_top_lists(
+    list_type: str, exchange: str, num_to_show: int = 20, export: str = ""
+):
+    """
+    Display top lists from ally Invest API.  Documentation for parameters below:
+    https://www.ally.com/api/invest/documentation/market-toplists-get/
+
+    Parameters
+    ----------
+    list_type : str
+        Which list to get data for
+    exchange : str
+        Which exchange to look at
+    num_to_show : int, optional
+        Number of top rows to show, by default 20
+    export : str, optional
+        Format to export data, by default ""
+    """
+    movers = ally_model.get_top_movers(list_type, exchange)
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                movers.head(num_to_show),
+                headers=movers.columns,
+                tablefmt="fancy_grid",
+                floatfmt=".2f",
+                showindex=True,
+            )
+        )
+    else:
+        print(movers.to_string())
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        "ally_movers",
+        movers,
+    )
