@@ -126,9 +126,8 @@ Coinbase:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--acc")
+            if other_args and other_args[0][0] != "-":
+                other_args.insert(0, "--acc")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -178,9 +177,8 @@ Coinbase:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--acc")
+            if other_args and other_args[0][0] != "-":
+                other_args.insert(0, "--acc")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -248,9 +246,8 @@ Coinbase:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--acc")
+            if other_args and other_args[0][0] != "-":
+                other_args.insert(0, "--acc")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 

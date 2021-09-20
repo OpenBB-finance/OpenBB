@@ -2,67 +2,6 @@ import pandas as pd
 from termcolor import colored
 
 
-def alpaca_positions_to_df(positions):
-
-    df = pd.DataFrame(columns=["Symbol", "MarketValue", "Quantity", "CostBasis"])
-    sym = []
-    mv = []
-    qty = []
-    cb = []
-
-    for pos in positions:
-        sym.append(pos.symbol)
-        mv.append(float(pos.market_value))
-        qty.append(float(pos.qty))
-        cb.append(float(pos.cost_basis))
-
-    df["Symbol"] = sym
-    df["MarketValue"] = mv
-    df["Quantity"] = qty
-    df["CostBasis"] = cb
-    df["Broker"] = "alp"
-
-    return df
-
-
-def ally_positions_to_df(df):
-    names = {
-        "costbasis": "CostBasis",
-        "marketvalue": "MarketValue",
-        "sym": "Symbol",
-        "qty": "Quantity",
-    }
-
-    df = df.loc[:, ["costbasis", "marketvalue", "qty", "sym"]]
-    df[["costbasis", "marketvalue", "qty"]] = df[
-        ["costbasis", "marketvalue", "qty"]
-    ].astype(float)
-    df = df.rename(columns=names)
-    df["Broker"] = "ally"
-    return df
-
-
-def rh_positions_to_df(holds: dict):
-
-    df = pd.DataFrame(columns=["Symbol", "MarketValue", "Quantity", "CostBasis"])
-    sym = []
-    mv = []
-    qty = []
-    cb = []
-    for stonk, data in holds.items():
-        sym.append(stonk)
-        qty.append(float(data["quantity"]))
-        mv.append(float(data["equity"]))
-        cb.append(float(data["quantity"]) * float(data["average_buy_price"]))
-    df["Symbol"] = sym
-    df["MarketValue"] = mv
-    df["Quantity"] = qty
-    df["CostBasis"] = cb
-    df["Broker"] = "rh"
-
-    return df
-
-
 def merge_brokers_holdings(df: pd.DataFrame) -> pd.DataFrame:
     if set(df.columns) != {"Symbol", "MarketValue", "Quantity", "CostBasis", "Broker"}:
         print("Check df generation")
