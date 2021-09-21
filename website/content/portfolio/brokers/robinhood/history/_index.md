@@ -13,3 +13,6 @@ optional arguments:
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```
+
+Sample Output:
+![RH_hist](https://user-images.githubusercontent.com/18151143/134234686-47ffdcf7-0c69-4557-a554-578d6c125a16.png)
