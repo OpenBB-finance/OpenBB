@@ -96,7 +96,7 @@ Alpaca:
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
-            prog="alpaca_holdings",
+            prog="holdings",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display info about your trading accounts on Alpaca",
@@ -122,7 +122,7 @@ Alpaca:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="alpaca_history",
+            prog="history",
             description="""Historical Portfolio Info""",
         )
         parser.add_argument(

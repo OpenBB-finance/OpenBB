@@ -102,7 +102,7 @@ Stock Information:
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
-            prog="ally_holdings",
+            prog="holdings",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display info about your trading accounts on Ally",
@@ -128,7 +128,7 @@ Stock Information:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ally_history",
+            prog="history",
             description="""Account transaction history""",
         )
         parser.add_argument(
@@ -160,7 +160,7 @@ Stock Information:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ally_balances",
+            prog="balances",
             description="""Account balance details""",
         )
         parser.add_argument(
@@ -185,7 +185,7 @@ Stock Information:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ally_quote",
+            prog="quote",
             description="""Get stock quote""",
         )
         if other_args and "-" not in other_args[0]:
@@ -212,7 +212,7 @@ Stock Information:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ally_movers",
+            prog="movers",
             description="""Get stock movers""",
         )
         parser.add_argument(

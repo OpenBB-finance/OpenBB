@@ -116,7 +116,7 @@ Robinhood:
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
-            prog="rh_holdings",
+            prog="holdings",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display info about your trading accounts on Robinhood",
@@ -142,7 +142,7 @@ Robinhood:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="Port",
+            prog="history",
             description="""Historical Portfolio Info""",
         )
         parser.add_argument(
