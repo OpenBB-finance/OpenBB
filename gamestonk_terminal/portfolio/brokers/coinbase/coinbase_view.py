@@ -8,37 +8,32 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio.brokers.coinbase import coinbase_model
 
 
-def display_account(show_all: bool = True, export: str = "") -> None:
+def display_account(currency: str = "USD", export: str = "") -> None:
     """Display list of all your trading accounts. [Source: Coinbase]
 
     Parameters
     ----------
-    show_all: bool
-        Indicate if you want to show all your accounts or only one.
+    currency: str
+        Currency to show current value in, default 'USD'
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    if show_all:
-        df = coinbase_model.get_accounts()
-    else:
-        df = coinbase_model.get_accounts()
-        df.balance = df["balance"].astype(float)
-        df = df[df.balance > 0]
+    df = coinbase_model.get_accounts(currency=currency, add_current_price=True)
+    df.balance = df["balance"].astype(float)
+    df = df[df.balance > 0]
 
     if df.empty:
-        print(
-            "No funds found on you account. To display all wallets (including 0 balance) use account --all\n"
-        )
+        print("No funds/coins found in your account.")
         return
 
     df_data = df.copy()
-
+    df = df.drop(columns=["id"])
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
                 df,
                 headers=df.columns,
-                floatfmt=".3f",
+                floatfmt=(None, ".8f", ".8f", ".8f", ".2f"),  # type: ignore
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -67,7 +62,6 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
     df = coinbase_model.get_account_history(account)
     df_data = df.copy()
 
@@ -114,7 +108,6 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
     df = coinbase_model.get_orders()
 
     if df.empty:
@@ -150,7 +143,7 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
 def display_deposits(
     limit: int, sortby: str, deposite_type: str, descend: bool, export: str = ""
 ) -> None:
-    """Display last N trades for chosen trading pair. [Source: Coinbase]
+    """Display deposits into account [Source: Coinbase]
 
     Parameters
     ----------
