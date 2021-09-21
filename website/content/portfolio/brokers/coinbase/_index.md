@@ -1,7 +1,9 @@
----
-geekdocCollapseSection: true
----
+# Coinbase Pro
 
-## TODO: Update after refactoring
+Note the following environment variable should be set:
 
-{{< toc-tree >}}
+```
+GT_API_COINBASE_KEY
+GT_API_COINBASE_SECRET
+GT_API_COINBASE_PASS_PHRASE
+```

@@ -1,10 +1,8 @@
+# Alpaca Markets
+
+Note the following environment variables must be set:
 ```
-usage: holdings [--export {csv,json,xlsx}] [-h]
-```
-Display info about your trading accounts on Alpaca
-```
-optional arguments:
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
-  -h, --help            show this help message (default: False)
+APCA_API_KEY_ID
+APCA_API_SECRET_KEY
+APCA_API_BASE_URL
 ```
