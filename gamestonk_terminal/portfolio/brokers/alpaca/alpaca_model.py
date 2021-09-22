@@ -5,8 +5,6 @@ from typing import List
 import alpaca_trade_api as alp_api
 import pandas as pd
 
-api = alp_api.REST()
-
 
 def get_holdings() -> pd.DataFrame:
     """Get holdings from alpaca api
@@ -16,6 +14,7 @@ def get_holdings() -> pd.DataFrame:
     pd.DataFrame
         Dataframe of positions
     """
+    api = alp_api.REST()
     positions = api.list_positions()
     return positions_to_df(positions)
 
@@ -35,6 +34,7 @@ def get_account_history(period: str = "1M", timeframe: str = "1D") -> pd.DataFra
     pd.DataFrame
         Dataframe containing historical account value
     """
+    api = alp_api.REST()
     return api.get_portfolio_history(period=period, timeframe=timeframe).df
 
 
