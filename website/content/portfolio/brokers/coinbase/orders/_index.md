@@ -1,4 +1,5 @@
-```usage: orders [-l LIMIT] [-s {product_id,side,price,size,type,created_at,status}] [--descend] [--export {csv,json,xlsx}] [-h]
+```
+usage: orders [-l LIMIT] [-s {product_id,side,price,size,type,created_at,status}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 List your current open orders
 ```

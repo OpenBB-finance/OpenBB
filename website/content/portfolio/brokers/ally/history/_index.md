@@ -10,6 +10,8 @@ optional arguments:
   -h, --help            show this help message (default: False)
 ```
 Sample Output:
+
+```
 ╒══════════╤═════════════════════╤══════════╤══════════════════════════╤════════════╕
 │   amount │ date                │ symbol   │ transactiontype          │   quantity │
 ╞══════════╪═════════════════════╪══════════╪══════════════════════════╪════════════╡
