@@ -1,6 +1,7 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
+from argparse import ArgumentError
 from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
@@ -320,21 +321,18 @@ def clean_data_values_to_float(val: str) -> float:
     if val == "-":
         val = "0"
 
+    # pylint:disable=no-else-return
     # Convert percentage to decimal
     if val.endswith("%"):
-        val_as_float = float(val[:-1]) / 100.0
-    # Convert from billions
+        return float(val[:-1]) / 100.0
     elif val.endswith("B"):
-        val_as_float = float(val[:-1]) * 1_000_000_000
-    # Convert from millions
+        return float(val[:-1]) * 1_000_000_000
     elif val.endswith("M"):
-        val_as_float = float(val[:-1]) * 1_000_000
-    # Convert from thousands
+        return float(val[:-1]) * 1_000_000
     elif val.endswith("K"):
-        val_as_float = float(val[:-1]) * 1000
+        return float(val[:-1]) * 1000
     else:
-        val_as_float = float(val)
-    return val_as_float
+        return float(val)
 
 
 def int_or_round_float(x) -> str:
@@ -361,7 +359,7 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
         year = last_stock_day.date().year
         if year not in years:
             years.append(year)
-            holidays = holidays + us_market_holidays(year)
+            holidays += us_market_holidays(year)
         # Check if it is a weekend
         if last_stock_day.date().weekday() > 4:
             continue
@@ -384,13 +382,8 @@ def get_data(tweet):
             "%Y-%m-%d %H:%M:%S"
         )
 
-    if "full_text" in tweet.keys():
-        s_text = tweet["full_text"]
-    else:
-        s_text = tweet["text"]
-
-    data = {"created_at": s_datetime, "text": s_text}
-    return data
+    s_text = tweet["full_text"] if "full_text" in tweet.keys() else tweet["text"]
+    return {"created_at": s_datetime, "text": s_text}
 
 
 def clean_tweet(tweet: str, s_ticker: str) -> str:
@@ -509,7 +502,17 @@ def parse_known_args_and_warn(parser: argparse.ArgumentParser, other_args: List[
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
-
+    try:
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+    except ArgumentError:
+        pass
     if gtff.USE_CLEAR_AFTER_CMD:
         os.system("cls||clear")
 
@@ -530,14 +533,10 @@ def financials_colored_values(val: str) -> str:
     if val == "N/A" or str(val) == "nan":
         val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
     elif sum(c.isalpha() for c in val) < 2:
-        if "%" in val:
-            if "-" in val:
-                val = f"{Fore.RED}{val}{Style.RESET_ALL}"
-            else:
-                val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
-        elif "(" in val:
+        if "%" in val and "-" in val or "%" not in val and "(" in val:
             val = f"{Fore.RED}{val}{Style.RESET_ALL}"
-
+        elif "%" in val:
+            val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
     return val
 
 
@@ -683,10 +682,7 @@ def get_last_time_market_was_open(dt):
 
 
 def find_tickers(submission):
-    ls_text = []
-    ls_text.append(submission.selftext)
-    ls_text.append(submission.title)
-
+    ls_text = [submission.selftext, submission.title]
     submission.comments.replace_more(limit=0)
     for comment in submission.comments.list():
         ls_text.append(comment.body)

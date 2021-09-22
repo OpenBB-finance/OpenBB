@@ -104,7 +104,7 @@ class StocksController:
             stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_text = f"{s_intraday} Stock: {self.ticker}"
-
+        dim = Style.DIM if not self.ticker else ""
         help_text = f"""
 
 >> STOCKS <<
@@ -119,7 +119,7 @@ What do you want to do?
 
 {stock_text}
 Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
-{Style.DIM if not self.ticker else ''}
+{dim}
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
@@ -131,14 +131,14 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   report      generate automatic report,   \t e.g.: dark pool, due diligence{Style.DIM if not self.ticker else ''}
+>   report      generate automatic report,   \t e.g.: dark pool, due diligence
+>   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
 >   ca          comparison analysis,     \t e.g.: historical, correlation, financials
 >   bt          strategy backtester,      \t e.g.: simple ema, ema cross, rsi strategies
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
->   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {Style.RESET_ALL if not self.ticker else ''}"""
@@ -420,10 +420,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_ba(self, _):
         """Process ba command"""
-        if not self.ticker:
-            print("Use 'load <ticker>' prior to this command!", "\n")
-            return
-
         ret = ba_controller.menu(
             self.ticker,
             self.start,

@@ -1,14 +1,16 @@
 """Behavioural Analysis Controller Module"""
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import argparse
 import os
 from typing import List
 from datetime import datetime
 from prompt_toolkit.completion import NestedCompleter
-
+from colorama import Style
+import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
     google_view,
@@ -18,18 +20,15 @@ from gamestonk_terminal.common.behavioural_analysis import (
     finnhub_view,
     sentimentinvestor_view,
 )
+from gamestonk_terminal.stocks.stocks_helper import load
 
 
 class BehaviouralAnalysisController:
     """Behavioural Analysis Controller class"""
 
     # Command choices
-    CHOICES = [
-        "?",
-        "cls",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
+    CHOICES_COMMANDS = [
         "watchlist",
         "spac",
         "spac_c",
@@ -63,56 +62,55 @@ class BehaviouralAnalysisController:
         self.ba_parser = argparse.ArgumentParser(add_help=False, prog="ba")
         self.ba_parser.add_argument(
             "cmd",
-            choices=self.CHOICES,
+            choices=self.CHOICES + self.CHOICES_COMMANDS,
         )
 
-    @staticmethod
-    def print_help():
-        """Print help"""
-        print("\nBehavioural Analysis:")
-        print("   cls           clear screen")
-        print("   ?/help        show this menu again")
-        print("   q             quit this menu, and shows back to main menu")
-        print("   quit          quit to abandon program")
-        print("")
-        print("Finbrain:")
-        print("   finbrain      sentiment from 15+ major news headlines")
-        print("   stats         sentiment stats including comparison with sector")
-        print("Reddit:")
-        print(
-            "   wsb           show what WSB gang is up to in subreddit wallstreetbets"
-        )
-        print("   watchlist     show other users watchlist")
-        print("   popular       show popular tickers")
-        print(
-            "   spac_c        show other users spacs announcements from subreddit SPACs community"
-        )
-        print("   spac          show other users spacs announcements from other subs")
-        print("   getdd         gets due diligence from another user's post")
-        print("Stocktwits:")
-        print(
-            "   bullbear      estimate quick sentiment from last 30 messages on board"
-        )
-        print("   messages      output up to the 30 last messages on the board")
-        print("   trending      trending stocks")
-        print("   stalker       stalk stocktwits user's last messages")
-        print("Twitter:")
-        print("   infer         infer about stock's sentiment from latest tweets")
-        print("   sentiment     in-depth sentiment prediction from tweets over time")
-        print("Google:")
-        print("   mentions      interest over time based on stock's mentions")
-        print("   regions       regions that show highest interest in stock")
-        print("   queries       top related queries with this stock")
-        print("   rise          top rising related queries with stock")
-        print("SentimentInvestor:")
-        print("   popularsi     show most popular stocks on social media right now")
-        print(
-            "   emerging      show stocks that are being talked about more than usual"
-        )
-        print("   metrics       core social sentiment metrics for this stock")
-        print("   social        social media figures for stock popularity")
-        print("   historical    plot the past week of data for a selected metric")
-        print("")
+    def print_help(self):
+        dim = Style.DIM if not self.ticker else ""
+        res = Style.RESET_ALL
+        help_string = f"""
+>>>Behavioural Analysis:<<<
+
+What would you like to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+
+Ticker: {self.ticker.upper() or None}
+
+Finbrain:{dim}
+    finbrain      sentiment from 15+ major news headlines {res}
+Finnhub:{dim}
+    stats         sentiment stats including comparison with sector{res}
+Reddit:
+    wsb           show what WSB gang is up to in subreddit wallstreetbets
+    watchlist     show other users watchlist
+    popular       show popular tickers
+    spac_c        show other users spacs announcements from subreddit SPACs community
+    spac          show other users spacs announcements from other subs
+    getdd         gets due diligence from another user's post
+Stocktwits:{dim}
+    bullbear      estimate quick sentiment from last 30 messages on board
+    messages      output up to the 30 last messages on the board{res}
+    trending      trending stocks
+    stalker       stalk stocktwits user's last messages
+Twitter:{dim}
+    infer         infer about stock's sentiment from latest tweets
+    sentiment     in-depth sentiment prediction from tweets over time{res}
+Google:{dim}
+    mentions      interest over time based on stock's mentions
+    regions       regions that show highest interest in stock
+    queries       top related queries with this stock
+    rise          top rising related queries with stock{res}
+SentimentInvestor:
+    popularsi     show most popular stocks on social media right now
+    emerging      show stocks that are being talked about more than usual
+    metrics       core social sentiment metrics for this stock{dim}
+    social        social media figures for stock popularity
+    historical    plot the past week of data for a selected metric{res}
+        """
+        print(help_string)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -156,6 +154,21 @@ class BehaviouralAnalysisController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def _check_ticker(self):
+        """Checks if ticker loaded"""
+        if not self.ticker:
+            print("No ticker loaded.  Please load using 'load <ticker>'\n")
+            return False
+        return True
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, _, _, _ = load(
+            other_args, self.ticker, "", "1440min", pd.DataFrame()
+        )
+        if "." in self.ticker:
+            self.ticker = self.ticker.split(".")[0]
 
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
@@ -255,11 +268,68 @@ class BehaviouralAnalysisController:
 
     def call_finbrain(self, other_args: List[str]):
         """Process finbrain command"""
-        finbrain_view.sentiment_analysis(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="finbrain",
+            description="""FinBrain collects the news headlines from 15+ major financial news
+                        sources on a daily basis and analyzes them to generate sentiment scores
+                        for more than 4500 US stocks.FinBrain Technologies develops deep learning
+                        algorithms for financial analysis and prediction, which currently serves
+                        traders from more than 150 countries all around the world.
+                        [Source:  https://finbrain.tech]""",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                finbrain_view.display_sentiment_analysis(
+                    ticker=self.ticker, export=ns_parser.export
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_stats(self, other_args: List[str]):
         """Process stats command"""
-        finnhub_view.sentiment_stats(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stats",
+            description="""
+                Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
+                bullish vs bearish percentages, sector average bullish percentage, and sector average news score.
+                [Source: https://finnhub.io]
+            """,
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if self._check_ticker():
+                finnhub_view.display_sentiment_stats(
+                    ticker=self.ticker, export=ns_parser.export
+                )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
