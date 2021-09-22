@@ -99,8 +99,7 @@ class OptionsController:
     def print_help(self):
         """Print help."""
         colored = self.ticker and self.selected_date
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/options
-
+        help_text = """
 >> OPTIONS <<
 
 What do you want to do?

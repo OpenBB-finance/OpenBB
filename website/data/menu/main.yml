@@ -1,72 +1,839 @@
 ---
 main:
-  - name: Stocks
+  - name: stocks
     ref: "/stocks"
     sub:
       - name: load
         ref: "/stocks/load"
       - name: candle
         ref: "/stocks/candle"
-      - name: Discovery
+      - name: quote
+        ref: "/stocks/quote"
+      - name: news
+        ref: "/stocks/news"
+      - name: discovery
         ref: "/stocks/discovery"
         sub:
-          - name: ipo
-            ref: "/stocks/discovery/ipo"
-          - name: map
-            ref: "/stocks/discovery/map"
-      - name: Dark Pool Shorts
+          - name: rtearn
+            ref: "/stocks/discovery/rtearn"
+          - name: pipo
+            ref: "/stocks/discovery/pipo"
+          - name: fipo
+            ref: "/stocks/discovery/fipo"
+          - name: gainers
+            ref: "/stocks/discovery/gainers"
+          - name: losers
+            ref: "/stocks/discovery/losers"
+          - name: ugs
+            ref: "/stocks/discovery/ugs"
+          - name: gtech
+            ref: "/stocks/discovery/gtech"
+          - name: active
+            ref: "/stocks/discovery/active"
+          - name: ulc
+            ref: "/stocks/discovery/ulc"
+          - name: asc
+            ref: "/stocks/discovery/asc"
+          - name: ford
+            ref: "/stocks/discovery/ford"
+          - name: arkord
+            ref: "/stocks/discovery/arkord"
+          - name: upcoming
+            ref: "/stocks/discovery/upcoming"
+          - name: latest
+            ref: "/stocks/discovery/latest"
+          - name: trending
+            ref: "/stocks/discovery/trending"
+          - name: lowfloat
+            ref: "/stocks/discovery/lowfloat"
+          - name: hotpenny
+            ref: "/stocks/discovery/hotpenny"
+      - name: dark pool shorts
         ref: "/stocks/dark_pool_shorts"
-      - name: Fundamental Analysis
-        ref: "/stocks/fundamental_analysis"
-      - name: Due Diligence
-        ref: "/stocks/due_diligence"
-      - name: Comparison Analysis
-        ref: "/stocks/comparison_analysis"
-      - name: Insider
-        ref: "/stocks/insider"
-      - name: Government
-        ref: "/stocks/government"
-      - name: Screener
+        sub:
+          - name: shorted
+            ref: "/stocks/dark_pool_shorts/shorted"
+          - name: hsi
+            ref: "/stocks/dark_pool_shorts/hsi"
+          - name: prom
+            ref: "/stocks/dark_pool_shorts/prom"
+          - name: pos
+            ref: "/stocks/dark_pool_shorts/pos"
+          - name: sidtc
+            ref: "/stocks/dark_pool_shorts/sidtc"
+          - name: dpotc
+            ref: "/stocks/dark_pool_shorts/dpotc"
+          - name: ftd
+            ref: "/stocks/dark_pool_shorts/ftd"
+          - name: spos
+            ref: "/stocks/dark_pool_shorts/spos"
+          - name: psi
+            ref: "/stocks/dark_pool_shorts/psi"
+      - name: screener
         ref: "/stocks/screener"
-      - name: Report
-        ref: "/stocks/report"
-  - name: Options
-    ref: "/options"
-  - name: Economy
-    ref: "/economy"
-    sub:
+        sub:
+          - name: view
+            ref: "/stocks/screener/view"
+          - name: set
+            ref: "/stocks/screener/set"
+          - name: historical
+            ref: "/stocks/screener/historical"
+          - name: overview
+            ref: "/stocks/screener/overview"
+          - name: valuation
+            ref: "/stocks/screener/valuation"
+          - name: financial
+            ref: "/stocks/screener/financial"
+          - name: ownership
+            ref: "/stocks/screener/ownership"
+          - name: performance
+            ref: "/stocks/screener/performance"
+          - name: technical
+            ref: "/stocks/screener/technical"
+          - name: signals
+            ref: "/stocks/screener/signals"
+      - name: insider trading
+        ref: "/stocks/insider"
+        sub:
+          - name: load
+            ref: "/stocks/insider/load"
+          - name: view
+            ref: "/stocks/insider/view"
+          - name: set
+            ref: "/stocks/insider/set"
+          - name: filter
+            ref: "/stocks/insider/filter"
+          - name: lcb
+            ref: "/stocks/insider/lcb"
+          - name: lpsb
+            ref: "/stocks/insider/lpsb"
+          - name: lit
+            ref: "/stocks/insider/lit"
+          - name: lip
+            ref: "/stocks/insider/lip"
+          - name: blip
+            ref: "/stocks/insider/blip"
+          - name: blop
+            ref: "/stocks/insider/blop"
+          - name: blcp
+            ref: "/stocks/insider/blcp"
+          - name: lis
+            ref: "/stocks/insider/lis"
+          - name: blis
+            ref: "/stocks/insider/blis"
+          - name: blos
+            ref: "/stocks/insider/blos"
+          - name: blcs
+            ref: "/stocks/insider/blcs"
+          - name: topt
+            ref: "/stocks/insider/topt"
+          - name: toppw
+            ref: "/stocks/insider/toppw"
+          - name: toppm
+            ref: "/stocks/insider/toppm"
+          - name: tipt
+            ref: "/stocks/insider/tipt"
+          - name: tippw
+            ref: "/stocks/insider/tippw"
+          - name: tippm
+            ref: "/stocks/insider/tippm"
+          - name: tist
+            ref: "/stocks/insider/tist"
+          - name: tispw
+            ref: "/stocks/insider/tispw"
+          - name: tispm
+            ref: "/stocks/insider/tispm"
+          - name: lins
+            ref: "/stocks/insider/lins"
+          - name: act
+            ref: "/stocks/insider/act"
+      - name: government
+        ref: "/stocks/government"
+        sub:
+          - name: last_congress
+            ref: "/stocks/government/last_congress"
+          - name: buy_congress
+            ref: "/stocks/government/buy_congress"
+          - name: sell_congress
+            ref: "/stocks/government/sell_congress"
+          - name: last_senate
+            ref: "/stocks/government/last_senate"
+          - name: buy_senate
+            ref: "/stocks/government/buy_senate"
+          - name: sell_house
+            ref: "/stocks/government/sell_house"
+          - name: last_contracts
+            ref: "/stocks/government/last_contracts"
+          - name: sum_contracts
+            ref: "/stocks/government/sum_contracts"
+          - name: qtr_contracts
+            ref: "/stocks/government/qtr_contracts"
+          - name: top_lobbying
+            ref: "/stocks/government/top_lobbying"
+          - name: raw_congress
+            ref: "/stocks/government/raw_congress"
+          - name: congress
+            ref: "/stocks/government/congress"
+          - name: raw_senate
+            ref: "/stocks/government/raw_senate"
+          - name: senate
+            ref: "/stocks/government/senate"
+          - name: raw_house
+            ref: "/stocks/government/raw_house"
+          - name: house
+            ref: "/stocks/government/house"
+          - name: raw_contracts
+            ref: "/stocks/government/raw_contracts"
+          - name: contracts
+            ref: "/stocks/government/contracts"
+          - name: qtr_contracts_hist
+            ref: "/stocks/government/qtr_contracts_hist"
+          - name: lobbying
+            ref: "/stocks/government/lobbying"
+      - name: fundamental analysis
+        ref: "/stocks/fundamental_analysis"
+        sub:
+          - name: screener
+            ref: "/stocks/fundamental_analysis/screener"
+          - name: mgmt
+            ref: "/stocks/fundamental_analysis/mgmt"
+          - name: score
+            ref: "/stocks/fundamental_analysis/score"
+          - name: warnings
+            ref: "/stocks/fundamental_analysis/warnings"
+          - name: dcf
+            ref: "/stocks/fundamental_analysis/dcf"
+          - name: info
+            ref: "/stocks/fundamental_analysis/info"
+          - name: shrs
+            ref: "/stocks/fundamental_analysis/shrs"
+          - name: sust
+            ref: "/stocks/fundamental_analysis/sust"
+          - name: cal
+            ref: "/stocks/fundamental_analysis/cal"
+          - name: web
+            ref: "/stocks/fundamental_analysis/web"
+          - name: hq
+            ref: "/stocks/fundamental_analysis/hq"
+          - name: overview
+            ref: "/stocks/fundamental_analysis/overview"
+          - name: key
+            ref: "/stocks/fundamental_analysis/key"
+          - name: income
+            ref: "/stocks/fundamental_analysis/income"
+          - name: balance
+            ref: "/stocks/fundamental_analysis/balance"
+          - name: cash
+            ref: "/stocks/fundamental_analysis/cash"
+          - name: earnings
+            ref: "/stocks/fundamental_analysis/earnings"
+          - name: fraud
+            ref: "/stocks/fundamental_analysis/fraud"
+          - name: financial modeling prep
+            ref: "/stocks/fundamental_analysis/fmp"
+            sub:
+              - name: profile
+                ref: "/stocks/fundamental_analysis/fmp/profile"
+              - name: quote
+                ref: "/stocks/fundamental_analysis/fmp/quote"
+              - name: enterprise
+                ref: "/stocks/fundamental_analysis/fmp/enterprise"
+              - name: dcf
+                ref: "/stocks/fundamental_analysis/fmp/dcf"
+              - name: income
+                ref: "/stocks/fundamental_analysis/fmp/income"
+              - name: balance
+                ref: "/stocks/fundamental_analysis/fmp/balance"
+              - name: cash
+                ref: "/stocks/fundamental_analysis/fmp/cash"
+              - name: metrics
+                ref: "/stocks/fundamental_analysis/fmp/metrics"
+              - name: ratios
+                ref: "/stocks/fundamental_analysis/fmp/ratios"
+              - name: growth
+                ref: "/stocks/fundamental_analysis/fmp/growth"
+      - name: research
+        ref: "/stocks/research"
+        sub:
+          - name: macroaxis
+            ref: "/stocks/research/macroaxis"
+          - name: yahoo
+            ref: "/stocks/research/yahoo"
+          - name: finviz
+            ref: "/stocks/research/finviz"
+          - name: marketwatch
+            ref: "/stocks/research/marketwatch"
+          - name: fool
+            ref: "/stocks/research/fool"
+          - name: businessinsider
+            ref: "/stocks/research/businessinsider"
+          - name: fmp
+            ref: "/stocks/research/fmp"
+          - name: fidelity
+            ref: "/stocks/research/fidelity"
+          - name: tradingview
+            ref: "/stocks/research/tradingview"
+          - name: marketchameleon
+            ref: "/stocks/research/marketchameleon"
+          - name: stockrow
+            ref: "/stocks/research/stockrow"
+          - name: barchart
+            ref: "/stocks/research/barchart"
+          - name: grufity
+            ref: "/stocks/research/grufity"
+          - name: fintel
+            ref: "/stocks/research/fintel"
+          - name: zacks
+            ref: "/stocks/research/zacks"
+          - name: macrotrends
+            ref: "/stocks/research/macrotrends"
+          - name: newsfilter
+            ref: "/stocks/research/newsfilter"
+          - name: stockanalysis
+            ref: "/stocks/research/stockanalysis"
+      - name: due diligence
+        ref: "/stocks/due_diligence"
+        sub:
+          - name: analyst
+            ref: "/stocks/due_diligence/analyst"
+          - name: rating
+            ref: "/stocks/due_diligence/rating"
+          - name: rot
+            ref: "/stocks/due_diligence/rot"
+          - name: pt
+            ref: "/stocks/due_diligence/pt"
+          - name: est
+            ref: "/stocks/due_diligence/est"
+          - name: sec
+            ref: "/stocks/due_diligence/sec"
+          - name: supplier
+            ref: "/stocks/due_diligence/supplier"
+          - name: customer
+            ref: "/stocks/due_diligence/customer"
+      - name: comparison analysis
+        ref: "/stocks/comparison_analysis"
+        sub:
+          - name: load
+            ref: "/stocks/comparison_analysis/load"
+          - name: select
+            ref: "/stocks/comparison_analysis/select"
+          - name: add
+            ref: "/stocks/comparison_analysis/add"
+          - name: tsne
+            ref: "/stocks/comparison_analysis/tsne"
+          - name: getpoly
+            ref: "/stocks/comparison_analysis/getpoly"
+          - name: getfinnhub
+            ref: "/stocks/comparison_analysis/getfinnhub"
+          - name: getfinviz
+            ref: "/stocks/comparison_analysis/getfinviz"
+          - name: historical
+            ref: "/stocks/comparison_analysis/historical"
+          - name: hcorr
+            ref: "/stocks/comparison_analysis/hcorr"
+          - name: income
+            ref: "/stocks/comparison_analysis/income"
+          - name: balance
+            ref: "/stocks/comparison_analysis/balance"
+          - name: cashflow
+            ref: "/stocks/comparison_analysis/cashflow"
+          - name: sentiment
+            ref: "/stocks/comparison_analysis/sentiment"
+          - name: scorr
+            ref: "/stocks/comparison_analysis/scorr"
+          - name: overview
+            ref: "/stocks/comparison_analysis/overview"
+          - name: valuation
+            ref: "/stocks/comparison_analysis/valuation"
+          - name: financial
+            ref: "/stocks/comparison_analysis/financial"
+          - name: ownership
+            ref: "/stocks/comparison_analysis/ownership"
+          - name: performance
+            ref: "/stocks/comparison_analysis/performance"
+          - name: technical
+            ref: "/stocks/comparison_analysis/technical"
+      - name: backtesting
+        ref: "/stocks/backtesting"
+        sub:
+          - name: ema
+            ref: "/stocks/backtesting/ema"
+          - name: ema_cross
+            ref: "/stocks/backtesting/ema_cross"
+          - name: rsi
+            ref: "/stocks/backtesting/rsi"
+      - name: technical analysis
+        ref: "/stocks/technical_analysis"
+        sub:
+          - name: view
+            ref: "/common/technical_analysis/view"
+          - name: summary
+            ref: "/common/technical_analysis/summary"
+          - name: recom
+            ref: "/common/technical_analysis/recom"
+          - name: pr
+            ref: "/common/technical_analysis/pr"
+          - name: ema
+            ref: "/common/technical_analysis/ema"
+          - name: sma
+            ref: "/common/technical_analysis/sma"
+          - name: wma
+            ref: "/common/technical_analysis/wma"
+          - name: hma
+            ref: "/common/technical_analysis/hma"
+          - name: zlma
+            ref: "/common/technical_analysis/zlma"
+          - name: vwap
+            ref: "/common/technical_analysis/vwap"
+          - name: cci
+            ref: "/common/technical_analysis/cci"
+          - name: macd
+            ref: "/common/technical_analysis/macd"
+          - name: rsi
+            ref: "/common/technical_analysis/rsi"
+          - name: stoch
+            ref: "/common/technical_analysis/stoch"
+          - name: fisher
+            ref: "/common/technical_analysis/fisher"
+          - name: cg
+            ref: "/common/technical_analysis/cg"
+          - name: adx
+            ref: "/common/technical_analysis/adx"
+          - name: aroon
+            ref: "/common/technical_analysis/aroon"
+          - name: bbands
+            ref: "/common/technical_analysis/bbands"
+          - name: donchian
+            ref: "/common/technical_analysis/donchian"
+          - name: kc
+            ref: "/common/technical_analysis/kc"
+          - name: ad
+            ref: "/common/technical_analysis/ad"
+          - name: adosc
+            ref: "/common/technical_analysis/adosc"
+          - name: obv
+            ref: "/common/technical_analysis/obv"
+          - name: fib
+            ref: "/common/technical_analysis/fib"
+      - name: behavioural analysis
+        ref: "/stocks/behavioural_analysis"
+        sub:
+          - name: finbrain
+            ref: "/stocks/behavioural_analysis/finbrain"
+          - name: stats
+            ref: "/stocks/behavioural_analysis/stats"
+          - name: wsb
+            ref: "/stocks/behavioural_analysis/wsb"
+          - name: watchlist
+            ref: "/stocks/behavioural_analysis/watchlist"
+          - name: popular
+            ref: "/stocks/behavioural_analysis/popular"
+          - name: spac_c
+            ref: "/stocks/behavioural_analysis/spac_c"
+          - name: spac
+            ref: "/stocks/behavioural_analysis/spac"
+          - name: getdd
+            ref: "/stocks/behavioural_analysis/getdd"
+          - name: bullbear
+            ref: "/stocks/behavioural_analysis/bullbear"
+          - name: messages
+            ref: "/stocks/behavioural_analysis/messages"
+          - name: trending
+            ref: "/stocks/behavioural_analysis/trending"
+          - name: stalker
+            ref: "/stocks/behavioural_analysis/stalker"
+          - name: infer
+            ref: "/stocks/behavioural_analysis/infer"
+          - name: sentiment
+            ref: "/stocks/behavioural_analysis/sentiment"
+          - name: mentions
+            ref: "/stocks/behavioural_analysis/mentions"
+          - name: regions
+            ref: "/stocks/behavioural_analysis/regions"
+          - name: queries
+            ref: "/stocks/behavioural_analysis/queries"
+          - name: rise
+            ref: "/stocks/behavioural_analysis/rise"
+          - name: popularsi
+            ref: "/stocks/behavioural_analysis/popularsi"
+          - name: emerging
+            ref: "/stocks/behavioural_analysis/emerging"
+          - name: metrics
+            ref: "/stocks/behavioural_analysis/metrics"
+          - name: social
+            ref: "/stocks/behavioural_analysis/social"
+          - name: historical
+            ref: "/stocks/behavioural_analysis/historical"
+      - name: quantitative analysis
+        ref: "/stocks/quantitative_analysis"
+        sub:
+          - name: load
+            ref: "/stocks/quantitative_analysis/load"
+          - name: pick
+            ref: "/stocks/quantitative_analysis/pick"
+          - name: summary
+            ref: "/stocks/quantitative_analysis/summary"
+          - name: normality
+            ref: "/stocks/quantitative_analysis/normality"
+          - name: unitroot
+            ref: "/stocks/quantitative_analysis/unitroot"
+          - name: hist
+            ref: "/stocks/quantitative_analysis/hist"
+          - name: cdf
+            ref: "/stocks/quantitative_analysis/cdf"
+          - name: bw
+            ref: "/stocks/quantitative_analysis/bw"
+          - name: acf
+            ref: "/stocks/quantitative_analysis/acf"
+          - name: qqplot
+            ref: "/stocks/quantitative_analysis/qqplot"
+          - name: rolling
+            ref: "/stocks/quantitative_analysis/rolling"
+          - name: spread
+            ref: "/stocks/quantitative_analysis/spread"
+          - name: quantile
+            ref: "/stocks/quantitative_analysis/quantile"
+          - name: skew
+            ref: "/stocks/quantitative_analysis/skew"
+          - name: decompose
+            ref: "/stocks/quantitative_analysis/decompose"
+          - name: cusum
+            ref: "/stocks/quantitative_analysis/cusum"
+      - name: prediction techniques
+        ref: "/stocks/prediction_techniques"
+        sub:
+          - name: ets
+            ref: "/stocks/prediction_techniques/ets"
+          - name: knn
+            ref: "/stocks/prediction_techniques/knn"
+          - name: linear
+            ref: "/stocks/prediction_techniques/linear"
+          - name: quadratic
+            ref: "/stocks/prediction_techniques/quadratic"
+          - name: cubic
+            ref: "/stocks/prediction_techniques/cubic"
+          - name: regression
+            ref: "/stocks/prediction_techniques/regression"
+          - name: arima
+            ref: "/stocks/prediction_techniques/arima"
+          - name: mlp
+            ref: "/stocks/prediction_techniques/mlp"
+          - name: rnn
+            ref: "/stocks/prediction_techniques/rnn"
+          - name: lstm
+            ref: "/stocks/prediction_techniques/lstm"
+          - name: conv1d
+            ref: "/stocks/prediction_techniques/conv1d"
       - name: report
         ref: "/stocks/report"
-  - name: Forex
+  - name: forex
     ref: "/forex"
-  - name: Portfolio
+  - name: resources
+    ref: "/resources"
+  - name: economy
+    ref: "/economy"
+    sub:
+      - name: feargreed
+        ref: "/economy/feargreed"
+      - name: events
+        ref: "/economy/events"
+      - name: overview
+        ref: "/economy/overview"
+      - name: indices
+        ref: "/economy/indices"
+      - name: futures
+        ref: "/economy/futures"
+      - name: usbonds
+        ref: "/economy/usbonds"
+      - name: glbonds
+        ref: "/economy/glbonds"
+      - name: currencies
+        ref: "/economy/currencies"
+      - name: map
+        ref: "/economy/map"
+      - name: valuation
+        ref: "/economy/valuation"
+      - name: performance
+        ref: "/economy/performance"
+      - name: spectrum
+        ref: "/economy/spectrum"
+      - name: rtps
+        ref: "/economy/rtps"
+      - name: search
+        ref: "/economy/search"
+      - name: series
+        ref: "/economy/series"
+      - name: report
+        ref: "/economy/report"
+  - name: options
+    ref: "/options"
+    sub:
+      - name: disp
+        ref: "/options/disp"
+      - name: scr
+        ref: "/options/scr"
+      - name: unu
+        ref: "/options/unu"
+      - name: calc
+        ref: "/options/calc"
+      - name: load
+        ref: "/options/load"
+      - name: exp
+        ref: "/options/exp"
+      - name: info
+        ref: "/options/info"
+      - name: chains
+        ref: "/options/chains"
+      - name: oi
+        ref: "/options/oi"
+      - name: vol
+        ref: "/options/vol"
+      - name: voi
+        ref: "/options/voi"
+      - name: hist
+        ref: "/options/hist"
+      - name: grhist
+        ref: "/options/grhist"
+  - name: etf
+    ref: "/etf"
+    sub:
+      - name: search
+        ref: "/etf/search"
+      - name: overview
+        ref: "/etf/overview"
+      - name: holdings
+        ref: "/etf/holdings"
+      - name: compare
+        ref: "/etf/compare"
+      - name: screener
+        ref: "/etf/screener"
+      - name: gainers
+        ref: "/etf/gainers"
+      - name: decliners
+        ref: "/etf/decliners"
+      - name: active
+        ref: "/etf/active"
+  - name: portfolio
     ref: "/portfolio"
     sub:
-      - name: Brokers
+      - name: brokers
         ref: "/portfolio/brokers"
-      - name: Portfolio Analysis
+      - name: portfolio analysis
         ref: "/portfolio/portfolio_analysis"
-      - name: Portfolio Optimization
+      - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
-  - name: Cryptocurrency
+        sub:
+        - name: select
+          ref: "/portfolio/portfolio_optimization/select"
+        - name: add
+          ref: "/portfolio/portfolio_optimization/add"
+        - name: rmv
+          ref: "/portfolio/portfolio_optimization/rmv"
+        - name: equal
+          ref: "/portfolio/portfolio_optimization/equal"
+        - name: mktcap
+          ref: "/portfolio/portfolio_optimization/mktcap"
+        - name: dividend
+          ref: "/portfolio/portfolio_optimization/dividend"
+        - name: property
+          ref: "/portfolio/portfolio_optimization/property"
+        - name: maxhsarpe
+          ref: "/portfolio/portfolio_optimization/maxsharpe"
+        - name: minvol
+          ref: "/portfolio/portfolio_optimization/minvol"
+        - name: maxquadutil
+          ref: "/portfolio/portfolio_optimization/maxquadutil"
+        - name: effret
+          ref: "/portfolio/portfolio_optimization/effret"
+        - name: effrisk
+          ref: "/portfolio/portfolio_optimization/effrisk"
+        - name: ef
+          ref: "/portfolio/portfolio_optimization/ef"
+  - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
-      - name: Discovery
+      - name: load
+        ref: "/cryptocurrency/load"
+      - name: chart
+        ref: "/cryptocurrency/chart"
+      - name: find
+        ref: "/cryptocurrency/find"
+      - name: finbrain
+        ref: "/cryptocurrency/finbrain"
+      - name: discovery
         ref: "/cryptocurrency/discovery"
-      - name: Due Diligence
-        ref: "/cryptocurrency/due_diligence"
-      - name: Overview
+        sub:
+          - name: coins
+            ref: "/cryptocurrency/discovery/coins"
+          - name: cgtrending
+            ref: "/cryptocurrency/discovery/cgtrending"
+          - name: cgvoted
+            ref: "/cryptocurrency/discovery/cgvoted"
+          - name: cgvisited
+            ref: "/cryptocurrency/discovery/cgvisited"
+          - name: cgvolume
+            ref: "/cryptocurrency/discovery/cgvolume"
+          - name: cgrecently
+            ref: "/cryptocurrency/discovery/cgrecently"
+          - name: cgsentiment
+            ref: "/cryptocurrency/discovery/cgsentiment"
+          - name: cggainers
+            ref: "/cryptocurrency/discovery/cggainers"
+          - name: cglosers
+            ref: "/cryptocurrency/discovery/cglosers"
+          - name: cgyfarms
+            ref: "/cryptocurrency/discovery/cgyfarms"
+          - name: cgdefi
+            ref: "/cryptocurrency/discovery/cgdefi"
+          - name: cgdex
+            ref: "/cryptocurrency/discovery/cgdex"
+          - name: cgnft
+            ref: "/cryptocurrency/discovery/cgnft"
+          - name: cpsearch
+            ref: "/cryptocurrency/discovery/cpsearch"
+          - name: cmctop
+            ref: "/cryptocurrency/discovery/cmctop"
+      - name: overview
         ref: "/cryptocurrency/overview"
-      - name: Report
+        sub:
+          - name: cgglobal
+            ref: "/cryptocurrency/overview/cgglobal"
+          - name: cgnews
+            ref: "/cryptocurrency/overview/cgnews"
+          - name: cgdefi
+            ref: "/cryptocurrency/overview/cgdefi"
+          - name: cgstables
+            ref: "/cryptocurrency/overview/cgstables"
+          - name: cgnft
+            ref: "/cryptocurrency/overview/cgnft"
+          - name: cgnftday
+            ref: "/cryptocurrency/overview/cgnftday"
+          - name: cgexchanges
+            ref: "/cryptocurrency/overview/cgexchanges"
+          - name: cgexrates
+            ref: "/cryptocurrency/overview/cgexrates"
+          - name: cgplatforms
+            ref: "/cryptocurrency/overview/cgplatforms"
+          - name: cgproducts
+            ref: "/cryptocurrency/overview/cgproducts"
+          - name: cgindexes
+            ref: "/cryptocurrency/overview/cgindexes"
+          - name: cgderivatives
+            ref: "/cryptocurrency/overview/cgderivatives"
+          - name: cgcategories
+            ref: "/cryptocurrency/overview/cgcategories"
+          - name: cghold
+            ref: "/cryptocurrency/overview/cghold"
+          - name: cgcompanies
+            ref: "/cryptocurrency/overview/cgcompanies"
+          - name: cpglobal
+            ref: "/cryptocurrency/overview/cpglobal"
+          - name: cpinfo
+            ref: "/cryptocurrency/overview/cpinfo"
+          - name: cpmarkets
+            ref: "/cryptocurrency/overview/cpmarkets"
+          - name: cpexchanges
+            ref: "/cryptocurrency/overview/cpexchanges"
+          - name: cpexmarkets
+            ref: "/cryptocurrency/overview/cpexmarkets"
+          - name: cpplatforms
+            ref: "/cryptocurrency/overview/cpplatforms"
+          - name: cpcontracts
+            ref: "/cryptocurrency/overview/cpcontracts"
+          - name: cbpairs
+            ref: "/cryptocurrency/overview/cbpairs"
+      - name: due diligence
+        ref: "/cryptocurrency/due_diligence"
+        sub:
+          - name: info
+            ref: "/cryptocurrency/due_diligence/info"
+          - name: market
+            ref: "/cryptocurrency/due_diligence/market"
+          - name: ath
+            ref: "/cryptocurrency/due_diligence/ath"
+          - name: atl
+            ref: "/cryptocurrency/due_diligence/atl"
+          - name: web
+            ref: "/cryptocurrency/due_diligence/web"
+          - name: social
+            ref: "/cryptocurrency/due_diligence/social"
+          - name: score
+            ref: "/cryptocurrency/due_diligence/score"
+          - name: dev
+            ref: "/cryptocurrency/due_diligence/dev"
+          - name: bc
+            ref: "/cryptocurrency/due_diligence/bc"
+          - name: chart
+            ref: "/cryptocurrency/due_diligence/chart"
+          - name: basic
+            ref: "/cryptocurrency/due_diligence/basic"
+          - name: ps
+            ref: "/cryptocurrency/due_diligence/ps"
+          - name: mkt
+            ref: "/cryptocurrency/due_diligence/mkt"
+          - name: ex
+            ref: "/cryptocurrency/due_diligence/ex"
+          - name: twitter
+            ref: "/cryptocurrency/due_diligence/twitter"
+          - name: events
+            ref: "/cryptocurrency/due_diligence/events"
+          - name: book
+            ref: "/cryptocurrency/due_diligence/book"
+          - name: balance
+            ref: "/cryptocurrency/due_diligence/balance"
+          - name: trades
+            ref: "/cryptocurrency/due_diligence/trades"
+          - name: stats
+            ref: "/cryptocurrency/due_diligence/stats"
+      - name: onchain
+        ref: "/cryptocurrency/onchain"
+        sub:
+          - name: gwei
+            ref: "/cryptocurrency/onchain/gwei"
+      - name: technical analysis
+        ref: "/cryptocurrency/technical_analysis"
+        sub:
+          - name: ema
+            ref: "/common/technical_analysis/ema"
+          - name: sma
+            ref: "/common/technical_analysis/sma"
+          - name: wma
+            ref: "/common/technical_analysis/wma"
+          - name: hma
+            ref: "/common/technical_analysis/hma"
+          - name: zlma
+            ref: "/common/technical_analysis/zlma"
+          - name: vwap
+            ref: "/common/technical_analysis/vwap"
+          - name: cci
+            ref: "/common/technical_analysis/cci"
+          - name: macd
+            ref: "/common/technical_analysis/macd"
+          - name: rsi
+            ref: "/common/technical_analysis/rsi"
+          - name: stoch
+            ref: "/common/technical_analysis/stoch"
+          - name: fisher
+            ref: "/common/technical_analysis/fisher"
+          - name: cg
+            ref: "/common/technical_analysis/cg"
+          - name: adx
+            ref: "/common/technical_analysis/adx"
+          - name: aroon
+            ref: "/common/technical_analysis/aroon"
+          - name: bbands
+            ref: "/common/technical_analysis/bbands"
+          - name: donchian
+            ref: "/common/technical_analysis/donchian"
+          - name: kc
+            ref: "/common/technical_analysis/kc"
+          - name: ad
+            ref: "/common/technical_analysis/ad"
+          - name: adosc
+            ref: "/common/technical_analysis/adosc"
+          - name: obv
+            ref: "/common/technical_analysis/obv"
+          - name: fib
+            ref: "/common/technical_analysis/fib"
+      - name: report
         ref: "/cryptocurrency/report"
-  - name: Common
-    ref: "/common"
-    sub:
-      - name: Behavioural Analysis
-        ref: "/common/behavioural_analysis"
-      - name: Technical Analysis
-        ref: "/common/technical_analysis"
-      - name: Quantitative Analysis
-        ref: "/common/quantitative_analysis"
-      - name: Prediction Techniques
-        ref: "/common/prediction_techniques"

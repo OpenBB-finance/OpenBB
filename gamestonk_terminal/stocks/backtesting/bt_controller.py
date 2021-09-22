@@ -48,7 +48,7 @@ class BacktestingController:
 
     def print_help(self):
         """Print help"""
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/backtesting"
+        help_text = f"""
 Backtesting:
     cls         clear screen
     ?/help      show this menu again
@@ -110,7 +110,7 @@ Current Ticker: {self.ticker.upper()}
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, _, self.stock, _ = load(
+        self.ticker, _, _, self.stock = load(
             other_args, self.ticker, "", "1440", pd.DataFrame()
         )
         if "." in self.ticker:

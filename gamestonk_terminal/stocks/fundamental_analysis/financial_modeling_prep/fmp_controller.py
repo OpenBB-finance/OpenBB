@@ -62,14 +62,11 @@ class FinancialModelingPrepController:
 
     def print_help(self):
         """Print help"""
-        help_text = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
-        help_text += "/stocks/fundamental_analysis/financial_modeling_prep"
-
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            help_text += f"\n\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            help_text = f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            help_text += f"\n\n{intraday} Stock: {self.ticker}"
+            help_text = f"\n{intraday} Stock: {self.ticker}"
 
         help_text += """
 
@@ -201,11 +198,11 @@ def menu(ticker: str, start: str, interval: str):
             )
 
             an_input = session.prompt(
-                f"{get_flair()} (fa)>(fmp)> ",
+                f"{get_flair()} (stocks)>(fa)>(fmp)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (fa)>(fmp)> ")
+            an_input = input(f"{get_flair()} (stocks)>(fa)>(fmp)> ")
 
         try:
             process_input = fmp_controller.switch(an_input)

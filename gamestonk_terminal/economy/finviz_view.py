@@ -6,7 +6,9 @@ import webbrowser
 
 from PIL import Image
 from tabulate import tabulate
+from matplotlib import pyplot as plt
 
+from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.economy import finviz_model
 from gamestonk_terminal.helper_funcs import export_data
 
@@ -41,20 +43,23 @@ def view_group_data(s_group: str, data_type: str, export: str):
     data_type : str
         select data type to see data between valuation, performance and spectrum
     export : str
-        Export dataframe data to csv,json,xlsx file
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
     if data_type in ("valuation", "performance"):
         df_group = finviz_model.get_valuation_performance_data(s_group, data_type)
-        print(
-            tabulate(
-                df_group.fillna(""),
-                showindex=False,
-                floatfmt=".2f",
-                headers=df_group.columns,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_group.fillna(""),
+                    showindex=False,
+                    floatfmt=".2f",
+                    headers=df_group.columns,
+                    tablefmt="fancy_grid",
+                )
+            )
+        else:
+            print(df_group.fillna("").to_string(index=False))
+        print("")
 
         export_data(
             export,
@@ -65,8 +70,17 @@ def view_group_data(s_group: str, data_type: str, export: str):
 
     elif data_type == "spectrum":
         finviz_model.get_spectrum_data(s_group)
+        print("")
 
         img = Image.open(s_group + ".jpg")
+        plt.imshow(img)
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "spectrum",
+        )
+
         img.show()
 
     else:

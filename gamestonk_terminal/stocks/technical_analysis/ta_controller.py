@@ -98,7 +98,7 @@ class TechnicalAnalysisController:
         else:
             stock_str = f"\n{s_intraday} Stock: {self.ticker}"
 
-        help_str = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/technical_analysis
+        help_str = f"""
 {stock_str}
 
 Technical Analysis:

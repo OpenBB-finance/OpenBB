@@ -131,9 +131,6 @@ class ReportController:
 
 def print_help():
     """Print help"""
-    print(
-        "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/cryptocurrency/report"
-    )
     print("\nReports:")
     print("   cls           clear screen")
     print("   ?/help        show this menu again")

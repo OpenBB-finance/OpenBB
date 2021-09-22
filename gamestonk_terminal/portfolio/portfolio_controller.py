@@ -1,3 +1,6 @@
+"""Portfolio Controller"""
+__docformat__ = "numpy"
+
 import argparse
 import os
 
@@ -25,13 +28,6 @@ class PortfolioController:
     ]
 
     CHOICES_MENUS = [
-        "load",
-        "quote",
-        "candle",
-        "view",
-    ]
-
-    CHOICES_MENUS = [
         "bro",
         "pa",
         "po",
@@ -52,7 +48,7 @@ class PortfolioController:
 
     def print_help(self):
         """Print help"""
-        help_text = """https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/portfolio
+        help_text = """
 
 >> PORTFOLIO <<
 

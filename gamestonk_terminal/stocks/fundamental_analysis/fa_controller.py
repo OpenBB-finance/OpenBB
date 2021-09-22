@@ -92,18 +92,14 @@ class FundamentalAnalysisController:
 
     def print_help(self):
         """Print help"""
-        help_text = "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal"
-        help_text += "/stocks/fundamental_analysis"
-
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
-            help_text += f"\n\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            help_text = f"\n\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            help_text += f"\n\n{intraday} Stock: {self.ticker}"
+            help_text = f"\n\n{intraday} Stock: {self.ticker}"
 
         help_text += """
-
 Fundamental Analysis:
     cls           clear screen
     ?/help        show this menu again

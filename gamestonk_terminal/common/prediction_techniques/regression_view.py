@@ -110,7 +110,7 @@ def regression(
             action="store",
             dest="n_polynomial",
             type=check_positive,
-            required=True,
+            required="-h" not in other_args,
             help="polynomial associated with regression.",
         )
 

@@ -56,7 +56,7 @@ services:
       dockerfile: docker/gst-poetry-jupyter.dockerfile
       args:
         GST_DOCKER_IMAGE_PREFIX: ${GST_DOCKER_IMAGE_PREFIX}
-        GST_DOCKER_POETRY_DEPS_VERSION: ${GST_DOCKER_POETRY_DEPS_VERSION}
+        GST_DOCKER_POETRY_FULL_DEPS_VERSION: ${GST_DOCKER_POETRY_FULL_DEPS_VERSION}
     image: "${GST_DOCKER_IMAGE_PREFIX}/gst-poetry-jupyter:${GST_DOCKER_POETRY_VERSION}"
     tty: true
     env_file: setenv

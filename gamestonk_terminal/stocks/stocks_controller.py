@@ -2,6 +2,7 @@ import argparse
 import os
 from typing import List
 
+from datetime import datetime, timedelta
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -31,6 +32,7 @@ from gamestonk_terminal.stocks.research import res_controller
 from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
+from gamestonk_terminal.helper_funcs import valid_date
 
 # pylint: disable=R1710
 
@@ -103,7 +105,7 @@ class StocksController:
         else:
             stock_text = f"{s_intraday} Stock: {self.ticker}"
 
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks
+        help_text = f"""
 
 >> STOCKS <<
 
@@ -138,7 +140,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
->   ra          residuals analysis,      \t e.g.: model fit, qqplot, hypothesis test
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
 {Style.RESET_ALL if not self.ticker else ''}"""
         print(help_text)
@@ -233,6 +234,24 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=5,
             help="Number of latest news being printed.",
         )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="n_start_date",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=7),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
+        )
+        parser.add_argument(
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help="Show oldest articles first",
+        )
+
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -241,6 +260,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             newsapi_view.news(
                 term=self.ticker,
                 num=ns_parser.n_num,
+                s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                show_newest=ns_parser.n_oldest,
             )
 
         except Exception as e:

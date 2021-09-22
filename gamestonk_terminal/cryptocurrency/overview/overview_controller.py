@@ -20,6 +20,7 @@ from gamestonk_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCI
 from gamestonk_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
+from gamestonk_terminal.cryptocurrency.overview import coinbase_view
 
 
 class Controller:
@@ -52,6 +53,7 @@ class Controller:
         "cpexchanges",
         "cpplatforms",
         "cpcontracts",
+        "cbpairs",
     ]
 
     def __init__(self):
@@ -93,6 +95,8 @@ CoinPaprika:
     cpexmarkets       all available markets on given exchange
     cpplatforms       list blockchain platforms eg. ethereum, solana, kusama, terra
     cpcontracts       all smart contracts for given platform
+Coinbase:
+    cbpairs           info about available trading pairs on Coinbase
 """
 
         print(help_text)
@@ -146,7 +150,7 @@ CoinPaprika:
     def call_cghold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
-            prog="hold",
+            prog="cghold",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -189,7 +193,7 @@ CoinPaprika:
     def call_cgcompanies(self, other_args):
         """Process companies command"""
         parser = argparse.ArgumentParser(
-            prog="companies",
+            prog="cgcompanies",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Track publicly traded companies around the world that
@@ -243,7 +247,7 @@ CoinPaprika:
     def call_cgnews(self, other_args):
         """Process news command"""
         parser = argparse.ArgumentParser(
-            prog="news",
+            prog="cgnews",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Shows latest crypto news from CoinGecko. "
@@ -315,7 +319,7 @@ CoinPaprika:
     def call_cgcategories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
-            prog="categories",
+            prog="cgcategories",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
@@ -397,7 +401,7 @@ CoinPaprika:
     def call_cgstables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
-            prog="stables",
+            prog="cgstables",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows stablecoins by market capitalization.
@@ -483,7 +487,7 @@ CoinPaprika:
         """Process nft command"""
 
         parser = argparse.ArgumentParser(
-            prog="nft",
+            prog="cgnft",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows NFT market status
@@ -515,7 +519,7 @@ CoinPaprika:
     def call_cgnftday(self, other_args):
         """Process nftday command"""
         parser = argparse.ArgumentParser(
-            prog="nftday",
+            prog="cgnftday",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows NFT of the day
@@ -547,7 +551,7 @@ CoinPaprika:
     def call_cgproducts(self, other_args):
         """Process products command"""
         parser = argparse.ArgumentParser(
-            prog="products",
+            prog="cgproducts",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Financial Products with which you can earn yield, borrow or lend your crypto.
@@ -617,7 +621,7 @@ CoinPaprika:
     def call_cgplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
-            prog="platforms",
+            prog="cgplatforms",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Financial Platforms in which you can borrow or lend your crypto.
@@ -682,7 +686,7 @@ CoinPaprika:
     def call_cgexchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
-            prog="exchanges",
+            prog="cgexchanges",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Exchanges
@@ -764,7 +768,7 @@ CoinPaprika:
     def call_cgexrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
-            prog="exrates",
+            prog="cgexrates",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -826,7 +830,7 @@ CoinPaprika:
     def call_cgindexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
-            prog="indexes",
+            prog="cgindexes",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto indexes from CoinGecko.
@@ -892,7 +896,7 @@ CoinPaprika:
     def call_cgderivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
-            prog="derivatives",
+            prog="cgderivatives",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto derivatives from CoinGecko
@@ -970,7 +974,7 @@ CoinPaprika:
     def call_cgglobal(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
-            prog="global",
+            prog="cgglobal",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global statistics about Crypto Market""",
@@ -998,7 +1002,7 @@ CoinPaprika:
     def call_cgdefi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
-            prog="defi",
+            prog="cgdefi",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global DeFi statistics
@@ -1033,7 +1037,7 @@ CoinPaprika:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="global",
+            prog="cpglobal",
             description="""Show most important global crypto statistics like: Market Cap, Volume,
             Number of cryptocurrencies, All Time High, All Time Low""",
         )
@@ -1060,7 +1064,7 @@ CoinPaprika:
     def call_cpmarkets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
-            prog="markets",
+            prog="cpmarkets",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
@@ -1148,7 +1152,7 @@ CoinPaprika:
     def call_cpexmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
-            prog="exmarkets",
+            prog="cpexmarkets",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Get all exchange markets found for given exchange
@@ -1246,7 +1250,7 @@ CoinPaprika:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="info",
+            prog="cpinfo",
             description="""Show basic coin information for all coins from CoinPaprika API
                 You can display only top N number of coins with --top parameter.
                 You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply,
@@ -1334,7 +1338,7 @@ CoinPaprika:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="exchanges",
+            prog="cpexchanges",
             description="""Show all exchanges from CoinPaprika
                You can display only top N number of coins with --top parameter.
                You can sort data by  rank, name, currencies, markets, fiats, confidence,
@@ -1419,7 +1423,7 @@ CoinPaprika:
     def call_cpplatforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
-            prog="platforms",
+            prog="cpplatforms",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
@@ -1448,7 +1452,7 @@ CoinPaprika:
         platforms = get_all_contract_platforms()["platform_id"].tolist()
 
         parser = argparse.ArgumentParser(
-            prog="contracts",
+            prog="cpcontracts",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Gets all contract addresses for given platform.
@@ -1519,6 +1523,75 @@ CoinPaprika:
                 descend=ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_cbpairs(self, other_args):
+        """Process news command"""
+        parser = argparse.ArgumentParser(
+            prog="cbpairs",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="Shows available trading pairs on Coinbase ",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=int,
+            help="top N number of news >=10",
+            default=15,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: id",
+            default="id",
+            choices=[
+                "id",
+                "display_name",
+                "base_currency",
+                "quote_currency",
+                "base_min_size",
+                "base_max_size",
+                "min_market_funds",
+                "max_market_funds",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            coinbase_view.display_trading_pairs(
+                top=ns_parser.top,
+                export=ns_parser.export,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
             )
 
         except Exception as e:

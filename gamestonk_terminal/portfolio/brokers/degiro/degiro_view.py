@@ -43,9 +43,6 @@ class DegiroView:
     @staticmethod
     def help_display():
         print(
-            "https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/brokers/degiro"
-        )
-        print(
             "\nDegiro:\n"
             "   help         show this help menu again\n"
             "   q            quit degiro standalone menu\n"

@@ -102,8 +102,7 @@ class InsiderController:
 
     def print_help(self):
         """Print help"""
-        help_text = f"""https://github.com/GamestonkTerminal/GamestonkTerminal/tree/main/gamestonk_terminal/stocks/insider
-
+        help_text = f"""
 Insider Trading:
     cls           clear screen
     ?/help        show this menu again

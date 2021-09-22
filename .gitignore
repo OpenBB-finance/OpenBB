@@ -16,3 +16,15 @@ exports/*
 .idea
 .coverage
 htmlcov
+
+# Jupyter Lab Extension build files
+jupyterlab/*/*.bundle.*
+jupyterlab/*/lib/
+jupyterlab/*/*/labextension/
+jupyterlab/*/node_modules/
+jupyterlab/*/*/node_modules/
+jupyterlab/*/*.egg-info/
+jupyterlab/*/.ipynb_checkpoints
+jupyterlab/*/*.tsbuildinfo
+jupyterlab/*/ui-tests/test-results/
+jupyterlab/*/ui-tests/tests/*.ts-snapshots/
