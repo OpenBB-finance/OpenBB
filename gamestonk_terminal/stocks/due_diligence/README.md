@@ -2,8 +2,6 @@
 
 This menu aims to help in due-diligence of a pre-loaded stock, and the usage of the following commands along with an example will be exploited below.
 
-* [news](#news)
-  * latest news of the company [News API]
 * [red](#red)
   * gets due diligence from another user's post [Reddit]
 * [analyst](#analyst)
@@ -38,19 +36,6 @@ This menu aims to help in due-diligence of a pre-loaded stock, and the usage of 
   * list of suppliers [csimarket]
 * [customer](#customer)
   * list of customers [csimarket]
-
-## news <a name="news"></a>
-
-```text
-news [-n N_NUM]
-```
-
-Prints latest news about company, including date, title and web link. [Source: News API]
-
-* -n : Number of latest news being printed. Default 10.
-
-<img width="770" alt="Captura de ecrã 2021-03-22, às 22 47 42" src="https://user-images.githubusercontent.com/25267873/112070935-b2587a00-8b66-11eb-8dfb-0353fc83311d.png">
-
 
 ## red <a name="red"></a>
 
