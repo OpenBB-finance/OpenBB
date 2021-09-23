@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import yfinance as yf
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import normalize
 
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
@@ -102,13 +103,13 @@ def get_sp500_comps_tsne(
             "Adj Close"
         ].to_frame()
         df_ticker.columns = [ticker]
-        close_vals = close_vals.join(df_ticker)
+        close_vals = close_vals.join(df_ticker, how="inner")
 
     close_vals = close_vals.dropna(how="all").fillna(method="bfill")
     rets = close_vals.pct_change()[1:].T
 
     model = TSNE(learning_rate=lr)
-    tsne_features = model.fit_transform(rets)
+    tsne_features = model.fit_transform(normalize(rets))
     xs = tsne_features[:, 0]
     ys = tsne_features[:, 1]
     if not no_plot:
