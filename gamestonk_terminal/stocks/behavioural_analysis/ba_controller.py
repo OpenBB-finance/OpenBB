@@ -10,7 +10,11 @@ from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_int_range,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
     google_view,
@@ -19,6 +23,7 @@ from gamestonk_terminal.common.behavioural_analysis import (
     finbrain_view,
     finnhub_view,
     sentimentinvestor_view,
+    twitter_view,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 
@@ -228,43 +233,80 @@ SentimentInvestor:
 
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
-        if not gtff.ENABLE_PREDICT:
-            print("Predict is not enabled in feature_flags.py")
-            print("Twitter inference menu is disabled", "\n")
-            return
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="infer",
+            description="""
+                Print quick sentiment inference from last tweets that contain the ticker.
+                This model splits the text into character-level tokens and uses vader sentiment analysis.
+                [Source: Twitter]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_int_range(10, 100),
+            default=100,
+            help="num of latest tweets to infer from.",
+        )
 
         try:
-            # pylint: disable=import-outside-toplevel
-            from gamestonk_terminal.common.behavioural_analysis import twitter_view
-        except ModuleNotFoundError as e:
-            print("Optional packages need to be installed")
-            print(e, "\n")
-            return
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if self._check_ticker():
+                twitter_view.display_inference(ticker=self.ticker, num=ns_parser.n_num)
         except Exception as e:
             print(e, "\n")
-            return
-
-        twitter_view.inference(other_args, self.ticker)
 
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
-        if not gtff.ENABLE_PREDICT:
-            print("Predict is not enabled in feature_flags.py")
-            print("Twitter inference menu is disabled", "\n")
-            return
-
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sentiment",
+            description="""
+                Plot in-depth sentiment predicted from tweets from last days
+                that contain pre-defined ticker. [Source: Twitter]
+            """,
+        )
+        # in reality this argument could be 100, but after testing it takes too long
+        # to compute which may not be acceptable
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_tweets",
+            type=check_int_range(10, 62),
+            default=15,
+            help="number of tweets to extract per hour.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days_past",
+            type=check_int_range(1, 6),
+            default=6,
+            help="number of days in the past to extract tweets.",
+        )
         try:
-            # pylint: disable=import-outside-toplevel
-            from gamestonk_terminal.common.behavioural_analysis import twitter_view
-        except ModuleNotFoundError as e:
-            print("Optional packages need to be installed")
-            print(e, "\n")
-            return
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                twitter_view.display_sentiment(
+                    ticker=self.ticker,
+                    n_tweets=ns_parser.n_tweets,
+                    n_days_past=ns_parser.n_days_past,
+                    export=ns_parser.export,
+                )
         except Exception as e:
             print(e, "\n")
-            return
-
-        twitter_view.sentiment(other_args, self.ticker)
 
     def call_finbrain(self, other_args: List[str]):
         """Process finbrain command"""
