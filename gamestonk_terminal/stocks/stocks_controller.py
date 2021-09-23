@@ -251,6 +251,14 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=True,
             help="Show oldest articles first",
         )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            dest="n_sources",
+            default=[],
+            nargs="+",
+            help="Show news only from the sources specified (e.g bbc.com yahoo.com)",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -262,6 +270,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 num=ns_parser.n_num,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
+                sources=",".join(ns_parser.n_sources),
             )
 
         except Exception as e:
