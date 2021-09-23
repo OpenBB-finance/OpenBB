@@ -618,6 +618,45 @@ main:
     sub:
       - name: brokers
         ref: "/portfolio/brokers"
+        sub:
+          - name: ally
+            ref: "/portfolio/brokers/ally"
+            sub:
+              - name: balances
+                ref: "/portfolio/brokers/ally/balances"
+              - name: history
+                ref: "/portfolio/brokers/ally/history"
+              - name: holdings
+                ref: "/portfolio/brokers/ally/holdings"
+              - name: movers
+                ref: "/portfolio/brokers/ally/movers"
+              - name: quote
+                ref: "/portfolio/brokers/ally/quote"
+          - name: alpaca
+            ref: "/portfolio/brokers/alpaca"
+            sub:
+              - name: history
+                ref: "/portfolio/brokers/alpaca/history"
+              - name: holdings
+                ref: "/portfolio/brokers/alpaca/holdings"
+          - name: coinbase
+            ref: "/portfolio/brokers/coinbase"
+            sub:
+              - name: account
+                ref: "/portfolio/brokers/coinbase/account"
+              - name: deposits
+                ref: "/portfolio/brokers/coinbase/deposits"
+              - name: history
+                ref: "/portfolio/brokers/coinbase/history"
+              - name: orders
+                ref: "/portfolio/brokers/coinbase/orders"
+          - name: robinhood
+            ref: "/portfolio/brokers/robinhood"
+            sub:
+              - name: history
+                ref: "/portfolio/brokers/robinhood/history"
+              - name: holdings
+                ref: "/portfolio/brokers/robinhood/holdings"
       - name: portfolio analysis
         ref: "/portfolio/portfolio_analysis"
       - name: portfolio optimization

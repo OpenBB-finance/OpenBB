@@ -50,9 +50,7 @@ Coinbase:
     history     show history of your account
     deposits    show all your deposits or internal transfers
     orders      show all your orders
-
 """
-
         print(help_text)
 
     def switch(self, an_input: str):
@@ -107,7 +105,6 @@ Coinbase:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display info about your trading accounts on Coinbase",
         )
-
         parser.add_argument(
             "--all",
             action="store_true",
@@ -115,7 +112,14 @@ Coinbase:
             dest="all",
             default=False,
         )
-
+        parser.add_argument(
+            "-c",
+            "--currency",
+            default="USD",
+            type=str,
+            dest="currency",
+            help="Currency to display value in.",
+        )
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -126,16 +130,18 @@ Coinbase:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--acc")
+            if other_args and other_args[0][0] != "-":
+                other_args.insert(0, "--acc")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
                 return
 
-            coinbase_view.display_account(ns_parser.all, ns_parser.export)
+            coinbase_view.display_account(
+                currency=ns_parser.currency,
+                export=ns_parser.export,
+            )
 
         except Exception as e:
             print(e, "\n")
@@ -148,7 +154,6 @@ Coinbase:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display account history",
         )
-
         parser.add_argument(
             "-a",
             "--acc",
@@ -158,7 +163,6 @@ Coinbase:
             default="BTC",
             required=False,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -167,7 +171,6 @@ Coinbase:
             default=20,
             type=check_positive,
         )
-
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -178,9 +181,8 @@ Coinbase:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--acc")
+            if other_args and other_args[0][0] != "-":
+                other_args.insert(0, "--acc")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -202,7 +204,6 @@ Coinbase:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="List your current open orders",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -211,7 +212,6 @@ Coinbase:
             default=20,
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -229,7 +229,6 @@ Coinbase:
                 "status",
             ],
         )
-
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -237,7 +236,6 @@ Coinbase:
             dest="descend",
             default=False,
         )
-
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -248,9 +246,8 @@ Coinbase:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "--acc")
+            if other_args and other_args[0][0] != "-":
+                other_args.insert(0, "--acc")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
@@ -272,7 +269,6 @@ Coinbase:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Display a list of deposits for your account.",
         )
-
         parser.add_argument(
             "-t",
             "--type",
@@ -282,7 +278,6 @@ Coinbase:
             default="deposit",
             choices=["internal_deposit", "deposit"],
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -291,7 +286,6 @@ Coinbase:
             default=20,
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -304,7 +298,6 @@ Coinbase:
                 "amount",
             ],
         )
-
         parser.add_argument(
             "--descend",
             action="store_false",
@@ -312,7 +305,6 @@ Coinbase:
             dest="descend",
             default=False,
         )
-
         parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
@@ -321,7 +313,6 @@ Coinbase:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
