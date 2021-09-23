@@ -509,7 +509,7 @@ def parse_known_args_and_warn(parser: argparse.ArgumentParser, other_args: List[
             default="",
             type=str,
             dest="export",
-            help="Export plot to png,jpg,pdf,svg file or data to csv,json,xlsx",
+            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
         )
     except ArgumentError:
         pass

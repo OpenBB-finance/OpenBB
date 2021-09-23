@@ -14,6 +14,8 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_int_range,
+    valid_date,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.behavioural_analysis import (
@@ -169,7 +171,7 @@ SentimentInvestor:
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
-        self.ticker, _, _, _ = load(
+        self.ticker, self.start, _, _ = load(
             other_args, self.ticker, "", "1440min", pd.DataFrame()
         )
         if "." in self.ticker:
@@ -217,19 +219,117 @@ SentimentInvestor:
 
     def call_mentions(self, other_args: List[str]):
         """Process mentions command"""
-        google_view.mentions(other_args, self.ticker, self.start)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mentions",
+            description="""
+                Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+            """,
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            dest="start",
+            default=self.start,
+            help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                google_view.display_mentions(
+                    ticker=self.ticker, start=self.start, export=ns_parser.export
+                )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_regions(self, other_args: List[str]):
         """Process regions command"""
-        google_view.regions(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="regions",
+            description="""Plot bars of regions based on stock's interest. [Source: Google]""",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of regions to plot that show highest interest.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                google_view.display_regions(
+                    ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_queries(self, other_args: List[str]):
         """Process queries command"""
-        google_view.queries(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="queries",
+            description="""Print top related queries with this stock's query. [Source: Google]""",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of top related queries to print.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                google_view.display_queries(
+                    ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_rise(self, other_args: List[str]):
         """Process rise command"""
-        google_view.rise(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rise",
+            description="""Print top rising related queries with this stock's query. [Source: Google]""",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=10,
+            help="number of top rising related queries to print.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                google_view.display_rise(
+                    ticker=self.ticker, num=ns_parser.n_num, export=ns_parser.export
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_infer(self, other_args: List[str]):
         """Process infer command"""
@@ -407,11 +507,11 @@ def menu(ticker: str, start: datetime):
                 {c: None for c in ba_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ba)> ",
+                f"{get_flair()} (forex)>(ba)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ba)> ")
+            an_input = input(f"{get_flair()} (forex)>(ba)> ")
 
         try:
             process_input = ba_controller.switch(an_input)
