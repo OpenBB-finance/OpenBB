@@ -61,7 +61,7 @@ Prints latest news about company, including date, title and web link. [Source: N
 * -n : Number of latest news being printed. Default 5.
 * -d : The starting date (format YYYY-MM-DD) to search articles from.
 * -o : Show oldest articles first.
-* -s : Show news only from the sources specified (e.g bbc.com yahoo.com)
+* -s : Show news only from the sources specified (e.g bbc yahoo.com)
 
 <img width="770" alt="Captura de ecrã 2021-03-22, às 22 47 42" src="https://user-images.githubusercontent.com/25267873/112070935-b2587a00-8b66-11eb-8dfb-0353fc83311d.png">
 

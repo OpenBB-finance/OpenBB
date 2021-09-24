@@ -12,6 +12,6 @@ optional arguments:
                         The starting date (format YYYY-MM-DD) to search articles from
   -o, --oldest          Show oldest articles first
   -s N_SOURCES [N_SOURCES ...], --sources N_SOURCES [N_SOURCES ...]
-                        Show news only from the sources specified (e.g bbc.com yahoo.com)
+                        Show news only from the sources specified (e.g bbc yahoo.com)
   -h, --help            show this help message
 ```

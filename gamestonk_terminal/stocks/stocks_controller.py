@@ -254,10 +254,9 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         parser.add_argument(
             "-s",
             "--sources",
-            dest="n_sources",
             default=[],
             nargs="+",
-            help="Show news only from the sources specified (e.g bbc.com yahoo.com)",
+            help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
 
         try:
@@ -265,12 +264,17 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             if not ns_parser:
                 return
 
+            sources = ns_parser.sources
+            for idx, source in enumerate(sources):
+                if source.find(".") == -1:
+                    sources[idx] += ".com"
+
             newsapi_view.news(
                 term=self.ticker,
                 num=ns_parser.n_num,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
-                sources=",".join(ns_parser.n_sources),
+                sources=",".join(sources),
             )
 
         except Exception as e:
