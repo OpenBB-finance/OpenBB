@@ -179,15 +179,73 @@ SentimentInvestor:
 
     def call_watchlist(self, other_args: List[str]):
         """Process watchlist command"""
-        reddit_view.watchlist(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="watchlist",
+            description="""Print other users watchlist. [Source: Reddit]""",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_limit",
+            type=check_positive,
+            default=5,
+            help="limit of posts with watchlists retrieved.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            reddit_view.display_watchlist(num=ns_parser.n_limit)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_spac(self, other_args: List[str]):
         """Process spac command"""
-        reddit_view.spac(other_args)
+        reddit_view.display_spac(other_args)
 
     def call_spac_c(self, other_args: List[str]):
         """Process spac_c command"""
-        reddit_view.spac_community(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spac_c",
+            description="""Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]""",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_limit",
+            type=check_positive,
+            default=10,
+            help="limit of posts with SPACs retrieved",
+        )
+        parser.add_argument(
+            "-p",
+            "--popular",
+            action="store_true",
+            default=False,
+            dest="b_popular",
+            help="popular flag, if true the posts retrieved are based on score rather than time",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            reddit_view.display_spac_community(
+                limit=ns_parser.n_limit, popular=ns_parser.b_popular
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_wsb(self, other_args: List[str]):
         """Process wsb command"""
@@ -195,7 +253,56 @@ SentimentInvestor:
 
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
-        reddit_view.popular_tickers(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="popular",
+            description="""Print latest popular tickers. [Source: Reddit]""",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            action="store",
+            dest="n_top",
+            type=check_positive,
+            default=10,
+            help="display top N tickers",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_limit",
+            type=check_positive,
+            default=50,
+            help="limit of posts retrieved per sub reddit.",
+        )
+        parser.add_argument(
+            "-s",
+            "--sub",
+            action="store",
+            dest="s_subreddit",
+            type=str,
+            help="""
+                subreddits to look for tickers, e.g. pennystocks,stocks.
+                Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing,
+                wallstreetbets
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            reddit_view.display_popular_tickers(
+                n_top=ns_parser.n_top,
+                posts_to_look_at=ns_parser.n_limit,
+                subreddits=ns_parser.s_subreddit,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_getdd(self, other_args: List[str]):
         """Process getdd command"""
