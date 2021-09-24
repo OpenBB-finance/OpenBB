@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: news [-n N_NUM] [-h] Prints latest news about company, including date, title and web link. [Source: News API]
-optional arguments: -n N_NUM, --num N_NUM Number of latest news being printed. -h, --help show this help message ">
+    <meta name="description" content="usage: news [-n N_NUM] [-d N_START_DATE] [-o] [-s N_SOURCES [N_SOURCES ...]] [-h] Prints latest news about company, including date, title and web link. [Source: News API]
+optional arguments: -n N_NUM, --num N_NUM Number of latest news being printed. -d N_START_DATE, --date N_START_DATE The starting date (format YYYY-MM-DD) to search articles from -o, --oldest Show oldest articles first -s N_SOURCES [N_SOURCES ...], --sources N_SOURCES [N_SOURCES ...] Show news only from the sources specified (e.">
 
 
 
@@ -13864,11 +13864,16 @@ optional arguments: -n N_NUM, --num N_NUM Number of latest news being printed. -
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>News</h1>
-        <pre><code>usage: news [-n N_NUM] [-h]
+        <pre><code>usage: news [-n N_NUM] [-d N_START_DATE] [-o] [-s N_SOURCES [N_SOURCES ...]] [-h]
 </code></pre><p>Prints latest news about company, including date, title and web link. [Source: News API]</p>
 <pre><code>optional arguments:
   -n N_NUM, --num N_NUM
                         Number of latest news being printed.
+  -d N_START_DATE, --date N_START_DATE
+                        The starting date (format YYYY-MM-DD) to search articles from
+  -o, --oldest          Show oldest articles first
+  -s N_SOURCES [N_SOURCES ...], --sources N_SOURCES [N_SOURCES ...]
+                        Show news only from the sources specified (e.g bbc yahoo.com)
   -h, --help            show this help message
 </code></pre>
     </article>
