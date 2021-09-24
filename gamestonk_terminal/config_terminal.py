@@ -92,9 +92,7 @@ API_COINBASE_SECRET = os.getenv("GT_API_COINBASE_SECRET") or "REPLACE_ME"
 API_COINBASE_PASS_PHRASE = os.getenv("GT_API_COINBASE_PASS_PHRASE") or "REPLACE_ME"
 
 # https://alpaca.markets/docs/api-documentation/api-v2/
-APCA_API_BASE_URL = os.getenv("GT_APCA_API_BASE_URL") or "REPLACE_ME"
-APCA_API_KEY_ID = os.getenv("GT_APCA_API_KEY_ID") or "REPLACE_ME"
-APCA_API_SECRET_KEY = os.getenv("GT_APCA_API_SECRET_KEY") or "REPLACE_ME"
+# GT_APCA_API_BASE_URL, GT_APCA_API_KEY_ID and GT_APCA_API_SECRET_KEY need to be set as env variable
 
 # https://docs.whale-alert.io/
 API_WHALE_ALERT_KEY = os.getenv("GT_API_WHALE_ALERT_KEY") or "REPLACE_ME"
