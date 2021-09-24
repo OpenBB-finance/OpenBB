@@ -8,9 +8,14 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+    check_int_range,
+)
 
-from gamestonk_terminal.cryptocurrency.onchain import gasnow_view
+from gamestonk_terminal.cryptocurrency.onchain import gasnow_view, whale_alert_view
 
 # pylint: disable=R1732
 
@@ -26,9 +31,7 @@ class OnchainController:
         "quit",
     ]
 
-    CHOICES_COMMANDS = [
-        "gwei",
-    ]
+    CHOICES_COMMANDS = ["gwei", "whales"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -123,6 +126,97 @@ class OnchainController:
         except Exception as e:
             print(e, "\n")
 
+    def call_whales(self, other_args: List[str]):
+        """Process whales command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wales",
+            description="""
+                Display crypto whales transactions.
+                [Source: https://docs.whale-alert.io/]
+            """,
+        )
+
+        parser.add_argument(
+            "-m",
+            "--min",
+            dest="min",
+            type=check_int_range(500000, 100 ** 7),
+            help="Minimum value of transactions.",
+            default=1000000,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: date",
+            default="date",
+            choices=[
+                "date",
+                "symbol",
+                "blockchain",
+                "amount",
+                "amount_usd",
+                "from",
+                "to",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            action="store_true",
+            help="Flag to show addresses of transaction",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            whale_alert_view.display_whales_transactions(
+                min_value=ns_parser.min,
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                show_address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
 
 def print_help():
     """Print help"""
@@ -133,6 +227,7 @@ def print_help():
     print("   quit          quit to abandon program")
     print("")
     print("   gwei          check current eth gas fees")
+    print("   whales        check crypto wales transactions")
     print("")
 
 
