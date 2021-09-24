@@ -34,7 +34,7 @@ def display_whales_transactions(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = whale_alert_model.get_wales_transactions(min_value)
+    df = whale_alert_model.get_whales_transactions(min_value)
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -64,6 +64,6 @@ def display_whales_transactions(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "wales",
+        "whales",
         df_data,
     )

@@ -1,5 +1,5 @@
 ```
-usage: wales [-m MIN] [-t TOP]
+usage: whales [-m MIN] [-t TOP]
              [-s {date,symbol,blockchain,amount,amount_usd,from,to}]
              [--descend] [-a] [--export {csv,json,xlsx}] [-h]
 ```

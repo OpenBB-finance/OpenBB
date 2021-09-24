@@ -46,7 +46,7 @@ def make_request(params: Optional[dict] = None) -> dict:
         raise ValueError("Invalid Response: %s" % response.text) from e
 
 
-def get_wales_transactions(min_value: int = 800000, limit: int = 100) -> pd.DataFrame:
+def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.DataFrame:
     """Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]
 

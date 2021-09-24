@@ -31,7 +31,7 @@ class OnchainController:
         "quit",
     ]
 
-    CHOICES_COMMANDS = ["gwei", "wales"]
+    CHOICES_COMMANDS = ["gwei", "whales"]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -126,14 +126,14 @@ class OnchainController:
         except Exception as e:
             print(e, "\n")
 
-    def call_wales(self, other_args: List[str]):
-        """Process wales command"""
+    def call_whales(self, other_args: List[str]):
+        """Process whales command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="wales",
             description="""
-                Display crypto wales transactions.
+                Display crypto whales transactions.
                 [Source: https://docs.whale-alert.io/]
             """,
         )
@@ -227,7 +227,7 @@ def print_help():
     print("   quit          quit to abandon program")
     print("")
     print("   gwei          check current eth gas fees")
-    print("   wales         check crypto wales transactions")
+    print("   whales        check crypto wales transactions")
     print("")
 
 
