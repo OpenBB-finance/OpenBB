@@ -11,13 +11,13 @@ from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep impo
     fmp_view,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import (
+    eclect_us_view,
     finviz_view,
     yahoo_finance_view,
     av_view,
     business_insider_view,
     dcf_view,
     market_watch_view,
-    elect_us_view,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
@@ -197,7 +197,7 @@ Other Sources:
             if not ns_parser:
                 return
 
-            elect_us_view.display_analysis(self.ticker)
+            eclect_us_view.display_analysis(self.ticker)
 
         except Exception as e:
             print(e, "\n")

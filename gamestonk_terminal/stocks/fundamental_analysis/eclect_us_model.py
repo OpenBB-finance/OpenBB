@@ -1,4 +1,4 @@
-"""Elect.us model"""
+"""Eclect.us model"""
 __docformat__ = "numpy"
 
 import requests

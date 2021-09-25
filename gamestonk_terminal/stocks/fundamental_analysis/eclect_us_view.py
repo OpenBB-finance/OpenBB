@@ -1,7 +1,7 @@
-"""Elect.us view"""
+"""Eclect.us view"""
 __docformat__ = "numpy"
 
-from gamestonk_terminal.stocks.fundamental_analysis import elect_us_model
+from gamestonk_terminal.stocks.fundamental_analysis import eclect_us_model
 
 
 def display_analysis(
@@ -15,7 +15,7 @@ def display_analysis(
         Ticker to do SEC filings analysis from
     """
 
-    analysis = elect_us_model.get_filings_analysis(ticker)
+    analysis = eclect_us_model.get_filings_analysis(ticker)
 
     if analysis:
         print(analysis)
