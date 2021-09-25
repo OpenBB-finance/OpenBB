@@ -36,6 +36,7 @@ class BrokersController:
         """Print help"""
         help_string = """
 >>BROKERS<<
+
 What would you like to do?
     cls           clear screen
     ?/help        show this menu again
@@ -43,13 +44,13 @@ What would you like to do?
     quit          quit to abandon program, logs out of brokers
 
 Brokers:
-    >ally         Ally Invest Menu
-    >alpaca       Alpaca Menu
-    >degiro       Degiro Menu
-    >rh           Robinhood Menu
+>   ally         Ally Invest Menu
+>   alpaca       Alpaca Menu
+>   degiro       Degiro Menu
+>   rh           Robinhood Menu
 
 Crypto Brokers:
-    >cb           Coinbase Pro Menu
+>   cb           Coinbase Pro Menu
     """
         print(help_string)
 
@@ -164,7 +165,7 @@ def menu():
         "does not take advantage of your data.\n"
         "   - HOWEVER, our project imports almost 200 different open source python modules. Therefore, it "
         "is impossible for us to check the coding standards and security of each of these modules. "
-        "Hence why adding this disclaimer here.\n"
+        "Hence why adding this disclaimer here."
     )
     bro_controller.print_help()
 

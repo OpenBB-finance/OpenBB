@@ -49,7 +49,6 @@ class PortfolioController:
     def print_help(self):
         """Print help"""
         help_text = """
-
 >> PORTFOLIO <<
 
 What do you want to do?

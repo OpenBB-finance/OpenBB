@@ -31,6 +31,7 @@ class ResourceCollectionController:
         "edgar",
         "fred",
         "learn",
+        "econiverse",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -61,6 +62,7 @@ What do you want to do?
    edgar         online public database from SEC
    fred          economic research data
    learn         trading analysis, tips and resources
+   econiverse    compilation of free knowledge and educational resources
         """
         print(help_str)
 
@@ -139,6 +141,11 @@ What do you want to do?
     def call_learn(self, _):
         """Process learn command"""
         webbrowser.open("https://moongangcapital.com/free-stock-market-resources/")
+        print("")
+
+    def call_econiverse(self, _):
+        """Process econiverse command"""
+        webbrowser.open("https://econiverse.github.io")
         print("")
 
 
