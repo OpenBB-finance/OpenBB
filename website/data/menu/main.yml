@@ -197,6 +197,8 @@ main:
             ref: "/stocks/fundamental_analysis/screener"
           - name: mgmt
             ref: "/stocks/fundamental_analysis/mgmt"
+          - name: analysis
+            ref: "/stocks/fundamental_analysis/analysis"
           - name: score
             ref: "/stocks/fundamental_analysis/score"
           - name: warnings

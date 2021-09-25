@@ -11,6 +11,7 @@ from gamestonk_terminal.stocks.fundamental_analysis.financial_modeling_prep impo
     fmp_view,
 )
 from gamestonk_terminal.stocks.fundamental_analysis import (
+    eclect_us_view,
     finviz_view,
     yahoo_finance_view,
     av_view,
@@ -37,6 +38,7 @@ class FundamentalAnalysisController:
     ]
 
     CHOICES_COMMANDS = [
+        "analysis",
         "score",
         "dcf",
         "screener",
@@ -108,6 +110,7 @@ Fundamental Analysis:
 
     screener      screen info about the company [Finviz]
     mgmt          management team of the company [Business Insider]
+    analysis      analyse SEC filings with the help of machine learning [Elect.us]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
     warnings      company warnings according to Sean Seah book [Market Watch]
     dcf           a customizable discounted cash flow created in excel [stockanalysis]
@@ -180,6 +183,24 @@ Other Sources:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_analysis(self, other_args: List[str]):
+        """Process analysis command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="analysis",
+            description="""Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]""",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            eclect_us_view.display_analysis(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command"""
