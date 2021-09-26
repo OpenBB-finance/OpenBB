@@ -11,6 +11,7 @@ def news(
     num: int,
     s_from: str,
     show_newest: bool,
+    sources: str,
 ):
     """Display news for a given title. [Source: NewsAPI]
 
@@ -24,13 +25,18 @@ def news(
         date to start searching articles from formatted YYYY-MM-DD
     show_newest: bool
         flag to show newest articles first
+    sources: str
+        sources to exclusively show news from
     """
-    # TODO: Add argument to specify news source being used
-
-    response = requests.get(
-        f"https://newsapi.org/v2/everything?q={term}&from={s_from}"
-        f"&sortBy=publishedAt&language=en&apiKey={cfg.API_NEWS_TOKEN}",
+    link = (
+        f"https://newsapi.org/v2/everything?q={term}&from={s_from}&sortBy=publishedAt&language=en"
+        f"&apiKey={cfg.API_NEWS_TOKEN}"
     )
+
+    if sources:
+        link += f"&domains={sources}"
+
+    response = requests.get(link)
 
     # Check that the API response was successful
     if response.status_code == 426:

@@ -36,7 +36,7 @@ pd.plotting.register_matplotlib_converters()
 logging.getLogger().setLevel(logging.CRITICAL)
 
 __command_descriptions = {
-    "popular": f"""
+    "popularsi": f"""
         The {Style.BRIGHT}popular{Style.RESET_ALL} command prints the stocks with highest Average Hype Index right now.
 
         {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
