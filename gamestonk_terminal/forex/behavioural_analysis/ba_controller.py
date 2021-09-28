@@ -6,6 +6,7 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+import textwrap
 from prompt_toolkit.completion import NestedCompleter
 from colorama import Style
 import pandas as pd
@@ -112,8 +113,8 @@ Google:{dim}
     rise          top rising related queries with stock{res}
 SentimentInvestor:
     popularsi     show most popular stocks on social media right now
-    emerging      show stocks that are being talked about more than usual
-    metrics       core social sentiment metrics for this stock{dim}
+    emerging      show stocks that are being talked about more than usual{dim}
+    metrics       core social sentiment metrics for this stock
     social        social media figures for stock popularity
     historical    plot the past week of data for a selected metric{res}
         """
@@ -776,23 +777,249 @@ SentimentInvestor:
 
     def call_metrics(self, other_args: List[str]):
         """Process metrics command"""
-        sentimentinvestor_view.metrics(self.ticker, other_args)
+        command_description = f"""
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+
+        The {Style.BRIGHT}metrics{Style.RESET_ALL} command prints the following realtime metrics:
+
+        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        ---
+        AHI is a measure of how much people are talking about a stock on social media.
+        It is calculated by dividing the total number of mentions for the chosen stock
+        on a social network by the mean number of mentions any stock receives on that
+        social medium.
+
+        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        ---
+        RHI is a measure of whether people are talking about a stock more or less than
+        usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+        for the past week for that stock.
+
+        {Style.BRIGHT}Sentiment Score{Style.RESET_ALL}
+        ---
+        Sentiment score is the percentage of people talking positively about the stock.
+        For each social network the number of positive posts/comments is divided by the
+        total number of both positive and negative posts/comments.
+
+        {Style.BRIGHT}SGP (Standard General Perception){Style.RESET_ALL}
+        ---
+        SGP is a measure of whether people are more or less positive about a stock than
+        usual. It is calculated by averaging the past day of sentiment values and then
+        dividing it by the average of the past week of sentiment values.
+        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="metrics",
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description=textwrap.dedent(command_description),
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if self._check_ticker():
+                sentimentinvestor_view.display_metrics(ticker=self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_social(self, other_args: List[str]):
         """Process social command"""
-        sentimentinvestor_view.socials(self.ticker, other_args)
+        command_description = f"""
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+
+        The {Style.BRIGHT}social{Style.RESET_ALL} command prints the raw data for a given stock, including the number
+        of mentions it has received on social media in the last hour and the sentiment
+        score of those comments.
+        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="social",
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description=textwrap.dedent(command_description),
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if self._check_ticker():
+                sentimentinvestor_view.display_social(ticker=self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
-        sentimentinvestor_view.historical(self.ticker, other_args)
+        command_description = f"""
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+
+        The {Style.BRIGHT}historical{Style.RESET_ALL} command plots the past week of data for a selected metric, one of:
+
+        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        ---
+        AHI is a measure of how much people are talking about a stock on social media.
+        It is calculated by dividing the total number of mentions for the chosen stock
+        on a social network by the mean number of mentions any stock receives on that
+        social medium.
+
+        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        ---
+        RHI is a measure of whether people are talking about a stock more or less than
+        usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+        for the past week for that stock.
+
+        {Style.BRIGHT}Sentiment Score{Style.RESET_ALL}
+        ---
+        Sentiment score is the percentage of people talking positively about the stock.
+        For each social network the number of positive posts/comments is divided by the
+        total number of both positive and negative posts/comments.
+
+        {Style.BRIGHT}SGP (Standard General Perception){Style.RESET_ALL}
+        ---
+        SGP is a measure of whether people are more or less positive about a stock than
+        usual. It is calculated by averaging the past day of sentiment values and then
+        dividing it by the average of the past week of sentiment values.
+        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="historical",
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description=textwrap.dedent(command_description),
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            action="store",
+            type=str,
+            default="date",
+            help="the parameter to sort output table by",
+            dest="sort_param",
+            nargs="?",
+            choices=["date", "value"],
+        )
+        parser.add_argument(
+            "-d",
+            "--direction",
+            action="store",
+            type=str,
+            default="desc",
+            help="the direction to sort the output table",
+            dest="sort_dir",
+            nargs="?",
+            choices=["asc", "desc"],
+        )
+        parser.add_argument(
+            "metric",
+            type=str,
+            action="store",
+            default="sentiment",
+            nargs="?",
+            choices=["sentiment", "AHI", "RHI", "SGP"],
+            help="the metric to plot",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                sentimentinvestor_view.display_historical(
+                    ticker=self.ticker,
+                    sort_param=ns_parser.sort_param,
+                    sort_dir=ns_parser.sort_dir,
+                    metric=ns_parser.metric,
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_popularsi(self, other_args: List[str]):
         """Process popular command"""
-        sentimentinvestor_view.sort_sentiment("AHI", other_args, "popularsi")
+        command_description = f"""
+        The {Style.BRIGHT}popular{Style.RESET_ALL} command prints the stocks with highest Average Hype Index right now.
+
+        {Style.BRIGHT}AHI (Absolute Hype Index){Style.RESET_ALL}
+        ---
+        AHI is a measure of how much people are talking about a stock on social media.
+        It is calculated by dividing the total number of mentions for the chosen stock
+        on a social network by the mean number of mentions any stock receives on that
+        social medium.
+
+        ===
+
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="popularsi",
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description=textwrap.dedent(command_description),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=int,
+            default=10,
+            help="the maximum number of stocks to retrieve",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            sentimentinvestor_view.display_top(metric="AHI", limit=ns_parser.limit)
+        except Exception as e:
+            print(e, "\n")
 
     def call_emerging(self, other_args: List[str]):
         """Process emerging command"""
-        sentimentinvestor_view.sort_sentiment("RHI", other_args, "emerging")
+        command_description = f"""
+        The {Style.BRIGHT}emerging{Style.RESET_ALL} command prints the stocks with highest Relative Hype Index right now.
+
+        {Style.BRIGHT}RHI (Relative Hype Index){Style.RESET_ALL}
+        ---
+        RHI is a measure of whether people are talking about a stock more or less than
+        usual, calculated by dividing the mean AHI for the past day by the mean AHI for
+        for the past week for that stock.
+
+        ===
+
+        {Style.BRIGHT}Sentiment Investor{Style.RESET_ALL} analyzes data from four major social media platforms to
+        generate hourly metrics on over 2,000 stocks. Sentiment provides volume and
+        sentiment metrics powered by proprietary NLP models.
+        """
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="popular",
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description=textwrap.dedent(command_description),
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=int,
+            default=10,
+            help="the maximum number of stocks to retrieve",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            sentimentinvestor_view.display_top(metric="RHI", limit=ns_parser.limit)
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: datetime):
@@ -808,11 +1035,11 @@ def menu(ticker: str, start: datetime):
                 {c: None for c in ba_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ba)> ",
+                f"{get_flair()} (forex)>(ba)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ba)> ")
+            an_input = input(f"{get_flair()} (forex)>(ba)> ")
 
         try:
             process_input = ba_controller.switch(an_input)
