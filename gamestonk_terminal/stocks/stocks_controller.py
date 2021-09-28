@@ -251,17 +251,30 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=True,
             help="Show oldest articles first",
         )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            default=[],
+            nargs="+",
+            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
+            sources = ns_parser.sources
+            for idx, source in enumerate(sources):
+                if source.find(".") == -1:
+                    sources[idx] += ".com"
+
             newsapi_view.news(
                 term=self.ticker,
                 num=ns_parser.n_num,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
+                sources=",".join(sources),
             )
 
         except Exception as e:

@@ -10,7 +10,7 @@ from gamestonk_terminal.cryptocurrency.coinbase_helpers import (
 )
 
 
-def get_accounts() -> pd.DataFrame:
+def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.DataFrame:
     """Get list of all your trading accounts. [Source: Coinbase]
 
     Single account information:
@@ -22,13 +22,18 @@ def get_accounts() -> pd.DataFrame:
         "hold": "0.0000000000000000",
         "profile_id": "75da88c5-05bf-4f54-bc85-5c775bd68254"
     }
+    Parameters
+    -------
+    add_current_price: bool
+        Boolean to query coinbase for current price
+    currency: str
+        Currency to convert to, defaults to 'USD'
 
     Returns
     -------
     pd.DataFrame
         DataFrame with all your trading accounts.
     """
-
     auth = CoinbaseProAuth(
         cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
     )
@@ -37,6 +42,30 @@ def get_accounts() -> pd.DataFrame:
         return pd.DataFrame()
 
     df = pd.DataFrame(resp)
+    df = df[df.balance.astype(float) > 0]
+    if add_current_price:
+        current_prices = []
+        for _, row in df.iterrows():
+            to_get = f"{row.currency}-{currency}"
+            current_prices.append(
+                float(
+                    make_coinbase_request(f"/products/{to_get}/stats", auth=auth)[
+                        "last"
+                    ]
+                )
+            )
+        df["current_price"] = current_prices
+        df[f"BalanceValue({currency})"] = df.current_price * df.balance.astype(float)
+        return df[
+            [
+                "id",
+                "currency",
+                "balance",
+                "available",
+                "hold",
+                f"BalanceValue({currency})",
+            ]
+        ]
     return df[["id", "currency", "balance", "available", "hold"]]
 
 
@@ -67,7 +96,6 @@ def get_account_history(account: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with account history.
     """
-
     auth = CoinbaseProAuth(
         cfg.API_COINBASE_KEY, cfg.API_COINBASE_SECRET, cfg.API_COINBASE_PASS_PHRASE
     )
@@ -126,7 +154,7 @@ def get_orders() -> pd.DataFrame:
     )
     resp = make_coinbase_request("/orders", auth=auth)
     if not resp:
-        df = pd.DataFrame(
+        return pd.DataFrame(
             columns=[
                 "product_id",
                 "side",
@@ -137,7 +165,6 @@ def get_orders() -> pd.DataFrame:
                 "status",
             ]
         )
-        return df
     return pd.DataFrame(resp)[
         ["product_id", "side", "price", "size", "type", "created_at", "status"]
     ]
@@ -170,8 +197,8 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
     if isinstance(resp, tuple):
         resp = resp[0]
 
+    # pylint:disable=no-else-return
     if deposit_type == "deposit":
-        df = pd.json_normalize(resp)
+        return pd.json_normalize(resp)
     else:
-        df = pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
-    return df
+        return pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
