@@ -9,7 +9,7 @@ async def shorted_command(ctx, arg):
     # Help
     if arg == "-h" or arg == "help":
         help_txt = "Display most shorted stocks screener. [Source: Yahoo Finance]\n"
-        help_txt += "\nPossible argments:\n"
+        help_txt += "\nPossible arguments:\n"
         help_txt += f"<NUM> Number of stocks to display. Default: 5"
         embed = discord.Embed(
             title="Stocks: [Yahoo Finance] Most Shorted HELP",

@@ -20,7 +20,7 @@ async def sidtc_command(ctx, arg, arg2):
         for k, v in dark_pool_sort.items():
             possible_args += f"\n{k}: {v}"
 
-        help_txt += "\nPossible argments:\n"
+        help_txt += "\nPossible arguments:\n"
         help_txt += "<SORT> Field for which to sort by. Default: float\n"
         help_txt += f"The choices are:{possible_args}\n"
         help_txt += "<NUM> Number of top tickers to show. Default: 10"

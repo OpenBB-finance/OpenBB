@@ -12,7 +12,7 @@ async def spos_command(ctx, arg):
     # Help
     if arg == "-h" or arg == "help":
         help_txt = "Plot net short position. [Source: Stockgrid]\n"
-        help_txt += "\nPossible argments:\n"
+        help_txt += "\nPossible arguments:\n"
         help_txt += "<TICKER> Stock ticker. REQUIRED!\n"
         embed = discord.Embed(
             title="Stocks: [Stockgrid] Net Short vs Position HELP",
