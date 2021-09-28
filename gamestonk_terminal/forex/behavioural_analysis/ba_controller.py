@@ -415,19 +415,108 @@ SentimentInvestor:
 
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
-        stocktwits_view.bullbear(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="bullbear",
+            description="""
+                Print bullbear sentiment based on last 30 messages on the board.
+                Also prints the watchlist_count. [Source: Stocktwits]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                stocktwits_view.display_bullbear(ticker=self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_messages(self, other_args: List[str]):
         """Process messages command"""
-        stocktwits_view.messages(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="messages",
+            description="""Print up to 30 of the last messages on the board. [Source: Stocktwits]""",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_lim",
+            type=check_positive,
+            default=30,
+            help="limit messages shown.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                stocktwits_view.display_messages(
+                    ticker=self.ticker, limit=ns_parser.n_lim
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_trending(self, other_args: List[str]):
         """Process trending command"""
-        stocktwits_view.trending(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trending",
+            description="""Stocks trending. [Source: Stocktwits]""",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stocktwits_view.display_trending()
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_stalker(self, other_args: List[str]):
         """Process stalker command"""
-        stocktwits_view.stalker(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stalker",
+            description="""Print up to the last 30 messages of a user. [Source: Stocktwits]""",
+        )
+        parser.add_argument(
+            "-u",
+            "--user",
+            action="store",
+            dest="s_user",
+            type=str,
+            default="Newsfilter",
+            help="username.",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_lim",
+            type=check_positive,
+            default=30,
+            help="limit messages shown.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            stocktwits_view.display_stalker(
+                user=ns_parser.s_user, limit=ns_parser.n_lim
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_mentions(self, other_args: List[str]):
         """Process mentions command"""
