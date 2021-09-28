@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import List, Dict, Tuple
+from datetime import datetime, timedelta
 import pandas as pd
 from prawcore.exceptions import ResponseException
 from requests import HTTPError
@@ -46,7 +47,6 @@ def get_watchlists(
         Count of how many posts were analyzed
     """
     d_watchlist_tickers: Dict = {}
-    l_watchlist_links = []
     l_watchlist_author = []
     subs = []
     try:
@@ -92,9 +92,6 @@ def get_watchlists(
                         # Initialize stock ticker found
                         d_watchlist_tickers[key] = 1
 
-                l_watchlist_links.append(
-                    f"https://old.reddit.com{submission.permalink}"
-                )
                 # Increment count of valid posts found
                 n_flair_posts_found += 1
                 subs.append(submission)
@@ -271,7 +268,6 @@ def get_spac_community(
         return [], {}
 
     d_watchlist_tickers: Dict = {}
-    l_watchlist_links = []
     l_watchlist_author = []
 
     if popular:
@@ -286,7 +282,7 @@ def get_spac_community(
 
         # Get more information about post using PRAW api
         submission = praw_api.submission(id=sub.id)
-        subs.append(submission)
+
         # Ensure that the post hasn't been removed  by moderator in the meanwhile,
         # that there is a description and it's not just an image, that the flair is
         # meaningful, and that we aren't re-considering same author's watchlist
@@ -301,6 +297,81 @@ def get_spac_community(
             if l_tickers_found:
                 # Add another author's name to the parsed watchlists
                 l_watchlist_author.append(submission.author.name)
+                subs.append(submission)
+                # Lookup stock tickers within a watchlist
+                for key in l_tickers_found:
+                    if key in d_watchlist_tickers:
+                        # Increment stock ticker found
+                        d_watchlist_tickers[key] += 1
+                    else:
+                        # Initialize stock ticker found
+                        d_watchlist_tickers[key] = 1
+    return subs, d_watchlist_tickers
+
+
+def get_spac(
+    limit: int = 5,
+) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
+    """Get posts containing SPAC from top subreddits
+
+    Parameters
+    ----------
+    limit : int, optional
+        Number of posts to get for each subreddit, by default 5
+
+    Returns
+    -------
+    List[praw.models.reddit.submission.Submission] :
+        List of reddit submissions
+    Dict :
+        Dictionary of tickers and counts
+    int :
+        Number of posts found.
+    """
+
+    try:
+        praw_api = praw.Reddit(
+            client_id=cfg.API_REDDIT_CLIENT_ID,
+            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+            username=cfg.API_REDDIT_USERNAME,
+            user_agent=cfg.API_REDDIT_USER_AGENT,
+            password=cfg.API_REDDIT_PASSWORD,
+        )
+    except ResponseException:
+        print(
+            "Received a response from Reddit with an authorization error. check your token.\n"
+        )
+        return [], {}, 0
+
+    d_watchlist_tickers: Dict = {}
+    l_watchlist_author = []
+    subs = []
+    psaw_api = PushshiftAPI()
+    submissions = psaw_api.search_submissions(
+        subreddit=l_sub_reddits,
+        q="SPAC|Spac|spac|Spacs|spacs",
+        filter=["id"],
+    )
+    n_flair_posts_found = 0
+    for submission in submissions:
+
+        # Get more information about post using PRAW api
+        submission = praw_api.submission(id=submission.id)
+
+        # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+        # that there is a description and it's not just an image, that the flair is
+        # meaningful, and that we aren't re-considering same author's watchlist
+        if (
+            not submission.removed_by_category
+            and submission.selftext
+            and submission.link_flair_text not in ["Yolo", "Meme"]
+            and submission.author.name not in l_watchlist_author
+        ):
+            l_tickers_found = find_tickers(submission)
+            subs.append(submission)
+            if l_tickers_found:
+                # Add another author's name to the parsed watchlists
+                l_watchlist_author.append(submission.author.name)
 
                 # Lookup stock tickers within a watchlist
                 for key in l_tickers_found:
@@ -311,12 +382,149 @@ def get_spac_community(
                         # Initialize stock ticker found
                         d_watchlist_tickers[key] = 1
 
-                l_watchlist_links.append(
-                    f"https://old.reddit.com{submission.permalink}"
-                )
+                # Increment count of valid posts found
+                n_flair_posts_found += 1
 
-    return subs, d_watchlist_tickers
+            # Check if number of wanted posts found has been reached
+            if n_flair_posts_found > limit - 1:
+                break
+
+    return subs, d_watchlist_tickers, n_flair_posts_found
 
 
-def get_spac():
-    pass
+def get_wsb_community(
+    limit: int = 10, new: bool = False
+) -> List[praw.models.reddit.submission.Submission]:
+    """Get wsb posts
+
+    Parameters
+    ----------
+    limit : int, optional
+        Number of posts to get, by default 10
+    new : bool, optional
+        Flag to sort by new instead of hot, by default False
+
+    Returns
+    -------
+    List[praw.models.reddit.submission.Submission]
+        List of reddit submissions
+    """
+    try:
+        praw_api = praw.Reddit(
+            client_id=cfg.API_REDDIT_CLIENT_ID,
+            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+            username=cfg.API_REDDIT_USERNAME,
+            user_agent=cfg.API_REDDIT_USER_AGENT,
+            password=cfg.API_REDDIT_PASSWORD,
+        )
+    except ResponseException:
+        print(
+            "Received a response from Reddit with an authorization error. check your token.\n"
+        )
+        return []
+
+    if new:
+        submissions = praw_api.subreddit("wallstreetbets").new(limit=limit)
+    else:
+        submissions = praw_api.subreddit("wallstreetbets").hot(limit=limit)
+
+    subs = []
+    for submission in submissions:
+        submission = praw_api.submission(id=submission.id)
+        # Ensure that the post hasn't been removed  by moderator in the meanwhile,
+        # that there is a description and it's not just an image, that the flair is
+        # meaningful, and that we aren't re-considering same author's watchlist
+        if not submission.removed_by_category:
+            subs.append(submission)
+    return subs
+
+
+def get_due_dilligence(
+    ticker: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
+) -> List[praw.models.reddit.submission.Submission]:
+    """[summary]
+
+    Parameters
+    ----------
+    ticker: str
+        Stock ticker
+    limit: int
+        Number of posts to get
+    n_days: int
+        Number of days back to get posts
+    show_all_flairs: bool
+        Search through all flairs (apart from Yolo and Meme)
+
+    Returns
+    -------
+    List[praw.models.reddit.submission.Submission]
+        List of submissions
+    """
+
+    try:
+        praw_api = praw.Reddit(
+            client_id=cfg.API_REDDIT_CLIENT_ID,
+            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+            username=cfg.API_REDDIT_USERNAME,
+            user_agent=cfg.API_REDDIT_USER_AGENT,
+            password=cfg.API_REDDIT_PASSWORD,
+        )
+    except ResponseException:
+        print(
+            "Received a response from Reddit with an authorization error. check your token.\n"
+        )
+        return []
+    psaw_api = PushshiftAPI()
+
+    n_ts_after = int((datetime.today() - timedelta(days=n_days)).timestamp())
+    l_flair_text = [
+        "DD",
+        "technical analysis",
+        "Catalyst",
+        "News",
+        "Advice",
+        "Chart",
+        "Charts and Setups",
+        "Fundamental Analysis",
+        "forex",
+        "Trade Idea",
+    ]
+    l_sub_reddits_dd = [
+        "pennystocks",
+        "RobinHoodPennyStocks",
+        "Daytrading",
+        "StockMarket",
+        "stocks",
+        "investing",
+        "wallstreetbets",
+        "forex",
+        "Forexstrategy",
+    ]
+
+    submissions = psaw_api.search_submissions(
+        after=int(n_ts_after), subreddit=l_sub_reddits_dd, q=ticker, filter=["id"]
+    )
+    n_flair_posts_found = 0
+    subs = []
+    for submission in submissions:
+        # Get more information about post using PRAW api
+        submission = praw_api.submission(id=submission.id)
+
+        # Ensure that the post hasn't been removed in the meanwhile
+        if not submission.removed_by_category:
+
+            # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
+            if (
+                submission.link_flair_text in l_flair_text,
+                submission.link_flair_text not in ["Yolo", "Meme"],
+            )[show_all_flairs]:
+
+                subs.append(submission)
+                # Increment count of valid posts found
+                n_flair_posts_found += 1
+
+        # Check if number of wanted posts found has been reached
+        if n_flair_posts_found > limit - 1:
+            break
+
+    return subs

@@ -95,8 +95,8 @@ Reddit:
     watchlist     show other users watchlist
     popular       show popular tickers
     spac_c        show other users spacs announcements from subreddit SPACs community
-    spac          show other users spacs announcements from other subs
-    getdd         gets due diligence from another user's post
+    spac          show other users spacs announcements from other subs{dim}
+    getdd         gets due diligence from another user's post{res}
 Stocktwits:{dim}
     bullbear      estimate quick sentiment from last 30 messages on board
     messages      output up to the 30 last messages on the board{res}
@@ -207,7 +207,31 @@ SentimentInvestor:
 
     def call_spac(self, other_args: List[str]):
         """Process spac command"""
-        reddit_view.display_spac(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spac",
+            description="""Show other users SPACs announcement. [Source: Reddit]""",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_limit",
+            type=check_positive,
+            default=5,
+            help="limit of posts with SPACs retrieved.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            reddit_view.display_spac(limit=ns_parser.n_limit)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_spac_c(self, other_args: List[str]):
         """Process spac_c command"""
@@ -249,7 +273,40 @@ SentimentInvestor:
 
     def call_wsb(self, other_args: List[str]):
         """Process wsb command"""
-        reddit_view.wsb_community(other_args)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wsb",
+            description="""Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]""",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_limit",
+            type=check_positive,
+            default=10,
+            help="limit of posts to print.",
+        )
+        parser.add_argument(
+            "--new",
+            action="store_true",
+            default=False,
+            dest="b_new",
+            help="new flag, if true the posts retrieved are based on being more recent rather than their score.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            reddit_view.display_wsb_community(
+                limit=ns_parser.n_limit, new=ns_parser.b_new
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_popular(self, other_args: List[str]):
         """Process popular command"""
@@ -306,7 +363,55 @@ SentimentInvestor:
 
     def call_getdd(self, other_args: List[str]):
         """Process getdd command"""
-        reddit_view.get_due_diligence(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="getdd",
+            description="""
+                Print top stock's due diligence from other users. [Source: Reddit]
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="n_limit",
+            type=check_positive,
+            default=5,
+            help="limit of posts to retrieve.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=3,
+            help="number of prior days to look for.",
+        )
+        parser.add_argument(
+            "-a",
+            "--all",
+            action="store_true",
+            dest="b_all",
+            default=False,
+            help="""
+                search through all flairs (apart from Yolo and Meme), otherwise we focus on
+                specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart""",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if self._check_ticker():
+                reddit_view.display_due_diligence(
+                    ticker=self.ticker,
+                    limit=ns_parser.n_limit,
+                    n_days=ns_parser.n_days,
+                    show_all_flairs=ns_parser.b_all,
+                )
+        except Exception as e:
+            print(e, "\n")
 
     def call_bullbear(self, other_args: List[str]):
         """Process bullbear command"""
