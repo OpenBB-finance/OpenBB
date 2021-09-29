@@ -1,5 +1,5 @@
 ```
-usage: historical [-t TICKER] [-s [{date,value}]] [-d [{asc,desc}]] [-h] [{sentiment,AHI,RHI,SGP}]
+usage: historical [-s [{date,value}]] [-d [{asc,desc}]] [-h] [{sentiment,AHI,RHI,SGP}]
 ```
 
 Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks. Sentiment provides volume and sentiment metrics powered by proprietary NLP models.
@@ -30,8 +30,6 @@ positional arguments:
                         the metric to plot
 
 optional arguments:
-  -t TICKER, --ticker TICKER
-                        ticker for which to fetch data
   -s [{date,value}], --sort [{date,value}]
                         the parameter to sort output table by
   -d [{asc,desc}], --direction [{asc,desc}]
