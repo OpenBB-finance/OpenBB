@@ -417,16 +417,15 @@ Feel free to share loss porn, memes or any questions at:
 
 #### Contributors
 
-* **pll_llq** and **Chavithra**: Working towards a GUI using Qt.
-  * Get in touch in our [#gui](https://discord.gg/gQ3VxXEj) discord channel.
+* **pll_llq** and **Chavithra**: Working on JupyterLab integration. Also developed a GUI POOC.
+* **jpp** : Responsible by developing `Crypto` menu.
+* **northern-64bit** : Developing a discord bot for the terminal.
 * **1lluz10n** and **crspy** : Working on our landing page https://gamestonkterminal.netlify.app.
-  * Get in touch in our [#landing-page](https://discord.gg/wkyB4xcb) discord channel.
-* **Meghan Hone** : Managing Twitter account
-* **alokan** : Responsible by developing `Forex` menu
+* **Meghan Hone** : Managing Twitter account.
 * **Chavithra** and **Deel18** : for Degiro's integration.
-* **Traceabl3** : By adding several preset screeners
-* **jpp** : Responsible by developing `Crypto` menu
-* **rkornmeyer** : Provides realtime earnings data on https://thegeekofwallstreet.com/
+* **alokan** : Responsible by developing `Forex` menu.
+* **Traceabl3** : By adding several preset screeners.
+
 
 <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=GamestonkTerminal/GamestonkTerminal" height="276"/>
@@ -442,6 +441,7 @@ Feel free to share loss porn, memes or any questions at:
 * [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
 * [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
 * [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
+* [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
