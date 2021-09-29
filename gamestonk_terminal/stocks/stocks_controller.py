@@ -3,6 +3,7 @@ import os
 from typing import List
 
 from datetime import datetime, timedelta
+import yfinance as yf
 import pandas as pd
 from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
@@ -269,8 +270,12 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 if source.find(".") == -1:
                     sources[idx] += ".com"
 
+            d_stock = yf.Ticker(self.ticker).info
+
             newsapi_view.news(
-                term=self.ticker,
+                term=d_stock["shortName"].replace(" ", "+")
+                if "shortName" in d_stock
+                else self.ticker,
                 num=ns_parser.n_num,
                 s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                 show_newest=ns_parser.n_oldest,
