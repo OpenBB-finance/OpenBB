@@ -104,7 +104,8 @@ class StocksController:
             stock_text = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
             stock_text = f"{s_intraday} Stock: {self.ticker}"
-        dim = Style.DIM if not self.ticker else ""
+        dim_if_no_ticker = Style.DIM if not self.ticker else ""
+        reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
 
 >> STOCKS <<
@@ -119,11 +120,11 @@ What do you want to do?
 
 {stock_text}
 Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
-{dim}
+{dim_if_no_ticker}
     quote       view the current price for a specific stock ticker
     candle      view a candle chart for a specific stock ticker
     news        latest news of the company [News API]
-{Style.RESET_ALL if not self.ticker else ''}
+{reset_style_if_no_ticker}
 >>  options     go into options context {'with ' if self.ticker else ''}{self.ticker}
 
 >   disc        discover trending stocks, \t e.g. map, sectors, high short interest
@@ -132,7 +133,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
 >   report      generate automatic report,   \t e.g.: dark pool, due diligence
->   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim}
+>   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim_if_no_ticker}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
 >   dd          in-depth due-diligence,  \t e.g.: news, analyst, shorts, insider, sec
@@ -141,7 +142,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   ta          technical analysis,      \t e.g.: ema, macd, rsi, adx, bbands, obv
 >   qa          quantitative analysis,   \t e.g.: decompose, cusum, residuals analysis
 >   pred        prediction techniques,   \t e.g.: regression, arima, rnn, lstm
-{Style.RESET_ALL if not self.ticker else ''}"""
+{reset_style_if_no_ticker}"""
         print(help_text)
 
     def switch(self, an_input: str):

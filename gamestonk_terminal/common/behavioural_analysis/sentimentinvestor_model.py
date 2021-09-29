@@ -20,6 +20,8 @@ sentipy: Sentipy = Sentipy(
     token=cfg.API_SENTIMENTINVESTOR_TOKEN, key=cfg.API_SENTIMENTINVESTOR_KEY
 )
 
+# TODO: Make code more consistent with rest of repository.
+
 
 @dataclasses.dataclass
 class _Boundary:
@@ -65,6 +67,7 @@ class _Boundary:
 
 
 def _get_past_week_average(ticker: str, metric: str) -> float:
+    """Gets last 1 week average"""
     historical_data = [
         dp
         for dp in sentipy.historical(
@@ -245,7 +248,7 @@ def get_socials(ticker: str) -> Optional[List[_Metric]]:
 
 
 def get_historical(ticker: str, metric: str) -> pd.DataFrame:
-    """Get historical sentiment data
+    """Get historical sentiment data [Source: sentimentinvestor]
 
     Parameters
     ----------
@@ -277,7 +280,7 @@ def get_historical(ticker: str, metric: str) -> pd.DataFrame:
 
 
 def get_top(metric: str, limit: int) -> List[List[Any]]:
-    """Get top stocks based on metric from sentimentinvestor
+    """Get top stocks based on metric from sentimentinvestor [Source: sentimentinvestor]
 
     Parameters
     ----------

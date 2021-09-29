@@ -24,20 +24,19 @@ def display_sentiment_stats(ticker: str, export: str = ""):
     d_stats = finnhub_model.get_sentiment_stats(ticker)
 
     if d_stats:
-        print(f"Buzz: {round(100*d_stats['buzz']['buzz'],2)} %")
-        print(f"News Score: {round(100*d_stats['companyNewsScore'],2)} %")
-        print("")
-        print(f"Articles Last Week: {d_stats['buzz']['articlesInLastWeek']}")
-        print(f"Articles Weekly Average: {d_stats['buzz']['weeklyAverage']}")
-        print("")
-        print(f"Bullish: {round(100*d_stats['sentiment']['bullishPercent'],2)} %")
-        print(f"Bearish: {round(100*d_stats['sentiment']['bearishPercent'],2)} %")
-        print("")
         print(
-            f"Sector Average Bullish: {round(100*d_stats['sectorAverageBullishPercent'],2)} %"
-        )
-        print(
-            f"Sector Average News Score: {round(100*d_stats['sectorAverageNewsScore'],2)} %"
+            f"""
+Buzz: {round(100*d_stats['buzz']['buzz'],2)} %
+News Score: {round(100*d_stats['companyNewsScore'],2)} %
+
+Articles Last Week: {d_stats['buzz']['articlesInLastWeek']}
+Articles Weekly Average: {d_stats['buzz']['weeklyAverage']}
+
+Bullish: {round(100*d_stats['sentiment']['bullishPercent'],2)} %
+Bearish: {round(100*d_stats['sentiment']['bearishPercent'],2)} %
+
+Sector Average Bullish: {round(100*d_stats['sectorAverageBullishPercent'],2)}
+Sector Average News Score: {round(100*d_stats['sectorAverageNewsScore'],2)} %"""
         )
         export_data(
             export,

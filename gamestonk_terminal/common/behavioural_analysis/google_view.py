@@ -73,20 +73,23 @@ def display_regions(ticker: str, num: int = 5, export: str = ""):
         Format to export data
     """
     df_interest_region = google_model.get_regions(ticker)
-    df_interest_region = df_interest_region.sort_values([ticker], ascending=False).head(
-        num
-    )
-    df = df_interest_region.copy()
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    ax.set_title(f"Top's regions interest on {ticker}")
-    ax.bar(df_interest_region.index, df_interest_region[ticker], width=0.8)
-    ax.grid(b=True, which="major", color="#666666", linestyle="-")
-    ax.set_ylabel("Interest [%]")
-    ax.set_xlabel("Region")
-    if gtff.USE_ION:
-        plt.ion()
-    fig.tight_layout()
-    plt.show()
+    if not df_interest_region.empty:
+        df_interest_region = df_interest_region.sort_values(
+            [ticker], ascending=False
+        ).head(num)
+        df = df_interest_region.copy()
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        ax.set_title(f"Top's regions interest on {ticker}")
+        ax.bar(df_interest_region.index, df_interest_region[ticker], width=0.8)
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.set_ylabel("Interest [%]")
+        ax.set_xlabel("Region")
+        if gtff.USE_ION:
+            plt.ion()
+        fig.tight_layout()
+        plt.show()
+    else:
+        print("No region data found.")
     print("")
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
 

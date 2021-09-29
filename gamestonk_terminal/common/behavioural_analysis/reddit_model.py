@@ -30,7 +30,7 @@ l_sub_reddits = [
 def get_watchlists(
     n_to_get: int,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
-    """Get reddit users watchlists
+    """Get reddit users watchlists [Source: reddit]
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ def get_watchlists(
 def get_popular_tickers(
     n_top: int, posts_to_look_at: int, subreddits: str = ""
 ) -> pd.DataFrame:
-    """Get popular tickers from list of subreddits
+    """Get popular tickers from list of subreddits [Source: reddit]
 
     Parameters
     ----------
@@ -237,7 +237,7 @@ def get_popular_tickers(
 def get_spac_community(
     limit: int, popular: bool
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict]:
-    """Get top tickers from r/SPACs
+    """Get top tickers from r/SPACs [Source: reddit]
 
     Parameters
     ----------
@@ -312,7 +312,7 @@ def get_spac_community(
 def get_spac(
     limit: int = 5,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
-    """Get posts containing SPAC from top subreddits
+    """Get posts containing SPAC from top subreddits [Source: reddit]
 
     Parameters
     ----------
@@ -395,7 +395,7 @@ def get_spac(
 def get_wsb_community(
     limit: int = 10, new: bool = False
 ) -> List[praw.models.reddit.submission.Submission]:
-    """Get wsb posts
+    """Get wsb posts [Source: reddit]
 
     Parameters
     ----------
@@ -442,7 +442,7 @@ def get_wsb_community(
 def get_due_dilligence(
     ticker: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> List[praw.models.reddit.submission.Submission]:
-    """[summary]
+    """Gets due dilligence posts from list of subreddits [Source: reddit]
 
     Parameters
     ----------

@@ -315,23 +315,22 @@ def long_number_format(num) -> str:
 
 
 def clean_data_values_to_float(val: str) -> float:
+    """Cleans data to float based on string ending"""
     # Remove any leading or trailing parentheses and spaces
     val = val.strip("( )")
     if val == "-":
         val = "0"
 
-    # pylint:disable=no-else-return
     # Convert percentage to decimal
     if val.endswith("%"):
         return float(val[:-1]) / 100.0
-    elif val.endswith("B"):
+    if val.endswith("B"):
         return float(val[:-1]) * 1_000_000_000
-    elif val.endswith("M"):
+    if val.endswith("M"):
         return float(val[:-1]) * 1_000_000
-    elif val.endswith("K"):
+    if val.endswith("K"):
         return float(val[:-1]) * 1000
-    else:
-        return float(val)
+    return float(val)
 
 
 def int_or_round_float(x) -> str:

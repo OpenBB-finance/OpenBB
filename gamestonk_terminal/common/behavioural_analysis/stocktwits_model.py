@@ -8,7 +8,7 @@ import requests
 
 
 def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
-    """Gets bullbear sentiment for ticker
+    """Gets bullbear sentiment for ticker [Source: stocktwits]
 
     Parameters
     ----------
@@ -48,7 +48,7 @@ def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
 
 
 def get_messages(ticker: str, limit: int = 30) -> List[str]:
-    """Get last messages for a given ticker
+    """Get last messages for a given ticker [Source: stocktwits]
 
     Parameters
     ----------
@@ -76,11 +76,8 @@ def get_messages(ticker: str, limit: int = 30) -> List[str]:
     return messages
 
 
-# pylint:disable=no-else-return
-
-
 def get_trending() -> pd.DataFrame:
-    """Get trending tickers from stocktwits
+    """Get trending tickers from stocktwits [Source: stocktwits]
 
     Returns
     -------
@@ -99,20 +96,20 @@ def get_trending() -> pd.DataFrame:
             l_symbols, columns=["Ticker", "Watchlist Count", "Name"]
         )
         return df_trending
-    else:
-        print(f"Error {result.status_code} in stocktwits request")
-        return pd.DataFrame()
+
+    print(f"Error {result.status_code} in stocktwits request")
+    return pd.DataFrame()
 
 
 def get_stalker(user: str, limit: int = 30) -> List[Dict]:
-    """Gets messages from given user
+    """Gets messages from given user [Source: stocktwits]
 
     Parameters
     ----------
     user : str
-        [description]
+        User to get posts for
     limit : int, optional
-        [description], by default 30
+        Number of posts to get, by default 30
     """
     result = requests.get(f"https://api.stocktwits.com/api/2/streams/user/{user}.json")
     if result.status_code == 200:
@@ -122,6 +119,6 @@ def get_stalker(user: str, limit: int = 30) -> List[Dict]:
             if idx > limit - 1:
                 break
         return messages
-    else:
-        print("Invalid user")
-        return []
+
+    print("Invalid user")
+    return []

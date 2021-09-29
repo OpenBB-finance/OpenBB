@@ -6,7 +6,7 @@ import requests
 
 
 def get_sentiment(ticker: str) -> pd.DataFrame:
-    """Gets Sentiment analysis provided by FinBrain's API
+    """Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
 
     Parameters
     ----------

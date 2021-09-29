@@ -108,8 +108,21 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
         else:
             print(color_df.to_string())
     else:
-        print(df_sentiment.to_string())
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    pd.DataFrame(
+                        data=df_sentiment.values,
+                        index=pd.to_datetime(df_sentiment.index).strftime("%Y-%m-%d"),
+                    ),
+                    headers=["Sentiment"],
+                    tablefmt="fancy_grid",
+                )
+            )
+
+        else:
+            print(df_sentiment.to_string())
     print("")
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "finbrain", df_sentiment
+        export, os.path.dirname(os.path.abspath(__file__)), "headlines", df_sentiment
     )

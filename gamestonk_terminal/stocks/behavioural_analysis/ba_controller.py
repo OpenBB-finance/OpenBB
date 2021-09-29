@@ -52,7 +52,7 @@ class BehaviouralAnalysisController:
         "regions",
         "queries",
         "rise",
-        "finbrain",
+        "headlines",
         "stats",
         "metrics",
         "social",
@@ -88,7 +88,7 @@ What would you like to do?
 Ticker: {self.ticker.upper() or None}
 
 Finbrain:{dim}
-    finbrain      sentiment from 15+ major news headlines {res}
+    headlines     sentiment from 15+ major news headlines {res}
 Finnhub:{dim}
     stats         sentiment stats including comparison with sector{res}
 Reddit:
@@ -710,7 +710,7 @@ SentimentInvestor:
         except Exception as e:
             print(e, "\n")
 
-    def call_finbrain(self, other_args: List[str]):
+    def call_headlines(self, other_args: List[str]):
         """Process finbrain command"""
         parser = argparse.ArgumentParser(
             add_help=False,

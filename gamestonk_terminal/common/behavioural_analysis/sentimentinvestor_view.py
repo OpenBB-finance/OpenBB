@@ -1,7 +1,6 @@
 """SentimentInvestor View"""
 __docformat__ = "numpy"
 
-import logging
 from typing import List
 
 import matplotlib.dates as mdates
@@ -28,13 +27,11 @@ sentipy: Sentipy = Sentipy(
 
 pd.plotting.register_matplotlib_converters()
 
-
-# suppress warning messages for a clean interface
-logging.getLogger().setLevel(logging.CRITICAL)
+# TODO: Make code more consisnet with rest of repository
 
 
 def display_top(metric: str, limit: int):
-    """Displays top stocks from sentimentinvestor based on metric
+    """Displays top stocks from sentimentinvestor based on metric [Source: sentimentinvestor]
 
     Parameters
     ----------
@@ -49,6 +46,7 @@ def display_top(metric: str, limit: int):
 
 
 def _tabulate_metrics(ticker: str, metrics_list: List[_Metric]):
+    """Tabulates sentiment investor data"""
     table_data = []
     table_headers = [
         f"{Style.BRIGHT}{ticker}{Style.RESET_ALL} Metrics",
@@ -64,6 +62,7 @@ def _tabulate_metrics(ticker: str, metrics_list: List[_Metric]):
 
 
 def _customise_plot() -> None:
+    """Customizes sentimentinvestor plot"""
     sns.set(
         font="Arial",
         style="darkgrid",
@@ -104,7 +103,7 @@ def display_metrics(ticker: str) -> None:
     metric_values = sentimentinvestor_model.get_metrics(ticker)
 
     if not metric_values:
-        logging.error("No data available or an error occurred.")
+        print("No data available or an error occurred.")
         return
 
     print(_tabulate_metrics(ticker, metric_values))
@@ -120,7 +119,7 @@ def display_social(ticker: str) -> None:
     metric_values = sentimentinvestor_model.get_socials(ticker)
 
     if not metric_values:
-        logging.error("No data available or an error occurred.")
+        print("No data available or an error occurred.")
         return
 
     print(_tabulate_metrics(ticker, metric_values))
@@ -130,7 +129,7 @@ def display_social(ticker: str) -> None:
 def display_historical(
     ticker: str, sort_param: str, sort_dir: str, metric: str
 ) -> None:
-    """Show historical sentiment from sentimentinvestor
+    """Show historical sentiment from sentimentinvestor [Source: sentimentinvestor]
 
     Parameters
     ----------
@@ -150,7 +149,7 @@ def display_historical(
     df = sentimentinvestor_model.get_historical(ticker, metric)
 
     if df.empty:
-        logging.error("The dataset is empty, something must have gone wrong")
+        print("The dataset is empty, something must have gone wrong")
         return
 
     _customise_plot()

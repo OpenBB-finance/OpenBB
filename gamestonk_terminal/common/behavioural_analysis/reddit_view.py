@@ -151,7 +151,7 @@ def display_popular_tickers(
     )
 
 
-def display_spac_community(limit: int = 20, popular: bool = True):
+def display_spac_community(limit: int = 10, popular: bool = False):
     """Look at tickers mentioned in r/SPACs [Source: Reddit]
 
     Parameters

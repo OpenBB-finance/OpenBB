@@ -6,7 +6,7 @@ from pytrends.request import TrendReq
 
 
 def get_mentions(ticker: str) -> pd.DataFrame:
-    """Get interest over time from google api
+    """Get interest over time from google api [Source: google]
 
     Parameters
     ----------
@@ -24,7 +24,7 @@ def get_mentions(ticker: str) -> pd.DataFrame:
 
 
 def get_regions(ticker: str) -> pd.DataFrame:
-    """Get interest by region from google api
+    """Get interest by region from google api [Source: google]
 
     Parameters
     ----------
@@ -42,7 +42,7 @@ def get_regions(ticker: str) -> pd.DataFrame:
 
 
 def get_queries(ticker: str) -> pd.DataFrame:
-    """Get related queries from google api
+    """Get related queries from google api [Source: google]
 
     Parameters
     ----------
@@ -60,7 +60,7 @@ def get_queries(ticker: str) -> pd.DataFrame:
 
 
 def get_rise(ticker: str) -> pd.DataFrame:
-    """Get top rising related queries with this stock's query
+    """Get top rising related queries with this stock's query [Source: google]
 
     Parameters
     ----------

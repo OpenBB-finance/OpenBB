@@ -7,7 +7,7 @@ from gamestonk_terminal import config_terminal as cfg
 
 
 def get_sentiment_stats(ticker: str) -> Dict:
-    """Get sentiment stats
+    """Get sentiment stats [Source: finnhub]
 
     Parameters
     ----------

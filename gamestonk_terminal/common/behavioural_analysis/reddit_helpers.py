@@ -8,6 +8,18 @@ import praw
 
 
 def find_tickers(submission: praw.models.reddit.submission.Submission) -> List[str]:
+    """Extracts potential tickers from reddit submission
+
+    Parameters
+    ----------
+    submission : praw.models.reddit.submission.Submission
+        Reddit post to scan
+
+    Returns
+    -------
+    List[str]
+        List of potential tickers
+    """
     ls_text = [submission.selftext, submission.title]
     submission.comments.replace_more(limit=0)
     for comment in submission.comments.list():
