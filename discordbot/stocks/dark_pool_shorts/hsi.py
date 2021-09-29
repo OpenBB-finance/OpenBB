@@ -13,7 +13,7 @@ async def hsi_command(ctx, arg):
             "Display top high shorted interest stocks [Source: highshortinterest.com]\n"
         )
         help_txt += "\nPossible arguments:\n"
-        help_txt += f"<NUM> Number of stocks to display. Default: 10"
+        help_txt += "<NUM> Number of stocks to display. Default: 10"
         embed = discord.Embed(
             title="Stocks: [highshortinterest.com] Top High Short Interest HELP",
             description=help_txt,

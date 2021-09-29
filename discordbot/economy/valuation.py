@@ -33,7 +33,7 @@ async def valuation_command(ctx, arg):
             possible_args += f"\n{k}: {v}"
 
         help_txt += "\nPossible arguments:\n"
-        help_txt += f"<GROUP> Groups to get data from. Default: sector\n"
+        help_txt += "<GROUP> Groups to get data from. Default: sector\n"
         help_txt += f"The choices are:{possible_args}"
         embed = discord.Embed(
             title="Economy: [Finviz] Valuation HELP",

@@ -23,8 +23,19 @@ class GenericCommands(discord.ext.commands.Cog):
             "SentimentInvestor: https://sentimentinvestor.com\n"
             "The Geek of Wall Street: https://thegeekofwallstreet.com\n"
         )
-        disclaimer = "Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in financial instrument you should be fully informed of the risks and costs associated with trading the financial markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in Gamestonk Terminal (GST) is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed."
-
+        disclaimer = (
+            "Trading in financial instruments involves high risks including "
+            "the risk of losing some, or all, of your investment amount, and "
+            "may not be suitable for all investors. Before deciding to trade "
+            "in financial instrument you should be fully informed of the risks "
+            "and costs associated with trading the financial markets, carefully "
+            "consider your investment objectives, level of experience, and risk "
+            "appetite, and seek professional advice where needed. The data "
+            "contained in Gamestonk Terminal (GST) is not necessarily accurate. "
+            "GST and any provider of the data contained in this website will not "
+            "accept liability for any loss or damage as a result of your trading, "
+            "or your reliance on the information displayed."
+        )
         embed = discord.Embed(
             title="Investment Research for Everyone",
             description=links,

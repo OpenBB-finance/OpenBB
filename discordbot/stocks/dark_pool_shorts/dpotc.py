@@ -1,7 +1,6 @@
 import discord
 import config_discordbot as cfg
 from discordbot import gst_imgur
-from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 import os
