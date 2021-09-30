@@ -28,11 +28,4 @@ def get_sentiment(ticker: str) -> pd.DataFrame:
             sentiment.index = pd.to_datetime(sentiment.index).to_pydatetime()
             sentiment.index.name = "date"
             sentiment.columns = ["Sentiment Analysis"]
-        else:
-            print("Unexpected data format from FinBrain API")
-    else:
-        print(
-            f"Request error {result.status_code} in retrieving sentiment from FinBrain API"
-        )
-
     return sentiment

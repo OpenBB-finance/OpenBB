@@ -49,19 +49,14 @@ def get_watchlists(
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
     subs = []
-    try:
-        praw_api = praw.Reddit(
-            client_id=cfg.API_REDDIT_CLIENT_ID,
-            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-            username=cfg.API_REDDIT_USERNAME,
-            user_agent=cfg.API_REDDIT_USER_AGENT,
-            password=cfg.API_REDDIT_PASSWORD,
-        )
-    except ResponseException:
-        print(
-            "Received a response from Reddit with an authorization error. check your token.\n"
-        )
-        return [], {}, 0
+
+    praw_api = praw.Reddit(
+        client_id=cfg.API_REDDIT_CLIENT_ID,
+        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+        username=cfg.API_REDDIT_USERNAME,
+        user_agent=cfg.API_REDDIT_USER_AGENT,
+        password=cfg.API_REDDIT_PASSWORD,
+    )
     psaw_api = PushshiftAPI()
     submissions = psaw_api.search_submissions(
         subreddit=l_sub_reddits,
@@ -253,19 +248,13 @@ def get_spac_community(
     Dict:
         Dictionary of tickers and number of mentions
     """
-    try:
-        praw_api = praw.Reddit(
-            client_id=cfg.API_REDDIT_CLIENT_ID,
-            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-            username=cfg.API_REDDIT_USERNAME,
-            user_agent=cfg.API_REDDIT_USER_AGENT,
-            password=cfg.API_REDDIT_PASSWORD,
-        )
-    except ResponseException:
-        print(
-            "Received a response from Reddit with an authorization error. check your token.\n"
-        )
-        return [], {}
+    praw_api = praw.Reddit(
+        client_id=cfg.API_REDDIT_CLIENT_ID,
+        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+        username=cfg.API_REDDIT_USERNAME,
+        user_agent=cfg.API_REDDIT_USER_AGENT,
+        password=cfg.API_REDDIT_PASSWORD,
+    )
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -328,20 +317,13 @@ def get_spac(
     int :
         Number of posts found.
     """
-
-    try:
-        praw_api = praw.Reddit(
-            client_id=cfg.API_REDDIT_CLIENT_ID,
-            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-            username=cfg.API_REDDIT_USERNAME,
-            user_agent=cfg.API_REDDIT_USER_AGENT,
-            password=cfg.API_REDDIT_PASSWORD,
-        )
-    except ResponseException:
-        print(
-            "Received a response from Reddit with an authorization error. check your token.\n"
-        )
-        return [], {}, 0
+    praw_api = praw.Reddit(
+        client_id=cfg.API_REDDIT_CLIENT_ID,
+        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+        username=cfg.API_REDDIT_USERNAME,
+        user_agent=cfg.API_REDDIT_USER_AGENT,
+        password=cfg.API_REDDIT_PASSWORD,
+    )
 
     d_watchlist_tickers: Dict = {}
     l_watchlist_author = []
@@ -409,19 +391,13 @@ def get_wsb_community(
     List[praw.models.reddit.submission.Submission]
         List of reddit submissions
     """
-    try:
-        praw_api = praw.Reddit(
-            client_id=cfg.API_REDDIT_CLIENT_ID,
-            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-            username=cfg.API_REDDIT_USERNAME,
-            user_agent=cfg.API_REDDIT_USER_AGENT,
-            password=cfg.API_REDDIT_PASSWORD,
-        )
-    except ResponseException:
-        print(
-            "Received a response from Reddit with an authorization error. check your token.\n"
-        )
-        return []
+    praw_api = praw.Reddit(
+        client_id=cfg.API_REDDIT_CLIENT_ID,
+        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+        username=cfg.API_REDDIT_USERNAME,
+        user_agent=cfg.API_REDDIT_USER_AGENT,
+        password=cfg.API_REDDIT_PASSWORD,
+    )
 
     if new:
         submissions = praw_api.subreddit("wallstreetbets").new(limit=limit)
@@ -460,20 +436,14 @@ def get_due_dilligence(
     List[praw.models.reddit.submission.Submission]
         List of submissions
     """
+    praw_api = praw.Reddit(
+        client_id=cfg.API_REDDIT_CLIENT_ID,
+        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+        username=cfg.API_REDDIT_USERNAME,
+        user_agent=cfg.API_REDDIT_USER_AGENT,
+        password=cfg.API_REDDIT_PASSWORD,
+    )
 
-    try:
-        praw_api = praw.Reddit(
-            client_id=cfg.API_REDDIT_CLIENT_ID,
-            client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-            username=cfg.API_REDDIT_USERNAME,
-            user_agent=cfg.API_REDDIT_USER_AGENT,
-            password=cfg.API_REDDIT_PASSWORD,
-        )
-    except ResponseException:
-        print(
-            "Received a response from Reddit with an authorization error. check your token.\n"
-        )
-        return []
     psaw_api = PushshiftAPI()
 
     n_ts_after = int((datetime.today() - timedelta(days=n_days)).timestamp())

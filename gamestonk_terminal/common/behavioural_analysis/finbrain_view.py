@@ -90,8 +90,11 @@ def display_sentiment_analysis(ticker: str, export: str = ""):
         Format to export data
     """
     df_sentiment = finbrain_model.get_sentiment(ticker)
-    if not df_sentiment.empty:
-        plot_sentiment(df_sentiment, ticker)
+    if df_sentiment.empty:
+        print("No sentiment data found.\n")
+        return
+
+    plot_sentiment(df_sentiment, ticker)
 
     df_sentiment.sort_index(ascending=True, inplace=True)
 

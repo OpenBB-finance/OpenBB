@@ -1,5 +1,5 @@
 ```
-usage: popular [-l LIMIT] [-h]
+usage: emerging [-l LIMIT] [-h]
 ```
 
 The emerging command prints the stocks with highest Relative Hype Index right now.

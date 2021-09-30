@@ -40,11 +40,8 @@ def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
                 n_bull += message["entities"]["sentiment"]["basic"] == "Bullish"
                 n_bear += message["entities"]["sentiment"]["basic"] == "Bearish"
 
-    else:
-        print(f"Error {result.status_code} in stocktwits request")
-        return 0, 0, 0, 0
-
-    return watchlist_count, n_cases, n_bull, n_bear
+        return watchlist_count, n_cases, n_bull, n_bear
+    return 0, 0, 0, 0
 
 
 def get_messages(ticker: str, limit: int = 30) -> List[str]:
@@ -71,8 +68,6 @@ def get_messages(ticker: str, limit: int = 30) -> List[str]:
             messages.append(message["body"])
             if idx > limit - 1:
                 break
-    else:
-        print(f"Error {result.status_code} in stocktwits request")
     return messages
 
 
@@ -97,7 +92,6 @@ def get_trending() -> pd.DataFrame:
         )
         return df_trending
 
-    print(f"Error {result.status_code} in stocktwits request")
     return pd.DataFrame()
 
 
@@ -120,5 +114,4 @@ def get_stalker(user: str, limit: int = 30) -> List[Dict]:
                 break
         return messages
 
-    print("Invalid user")
     return []
