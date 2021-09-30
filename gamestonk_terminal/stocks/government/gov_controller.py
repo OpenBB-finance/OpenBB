@@ -4,37 +4,32 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+from colorama import Style
 from matplotlib import pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.government import quiverquant_view
+from gamestonk_terminal.helper_funcs import (
+    parse_known_args_and_warn,
+    check_positive,
+)
 
 
 class GovController:
     """Gov Controller class"""
 
     # Command choices
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
-        "last_congress",
-        "buy_congress",
-        "sell_congress",
+    CHOICES = ["cls", "?", "help", "q", "quit", "load"]
+    CHOICES_COMMANDS = [
+        "last_trades",
+        "top_buys",
+        "top_sells",
         "congress",
         "raw_congress",
-        "last_senate",
-        "buy_senate",
-        "sell_senate",
         "senate",
         "raw_senate",
-        "last_house",
-        "buy_house",
-        "sell_house",
         "house",
         "raw_house",
         "last_contracts",
@@ -46,6 +41,7 @@ class GovController:
         "top_lobbying",
         "lobbying",
     ]
+    CHOICES += CHOICES_COMMANDS
 
     def __init__(
         self,
@@ -61,41 +57,40 @@ class GovController:
 
     def print_help(self):
         """Print help"""
-        print("\nGovernment:")
-        print("   cls                  clear screen")
-        print("   ?/help               show this menu again")
-        print("   q                    quit this menu, and shows back to main menu")
-        print("   quit                 quit to abandon program")
-        print("")
-        print("Explore:")
-        print("   last_congress        last congress trading")
-        print("   buy_congress         plot top buy congress tickers")
-        print("   sell_congress        plot top sell congress tickers")
-        print("   last_senate          last senate trading")
-        print("   buy_senate           plot top buy senate tickers")
-        print("   sell_senate          plot top sell senate tickers")
-        print("   last_house           last house trading")
-        print("   buy_house            plot top buy house tickers")
-        print("   sell_house           plot top sell house tickers")
-        print("   last_contracts       last government contracts")
-        print("   sum_contracts        plot sum of last government contracts")
-        print("   qtr_contracts        quarterly government contracts best regression")
-        print("   top_lobbying         top corporate lobbying tickers")
-        print("")
-        if self.ticker:
-            print(f"Ticker: {self.ticker}\n")
-            print("   raw_congress         raw congress trades on the ticker")
-            print("   congress             plot congress trades on the ticker")
-            print("   raw_senate           raw senate trades on the ticker")
-            print("   senate               plot senate trades on the ticker")
-            print("   raw_house            raw house trades on the ticker")
-            print("   house                plot house trades on the ticker")
-            print("   raw_contracts        raw contracts on the ticker")
-            print("   contracts            plot sum of contracts on the ticker")
-            print("   qtr_contracts_hist   quarterly government contracts historical")
-            print("   lobbying             corporate lobbying details")
-            print("")
-        return
+        dim_no_ticker = Style.DIM if not self.ticker else ""
+        reset_style = Style.RESET_ALL
+        help_string = f"""
+>>GOVERNMENT<<
+
+What would you like to do?
+    cls           clear screen
+    ?/help        show this menu again
+    q             quit this menu, and shows back to main menu
+    quit          quit to abandon program
+    load          load a ticker
+
+Explore:
+    last_trades          last trades
+    top_buys             show most purchased stocks
+    top_sells            show most sold stocks
+    last_contracts       last government contracts
+    sum_contracts        plot sum of last government contracts
+    qtr_contracts        quarterly government contracts best regression
+    top_lobbying         top corporate lobbying tickers
+
+Current Ticker: {self.ticker or None}{dim_no_ticker}
+    raw_congress         raw congress trades on the ticker
+    congress             plot congress trades on the ticker
+    raw_senate           raw senate trades on the ticker
+    senate               plot senate trades on the ticker
+    raw_house            raw house trades on the tickers
+    house                plot house trades on the ticker
+    raw_contracts        raw contracts on the ticker
+    contracts            plot sum of contracts on the ticker
+    qtr_contracts_hist   quarterly government contracts historical
+    lobbying             corporate lobbying details{reset_style}
+            """
+        print(help_string)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -141,17 +136,180 @@ class GovController:
         """Process Quit command - quit the program"""
         return True
 
-    def call_last_congress(self, other_args: List[str]):
-        """Process last_congress command"""
-        quiverquant_view.last_government(other_args, "congress")
+    def call_last_trades(self, other_args: List[str]):
+        """Process last trades command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="last_trades",
+            description="Last government trading trading. [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-g",
+            "--govtype",
+            dest="gov",
+            choices=["congress", "senate", "house"],
+            type=str,
+            default="senate",
+        )
+        parser.add_argument(
+            "-p",
+            "--past_transactions_days",
+            action="store",
+            dest="past_transactions_days",
+            type=check_positive,
+            default=5,
+            help="Past transaction days",
+        )
+        parser.add_argument(
+            "-r",
+            "--representative",
+            action="store",
+            dest="representative",
+            type=str,
+            default="",
+            help="Representative",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            quiverquant_view.display_last_government(
+                gov_type=ns_parser.gov,
+                past_days=ns_parser.past_transactions_days,
+                representative=ns_parser.representative,
+            )
 
-    def call_buy_congress(self, other_args: List[str]):
-        """Process buy_congress command"""
-        quiverquant_view.buy_government(other_args, "congress")
+        except Exception as e:
+            print(e, "\n")
 
-    def call_sell_congress(self, other_args: List[str]):
-        """Process sell_congress command"""
-        quiverquant_view.sell_government(other_args, "congress")
+    def call_top_buys(self, other_args: List[str]):
+        """Process top_buys command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="top_buys",
+            description="Top buys for government trading. [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-g",
+            "--govtype",
+            dest="gov",
+            choices=["congress", "senate", "house"],
+            type=str,
+            default="senate",
+        )
+        parser.add_argument(
+            "-p",
+            "--past_transactions_months",
+            action="store",
+            dest="past_transactions_months",
+            type=check_positive,
+            default=6,
+            help="Past transaction months",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=10,
+            help="Number of top tickers",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            quiverquant_view.display_buy_government(
+                gov_type=ns_parser.gov,
+                past_transactions_months=ns_parser.past_transactions_months,
+                num=ns_parser.num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_top_sells(self, other_args: List[str]):
+        """Process top_sells command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="top_sells",
+            description="Top sells for government trading. [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-g",
+            "--govtype",
+            dest="gov",
+            choices=["congress", "senate", "house"],
+            type=str,
+            default="senate",
+        )
+        parser.add_argument(
+            "-p",
+            "--past_transactions_months",
+            action="store",
+            dest="past_transactions_months",
+            type=check_positive,
+            default=6,
+            help="Past transaction months",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=10,
+            help="Number of top tickers",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            quiverquant_view.display_sell_government(
+                gov_type=ns_parser.gov,
+                past_transactions_months=ns_parser.past_transactions_months,
+                num=ns_parser.num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_raw_congress(self, other_args: List[str]):
         """Process raw_congress command"""
@@ -161,18 +319,6 @@ class GovController:
         """Process congress command"""
         quiverquant_view.government_trading(other_args, self.ticker, "congress")
 
-    def call_last_senate(self, other_args: List[str]):
-        """Process last_senate command"""
-        quiverquant_view.last_government(other_args, "senate")
-
-    def call_buy_senate(self, other_args: List[str]):
-        """Process buy_senate command"""
-        quiverquant_view.buy_government(other_args, "senate")
-
-    def call_sell_senate(self, other_args: List[str]):
-        """Process sell_senate command"""
-        quiverquant_view.sell_government(other_args, "senate")
-
     def call_raw_senate(self, other_args: List[str]):
         """Process raw_senate command"""
         quiverquant_view.raw_government(other_args, self.ticker, "senate")
@@ -180,18 +326,6 @@ class GovController:
     def call_senate(self, other_args: List[str]):
         """Process senate command"""
         quiverquant_view.government_trading(other_args, self.ticker, "senate")
-
-    def call_last_house(self, other_args: List[str]):
-        """Process last_house command"""
-        quiverquant_view.last_government(other_args, "house")
-
-    def call_buy_house(self, other_args: List[str]):
-        """Process buy_house command"""
-        quiverquant_view.buy_government(other_args, "house")
-
-    def call_sell_house(self, other_args: List[str]):
-        """Process sell_house command"""
-        quiverquant_view.sell_government(other_args, "house")
 
     def call_raw_house(self, other_args: List[str]):
         """Process raw_house command"""

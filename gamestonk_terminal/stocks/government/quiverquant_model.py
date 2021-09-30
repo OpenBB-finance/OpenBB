@@ -1,3 +1,6 @@
+"""Quiverquant Model"""
+__docformat__ = "numpy"
+
 import requests
 import pandas as pd
 
