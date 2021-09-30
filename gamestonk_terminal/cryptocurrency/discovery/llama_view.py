@@ -3,9 +3,11 @@ __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
+import matplotlib.pyplot as plt
 from gamestonk_terminal.cryptocurrency.discovery import llama_model
-from gamestonk_terminal.helper_funcs import export_data
+from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.config_plot import PLOT_DPI
 
 
 def display_defi_protocols(
@@ -64,5 +66,44 @@ def display_defi_protocols(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "protocols",
+        df_data,
+    )
+
+
+def display_defi_tvl(top: int, export: str = "") -> None:
+    """ "Displays historical values of the total sum of TVLs from all listed protocols.
+    [Source: https://docs.llama.fi/api]
+
+    Parameters
+    ----------
+    top: int
+        Number of records to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = llama_model.get_defi_tvl()
+    df_data = df.copy()
+
+    df = df.tail(top)
+    df["totalLiquidityUSD"] = df["totalLiquidityUSD"] / 1_000_000_000
+
+    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    plt.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
+    plt.xlabel("Time")
+    plt.xlim(df["date"].iloc[0], df["date"].iloc[-1])
+    plt.ylabel("Total Value Locked USD [1B]")
+    plt.grid(b=True, which="major", color="#666666", linestyle="-")
+    plt.minorticks_on()
+    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    plt.title("Total Value Locked in DeFi [Billions USD]")
+    plt.show()
+    print("")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "tvl",
         df_data,
     )
