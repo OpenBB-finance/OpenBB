@@ -5,10 +5,10 @@ import os
 import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.behavioural_analysis.finbrain_view import (
-    get_sentiment,
     plot_sentiment,
     sentiment_coloring,
 )
+from gamestonk_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from gamestonk_terminal.helper_funcs import export_data
 
 PATH = os.path.dirname(os.path.abspath(__file__))
