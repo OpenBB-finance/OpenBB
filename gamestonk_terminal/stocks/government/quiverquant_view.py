@@ -305,133 +305,6 @@ def display_government_sells(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "top_sells", df_gov)
 
 
-def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
-    """Plot government trading
-
-    Parameters
-    ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    ticker: str
-        Ticker to plot government trading
-    gov_type: str
-        Type of government data between: congress, senate and house
-    """
-    plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    plt.gca().fill_between(
-        government["TransactionDate"].unique(),
-        government.groupby("TransactionDate")["lower"].sum().values / 1000,
-        government.groupby("TransactionDate")["upper"].sum().values / 1000,
-    )
-
-    plt.xlim(
-        [
-            government["TransactionDate"].values[0],
-            government["TransactionDate"].values[-1],
-        ]
-    )
-    plt.grid()
-    plt.title(f"{gov_type.capitalize()} trading on {ticker}")
-    plt.xlabel("Date")
-    plt.ylabel("Amount [1k $]")
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-    plt.gcf().autofmt_xdate()
-
-    if gtff.USE_ION:
-        plt.ion()
-
-    plt.show()
-
-
-def government_trading(other_args: List[str], ticker: str, gov_type: str):
-    """Government trading
-
-    Parameters
-    ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    ticker: str
-        Ticker to get congress trading data from
-    gov_type: str
-        Type of government data between: congress, senate and house
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog=gov_type,
-        description=f"{gov_type} trading. [Source: www.quiverquant.com]",
-    )
-    parser.add_argument(
-        "-p",
-        "--past_transactions_months",
-        action="store",
-        dest="past_transactions_months",
-        type=check_positive,
-        default=6,
-        help="Past transaction months",
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
-
-        if df_gov.empty:
-            print(f"No {gov_type} trading data found\n")
-            return
-
-        df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-
-        start_date = datetime.now() - timedelta(
-            days=ns_parser.past_transactions_months * 30
-        )
-
-        df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
-
-        df_gov = df_gov[df_gov["TransactionDate"] > start_date]
-
-        if df_gov.empty:
-            print(f"No recent {gov_type} trading data found\n")
-            return
-
-        df_gov["min"] = df_gov["Range"].apply(
-            lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
-        )
-        df_gov["max"] = df_gov["Range"].apply(
-            lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
-            if "-" in x
-            else x.strip("$").replace(",", "")
-        )
-
-        df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-            lambda x: int(x["min"])
-            if x["Transaction"] == "Purchase"
-            else -int(x["max"]),
-            axis=1,
-        )
-        df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-            lambda x: int(x["max"])
-            if x["Transaction"] == "Purchase"
-            else -int(x["min"]),
-            axis=1,
-        )
-
-        df_gov = df_gov.sort_values("TransactionDate", ascending=True)
-
-        plot_government(df_gov, ticker, gov_type)
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
-
-
 def display_last_contracts(
     past_transaction_days: int = 2,
     num: int = 20,
@@ -502,208 +375,181 @@ def display_last_contracts(
     )
 
 
-def raw_government(other_args: List[str], ticker: str, gov_type: str):
-    """Raw government trading
+def plot_government(government: pd.DataFrame, ticker: str, gov_type: str):
+    """Helper for plotting government trading
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
+    government: pd.DataFrame
+        Data to plot
+    ticker: str
+        Ticker to plot government trading
+    gov_type: str
+        Type of government data between: congress, senate and house
+    """
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
+    ax.fill_between(
+        government["TransactionDate"].unique(),
+        government.groupby("TransactionDate")["lower"].sum().values / 1000,
+        government.groupby("TransactionDate")["upper"].sum().values / 1000,
+    )
+
+    ax.set_xlim(
+        [
+            government["TransactionDate"].values[0],
+            government["TransactionDate"].values[-1],
+        ]
+    )
+    ax.grid()
+    ax.set_title(f"{gov_type.capitalize()} trading on {ticker}")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Amount ($1k)")
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
+
+    plt.show()
+
+
+def display_government_trading(
+    ticker: str, gov_type: str, past_transactions_months: int = 6, raw: bool = False
+):
+    """Government trading for specific ticker [Source: quiverquant.com]
+
+    Parameters
+    ----------
     ticker: str
         Ticker to get congress trading data from
     gov_type: str
         Type of government data between: congress, senate and house
+    past_transactions_months: int
+        Number of months to get transactions for
+    raw: bool
+        Show raw output of trades
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog=gov_type,
-        description=f"Raw {gov_type} trading. [Source: www.quiverquant.com]",
+    df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
+
+    if df_gov.empty:
+        print(f"No {gov_type} trading data found\n")
+        return
+
+    df_gov = df_gov.sort_values("TransactionDate", ascending=False)
+
+    start_date = datetime.now() - timedelta(days=past_transactions_months * 30)
+
+    df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
+
+    df_gov = df_gov[df_gov["TransactionDate"] > start_date]
+
+    if df_gov.empty:
+        print(f"No recent {gov_type} trading data found\n")
+        return
+
+    df_gov["min"] = df_gov["Range"].apply(
+        lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
     )
-    parser.add_argument(
-        "-p",
-        "--past_transactions_days",
-        action="store",
-        dest="past_transactions_days",
-        type=check_positive,
-        default=10,
-        help="Past transaction days",
+    df_gov["max"] = df_gov["Range"].apply(
+        lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
+        if "-" in x
+        else x.strip("$").replace(",", "").split("\n")[0]
     )
 
-    try:
+    df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
+        lambda x: int(float(x["min"]))
+        if x["Transaction"] == "Purchase"
+        else -int(float(x["max"])),
+        axis=1,
+    )
+    df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
+        lambda x: int(float(x["max"]))
+        if x["Transaction"] == "Purchase"
+        else -1 * int(float(x["min"])),
+        axis=1,
+    )
 
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
+    df_gov = df_gov.sort_values("TransactionDate", ascending=True)
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_gov = quiverquant_model.get_government_trading(gov_type, ticker)
-
-        if df_gov.empty:
-            print(f"No {gov_type} trading data found\n")
-            return
-
-        df_gov = df_gov.sort_values("TransactionDate", ascending=False)
-        if gov_type == "congress":
-            df_gov = df_gov[
-                ["TransactionDate", "Representative", "House", "Transaction", "Range"]
-            ]
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_gov,
+                    headers=df_gov.columns,
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                )
+            )
         else:
-            df_gov = df_gov[
-                ["TransactionDate", "Representative", "Transaction", "Range"]
-            ]
+            print(df_gov.to_string())
 
-        df_gov = df_gov[
-            df_gov["TransactionDate"].isin(
-                df_gov["TransactionDate"].unique()[: ns_parser.past_transactions_days]
-            )
-        ].rename(
-            columns={
-                "TransactionDate": "Transaction Date",
-            }
-        )
-
-        print(df_gov.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    plot_government(df_gov, ticker, gov_type)
+    print("")
 
 
-def raw_contracts(other_args: List[str], ticker: str):
-    """Raw contracts
+def display_contracts(
+    ticker: str, past_transaction_days: int, raw: bool, export: str = ""
+):
+    """Show government contracts for ticker [Source: quiverquant.com]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker: str
         Ticker to get congress trading data from
+    past_transaction_days: int
+        Number of days to get transactions for
+    raw: bool
+        Flag to display raw data
+    export: str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="raw_contracts",
-        description="Raw contracts. [Source: www.quiverquant.com]",
-    )
-    parser.add_argument(
-        "-p",
-        "--past_transactions_days",
-        action="store",
-        dest="past_transactions_days",
-        type=check_positive,
-        default=10,
-        help="Past transaction days",
-    )
+    df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
 
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
+    if df_contracts.empty:
+        print("No government contracts found\n")
+        return
 
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
 
-        df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
+    df_contracts = df_contracts[
+        df_contracts["Date"].isin(df_contracts["Date"].unique()[:past_transaction_days])
+    ]
 
-        if df_contracts.empty:
-            print("No government contracts found\n")
-            return
+    df_contracts.drop_duplicates(inplace=True)
 
-        df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        df_contracts.drop_duplicates(inplace=True)
+    df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
+    ax.set_ylabel("Amount ($1k)")
+    ax.set_title(f"Sum of latest government contracts to {ticker}")
+    fig.tight_layout()
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "contracts")
 
-        df_contracts = df_contracts[
-            df_contracts["Date"].isin(
-                df_contracts["Date"].unique()[: ns_parser.past_transactions_days]
+    if gtff.USE_ION:
+        plt.ion()
+
+    if raw:
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_contracts,
+                    headers=df_contracts.columns,
+                    tablefmt="fancy_grid",
+                    showindex=False,
+                    floatfmt=".2f",
+                )
             )
-        ]
+        else:
+            print(df_contracts.to_string())
 
-        df_contracts.drop_duplicates(inplace=True)
-
-        print(df_contracts.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    plt.show()
+    print("")
 
 
-def contracts(other_args: List[str], ticker: str):
-    """Contracts
-
-    Parameters
-    ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    ticker: str
-        Ticker to get congress trading data from
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="contracts",
-        description="Contracts associated with ticker. [Source: www.quiverquant.com]",
-    )
-    parser.add_argument(
-        "-p",
-        "--past_transactions_days",
-        action="store",
-        dest="past_transactions_days",
-        type=check_positive,
-        default=10,
-        help="Past transaction days",
-    )
-
-    try:
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        df_contracts = quiverquant_model.get_government_trading("contracts", ticker)
-
-        if df_contracts.empty:
-            print("No government contracts found\n")
-            return
-
-        df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
-
-        df_contracts = df_contracts[
-            df_contracts["Date"].isin(
-                df_contracts["Date"].unique()[: ns_parser.past_transactions_days]
-            )
-        ]
-
-        df_contracts.drop_duplicates(inplace=True)
-
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        df_contracts.groupby("Date").sum().div(1000).plot(
-            kind="bar", rot=0, ax=plt.gca()
-        )
-        plt.ylabel("Amount [1k $]")
-        plt.title(f"Sum of latest government contracts to {ticker}")
-
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
-
-
-def display_qtr_contracts(analysis: str, num: int):
-    """Quarter contracts
+def display_qtr_contracts(analysis: str, num: int, export: str = ""):
+    """Quarterly contracts [Source: quiverquant.com]
 
     Parameters
     ----------
@@ -711,6 +557,8 @@ def display_qtr_contracts(analysis: str, num: int):
         Analysis to perform.  Either 'total', 'upmom' 'downmom'
     num: int
         Number to show
+    export: str
+        Format to export data
     """
     df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
 
@@ -773,6 +621,8 @@ def display_qtr_contracts(analysis: str, num: int):
         ax.set_xlabel("Date")
         ax.set_ylabel("Amount ($1M)")
         fig.tight_layout()
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "qtr_contracts")
+
         if gtff.USE_ION:
             plt.ion()
 
@@ -787,66 +637,54 @@ def display_qtr_contracts(analysis: str, num: int):
             )
         else:
             print(tickers.to_string())
+
     print("")
 
 
-def qtr_contracts_hist(other_args: List[str], ticker: str):
+def display_hist_contracts(ticker: str, export: str = ""):
     """Quarter contracts
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker: str
         Ticker to get congress trading data from
+    export: str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="qtr_contracts_hist",
-        description="Quarterly-contracts historical [Source: www.quiverquant.com]",
+    df_contracts = quiverquant_model.get_government_trading(
+        "quarter-contracts", ticker=ticker
     )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        df_contracts = quiverquant_model.get_government_trading(
-            "quarter-contracts", ticker=ticker
-        )
+    if df_contracts.empty:
+        print("No quarterly government contracts found\n")
+        return
 
-        if df_contracts.empty:
-            print("No quarterly government contracts found\n")
-            return
+    amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
 
-        plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
+    year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
 
-        amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
+    quarter_ticks = [
+        f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
+    ]
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-        qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
-        year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
+    ax.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
 
-        quarter_ticks = [
-            f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
-        ]
+    ax.set_xlim([-0.5, len(amounts) - 0.5])
+    ax.set_xticks(np.arange(0, len(amounts)))
+    ax.set_xticklabels(quarter_ticks)
+    ax.grid()
+    ax.set_title(f"Historical Quarterly Government Contracts for {ticker.upper()}")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Amount ($1k)")
+    fig.tight_layout()
+    if gtff.USE_ION:
+        plt.ion()
 
-        plt.plot(np.arange(0, len(amounts)), amounts / 1000, "-*", lw=2, ms=15)
-
-        plt.xlim([-0.5, len(amounts) - 0.5])
-        plt.xticks(np.arange(0, len(amounts)), quarter_ticks)
-        plt.grid()
-        plt.title(f"Quarterly Government Contracts Historical on {ticker.upper()}")
-        plt.xlabel("Date")
-        plt.ylabel("Amount [1k $]")
-
-        if gtff.USE_ION:
-            plt.ion()
-
-        plt.show()
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    plt.show()
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "hist_cont")
+    print("")
 
 
 def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
