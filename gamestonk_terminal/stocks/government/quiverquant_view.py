@@ -707,8 +707,10 @@ def display_qtr_contracts(analysis: str, num: int):
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
+    analysis: str
+        Analysis to perform.  Either 'total', 'upmom' 'downmom'
+    num: int
+        Number to show
     """
     df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
 
@@ -848,12 +850,16 @@ def qtr_contracts_hist(other_args: List[str], ticker: str):
 
 
 def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
-    """Top lobbying based on tickers that have biggest amounts for the past couple months
+    """Top lobbying tickers based on total spent
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
+    num: int
+        Number of tickers to show
+    raw: bool
+        Show raw data
+    export:
+        Format to export data
     """
     df_lobbying = quiverquant_model.get_government_trading("corporate-lobbying")
 
