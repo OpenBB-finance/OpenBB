@@ -78,8 +78,8 @@ Explore:
 Current Ticker: {self.ticker or None}{dim_no_ticker}
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
-    hist_cont            show historical quarterly government contracts
-    lobbying             corporate lobbying details{reset_style}
+    hist_cont            show historical quarterly government contracts for ticker
+    lobbying             corporate lobbying details for ticker{reset_style}
             """
         print(help_string)
 
@@ -564,7 +564,31 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
 
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
-        quiverquant_view.lobbying(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lobbying",
+            description="Lobbying details [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=10,
+            help="Number of events to show",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if self._check_ticker():
+                quiverquant_view.display_lobbying(ticker=self.ticker, num=ns_parser.num)
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str):

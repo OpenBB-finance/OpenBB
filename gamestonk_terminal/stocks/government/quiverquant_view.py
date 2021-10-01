@@ -1,8 +1,7 @@
 """Quiverquant View"""
 __docformat__ = "numpy"
-import argparse
+
 import os
-from typing import List
 import textwrap
 
 from datetime import datetime, timedelta
@@ -13,8 +12,6 @@ from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 from gamestonk_terminal.stocks.government import quiverquant_model
 from gamestonk_terminal.helper_funcs import (
-    parse_known_args_and_warn,
-    check_positive,
     plot_autoscale,
     export_data,
 )
@@ -642,7 +639,7 @@ def display_qtr_contracts(analysis: str, num: int, export: str = ""):
 
 
 def display_hist_contracts(ticker: str, export: str = ""):
-    """Quarter contracts
+    """Show historical quarterly government contracts [Source: quiverquant.com]
 
     Parameters
     ----------
@@ -740,59 +737,32 @@ def display_top_lobbying(num: int, raw: bool = False, export: str = ""):
     )
 
 
-def lobbying(other_args: List[str], ticker: str):
+def display_lobbying(ticker: str, num: int = 10):
     """Corporate lobbying details
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker: str
         Ticker to get corporate lobbying data from
+    num: int
+        Number of events to show
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="lobbying",
-        description="Lobbying details [Source: www.quiverquant.com]",
+    df_lobbying = quiverquant_model.get_government_trading(
+        "corporate-lobbying", ticker=ticker
     )
-    parser.add_argument(
-        "-l",
-        "--last",
-        action="store",
-        dest="last",
-        type=check_positive,
-        default=10,
-        help="Last corporate lobbying details",
-    )
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
 
-        df_lobbying = quiverquant_model.get_government_trading(
-            "corporate-lobbying", ticker=ticker
+    if df_lobbying.empty:
+        print("No corporate lobbying found\n")
+        return
+
+    for _, row in (
+        df_lobbying.sort_values(by=["Date"], ascending=False).head(num).iterrows()
+    ):
+        amount = (
+            "$" + str(int(float(row["Amount"]))) if row["Amount"] is not None else "N/A"
         )
-
-        if df_lobbying.empty:
-            print("No corporate lobbying found\n")
-            return
-
-        for _, row in (
-            df_lobbying.sort_values(by=["Date"], ascending=False)
-            .head(ns_parser.last)
-            .iterrows()
-        ):
-            amount = (
-                "$" + str(int(float(row["Amount"])))
-                if row["Amount"] is not None
-                else "N/A"
-            )
-            print(f"{row['Date']}: {row['Client']} {amount}")
-            if row["Amount"] is not None:
-                print("\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", ""))
-            print("")
+        print(f"{row['Date']}: {row['Client']} {amount}")
+        if row["Amount"] is not None:
+            print("\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", ""))
         print("")
-
-    except Exception as e:
-        print(e, "\n")
+    print("")
