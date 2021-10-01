@@ -4,8 +4,12 @@ __docformat__ = "numpy"
 import os
 from tabulate import tabulate
 import matplotlib.pyplot as plt
-from gamestonk_terminal.cryptocurrency.discovery import llama_model
-from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
+from gamestonk_terminal.cryptocurrency.defi import llama_model
+from gamestonk_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    long_number_format,
+)
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 
@@ -34,6 +38,8 @@ def display_defi_protocols(
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend)
+
+    df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
 
     if not description:
         df.drop(["description", "url"], axis=1, inplace=True)
@@ -65,13 +71,13 @@ def display_defi_protocols(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "protocols",
+        "llama",
         df_data,
     )
 
 
 def display_defi_tvl(top: int, export: str = "") -> None:
-    """ "Displays historical values of the total sum of TVLs from all listed protocols.
+    """Displays historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]
 
     Parameters
@@ -93,6 +99,7 @@ def display_defi_tvl(top: int, export: str = "") -> None:
     plt.plot(df["date"], df["totalLiquidityUSD"], "-ok", ms=2)
     plt.xlabel("Time")
     plt.xlim(df["date"].iloc[0], df["date"].iloc[-1])
+    plt.gcf().autofmt_xdate()
     plt.ylabel("Total Value Locked USD [1B]")
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
     plt.minorticks_on()

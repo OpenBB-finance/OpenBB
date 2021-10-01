@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from tabulate import tabulate
-from gamestonk_terminal.cryptocurrency.discovery import defipulse_model
+from gamestonk_terminal.cryptocurrency.defi import defipulse_model
 from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal import feature_flags as gtff
 
@@ -24,7 +24,7 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = defipulse_model.get_defi_pulse_index()
+    df = defipulse_model.get_defipulse_index()
     df_data = df.copy()
 
     df = df.sort_values(by=sortby, ascending=descend)
@@ -46,6 +46,6 @@ def display_defipulse(top: int, sortby: str, descend: bool, export: str = "") ->
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "defipulse",
+        "dpi",
         df_data,
     )

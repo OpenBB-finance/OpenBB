@@ -6,7 +6,6 @@ import textwrap
 import requests
 import pandas as pd
 import numpy as np
-from gamestonk_terminal.helper_funcs import long_number_format
 
 
 def get_defi_protocols() -> pd.DataFrame:
@@ -43,7 +42,6 @@ def get_defi_protocols() -> pd.DataFrame:
         df["description"] = df["description"].apply(
             lambda x: "\n".join(textwrap.wrap(x, width=70)) if isinstance(x, str) else x
         )
-        df["tvl"] = df["tvl"].apply(lambda x: long_number_format(x))
         return df[columns]
 
     except Exception as e:
