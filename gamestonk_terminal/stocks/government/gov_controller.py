@@ -61,11 +61,11 @@ class GovController:
 >>GOVERNMENT<<
 
 What would you like to do?
-    cls                 clear screen
-    ?/help              show this menu again
-    q                   quit this menu, and shows back to main menu
-    quit                quit to abandon program
-    load                load a ticker
+    cls                  clear screen
+    ?/help               show this menu again
+    q                    quit this menu, and shows back to main menu
+    quit                 quit to abandon program
+    load                 load a ticker
 
 Explore:
     last_trades          last trades
