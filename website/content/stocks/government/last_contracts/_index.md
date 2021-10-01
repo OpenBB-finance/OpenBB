@@ -1,11 +1,16 @@
-## TODO: Update after refactoring
-
-```text
-usage: last_contracts [-p PAST_TRANSACTIONS_DAYS] [-l LIMIT_CONTRACTS]
 ```
-Last contracts. [Source: www.quiverquant.com]
+usage: last_contracts [-p PAST_TRANSACTION_DAYS] [-n NUM] [-s] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
+```
 
-* -p : Past transaction months. Default: 2.
-* -t : Number of top tickers. Default: 20.
+Last government contracts. [Source: www.quiverquant.com]
 
-<img width="1081" alt="last_contracts" src="https://user-images.githubusercontent.com/25267873/119065144-d3a5dd00-b9d4-11eb-85c9-ab16255a6996.png">
+```
+optional arguments:
+  -p PAST_TRANSACTION_DAYS, --past_transaction_days PAST_TRANSACTION_DAYS
+                        Past transaction days (default: 2)
+  -n NUM, --num NUM     Number of contracts to display (default: 20)
+  -s, --sum             Flag to show total amount of contracts. (default: False)
+  --export {png,jpg,pdf,svg,csv,json,xlsx}
+                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
+  -h, --help            show this help message (default: False)
+  ```

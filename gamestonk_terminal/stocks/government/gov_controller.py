@@ -58,6 +58,7 @@ class GovController:
         dim_no_ticker = Style.DIM if not self.ticker else ""
         reset_style = Style.RESET_ALL
         help_string = f"""
+
 >>GOVERNMENT<<
 
 What would you like to do?
