@@ -26,6 +26,11 @@ class GovController:
         "last_trades",
         "top_buys",
         "top_sells",
+        "qtr_contracts",
+        "top_lobbying",
+    ]
+
+    CHOICES_COMMANDS_TICKER = [
         "congress",
         "raw_congress",
         "senate",
@@ -33,15 +38,12 @@ class GovController:
         "house",
         "raw_house",
         "last_contracts",
-        "sum_contracts",
         "raw_contracts",
         "contracts",
-        "qtr_contracts",
         "qtr_contracts_hist",
-        "top_lobbying",
         "lobbying",
     ]
-    CHOICES += CHOICES_COMMANDS
+    CHOICES += CHOICES_COMMANDS + CHOICES_COMMANDS_TICKER
 
     def __init__(
         self,
@@ -73,9 +75,8 @@ Explore:
     last_trades          last trades
     top_buys             show most purchased stocks
     top_sells            show most sold stocks
-    last_contracts       last government contracts
-    sum_contracts        plot sum of last government contracts
-    qtr_contracts        quarterly government contracts best regression
+    last_contracts       show last government contracts given out
+    qtr_contracts        quarterly government contracts analysis
     top_lobbying         top corporate lobbying tickers
 
 Current Ticker: {self.ticker or None}{dim_no_ticker}
@@ -236,7 +237,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            quiverquant_view.display_buy_government(
+            quiverquant_view.display_government_buys(
                 gov_type=ns_parser.gov,
                 past_transactions_months=ns_parser.past_transactions_months,
                 num=ns_parser.num,
@@ -300,7 +301,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            quiverquant_view.display_sell_government(
+            quiverquant_view.display_government_sells(
                 gov_type=ns_parser.gov,
                 past_transactions_months=ns_parser.past_transactions_months,
                 num=ns_parser.num,
@@ -308,6 +309,142 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
                 export=ns_parser.export,
             )
 
+        except Exception as e:
+            print(e, "\n")
+
+    def call_last_contracts(self, other_args: List[str]):
+        """Process last_contracts command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="last_contracts",
+            description="Last government contracts. [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-p",
+            "--past_transaction_days",
+            action="store",
+            dest="past_transaction_days",
+            type=check_positive,
+            default=2,
+            help="Past transaction days",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=20,
+            help="Number of contracts to display",
+        )
+        parser.add_argument(
+            "-s",
+            "--sum",
+            action="store_true",
+            dest="sum",
+            default=False,
+            help="Flag to show total amount of contracts.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            quiverquant_view.display_last_contracts(
+                past_transaction_days=ns_parser.past_transaction_days,
+                num=ns_parser.num,
+                sum_contracts=ns_parser.sum,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_qtr_contracts(self, other_args: List[str]):
+        """Process contracts command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="qtr_contracts",
+            description="Look at government contracts [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=5,
+            help="Number of tickers to get",
+        )
+        parser.add_argument(
+            "-a",
+            "--analysis",
+            action="store",
+            dest="analysis",
+            choices=["total", "upmom", "downmom"],
+            type=str,
+            default="total",
+            help="Analysis to look at contracts.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            quiverquant_view.display_qtr_contracts(
+                analysis=ns_parser.analysis, num=ns_parser.num
+            )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_top_lobbying(self, other_args: List[str]):
+        """Process top_lobbying command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="top_lobbying",
+            description="Top lobbying. [Source: www.quiverquant.com]",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="num",
+            type=check_positive,
+            default=10,
+            help="Number to show",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            quiverquant_view.display_top_lobbying(
+                num=ns_parser.num, raw=ns_parser.raw, export=ns_parser.export
+            )
         except Exception as e:
             print(e, "\n")
 
@@ -319,29 +456,21 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         """Process congress command"""
         quiverquant_view.government_trading(other_args, self.ticker, "congress")
 
-    def call_raw_senate(self, other_args: List[str]):
-        """Process raw_senate command"""
-        quiverquant_view.raw_government(other_args, self.ticker, "senate")
-
     def call_senate(self, other_args: List[str]):
         """Process senate command"""
         quiverquant_view.government_trading(other_args, self.ticker, "senate")
-
-    def call_raw_house(self, other_args: List[str]):
-        """Process raw_house command"""
-        quiverquant_view.raw_government(other_args, self.ticker, "house")
 
     def call_house(self, other_args: List[str]):
         """Process house command"""
         quiverquant_view.government_trading(other_args, self.ticker, "house")
 
-    def call_last_contracts(self, other_args: List[str]):
-        """Process last_contracts command"""
-        quiverquant_view.last_contracts(other_args)
+    def call_raw_senate(self, other_args: List[str]):
+        """Process raw_senate command"""
+        quiverquant_view.raw_government(other_args, self.ticker, "senate")
 
-    def call_sum_contracts(self, other_args: List[str]):
-        """Process sum_contracts command"""
-        quiverquant_view.sum_contracts(other_args)
+    def call_raw_house(self, other_args: List[str]):
+        """Process raw_house command"""
+        quiverquant_view.raw_government(other_args, self.ticker, "house")
 
     def call_raw_contracts(self, other_args: List[str]):
         """Process raw_contracts command"""
@@ -351,17 +480,9 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         """Process contracts command"""
         quiverquant_view.contracts(other_args, self.ticker)
 
-    def call_qtr_contracts(self, other_args: List[str]):
-        """Process qtr_contracts command"""
-        quiverquant_view.qtr_contracts(other_args)
-
     def call_qtr_contracts_hist(self, other_args: List[str]):
         """Process qtr_contracts_hist command"""
         quiverquant_view.qtr_contracts_hist(other_args, self.ticker)
-
-    def call_top_lobbying(self, other_args: List[str]):
-        """Process top_lobbying command"""
-        quiverquant_view.top_lobbying(other_args)
 
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
