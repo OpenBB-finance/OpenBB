@@ -26,6 +26,11 @@ register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
     matplotlib.use(cfgPlot.BACKEND)
 
+NO_EXPORT = 0
+EXPORT_ONLY_RAW_DATA_ALLOWED = 1
+EXPORT_ONLY_FIGURES_ALLOWED = 2
+EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
+
 
 def check_int_range(mini: int, maxi: int):
     """Checks if argparse argument is an int between 2 values.
@@ -482,7 +487,11 @@ def patch_pandas_text_adjustment():
     pandas.io.formats.format.TextAdjustment.adjoin = text_adjustment_adjoin
 
 
-def parse_known_args_and_warn(parser: argparse.ArgumentParser, other_args: List[str]):
+def parse_known_args_and_warn(
+    parser: argparse.ArgumentParser,
+    other_args: List[str],
+    export_allowed: int = NO_EXPORT,
+):
     """Parses list of arguments into the supplied parser
 
     Parameters
@@ -500,17 +509,31 @@ def parse_known_args_and_warn(parser: argparse.ArgumentParser, other_args: List[
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
-    try:
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
-        )
-    except ArgumentError:
-        pass
+    if export_allowed > NO_EXPORT:
+        # TODO: No need for try-catch when no export argument is added individually
+        try:
+            choices_export = []
+            help_export = "Export "
+
+            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+                choices_export += ["csv", "json", "xlsx"]
+                help_export += "raw data into csv, json, xlsx "
+            if export_allowed > EXPORT_ONLY_RAW_DATA_ALLOWED:
+                choices_export += ["png", "jpg", "pdf", "svg"]
+                if export_allowed == EXPORT_BOTH_RAW_DATA_AND_FIGURES:
+                    help_export += "or "
+                help_export += "figure into png, jpg, pdf, svg "
+
+            parser.add_argument(
+                "--export",
+                choices=choices_export,
+                default="",
+                type=str,
+                dest="export",
+                help=help_export,
+            )
+        except ArgumentError:
+            pass
     if gtff.USE_CLEAR_AFTER_CMD:
         os.system("cls||clear")
 
