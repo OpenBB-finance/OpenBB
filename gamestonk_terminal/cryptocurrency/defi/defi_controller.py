@@ -484,6 +484,3 @@ def menu():
 
         if process_input is True:
             return True
-
-
-menu()
