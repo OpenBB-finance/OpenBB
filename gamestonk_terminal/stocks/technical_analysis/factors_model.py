@@ -1,4 +1,4 @@
-"""Calculations view"""
+"""Factors model"""
 __docformat__ = "numpy"
 
 from urllib.request import urlopen
@@ -53,6 +53,7 @@ def get_historical_5(ticker: str):
 
 
 def capm_information(ticker):
+    """Provides information that relates to the CAPM model"""
     df_f = get_fama_raw()
     df_h = get_historical_5(ticker)
     df = df_h.join(df_f)
@@ -74,8 +75,4 @@ def capm_information(ticker):
     unsys = ss / deg_free
     sy = (syst / (syst + unsys)) * 100
     us = (unsys / (syst + unsys)) * 100
-    print(unsys)
-    print(f"Beta:\t\t\t{beta:.2f}")
-    print(f"Market Variance:\t{m_variance:.4f}")
-    print(f"Systematic Risk:\t{sy:.2f}%")
-    print(f"Unsystematic Risk:\t{us:.2f}%")
+    return beta, m_variance, sy, us

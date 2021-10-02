@@ -36,9 +36,7 @@ from gamestonk_terminal.common.technical_analysis import (
     volume_view,
 )
 
-from gamestonk_terminal.stocks.technical_analysis.calculations_view import (
-    capm_information,
-)
+from gamestonk_terminal.stocks.technical_analysis.factors_view import capm_view
 
 
 class TechnicalAnalysisController:
@@ -1515,7 +1513,7 @@ Custom:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            capm_information(self.ticker)
+            capm_view(self.ticker)
 
         except Exception as e:
             print(e, "\n")
