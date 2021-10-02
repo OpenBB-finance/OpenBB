@@ -137,7 +137,7 @@ Volatility:
     bbands      bollinger bands
     donchian    donchian channels
     kc          keltner channels
-    capm        capm values
+    capm        capital asset pricing model
 Volume:
     ad          accumulation/distribution line
     adosc       chaikin oscillator
