@@ -1,6 +1,7 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
+# pylint:disable=R0904
 
 import argparse
 import os
@@ -35,6 +36,10 @@ from gamestonk_terminal.common.technical_analysis import (
     volume_view,
 )
 
+from gamestonk_terminal.stocks.technical_analysis.calculations_view import (
+    capm_information,
+)
+
 
 class TechnicalAnalysisController:
     """Technical Analysis Controller class"""
@@ -67,6 +72,7 @@ class TechnicalAnalysisController:
         "adosc",
         "obv",
         "fib",
+        "capm",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -133,6 +139,7 @@ Volatility:
     bbands      bollinger bands
     donchian    donchian channels
     kc          keltner channels
+    capm        capm values
 Volume:
     ad          accumulation/distribution line
     adosc       chaikin oscillator
@@ -1490,6 +1497,26 @@ Custom:
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_capm(self, other_args: List[str]):
+        """Process capm command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="capm",
+            description="""
+                Provides detailed information about a stock's risk compared to the market risk.
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            capm_information(self.ticker)
+
         except Exception as e:
             print(e, "\n")
 
