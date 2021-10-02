@@ -46,7 +46,8 @@ async def shorted_command(ctx, arg):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "No number (int) entered." "\nEnter a valid (positive) number, example: 10"
+                    "No number (int) entered."
+                    "\nEnter a valid (positive) number, example: 10"
                 )
                 if cfg.DEBUG:
                     print("-- ERROR at COMMAND: !stocks.dps.pos " + arg + " --")
