@@ -1,5 +1,5 @@
 ```
-usage: metrics [-h] [ticker]
+usage: metrics [-h]
 ```
 
 Sentiment Investor analyzes data from four major social media platforms to
@@ -34,9 +34,6 @@ usual. It is calculated by averaging the past day of sentiment values and then
 dividing it by the average of the past week of sentiment values.
 
 ```
-positional arguments:
-  ticker      ticker to use instead of the loaded one
-
 optional arguments:
   -h, --help  show this help message
 ```

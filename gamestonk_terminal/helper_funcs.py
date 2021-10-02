@@ -1,6 +1,7 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
+from argparse import ArgumentError
 from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
@@ -9,7 +10,6 @@ import re
 import sys
 import pandas as pd
 from pytz import timezone
-from prettytable import PrettyTable
 import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
@@ -315,6 +315,7 @@ def long_number_format(num) -> str:
 
 
 def clean_data_values_to_float(val: str) -> float:
+    """Cleans data to float based on string ending"""
     # Remove any leading or trailing parentheses and spaces
     val = val.strip("( )")
     if val == "-":
@@ -322,19 +323,14 @@ def clean_data_values_to_float(val: str) -> float:
 
     # Convert percentage to decimal
     if val.endswith("%"):
-        val_as_float = float(val[:-1]) / 100.0
-    # Convert from billions
-    elif val.endswith("B"):
-        val_as_float = float(val[:-1]) * 1_000_000_000
-    # Convert from millions
-    elif val.endswith("M"):
-        val_as_float = float(val[:-1]) * 1_000_000
-    # Convert from thousands
-    elif val.endswith("K"):
-        val_as_float = float(val[:-1]) * 1000
-    else:
-        val_as_float = float(val)
-    return val_as_float
+        return float(val[:-1]) / 100.0
+    if val.endswith("B"):
+        return float(val[:-1]) * 1_000_000_000
+    if val.endswith("M"):
+        return float(val[:-1]) * 1_000_000
+    if val.endswith("K"):
+        return float(val[:-1]) * 1000
+    return float(val)
 
 
 def int_or_round_float(x) -> str:
@@ -361,7 +357,7 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
         year = last_stock_day.date().year
         if year not in years:
             years.append(year)
-            holidays = holidays + us_market_holidays(year)
+            holidays += us_market_holidays(year)
         # Check if it is a weekend
         if last_stock_day.date().weekday() > 4:
             continue
@@ -384,13 +380,8 @@ def get_data(tweet):
             "%Y-%m-%d %H:%M:%S"
         )
 
-    if "full_text" in tweet.keys():
-        s_text = tweet["full_text"]
-    else:
-        s_text = tweet["text"]
-
-    data = {"created_at": s_datetime, "text": s_text}
-    return data
+    s_text = tweet["full_text"] if "full_text" in tweet.keys() else tweet["text"]
+    return {"created_at": s_datetime, "text": s_text}
 
 
 def clean_tweet(tweet: str, s_ticker: str) -> str:
@@ -509,7 +500,17 @@ def parse_known_args_and_warn(parser: argparse.ArgumentParser, other_args: List[
     parser.add_argument(
         "-h", "--help", action="store_true", help="show this help message"
     )
-
+    try:
+        parser.add_argument(
+            "--export",
+            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
+        )
+    except ArgumentError:
+        pass
     if gtff.USE_CLEAR_AFTER_CMD:
         os.system("cls||clear")
 
@@ -530,14 +531,10 @@ def financials_colored_values(val: str) -> str:
     if val == "N/A" or str(val) == "nan":
         val = f"{Fore.YELLOW}N/A{Style.RESET_ALL}"
     elif sum(c.isalpha() for c in val) < 2:
-        if "%" in val:
-            if "-" in val:
-                val = f"{Fore.RED}{val}{Style.RESET_ALL}"
-            else:
-                val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
-        elif "(" in val:
+        if "%" in val and "-" in val or "%" not in val and "(" in val:
             val = f"{Fore.RED}{val}{Style.RESET_ALL}"
-
+        elif "%" in val:
+            val = f"{Fore.GREEN}{val}{Style.RESET_ALL}"
     return val
 
 
@@ -626,48 +623,6 @@ def plot_autoscale():
     return x, y
 
 
-def print_and_record_reddit_post(submissions_dict, submission):
-    # Refactor data
-    s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
-        "%d/%m/%Y %H:%M:%S"
-    )
-    s_link = f"https://old.reddit.com{submission.permalink}"
-    s_all_awards = ""
-    for award in submission.all_awardings:
-        s_all_awards += f"{award['count']} {award['name']}\n"
-    s_all_awards = s_all_awards[:-2]
-    # Create dictionary with data to construct dataframe allows to save data
-    submissions_dict[submission.id] = {
-        "created_utc": s_datetime,
-        "subreddit": submission.subreddit,
-        "link_flair_text": submission.link_flair_text,
-        "title": submission.title,
-        "score": submission.score,
-        "link": s_link,
-        "num_comments": submission.num_comments,
-        "upvote_ratio": submission.upvote_ratio,
-        "awards": s_all_awards,
-    }
-    # Print post data collected so far
-    print(f"{s_datetime} - {submission.title}")
-    print(f"{s_link}")
-    t_post = PrettyTable(
-        ["Subreddit", "Flair", "Score", "# Comments", "Upvote %", "Awards"]
-    )
-    t_post.add_row(
-        [
-            submission.subreddit,
-            submission.link_flair_text,
-            submission.score,
-            submission.num_comments,
-            f"{round(100 * submission.upvote_ratio)}%",
-            s_all_awards,
-        ]
-    )
-    print(t_post)
-    print("\n")
-
-
 def get_last_time_market_was_open(dt):
     # Check if it is a weekend
     if dt.date().weekday() > 4:
@@ -680,23 +635,6 @@ def get_last_time_market_was_open(dt):
     dt = dt.replace(hour=21, minute=0, second=0)
 
     return dt
-
-
-def find_tickers(submission):
-    ls_text = []
-    ls_text.append(submission.selftext)
-    ls_text.append(submission.title)
-
-    submission.comments.replace_more(limit=0)
-    for comment in submission.comments.list():
-        ls_text.append(comment.body)
-
-    l_tickers_found = []
-    for s_text in ls_text:
-        for s_ticker in set(re.findall(r"([A-Z]{3,5} )", s_text)):
-            l_tickers_found.append(s_ticker.strip())
-
-    return l_tickers_found
 
 
 def export_data(

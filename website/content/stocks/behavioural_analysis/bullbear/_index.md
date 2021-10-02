@@ -1,13 +1,11 @@
 ```
-usage: bullbear [-t TICKER] [-h]
+usage: bullbear [-h]
 ```
 
 Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
 
 ```
 optional arguments:
-  -t TICKER, --ticker TICKER
-                        ticker to gather sentiment from. (default: AAPL)
   -h, --help            show this help message (default: False)
 ```
 

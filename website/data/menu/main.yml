@@ -420,8 +420,8 @@ main:
       - name: behavioural analysis
         ref: "/stocks/behavioural_analysis"
         sub:
-          - name: finbrain
-            ref: "/stocks/behavioural_analysis/finbrain"
+          - name: headlines
+            ref: "/stocks/behavioural_analysis/headlines"
           - name: stats
             ref: "/stocks/behavioural_analysis/stats"
           - name: wsb

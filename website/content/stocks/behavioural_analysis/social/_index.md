@@ -1,5 +1,5 @@
 ```
-usage: social [-h] [ticker]
+usage: social [-h]
 ```
 
 Sentiment Investor analyzes data from four major social media platforms to generate hourly metrics on over 2,000 stocks. Sentiment provides volume and sentiment metrics powered by proprietary NLP models.
@@ -7,9 +7,6 @@ Sentiment Investor analyzes data from four major social media platforms to gener
 The social command prints the raw data for a given stock, including the number of mentions it has received on social media in the last hour and the sentiment score of those comments.
 
 ```
-positional arguments:
-  ticker      ticker to use instead of the loaded one
-
 optional arguments:
   -h, --help  show this help message
 ```
