@@ -5,21 +5,10 @@ __docformat__ = "numpy"
 import argparse
 import os
 import sys
-
-from prompt_toolkit.completion import NestedCompleter
-
-from gamestonk_terminal import config_terminal
-from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
-from gamestonk_terminal.menu import session
-from gamestonk_terminal.terminal_helper import (
-    about_us,
-    bootup,
-    check_api_keys,
-    print_goodbye,
-    reset,
-    update_terminal,
-)
+import platform
+import subprocess
+import json
+import pathlib
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 
@@ -59,7 +48,9 @@ class TerminalController:
     CHOICES += CHOICES_SHORTHAND_MENUS
 
     def __init__(self):
-        """Constructor"""
+        from prompt_toolkit.completion import NestedCompleter
+
+        # Constructor
         self.update_succcess = False
         self.t_parser = argparse.ArgumentParser(add_help=False, prog="terminal")
         self.t_parser.add_argument(
@@ -138,6 +129,7 @@ What do you want to do?
         return True
 
     # COMMANDS
+
     def call_reset(self, _):
         """Process reset command"""
         return True
@@ -239,6 +231,7 @@ def terminal():
     bootup()
     process_input = False
     t_controller = TerminalController()
+    from gamestonk_terminal import config_terminal
 
     if config_terminal.DEFAULT_CONTEXT:
         if config_terminal.DEFAULT_CONTEXT in t_controller.CHOICES_MENUS:
@@ -255,11 +248,15 @@ def terminal():
     if not process_input:
         t_controller.print_help()
         parsed_stdin = False
+        from gamestonk_terminal import feature_flags as gtff
 
         while True:
             if gtff.ENABLE_QUICK_EXIT:
                 print("Quick exit enabled")
                 break
+
+            from gamestonk_terminal.helper_funcs import get_flair
+            from gamestonk_terminal.menu import session
 
             # Get input command from stdin or user
             if not parsed_stdin and len(sys.argv) > 1:
@@ -308,5 +305,93 @@ def terminal():
                 print_goodbye()
 
 
+def install():
+    if os.path.isfile("data.txt"):
+        with open("data.txt") as f:
+            json_data = json.load(f)
+        new = json_data["installed"]
+
+    else:
+        with open("data.txt", "w+") as f:
+            data = {"installed": False}
+            json.dump(data, f)
+        new = False
+
+    if not new:
+        if platform.system() == "Darwin":
+            # Installation for Mac M1
+            if (
+                subprocess.check_output(
+                    ["sysctl", "-n", "machdep.cpu.brand_string"]
+                ).decode("utf-8")
+                == "Apple M1\n"
+            ):
+                if (
+                    input("Would you like to install Gamestonk Terminal?Y/N").lower()
+                    == "y"
+                ):
+                    subprocess.run(
+                        [
+                            "arch",
+                            "-x86_64",
+                            "/usr/bin/python3",
+                            "-m",
+                            "pip",
+                            "install",
+                            "--user",
+                            "--upgrade",
+                            "virtualenv",
+                        ],
+                        check=True,
+                    )
+                    subprocess.run(
+                        [
+                            "arch",
+                            "-x86_64",
+                            "/usr/bin/python3",
+                            "-m",
+                            "virtualenv",
+                            "env",
+                        ],
+                        check=True,
+                    )
+                    path_to = pathlib.Path(__file__).parent.resolve()
+                    path_to = os.path.join(path_to, "env", "bin", "python")
+                    subprocess.run(
+                        [
+                            "arch",
+                            "-x86_64",
+                            path_to,
+                            "-m",
+                            "pip",
+                            "install",
+                            "-r",
+                            "requirements.txt",
+                        ],
+                        check=True,
+                    )
+                    with open("data.txt", "w+") as f:
+                        data = {"installed": True}
+                        json.dump(data, f)
+                else:
+                    sys.exit()
+
+
 if __name__ == "__main__":
-    terminal()
+    install()
+    try:
+        from gamestonk_terminal.terminal_helper import (
+            about_us,
+            bootup,
+            check_api_keys,
+            print_goodbye,
+            reset,
+            update_terminal,
+        )
+
+        terminal()
+    except ModuleNotFoundError:
+        # Does not work
+        subprocess.call(
+            ["open", "-W", "-a", "Terminal.app", "env/bin/python", "terminal.py"]
+        )

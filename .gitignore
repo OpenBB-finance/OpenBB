@@ -28,3 +28,6 @@ jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
 jupyterlab/*/ui-tests/test-results/
 jupyterlab/*/ui-tests/tests/*.ts-snapshots/
+
+#Data files
+data.txt
