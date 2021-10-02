@@ -29,7 +29,7 @@ async def ftd_command(ctx, arg, arg2, arg3):
             help_txt = (
                 "Display fails-to-deliver data for a given ticker. [Source: SEC]\n"
             )
-            help_txt += "\nPossible argments:\n"
+            help_txt += "\nPossible arguments:\n"
             help_txt += "<TICKER> Stock ticker. REQUIRED!\n"
             help_txt += "<DATE_START> Start of data. Default: 1 year ago\n"
             help_txt += "<DATE_END> End of data. Default: today\n"
