@@ -36,7 +36,9 @@ async def hsi_command(ctx, arg):
             try:
                 # Parse argument
                 num = int(arg)
-            except:
+                if num < 0:
+                    raise ValueError("Number has to be above 0")
+            except ValueError:
                 title = "ERROR Stocks: [SEC] Failure-to-deliver"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(
@@ -44,11 +46,11 @@ async def hsi_command(ctx, arg):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "No number (int) entered." "\nEnter a valid number, example: 10"
+                    "No number (int) entered." "\nEnter a valid (positive) number, example: 10"
                 )
                 if cfg.DEBUG:
                     print("-- ERROR at COMMAND: !stocks.dps.hsi " + arg + " --")
-                    print("   ERROR: No int entered")
+                    print("   ERROR: No (positive) int entered")
                     print("-- Command stopped before error --")
                 return
 

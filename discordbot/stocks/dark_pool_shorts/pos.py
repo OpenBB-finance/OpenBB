@@ -57,7 +57,9 @@ async def pos_command(ctx, arg, arg2):
 
             try:
                 num = int(arg2)
-            except:
+                if num < 0:
+                    raise ValueError("Number has to be above 0")
+            except ValueError:
                 title = "ERROR Stocks: [Stockgrid] Dark Pool Short Position"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(
@@ -66,7 +68,7 @@ async def pos_command(ctx, arg, arg2):
                 )
                 embed.set_description(
                     "No number (int) entered in the second argument."
-                    "\nEnter a valid number, example: 10"
+                    "\nEnter a valid (positive) number, example: 10"
                 )
                 if cfg.DEBUG:
                     print(
@@ -76,7 +78,7 @@ async def pos_command(ctx, arg, arg2):
                         + arg2
                         + " --"
                     )
-                    print("   ERROR: No int for second argument entered")
+                    print("   ERROR: No (positive) int for second argument entered")
                     print("-- Command stopped before error --")
                 return
 

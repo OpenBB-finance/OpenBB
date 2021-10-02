@@ -60,7 +60,7 @@ async def valuation_command(ctx, arg):
             try:
                 # Parse argument
                 group = economy_group[arg]
-            except:
+            except KeyError:
                 title = "ERROR Economy: [Finviz] Performance"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(
