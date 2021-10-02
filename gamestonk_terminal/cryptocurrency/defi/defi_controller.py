@@ -18,6 +18,7 @@ from gamestonk_terminal.cryptocurrency.defi import (
     defirate_view,
     defipulse_view,
     llama_view,
+    substack_view,
 )
 
 # pylint: disable=R1732
@@ -34,14 +35,22 @@ class DefiController:
         "quit",
     ]
 
-    CHOICES_COMMANDS = ["dpi", "funding", "lending", "tvl", "borrow", "llama"]
+    CHOICES_COMMANDS = [
+        "dpi",
+        "funding",
+        "lending",
+        "tvl",
+        "borrow",
+        "llama",
+        "newsletter",
+    ]
 
     CHOICES += CHOICES_COMMANDS
 
     def __init__(self):
         """Constructor"""
-        self.onchain_parser = argparse.ArgumentParser(add_help=False, prog="defi")
-        self.onchain_parser.add_argument(
+        self.defi_parser = argparse.ArgumentParser(add_help=False, prog="defi")
+        self.defi_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
         )
@@ -67,9 +76,7 @@ class DefiController:
             print("")
             return None
 
-        (known_args, other_args) = self.onchain_parser.parse_known_args(
-            an_input.split()
-        )
+        (known_args, other_args) = self.defi_parser.parse_known_args(an_input.split())
 
         # Help menu again
         if known_args.cmd == "?":
@@ -98,7 +105,7 @@ class DefiController:
         return True
 
     def call_dpi(self, other_args: List[str]):
-        """Process gwei command"""
+        """Process dpi command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -404,7 +411,7 @@ class DefiController:
             dest="top",
             type=check_positive,
             help="top N number records",
-            default=10,
+            default=15,
         )
 
         parser.add_argument(
@@ -437,10 +444,53 @@ class DefiController:
         except Exception as e:
             print(e, "\n")
 
+    def call_newsletter(self, other_args: List[str]):
+        """Process newsletter command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="newsletter",
+            description="""
+                Display DeFi related substack newsletters.
+                [Source: substack.com]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            substack_view.display_newsletters(
+                top=ns_parser.top, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
 
 def print_help():
     """Print help"""
-    print("\nOnchain:")
+    print("\nDecentralized Finance:")
     print("   cls           clear screen")
     print("   ?/help        show this menu again")
     print("   q             quit this menu, and shows back to main menu")
@@ -448,10 +498,11 @@ def print_help():
     print("")
     print("   llama         DeFi protocols listed on DeFi Llama")
     print("   tvl           Total value locked of DeFi protocols")
-    print("   dpi           Defi protocols listed on DefiPulse")
-    print("   funding       Current or last 30 days average funding rates")
-    print("   borrow        Current or last 30 days average borrow rates")
-    print("   lending       Current or last 30 days average lending rates")
+    print("   newsletter    Recent DeFi related newsletters")
+    print("   dpi           DeFi protocols listed on DefiPulse")
+    print("   funding       Funding reates - current or last 30 days average")
+    print("   borrow        DeFi borrow rates - current or last 30 days average")
+    print("   lending       DeFi ending rates - current or last 30 days average")
     print("")
 
 
