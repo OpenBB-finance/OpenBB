@@ -1,7 +1,6 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
-from argparse import ArgumentError
 from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
@@ -500,6 +499,9 @@ def parse_known_args_and_warn(
         Parser with predefined arguments
     other_args: List[str]
         List of arguments to parse
+    export_allowed: int
+        Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
+        EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
 
     Returns
     -------
@@ -510,30 +512,27 @@ def parse_known_args_and_warn(
         "-h", "--help", action="store_true", help="show this help message"
     )
     if export_allowed > NO_EXPORT:
-        # TODO: No need for try-catch when no export argument is added individually
-        try:
-            choices_export = []
-            help_export = "Export "
+        choices_export = []
+        help_export = "Export "
 
-            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
-                choices_export += ["csv", "json", "xlsx"]
-                help_export += "raw data into csv, json, xlsx "
-            if export_allowed > EXPORT_ONLY_RAW_DATA_ALLOWED:
-                choices_export += ["png", "jpg", "pdf", "svg"]
-                if export_allowed == EXPORT_BOTH_RAW_DATA_AND_FIGURES:
-                    help_export += "or "
-                help_export += "figure into png, jpg, pdf, svg "
+        if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+            choices_export += ["csv", "json", "xlsx"]
+            help_export += "raw data into csv, json, xlsx "
+        if export_allowed > EXPORT_ONLY_RAW_DATA_ALLOWED:
+            choices_export += ["png", "jpg", "pdf", "svg"]
+            if export_allowed == EXPORT_BOTH_RAW_DATA_AND_FIGURES:
+                help_export += "or "
+            help_export += "figure into png, jpg, pdf, svg "
 
-            parser.add_argument(
-                "--export",
-                choices=choices_export,
-                default="",
-                type=str,
-                dest="export",
-                help=help_export,
-            )
-        except ArgumentError:
-            pass
+        parser.add_argument(
+            "--export",
+            choices=choices_export,
+            default="",
+            type=str,
+            dest="export",
+            help=help_export,
+        )
+
     if gtff.USE_CLEAR_AFTER_CMD:
         os.system("cls||clear")
 
