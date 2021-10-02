@@ -24,70 +24,119 @@ async def performance_command(ctx, arg):
         "capitalization": "Capitalization",
     }
 
-    # Help
-    if arg == "-h" or arg == "help":
-        help_txt = "Group performance [Source: Finviz]\n"
+    try:
+        # Debug
+        if cfg.DEBUG:
+            print("-- STARTED COMMAND: !stocks.economy.performance " + arg + " --")
 
-        possible_args = ""
-        for k, v in economy_group.items():
-            possible_args += f"\n{k}: {v}"
+        # Help
+        if arg == "-h" or arg == "help":
+            help_txt = "Group performance [Source: Finviz]\n"
 
-        help_txt += "\nPossible arguments:\n"
-        help_txt += "<GROUP> Groups to get data from. Default: sector\n"
-        help_txt += f"The choices are:{possible_args}"
-        embed = discord.Embed(
-            title="Economy: [Finviz] Performance HELP",
-            description=help_txt,
-            colour=cfg.COLOR,
-        )
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
+            possible_args = ""
+            for k, v in economy_group.items():
+                possible_args += f"\n{k}: {v}"
 
-        await ctx.send(embed=embed)
-
-    else:
-        # Select default
-        if not arg:
-            arg = "sector"
-
-        # Parse argument
-        group = economy_group[arg]
-
-        df_group = finviz_model.get_valuation_performance_data(group, "performance")
-
-        future_column_name = df_group["Name"]
-        df_group = df_group.transpose()
-        df_group.columns = future_column_name
-        df_group.drop("Name")
-        columns = []
-
-        initial_str = "Page 0: Overview"
-        i = 1
-        for col_name in df_group.columns.values:
-            initial_str += f"\nPage {i}: {col_name}"
-            i += 1
-
-        columns.append(
-            discord.Embed(
-                title=f"Economy: [Finviz] Performance {group}",
-                description=initial_str,
+            help_txt += "\nPossible arguments:\n"
+            help_txt += "<GROUP> Groups to get data from. Default: sector\n"
+            help_txt += f"The choices are:{possible_args}"
+            embed = discord.Embed(
+                title="Economy: [Finviz] Performance HELP",
+                description=help_txt,
                 colour=cfg.COLOR,
-            ).set_author(
+            )
+            embed.set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-        )
-        for column in df_group.columns.values:
+
+            await ctx.send(embed=embed)
+
+        else:
+            # Select default
+            if not arg:
+                arg = "sector"
+
+            # Parse argument
+            try:
+                group = economy_group[arg]
+            except:
+                title = "ERROR Economy: [Finviz] Performance"
+                embed = discord.Embed(title=title, colour=cfg.COLOR)
+                embed.set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                embed.set_description(
+                    "Entered group argument: "
+                    + arg
+                    + "\nEnter a valid group argument, example: sector"
+                )
+                if cfg.DEBUG:
+                    print(
+                        "-- ERROR at COMMAND: !stocks.economy.performance "
+                        + arg
+                        + " --"
+                    )
+                    print("   ERROR: Bad group argument entered")
+                    print("-- Command stopped before error --")
+                return
+
+            df_group = finviz_model.get_valuation_performance_data(group, "performance")
+
+            future_column_name = df_group["Name"]
+            df_group = df_group.transpose()
+            df_group.columns = future_column_name
+            df_group.drop("Name")
+            columns = []
+
+            initial_str = "Page 0: Overview"
+            i = 1
+            for col_name in df_group.columns.values:
+                initial_str += f"\nPage {i}: {col_name}"
+                i += 1
+
             columns.append(
                 discord.Embed(
-                    description="```" + df_group[column].fillna("").to_string() + "```",
+                    title=f"Economy: [Finviz] Performance {group}",
+                    description=initial_str,
                     colour=cfg.COLOR,
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
+            for column in df_group.columns.values:
+                columns.append(
+                    discord.Embed(
+                        description="```"
+                        + df_group[column].fillna("").to_string()
+                        + "```",
+                        colour=cfg.COLOR,
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                )
 
-        await pagination(columns, ctx)
+            await pagination(columns, ctx)
+
+    except Exception as e:
+        title = "INTERNAL ERROR"
+        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        embed.set_description(
+            "Try updating the bot, make sure DEBUG is True in the config "
+            "and restart it.\nIf the error still occurs open a issue at: "
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+        )
+        if cfg.DEBUG:
+            print("-- ERROR at COMMAND: !stocks.economy.performance " + arg + " --")
+            print(
+                "   Try updating the bot and restart it. If the error still occurs open "
+                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            )
+            print("-- DETAILED REPORT: --\n\n" + e + "\n")
