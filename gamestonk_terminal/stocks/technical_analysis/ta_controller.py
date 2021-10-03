@@ -36,8 +36,6 @@ from gamestonk_terminal.common.technical_analysis import (
     volume_view,
 )
 
-from gamestonk_terminal.stocks.technical_analysis.factors_view import capm_view
-
 
 class TechnicalAnalysisController:
     """Technical Analysis Controller class"""
@@ -70,7 +68,6 @@ class TechnicalAnalysisController:
         "adosc",
         "obv",
         "fib",
-        "capm",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -137,7 +134,6 @@ Volatility:
     bbands      bollinger bands
     donchian    donchian channels
     kc          keltner channels
-    capm        capital asset pricing model
 Volume:
     ad          accumulation/distribution line
     adosc       chaikin oscillator
@@ -1495,26 +1491,6 @@ Custom:
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
             )
-        except Exception as e:
-            print(e, "\n")
-
-    def call_capm(self, other_args: List[str]):
-        """Process capm command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="capm",
-            description="""
-                Provides detailed information about a stock's risk compared to the market risk.
-            """,
-        )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            capm_view(self.ticker)
-
         except Exception as e:
             print(e, "\n")
 

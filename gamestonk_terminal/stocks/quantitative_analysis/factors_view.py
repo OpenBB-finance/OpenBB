@@ -1,7 +1,9 @@
 """Factors view"""
 __docformat__ = "numpy"
 
-from gamestonk_terminal.stocks.technical_analysis.factors_model import capm_information
+from gamestonk_terminal.stocks.quantitative_analysis.factors_model import (
+    capm_information,
+)
 
 
 def capm_view(ticker):
