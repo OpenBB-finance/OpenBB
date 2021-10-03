@@ -8,7 +8,6 @@ from io import BytesIO
 import statsmodels.api as sm
 import yfinance as yf
 import pandas as pd
-import numpy as np
 
 
 def get_fama_raw():
@@ -67,12 +66,5 @@ def capm_information(ticker):
     x = sm.add_constant(x)
     model = sm.OLS(y, x).fit()
     beta = model.params["Excess MKT-RF"]
-    beta2 = beta ** 2
-    m_variance = np.var(df["Excess MKT-RF"])
-    syst = beta2 * m_variance
-    ss = model.ssr
-    deg_free = model.df_resid
-    unsys = ss / deg_free
-    sy = (syst / (syst + unsys)) * 100
-    us = (unsys / (syst + unsys)) * 100
-    return beta, m_variance, sy, us
+    sy = model.rsquared
+    return beta, sy
