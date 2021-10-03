@@ -17,6 +17,10 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+)
 
 
 class GovController:
@@ -25,18 +29,18 @@ class GovController:
     # Command choices
     CHOICES = ["cls", "?", "help", "q", "quit", "load"]
     CHOICES_COMMANDS = [
-        "last_trades",
-        "top_buys",
-        "top_sells",
-        "qtr_contracts",
-        "top_lobbying",
+        "lasttrades",
+        "topbuys",
+        "topsells",
+        "qtrcontracts",
+        "toplobbying",
     ]
 
     CHOICES_COMMANDS_TICKER = [
         "gtrades",
-        "last_contracts",
+        "lastcontracts",
         "contracts",
-        "hist_cont",
+        "histcont",
         "lobbying",
     ]
     CHOICES += CHOICES_COMMANDS + CHOICES_COMMANDS_TICKER
@@ -58,7 +62,6 @@ class GovController:
         dim_no_ticker = Style.DIM if not self.ticker else ""
         reset_style = Style.RESET_ALL
         help_string = f"""
-
 >>GOVERNMENT<<
 
 What would you like to do?
@@ -69,17 +72,17 @@ What would you like to do?
     load                 load a ticker
 
 Explore:
-    last_trades          last trades
-    top_buys             show most purchased stocks
-    top_sells            show most sold stocks
-    last_contracts       show last government contracts given out
-    qtr_contracts        quarterly government contracts analysis
-    top_lobbying         top corporate lobbying tickers
+    lasttrades           last trades
+    topbuys              show most purchased stocks
+    topsells             show most sold stocks
+    lastcontracts        show last government contracts given out
+    qtrcontracts         quarterly government contracts analysis
+    toplobbying          top corporate lobbying tickers
 
 Current Ticker: {self.ticker or None}{dim_no_ticker}
     gtrades              show government trades for ticker
     contracts            show government contracts for ticker
-    hist_cont            show historical quarterly government contracts for ticker
+    histcont             show historical quarterly government contracts for ticker
     lobbying             corporate lobbying details for ticker{reset_style}
             """
         print(help_string)
@@ -136,7 +139,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
 
-    def call_last_trades(self, other_args: List[str]):
+    def call_lasttrades(self, other_args: List[str]):
         """Process last trades command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -150,7 +153,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="gov",
             choices=["congress", "senate", "house"],
             type=str,
-            default="senate",
+            default="congress",
         )
         parser.add_argument(
             "-p",
@@ -171,7 +174,13 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             help="Representative",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-g")
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
             if not ns_parser:
                 return
             quiverquant_view.display_last_government(
@@ -183,7 +192,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         except Exception as e:
             print(e, "\n")
 
-    def call_top_buys(self, other_args: List[str]):
+    def call_topbuys(self, other_args: List[str]):
         """Process top_buys command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -197,7 +206,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="gov",
             choices=["congress", "senate", "house"],
             type=str,
-            default="senate",
+            default="congress",
         )
         parser.add_argument(
             "-p",
@@ -224,16 +233,12 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
-        )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-g")
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             quiverquant_view.display_government_buys(
@@ -247,7 +252,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         except Exception as e:
             print(e, "\n")
 
-    def call_top_sells(self, other_args: List[str]):
+    def call_topsells(self, other_args: List[str]):
         """Process top_sells command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -261,7 +266,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="gov",
             choices=["congress", "senate", "house"],
             type=str,
-            default="senate",
+            default="congress",
         )
         parser.add_argument(
             "-p",
@@ -288,16 +293,12 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
-        )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-g")
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             quiverquant_view.display_government_sells(
@@ -311,7 +312,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         except Exception as e:
             print(e, "\n")
 
-    def call_last_contracts(self, other_args: List[str]):
+    def call_lastcontracts(self, other_args: List[str]):
         """Process last_contracts command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -345,16 +346,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             default=False,
             help="Flag to show total amount of contracts.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
-        )
+
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             quiverquant_view.display_last_contracts(
@@ -366,7 +362,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         except Exception as e:
             print(e, "\n")
 
-    def call_qtr_contracts(self, other_args: List[str]):
+    def call_qtrcontracts(self, other_args: List[str]):
         """Process contracts command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -391,7 +387,8 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             choices=["total", "upmom", "downmom"],
             type=str,
             default="total",
-            help="Analysis to look at contracts.",
+            help="""Analysis to look at contracts. 'Total' shows summed contracts.
+            'Upmom' shows highest sloped contacts while 'downmom' shows highest decreasing slopes.""",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -404,7 +401,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         except Exception as e:
             print(e, "\n")
 
-    def call_top_lobbying(self, other_args: List[str]):
+    def call_toplobbying(self, other_args: List[str]):
         """Process top_lobbying command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -428,16 +425,10 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        parser.add_argument(
-            "--export",
-            choices=["png", "jpg", "pdf", "svg", "csv", "json", "xlsx"],
-            default="",
-            type=str,
-            dest="export",
-            help="Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx",
-        )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
 
@@ -451,7 +442,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         """Check if ticker loaded"""
         if self.ticker:
             return True
-        print("N ticker loaded.  Use `load <ticker>` first")
+        print("No ticker loaded. Use `load <ticker>` first.\n")
         return False
 
     def call_gtrades(self, other_args: List[str]):
@@ -477,7 +468,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="gov",
             choices=["congress", "senate", "house"],
             type=str,
-            default="senate",
+            default="congress",
         )
         parser.add_argument(
             "--raw",
@@ -487,6 +478,8 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             help="Print raw data.",
         )
         try:
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-g")
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -542,7 +535,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         except Exception as e:
             print(e, "\n")
 
-    def call_hist_cont(self, other_args: List[str]):
+    def call_histcont(self, other_args: List[str]):
         """Process qtr_contracts_hist command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -551,7 +544,9 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             description="Quarterly-contracts historical [Source: www.quiverquant.com]",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
 

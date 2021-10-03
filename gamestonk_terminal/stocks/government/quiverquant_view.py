@@ -22,7 +22,7 @@ from gamestonk_terminal import feature_flags as gtff
 
 
 def display_last_government(
-    gov_type: str, past_days: int = 5, representative: str = ""
+    gov_type: str, past_days: int = 5, representative: str = "", export: str = ""
 ):
     """Display last government trading [Source: quiverquant.com]
 
@@ -34,6 +34,8 @@ def display_last_government(
         Number of days to look back
     representative: str
         Specific representative to look at
+    export: str
+        Format to export data
     """
     df_gov = quiverquant_model.get_government_trading(gov_type)
 
@@ -111,6 +113,9 @@ def display_last_government(
         else:
             print(df_gov.to_string(index=False))
     print("")
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "lasttrades", df_gov
+    )
 
 
 def display_government_buys(
@@ -205,7 +210,7 @@ def display_government_buys(
     fig.tight_layout()
     plt.show()
     print("")
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "top_buys", df_gov)
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "topbuys", df_gov)
 
 
 def display_government_sells(
