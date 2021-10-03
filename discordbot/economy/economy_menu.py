@@ -58,6 +58,9 @@ class EconomyCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="economy")
     async def economy(self, ctx: discord.ext.commands.Context):
+        if cfg.DEBUG:
+            print("!economy")
+
         text = (
             "0️⃣ !economy.overview\n"
             "1️⃣ !economy.futures\n"
@@ -91,22 +94,40 @@ class EconomyCommands(discord.ext.commands.Cog):
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
-                await overview_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 0")
+                await overview_command(ctx, "")
             elif reaction.emoji == "1️⃣":
-                await futures_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 1")
+                await futures_command(ctx, "")
             elif reaction.emoji == "2️⃣":
-                await usbonds_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 2")
+                await usbonds_command(ctx, "")
             elif reaction.emoji == "3️⃣":
-                await glbonds_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 3")
+                await glbonds_command(ctx, "")
             elif reaction.emoji == "4️⃣":
-                await indices_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 4")
+                await indices_command(ctx, "")
             elif reaction.emoji == "5️⃣":
-                await currencies_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 5")
+                await currencies_command(ctx, "")
             elif reaction.emoji == "6️⃣":
-                await feargreed_command(ctx)
+                if cfg.DEBUG:
+                    print("Reaction selected: 6")
+                await feargreed_command(ctx, "")
             elif reaction.emoji == "7️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 7")
                 await valuation_command(ctx, "")
             elif reaction.emoji == "8️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 8")
                 await performance_command(ctx, "")
 
             # TODO: Make this work - may need to set different discord server configurations
