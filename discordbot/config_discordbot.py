@@ -23,6 +23,7 @@ COMMAND_PREFIX = "!"
 DATE_FORMAT = "%Y-%m-%d"
 COLOR = discord.Color.from_rgb(0, 206, 154)
 MENU_TIMEOUT = 30
+DEBUG = True
 
 AUTHOR_NAME = "Gamestonk Terminal"
 AUTHOR_ICON_URL = (
