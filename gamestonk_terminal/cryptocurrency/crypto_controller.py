@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
 from gamestonk_terminal.cryptocurrency.overview import overview_controller
+from gamestonk_terminal.cryptocurrency.defi import defi_controller
 from gamestonk_terminal.cryptocurrency.due_diligence import (
     dd_controller,
     coinpaprika_view,
@@ -60,7 +61,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "report", "onchain"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "report", "onchain", "defi"]
 
     SOURCES = {
         "bin": "Binance",
@@ -121,6 +122,7 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 >   onchain     information on different blockchains,   e.g.: eth gas fees
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
 >   report      generate automatic report
 """
         print(help_text)
@@ -660,6 +662,14 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
         """Process ov command"""
         ov = overview_controller.menu()
         if ov is False:
+            self.print_help()
+        else:
+            return True
+
+    def call_defi(self, _):
+        """Process defi command"""
+        defi = defi_controller.menu()
+        if defi is False:
             self.print_help()
         else:
             return True
