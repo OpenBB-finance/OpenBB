@@ -1,6 +1,7 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
+# pylint:disable=R0904
 
 import argparse
 import os
