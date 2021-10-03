@@ -10,7 +10,8 @@
 
 
 
-    <meta name="description" content="TODO: Update after refactoring    usage: qtr_contracts [-t TOP] Quarterly government contracts best regression. [Source: www.quiverquant.com]">
+    <meta name="description" content="usage: qtr_contracts [-n NUM] [-a {total,upmom,downmom}] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}] Look at government contracts [Source: www.quiverquant.com]
+optional arguments: -n NUM, --num NUM Number of tickers to get (default: 5) -a {total,upmom,downmom}, --analysis {total,upmom,downmom} Analysis to look at contracts. (default: total) -h, --help show this help message (default: False) --export {png,jpg,pdf,svg,csv,json,xlsx} Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: ) ">
 
 
 
@@ -2445,9 +2446,9 @@
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/government/last_congress/"
+                <a href="/GamestonkTerminal/stocks/government/contracts/"
                     class="gdoc-nav__entry ">
-                    last_congress
+                    contracts
                 </a>
             </span>
             
@@ -2476,9 +2477,9 @@
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/government/buy_congress/"
+                <a href="/GamestonkTerminal/stocks/government/gtrades/"
                     class="gdoc-nav__entry ">
-                    buy_congress
+                    gtrades
                 </a>
             </span>
             
@@ -2507,102 +2508,9 @@
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/government/sell_congress/"
+                <a href="/GamestonkTerminal/stocks/government/hist_cont/"
                     class="gdoc-nav__entry ">
-                    sell_congress
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/last_senate/"
-                    class="gdoc-nav__entry ">
-                    last_senate
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/buy_senate/"
-                    class="gdoc-nav__entry ">
-                    buy_senate
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/sell_house/"
-                    class="gdoc-nav__entry ">
-                    sell_house
+                    hist_cont
                 </a>
             </span>
             
@@ -2662,9 +2570,40 @@
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/government/sum_contracts/"
+                <a href="/GamestonkTerminal/stocks/government/last_trades/"
                     class="gdoc-nav__entry ">
-                    sum_contracts
+                    last_trades
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/stocks/government/lobbying/"
+                    class="gdoc-nav__entry ">
+                    lobbying
                 </a>
             </span>
             
@@ -2724,6 +2663,37 @@
             
             <span class="flex">
                 
+                <a href="/GamestonkTerminal/stocks/government/top_buys/"
+                    class="gdoc-nav__entry ">
+                    top_buys
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a href="/GamestonkTerminal/stocks/government/top_lobbying/"
                     class="gdoc-nav__entry ">
                     top_lobbying
@@ -2755,288 +2725,9 @@
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/government/raw_congress/"
+                <a href="/GamestonkTerminal/stocks/government/top_sells/"
                     class="gdoc-nav__entry ">
-                    raw_congress
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/congress/"
-                    class="gdoc-nav__entry ">
-                    congress
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/raw_senate/"
-                    class="gdoc-nav__entry ">
-                    raw_senate
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/senate/"
-                    class="gdoc-nav__entry ">
-                    senate
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/raw_house/"
-                    class="gdoc-nav__entry ">
-                    raw_house
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/house/"
-                    class="gdoc-nav__entry ">
-                    house
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/raw_contracts/"
-                    class="gdoc-nav__entry ">
-                    raw_contracts
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/contracts/"
-                    class="gdoc-nav__entry ">
-                    contracts
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/qtr_contracts_hist/"
-                    class="gdoc-nav__entry ">
-                    qtr_contracts_hist
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/government/lobbying/"
-                    class="gdoc-nav__entry ">
-                    lobbying
+                    top_sells
                 </a>
             </span>
             
@@ -13933,17 +13624,16 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Qtr Contracts</h1>
-        <div class="gdoc-page__anchorwrap">
-    <h2 id="todo-update-after-refactoring">
-        TODO: Update after refactoring
-        <a data-clipboard-text="https://gamestonkterminal.github.io/GamestonkTerminal/stocks/government/qtr_contracts/#todo-update-after-refactoring" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor TODO: Update after refactoring" href="#todo-update-after-refactoring">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">usage: qtr_contracts [-t TOP]
-</code></pre></div><p>Quarterly government contracts best regression. [Source: www.quiverquant.com]</p>
-<p><img src="https://user-images.githubusercontent.com/25267873/120394857-f963a800-c32b-11eb-9d3f-2295f7216b67.png" alt="top_promising_stocks"  /></p>
-
+        <pre><code>usage: qtr_contracts [-n NUM] [-a {total,upmom,downmom}] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
+</code></pre><p>Look at government contracts [Source: www.quiverquant.com]</p>
+<pre><code>optional arguments:
+  -n NUM, --num NUM     Number of tickers to get (default: 5)
+  -a {total,upmom,downmom}, --analysis {total,upmom,downmom}
+                        Analysis to look at contracts. (default: total)
+  -h, --help            show this help message (default: False)
+  --export {png,jpg,pdf,svg,csv,json,xlsx}
+                        Export plot to png,jpg,pdf,svg file or export dataframe to csv,json,xlsx (default: )
+</code></pre>
     </article>
 
                 
@@ -15489,44 +15179,6 @@
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -15549,158 +15201,6 @@
             
                 
                 
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
             
 
             
@@ -22255,12 +21755,12 @@
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/stocks/government/sum_contracts/" title="sum_contracts"> sum_contracts</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/stocks/government/lobbying/" title="lobbying"> lobbying</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/stocks/government/top_lobbying/" title="top_lobbying">top_lobbying </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/stocks/government/top_buys/" title="top_buys">top_buys </a>
             
         </span>
     
