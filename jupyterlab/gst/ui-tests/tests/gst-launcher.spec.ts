@@ -1,5 +1,5 @@
 /*
- * Simple scenario placeholder for testing the Gamesting Launcher
+ * Simple scenario placeholder for testing the Gamestonk Launcher
  *
  * Steps:
  * - Wait for the launcher panel to load
