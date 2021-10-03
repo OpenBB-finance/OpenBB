@@ -64,11 +64,11 @@
         <li><a href="#usage">Usage</a></li>
       </ul>
     </li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#disclaimer">Disclaimer</a></li>
-    <li><a href="#contacts">Contacts</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#contributing">Contributing :  </a></li>
+    <li><a href="#license">License :  </a></li>
+    <li><a href="#disclaimer">Disclaimer :  </a></li>
+    <li><a href="#contacts">Contacts : </a></li>
+    <li><a href="#acknowledgments">Acknowledgments : </a></li>
   </ol>
 </details>
 
@@ -76,7 +76,7 @@
 
 **How it started:**
 
-Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
+Gamestonk Terminal is a awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
 
 **How it's going:**
 
@@ -118,7 +118,7 @@ You are now ready to run the terminal.
 
 ```docker run -it --rm ghcr.io/gamestonkterminal/gst-poetry:latest```
 
-This will open up the terminal in your command prompt or terminal.  Note that this has provided now environment file, so you will not be able to view plots or use keys at this stage.
+It will open up the terminal in your command prompt or terminal. And  Note that this has provided now environment file, so you will not be able to view plots or use keys at this stage.
 
 To read more on adding the environment keys and how to configure your X-server to show plots, hop over to the [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
@@ -141,7 +141,7 @@ Confirm that you have it with: `conda -V`. The output should be something along 
 
 - If on Windows, install/update Microsoft C++ Build Tools from here: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
-2. Install git
+2. Install the git
 
 ```
 conda install -c anaconda git
