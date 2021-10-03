@@ -101,23 +101,23 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
             if reaction.emoji == "0️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 0")
-                await shorted_command(ctx, "")
+                await shorted_command(ctx)
             elif reaction.emoji == "1️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 1")
-                await hsi_command(ctx, "")
+                await hsi_command(ctx)
             elif reaction.emoji == "2️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 2")
-                await pos_command(ctx, "", "")
+                await pos_command(ctx)
             elif reaction.emoji == "3️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 3")
-                await sidtc_command(ctx, "", "")
+                await sidtc_command(ctx)
             elif reaction.emoji == "4️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 4")
-                await ftd_command(ctx, arg, "", "")
+                await ftd_command(ctx, arg)
             elif reaction.emoji == "5️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 5")

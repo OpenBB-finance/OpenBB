@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def sidtc_command(ctx, arg, arg2):
+async def sidtc_command(ctx, arg="float", arg2="10"):
     try:
         # Debug
         if cfg.DEBUG:
@@ -43,12 +43,6 @@ async def sidtc_command(ctx, arg, arg2):
             await ctx.send(embed=embed)
 
         else:
-            # Select default
-            if not arg:
-                arg = "float"
-            if not arg2:
-                arg2 = "10"
-
             # Parse argument
             if arg == "float" or arg == "dtc" or arg == "si":
                 sort = arg

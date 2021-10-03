@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
 
 
-async def hsi_command(ctx, arg):
+async def hsi_command(ctx, arg="10"):
     try:
         # Debug
         if cfg.DEBUG:
@@ -29,10 +29,6 @@ async def hsi_command(ctx, arg):
             await ctx.send(embed=embed)
 
         else:
-            # Select default
-            if not arg:
-                arg = "10"
-
             try:
                 # Parse argument
                 num = int(arg)

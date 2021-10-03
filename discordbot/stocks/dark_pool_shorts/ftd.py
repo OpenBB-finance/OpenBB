@@ -10,7 +10,7 @@ import helpers
 from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
 
-async def ftd_command(ctx, arg, arg2, arg3):
+async def ftd_command(ctx, arg="", arg2="", arg3=""):
     try:
         # Debug
         if cfg.DEBUG:
@@ -36,7 +36,7 @@ async def ftd_command(ctx, arg, arg2, arg3):
             )
 
         else:
-            if not arg:
+            if arg == "":
                 title = "ERROR Stocks: [SEC] Failure-to-deliver"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(

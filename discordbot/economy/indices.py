@@ -4,7 +4,7 @@ import config_discordbot as cfg
 from gamestonk_terminal.economy import wsj_model
 
 
-async def indices_command(ctx, arg):
+async def indices_command(ctx, arg=""):
     try:
         # Debug
         if cfg.DEBUG:

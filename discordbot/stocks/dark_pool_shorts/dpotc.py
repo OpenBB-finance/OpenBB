@@ -9,7 +9,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
 
-async def dpotc_command(ctx, arg):
+async def dpotc_command(ctx, arg=""):
     try:
         # Debug
         if cfg.DEBUG:
@@ -33,7 +33,7 @@ async def dpotc_command(ctx, arg):
             await ctx.send(embed=embed)
 
         else:
-            if not arg:
+            if arg == "":
                 title = "ERROR Stocks: [FINRA] Dark Pools (ATS) vs OTC"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(

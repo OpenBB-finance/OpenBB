@@ -96,39 +96,39 @@ class EconomyCommands(discord.ext.commands.Cog):
             if reaction.emoji == "0️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 0")
-                await overview_command(ctx, "")
+                await overview_command(ctx)
             elif reaction.emoji == "1️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 1")
-                await futures_command(ctx, "")
+                await futures_command(ctx)
             elif reaction.emoji == "2️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 2")
-                await usbonds_command(ctx, "")
+                await usbonds_command(ctx)
             elif reaction.emoji == "3️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 3")
-                await glbonds_command(ctx, "")
+                await glbonds_command(ctx)
             elif reaction.emoji == "4️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 4")
-                await indices_command(ctx, "")
+                await indices_command(ctx)
             elif reaction.emoji == "5️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 5")
-                await currencies_command(ctx, "")
+                await currencies_command(ctx)
             elif reaction.emoji == "6️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 6")
-                await feargreed_command(ctx, "")
+                await feargreed_command(ctx)
             elif reaction.emoji == "7️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 7")
-                await valuation_command(ctx, "")
+                await valuation_command(ctx)
             elif reaction.emoji == "8️⃣":
                 if cfg.DEBUG:
                     print("Reaction selected: 8")
-                await performance_command(ctx, "")
+                await performance_command(ctx)
 
             # TODO: Make this work - may need to set different discord server configurations
             # await msg.remove_reaction(reaction.emoji, user)

@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
-async def shorted_command(ctx, arg):
+async def shorted_command(ctx, arg="5"):
     try:
         # Debug
         if cfg.DEBUG:
@@ -29,10 +29,6 @@ async def shorted_command(ctx, arg):
             await ctx.send(embed=embed)
 
         else:
-            # Select default
-            if not arg:
-                arg = "5"
-
             try:
                 # Parse argument
                 num = int(arg)

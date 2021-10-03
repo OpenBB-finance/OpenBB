@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.economy import finviz_model
 
 
-async def performance_command(ctx, arg):
+async def performance_command(ctx, arg="sector"):
     economy_group = {
         "sector": "Sector",
         "industry": "Industry",
@@ -53,10 +53,6 @@ async def performance_command(ctx, arg):
             await ctx.send(embed=embed)
 
         else:
-            # Select default
-            if not arg:
-                arg = "sector"
-
             # Parse argument
             try:
                 group = economy_group[arg]

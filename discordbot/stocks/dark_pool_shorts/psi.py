@@ -9,7 +9,7 @@ from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
-async def psi_command(ctx, arg):
+async def psi_command(ctx, arg=""):
     try:
         # Debug
         if cfg.DEBUG:
@@ -31,7 +31,7 @@ async def psi_command(ctx, arg):
             )
 
         else:
-            if not arg:
+            if arg == "":
                 title = "ERROR Stocks: [SEC] Failure-to-deliver"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(

@@ -8,7 +8,7 @@ from discordbot import gst_imgur
 from gamestonk_terminal.economy import cnn_view, cnn_model
 
 
-async def feargreed_command(ctx, arg):
+async def feargreed_command(ctx, arg=""):
     try:
         # Debug
         if cfg.DEBUG:
