@@ -5,7 +5,7 @@ from helpers import pagination
 from gamestonk_terminal.economy import finviz_model
 
 
-async def performance_command(ctx, arg):
+async def performance_command(ctx, arg="sector"):
     economy_group = {
         "sector": "Sector",
         "industry": "Industry",
@@ -24,70 +24,106 @@ async def performance_command(ctx, arg):
         "capitalization": "Capitalization",
     }
 
-    # Help
-    if arg == "-h" or arg == "help":
-        help_txt = "Group performance [Source: Finviz]\n"
+    try:
+        # Debug
+        if cfg.DEBUG:
+            print(f"!stocks.economy.performance {arg}")
 
-        possible_args = ""
-        for k, v in economy_group.items():
-            possible_args += f"\n{k}: {v}"
+        # Help
+        if arg == "-h" or arg == "help":
+            help_txt = "Group performance [Source: Finviz]\n"
 
-        help_txt += "\nPossible arguments:\n"
-        help_txt += "<GROUP> Groups to get data from. Default: sector\n"
-        help_txt += f"The choices are:{possible_args}"
-        embed = discord.Embed(
-            title="Economy: [Finviz] Performance HELP",
-            description=help_txt,
-            colour=cfg.COLOR,
-        )
-        embed.set_author(
-            name=cfg.AUTHOR_NAME,
-            icon_url=cfg.AUTHOR_ICON_URL,
-        )
+            possible_args = ""
+            for k, v in economy_group.items():
+                possible_args += f"\n{k}: {v}"
 
-        await ctx.send(embed=embed)
-
-    else:
-        # Select default
-        if not arg:
-            arg = "sector"
-
-        # Parse argument
-        group = economy_group[arg]
-
-        df_group = finviz_model.get_valuation_performance_data(group, "performance")
-
-        future_column_name = df_group["Name"]
-        df_group = df_group.transpose()
-        df_group.columns = future_column_name
-        df_group.drop("Name")
-        columns = []
-
-        initial_str = "Page 0: Overview"
-        i = 1
-        for col_name in df_group.columns.values:
-            initial_str += f"\nPage {i}: {col_name}"
-            i += 1
-
-        columns.append(
-            discord.Embed(
-                title=f"Economy: [Finviz] Performance {group}",
-                description=initial_str,
+            help_txt += "\nPossible arguments:\n"
+            help_txt += "<GROUP> Groups to get data from. Default: sector\n"
+            help_txt += f"The choices are:{possible_args}"
+            embed = discord.Embed(
+                title="Economy: [Finviz] Performance HELP",
+                description=help_txt,
                 colour=cfg.COLOR,
-            ).set_author(
+            )
+            embed.set_author(
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-        )
-        for column in df_group.columns.values:
+
+            await ctx.send(embed=embed)
+
+        else:
+            # Parse argument
+            try:
+                group = economy_group[arg]
+            except KeyError:
+                title = "ERROR Economy: [Finviz] Performance"
+                embed = discord.Embed(title=title, colour=cfg.COLOR)
+                embed.set_author(
+                    name=cfg.AUTHOR_NAME,
+                    icon_url=cfg.AUTHOR_ICON_URL,
+                )
+                embed.set_description(
+                    f"Entered group argument: {arg}"
+                    "\nEnter a valid group argument, example: sector"
+                )
+                await ctx.send(embed=embed)
+                if cfg.DEBUG:
+                    print("ERROR: Bad group argument entered")
+                return
+
+            df_group = finviz_model.get_valuation_performance_data(group, "performance")
+
+            future_column_name = df_group["Name"]
+            df_group = df_group.transpose()
+            df_group.columns = future_column_name
+            df_group.drop("Name")
+            columns = []
+
+            initial_str = "Page 0: Overview"
+            i = 1
+            for col_name in df_group.columns.values:
+                initial_str += f"\nPage {i}: {col_name}"
+                i += 1
+
             columns.append(
                 discord.Embed(
-                    description="```" + df_group[column].fillna("").to_string() + "```",
+                    title=f"Economy: [Finviz] Performance {group}",
+                    description=initial_str,
                     colour=cfg.COLOR,
                 ).set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
             )
+            for column in df_group.columns.values:
+                columns.append(
+                    discord.Embed(
+                        description="```"
+                        + df_group[column].fillna("").to_string()
+                        + "```",
+                        colour=cfg.COLOR,
+                    ).set_author(
+                        name=cfg.AUTHOR_NAME,
+                        icon_url=cfg.AUTHOR_ICON_URL,
+                    )
+                )
 
-        await pagination(columns, ctx)
+            await pagination(columns, ctx)
+
+    except Exception as e:
+        title = "INTERNAL ERROR"
+        embed = discord.Embed(title=title, colour=cfg.COLOR)
+        embed.set_author(
+            name=cfg.AUTHOR_NAME,
+            icon_url=cfg.AUTHOR_ICON_URL,
+        )
+        embed.set_description(
+            "Try updating the bot, make sure DEBUG is True in the config "
+            "and restart it.\nIf the error still occurs open a issue at: "
+            "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
+        )
+        await ctx.send(embed=embed)
+        if cfg.DEBUG:
+            print(e)

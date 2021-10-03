@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
 
 class QaController:
@@ -49,6 +50,7 @@ class QaController:
         "unitroot",
         "goodness",
         "unitroot",
+        "capm",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -116,6 +118,7 @@ Rolling Metrics:
 Other:
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
+    capm        capital asset pricing model
         """
         print(help_str)
 
@@ -764,6 +767,26 @@ Other:
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
             )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_capm(self, other_args: List[str]):
+        """Process capm command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="capm",
+            description="""
+                Provides detailed information about a stock's risk compared to the market risk.
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            capm_view(self.ticker)
 
         except Exception as e:
             print(e, "\n")

@@ -53,6 +53,9 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.dps")
     async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, arg=""):
+        if cfg.DEBUG:
+            print("!stocks.dps")
+
         text = (
             "0️⃣ !stocks.dps.shorted <NUM>\n"
             "1️⃣ !stocks.dps.hsi <NUM>\n"
@@ -96,20 +99,36 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
                 "reaction_add", timeout=cfg.MENU_TIMEOUT, check=check
             )
             if reaction.emoji == "0️⃣":
-                await shorted_command(ctx, "")
+                if cfg.DEBUG:
+                    print("Reaction selected: 0")
+                await shorted_command(ctx)
             elif reaction.emoji == "1️⃣":
-                await hsi_command(ctx, "")
+                if cfg.DEBUG:
+                    print("Reaction selected: 1")
+                await hsi_command(ctx)
             elif reaction.emoji == "2️⃣":
-                await pos_command(ctx, "", "")
+                if cfg.DEBUG:
+                    print("Reaction selected: 2")
+                await pos_command(ctx)
             elif reaction.emoji == "3️⃣":
-                await sidtc_command(ctx, "", "")
+                if cfg.DEBUG:
+                    print("Reaction selected: 3")
+                await sidtc_command(ctx)
             elif reaction.emoji == "4️⃣":
-                await ftd_command(ctx, arg, "", "")
+                if cfg.DEBUG:
+                    print("Reaction selected: 4")
+                await ftd_command(ctx, arg)
             elif reaction.emoji == "5️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 5")
                 await dpotc_command(ctx, arg)
             elif reaction.emoji == "6️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 6")
                 await spos_command(ctx, arg)
             elif reaction.emoji == "7️⃣":
+                if cfg.DEBUG:
+                    print("Reaction selected: 7")
                 await psi_command(ctx, arg)
 
         except asyncio.TimeoutError:
