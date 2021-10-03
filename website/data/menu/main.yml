@@ -150,46 +150,26 @@ main:
       - name: government
         ref: "/stocks/government"
         sub:
-          - name: last_congress
-            ref: "/stocks/government/last_congress"
-          - name: buy_congress
-            ref: "/stocks/government/buy_congress"
-          - name: sell_congress
-            ref: "/stocks/government/sell_congress"
-          - name: last_senate
-            ref: "/stocks/government/last_senate"
-          - name: buy_senate
-            ref: "/stocks/government/buy_senate"
-          - name: sell_house
-            ref: "/stocks/government/sell_house"
-          - name: last_contracts
-            ref: "/stocks/government/last_contracts"
-          - name: sum_contracts
-            ref: "/stocks/government/sum_contracts"
-          - name: qtr_contracts
-            ref: "/stocks/government/qtr_contracts"
-          - name: top_lobbying
-            ref: "/stocks/government/top_lobbying"
-          - name: raw_congress
-            ref: "/stocks/government/raw_congress"
-          - name: congress
-            ref: "/stocks/government/congress"
-          - name: raw_senate
-            ref: "/stocks/government/raw_senate"
-          - name: senate
-            ref: "/stocks/government/senate"
-          - name: raw_house
-            ref: "/stocks/government/raw_house"
-          - name: house
-            ref: "/stocks/government/house"
-          - name: raw_contracts
-            ref: "/stocks/government/raw_contracts"
           - name: contracts
             ref: "/stocks/government/contracts"
-          - name: qtr_contracts_hist
-            ref: "/stocks/government/qtr_contracts_hist"
+          - name: gtrades
+            ref: "/stocks/government/gtrades"
+          - name: hist_cont
+            ref: "/stocks/government/hist_cont"
+          - name: last_contracts
+            ref: "/stocks/government/last_contracts"
+          - name: last_trades
+            ref: "/stocks/government/last_trades"
           - name: lobbying
             ref: "/stocks/government/lobbying"
+          - name: qtr_contracts
+            ref: "/stocks/government/qtr_contracts"
+          - name: top_buys
+            ref: "/stocks/government/top_buys"
+          - name: top_lobbying
+            ref: "/stocks/government/top_lobbying"
+          - name: top_sells
+            ref: "/stocks/government/top_sells"
       - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:
