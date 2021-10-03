@@ -12,7 +12,7 @@ async def feargreed_command(ctx, arg):
     try:
         # Debug
         if cfg.DEBUG:
-            print("-- STARTED COMMAND: !stocks.economy.feargreed " + arg + " --")
+            print(f"!stocks.economy.feargreed {arg}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -29,8 +29,6 @@ async def feargreed_command(ctx, arg):
                 name=cfg.AUTHOR_NAME,
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
-
-            await ctx.send(embed=embed)
 
         else:
             plt.ion()
@@ -82,7 +80,7 @@ async def feargreed_command(ctx, arg):
 
             plt.close("all")
 
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     except Exception as e:
         title = "INTERNAL ERROR"
@@ -95,11 +93,8 @@ async def feargreed_command(ctx, arg):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print("-- ERROR at COMMAND: !stocks.economy.feargreed " + arg + " --")
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)

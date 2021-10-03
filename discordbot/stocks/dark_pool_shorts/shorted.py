@@ -9,7 +9,7 @@ async def shorted_command(ctx, arg):
     try:
         # Debug
         if cfg.DEBUG:
-            print("-- STARTED COMMAND: !stocks.dps.shorted " + arg + " --")
+            print(f"!stocks.dps.shorted {arg}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -49,10 +49,9 @@ async def shorted_command(ctx, arg):
                     "No number (int) entered."
                     "\nEnter a valid (positive) number, example: 10"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print("-- ERROR at COMMAND: !stocks.dps.pos " + arg + " --")
-                    print("   ERROR: No (positive) int entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: No (positive) int entered")
                 return
 
             df = yahoofinance_model.get_most_shorted().head(num)
@@ -106,11 +105,8 @@ async def shorted_command(ctx, arg):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print("-- ERROR at COMMAND: !stocks.dps.shorted " + arg + " --")
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)

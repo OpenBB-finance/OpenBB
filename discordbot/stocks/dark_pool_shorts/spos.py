@@ -12,7 +12,7 @@ async def spos_command(ctx, arg):
     try:
         # Debug
         if cfg.DEBUG:
-            print("-- STARTED COMMAND: !stocks.dps.spos " + arg + " --")
+            print(f"!stocks.dps.spos {arg}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -29,8 +29,6 @@ async def spos_command(ctx, arg):
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
 
-            await ctx.send(embed=embed)
-
         else:
             if not arg:
                 title = "ERROR Stocks: [Stockgrid] Net Short vs Position"
@@ -42,17 +40,16 @@ async def spos_command(ctx, arg):
                 embed.set_description(
                     "No ticker entered." "\nEnter a valid ticker, example: GME"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print("-- ERROR at COMMAND: !stocks.dps.spos --")
-                    print("   ERROR: No ticker entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: No ticker entered")
                 return
 
             # Parse argument
             ticker = arg.upper()
 
             plt.ion()
-            title = "Stocks: [Stockgrid] Net Short vs Position " + ticker
+            title = f"Stocks: [Stockgrid] Net Short vs Position {arg}"
             embed = discord.Embed(title=title, colour=cfg.COLOR)
             embed.set_author(
                 name=cfg.AUTHOR_NAME,
@@ -62,21 +59,18 @@ async def spos_command(ctx, arg):
             try:
                 df = stockgrid_model.get_net_short_position(ticker)
             except Exception as e:
-                title = (
-                    "ERROR Stocks: [Stockgrid] Price vs Short Interest Volume " + ticker
-                )
+                title = "ERROR Stocks: [Stockgrid] Price vs Short Interest Volume"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "Ticker given: " + arg + "\nEnter a valid ticker, example: GME"
+                    f"Ticker given: {arg}" "\nEnter a valid ticker, example: GME"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print("-- ERROR at COMMAND: !stocks.dps.psi " + arg + " --")
-                    print("   POSSIBLE ERROR: Wrong ticker parameter entered")
-                    print("-- DETAILED REPORT: --\n\n" + e + "\n")
+                    print(f"POSSIBLE ERROR: Wrong ticker parameter entered\n{e}")
                 return
 
             fig = plt.figure(dpi=PLOT_DPI)
@@ -115,7 +109,7 @@ async def spos_command(ctx, arg):
             embed.set_image(url=image_link)
             os.remove(file_name)
 
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     except Exception as e:
         title = "INTERNAL ERROR"
@@ -128,11 +122,8 @@ async def spos_command(ctx, arg):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print("-- ERROR at COMMAND: !stocks.dps.spos " + arg + " --")
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)

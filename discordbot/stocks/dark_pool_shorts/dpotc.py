@@ -13,7 +13,7 @@ async def dpotc_command(ctx, arg):
     try:
         # Debug
         if cfg.DEBUG:
-            print("-- STARTED COMMAND: !stocks.dps.dpotc " + arg + " --")
+            print(f"!stocks.dps.dpotc {arg}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -41,12 +41,11 @@ async def dpotc_command(ctx, arg):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "No ticker entered." "\nEnter a valid ticker, example: GME"
+                    "No ticker entered.\nEnter a valid ticker, example: GME"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print("-- ERROR at COMMAND: !stocks.dps.dpotc --")
-                    print("   ERROR: No ticker entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: No ticker entered")
                 return
 
             # Parse argument
@@ -71,12 +70,11 @@ async def dpotc_command(ctx, arg):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "Ticker given: " + arg + "\nEnter a valid ticker, example: GME"
+                    f"Ticker given: {arg}\nEnter a valid ticker, example: GME"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print("-- ERROR at COMMAND: !stocks.dps.dpotc " + arg + " --")
-                    print("   POSSIBLE ERROR: Wrong ticker parameter entered")
-                    print("-- DETAILED REPORT: --\n\n" + e + "\n")
+                    print(f"POSSIBLE ERROR: Wrong ticker parameter entered\n{e}")
                 return
 
             if ats.empty and otc.empty:
@@ -170,11 +168,8 @@ async def dpotc_command(ctx, arg):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print("-- ERROR at COMMAND: !stocks.dps.dpotc " + arg + " --")
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)

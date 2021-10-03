@@ -14,15 +14,7 @@ async def ftd_command(ctx, arg, arg2, arg3):
     try:
         # Debug
         if cfg.DEBUG:
-            print(
-                "-- STARTED COMMAND: !stocks.dps.ftd "
-                + arg
-                + " "
-                + arg2
-                + " "
-                + arg3
-                + "--"
-            )
+            print(f"!stocks.dps.ftd {arg} {arg2} {arg3}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -43,8 +35,6 @@ async def ftd_command(ctx, arg, arg2, arg3):
                 icon_url=cfg.AUTHOR_ICON_URL,
             )
 
-            await ctx.send(embed=embed)
-
         else:
             if not arg:
                 title = "ERROR Stocks: [SEC] Failure-to-deliver"
@@ -54,12 +44,11 @@ async def ftd_command(ctx, arg, arg2, arg3):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "No ticker entered." "\nEnter a valid ticker, example: GME"
+                    "No ticker entered.\nEnter a valid ticker, example: GME"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print("-- ERROR at COMMAND: !stocks.dps.ftd --")
-                    print("   ERROR: No ticker entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: No ticker entered")
                 return
 
             # Parse argument
@@ -70,30 +59,19 @@ async def ftd_command(ctx, arg, arg2, arg3):
                 try:
                     start = datetime.strptime(arg2, cfg.DATE_FORMAT)
                 except Exception as e:
-                    title = "ERROR Stocks: [SEC] Failure-to-deliver " + ticker
+                    title = "ERROR Stocks: [SEC] Failure-to-deliver"
                     embed = discord.Embed(title=title, colour=cfg.COLOR)
                     embed.set_author(
                         name=cfg.AUTHOR_NAME,
                         icon_url=cfg.AUTHOR_ICON_URL,
                     )
                     embed.set_description(
-                        "Start Date given: "
-                        + arg2
-                        + "\nEnter a valid start date using the format: "
-                        + cfg.DATE_FORMAT
+                        f"Start Date given: {arg2}"
+                        f"\nEnter a valid start date using the format: {cfg.DATE_FORMAT}"
                     )
+                    await ctx.send(embed=embed)
                     if cfg.DEBUG:
-                        print(
-                            "-- ERROR at COMMAND: !stocks.dps.ftd "
-                            + arg
-                            + " "
-                            + arg2
-                            + " "
-                            + arg3
-                            + " --"
-                        )
-                        print("   POSSIBLE ERROR: Wrong start date parameter entered")
-                        print("-- DETAILED REPORT: --\n\n" + e + "\n")
+                        print(f"ERROR: Wrong start date parameter entered\n{e}")
                     return
             if arg3 == "":
                 end = datetime.now()
@@ -101,57 +79,37 @@ async def ftd_command(ctx, arg, arg2, arg3):
                 try:
                     end = datetime.strptime(arg3, cfg.DATE_FORMAT)
                 except Exception as e:
-                    title = "ERROR Stocks: [SEC] Failure-to-deliver " + ticker
+                    title = "ERROR Stocks: [SEC] Failure-to-deliver"
                     embed = discord.Embed(title=title, colour=cfg.COLOR)
                     embed.set_author(
                         name=cfg.AUTHOR_NAME,
                         icon_url=cfg.AUTHOR_ICON_URL,
                     )
                     embed.set_description(
-                        "End Date given: "
-                        + arg2
-                        + "\nEnter a valid end date using the format: "
-                        + cfg.DATE_FORMAT
+                        f"End Date given: {arg3}"
+                        f"\nEnter a valid end date using the format: {cfg.DATE_FORMAT}"
                     )
+                    await ctx.send(embed=embed)
                     if cfg.DEBUG:
-                        print(
-                            "-- ERROR at COMMAND: !stocks.dps.ftd "
-                            + arg
-                            + " "
-                            + arg2
-                            + " "
-                            + arg3
-                            + " --"
-                        )
-                        print("   POSSIBLE ERROR: Wrong end date parameter entered")
-                        print("-- DETAILED REPORT: --\n\n" + e + "\n")
+                        print(f"ERROR: Wrong end date parameter entered\n{e}")
                     return
 
             plt.ion()
             try:
                 ftds_data = sec_model.get_fails_to_deliver(ticker, start, end, 0)
             except Exception as e:
-                title = "ERROR Stocks: [SEC] Failure-to-deliver " + ticker
+                title = f"ERROR Stocks: [SEC] Failure-to-deliver {ticker}"
                 embed = discord.Embed(title=title, colour=cfg.COLOR)
                 embed.set_author(
                     name=cfg.AUTHOR_NAME,
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "Ticker given: " + arg + "\nEnter a valid ticker, example: GME"
+                    f"Ticker given: {arg}" "\nEnter a valid ticker, example: GME"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print(
-                        "-- ERROR at COMMAND: !stocks.dps.ftd "
-                        + arg
-                        + " "
-                        + arg2
-                        + " "
-                        + arg3
-                        + " --"
-                    )
-                    print("   POSSIBLE ERROR: Wrong ticker parameter entered")
-                    print("-- DETAILED REPORT: --\n\n" + e + "\n")
+                    print(f"POSSIBLE ERROR: Wrong ticker parameter entered\n{e}")
                 return
             plt.bar(
                 ftds_data["SETTLEMENT DATE"],
@@ -183,7 +141,7 @@ async def ftd_command(ctx, arg, arg2, arg3):
             embed.set_image(url=image_link)
             os.remove("dps_ftd.png")
 
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     except Exception as e:
         title = "INTERNAL ERROR"
@@ -196,19 +154,8 @@ async def ftd_command(ctx, arg, arg2, arg3):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print(
-                "-- ERROR at COMMAND: !stocks.dps.ftd "
-                + arg
-                + " "
-                + arg2
-                + " "
-                + arg3
-                + " --"
-            )
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)

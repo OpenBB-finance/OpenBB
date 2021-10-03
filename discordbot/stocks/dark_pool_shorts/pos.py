@@ -9,7 +9,7 @@ async def pos_command(ctx, arg, arg2):
     try:
         # Debug
         if cfg.DEBUG:
-            print("-- STARTED COMMAND: !stocks.dps.pos " + arg + " " + arg2 + " --")
+            print(f"!stocks.dps.pos {arg} {arg2}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -70,16 +70,9 @@ async def pos_command(ctx, arg, arg2):
                     "No number (int) entered in the second argument."
                     "\nEnter a valid (positive) number, example: 10"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print(
-                        "-- ERROR at COMMAND: !stocks.dps.pos "
-                        + arg
-                        + " "
-                        + arg2
-                        + " --"
-                    )
-                    print("   ERROR: No (positive) int for second argument entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: No (positive) int for second argument entered")
                 return
 
             try:
@@ -92,20 +85,12 @@ async def pos_command(ctx, arg, arg2):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "Sorting parameter given: "
-                    + arg
-                    + "\nEnter a valid ticker, example: dpp_value"
+                    f"Sorting parameter given: {arg}"
+                    "\nEnter a valid ticker, example: dpp_value"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print(
-                        "-- ERROR at COMMAND: !stocks.dps.pos "
-                        + arg
-                        + " "
-                        + arg2
-                        + " --"
-                    )
-                    print("   POSSIBLE ERROR: Wrong sort parameter entered")
-                    print("-- DETAILED REPORT: --\n\n" + e + "\n")
+                    print(f"POSSIBLE ERROR: Wrong sort parameter entered\n{e}")
                 return
 
             df = df.iloc[:num]
@@ -175,11 +160,8 @@ async def pos_command(ctx, arg, arg2):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print("-- ERROR at COMMAND: !stocks.dps.pos " + arg + " " + arg2 + " --")
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)

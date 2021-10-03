@@ -9,7 +9,7 @@ async def sidtc_command(ctx, arg, arg2):
     try:
         # Debug
         if cfg.DEBUG:
-            print("-- STARTED COMMAND: !stocks.dps.sidtc " + arg + " " + arg2 + " --")
+            print(f"!stocks.dps.sidtc {arg} {arg2}")
 
         # Help
         if arg == "-h" or arg == "help":
@@ -60,20 +60,12 @@ async def sidtc_command(ctx, arg, arg2):
                     icon_url=cfg.AUTHOR_ICON_URL,
                 )
                 embed.set_description(
-                    "Entered sort argument: "
-                    + arg
-                    + "\nEnter a valid sort argument, example: float"
+                    f"Entered sort argument: {arg}"
+                    "\nEnter a valid sort argument, example: float"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print(
-                        "-- ERROR at COMMAND: !stocks.dps.sidtc "
-                        + arg
-                        + " "
-                        + arg2
-                        + " --"
-                    )
-                    print("   ERROR: Bad sort argument entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: Bad sort argument entered")
                 return
 
             try:
@@ -91,16 +83,9 @@ async def sidtc_command(ctx, arg, arg2):
                     "No number (int) entered in the second argument."
                     "\nEnter a valid (positive) number, example: 10"
                 )
+                await ctx.send(embed=embed)
                 if cfg.DEBUG:
-                    print(
-                        "-- ERROR at COMMAND: !stocks.dps.sidtc "
-                        + arg
-                        + " "
-                        + arg2
-                        + " --"
-                    )
-                    print("   ERROR: No (positive) int for second argument entered")
-                    print("-- Command stopped before error --")
+                    print("ERROR: No (positive) int for second argument entered")
                 return
 
             df = stockgrid_model.get_short_interest_days_to_cover(sort)
@@ -162,11 +147,8 @@ async def sidtc_command(ctx, arg, arg2):
             "Try updating the bot, make sure DEBUG is True in the config "
             "and restart it.\nIf the error still occurs open a issue at: "
             "https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
+            f"\n{e}"
         )
+        await ctx.send(embed=embed)
         if cfg.DEBUG:
-            print("-- ERROR at COMMAND: !stocks.dps.sidtc " + arg + " " + arg2 + " --")
-            print(
-                "   Try updating the bot and restart it. If the error still occurs open "
-                "a issue at:\n   https://github.com/GamestonkTerminal/GamestonkTerminal/issues"
-            )
-            print("-- DETAILED REPORT: --\n\n" + e + "\n")
+            print(e)
