@@ -349,9 +349,14 @@ def display_ef(
     ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     if risk_free:
-        x = [0, std_sharpe]
-        y = [get_rf(), ret_sharpe]
-        line = Line2D(x, y)
+        y = max(rets)
+        b = get_rf()
+        m = (ret_sharpe - b) / std_sharpe
+        x = (y - b) / m
+        ax.set_xlim(xmin=0)
+        x = [0, x]
+        y = [b, y]
+        line = Line2D(x, y, color="#FF0000")
         ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
