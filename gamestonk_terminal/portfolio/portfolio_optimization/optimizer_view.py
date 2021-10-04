@@ -160,7 +160,7 @@ def display_max_sharpe(
     else:
         print("\n", s_title)
         display_weights(weights)
-    ef.portfolio_performance(verbose=True, risk_free_rate=get_rf())
+    ef.portfolio_performance(verbose=True, risk_free_rate=rfrate)
     print("")
 
 
