@@ -153,7 +153,6 @@ def display_max_sharpe(
     """
     p = d_period[period]
     s_title = f"{p} Weights that maximize Sharpe ratio with risk free level of {rfrate*100:.2f}%"
-    print(rfrate)
     ef_opt, ef = optimizer_model.get_maxsharpe_portfolio(stocks, period, rfrate)
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
     if pie:

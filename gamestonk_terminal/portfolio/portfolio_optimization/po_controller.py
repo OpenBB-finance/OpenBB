@@ -387,7 +387,7 @@ Mean Variance Optimization:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
                 return
-
+            print(ns_parser.risk_free_rate)
             optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
                 period=ns_parser.period,
