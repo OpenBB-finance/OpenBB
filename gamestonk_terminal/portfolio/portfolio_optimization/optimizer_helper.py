@@ -107,8 +107,7 @@ def check_valid_property_type(aproperty: str) -> str:
 
     raise argparse.ArgumentTypeError(f"{aproperty} is not a valid info")
 
-
-def get_rf():
+def get_rf() -> float:
     """Uses the fiscaldata.gov API to get most recent T-Bill rate"""
     try:
         base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"

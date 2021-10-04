@@ -18,6 +18,8 @@ from gamestonk_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
 )
 
+from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_helper import get_rf
+
 period_choices = [
     "1d",
     "5d",
@@ -372,7 +374,7 @@ Mean Variance Optimization:
             "--risk-free-rate",
             type=float,
             dest="risk_free_rate",
-            default=0.02,
+            default=get_rf(),
             help="""Risk-free rate of borrowing/lending. The period of the risk-free rate
                 should correspond to the frequency of expected returns.""",
         )
@@ -385,7 +387,6 @@ Mean Variance Optimization:
             if len(self.tickers) < 2:
                 print("Please have at least 2 loaded tickers to calculate weights.\n")
                 return
-
             optimizer_view.display_max_sharpe(
                 stocks=self.tickers,
                 period=ns_parser.period,
