@@ -14,12 +14,14 @@ from gamestonk_terminal.stocks.due_diligence import (
     marketwatch_view,
     finnhub_view,
     csimarket_view,
+    ark_view,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
 
@@ -45,6 +47,7 @@ class DueDiligenceController:
         "analyst",
         "supplier",
         "customer",
+        "arktrades",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -106,6 +109,8 @@ Market Watch:
 csimarket:
     supplier      list of suppliers
     customer      list of customers
+cathiesark.com
+    arktrades     get ARK trades for ticker
         """
 
         print(help_text)
@@ -456,6 +461,35 @@ csimarket:
                 export=ns_parser.export,
             )
 
+        except Exception as e:
+            print(e, "\n")
+
+    def call_arktrades(self, other_args):
+        """Process arktrades command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="arktrades",
+            description="""
+                Get trades for ticker across all ARK funds.
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            help="Number of rows to show",
+            dest="num",
+            default=20,
+            type=int,
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+            ark_view.display_ark_trades(
+                ticker=self.ticker, num=ns_parser.num, export=ns_parser.export
+            )
         except Exception as e:
             print(e, "\n")
 
