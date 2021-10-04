@@ -339,8 +339,12 @@ def display_ef(stocks: List[str], period: str = "3mo", n_portfolios: int = 300):
     ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
-    ef.max_sharpe(risk_free_rate=get_rf())
-    ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
+    rfrate = get_rf()
+    print(rfrate)
+    ef.max_sharpe(risk_free_rate=rfrate)
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(
+        verbose=True, riskfreerate=rfrate
+    )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
