@@ -292,6 +292,8 @@ main:
             ref: "/stocks/due_diligence/supplier"
           - name: customer
             ref: "/stocks/due_diligence/customer"
+          - name: arktrades
+            ref: "/stocks/due_diligence/arktrades"
       - name: comparison analysis
         ref: "/stocks/comparison_analysis"
         sub:
