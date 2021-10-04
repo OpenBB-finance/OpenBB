@@ -1,5 +1,5 @@
 ```
-usage: top_lobbying [-n NUM] [--raw] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
+usage: toplobbying [-n NUM] [--raw] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
 
 Top lobbying. [Source: www.quiverquant.com]

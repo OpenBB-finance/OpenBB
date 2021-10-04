@@ -1,5 +1,5 @@
 ```
-usage: hist_cont [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
+usage: histcont [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
 ```
 
 Quarterly-contracts historical [Source: www.quiverquant.com]

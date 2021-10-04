@@ -1,5 +1,5 @@
 ```
-usage: last_contracts [-p PAST_TRANSACTION_DAYS] [-n NUM] [-s] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
+usage: lastcontracts [-p PAST_TRANSACTION_DAYS] [-n NUM] [-s] [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
 
 Last government contracts. [Source: www.quiverquant.com]

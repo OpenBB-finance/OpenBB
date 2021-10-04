@@ -1,5 +1,5 @@
 ```
-usage: qtr_contracts [-n NUM] [-a {total,upmom,downmom}] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
+usage: qtrcontracts [-n NUM] [-a {total,upmom,downmom}] [-h] [--export {png,jpg,pdf,svg,csv,json,xlsx}]
 ```
 
 Look at government contracts [Source: www.quiverquant.com]
