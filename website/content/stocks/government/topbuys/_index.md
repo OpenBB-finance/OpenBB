@@ -1,5 +1,5 @@
 ```
-usage: top_buys [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-n NUM] [--raw]
+usage: topbuys [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-n NUM] [--raw]
                 [--export {png,jpg,pdf,svg,csv,json,xlsx}] [-h]
 ```
 Top buys for government trading. [Source: www.quiverquant.com]

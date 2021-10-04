@@ -1,5 +1,5 @@
 ```
-usage: last_trades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE] [-h]
+usage: lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE] [-h]
                    [--export {png,jpg,pdf,svg,csv,json,xlsx}]
 ```
 

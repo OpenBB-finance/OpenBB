@@ -154,22 +154,22 @@ main:
             ref: "/stocks/government/contracts"
           - name: gtrades
             ref: "/stocks/government/gtrades"
-          - name: hist_cont
-            ref: "/stocks/government/hist_cont"
-          - name: last_contracts
-            ref: "/stocks/government/last_contracts"
-          - name: last_trades
-            ref: "/stocks/government/last_trades"
+          - name: histcont
+            ref: "/stocks/government/histcont"
+          - name: lastcontracts
+            ref: "/stocks/government/lastcontracts"
+          - name: lasttrades
+            ref: "/stocks/government/lasttrades"
           - name: lobbying
             ref: "/stocks/government/lobbying"
-          - name: qtr_contracts
-            ref: "/stocks/government/qtr_contracts"
-          - name: top_buys
-            ref: "/stocks/government/top_buys"
-          - name: top_lobbying
-            ref: "/stocks/government/top_lobbying"
-          - name: top_sells
-            ref: "/stocks/government/top_sells"
+          - name: qtrcontracts
+            ref: "/stocks/government/qtrcontracts"
+          - name: topbuys
+            ref: "/stocks/government/topbuys"
+          - name: toplobbying
+            ref: "/stocks/government/toplobbying"
+          - name: topsells
+            ref: "/stocks/government/topsells"
       - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:

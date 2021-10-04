@@ -140,11 +140,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             self.ticker = self.ticker.split(".")[0]
 
     def call_lasttrades(self, other_args: List[str]):
-        """Process last trades command"""
+        """Process lasttrades command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="last_trades",
+            prog="lasttrades",
             description="Last government trading trading. [Source: www.quiverquant.com]",
         )
         parser.add_argument(
@@ -193,11 +193,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             print(e, "\n")
 
     def call_topbuys(self, other_args: List[str]):
-        """Process top_buys command"""
+        """Process topbuys command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="top_buys",
+            prog="topbuys",
             description="Top buys for government trading. [Source: www.quiverquant.com]",
         )
         parser.add_argument(
@@ -253,11 +253,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             print(e, "\n")
 
     def call_topsells(self, other_args: List[str]):
-        """Process top_sells command"""
+        """Process topsells command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="top_sells",
+            prog="topsells",
             description="Top sells for government trading. [Source: www.quiverquant.com]",
         )
         parser.add_argument(
@@ -313,11 +313,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             print(e, "\n")
 
     def call_lastcontracts(self, other_args: List[str]):
-        """Process last_contracts command"""
+        """Process lastcontracts command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="last_contracts",
+            prog="lastcontracts",
             description="Last government contracts. [Source: www.quiverquant.com]",
         )
         parser.add_argument(
@@ -363,11 +363,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             print(e, "\n")
 
     def call_qtrcontracts(self, other_args: List[str]):
-        """Process contracts command"""
+        """Process qtrcontracts command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="qtr_contracts",
+            prog="qtrcontracts",
             description="Look at government contracts [Source: www.quiverquant.com]",
         )
         parser.add_argument(
@@ -402,11 +402,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             print(e, "\n")
 
     def call_toplobbying(self, other_args: List[str]):
-        """Process top_lobbying command"""
+        """Process toplobbying command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="top_lobbying",
+            prog="toplobbying",
             description="Top lobbying. [Source: www.quiverquant.com]",
         )
         parser.add_argument(
@@ -536,11 +536,11 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             print(e, "\n")
 
     def call_histcont(self, other_args: List[str]):
-        """Process qtr_contracts_hist command"""
+        """Process histcont command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hist_cont",
+            prog="histcont",
             description="Quarterly-contracts historical [Source: www.quiverquant.com]",
         )
         try:
