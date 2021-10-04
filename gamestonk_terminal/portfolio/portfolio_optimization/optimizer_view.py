@@ -14,6 +14,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
+from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_helper import get_rf
 
 d_period = {
     "1d": "[1 Day]",
@@ -131,8 +132,8 @@ def display_property_weighting(
 def display_max_sharpe(
     stocks: List[str],
     period: str,
-    value: float = 1.0,
-    rfrate: float = 0.02,
+    value: float,
+    rfrate: float,
     pie: bool = False,
 ):
     """Display portfolio that maximizes Sharpe Ratio over stocks
@@ -146,11 +147,12 @@ def display_max_sharpe(
     value : float, optional
         Amount to allocate to portfolio, by default 1.0
     rfrate : float, optional
-        Risk Free Rate, by default 0.02
+        Risk Free Rate, by default current US T-Bill rate
     pie : bool, optional
         Boolean to show weights as a pie chart, by default False
     """
-    s_title = f"{d_period[period]} Weights that maximize Sharpe ratio with risk free level of {rfrate}"
+    p = d_period[period]
+    s_title = f"{p} Weights that maximize Sharpe ratio with risk free level of {rfrate*100:.2f}%"
     ef_opt, ef = optimizer_model.get_maxsharpe_portfolio(stocks, period, rfrate)
     weights = {key: value * round(port_value, 5) for key, port_value in ef_opt.items()}
     if pie:
@@ -158,7 +160,7 @@ def display_max_sharpe(
     else:
         print("\n", s_title)
         display_weights(weights)
-    ef.portfolio_performance(verbose=True)
+    ef.portfolio_performance(verbose=True, risk_free_rate=rfrate)
     print("")
 
 
@@ -337,8 +339,11 @@ def display_ef(stocks: List[str], period: str = "3mo", n_portfolios: int = 300):
     ax.scatter(stds, rets, marker=".", c=sharpes, cmap="viridis_r")
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
-    ef.max_sharpe()
-    ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
+    rfrate = get_rf()
+    ef.max_sharpe(risk_free_rate=rfrate)
+    ret_sharpe, std_sharpe, _ = ef.portfolio_performance(
+        verbose=True, risk_free_rate=rfrate
+    )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
