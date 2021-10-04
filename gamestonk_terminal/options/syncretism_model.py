@@ -272,8 +272,7 @@ def check_presets(preset_dict: dict) -> str:
         elif key == "tickers":
             for ticker in value.split(","):
                 try:
-                    eval(ticker)
-                    if yf.Ticker(ticker).info["regularMarketPrice"] is None:
+                    if yf.Ticker(eval(ticker)).info["regularMarketPrice"] is None:
                         error += f"{key} : {ticker} not found on yfinance"
 
                 except NameError:
