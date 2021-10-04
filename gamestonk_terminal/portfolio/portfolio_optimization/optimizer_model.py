@@ -87,7 +87,6 @@ def get_maxsharpe_portfolio(
     """
     stock_prices = yahoo_finance_model.process_stocks(stocks, period)
     ef = prepare_efficient_frontier(stock_prices)
-    print(rfrate)
     return dict(ef.max_sharpe(rfrate)), ef
 
 

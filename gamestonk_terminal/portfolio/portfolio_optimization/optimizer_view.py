@@ -160,7 +160,7 @@ def display_max_sharpe(
     else:
         print("\n", s_title)
         display_weights(weights)
-    ef.portfolio_performance(verbose=True)
+    ef.portfolio_performance(verbose=True, risk_free_rate=get_rf())
     print("")
 
 
@@ -340,10 +340,9 @@ def display_ef(stocks: List[str], period: str = "3mo", n_portfolios: int = 300):
     plotting.plot_efficient_frontier(ef, ax=ax, show_assets=True)
     # Find the tangency portfolio
     rfrate = get_rf()
-    print(rfrate)
     ef.max_sharpe(risk_free_rate=rfrate)
     ret_sharpe, std_sharpe, _ = ef.portfolio_performance(
-        verbose=True, riskfreerate=rfrate
+        verbose=True, risk_free_rate=rfrate
     )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
