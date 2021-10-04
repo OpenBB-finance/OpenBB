@@ -6,7 +6,7 @@ from typing import List
 
 import matplotlib.pyplot as plt
 
-# from matplotlib.lines import Line2D
+from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 from pypfopt import plotting
@@ -16,6 +16,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
+from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_helper import get_rf
 
 d_period = {
     "1d": "[1 Day]",
@@ -348,12 +349,10 @@ def display_ef(
     ret_sharpe, std_sharpe, _ = ef.portfolio_performance()
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     if risk_free:
-        pass
-        # x = [0]
-        # replace with variable passed if necessary
-        # y = [get_rf()]
-        # line = Line2D(x, y)
-        # ax.add_line(line)
+        x = [0, std_sharpe]
+        y = [get_rf(), ret_sharpe]
+        line = Line2D(x, y)
+        ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
     fig.tight_layout()

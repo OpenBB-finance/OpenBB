@@ -713,30 +713,30 @@ Mean Variance Optimization:
         parser.add_argument(
             "-r",
             "--risk-free",
-            type=bool,
+            action="store_true",
             dest="risk_free",
             default=False,
             help="Adds the optimal line with the risk-free asset",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        # try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if len(self.tickers) < 2:
-                print("Please have at least 2 loaded tickers to calculate weights.\n")
-                return
+        if len(self.tickers) < 2:
+            print("Please have at least 2 loaded tickers to calculate weights.\n")
+            return
 
-            optimizer_view.display_ef(
-                stocks=self.tickers,
-                period=ns_parser.period,
-                n_portfolios=ns_parser.n_port,
-                risk_free=ns_parser.risk_free,
-            )
+        optimizer_view.display_ef(
+            stocks=self.tickers,
+            period=ns_parser.period,
+            n_portfolios=ns_parser.n_port,
+            risk_free=ns_parser.risk_free,
+        )
 
-        except Exception as e:
-            print(e, "\n")
+        # except Exception as e:
+        # print(e, "\n")
 
     def call_yolo(self, _):
         # Easter egg :)
