@@ -11,7 +11,7 @@ argcomplete==1.12.3; python_version < "3.8.0" and python_version >= "3.7"
 argon2-cffi==21.1.0; python_version >= "3.6"
 astunparse==1.6.3
 async-timeout==3.0.1; python_full_version >= "3.5.3" and python_version >= "3.6"
-attrs==21.2.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.7"
+attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 babel==2.9.1; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.6" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6")
 backcall==0.2.0; python_version >= "3.7"
 backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.6"
@@ -81,7 +81,7 @@ jedi==0.18.0; python_version >= "3.7"
 jinja2==3.0.2; python_full_version >= "3.6.8" and python_full_version < "4.0.0" and python_version >= "3.7"
 joblib==1.0.1; python_version >= "3.7"
 json5==0.9.6; python_version >= "3.6"
-jsonschema==4.0.1; python_version >= "3.7"
+jsonschema==3.2.0
 jupyter-client==6.1.12; python_version >= "3.5"
 jupyter-console==6.4.0; python_version >= "3.6"
 jupyter-core==4.8.1; python_full_version >= "3.6.1" and python_version >= "3.7"
