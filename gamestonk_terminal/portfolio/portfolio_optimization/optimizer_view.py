@@ -354,12 +354,14 @@ def display_ef(
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
     # Add risk free line
     if risk_free:
-        y = max(rets)
+        y = ret_sharpe * 1.2
         b = get_rf()
         m = (ret_sharpe - b) / std_sharpe
-        x = (y - b) / m
-        ax.set_xlim(xmin=0)
-        line = Line2D([0, x], [b, y], color="#FF0000", label="Capital Allocation Line")
+        x2 = (y - b) / m
+        x = [0, x2]
+        y = [b, y]
+        line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
+        ax.set_xlim(xmin=min(stds) * 0.8)
         ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
