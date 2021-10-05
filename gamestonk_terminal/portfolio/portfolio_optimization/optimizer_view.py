@@ -352,6 +352,7 @@ def display_ef(
         verbose=True, risk_free_rate=rfrate
     )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
+    # Add risk free line
     if risk_free:
         y = max(rets)
         b = get_rf()
