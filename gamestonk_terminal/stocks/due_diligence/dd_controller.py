@@ -24,19 +24,14 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.stocks.stocks_helper import load
 
 
 class DueDiligenceController:
     """Due Diligence Controller"""
 
     # Command choices
-    CHOICES = [
-        "?",
-        "cls",
-        "help",
-        "q",
-        "quit",
-    ]
+    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
 
     CHOICES_COMMANDS = [
         "sec",
@@ -92,6 +87,7 @@ Due Diligence:
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    load          load new ticker
 
 {stock_text}
 
@@ -158,6 +154,12 @@ cathiesark.com
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.interval, self.stock = load(
+            other_args, self.ticker, self.start, "1440min", self.stock
+        )
 
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
