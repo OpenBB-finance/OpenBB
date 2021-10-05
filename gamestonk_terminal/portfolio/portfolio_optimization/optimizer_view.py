@@ -5,6 +5,8 @@ import math
 from typing import List
 
 import matplotlib.pyplot as plt
+
+from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 from pypfopt import plotting
@@ -321,7 +323,12 @@ def display_efficient_return(
     print("")
 
 
-def display_ef(stocks: List[str], period: str = "3mo", n_portfolios: int = 300):
+def display_ef(
+    stocks: List[str],
+    period: str = "3mo",
+    n_portfolios: int = 300,
+    risk_free: bool = False,
+):
     """Display efficient frontier
 
     Parameters
@@ -345,6 +352,17 @@ def display_ef(stocks: List[str], period: str = "3mo", n_portfolios: int = 300):
         verbose=True, risk_free_rate=rfrate
     )
     ax.scatter(std_sharpe, ret_sharpe, marker="*", s=100, c="r", label="Max Sharpe")
+    # Add risk free line
+    if risk_free:
+        y = ret_sharpe * 1.2
+        b = get_rf()
+        m = (ret_sharpe - b) / std_sharpe
+        x2 = (y - b) / m
+        x = [0, x2]
+        y = [b, y]
+        line = Line2D(x, y, color="#FF0000", label="Capital Allocation Line")
+        ax.set_xlim(xmin=min(stds) * 0.8)
+        ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
     fig.tight_layout()
