@@ -359,9 +359,7 @@ def display_ef(
         m = (ret_sharpe - b) / std_sharpe
         x = (y - b) / m
         ax.set_xlim(xmin=0)
-        x = [0, x]
-        y = [b, y]
-        line = Line2D(x, y, color="#FF0000")
+        line = Line2D([0, x], [b, y], color="#FF0000")
         ax.add_line(line)
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend()
