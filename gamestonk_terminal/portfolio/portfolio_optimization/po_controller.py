@@ -711,6 +711,14 @@ Mean Variance Optimization:
             dest="n_port",
             help="number of portfolios to simulate",
         )
+        parser.add_argument(
+            "-r",
+            "--risk-free",
+            action="store_true",
+            dest="risk_free",
+            default=False,
+            help="Adds the optimal line with the risk-free asset",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -725,6 +733,7 @@ Mean Variance Optimization:
                 stocks=self.tickers,
                 period=ns_parser.period,
                 n_portfolios=ns_parser.n_port,
+                risk_free=ns_parser.risk_free,
             )
 
         except Exception as e:

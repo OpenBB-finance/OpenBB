@@ -187,6 +187,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
                 gov_type=ns_parser.gov,
                 past_days=ns_parser.past_transactions_days,
                 representative=ns_parser.representative,
+                export=ns_parser.export,
             )
 
         except Exception as e:

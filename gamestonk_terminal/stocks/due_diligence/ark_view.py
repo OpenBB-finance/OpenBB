@@ -21,6 +21,11 @@ def display_ark_trades(ticker: str, num: int = 20, export: str = ""):
         Format to export data
     """
     ark_holdings = ark_model.get_ark_trades_by_ticker(ticker)
+
+    if ark_holdings.empty:
+        print("Issue getting data from cathiesark.com.  Likely no trades found.\n")
+        return
+
     # Since this is for a given ticker, no need to show it
     ark_holdings = ark_holdings.drop(columns=["ticker"])
 
