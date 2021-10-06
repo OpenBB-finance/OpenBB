@@ -1,0 +1,34 @@
+on:
+  schedule:
+    - cron:  '0 0 * * *' # at midnight (utc) every day
+jobs:
+  build:
+    name: Run AskGit
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout AskGit repo
+      uses: actions/checkout@v2
+      with:
+        repository: askgitdev/askgit
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install libgit2
+      run: sudo ./scripts/install_libgit2.sh
+
+    - name: Build AskGit
+      run: |
+        make
+        cp .build/askgit /usr/local/bin/askgit
+
+    - name: Sync tables
+      run: |
+        export PGSYNC=1
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        export GITHUB_PER_PAGE=50
+        export POSTGRES_CONNECTION=${{ secrets.POSTGRES_CONNECTION }}
+        export PGSYNC_PREAMBLE="SET statement_timeout = 0;"
+        askgit pgsync "askgit/GamestonkTerminal".pull_requests "SELECT * FROM github_repo_prs('GamestonkTerminal/GamestonkTerminal')"
+        askgit pgsync "askgit/GamestonkTerminal".issues "SELECT * FROM github_repo_issues('GamestonkTerminal/GamestonkTerminal')"
+        askgit pgsync "askgit/GamestonkTerminal".repos "SELECT * FROM github_org_repos('GamestonkTerminal')"
+        askgit pgsync "askgit/GamestonkTerminal".commit_stats "SELECT * FROM commits('https://github.com/GamestonkTerminal/GamestonkTerminal'), stats('https://github.com/GamestonkTerminal/GamestonkTerminal', commits.hash)"
+        askgit pgsync "askgit/GamestonkTerminal".stargazers "SELECT * FROM github_stargazers('GamestonkTerminal/GamestonkTerminal')"
