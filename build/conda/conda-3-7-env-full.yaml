@@ -4,7 +4,7 @@ channels:
 dependencies:
   - python=3.7
   - pip
-  - poetry=1.1.7
+  - poetry=1.1.11
   - numpy=1.19.5
   - gensim=3.8.3
   - cvxpy=1.1.12
