@@ -39,9 +39,6 @@ def load_portfolio(
     elif full_path.endswith(".json"):
         df = pd.read_json(full_path)
 
-    elif full_path.endswith(".xls"):
-        df = pd.read_excel(full_path)
-
     elif full_path.endswith(".xlsx"):
         df = pd.read_excel(full_path, engine="openpyxl")
 

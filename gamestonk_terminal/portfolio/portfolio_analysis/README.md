@@ -1,6 +1,6 @@
 # PORTFOLIO ANALYSIS
 
-This menu aims to analyze a portfolio loaded through csv/json/xls/xlsx, and the usage of the following commands along with an example will be exploited below.
+This menu aims to analyze a portfolio loaded through csv/json/xlsx, and the usage of the following commands along with an example will be exploited below.
 
 * [load](#load)
   * load portfolio from a file
