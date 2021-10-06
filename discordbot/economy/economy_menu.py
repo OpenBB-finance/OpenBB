@@ -130,15 +130,15 @@ class EconomyCommands(discord.ext.commands.Cog):
                     print("Reaction selected: 8")
                 await performance_command(ctx)
 
-            # TODO: Make this work - may need to set different discord server configurations
-            # await msg.remove_reaction(reaction.emoji, user)
-            # for emoji in emoji_list:
-            #    await msg.remove_reaction(emoji, user)
+            for emoji in emoji_list:
+                await msg.remove_reaction(emoji, ctx.bot.user)
 
         except asyncio.TimeoutError:
             text = text + "\n\nCOMMAND TIMEOUT."
             embed = discord.Embed(title=title, description=text)
             await msg.edit(embed=embed)
+            for emoji in emoji_list:
+                await msg.remove_reaction(emoji, ctx.bot.user)
 
 
 def setup(bot: discord.ext.commands.Bot):
