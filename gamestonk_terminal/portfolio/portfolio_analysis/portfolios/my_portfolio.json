@@ -1,0 +1,32 @@
+[
+    {
+        "Ticker": "GME",
+        "Shares": 69,
+        "Other": "https://www.gmefloor.com"
+    },
+    {
+        "Ticker": "AMC",
+        "Shares": 420,
+        "Other": null
+    },
+    {
+        "Ticker": "MSFT",
+        "Shares": 3,
+        "Other": null
+    },
+    {
+        "Ticker": "BAC",
+        "Shares": 2,
+        "Other": null
+    },
+    {
+        "Ticker": "O",
+        "Shares": 1,
+        "Other": null
+    },
+    {
+        "Ticker": "AAPL",
+        "Shares": 4,
+        "Other": null
+    }
+]

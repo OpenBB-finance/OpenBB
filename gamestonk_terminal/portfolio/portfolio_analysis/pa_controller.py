@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-from pathlib import Path
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
@@ -21,7 +20,9 @@ from gamestonk_terminal.portfolio.portfolio_analysis import (
 
 portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 possible_paths = [
-    Path(port).stem for port in os.listdir(portfolios_path) if port.endswith(".csv")
+    port
+    for port in os.listdir(portfolios_path)
+    if port.endswith(".csv") or port.endswith(".json") or port.endswith(".xlsx")
 ]
 
 
@@ -61,7 +62,7 @@ What would you like to do?
     quit          quit to abandon program
 
     view          view available portfolios
-    load          load portfolio from csv file
+    load          load portfolio from a file
 
 Portfolio: {self.portfolio_name or None}
 
@@ -113,14 +114,14 @@ Portfolio: {self.portfolio_name or None}
         """Process Quit command - quit the program"""
         return True
 
-    # TODO: allow loading other files than csv
     def call_load(self, other_args):
         """Process load command"""
         parser = argparse.ArgumentParser(
             prog="load",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Function to get portfolio from predefined csv file inside portfolios folder",
+            description="Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder",
+            epilog="usage: load file_name",
         )
         parser.add_argument(
             "-s",
@@ -141,26 +142,29 @@ Portfolio: {self.portfolio_name or None}
             "--nan",
             action="store_true",
             default=False,
-            help="Show nan entries from csv",
+            help="Show nan entries",
             dest="show_nan",
         )
         parser.add_argument(
             "-p",
             "--path",
-            default="my_portfolio",
+            default="my_portfolio.csv",
             choices=possible_paths,
-            help="Path to csv file",
+            help="Path to portfolio file",
             dest="path",
         )
 
         try:
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
             self.portfolio_name = ns_parser.path
-            self.portfolio = portfolio_model.load_csv_portfolio(
-                full_path=os.path.join(portfolios_path, ns_parser.path) + ".csv",
+            self.portfolio = portfolio_model.load_portfolio(
+                full_path=os.path.join(portfolios_path, ns_parser.path),
                 sector=ns_parser.sector,
                 last_price=ns_parser.last_price,
                 show_nan=ns_parser.show_nan,
@@ -234,7 +238,7 @@ Portfolio: {self.portfolio_name or None}
         parser.add_argument(
             "-f",
             "-format",
-            choices=["csv", "all"],
+            choices=["csv", "json", "xlsx", "all"],
             help="Format of portfolios to view.  'csv' will show all csv files available, etc.",
             default="all",
             dest="file_format",
@@ -255,7 +259,7 @@ Portfolio: {self.portfolio_name or None}
 
             print("\nAvailable Portfolios:\n")
             for port in available_ports:
-                print(Path(port).stem)
+                print(port)
             print("")
 
         except Exception as e:

@@ -271,7 +271,7 @@ Command|Technique|Sources
 
 Command|Description
 ------ | ------------
-`load`   | load portfolio from csv file
+`load`   | load portfolio from a file
 `group`  | view holdings by a user input group
 
 &nbsp;
