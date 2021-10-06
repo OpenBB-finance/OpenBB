@@ -121,6 +121,7 @@ Portfolio: {self.portfolio_name or None}
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder",
+            epilog="usage: load file_name",
         )
         parser.add_argument(
             "-s",
@@ -154,6 +155,9 @@ Portfolio: {self.portfolio_name or None}
         )
 
         try:
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-p")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
