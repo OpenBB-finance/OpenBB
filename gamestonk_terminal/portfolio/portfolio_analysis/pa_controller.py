@@ -22,7 +22,10 @@ portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "port
 possible_paths = [
     port
     for port in os.listdir(portfolios_path)
-    if port.endswith(".csv") or port.endswith(".json")
+    if port.endswith(".csv")
+    or port.endswith(".json")
+    or port.endswith(".xls")
+    or port.endswith(".xlsx")
 ]
 
 
@@ -120,7 +123,7 @@ Portfolio: {self.portfolio_name or None}
             prog="load",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="Function to get portfolio from predefined csv/json file inside portfolios folder",
+            description="Function to get portfolio from predefined csv/json/xls/xlsx file inside portfolios folder",
         )
         parser.add_argument(
             "-s",
@@ -234,7 +237,7 @@ Portfolio: {self.portfolio_name or None}
         parser.add_argument(
             "-f",
             "-format",
-            choices=["csv", "json", "all"],
+            choices=["csv", "json", "xls", "xlsx", "all"],
             help="Format of portfolios to view.  'csv' will show all csv files available, etc.",
             default="all",
             dest="file_format",
