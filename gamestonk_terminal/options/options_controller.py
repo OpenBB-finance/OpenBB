@@ -1041,7 +1041,8 @@ Current Expiry: {self.selected_date or None}
         )
 
         parser.add_argument(
-            "-p" "--put",
+            "-p",
+            "--put",
             action="store_true",
             default=False,
             dest="put",
