@@ -5,6 +5,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import yfinance as yf
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
@@ -44,4 +45,18 @@ def get_ark_trades_by_ticker(ticker: str) -> pd.DataFrame:
 
     df_orders = df_orders.drop(columns=["hidden", "everything.profile.customThumbnail"])
     df_orders["date"] = df_orders["date"].apply(lambda x: x.strip("Z"))
+
+    df_orders.rename(columns={"date": "Date"}, inplace=True)
+
+    # Get yfinance price to merge.  Use Close which assumes purchased throughout day
+    prices = yf.download(
+        ticker,
+        end=df_orders.Date.iloc[0],
+        start=df_orders.Date.iloc[-1],
+        progress=False,
+    )["Close"]
+
+    df_orders.set_index("Date", inplace=True)
+    df_orders = df_orders.join(prices)
+    df_orders["Total"] = df_orders["Close"] * df_orders["shares"]
     return df_orders
