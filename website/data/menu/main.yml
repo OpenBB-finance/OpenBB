@@ -580,6 +580,8 @@ main:
         ref: "/options/hist"
       - name: grhist
         ref: "/options/grhist"
+      - name: smile
+        ref: "/options/smile"
   - name: etf
     ref: "/etf"
     sub:
