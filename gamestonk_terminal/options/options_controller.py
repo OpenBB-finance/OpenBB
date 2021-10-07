@@ -60,6 +60,7 @@ class OptionsController:
         "grhist",
         "unu",
         "stocks",
+        "smile",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -134,6 +135,7 @@ Current Expiry: {self.selected_date or None}
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
+    smile         plot the volatility smile for the expiration date [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
@@ -1026,6 +1028,32 @@ Current Expiry: {self.selected_date or None}
                     puts_only=ns_parser.puts,
                     export=ns_parser.export,
                 )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_smile(self, other_args: List[str]):
+        """Process smile command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="smile",
+            description="Shows the volatility smile for a specified asset and expiration date",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--put",
+            action="store_true",
+            default=False,
+            dest="put",
+            help="Shows puts instead of calls",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            yfinance_view.plot_smile(self.ticker, self.selected_date, ns_parser.put)
+            print("")
         except Exception as e:
             print(e, "\n")
 
