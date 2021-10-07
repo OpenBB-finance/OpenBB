@@ -61,7 +61,7 @@ The fact that this is an Open Source project makes the possibilities of contribu
 ## Select Feature
 
  - Pick a feature you want to implement or a bug.
- - If out are out of ideas, look into our [issues](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) or search for `# TODO` in our repository.
+ - If out are out of ideas, look into our [issues](https://github.com/GamestonkTerminal/GamestonkTerminal/issues) or search for [`# TODO`](https://www.tickgit.com/browse?repo=github.com/GamestonkTerminal/GamestonkTerminal&branch=main) in our repository.
  - Feel free to discuss what you'll be working on via discord https://discord.gg/Up2QGbMKHY, to avoid duplicate work.
 
 ## Understand Code Structure
