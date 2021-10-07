@@ -212,19 +212,27 @@ Show:
             description="""Remove one of the options to be shown in the payoff.""",
         )
         parser.add_argument(
-            "-t",
-            "--type",
-            dest="rmv_tickers",
+            "-p",
+            "--put",
+            dest="put",
             type=str,
-            help="whether you want a call or a put",
-            required=True,
+            help="buy a put instead of a call",
+            default=False,
         )
         parser.add_argument(
-            "-t",
-            "--type",
-            dest="rmv_tickers",
+            "-s",
+            "--short",
+            dest="short",
             type=str,
-            help="whether you want a call or a put",
+            help="short the option instead of buying it",
+            default=False,
+        )
+        parser.add_argument(
+            "-k",
+            "--strike",
+            dest="strike",
+            type=float,
+            help="strike price for option",
             required=True,
         )
         try:
