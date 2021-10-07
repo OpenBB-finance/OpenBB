@@ -30,7 +30,6 @@ from gamestonk_terminal.options import (
     yfinance_view,
 )
 from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.options.smile_view import plot_smile
 
 
 class OptionsController:
@@ -136,7 +135,7 @@ Current Expiry: {self.selected_date or None}
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
-    smile         plot the volatility smile for the expiration date
+    smile         plot the volatility smile for the expiration date [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
@@ -1052,7 +1051,8 @@ Current Expiry: {self.selected_date or None}
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            plot_smile(self.ticker, self.selected_date, ns_parser.put)
+            yfinance_view.plot_smile(self.ticker, self.selected_date, ns_parser.put)
+            print("")
         except Exception as e:
             print(e, "\n")
 
