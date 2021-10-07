@@ -30,6 +30,7 @@ from gamestonk_terminal.options import (
     yfinance_view,
 )
 from gamestonk_terminal.stocks import stocks_controller
+from gamestonk_terminal.options import payoff_controller
 
 
 class OptionsController:
@@ -942,6 +943,15 @@ Current Expiry: {self.selected_date or None}
         if not self.ticker and not self.selected_date:
             print("Ticker and expiration required.")
             return
+
+    def call_payoff(self, _):
+        """Process payoff command"""
+        ret = payoff_controller.menu(self.ticker, self.selected_date)
+        if ret is False:
+            self.print_help()
+        else:
+            return True
+        return True
 
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
