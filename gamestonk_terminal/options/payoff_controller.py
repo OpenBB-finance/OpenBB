@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-from typing import List
+from typing import List, Dict
 
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
@@ -60,7 +60,7 @@ class Payoff:
         )
         self.ticker = ticker
         self.expiration = expiration
-        self.options: List[dict[str, str]] = []
+        self.options: List[Dict[str, str]] = []
         self.underlying = 0
         self.current_price = get_price(ticker)
 
