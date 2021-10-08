@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
-
 import argparse
 import os
 from typing import List
