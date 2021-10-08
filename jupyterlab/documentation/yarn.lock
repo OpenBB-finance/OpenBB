@@ -436,7 +436,7 @@
     node-fetch "^2.6.0"
     ws "^7.4.6"
 
-"@jupyterlab/settingregistry@^3.1.17", "@jupyterlab/settingregistry@^3.1.8":
+"@jupyterlab/settingregistry@^3.1.17":
   version "3.1.17"
   resolved "https://registry.yarnpkg.com/@jupyterlab/settingregistry/-/settingregistry-3.1.17.tgz#4e28790f63445ade18b574a38ab5ca007b0429b0"
   integrity sha512-nd/m+/fc7M+1wk4YsPiNz+Rm/QbuSoWBNMjv8BCw7tdZkK4QqT9OTeaYtyn3QzHrx2svcSVpXW+S3iA4BB6BnA==
@@ -502,7 +502,7 @@
     "@jupyterlab/statedb" "^3.1.17"
     "@lumino/coreutils" "^1.5.3"
 
-"@jupyterlab/ui-components@^3.1.0", "@jupyterlab/ui-components@^3.1.17":
+"@jupyterlab/ui-components@^3.1.17":
   version "3.1.17"
   resolved "https://registry.yarnpkg.com/@jupyterlab/ui-components/-/ui-components-3.1.17.tgz#bc3d3d3de93493ad4ebab30a15faab240ef23d75"
   integrity sha512-E6y/Ef8IC2P6ZDSQ39fp2rBoxoz+xYrmmCx4uqEhOPA7RKC6q1CKJ1f6fG/xYgJUw/Q6UB2/Y7LaXxAy+jR7cw==
