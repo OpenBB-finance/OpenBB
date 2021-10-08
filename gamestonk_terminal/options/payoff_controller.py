@@ -4,8 +4,11 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
+
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
+import yfinance as yf
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -13,6 +16,13 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.options.yfinance_model import get_option_chain
+
+
+def get_price(ticker):
+    ticker_yahoo = yf.Ticker(ticker)
+    data = ticker_yahoo.history()
+    last_quote = data.tail(1)["Close"].iloc[0]
+    return last_quote
 
 
 class Payoff:
@@ -52,6 +62,7 @@ class Payoff:
         self.expiration = expiration
         self.options: List[dict[str, str]] = []
         self.underlying = 0
+        self.current_price = get_price(ticker)
 
     @staticmethod
     def print_help():
@@ -141,17 +152,20 @@ Show:
         """Process rmv command"""
         self.rmv_option(other_args)
 
-    def call_long(self):
+    def call_long(self, other_args: List[str]):
+        # pylint: disable=W0613
         """Process call command"""
         self.underlying = 1
         self.show_setup(True)
 
-    def call_short(self):
+    def call_short(self, other_args: List[str]):
+        # pylint: disable=W0613
         """Process short command"""
         self.underlying = -1
         self.show_setup(True)
 
-    def call_none(self):
+    def call_none(self, other_args: List[str]):
+        # pylint: disable=W0613
         """Process none command"""
         self.underlying = 0
         self.show_setup(True)
@@ -166,15 +180,28 @@ Show:
                         on their risk and returns and shows the efficient frontier.""",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        # try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            print("Graph should show")
+        x, yb, ya = self.generate_data()
+        _, ax = plt.subplots()
+        if ya:
+            ax.plot(x, yb, label="Payoff Before Fees")
+            ax.plot(x, ya, label="Payoff After Fees")
+        else:
+            ax.plot(x, yb, label="Payoff")
+        ax.set_title(f"Option Payoff Diagram for {self.ticker} on {self.expiration}")
+        ax.set_ylabel("Profit")
+        ax.set_xlabel("Underlying Asset Price at Expiration")
+        ax.xaxis.set_major_formatter("${x:.2f}")
+        ax.yaxis.set_major_formatter("${x:.2f}")
+        plt.legend()
+        plt.show()
 
-        except Exception as e:
-            print(e, "\n")
+        # except Exception as e:
+        # print(e, "\n")
 
     def show_setup(self, nl: bool = False):
         if self.underlying == -1:
@@ -183,7 +210,9 @@ Show:
             text = "Not holding"
         else:
             text = "Longing"
-        print(f"{text} the underlying asset")
+        print(
+            f"{text} the underlying asset with current price of ${self.current_price:.2f}"
+        )
         print("#\tType\tHold\tStrike\tCost")
         for i, o in enumerate(self.options):
             sign = "Long" if o["sign"] == 1 else "Short"
@@ -274,6 +303,43 @@ Show:
         except Exception as e:
             print(e, "\n")
 
+    def get_x_values(self):
+        x_list = list(range(101))
+        mini = self.current_price
+        maxi = self.current_price
+        if len(self.options) == 0:
+            mini *= 0.5
+            maxi *= 1.5
+        elif len(self.options) > 0:
+            biggest = max(self.options, key=lambda x: x["strike"])
+            smallest = min(self.options, key=lambda x: x["strike"])
+            maxi = max(maxi, biggest["strike"]) * 1.2
+            mini = min(mini, smallest["strike"]) * 0.8
+        num_range = maxi - mini
+        return [(x / 100) * num_range + mini for x in x_list]
+
+    def get_y_values(self, base, price):
+        option_change = 0
+        change = price - base
+        for option in self.options:
+            if option["type"] == "call":
+                abs_change = price - option["strike"] if price > option["strike"] else 0
+                option_change += option["sign"] * abs_change
+            elif option["type"] == "put":
+                abs_change = option["strike"] - price if price < option["strike"] else 0
+                option_change += option["sign"] * abs_change
+        return (change * self.underlying) + option_change
+
+    def generate_data(self):
+        x_vals = self.get_x_values()
+        base = self.current_price
+        total_cost = sum(x["cost"] for x in self.options)
+        before = [self.get_y_values(base, x) for x in x_vals]
+        if total_cost != 0:
+            after = [self.get_y_values(base, x) - total_cost for x in x_vals]
+            return x_vals, before, after
+        return x_vals, before, None
+
 
 def menu(ticker: str, expiration: str):
     """Portfolio Optimization Menu"""
@@ -317,7 +383,7 @@ type portItem = {
   cost: number
 }
 
-  dataFunction(base: number, price: number) {
+  getYValues(base: number, price: number) {
       var main = this.props.portfolio.find(item => item.id == 1);
       var optionsChange: number = 0;
       var change: number = price - base;
@@ -365,9 +431,9 @@ type portItem = {
         var beforeFees = [];
         var afterFees = [];
         xVals.forEach(item => {
-          beforeFees.push({"x" : item, "y": this.dataFunction(base, item)});
+          beforeFees.push({"x" : item, "y": this.getYValues(base, item)});
           if (totalCost != 0) {
-            afterFees.push({"x" : item, "y": this.dataFunction(base, item) - totalCost});
+            afterFees.push({"x" : item, "y": this.getYValues(base, item) - totalCost});
           }
         })
         var returnDict = [{id: "Before Costs", data: beforeFees},]
