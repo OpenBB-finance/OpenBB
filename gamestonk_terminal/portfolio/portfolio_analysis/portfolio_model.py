@@ -9,18 +9,18 @@ import gamestonk_terminal.feature_flags as gtff
 # pylint: disable=no-member,unsupported-assignment-operation,unsubscriptable-object
 
 
-def load_csv_portfolio(
+def load_portfolio(
     full_path: str,
     sector: bool = False,
     last_price: bool = False,
     show_nan: bool = True,
 ) -> pd.DataFrame:
-    """Loads a csv portfolio into a dataframe and adds sector and last price
+    """Loads a portfolio file into a dataframe and adds sector and last price
 
     Parameters
     ----------
     full_path : str
-        Path to csv portfolio.
+        Path to portfolio file.
     sector : bool, optional
         Boolean to indicate getting sector from yfinance , by default False
     last_price : bool, optional
@@ -31,9 +31,16 @@ def load_csv_portfolio(
     Returns
     -------
     pd.DataFrame
-        Dataframe conataining csv portfolio
+        Dataframe conataining portfolio
     """
-    df = pd.read_csv(full_path)
+    if full_path.endswith(".csv"):
+        df = pd.read_csv(full_path)
+
+    elif full_path.endswith(".json"):
+        df = pd.read_json(full_path)
+
+    elif full_path.endswith(".xlsx"):
+        df = pd.read_excel(full_path, engine="openpyxl")
 
     if sector:
         df["sector"] = df.apply(

@@ -14,27 +14,24 @@ from gamestonk_terminal.stocks.due_diligence import (
     marketwatch_view,
     finnhub_view,
     csimarket_view,
+    ark_view,
 )
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.stocks.stocks_helper import load
 
 
 class DueDiligenceController:
     """Due Diligence Controller"""
 
     # Command choices
-    CHOICES = [
-        "?",
-        "cls",
-        "help",
-        "q",
-        "quit",
-    ]
+    CHOICES = ["?", "cls", "help", "q", "quit", "load"]
 
     CHOICES_COMMANDS = [
         "sec",
@@ -45,6 +42,7 @@ class DueDiligenceController:
         "analyst",
         "supplier",
         "customer",
+        "arktrades",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -89,6 +87,7 @@ Due Diligence:
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    load          load new ticker
 
 {stock_text}
 
@@ -106,6 +105,8 @@ Market Watch:
 csimarket:
     supplier      list of suppliers
     customer      list of customers
+cathiesark.com
+    arktrades     get ARK trades for ticker
         """
 
         print(help_text)
@@ -153,6 +154,12 @@ csimarket:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.interval, self.stock = load(
+            other_args, self.ticker, self.start, "1440min", self.stock
+        )
 
     def call_analyst(self, other_args: List[str]):
         """Process analyst command"""
@@ -456,6 +463,46 @@ csimarket:
                 export=ns_parser.export,
             )
 
+        except Exception as e:
+            print(e, "\n")
+
+    def call_arktrades(self, other_args):
+        """Process arktrades command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="arktrades",
+            description="""
+                Get trades for ticker across all ARK funds.
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            help="Number of rows to show",
+            dest="num",
+            default=20,
+            type=int,
+        )
+        parser.add_argument(
+            "-s",
+            "--show_ticker",
+            action="store_true",
+            default=False,
+            help="Flag to show ticker in table",
+            dest="show_ticker",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+            ark_view.display_ark_trades(
+                ticker=self.ticker,
+                num=ns_parser.num,
+                export=ns_parser.export,
+                show_ticker=ns_parser.show_ticker,
+            )
         except Exception as e:
             print(e, "\n")
 

@@ -12,6 +12,8 @@ from colorama import Style
 import pandas as pd
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
     check_int_range,
@@ -509,7 +511,9 @@ SentimentInvestor:
             help="limit messages shown.",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
             if not ns_parser:
                 return
 
@@ -538,7 +542,9 @@ SentimentInvestor:
             help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             if self._check_ticker():
@@ -567,7 +573,9 @@ SentimentInvestor:
             help="number of regions to plot that show highest interest.",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             if self._check_ticker():
@@ -595,7 +603,9 @@ SentimentInvestor:
             help="number of top related queries to print.",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             if self._check_ticker():
@@ -623,7 +633,9 @@ SentimentInvestor:
             help="number of top rising related queries to print.",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             if self._check_ticker():
@@ -656,7 +668,9 @@ SentimentInvestor:
         )
 
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
 
@@ -697,7 +711,9 @@ SentimentInvestor:
             help="number of days in the past to extract tweets.",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             if self._check_ticker():
@@ -732,7 +748,9 @@ SentimentInvestor:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
             if self._check_ticker():
@@ -763,7 +781,9 @@ SentimentInvestor:
             help="Export dataframe data to csv,json,xlsx file",
         )
         try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            )
             if not ns_parser:
                 return
 

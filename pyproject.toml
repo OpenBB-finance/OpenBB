@@ -80,17 +80,18 @@ openpyxl = "3.0.7"
 vcrpy = "^4.1.1"
 coverage = "^5.5"
 tensorflow = {version = "2.6.0", optional = true}
+jsonschema = "3.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "^2.7.2"
 flake8 = "^3.9.0"
-black = "21.5b2"
 mypy = "^0.901"
 mock = "^4.0.3"
 codespell = "^2.0.0"
 pyupgrade = "^2.11.0"
 Sphinx = "4.1.1"
+black = "21.7b0"
 
 [tool.poetry.extras]
 prediction = ["tensorflow"]

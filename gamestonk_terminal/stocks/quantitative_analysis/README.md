@@ -20,6 +20,9 @@ This menu aims to perform exploratory data analysis on a pre-loaded stock, and t
   * detects abrupt changes using cumulative sum algorithm
 * [acf](#acf)
   * (partial) auto-correlation function differentials
+* [capm](#capm)
+  * capital asset pricing model
+
 
 
 ## summary <a name="summary"></a>
@@ -132,3 +135,15 @@ Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff s
 * -l : maximum lags to display in plots. Default 40.
 
 ![acf](https://user-images.githubusercontent.com/25267873/112733336-637c5d00-8f37-11eb-9aae-38e75dff9ad2.png)
+
+
+## capm <a name="capm"></a>
+
+```text
+usage: capm
+```
+
+Capital asset pricing model for a given stock.
+
+
+![capm]

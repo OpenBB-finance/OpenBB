@@ -1,9 +1,9 @@
 # PORTFOLIO ANALYSIS
 
-This menu aims to analyze a portfolio loaded through csv, and the usage of the following commands along with an example will be exploited below.
+This menu aims to analyze a portfolio loaded through csv/json/xlsx, and the usage of the following commands along with an example will be exploited below.
 
 * [load](#load)
-  * load portfolio from csv file
+  * load portfolio from a file
 * [group](#group)
   * view holdings by a user input group
 
@@ -11,8 +11,8 @@ This menu aims to analyze a portfolio loaded through csv, and the usage of the f
 ```
 usage: load [-p PATH] [--no_sector] [--no_last_price] [--nan]
 ```
-This function allows you to load from a predefined csv file.  The csv file can contain any information you want, but the stocks should be under a column `Ticker`.  The number owned should be defined in `Shares`.  By default, this will loop through all Tickers and pull sector and latest price. An example column that could be added would be if the ticker is considered a Value or Growth stock.
-* -p/--path : Path to csv.  A template is supplied and the default path points to it.
+This function allows you to load from a predefined file.  The file can contain any information you want, but the stocks should be under a column `Ticker`.  The number owned should be defined in `Shares`.  By default, this will loop through all Tickers and pull sector and latest price. An example column that could be added would be if the ticker is considered a Value or Growth stock.
+* -p/--path : Path to portfolio file.  A template is supplied and the default path points to it.
 * --no_sector : Flag to avoid getting the sector of each stock.
 * --no_last_price : Flag to avoid getting the latest price for each supplied stock.
 * --nan : Flag to display NaN columns.  Useful if importing partial information.
