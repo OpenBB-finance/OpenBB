@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
+
 import argparse
 import os
 from typing import List
@@ -62,6 +63,7 @@ class OptionsController:
         "stocks",
         "payoff",
         "smile",
+    ]
 
     CHOICES += CHOICES_MENUS
 
