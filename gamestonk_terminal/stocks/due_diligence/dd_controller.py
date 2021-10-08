@@ -483,6 +483,14 @@ cathiesark.com
             default=20,
             type=int,
         )
+        parser.add_argument(
+            "-s",
+            "--show_ticker",
+            action="store_true",
+            default=False,
+            help="Flag to show ticker in table",
+            dest="show_ticker",
+        )
         try:
             ns_parser = parse_known_args_and_warn(
                 parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -490,7 +498,10 @@ cathiesark.com
             if not ns_parser:
                 return
             ark_view.display_ark_trades(
-                ticker=self.ticker, num=ns_parser.num, export=ns_parser.export
+                ticker=self.ticker,
+                num=ns_parser.num,
+                export=ns_parser.export,
+                show_ticker=ns_parser.show_ticker,
             )
         except Exception as e:
             print(e, "\n")
