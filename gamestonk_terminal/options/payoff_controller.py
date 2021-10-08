@@ -204,6 +204,7 @@ Show:
         # print(e, "\n")
 
     def show_setup(self, nl: bool = False):
+        """Shows the current assets to display in the diagram"""
         if self.underlying == -1:
             text = "Shorting"
         elif self.underlying == 0:
@@ -225,7 +226,7 @@ Show:
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="add/select",
-            description="""Add/Select tickers for portfolio to be optimized.""",
+            description="""Add options to the diagram.""",
         )
         parser.add_argument(
             "-p",
@@ -304,6 +305,7 @@ Show:
             print(e, "\n")
 
     def get_x_values(self):
+        """Generates different price values that need to be tested"""
         x_list = list(range(101))
         mini = self.current_price
         maxi = self.current_price
@@ -319,6 +321,7 @@ Show:
         return [(x / 100) * num_range + mini for x in x_list]
 
     def get_y_values(self, base, price):
+        """Generates y values for corresponding x values"""
         option_change = 0
         change = price - base
         for option in self.options:
@@ -331,6 +334,7 @@ Show:
         return (change * self.underlying) + option_change
 
     def generate_data(self):
+        """Gets x values, and y values before and after fees"""
         x_vals = self.get_x_values()
         base = self.current_price
         total_cost = sum(x["cost"] for x in self.options)
@@ -371,73 +375,3 @@ def menu(ticker: str, expiration: str):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
-
-
-# pylint: disable=W0105
-"""
-type portItem = {
-  id: number,
-  type: "stock" | "call" | "put",
-  sign: -1 | 0 | 1,
-  strike: number,
-  cost: number
-}
-
-  getYValues(base: number, price: number) {
-      var main = this.props.portfolio.find(item => item.id == 1);
-      var optionsChange: number = 0;
-      var change: number = price - base;
-      this.props.portfolio.filter(item => item.id != 1).forEach(item => {
-        if (item.type == "call") {
-          let absChange: number = price > item.strike ? price - item.strike : 0;
-          optionsChange += item.sign * absChange;
-        } else if (item.type == "put") {
-          let absChange: number = price < item.strike ? item.strike - price : 0;
-          optionsChange += item.sign * absChange;
-        }
-      })
-      return  (change * main.sign) + optionsChange;
-    }
-
-    getXValues() {
-      var xList: number[] = Array.from(Array(101).keys())
-      var min: number = this.props.data.price;
-      var max: number = this.props.data.price;
-      if (this.props.portfolio.length == 1) {
-        min *= 0.5;
-        max *= 1.5;
-      } else if (this.props.portfolio.length > 1) {
-        this.props.portfolio.forEach(item => {
-          if (item.strike > max) {
-            max = item.strike;
-          }
-          if (item.strike < min) {
-            min = item.strike;
-          }
-          min *= 0.8;
-          max *= 1.2;
-        })
-      }
-      var range: number = max - min;
-      return xList.map(item => min + ((item/100)*range));
-
-     generateData() {
-        var xVals: number[] = this.getXValues();
-        var base: number = this.props.data.price;
-        var totalCost: number = 0;
-        this.props.portfolio.forEach(item => {
-          totalCost += item.cost
-        })
-        var beforeFees = [];
-        var afterFees = [];
-        xVals.forEach(item => {
-          beforeFees.push({"x" : item, "y": this.getYValues(base, item)});
-          if (totalCost != 0) {
-            afterFees.push({"x" : item, "y": this.getYValues(base, item) - totalCost});
-          }
-        })
-        var returnDict = [{id: "Before Costs", data: beforeFees},]
-        if (totalCost != 0){returnDict.push({id: "After Costs", data: afterFees})}
-        return returnDict;
-    }
-"""
