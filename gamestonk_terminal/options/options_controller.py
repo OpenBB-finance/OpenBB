@@ -61,6 +61,7 @@ class OptionsController:
         "grhist",
         "unu",
         "stocks",
+        "payoff",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -135,6 +136,7 @@ Current Expiry: {self.selected_date or None}
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
+    payoff        shows payoff diagram for a selection of options [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
@@ -951,7 +953,7 @@ Current Expiry: {self.selected_date or None}
             self.print_help()
         else:
             return True
-        return True
+        return False
 
     def call_oi(self, other_args: List[str]):
         """Process oi command"""

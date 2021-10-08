@@ -10,14 +10,14 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
-    check_non_negative,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.options.yfinance_model import get_option_chain
 
 
 class Payoff:
 
-    CHOICES = ["cls", "?", "help", "q", "quit"]
+    CHOICES = ["cls", "?", "help", "q", "quit", "list"]
     CHOICES_COMMANDS = [
         "select",
         "add",
@@ -35,6 +35,19 @@ class Payoff:
 
         self.po_parser = argparse.ArgumentParser(add_help=False, prog="po")
         self.po_parser.add_argument("cmd", choices=self.CHOICES)
+        self.chain = get_option_chain(ticker, expiration)
+        self.calls = list(
+            zip(
+                self.chain.calls["strike"].tolist(),
+                self.chain.calls["lastPrice"].tolist(),
+            )
+        )
+        self.puts = list(
+            zip(
+                self.chain.puts["strike"].tolist(),
+                self.chain.puts["lastPrice"].tolist(),
+            )
+        )
         self.ticker = ticker
         self.expiration = expiration
         self.options: List[dict[str, str]] = []
@@ -51,10 +64,11 @@ What would you like to do?
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    list          list available strike prices for calls and puts
 
 Options:
     add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized"
+    rmv           remove tickers from the list of the tickers to be optimized
 
 Underlying Asset:
     long          long the underlying asset
@@ -64,7 +78,6 @@ Underlying Asset:
 Show:
     plot          show the efficient frontier
         """
-        # {('None', ', '.join(tickers))[bool(tickers)]}
         print(help_text)
 
     def switch(self, an_input: str):
@@ -111,6 +124,15 @@ Show:
         """Process Quit command - quit the program"""
         return True
 
+    def call_list(self, _):
+        """Lists available calls and puts"""
+        length = max(len(self.calls), len(self.puts)) - 1
+        print("#\tcall\tput")
+        for i in range(length):
+            call = self.calls[i][0] if i < len(self.calls) else "NA"
+            put = self.puts[i][0] if i < len(self.puts) else "NA"
+            print(f"{i}\t{call}\t{put}")
+
     def call_add(self, other_args: List[str]):
         """Process add command"""
         self.add_option(other_args)
@@ -122,14 +144,17 @@ Show:
     def call_long(self):
         """Process call command"""
         self.underlying = 1
+        self.show_setup(True)
 
     def call_short(self):
         """Process short command"""
         self.underlying = -1
+        self.show_setup(True)
 
     def call_none(self):
         """Process none command"""
         self.underlying = 0
+        self.show_setup(True)
 
     def call_plot(self, other_args):
         """Process plot command"""
@@ -139,24 +164,6 @@ Show:
             prog="plot",
             description="""This function plots random portfolios based
                         on their risk and returns and shows the efficient frontier.""",
-        )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-n")
-        parser.add_argument(
-            "-n",
-            "--number-portfolios",
-            default=300,
-            type=check_non_negative,
-            dest="n_port",
-            help="number of portfolios to simulate",
-        )
-        parser.add_argument(
-            "-r",
-            "--risk-free",
-            action="store_true",
-            dest="risk_free",
-            default=False,
-            help="Adds the optimal line with the risk-free asset",
         )
 
         try:
@@ -169,53 +176,33 @@ Show:
         except Exception as e:
             print(e, "\n")
 
+    def show_setup(self, nl: bool = False):
+        if self.underlying == -1:
+            text = "Shorting"
+        elif self.underlying == 0:
+            text = "Not holding"
+        else:
+            text = "Longing"
+        print(f"{text} the underlying asset")
+        print("#\tType\tHold\tStrike\tCost")
+        for i, o in enumerate(self.options):
+            sign = "Long" if o["sign"] == 1 else "Short"
+            print(f"{i}\t{o['type']}\t{sign}\t{o['strike']}\t{o['cost']}")
+        if nl:
+            print("")
+
     def add_option(self, other_args: List[str]):
-        """Add ticker or Select tickes for portfolio to be optimized"""
+        """Add an option to the diagram"""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="add/select",
             description="""Add/Select tickers for portfolio to be optimized.""",
         )
         parser.add_argument(
-            "-t",
-            "--tickers",
-            dest="add_tickers",
-            type=lambda s: [str(item).upper() for item in s.split(",")],
-            default=[],
-            help="tickers to be used in the portfolio to optimize.",
-        )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-t")
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            self.options.append(ns_parser.add_tickers)
-
-            for option in self.options:
-                print(option)
-
-            # self.tickers = list(tickers)
-            print("")
-
-        except Exception as e:
-            print(e, "\n")
-
-    def rmv_option(self, other_args: List[str]):
-        """Remove one of the tickers to be optimized"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="rmv",
-            description="""Remove one of the options to be shown in the payoff.""",
-        )
-        parser.add_argument(
             "-p",
             "--put",
             dest="put",
-            type=str,
+            action="store_true",
             help="buy a put instead of a call",
             default=False,
         )
@@ -223,7 +210,7 @@ Show:
             "-s",
             "--short",
             dest="short",
-            type=str,
+            action="store_true",
             help="short the option instead of buying it",
             default=False,
         )
@@ -231,27 +218,58 @@ Show:
             "-k",
             "--strike",
             dest="strike",
-            type=float,
+            type=int,
+            help="strike price for option",
+            required=True,
+        )
+        try:
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            opt_type = "put" if ns_parser.put else "call"
+            sign = -1 if ns_parser.short else 1
+            if ns_parser.put:
+                strike = self.puts[ns_parser.strike][0]
+                cost = self.puts[ns_parser.strike][1]
+            else:
+                strike = self.calls[ns_parser.strike][0]
+                cost = self.calls[ns_parser.strike][1]
+
+            option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
+            self.options.append(option)
+            self.show_setup(True)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def rmv_option(self, other_args: List[str]):
+        """Remove one of the options from the diagram"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rmv",
+            description="""Remove one of the options to be shown in the payoff.""",
+        )
+
+        parser.add_argument(
+            "-k",
+            "--strike",
+            dest="strike",
+            type=int,
             help="strike price for option",
             required=True,
         )
         try:
             if other_args:
                 if "-" not in other_args[0]:
-                    other_args.insert(0, "-t")
-
+                    other_args.insert(0, "-k")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
 
-            # tickers = set(self.tickers)
-            for option in ns_parser.rmv_tickers:
-                self.options.remove(option)
-
-            for option in self.options:
-                print(option)
-
-            print("")
+            del self.options[ns_parser.strike]
+            self.show_setup(True)
 
         except Exception as e:
             print(e, "\n")
@@ -287,3 +305,73 @@ def menu(ticker: str, expiration: str):
         except SystemExit:
             print("The command selected doesn't exist\n")
             continue
+
+
+# pylint: disable=W0105
+"""
+type portItem = {
+  id: number,
+  type: "stock" | "call" | "put",
+  sign: -1 | 0 | 1,
+  strike: number,
+  cost: number
+}
+
+  dataFunction(base: number, price: number) {
+      var main = this.props.portfolio.find(item => item.id == 1);
+      var optionsChange: number = 0;
+      var change: number = price - base;
+      this.props.portfolio.filter(item => item.id != 1).forEach(item => {
+        if (item.type == "call") {
+          let absChange: number = price > item.strike ? price - item.strike : 0;
+          optionsChange += item.sign * absChange;
+        } else if (item.type == "put") {
+          let absChange: number = price < item.strike ? item.strike - price : 0;
+          optionsChange += item.sign * absChange;
+        }
+      })
+      return  (change * main.sign) + optionsChange;
+    }
+
+    getXValues() {
+      var xList: number[] = Array.from(Array(101).keys())
+      var min: number = this.props.data.price;
+      var max: number = this.props.data.price;
+      if (this.props.portfolio.length == 1) {
+        min *= 0.5;
+        max *= 1.5;
+      } else if (this.props.portfolio.length > 1) {
+        this.props.portfolio.forEach(item => {
+          if (item.strike > max) {
+            max = item.strike;
+          }
+          if (item.strike < min) {
+            min = item.strike;
+          }
+          min *= 0.8;
+          max *= 1.2;
+        })
+      }
+      var range: number = max - min;
+      return xList.map(item => min + ((item/100)*range));
+
+     generateData() {
+        var xVals: number[] = this.getXValues();
+        var base: number = this.props.data.price;
+        var totalCost: number = 0;
+        this.props.portfolio.forEach(item => {
+          totalCost += item.cost
+        })
+        var beforeFees = [];
+        var afterFees = [];
+        xVals.forEach(item => {
+          beforeFees.push({"x" : item, "y": this.dataFunction(base, item)});
+          if (totalCost != 0) {
+            afterFees.push({"x" : item, "y": this.dataFunction(base, item) - totalCost});
+          }
+        })
+        var returnDict = [{id: "Before Costs", data: beforeFees},]
+        if (totalCost != 0){returnDict.push({id: "After Costs", data: afterFees})}
+        return returnDict;
+    }
+"""
