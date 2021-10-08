@@ -29,6 +29,16 @@ def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
     if result.status_code == 200:
         similar = result.json()["similar"]
         source = "Polygon"
+        us_similar = []
+        mkw_link = "https://www.marketwatch.com/investing/stock/"
+        for sym in similar:
+            prep_link = mkw_link + sym
+            sent_req = requests.get(prep_link)
+            if prep_link == sent_req.request.url:
+                us_similar.append(sym)
+            else:
+                pass
+            similar = us_similar
     else:
         print(result.json()["error"])
         similar = [""]
