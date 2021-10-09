@@ -7,6 +7,8 @@ import warnings
 from typing import Union
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -65,7 +67,7 @@ def display_exponential_smoothing(
             return
 
         df_future = values[future_index[0] : future_index[-1]]
-        df = values[:s_end_date]  # type: ignore
+        values = values[:s_end_date]  # type: ignore
 
     # Get ETS model
     model, title, forecast = ets_model.get_exponential_smoothing_model(
@@ -148,9 +150,9 @@ def display_exponential_smoothing(
             ls="--",
         )
         ax.plot(
-            [df.index[-1], df_future.index[0]],
+            [values.index[-1], df_future.index[0]],
             [
-                df.values[-1],
+                values.values[-1],
                 df_future.values[0],
             ],
             lw=1,
@@ -166,6 +168,7 @@ def display_exponential_smoothing(
 
     # BACKTESTING
     if s_end_date:
+        dateFmt = mdates.DateFormatter("%m-%d")
         fig, ax = plt.subplots(1, 2, figsize=plot_autoscale(), dpi=PLOT_DPI)
         ax0 = ax[0]
         ax0.plot(
@@ -183,9 +186,9 @@ def display_exponential_smoothing(
             lw=3,
         )
         ax0.plot(
-            [df.index[-1], df_future.index[0]],
+            [values.index[-1], df_future.index[0]],
             [
-                df.values[-1],
+                values.values[-1],
                 df_future.values[0],
             ],
             lw=2,
@@ -194,23 +197,20 @@ def display_exponential_smoothing(
         )
         ax0.scatter(df_pred.index, df_pred, c="green", lw=3)
         ax0.plot(
-            [df.index[-1], df_pred.index[0]],
-            [df.values[-1], df_pred.values[0]],
+            [values.index[-1], df_pred.index[0]],
+            [values.values[-1], df_pred.values[0]],
             lw=2,
             c="green",
             ls="--",
         )
-        ax0.title("BACKTESTING: Real data price versus Prediction")
+        ax0.set_title("BACKTESTING: Prices")
         ax0.set_xlim(
-            df.index[-1],
+            values.index[-1],
             df_pred.index[-1] + datetime.timedelta(days=1),
         )
         ax0.set_ylabel("Share Price ($)")
         ax0.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax0.minorticks_on()
-        ax0.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         ax0.legend(["Real data", "Prediction data"])
-        ax0.set_xticks([])
 
         ax1 = ax[1]
         ax1.axhline(y=0, color="k", linestyle="--", linewidth=2)
@@ -226,9 +226,9 @@ def display_exponential_smoothing(
             c="red",
             lw=5,
         )
-        ax1.title("BACKTESTING: Error between Real data and Prediction [%]")
+        ax1.set_title("BACKTESTING: % Error")
         ax1.plot(
-            [df.index[-1], df_future.index[0]],
+            [values.index[-1], df_future.index[0]],
             [
                 0,
                 100 * (df_pred.values[0] - df_future.values[0]) / df_future.values[0],
@@ -237,16 +237,19 @@ def display_exponential_smoothing(
             ls="--",
             c="red",
         )
-        ax1.xlim(
-            df.index[-1],
+        ax1.set_xlim(
+            values.index[-1],
             df_pred.index[-1] + datetime.timedelta(days=1),
         )
         ax1.set_xlabel("Time")
         ax1.set_ylabel("Prediction Error (%)")
         ax1.grid(b=True, which="major", color="#666666", linestyle="-")
-        ax1.minorticks_on()
-        ax1.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
         ax1.legend(["Real data", "Prediction data"])
+
+        ax0.xaxis.set_major_formatter(dateFmt)
+        ax0.tick_params(axis="x", labelrotation=45)
+        ax1.xaxis.set_major_formatter(dateFmt)
+        ax1.tick_params(axis="x", labelrotation=45)
 
         if gtff.USE_ION:
             plt.ion()
