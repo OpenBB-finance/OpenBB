@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Union
 import os
 from warnings import simplefilter
 from datetime import timedelta
@@ -217,13 +217,18 @@ def parse_args(prog: str, description: str, other_args: List[str]):
 
 
 def prepare_scale_train_valid_test(
-    df_stock: pd.DataFrame, ns_parser: argparse.Namespace
+    data: Union[pd.DataFrame, pd.Series],
+    n_input_days: int,
+    n_predict_days: int,
+    test_size: float,
+    s_end_date: str,
+    no_shuffle: bool,
 ):
     """
     Prepare and scale train, validate and test data.
     Parameters
     ----------
-    df_stock: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of stock prices
     ns_parser: argparse.Namespace
         Parsed arguments
@@ -253,10 +258,6 @@ def prepare_scale_train_valid_test(
         Fitted preprocesser
     """
 
-    n_input_days = ns_parser.n_inputs
-    n_predict_days = ns_parser.n_days
-    test_size = ns_parser.valid_split
-
     # Pre-process data
     if PREPROCESSER == "standardization":
         scaler = StandardScaler()
@@ -272,9 +273,9 @@ def prepare_scale_train_valid_test(
     # Test data is used for forecasting.  Takes the last n_input_days data points.
     # These points are not fed into training
 
-    if ns_parser.s_end_date:
-        df_stock = df_stock[df_stock.index <= ns_parser.s_end_date]
-        if n_input_days + n_predict_days > df_stock.shape[0]:
+    if s_end_date:
+        data = data[data.index <= s_end_date]
+        if n_input_days + n_predict_days > data.shape[0]:
             print("Cannot train enough input days to predict with loaded dataframe\n")
             return (
                 None,
@@ -291,16 +292,16 @@ def prepare_scale_train_valid_test(
                 True,
             )
 
-    test_data = df_stock.iloc[-n_input_days:]
-    train_data = df_stock.iloc[:-n_input_days]
+    test_data = data.iloc[-n_input_days:]
+    train_data = data.iloc[:-n_input_days]
 
-    dates = df_stock.index
+    dates = data.index
     dates_test = test_data.index
     if scaler:
-        train_data = scaler.fit_transform(df_stock.values.reshape(-1, 1))
+        train_data = scaler.fit_transform(data.values.reshape(-1, 1))
         test_data = scaler.transform(test_data.values.reshape(-1, 1))
     else:
-        train_data = df_stock.values.reshape(-1, 1)
+        train_data = data.values.reshape(-1, 1)
         test_data = test_data.values.reshape(-1, 1)
 
     prices = train_data
@@ -340,7 +341,7 @@ def prepare_scale_train_valid_test(
         input_dates,
         next_n_day_dates,
         test_size=test_size,
-        shuffle=ns_parser.no_shuffle,
+        shuffle=no_shuffle,
     )
     return (
         X_train,
@@ -393,13 +394,13 @@ def forecast(
 
 
 def plot_data_predictions(
-    df_stock, preds, y_valid, y_dates_valid, scaler, title, forecast_data, n_loops
+    data, preds, y_valid, y_dates_valid, scaler, title, forecast_data, n_loops
 ):
 
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(
-        df_stock.index,
-        df_stock["Adj Close"].values,
+        data.index,
+        data.values,
         "-ob",
         lw=1,
         ms=2,
@@ -497,12 +498,10 @@ def plot_data_predictions(
             alpha=0.3,
         )
     plt.legend(loc=0)
-    plt.xlim(df_stock.index[0], forecast_data.index[-1] + timedelta(days=1))
+    plt.xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
     plt.xlabel("Time")
-    plt.ylabel("Share Price ($)")
+    plt.ylabel("Value")
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     plt.title(title)
     if gtff.USE_ION:
         plt.ion()

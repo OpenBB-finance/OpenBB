@@ -192,9 +192,8 @@ Models:
             help="Select variable to analyze",
         )
         try:
-            if other_args:
-                if "-t" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-t")
+            if other_args and "-t" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-t")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -313,7 +312,93 @@ Models:
 
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
-        knn_view.k_nearest_neighbors(other_args, self.ticker, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="knn",
+            description="""
+                K nearest neighbors is a simple algorithm that stores all
+                available cases and predict the numerical target based on a similarity measure
+                (e.g. distance functions).
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--input",
+            action="store",
+            dest="n_inputs",
+            type=check_positive,
+            default=40,
+            help="number of days to use as input for prediction.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-j",
+            "--jumps",
+            action="store",
+            dest="n_jumps",
+            type=check_positive,
+            default=1,
+            help="number of jumps in training data.",
+        )
+        parser.add_argument(
+            "-n",
+            "--neighbors",
+            action="store",
+            dest="n_neighbors",
+            type=check_positive,
+            default=20,
+            help="number of neighbors to use on the algorithm.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select for testing",
+        )
+        parser.add_argument(
+            "-t",
+            "--test_size",
+            default=0.2,
+            dest="valid_split",
+            type=float,
+            help="Percentage of data to validate in sample",
+        )
+        parser.add_argument(
+            "--no_shuffle",
+            action="store_false",
+            dest="no_shuffle",
+            default=True,
+            help="Specify if shuffling validation inputs.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            knn_view.display_k_nearest_neighbors(
+                ticker=self.ticker,
+                data=self.stock[self.target],
+                n_neighbors=ns_parser.n_neighbors,
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                test_size=ns_parser.valid_split,
+                end_date=ns_parser.s_end_date,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_linear(self, other_args: List[str]):
         """Process linear command"""
