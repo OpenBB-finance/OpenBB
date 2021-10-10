@@ -138,7 +138,7 @@ Current Expiry: {self.selected_date or None}
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
     smile         plot the volatility smile for the expiration date [Yfinance]
->.  payoff        shows payoff diagram for a selection of options [Yfinance]
+>   payoff        shows payoff diagram for a selection of options [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
 
