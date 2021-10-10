@@ -116,7 +116,7 @@ Show:
             self, "call_" + known_args.cmd, lambda: "Command not recognized!"
         )(other_args)
 
-    def call_help(self):
+    def call_help(self, _):
         """Process Help command"""
         self.print_help()
 
@@ -131,11 +131,15 @@ Show:
     def call_list(self, _):
         """Lists available calls and puts"""
         length = max(len(self.calls), len(self.puts)) - 1
+        print(
+            "Add an option using the index on the left, and not the actual strike price"
+        )
         print("#\tcall\tput")
         for i in range(length):
-            call = self.calls[i][0] if i < len(self.calls) else "NA"
-            put = self.puts[i][0] if i < len(self.puts) else "NA"
+            call = self.calls[i][0] if i < len(self.calls) else ""
+            put = self.puts[i][0] if i < len(self.puts) else ""
             print(f"{i}\t{call}\t{put}")
+        print("")
 
     def call_add(self, other_args: List[str]):
         """Process add command"""
@@ -145,20 +149,17 @@ Show:
         """Process rmv command"""
         self.rmv_option(other_args)
 
-    def call_long(self, other_args: List[str]):
-        # pylint: disable=W0613
-        """Process call command"""
+    def call_long(self, _):
+        """Process long command"""
         self.underlying = 1
         self.show_setup(True)
 
-    def call_short(self, other_args: List[str]):
-        # pylint: disable=W0613
+    def call_short(self, _):
         """Process short command"""
         self.underlying = -1
         self.show_setup(True)
 
-    def call_none(self, other_args: List[str]):
-        # pylint: disable=W0613
+    def call_none(self, _):
         """Process none command"""
         self.underlying = 0
         self.show_setup(True)
@@ -246,14 +247,23 @@ Show:
             opt_type = "put" if ns_parser.put else "call"
             sign = -1 if ns_parser.short else 1
             if ns_parser.put:
-                strike = self.puts[ns_parser.strike][0]
-                cost = self.puts[ns_parser.strike][1]
+                try:
+                    strike = self.puts[ns_parser.strike][0]
+                    cost = self.puts[ns_parser.strike][1]
+                except IndexError:
+                    print("Please use the index, and not the strike price\n")
+                    return
             else:
-                strike = self.calls[ns_parser.strike][0]
-                cost = self.calls[ns_parser.strike][1]
+                try:
+                    strike = self.calls[ns_parser.strike][0]
+                    cost = self.calls[ns_parser.strike][1]
+                except IndexError:
+                    print("Please use the index, and not the strike price\n")
+                    return
 
             option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
             self.options.append(option)
+
             self.show_setup(True)
 
         except Exception as e:
@@ -294,7 +304,11 @@ Show:
             if ns_parser.all:
                 self.options = []
             else:
-                del self.options[ns_parser.strike]
+                try:
+                    del self.options[ns_parser.strike]
+                except IndexError:
+                    print("Please use the index, and not the strike price\n")
+                    return
 
             self.show_setup(True)
 
@@ -306,7 +320,7 @@ def menu(ticker: str, expiration: str):
     """Portfolio Optimization Menu"""
     plt.close("all")
     po_controller = Payoff(ticker, expiration)
-    po_controller.call_help()
+    po_controller.call_help(None)
 
     while True:
         # Get input command from user
