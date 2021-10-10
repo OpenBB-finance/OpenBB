@@ -22,12 +22,10 @@ class Payoff:
 
     CHOICES = ["cls", "?", "help", "q", "quit", "list"]
     CHOICES_COMMANDS = [
-        "select",
+        "list",
         "add",
         "rmv",
-        "long",
-        "short",
-        "none",
+        "pick",
         "plot",
     ]
     CHOICES += CHOICES_COMMANDS
@@ -58,29 +56,27 @@ class Payoff:
         self.current_price = get_price(ticker)
 
     @staticmethod
-    def print_help():
+    def print_help(underlying):
         """Print help"""
-        help_text = """
+        if underlying == 1:
+            text = "Long"
+        elif underlying == 0:
+            text = "None"
+        elif underlying == -1:
+            text = "Short"
+
+        help_text = f"""
 >>OPTION PAYOFF DIAGRAM<<
 
-What would you like to do?
-    cls           clear screen
-    ?/help        show this menu again
-    q             quit this menu, and shows back to main menu
-    quit          quit to abandon program
-    list          list available strike prices for calls and puts
+Underlying Asset: {text}
 
-Options:
+    pick          long, short, or choose not to hold the underlying asset
+
     add           add option to the list of the options to be plotted
     rmv           remove option from the list of the options to be plotted
 
-Underlying Asset:
-    long          long the underlying asset
-    short         short the underlying asset
-    none          do not hold the underlying asset
-
-Show:
     plot          show the option payoff diagram
+    list          list available strike prices for calls and puts
         """
         print(help_text)
 
@@ -104,7 +100,7 @@ Show:
 
         # Help menu again
         if known_args.cmd == "?":
-            self.print_help()
+            self.print_help(self.underlying)
             return None
 
         # Clear screen
@@ -118,7 +114,7 @@ Show:
 
     def call_help(self, _):
         """Process Help command"""
-        self.print_help()
+        self.print_help(self.underlying)
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -149,20 +145,39 @@ Show:
         """Process rmv command"""
         self.rmv_option(other_args)
 
-    def call_long(self, _):
-        """Process long command"""
-        self.underlying = 1
-        self.show_setup(True)
+    def call_pick(self, other_args: List[str]):
+        """Process pick command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="long",
+            description="This function plots option payoff diagrams",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="type",
+            type=str,
+            help="choose what you would like to do with the underlying asset, choose from: long, short, or none",
+            required="-h" not in other_args,
+        )
 
-    def call_short(self, _):
-        """Process short command"""
-        self.underlying = -1
-        self.show_setup(True)
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-t")
 
-    def call_none(self, _):
-        """Process none command"""
-        self.underlying = 0
-        self.show_setup(True)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if ns_parser.type == "long":
+            self.underlying = 1
+        elif ns_parser.type == "none":
+            self.underlying = 0
+        elif ns_parser.type == "short":
+            self.underlying = -1
+
+        self.print_help(self.underlying)
 
     def call_plot(self, other_args):
         """Process plot command"""
@@ -191,15 +206,6 @@ Show:
 
     def show_setup(self, nl: bool = False):
         """Shows the current assets to display in the diagram"""
-        if self.underlying == -1:
-            text = "Shorting"
-        elif self.underlying == 0:
-            text = "Not holding"
-        else:
-            text = "Longing"
-        print(
-            f"{text} the underlying asset with current price of ${self.current_price:.2f}"
-        )
         print("#\tType\tHold\tStrike\tCost")
         for i, o in enumerate(self.options):
             sign = "Long" if o["sign"] == 1 else "Short"
