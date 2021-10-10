@@ -950,6 +950,9 @@ Current Expiry: {self.selected_date or None}
 
     def call_payoff(self, _):
         """Process payoff command"""
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required.\n")
+            return None
         ret = payoff_controller.menu(self.ticker, self.selected_date)
         if ret is False:
             self.print_help()

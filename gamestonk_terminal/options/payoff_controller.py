@@ -7,7 +7,6 @@ from typing import List, Dict
 
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
-import yfinance as yf
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
@@ -15,14 +14,8 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
-from gamestonk_terminal.options.yfinance_model import get_option_chain
-
-
-def get_price(ticker):
-    ticker_yahoo = yf.Ticker(ticker)
-    data = ticker_yahoo.history()
-    last_quote = data.tail(1)["Close"].iloc[0]
-    return last_quote
+from gamestonk_terminal.options.yfinance_model import get_option_chain, get_price
+from gamestonk_terminal.options.yfinance_view import plot_payoff
 
 
 class Payoff:
@@ -78,8 +71,8 @@ What would you like to do?
     list          list available strike prices for calls and puts
 
 Options:
-    add           add tickers to the list of the tickers to be optimized
-    rmv           remove tickers from the list of the tickers to be optimized
+    add           add option to the list of the options to be plotted
+    rmv           remove option from the list of the options to be plotted
 
 Underlying Asset:
     long          long the underlying asset
@@ -87,7 +80,7 @@ Underlying Asset:
     none          do not hold the underlying asset
 
 Show:
-    plot          show the efficient frontier
+    plot          show the option payoff diagram
         """
         print(help_text)
 
@@ -176,32 +169,24 @@ Show:
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="plot",
-            description="""This function plots random portfolios based
-                        on their risk and returns and shows the efficient frontier.""",
+            description="This function plots option payoff diagrams",
         )
 
-        # try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
 
-        x, yb, ya = self.generate_data()
-        _, ax = plt.subplots()
-        if ya:
-            ax.plot(x, yb, label="Payoff Before Fees")
-            ax.plot(x, ya, label="Payoff After Fees")
-        else:
-            ax.plot(x, yb, label="Payoff")
-        ax.set_title(f"Option Payoff Diagram for {self.ticker} on {self.expiration}")
-        ax.set_ylabel("Profit")
-        ax.set_xlabel("Underlying Asset Price at Expiration")
-        ax.xaxis.set_major_formatter("${x:.2f}")
-        ax.yaxis.set_major_formatter("${x:.2f}")
-        plt.legend()
-        plt.show()
+            plot_payoff(
+                self.current_price,
+                self.options,
+                self.underlying,
+                self.ticker,
+                self.expiration,
+            )
 
-        # except Exception as e:
-        # print(e, "\n")
+        except Exception as e:
+            print(e, "\n")
 
     def show_setup(self, nl: bool = False):
         """Shows the current assets to display in the diagram"""
@@ -250,7 +235,7 @@ Show:
             dest="strike",
             type=int,
             help="strike price for option",
-            required=True,
+            required="-h" not in other_args,
         )
         try:
 
@@ -288,7 +273,15 @@ Show:
             dest="strike",
             type=int,
             help="strike price for option",
-            required=True,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--all",
+            dest="all",
+            action="store_true",
+            help="remove all of the options",
+            default=False,
         )
         try:
             if other_args:
@@ -298,51 +291,15 @@ Show:
             if not ns_parser:
                 return
 
-            del self.options[ns_parser.strike]
+            if ns_parser.all:
+                self.options = []
+            else:
+                del self.options[ns_parser.strike]
+
             self.show_setup(True)
 
         except Exception as e:
             print(e, "\n")
-
-    def get_x_values(self):
-        """Generates different price values that need to be tested"""
-        x_list = list(range(101))
-        mini = self.current_price
-        maxi = self.current_price
-        if len(self.options) == 0:
-            mini *= 0.5
-            maxi *= 1.5
-        elif len(self.options) > 0:
-            biggest = max(self.options, key=lambda x: x["strike"])
-            smallest = min(self.options, key=lambda x: x["strike"])
-            maxi = max(maxi, biggest["strike"]) * 1.2
-            mini = min(mini, smallest["strike"]) * 0.8
-        num_range = maxi - mini
-        return [(x / 100) * num_range + mini for x in x_list]
-
-    def get_y_values(self, base, price):
-        """Generates y values for corresponding x values"""
-        option_change = 0
-        change = price - base
-        for option in self.options:
-            if option["type"] == "call":
-                abs_change = price - option["strike"] if price > option["strike"] else 0
-                option_change += option["sign"] * abs_change
-            elif option["type"] == "put":
-                abs_change = option["strike"] - price if price < option["strike"] else 0
-                option_change += option["sign"] * abs_change
-        return (change * self.underlying) + option_change
-
-    def generate_data(self):
-        """Gets x values, and y values before and after fees"""
-        x_vals = self.get_x_values()
-        base = self.current_price
-        total_cost = sum(x["cost"] for x in self.options)
-        before = [self.get_y_values(base, x) for x in x_vals]
-        if total_cost != 0:
-            after = [self.get_y_values(base, x) - total_cost for x in x_vals]
-            return x_vals, before, after
-        return x_vals, before, None
 
 
 def menu(ticker: str, expiration: str):
