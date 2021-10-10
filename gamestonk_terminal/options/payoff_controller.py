@@ -70,13 +70,13 @@ class Payoff:
 
 Underlying Asset: {text}
 
-    pick          long, short, or choose not to hold the underlying asset
+    list          list available strike prices for calls and puts
 
+    pick          long, short, or none (default) underlying asset
     add           add option to the list of the options to be plotted
     rmv           remove option from the list of the options to be plotted
 
     plot          show the option payoff diagram
-    list          list available strike prices for calls and puts
         """
         print(help_text)
 
@@ -217,7 +217,7 @@ Underlying Asset: {text}
         """Add an option to the diagram"""
         parser = argparse.ArgumentParser(
             add_help=False,
-            prog="add/select",
+            prog="add",
             description="""Add options to the diagram.""",
         )
         parser.add_argument(
@@ -237,14 +237,27 @@ Underlying Asset: {text}
             default=False,
         )
         parser.add_argument(
+            "-i",
+            "--index",
+            dest="index",
+            type=int,
+            help="list index of the option",
+            required="-h" not in other_args and "-k" not in other_args,
+        )
+
+        parser.add_argument(
             "-k",
             "--strike",
             dest="strike",
-            type=int,
-            help="strike price for option",
-            required="-h" not in other_args,
+            type=float,
+            help="strike price for the option",
+            default=None,
         )
         try:
+
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-i")
 
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -252,20 +265,24 @@ Underlying Asset: {text}
 
             opt_type = "put" if ns_parser.put else "call"
             sign = -1 if ns_parser.short else 1
-            if ns_parser.put:
-                try:
-                    strike = self.puts[ns_parser.strike][0]
-                    cost = self.puts[ns_parser.strike][1]
-                except IndexError:
-                    print("Please use the index, and not the strike price\n")
-                    return
+            options_list = self.puts if ns_parser.put else self.calls
+            if ns_parser.strike is None:
+                index = ns_parser.index
+            elif float(ns_parser.strike) in [float(x[0]) for x in options_list]:
+                index = filter(
+                    lambda x: float(x[0]) == float(ns_parser.strike), options_list
+                )
+                index = options_list.index(list(index)[0])
+                print(index)
             else:
-                try:
-                    strike = self.calls[ns_parser.strike][0]
-                    cost = self.calls[ns_parser.strike][1]
-                except IndexError:
-                    print("Please use the index, and not the strike price\n")
-                    return
+                print("Invalid strike price, please select a valid price from the list")
+                return
+            try:
+                strike = options_list[index][0]
+                cost = options_list[index][1]
+            except IndexError:
+                print("Please use the index, and not the strike price\n")
+                return
 
             option = {"type": opt_type, "sign": sign, "strike": strike, "cost": cost}
             self.options.append(option)

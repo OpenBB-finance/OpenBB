@@ -447,3 +447,4 @@ def plot_payoff(
     ax.yaxis.set_major_formatter("${x:.2f}")
     plt.legend()
     plt.show()
+    print("")
