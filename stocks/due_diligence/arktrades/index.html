@@ -10,9 +10,9 @@
 
 
 
-    <meta name="description" content="usage: arktrades [-n NUM] [-h] [--export {csv,json,xlsx}] Get trades for ticker across all ARK funds.
-optional arguments: -n NUM, --num NUM Number of rows to show -h, --help show this help message --export {csv,json,xlsx} Export raw data into csv, json, xlsx Output:
-(✨) (stocks)&gt;(dd)&gt; arktrades ╒════════════╤══════════╤══════════╤════════╤═════════════╕ │ date │ shares │ weight │ fund │ direction │ ╞════════════╪══════════╪══════════╪════════╪═════════════╡ │ 2021-05-20 │ 188 │ 0.0007 │ ARKF │ Sell │ ├────────────┼──────────┼──────────┼────────┼─────────────┤ │ 2021-05-18 │ 2500 │ 0.">
+    <meta name="description" content="usage: arktrades [-n NUM] [-s] [-h] [--export {csv,json,xlsx}] Get trades for ticker across all ARK funds.
+optional arguments: -n NUM, --num NUM Number of rows to show -s, --show_ticker Flag to show ticker in table -h, --help show this help message --export {csv,json,xlsx} Export raw data into csv, json, xlsx Output:
+(✨) (stocks)&gt;(dd)&gt; arktrades -n 5 ╒════════════╤══════════╤══════════╤════════╤═════════════╤═════════════╤═══════════════╕ │ │ shares │ weight │ fund │ direction │ Close ($) │ Total ($1M) │ ╞════════════╪══════════╪══════════╪════════╪═════════════╪═════════════╪═══════════════╡ │ 2020-08-24 │ 9891 │ 0.">
 
 
 
@@ -9098,6 +9098,37 @@ optional arguments: -n NUM, --num NUM Number of rows to show -h, --help show thi
     </li>
 
 
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/options/smile/"
+                    class="gdoc-nav__entry ">
+                    smile
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
 </ul>
 
         
@@ -13649,28 +13680,29 @@ optional arguments: -n NUM, --num NUM Number of rows to show -h, --help show thi
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Arktrades</h1>
-        <pre><code>usage: arktrades [-n NUM] [-h] [--export {csv,json,xlsx}]
+        <pre><code>usage: arktrades [-n NUM] [-s] [-h] [--export {csv,json,xlsx}]
 </code></pre><p>Get trades for ticker across all ARK funds.</p>
 <pre><code>optional arguments:
   -n NUM, --num NUM     Number of rows to show
+  -s, --show_ticker     Flag to show ticker in table
   -h, --help            show this help message
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx
 </code></pre><p>Output:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="p">(</span><span class="err">✨</span><span class="p">)</span> <span class="p">(</span><span class="n">stocks</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dd</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">arktrades</span>
-<span class="err">╒════════════╤══════════╤══════════╤════════╤═════════════╕</span>
-<span class="err">│</span> <span class="n">date</span>       <span class="err">│</span>   <span class="n">shares</span> <span class="err">│</span>   <span class="n">weight</span> <span class="err">│</span> <span class="n">fund</span>   <span class="err">│</span> <span class="n">direction</span>   <span class="err">│</span>
-<span class="err">╞════════════╪══════════╪══════════╪════════╪═════════════╡</span>
-<span class="err">│</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="err">│</span>      <span class="mi">188</span> <span class="err">│</span>   <span class="mf">0.0007</span> <span class="err">│</span> <span class="n">ARKF</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>
-<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┤</span>
-<span class="err">│</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">18</span> <span class="err">│</span>     <span class="mi">2500</span> <span class="err">│</span>   <span class="mf">0.0091</span> <span class="err">│</span> <span class="n">ARKF</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>
-<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┤</span>
-<span class="err">│</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">17</span> <span class="err">│</span>   <span class="mi">188455</span> <span class="err">│</span>   <span class="mf">0.6945</span> <span class="err">│</span> <span class="n">ARKF</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>
-<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┤</span>
-<span class="err">│</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">10</span> <span class="err">│</span>    <span class="mi">87560</span> <span class="err">│</span>   <span class="mf">0.3057</span> <span class="err">│</span> <span class="n">ARKF</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>
-<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┤</span>
-<span class="err">│</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">06</span> <span class="err">│</span>   <span class="mi">298505</span> <span class="err">│</span>   <span class="mf">1.0040</span> <span class="err">│</span> <span class="n">ARKF</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>
-<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┤</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="p">(</span><span class="err">✨</span><span class="p">)</span> <span class="p">(</span><span class="n">stocks</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dd</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">arktrades</span> <span class="o">-</span><span class="n">n</span> <span class="mi">5</span>
+<span class="err">╒════════════╤══════════╤══════════╤════════╤═════════════╤═════════════╤═══════════════╕</span>
+<span class="err">│</span>            <span class="err">│</span>   <span class="n">shares</span> <span class="err">│</span>   <span class="n">weight</span> <span class="err">│</span> <span class="n">fund</span>   <span class="err">│</span> <span class="n">direction</span>   <span class="err">│</span>   <span class="n">Close</span> <span class="p">(</span><span class="err">$</span><span class="p">)</span> <span class="err">│</span>   <span class="n">Total</span> <span class="p">(</span><span class="err">$</span><span class="mi">1</span><span class="n">M</span><span class="p">)</span> <span class="err">│</span>
+<span class="err">╞════════════╪══════════╪══════════╪════════╪═════════════╪═════════════╪═══════════════╡</span>
+<span class="err">│</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">24</span> <span class="err">│</span>     <span class="mi">9891</span> <span class="err">│</span>   <span class="mf">0.1830</span> <span class="err">│</span> <span class="n">ARKQ</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>      <span class="mf">125.86</span> <span class="err">│</span>          <span class="mf">1.24</span> <span class="err">│</span>
+<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┼─────────────┼───────────────┤</span>
+<span class="err">│</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">24</span> <span class="err">│</span>    <span class="mi">14278</span> <span class="err">│</span>   <span class="mf">0.2500</span> <span class="err">│</span> <span class="n">ARKW</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>      <span class="mf">125.86</span> <span class="err">│</span>          <span class="mf">1.80</span> <span class="err">│</span>
+<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┼─────────────┼───────────────┤</span>
+<span class="err">│</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span> <span class="err">│</span>    <span class="mi">27722</span> <span class="err">│</span>   <span class="mf">0.4970</span> <span class="err">│</span> <span class="n">ARKF</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>      <span class="mf">124.82</span> <span class="err">│</span>          <span class="mf">3.46</span> <span class="err">│</span>
+<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┼─────────────┼───────────────┤</span>
+<span class="err">│</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">08</span> <span class="err">│</span>    <span class="mi">14631</span> <span class="err">│</span>   <span class="mf">0.2000</span> <span class="err">│</span> <span class="n">ARKQ</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>      <span class="mf">112.82</span> <span class="err">│</span>          <span class="mf">1.65</span> <span class="err">│</span>
+<span class="err">├────────────┼──────────┼──────────┼────────┼─────────────┼─────────────┼───────────────┤</span>
+<span class="err">│</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">08</span> <span class="err">│</span>    <span class="mi">90983</span> <span class="err">│</span>   <span class="mf">0.8200</span> <span class="err">│</span> <span class="n">ARKW</span>   <span class="err">│</span> <span class="n">Sell</span>        <span class="err">│</span>      <span class="mf">112.82</span> <span class="err">│</span>         <span class="mf">10.26</span> <span class="err">│</span>
+<span class="err">╘════════════╧══════════╧══════════╧════════╧═════════════╧═════════════╧═══════════════╛</span>
 </code></pre></div>
     </article>
 
@@ -18907,6 +18939,25 @@ optional arguments: -n NUM, --num NUM Number of rows to show -h, --help show thi
     
     
 
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
         
         
