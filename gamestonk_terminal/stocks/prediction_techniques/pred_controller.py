@@ -1,4 +1,4 @@
-""" Due Diligence Controller """
+""" Prediction Controller """
 __docformat__ = "numpy"
 
 import argparse
@@ -26,6 +26,7 @@ from gamestonk_terminal.common.prediction_techniques import (
     knn_view,
     neural_networks_view,
     regression_view,
+    pred_helper,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 
@@ -430,19 +431,121 @@ Models:
 
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
-        neural_networks_view.mlp(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="mlp",
+                description="""Multi-Layered-Perceptron. """,
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+
+            neural_networks_view.display_mlp(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
-        neural_networks_view.rnn(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="rnn",
+                description="""Recurrent Neural Network. """,
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+
+            neural_networks_view.display_rnn(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
-        neural_networks_view.lstm(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="lstm",
+                description="""Long-Short Term Memory. """,
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+            neural_networks_view.display_lstm(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
-        neural_networks_view.conv1d(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="conv1d",
+                description="""1D CNN.""",
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+
+            neural_networks_view.display_conv1d(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):

@@ -21,6 +21,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
 from tensorflow.keras.models import Sequential
 from gamestonk_terminal.helper_funcs import (
     check_positive,
+    check_positive_float,
     parse_known_args_and_warn,
     valid_date,
     plot_autoscale,
@@ -172,7 +173,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
 
     parser.add_argument(
         "--lr",
-        type=check_positive,
+        type=check_positive_float,
         dest="lr",
         default=0.01,
         help="Specify learning rate for optimizer.",
