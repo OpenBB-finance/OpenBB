@@ -582,6 +582,17 @@ main:
         ref: "/options/grhist"
       - name: smile
         ref: "/options/smile"
+      - name: portfolio optimization
+        ref: "/portfolio/portfolio_optimization"
+        sub:
+          - name: add
+            ref: "/options/payoff/add"
+          - name: pick
+            ref: "/options/payoff/pick"
+          - name: plot
+            ref: "/options/payoff/plot"
+          - name: rmv
+            ref: "/options/payoff/rmv"
   - name: etf
     ref: "/etf"
     sub:
