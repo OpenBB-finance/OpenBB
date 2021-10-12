@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import os
 from bisect import bisect_left
 from typing import List, Dict, Any
+from datetime import datetime, date
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,7 +16,8 @@ import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.options import op_helpers, yfinance_model
-from gamestonk_terminal.options.yfinance_model import generate_data
+from gamestonk_terminal.options.yfinance_model import generate_data, get_option_chain
+from gamestonk_terminal.terminal_helper import get_rf
 
 
 def plot_oi(
@@ -447,4 +449,20 @@ def plot_payoff(
     ax.yaxis.set_major_formatter("${x:.2f}")
     plt.legend()
     plt.show()
+    print("")
+
+
+def show_parity(ticker: str, exp: str, put: bool = False) -> None:
+    """Prints options and whether they are under or over priced"""
+    # P = B + C - S
+    # C = P + S - B
+    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    delta = (r_date - date.today()).days / 365
+    rate = ((1 + get_rf()) ** delta) - 1
+
+    chain = get_option_chain(ticker, exp)
+    calls = list(zip(chain.calls["strike"].tolist(), chain.calls["lastPrice"].tolist()))
+    puts = list(zip(chain.puts["strike"].tolist(), chain.puts["lastPrice"].tolist()))
+
+    print(f"{calls}, {put}, {puts} {rate}")
     print("")
