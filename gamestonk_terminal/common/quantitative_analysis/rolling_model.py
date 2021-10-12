@@ -105,3 +105,22 @@ def get_skew(df: pd.DataFrame, length: int) -> pd.DataFrame:
     """
     df_skew = ta.skew(close=df, length=length).dropna()
     return df_skew
+
+
+def get_kurtosis(df: pd.DataFrame, length: int) -> pd.DataFrame:
+    """Kurtosis Indicator
+
+    Parameters
+    ----------
+    df_stock : pd.DataFrame
+        Dataframe of targeted data
+    length : int
+        Length of window
+
+    Returns
+    -------
+    df_kurt : pd.DataFrame
+        Dataframe of rolling kurtosis
+    """
+    df_kurt = ta.kurtosis(close=df, length=length).dropna()
+    return df_kurt

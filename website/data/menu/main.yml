@@ -479,6 +479,8 @@ main:
             ref: "/stocks/quantitative_analysis/quantile"
           - name: skew
             ref: "/stocks/quantitative_analysis/skew"
+          - name: kurtosis
+            ref: "/stocks/quantitative_analysis/kurtosis"
           - name: decompose
             ref: "/stocks/quantitative_analysis/decompose"
           - name: cusum
