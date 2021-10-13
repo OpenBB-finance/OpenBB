@@ -40,9 +40,6 @@ class PredictionTechniquesController:
     CHOICES_MODELS = [
         "ets",
         "knn",
-        "linear",
-        "quadratic",
-        "cubic",
         "regression",
         "arima",
         "mlp",
@@ -102,10 +99,7 @@ Target Column: {self.target}
 Models:
     ets         exponential smoothing (e.g. Holt-Winters)
     knn         k-Nearest Neighbors
-    linear      linear regression (polynomial 1)
-    quadratic   quadratic regression (polynomial 2)
-    cubic       cubic regression (polynomial 3)
-    regression  regression (other polynomial)
+    regression  polynomial regression
     arima       autoregressive integrated moving average
     mlp         MultiLayer Perceptron
     rnn         Recurrent Neural Network
@@ -401,29 +395,100 @@ Models:
         except Exception as e:
             print(e, "\n")
 
-    def call_linear(self, other_args: List[str]):
-        """Process linear command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.LINEAR
-        )
-
-    def call_quadratic(self, other_args: List[str]):
-        """Process quadratic command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.QUADRATIC
-        )
-
-    def call_cubic(self, other_args: List[str]):
-        """Process cubic command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.CUBIC
-        )
-
     def call_regression(self, other_args: List[str]):
-        """Process regression command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.USER_INPUT
+        """Process linear command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="regression",
+            description="""
+                Regression attempts to model the relationship between
+                two variables by fitting a linear/quadratic/cubic/other equation to
+                observed data. One variable is considered to be an explanatory variable,
+                and the other is considered to be a dependent variable.
+            """,
         )
+
+        parser.add_argument(
+            "-i",
+            "--input",
+            action="store",
+            dest="n_inputs",
+            type=check_positive,
+            default=40,
+            help="number of days to use for prediction.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-j",
+            "--jumps",
+            action="store",
+            dest="n_jumps",
+            type=check_positive,
+            default=1,
+            help="number of jumps in training data.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        )
+        parser.add_argument(
+            "-p",
+            "--polynomial",
+            action="store",
+            dest="n_polynomial",
+            type=check_positive,
+            default=1,
+            help="polynomial associated with regression.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            )
+            if not ns_parser:
+                return
+            # BACKTESTING CHECK
+            if ns_parser.s_end_date:
+                if ns_parser.s_end_date < self.stock.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return
+
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.stock.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return
+
+            regression_view.display_regression(
+                dataset=self.ticker,
+                values=self.stock[self.target],
+                poly_order=ns_parser.n_polynomial,
+                n_input=ns_parser.n_inputs,
+                n_predict=ns_parser.n_days,
+                n_jumps=ns_parser.n_jumps,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
