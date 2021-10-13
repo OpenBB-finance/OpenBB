@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
 )
 from gamestonk_terminal.menu import session
+from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
 
 class QaController:
@@ -44,11 +45,13 @@ class QaController:
         "spread",
         "quantile",
         "skew",
+        "kurtosis",
         "normality",
         "qqplot",
         "unitroot",
         "goodness",
         "unitroot",
+        "capm",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -113,9 +116,11 @@ Rolling Metrics:
     spread      rolling variance and std deviation of prices
     quantile    rolling median and quantile of prices
     skew        rolling skewness of distribution of prices
+    kurtosis    rolling kurtosis of distribution of prices
 Other:
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
+    capm        capital asset pricing model
         """
         print(help_str)
 
@@ -663,6 +668,54 @@ Other:
         except Exception as e:
             print(e, "\n")
 
+    def call_kurtosis(self, other_args: List[str]):
+        """Process kurtosis command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="kurtosis",
+            description="""
+                Kurtosis is a measure of the "tailedness" of the probability distribution
+                of a real-valued random variable. Like skewness, kurtosis describes the shape
+                of a probability distribution and there are different ways of quantifying it
+                for a theoretical distribution and corresponding ways of estimating it from
+                a sample from a population. Different measures of kurtosis may have different
+                interpretations.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="length",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dfframe df to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            rolling_view.display_kurtosis(
+                name=self.ticker,
+                df=self.stock,
+                target=self.target,
+                length=ns_parser.n_length,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
+
     def call_normality(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -764,6 +817,26 @@ Other:
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
             )
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_capm(self, other_args: List[str]):
+        """Process capm command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="capm",
+            description="""
+                Provides detailed information about a stock's risk compared to the market risk.
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            capm_view(self.ticker)
 
         except Exception as e:
             print(e, "\n")

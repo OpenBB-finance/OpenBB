@@ -63,8 +63,8 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
         Crypto wales transactions
     """
 
-    min_value = 800000 if min_value > 800000 else min_value
-    limit = 100 if limit > 100 else limit
+    min_value = max(min_value, 800000)
+    limit = max(limit, 100)
 
     params = {"limit": limit, "min_value": min_value}
 

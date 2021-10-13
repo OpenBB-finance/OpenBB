@@ -65,7 +65,7 @@ def get_property_weights(
 
 
 def get_maxsharpe_portfolio(
-    stocks: List[str], period: str = "3mo", rfrate: float = 0.02
+    stocks: List[str], period: str, rfrate: float
 ) -> Tuple[Dict, EfficientFrontier]:
     """Generate weights for max sharpe portfolio
 

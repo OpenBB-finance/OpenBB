@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import os
 from bisect import bisect_left
+from typing import List, Dict, Any
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,6 +15,7 @@ import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.options import op_helpers, yfinance_model
+from gamestonk_terminal.options.yfinance_model import generate_data
 
 
 def plot_oi(
@@ -402,4 +404,47 @@ def plot_volume_open_interest(
         plt.ion()
     plt.show()
     plt.style.use("default")
+    print("")
+
+
+def plot_smile(ticker: str, expiration: str, put: bool) -> None:
+    """Generate a graph showing the option smile for a given option chain at a given expiration"""
+    chain = yfinance_model.get_option_chain(ticker, expiration)
+    values = chain.puts if put else chain.calls
+    prices = values["strike"]
+    iv = values["impliedVolatility"]
+    _, ax = plt.subplots()
+    ax.plot(prices, iv, "--bo", label="Implied Volatility")
+    word = "puts" if put else "calls"
+    ax.set_title(f"Volatility smile for {ticker} {word} on {expiration}")
+    ax.set_ylabel("Implied Volatility")
+    ax.set_xlabel("Strike Price")
+    ax.xaxis.set_major_formatter("${x:.2f}")
+    ax.yaxis.set_major_formatter("{x:.2f}%")
+    plt.legend()
+    plt.show()
+
+
+def plot_payoff(
+    current_price: float,
+    options: List[Dict[Any, Any]],
+    underlying: int,
+    ticker: str,
+    expiration: str,
+) -> None:
+    """Generate a graph showing the option payoff diagram"""
+    x, yb, ya = generate_data(current_price, options, underlying)
+    _, ax = plt.subplots()
+    if ya:
+        ax.plot(x, yb, label="Payoff Before Premium")
+        ax.plot(x, ya, label="Payoff After Premium")
+    else:
+        ax.plot(x, yb, label="Payoff")
+    ax.set_title(f"Option Payoff Diagram for {ticker} on {expiration}")
+    ax.set_ylabel("Profit")
+    ax.set_xlabel("Underlying Asset Price at Expiration")
+    ax.xaxis.set_major_formatter("${x:.2f}")
+    ax.yaxis.set_major_formatter("${x:.2f}")
+    plt.legend()
+    plt.show()
     print("")

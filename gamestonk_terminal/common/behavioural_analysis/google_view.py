@@ -1,217 +1,160 @@
-import argparse
-from typing import List
+"""Google View"""
+__docformat__ = "numpy"
+
+import os
 from datetime import datetime
-from pytrends.request import TrendReq
+
+from tabulate import tabulate
 import matplotlib.pyplot as plt
-from gamestonk_terminal.helper_funcs import (
-    check_positive,
-    valid_date,
-    parse_known_args_and_warn,
-)
+
+from gamestonk_terminal.helper_funcs import plot_autoscale, export_data
+from gamestonk_terminal.common.behavioural_analysis import google_model
+from gamestonk_terminal import config_plot as cfp, feature_flags as gtff
 
 
-def mentions(other_args: List[str], ticker: str, start: datetime):
+def display_mentions(ticker: str, start: datetime, export: str = ""):
     """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker : str
         Ticker
-    start : str
+    start : datetime
         Start date
+    export: str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="mentions",
-        description="""
-            Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
-        """,
+    df_interest = google_model.get_mentions(ticker)
+
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    ax.set_title(f"Interest over time on {ticker}")
+    if start:
+        df_interest = df_interest[start:]  # type: ignore
+        ax.bar(df_interest.index, df_interest[ticker], width=2)
+        ax.bar(
+            df_interest.index[-1],
+            df_interest[ticker].values[-1],
+            color="tab:orange",
+            width=2,
+        )
+    else:
+        ax.bar(df_interest.index, df_interest[ticker], width=1)
+        ax.bar(
+            df_interest.index[-1],
+            df_interest[ticker].values[-1],
+            color="tab:orange",
+            width=1,
+        )
+
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.set_ylabel("Interest [%]")
+    ax.set_xlabel("Time")
+
+    if gtff.USE_ION:
+        plt.ion()
+    fig.tight_layout()
+    plt.show()
+    print("")
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "mentions", df_interest
     )
-    parser.add_argument(
-        "-s",
-        "--start",
-        type=valid_date,
-        dest="start",
-        default=start,
-        help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pytrend = TrendReq()
-        pytrend.build_payload(kw_list=[ticker])
-        df_interest = pytrend.interest_over_time()
-
-        plt.title(f"Interest over time on {ticker}")
-        if ns_parser.start:
-            df_interest = df_interest[ns_parser.start :]
-            plt.bar(df_interest.index, df_interest[ticker], width=2)
-            plt.bar(
-                df_interest.index[-1],
-                df_interest[ticker].values[-1],
-                color="tab:orange",
-                width=2,
-            )
-        else:
-            plt.bar(df_interest.index, df_interest[ticker], width=1)
-            plt.bar(
-                df_interest.index[-1],
-                df_interest[ticker].values[-1],
-                color="tab:orange",
-                width=1,
-            )
-
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.ylabel("Interest [%]")
-        plt.xlabel("Time")
-        plt.show()
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
 
 
-def regions(other_args: List[str], ticker: str):
+def display_regions(ticker: str, num: int = 5, export: str = ""):
     """Plot bars of regions based on stock's interest. [Source: Google]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker : str
         Ticker
+    num: int
+        Number of regions to show
+    export: str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="regions",
-        description="""Plot bars of regions based on stock's interest. [Source: Google]""",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of regions to plot that show highest interest.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pytrend = TrendReq()
-        pytrend.build_payload(kw_list=[ticker])
-        df_interest_region = pytrend.interest_by_region()
+    df_interest_region = google_model.get_regions(ticker)
+    if not df_interest_region.empty:
         df_interest_region = df_interest_region.sort_values(
             [ticker], ascending=False
-        ).head(ns_parser.n_num)
-
-        plt.figure(figsize=(25, 5))
-        plt.title(f"Top's regions interest on {ticker}")
-        plt.bar(df_interest_region.index, df_interest_region[ticker], width=0.8)
-        plt.grid(b=True, which="major", color="#666666", linestyle="-")
-        plt.ylabel("Interest [%]")
-        plt.xlabel("Region")
+        ).head(num)
+        df = df_interest_region.copy()
+        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        ax.set_title(f"Top's regions interest on {ticker}")
+        ax.bar(df_interest_region.index, df_interest_region[ticker], width=0.8)
+        ax.grid(b=True, which="major", color="#666666", linestyle="-")
+        ax.set_ylabel("Interest [%]")
+        ax.set_xlabel("Region")
+        if gtff.USE_ION:
+            plt.ion()
+        fig.tight_layout()
         plt.show()
-        print("")
+    else:
+        print("No region data found.")
+    print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
 
-    except Exception as e:
-        print(e, "\n")
 
-
-def queries(other_args: List[str], ticker: str):
+def display_queries(ticker: str, num: int = 5, export: str = ""):
     """Print top related queries with this stock's query. [Source: Google]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker : str
         Ticker
+    num: int
+        Number of regions to show
+    export: str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="queries",
-        description="""Print top related queries with this stock's query. [Source: Google]""",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of top related queries to print.",
-    )
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        pytrend = TrendReq()
-        pytrend.build_payload(kw_list=[ticker])
-        df_related_queries = pytrend.related_queries()
-        df_related_queries = df_related_queries[ticker]["top"].head(ns_parser.n_num)
-        df_related_queries["value"] = df_related_queries["value"].apply(
-            lambda x: str(x) + "%"
+    df_related_queries = google_model.get_queries(ticker)
+    df = df_related_queries.copy()
+    df_related_queries = df_related_queries[ticker]["top"].head(num)
+    df_related_queries["value"] = df_related_queries["value"].apply(
+        lambda x: str(x) + "%"
+    )
+    print(f"Top {ticker}'s related queries")
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_related_queries,
+                headers=df_related_queries.columns,
+                tablefmt="fancy_grid",
+            )
         )
-        print(f"Top {ticker}'s related queries")
+    else:
         print(df_related_queries.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "queries", df)
 
 
-def rise(other_args: List[str], ticker: str):
+def display_rise(ticker: str, num: int, export: str = ""):
     """Print top rising related queries with this stock's query. [Source: Google]
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
     ticker : str
         Ticker
+    num: int
+        Number of regions to show
+    export: str
+        Format to export data
     """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="rise",
-        description="""Print top rising related queries with this stock's query. [Source: Google]""",
-    )
-    parser.add_argument(
-        "-n",
-        "--num",
-        action="store",
-        dest="n_num",
-        type=check_positive,
-        default=10,
-        help="number of top rising related queries to print.",
-    )
+    df_related_queries = google_model.get_rise(ticker)
+    df = df_related_queries.copy()
+    df_related_queries = df_related_queries.head(num)
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
+    print(f"Top rising {ticker}'s related queries")
 
-        pytrend = TrendReq()
-        pytrend.build_payload(kw_list=[ticker])
-        df_related_queries = pytrend.related_queries()
-        df_related_queries = df_related_queries[ticker]["rising"].head(ns_parser.n_num)
-        print(f"Top rising {ticker}'s related queries")
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df_related_queries,
+                headers=df_related_queries.columns,
+                tablefmt="fancy_grid",
+            )
+        )
+    else:
         print(df_related_queries.to_string(index=False))
-        print("")
-
-    except Exception as e:
-        print(e, "\n")
+    print("")
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "rise", df)

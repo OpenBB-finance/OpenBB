@@ -150,46 +150,26 @@ main:
       - name: government
         ref: "/stocks/government"
         sub:
-          - name: last_congress
-            ref: "/stocks/government/last_congress"
-          - name: buy_congress
-            ref: "/stocks/government/buy_congress"
-          - name: sell_congress
-            ref: "/stocks/government/sell_congress"
-          - name: last_senate
-            ref: "/stocks/government/last_senate"
-          - name: buy_senate
-            ref: "/stocks/government/buy_senate"
-          - name: sell_house
-            ref: "/stocks/government/sell_house"
-          - name: last_contracts
-            ref: "/stocks/government/last_contracts"
-          - name: sum_contracts
-            ref: "/stocks/government/sum_contracts"
-          - name: qtr_contracts
-            ref: "/stocks/government/qtr_contracts"
-          - name: top_lobbying
-            ref: "/stocks/government/top_lobbying"
-          - name: raw_congress
-            ref: "/stocks/government/raw_congress"
-          - name: congress
-            ref: "/stocks/government/congress"
-          - name: raw_senate
-            ref: "/stocks/government/raw_senate"
-          - name: senate
-            ref: "/stocks/government/senate"
-          - name: raw_house
-            ref: "/stocks/government/raw_house"
-          - name: house
-            ref: "/stocks/government/house"
-          - name: raw_contracts
-            ref: "/stocks/government/raw_contracts"
           - name: contracts
             ref: "/stocks/government/contracts"
-          - name: qtr_contracts_hist
-            ref: "/stocks/government/qtr_contracts_hist"
+          - name: gtrades
+            ref: "/stocks/government/gtrades"
+          - name: histcont
+            ref: "/stocks/government/histcont"
+          - name: lastcontracts
+            ref: "/stocks/government/lastcontracts"
+          - name: lasttrades
+            ref: "/stocks/government/lasttrades"
           - name: lobbying
             ref: "/stocks/government/lobbying"
+          - name: qtrcontracts
+            ref: "/stocks/government/qtrcontracts"
+          - name: topbuys
+            ref: "/stocks/government/topbuys"
+          - name: toplobbying
+            ref: "/stocks/government/toplobbying"
+          - name: topsells
+            ref: "/stocks/government/topsells"
       - name: fundamental analysis
         ref: "/stocks/fundamental_analysis"
         sub:
@@ -312,6 +292,8 @@ main:
             ref: "/stocks/due_diligence/supplier"
           - name: customer
             ref: "/stocks/due_diligence/customer"
+          - name: arktrades
+            ref: "/stocks/due_diligence/arktrades"
       - name: comparison analysis
         ref: "/stocks/comparison_analysis"
         sub:
@@ -420,8 +402,8 @@ main:
       - name: behavioural analysis
         ref: "/stocks/behavioural_analysis"
         sub:
-          - name: finbrain
-            ref: "/stocks/behavioural_analysis/finbrain"
+          - name: headlines
+            ref: "/stocks/behavioural_analysis/headlines"
           - name: stats
             ref: "/stocks/behavioural_analysis/stats"
           - name: wsb
@@ -497,10 +479,14 @@ main:
             ref: "/stocks/quantitative_analysis/quantile"
           - name: skew
             ref: "/stocks/quantitative_analysis/skew"
+          - name: kurtosis
+            ref: "/stocks/quantitative_analysis/kurtosis"
           - name: decompose
             ref: "/stocks/quantitative_analysis/decompose"
           - name: cusum
             ref: "/stocks/quantitative_analysis/cusum"
+          - name: capm
+            ref: "/stocks/quantitative_analysis/capm"
       - name: prediction techniques
         ref: "/stocks/prediction_techniques"
         sub:
@@ -596,6 +582,19 @@ main:
         ref: "/options/hist"
       - name: grhist
         ref: "/options/grhist"
+      - name: smile
+        ref: "/options/smile"
+      - name: portfolio optimization
+        ref: "/portfolio/portfolio_optimization"
+        sub:
+          - name: add
+            ref: "/options/payoff/add"
+          - name: pick
+            ref: "/options/payoff/pick"
+          - name: plot
+            ref: "/options/payoff/plot"
+          - name: rmv
+            ref: "/options/payoff/rmv"
   - name: etf
     ref: "/etf"
     sub:

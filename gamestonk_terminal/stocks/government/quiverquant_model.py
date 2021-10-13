@@ -1,5 +1,10 @@
+"""Quiverquant Model"""
+__docformat__ = "numpy"
+
 import requests
 import pandas as pd
+from sklearn.linear_model import LinearRegression
+import numpy as np
 
 # Provided by Quiverquant guys to GST users
 API_QUIVERQUANT_KEY = (
@@ -22,7 +27,6 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
     pd.DataFrame
         Most recent transactions by members of U.S. Congress
     """
-
     if gov_type == "congress":
         if ticker:
             url = (
@@ -79,4 +83,48 @@ def get_government_trading(gov_type: str, ticker: str = "") -> pd.DataFrame:
             )
         return pd.DataFrame(response.json())
 
+    return pd.DataFrame()
+
+
+def analyze_qtr_contracts(analysis: str, num: int = 5) -> pd.DataFrame:
+    """Analyzes quarterly contracts by ticker
+
+    Parameters
+    ----------
+    analysis : str
+        How to analyze.  Either gives total amount or sorts by high/low momentum.
+    num : int, optional
+        Number to return, by default 5
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with tickers and total amount if total selected.
+    """
+    df_contracts = get_government_trading("quarter-contracts")
+
+    if analysis == "total":
+        df_groups = (
+            df_contracts.groupby("Ticker")["Amount"].sum().sort_values(ascending=False)
+        )
+        return pd.DataFrame(df_groups[:num])
+
+    if analysis in {"upmom", "downmom"}:
+        df_coef = pd.DataFrame(columns=["Ticker", "Coef"])
+        df_groups = df_contracts.groupby("Ticker")
+        for tick, data in df_groups:
+            regr = LinearRegression()
+
+            amounts = data.sort_values(by=["Year", "Qtr"])["Amount"].values
+
+            # Train the model using the training sets
+            regr.fit(np.arange(0, len(amounts)).reshape(-1, 1), amounts)
+
+            df_coef = df_coef.append(
+                {"Ticker": tick, "Coef": regr.coef_[0]}, ignore_index=True
+            )
+
+        return df_coef.sort_values(by=["Coef"], ascending=analysis == "downmom")[
+            "Ticker"
+        ][:num]
     return pd.DataFrame()
