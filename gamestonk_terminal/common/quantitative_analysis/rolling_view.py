@@ -253,3 +253,54 @@ def display_skew(
         "skew",
         df_skew,
     )
+
+
+def display_kurtosis(
+    name: str, df: pd.DataFrame, target: str, length: int, export: str = ""
+):
+    """View rolling kurtosis
+
+    Parameters
+    ----------
+    name : str
+        Ticker
+    df : pd.DataFrame
+        Dataframe of stock prices
+    length : int
+        Length of window
+    export : str
+        Format to export data
+    """
+    data = df[target]
+    df_kurt = rolling_model.get_kurtosis(data, length)
+    fig, axes = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI)
+    ax = axes[0]
+    ax.set_title(f"{name} Kurtosis Indicator")
+    ax.plot(data.index, data.values, "fuchsia", lw=1)
+    ax.set_xlim(data.index[0], data.index[-1])
+    ax.set_ylabel(f"{target}")
+    ax.grid(b=True, which="major", color="#666666", linestyle="-")
+    ax.minorticks_on()
+    ax.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
+    ax2 = axes[1]
+    ax2.plot(df_kurt.index, df_kurt.values, "b", lw=2, label="kurtosis")
+
+    ax2.set_xlim(df.index[0], df.index[-1])
+    ax2.grid(b=True, which="major", color="#666666", linestyle="-")
+
+    if gtff.USE_ION:
+        plt.ion()
+
+    plt.gcf().autofmt_xdate()
+    fig.tight_layout(pad=1)
+
+    plt.legend()
+    plt.show()
+
+    print("")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "kurtosis",
+        df_kurt,
+    )

@@ -479,6 +479,8 @@ main:
             ref: "/stocks/quantitative_analysis/quantile"
           - name: skew
             ref: "/stocks/quantitative_analysis/skew"
+          - name: kurtosis
+            ref: "/stocks/quantitative_analysis/kurtosis"
           - name: decompose
             ref: "/stocks/quantitative_analysis/decompose"
           - name: cusum
@@ -582,6 +584,17 @@ main:
         ref: "/options/grhist"
       - name: smile
         ref: "/options/smile"
+      - name: portfolio optimization
+        ref: "/portfolio/portfolio_optimization"
+        sub:
+          - name: add
+            ref: "/options/payoff/add"
+          - name: pick
+            ref: "/options/payoff/pick"
+          - name: plot
+            ref: "/options/payoff/plot"
+          - name: rmv
+            ref: "/options/payoff/rmv"
   - name: etf
     ref: "/etf"
     sub:
