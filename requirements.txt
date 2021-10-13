@@ -19,7 +19,7 @@ bleach==4.1.0; python_version >= "3.7"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 certifi==2021.10.8; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
-cffi==1.14.6; implementation_name == "pypy" and python_version >= "3.6"
+cffi==1.15.0; implementation_name == "pypy" and python_version >= "3.6"
 chardet==3.0.4; python_version >= "3.6"
 charset-normalizer==2.0.1; python_full_version >= "3.5.0"
 click==8.0.3; python_full_version >= "3.6.2" and python_version >= "3.6"

@@ -131,10 +131,15 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
                     print("Reaction selected: 7")
                 await psi_command(ctx, arg)
 
+            for emoji in emoji_list:
+                await msg.remove_reaction(emoji, ctx.bot.user)
+
         except asyncio.TimeoutError:
             text = text + "\n\nCommand timeout."
             embed = discord.Embed(title=title, description=text)
             await msg.edit(embed=embed)
+            for emoji in emoji_list:
+                await msg.remove_reaction(emoji, ctx.bot.user)
 
 
 def setup(bot: discord.ext.commands.Bot):
