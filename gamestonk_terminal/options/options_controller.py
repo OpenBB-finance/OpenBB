@@ -1095,6 +1095,14 @@ Current Expiry: {self.selected_date or None}
             dest="put",
             help="Shows puts instead of calls",
         )
+        parser.add_argument(
+            "-a",
+            "--ask",
+            action="store_true",
+            default=False,
+            dest="ask",
+            help="Use ask price instead of lastPrice",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -1102,7 +1110,9 @@ Current Expiry: {self.selected_date or None}
             if not self.ticker and not self.selected_date:
                 print("Ticker and expiration required. \n")
                 return
-            yfinance_view.show_parity(self.ticker, self.selected_date, ns_parser.put)
+            yfinance_view.show_parity(
+                self.ticker, self.selected_date, ns_parser.put, ns_parser.ask
+            )
             print("")
         except Exception as e:
             print(e, "\n")

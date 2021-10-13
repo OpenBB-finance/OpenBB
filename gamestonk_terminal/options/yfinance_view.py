@@ -456,28 +456,35 @@ def plot_payoff(
     print("")
 
 
-def show_parity(ticker: str, exp: str, put: bool = False) -> None:
+def show_parity(ticker: str, exp: str, put: bool, ask: bool) -> None:
     """Prints options and whether they are under or over priced"""
-    # P = B + C - S
-    # C = P + S - B
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days / 365
     rate = ((1 + get_rf()) ** delta) - 1
     stock = get_price(ticker)
     chain = get_option_chain(ticker, exp)
+    name = "ask" if ask else "lastPrice"
+    o_type = "put" if put else "call"
 
-    calls = chain.calls[["strike", "lastPrice"]].copy()
-    calls = calls.rename(columns={"lastPrice": "callPrice"})
-    puts = chain.puts[["strike", "lastPrice"]].copy()
-    puts = puts.rename(columns={"lastPrice": "putPrice"})
+    calls = chain.calls[["strike", name]].copy()
+    calls = calls.rename(columns={name: "callPrice"})
+    puts = chain.puts[["strike", name]].copy()
+    puts = puts.rename(columns={name: "putPrice"})
 
     opts = pd.merge(calls, puts, on="strike")
-    # Don't let go below 0
+    opts = opts.dropna()
+    opts = opts.loc[opts["callPrice"] * opts["putPrice"] != 0]
+
     opts["callParity"] = opts["putPrice"] + stock - (opts["strike"] / (1 + rate))
+    opts["putParity"] = (opts["strike"] / (1 + rate)) + opts["callPrice"] - stock
 
-    print(opts)
+    print("Warning: Low volume options may be difficult to trade.\n")
+    if ask:
+        print("Warning: Options with no current ask price not shown.\n")
 
-    if put:
-        print("hello")
+    print("Strike\tOver(Under) Priced")
+
+    for _, row in opts.iterrows():
+        print(f"{row['strike']}\t{row[o_type+'Price'] - row[o_type+'Parity']}")
 
     print("")
