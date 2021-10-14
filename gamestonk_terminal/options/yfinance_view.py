@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import yfinance as yf
+from tabulate import tabulate
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
@@ -21,7 +22,7 @@ from gamestonk_terminal.options.yfinance_model import (
     get_option_chain,
     get_price,
 )
-from gamestonk_terminal.terminal_helper import get_rf
+from gamestonk_terminal.helper_funcs import get_rf
 
 
 def plot_oi(
@@ -457,7 +458,7 @@ def plot_payoff(
 
 
 def show_parity(ticker: str, exp: str, put: bool, ask: bool) -> None:
-    """Prints options and whether they are under or over priced"""
+    """Prints options and whether they are under or over priced [Source: Yahoo Finance]"""
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days / 365
     rate = ((1 + get_rf()) ** delta) - 1
@@ -478,13 +479,31 @@ def show_parity(ticker: str, exp: str, put: bool, ask: bool) -> None:
     opts["callParity"] = opts["putPrice"] + stock - (opts["strike"] / (1 + rate))
     opts["putParity"] = (opts["strike"] / (1 + rate)) + opts["callPrice"] - stock
 
+    name = o_type + " Difference"
+    opts[name] = opts[o_type + "Price"] - opts[o_type + "Parity"]
+
+    show = opts[
+        [
+            "strike",
+            name,
+        ]
+    ].copy()
+
     print("Warning: Low volume options may be difficult to trade.\n")
     if ask:
         print("Warning: Options with no current ask price not shown.\n")
 
-    print("Strike\tOver(Under) Priced")
-
-    for _, row in opts.iterrows():
-        print(f"{row['strike']}\t{row[o_type+'Price'] - row[o_type+'Parity']}")
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                show,
+                headers=[x.title() for x in show.columns],
+                tablefmt="fancy_grid",
+                showindex=False,
+                floatfmt=".2f",
+            )
+        )
+    else:
+        print(opts.to_string(index=False))
 
     print("")

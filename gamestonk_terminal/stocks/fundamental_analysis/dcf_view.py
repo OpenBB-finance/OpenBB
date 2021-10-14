@@ -21,7 +21,7 @@ import requests
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
 
-from gamestonk_terminal.terminal_helper import get_rf
+from gamestonk_terminal.helper_funcs import get_rf
 
 int_or_str = Union[int, str]
 
