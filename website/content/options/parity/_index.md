@@ -1,13 +1,14 @@
 ```
-usage: parity [-p] [-a] [-l] [-h]
+usage: parity [-p] [-a] [-m MINIMUM] [-M MAXIMUM] [-h]
 ```
 
-Shows the parity for options. In theory a short plus a stock should equal a call plus a bond.
+shows the parity for options. in theory a short plus a stock should equal a call plus a bond.
 
 ```
 optional arguments:
-  -a, --ask             Uses ask price instead of lastPrice (default: False)
-  -p, --put             Shows puts instead of calls (default: False)
-  -l, --length          Maximum number of options shown (default: None)
+  -a, --ask             uses ask price instead of lastPrice (default: False)
+  -p, --put             shows puts instead of calls (default: False)
+  -m, --min             the minimum strike price to be shown (default: None)
+  -M, --max             the maximum strike price to be shown (default: None)
   -h, --help            show this help message (default: False)
 ```

@@ -715,7 +715,14 @@ def export_data(
 
 
 def get_rf() -> float:
-    """Uses the fiscaldata.gov API to get most recent T-Bill rate"""
+    """
+    Uses the fiscaldata.gov API to get most recent T-Bill rate
+
+    Returns
+    -------
+    float
+        The current US T-Bill rate
+    """
     try:
         base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
         end = "/v2/accounting/od/avg_interest_rates"

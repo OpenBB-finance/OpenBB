@@ -457,8 +457,27 @@ def plot_payoff(
     print("")
 
 
-def show_parity(ticker: str, exp: str, put: bool, ask: bool, length: int) -> None:
-    """Prints options and whether they are under or over priced [Source: Yahoo Finance]"""
+def show_parity(
+    ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float
+) -> None:
+    """Prints options and whether they are under or over priced [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get expirations for
+    exp: str
+        Expiration to use for options
+    put: bool
+        Whether to use puts or calls
+    ask: bool
+        Whether to use ask or lastPrice
+    mini: float
+        Minimum strike price to show
+    maxi: float
+        Maximum strike price to show
+
+    """
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days / 365
     rate = ((1 + get_rf()) ** delta) - 1
@@ -484,9 +503,13 @@ def show_parity(ticker: str, exp: str, put: bool, ask: bool, length: int) -> Non
     opts["distance"] = abs(stock - opts["strike"])
     filtered = opts.copy()
 
-    if length:
-        while filtered.shape[0] > length:
-            filtered = filtered.loc[filtered["distance"] != filtered["distance"].max()]
+    if mini is None:
+        mini = filtered.strike.quantile(0.25)
+    if maxi is None:
+        maxi = filtered.strike.quantile(0.75)
+
+    filtered = filtered.loc[filtered["strike"] > mini]
+    filtered = filtered.loc[filtered["strike"] < maxi]
 
     show = filtered[["strike", diff]].copy()
 

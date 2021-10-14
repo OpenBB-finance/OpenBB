@@ -1104,12 +1104,20 @@ Current Expiry: {self.selected_date or None}
             help="Use ask price instead of lastPrice",
         )
         parser.add_argument(
-            "-l",
-            "--length",
-            type=int,
+            "-m",
+            "--min",
+            type=float,
             default=None,
-            dest="length",
-            help="Maximum number of options shown",
+            dest="mini",
+            help="Minimum strike price shown",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            type=float,
+            default=None,
+            dest="maxi",
+            help="Maximum strike price shown",
         )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -1123,7 +1131,8 @@ Current Expiry: {self.selected_date or None}
                 self.selected_date,
                 ns_parser.put,
                 ns_parser.ask,
-                ns_parser.length,
+                ns_parser.mini,
+                ns_parser.maxi,
             )
             print("")
         except Exception as e:
