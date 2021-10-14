@@ -479,8 +479,8 @@ def show_parity(ticker: str, exp: str, put: bool, ask: bool, length: int) -> Non
     opts["callParity"] = opts["putPrice"] + stock - (opts["strike"] / (1 + rate))
     opts["putParity"] = (opts["strike"] / (1 + rate)) + opts["callPrice"] - stock
 
-    name = o_type + " Difference"
-    opts[name] = opts[o_type + "Price"] - opts[o_type + "Parity"]
+    diff = o_type + " Difference"
+    opts[diff] = opts[o_type + "Price"] - opts[o_type + "Parity"]
     opts["distance"] = abs(stock - opts["strike"])
     filtered = opts.copy()
 
@@ -488,7 +488,7 @@ def show_parity(ticker: str, exp: str, put: bool, ask: bool, length: int) -> Non
         while filtered.shape[0] > length:
             filtered = filtered.loc[filtered["distance"] != filtered["distance"].max()]
 
-    show = filtered[["strike", name]].copy()
+    show = filtered[["strike", diff]].copy()
 
     print("Warning: Low volume options may be difficult to trade.\n")
     if ask:
