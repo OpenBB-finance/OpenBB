@@ -1103,6 +1103,14 @@ Current Expiry: {self.selected_date or None}
             dest="ask",
             help="Use ask price instead of lastPrice",
         )
+        parser.add_argument(
+            "-l",
+            "--length",
+            type=int,
+            default=None,
+            dest="length",
+            help="Maximum number of options shown",
+        )
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
@@ -1111,7 +1119,11 @@ Current Expiry: {self.selected_date or None}
                 print("Ticker and expiration required. \n")
                 return
             yfinance_view.show_parity(
-                self.ticker, self.selected_date, ns_parser.put, ns_parser.ask
+                self.ticker,
+                self.selected_date,
+                ns_parser.put,
+                ns_parser.ask,
+                ns_parser.length,
             )
             print("")
         except Exception as e:

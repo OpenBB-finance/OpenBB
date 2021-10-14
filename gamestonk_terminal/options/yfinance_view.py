@@ -457,7 +457,7 @@ def plot_payoff(
     print("")
 
 
-def show_parity(ticker: str, exp: str, put: bool, ask: bool) -> None:
+def show_parity(ticker: str, exp: str, put: bool, ask: bool, length: int) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]"""
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days / 365
@@ -481,13 +481,14 @@ def show_parity(ticker: str, exp: str, put: bool, ask: bool) -> None:
 
     name = o_type + " Difference"
     opts[name] = opts[o_type + "Price"] - opts[o_type + "Parity"]
+    opts["distance"] = abs(stock - opts["strike"])
+    filtered = opts.copy()
 
-    show = opts[
-        [
-            "strike",
-            name,
-        ]
-    ].copy()
+    if length:
+        while filtered.shape[0] > length:
+            filtered = filtered.loc[filtered["distance"] != filtered["distance"].max()]
+
+    show = filtered[["strike", name]].copy()
 
     print("Warning: Low volume options may be difficult to trade.\n")
     if ask:
@@ -504,6 +505,6 @@ def show_parity(ticker: str, exp: str, put: bool, ask: bool) -> None:
             )
         )
     else:
-        print(opts.to_string(index=False))
+        print(show.to_string(index=False))
 
     print("")
