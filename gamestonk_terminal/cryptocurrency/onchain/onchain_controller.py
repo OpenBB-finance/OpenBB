@@ -15,7 +15,11 @@ from gamestonk_terminal.helper_funcs import (
     check_int_range,
 )
 
-from gamestonk_terminal.cryptocurrency.onchain import gasnow_view, whale_alert_view
+from gamestonk_terminal.cryptocurrency.onchain import (
+    gasnow_view,
+    whale_alert_view,
+    ethplorer_view,
+)
 
 # pylint: disable=R1732
 
@@ -31,7 +35,18 @@ class OnchainController:
         "quit",
     ]
 
-    CHOICES_COMMANDS = ["gwei", "whales"]
+    CHOICES_COMMANDS = [
+        "gwei",
+        "whales",
+        "address",
+        "top",
+        "holders",
+        "tx",
+        "hist",
+        "info",
+        "th",
+        "prices",
+    ]
 
     CHOICES += CHOICES_COMMANDS
 
@@ -217,6 +232,577 @@ class OnchainController:
         except Exception as e:
             print(e)
 
+    def call_address(self, other_args: List[str]):
+        """Process address command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="address",
+            description="""
+                Display info about tokens on given ethereum blockchain address:.
+                [Source: Ethplorer]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: index",
+            default="index",
+            choices=[
+                "balance",
+                "tokenName",
+                "tokenSymbol",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            help="Ethereum addresses",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_address_info(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_hist(self, other_args: List[str]):
+        """Process hist command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hist",
+            description="""
+                   Display address history for given ethereum blockchain address.
+                   [Source: Ethplorer]
+               """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: timestamp",
+            default="timestamp",
+            choices=["timestamp", "transactionHash", "token", "value"],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            help="Ethereum addresses",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_address_history(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_holders(self, other_args: List[str]):
+        """Process address command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="holders",
+            description="""
+                Display top ERC20 token holders: e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+                [Source: Ethplorer]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: share",
+            default="share",
+            choices=[
+                "address",
+                "balance",
+                "share",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            help="Ethereum token addresses",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_top_token_holders(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_top(self, other_args: List[str]):
+        """Process top command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="top",
+            description="""
+                Display top ERC20 tokens.
+                [Source: Ethplorer]
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: rank",
+            default="rank",
+            choices=[
+                "rank",
+                "name",
+                "symbol",
+                "price",
+                "txsCount",
+                "transfersCount",
+                "holdersCount",
+                "address",
+            ],
+        )
+
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_top_tokens(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_info(self, other_args: List[str]):
+        """Process info command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""
+                Display info about ERC20 token. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+                [Source: Ethplorer]
+            """,
+        )
+
+        parser.add_argument(
+            "--social",
+            action="store_false",
+            help="Flag to show social media links",
+            dest="social",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            help="Ethereum addresses",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_token_info(
+                social=ns_parser.social,
+                address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_th(self, other_args: List[str]):
+        """Process th command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hist",
+            description="""
+                     Displays info about token history.
+                     e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+                     [Source: Ethplorer]
+                 """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: value",
+            default="value",
+            choices=[
+                "value",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=True,
+        )
+
+        parser.add_argument(
+            "--hash",
+            action="store_false",
+            help="Flag to show transaction hash",
+            dest="hash",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            help="Ethereum token addresses",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_token_history(
+                top=ns_parser.top,
+                hash_=ns_parser.hash,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_tx(self, other_args: List[str]):
+        """Process tx command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="address",
+            description="""
+                  Display info ERC20 token transaction on ethereum blockchain.
+                  e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
+                  [Source: Ethplorer]
+              """,
+        )
+
+        parser.add_argument(
+            "-tx",
+            "--tx",
+            dest="tx",
+            help="Ethereum transaction hash",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_tx_info(
+                tx_hash=ns_parser.tx,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
+    def call_prices(self, other_args: List[str]):
+        """Process prices command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="prices",
+            description="""
+                  "Display token historical prices. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+                  [Source: Ethplorer]
+              """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--top",
+            dest="top",
+            type=check_positive,
+            help="top N number records",
+            default=10,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            type=str,
+            help="Sort by given column. Default: date",
+            default="date",
+            choices=[
+                "date",
+                "cap",
+                "volumeConverted",
+                "open",
+                "high",
+                "close",
+                "low",
+            ],
+        )
+        parser.add_argument(
+            "--descend",
+            action="store_false",
+            help="Flag to sort in descending order (lowest first)",
+            dest="descend",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-a",
+            "--address",
+            dest="address",
+            help="ERC20 token addresses",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            ethplorer_view.display_token_historical_prices(
+                top=ns_parser.top,
+                sortby=ns_parser.sortby,
+                descend=ns_parser.descend,
+                address=ns_parser.address,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e)
+
 
 def print_help():
     """Print help"""
@@ -228,6 +814,16 @@ def print_help():
     print("")
     print("   gwei          check current eth gas fees")
     print("   whales        check crypto wales transactions")
+    print("\nEthplorer:")
+    print("   exp           open explorer in browser")
+    print("   address       check ethereum address balance")
+    print("   top           top ERC20 tokens")
+    print("   holders       top ERC20 token holders")
+    print("   hist          ethereum address history (transactions)")
+    print("   info          ERC20 token info")
+    print("   th            ERC20 token history")
+    print("   tx            ethereum blockchain transaction info")
+    print("   prices        ERC20 token historical prices")
     print("")
 
 

@@ -18,11 +18,13 @@ def display_address_info(
     descend: bool = True,
     export: str = "",
 ) -> None:
-    """Displays info about tokens on given ethereum blockchain address: ETH balance, balance of all tokens which
+    """Display info about tokens on given ethereum blockchain address: ETH balance, balance of all tokens which
     have name and symbol. [Source: Ethplorer]
 
     Parameters
     ----------
+    address: str
+        Ethereum address.
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -43,7 +45,7 @@ def display_address_info(
             tabulate(
                 df.head(top),
                 headers=df.columns,
-                floatfmt=".0f",
+                floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -66,8 +68,7 @@ def display_top_tokens(
     descend: bool = True,
     export: str = "",
 ) -> None:
-    """Displays info about tokens on given ethereum blockchain address: ETH balance, balance of all tokens which
-    have name and symbol. [Source: Ethplorer]
+    """Display top ERC20 tokens [Source: Ethplorer]
 
     Parameters
     ----------
@@ -90,7 +91,7 @@ def display_top_tokens(
             tabulate(
                 df.head(top),
                 headers=df.columns,
-                floatfmt=".0f",
+                floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -140,7 +141,7 @@ def display_top_token_holders(
             tabulate(
                 df.head(top),
                 headers=df.columns,
-                floatfmt=".0f",
+                floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -304,7 +305,7 @@ def display_token_history(
     descend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays info about top token holders. [Source: Ethplorer]
+    """Displays info about token history. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -339,7 +340,7 @@ def display_token_history(
             tabulate(
                 df.head(top),
                 headers=df.columns,
-                floatfmt=".0f",
+                floatfmt=".2f",
                 showindex=False,
                 tablefmt="fancy_grid",
             ),
@@ -351,7 +352,7 @@ def display_token_history(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "tokenhist",
+        "th",
         df_data,
     )
 

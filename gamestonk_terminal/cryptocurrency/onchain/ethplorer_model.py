@@ -8,6 +8,7 @@ from typing import Any, Optional
 from time import sleep
 import pandas as pd
 import requests
+from gamestonk_terminal.cryptocurrency.dataframe_helpers import create_df_index
 
 
 def split_cols_with_dot(column: str) -> str:
@@ -82,7 +83,7 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
     response = requests.get(url).json()
     if "error" in response:
         raise Exception(
-            f"Error: {response['error']['code']}. Message: {response['error']['message']}"
+            f"Error: {response['error']['code']}. Message: {response['error']['message']}\n",
         )
 
     return response
@@ -133,11 +134,9 @@ def get_address_info(address: str) -> pd.DataFrame:
     df = pd.DataFrame(tokens)[cols]
     eth_row_df = pd.DataFrame([eth_row], columns=cols)
     df = pd.concat([eth_row_df, df], ignore_index=True)
-    return df[df["tokenName"].notna()].reset_index()
-
-
-# z = get_address_info('0x3cD751E6b0078Be393132286c442345e5DC49699')
-# print(z)
+    df = df[df["tokenName"].notna()]
+    create_df_index(df, "index")
+    return df
 
 
 def get_top_tokens() -> pd.DataFrame:
@@ -151,24 +150,21 @@ def get_top_tokens() -> pd.DataFrame:
 
     response = make_request("getTopTokens")
     tokens = response["tokens"]
-    df = (
-        pd.DataFrame(tokens)[
-            [
-                "name",
-                "symbol",
-                "price",
-                "txsCount",
-                "transfersCount",
-                "holdersCount",
-                "address",
-                "twitter",
-                "coingecko",
-            ]
+    df = pd.DataFrame(tokens)[
+        [
+            "name",
+            "symbol",
+            "price",
+            "txsCount",
+            "transfersCount",
+            "holdersCount",
+            "address",
+            "twitter",
+            "coingecko",
         ]
-        .reset_index()
-        .rename(columns={"index": "rank"})
-    )
+    ]
     df["price"] = df["price"].apply(lambda x: x["rate"] if x and "rate" in x else None)
+    create_df_index(df, "rank")
     return df
 
 
@@ -188,9 +184,6 @@ def get_top_token_holders(address) -> pd.DataFrame:
 
     response = make_request("getTopTokenHolders", address, limit=100)
     return pd.DataFrame(response["holders"])
-
-
-# print(get_top_token_holders('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'))
 
 
 def get_address_history(address) -> pd.DataFrame:
@@ -218,10 +211,6 @@ def get_address_history(address) -> pd.DataFrame:
 
     df = pd.DataFrame(operations)
     return df[["timestamp", "transactionHash", "token", "value"]]
-
-
-# ah = get_address_history('0x3cD751E6b0078Be393132286c442345e5DC49699')
-# print(ah)
 
 
 def get_token_info(address) -> pd.DataFrame:
@@ -283,10 +272,6 @@ def get_token_info(address) -> pd.DataFrame:
     return df
 
 
-# xc = get_token_info('0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8')
-# print(xc)
-
-
 def get_tx_info(tx_hash) -> pd.DataFrame:
     """Get info about transaction. [Source: Ethplorer]
 
@@ -319,10 +304,6 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
     except KeyError:
         return pd.DataFrame()
     return df
-
-
-# tx = get_tx_info('0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6')
-# print(tx)
 
 
 def get_token_history(address) -> pd.DataFrame:
