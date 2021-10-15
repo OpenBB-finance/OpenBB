@@ -1,0 +1,396 @@
+"""Ethplorer model"""
+__docformat__ = "numpy"
+
+import textwrap
+
+from datetime import datetime
+from typing import Any, Optional
+from time import sleep
+import pandas as pd
+import requests
+
+
+def split_cols_with_dot(column: str) -> str:
+    """Split column name in data frame columns whenever there is a dot between 2 words.
+    E.g. price.availableSupply -> priceAvailableSupply.
+
+    Parameters
+    ----------
+    column: str
+        Pandas dataframe column value
+
+    Returns
+    -------
+    str:
+        Value of column with replaced format.
+    """
+
+    def replace(string: str, char: str, index: int) -> str:
+        """Helper method which replaces values with dot as a separator and converts it to camelCase format"""
+        return string[:index] + char + string[index + 1 :]
+
+    if "." in column:
+        part1, part2 = column.split(".")
+        part2 = replace(part2, part2[0].upper(), 0)
+        return part1 + part2
+    return column
+
+
+def enrich_social_media(dct: dict) -> None:
+    social_media = {
+        "twitter": "https://www.twitter.com/",
+        "reddit": "https://www.reddit.com/r/",
+        "coingecko": "https://www.coingecko.com/en/coins/",
+    }
+    try:
+        for k, v in social_media.items():
+            if k in dct:
+                dct[k] = v + dct[k]
+    except Exception as e:
+        print(e)
+
+
+def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) -> dict:
+    """Helper method that handles request for Ethplorer API [Source: https://ethplorer.io/]
+
+    Parameters
+    ----------
+    endpoint: str
+        endpoint which we want to query e.g. https://api.ethplorer.io/<endpoint><arg>?=apiKey=freekey
+    address: str
+        address argument for given endpoint. In most cases it's tx hash, or eth address.
+    kwargs: Any
+        Additional keywords arguments e.g. limit of transactions
+
+    Returns
+    -------
+    dict with response data
+    """
+
+    base_url = "https://api.ethplorer.io/"
+    url = f"{base_url}{endpoint}"
+
+    if address:
+        url = url + "/" + address
+
+    url += "?apiKey=freekey"
+
+    if "limit" in kwargs:
+        url += f"&limit={kwargs['limit']}"
+
+    sleep(0.5)  # Limit is 2 API calls per 1 sec.
+    response = requests.get(url).json()
+    if "error" in response:
+        raise Exception(
+            f"Error: {response['error']['code']}. Message: {response['error']['message']}"
+        )
+
+    return response
+
+
+def get_address_info(address: str) -> pd.DataFrame:
+    """Get info about tokens on you ethereum blockchain address. Eth balance, balance of all tokens which
+    have name and symbol. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Blockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with list of tokens and their balances.
+    """
+
+    response = make_request("getAddressInfo", address)
+    tokens = response.pop("tokens")
+
+    eth = response["ETH"] or {}
+    eth_balance = eth.get("balance")
+    eth_row = [
+        "Ethereum",
+        "ETH",
+        "0x0000000000000000000000000000000000000000",
+        eth_balance,
+    ]
+
+    for token in tokens:
+        token_info = token.pop("tokenInfo")
+        token.update(
+            {
+                "tokenName": token_info.get("name"),
+                "tokenSymbol": token_info.get("symbol"),
+                "tokenAddress": token_info.get("address"),
+            }
+        )
+    cols = [
+        "tokenName",
+        "tokenSymbol",
+        "tokenAddress",
+        "balance",
+    ]
+    df = pd.DataFrame(tokens)[cols]
+    eth_row_df = pd.DataFrame([eth_row], columns=cols)
+    df = pd.concat([eth_row_df, df], ignore_index=True)
+    return df[df["tokenName"].notna()].reset_index()
+
+
+# z = get_address_info('0x3cD751E6b0078Be393132286c442345e5DC49699')
+# print(z)
+
+
+def get_top_tokens() -> pd.DataFrame:
+    """Get top 50 tokens. [Source: Ethplorer]
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with list of top 50 tokens.
+    """
+
+    response = make_request("getTopTokens")
+    tokens = response["tokens"]
+    df = (
+        pd.DataFrame(tokens)[
+            [
+                "name",
+                "symbol",
+                "price",
+                "txsCount",
+                "transfersCount",
+                "holdersCount",
+                "address",
+                "twitter",
+                "coingecko",
+            ]
+        ]
+        .reset_index()
+        .rename(columns={"index": "rank"})
+    )
+    df["price"] = df["price"].apply(lambda x: x["rate"] if x and "rate" in x else None)
+    return df
+
+
+def get_top_token_holders(address) -> pd.DataFrame:
+    """Get info about top token holders. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with list of top token holders.
+    """
+
+    response = make_request("getTopTokenHolders", address, limit=100)
+    return pd.DataFrame(response["holders"])
+
+
+# print(get_top_token_holders('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'))
+
+
+def get_address_history(address) -> pd.DataFrame:
+    """Get information about address historical transactions. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Blockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with address historical transactions (last 100)
+    """
+    response = make_request("getAddressHistory", address, limit=100)
+    operations = response.pop("operations")
+    if operations:
+        for operation in operations:
+            token = operation.pop("tokenInfo")
+            if token:
+                operation["token"] = token["name"]
+                operation["tokenAddress"] = token["address"]
+            operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
+
+    df = pd.DataFrame(operations)
+    return df[["timestamp", "transactionHash", "token", "value"]]
+
+
+# ah = get_address_history('0x3cD751E6b0078Be393132286c442345e5DC49699')
+# print(ah)
+
+
+def get_token_info(address) -> pd.DataFrame:
+    """Get info about ERC20 token. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with information about provided ERC20 token.
+    """
+
+    response = make_request("getTokenInfo", address)
+
+    for name in [
+        "decimals",
+        "issuancesCount",
+        "lastUpdated",
+        "image",
+        "transfersCount",
+        "ethTransfersCount",
+    ]:
+        try:
+            response.pop(name)
+        except KeyError as e:
+            print(e)
+    enrich_social_media(response)
+    df = pd.json_normalize(response)
+    df.columns = [split_cols_with_dot(x) for x in df.columns.tolist()]
+    if "priceTs" in df:
+        df.drop("priceTs", axis=1, inplace=True)
+
+    for col in [
+        "owner",
+        "slot",
+        "facebook",
+        "priceDiff",
+        "priceDiff7d",
+        "priceDiff30d",
+        "priceVolDiff1",
+        "priceVolDiff7",
+        "priceVolDiff30",
+        "priceCurrency",
+    ]:
+        try:
+            df.drop(col, axis=1, inplace=True)
+        except KeyError as e:
+            print(e)
+    df = df.T.reset_index()
+    df.columns = ["Metric", "Value"]
+    df["Value"] = df["Value"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=70)) if isinstance(x, str) else x
+    )
+
+    return df
+
+
+# xc = get_token_info('0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8')
+# print(xc)
+
+
+def get_tx_info(tx_hash) -> pd.DataFrame:
+    """Get info about transaction. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    tx_hash: str
+        Transaction hash e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with information about ERC20 token transaction.
+    """
+
+    response = make_request("getTxInfo", tx_hash)
+    try:
+        response.pop("logs")
+        operations = response.pop("operations")[0]
+        if operations:
+            operations.pop("addresses")
+            token = operations.pop("tokenInfo")
+            if token:
+                operations["token"] = token["name"]
+                operations["tokenAddress"] = token["address"]
+            operations["timestamp"] = datetime.fromtimestamp(operations["timestamp"])
+        response.update(operations)
+        response.pop("input")
+        df = pd.Series(response).to_frame().reset_index()
+        df.columns = ["Metric", "Value"]
+    except KeyError:
+        return pd.DataFrame()
+    return df
+
+
+# tx = get_tx_info('0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6')
+# print(tx)
+
+
+def get_token_history(address) -> pd.DataFrame:
+    """Get info about token historical transactions. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Token e.g. 0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with token historical transactions.
+    """
+
+    response = make_request("getTokenHistory", address, limit=1000)
+    all_operations = []
+    name, symbol = "", ""
+    try:
+        operations = response["operations"]
+        try:
+            first_row = operations[0]["tokenInfo"]
+            name, symbol, _ = (
+                first_row.get("name"),
+                first_row.get("symbol"),
+                first_row.get("address"),
+            )
+        except Exception as e:
+            print(e)
+
+        for operation in operations:
+            operation.pop("type")
+            operation.pop("tokenInfo")
+            operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
+            all_operations.append(operation)
+    except KeyError as e:
+        print(e)
+    df = pd.DataFrame(all_operations)
+    df[["name", "symbol"]] = name, symbol
+    return df[["timestamp", "name", "symbol", "value", "from", "to", "transactionHash"]]
+
+
+def get_token_historical_price(address) -> pd.DataFrame:
+    """Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Token e.g. 0xf3db5fa2c66b7af3eb0c0b782510816cbe4813b8
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with token historical prices.
+    """
+
+    response = make_request("getTokenPriceHistoryGrouped", address)
+    data = response["history"]
+    data.pop("current")
+    txs = []
+    for i in data["countTxs"]:
+        txs.append({"ts": i["ts"], "cnt": i["cnt"]})
+    txs_df = pd.DataFrame(txs)
+    txs_df["ts"] = txs_df["ts"].apply(lambda x: datetime.fromtimestamp(x))
+    prices_df = pd.DataFrame(data["prices"])
+    prices_df["ts"] = prices_df["ts"].apply(lambda x: datetime.fromtimestamp(x))
+    prices_df.drop("tmp", axis=1, inplace=True)
+    return prices_df[
+        ["date", "open", "close", "high", "low", "volumeConverted", "cap", "average"]
+    ]
