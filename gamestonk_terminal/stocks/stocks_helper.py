@@ -12,6 +12,8 @@ import pytz
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from tabulate import tabulate
 
 from gamestonk_terminal import config_plot as cfgPlot
@@ -422,8 +424,15 @@ def candle(s_ticker: str, other_args: List[str]):
         "--start_date",
         dest="s_start",
         type=valid_date,
-        default=(datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d"),
+        default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
         help="Start date for candle data",
+    )
+    parser.add_argument(
+        "--plotly",
+        dest="plotly",
+        action="store_true",
+        default=False,
+        help="Flag to show interactive plot using plotly.",
     )
     # TODO: Add option to customize plot even further
 
@@ -436,46 +445,169 @@ def candle(s_ticker: str, other_args: List[str]):
             return
 
         df_stock = trend.load_ticker(s_ticker, ns_parser.s_start)
+        df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
+        df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
+
         df_stock = trend.find_trendline(df_stock, "OC_High", "high")
         df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
-
-        mc = mpf.make_marketcolors(
-            up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
-        )
-
-        s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
-
-        ap0 = []
-
-        if "OC_High_trend" in df_stock.columns:
-            ap0.append(
-                mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+        if not ns_parser.plotly:
+            mc = mpf.make_marketcolors(
+                up="green",
+                down="red",
+                edge="black",
+                wick="black",
+                volume="in",
+                ohlc="i",
             )
 
-        if "OC_Low_trend" in df_stock.columns:
-            ap0.append(
-                mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+            s = mpf.make_mpf_style(marketcolors=mc, gridstyle=":", y_on_right=True)
+
+            ap0 = []
+
+            if "OC_High_trend" in df_stock.columns:
+                ap0.append(
+                    mpf.make_addplot(df_stock["OC_High_trend"], color="g"),
+                )
+
+            if "OC_Low_trend" in df_stock.columns:
+                ap0.append(
+                    mpf.make_addplot(df_stock["OC_Low_trend"], color="b"),
+                )
+
+            if gtff.USE_ION:
+                plt.ion()
+
+            mpf.plot(
+                df_stock,
+                type="candle",
+                mav=(20, 50),
+                volume=True,
+                title=f"\n{s_ticker} - Starting {ns_parser.s_start.strftime('%Y-%m-%d')}",
+                addplot=ap0,
+                xrotation=10,
+                style=s,
+                figratio=(10, 7),
+                figscale=1.10,
+                figsize=(plot_autoscale()),
+                update_width_config=dict(
+                    candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
+                ),
+            )
+        else:
+            fig = make_subplots(
+                rows=2,
+                cols=1,
+                shared_xaxes=True,
+                vertical_spacing=0.06,
+                subplot_titles=(f"{s_ticker}", "Volume"),
+                row_width=[0.2, 0.7],
+            )
+            fig.add_trace(
+                go.Candlestick(
+                    x=df_stock.index,
+                    open=df_stock.Open,
+                    high=df_stock.High,
+                    low=df_stock.Low,
+                    close=df_stock.Close,
+                    name="OHLC",
+                ),
+                row=1,
+                col=1,
+            )
+            fig.add_trace(
+                go.Scatter(
+                    x=df_stock.index,
+                    y=df_stock["ma20"],
+                    name="MA20",
+                    mode="lines",
+                    line=go.scatter.Line(color="royalblue"),
+                ),
+                row=1,
+                col=1,
+            )
+            fig.add_trace(
+                go.Scatter(
+                    x=df_stock.index,
+                    y=df_stock["ma50"],
+                    name="MA50",
+                    mode="lines",
+                    line=go.scatter.Line(color="black"),
+                ),
+                row=1,
+                col=1,
             )
 
-        if gtff.USE_ION:
-            plt.ion()
+            if "OC_High_trend" in df_stock.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_stock.index,
+                        y=df_stock["OC_High_trend"],
+                        name="High Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="red"),
+                    ),
+                    row=1,
+                    col=1,
+                )
+            if "OC_Low_trend" in df_stock.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_stock.index,
+                        y=df_stock["OC_Low_trend"],
+                        name="Low Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="green"),
+                    ),
+                    row=1,
+                    col=1,
+                )
+            fig.add_trace(
+                go.Bar(
+                    x=df_stock.index,
+                    y=df_stock.Volume,
+                    name="Volume",
+                    marker_color="black",
+                ),
+                row=2,
+                col=1,
+            )
+            fig.update_layout(
+                yaxis_title="Stock Price ($)",
+                xaxis=dict(
+                    rangeselector=dict(
+                        buttons=list(
+                            [
+                                dict(
+                                    count=1,
+                                    label="1m",
+                                    step="month",
+                                    stepmode="backward",
+                                ),
+                                dict(
+                                    count=3,
+                                    label="3m",
+                                    step="month",
+                                    stepmode="backward",
+                                ),
+                                dict(
+                                    count=1, label="YTD", step="year", stepmode="todate"
+                                ),
+                                dict(
+                                    count=1,
+                                    label="1y",
+                                    step="year",
+                                    stepmode="backward",
+                                ),
+                                dict(step="all"),
+                            ]
+                        )
+                    ),
+                    rangeslider=dict(visible=False),
+                    type="date",
+                ),
+            )
 
-        mpf.plot(
-            df_stock,
-            type="candle",
-            mav=(20, 50),
-            volume=True,
-            title=f"\n{s_ticker} - Starting {ns_parser.s_start.strftime('%Y-%m-%d')}",
-            addplot=ap0,
-            xrotation=10,
-            style=s,
-            figratio=(10, 7),
-            figscale=1.10,
-            figsize=(plot_autoscale()),
-            update_width_config=dict(
-                candle_linewidth=1.0, candle_width=0.8, volume_linewidth=1.0
-            ),
-        )
+            fig.show()
         print("")
 
     except Exception as e:
