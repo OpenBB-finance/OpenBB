@@ -1,7 +1,7 @@
 {
-  "name": "@gamestonk/settings-tests",
+  "name": "@gamestonk/launcher-tests",
   "version": "0.1.0",
-  "description": "Integration test for the gamestong Settings extension",
+  "description": "Integration test for terminal launcher",
   "repository": "https://github.com/GamestonkTerminal/GamestonkTerminal",
   "author": "Gamestonk Terminal Contributors",
   "license": "MIT",
