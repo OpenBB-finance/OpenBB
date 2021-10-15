@@ -407,21 +407,30 @@ def plot_volume_open_interest(
     print("")
 
 
-def plot_smile(ticker: str, expiration: str, put: bool) -> None:
-    """Generate a graph showing the option smile for a given option chain at a given expiration"""
+def plot_plot(
+    ticker: str, expiration: str, put: bool, x: str, y: str, custom: str
+) -> None:
+    """Generate a graph custom graph based on user input"""
+    varis = op_helpers.opt_chain_cols
     chain = yfinance_model.get_option_chain(ticker, expiration)
     values = chain.puts if put else chain.calls
-    prices = values["strike"]
-    iv = values["impliedVolatility"]
     _, ax = plt.subplots()
-    ax.plot(prices, iv, "--bo", label="Implied Volatility")
+    if custom == "smile":
+        x = "strike"
+        y = "impliedVolatility"
+    x_data = values[x]
+    y_data = values[y]
+    ax.plot(x_data, y_data, "--bo")
     word = "puts" if put else "calls"
-    ax.set_title(f"Volatility smile for {ticker} {word} on {expiration}")
-    ax.set_ylabel("Implied Volatility")
-    ax.set_xlabel("Strike Price")
-    ax.xaxis.set_major_formatter("${x:.2f}")
-    ax.yaxis.set_major_formatter("{x:.2f}%")
-    plt.legend()
+    ax.set_title(
+        f"{varis[y]['label']} vs. {varis[x]['label']} for {ticker} {word} on {expiration}"
+    )
+    ax.set_ylabel(varis[y]["label"])
+    ax.set_xlabel(varis[x]["label"])
+    if varis[x]["format"]:
+        ax.xaxis.set_major_formatter(varis[x]["format"])
+    if varis[y]["format"]:
+        ax.yaxis.set_major_formatter(varis[y]["format"])
     plt.show()
 
 
