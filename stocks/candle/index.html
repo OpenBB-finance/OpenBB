@@ -10,8 +10,8 @@
 
 
 
-    <meta name="description" content="usage: candle [-s S_START] [-h] Displays candle chart of loaded ticker
-optional arguments: -s S_START, --start_date S_START Start date for candle data (default: 2021-03-19) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: candle [-s S_START] [--plotly] [-h] Displays candle chart of loaded ticker
+optional arguments: -s S_START, --start_date S_START Start date for candle data (default: 2021-03-19) --plotly Flag to show interactive plot using plotly. (default: False) -h, --help show this help message (default: False) ">
 
 
 
@@ -13873,11 +13873,12 @@ optional arguments: -s S_START, --start_date S_START Start date for candle data 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Candle</h1>
-        <pre><code>usage: candle [-s S_START] [-h]
+        <pre><code>usage: candle [-s S_START] [--plotly] [-h]
 </code></pre><p>Displays candle chart of loaded ticker</p>
 <pre><code>optional arguments:
   -s S_START, --start_date S_START
                         Start date for candle data (default: 2021-03-19)
+  --plotly              Flag to show interactive plot using plotly. (default: False)
   -h, --help            show this help message (default: False)
 </code></pre><p><img src="https://user-images.githubusercontent.com/25267873/111053397-4d609e00-845b-11eb-9c94-89b8892a8e81.png" alt="nio"  /></p>
 
