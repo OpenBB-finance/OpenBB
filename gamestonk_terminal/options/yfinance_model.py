@@ -47,6 +47,24 @@ def get_option_chain(ticker: str, expiration: str) -> pd.DataFrame:
     return chains
 
 
+def get_dividend(ticker: str) -> pd.Series:
+    """Gets option chain from yf for given ticker and expiration
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get options for
+
+    Returns
+    -------
+    chains: yf.ticker.Dividends
+        Dividends
+    """
+    yf_ticker = yf.Ticker(ticker)
+    dividend = yf_ticker.dividends
+    return dividend
+
+
 def get_x_values(current_price: float, options: List[Dict[str, int]]) -> List[float]:
     """Generates different price values that need to be tested"""
     x_list = list(range(101))
