@@ -18,7 +18,7 @@ from gamestonk_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
 )
 
-from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_helper import get_rf
+from gamestonk_terminal.helper_funcs import get_rf
 
 period_choices = [
     "1d",

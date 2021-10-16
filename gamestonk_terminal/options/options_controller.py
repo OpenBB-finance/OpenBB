@@ -62,6 +62,7 @@ class OptionsController:
         "unu",
         "stocks",
         "payoff",
+        "parity",
         "smile",
     ]
 
@@ -138,6 +139,7 @@ Current Expiry: {self.selected_date or None}
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
     smile         plot the volatility smile for the expiration date [Yfinance]
+    parity        shows whether options are above or below expected price [Yfinance]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
@@ -1075,6 +1077,66 @@ Current Expiry: {self.selected_date or None}
     def call_stocks(self, _):
         """Process stocks command"""
         return stocks_controller.menu(self.ticker)
+
+    def call_parity(self, other_args: List[str]):
+        """Process parity command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="parity",
+            description="Shows whether options are over or under valued",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--put",
+            action="store_true",
+            default=False,
+            dest="put",
+            help="Shows puts instead of calls",
+        )
+        parser.add_argument(
+            "-a",
+            "--ask",
+            action="store_true",
+            default=False,
+            dest="ask",
+            help="Use ask price instead of lastPrice",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            type=float,
+            default=None,
+            dest="mini",
+            help="Minimum strike price shown",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            type=float,
+            default=None,
+            dest="maxi",
+            help="Maximum strike price shown",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if not self.ticker and not self.selected_date:
+                print("Ticker and expiration required. \n")
+                return
+            yfinance_view.show_parity(
+                self.ticker,
+                self.selected_date,
+                ns_parser.put,
+                ns_parser.ask,
+                ns_parser.mini,
+                ns_parser.maxi,
+            )
+            print("")
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str = ""):

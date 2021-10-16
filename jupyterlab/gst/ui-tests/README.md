@@ -71,9 +71,10 @@ jlpm install
 jlpm run build:prod
 ```
 
-Note: When compiling the extension execute the commands in the extension root (`gst-settings`) folder and not the `gst-settings/ui-tests` folder.
+Note: When compiling the extension execute the commands in the extension root (`gst`) folder and not the `gst/ui-tests` folder.
 
 2. Start JupyterLab _with the extension installed_ without any token or password:
+
 
 **Using local installation**
 
@@ -87,5 +88,5 @@ jupyter lab --ServerApp.token= --ServerApp.password=
 cd ui-tests
 jlpm install
 npx playwright install
-PWDEBUG=1 npx playwright test
+PWDEBUG=1 npx playwright test --headed
 ```
