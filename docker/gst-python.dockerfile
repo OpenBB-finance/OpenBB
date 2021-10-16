@@ -36,4 +36,4 @@ WORKDIR /home/python
 
 ENV PATH="/home/python/.local/bin:${PATH}"
 
-RUN pip install "poetry==1.1.7"
+RUN pip install "poetry==1.1.11"
