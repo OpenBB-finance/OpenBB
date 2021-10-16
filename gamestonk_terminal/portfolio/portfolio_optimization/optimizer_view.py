@@ -16,7 +16,7 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import plot_autoscale
 from gamestonk_terminal.portfolio.portfolio_optimization import optimizer_model
-from gamestonk_terminal.portfolio.portfolio_optimization.optimizer_helper import get_rf
+from gamestonk_terminal.helper_funcs import get_rf
 
 d_period = {
     "1d": "[1 Day]",

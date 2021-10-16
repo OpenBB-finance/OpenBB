@@ -17,6 +17,7 @@ from colorama import Fore, Style
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
+import requests
 from screeninfo import get_monitors
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
@@ -711,3 +712,23 @@ def export_data(
                     print("Wrong export file specified.\n")
 
                 print(f"Saved file: {saved_path}\n")
+
+
+def get_rf() -> float:
+    """
+    Uses the fiscaldata.gov API to get most recent T-Bill rate
+
+    Returns
+    -------
+    float
+        The current US T-Bill rate
+    """
+    try:
+        base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
+        end = "/v2/accounting/od/avg_interest_rates"
+        filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
+        response = requests.get(base + end + filters)
+        latest = response.json()["data"][0]
+        return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
+    except Exception:
+        return 0.02
