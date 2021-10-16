@@ -63,7 +63,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> int:
 
 
 opt_chain_cols = {
-    "lastTradeDate": {"format": "", "label": "Last Trade Date"},
+    "lastTradeDate": {"format": "date", "label": "Last Trade Date"},
     "strike": {"format": "${x:.2f}", "label": "Strike"},
     "lastPrice": {"format": "${x:.2f}", "label": "Last Price"},
     "bid": {"format": "${x:.2f}", "label": "Bid"},

@@ -31,7 +31,6 @@ from gamestonk_terminal.options import (
 )
 from gamestonk_terminal.stocks import stocks_controller
 from gamestonk_terminal.options import payoff_controller
-from gamestonk_terminal.options.op_helpers import opt_chain_cols
 
 
 class OptionsController:
@@ -1072,8 +1071,11 @@ Current Expiry: {self.selected_date or None}
             type=str,
             dest="x",
             default=None,
-            choices=list(opt_chain_cols),
-            help="Choose the independent variable to display",
+            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            help=(
+                "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
+                "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
+            ),
         )
         parser.add_argument(
             "-y",
@@ -1081,8 +1083,11 @@ Current Expiry: {self.selected_date or None}
             type=str,
             dest="y",
             default=None,
-            choices=list(opt_chain_cols),
-            help="Choose the depentdent variable to display",
+            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            help=(
+                "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
+                "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
+            ),
         )
         parser.add_argument(
             "-c",
@@ -1095,29 +1100,28 @@ Current Expiry: {self.selected_date or None}
             default=None,
             help="Choose from already created graphs",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker and not self.selected_date:
-                print("Ticker and expiration required. \n")
-                return
-            if (
-                ns_parser.x is None or ns_parser.y is None
-            ) and ns_parser.custom is None:
-                print("Please submit an X and Y value, or select a preset.")
-                return
-            yfinance_view.plot_plot(
-                self.ticker,
-                self.selected_date,
-                ns_parser.put,
-                ns_parser.x,
-                ns_parser.y,
-                ns_parser.custom,
-            )
-            print("")
-        except Exception as e:
-            print(e, "\n")
+
+        # try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+        if (ns_parser.x is None or ns_parser.y is None) and ns_parser.custom is None:
+            print("Please submit an X and Y value, or select a preset.\n")
+            return
+        yfinance_view.plot_plot(
+            self.ticker,
+            self.selected_date,
+            ns_parser.put,
+            ns_parser.x,
+            ns_parser.y,
+            ns_parser.custom,
+        )
+        print("")
+        # except Exception as e:
+        # print(e, "\n")
 
     def call_stocks(self, _):
         """Process stocks command"""
