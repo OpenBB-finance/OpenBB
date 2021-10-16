@@ -4,18 +4,25 @@ __docformat__ = "numpy"
 import os
 from bisect import bisect_left
 from typing import List, Dict, Any
+from datetime import datetime, date, timedelta
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import yfinance as yf
+from tabulate import tabulate
 
 import gamestonk_terminal.config_plot as cfp
 import gamestonk_terminal.feature_flags as gtff
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
 from gamestonk_terminal.options import op_helpers, yfinance_model
-from gamestonk_terminal.options.yfinance_model import generate_data
+from gamestonk_terminal.options.yfinance_model import (
+    generate_data,
+    get_option_chain,
+    get_price,
+)
+from gamestonk_terminal.helper_funcs import get_rf
 
 
 def plot_oi(
@@ -456,4 +463,107 @@ def plot_payoff(
     ax.yaxis.set_major_formatter("${x:.2f}")
     plt.legend()
     plt.show()
+    print("")
+
+
+def show_parity(
+    ticker: str, exp: str, put: bool, ask: bool, mini: float, maxi: float
+) -> None:
+    """Prints options and whether they are under or over priced [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Ticker to get expirations for
+    exp: str
+        Expiration to use for options
+    put: bool
+        Whether to use puts or calls
+    ask: bool
+        Whether to use ask or lastPrice
+    mini: float
+        Minimum strike price to show
+    maxi: float
+        Maximum strike price to show
+
+    """
+    r_date = datetime.strptime(exp, "%Y-%m-%d").date()
+    delta = (r_date - date.today()).days
+    rate = ((1 + get_rf()) ** (delta / 365)) - 1
+    stock = get_price(ticker)
+
+    div_info = yfinance_model.get_dividend(ticker)
+    div_dts = div_info.index.values.tolist()
+
+    if div_dts:
+        last_div = pd.to_datetime(div_dts[-1])
+
+        if len(div_dts) > 3:
+            avg_div = np.mean(div_info.to_list()[-4:])
+        else:
+            avg_div = np.mean(div_info.to_list())
+
+        next_div = last_div + timedelta(days=91)
+        dividends = []
+        while next_div < datetime.strptime(exp, "%Y-%m-%d"):
+            day_dif = (next_div - datetime.now()).days
+            dividends.append((avg_div, day_dif))
+            next_div += timedelta(days=91)
+        div_pvs = [x[0] / ((1 + get_rf()) ** (x[1] / 365)) for x in dividends]
+        pv_dividend = sum(div_pvs)
+    else:
+        pv_dividend = 0
+
+    chain = get_option_chain(ticker, exp)
+    name = "ask" if ask else "lastPrice"
+    o_type = "put" if put else "call"
+
+    calls = chain.calls[["strike", name]].copy()
+    calls = calls.rename(columns={name: "callPrice"})
+    puts = chain.puts[["strike", name]].copy()
+    puts = puts.rename(columns={name: "putPrice"})
+
+    opts = pd.merge(calls, puts, on="strike")
+    opts = opts.dropna()
+    opts = opts.loc[opts["callPrice"] * opts["putPrice"] != 0]
+
+    opts["callParity"] = (
+        opts["putPrice"] + stock - (opts["strike"] / (1 + rate)) - pv_dividend
+    )
+    opts["putParity"] = (
+        (opts["strike"] / (1 + rate)) + opts["callPrice"] - stock + pv_dividend
+    )
+
+    diff = o_type + " Difference"
+    opts[diff] = opts[o_type + "Price"] - opts[o_type + "Parity"]
+    opts["distance"] = abs(stock - opts["strike"])
+    filtered = opts.copy()
+
+    if mini is None:
+        mini = filtered.strike.quantile(0.25)
+    if maxi is None:
+        maxi = filtered.strike.quantile(0.75)
+
+    filtered = filtered.loc[filtered["strike"] > mini]
+    filtered = filtered.loc[filtered["strike"] < maxi]
+
+    show = filtered[["strike", diff]].copy()
+
+    print("Warning: Low volume options may be difficult to trade.\n")
+    if ask:
+        print("Warning: Options with no current ask price not shown.\n")
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                show,
+                headers=[x.title() for x in show.columns],
+                tablefmt="fancy_grid",
+                showindex=False,
+                floatfmt=".2f",
+            )
+        )
+    else:
+        print(show.to_string(index=False))
+
     print("")

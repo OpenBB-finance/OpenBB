@@ -586,6 +586,10 @@ main:
         ref: "/options/plot"
       - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
+      - name: parity
+        ref: "/options/parity"
+      - name: payoff
+        ref: "/options/payoff"
         sub:
           - name: add
             ref: "/options/payoff/add"
