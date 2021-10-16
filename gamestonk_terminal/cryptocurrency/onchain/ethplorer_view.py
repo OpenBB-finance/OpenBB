@@ -18,8 +18,8 @@ def display_address_info(
     descend: bool = True,
     export: str = "",
 ) -> None:
-    """Display info about tokens on given ethereum blockchain address: ETH balance, balance of all tokens which
-    have name and symbol. [Source: Ethplorer]
+    """Display info about tokens for given ethereum blockchain address e.g. ETH balance, balance of all tokens with
+    name and symbol. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -115,7 +115,7 @@ def display_top_token_holders(
     descend: bool = True,
     export: str = "",
 ) -> None:
-    """Displays info about top token holders. [Source: Ethplorer]
+    """Display info about top ERC20 token holders. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -165,12 +165,12 @@ def display_address_history(
     descend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays information about address historical transactions. [Source: Ethplorer]
+    """Display information about address historical transactions. [Source: Ethplorer]
 
     Parameters
     ----------
     address: str
-        Blockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Ethereum nlockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -215,7 +215,7 @@ def display_token_info(
     social: bool = False,
     export: str = "",
 ) -> None:
-    """Displays info about top token holders. [Source: Ethplorer]
+    """Display info about ERC20 token. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -263,7 +263,7 @@ def display_tx_info(
     tx_hash: str,
     export: str = "",
 ) -> None:
-    """Displays info about transaction. [Source: Ethplorer]
+    """Display info about transaction. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -305,7 +305,7 @@ def display_token_history(
     descend: bool = False,
     export: str = "",
 ) -> None:
-    """Displays info about token history. [Source: Ethplorer]
+    """Display info about token history. [Source: Ethplorer]
 
     Parameters
     ----------
@@ -359,7 +359,7 @@ def display_token_history(
 
 def display_token_historical_prices(
     address: str,
-    top: int = 10,
+    top: int = 30,
     sortby: str = "date",
     descend: bool = False,
     export: str = "",

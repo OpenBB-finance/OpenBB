@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import os
 import argparse
 from typing import List
+import webbrowser
+
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
@@ -46,6 +48,8 @@ class OnchainController:
         "info",
         "th",
         "prices",
+        "ep",
+        "es",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -108,6 +112,79 @@ class OnchainController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
+
+    def call_es(self, _):
+        """Process es command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="es",
+            description="""
+                           Open Etherscan in webbrowser
+                           [Source: Etherscan]
+                       """,
+        )
+
+        parser.add_argument(
+            "--charts",
+            action="store_false",
+            help="open charts page",
+            dest="charts",
+            default=False,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, _)
+
+            if not ns_parser:
+                return
+            if ns_parser.charts:
+                webbrowser.open("https://etherscan.io/charts")
+            else:
+                webbrowser.open("https://etherscan.io/")
+
+        except Exception as e:
+            print(e, "\n")
+        print("")
+
+    def call_ep(self, other_args: List[str]):
+        """Process ep command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ep",
+            description="""
+                     Open Ethplorer in webbrowser
+                     [Source: Ethplorer]
+                 """,
+        )
+
+        parser.add_argument(
+            "-q",
+            default="",
+            type=str,
+            dest="q",
+            help="search query",
+        )
+
+        try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-q")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+            if ns_parser.q:
+                webbrowser.open(f"https://ethplorer.io/search/{ns_parser.q}")
+            else:
+                webbrowser.open("https://ethplorer.io/")
+
+        except Exception as e:
+            print(e, "\n")
+        print("")
 
     def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
@@ -239,7 +316,7 @@ class OnchainController:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="address",
             description="""
-                Display info about tokens on given ethereum blockchain address:.
+                Display info about tokens on given ethereum blockchain address.
                 [Source: Ethplorer]
             """,
         )
@@ -261,6 +338,7 @@ class OnchainController:
             help="Sort by given column. Default: index",
             default="index",
             choices=[
+                "index",
                 "balance",
                 "tokenName",
                 "tokenSymbol",
@@ -278,7 +356,7 @@ class OnchainController:
             "-a",
             "--address",
             dest="address",
-            help="Ethereum addresses",
+            help="Ethereum blockchain address",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -317,7 +395,8 @@ class OnchainController:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hist",
             description="""
-                   Display address history for given ethereum blockchain address.
+                   Display history for given ethereum blockchain address.
+                    e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
                    [Source: Ethplorer]
                """,
         )
@@ -352,7 +431,7 @@ class OnchainController:
             "-a",
             "--address",
             dest="address",
-            help="Ethereum addresses",
+            help="Ethereum blockchain addresses",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -385,7 +464,7 @@ class OnchainController:
             print(e)
 
     def call_holders(self, other_args: List[str]):
-        """Process address command"""
+        """Process holders command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -430,7 +509,7 @@ class OnchainController:
             "-a",
             "--address",
             dest="address",
-            help="Ethereum token addresses",
+            help="ERC20 token address",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -559,7 +638,7 @@ class OnchainController:
             "-a",
             "--address",
             dest="address",
-            help="Ethereum addresses",
+            help="ERC20 token address",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -642,7 +721,7 @@ class OnchainController:
             "-a",
             "--address",
             dest="address",
-            help="Ethereum token addresses",
+            help="ERC20 token address",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -814,8 +893,9 @@ def print_help():
     print("")
     print("   gwei          check current eth gas fees")
     print("   whales        check crypto wales transactions")
-    print("\nEthplorer:")
-    print("   exp           open explorer in browser")
+    print("\nEthereum:")
+    print("   ep            open ethplorer in browser")
+    print("   es            open etherscan in browser")
     print("   address       check ethereum address balance")
     print("   top           top ERC20 tokens")
     print("   holders       top ERC20 token holders")
