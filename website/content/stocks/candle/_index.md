@@ -1,5 +1,5 @@
 ```
-usage: candle [-s S_START] [-h]
+usage: candle [-s S_START] [--plotly] [-h]
 ```
 
 Displays candle chart of loaded ticker
@@ -8,6 +8,7 @@ Displays candle chart of loaded ticker
 optional arguments:
   -s S_START, --start_date S_START
                         Start date for candle data (default: 2021-03-19)
+  --plotly              Flag to show interactive plot using plotly. (default: False)
   -h, --help            show this help message (default: False)
 ```
 
