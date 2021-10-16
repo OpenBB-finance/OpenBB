@@ -10,12 +10,12 @@
 
 
 
-    <meta name="description" content="usage: smile [-p --put] [-h] Shows the volatility smile for an option chain for a given stock price and expiration date.
-optional arguments: -p, --put shows the chart for puts instead of calls (default: False) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: plot [-p] [-x VARIABLE] [-y VARIABLE] [-h] plots an x and y variable defined by the user
+optional arguments: -x, --x selects the x variable for the graph (default: None) -y, --y selects the y variable for the graph (default: None) -c, --custom selects a predefined graph (default: None) -p, --put shows the chart for puts instead of calls (default: False) -h, --help show this help message (default: False) ">
 
 
 
-    <title>Smile | Gamestonk Terminal</title>
+    <title>Plot | Gamestonk Terminal</title>
 
     <link rel="icon" href="/GamestonkTerminal/favicon/favicon-32x32.png" type="image/x-icon">
 
@@ -36,7 +36,7 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
 <link rel="preload" href="/GamestonkTerminal/custom.css" as="style">
 <link rel="stylesheet" href="/GamestonkTerminal/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/options/smile/index.xml" title="Gamestonk Terminal" />
+<link rel="alternate" type="application/rss+xml" href="https://gamestonkterminal.github.io/GamestonkTerminal/options/plot/index.xml" title="Gamestonk Terminal" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -9147,9 +9147,40 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/options/smile/"
+                <a href="/GamestonkTerminal/options/plot/"
                     class="gdoc-nav__entry is-active">
-                    smile
+                    plot
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a href="/GamestonkTerminal/portfolio/portfolio_optimization/"
+                    class="gdoc-nav__entry ">
+                    portfolio optimization
                 </a>
             </span>
             
@@ -13880,7 +13911,7 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/options/' href='/GamestonkTerminal/options/'><span itemprop='name'>Options</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Smile</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/' href='/GamestonkTerminal/'><span itemprop='name'>Gamestonk Terminal</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/GamestonkTerminal/options/' href='/GamestonkTerminal/options/'><span itemprop='name'>Options</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Plot</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -13894,7 +13925,7 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/website/tree/main/content/options/smile/_index.md">
+            <a href="https://github.com/GamestonkTerminal/GamestonkTerminal/tree/master/website/tree/main/content/options/plot/_index.md">
                 Edit this page
             </a>
         </span>
@@ -13903,10 +13934,13 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Smile</h1>
-        <pre><code>usage: smile [-p --put] [-h]
-</code></pre><p>Shows the volatility smile for an option chain for a given stock price and expiration date.</p>
+        <h1>Plot</h1>
+        <pre><code>usage: plot [-p] [-x VARIABLE] [-y VARIABLE] [-h]
+</code></pre><p>plots an x and y variable defined by the user</p>
 <pre><code>optional arguments:
+  -x, --x               selects the x variable for the graph (default: None)
+  -y, --y               selects the y variable for the graph (default: None)
+  -c, --custom          selects a predefined graph (default: None)
   -p, --put             shows the chart for puts instead of calls (default: False)
   -h, --help            show this help message (default: False)
 </code></pre>
@@ -19468,6 +19502,25 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
 
         
         
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
             
     
     
@@ -22214,7 +22267,7 @@ optional arguments: -p, --put shows the chart for puts instead of calls (default
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/options/parity/" title="parity">parity </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/GamestonkTerminal/portfolio/portfolio_optimization/" title="portfolio optimization">portfolio optimization </a>
             
         </span>
     
