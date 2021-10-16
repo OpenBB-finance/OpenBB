@@ -582,8 +582,10 @@ main:
         ref: "/options/hist"
       - name: grhist
         ref: "/options/grhist"
-      - name: smile
-        ref: "/options/smile"
+      - name: plot
+        ref: "/options/plot"
+      - name: portfolio optimization
+        ref: "/portfolio/portfolio_optimization"
       - name: parity
         ref: "/options/parity"
       - name: payoff

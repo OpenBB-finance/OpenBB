@@ -62,8 +62,8 @@ class OptionsController:
         "unu",
         "stocks",
         "payoff",
+        "plot",
         "parity",
-        "smile",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -138,7 +138,7 @@ Current Expiry: {self.selected_date or None}
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
-    smile         plot the volatility smile for the expiration date [Yfinance]
+    plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
@@ -1048,13 +1048,13 @@ Current Expiry: {self.selected_date or None}
         except Exception as e:
             print(e, "\n")
 
-    def call_smile(self, other_args: List[str]):
-        """Process smile command"""
+    def call_plot(self, other_args: List[str]):
+        """Process plot command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="smile",
-            description="Shows the volatility smile for a specified asset and expiration date",
+            prog="plot",
+            description="Shows a plot for the given x and y variables",
         )
 
         parser.add_argument(
@@ -1065,14 +1065,63 @@ Current Expiry: {self.selected_date or None}
             dest="put",
             help="Shows puts instead of calls",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            yfinance_view.plot_smile(self.ticker, self.selected_date, ns_parser.put)
-            print("")
-        except Exception as e:
-            print(e, "\n")
+        parser.add_argument(
+            "-x",
+            "--x",
+            type=str,
+            dest="x",
+            default=None,
+            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            help=(
+                "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
+                "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
+            ),
+        )
+        parser.add_argument(
+            "-y",
+            "--y",
+            type=str,
+            dest="y",
+            default=None,
+            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            help=(
+                "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
+                "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
+            ),
+        )
+        parser.add_argument(
+            "-c",
+            "--custom",
+            type=str,
+            choices=[
+                "smile",
+            ],
+            dest="custom",
+            default=None,
+            help="Choose from already created graphs",
+        )
+
+        # try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+        if (ns_parser.x is None or ns_parser.y is None) and ns_parser.custom is None:
+            print("Please submit an X and Y value, or select a preset.\n")
+            return
+        yfinance_view.plot_plot(
+            self.ticker,
+            self.selected_date,
+            ns_parser.put,
+            ns_parser.x,
+            ns_parser.y,
+            ns_parser.custom,
+        )
+        print("")
+        # except Exception as e:
+        # print(e, "\n")
 
     def call_stocks(self, _):
         """Process stocks command"""
