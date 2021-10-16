@@ -1,0 +1,22 @@
+```
+usage: holders [-t TOP] [-s {address,balance,share}] [--descend] [-a ADDRESS]
+               [--export {csv,json,xlsx}] [-h]
+```
+
+Display top ERC20 token holders: e.g.
+0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]
+
+```
+optional arguments:
+  -t TOP, --top TOP     top N number records (default: 10)
+  -s {address,balance,share}, --sort {address,balance,share}
+                        Sort by given column. Default: share (default: share)
+  --descend             Flag to sort in descending order (lowest first)
+                        (default: False)
+  -a ADDRESS, --address ADDRESS
+                        ERC20 token address (default: False)
+  --export {csv,json,xlsx}
+                        Export dataframe data to csv,json,xlsx file (default:
+                        )
+  -h, --help            show this help message (default: False)
+```

@@ -76,7 +76,6 @@ def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     Returns
     -------
     Union[str, Any]
-
     """
 
     if isinstance(x, (int, float)) and x < 10 ** 18:
@@ -98,7 +97,7 @@ def very_long_number_formatter(num: Union[str, int, float]) -> str:
     Returns
     -------
     str:
-     formatted number
+        formatted number
     """
 
     if isinstance(num, str):

@@ -372,6 +372,11 @@ class OnchainController:
         )
 
         try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-a")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -447,6 +452,11 @@ class OnchainController:
         )
 
         try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-a")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -525,6 +535,10 @@ class OnchainController:
         )
 
         try:
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-a")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -654,6 +668,11 @@ class OnchainController:
         )
 
         try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-a")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -737,6 +756,11 @@ class OnchainController:
         )
 
         try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-a")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -787,6 +811,11 @@ class OnchainController:
         )
 
         try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-tx")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
@@ -866,6 +895,11 @@ class OnchainController:
         )
 
         try:
+
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "-a")
+
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
             if not ns_parser:
