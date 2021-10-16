@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import os
 from bisect import bisect_left
 from typing import List, Dict, Any
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -479,9 +479,32 @@ def show_parity(
 
     """
     r_date = datetime.strptime(exp, "%Y-%m-%d").date()
-    delta = (r_date - date.today()).days / 365
-    rate = ((1 + get_rf()) ** delta) - 1
+    delta = (r_date - date.today()).days
+    rate = ((1 + get_rf()) ** (delta / 365)) - 1
     stock = get_price(ticker)
+
+    div_info = yfinance_model.get_dividend(ticker)
+    div_dts = div_info.index.values.tolist()
+
+    if div_dts:
+        last_div = pd.to_datetime(div_dts[-1])
+
+        if len(div_dts) > 3:
+            avg_div = np.mean(div_info.to_list()[-4:])
+        else:
+            avg_div = np.mean(div_info.to_list())
+
+        next_div = last_div + timedelta(days=91)
+        dividends = []
+        while next_div < datetime.strptime(exp, "%Y-%m-%d"):
+            day_dif = (next_div - datetime.now()).days
+            dividends.append((avg_div, day_dif))
+            next_div += timedelta(days=91)
+        div_pvs = [x[0] / ((1 + get_rf()) ** (x[1] / 365)) for x in dividends]
+        pv_dividend = sum(div_pvs)
+    else:
+        pv_dividend = 0
+
     chain = get_option_chain(ticker, exp)
     name = "ask" if ask else "lastPrice"
     o_type = "put" if put else "call"
@@ -495,8 +518,12 @@ def show_parity(
     opts = opts.dropna()
     opts = opts.loc[opts["callPrice"] * opts["putPrice"] != 0]
 
-    opts["callParity"] = opts["putPrice"] + stock - (opts["strike"] / (1 + rate))
-    opts["putParity"] = (opts["strike"] / (1 + rate)) + opts["callPrice"] - stock
+    opts["callParity"] = (
+        opts["putPrice"] + stock - (opts["strike"] / (1 + rate)) - pv_dividend
+    )
+    opts["putParity"] = (
+        (opts["strike"] / (1 + rate)) + opts["callPrice"] - stock + pv_dividend
+    )
 
     diff = o_type + " Difference"
     opts[diff] = opts[o_type + "Price"] - opts[o_type + "Parity"]
