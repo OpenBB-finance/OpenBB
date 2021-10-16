@@ -105,7 +105,29 @@ def get_address_info(address: str) -> pd.DataFrame:
     """
 
     response = make_request("getAddressInfo", address)
-    tokens = response.pop("tokens")
+
+    if "tokens" in response:
+        tokens = response.pop("tokens")
+
+        for token in tokens:
+            token_info = token.pop("tokenInfo")
+            token.update(
+                {
+                    "tokenName": token_info.get("name"),
+                    "tokenSymbol": token_info.get("symbol"),
+                    "tokenAddress": token_info.get("address"),
+                }
+            )
+    else:
+        token_info = response.get("tokenInfo") or {}
+        tokens = [
+            {
+                "tokenName": token_info.get("name"),
+                "tokenSymbol": token_info.get("symbol"),
+                "tokenAddress": token_info.get("address"),
+                "balance": token_info.get("balance"),
+            }
+        ]
 
     eth = response["ETH"] or {}
     eth_balance = eth.get("balance")
@@ -116,15 +138,6 @@ def get_address_info(address: str) -> pd.DataFrame:
         eth_balance,
     ]
 
-    for token in tokens:
-        token_info = token.pop("tokenInfo")
-        token.update(
-            {
-                "tokenName": token_info.get("name"),
-                "tokenSymbol": token_info.get("symbol"),
-                "tokenAddress": token_info.get("address"),
-            }
-        )
     cols = [
         "tokenName",
         "tokenSymbol",
@@ -210,7 +223,11 @@ def get_address_history(address) -> pd.DataFrame:
             operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
 
     df = pd.DataFrame(operations)
-    return df[["timestamp", "transactionHash", "token", "value"]]
+    cols = ["timestamp", "transactionHash", "token", "value"]
+    if df.empty:
+        return pd.DataFrame(columns=cols)
+
+    return df[cols]
 
 
 def get_token_info(address) -> pd.DataFrame:
@@ -259,10 +276,9 @@ def get_token_info(address) -> pd.DataFrame:
         "priceVolDiff30",
         "priceCurrency",
     ]:
-        try:
+        if col in df.columns:
             df.drop(col, axis=1, inplace=True)
-        except KeyError as e:
-            print(e)
+
     df = df.T.reset_index()
     df.columns = ["Metric", "Value"]
     df["Value"] = df["Value"].apply(
@@ -343,6 +359,8 @@ def get_token_history(address) -> pd.DataFrame:
     except KeyError as e:
         print(e)
     df = pd.DataFrame(all_operations)
+    if df.empty:
+        return df
     df[["name", "symbol"]] = name, symbol
     return df[["timestamp", "name", "symbol", "value", "from", "to", "transactionHash"]]
 
@@ -364,12 +382,11 @@ def get_token_historical_price(address) -> pd.DataFrame:
     response = make_request("getTokenPriceHistoryGrouped", address)
     data = response["history"]
     data.pop("current")
-    txs = []
-    for i in data["countTxs"]:
-        txs.append({"ts": i["ts"], "cnt": i["cnt"]})
-    txs_df = pd.DataFrame(txs)
-    txs_df["ts"] = txs_df["ts"].apply(lambda x: datetime.fromtimestamp(x))
-    prices_df = pd.DataFrame(data["prices"])
+    prices = data.get("prices")
+    if not prices:
+        return pd.DataFrame()
+
+    prices_df = pd.DataFrame(prices)
     prices_df["ts"] = prices_df["ts"].apply(lambda x: datetime.fromtimestamp(x))
     prices_df.drop("tmp", axis=1, inplace=True)
     return prices_df[

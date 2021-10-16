@@ -502,7 +502,7 @@ class OnchainController:
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         parser.add_argument(
@@ -673,7 +673,7 @@ class OnchainController:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hist",
+            prog="th",
             description="""
                      Displays info about token history.
                      e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
