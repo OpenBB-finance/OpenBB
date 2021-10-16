@@ -53,6 +53,14 @@ class DarkPoolShortsCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="stocks.dps")
     async def dark_pool_shorts_menu(self, ctx: discord.ext.commands.Context, arg=""):
+        """Shows Economy Menu
+
+        Returns
+        -------
+        Sends a message to the discord user with the commands from the dps context.
+        The user can then select a reaction to trigger a command.
+        """
+
         if cfg.DEBUG:
             print("!stocks.dps")
 

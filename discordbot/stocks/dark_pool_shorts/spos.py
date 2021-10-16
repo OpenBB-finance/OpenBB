@@ -9,6 +9,20 @@ from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
 async def spos_command(ctx, arg=""):
+    """Gets price vs short interest volume plot from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        ticker, -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an image of net short position of a given
+        ticker to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

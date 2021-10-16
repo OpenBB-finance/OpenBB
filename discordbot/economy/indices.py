@@ -5,6 +5,19 @@ from gamestonk_terminal.economy import wsj_model
 
 
 async def indices_command(ctx, arg=""):
+    """Gets the indices data from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an embed of indices data to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

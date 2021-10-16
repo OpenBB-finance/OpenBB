@@ -35,48 +35,63 @@ Register your app <a href="https://imgur.com/signin?redirect=http://api.imgur.co
 
 Download the code from this repository.
 
-Then open the main.py file and go back to https://discord.com/developers/applications/ and go to your bot page. There you'll have to copy the token
+Then open the config_discordbot.py file and go back to https://discord.com/developers/applications/ and go to your bot page. There you'll have to copy the token
 <img src="images/picture_7.png" alt="Logo" width="1183" height="419">
 
-Then change the settings in the beginning of main.py:
+Then change the settings in the config_discordbot.py. Make sure to add the proper filepath to the GamestonkTerminal folder.
+Add your discord token and imgur id to your environment variables as "GT_DISCORD_BOT_TOKEN" & "GT_IMGUR_CLIENT_ID" or
+change the string in the config. You can also change the command prefix, date format, debug mode and other parameters in the settings
+part of the config file.
+
+From the config_discordbot.py file:
 ```
-##############
-## Settings ##
-##############
-DISCORD_BOT_TOKEN = 'string' # Insert your bots secrets token
-IMGUR_CLIENT_ID = 'string' # Enter your imgur client id
-COMMAND_PREFIX = '!' # Sets the prefix to the commands
-activity = discord.Game(name='Gametonk Terminal: https://github.com/GamestonkTerminal/GamestonkTerminal')
-gst_path = 'C:\\Users\\user\\GamestonkTerminal' # The path to Gamestonk Terminal
-date_input_format = '%Y-%m-%d' # Enter your prefered date input format
+# Path to the terminal
+GST_PATH = os.path.join("~", "Documents", "GamestonkTerminal")
+sys.path.append(GST_PATH)
+
+# https://discord.com/developers/applications/
+DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
+
+# https://apidocs.imgur.com
+IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
+
+# Settings
+COMMAND_PREFIX = "!"
+DATE_FORMAT = "%Y-%m-%d"
+COLOR = discord.Color.from_rgb(0, 206, 154)
+MENU_TIMEOUT = 30
+DEBUG = True
+
+AUTHOR_NAME = "Gamestonk Terminal"
+AUTHOR_ICON_URL = (
+    "https://github.com/GamestonkTerminal/GamestonkTerminal/"
+    "blob/main/images/gst_logo_green_white_background.png?raw=true"
+)
 ```
 
 ### Step 3:
-Activate your GST virtual enviroment and go to the place where your main.py file is located and run it.
+Activate your GST virtual environment and go to the place where your main.py file is located and run it.
 <img src="images/image.png" alt="Logo" width="1167" height="294">
-Your finished! Go to your server and you should see the bot online!!!
+You're finished! Go to your server and you should see the bot online!!!
 
 ## Code Structure and Contributing
 The file system is built in the following way:
-- Each context is one file unless it has categories and if it has it then it should have a file in the directory named context_main.py (example: Stocks has as a category Dark Pool Shorts -> stocks is a directory with a file stocks_main.py and dps is a file; economy has no categories -> economy is one file)
-- The settings shall currently be in the main.py file (example: API keys)
+- Each command is one file with the essential functions for the command and is named COMMANDNAME.py.
+- Each context is a directory and has a menu file named CONTEXT_menu.py.
+- The menu file works by controlling every command in the context and it contains the menu command.
+- discordbot.py can loads every menu file from each context.
+- The settings shall be in the config_discordbot.py file (example: API keys).
 
-A context/category file is built in the following way:
-```
-Imports
+If a function is often used by multiple files then add them to the helpers.py file. Please try to use the _view files
+from the GST to get the data for the commands if possible.
 
-Functions
-  Returns the embed or sends the response via pagination function from main
+Feel free to contribute to the discord bot, add more contexts, commands or just do other improvements. To see the
+current prioritize of the development see the TODO list in the discord bot project
+(https://github.com/GamestonkTerminal/GamestonkTerminal/projects/4).
 
-Class with the commands as cogs
-  The Commands call the functions with given arguments
-  Has one command with a list of the commands and can run them via emoji reactions from the user
+## What if something doesn't work?
 
-Add the cogs class to the bot
-```
-If a funtion is often used by a context with categories or multiple files then add them to the context_main.py or the main.py file.
+Make sure to follow the steps in the download guide. If an error occurs anyway then activate the debug mode in the
+config file and see where the error occurs in your terminal. Join the GST discord and report your issue in the #bugs
+channel. Otherwise, there's the possibility to open a GitHub issue or message northern-64bit.
 
-## Disclaimer
-"A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have clients and I do not provide personalized investment advice for fees or commissions." DFV
-
-Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment amount, and may not be suitable for all investors. Before deciding to trade in financial instrument you should be fully informed of the risks and costs associated with trading the financial markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST is not necessarily accurate. GST Discord Bot/GST and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.

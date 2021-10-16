@@ -10,6 +10,20 @@ from gamestonk_terminal.stocks.dark_pool_shorts import finra_model
 
 
 async def dpotc_command(ctx, arg=""):
+    """Displays barchart of dark pool (ATS) and OTC (Non ATS) data and sends it
+
+    Parameters
+    -----------
+    arg: str
+        ticker, -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an image displaying a barchart of dark pool
+        (ATS) and OTC (Non ATS) data to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

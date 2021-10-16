@@ -6,6 +6,22 @@ from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
 async def pos_command(ctx, arg="dpp_dollar", arg2="10"):
+    """Gets the dark pool shorts data sorted by arg from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        sort (str in dark_pool_short), -h or help
+    arg2: str
+        number
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an embed of dark pool shorts data given
+        the sorting arg to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:
