@@ -1,23 +1,19 @@
 # Discord Bot - WORK IN PROGRESS
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li><a href="#registering-applications">Registering Applications</a></li>
-    <li>
-      <a href="#api-keys">API Keys</a>
-      <ul>
-        <li><a href="#discord">Discord</a></li>
-        <li><a href="#imgur">Imgur</a></li>
-      </ul>
-    </li>
-    <li><a href="#discord-configs">Discord Configs</a></li>
-    <li><a href="#run-locally">Run Locally</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#bugs">Bugs</a></li>
-  </ol>
-</details>
+<summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+<ol>
+  <li><a href="#install-requirements">Install Requirements</a></li>
+  <li><a href="#registering-applications">Registering Applications</a></li>
+  <ul>
+    <li><a href="#discord">Discord</a></li>
+    <li><a href="#imgur">Imgur</a></li>
+  </ul>
+  <li><a href="#discord-configs">Discord Configs</a></li>
+  <li><a href="#run-locally">Run Locally</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+  <li><a href="#bugs">Bugs</a></li>
+</ol>
 
 
 ## Install Requirements
@@ -92,6 +88,8 @@ Now, you should be ready to invoke the discord bot from server using something l
 ```
 !stocks.dps TSLA
 ```
+
+<img width="1211" alt="Screenshot 2021-10-18 at 00 21 30" src="https://user-images.githubusercontent.com/25267873/137649138-8d8158c5-1b76-49bc-928f-694d7005d94d.png">
 
 
 ## Contributing
