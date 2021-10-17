@@ -6,7 +6,7 @@ import os
 from tabulate import tabulate
 
 from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.stocks.technical_analysis.yfinance_model import get_history
+from gamestonk_terminal.stocks.quantitative_analysis.yfinance_model import get_history
 import gamestonk_terminal.feature_flags as gtff
 
 

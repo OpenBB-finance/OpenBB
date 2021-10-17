@@ -34,6 +34,7 @@ from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
 from gamestonk_terminal.helper_funcs import valid_date
+from gamestonk_terminal.stocks.quantitative_analysis import yfinance_view
 
 # pylint: disable=R1710
 
@@ -209,10 +210,127 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
-        candle(
-            self.ticker + "." + self.suffix if self.suffix else self.ticker,
-            other_args,
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="data",
+            description="Shows historic data for a stock",
         )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            type=str,
+            choices=[
+                "1d",
+                "5d",
+                "1mo",
+                "3mo",
+                "6mo",
+                "1y",
+                "2y",
+                "5y",
+                "10y",
+                "ytd",
+                "max",
+            ],
+            help="Period to get data for",
+            default="1mo",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            choices=[
+                "1m",
+                "2m",
+                "5m",
+                "15m",
+                "30m",
+                "60m",
+                "90m",
+                "1h",
+                "1d",
+                "5d",
+                "1wk",
+                "1mo",
+                "3mo",
+            ],
+            help="Interval of stock data",
+            default="1d",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            choices=[
+                "Date",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Volume",
+                "Dividend",
+                "Stock Splits",
+            ],
+            default="Date",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Shows raw data instead of chart",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if ns_parser.raw:
+                periods = ["3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
+                intervals = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h"]
+                if ns_parser.period in periods and ns_parser.interval in intervals:
+                    print("Intraday history available when period is less than 60 days.\n")
+                    return
+
+                yfinance_view.get_raw(
+                    self.ticker,
+                    ns_parser.period,
+                    ns_parser.interval,
+                    ns_parser.export,
+                    ns_parser.sort,
+                    ns_parser.descending,
+                )
+
+            else:
+                candle(
+                    self.ticker + "." + self.suffix if self.suffix else self.ticker,
+                    other_args,
+                )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_news(self, other_args: List[str]):
         """Process news command"""
