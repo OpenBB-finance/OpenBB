@@ -250,10 +250,20 @@ def display_government_sells(
     df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
 
     df_gov["min"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[0].strip("$").replace(",", "").strip().replace(">$", "").strip()
+        lambda x: x.split("-")[0]
+        .strip("$")
+        .replace(",", "")
+        .strip()
+        .replace(">$", "")
+        .strip()
     )
     df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1].replace(",", "").strip().strip("$").replace(">$", "").strip()
+        lambda x: x.split("-")[1]
+        .replace(",", "")
+        .strip()
+        .strip("$")
+        .replace(">$", "")
+        .strip()
         if "-" in x
         else x.strip("$").replace(",", "").replace(">$", "").strip()
     )
