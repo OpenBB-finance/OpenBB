@@ -12,6 +12,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
+from gamestonk_terminal.stocks.technical_analysis.yfinance_view import get_raw
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import (
     get_flair,
@@ -68,6 +69,7 @@ class TechnicalAnalysisController:
         "adosc",
         "obv",
         "fib",
+        "raw",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -140,6 +142,7 @@ Volume:
     obv         on balance volume
 Custom:
     fib         fibonacci retracement
+    raw         gives raw data for a stock
 """
         print(help_str)
 
@@ -1657,6 +1660,116 @@ Custom:
                 end_date=ns_parser.end,
                 export=ns_parser.export,
             )
+        except Exception as e:
+            print(e, "\n")
+
+    def call_raw(self, other_args: List[str]):
+        """Process fib command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fib",
+            description="Calculates the fibonacci retracement levels",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            type=str,
+            choices=[
+                "1d",
+                "5d",
+                "1mo",
+                "3mo",
+                "6mo",
+                "1y",
+                "2y",
+                "5y",
+                "10y",
+                "ytd",
+                "max",
+            ],
+            help="Period to get data for",
+            default="1mo",
+        )
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=str,
+            choices=[
+                "1m",
+                "2m",
+                "5m",
+                "15m",
+                "30m",
+                "60m",
+                "90m",
+                "1h",
+                "1d",
+                "5d",
+                "1wk",
+                "1mo",
+                "3mo",
+            ],
+            help="Interval of stock data",
+            default="1d",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "-s" "--sort",
+            choices=[
+                "Date",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Volume",
+                "Dividend",
+                "Stock Splits",
+            ],
+            default="Date",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d" "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+
+        try:
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            periods = ["3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
+            intervals = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h"]
+            if ns_parser.period in periods and ns_parser.interval in intervals:
+                print("Intraday history available when period is less than 60 days.\n")
+                return
+
+            get_raw(
+                self.ticker,
+                ns_parser.period,
+                ns_parser.interval,
+                ns_parser.export,
+                ns_parser.sort,
+                ns_parser.descending,
+            )
+
+            print("")
+
         except Exception as e:
             print(e, "\n")
 

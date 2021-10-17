@@ -399,6 +399,8 @@ main:
             ref: "/common/technical_analysis/obv"
           - name: fib
             ref: "/common/technical_analysis/fib"
+          - name: raw
+            ref: "/common/technical_analysis/raw"
       - name: behavioural analysis
         ref: "/stocks/behavioural_analysis"
         sub:
