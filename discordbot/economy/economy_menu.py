@@ -58,6 +58,14 @@ class EconomyCommands(discord.ext.commands.Cog):
 
     @discord.ext.commands.command(name="economy")
     async def economy(self, ctx: discord.ext.commands.Context):
+        """Shows Economy Menu
+
+        Returns
+        -------
+        Sends a message to the discord user with the commands from the economy context.
+        The user can then select a reaction to trigger a command.
+        """
+
         if cfg.DEBUG:
             print("!economy")
 

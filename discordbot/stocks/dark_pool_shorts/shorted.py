@@ -6,6 +6,20 @@ from gamestonk_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
 
 async def shorted_command(ctx, arg="5"):
+    """Gets the most shorted stocks data from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        number, -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an embed containing of the most shorted
+        stocks to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

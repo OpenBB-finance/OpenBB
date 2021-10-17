@@ -6,6 +6,22 @@ from gamestonk_terminal.stocks.dark_pool_shorts import stockgrid_model
 
 
 async def sidtc_command(ctx, arg="float", arg2="10"):
+    """Gets short interest and days to cover data from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        sort (dark_pool_shorts), -h or help
+    arg2: str
+        number
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an embed with short interest and days to cover
+        data to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:
