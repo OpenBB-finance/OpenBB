@@ -1,4 +1,7 @@
 ## Code Structure and Contributing
+
+UNDER DEVELOPMENT!
+
 The file system is built in the following way:
 - Each command is one file with the essential functions for the command and is named COMMANDNAME.py.
 - Each context is a directory and has a menu file named CONTEXT_menu.py.
