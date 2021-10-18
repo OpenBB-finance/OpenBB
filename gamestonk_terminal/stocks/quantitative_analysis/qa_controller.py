@@ -25,7 +25,6 @@ from gamestonk_terminal.helper_funcs import (
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
-from gamestonk_terminal.stocks.quantitative_analysis import yfinance_view
 
 
 class QaController:
@@ -942,7 +941,7 @@ Other:
                 print("Intraday history available when period is less than 60 days.\n")
                 return
 
-            yfinance_view.get_raw(
+            qa_view.display_raw(
                 self.ticker,
                 ns_parser.period,
                 ns_parser.interval,

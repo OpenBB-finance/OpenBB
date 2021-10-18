@@ -34,7 +34,7 @@ from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
 from gamestonk_terminal.helper_funcs import valid_date
-from gamestonk_terminal.stocks.quantitative_analysis import yfinance_view
+from gamestonk_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710
 
@@ -316,7 +316,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                     )
                     return
 
-                yfinance_view.get_raw(
+                qa_view.display_raw(
                     self.ticker,
                     ns_parser.period,
                     ns_parser.interval,
