@@ -1,97 +1,105 @@
-# DiscordBot
-Implementation of a discord bot, which is WORK IN PROGRESS
+# Discord Bot - WORK IN PROGRESS
 
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/GamestonkTerminal/DiscordBot">
-    <img src="images/gst_logo_lockup_rGreen_with_letters.png" alt="Logo" width="800" height="276">
-  </a>
+<!-- TABLE OF CONTENTS -->
+<summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+<ol>
+  <li><a href="#install-requirements">Install Requirements</a></li>
+  <li><a href="#registering-applications">Registering Applications</a></li>
+  <ul>
+    <li><a href="#discord">Discord</a></li>
+    <li><a href="#imgur">Imgur</a></li>
+  </ul>
+  <li><a href="#discord-configs">Discord Configs</a></li>
+  <li><a href="#run-locally">Run Locally</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+  <li><a href="#bugs">Bugs</a></li>
+</ol>
 
-## Set Up
 
-### Step 1: Getting a discord bot
-Go to https://discord.com/developers/applications and click on "New Application" (See Picture 1)
-Enter a name for example "Gamestonk Terminal Discord Bot"
-Picture 1:
-<img src="images/picture_1.png" alt="Logo" width="1183" height="157">
-Then go to the bot page:
-<img src="images/picture_2.png" alt="Logo" width="1183" height="251">
-Then press "Add Bot":
-<img src="images/picture_3.png" alt="Logo" width="1183" height="324">
-Now go to your applications "OAuth2" Tab:
+## Install Requirements
 
-<img src="images/picture_4.png" alt="Logo" width="455" height="423">
-Then copy your Client ID:
-<img src="images/picture_5.png" alt="Logo" width="1183" height="301">
-Then invite your bot to your discord server by replacing the ENTERCLIENTID with your copied client ID in this url: https://discord.com/oauth2/authorize?client_id=ENTERCLIENTID&scope=bot (You can also do it on via this link generator https://discordapi.com/permissions.html where you can select the proper permissions)
-After clicking the link you'll see something similar to this:
-<img src="images/picture_6.png" alt="Logo" width="472" height="624">
-Register your app <a href="https://imgur.com/signin?redirect=http://api.imgur.com/oauth2/addclient" class="dy ie" rel="noopener ugc nofollow">here</a>. Choose “OAuth 2 authorization without a callback URL”. Registering is free for all open source projects and if your discord bot uses fewer than 1,250 uploads per day. You will receive an client ID and client secret once you submit the form.
+This tutorial assumes that you have successfully installed Gamestonk Terminal.
 
-### Step 2: Get the scripts to run the GST Discord Bot
-
-(Note this assumes that you already have installed GST for more info about the installation: https://github.com/GamestonkTerminal/GamestonkTerminal#getting-started)
-
-Download the code from this repository.
-
-Then open the config_discordbot.py file and go back to https://discord.com/developers/applications/ and go to your bot page. There you'll have to copy the token
-<img src="images/picture_7.png" alt="Logo" width="1183" height="419">
-
-Then change the settings in the config_discordbot.py. Make sure to add the proper filepath to the GamestonkTerminal folder.
-Add your discord token and imgur id to your environment variables as "GT_DISCORD_BOT_TOKEN" & "GT_IMGUR_CLIENT_ID" or
-change the string in the config. You can also change the command prefix, date format, debug mode and other parameters in the settings
-part of the config file.
-
-From the config_discordbot.py file:
+Next, go into the discordbot folder with `cd discordbot` and install the following packages:
 ```
-# Path to the terminal
+pip install discord
+pip install discord_components
+pip install pyimgur
+```
+
+## Registering Applications
+
+### DISCORD
+
+1. Login into your discord account in https://discord.com/developers/applications 
+2. On the "Applications" tab, select "New Application" and name it something like "GST Bot". This will create a new application.
+3. For creating a bot, we need to go into the "GST Bot" application previously created, and on the "Bot" tab select "Add Bot". Note: On this same page you can manage the bot permissions with regards to the server it will be added.
+4. Next we need to obtain the "Client ID". For that we choose the "OAuth2" tab and copy our "Client ID" under "Client".
+5. At this stage the bot is created and we are ready to invite it to one of our servers. To do so we need to access:
+https://discord.com/oauth2/authorize?client_id=CLIENTID&scope=bot, where **CLIENTID** is replaced by the value copied above. 
+6. If everything went well, you should see a window popup where the Bot that was just created asks to which of your own servers do you want to add it to.
+
+**NOTE:** If you haven't managed the bot permissions on the Bot tab previously you can do it via this link generator https://discordapi.com/permissions.html   
+
+### IMGUR
+
+1. Login into your https://imgur.com account. Create one if you don't have it.
+2. Access https://api.imgur.com/oauth2/addclient to create your application.
+3. Select "OAuth 2 authorization without a callback URL" when creating such.
+4. You will receive a client ID and client secret once you submit the form. 
+
+**NOTE:** Registering is free for all open source projects and if your discord bot uses fewer than 1250 uploads per day. 
+
+## Discord Configs
+
+In order to config the discord bot you will need to edit the [config_discordbot.py](gamestonk_terminal/config_discordbot.py) file.
+
+1. Edit the path to the terminal by changing the variable `GST_PATH`. E.g.
+```
 GST_PATH = os.path.join("~", "Documents", "GamestonkTerminal")
 sys.path.append(GST_PATH)
-
-# https://discord.com/developers/applications/
-DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
-
-# https://apidocs.imgur.com
-IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
-
-# Settings
-COMMAND_PREFIX = "!"
-DATE_FORMAT = "%Y-%m-%d"
-COLOR = discord.Color.from_rgb(0, 206, 154)
-MENU_TIMEOUT = 30
-DEBUG = True
-
-AUTHOR_NAME = "Gamestonk Terminal"
-AUTHOR_ICON_URL = (
-    "https://github.com/GamestonkTerminal/GamestonkTerminal/"
-    "blob/main/images/gst_logo_green_white_background.png?raw=true"
-)
 ```
 
-### Step 3:
-Activate your GST virtual environment and go to the place where your main.py file is located and run it.
-<img src="images/image.png" alt="Logo" width="1167" height="294">
-You're finished! Go to your server and you should see the bot online!!!
+2. Update `DISCORD_BOT_TOKEN` using discord bot CLIENT ID obtained previously in [discord](#discord).
 
-## Code Structure and Contributing
-The file system is built in the following way:
-- Each command is one file with the essential functions for the command and is named COMMANDNAME.py.
-- Each context is a directory and has a menu file named CONTEXT_menu.py.
-- The menu file works by controlling every command in the context and it contains the menu command.
-- discordbot.py can loads every menu file from each context.
-- The settings shall be in the config_discordbot.py file (example: API keys).
+2. Update `IMGUR_CLIENT_ID` using imgur application CLIENT ID obtained previously in [imgur](#imgur).
 
-If a function is often used by multiple files then add them to the helpers.py file. Please try to use the _view files
-from the GST to get the data for the commands if possible.
+#### Advanced
 
-Feel free to contribute to the discord bot, add more contexts, commands or just do other improvements. To see the
-current prioritize of the development see the TODO list in the discord bot project
-(https://github.com/GamestonkTerminal/GamestonkTerminal/projects/4).
+Other parameters that can be configured are:
 
-## What if something doesn't work?
+- **DEBUG**: Shows a debug message on the terminal console of what's happening on the discord bot from the server side.
+- **COMMAND_PREFIX**: Command prefix to be used when calling the bot from the discord server.
+- **DATE_FORMAT**: Selects date format to be used as parameter on the discord bot.
+- **COLOR**: Changes color of the bot messages replies on the discord server.
+- **MENU_TIMEOUT**: Timeout in seconds to allow user to select options when a menu command is invoked from the discord bot.
+- **AUTHOR_NAME**: Name of the discord bot in the server.
+- **AUTHOR_ICON_URL**: Icon displayed on the discord bot replies on the server.
 
-Make sure to follow the steps in the download guide. If an error occurs anyway then activate the debug mode in the
-config file and see where the error occurs in your terminal. Join the GST discord and report your issue in the #bugs
-channel. Otherwise, there's the possibility to open a GitHub issue or message northern-64bit.
+## Run Locally
 
+Just run the discord bot from this folder with:
+```
+python discordbot.py
+```
+
+Now, you should be ready to invoke the discord bot from server using something like:
+
+```
+!stocks.dps TSLA
+```
+
+<img width="1211" alt="Screenshot 2021-10-18 at 00 21 30" src="https://user-images.githubusercontent.com/25267873/137649138-8d8158c5-1b76-49bc-928f-694d7005d94d.png">
+
+
+## Contributing
+
+See more in [CONTRIBUTING.md](discordbot/CONTRIBUTING.md).
+
+## Bugs
+
+If an error occurs, use `DEBUG=True` on the [config_discordbot.py](gamestonk_terminal/config_discordbot.py) file.
+
+Then, report what is the issue with the console output attached either by:
+- [Opening an issue on github](https://github.com/GamestonkTerminal/GamestonkTerminal/issues/new/choose)
+- Contacting either `DidierRLopes` (@SexyYear) or `northern-64bit`
