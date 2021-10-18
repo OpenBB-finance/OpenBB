@@ -584,6 +584,8 @@ main:
         ref: "/options/hist"
       - name: grhist
         ref: "/options/grhist"
+      - name: data
+        ref: "/options/data"
       - name: plot
         ref: "/options/plot"
       - name: portfolio optimization

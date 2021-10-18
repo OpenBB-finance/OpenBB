@@ -31,6 +31,7 @@ from gamestonk_terminal.options import (
 )
 from gamestonk_terminal.stocks import stocks_controller
 from gamestonk_terminal.options import payoff_controller
+from gamestonk_terminal.options import chartexchange_view
 
 
 class OptionsController:
@@ -64,6 +65,7 @@ class OptionsController:
         "payoff",
         "plot",
         "parity",
+        "data",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -140,6 +142,7 @@ Current Expiry: {self.selected_date or None}
     grhist        plot option greek history [Syncretism.io]
     plot          plot variables provided by the user [Yfinance]
     parity        shows whether options are above or below expected price [Yfinance]
+    data          shows historical data for a given option
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
@@ -1182,6 +1185,109 @@ Current Expiry: {self.selected_date or None}
                 ns_parser.ask,
                 ns_parser.mini,
                 ns_parser.maxi,
+            )
+            print("")
+        except Exception as e:
+            print(e, "\n")
+
+    def call_data(self, other_args: List[str]):
+        """Process data command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="data",
+            description="Shows historic prices for an option",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            choices=[
+                "Date",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Change",
+                "Volume",
+                "Open Interest",
+                "Change Since",
+            ],
+            default="Date",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "-p",
+            "--put",
+            action="store_false",
+            dest="call",
+            default=True,
+            help="Use a put instead of a call",
+        )
+
+        parser.add_argument(
+            "-k",
+            "--strike",
+            dest="strike",
+            type=str,
+            default="0",
+            help="What strike prices to use",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if not self.ticker and not self.selected_date:
+                print("Ticker and expiration required. \n")
+                return
+            both = yfinance_model.get_option_chain(self.ticker, self.selected_date)
+            options = both.calls if ns_parser else both.puts
+            if float(ns_parser.strike) not in options["strike"].tolist():
+                print("Strike not valid, give a strike from the list below:\n")
+                n = max(
+                    len(both.calls["strike"].tolist()),
+                    len(both.puts["strike"].tolist()),
+                )
+                print("Calls\tPuts")
+                for i in range(n):
+                    if len(both.calls["strike"].tolist()) > i:
+                        call = f"{float(both.calls['strike'].tolist()[i]):g}"
+                    else:
+                        call = f"{float(0):g}"
+                    if len(both.puts["strike"].tolist()) > i:
+                        put = f"{float(both.puts['strike'].tolist()[i]):g}"
+                    else:
+                        put = f"{float(0):g}"
+                    print(f"{call}\t{put}")
+                print("")
+                return
+
+            chartexchange_view.get_option_hist(
+                self.ticker,
+                self.selected_date,
+                ns_parser.call,
+                ns_parser.strike,
+                ns_parser.export,
+                ns_parser.sort,
+                ns_parser.descending,
             )
             print("")
         except Exception as e:
