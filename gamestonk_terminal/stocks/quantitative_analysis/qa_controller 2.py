@@ -52,6 +52,7 @@ class QaController:
         "goodness",
         "unitroot",
         "capm",
+        "data",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -121,6 +122,7 @@ Other:
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
     capm        capital asset pricing model
+    data        get raw data for a specific stock
         """
         print(help_str)
 
@@ -837,6 +839,67 @@ Other:
             if not ns_parser:
                 return
             capm_view(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
+
+    def call_data(self, other_args: List[str]):
+        """Process data command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="data",
+            description="Shows historic data for a stock",
+        )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            choices=self.stock.columns,
+            default="",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            type=int,
+            dest="num",
+            default=20,
+            help="Number of results to show",
+        )
+
+        try:
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.display_raw(
+                self.stock,
+                ns_parser.export,
+                ns_parser.sort,
+                ns_parser.descending,
+                ns_parser.num,
+            )
+
+            print("")
 
         except Exception as e:
             print(e, "\n")
