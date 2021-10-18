@@ -499,8 +499,10 @@ def display_unitroot(
     )
 
 
-def display_raw(df: pd.DataFrame, export: str, sort: str, des: bool) -> None:
-    """Return raw stock data [Source: Yahoo Finance]
+def display_raw(
+    df: pd.DataFrame, export: str, sort: str, des: bool, num: int = 20
+) -> None:
+    """Return raw stock data
 
     Parameters
     ----------
@@ -521,13 +523,13 @@ def display_raw(df: pd.DataFrame, export: str, sort: str, des: bool) -> None:
         df,
     )
 
-    if sort != "":
+    if sort:
         df = df.sort_values(by=sort, ascending=des)
 
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df,
+                df.head(num),
                 headers=[x.title() if x != "" else "Date" for x in df.columns],
                 tablefmt="fancy_grid",
                 showindex=True,

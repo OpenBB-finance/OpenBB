@@ -862,16 +862,7 @@ Other:
         parser.add_argument(
             "-s",
             "--sort",
-            choices=[
-                "AdjClose",
-                "Open",
-                "Close",
-                "High",
-                "Low",
-                "Volume",
-                "Returns",
-                "LogRet",
-            ],
+            choices=self.stock.columns,
             default="",
             type=str,
             dest="sort",
@@ -885,24 +876,33 @@ Other:
             default=True,
             help="Sort selected column descending",
         )
-
-        # try:
-
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        qa_view.display_raw(
-            self.stock,
-            ns_parser.export,
-            ns_parser.sort,
-            ns_parser.descending,
+        parser.add_argument(
+            "-n",
+            "--number",
+            type=int,
+            dest="num",
+            default=20,
+            help="Number of results to show",
         )
 
-        print("")
+        try:
 
-        # except Exception as e:
-        # print(e, "\n")
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            qa_view.display_raw(
+                self.stock,
+                ns_parser.export,
+                ns_parser.sort,
+                ns_parser.descending,
+                ns_parser.num,
+            )
+
+            print("")
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
