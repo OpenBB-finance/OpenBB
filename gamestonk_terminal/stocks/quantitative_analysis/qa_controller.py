@@ -53,7 +53,7 @@ class QaController:
         "goodness",
         "unitroot",
         "capm",
-        "data"
+        "data",
     ]
 
     CHOICES += CHOICES_COMMANDS
