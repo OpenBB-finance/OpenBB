@@ -514,6 +514,8 @@ def display_raw(
         The column to sort by
     des : bool
         Whether to sort descending
+    num : int
+        Number of rows to show
     """
 
     export_data(
