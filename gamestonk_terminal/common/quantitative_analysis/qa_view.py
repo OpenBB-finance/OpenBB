@@ -497,3 +497,48 @@ def display_unitroot(
         "unitroot",
         data,
     )
+
+
+def display_raw(
+    df: pd.DataFrame, export: str, sort: str, des: bool, num: int = 20
+) -> None:
+    """Return raw stock data
+
+    Parameters
+    ----------
+    df : DataFrame
+        DataFrame with historical information
+    export : str
+        Export data as CSV, JSON, XLSX
+    sort : str
+        The column to sort by
+    des : bool
+        Whether to sort descending
+    num : int
+        Number of rows to show
+    """
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "history",
+        df,
+    )
+
+    if sort:
+        df = df.sort_values(by=sort, ascending=des)
+
+    if gtff.USE_TABULATE_DF:
+        print(
+            tabulate(
+                df.head(num),
+                headers=[x.title() if x != "" else "Date" for x in df.columns],
+                tablefmt="fancy_grid",
+                showindex=True,
+                floatfmt=".2f",
+            )
+        )
+    else:
+        print(df.to_string(index=False))
+
+    print("")

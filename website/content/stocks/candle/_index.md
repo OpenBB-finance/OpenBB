@@ -1,14 +1,18 @@
 ```
-usage: candle [-s S_START] [--plotly] [-h]
+usage: candle [-s S_START] [--plotly] [-h] [--raw] [-e {csv, json, xlsx}] -s SORT] [-d]
 ```
 
-Displays candle chart of loaded ticker
+Displays candle chart of loaded ticker, or shows raw data with --raw
 
 ```
 optional arguments:
   -s S_START, --start_date S_START
                         Start date for candle data (default: 2021-03-19)
   --plotly              Flag to show interactive plot using plotly. (default: False)
+  --raw                 shows the raw data instead of a chart
+  -e, --export          The format to export the information into
+  -s, --sort            Which column to sort the information by
+  -d, --descending      Show the information in descending order
   -h, --help            show this help message (default: False)
 ```
 

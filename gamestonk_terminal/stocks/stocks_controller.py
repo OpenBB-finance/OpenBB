@@ -34,6 +34,7 @@ from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
 from gamestonk_terminal.helper_funcs import valid_date
+from gamestonk_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710
 
@@ -209,10 +210,75 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_candle(self, other_args: List[str]):
         """Process candle command"""
-        candle(
-            self.ticker + "." + self.suffix if self.suffix else self.ticker,
-            other_args,
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="data",
+            description="Shows historic data for a stock",
         )
+        parser.add_argument(
+            "--export",
+            choices=["csv", "json", "xlsx"],
+            default="",
+            type=str,
+            dest="export",
+            help="Export dataframe data to csv,json,xlsx file",
+        )
+        parser.add_argument(
+            "-s",
+            "--sort",
+            choices=[
+                "AdjClose",
+                "Open",
+                "Close",
+                "High",
+                "Low",
+                "Volume",
+                "Returns",
+                "LogRet",
+            ],
+            default="",
+            type=str,
+            dest="sort",
+            help="Choose a column to sort by",
+        )
+        parser.add_argument(
+            "-d",
+            "--descending",
+            action="store_false",
+            dest="descending",
+            default=True,
+            help="Sort selected column descending",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            default=False,
+            help="Shows raw data instead of chart",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if ns_parser.raw:
+                qa_view.display_raw(
+                    self.stock,
+                    ns_parser.export,
+                    ns_parser.sort,
+                    ns_parser.descending,
+                )
+
+            else:
+                candle(
+                    self.ticker + "." + self.suffix if self.suffix else self.ticker,
+                    other_args,
+                )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_news(self, other_args: List[str]):
         """Process news command"""
