@@ -367,9 +367,8 @@ Current Expiry: {self.selected_date or None}
             ],
         )
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-p")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -423,9 +422,8 @@ Current Expiry: {self.selected_date or None}
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-p")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -481,7 +479,8 @@ Current Expiry: {self.selected_date or None}
             help="Display raw data",
         )
         parser.add_argument(
-            "-n," "--num",
+            "-n",
+            "--num",
             dest="num",
             default=20,
             help="Number of raw data rows to show",
@@ -543,9 +542,8 @@ Current Expiry: {self.selected_date or None}
             help="Source to get option expirations from",
         )
         try:
-            if other_args:
-                if "-t" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-t")
+            if other_args and "-t" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-t")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -554,7 +552,6 @@ Current Expiry: {self.selected_date or None}
         except Exception as e:
             print(e, "\n")
             return
-
         except SystemExit:
             print("")
             return
@@ -594,9 +591,8 @@ Current Expiry: {self.selected_date or None}
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-i")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -609,18 +605,16 @@ Current Expiry: {self.selected_date or None}
                 for i, d in enumerate(self.expiry_dates):
                     print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
                 print("")
-            # It means an expiry date was correctly selected
-            else:
-                if ns_parser.date:
-                    if ns_parser.date in self.expiry_dates:
-                        print(f"Expiraration set to {ns_parser.date} \n")
-                        self.selected_date = ns_parser.date
-                    else:
-                        print("Expiration not an option")
+            elif ns_parser.date:
+                if ns_parser.date in self.expiry_dates:
+                    print(f"Expiration set to {ns_parser.date} \n")
+                    self.selected_date = ns_parser.date
                 else:
-                    expiry_date = self.expiry_dates[ns_parser.index]
-                    print(f"Expiraration set to {expiry_date} \n")
-                    self.selected_date = expiry_date
+                    print("Expiration not an option")
+            else:
+                expiry_date = self.expiry_dates[ns_parser.index]
+                print(f"Expiration set to {expiry_date} \n")
+                self.selected_date = expiry_date
         except Exception as e:
             print(e, "\n")
 
@@ -637,7 +631,7 @@ Current Expiry: {self.selected_date or None}
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" in other_args or "-h" not in other_args,
+            required="--chain" not in other_args or "-h" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(
@@ -652,7 +646,8 @@ Current Expiry: {self.selected_date or None}
             "--chain", dest="chain_id", type=str, help="OCC option symbol"
         )
         parser.add_argument(
-            "-r," "--raw",
+            "-r",
+            "--raw",
             dest="raw",
             action="store_true",
             default=False,
@@ -667,11 +662,13 @@ Current Expiry: {self.selected_date or None}
         )
 
         try:
-            if other_args:
-                if (
-                    "-s" not in other_args or "--strike" not in other_args
-                ) and "-h" not in other_args:
-                    other_args.insert(0, "-s")
+            if (
+                other_args
+                and ("-s" not in other_args and "--strike" not in other_args)
+                and "-h" not in other_args
+                and "--chain" not in other_args
+            ):
+                other_args.insert(0, "-s")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
