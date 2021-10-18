@@ -852,50 +852,6 @@ Other:
             description="Shows historic data for a stock",
         )
         parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
-            type=str,
-            choices=[
-                "1d",
-                "5d",
-                "1mo",
-                "3mo",
-                "6mo",
-                "1y",
-                "2y",
-                "5y",
-                "10y",
-                "ytd",
-                "max",
-            ],
-            help="Period to get data for",
-            default="1mo",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            dest="interval",
-            type=str,
-            choices=[
-                "1m",
-                "2m",
-                "5m",
-                "15m",
-                "30m",
-                "60m",
-                "90m",
-                "1h",
-                "1d",
-                "5d",
-                "1wk",
-                "1mo",
-                "3mo",
-            ],
-            help="Interval of stock data",
-            default="1d",
-        )
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -907,16 +863,16 @@ Other:
             "-s",
             "--sort",
             choices=[
-                "Date",
+                "AdjClose",
                 "Open",
                 "Close",
                 "High",
                 "Low",
                 "Volume",
-                "Dividend",
-                "Stock Splits",
+                "Returns",
+                "LogRet",
             ],
-            default="Date",
+            default="",
             type=str,
             dest="sort",
             help="Choose a column to sort by",
@@ -930,30 +886,23 @@ Other:
             help="Sort selected column descending",
         )
 
-        try:
+        # try:
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            periods = ["3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
-            intervals = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h"]
-            if ns_parser.period in periods and ns_parser.interval in intervals:
-                print("Intraday history available when period is less than 60 days.\n")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            qa_view.display_raw(
-                self.ticker,
-                ns_parser.period,
-                ns_parser.interval,
-                ns_parser.export,
-                ns_parser.sort,
-                ns_parser.descending,
-            )
+        qa_view.display_raw(
+            self.stock,
+            ns_parser.export,
+            ns_parser.sort,
+            ns_parser.descending,
+        )
 
-            print("")
+        print("")
 
-        except Exception as e:
-            print(e, "\n")
+        # except Exception as e:
+        # print(e, "\n")
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):

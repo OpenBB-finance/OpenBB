@@ -21,7 +21,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.common.quantitative_analysis import qa_model
 from gamestonk_terminal.config_plot import PLOT_DPI
 from gamestonk_terminal.helper_funcs import export_data, plot_autoscale
-from gamestonk_terminal.stocks.quantitative_analysis.yfinance_model import get_history
 
 register_matplotlib_converters()
 
@@ -500,19 +499,13 @@ def display_unitroot(
     )
 
 
-def display_raw(
-    ticker: str, period: str, interval: str, export: str, sort: str, des: bool
-) -> None:
+def display_raw(df: pd.DataFrame, export: str, sort: str, des: bool) -> None:
     """Return raw stock data [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to display data for
-    period : str
-        Period to show information for
-    interval : str
-        Format of export file
+    df : DataFrame
+        DataFrame with historical information
     export : str
         Export data as CSV, JSON, XLSX
     sort : str
@@ -521,28 +514,27 @@ def display_raw(
         Whether to sort descending
     """
 
-    history = get_history(ticker, period, interval)
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "history",
-        history,
+        df,
     )
 
-    history = history.sort_values(by=sort, ascending=des)
+    if sort != "":
+        df = df.sort_values(by=sort, ascending=des)
 
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                history,
-                headers=[x.title() if x != "" else "Date" for x in history.columns],
+                df,
+                headers=[x.title() if x != "" else "Date" for x in df.columns],
                 tablefmt="fancy_grid",
                 showindex=True,
                 floatfmt=".2f",
             )
         )
     else:
-        print(history.to_string(index=False))
+        print(df.to_string(index=False))
 
     print("")

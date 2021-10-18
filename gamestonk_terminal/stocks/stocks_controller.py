@@ -217,50 +217,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             description="Shows historic data for a stock",
         )
         parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
-            type=str,
-            choices=[
-                "1d",
-                "5d",
-                "1mo",
-                "3mo",
-                "6mo",
-                "1y",
-                "2y",
-                "5y",
-                "10y",
-                "ytd",
-                "max",
-            ],
-            help="Period to get data for",
-            default="1mo",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            dest="interval",
-            type=str,
-            choices=[
-                "1m",
-                "2m",
-                "5m",
-                "15m",
-                "30m",
-                "60m",
-                "90m",
-                "1h",
-                "1d",
-                "5d",
-                "1wk",
-                "1mo",
-                "3mo",
-            ],
-            help="Interval of stock data",
-            default="1d",
-        )
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -272,16 +228,16 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             "-s",
             "--sort",
             choices=[
-                "Date",
+                "AdjClose",
                 "Open",
                 "Close",
                 "High",
                 "Low",
                 "Volume",
-                "Dividend",
-                "Stock Splits",
+                "Returns",
+                "LogRet",
             ],
-            default="Date",
+            default="",
             type=str,
             dest="sort",
             help="Choose a column to sort by",
@@ -308,18 +264,8 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 return
 
             if ns_parser.raw:
-                periods = ["3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
-                intervals = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h"]
-                if ns_parser.period in periods and ns_parser.interval in intervals:
-                    print(
-                        "Intraday history available when period is less than 60 days.\n"
-                    )
-                    return
-
                 qa_view.display_raw(
-                    self.ticker,
-                    ns_parser.period,
-                    ns_parser.interval,
+                    self.stock,
                     ns_parser.export,
                     ns_parser.sort,
                     ns_parser.descending,
