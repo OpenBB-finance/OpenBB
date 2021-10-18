@@ -613,13 +613,13 @@ Current Expiry: {self.selected_date or None}
             else:
                 if ns_parser.date:
                     if ns_parser.date in self.expiry_dates:
-                        print(f"Expiraration set to {ns_parser.date} \n")
+                        print(f"Expiration set to {ns_parser.date} \n")
                         self.selected_date = ns_parser.date
                     else:
                         print("Expiration not an option")
                 else:
                     expiry_date = self.expiry_dates[ns_parser.index]
-                    print(f"Expiraration set to {expiry_date} \n")
+                    print(f"Expiration set to {expiry_date} \n")
                     self.selected_date = expiry_date
         except Exception as e:
             print(e, "\n")
