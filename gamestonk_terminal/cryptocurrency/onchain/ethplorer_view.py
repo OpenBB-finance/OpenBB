@@ -84,6 +84,7 @@ def display_top_tokens(
 
     df = ethplorer_model.get_top_tokens()
     df_data = df.copy()
+    df.fillna("", inplace=True)
     df = df.sort_values(by=sortby, ascending=descend)
     for col in ["txsCount", "transfersCount", "holdersCount"]:
         if col in df.columns:

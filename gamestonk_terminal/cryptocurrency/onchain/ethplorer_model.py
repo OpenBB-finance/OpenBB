@@ -27,7 +27,23 @@ def split_cols_with_dot(column: str) -> str:
     """
 
     def replace(string: str, char: str, index: int) -> str:
-        """Helper method which replaces values with dot as a separator and converts it to camelCase format"""
+        """Helper method which replaces values with dot as a separator and converts it to camelCase format
+
+        Parameters
+        ----------
+        string: str
+            String in which we remove dots and convert it to camelcase format.
+        char: str
+            First letter of given word.
+        index:
+            Index of string element.
+
+        Returns
+        -------
+        str:
+            Camel case string with removed dots. E.g. price.availableSupply -> priceAvailableSupply.
+        """
+
         return string[:index] + char + string[index + 1 :]
 
     if "." in column:
@@ -38,17 +54,24 @@ def split_cols_with_dot(column: str) -> str:
 
 
 def enrich_social_media(dct: dict) -> None:
+    """Searching inside dictionary if there are any information about twitter, reddit or coingecko. If yes it
+    updates dictionary with url to given social media site.
+
+    Parameters
+    ----------
+    dct: dict
+        Dictionary in which we search for coingecko, twitter or reddit url.
+    """
+
     social_media = {
         "twitter": "https://www.twitter.com/",
         "reddit": "https://www.reddit.com/r/",
         "coingecko": "https://www.coingecko.com/en/coins/",
     }
-    try:
-        for k, v in social_media.items():
-            if k in dct:
-                dct[k] = v + dct[k]
-    except Exception as e:
-        print(e)
+
+    for k, v in social_media.items():
+        if k in dct:
+            dct[k] = v + dct[k]
 
 
 def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) -> dict:
@@ -256,8 +279,9 @@ def get_token_info(address) -> pd.DataFrame:
     ]:
         try:
             response.pop(name)
-        except KeyError as e:
-            print(e)
+        except KeyError:
+            continue
+
     enrich_social_media(response)
     df = pd.json_normalize(response)
     df.columns = [split_cols_with_dot(x) for x in df.columns.tolist()]
@@ -338,26 +362,23 @@ def get_token_history(address) -> pd.DataFrame:
 
     response = make_request("getTokenHistory", address, limit=1000)
     all_operations = []
-    name, symbol = "", ""
+    operations = response["operations"]
     try:
-        operations = response["operations"]
-        try:
-            first_row = operations[0]["tokenInfo"]
-            name, symbol, _ = (
-                first_row.get("name"),
-                first_row.get("symbol"),
-                first_row.get("address"),
-            )
-        except Exception as e:
-            print(e)
+        first_row = operations[0]["tokenInfo"]
+        name, symbol, _ = (
+            first_row.get("name"),
+            first_row.get("symbol"),
+            first_row.get("address"),
+        )
+    except Exception:
+        name, symbol = "", ""
 
-        for operation in operations:
-            operation.pop("type")
-            operation.pop("tokenInfo")
-            operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
-            all_operations.append(operation)
-    except KeyError as e:
-        print(e)
+    for operation in operations:
+        operation.pop("type")
+        operation.pop("tokenInfo")
+        operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
+        all_operations.append(operation)
+
     df = pd.DataFrame(all_operations)
     if df.empty:
         return df

@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import os
 import argparse
 from typing import List
-import webbrowser
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -40,7 +39,7 @@ class OnchainController:
     CHOICES_COMMANDS = [
         "gwei",
         "whales",
-        "address",
+        "balance",
         "top",
         "holders",
         "tx",
@@ -48,8 +47,6 @@ class OnchainController:
         "info",
         "th",
         "prices",
-        "ep",
-        "es",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -89,7 +86,7 @@ class OnchainController:
 
         # Help menu again
         if known_args.cmd == "?":
-            print_help()
+            self.print_help()
             return None
 
         # Clear screen
@@ -103,7 +100,7 @@ class OnchainController:
 
     def call_help(self, *_):
         """Process Help command"""
-        print_help()
+        self.print_help()
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
@@ -112,79 +109,6 @@ class OnchainController:
     def call_quit(self, _):
         """Process Quit command - quit the program"""
         return True
-
-    def call_es(self, _):
-        """Process es command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="es",
-            description="""
-                           Open Etherscan in webbrowser
-                           [Source: Etherscan]
-                       """,
-        )
-
-        parser.add_argument(
-            "--charts",
-            action="store_false",
-            help="open charts page",
-            dest="charts",
-            default=False,
-        )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, _)
-
-            if not ns_parser:
-                return
-            if ns_parser.charts:
-                webbrowser.open("https://etherscan.io/charts")
-            else:
-                webbrowser.open("https://etherscan.io/")
-
-        except Exception as e:
-            print(e, "\n")
-        print("")
-
-    def call_ep(self, other_args: List[str]):
-        """Process ep command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ep",
-            description="""
-                     Open Ethplorer in webbrowser
-                     [Source: Ethplorer]
-                 """,
-        )
-
-        parser.add_argument(
-            "-q",
-            default="",
-            type=str,
-            dest="q",
-            help="search query",
-        )
-
-        try:
-
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-q")
-
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-
-            if not ns_parser:
-                return
-            if ns_parser.q:
-                webbrowser.open(f"https://ethplorer.io/search/{ns_parser.q}")
-            else:
-                webbrowser.open("https://ethplorer.io/")
-
-        except Exception as e:
-            print(e, "\n")
-        print("")
 
     def call_gwei(self, other_args: List[str]):
         """Process gwei command"""
@@ -309,12 +233,12 @@ class OnchainController:
         except Exception as e:
             print(e)
 
-    def call_address(self, other_args: List[str]):
-        """Process address command"""
+    def call_balance(self, other_args: List[str]):
+        """Process balance command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="address",
+            prog="balance",
             description="""
                 Display info about tokens on given ethereum blockchain address.
                 [Source: Ethplorer]
@@ -783,7 +707,7 @@ class OnchainController:
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="address",
+            prog="tx",
             description="""
                   Display info ERC20 token transaction on ethereum blockchain.
                   e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
@@ -916,29 +840,30 @@ class OnchainController:
         except Exception as e:
             print(e)
 
+    def print_help(self):
+        """Print help"""
+        help_text = """
+Onchain:
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon the program
 
-def print_help():
-    """Print help"""
-    print("\nOnchain:")
-    print("   cls           clear screen")
-    print("   ?/help        show this menu again")
-    print("   q             quit this menu, and shows back to main menu")
-    print("   quit          quit to abandon program")
-    print("")
-    print("   gwei          check current eth gas fees")
-    print("   whales        check crypto wales transactions")
-    print("\nEthereum:")
-    print("   ep            open ethplorer in browser")
-    print("   es            open etherscan in browser")
-    print("   address       check ethereum address balance")
-    print("   top           top ERC20 tokens")
-    print("   holders       top ERC20 token holders")
-    print("   hist          ethereum address history (transactions)")
-    print("   info          ERC20 token info")
-    print("   th            ERC20 token history")
-    print("   tx            ethereum blockchain transaction info")
-    print("   prices        ERC20 token historical prices")
-    print("")
+    gwei              check current eth gas fees
+    whales            check crypto wales transactions
+
+Ethereum:
+    balance           check ethereum address balance
+    top               top ERC20 tokens
+    holders           top ERC20 token holders
+    hist              ethereum address history (transactions)
+    info              ERC20 token info
+    th                ERC20 token history
+    tx                ethereum blockchain transaction info
+    prices            ERC20 token historical prices
+"""
+
+        print(help_text)
 
 
 def menu():
