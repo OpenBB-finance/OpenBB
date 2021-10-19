@@ -30,7 +30,7 @@ from gamestonk_terminal.options import (
     yfinance_view,
 )
 from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.options import payoff_controller
+from gamestonk_terminal.options import payoff_controller, chartexchange_view
 
 
 class OptionsController:
@@ -660,6 +660,13 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        parser.add_argument(
+            "--source",
+            dest="source",
+            type=str,
+            default="",
+            help="Choose TradierView(TD) or ChartExchange (CE), only affects raw data",
+        )
 
         try:
             if (
@@ -678,9 +685,21 @@ Current Expiry: {self.selected_date or None}
             if not self.selected_date:
                 print("No expiry loaded.  First use `exp ` \n")
                 return
+            if ns_parser.source.lower() == "ce":
+                call = not ns_parser.put
+                chartexchange_view.display_raw(
+                    ns_parser.export,
+                    self.ticker,
+                    self.selected_date,
+                    call,
+                    ns_parser.strike,
+                )
+                return
+
             if TRADIER_TOKEN == "REPLACE_ME":
                 print("TRADIER TOKEN not supplied. \n")
                 return
+
             tradier_view.display_historical(
                 ticker=self.ticker,
                 expiry=self.selected_date,
