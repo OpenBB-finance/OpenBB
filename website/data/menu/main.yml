@@ -496,12 +496,6 @@ main:
             ref: "/stocks/prediction_techniques/ets"
           - name: knn
             ref: "/stocks/prediction_techniques/knn"
-          - name: linear
-            ref: "/stocks/prediction_techniques/linear"
-          - name: quadratic
-            ref: "/stocks/prediction_techniques/quadratic"
-          - name: cubic
-            ref: "/stocks/prediction_techniques/cubic"
           - name: regression
             ref: "/stocks/prediction_techniques/regression"
           - name: arima

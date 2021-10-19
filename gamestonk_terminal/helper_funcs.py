@@ -106,6 +106,14 @@ def check_positive(value) -> int:
     return ivalue
 
 
+def check_positive_float(value) -> float:
+    """Argparse type to check positive int"""
+    fvalue = float(value)
+    if fvalue <= 0:
+        raise argparse.ArgumentTypeError(f"{value} is not a positive float value")
+    return fvalue
+
+
 def check_proportion_range(num) -> float:
     """Checks if float is between 0 and 1. If so, return it.
 
