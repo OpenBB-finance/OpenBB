@@ -36,7 +36,7 @@ def display_raw(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "history",
+        "hist",
         df,
     )
 

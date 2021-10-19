@@ -686,12 +686,11 @@ Current Expiry: {self.selected_date or None}
                 print("No expiry loaded.  First use `exp ` \n")
                 return
             if ns_parser.source.lower() == "ce":
-                call = not ns_parser.put
                 chartexchange_view.display_raw(
                     ns_parser.export,
                     self.ticker,
                     self.selected_date,
-                    call,
+                    not ns_parser.put,
                     ns_parser.strike,
                 )
                 return
