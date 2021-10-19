@@ -8,9 +8,7 @@ from bs4 import BeautifulSoup
 from gamestonk_terminal.options.op_helpers import convert
 
 
-def get_option_history(
-    ticker: str, date: str, call: bool, price: str
-) -> pd.DataFrame:
+def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 
     Parameters
