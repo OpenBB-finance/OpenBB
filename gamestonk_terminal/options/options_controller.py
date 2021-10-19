@@ -631,7 +631,7 @@ Current Expiry: {self.selected_date or None}
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" not in other_args or "-h" not in other_args,
+            required="--chain" not in other_args and "-h" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(

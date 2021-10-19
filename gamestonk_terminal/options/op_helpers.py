@@ -79,7 +79,7 @@ def convert(orig: str, to: str) -> float:
     if to == ",":
         clean = orig.replace(",", "")
         return float(clean)
-    return 0
+    raise ValueError
 
 
 opt_chain_cols = {
