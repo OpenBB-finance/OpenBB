@@ -575,12 +575,20 @@ def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np
 
 def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     """Print prediction statistics"""
+    kpis = {
+        "MAPE": f"{mean_absolute_percentage_error(real, pred) :.3f} %",
+        "R2": f"{r2_score(real, pred) :.3f}",
+        "MAE": f"{mean_absolute_error(real, pred):.3f}",
+        "MSE": f"{mean_squared_error(real, pred):.3f}",
+        "RMSE": f"{mean_squared_error(real, pred, squared=False):.3f}",
+    }
+
     print("KPIs")
-    print(f"MAPE: {mean_absolute_percentage_error(real, pred):.3f} %")
-    print(f"R2: {r2_score(real, pred):.3f}")
-    print(f"MAE: {mean_absolute_error(real, pred):.3f}")
-    print(f"MSE: {mean_squared_error(real, pred):.3f}")
-    print(f"RMSE: {mean_squared_error(real, pred, squared=False):.3f}")
+    df = pd.DataFrame.from_dict(kpis, orient="index")
+    if gtff.USE_TABULATE_DF:
+        print(tabulate(df, tablefmt="fancy_grid", showindex=True))
+    else:
+        print(df.to_string())
 
 
 def price_prediction_backtesting_color(val: list) -> str:
