@@ -79,7 +79,7 @@ def convert(orig: str, to: str) -> float:
     if to == ",":
         clean = orig.replace(",", "")
         return float(clean)
-    raise ValueError
+    raise ValueError("Invalid to format, please use '%' or ','.")
 
 
 opt_chain_cols = {
