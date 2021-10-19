@@ -27,11 +27,10 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
     historical : pd.Dataframe
         Historic information for an option
     """
-    t = "c" if call else "p"
     url = (
         f"https://chartexchange.com/symbol/opra-{ticker.lower()}{date.replace('-', '')}"
     )
-    url += f"{t}{float(price):g}/historical/"
+    url += f"{'c' if call else 'p'}{float(price):g}/historical/"
 
     data = requests.get(url, headers={"User-Agent": "test"}).content
     soup = BeautifulSoup(data, "html.parser")
