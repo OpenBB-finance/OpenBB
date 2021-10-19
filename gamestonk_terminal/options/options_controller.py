@@ -664,8 +664,16 @@ Current Expiry: {self.selected_date or None}
             "--source",
             dest="source",
             type=str,
-            default="",
-            help="Choose TradierView(TD) or ChartExchange (CE), only affects raw data",
+            choices=["td", "ce"],
+            default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
+            help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="num",
+            type=int,
+            help="Number of data rows to show",
         )
 
         try:
@@ -692,6 +700,7 @@ Current Expiry: {self.selected_date or None}
                     self.selected_date,
                     not ns_parser.put,
                     ns_parser.strike,
+                    ns_parser.num,
                 )
                 return
 

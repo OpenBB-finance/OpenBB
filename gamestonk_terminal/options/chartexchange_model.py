@@ -44,7 +44,7 @@ def get_option_history(ticker: str, date: str, call: bool, price: str) -> pd.Dat
             clean_rows.append([x.text for x in item])
     else:
         print("No data for this option\n")
-        return None
+        return pd.DataFrame()
 
     df = pd.DataFrame()
     df["Date"] = [x[0] for x in clean_rows]
