@@ -101,6 +101,9 @@ def display_arima(
     # Plotting
     fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     ax.plot(values.index, values, lw=2)
+
+    # pylint:disable=no-member
+
     if arima_order:
         # BACKTESTING
         if s_end_date:

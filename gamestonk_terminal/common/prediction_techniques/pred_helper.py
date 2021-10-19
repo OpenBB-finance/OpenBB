@@ -18,6 +18,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
+from tabulate import tabulate
 from tensorflow.keras.models import Sequential
 from gamestonk_terminal.helper_funcs import (
     check_positive,
@@ -45,6 +46,7 @@ PREPROCESSER = cfg.Preprocess
 
 
 def check_valid_frac(num) -> float:
+    """Argparse type checker for valid float between 0 and 1"""
     if (num < 0) or (num > 1):
         raise argparse.ArgumentTypeError(f"{num} is an invalid percentage")
     return num
@@ -520,14 +522,34 @@ def price_prediction_color(val: float, last_val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
+    print("")
     if gtff.USE_COLOR:
         print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
-        print("Prediction:")
-        print(df_pred.apply(price_prediction_color, last_val=last_price).to_string())
+        if gtff.USE_TABULATE_DF:
+            df_pred = pd.DataFrame(df_pred)
+            df_pred.columns = ["pred"]
+            df_pred["pred"] = df_pred["pred"].apply(
+                lambda x: price_prediction_color(x, last_val=last_price)
+            )
+            print("Prediction:")
+            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
+
+        else:
+
+            print("Prediction:")
+            print(
+                df_pred.apply(price_prediction_color, last_val=last_price).to_string()
+            )
     else:
-        print(f"Actual price: {last_price:.2f} $\n")
-        print("Prediction:")
-        print(df_pred.to_string())
+        if gtff.USE_TABULATE_DF:
+            df_pred = pd.DataFrame(df_pred)
+            df_pred.columns = ["pred"]
+            print("Prediction:")
+            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
+        else:
+            print(f"Actual price: {last_price:.2f} $\n")
+            print("Prediction:")
+            print(df_pred.to_string())
 
 
 def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
