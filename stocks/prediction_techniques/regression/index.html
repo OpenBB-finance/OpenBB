@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="usage: regression [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS] [-e S_END_DATE] -p N_POLYNOMIAL [-h] Regression attempts to model the relationship between two variables by fitting a linear/quadratic/cubic/other equation to observed data. One variable is considered to be an explanatory variable, and the other is considered to be a dependent variable.
+    <meta name="description" content="usage: regression [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS] [-e S_END_DATE] [-p N_POLYNOMIAL] [-h] [--export {png,jpg,pdf,svg}] Regression attempts to model the relationship between two variables by fitting a linear/quadratic/cubic/other equation to observed data. One variable is considered to be an explanatory variable, and the other is considered to be a dependent variable.
 optional arguments: -i N_INPUTS, --input N_INPUTS number of days to use for prediction. -d N_DAYS, --days N_DAYS prediction days. -j N_JUMPS, --jumps N_JUMPS number of jumps in training data.">
 
 
@@ -7807,99 +7807,6 @@ optional arguments: -i N_INPUTS, --input N_INPUTS number of days to use for pred
             
             <span class="flex">
                 
-                <a href="/GamestonkTerminal/stocks/prediction_techniques/linear/"
-                    class="gdoc-nav__entry ">
-                    linear
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/prediction_techniques/quadratic/"
-                    class="gdoc-nav__entry ">
-                    quadratic
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a href="/GamestonkTerminal/stocks/prediction_techniques/cubic/"
-                    class="gdoc-nav__entry ">
-                    cubic
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li>
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
                 <a href="/GamestonkTerminal/stocks/prediction_techniques/regression/"
                     class="gdoc-nav__entry is-active">
                     regression
@@ -13974,8 +13881,11 @@ optional arguments: -i N_INPUTS, --input N_INPUTS number of days to use for pred
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Regression</h1>
-        <pre><code>usage: regression [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS] [-e S_END_DATE] -p N_POLYNOMIAL [-h]
-</code></pre><p>Regression attempts to model the relationship between two variables by fitting a linear/quadratic/cubic/other equation to observed data. One variable is considered to be an explanatory variable, and the other is considered to be a dependent variable.</p>
+        <pre><code>usage: regression [-i N_INPUTS] [-d N_DAYS] [-j N_JUMPS] [-e S_END_DATE] [-p N_POLYNOMIAL] [-h]
+                  [--export {png,jpg,pdf,svg}]
+</code></pre><p>Regression attempts to model the relationship between two variables by fitting a linear/quadratic/cubic/other equation to
+observed data. One variable is considered to be an explanatory variable, and the other is considered to be a dependent
+variable.</p>
 <pre><code>optional arguments:
   -i N_INPUTS, --input N_INPUTS
                         number of days to use for prediction.
@@ -13988,6 +13898,8 @@ optional arguments: -i N_INPUTS, --input N_INPUTS number of days to use for pred
   -p N_POLYNOMIAL, --polynomial N_POLYNOMIAL
                         polynomial associated with regression.
   -h, --help            show this help message
+  --export {png,jpg,pdf,svg}
+                        Export figure into png, jpg, pdf, svg
 </code></pre><p><img src="https://user-images.githubusercontent.com/25267873/108604946-d3338100-73a8-11eb-9e99-fa526fb56672.png" alt="regression"  /></p>
 
     </article>
@@ -18683,63 +18595,6 @@ optional arguments: -i N_INPUTS, --input N_INPUTS number of days to use for pred
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -22327,7 +22182,7 @@ optional arguments: -i N_INPUTS, --input N_INPUTS number of days to use for pred
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/stocks/prediction_techniques/cubic/" title="cubic"> cubic</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/GamestonkTerminal/stocks/prediction_techniques/knn/" title="knn"> knn</a>
             
         </span>
         <span class="gdoc-page__nav">
