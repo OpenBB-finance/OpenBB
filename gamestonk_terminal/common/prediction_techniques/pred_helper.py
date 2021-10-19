@@ -481,7 +481,7 @@ def plot_data_predictions(
         plt.plot(
             forecast_data.index,
             forecast_data.values,
-            "-ok",
+            "-og",
             ms=3,
             label="Forecast",
         )
@@ -489,7 +489,7 @@ def plot_data_predictions(
         plt.plot(
             forecast_data.index,
             forecast_data.median(axis=1).values,
-            "-ok",
+            "-og",
             ms=3,
             label="Forecast",
         )
