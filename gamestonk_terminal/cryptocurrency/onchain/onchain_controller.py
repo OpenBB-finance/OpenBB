@@ -199,8 +199,8 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
+            "--balance",
+            dest="balance",
             action="store_true",
             help="Flag to show addresses of transaction",
             default=False,
@@ -240,7 +240,7 @@ class OnchainController:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="balance",
             description="""
-                Display info about tokens on given ethereum blockchain address.
+                Display info about tokens on given ethereum blockchain balance.
                 [Source: Ethplorer]
             """,
         )
@@ -278,9 +278,9 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
-            help="Ethereum blockchain address",
+            "--balance",
+            dest="balance",
+            help="Ethereum blockchain balance",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -324,7 +324,7 @@ class OnchainController:
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hist",
             description="""
-                   Display history for given ethereum blockchain address.
+                   Display history for given ethereum blockchain balance.
                     e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
                    [Source: Ethplorer]
                """,
@@ -358,8 +358,8 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
+            "--balance",
+            dest="balance",
             help="Ethereum blockchain addresses",
             default=False,
             type=str,
@@ -426,7 +426,7 @@ class OnchainController:
             help="Sort by given column. Default: share",
             default="share",
             choices=[
-                "address",
+                "balance",
                 "balance",
                 "share",
             ],
@@ -441,9 +441,9 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
-            help="ERC20 token address",
+            "--balance",
+            dest="balance",
+            help="ERC20 token balance",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -515,7 +515,7 @@ class OnchainController:
                 "txsCount",
                 "transfersCount",
                 "holdersCount",
-                "address",
+                "balance",
             ],
         )
 
@@ -574,9 +574,9 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
-            help="ERC20 token address",
+            "--balance",
+            dest="balance",
+            help="ERC20 token balance",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -662,9 +662,9 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
-            help="ERC20 token address",
+            "--balance",
+            dest="balance",
+            help="ERC20 token balance",
             default=False,
             type=str,
             required="-h" not in other_args,
@@ -801,8 +801,8 @@ class OnchainController:
 
         parser.add_argument(
             "-a",
-            "--address",
-            dest="address",
+            "--balance",
+            dest="balance",
             help="ERC20 token addresses",
             default=False,
             type=str,
@@ -853,10 +853,10 @@ Onchain:
     whales            check crypto wales transactions
 
 Ethereum:
-    balance           check ethereum address balance
+    balance           check ethereum balance balance
     top               top ERC20 tokens
     holders           top ERC20 token holders
-    hist              ethereum address history (transactions)
+    hist              ethereum balance history (transactions)
     info              ERC20 token info
     th                ERC20 token history
     tx                ethereum blockchain transaction info

@@ -83,7 +83,7 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
     endpoint: str
         endpoint which we want to query e.g. https://api.ethplorer.io/<endpoint><arg>?=apiKey=freekey
     address: str
-        address argument for given endpoint. In most cases it's tx hash, or eth address.
+        balance argument for given endpoint. In most cases it's tx hash, or eth balance.
     kwargs: Any
         Additional keywords arguments e.g. limit of transactions
 
@@ -120,7 +120,7 @@ def get_token_decimals(address: str) -> Optional[int]:
     Parameters
     ----------
     address: str
-        Blockchain address e.g. 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
+        Blockchain balance e.g. 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
 
     Returns
     -------
@@ -134,13 +134,13 @@ def get_token_decimals(address: str) -> Optional[int]:
 
 
 def get_address_info(address: str) -> pd.DataFrame:
-    """Get info about tokens on you ethereum blockchain address. Eth balance, balance of all tokens which
+    """Get info about tokens on you ethereum blockchain balance. Eth balance, balance of all tokens which
     have name and symbol. [Source: Ethplorer]
 
     Parameters
     ----------
     address: str
-        Blockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
 
     Returns
     -------
@@ -159,7 +159,7 @@ def get_address_info(address: str) -> pd.DataFrame:
                 {
                     "tokenName": token_info.get("name"),
                     "tokenSymbol": token_info.get("symbol"),
-                    "tokenAddress": token_info.get("address"),
+                    "tokenAddress": token_info.get("balance"),
                     "balance": token.get("balance")
                     / (10 ** int(token_info.get("decimals"))),
                 }
@@ -170,7 +170,7 @@ def get_address_info(address: str) -> pd.DataFrame:
             {
                 "tokenName": token_info.get("name"),
                 "tokenSymbol": token_info.get("symbol"),
-                "tokenAddress": token_info.get("address"),
+                "tokenAddress": token_info.get("balance"),
                 "balance": token_info.get("balance")
                 / (10 ** int(token_info.get("decimals"))),
             }
@@ -218,7 +218,7 @@ def get_top_tokens() -> pd.DataFrame:
             "txsCount",
             "transfersCount",
             "holdersCount",
-            "address",
+            "balance",
             "twitter",
             "coingecko",
         ]
@@ -234,7 +234,7 @@ def get_top_token_holders(address) -> pd.DataFrame:
     Parameters
     ----------
     address: str
-        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
 
     Returns
     -------
@@ -252,17 +252,17 @@ def get_top_token_holders(address) -> pd.DataFrame:
 
 
 def get_address_history(address) -> pd.DataFrame:
-    """Get information about address historical transactions. [Source: Ethplorer]
+    """Get information about balance historical transactions. [Source: Ethplorer]
 
     Parameters
     ----------
     address: str
-        Blockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
 
     Returns
     -------
     pd.DataFrame:
-        DataFrame with address historical transactions (last 100)
+        DataFrame with balance historical transactions (last 100)
     """
     response = make_request("getAddressHistory", address, limit=100)
     operations = response.pop("operations")
@@ -271,7 +271,7 @@ def get_address_history(address) -> pd.DataFrame:
             token = operation.pop("tokenInfo")
             if token:
                 operation["token"] = token["name"]
-                operation["tokenAddress"] = token["address"]
+                operation["tokenAddress"] = token["balance"]
             operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
 
     df = pd.DataFrame(operations)
@@ -288,7 +288,7 @@ def get_token_info(address) -> pd.DataFrame:
     Parameters
     ----------
     address: str
-        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
 
     Returns
     -------
@@ -366,7 +366,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
             decimals = token.get("decimals")
             if token:
                 operations["token"] = token["name"]
-                operations["tokenAddress"] = token["address"]
+                operations["tokenAddress"] = token["balance"]
             operations["timestamp"] = datetime.fromtimestamp(operations["timestamp"])
         response.update(operations)
         response.pop("input")
@@ -406,7 +406,7 @@ def get_token_history(address) -> pd.DataFrame:
         name, symbol, _ = (
             first_row.get("name"),
             first_row.get("symbol"),
-            first_row.get("address"),
+            first_row.get("balance"),
         )
         decimals = first_row.get("decimals")
     except Exception:

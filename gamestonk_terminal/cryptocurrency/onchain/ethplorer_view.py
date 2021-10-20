@@ -18,13 +18,13 @@ def display_address_info(
     descend: bool = True,
     export: str = "",
 ) -> None:
-    """Display info about tokens for given ethereum blockchain address e.g. ETH balance, balance of all tokens with
+    """Display info about tokens for given ethereum blockchain balance e.g. ETH balance, balance of all tokens with
     name and symbol. [Source: Ethplorer]
 
     Parameters
     ----------
     address: str
-        Ethereum address.
+        Ethereum balance.
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -59,7 +59,7 @@ def display_address_info(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "address",
+        "balance",
         df_data,
     )
 
@@ -126,7 +126,7 @@ def display_top_token_holders(
     Parameters
     ----------
     address: str
-        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -171,12 +171,12 @@ def display_address_history(
     descend: bool = False,
     export: str = "",
 ) -> None:
-    """Display information about address historical transactions. [Source: Ethplorer]
+    """Display information about balance historical transactions. [Source: Ethplorer]
 
     Parameters
     ----------
     address: str
-        Ethereum nlockchain address e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
+        Ethereum nlockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -224,7 +224,7 @@ def display_token_info(
     Parameters
     ----------
     address: str
-        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     social: bool
         Flag to display social media links
     export : str
@@ -237,7 +237,7 @@ def display_token_info(
 
     socials = ["website", "telegram", "reddit", "twitter", "coingecko"]
     if social:
-        df = df[df["Metric"].isin(["address", "name", "symbol"] + socials)]
+        df = df[df["Metric"].isin(["balance", "name", "symbol"] + socials)]
     else:
         df = df[~df["Metric"].isin(socials)]
 
@@ -314,7 +314,7 @@ def display_token_history(
     Parameters
     ----------
     address: str
-        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -330,7 +330,7 @@ def display_token_history(
     df = ethplorer_model.get_token_history(address)
     df_data = df.copy()
     if df.empty:
-        print(f"No results found for address: {address}\n")
+        print(f"No results found for balance: {address}\n")
         return
 
     df["value"] = df["value"].apply(lambda x: very_long_number_formatter(x))
@@ -375,7 +375,7 @@ def display_token_historical_prices(
     Parameters
     ----------
     address: str
-        Token address e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     top: int
         Limit of transactions. Maximum 100
     sortby: str
@@ -390,7 +390,7 @@ def display_token_historical_prices(
     df_data = df.copy()
 
     if df.empty:
-        print(f"No results found for address: {address}\n")
+        print(f"No results found for balance: {address}\n")
         return
 
     df["volumeConverted"] = df["volumeConverted"].apply(
