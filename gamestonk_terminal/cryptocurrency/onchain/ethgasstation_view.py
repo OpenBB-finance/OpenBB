@@ -2,13 +2,13 @@ import os
 
 from tabulate import tabulate
 from gamestonk_terminal.helper_funcs import export_data
-from gamestonk_terminal.cryptocurrency.onchain.gasnow_model import get_gwei_fees
+from gamestonk_terminal.cryptocurrency.onchain.ethgasstation_model import get_gwei_fees
 from gamestonk_terminal import feature_flags as gtff
 
 
 def display_gwei_fees(export: str) -> None:
     """Current gwei fees
-    [Source: https://www.gasnow.org]
+    [Source: https://ethgasstation.info]
 
     Parameters
     ----------
