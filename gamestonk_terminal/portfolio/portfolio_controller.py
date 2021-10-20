@@ -56,15 +56,20 @@ class PortfolioController:
         self.completer = NestedCompleter.from_nested_dict(
             {c: None for c in self.CHOICES}
         )
-        self.portfolio = self.load_df()
-        self.loaded = True
+        self.portfolio = pd.DataFrame(
+            columns=[
+                "Name",
+                "Type",
+                "Volume",
+                "BDatetime",
+                "SDatetime",
+            ]
+        )
 
     def print_help(self):
         """Print help"""
-        help_text = f"""
+        help_text = """
 >> PORTFOLIO <<
-
-{'Portfolio successfully loaded' if self.loaded else 'Could not load portfolio'}
 
 What do you want to do?
     cls         clear screen
@@ -157,13 +162,57 @@ Reports:
         else:
             return True
 
-    def call_load(self, _):
+    def call_load(self, other_args: List[str]):
         """Process load command"""
-        portfolio_view.get_load()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load your portfolio",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            required="-h" not in other_args,
+            help="Name of file to be saved",
+        )
+        if other_args:
+            if "-n" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-n")
 
-    def call_save(self, _):
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        self.portfolio = self.load_df(ns_parser.name)
+
+    def call_save(self, other_args: List[str]):
         """Process save command"""
-        portfolio_view.save_df(self.portfolio)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="save",
+            description="Save your portfolio",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            required="-h" not in other_args,
+            help="Name of file to be saved",
+        )
+        if other_args:
+            if "-n" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-n")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        portfolio_view.save_df(self.portfolio, ns_parser.name)
 
     def call_show(self, _):
         """Process show command"""
@@ -258,23 +307,14 @@ Reports:
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
 
-    def load_df(self) -> pd.DataFrame:
+    def load_df(self, name: str) -> pd.DataFrame:
         """Loads the user's portfolio"""
         try:
-            df = pd.read_csv("exports/portfolio/portfolio.csv")
-            df.index = list(range(0, len(self.portfolio.values)))
+            df = pd.read_csv(f"gamestonk_terminal/portfolio/portfolios/{name}.csv")
+            df.index = list(range(0, len(df.values)))
             return df
         except FileNotFoundError:
-            self.loaded = False
-            return pd.DataFrame(
-                columns=[
-                    "Name",
-                    "Type",
-                    "Volume",
-                    "BDatetime",
-                    "SDatetime",
-                ]
-            )
+            portfolio_view.get_load()
 
 
 def menu():
