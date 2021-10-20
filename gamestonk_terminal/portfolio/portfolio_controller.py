@@ -3,6 +3,8 @@ __docformat__ = "numpy"
 
 import argparse
 import os
+from typing import List
+from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
@@ -14,6 +16,7 @@ from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
 from gamestonk_terminal.portfolio import portfolio_view
+from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710
 
@@ -36,6 +39,8 @@ class PortfolioController:
         "load",
         "save",
         "show",
+        "add",
+        "rmv",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -155,28 +160,120 @@ Reports:
         """Process load command"""
         portfolio_view.get_load()
 
-    def load_df(self):
-        """Loads the user's portfolio"""
-        try:
-            return pd.read_csv("exports/portfolio/portfolio.csv")
-        except FileNotFoundError:
-            self.loaded = False
-            return pd.DataFrame(
-                columns=[
-                    "ID",
-                    "Type",
-                    "BDatetime",
-                    "SDatetime",
-                ]
-            )
-
     def call_save(self, _):
         """Process save command"""
         portfolio_view.save_df(self.portfolio)
 
     def call_show(self, _):
         """Process show command"""
-        portfolio_view.show_df(self.portfolio)
+        portfolio_view.show_df(self.portfolio, False)
+
+    def call_add(self, other_args: List[str]):
+        """Process add command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="add",
+            description="Adds an item to your portfolio",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            required="-h" not in other_args,
+            help="Name of item to be added (for example a ticker for a stock)",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="type",
+            type=str,
+            choices=["stock", "bond", "option", "crypto"],
+            default="stock",
+            help="Type of asset to add",
+        )
+        parser.add_argument(
+            "-v",
+            "--volume",
+            dest="volume",
+            type=float,
+            default=1,
+            help="Amounts of the asset owned",
+        )
+        parser.add_argument(
+            "-b",
+            "--buy",
+            dest="buy",
+            type=str,
+            default=datetime.now().strftime("%Y/%m/%d %H:%M"),
+            help="Datetime asset was purchased format: yyyy/mm/dd_hh:mm",
+        )
+        parser.add_argument(
+            "-s",
+            "--sell",
+            dest="sell",
+            type=str,
+            help="Datetime asset was sold format: yyyy/mm/dd_hh:mm",
+        )
+        if other_args:
+            if "-n" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-n")
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        if ns_parser.buy:
+            buy = ns_parser.buy.replace("_", " ")
+        else:
+            buy = ""
+
+        if ns_parser.sell:
+            sell = ns_parser.sell.replace("_", " ")
+        else:
+            sell = ""
+
+        data = {
+            "Name": ns_parser.name,
+            "Type": ns_parser.type,
+            "Volume": ns_parser.volume,
+            "BDatetime": buy,
+            "SDatetime": sell,
+        }
+        self.portfolio = self.portfolio.append([data])
+        self.portfolio.index = list(range(0, len(self.portfolio.values)))
+        print(f"{ns_parser.name.upper()} successfully added\n")
+
+    def call_rmv(self, _):
+        """Process rmv command"""
+        portfolio_view.show_df(self.portfolio, True)
+        to_rmv = int(input("\nType the index number you want to remove:\n"))
+        if 0 <= to_rmv < len(self.portfolio.index):
+            self.portfolio = self.portfolio.drop(self.portfolio.index[to_rmv])
+            self.portfolio.index = list(range(0, len(self.portfolio.values)))
+        else:
+            print(
+                f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
+            )
+
+    def load_df(self) -> pd.DataFrame:
+        """Loads the user's portfolio"""
+        try:
+            df = pd.read_csv("exports/portfolio/portfolio.csv")
+            df.index = list(range(0, len(self.portfolio.values)))
+            return df
+        except FileNotFoundError:
+            self.loaded = False
+            return pd.DataFrame(
+                columns=[
+                    "Name",
+                    "Type",
+                    "Volume",
+                    "BDatetime",
+                    "SDatetime",
+                ]
+            )
 
 
 def menu():
