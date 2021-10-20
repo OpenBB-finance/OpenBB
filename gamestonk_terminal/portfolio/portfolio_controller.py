@@ -19,6 +19,7 @@ from gamestonk_terminal.portfolio import portfolio_view
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710
+# pylint: disable=E1101
 
 
 class PortfolioController:
