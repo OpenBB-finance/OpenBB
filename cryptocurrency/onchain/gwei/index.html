@@ -10,8 +10,9 @@
 
 
 
-    <meta name="description" content="usage: onchain [--export {csv,json,xlsx}] [-h] Display ETH gas fees [Source: https://www.gasnow.org]
-optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) ">
+    <meta name="description" content="usage: onchain [--export {csv,json,xlsx}] [-h] Display ETH gas fees [Source: https://ethgasstation.info]
+optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,xlsx file (default: ) -h, --help show this help message (default: False) Example output:
+   Tx Type Fee (gwei) Duration (min)     Fastest 108 0.4   Fast 95 0.5   Average 72 4.0   Slow 68 11.9    ">
 
 
 
@@ -13882,12 +13883,44 @@ optional arguments: --export {csv,json,xlsx} Export dataframe data to csv,json,x
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Gwei</h1>
         <pre><code>usage: onchain [--export {csv,json,xlsx}] [-h]
-</code></pre><p>Display ETH gas fees [Source: https://www.gasnow.org]</p>
+</code></pre><p>Display ETH gas fees [Source: https://ethgasstation.info]</p>
 <pre><code>optional arguments:
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
-</code></pre>
+</code></pre><p>Example output:</p>
+<div class=table-wrap> <table>
+<thead>
+<tr>
+<th>Tx Type</th>
+<th>Fee (gwei)</th>
+<th>Duration (min)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fastest</td>
+<td>108</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>Fast</td>
+<td>95</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>Average</td>
+<td>72</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Slow</td>
+<td>68</td>
+<td>11.9</td>
+</tr>
+</tbody>
+</table> </div>
+
     </article>
 
                 
