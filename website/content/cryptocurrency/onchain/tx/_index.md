@@ -1,5 +1,5 @@
 ```
-usage: address [-tx TX] [--export {csv,json,xlsx}] [-h]
+usage: tx [-tx TX] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display info ERC20 token transaction on ethereum blockchain. e.g.

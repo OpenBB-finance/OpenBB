@@ -1,5 +1,5 @@
 ```
-usage: address [-t TOP] [-s {index,balance,tokenName,tokenSymbol}] [--descend]
+usage: balance [-t TOP] [-s {index,balance,tokenName,tokenSymbol}] [--descend]
                [-a ADDRESS] [--export {csv,json,xlsx}] [-h]
 ```
 
