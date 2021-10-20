@@ -8,15 +8,12 @@ env_files = [f for f in os.listdir() if f.endswith(".env")]
 if env_files:
     load_dotenv(env_files[0])
 
-# Path to the terminal
-GST_PATH = os.path.join("~", "Documents", "GamestonkTerminal")
-sys.path.append(GST_PATH)
+# Relative path to the terminal
+sys.path.append("..")
 
-# https://discord.com/developers/applications/
-DISCORD_BOT_TOKEN = os.getenv("GT_DISCORD_BOT_TOKEN") or "REPLACE_ME"
+DISCORD_BOT_TOKEN = "ODg2NTQ0NTkxODQ1NzQwNTQ0.YT3I_Q.hkCmX06jCnZtl0mtgLhXvwvasJs"
 
-# https://apidocs.imgur.com
-IMGUR_CLIENT_ID = os.getenv("GT_IMGUR_CLIENT_ID") or "REPLACE_ME"
+IMGUR_CLIENT_ID = "2c6ae1b42387fba"
 
 # Settings
 COMMAND_PREFIX = "!"
