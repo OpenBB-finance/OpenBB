@@ -20,7 +20,11 @@ from gamestonk_terminal.stocks.fundamental_analysis import (
     market_watch_view,
 )
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    get_flair,
+    parse_known_args_and_warn,
+)
 from gamestonk_terminal.menu import session
 
 # pylint: disable=inconsistent-return-statements
@@ -97,16 +101,20 @@ class FundamentalAnalysisController:
         intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
 
         if self.start:
-            help_text = f"\n\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_text = f"\n{intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            help_text = f"\n\n{intraday} Stock: {self.ticker}"
+            stock_text = f"\n{intraday} Stock: {self.ticker}"
 
-        help_text += """
-Fundamental Analysis:
+        help_text = f"""
+>>>Fundamental Analysis<<<
+
+What would you like to do?
     cls           clear screen
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    load          load a new ticker
+{stock_text}
 
     screener      screen info about the company [Finviz]
     mgmt          management team of the company [Business Insider]
@@ -114,6 +122,7 @@ Fundamental Analysis:
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
     warnings      company warnings according to Sean Seah book [Market Watch]
     dcf           a customizable discounted cash flow created in excel [stockanalysis]
+
 Yahoo Finance:
     info          information scope of the company
     shrs          shareholders of the company
@@ -121,6 +130,7 @@ Yahoo Finance:
     cal           calendar earnings and estimates of the company
     web           open web browser of the company
     hq            open HQ location of the company
+
 Alpha Vantage:
     overview      overview of the company
     key           company key metrics
@@ -129,6 +139,7 @@ Alpha Vantage:
     cash          cash flow of the company
     earnings      earnings dates and reported EPS
     fraud         key fraud ratios
+
 Other Sources:
 >   fmp           profile,quote,enterprise,dcf,income,ratios,growth from FMP
         """
@@ -204,7 +215,29 @@ Other Sources:
 
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command"""
-        business_insider_view.management(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mgmt",
+            description="""
+                Print management team. Namely: Name, Title, Information from google and
+                (potentially) Insider Activity page. [Source: Business Insider]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+
+            business_insider_view.management(
+                ticker=self.ticker, export=ns_parser.export
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_screener(self, other_args: List[str]):
         """Process screener command"""
