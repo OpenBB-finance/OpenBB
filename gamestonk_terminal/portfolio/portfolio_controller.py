@@ -61,8 +61,11 @@ class PortfolioController:
                 "Name",
                 "Type",
                 "Volume",
-                "BDatetime",
-                "SDatetime",
+                "Date",
+                "Price",
+                "Fees",
+                "Premium",
+                "Side",
             ]
         )
 
@@ -252,19 +255,41 @@ Reports:
             help="Amounts of the asset owned",
         )
         parser.add_argument(
-            "-b",
-            "--buy",
-            dest="buy",
+            "-d",
+            "--date",
+            dest="date",
             type=str,
-            default=datetime.now().strftime("%Y/%m/%d %H:%M"),
-            help="Datetime asset was purchased format: yyyy/mm/dd_hh:mm",
+            default=datetime.now().strftime("%Y/%m/%d_%H:%M"),
+            help="Date: yyyy/mm/dd_hh:mm",
         )
         parser.add_argument(
-            "-s",
+            "-p",
+            "--price",
+            dest="price",
+            type=float,
+            required="-h" not in other_args,
+            help="Price purchased for asset",
+        )
+        parser.add_argument(
+            "-f",
+            "--fees",
+            dest="fees",
+            type=float,
+            help="Fees paid for transaction",
+        )
+        parser.add_argument(
+            "-r",
+            "--premium",
+            dest="premium",
+            type=float,
+            help="Premium paid/received for the option",
+        )
+        parser.add_argument(
             "--sell",
+            action="store_true",
             dest="sell",
-            type=str,
-            help="Datetime asset was sold format: yyyy/mm/dd_hh:mm",
+            default=False,
+            help="Use to sell or short an asset",
         )
         if other_args:
             if "-n" not in other_args and "-h" not in other_args:
@@ -274,22 +299,15 @@ Reports:
         if not ns_parser:
             return
 
-        if ns_parser.buy:
-            buy = ns_parser.buy.replace("_", " ")
-        else:
-            buy = ""
-
-        if ns_parser.sell:
-            sell = ns_parser.sell.replace("_", " ")
-        else:
-            sell = ""
-
         data = {
             "Name": ns_parser.name,
             "Type": ns_parser.type,
             "Volume": ns_parser.volume,
-            "BDatetime": buy,
-            "SDatetime": sell,
+            "Date": ns_parser.date.replace("_", " "),
+            "Price": ns_parser.price,
+            "Fees": ns_parser.fees,
+            "Premium": ns_parser.premium,
+            "Side": "Sell" if ns_parser.sell else "Buy",
         }
         self.portfolio = self.portfolio.append([data])
         self.portfolio.index = list(range(0, len(self.portfolio.values)))

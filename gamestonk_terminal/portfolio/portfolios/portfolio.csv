@@ -1,0 +1,4 @@
+Name,Type,Volume,Date,Price,Fees,Premium,Side
+amzn,stock,300.0,2021/10/20 19:42,2000.0,20.0,,Buy
+tsla,stock,100.0,2020/10/10 10:15,200.0,20.0,,Sell
+gme,stock,1.0,2021/10/20 19:44,50.0,,,Buy
