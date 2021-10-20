@@ -38,7 +38,9 @@ def display_address_info(
     df = ethplorer_model.get_address_info(address)
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend)
-    df["balance"] = df["balance"].apply(lambda x: very_long_number_formatter(x))
+    df["balance"] = df["balance"].apply(
+        lambda x: very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
+    )
 
     if gtff.USE_TABULATE_DF:
         print(
@@ -116,7 +118,7 @@ def display_top_token_holders(
     address: str,
     top: int = 10,
     sortby: str = "balance",
-    descend: bool = True,
+    descend: bool = False,
     export: str = "",
 ) -> None:
     """Display info about top ERC20 token holders. [Source: Ethplorer]
@@ -327,6 +329,10 @@ def display_token_history(
 
     df = ethplorer_model.get_token_history(address)
     df_data = df.copy()
+    if df.empty:
+        print(f"No results found for address: {address}\n")
+        return
+
     df["value"] = df["value"].apply(lambda x: very_long_number_formatter(x))
     df = df.sort_values(by=sortby, ascending=descend)
 
@@ -382,6 +388,11 @@ def display_token_historical_prices(
 
     df = ethplorer_model.get_token_historical_price(address)
     df_data = df.copy()
+
+    if df.empty:
+        print(f"No results found for address: {address}\n")
+        return
+
     df["volumeConverted"] = df["volumeConverted"].apply(
         lambda x: very_long_number_formatter(x)
     )

@@ -9,6 +9,7 @@ from time import sleep
 import pandas as pd
 import requests
 from gamestonk_terminal.cryptocurrency.dataframe_helpers import create_df_index
+import gamestonk_terminal.config_terminal as cfg
 
 
 def split_cols_with_dot(column: str) -> str:
@@ -88,7 +89,8 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
 
     Returns
     -------
-    dict with response data
+    dict
+    dictionary with response data
     """
 
     base_url = "https://api.ethplorer.io/"
@@ -97,7 +99,7 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
     if address:
         url = url + "/" + address
 
-    url += "?apiKey=freekey"
+    url += f"?apiKey={cfg.API_ETHPLORER_KEY}"
 
     if "limit" in kwargs:
         url += f"&limit={kwargs['limit']}"
@@ -110,6 +112,25 @@ def make_request(endpoint: str, address: Optional[str] = None, **kwargs: Any) ->
         )
 
     return response
+
+
+def get_token_decimals(address: str) -> Optional[int]:
+    """Helper methods that gets token decimals number. [Source: Ethplorer]
+
+    Parameters
+    ----------
+    address: str
+        Blockchain address e.g. 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
+
+    Returns
+    -------
+    pd.DataFrame:
+        DataFrame with list of tokens and their balances.
+    """
+    response = make_request("getTokenInfo", address)
+    if response and "decimals" in response:
+        return 10 ** int(response["decimals"])
+    return None
 
 
 def get_address_info(address: str) -> pd.DataFrame:
@@ -139,6 +160,8 @@ def get_address_info(address: str) -> pd.DataFrame:
                     "tokenName": token_info.get("name"),
                     "tokenSymbol": token_info.get("symbol"),
                     "tokenAddress": token_info.get("address"),
+                    "balance": token.get("balance")
+                    / (10 ** int(token_info.get("decimals"))),
                 }
             )
     else:
@@ -148,7 +171,8 @@ def get_address_info(address: str) -> pd.DataFrame:
                 "tokenName": token_info.get("name"),
                 "tokenSymbol": token_info.get("symbol"),
                 "tokenAddress": token_info.get("address"),
-                "balance": token_info.get("balance"),
+                "balance": token_info.get("balance")
+                / (10 ** int(token_info.get("decimals"))),
             }
         ]
 
@@ -219,7 +243,12 @@ def get_top_token_holders(address) -> pd.DataFrame:
     """
 
     response = make_request("getTopTokenHolders", address, limit=100)
-    return pd.DataFrame(response["holders"])
+    df = pd.DataFrame(response["holders"])
+    sleep(0.5)
+    token_decimals_divider = get_token_decimals(address)
+    if token_decimals_divider:
+        df["balance"] = df["balance"] / token_decimals_divider
+    return df
 
 
 def get_address_history(address) -> pd.DataFrame:
@@ -268,9 +297,8 @@ def get_token_info(address) -> pd.DataFrame:
     """
 
     response = make_request("getTokenInfo", address)
-
+    decimals = response.pop("decimals") if "decimals" in response else None
     for name in [
-        "decimals",
         "issuancesCount",
         "lastUpdated",
         "image",
@@ -303,6 +331,8 @@ def get_token_info(address) -> pd.DataFrame:
         if col in df.columns:
             df.drop(col, axis=1, inplace=True)
 
+    df["totalSupply"] = df["totalSupply"].astype(float) / (10 ** int(decimals))
+
     df = df.T.reset_index()
     df.columns = ["Metric", "Value"]
     df["Value"] = df["Value"].apply(
@@ -325,7 +355,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
     pd.DataFrame:
         DataFrame with information about ERC20 token transaction.
     """
-
+    decimals = None
     response = make_request("getTxInfo", tx_hash)
     try:
         response.pop("logs")
@@ -333,13 +363,21 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
         if operations:
             operations.pop("addresses")
             token = operations.pop("tokenInfo")
+            decimals = token.get("decimals")
             if token:
                 operations["token"] = token["name"]
                 operations["tokenAddress"] = token["address"]
             operations["timestamp"] = datetime.fromtimestamp(operations["timestamp"])
         response.update(operations)
         response.pop("input")
-        df = pd.Series(response).to_frame().reset_index()
+
+        df = pd.Series(response)
+
+        if decimals:
+            for col in ["intValue", "value"]:
+                df[col] = float(df[col]) // (10 ** int(decimals))
+
+        df = df.to_frame().reset_index()
         df.columns = ["Metric", "Value"]
     except KeyError:
         return pd.DataFrame()
@@ -370,8 +408,10 @@ def get_token_history(address) -> pd.DataFrame:
             first_row.get("symbol"),
             first_row.get("address"),
         )
+        decimals = first_row.get("decimals")
     except Exception:
         name, symbol = "", ""
+        decimals = None
 
     for operation in operations:
         operation.pop("type")
@@ -383,6 +423,7 @@ def get_token_history(address) -> pd.DataFrame:
     if df.empty:
         return df
     df[["name", "symbol"]] = name, symbol
+    df["value"] = df["value"].astype(float) / (10 ** int(decimals))
     return df[["timestamp", "name", "symbol", "value", "from", "to", "transactionHash"]]
 
 
