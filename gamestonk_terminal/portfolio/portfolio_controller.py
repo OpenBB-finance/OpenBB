@@ -5,6 +5,7 @@ import argparse
 import os
 
 from prompt_toolkit.completion import NestedCompleter
+import pandas as pd
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.helper_funcs import get_flair
@@ -12,6 +13,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
+from gamestonk_terminal.portfolio import portfolio_view
 
 # pylint: disable=R1710
 
@@ -31,6 +33,9 @@ class PortfolioController:
         "bro",
         "pa",
         "po",
+        "load",
+        "save",
+        "show",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -45,11 +50,15 @@ class PortfolioController:
         self.completer = NestedCompleter.from_nested_dict(
             {c: None for c in self.CHOICES}
         )
+        self.portfolio = self.load_df()
+        self.loaded = True
 
     def print_help(self):
         """Print help"""
-        help_text = """
+        help_text = f"""
 >> PORTFOLIO <<
+
+{'Portfolio successfully loaded' if self.loaded else 'Could not load portfolio'}
 
 What do you want to do?
     cls         clear screen
@@ -60,6 +69,16 @@ What do you want to do?
 >   bro         brokers holdings, \t\t supports: robinhood, alpaca, ally, degiro
 >   pa          portfolio analysis, \t\t analyses your custom portfolio
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
+
+Portfolio:
+    load        instructions on how to load data
+    save        updated your csv portfolio
+    show        show existing portfolio
+    add         add a security to your portfolio
+    rmv         remove a security from your portfolio
+
+Reports:
+    ar          annual report for performance of a given portfolio
         """
         print(help_text)
 
@@ -131,6 +150,33 @@ What do you want to do?
             self.print_help()
         else:
             return True
+
+    def call_load(self, _):
+        """Process load command"""
+        portfolio_view.get_load()
+
+    def load_df(self):
+        """Loads the user's portfolio"""
+        try:
+            return pd.read_csv("exports/portfolio/portfolio.csv")
+        except FileNotFoundError:
+            self.loaded = False
+            return pd.DataFrame(
+                columns=[
+                    "ID",
+                    "Type",
+                    "BDatetime",
+                    "SDatetime",
+                ]
+            )
+
+    def call_save(self, _):
+        """Process save command"""
+        portfolio_view.save_df(self.portfolio)
+
+    def call_show(self, _):
+        """Process show command"""
+        portfolio_view.show_df(self.portfolio)
 
 
 def menu():
