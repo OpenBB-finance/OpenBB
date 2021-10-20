@@ -45,7 +45,7 @@ class FundamentalAnalysisController:
         "analysis",
         "score",
         "dcf",
-        "screener",
+        "data",
         "fraud",
         "income",
         "balance",
@@ -116,7 +116,7 @@ What would you like to do?
     load          load a new ticker
 {stock_text}
 
-    screener      screen info about the company [Finviz]
+    data          fundamental and technical data of company [FinViz]
     mgmt          management team of the company [Business Insider]
     analysis      analyse SEC filings with the help of machine learning [Elect.us]
     score         investing score from Warren Buffett, Joseph Piotroski and Benjamin Graham [FMP]
@@ -239,9 +239,38 @@ Other Sources:
         except Exception as e:
             print(e, "\n")
 
-    def call_screener(self, other_args: List[str]):
+    def call_data(self, other_args: List[str]):
         """Process screener command"""
-        finviz_view.screener(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="data",
+            description="""
+                Print several metrics about the company. The following fields are expected:
+                Company, Sector, Industry, Country, Index, P/E, EPS (ttm), Insider Own,
+                Shs Outstand, Perf Week, Market Cap, Forward P/E, EPS next Y, Insider Trans,
+                Shs Float, Perf Month, Income, EPS next Q, Inst Own, Short Float, Perf Quarter,
+                Sales, P/S, EPS this Y, Inst Trans, Short Ratio, Perf Half Y, Book/sh, P/B, ROA,
+                Target Price, Perf Year, Cash/sh, P/C, ROE, 52W Range, Perf YTD, P/FCF, EPS past 5Y,
+                ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR,
+                Employees, Current Ratio, Sales Q/Q, Oper. Margin, RSI (14), Volatility, Optionable,
+                Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq,
+                Earnings, Payout, Avg Volume, Price, Recom, SMA20, SMA50, SMA200, Volume, Change.
+                [Source: Finviz]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+
+            finviz_view.display_screen_data(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_score(self, other_args: List[str]):
         """Process score command"""
