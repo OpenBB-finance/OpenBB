@@ -11,7 +11,7 @@ from gamestonk_terminal.helper_funcs import export_data
 from gamestonk_terminal.stocks.fundamental_analysis import business_insider_model
 
 
-def management(ticker: str, export: str = ""):
+def display_management(ticker: str, export: str = ""):
     """Display company's managers
 
     Parameters

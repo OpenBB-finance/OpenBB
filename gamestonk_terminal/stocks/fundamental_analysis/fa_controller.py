@@ -232,7 +232,7 @@ Other Sources:
             if not ns_parser:
                 return
 
-            business_insider_view.management(
+            business_insider_view.display_management(
                 ticker=self.ticker, export=ns_parser.export
             )
 

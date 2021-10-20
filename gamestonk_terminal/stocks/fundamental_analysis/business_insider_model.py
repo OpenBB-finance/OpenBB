@@ -8,7 +8,7 @@ from rapidfuzz import fuzz
 from gamestonk_terminal.helper_funcs import get_user_agent
 
 
-def get_management(ticker) -> pd.DataFrame:
+def get_management(ticker: str) -> pd.DataFrame:
     """Get company managers from Business Insider
 
     Parameters
