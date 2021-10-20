@@ -44,8 +44,7 @@ def get_gwei_fees() -> pd.DataFrame:
                 ],
                 columns=["Tx Type", "Fee (gwei)", "Duration (min)"],
             )
-        else:
-            return pd.DataFrame()
+        return pd.DataFrame()
     except TypeError:
         return pd.DataFrame()
     except requests.exceptions.RequestException:
