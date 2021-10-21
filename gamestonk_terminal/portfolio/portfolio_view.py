@@ -24,8 +24,12 @@ In order to load a CSV do the following:
 1. Add headers to the first row, below is data for each column:\n
 \t1. Identifier for the asset (such as a stock ticker)
 \t2. Type of asset (stock, bond, option, crypto)
-\t3. The buy date in yyyy/mm/dd hh:mm format (hh:mm excludable, but reduces accuracy)
-\t4. The sell date if applicable, same format as buy date\n
+\t3. The volume of the asset transacted
+\t4. The buy date in yyyy/mm/dd hh:mm format (hh:mm excludable, but reduces accuracy)
+\t5. The Price paid for the asset
+\t6. Any fees paid during the transaction
+\t7. A premium paid or received if this was an option
+\t8. Whether the asset was bought (covered) or sold (shorted)\n
 2. Place this file in gamestonk_terminal/portfolio/portfolios\n
         """
     print(text)
