@@ -20,8 +20,8 @@ def get_gwei_fees() -> pd.DataFrame:
 
     r = requests.get("https://ethgasstation.info/json/ethgasAPI.json")
 
-    if r.status_code == 200:
-        try:
+    try:
+        if r.status_code == 200:
             apiData = r.json()
             return pd.DataFrame(
                 data=[
@@ -44,9 +44,8 @@ def get_gwei_fees() -> pd.DataFrame:
                 ],
                 columns=["Tx Type", "Fee (gwei)", "Duration (min)"],
             )
-        except TypeError:
-            print("Error in ethgasstation JSON response.\n")
-            return pd.DataFrame()
-    else:
-        print("Error in ethgasstation GET request\n")
+        return pd.DataFrame()
+    except TypeError:
+        return pd.DataFrame()
+    except requests.exceptions.RequestException:
         return pd.DataFrame()

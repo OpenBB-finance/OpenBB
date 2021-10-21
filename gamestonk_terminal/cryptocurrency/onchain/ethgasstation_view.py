@@ -18,25 +18,28 @@ def display_gwei_fees(export: str) -> None:
 
     df_fees = get_gwei_fees()
 
-    print("Current ETH gas fees (gwei):")
-
-    if gtff.USE_TABULATE_DF:
-        print(
-            tabulate(
-                df_fees.head(4),
-                headers=df_fees.columns,
-                floatfmt=".1f",
-                showindex=False,
-                tablefmt="fancy_grid",
-            ),
-            "\n",
-        )
+    if df_fees.empty:
+        print("\nError in ethgasstation request\n")
     else:
-        print(df_fees.to_string(index=False), "\n")
+        print("\nCurrent ETH gas fees (gwei):")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "gwei",
-        df_fees,
-    )
+        if gtff.USE_TABULATE_DF:
+            print(
+                tabulate(
+                    df_fees.head(4),
+                    headers=df_fees.columns,
+                    floatfmt=".1f",
+                    showindex=False,
+                    tablefmt="fancy_grid",
+                ),
+                "\n",
+            )
+        else:
+            print(df_fees.to_string(index=False), "\n")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "gwei",
+            df_fees,
+        )
