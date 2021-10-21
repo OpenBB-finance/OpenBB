@@ -190,7 +190,9 @@ def display_address_history(
     df = ethplorer_model.get_address_history(address)
     df_data = df.copy()
     df = df.sort_values(by=sortby, ascending=descend)
-    df["value"] = df["value"].apply(lambda x: very_long_number_formatter(x))
+    df["value"] = df["value"].apply(
+        lambda x: very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
+    )
 
     if gtff.USE_TABULATE_DF:
         print(

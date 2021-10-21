@@ -36,6 +36,20 @@ class OnchainController:
         "quit",
     ]
 
+    SPECIFIC_CHOICES = {
+        "account": [
+            "balance",
+            "hist",
+        ],
+        "token": [
+            "info",
+            "th",
+            "prices",
+            "holders",
+        ],
+        "tx": ["tx"],
+    }
+
     CHOICES_COMMANDS = [
         "gwei",
         "whales",
@@ -47,6 +61,7 @@ class OnchainController:
         "info",
         "th",
         "prices",
+        "address",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -58,6 +73,8 @@ class OnchainController:
             "cmd",
             choices=self.CHOICES,
         )
+        self.address = None
+        self.address_type = None
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -233,6 +250,88 @@ class OnchainController:
         except Exception as e:
             print(e)
 
+    def call_address(self, other_args: List[str]):
+        """Process address command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="address",
+            description="""
+                Load address for further analysis. You can analyze account address, token address or transaction hash.
+                [Source: Ethplorer]
+            """,
+        )
+
+        parser.add_argument(
+            "-a",
+            action="store_true",
+            help="Account address",
+            dest="account",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-t",
+            action="store_true",
+            help="ERC20 token address",
+            dest="token",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-tx",
+            action="store_true",
+            help="Transaction hash",
+            dest="transaction",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--address",
+            dest="address",
+            help="Ethereum address",
+            default=False,
+            type=str,
+            required="-h" not in other_args,
+        )
+
+        try:
+            if other_args:
+                if not other_args[0][0] == "-":
+                    other_args.insert(0, "--address")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            if len(ns_parser.address) not in [42, 66]:
+                print(
+                    f"Couldn't load address {ns_parser.address}. "
+                    f"Token or account address should be 42 characters long. "
+                    f"Transaction hash should be 66 characters long\n"
+                )
+                return
+
+            if ns_parser.account:
+                address_type = "account"
+            elif ns_parser.token:
+                address_type = "token"
+            elif ns_parser.transaction:
+                address_type = "tx"
+            else:
+                address_type = "account"
+
+            if len(ns_parser.address) == 66:
+                address_type = "tx"
+
+            self.address = ns_parser.address
+            self.address_type = address_type
+
+            print(f"Address loaded {self.address}\n")
+        except Exception as e:
+            print(e)
+
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -277,16 +376,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-a",
-            "--balance",
-            dest="balance",
-            help="Ethereum blockchain balance",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -296,21 +385,16 @@ class OnchainController:
         )
 
         try:
-
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-a")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_address_info(
                 top=ns_parser.top,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                address=ns_parser.address,
+                address=self.address,
                 export=ns_parser.export,
             )
 
@@ -357,16 +441,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-a",
-            "--balance",
-            dest="balance",
-            help="Ethereum blockchain addresses",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -376,21 +450,16 @@ class OnchainController:
         )
 
         try:
-
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-a")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_address_history(
                 top=ns_parser.top,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                address=ns_parser.address,
+                address=self.address,
                 export=ns_parser.export,
             )
 
@@ -440,16 +509,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-a",
-            "--balance",
-            dest="balance",
-            help="ERC20 token balance",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -459,20 +518,16 @@ class OnchainController:
         )
 
         try:
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-a")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_top_token_holders(
                 top=ns_parser.top,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                address=ns_parser.address,
+                address=self.address,
                 export=ns_parser.export,
             )
 
@@ -515,7 +570,6 @@ class OnchainController:
                 "txsCount",
                 "transfersCount",
                 "holdersCount",
-                "balance",
             ],
         )
 
@@ -573,16 +627,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-a",
-            "--balance",
-            dest="balance",
-            help="ERC20 token balance",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -592,19 +636,14 @@ class OnchainController:
         )
 
         try:
-
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-a")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_token_info(
                 social=ns_parser.social,
-                address=ns_parser.address,
+                address=self.address,
                 export=ns_parser.export,
             )
 
@@ -661,16 +700,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-a",
-            "--balance",
-            dest="balance",
-            help="ERC20 token balance",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -681,13 +710,9 @@ class OnchainController:
 
         try:
 
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-a")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_token_history(
@@ -695,7 +720,7 @@ class OnchainController:
                 hash_=ns_parser.hash,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                address=ns_parser.address,
+                address=self.address,
                 export=ns_parser.export,
             )
 
@@ -716,16 +741,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-tx",
-            "--tx",
-            dest="tx",
-            help="Ethereum transaction hash",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -736,17 +751,13 @@ class OnchainController:
 
         try:
 
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-tx")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_tx_info(
-                tx_hash=ns_parser.tx,
+                tx_hash=self.address,
                 export=ns_parser.export,
             )
 
@@ -800,16 +811,6 @@ class OnchainController:
         )
 
         parser.add_argument(
-            "-a",
-            "--balance",
-            dest="balance",
-            help="ERC20 token addresses",
-            default=False,
-            type=str,
-            required="-h" not in other_args,
-        )
-
-        parser.add_argument(
             "--export",
             choices=["csv", "json", "xlsx"],
             default="",
@@ -819,21 +820,16 @@ class OnchainController:
         )
 
         try:
-
-            if other_args:
-                if not other_args[0][0] == "-":
-                    other_args.insert(0, "-a")
-
             ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
+            if not ns_parser or not self.address:
                 return
 
             ethplorer_view.display_token_historical_prices(
                 top=ns_parser.top,
                 sortby=ns_parser.sortby,
                 descend=ns_parser.descend,
-                address=ns_parser.address,
+                address=self.address,
                 export=ns_parser.export,
             )
 
@@ -851,19 +847,34 @@ Onchain:
 
     gwei              check current eth gas fees
     whales            check crypto wales transactions
-
-Ethereum:
-    balance           check ethereum balance balance
-    top               top ERC20 tokens
-    holders           top ERC20 token holders
-    hist              ethereum balance history (transactions)
-    info              ERC20 token info
-    th                ERC20 token history
-    tx                ethereum blockchain transaction info
-    prices            ERC20 token historical prices
 """
+        help_text += f"\nEthereum address: {self.address if self.address else '?'}"
+        help_text += (
+            f"\nAddress type: {self.address_type if self.address_type else '?'}\n"
+        )
 
-        print(help_text)
+        help_text += """
+Ethereum:
+    address           load ethereum address of token, account or transaction
+    top               top ERC20 tokens"""
+
+        if self.address_type == "account":
+            help_text += """
+    balance           check ethereum balance balance
+    hist              ethereum balance history (transactions)"""
+
+        if self.address_type == "token":
+            help_text += """
+    info              ERC20 token info
+    holders           top ERC20 token holders
+    th                ERC20 token history
+    prices            ERC20 token historical prices"""
+
+        if self.address_type == "tx":
+            help_text += """
+    tx                ethereum blockchain transaction info"""
+
+        print(help_text, "\n")
 
 
 def menu():
@@ -895,3 +906,6 @@ def menu():
 
         if process_input is True:
             return True
+
+
+menu()

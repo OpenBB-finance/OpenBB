@@ -218,7 +218,6 @@ def get_top_tokens() -> pd.DataFrame:
             "txsCount",
             "transfersCount",
             "holdersCount",
-            "balance",
             "twitter",
             "coingecko",
         ]
@@ -271,11 +270,13 @@ def get_address_history(address) -> pd.DataFrame:
             token = operation.pop("tokenInfo")
             if token:
                 operation["token"] = token["name"]
-                operation["tokenAddress"] = token["balance"]
+                operation["tokenAddress"] = token["address"]
+                operation["decimals"] = int(token["decimals"])
             operation["timestamp"] = datetime.fromtimestamp(operation["timestamp"])
 
     df = pd.DataFrame(operations)
     cols = ["timestamp", "transactionHash", "token", "value"]
+    df["value"] = df["value"].astype(float) / (10 ** df["decimals"])
     if df.empty:
         return pd.DataFrame(columns=cols)
 
@@ -366,7 +367,7 @@ def get_tx_info(tx_hash) -> pd.DataFrame:
             decimals = token.get("decimals")
             if token:
                 operations["token"] = token["name"]
-                operations["tokenAddress"] = token["balance"]
+                operations["tokenAddress"] = token["address"]
             operations["timestamp"] = datetime.fromtimestamp(operations["timestamp"])
         response.update(operations)
         response.pop("input")
