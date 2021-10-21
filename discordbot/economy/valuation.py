@@ -6,6 +6,20 @@ from gamestonk_terminal.economy import finviz_model
 
 
 async def valuation_command(ctx, arg="sector"):
+    """Gets the valuation data of a entered sector from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        sector (or any other input in the economy_group), -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an embed of the valuation data of the given arg
+        with pagination to the user
+    """
+
     economy_group = {
         "sector": "Sector",
         "industry": "Industry",

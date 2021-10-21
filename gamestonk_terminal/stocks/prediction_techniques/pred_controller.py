@@ -1,4 +1,4 @@
-""" Due Diligence Controller """
+""" Prediction Controller """
 __docformat__ = "numpy"
 
 import argparse
@@ -6,11 +6,19 @@ import os
 from typing import List
 from datetime import datetime
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    check_positive,
+    valid_date,
+    get_next_stock_market_days,
+    EXPORT_ONLY_FIGURES_ALLOWED,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
     arima_view,
@@ -18,24 +26,20 @@ from gamestonk_terminal.common.prediction_techniques import (
     knn_view,
     neural_networks_view,
     regression_view,
+    pred_helper,
 )
+from gamestonk_terminal.stocks.stocks_helper import load
 
 
 class PredictionTechniquesController:
     """Prediction Techniques Controller class"""
 
     # Command choices
-    CHOICES = [
-        "cls",
-        "?",
-        "help",
-        "q",
-        "quit",
+    CHOICES = ["cls", "?", "help", "q", "quit", "load", "pick"]
+
+    CHOICES_MODELS = [
         "ets",
         "knn",
-        "linear",
-        "quadratic",
-        "cubic",
         "regression",
         "arima",
         "mlp",
@@ -43,6 +47,7 @@ class PredictionTechniquesController:
         "lstm",
         "conv1d",
     ]
+    CHOICES += CHOICES_MODELS
 
     def __init__(
         self,
@@ -52,10 +57,18 @@ class PredictionTechniquesController:
         stock: pd.DataFrame,
     ):
         """Constructor"""
+        stock["Returns"] = stock["Adj Close"].pct_change()
+        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
+            stock["Adj Close"].shift(1)
+        )
+        stock = stock.rename(columns={"Adj Close": "AdjClose"})
+        stock = stock.dropna()
+
         self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
+        self.target = "AdjClose"
         self.pred_parser = argparse.ArgumentParser(add_help=False, prog="pred")
         self.pred_parser.add_argument(
             "cmd",
@@ -65,32 +78,35 @@ class PredictionTechniquesController:
     def print_help(self):
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
-
         if self.start:
-            print(
-                f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            )
+            stock_info = f"{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            print(f"\n{s_intraday} Stock: {self.ticker}")
+            stock_info = "{s_intraday} Stock: {self.ticker}"
 
-        print("\nPrediction Techniques:")
-        print("   cls         clear screen")
-        print("   ?/help      show this menu again")
-        print("   q           quit this menu, and shows back to main menu")
-        print("   quit        quit to abandon program")
-        print("")
-        print("   ets         exponential smoothing (e.g. Holt-Winters)")
-        print("   knn         k-Nearest Neighbors")
-        print("   linear      linear regression (polynomial 1)")
-        print("   quadratic   quadratic regression (polynomial 2)")
-        print("   cubic       cubic regression (polynomial 3)")
-        print("   regression  regression (other polynomial)")
-        print("   arima       autoregressive integrated moving average")
-        print("   mlp         MultiLayer Perceptron")
-        print("   rnn         Recurrent Neural Network")
-        print("   lstm        Long-Short Term Memory")
-        print("   conv1d      1D Convolutional Neural Network")
-        print("")
+        help_string = f""">>> PREDICTION <<<
+
+What would you like to do?
+    cls         clear screen
+    ?/help      show this menu again
+    q           quit this menu, and shows back to main menu
+    quit        quit to abandon program
+    load        load new ticker
+    pick        pick new target variable
+
+{stock_info}
+Target Column: {self.target}
+
+Models:
+    ets         exponential smoothing (e.g. Holt-Winters)
+    knn         k-Nearest Neighbors
+    regression  polynomial regression
+    arima       autoregressive integrated moving average
+    mlp         MultiLayer Perceptron
+    rnn         Recurrent Neural Network
+    lstm        Long-Short Term Memory
+    conv1d      1D Convolutional Neural Network
+        """
+        print(help_string)
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -136,57 +152,577 @@ class PredictionTechniquesController:
         """Process Quit command - quit the program"""
         return True
 
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        self.ticker, self.start, self.interval, stock = load(
+            other_args, self.ticker, self.start, self.interval, self.stock
+        )
+        if "." in self.ticker:
+            self.ticker = self.ticker.split(".")[0]
+
+        if "-h" not in other_args:
+            stock["Returns"] = stock["Adj Close"].pct_change()
+            stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
+                stock["Adj Close"].shift(1)
+            )
+            stock = stock.rename(columns={"Adj Close": "AdjClose"})
+            stock = stock.dropna()
+            self.stock = stock
+
+    def call_pick(self, other_args: List[str]):
+        """Process pick command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="pick",
+            description="""
+                Change target variable
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--target",
+            dest="target",
+            choices=list(self.stock.columns),
+            help="Select variable to analyze",
+        )
+        try:
+            if other_args and "-t" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-t")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            self.target = ns_parser.target
+            print("")
+
+        except Exception as e:
+            print(e, "\n")
+
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
-        ets_view.exponential_smoothing(other_args, self.ticker, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ets",
+            description="""
+                Exponential Smoothing, see https://otexts.com/fpp2/taxonomy.html
+
+                Trend='N',  Seasonal='N': Simple Exponential Smoothing
+                Trend='N',  Seasonal='A': Exponential Smoothing
+                Trend='N',  Seasonal='M': Exponential Smoothing
+                Trend='A',  Seasonal='N': Holt’s linear method
+                Trend='A',  Seasonal='A': Additive Holt-Winters’ method
+                Trend='A',  Seasonal='M': Multiplicative Holt-Winters’ method
+                Trend='Ad', Seasonal='N': Additive damped trend method
+                Trend='Ad', Seasonal='A': Exponential Smoothing
+                Trend='Ad', Seasonal='M': Holt-Winters’ damped method
+                Trend component: N: None, A: Additive, Ad: Additive Damped
+                Seasonality component: N: None, A: Additive, M: Multiplicative
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-t",
+            "--trend",
+            action="store",
+            dest="trend",
+            choices=["N", "A", "Ad"],
+            default="N",
+            help="Trend component: N: None, A: Additive, Ad: Additive Damped.",
+        )
+        parser.add_argument(
+            "-s",
+            "--seasonal",
+            action="store",
+            dest="seasonal",
+            choices=["N", "A", "M"],
+            default="N",
+            help="Seasonality component: N: None, A: Additive, M: Multiplicative.",
+        )
+        parser.add_argument(
+            "-p",
+            "--periods",
+            action="store",
+            dest="seasonal_periods",
+            type=check_positive,
+            default=5,
+            help="Seasonal periods.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            )
+            if not ns_parser:
+                return
+
+            if ns_parser.s_end_date:
+
+                if ns_parser.s_end_date < self.stock.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return
+
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.stock.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return
+
+            ets_view.display_exponential_smoothing(
+                ticker=self.ticker,
+                values=self.stock[self.target],
+                n_predict=ns_parser.n_days,
+                trend=ns_parser.trend,
+                seasonal=ns_parser.seasonal,
+                seasonal_periods=ns_parser.seasonal_periods,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
-        knn_view.k_nearest_neighbors(other_args, self.ticker, self.stock)
-
-    def call_linear(self, other_args: List[str]):
-        """Process linear command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.LINEAR
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="knn",
+            description="""
+                K nearest neighbors is a simple algorithm that stores all
+                available cases and predict the numerical target based on a similarity measure
+                (e.g. distance functions).
+            """,
         )
-
-    def call_quadratic(self, other_args: List[str]):
-        """Process quadratic command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.QUADRATIC
+        parser.add_argument(
+            "-i",
+            "--input",
+            action="store",
+            dest="n_inputs",
+            type=check_positive,
+            default=40,
+            help="number of days to use as input for prediction.",
         )
-
-    def call_cubic(self, other_args: List[str]):
-        """Process cubic command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.CUBIC
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
         )
+        parser.add_argument(
+            "-j",
+            "--jumps",
+            action="store",
+            dest="n_jumps",
+            type=check_positive,
+            default=1,
+            help="number of jumps in training data.",
+        )
+        parser.add_argument(
+            "-n",
+            "--neighbors",
+            action="store",
+            dest="n_neighbors",
+            type=check_positive,
+            default=20,
+            help="number of neighbors to use on the algorithm.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select for testing",
+        )
+        parser.add_argument(
+            "-t",
+            "--test_size",
+            default=0.2,
+            dest="valid_split",
+            type=float,
+            help="Percentage of data to validate in sample",
+        )
+        parser.add_argument(
+            "--no_shuffle",
+            action="store_false",
+            dest="no_shuffle",
+            default=True,
+            help="Specify if shuffling validation inputs.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            knn_view.display_k_nearest_neighbors(
+                ticker=self.ticker,
+                data=self.stock[self.target],
+                n_neighbors=ns_parser.n_neighbors,
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                test_size=ns_parser.valid_split,
+                end_date=ns_parser.s_end_date,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_regression(self, other_args: List[str]):
-        """Process regression command"""
-        regression_view.regression(
-            other_args, self.ticker, self.stock, regression_view.USER_INPUT
+        """Process linear command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="regression",
+            description="""
+                Regression attempts to model the relationship between
+                two variables by fitting a linear/quadratic/cubic/other equation to
+                observed data. One variable is considered to be an explanatory variable,
+                and the other is considered to be a dependent variable.
+            """,
         )
+
+        parser.add_argument(
+            "-i",
+            "--input",
+            action="store",
+            dest="n_inputs",
+            type=check_positive,
+            default=40,
+            help="number of days to use for prediction.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-j",
+            "--jumps",
+            action="store",
+            dest="n_jumps",
+            type=check_positive,
+            default=1,
+            help="number of jumps in training data.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        )
+        parser.add_argument(
+            "-p",
+            "--polynomial",
+            action="store",
+            dest="n_polynomial",
+            type=check_positive,
+            default=1,
+            help="polynomial associated with regression.",
+        )
+
+        try:
+            if (
+                other_args
+                and "-h" not in other_args
+                and ("-p" not in other_args or "--polynomial" not in other_args)
+            ):
+                other_args.insert(0, "-p")
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            )
+            if not ns_parser:
+                return
+            # BACKTESTING CHECK
+            if ns_parser.s_end_date:
+                if ns_parser.s_end_date < self.stock.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return
+
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.stock.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return
+
+            regression_view.display_regression(
+                dataset=self.ticker,
+                values=self.stock[self.target],
+                poly_order=ns_parser.n_polynomial,
+                n_input=ns_parser.n_inputs,
+                n_predict=ns_parser.n_days,
+                n_jumps=ns_parser.n_jumps,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
-        arima_view.arima(other_args, self.ticker, self.stock)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="arima",
+            description="""
+                In statistics and econometrics, and in particular in time series analysis, an
+                autoregressive integrated moving average (ARIMA) model is a generalization of an
+                autoregressive moving average (ARMA) model. Both of these models are fitted to time
+                series data either to better understand the data or to predict future points in the
+                series (forecasting). ARIMA(p,d,q) where parameters p, d, and q are non-negative
+                integers, p is the order (number of time lags) of the autoregressive model, d is the
+                degree of differencing (the number of times the data have had past values subtracted),
+                and q is the order of the moving-average model.
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            action="store",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+            help="prediction days.",
+        )
+        parser.add_argument(
+            "-i",
+            "--ic",
+            action="store",
+            dest="s_ic",
+            type=str,
+            default="aic",
+            choices=["aic", "aicc", "bic", "hqic", "oob"],
+            help="information criteria.",
+        )
+        parser.add_argument(
+            "-s",
+            "--seasonal",
+            action="store_true",
+            default=False,
+            dest="b_seasonal",
+            help="Use weekly seasonal data.",
+        )
+        parser.add_argument(
+            "-o",
+            "--order",
+            action="store",
+            dest="s_order",
+            default="",
+            type=str,
+            help="arima model order (p,d,q) in format: p,d,q.",
+        )
+        parser.add_argument(
+            "-r",
+            "--results",
+            action="store_true",
+            dest="b_results",
+            default=False,
+            help="results about ARIMA summary flag.",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            action="store",
+            type=valid_date,
+            dest="s_end_date",
+            default=None,
+            help="The end date (format YYYY-MM-DD) to select - Backtesting",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            )
+            if not ns_parser:
+                return
+
+            # BACKTESTING CHECK
+            if ns_parser.s_end_date:
+
+                if ns_parser.s_end_date < self.stock.index[0]:
+                    print(
+                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                    )
+                    return
+
+                if ns_parser.s_end_date < get_next_stock_market_days(
+                    last_stock_day=self.stock.index[0],
+                    n_next_days=5 + ns_parser.n_days,
+                )[-1]:
+                    print(
+                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                    )
+                    return
+
+            arima_view.display_arima(
+                dataset=self.ticker,
+                values=self.stock[self.target],
+                arima_order=ns_parser.s_order,
+                n_predict=ns_parser.n_days,
+                seasonal=ns_parser.b_seasonal,
+                ic=ns_parser.s_ic,
+                results=ns_parser.b_results,
+                s_end_date=ns_parser.s_end_date,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
-        neural_networks_view.mlp(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="mlp",
+                description="""Multi-Layered-Perceptron. """,
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+
+            neural_networks_view.display_mlp(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
     def call_rnn(self, other_args: List[str]):
         """Process rnn command"""
-        neural_networks_view.rnn(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="rnn",
+                description="""Recurrent Neural Network. """,
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+
+            neural_networks_view.display_rnn(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
     def call_lstm(self, other_args: List[str]):
         """Process lstm command"""
-        neural_networks_view.lstm(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="lstm",
+                description="""Long-Short Term Memory. """,
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+            neural_networks_view.display_lstm(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
     def call_conv1d(self, other_args: List[str]):
         """Process conv1d command"""
-        neural_networks_view.conv1d(other_args, self.ticker, self.stock)
+        try:
+            ns_parser = pred_helper.parse_args(
+                prog="conv1d",
+                description="""1D CNN.""",
+                other_args=other_args,
+            )
+            if not ns_parser:
+                return
+
+            neural_networks_view.display_conv1d(
+                dataset=self.ticker,
+                data=self.stock[self.target],
+                n_input_days=ns_parser.n_inputs,
+                n_predict_days=ns_parser.n_days,
+                learning_rate=ns_parser.lr,
+                epochs=ns_parser.n_epochs,
+                batch_size=ns_parser.n_batch_size,
+                test_size=ns_parser.valid_split,
+                n_loops=ns_parser.n_loops,
+                no_shuffle=ns_parser.no_shuffle,
+            )
+
+        except Exception as e:
+            print(e, "\n")
+
+        finally:
+            pred_helper.restore_env()
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):

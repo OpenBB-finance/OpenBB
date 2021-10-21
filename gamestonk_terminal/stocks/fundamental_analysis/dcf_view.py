@@ -21,6 +21,8 @@ import requests
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
 
+from gamestonk_terminal.helper_funcs import get_rf
+
 int_or_str = Union[int, str]
 
 
@@ -90,7 +92,7 @@ class CreateExcelFA:
         self.df_is: pd.DataFrame = self.get_data("IS", self.is_start, True)
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
         self.info: pd.DataFrame = yf.Ticker(ticker).info
-        self.t_bill: float = dcf_model.get_rf()
+        self.t_bill: float = get_rf()
         self.r_ff: int = dcf_model.get_fama_coe(self.ticker)
 
     def create_workbook(self):

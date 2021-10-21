@@ -8,7 +8,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 21.7b0
+    rev: 21.9b0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8

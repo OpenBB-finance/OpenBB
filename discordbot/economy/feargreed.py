@@ -9,6 +9,19 @@ from gamestonk_terminal.economy import cnn_view, cnn_model
 
 
 async def feargreed_command(ctx, arg=""):
+    """Gets the fear greed data from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an image of the fear & greed indicator to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

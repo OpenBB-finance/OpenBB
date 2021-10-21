@@ -11,6 +11,24 @@ from gamestonk_terminal.stocks.dark_pool_shorts import sec_model
 
 
 async def ftd_command(ctx, arg="", arg2="", arg3=""):
+    """Displays barchart of fail of deliver data of a given stock and sends it
+
+    Parameters
+    -----------
+    arg: str
+        ticker, -h or help
+    arg2:
+        date (in date format for start date)
+    arg3:
+        date (in date format for end date)
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an image displaying a barchart fail to
+        deliver data to the user during a given time period
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

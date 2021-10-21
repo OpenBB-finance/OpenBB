@@ -17,7 +17,7 @@ from gamestonk_terminal.helper_funcs import (
 )
 
 from gamestonk_terminal.cryptocurrency.onchain import (
-    gasnow_view,
+    ethgasstation_view,
     whale_alert_view,
     ethplorer_view,
 )
@@ -135,7 +135,7 @@ class OnchainController:
             prog="onchain",
             description="""
                 Display ETH gas fees
-                [Source: https://www.gasnow.org]
+                [Source: https://ethgasstation.info]
             """,
         )
 
@@ -154,7 +154,7 @@ class OnchainController:
             if not ns_parser:
                 return
 
-            gasnow_view.display_gwei_fees(export=ns_parser.export)
+            ethgasstation_view.display_gwei_fees(export=ns_parser.export)
 
         except Exception as e:
             print(e, "\n")

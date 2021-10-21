@@ -11,7 +11,6 @@ from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 from openpyxl import worksheet
 import yfinance as yf
 import pandas as pd
-import requests
 
 
 opts = Union[int, str, float]
@@ -58,16 +57,6 @@ def set_cell(
         ws[cell].alignment = alignment
     if num_form:
         ws[cell].number_format = num_form
-
-
-def get_rf():
-    """Uses the fiscaldata.gov API to get most recent T-Bill rate"""
-    base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
-    end = "/v2/accounting/od/avg_interest_rates"
-    filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
-    response = requests.get(base + end + filters)
-    latest = response.json()["data"][0]
-    return latest["avg_interest_rate_amt"]
 
 
 def get_fama_raw():

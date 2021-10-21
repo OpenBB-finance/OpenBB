@@ -6,6 +6,20 @@ from gamestonk_terminal.stocks.dark_pool_shorts import shortinterest_model
 
 
 async def hsi_command(ctx, arg="10"):
+    """Gets high shorted interest data from GST and sends it
+
+    Parameters
+    -----------
+    arg: str
+        number, -h or help
+
+    Returns
+    -------
+    discord message
+        Sends a message containing an embed of the stocks with the top high
+        shorted interest to the user
+    """
+
     try:
         # Debug
         if cfg.DEBUG:

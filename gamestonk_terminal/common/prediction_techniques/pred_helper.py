@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import List
+from typing import List, Union
 import os
 from warnings import simplefilter
 from datetime import timedelta
@@ -18,9 +18,11 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
+from tabulate import tabulate
 from tensorflow.keras.models import Sequential
 from gamestonk_terminal.helper_funcs import (
     check_positive,
+    check_positive_float,
     parse_known_args_and_warn,
     valid_date,
     plot_autoscale,
@@ -44,6 +46,7 @@ PREPROCESSER = cfg.Preprocess
 
 
 def check_valid_frac(num) -> float:
+    """Argparse type checker for valid float between 0 and 1"""
     if (num < 0) or (num > 1):
         raise argparse.ArgumentTypeError(f"{num} is an invalid percentage")
     return num
@@ -172,7 +175,7 @@ def parse_args(prog: str, description: str, other_args: List[str]):
 
     parser.add_argument(
         "--lr",
-        type=check_positive,
+        type=check_positive_float,
         dest="lr",
         default=0.01,
         help="Specify learning rate for optimizer.",
@@ -217,13 +220,18 @@ def parse_args(prog: str, description: str, other_args: List[str]):
 
 
 def prepare_scale_train_valid_test(
-    df_stock: pd.DataFrame, ns_parser: argparse.Namespace
+    data: Union[pd.DataFrame, pd.Series],
+    n_input_days: int,
+    n_predict_days: int,
+    test_size: float,
+    s_end_date: str,
+    no_shuffle: bool,
 ):
     """
     Prepare and scale train, validate and test data.
     Parameters
     ----------
-    df_stock: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of stock prices
     ns_parser: argparse.Namespace
         Parsed arguments
@@ -253,10 +261,6 @@ def prepare_scale_train_valid_test(
         Fitted preprocesser
     """
 
-    n_input_days = ns_parser.n_inputs
-    n_predict_days = ns_parser.n_days
-    test_size = ns_parser.valid_split
-
     # Pre-process data
     if PREPROCESSER == "standardization":
         scaler = StandardScaler()
@@ -272,9 +276,9 @@ def prepare_scale_train_valid_test(
     # Test data is used for forecasting.  Takes the last n_input_days data points.
     # These points are not fed into training
 
-    if ns_parser.s_end_date:
-        df_stock = df_stock[df_stock.index <= ns_parser.s_end_date]
-        if n_input_days + n_predict_days > df_stock.shape[0]:
+    if s_end_date:
+        data = data[data.index <= s_end_date]
+        if n_input_days + n_predict_days > data.shape[0]:
             print("Cannot train enough input days to predict with loaded dataframe\n")
             return (
                 None,
@@ -291,16 +295,16 @@ def prepare_scale_train_valid_test(
                 True,
             )
 
-    test_data = df_stock.iloc[-n_input_days:]
-    train_data = df_stock.iloc[:-n_input_days]
+    test_data = data.iloc[-n_input_days:]
+    train_data = data.iloc[:-n_input_days]
 
-    dates = df_stock.index
+    dates = data.index
     dates_test = test_data.index
     if scaler:
-        train_data = scaler.fit_transform(df_stock.values.reshape(-1, 1))
+        train_data = scaler.fit_transform(data.values.reshape(-1, 1))
         test_data = scaler.transform(test_data.values.reshape(-1, 1))
     else:
-        train_data = df_stock.values.reshape(-1, 1)
+        train_data = data.values.reshape(-1, 1)
         test_data = test_data.values.reshape(-1, 1)
 
     prices = train_data
@@ -340,7 +344,7 @@ def prepare_scale_train_valid_test(
         input_dates,
         next_n_day_dates,
         test_size=test_size,
-        shuffle=ns_parser.no_shuffle,
+        shuffle=no_shuffle,
     )
     return (
         X_train,
@@ -393,13 +397,13 @@ def forecast(
 
 
 def plot_data_predictions(
-    df_stock, preds, y_valid, y_dates_valid, scaler, title, forecast_data, n_loops
+    data, preds, y_valid, y_dates_valid, scaler, title, forecast_data, n_loops
 ):
 
     plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plt.plot(
-        df_stock.index,
-        df_stock["Adj Close"].values,
+        data.index,
+        data.values,
         "-ob",
         lw=1,
         ms=2,
@@ -477,7 +481,7 @@ def plot_data_predictions(
         plt.plot(
             forecast_data.index,
             forecast_data.values,
-            "-ok",
+            "-og",
             ms=3,
             label="Forecast",
         )
@@ -485,7 +489,7 @@ def plot_data_predictions(
         plt.plot(
             forecast_data.index,
             forecast_data.median(axis=1).values,
-            "-ok",
+            "-og",
             ms=3,
             label="Forecast",
         )
@@ -497,12 +501,10 @@ def plot_data_predictions(
             alpha=0.3,
         )
     plt.legend(loc=0)
-    plt.xlim(df_stock.index[0], forecast_data.index[-1] + timedelta(days=1))
+    plt.xlim(data.index[0], forecast_data.index[-1] + timedelta(days=1))
     plt.xlabel("Time")
-    plt.ylabel("Share Price ($)")
+    plt.ylabel("Value")
     plt.grid(b=True, which="major", color="#666666", linestyle="-")
-    plt.minorticks_on()
-    plt.grid(b=True, which="minor", color="#999999", linestyle="-", alpha=0.2)
     plt.title(title)
     if gtff.USE_ION:
         plt.ion()
@@ -520,14 +522,34 @@ def price_prediction_color(val: float, last_val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
+    print("")
     if gtff.USE_COLOR:
         print(f"Actual price: {Fore.YELLOW}{last_price:.2f} ${Style.RESET_ALL}\n")
-        print("Prediction:")
-        print(df_pred.apply(price_prediction_color, last_val=last_price).to_string())
+        if gtff.USE_TABULATE_DF:
+            df_pred = pd.DataFrame(df_pred)
+            df_pred.columns = ["pred"]
+            df_pred["pred"] = df_pred["pred"].apply(
+                lambda x: price_prediction_color(x, last_val=last_price)
+            )
+            print("Prediction:")
+            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
+
+        else:
+
+            print("Prediction:")
+            print(
+                df_pred.apply(price_prediction_color, last_val=last_price).to_string()
+            )
     else:
-        print(f"Actual price: {last_price:.2f} $\n")
-        print("Prediction:")
-        print(df_pred.to_string())
+        if gtff.USE_TABULATE_DF:
+            df_pred = pd.DataFrame(df_pred)
+            df_pred.columns = ["pred"]
+            print("Prediction:")
+            print(tabulate(df_pred, headers=["Prediction"], tablefmt="fancy_grid"))
+        else:
+            print(f"Actual price: {last_price:.2f} $\n")
+            print("Prediction:")
+            print(df_pred.to_string())
 
 
 def print_pretty_prediction_nn(df_pred: pd.DataFrame, last_price: float):
@@ -553,12 +575,20 @@ def mean_absolute_percentage_error(y_true: np.ndarray, y_pred: np.ndarray) -> np
 
 def print_prediction_kpis(real: np.ndarray, pred: np.ndarray):
     """Print prediction statistics"""
+    kpis = {
+        "MAPE": f"{mean_absolute_percentage_error(real, pred) :.3f} %",
+        "R2": f"{r2_score(real, pred) :.3f}",
+        "MAE": f"{mean_absolute_error(real, pred):.3f}",
+        "MSE": f"{mean_squared_error(real, pred):.3f}",
+        "RMSE": f"{mean_squared_error(real, pred, squared=False):.3f}",
+    }
+
     print("KPIs")
-    print(f"MAPE: {mean_absolute_percentage_error(real, pred):.3f} %")
-    print(f"R2: {r2_score(real, pred):.3f}")
-    print(f"MAE: {mean_absolute_error(real, pred):.3f}")
-    print(f"MSE: {mean_squared_error(real, pred):.3f}")
-    print(f"RMSE: {mean_squared_error(real, pred, squared=False):.3f}")
+    df = pd.DataFrame.from_dict(kpis, orient="index")
+    if gtff.USE_TABULATE_DF:
+        print(tabulate(df, tablefmt="fancy_grid", showindex=True))
+    else:
+        print(df.to_string())
 
 
 def price_prediction_backtesting_color(val: list) -> str:

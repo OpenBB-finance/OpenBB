@@ -30,7 +30,7 @@ from gamestonk_terminal.options import (
     yfinance_view,
 )
 from gamestonk_terminal.stocks import stocks_controller
-from gamestonk_terminal.options import payoff_controller
+from gamestonk_terminal.options import payoff_controller, chartexchange_view
 
 
 class OptionsController:
@@ -62,7 +62,8 @@ class OptionsController:
         "unu",
         "stocks",
         "payoff",
-        "smile",
+        "plot",
+        "parity",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -137,7 +138,8 @@ Current Expiry: {self.selected_date or None}
     voi           plot volume and open interest [Tradier/YF]
     hist          plot option history [Tradier]
     grhist        plot option greek history [Syncretism.io]
-    smile         plot the volatility smile for the expiration date [Yfinance]
+    plot          plot variables provided by the user [Yfinance]
+    parity        shows whether options are above or below expected price [Yfinance]
 >   payoff        shows payoff diagram for a selection of options [Yfinance]
 {Style.RESET_ALL if not colored else ''}"""
         print(help_text)
@@ -365,9 +367,8 @@ Current Expiry: {self.selected_date or None}
             ],
         )
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-p")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -421,9 +422,8 @@ Current Expiry: {self.selected_date or None}
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-p")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-p")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -479,7 +479,8 @@ Current Expiry: {self.selected_date or None}
             help="Display raw data",
         )
         parser.add_argument(
-            "-n," "--num",
+            "-n",
+            "--num",
             dest="num",
             default=20,
             help="Number of raw data rows to show",
@@ -541,9 +542,8 @@ Current Expiry: {self.selected_date or None}
             help="Source to get option expirations from",
         )
         try:
-            if other_args:
-                if "-t" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-t")
+            if other_args and "-t" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-t")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -552,7 +552,6 @@ Current Expiry: {self.selected_date or None}
         except Exception as e:
             print(e, "\n")
             return
-
         except SystemExit:
             print("")
             return
@@ -592,9 +591,8 @@ Current Expiry: {self.selected_date or None}
         )
 
         try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-i")
+            if other_args and "-" not in other_args[0]:
+                other_args.insert(0, "-i")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -607,18 +605,16 @@ Current Expiry: {self.selected_date or None}
                 for i, d in enumerate(self.expiry_dates):
                     print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
                 print("")
-            # It means an expiry date was correctly selected
-            else:
-                if ns_parser.date:
-                    if ns_parser.date in self.expiry_dates:
-                        print(f"Expiraration set to {ns_parser.date} \n")
-                        self.selected_date = ns_parser.date
-                    else:
-                        print("Expiration not an option")
+            elif ns_parser.date:
+                if ns_parser.date in self.expiry_dates:
+                    print(f"Expiration set to {ns_parser.date} \n")
+                    self.selected_date = ns_parser.date
                 else:
-                    expiry_date = self.expiry_dates[ns_parser.index]
-                    print(f"Expiraration set to {expiry_date} \n")
-                    self.selected_date = expiry_date
+                    print("Expiration not an option")
+            else:
+                expiry_date = self.expiry_dates[ns_parser.index]
+                print(f"Expiration set to {expiry_date} \n")
+                self.selected_date = expiry_date
         except Exception as e:
             print(e, "\n")
 
@@ -635,7 +631,7 @@ Current Expiry: {self.selected_date or None}
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" in other_args or "-h" not in other_args,
+            required="--chain" not in other_args and "-h" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(
@@ -650,7 +646,8 @@ Current Expiry: {self.selected_date or None}
             "--chain", dest="chain_id", type=str, help="OCC option symbol"
         )
         parser.add_argument(
-            "-r," "--raw",
+            "-r",
+            "--raw",
             dest="raw",
             action="store_true",
             default=False,
@@ -663,13 +660,30 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        parser.add_argument(
+            "--source",
+            dest="source",
+            type=str,
+            choices=["td", "ce"],
+            default="ce" if TRADIER_TOKEN == "REPLACE_ME" else "td",
+            help="Choose Tradier(TD) or ChartExchange (CE), only affects raw data",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            dest="num",
+            type=int,
+            help="Number of data rows to show",
+        )
 
         try:
-            if other_args:
-                if (
-                    "-s" not in other_args or "--strike" not in other_args
-                ) and "-h" not in other_args:
-                    other_args.insert(0, "-s")
+            if (
+                other_args
+                and ("-s" not in other_args and "--strike" not in other_args)
+                and "-h" not in other_args
+                and "--chain" not in other_args
+            ):
+                other_args.insert(0, "-s")
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
@@ -679,9 +693,21 @@ Current Expiry: {self.selected_date or None}
             if not self.selected_date:
                 print("No expiry loaded.  First use `exp ` \n")
                 return
+            if ns_parser.source.lower() == "ce":
+                chartexchange_view.display_raw(
+                    ns_parser.export,
+                    self.ticker,
+                    self.selected_date,
+                    not ns_parser.put,
+                    ns_parser.strike,
+                    ns_parser.num,
+                )
+                return
+
             if TRADIER_TOKEN == "REPLACE_ME":
                 print("TRADIER TOKEN not supplied. \n")
                 return
+
             tradier_view.display_historical(
                 ticker=self.ticker,
                 expiry=self.selected_date,
@@ -1046,13 +1072,13 @@ Current Expiry: {self.selected_date or None}
         except Exception as e:
             print(e, "\n")
 
-    def call_smile(self, other_args: List[str]):
-        """Process smile command"""
+    def call_plot(self, other_args: List[str]):
+        """Process plot command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="smile",
-            description="Shows the volatility smile for a specified asset and expiration date",
+            prog="plot",
+            description="Shows a plot for the given x and y variables",
         )
 
         parser.add_argument(
@@ -1063,18 +1089,127 @@ Current Expiry: {self.selected_date or None}
             dest="put",
             help="Shows puts instead of calls",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            yfinance_view.plot_smile(self.ticker, self.selected_date, ns_parser.put)
-            print("")
-        except Exception as e:
-            print(e, "\n")
+        parser.add_argument(
+            "-x",
+            "--x",
+            type=str,
+            dest="x",
+            default=None,
+            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            help=(
+                "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
+                "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
+            ),
+        )
+        parser.add_argument(
+            "-y",
+            "--y",
+            type=str,
+            dest="y",
+            default=None,
+            choices=["ltd", "s", "lp", "b", "a", "c", "pc", "v", "oi", "iv"],
+            help=(
+                "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
+                "c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility"
+            ),
+        )
+        parser.add_argument(
+            "-c",
+            "--custom",
+            type=str,
+            choices=[
+                "smile",
+            ],
+            dest="custom",
+            default=None,
+            help="Choose from already created graphs",
+        )
+
+        # try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+        if (ns_parser.x is None or ns_parser.y is None) and ns_parser.custom is None:
+            print("Please submit an X and Y value, or select a preset.\n")
+            return
+        yfinance_view.plot_plot(
+            self.ticker,
+            self.selected_date,
+            ns_parser.put,
+            ns_parser.x,
+            ns_parser.y,
+            ns_parser.custom,
+        )
+        print("")
+        # except Exception as e:
+        # print(e, "\n")
 
     def call_stocks(self, _):
         """Process stocks command"""
         return stocks_controller.menu(self.ticker)
+
+    def call_parity(self, other_args: List[str]):
+        """Process parity command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="parity",
+            description="Shows whether options are over or under valued",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--put",
+            action="store_true",
+            default=False,
+            dest="put",
+            help="Shows puts instead of calls",
+        )
+        parser.add_argument(
+            "-a",
+            "--ask",
+            action="store_true",
+            default=False,
+            dest="ask",
+            help="Use ask price instead of lastPrice",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            type=float,
+            default=None,
+            dest="mini",
+            help="Minimum strike price shown",
+        )
+        parser.add_argument(
+            "-M",
+            "--max",
+            type=float,
+            default=None,
+            dest="maxi",
+            help="Maximum strike price shown",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            if not self.ticker and not self.selected_date:
+                print("Ticker and expiration required. \n")
+                return
+            yfinance_view.show_parity(
+                self.ticker,
+                self.selected_date,
+                ns_parser.put,
+                ns_parser.ask,
+                ns_parser.mini,
+                ns_parser.maxi,
+            )
+            print("")
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str = ""):
