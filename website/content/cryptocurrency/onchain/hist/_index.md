@@ -1,6 +1,5 @@
 ```
-usage: hist [-t TOP] [-s {timestamp,transactionHash,token,value}] [--descend]
-            [-a ADDRESS] [--export {csv,json,xlsx}] [-h]
+usage: hist [-t TOP] [-s {timestamp,transactionHash,token,value}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display history for given ethereum blockchain address. e.g.
@@ -10,14 +9,10 @@ Display history for given ethereum blockchain address. e.g.
 optional arguments:
   -t TOP, --top TOP     top N number records (default: 10)
   -s {timestamp,transactionHash,token,value}, --sort {timestamp,transactionHash,token,value}
-                        Sort by given column. Default: timestamp (default:
-                        timestamp)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: True)
-  -a ADDRESS, --address ADDRESS
-                        Ethereum blockchain addresses (default: False)
+                        Sort by given column. Default: timestamp (default: timestamp)
+  --descend             Flag to sort in descending order (lowest first) (default: True)
   --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default:
-                        )
+                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+
 ```

@@ -1,6 +1,5 @@
 ```
-usage: balance [-t TOP] [-s {index,balance,tokenName,tokenSymbol}] [--descend]
-               [-a ADDRESS] [--export {csv,json,xlsx}] [-h]
+usage: balance [-t TOP] [-s {index,balance,tokenName,tokenSymbol}] [--descend] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display info about tokens on given ethereum blockchain address. [Source:
@@ -11,12 +10,9 @@ optional arguments:
   -t TOP, --top TOP     top N number records (default: 10)
   -s {index,balance,tokenName,tokenSymbol}, --sort {index,balance,tokenName,tokenSymbol}
                         Sort by given column. Default: index (default: index)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: True)
-  -a ADDRESS, --address ADDRESS
-                        Ethereum blockchain address (default: False)
+  --descend             Flag to sort in descending order (lowest first) (default: True)
   --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default:
-                        )
+                        Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
+
 ```
