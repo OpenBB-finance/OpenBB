@@ -268,6 +268,7 @@ These are the ones where a key is necessary:
 * Twitter: https://developer.twitter.com
 * Coinbase Pro API: https://docs.pro.coinbase.com/
 * Whale Alert API: https://docs.whale-alert.io/
+* Ethplorer API: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
@@ -292,6 +293,7 @@ Alternatively, you can also set them to the following environment variables:
 | [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
 | [Coinbase](https://docs.pro.coinbase.com/) | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE |
 | [Whale Alert](https://docs.whale-alert.io/) | GT_API_WHALE_ALERT_KEY |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API) | GT_API_ETHPLORER_KEY |
 
 Example:
 ```
