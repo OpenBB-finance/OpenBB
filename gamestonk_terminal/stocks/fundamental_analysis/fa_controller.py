@@ -334,7 +334,37 @@ Other Sources:
 
     def call_warnings(self, other_args: List[str]):
         """Process warnings command"""
-        market_watch_view.sean_seah_warnings(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="warnings",
+            description="""
+                Sean Seah warnings. Check: Consistent historical earnings per share;
+                Consistently high return on equity; Consistently high return on assets; 5x Net
+                Income > Long-Term Debt; and Interest coverage ratio more than 3. See
+                https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/
+                [Source: Market Watch]
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--debug",
+            action="store_true",
+            default=False,
+            dest="b_debug",
+            help="print insights into warnings calculation.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            market_watch_view.display_sean_seah_warnings(
+                ticker=self.ticker, debug=ns_parser.b_debug
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_fmp(self, _):
         """Process fmp command"""
