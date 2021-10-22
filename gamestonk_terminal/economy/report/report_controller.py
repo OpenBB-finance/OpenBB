@@ -15,6 +15,7 @@ from gamestonk_terminal import config_terminal
 
 # pylint: disable=R1732
 
+
 class ReportController:
     """Report Controller class"""
 
