@@ -180,7 +180,7 @@ FRED:
         return MENU_QUIT
 
     def call_reset(self, _):
-        """Process Reset command - exit the program"""
+        """Process Reset command - reset the program"""
         return MENU_RESET
 
     def call_events(self, other_args: List[str]):

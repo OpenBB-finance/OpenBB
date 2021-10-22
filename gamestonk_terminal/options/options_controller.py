@@ -194,7 +194,7 @@ Current Expiry: {self.selected_date or None}
         return MENU_QUIT
 
     def call_reset(self, _):
-        """Process Reset command - exit the program"""
+        """Process Reset command - reset the program"""
         return MENU_RESET
 
     def call_calc(self, other_args: List[str]):

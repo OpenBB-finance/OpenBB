@@ -198,7 +198,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         return MENU_QUIT
 
     def call_reset(self, _):
-        """Process Reset command - exit the program"""
+        """Process Reset command - reset the program"""
         return MENU_RESET
 
     # COMMANDS
