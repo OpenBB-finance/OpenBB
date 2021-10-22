@@ -6,6 +6,7 @@ import argparse
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
+from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
 from gamestonk_terminal import feature_flags as gtff
@@ -43,6 +44,7 @@ from gamestonk_terminal.cryptocurrency.due_diligence import binance_model
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 import gamestonk_terminal.config_terminal as cfg
+
 
 
 class CryptoController:
@@ -109,8 +111,7 @@ What do you want to do?
             if self.source != ""
             else "\nSource: ?\n"
         )
-        help_text += """
-Note: Some of CoinGecko commands can fail. Team is working on fix.
+        help_text += f"""
 
     load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
@@ -119,11 +120,12 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
->   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 >   onchain     information on different blockchains,   e.g.: eth gas fees
 >   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   report      generate automatic report
+>   report      generate automatic report {Style.DIM if not self.current_coin else ""}
+>   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
+>   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
+{Style.RESET_ALL if not self.current_coin else ""}
 """
         print(help_text)
 
