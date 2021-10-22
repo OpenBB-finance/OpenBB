@@ -278,27 +278,144 @@ Other Sources:
 
     def call_info(self, other_args: List[str]):
         """Process info command"""
-        yahoo_finance_view.info(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="info",
+            description="""
+                Print information about the company. The following fields are expected:
+                Zip, Sector, Full time employees, Long business summary, City, Phone, State, Country,
+                Website, Max age, Address, Industry, Previous close, Regular market open, Two hundred
+                day average, Payout ratio, Regular market day high, Average daily volume 10 day,
+                Regular market previous close, Fifty day average, Open, Average volume 10 days, Beta,
+                Regular market day low, Price hint, Currency, Trailing PE, Regular market volume,
+                Market cap, Average volume, Price to sales trailing 12 months, Day low, Ask, Ask size,
+                Volume, Fifty two week high, Forward PE, Fifty two week low, Bid, Tradeable, Bid size,
+                Day high, Exchange, Short name, Long name, Exchange timezone name, Exchange timezone
+                short name, Is esg populated, Gmt off set milliseconds, Quote type, Symbol, Message
+                board id, Market, Enterprise to revenue, Profit margins, Enterprise to ebitda, 52 week
+                change, Forward EPS, Shares outstanding, Book value, Shares short, Shares percent
+                shares out, Last fiscal year end, Held percent institutions, Net income to common,
+                Trailing EPS, Sand p52 week change, Price to book, Held percent insiders, Next fiscal
+                year end, Most recent quarter, Short ratio, Shares short previous month date, Float
+                shares, Enterprise value, Last split date, Last split factor, Earnings quarterly growth,
+                Date short interest, PEG ratio, Short percent of float, Shares short prior month,
+                Regular market price, Logo_url. [Source: Yahoo Finance]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            yahoo_finance_view.display_info(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_shrs(self, other_args: List[str]):
         """Process shrs command"""
-        yahoo_finance_view.shareholders(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shrs",
+            description="""Print Major, institutional and mutualfunds shareholders.
+            [Source: Yahoo Finance]""",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+
+            if not ns_parser:
+                return
+
+            yahoo_finance_view.display_shareholders(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_sust(self, other_args: List[str]):
         """Process sust command"""
-        yahoo_finance_view.sustainability(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="sust",
+            description="""
+                Print sustainability values of the company. The following fields are expected:
+                Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic,
+                Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile,
+                Animaltesting, Tobacco, Totalesg, Highestcontroversy, Esgperformance, Coal, Pesticides,
+                Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile,
+                Militarycontract. [Source: Yahoo Finance]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            yahoo_finance_view.display_sustainability(self.ticker)
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_cal(self, other_args: List[str]):
         """Process cal command"""
-        yahoo_finance_view.calendar_earnings(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cal",
+            description="""
+                Calendar earnings of the company. Including revenue and earnings estimates.
+                [Source: Yahoo Finance]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_web(self, other_args: List[str]):
         """Process web command"""
-        yahoo_finance_view.web(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="web",
+            description="""
+                Opens company's website. [Source: Yahoo Finance]
+            """,
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            yahoo_finance_view.open_web(self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_hq(self, other_args: List[str]):
         """Process hq command"""
-        yahoo_finance_view.headquarters(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hq",
+            description="""
+                Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            yahoo_finance_view.open_headquarters_map(self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
