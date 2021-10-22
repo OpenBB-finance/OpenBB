@@ -22,6 +22,10 @@ Data is currently scraped from StockAnalysis.com/etf
 * [active](#active)
   * show most active
 
+[The Passive Investor](#thepassiveinvestor)
+* [report](#report)
+  * create a ETF Excel report of multiple ETFs
+
 ## web <a name="web"></a>
 ```python
 usage: web
@@ -194,3 +198,13 @@ usage: active [-n NUM] [--export {csv,json,xlsx}] [-h]
 Shows most active ETFs
 * -n/--num: Number to show.  Defaults to 25, which is the max provided
 * --export: Export data to one of {csv, json, xlsx}.
+
+## report <a name="report"></a>
+
+```python
+usage: report -e NAMES [--filename FILENAME] [--folder FOLDER] [-h]
+```
+Creates an ETF Excel report based on the number of tickers entered.
+* -e: tickers separated by a comma
+* --filename: name of the file
+* --folder: the path where you wish to save the file
