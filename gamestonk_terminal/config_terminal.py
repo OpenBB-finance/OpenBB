@@ -97,5 +97,8 @@ API_COINBASE_PASS_PHRASE = os.getenv("GT_API_COINBASE_PASS_PHRASE") or "REPLACE_
 # https://docs.whale-alert.io/
 API_WHALE_ALERT_KEY = os.getenv("GT_API_WHALE_ALERT_KEY") or "REPLACE_ME"
 
+# https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key
+API_GLASSNODE_KEY = os.getenv("GT_API_GLASSNODE_KEY") or "REPLACE_ME"
+
 # https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
 API_ETHPLORER_KEY = os.getenv("GT_API_ETHPLORER_KEY") or "freekey"
