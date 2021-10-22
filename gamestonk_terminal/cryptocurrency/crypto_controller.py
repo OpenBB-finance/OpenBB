@@ -46,7 +46,6 @@ from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
 import gamestonk_terminal.config_terminal as cfg
 
 
-
 class CryptoController:
     CHOICES = [
         "?",
@@ -120,7 +119,7 @@ What do you want to do?
 
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
->   onchain     information on different blockchains,   e.g.: eth gas fees
+>   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
 >   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
 >   report      generate automatic report {Style.DIM if not self.current_coin else ""}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
