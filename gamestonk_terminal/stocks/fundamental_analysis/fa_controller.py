@@ -24,6 +24,7 @@ from gamestonk_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     parse_known_args_and_warn,
+    check_positive,
 )
 from gamestonk_terminal.menu import session
 
@@ -419,31 +420,307 @@ Other Sources:
 
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
-        av_view.overview(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="overview",
+            description="""
+                Prints an overview about the company. The following fields are expected:
+                Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry,
+                Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization,
+                EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS,
+                Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM,
+                Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly
+                earnings growth YOY, Quarterly revenue growth YOY, Analyst target price, Trailing PE,
+                Forward PE, Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA,
+                Beta, 52 week high, 52 week low, 50 day moving average, 200 day moving average, Shares
+                outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short
+                percent outstanding, Short percent float, Percent insiders, Percent institutions,
+                Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend
+                date, Ex dividend date, Last split factor, and Last split date. Also, the C i k field
+                corresponds to Central Index Key, which can be used to search a company on
+                https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            av_view.display_overview(self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_key(self, other_args: List[str]):
         """Process overview command"""
-        av_view.key(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="key",
+            description="""
+                Gives main key metrics about the company (it's a subset of the Overview data from Alpha
+                Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE
+                ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to
+                sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta
+                [Source: Alpha Vantage API]
+            """,
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            av_view.display_key(self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_income(self, other_args: List[str]):
         """Process income command"""
-        av_view.income_statement(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="income",
+            description="""
+                Prints a complete income statement over time. This can be either quarterly or annually.
+                The following fields are expected: Accepted date, Cost and expenses, Cost of revenue,
+                Depreciation and amortization, Ebitda, Ebitdaratio, Eps, Epsdiluted, Filling date,
+                Final link, General and administrative expenses, Gross profit, Gross profit ratio,
+                Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link,
+                Net income, Net income ratio, Operating expenses, Operating income, Operating income
+                ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and
+                marketing expenses, Total other income expenses net, Weighted average shs out, Weighted
+                average shs out dil [Source: Alpha Vantage]""",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=1,
+            help="Number of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        try:
+
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+            av_view.display_income_statement(
+                ticker=self.ticker,
+                number=ns_parser.n_num,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
-        av_view.balance_sheet(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="balance",
+            description="""
+                Prints a complete balance sheet statement over time. This can be either quarterly or
+                annually. The following fields are expected: Accepted date, Account payables,
+                Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short
+                term investments, Common stock, Deferred revenue, Deferred revenue non current,
+                Deferred tax liabilities non current, Filling date, Final link, Goodwill,
+                Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt,
+                Long term investments, Net debt, Net receivables, Other assets, Other current assets,
+                Other current liabilities, Other liabilities, Other non current assets, Other non
+                current liabilities, Othertotal stockholders equity, Period, Property plant equipment
+                net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax
+                payables, Total assets, Total current assets, Total current liabilities, Total debt,
+                Total investments, Total liabilities, Total liabilities and stockholders equity, Total
+                non current assets, Total non current liabilities, and Total stockholders equity.
+                [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=1,
+            help="Number of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+            av_view.display_balance_sheet(
+                ticker=self.ticker,
+                number=ns_parser.n_num,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_cash(self, other_args: List[str]):
         """Process cash command"""
-        av_view.cash_flow(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cash",
+            description="""
+                Prints a complete cash flow statement over time. This can be either quarterly or
+                annually. The following fields are expected: Accepted date, Accounts payables, Accounts
+                receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash
+                at end of period, Change in working capital, Common stock issued, Common stock
+                repurchased, Debt repayment, Deferred income tax, Depreciation and amortization,
+                Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash
+                flow, Inventory, Investments in property plant and equipment, Link, Net cash provided
+                by operating activities, Net cash used for investing activities, Net cash used provided
+                by financing activities, Net change in cash, Net income, Operating cash flow, Other
+                financing activities, Other investing activities, Other non cash items, Other working
+                capital, Period, Purchases of investments, Sales maturities of investments, Stock based
+                compensation. [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=1,
+            help="Number of latest years/quarters.",
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            )
+            if not ns_parser:
+                return
+            av_view.display_cash_flow(
+                ticker=self.ticker,
+                number=ns_parser.n_num,
+                quarterly=ns_parser.b_quarter,
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_earnings(self, other_args: List[str]):
         """Process earnings command"""
-        av_view.earnings(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="earnings",
+            description="""
+                Print earnings dates and reported EPS of the company. The following fields are
+                expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
+            """,
+        )
+        parser.add_argument(
+            "-q",
+            "--quarter",
+            action="store_true",
+            default=False,
+            dest="b_quarter",
+            help="Quarter fundamental data flag.",
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            action="store",
+            dest="n_num",
+            type=check_positive,
+            default=5,
+            help="Number of latest info",
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            av_view.display_earnings(
+                ticker=self.ticker,
+                number=ns_parser.n_num,
+                quarterly=ns_parser.b_quarter,
+            )
+        except Exception as e:
+            print(e, "\n")
 
     def call_fraud(self, other_args: List[str]):
         """Process fraud command"""
-        av_view.fraud(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.RawTextHelpFormatter,
+            prog="fraud",
+            description=(
+                "Mscore:\n------------------------------------------------\n"
+                "The Beneish model is a statistical model that uses financial ratios calculated with"
+                " accounting data of a specific company in order to check if it is likely (high"
+                " probability) that the reported earnings of the company have been manipulated."
+                " A score of -5 to -2.22 indicated a low chance of fraud, a score of -2.22 to -1.78"
+                " indicates a moderate change of fraud, and a score above -1.78 indicated a high"
+                " chance of fraud.[Source: Wikipedia]\n\nDSRI:\nDays Sales in Receivables Index"
+                " gauges whether receivables and revenue are out of balance, a large number is"
+                " expected to be associated with a higher likelihood that revenues and earnings are"
+                " overstated.\n\nGMI:\nGross Margin Index shows if gross margins are deteriorating."
+                " Research suggests that firms with worsening gross margin are more likely to engage"
+                " in earnings management, therefore there should be a positive correlation between"
+                " GMI and probability of earnings management.\n\nAQI:\nAsset Quality Index measures"
+                " the proportion of assets where potential benefit is less certain. A positive"
+                " relation between AQI and earnings manipulation is expected.\n\nSGI:\nSales Growth"
+                " Index shows the amount of growth companies are having. Higher growth companies are"
+                " more likely to commit fraud so there should be a positive relation between SGI and"
+                " earnings management.\n\nDEPI:\nDepreciation Index is the ratio for the rate of"
+                " depreciation. A DEPI greater than 1 shows that the depreciation rate has slowed and"
+                " is positively correlated with earnings management.\n\nSGAI:\nSales General and"
+                " Administrative Expenses Index measures the change in SG&A over sales. There should"
+                " be a positive relationship between SGAI and earnings management.\n\nLVGI:\nLeverage"
+                " Index represents change in leverage. A LVGI greater than one indicates a lower"
+                " change of fraud.\n\nTATA: \nTotal Accruals to Total Assets is a proxy for the"
+                " extent that cash underlies earnigns. A higher number is associated with a higher"
+                " likelihood of manipulation.\n\n\n"
+                "Zscore:\n------------------------------------------------\n"
+                "The Zmijewski Score is a bankruptcy model used to predict a firm's bankruptcy in two"
+                " years. The ratio uses in the Zmijewski score were determined by probit analysis ("
+                "think of probit as probability unit). In this case, scores less than .5 represent a"
+                " higher probability of default. One of the criticisms that Zmijewski made was that"
+                " other bankruptcy scoring models oversampled distressed firms and favored situations"
+                " with more complete data.[Source: YCharts]"
+            ),
+        )
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            av_view.display_fraud(self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
