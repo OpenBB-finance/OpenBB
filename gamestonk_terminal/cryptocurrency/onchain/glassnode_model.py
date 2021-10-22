@@ -1,7 +1,6 @@
 import json
 import pandas as pd
-from requests import Session
-from requests.exceptions import Timeout, TooManyRedirects
+import requests
 from gamestonk_terminal import config_terminal as cfg
 
 
@@ -34,19 +33,17 @@ def get_active_addresses(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": asset,
         "i": interval,
-        "s": since,
-        "u": until,
+        "s": str(since),
+        "u": str(until),
     }
 
-    session = Session()
-    try:
-        response = session.get(url, params=parameters)
-    except (ConnectionError, Timeout, TooManyRedirects):
-        return pd.DataFrame()
+    r = requests.get(url, params=parameters)
 
-    df = pd.DataFrame(json.loads(response.text))
-    df = df.set_index("t")
-    df.index = pd.to_datetime(df.index, unit="s")
-    df = df.loc[df.index > "2010-1-1"]
-    df.reset_index(inplace=True)
-    return df
+    if r.status_code == 200:
+        df = pd.DataFrame(json.loads(r.text))
+        df = df.set_index("t")
+        df.index = pd.to_datetime(df.index, unit="s")
+        df = df.loc[df.index > "2010-1-1"]
+        df.reset_index(inplace=True)
+        return df
+    return pd.DataFrame()
