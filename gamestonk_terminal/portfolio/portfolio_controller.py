@@ -15,7 +15,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.portfolio import portfolio_view
+from gamestonk_terminal.portfolio import portfolio_view, portfolio_model
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710
@@ -60,7 +60,7 @@ class PortfolioController:
             columns=[
                 "Name",
                 "Type",
-                "Volume",
+                "Quantity",
                 "Date",
                 "Price",
                 "Fees",
@@ -189,7 +189,10 @@ Reports:
         if not ns_parser:
             return
 
-        self.portfolio = self.load_df(ns_parser.name)
+        try:
+            self.portfolio = portfolio_model.load_df(ns_parser.name)
+        except Exception as e:
+            print(e, "\n")
 
     def call_save(self, other_args: List[str]):
         """Process save command"""
@@ -215,7 +218,19 @@ Reports:
         if not ns_parser:
             return
 
-        portfolio_view.save_df(self.portfolio, ns_parser.name)
+        if (
+            ".csv" not in ns_parser.name
+            and ".xlsx" not in ns_parser.name
+            and ".json" not in ns_parser.name
+        ):
+            print(
+                "Please submit as 'filename.filetype' with filetype being csv, xlsx, or json\n"
+            )
+
+        try:
+            portfolio_model.save_df(self.portfolio, ns_parser.name)
+        except Exception as e:
+            print(e, "\n")
 
     def call_show(self, _):
         """Process show command"""
@@ -259,8 +274,8 @@ Reports:
             "--date",
             dest="date",
             type=str,
-            default=datetime.now().strftime("%Y/%m/%d_%H:%M"),
-            help="Date: yyyy/mm/dd_hh:mm",
+            default=datetime.now().strftime("%Y/%m/%d"),
+            help="Date: yyyy/mm/dd",
         )
         parser.add_argument(
             "-p",
@@ -324,15 +339,6 @@ Reports:
             print(
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
-
-    def load_df(self, name: str) -> pd.DataFrame:
-        """Loads the user's portfolio"""
-        try:
-            df = pd.read_csv(f"gamestonk_terminal/portfolio/portfolios/{name}.csv")
-            df.index = list(range(0, len(df.values)))
-            return df
-        except FileNotFoundError:
-            portfolio_view.get_load()
 
 
 def menu():

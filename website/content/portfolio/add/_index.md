@@ -1,5 +1,5 @@
 ```
-usage: load [-n NAME] [-t {stock,bond,option,crypto}] [-v VOLUME] [-d DATE] [-p PRICE] [-f FEES]
+usage: add [-n NAME] [-t {stock,bond,option,crypto}] [-v VOLUME] [-d DATE] [-p PRICE] [-f FEES]
             [-r PREMIUM] [--sell] [-h]
 ```
 
