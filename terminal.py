@@ -10,7 +10,12 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import config_terminal
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    MENU_RESET,
+    MENU_GO_BACK,
+    MENU_QUIT,
+)
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.terminal_helper import (
     about_us,
@@ -233,41 +238,43 @@ What do you want to do?
         return self.call_portfolio(_)
 
 
-def terminal():
+def terminal(menu_prior_to_reset=""):
     """Terminal Menu"""
 
     bootup()
     process_input = False
     t_controller = TerminalController()
 
-    if config_terminal.DEFAULT_CONTEXT:
-        if config_terminal.DEFAULT_CONTEXT in t_controller.CHOICES_MENUS:
+    if config_terminal.DEFAULT_CONTEXT or menu_prior_to_reset:
+        if (
+            config_terminal.DEFAULT_CONTEXT in t_controller.CHOICES_MENUS
+            or menu_prior_to_reset in t_controller.CHOICES_MENUS
+        ):
             try:
                 print("")
                 process_input = t_controller.switch(
-                    config_terminal.DEFAULT_CONTEXT.lower()
+                    menu_prior_to_reset or config_terminal.DEFAULT_CONTEXT.lower()
                 )
+                # Check if the user wants to reset application
+                if process_input == MENU_RESET:
+                    ret_code = reset(menu_prior_to_reset)
+                    if ret_code != 0:
+                        print_goodbye()
+
             except SystemExit:
                 print("")
         else:
             print("\nInvalid DEFAULT_CONTEXT config selected!", "\n")
 
-    if not process_input:
+    if process_input != MENU_QUIT:
         t_controller.print_help()
-        parsed_stdin = False
 
         while True:
             if gtff.ENABLE_QUICK_EXIT:
                 print("Quick exit enabled")
                 break
 
-            # Get input command from stdin or user
-            if not parsed_stdin and len(sys.argv) > 1:
-                an_input = " ".join(sys.argv[1:])
-                print(f"{get_flair()}> {an_input}")
-                parsed_stdin = True
-
-            elif session and gtff.USE_PROMPT_TOOLKIT:
+            if session and gtff.USE_PROMPT_TOOLKIT:
                 an_input = session.prompt(
                     f"{get_flair()}> ", completer=t_controller.completer
                 )
@@ -283,16 +290,14 @@ def terminal():
             # Process list of commands selected by user
             try:
                 process_input = t_controller.switch(an_input)
-                # None - Keep loop
-                # True - Quit or Reset based on flag
-                # False - Keep loop and show help menu
+                # MENU_GO_BACK - Show main context menu again
+                # MENU_QUIT - Quit terminal
+                # MENU_RESET - Reset terminal and go back to same previous menu
 
-                if process_input is not None:
-                    # Quit terminal
-                    if process_input:
-                        break
-
+                if process_input == MENU_GO_BACK:
                     t_controller.print_help()
+                else:
+                    break
 
             except SystemExit:
                 print("The command selected doesn't exist\n")
@@ -300,13 +305,22 @@ def terminal():
 
         if not gtff.ENABLE_QUICK_EXIT:
             # Check if the user wants to reset application
-            if an_input == "reset" or t_controller.update_succcess:
-                ret_code = reset()
+            if (
+                an_input == "reset"
+                or t_controller.update_succcess
+                or process_input == MENU_RESET
+            ):
+                ret_code = reset(an_input if an_input != "reset" else "")
                 if ret_code != 0:
                     print_goodbye()
             else:
                 print_goodbye()
+    else:
+        print_goodbye()
 
 
 if __name__ == "__main__":
-    terminal()
+    if len(sys.argv) > 1:
+        terminal(sys.argv[1])
+    else:
+        terminal()

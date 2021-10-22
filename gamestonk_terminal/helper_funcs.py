@@ -31,6 +31,10 @@ EXPORT_ONLY_RAW_DATA_ALLOWED = 1
 EXPORT_ONLY_FIGURES_ALLOWED = 2
 EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
+MENU_GO_BACK = 0
+MENU_QUIT = 1
+MENU_RESET = 2
+
 
 def check_int_range(mini: int, maxi: int):
     """Checks if argparse argument is an int between 2 values.

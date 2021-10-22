@@ -22,6 +22,9 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     valid_date,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
 )
 from gamestonk_terminal.menu import session
 
@@ -55,6 +58,7 @@ class EconomyController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -103,6 +107,7 @@ What do you want to do?
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    reset         reset terminal and reload configs
 
 CNN:
     feargreed     CNN Fear and Greed Index
@@ -135,10 +140,10 @@ FRED:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -168,11 +173,15 @@ FRED:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
 
     def call_events(self, other_args: List[str]):
         """Process events command"""

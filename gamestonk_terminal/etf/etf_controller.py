@@ -10,7 +10,13 @@ from prompt_toolkit.completion import NestedCompleter
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import screener_view, stockanalysis_view, wsj_view
-from gamestonk_terminal.helper_funcs import get_flair, parse_known_args_and_warn
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    parse_known_args_and_warn,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+)
 from gamestonk_terminal.menu import session
 
 
@@ -23,6 +29,7 @@ class ETFController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -53,6 +60,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 
 StockAnalysis.com:
     search        search ETFs matching name (i.e. BlackRock or Invesco)
@@ -73,10 +81,10 @@ Wall St. Journal:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -106,11 +114,15 @@ Wall St. Journal:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
 
     def call_search(self, other_args: List[str]):
         """Process search command"""

@@ -11,7 +11,12 @@ from gamestonk_terminal.forex import fx_view
 from gamestonk_terminal.forex.behavioural_analysis import ba_controller
 
 # from gamestonk_terminal.forex.exploratory_data_analysis import eda_controller
-from gamestonk_terminal.helper_funcs import get_flair
+from gamestonk_terminal.helper_funcs import (
+    get_flair,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+)
 from gamestonk_terminal.menu import session
 
 # from gamestonk_terminal.stocks.due_diligence import news_view, reddit_view
@@ -29,6 +34,7 @@ class ForexController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -74,6 +80,7 @@ class ForexController:
         print("   ?/help        show this menu again")
         print("   q             quit this menu and goes back to main menu")
         print("   quit          quit to abandon program")
+        print("   reset         reset terminal and reload configs")
         print("")
         print("   summary       shows account summary")
         print("   calendar      show calendar")
@@ -98,9 +105,6 @@ class ForexController:
                 "   reddit        search reddit for posts about the loaded instrument"
             )
             print("")
-            # print(
-            #    ">  eda         exploratory data analysis,	 e.g.: decompose, cusum, residuals analysis"
-            # )
             print(
                 ">  ba          behavioural analysis,    	 from: reddit, stocktwits, twitter, google"
             )
@@ -111,10 +115,10 @@ class ForexController:
 
         Returns
         -------
-        True, False, or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -144,11 +148,15 @@ class ForexController:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
         """Process Quit command - exit the program"""
-        return True
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
 
     def call_price(self, other_args):
         """Process Price Command"""
