@@ -16,8 +16,6 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import config_terminal
 
-# pylint: disable=R1732
-
 
 class ReportController:
     """Report Controller class"""

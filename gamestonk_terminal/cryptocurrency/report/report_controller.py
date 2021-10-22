@@ -14,8 +14,6 @@ from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import config_terminal
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
-# pylint: disable=R1732
-
 
 class ReportController:
     """Report Controller class"""

@@ -76,7 +76,6 @@ def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
     Returns
     -------
     Union[str, Any]
-
     """
 
     if isinstance(x, (int, float)) and x < 10 ** 18:
@@ -86,3 +85,36 @@ def long_number_format_with_type_check(x: Union[int, float]) -> Union[str, Any]:
 
 def replace_underscores_in_column_names(string: str) -> str:
     return string.title().replace("_", " ")
+
+
+def very_long_number_formatter(num: Union[str, int, float]) -> str:
+    """Apply nice string format for very big numbers like Trillions, Quadrillions, Billions etc.
+
+    Parameters
+    ----------
+    num: Union[str, int, float]
+        number to format
+    Returns
+    -------
+    str:
+        formatted number
+    """
+
+    if isinstance(num, str):
+        try:
+            num = float(num)
+        except (TypeError, ValueError):
+            return str(num)
+
+    if isinstance(num, (int, float)):
+        num = int(num)
+        magnitude = 0
+        while abs(num) >= 1000 and magnitude <= 3:
+            magnitude += 1
+            num /= 1000.0
+        num = round(num, 1)
+        return "{}{}".format(
+            f"{num:f}".rstrip("0").rstrip("."),
+            ["", "K", "M", "B", "T"][magnitude],
+        )
+    return num

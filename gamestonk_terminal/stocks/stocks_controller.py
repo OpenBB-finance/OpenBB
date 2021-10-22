@@ -33,7 +33,12 @@ from gamestonk_terminal.stocks.research import res_controller
 from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
-from gamestonk_terminal.helper_funcs import valid_date
+from gamestonk_terminal.helper_funcs import (
+    valid_date,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
+)
 from gamestonk_terminal.common.quantitative_analysis import qa_view
 
 # pylint: disable=R1710
@@ -51,6 +56,7 @@ class StocksController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -109,7 +115,6 @@ class StocksController:
         dim_if_no_ticker = Style.DIM if not self.ticker else ""
         reset_style_if_no_ticker = Style.RESET_ALL if not self.ticker else ""
         help_text = f"""
-
 >> STOCKS <<
 
 What do you want to do?
@@ -117,6 +122,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 
     load        load a specific stock ticker for analysis
 
@@ -152,10 +158,10 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
         Returns
         -------
-        True, False, or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -185,11 +191,15 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
         """Process Quit command - exit the program"""
-        return True
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
 
     # COMMANDS
     def call_load(self, other_args: List[str]):

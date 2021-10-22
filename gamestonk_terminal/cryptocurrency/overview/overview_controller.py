@@ -1458,11 +1458,11 @@ Coinbase:
             description="""Gets all contract addresses for given platform.
                Provide platform id with -p/--platform parameter
                You can display only top N number of smart contracts with --top parameter.
-               You can sort data by id, type, active, address  --sort parameter
+               You can sort data by id, type, active, balance  --sort parameter
                and also with --descend flag to sort descending.
 
                Displays:
-                   id, type, active, address
+                   id, type, active, balance
                """,
         )
 
@@ -1492,7 +1492,7 @@ Coinbase:
             type=str,
             help="Sort by given column",
             default="id",
-            choices=["id", "type", "active", "address"],
+            choices=["id", "type", "active", "balance"],
         )
 
         parser.add_argument(

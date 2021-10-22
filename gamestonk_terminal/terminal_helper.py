@@ -397,16 +397,16 @@ def bootup():
         print("")
 
 
-def reset():
+def reset(menu_prior_to_reset=""):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     print("resetting...")
     plt.close("all")
-    completed_process = subprocess.run("python terminal.py", shell=True, check=False)
+
+    arg = f" {menu_prior_to_reset}" if menu_prior_to_reset else ""
+    completed_process = subprocess.run(
+        f"{sys.executable} terminal.py{arg}", shell=True, check=False
+    )
     if completed_process.returncode != 0:
-        completed_process = subprocess.run(
-            "python3 terminal.py", shell=True, check=False
-        )
-        if completed_process.returncode != 0:
-            print("Unfortunately, resetting wasn't possible!\n")
+        print("Unfortunately, resetting wasn't possible!\n")
 
     return completed_process.returncode

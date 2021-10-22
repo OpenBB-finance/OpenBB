@@ -34,7 +34,7 @@ def display_active_addresses(
         print("Error in glassnode request")
     else:
         plot_data(df_addresses, asset)
-        print("")
+    print("")
 
     export_data(
         export,
