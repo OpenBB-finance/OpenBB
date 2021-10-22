@@ -13,6 +13,9 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
@@ -52,6 +55,7 @@ class CryptoController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMAND = [
@@ -100,6 +104,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 """
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
@@ -132,10 +137,10 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -165,11 +170,15 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - exit the program"""
+        return MENU_RESET
 
     def call_load(self, other_args):
         """Process load command"""
