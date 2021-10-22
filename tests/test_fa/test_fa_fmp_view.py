@@ -22,10 +22,10 @@ def replace_stdin(target):
 
 
 class TestFMPView(unittest.TestCase):
-    @check_print(assert_in="Ticker should be a NASDAQ")
+    @check_print(assert_in="Score")
     @vcr.use_cassette(
         "tests/cassettes/test_fa/test_fa_fmp/test_fmp_valinvest.yaml",
         record_mode="new_episodes",
     )
     def test_fmp_valinvest_score(self):
-        fmp_view.valinvest_score("GME")
+        fmp_view.valinvest_score("AAPL")
