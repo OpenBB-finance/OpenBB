@@ -275,7 +275,22 @@ Other Sources:
 
     def call_score(self, other_args: List[str]):
         """Process score command"""
-        fmp_view.valinvest_score(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="score",
+            description="""
+                Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
+            """,
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+            fmp_view.valinvest_score(self.ticker)
+        except Exception as e:
+            print(e, "\n")
 
     def call_info(self, other_args: List[str]):
         """Process info command"""

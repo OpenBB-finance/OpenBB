@@ -28,4 +28,4 @@ class TestFMPView(unittest.TestCase):
         record_mode="new_episodes",
     )
     def test_fmp_valinvest_score(self):
-        fmp_view.valinvest_score([], "GME")
+        fmp_view.valinvest_score("GME")
