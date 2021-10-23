@@ -347,7 +347,6 @@ Reports:
         """Process ar command"""
         try:
             val = self.generate_performance()
-            print(val)
             portfolio_view.annual_report(val)
         except Exception as e:
             print(e, "\n")

@@ -15,6 +15,7 @@ from matplotlib import pyplot as plt
 import matplotlib.ticker as mtick
 
 from gamestonk_terminal import feature_flags as gtff
+from gamestonk_terminal.portfolio import yfinance_model
 
 
 def load_info():
@@ -76,18 +77,28 @@ def plot_overall_return(df: pd.DataFrame):
     img : ImageReader
         Overal return graph
     """
+    df_m = yfinance_model.get_market()
+    comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
+    comb = comb.fillna(method="ffill")
+    comb[("Market", "Return")] = (
+        comb[("Market", "Close")] - comb[("Market", "Close")][0]
+    ) / comb[("Market", "Close")][0]
+
     pos = df["return"].copy()
     neg = df["return"].copy()
+    mark = comb[("Market", "Return")].copy()
 
     pos[pos <= 0] = np.nan
     neg[neg > 0] = np.nan
 
-    plt.plot(pos, color="r")
-    plt.plot(neg, color="b")
+    # plt.plot(pos, color="r")
+    # plt.plot(neg, color="b")
+    # plt.plot(mark, color="y", label="SPY")
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(pos.index.to_list(), pos.to_list(), color="tab:blue")
     ax.plot(neg.index.to_list(), neg.to_list(), color="tab:red")
+    ax.plot(mark.index.to_list(), mark.to_list(), color="orange", label="SPY")
 
     ax.set_ylabel("", fontweight="bold", fontsize=12, color="black")
     ax.set_xlabel("")
@@ -127,6 +138,7 @@ def plot_overall_return(df: pd.DataFrame):
         color="red",
         alpha=0.25,
     )
+    ax.legend()
     fig.autofmt_xdate()
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
