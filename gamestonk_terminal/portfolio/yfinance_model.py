@@ -20,7 +20,15 @@ def get_stocks(tickers: List[str]) -> pd.DataFrame:
     data : pd.DataFrame
         Historic daily prices for stocks
     """
-    return yf.download(tickers=tickers, period="5y", interval="1d", progress=False)
+
+    df = yf.download(tickers=tickers, period="5y", interval="1d", progress=False)
+    df = df["Adj Close"]
+    df.columns = df.columns.str.lower()
+    arrays = [["Close" for _ in df.columns], [x.lower() for x in df.columns]]
+    tuples = list(zip(*arrays))
+    headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
+    df.columns = headers
+    return df
 
 
 def get_dividends(tickers: List[str]) -> pd.DataFrame:
@@ -39,6 +47,6 @@ def get_dividends(tickers: List[str]) -> pd.DataFrame:
     dfs = []
     for ticker in tickers:
         tick = yf.Ticker(ticker)
-        df = tick.dividends.to_frame(name=f"{ticker}_div")
+        df = tick.dividends.to_frame(name=("Dividend", ticker))
         dfs.append(df)
     return pd.concat(dfs)
