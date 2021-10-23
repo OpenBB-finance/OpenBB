@@ -7,3 +7,4 @@ gme,stock,1.0,2020/10/20,50.0,,,Buy
 gme,stock,1.0,2021/10/20,50.0,,,Buy
 amzn,stock,50.0,2021/10/20,2000.0,20.0,,Sell
 tsla,stock,15.0,2021/10/12,200.0,20.0,,Sell
+tsla,stock,15.0,2021/10/21,20,0,,Interest

@@ -126,8 +126,6 @@ To read more on adding the environment keys and how to configure your X-server t
 
 If you'd like to see a video recording of the installation process, @JohnnyDankseed has made one available [here](https://www.youtube.com/watch?v=-DJJ-cfquDA).
 
-The user @mchow01 has made available a tutorial on [how to run the terminal on an Apple M1](https://mchow01.github.io/macos/system/gamestonk/2021/05/27/gamestonk-terminal-m1.html).
-
 This project supports Python 3.7, 3.8 and 3.9.
 
 Our current recommendation is to use this project with Anaconda's Python distribution - either full [__Anaconda3 Latest__](https://repo.anaconda.com/archive/) or [__Miniconda3 Latest__](https://repo.anaconda.com/archive/). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. If you decided to add Machine Learning features at a later point, you will likely have better user experience with Anaconda's Python distribution.

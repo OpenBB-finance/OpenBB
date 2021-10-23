@@ -160,15 +160,11 @@ def annual_report(df: pd.DataFrame) -> None:
     report.drawString(500, 750, now.strftime("%Y/%m/%d"))
     report.drawString(275, 725, "Annual Report")
     report.setFillColorRGB(255, 0, 0)
-    report.drawString(
-        130,
-        710,
-        "Warning: currently only analyzes stocks, currently excludes interest",
-    )
+    report.drawString(200, 710, "Warning: currently only analyzes stocks")
     report.setFillColorRGB(0, 0, 0)
     report.line(50, 700, 580, 700)
     image = plot_overall_return(df)
-    report.drawImage(image, 20, 430, 500, 250)
+    report.drawImage(image, 15, 380, 600, 300)
     report.save()
 
     print("File save in:\n", path, "\n")

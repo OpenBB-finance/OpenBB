@@ -5,6 +5,7 @@ import argparse
 import os
 from typing import List
 from datetime import datetime, timedelta, date
+import math
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
@@ -301,11 +302,12 @@ Reports:
             help="Premium paid/received for the option",
         )
         parser.add_argument(
-            "--sell",
-            action="store_true",
-            dest="sell",
-            default=False,
-            help="Use to sell or short an asset",
+            "--side",
+            type=str,
+            dest="side",
+            choices=["buy", "sell", "interest"],
+            default="buy",
+            help="Choose to buy, sell, or record interest for an asset. Enter interest per item.",
         )
         if other_args:
             if "-n" not in other_args and "-h" not in other_args:
@@ -323,7 +325,7 @@ Reports:
             "Price": ns_parser.price,
             "Fees": ns_parser.fees,
             "Premium": ns_parser.premium,
-            "Side": "Sell" if ns_parser.sell else "Buy",
+            "Side": ns_parser.side,
         }
         self.portfolio = self.portfolio.append([data])
         self.portfolio.index = list(range(0, len(self.portfolio.values)))
@@ -345,6 +347,7 @@ Reports:
         """Process ar command"""
         try:
             val = self.generate_performance()
+            print(val)
             portfolio_view.annual_report(val)
         except Exception as e:
             print(e, "\n")
@@ -382,19 +385,28 @@ Reports:
                     ticker = sub_row["Name"]
                     quantity = sub_row["Quantity"]
                     price = sub_row["Price"]
-                    # Will need to be updated once we add interest
-                    sign = -1 if sub_row["Side"] == "Sell" else 1
+                    fees = sub_row["Fees"]
+                    if math.isnan(fees):
+                        fees = 0
+                    sign = -1 if sub_row["Side"] == "sell" else 1
                     pos1 = log.cumsum().at[index, ticker] > 0
                     pos2 = (quantity * sign) > 0
 
-                    if (
+                    if sub_row["Side"].lower() == "interest":
+                        log.at[index, f"cbas_{ticker}"] = (
+                            log.at[index, f"cbas_{ticker}"] + quantity * price
+                        )
+
+                    elif (
                         pos1 == pos2
                         or log.cumsum().at[index, ticker] == 0
                         or (quantity * sign) == 0
                     ):
                         log.at[index, ticker] = log.at[index, ticker] + quantity * sign
                         log.at[index, f"cbas_{ticker}"] = (
-                            log.at[index, f"cbas_{ticker}"] + quantity * sign * price
+                            log.at[index, f"cbas_{ticker}"]
+                            + fees
+                            + quantity * sign * price
                         )
                     else:
                         rev = (
@@ -404,7 +416,7 @@ Reports:
                         wa_cost = (
                             quantity / log.cumsum().at[index, ticker]
                         ) * log.cumsum().at[index, f"cbas_{ticker}"]
-                        log.at[index, f"prof_{ticker}"] = rev - wa_cost
+                        log.at[index, f"prof_{ticker}"] = rev - wa_cost - fees
                         log.at[index, ticker] = log.at[index, ticker] + quantity * sign
                         log.at[index, f"cbas_{ticker}"] = (
                             log.at[index, f"cbas_{ticker}"] - wa_cost
@@ -432,7 +444,6 @@ Reports:
         comb["total"] = comb["holdings"] + comb["profits"]
         comb["cost_basis"] = comb[cost_basis].sum(axis=1)
         comb["return"] = (comb["total"] - comb["cost_basis"]) / comb["cost_basis"]
-
         return comb
 
 
