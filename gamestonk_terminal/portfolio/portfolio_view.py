@@ -10,9 +10,9 @@ import numpy as np
 from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
 from matplotlib import pyplot as plt
 import matplotlib.ticker as mtick
-from reportlab.lib.utils import ImageReader
 
 from gamestonk_terminal import feature_flags as gtff
 
