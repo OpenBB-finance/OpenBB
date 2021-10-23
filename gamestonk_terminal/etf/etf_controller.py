@@ -5,7 +5,7 @@ import argparse
 import os
 from typing import List
 
-from ThePassiveInvestor import create_ETF_report
+from thepassiveinvestor import create_ETF_report
 from datetime import datetime
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
