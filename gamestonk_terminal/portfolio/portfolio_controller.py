@@ -344,7 +344,8 @@ Reports:
     def call_ar(self, _):
         """Process ar command"""
         try:
-            self.generate_performance()
+            val = self.generate_performance()
+            print(val)
             portfolio_view.annual_report()
         except Exception as e:
             print(e, "\n")
@@ -357,6 +358,9 @@ Reports:
         uniques = list(set(changes["Name"].tolist()))
         # Stock price history for each stock
         hist = yfinance_model.get_stocks(uniques)["Adj Close"]
+        # Dividends for each stock
+        divs = yfinance_model.get_dividends(uniques)
+        divs = divs.fillna(0)
         mini = min(changes["Date"])
         days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
         days = [
@@ -368,9 +372,8 @@ Reports:
             columns=["Date"]
             + uniques
             + [f"cbas_{x}" for x in uniques]
-            + [f"rbas_{x}" for x in uniques],
+            + [f"prof_{x}" for x in uniques],
         )
-        print(log.columns)
         log = log.set_index("Date")
 
         for index, _ in log.iterrows():
@@ -395,15 +398,43 @@ Reports:
                             log.at[index, f"cbas_{ticker}"] + quantity * sign * price
                         )
                     else:
+                        rev = (
+                            log.at[index, f"prof_{ticker}"]
+                            + quantity * sign * price * -1
+                        )
+                        wa_cost = (
+                            quantity / log.cumsum().at[index, ticker]
+                        ) * log.cumsum().at[index, f"cbas_{ticker}"]
+                        log.at[index, f"prof_{ticker}"] = rev - wa_cost
                         log.at[index, ticker] = log.at[index, ticker] + quantity * sign
-                        log.at[index, f"rbas_{ticker}"] = (
-                            log.at[index, f"rbas_{ticker}"] + quantity * sign * price
+                        log.at[index, f"cbas_{ticker}"] = (
+                            log.at[index, f"cbas_{ticker}"] - wa_cost
                         )
 
-        for uni in uniques:
-            log[uni] = log[uni].cumsum()
         comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
         comb = comb.fillna(method="ffill")
+        comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
+        print(divs)
+        comb = comb.fillna(0)
+
+        for uni in uniques:
+            comb[uni] = comb[uni].cumsum()
+            comb[f"cbas_{uni}"] = comb[f"cbas_{uni}"].cumsum()
+            comb[f"prof_{uni}"] = comb[f"prof_{uni}"] + (
+                comb[f"{uni}"] * comb[f"{uni}_div"]
+            )
+            comb[f"holding_{uni}"] = comb[f"{uni}"] * comb[f"{uni.upper()}"]
+            comb[f"prof_{uni}"] = comb[f"prof_{uni}"].cumsum()
+
+        holdings = [f"holding_{x}" for x in uniques]
+        profits = [f"prof_{x}" for x in uniques]
+        cost_basis = [f"cbas_{x}" for x in uniques]
+        comb["holdings"] = comb[holdings].sum(axis=1)
+        comb["profits"] = comb[profits].sum(axis=1)
+        comb["total"] = comb["holdings"] + comb["profits"]
+        comb["cost_basis"] = comb[cost_basis].sum(axis=1)
+        comb["return"] = (comb["total"] - comb["cost_basis"]) / comb["cost_basis"]
+
         return comb
 
 

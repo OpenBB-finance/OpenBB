@@ -8,6 +8,7 @@ import pandas as pd
 from gamestonk_terminal.portfolio import portfolio_view
 
 # pylint: disable=E1136
+# pylint: disable=unsupported-assignment-operation
 
 
 def save_df(df: pd.DataFrame, name: str) -> None:

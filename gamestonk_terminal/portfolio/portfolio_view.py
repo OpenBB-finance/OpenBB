@@ -81,7 +81,7 @@ def annual_report() -> None:
     report.drawString(
         100,
         710,
-        "Warning: currently only analyzes stocks, currently excludes dividends and interest",
+        "Warning: currently only analyzes stocks, currently excludes interest",
     )
     report.setFillColorRGB(0, 0, 0)
     report.line(50, 700, 580, 700)
