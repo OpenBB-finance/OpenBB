@@ -663,32 +663,32 @@ main:
       - name: portfolio optimization
         ref: "/portfolio/portfolio_optimization"
         sub:
-        - name: select
-          ref: "/portfolio/portfolio_optimization/select"
-        - name: add
-          ref: "/portfolio/portfolio_optimization/add"
-        - name: rmv
-          ref: "/portfolio/portfolio_optimization/rmv"
-        - name: equal
-          ref: "/portfolio/portfolio_optimization/equal"
-        - name: mktcap
-          ref: "/portfolio/portfolio_optimization/mktcap"
-        - name: dividend
-          ref: "/portfolio/portfolio_optimization/dividend"
-        - name: property
-          ref: "/portfolio/portfolio_optimization/property"
-        - name: maxhsarpe
-          ref: "/portfolio/portfolio_optimization/maxsharpe"
-        - name: minvol
-          ref: "/portfolio/portfolio_optimization/minvol"
-        - name: maxquadutil
-          ref: "/portfolio/portfolio_optimization/maxquadutil"
-        - name: effret
-          ref: "/portfolio/portfolio_optimization/effret"
-        - name: effrisk
-          ref: "/portfolio/portfolio_optimization/effrisk"
-        - name: ef
-          ref: "/portfolio/portfolio_optimization/ef"
+          - name: select
+            ref: "/portfolio/portfolio_optimization/select"
+          - name: add
+            ref: "/portfolio/portfolio_optimization/add"
+          - name: rmv
+            ref: "/portfolio/portfolio_optimization/rmv"
+          - name: equal
+            ref: "/portfolio/portfolio_optimization/equal"
+          - name: mktcap
+            ref: "/portfolio/portfolio_optimization/mktcap"
+          - name: dividend
+            ref: "/portfolio/portfolio_optimization/dividend"
+          - name: property
+            ref: "/portfolio/portfolio_optimization/property"
+          - name: maxhsarpe
+            ref: "/portfolio/portfolio_optimization/maxsharpe"
+          - name: minvol
+            ref: "/portfolio/portfolio_optimization/minvol"
+          - name: maxquadutil
+            ref: "/portfolio/portfolio_optimization/maxquadutil"
+          - name: effret
+            ref: "/portfolio/portfolio_optimization/effret"
+          - name: effrisk
+            ref: "/portfolio/portfolio_optimization/effrisk"
+          - name: ef
+            ref: "/portfolio/portfolio_optimization/ef"
   - name: cryptocurrency
     ref: "/cryptocurrency"
     sub:
@@ -830,6 +830,8 @@ main:
         sub:
           - name: gwei
             ref: "/cryptocurrency/onchain/gwei"
+          - name: active
+            ref: "/cryptocurrency/onchain/active"
       - name: technical analysis
         ref: "/cryptocurrency/technical_analysis"
         sub:

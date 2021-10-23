@@ -1,6 +1,8 @@
 """Papermill Controller Module"""
 __docformat__ = "numpy"
 
+# pylint: disable=R1732
+
 import argparse
 import os
 from typing import List
@@ -15,8 +17,6 @@ from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.helper_funcs import get_flair
 from gamestonk_terminal import config_terminal
-
-# pylint: disable=R1732
 
 
 class ReportController:

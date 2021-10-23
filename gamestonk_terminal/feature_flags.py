@@ -1,6 +1,12 @@
 import os
 from distutils.util import strtobool
 
+from dotenv import load_dotenv
+
+env_files = [f for f in os.listdir() if f.endswith(".env")]
+if env_files:
+    load_dotenv(env_files[0])
+
 # Use tabulate to print dataframes
 USE_TABULATE_DF = strtobool(os.getenv("GTFF_USE_CLEAR_AFTER_CMD", "True"))
 
