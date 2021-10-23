@@ -2,12 +2,17 @@
 __docformat__ = "numpy"
 
 from datetime import datetime
+from io import BytesIO
 import os
 
 import pandas as pd
+import numpy as np
 from tabulate import tabulate
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from matplotlib import pyplot as plt
+import matplotlib.ticker as mtick
+from reportlab.lib.utils import ImageReader
 
 from gamestonk_terminal import feature_flags as gtff
 
@@ -58,8 +63,85 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
         print(df.to_string, "\n")
 
 
-def annual_report() -> None:
-    """Generates an annual report"""
+def plot_overall_return(df: pd.DataFrame):
+    """Generates overall return graph
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to be analyzed
+
+    Returns
+    ----------
+    img : ImageReader
+        Overal return graph
+    """
+    pos = df["return"].copy()
+    neg = df["return"].copy()
+
+    pos[pos <= 0] = np.nan
+    neg[neg > 0] = np.nan
+
+    plt.plot(pos, color="r")
+    plt.plot(neg, color="b")
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(pos.index.to_list(), pos.to_list(), color="tab:blue")
+    ax.plot(neg.index.to_list(), neg.to_list(), color="tab:red")
+
+    ax.set_ylabel("", fontweight="bold", fontsize=12, color="black")
+    ax.set_xlabel("")
+    ax.yaxis.set_label_coords(-0.1, 0.5)
+    ax.grid(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["bottom"].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    fig.suptitle("Performance", y=0.99, fontweight="bold", fontsize=14, color="black")
+    ax.axhline(0, ls="-", lw=1, color="gray", zorder=1)
+    ax.axhline(0, ls="--", lw=1, color="black", zorder=2)
+    fig.set_facecolor("white")
+    ax.set_title(
+        "%s - %s"
+        % (df.index[:1][0].strftime("%Y/%m/%d"), df.index[-1:][0].strftime("%Y/%m/%d")),
+        fontsize=12,
+        color="gray",
+    )
+    ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+    ax.set_facecolor("white")
+    ax.fill_between(
+        df.index,
+        0,
+        df["return"],
+        where=df["return"] >= 0,
+        interpolate=True,
+        color="#348dc1",
+        alpha=0.25,
+    )
+    ax.fill_between(
+        df.index,
+        0,
+        df["return"],
+        where=df["return"] <= 0,
+        interpolate=True,
+        color="red",
+        alpha=0.25,
+    )
+    fig.autofmt_xdate()
+    imgdata = BytesIO()
+    fig.savefig(imgdata, format="png")
+    imgdata.seek(0)
+    return ImageReader(imgdata)
+
+
+def annual_report(df: pd.DataFrame) -> None:
+    """Generates an annual report
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to be analyzed
+    """
     dire = os.path.dirname(os.path.abspath(__file__)).replace(
         "gamestonk_terminal", "exports"
     )
@@ -79,10 +161,14 @@ def annual_report() -> None:
     report.drawString(275, 725, "Annual Report")
     report.setFillColorRGB(255, 0, 0)
     report.drawString(
-        100,
+        130,
         710,
         "Warning: currently only analyzes stocks, currently excludes interest",
     )
     report.setFillColorRGB(0, 0, 0)
     report.line(50, 700, 580, 700)
+    image = plot_overall_return(df)
+    report.drawImage(image, 20, 430, 500, 250)
     report.save()
+
+    print("File save in:\n", path, "\n")

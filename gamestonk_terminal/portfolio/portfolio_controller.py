@@ -345,8 +345,7 @@ Reports:
         """Process ar command"""
         try:
             val = self.generate_performance()
-            print(val)
-            portfolio_view.annual_report()
+            portfolio_view.annual_report(val)
         except Exception as e:
             print(e, "\n")
 
@@ -414,7 +413,6 @@ Reports:
         comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
         comb = comb.fillna(method="ffill")
         comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
-        print(divs)
         comb = comb.fillna(0)
 
         for uni in uniques:
