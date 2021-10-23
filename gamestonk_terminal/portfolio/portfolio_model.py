@@ -7,6 +7,8 @@ import pandas as pd
 
 from gamestonk_terminal.portfolio import portfolio_view
 
+# pylint: disable=E1136
+
 
 def save_df(df: pd.DataFrame, name: str) -> None:
     """
@@ -58,7 +60,11 @@ def load_df(name: str) -> pd.DataFrame:
             df = pd.read_excel(
                 f"gamestonk_terminal/portfolio/portfolios/{name}", engine="openpyxl"
             )
+
         df.index = list(range(0, len(df.values)))
+        df["Name"] = df["Name"].str.lower()
+        df["Type"] = df["Type"].str.lower()
+        df["Date"] = pd.to_datetime(df["Date"], format="%Y/%m/%d")
         return df
     except FileNotFoundError:
         portfolio_view.load_info()

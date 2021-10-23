@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import os
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta, date
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
@@ -15,7 +15,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.portfolio import portfolio_view, portfolio_model
+from gamestonk_terminal.portfolio import portfolio_view, portfolio_model, yfinance_model
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710
@@ -42,6 +42,7 @@ class PortfolioController:
         "show",
         "add",
         "rmv",
+        "ar",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -339,6 +340,71 @@ Reports:
             print(
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
+
+    def call_ar(self, _):
+        """Process ar command"""
+        try:
+            self.generate_performance()
+            portfolio_view.annual_report()
+        except Exception as e:
+            print(e, "\n")
+
+    def generate_performance(self) -> pd.DataFrame:
+        """Creates a new df with performance results"""
+        changes = self.portfolio.copy()
+        # Transactions sorted for only stocks
+        changes = changes[changes["Type"] == "stock"]
+        uniques = list(set(changes["Name"].tolist()))
+        # Stock price history for each stock
+        hist = yfinance_model.get_stocks(uniques)["Adj Close"]
+        mini = min(changes["Date"])
+        days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
+        days = [
+            [x] + [0 for _ in uniques] + [0 for _ in uniques] + [0 for _ in uniques]
+            for x in days
+        ]
+        log = pd.DataFrame(
+            days,
+            columns=["Date"]
+            + uniques
+            + [f"cbas_{x}" for x in uniques]
+            + [f"rbas_{x}" for x in uniques],
+        )
+        print(log.columns)
+        log = log.set_index("Date")
+
+        for index, _ in log.iterrows():
+            values = changes[changes["Date"] == index]
+            if len(values.index) > 0:
+                for _, sub_row in values.iterrows():
+                    ticker = sub_row["Name"]
+                    quantity = sub_row["Quantity"]
+                    price = sub_row["Price"]
+                    # Will need to be updated once we add interest
+                    sign = -1 if sub_row["Side"] == "Sell" else 1
+                    pos1 = log.cumsum().at[index, ticker] > 0
+                    pos2 = (quantity * sign) > 0
+
+                    if (
+                        pos1 == pos2
+                        or log.cumsum().at[index, ticker] == 0
+                        or (quantity * sign) == 0
+                    ):
+                        log.at[index, ticker] = log.at[index, ticker] + quantity * sign
+                        log.at[index, f"cbas_{ticker}"] = (
+                            log.at[index, f"cbas_{ticker}"] + quantity * sign * price
+                        )
+                    else:
+                        log.at[index, ticker] = log.at[index, ticker] + quantity * sign
+                        log.at[index, f"rbas_{ticker}"] = (
+                            log.at[index, f"rbas_{ticker}"] + quantity * sign * price
+                        )
+
+        for uni in uniques:
+            log[uni] = log[uni].cumsum()
+        comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
+        comb = comb.fillna(method="ffill")
+        return comb
 
 
 def menu():

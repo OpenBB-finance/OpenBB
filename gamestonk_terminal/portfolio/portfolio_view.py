@@ -1,8 +1,13 @@
 """Portfolio View"""
 __docformat__ = "numpy"
 
+from datetime import datetime
+import os
+
 import pandas as pd
 from tabulate import tabulate
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 from gamestonk_terminal import feature_flags as gtff
 
@@ -51,3 +56,33 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
         )
     else:
         print(df.to_string, "\n")
+
+
+def annual_report() -> None:
+    """Generates an annual report"""
+    dire = os.path.dirname(os.path.abspath(__file__)).replace(
+        "gamestonk_terminal", "exports"
+    )
+
+    now = datetime.now()
+    path = os.path.abspath(
+        os.path.join(
+            dire,
+            f"ar_{now.strftime('%Y%m%d_%H%M%S')}.pdf",
+        )
+    )
+    report = canvas.Canvas(path, pagesize=letter)
+    report.setLineWidth(0.3)
+    report.setFont("Helvetica", 12)
+    report.drawString(30, 750, "Gamestonk Terminal")
+    report.drawString(500, 750, now.strftime("%Y/%m/%d"))
+    report.drawString(275, 725, "Annual Report")
+    report.setFillColorRGB(255, 0, 0)
+    report.drawString(
+        100,
+        710,
+        "Warning: currently only analyzes stocks, currently excludes dividends and interest",
+    )
+    report.setFillColorRGB(0, 0, 0)
+    report.line(50, 700, 580, 700)
+    report.save()
