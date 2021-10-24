@@ -70,6 +70,7 @@ class PortfolioController:
                 "Side",
             ]
         )
+        self.hist = pd.DataFrame()
 
     def print_help(self):
         """Print help"""
@@ -347,7 +348,7 @@ Reports:
         """Process ar command"""
         try:
             val = self.generate_performance()
-            portfolio_view.annual_report(val)
+            portfolio_view.annual_report(val, self.hist)
         except Exception as e:
             print(e, "\n")
 
@@ -358,7 +359,7 @@ Reports:
         changes = changes[changes["Type"] == "stock"]
         uniques = list(set(changes["Name"].tolist()))
         # Stock price history for each stock
-        hist = yfinance_model.get_stocks(uniques)
+        self.hist = yfinance_model.get_stocks(uniques)
         # Dividends for each stock
         divs = yfinance_model.get_dividends(uniques)
         divs = divs.fillna(0)
@@ -390,7 +391,6 @@ Reports:
                         log.at[index, ("Cost Basis", ticker)] = (
                             log.at[index, ("Cost Basis", ticker)] + quantity * price
                         )
-                        print(-(quantity * price))
                         log.at[index, ("Cash", "Cash")] = log.at[
                             index, ("Cash", "Cash")
                         ] - (quantity * price)
@@ -408,7 +408,6 @@ Reports:
                             + fees
                             + quantity * sign * price
                         )
-                        print(-(fees + quantity * sign * price))
                         log.at[index, ("Cash", "Cash")] = log.at[
                             index, ("Cash", "Cash")
                         ] - (fees + quantity * sign * price)
@@ -421,7 +420,6 @@ Reports:
                             quantity / log.cumsum().at[index, ("Quantity", ticker)]
                         ) * log.cumsum().at[index, ("Cost Basis", ticker)]
                         log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
-                        print(rev - fees)
                         log.at[index, ("Cash", "Cash")] = (
                             log.at[index, ("Cash", "Cash")] + rev - fees
                         )
@@ -434,7 +432,7 @@ Reports:
 
         log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
 
-        comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
+        comb = pd.merge(log, self.hist, how="left", left_index=True, right_index=True)
         comb = comb.fillna(method="ffill")
         comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
         comb = comb.fillna(0)

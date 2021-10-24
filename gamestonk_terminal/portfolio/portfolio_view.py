@@ -16,6 +16,7 @@ import matplotlib.ticker as mtick
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.portfolio import yfinance_model
+from gamestonk_terminal.portfolio import reportlab_helpers
 
 
 def load_info():
@@ -64,15 +65,18 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
         print(df.to_string, "\n")
 
 
-def plot_overall_return(df: pd.DataFrame, n: int):
+def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageReader:
     """Generates overall return graph
 
     Parameters
     ----------
     df : pd.DataFrame
         The dataframe to be analyzed
+    df_m : pd.DataFrame
+        The dataframe for historical market performance
     n : int
         The number of days to include in chart
+
     Returns
     ----------
     img : ImageReader
@@ -83,24 +87,17 @@ def plot_overall_return(df: pd.DataFrame, n: int):
     df["return"] = (
         df["holdings"] + df["Cash"]["Cash"] - df["holdings"][0] - df["Cash"]["Cash"][0]
     ) / (df["Cash"]["Cash"][0] + df["holdings"][0] + df["total_cost"][0])
-    df_m = yfinance_model.get_market()
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
 
-    pos = df["return"].copy()
-    neg = df["return"].copy()
     mark = comb[("Market", "Return")].copy()
 
-    pos[pos <= 0] = np.nan
-    neg[neg > 0] = np.nan
-
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(pos.index.to_list(), pos.to_list(), color="tab:blue")
-    ax.plot(neg.index.to_list(), neg.to_list(), color="tab:red")
-    ax.plot(mark.index.to_list(), mark.to_list(), color="orange", label="SPY")
+    ax.plot(df.index, df["return"], color="tab:blue", label="Portfolio")
+    ax.plot(mark.index, mark, color="orange", label="SPY")
 
     ax.set_ylabel("", fontweight="bold", fontsize=12, color="black")
     ax.set_xlabel("")
@@ -122,24 +119,6 @@ def plot_overall_return(df: pd.DataFrame, n: int):
     )
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
     ax.set_facecolor("white")
-    ax.fill_between(
-        df.index,
-        0,
-        df["return"],
-        where=df["return"] >= 0,
-        interpolate=True,
-        color="#348dc1",
-        alpha=0.25,
-    )
-    ax.fill_between(
-        df.index,
-        0,
-        df["return"],
-        where=df["return"] <= 0,
-        interpolate=True,
-        color="red",
-        alpha=0.25,
-    )
     ax.legend()
     fig.autofmt_xdate()
     imgdata = BytesIO()
@@ -148,37 +127,119 @@ def plot_overall_return(df: pd.DataFrame, n: int):
     return ImageReader(imgdata)
 
 
-def annual_report(df: pd.DataFrame) -> None:
+def plot_rolling_beta(
+    df: pd.DataFrame, hist: pd.DataFrame, mark: pd.DataFrame, n: int
+) -> ImageReader:
+    """Returns a chart with the portfolio's rolling beta
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to be analyzed
+    hist : pd.DataFrame
+        A dataframe of historical returns
+    market : pd.DataFrame
+        A dataframe of SPY returns
+    n : int
+        The number of days to include in chart
+
+    Returns
+    ----------
+    img : ImageReader
+        Rolling beta graph
+    """
+    df = df["Holding"]
+    uniques = df.columns.tolist()
+    res = df.div(df.sum(axis=1), axis=0)
+    comb = pd.merge(
+        hist["Close"], mark["Market"], how="left", left_index=True, right_index=True
+    )
+    comb = comb.fillna(method="ffill")
+    df_var = comb.rolling(600).var().unstack()["Close"].to_frame(name="var")
+
+    for col in hist["Close"].columns:
+        df1 = (
+            comb.rolling(600).cov().unstack()[col]["Close"].to_frame(name=f"cov_{col}")
+        )
+        df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
+        df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
+
+    # James, Beta values are not accurate, even though I followed the formula. Any thoughts here?
+    # print(df_var)
+
+    final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
+    final = final.fillna(method="ffill")
+    final = final.drop(columns=["var"] + [f"cov_{x}" for x in uniques])
+    for uni in uniques:
+        final[f"prod_{uni}"] = final[uni] * final[f"beta_{uni}"]
+
+    final = final.drop(columns=[f"beta_{x}" for x in uniques] + uniques)
+    final["total"] = final.sum(axis=1)
+    final = final[final.index >= datetime.now() - timedelta(days=n + 1)]
+
+    final[final == 0] = np.nan
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(
+        final.index,
+        final["total"],
+        color="tab:blue",
+    )
+
+    ax.set_ylabel("", fontweight="bold", fontsize=12, color="black")
+    ax.set_xlabel("")
+    ax.yaxis.set_label_coords(-0.1, 0.5)
+    ax.grid(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["bottom"].set_visible(False)
+    ax.spines["left"].set_visible(False)
+    fig.suptitle("Rolling Beta", y=0.99, fontweight="bold", fontsize=14, color="black")
+    ax.axhline(0, ls="-", lw=1, color="gray", zorder=1)
+    ax.axhline(0, ls="--", lw=1, color="black", zorder=2)
+    fig.set_facecolor("white")
+    ax.set_title(
+        "%s - %s"
+        % (df.index[:1][0].strftime("%Y/%m/%d"), df.index[-1:][0].strftime("%Y/%m/%d")),
+        fontsize=12,
+        color="gray",
+    )
+    ax.set_facecolor("white")
+    fig.autofmt_xdate()
+    imgdata = BytesIO()
+    fig.savefig(imgdata, format="png")
+    imgdata.seek(0)
+    return ImageReader(imgdata)
+
+
+def annual_report(df: pd.DataFrame, hist: pd.DataFrame) -> None:
     """Generates an annual report
 
     Parameters
     ----------
     df : pd.DataFrame
         The dataframe to be analyzed
+
+    hist : pd.DataFrame
+        A dataframe of historical returns
     """
+    df_m = yfinance_model.get_market()
     dire = os.path.dirname(os.path.abspath(__file__)).replace(
         "gamestonk_terminal", "exports"
     )
 
-    now = datetime.now()
     path = os.path.abspath(
         os.path.join(
             dire,
-            f"ar_{now.strftime('%Y%m%d_%H%M%S')}.pdf",
+            f"ar_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
         )
     )
     report = canvas.Canvas(path, pagesize=letter)
-    report.setLineWidth(0.3)
-    report.setFont("Helvetica", 12)
-    report.drawString(30, 750, "Gamestonk Terminal")
-    report.drawString(500, 750, now.strftime("%Y/%m/%d"))
-    report.drawString(275, 725, "Annual Report")
-    report.setFillColorRGB(255, 0, 0)
-    report.drawString(200, 710, "Warning: currently only analyzes stocks")
-    report.setFillColorRGB(0, 0, 0)
-    report.line(50, 700, 580, 700)
-    image = plot_overall_return(df, 365)
-    report.drawImage(image, 15, 380, 600, 300)
+    reportlab_helpers.base_format(report, "Overview")
+    report.drawImage(plot_overall_return(df, df_m, 365), 15, 360, 600, 300)
+    report.showPage()
+    reportlab_helpers.base_format(report, "Portfolio Analysis")
+    report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
     report.save()
 
     print("File save in:\n", path, "\n")
