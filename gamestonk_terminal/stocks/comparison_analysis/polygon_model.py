@@ -36,8 +36,6 @@ def get_similar_companies(ticker: str) -> Tuple[List[str], str]:
             sent_req = requests.get(prep_link)
             if prep_link == sent_req.request.url:
                 us_similar.append(sym)
-            else:
-                pass
             similar = us_similar
     else:
         print(result.json()["error"])
