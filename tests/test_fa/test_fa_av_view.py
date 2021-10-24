@@ -69,40 +69,34 @@ class TestAVView(unittest.TestCase):
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_av_overview(self, mock_get):
         # pylint: disable=unused-argument
-        av_view.overview([], "GME")
+        av_view.display_overview("GME")
 
     @check_print(assert_in="Market capitalization")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_av_key(self, mock_get):
         # pylint: disable=unused-argument
-        av_view.key([], "GME")
+        av_view.display_key("GME")
 
-    @check_print(assert_in="Gross profit")
+    @check_print(assert_in="netIncome")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_income_statement(self, mock_get):
         # pylint: disable=unused-argument
-        av_view.income_statement([], "GME")
+        av_view.display_income_statement("GME", 1)
 
-    @check_print(assert_in="Total assets")
+    @check_print(assert_in="commonStockSharesOutstanding")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_balance_sheet(self, mock_get):
         # pylint: disable=unused-argument
-        av_view.balance_sheet([], "GME")
-
-    @check_print(assert_in="Operating cashflow")
-    @mock.patch("requests.get", side_effect=mocked_requests_get)
-    def test_cash_flow(self, mock_get):
-        # pylint: disable=unused-argument
-        av_view.cash_flow([], "GME")
+        av_view.display_balance_sheet("GME", 1)
 
     @check_print(assert_in="Reported EPS")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_earnings(self, mock_get):
         # pylint: disable=unused-argument
-        av_view.earnings([], "GME")
+        av_view.display_earnings("GME", 1)
 
     @check_print(assert_in="Mscore Sub Stats")
     @mock.patch("requests.get", side_effect=mocked_requests_get)
     def test_fraud(self, mock_get):
         # pylint: disable=unused-argument
-        av_view.fraud([], "GME")
+        av_view.display_fraud("GME")
