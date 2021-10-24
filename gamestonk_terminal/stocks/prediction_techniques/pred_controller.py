@@ -27,6 +27,7 @@ from gamestonk_terminal.common.prediction_techniques import (
     neural_networks_view,
     regression_view,
     pred_helper,
+    mc_view,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 
@@ -46,6 +47,7 @@ class PredictionTechniquesController:
         "rnn",
         "lstm",
         "conv1d",
+        "mc",
     ]
     CHOICES += CHOICES_MODELS
 
@@ -105,6 +107,7 @@ Models:
     rnn         Recurrent Neural Network
     lstm        Long-Short Term Memory
     conv1d      1D Convolutional Neural Network
+    mc          Monte-Carlo simulations
         """
         print(help_string)
 
@@ -723,6 +726,59 @@ Models:
 
         finally:
             pred_helper.restore_env()
+
+    def call_mc(self, other_args: List[str]):
+        """Process mc command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="mc",
+            description="""
+                Perform Monte Carlo forecasting
+            """,
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            help="Days to predict",
+            dest="n_days",
+            type=check_positive,
+            default=30,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            help="Number of simulations to perform",
+            dest="n_sims",
+            default=100,
+        )
+        parser.add_argument(
+            "--dist",
+            choices=["normal", "lognormal"],
+            default="lognormal",
+            dest="dist",
+            help="Whether to model returns or log returns",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(
+                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            )
+            if not ns_parser:
+                return
+            if self.target != "AdjClose":
+                print("MC Prediction designed for AdjClose prices")
+                return
+
+            mc_view.display_mc_forecast(
+                data=self.stock[self.target],
+                n_future=ns_parser.n_days,
+                n_sims=ns_parser.n_sims,
+                use_log=ns_parser.dist == "lognormal",
+                export=ns_parser.export,
+            )
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
