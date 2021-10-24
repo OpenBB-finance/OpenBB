@@ -764,7 +764,10 @@ class CreateExcelFA:
             )
 
             dcf_model.set_cell(
-                self.ws4, f"{lt}6", self.df_bs.columns[i + 1], font=dcf_model.bold_font
+                self.ws4,
+                f"{lt}6",
+                int(self.df_bs.columns[i + 1]),
+                font=dcf_model.bold_font,
             )
             dcf_model.set_cell(self.ws4, f"{lt}7", ca1 / cl1)
             dcf_model.set_cell(self.ws4, f"{lt}8", (cace1 + ar1) / cl1)
@@ -789,7 +792,10 @@ class CreateExcelFA:
             dcf_model.set_cell(self.ws4, f"{lt}29", tl1 / te1)
             dcf_model.set_cell(self.ws4, f"{lt}30", tl1 / ta1)
             dcf_model.set_cell(self.ws4, f"{lt}31", ta1 / te1)
-            dcf_model.set_cell(self.ws4, f"{lt}32", (ni1 + inte1 + tax1) / inte1)
+            if inte1 == 0:
+                dcf_model.set_cell(self.ws4, f"{lt}32", "N/A")
+            else:
+                dcf_model.set_cell(self.ws4, f"{lt}32", (ni1 + inte1 + tax1) / inte1)
             dcf_model.set_cell(
                 self.ws4,
                 f"{lt}35",
