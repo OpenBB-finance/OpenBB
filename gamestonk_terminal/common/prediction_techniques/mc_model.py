@@ -28,19 +28,17 @@ def get_mc_brownian(
     np.array
         Array of predictions.  Has shape (n_future, n_sims)
     """
-
+    changes = data.pct_change().dropna()
     if use_log:
-        changes = np.log(1 + data.pct_change().dropna())
-    else:
-        changes = data.pct_change().drop_na()
+        changes = np.log(1 + changes)
 
     dist_mean = changes.mean()
     dist_var = changes.var()
     dist_drift = dist_mean - 0.5 * dist_var
     dist_std = np.sqrt(dist_var)
 
-    Z = norm.ppf(np.random.rand(n_future, n_sims))
-    predicted_change = np.exp(dist_drift + dist_std * Z)
+    random_steps = norm.ppf(np.random.rand(n_future, n_sims))
+    predicted_change = np.exp(dist_drift + dist_std * random_steps)
     possible_paths = np.zeros_like(predicted_change)
     possible_paths[0] = data.values[-1]
 
