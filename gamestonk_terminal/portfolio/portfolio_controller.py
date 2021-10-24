@@ -365,9 +365,9 @@ Reports:
         mini = min(changes["Date"])
         days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
         zeros = [0 for _ in uniques]
-        data = [zeros + zeros + zeros for _ in days]
+        data = [zeros + zeros + zeros + [0] for _ in days]
         vals = ["Quantity", "Cost Basis", "Profit"]
-        arrays = [[x for _ in uniques for x in vals], uniques * 3]
+        arrays = [[x for _ in uniques for x in vals] + ["Cash"], uniques * 3 + ["Cash"]]
         tuples = list(zip(*arrays))
         headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
         log = pd.DataFrame(data, columns=headers, index=days)
@@ -390,6 +390,10 @@ Reports:
                         log.at[index, ("Cost Basis", ticker)] = (
                             log.at[index, ("Cost Basis", ticker)] + quantity * price
                         )
+                        print(-(quantity * price))
+                        log.at[index, ("Cash", "Cash")] = log.at[
+                            index, ("Cash", "Cash")
+                        ] - (quantity * price)
 
                     elif (
                         pos1 == pos2
@@ -404,6 +408,10 @@ Reports:
                             + fees
                             + quantity * sign * price
                         )
+                        print(-(fees + quantity * sign * price))
+                        log.at[index, ("Cash", "Cash")] = log.at[
+                            index, ("Cash", "Cash")
+                        ] - (fees + quantity * sign * price)
                     else:
                         rev = (
                             log.at[index, ("Profit", ticker)]
@@ -413,12 +421,18 @@ Reports:
                             quantity / log.cumsum().at[index, ("Quantity", ticker)]
                         ) * log.cumsum().at[index, ("Cost Basis", ticker)]
                         log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
+                        print(rev - fees)
+                        log.at[index, ("Cash", "Cash")] = (
+                            log.at[index, ("Cash", "Cash")] + rev - fees
+                        )
                         log.at[index, ("Quantity", ticker)] = (
                             log.at[index, ("Quantity", ticker)] + quantity * sign
                         )
                         log.at[index, ("Cost Basis", ticker)] = (
                             log.at[index, ("Cost Basis", ticker)] - wa_cost
                         )
+
+        log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
 
         comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
         comb = comb.fillna(method="ffill")
@@ -428,7 +442,7 @@ Reports:
         for uni in uniques:
             comb[("Quantity", uni)] = comb[("Quantity", uni)].cumsum()
             comb[("Cost Basis", uni)] = comb[("Cost Basis", uni)].cumsum()
-            comb[("Profit", uni)] = comb[("Profit", uni)] + (
+            comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
                 comb[("Quantity", uni)] * comb[("Dividend", uni)]
             )
             comb[("Holding", uni)] = comb[("Quantity", uni)] * comb[("Close", uni)]
@@ -438,7 +452,6 @@ Reports:
         comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
         comb["total_prof"] = comb["holdings"] + comb["profits"]
         comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
-        comb["return"] = (comb["total_prof"] - comb["total_cost"]) / comb["total_cost"]
         return comb
 
 

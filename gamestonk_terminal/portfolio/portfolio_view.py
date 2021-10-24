@@ -1,7 +1,7 @@
 """Portfolio View"""
 __docformat__ = "numpy"
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 import os
 
@@ -64,19 +64,25 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
         print(df.to_string, "\n")
 
 
-def plot_overall_return(df: pd.DataFrame):
+def plot_overall_return(df: pd.DataFrame, n: int):
     """Generates overall return graph
 
     Parameters
     ----------
     df : pd.DataFrame
         The dataframe to be analyzed
-
+    n : int
+        The number of days to include in chart
     Returns
     ----------
     img : ImageReader
         Overal return graph
     """
+    df = df.copy()
+    df = df[df.index >= datetime.now() - timedelta(days=n + 1)]
+    df["return"] = (
+        df["holdings"] + df["Cash"]["Cash"] - df["holdings"][0] - df["Cash"]["Cash"][0]
+    ) / (df["Cash"]["Cash"][0] + df["holdings"][0] + df["total_cost"][0])
     df_m = yfinance_model.get_market()
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
@@ -90,10 +96,6 @@ def plot_overall_return(df: pd.DataFrame):
 
     pos[pos <= 0] = np.nan
     neg[neg > 0] = np.nan
-
-    # plt.plot(pos, color="r")
-    # plt.plot(neg, color="b")
-    # plt.plot(mark, color="y", label="SPY")
 
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(pos.index.to_list(), pos.to_list(), color="tab:blue")
@@ -175,7 +177,7 @@ def annual_report(df: pd.DataFrame) -> None:
     report.drawString(200, 710, "Warning: currently only analyzes stocks")
     report.setFillColorRGB(0, 0, 0)
     report.line(50, 700, 580, 700)
-    image = plot_overall_return(df)
+    image = plot_overall_return(df, 365)
     report.drawImage(image, 15, 380, 600, 300)
     report.save()
 
