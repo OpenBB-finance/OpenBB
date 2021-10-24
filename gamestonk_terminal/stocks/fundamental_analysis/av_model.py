@@ -1,7 +1,7 @@
 """Alpha Vantage Model"""
 __docformat__ = "numpy"
 
-from typing import Dict
+from typing import Dict, Tuple
 
 import requests
 
@@ -301,7 +301,21 @@ def clean_fundamentals_df(df_fa: pd.DataFrame, num: int) -> pd.DataFrame:
     return df_fa
 
 
-def get_fraud_ratios(ticker: str):
+def get_fraud_ratios(ticker: str) -> Tuple[Dict[str, float], float]:
+    """Get fraud ratios based on fundamentals
+
+    Parameters
+    ----------
+    ticker : str
+        Stock ticker
+
+    Returns
+    -------
+    Dict[float]:
+        Dictionary of fraud metrics
+    float:
+        Z score for fraud metrics
+    """
     fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
     # pylint: disable=unbalanced-tuple-unpacking
     # pylint: disable=no-member
