@@ -51,7 +51,7 @@ class CreateExcelFA:
         self.df_cf: pd.DataFrame = self.get_data("CF", self.cf_start, False)
         self.info: pd.DataFrame = yf.Ticker(ticker).info
         self.t_bill: float = get_rf()
-        self.r_ff: int = dcf_model.get_fama_coe(self.ticker)
+        self.r_ff: float = dcf_model.get_fama_coe(self.ticker)
 
     def create_workbook(self):
         self.ws1.column_dimensions["A"].width = 25
@@ -88,7 +88,7 @@ class CreateExcelFA:
                 f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
             )
 
-    def get_data(self, statement: str, row: int, header: bool):
+    def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
         if statement == "BS":
             URL += "balance-sheet/"
@@ -1091,7 +1091,7 @@ class CreateExcelFA:
         if text:
             self.custom_exp(row, text)
 
-    def title_to_row(self, title: str):
+    def title_to_row(self, title: str) -> int:
         df = (
             self.df_is
             if title in self.df_is.index
