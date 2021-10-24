@@ -739,7 +739,34 @@ Other Sources:
 
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
-        dcf_view.dcf(other_args, self.ticker)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dcf",
+            description="""
+                Generates a completed discounted cash flow statement. The statement uses machine
+                learning to predict the future financial statement, and then predicts the future
+                value of the stock based on the predicted financials.""",
+        )
+        parser.add_argument(
+            "-a",
+            "--audit",
+            action="store_true",
+            dest="audit",
+            default=False,
+            help="Confirms that the numbers provided are accurate.",
+        )
+
+        try:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
+            dcf.create_workbook()
+
+        except Exception as e:
+            print(e, "\n")
 
     def call_warnings(self, other_args: List[str]):
         """Process warnings command"""
