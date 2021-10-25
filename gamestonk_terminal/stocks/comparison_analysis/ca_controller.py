@@ -253,7 +253,9 @@ Finviz:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            self.similar, self.user = polygon_model.get_similar_companies(self.ticker, ns_parser.us_only)
+            self.similar, self.user = polygon_model.get_similar_companies(
+                self.ticker, ns_parser.us_only
+            )
 
             if self.ticker.upper() in self.similar:
                 self.similar.remove(self.ticker.upper())
