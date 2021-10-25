@@ -56,11 +56,14 @@ class ReportController:
     max_len_name = max(len(name) for name in valid_reports) + 2
     reports_opts = ""
     for k, v in d_id_to_report_name.items():
-        reports_opts += f"    {k}. {v}{(max_len_name-len(v))*' '} <{'> <'.join(list({**cfg_reports[v]}.keys()))}>\n"
+        args = f"<{'> <'.join(list({**cfg_reports[v]}.keys()))}>"
+        reports_opts += (
+            f"    {k}. {v}{(max_len_name-len(v))*' '} {args if args != '<>' else ''}\n"
+        )
 
     def __init__(self):
         """Constructor"""
-        self.report_parser = argparse.ArgumentParser(add_help=False, prog="report")
+        self.report_parser = argparse.ArgumentParser(add_help=False, prog="reports")
         self.report_parser.add_argument(
             "cmd",
             choices=self.CHOICES,
@@ -147,11 +150,12 @@ Select one of the following reports:
             notebook_template = os.path.join(
                 "gamestonk_terminal", "reports", report_to_run
             )
+            args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             notebook_output = os.path.join(
                 "gamestonk_terminal",
                 "reports",
                 "stored",
-                f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{report_to_run}_{'_'.join(other_args)}",
+                f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{report_to_run}{args_to_output}",
             )
 
             for idx, args in enumerate(list(d_report_params.keys())):
