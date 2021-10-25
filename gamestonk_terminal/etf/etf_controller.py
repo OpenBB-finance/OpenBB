@@ -43,7 +43,7 @@ class ETFController:
         "gainers",
         "decliners",
         "active",
-        "report",
+        "pir",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -78,7 +78,7 @@ Wall St. Journal:
     active        show most active
 
 The Passive Investor:
-    report        create report of multiple tickers
+    pir           create ETF report of multiple tickers
 """
         print(help_str)
 
@@ -370,12 +370,12 @@ The Passive Investor:
         """Process gainers command"""
         wsj_view.show_top_mover("active", other_args)
 
-    def call_report(self, other_args):
-        """Process report command"""
+    def call_pir(self, other_args):
+        """Process pir command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="report",
+            prog="pir",
             description="Create a ETF Report of the selected ETFs",
         )
         parser.add_argument(
@@ -415,7 +415,7 @@ The Passive Investor:
                 etf_list, filename=ns_parser.filename, folder=ns_parser.folder
             )
             print(
-                f"Created ETF report as {ns_parser.filename}.xlsx in folder {ns_parser.folder}"
+                f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
             )
 
         except Exception as e:
