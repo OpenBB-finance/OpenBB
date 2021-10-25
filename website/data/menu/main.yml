@@ -608,7 +608,7 @@ main:
         ref: "/etf/holdings"
       - name: compare
         ref: "/etf/compare"
-      - name: screene
+      - name: screener
         ref: "/etf/screener"
       - name: gainers
         ref: "/etf/gainers"
