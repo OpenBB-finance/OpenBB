@@ -13,6 +13,7 @@ Since the start of the project we've come across different types of issues exper
     <li><a href="#wheel">Wheel</a></li>
     <li><a href="#cvxpy">Cvxpy</a></li>
     <li><a href="#numpy">Numpy</a></li>
+    <li><a href="#Poetry">Poetry</a></li>
   </ul>
 </li>
 <li>
@@ -30,7 +31,6 @@ Since the start of the project we've come across different types of issues exper
 <li>
   <a href="#other-issues">Other Issues</a>
   <ul>
-    <li><a href="#Poetry">Poetry</a></li>
     <li><a href="#CRLF-versus-LF">CRLF versus LF</a></li>
   </ul>
 </li>
@@ -91,26 +91,6 @@ pip install python-dotenv
 pip install pyally
 ```
 
-
-### Machine Learning Troubles
-
-If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:
-
-```
-conda install -c conda-forge numpy=1.19.5 hdf5=1.10.5
-poetry install
-poetry install -E prediction
-```
-
-*Commands that may help you in case of an error:*
-
-* `python -m pip install --upgrade pip`
-* `pip install pystan --upgrade`
-* `poetry update --lock`
-
-
-## Other Issues
-
 ### Poetry
 If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
 Just removing the 'artifacts' folder could also be enough:
@@ -130,20 +110,37 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 
 2. `conda deactivate` -> `conda activate gst`, then try again
 
-3. Delete the poetry cache, then try again
-
-4. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
+3. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
 
    | Platform  | Location                                     |
    | --------- | -------------------------------------------- |
    | Linux/Mac | "~/anaconda3/envs" or "~/opt/anaconda3/envs" |
    | Windows   | "%userprofile%/anaconda3/envs"               |
 
-5. Completely nuke your conda environment folder and make a new environment from scratch
+4. Completely nuke your conda environment folder and make a new environment from scratch
 
-6. Reboot your computer and try again
+5. Reboot your computer and try again
 
-7. Submit a ticket on GitHub
+6. Submit a ticket on GitHub
+
+### Machine Learning Troubles
+
+If you run into issues installing or `Cannot convert a symbolic Tensor...` at runtime, try this:
+
+```
+conda install -c conda-forge numpy=1.19.5 hdf5=1.10.5
+poetry install
+poetry install -E prediction
+```
+
+*Commands that may help you in case of an error:*
+
+* `python -m pip install --upgrade pip`
+* `pip install pystan --upgrade`
+* `poetry update --lock`
+
+
+## Other Issues
 
 ### CRLF versus LF
 When trying to commit code changes, pylint will prevent you from doing so if your line break settings are set to
