@@ -62,35 +62,6 @@ conda install -c conda-forge cvxpy
 pip install --upgrade numpy==1.20.2
 ```
 
-## ModuleNotFoundError Trouble
-
-### General
-
-In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
-install the missing package via pip.
-
-If you get the error that `yfinance` is not found, you would run
-* `pip install yfinance`
-
-Then please submit an issue so that we can address why that was not imported.
-
-Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`.
-
-### pypfopt
-```
-pip install PyPortfolioOpt
-```
-
-### dotenv
-```
-pip install python-dotenv
-```
-
-### ally
-```
-pip install pyally
-```
-
 ### Poetry
 If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
 Just removing the 'artifacts' folder could also be enough:
@@ -122,6 +93,35 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 5. Reboot your computer and try again
 
 6. Submit a ticket on GitHub
+
+## ModuleNotFoundError Trouble
+
+### General
+
+In the case when you run into an error of the form `ModuleNotFoundError: No module named '_______'`.  The solution is to
+install the missing package via pip.
+
+If you get the error that `yfinance` is not found, you would run
+* `pip install yfinance`
+
+Then please submit an issue so that we can address why that was not imported.
+
+Please note that the package `pmdarima` needs to installed through `pip install` and not through `conda install`.
+
+### pypfopt
+```
+pip install PyPortfolioOpt
+```
+
+### dotenv
+```
+pip install python-dotenv
+```
+
+### ally
+```
+pip install pyally
+```
 
 ### Machine Learning Troubles
 
