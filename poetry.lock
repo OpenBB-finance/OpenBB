@@ -2976,7 +2976,7 @@ python-versions = "*"
 
 [[package]]
 name = "thepassiveinvestor"
-version = "1.0.8"
+version = "1.0.9"
 description = "Passive Investing for the Average Joe."
 category = "main"
 optional = false
@@ -3316,7 +3316,7 @@ prediction = ["tensorflow"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "0766298571fed1064062e01e76251ee7ca55e0b4242fe2ff9180f9fed4c20ff6"
+content-hash = "939d01212ca87b6d5cc5f989896dd6cd62ce1cfd8fe6460ba19fcb8e3eff10c5"
 
 [metadata.files]
 absl-py = [
@@ -4511,8 +4511,10 @@ opt-einsum = [
     {file = "opt_einsum-3.3.0.tar.gz", hash = "sha256:59f6475f77bbc37dcf7cd748519c0ec60722e91e63ca114e68821c0c54a46549"},
 ]
 orjson = [
+    {file = "orjson-3.6.4-cp310-cp310-macosx_10_7_x86_64.whl", hash = "sha256:fc01a15f3101628fd619158daec79b30d7461149735e73542ca8c13be6b835be"},
     {file = "orjson-3.6.4-cp310-cp310-manylinux_2_24_aarch64.whl", hash = "sha256:48a69fed90f551bf9e9bb7a63e363fed4f67fc7c6e6bfb057054dc78f6721e9e"},
     {file = "orjson-3.6.4-cp310-cp310-manylinux_2_24_x86_64.whl", hash = "sha256:3722f02f50861d5e2a6be9d50bfe8da27a5155bb60043118a4e1ceb8c7040cf7"},
+    {file = "orjson-3.6.4-cp310-none-win_amd64.whl", hash = "sha256:231a99a728322d0271e970b149c57deb67315e6837e6cd4166cf51d30161700c"},
     {file = "orjson-3.6.4-cp37-cp37m-macosx_10_7_x86_64.whl", hash = "sha256:6cd300421b41f7e84e388b1792a18c3fc4c440ae3039434b9320956be05f0102"},
     {file = "orjson-3.6.4-cp37-cp37m-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:e55ef66ee1d35b1c43db275aff3a1ba7e0408b31e624912a612bd799df14e73e"},
     {file = "orjson-3.6.4-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:eef8d332af8e6f7d6d2c1f3b5384c8d239800c1405b136da5f1710e802918d57"},
@@ -5365,8 +5367,8 @@ textwrap3 = [
     {file = "textwrap3-0.9.2.zip", hash = "sha256:5008eeebdb236f6303dcd68f18b856d355f6197511d952ba74bc75e40e0c3414"},
 ]
 thepassiveinvestor = [
-    {file = "thepassiveinvestor-1.0.8-py3-none-any.whl", hash = "sha256:17d4ecd2c89016d53987824219b935eba705f952cf2c59069e78fb053b93328e"},
-    {file = "thepassiveinvestor-1.0.8.tar.gz", hash = "sha256:40ebb01fa9e142f85bb1dfb47c34e1d24f3d9a27170158ee00316619723fbb69"},
+    {file = "thepassiveinvestor-1.0.9-py3-none-any.whl", hash = "sha256:ad043415b4e40a45ff1af2e3b9cdb8a1717dc37bf6ac71d45fdf0c71e0f22ebc"},
+    {file = "thepassiveinvestor-1.0.9.tar.gz", hash = "sha256:9fb607809c95adea71597a8672a1480d4276e65ae221972a4763d6d065349360"},
 ]
 threadpoolctl = [
     {file = "threadpoolctl-3.0.0-py3-none-any.whl", hash = "sha256:4fade5b3b48ae4b1c30f200b28f39180371104fccc642e039e0f2435ec8cc211"},
