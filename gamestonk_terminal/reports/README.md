@@ -9,13 +9,9 @@ This menu has a different concept from remaining menus. It has 2 main goals:
 
 1. Copy one of the existing notebook reports as a template, e.g. [dark_pool.ipynb](/gamestonk_terminal/reports/dark_pool.ipynb).
 
-2. Rename that notebook with a name that reflects what you want this notebook to contain, even including your name. That same name should be added as a section in the file [config_reports.ini](/gamestonk_terminal/reports/config_reports.ini), e.g. `[dark_pool]`
+2. Rename that notebook with a name that reflects what you want this notebook to contain, even including your name. 
 
-3. One of the notebook cells will have a `parameters` tag, that's where the papermill will parametrize the notebook. Thus, your variables should be declared there. The variables used (and their description) should also be added to [config_reports.ini](/gamestonk_terminal/reports/config_reports.ini), under the name of the report section. E.g.
-```
-[dark_pool]
-ticker = "Provides ticker to perform dark pool analysis on, e.g. AMC"
-```
+3. One of the notebook cells will have a `parameters` tag, that's where the papermill will parametrize the notebook. Thus, your variables should be declared there. 
 
 4. Remove the function calls that you don't care about to build your own report.
 
@@ -40,7 +36,7 @@ ticker = "Provides ticker to perform dark pool analysis on, e.g. AMC"
 
 2. Start the terminal with `python terminal.py`
 
-3. Select `reports` context, and choose from the options selected - which are derived from the .ipynb jupyter notebook files on the [reports](/gamestonk_terminal/reports/) folder and also based on [config_reports.ini](/gamestonk_terminal/reports/config_reports.ini) file.
+3. Select `reports` context, and choose from the options selected - which are derived from the .ipynb jupyter notebook files on the [reports](/gamestonk_terminal/reports/) folder.
 
 4. This should prompt you with a filled notebok with name: `<date time>_<report name>_<args>.ipynb`. E.g. `20210725_193517_dark_pool_AMC.ipynb`
 
