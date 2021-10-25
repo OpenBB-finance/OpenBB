@@ -240,12 +240,22 @@ Finviz:
             prog="getpoly",
             description="""Get similar companies from polygon to compare with.""",
         )
+        parser.add_argument(
+            "-u",
+            "--us_only",
+            action="store_true",
+            default=False,
+            dest="us_only",
+            help="Show only stocks from the US stock exchanges",
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
-            self.similar, self.user = polygon_model.get_similar_companies(self.ticker)
+            self.similar, self.user = polygon_model.get_similar_companies(
+                self.ticker, ns_parser.us_only
+            )
 
             if self.ticker.upper() in self.similar:
                 self.similar.remove(self.ticker.upper())
