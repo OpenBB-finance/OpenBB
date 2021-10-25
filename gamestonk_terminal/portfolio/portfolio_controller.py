@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 import argparse
 import os
+from os import listdir
+from os.path import isfile, join
 from typing import List
-from datetime import datetime, timedelta, date
-import math
+from datetime import datetime
 
 from prompt_toolkit.completion import NestedCompleter
 import pandas as pd
@@ -16,7 +17,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.portfolio import portfolio_view, portfolio_model, yfinance_model
+from gamestonk_terminal.portfolio import portfolio_view, portfolio_model
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710
@@ -70,7 +71,6 @@ class PortfolioController:
                 "Side",
             ]
         )
-        self.hist = pd.DataFrame()
 
     def print_help(self):
         """Print help"""
@@ -88,9 +88,9 @@ What do you want to do?
 >   po          portfolio optimization, \t optimal portfolio weights from pyportfolioopt
 
 Portfolio:
-    load        instructions on how to load data
-    save        updated your csv portfolio
-    show        show existing portfolio
+    load        load data into the portfolio
+    save        save your portfolio for future use
+    show        show existing transactions
     add         add a security to your portfolio
     rmv         remove a security from your portfolio
 
@@ -170,6 +170,8 @@ Reports:
 
     def call_load(self, other_args: List[str]):
         """Process load command"""
+        path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.abspath(os.path.join(path, "portfolios"))
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -180,6 +182,7 @@ Reports:
             "-n",
             "--name",
             type=str,
+            choices=[f for f in listdir(path) if isfile(join(path, f))],
             dest="name",
             required="-h" not in other_args,
             help="Name of file to be saved",
@@ -194,6 +197,7 @@ Reports:
 
         try:
             self.portfolio = portfolio_model.load_df(ns_parser.name)
+            print("")
         except Exception as e:
             print(e, "\n")
 
@@ -213,9 +217,8 @@ Reports:
             required="-h" not in other_args,
             help="Name of file to be saved",
         )
-        if other_args:
-            if "-n" not in other_args and "-h" not in other_args:
-                other_args.insert(0, "-n")
+        if other_args and "-n" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-n")
 
         ns_parser = parse_known_args_and_warn(parser, other_args)
         if not ns_parser:
@@ -265,9 +268,9 @@ Reports:
             help="Type of asset to add",
         )
         parser.add_argument(
-            "-v",
-            "--volume",
-            dest="volume",
+            "-q",
+            "--quantity",
+            dest="quantity",
             type=float,
             default=1,
             help="Amounts of the asset owned",
@@ -321,7 +324,7 @@ Reports:
         data = {
             "Name": ns_parser.name,
             "Type": ns_parser.type,
-            "Volume": ns_parser.volume,
+            "Quantity": ns_parser.quantity,
             "Date": ns_parser.date.replace("_", " "),
             "Price": ns_parser.price,
             "Fees": ns_parser.fees,
@@ -347,110 +350,10 @@ Reports:
     def call_ar(self, _):
         """Process ar command"""
         try:
-            val = self.generate_performance()
-            portfolio_view.annual_report(val, self.hist)
+            val, hist = portfolio_model.generate_performance(self.portfolio)
+            portfolio_view.annual_report(val, hist)
         except Exception as e:
             print(e, "\n")
-
-    def generate_performance(self) -> pd.DataFrame:
-        """Creates a new df with performance results"""
-        changes = self.portfolio.copy()
-        # Transactions sorted for only stocks
-        changes = changes[changes["Type"] == "stock"]
-        uniques = list(set(changes["Name"].tolist()))
-        # Stock price history for each stock
-        self.hist = yfinance_model.get_stocks(uniques)
-        # Dividends for each stock
-        divs = yfinance_model.get_dividends(uniques)
-        divs = divs.fillna(0)
-        mini = min(changes["Date"])
-        days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
-        zeros = [0 for _ in uniques]
-        data = [zeros + zeros + zeros + [0] for _ in days]
-        vals = ["Quantity", "Cost Basis", "Profit"]
-        arrays = [[x for _ in uniques for x in vals] + ["Cash"], uniques * 3 + ["Cash"]]
-        tuples = list(zip(*arrays))
-        headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
-        log = pd.DataFrame(data, columns=headers, index=days)
-
-        for index, _ in log.iterrows():
-            values = changes[changes["Date"] == index]
-            if len(values.index) > 0:
-                for _, sub_row in values.iterrows():
-                    ticker = sub_row["Name"]
-                    quantity = sub_row["Quantity"]
-                    price = sub_row["Price"]
-                    fees = sub_row["Fees"]
-                    if math.isnan(fees):
-                        fees = 0
-                    sign = -1 if sub_row["Side"].lower() == "sell" else 1
-                    pos1 = log.cumsum().at[index, ("Quantity", ticker)] > 0
-                    pos2 = (quantity * sign) > 0
-
-                    if sub_row["Side"].lower() == "interest":
-                        log.at[index, ("Cost Basis", ticker)] = (
-                            log.at[index, ("Cost Basis", ticker)] + quantity * price
-                        )
-                        log.at[index, ("Cash", "Cash")] = log.at[
-                            index, ("Cash", "Cash")
-                        ] - (quantity * price)
-
-                    elif (
-                        pos1 == pos2
-                        or log.cumsum().at[index, ("Quantity", ticker)] == 0
-                        or (quantity * sign) == 0
-                    ):
-                        log.at[index, ("Quantity", ticker)] = (
-                            log.at[index, ("Quantity", ticker)] + quantity * sign
-                        )
-                        log.at[index, ("Cost Basis", ticker)] = (
-                            log.at[index, ("Cost Basis", ticker)]
-                            + fees
-                            + quantity * sign * price
-                        )
-                        log.at[index, ("Cash", "Cash")] = log.at[
-                            index, ("Cash", "Cash")
-                        ] - (fees + quantity * sign * price)
-                    else:
-                        rev = (
-                            log.at[index, ("Profit", ticker)]
-                            + quantity * sign * price * -1
-                        )
-                        wa_cost = (
-                            quantity / log.cumsum().at[index, ("Quantity", ticker)]
-                        ) * log.cumsum().at[index, ("Cost Basis", ticker)]
-                        log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
-                        log.at[index, ("Cash", "Cash")] = (
-                            log.at[index, ("Cash", "Cash")] + rev - fees
-                        )
-                        log.at[index, ("Quantity", ticker)] = (
-                            log.at[index, ("Quantity", ticker)] + quantity * sign
-                        )
-                        log.at[index, ("Cost Basis", ticker)] = (
-                            log.at[index, ("Cost Basis", ticker)] - wa_cost
-                        )
-
-        log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
-
-        comb = pd.merge(log, self.hist, how="left", left_index=True, right_index=True)
-        comb = comb.fillna(method="ffill")
-        comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
-        comb = comb.fillna(0)
-
-        for uni in uniques:
-            comb[("Quantity", uni)] = comb[("Quantity", uni)].cumsum()
-            comb[("Cost Basis", uni)] = comb[("Cost Basis", uni)].cumsum()
-            comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
-                comb[("Quantity", uni)] * comb[("Dividend", uni)]
-            )
-            comb[("Holding", uni)] = comb[("Quantity", uni)] * comb[("Close", uni)]
-            comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
-
-        comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
-        comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
-        comb["total_prof"] = comb["holdings"] + comb["profits"]
-        comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
-        return comb
 
 
 def menu():

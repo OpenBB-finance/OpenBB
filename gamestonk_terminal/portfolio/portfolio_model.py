@@ -2,10 +2,12 @@
 __docformat__ = "numpy"
 
 import os
+import math
+from datetime import date, timedelta
 
 import pandas as pd
 
-from gamestonk_terminal.portfolio import portfolio_view
+from gamestonk_terminal.portfolio import portfolio_view, yfinance_model
 
 # pylint: disable=E1136
 # pylint: disable=unsupported-assignment-operation
@@ -70,3 +72,117 @@ def load_df(name: str) -> pd.DataFrame:
     except FileNotFoundError:
         portfolio_view.load_info()
         return pd.DataFrame()
+
+
+def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
+    """
+    Creates a new df with performance results
+
+    Parameters
+    ----------
+    portfolio : pd.DataFrame
+        The dataframe of transactions
+
+    Returns
+    ----------
+    data : pd.DataFrame
+        A dataframe with performance of portfolio
+    hist : pd.DataFrame
+        The historical performance of tickers in portfolio
+    """
+    changes = portfolio.copy()
+    # Transactions sorted for only stocks
+    changes = changes[changes["Type"] == "stock"]
+    uniques = list(set(changes["Name"].tolist()))
+    # Stock price history for each stock
+    hist = yfinance_model.get_stocks(uniques)
+    # Dividends for each stock
+    divs = yfinance_model.get_dividends(uniques)
+    divs = divs.fillna(0)
+    mini = min(changes["Date"])
+    days = pd.date_range(mini, date.today() - timedelta(days=1), freq="d")
+    zeros = [0 for _ in uniques]
+    data = [zeros + zeros + zeros + [0] for _ in days]
+    vals = ["Quantity", "Cost Basis", "Profit"]
+    arrays = [[x for _ in uniques for x in vals] + ["Cash"], uniques * 3 + ["Cash"]]
+    tuples = list(zip(*arrays))
+    headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
+    log = pd.DataFrame(data, columns=headers, index=days)
+
+    for index, _ in log.iterrows():
+        values = changes[changes["Date"] == index]
+        if len(values.index) > 0:
+            for _, sub_row in values.iterrows():
+                ticker = sub_row["Name"]
+                quantity = sub_row["Quantity"]
+                price = sub_row["Price"]
+                fees = sub_row["Fees"]
+                if math.isnan(fees):
+                    fees = 0
+                sign = -1 if sub_row["Side"].lower() == "sell" else 1
+                pos1 = log.cumsum().at[index, ("Quantity", ticker)] > 0
+                pos2 = (quantity * sign) > 0
+
+                if sub_row["Side"].lower() == "interest":
+                    log.at[index, ("Cost Basis", ticker)] = (
+                        log.at[index, ("Cost Basis", ticker)] + quantity * price
+                    )
+                    log.at[index, ("Cash", "Cash")] = log.at[
+                        index, ("Cash", "Cash")
+                    ] - (quantity * price)
+
+                elif (
+                    pos1 == pos2
+                    or log.cumsum().at[index, ("Quantity", ticker)] == 0
+                    or (quantity * sign) == 0
+                ):
+                    log.at[index, ("Quantity", ticker)] = (
+                        log.at[index, ("Quantity", ticker)] + quantity * sign
+                    )
+                    log.at[index, ("Cost Basis", ticker)] = (
+                        log.at[index, ("Cost Basis", ticker)]
+                        + fees
+                        + quantity * sign * price
+                    )
+                    log.at[index, ("Cash", "Cash")] = log.at[
+                        index, ("Cash", "Cash")
+                    ] - (fees + quantity * sign * price)
+                else:
+                    rev = (
+                        log.at[index, ("Profit", ticker)] + quantity * sign * price * -1
+                    )
+                    wa_cost = (
+                        quantity / log.cumsum().at[index, ("Quantity", ticker)]
+                    ) * log.cumsum().at[index, ("Cost Basis", ticker)]
+                    log.at[index, ("Profit", ticker)] = rev - wa_cost - fees
+                    log.at[index, ("Cash", "Cash")] = (
+                        log.at[index, ("Cash", "Cash")] + rev - fees
+                    )
+                    log.at[index, ("Quantity", ticker)] = (
+                        log.at[index, ("Quantity", ticker)] + quantity * sign
+                    )
+                    log.at[index, ("Cost Basis", ticker)] = (
+                        log.at[index, ("Cost Basis", ticker)] - wa_cost
+                    )
+
+    log[("Cash", "Cash")] = log[("Cash", "Cash")].cumsum()
+
+    comb = pd.merge(log, hist, how="left", left_index=True, right_index=True)
+    comb = comb.fillna(method="ffill")
+    comb = pd.merge(comb, divs, how="left", left_index=True, right_index=True)
+    comb = comb.fillna(0)
+
+    for uni in uniques:
+        comb[("Quantity", uni)] = comb[("Quantity", uni)].cumsum()
+        comb[("Cost Basis", uni)] = comb[("Cost Basis", uni)].cumsum()
+        comb[("Cash", "Cash")] = comb[("Cash", "Cash")] + (
+            comb[("Quantity", uni)] * comb[("Dividend", uni)]
+        )
+        comb[("Holding", uni)] = comb[("Quantity", uni)] * comb[("Close", uni)]
+        comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
+
+    comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]
+    comb["profits"] = comb.sum(level=0, axis=1)["Profit"]
+    comb["total_prof"] = comb["holdings"] + comb["profits"]
+    comb["total_cost"] = comb.sum(level=0, axis=1)["Cost Basis"]
+    return comb, hist
