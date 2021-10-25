@@ -3,10 +3,12 @@ __docformat__ = "numpy"
 
 import argparse
 import os
+from datetime import datetime
 from typing import List
 
 import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
+from thepassiveinvestor import create_ETF_report
 
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.etf import screener_view, stockanalysis_view, wsj_view
@@ -41,6 +43,7 @@ class ETFController:
         "gainers",
         "decliners",
         "active",
+        "pir",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -73,6 +76,9 @@ Wall St. Journal:
     gainers       show top gainers
     decliners     show top decliners
     active        show most active
+
+The Passive Investor:
+    pir           create ETF report of multiple tickers
 """
         print(help_str)
 
@@ -363,6 +369,57 @@ Wall St. Journal:
     def call_active(self, other_args):
         """Process gainers command"""
         wsj_view.show_top_mover("active", other_args)
+
+    def call_pir(self, other_args):
+        """Process pir command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="pir",
+            description="Create a ETF Report of the selected ETFs",
+        )
+        parser.add_argument(
+            "-e",
+            "--etfs",
+            type=str,
+            dest="names",
+            help="Symbols to create a report for",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "--filename",
+            default=f"ETF_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            dest="filename",
+            help="Filename of the ETF report",
+        )
+        parser.add_argument(
+            "--folder",
+            default=os.path.dirname(os.path.abspath(__file__)).replace(
+                "gamestonk_terminal", "exports"
+            ),
+            dest="folder",
+            help="Folder where the ETF report will be saved",
+        )
+
+        try:
+            if other_args:
+                if "-" not in other_args[0]:
+                    other_args.insert(0, "-e")
+
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            etf_list = ns_parser.names.upper().split(",")
+            create_ETF_report(
+                etf_list, filename=ns_parser.filename, folder=ns_parser.folder
+            )
+            print(
+                f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
+            )
+
+        except Exception as e:
+            print(e, "\n")
 
 
 def menu():
