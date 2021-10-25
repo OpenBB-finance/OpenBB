@@ -9,6 +9,7 @@ from io import BytesIO
 from sklearn.linear_model import LinearRegression
 from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
 from openpyxl import worksheet
+import FinanceDatabase as fd
 import yfinance as yf
 import pandas as pd
 
@@ -199,7 +200,29 @@ def get_fama_coe(ticker: str) -> float:
         + coefs[2] * df["HML"].mean()
     ) * 12
 
+def others_in_sector(ticker : str, sector: str, industry: str) -> List[str]:
+    """Get other stocks in a ticker's sector
 
+    Parameters
+    ----------
+    ticker : str
+        The ticker to be excluded
+    sector : str
+        The sector to pull from
+    industry : str
+        The industry to pull from
+
+    Returns
+    -------
+    tickers : List[str]
+        List of tickers in the same sector
+    """
+    print(sector)
+    sister_ticks = fd.select_equities(country="United States", sector=sector, industry=industry)
+    print(len(sister_ticks))
+    print(len(list(set(sister_ticks))))
+    for item in sister_ticks[:20]:
+        print(item)
 letters = [
     "A",
     "B",

@@ -54,39 +54,40 @@ class CreateExcelFA:
         self.r_ff: float = dcf_model.get_fama_coe(self.ticker)
 
     def create_workbook(self):
-        self.ws1.column_dimensions["A"].width = 25
-        self.ws2.column_dimensions["A"].width = 22
-        for column in dcf_model.letters[1:21]:
-            self.ws1.column_dimensions[column].width = 14
-        for column in dcf_model.letters[1:21]:
-            self.ws2.column_dimensions[column].width = 14
+        # self.ws1.column_dimensions["A"].width = 25
+        # self.ws2.column_dimensions["A"].width = 22
+        # for column in dcf_model.letters[1:21]:
+        #     self.ws1.column_dimensions[column].width = 14
+        # for column in dcf_model.letters[1:21]:
+        #     self.ws2.column_dimensions[column].width = 14
 
-        self.ws3.column_dimensions["A"].width = 3
-        self.create_header(self.ws1)
-        self.create_header(self.ws2)
-        self.create_header(self.ws3)
-        self.create_header(self.ws4)
-        self.add_estimates()
-        self.create_dcf()
-        if self.audit:
-            self.run_audit()
+        # self.ws3.column_dimensions["A"].width = 3
+        # self.create_header(self.ws1)
+        # self.create_header(self.ws2)
+        # self.create_header(self.ws3)
+        # self.create_header(self.ws4)
+        # self.add_estimates()
+        # self.create_dcf()
+        # if self.audit:
+        #     self.run_audit()
 
-        trypath = os.path.join(
-            "..",
-            "GamestonkTerminal",
-            "exports",
-            "excel",
-            f"{self.ticker} {self.now}.xlsx",
-        )
+        # trypath = os.path.join(
+        #     "..",
+        #     "GamestonkTerminal",
+        #     "exports",
+        #     "excel",
+        #     f"{self.ticker} {self.now}.xlsx",
+        # )
 
-        my_file = Path(trypath)
-        if my_file.is_file():
-            print("Analysis already ran. Please move file to rerun.")
-        else:
-            self.wb.save(trypath)
-            print(
-                f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
-            )
+        # my_file = Path(trypath)
+        # if my_file.is_file():
+        #     print("Analysis already ran. Please move file to rerun.")
+        # else:
+        #     self.wb.save(trypath)
+        #     print(
+        #         f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
+        #     )
+        dcf_model.others_in_sector(self.ticker, self.info["sector"], self.info["industry"])
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
