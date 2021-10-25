@@ -1,15 +1,37 @@
-# PAPERMILL
+# REPORTS
 
 This menu has a different concept from remaining menus. It has 2 main goals:
  - Generate a personalised report.
  - Allow the user to write notes on that notebook (report), as if it was his personal investment diary.
 
-Command | Template | Example
------- | --------|----
-`dd`   | [Due Diligence Template](/notebooks/templates/due_diligence.ipynb) | [Due Diligence Example](/notebooks/examples/aapl_due_diligence_20210729_001048.html)
-`econ` | [Economy Template](/notebooks/templates/econ_data.ipynb) | [Economy Example](/notebooks/examples/econ_data_20210729_001227.html)
-`dp` | [Dark Pool](/notebooks/templates/dark_pool.ipynb) | [Dark Pool](/notebooks/examples/amc_dark_pool_20210728_235316.html)
-`cm` | [Crypto Market](/notebooks/templates/crypto_market.ipynb) | [Crypto Market](/notebooks/examples/crypto_market_20210729_001530.html)
+
+## How to create your own personal report
+
+1. Copy one of the existing notebook reports as a template, e.g. [dark_pool.ipynb](/gamestonk_terminal/reports/dark_pool.ipynb).
+
+2. Rename that notebook with a name that reflects what you want this notebook to contain, even including your name. That same name should be added as a section in the file [config_reports.ini](/gamestonk_terminal/reports/config_reports.ini), e.g. `[dark_pool]`
+
+3. One of the notebook cells will have a `parameters` tag, that's where the papermill will parametrize the notebook. Thus, your variables should be declared there. The variables used (and their description) should also be added to [config_reports.ini](/gamestonk_terminal/reports/config_reports.ini), under the name of the report section. E.g.
+```
+[dark_pool]
+ticker = "Provides ticker to perform dark pool analysis on, e.g. AMC"
+```
+
+4. Remove the function calls that you don't care about to build your own report.
+
+5. When building your template notebook, there are 2 type of possible things you can do:
+   * Create a markdown cell, where you can add a title or a description. E.g.
+   ```
+   ## Analyst Targets
+   ```
+   * Create a code cell, where you should both: import a module, and call a function to display a chart or print data. E.g.
+   ```python
+   from gamestonk_terminal.stocks.due_diligence import finviz_view
+
+   finviz_view.analyst(ticker=ticker, export='')
+   ```
+   
+**Note**: In order to find the name of the function you want, you should either crawl through the codebase (and ask help in discord) or look into our readthedocs (#TODO).
 
 
 ## How to run the report
@@ -18,15 +40,15 @@ Command | Template | Example
 
 2. Start the terminal with `python terminal.py`
 
-3. Select `mill` and select one of the available reports generation, e.g. `econ`
+3. Select `reports` context, and choose from the options selected - which are derived from the .ipynb jupyter notebook files on the [reports](/gamestonk_terminal/reports/) folder and also based on [config_reports.ini](/gamestonk_terminal/reports/config_reports.ini) file.
 
-4. This should prompt you with a filled notebok with name: `report_name_date_time.ipynb`. E.g. `econ_data_20210725_193517.ipynb`
+4. This should prompt you with a filled notebok with name: `<date time>_<report name>_<args>.ipynb`. E.g. `20210725_193517_dark_pool_AMC.ipynb`
 
-5. Due to the last cell of the notebook, the report is saved by default as `.html`. E.g.  `econ_data_20210725_193517.html`
+5. Due to the last cell of the notebook, the report is saved by default as `.html`. E.g.  `20210725_193517_dark_pool_AMC.html`
 ```
 folder = "notebooks/reports/"
 extension = ".ipynb"
-!jupyter nbconvert {folder + report_name + extension} --to html --no-input
+!jupyter nbconvert {report_name} --to html --no-input
 ```
 
 6. You can now write your own personal notes on the notebook. By doing:
@@ -35,11 +57,6 @@ extension = ".ipynb"
    * On the tooblar click on "Cell" -> "Cell Type" -> "Markdown"
    * You're now ready to write your own notes
 
-6. Once you're happy with your report, you can either:
-   * Re-run the last cell (potentially changing output from `.html` with:
-   ```
-   folder = "notebooks/reports/"
-   extension = ".ipynb"
-   !jupyter nbconvert {folder + report_name + extension} --to html --no-input
-   ```
+7. Once you're happy with your report, you can either:
+   * Re-run the last cell, potentially changing output from `.html`:
    * Or, on the toolbar click on "File" -> "Download as" -> Select your preferred option (e.g. HTML)
