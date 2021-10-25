@@ -29,6 +29,10 @@ Since the start of the project we've come across different types of issues exper
 </li>
 <li>
   <a href="#other-issues">Other Issues</a>
+  <ul>
+    <li><a href="#Poetry">General</a></li>
+    <li><a href="#CRLF-versus-LF">CRLF versus LF</a></li>
+  </ul>
 </li>
 </ol>
 
@@ -57,7 +61,6 @@ conda install -c conda-forge cvxpy
 ```
 pip install --upgrade numpy==1.20.2
 ```
-
 
 ## ModuleNotFoundError Trouble
 
@@ -106,21 +109,28 @@ poetry install -E prediction
 * `poetry update --lock`
 
 
-### Other Issues
+## Other Issues
 
-If you run into trouble with poetry and the advice above did not help, your best bet is to try
+### Poetry
+If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
+Just removing the 'artifacts' folder could also be enough:
+
+| Platform | Location                        |
+| -------- | ------------------------------- |
+| Linux    | "~/.cache/pypoetry"             |
+| Mac      | "~/Library/Caches/pypoetry"     |
+| Windows  | "%localappdata%/pypoetry/cache" |
+
+When you try to add a package to Poetry it is possible that it causes a similar issue. Here you can remove the
+'artifacts' folder again to reinitialize Poetry.
+
+If you run into trouble with Poetry, and the advice above did not help, your best bet is to try
 
 1. `poetry update --lock`
 
 2. `conda deactivate` -> `conda activate gst`, then try again
 
 3. Delete the poetry cache, then try again
-
-   | Platform | Location                        |
-   | -------- | ------------------------------- |
-   | Linux    | "~/.cache/pypoetry"             |
-   | Mac      | "~/Library/Caches/pypoetry"     |
-   | Windows  | "%localappdata%/pypoetry/cache" |
 
 4. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again (removing through conda can sometimes leave locks behind)
 
@@ -133,4 +143,20 @@ If you run into trouble with poetry and the advice above did not help, your best
 
 6. Reboot your computer and try again
 
-7. Submit a ticket on github
+7. Submit a ticket on GitHub
+
+### CRLF versus LF
+When trying to commit code changes, pylint will prevent you from doing so if your line break settings are set to
+CRLF (default for Windows). This is because the entire package uses LF (default for Linux/Mac), and it is therefore
+important that you change this setting to LF *before* you make any changes to the code.
+
+It is possible that CRLF automatically turns back on, you can correct this with:
+```
+git config --global core.autocrlf false
+```
+In case you already made coding adjustments, you have to reset your cache, and the changes you made to the code with
+the following:
+```
+git rm --cached -r .
+git reset --hard
+```
