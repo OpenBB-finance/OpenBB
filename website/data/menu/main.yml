@@ -508,6 +508,8 @@ main:
             ref: "/stocks/prediction_techniques/lstm"
           - name: conv1d
             ref: "/stocks/prediction_techniques/conv1d"
+          - name: mc
+            ref: "/stocks/prediction_techniques/mc"
       - name: report
         ref: "/stocks/report"
   - name: forex

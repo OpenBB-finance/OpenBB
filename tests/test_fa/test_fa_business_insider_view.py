@@ -4,7 +4,7 @@ import unittest
 import vcr
 
 from gamestonk_terminal.stocks.fundamental_analysis.business_insider_view import (
-    management,
+    display_management,
 )
 from tests.helpers import check_print
 
@@ -16,4 +16,4 @@ class TestFaBusinessInsiderApi(unittest.TestCase):
         record_mode="new_episodes",
     )
     def test_management(self):
-        management([], "PLTR")
+        display_management("PLTR")

@@ -4,8 +4,6 @@ __docformat__ = "numpy"
 from typing import List, Union
 from datetime import datetime
 from pathlib import Path
-import argparse
-import math
 import os
 
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
@@ -18,65 +16,25 @@ import pandas as pd
 import numpy as np
 import requests
 
-from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 from gamestonk_terminal.stocks.fundamental_analysis import dcf_model
-
 from gamestonk_terminal.helper_funcs import get_rf
+
+# pylint: disable=R0902
+# pylint: disable=R0912
+# pylint: disable=C0302
+# pylint: disable=R0915
 
 int_or_str = Union[int, str]
 
 
-def dcf(other_args: List[str], ticker: str):
-    """Discounted cash flow
-
-    Parameters
-    ----------
-    other_args : List[str]
-        argparse other args
-    ticker : str
-        Fundamental analysis ticker symbol
-    """
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="dcf",
-        description="""
-            Generates a completed discounted cash flow statement. The statement uses machine
-            learning to predict the future financial statement, and then predicts the future
-            value of the stock based on the predicted financials.""",
-    )
-    parser.add_argument(
-        "-a",
-        "--audit",
-        action="store_true",
-        dest="audit",
-        default=False,
-        help="Confirms that the numbers provided are accurate.",
-    )
-
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        dcf_view = CreateExcelFA(ticker, ns_parser.audit)
-        dcf_view.create_workbook()
-
-    except Exception as e:
-        print(e, "\n")
-
-
 class CreateExcelFA:
-
-    # pylint: disable=R0902
-    # pylint: disable=R0912
-
     def __init__(self, ticker: str, audit: bool):
         self.audit: bool = audit
         self.wb: Workbook = Workbook()
         self.ws1: worksheet = self.wb.active
         self.ws2: worksheet = self.wb.create_sheet("Free Cash Flows")
         self.ws3: worksheet = self.wb.create_sheet("Explanations")
+        self.ws4: worksheet = self.wb.create_sheet("Ratios")
         self.ws1.title = "Financials"
         self.ticker: str = ticker
         self.now: str = datetime.now().strftime("%Y-%m-%d")
@@ -107,6 +65,7 @@ class CreateExcelFA:
         self.create_header(self.ws1)
         self.create_header(self.ws2)
         self.create_header(self.ws3)
+        self.create_header(self.ws4)
         self.add_estimates()
         self.create_dcf()
         if self.audit:
@@ -655,7 +614,199 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws2, "A18", "Actual Price")
         dcf_model.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
 
-        # Handle unexpected situation:
+        # Create ratios page
+        self.ws4.column_dimensions["A"].width = 27
+        dcf_model.set_cell(self.ws4, "B4", "Sector:")
+        dcf_model.set_cell(self.ws4, "C4", self.info["sector"])
+        dcf_model.set_cell(
+            self.ws4,
+            "A6",
+            "Liquidity Ratios",
+            border=dcf_model.thin_border,
+            font=dcf_model.bold_font,
+        )
+        dcf_model.set_cell(self.ws4, "A7", "Current Ratio")
+        dcf_model.set_cell(self.ws4, "A8", "Quick Ratio")
+        dcf_model.set_cell(self.ws4, "A10", "Activity Ratios", font=dcf_model.bold_font)
+        dcf_model.set_cell(self.ws4, "A11", "AR Turnover")
+        dcf_model.set_cell(self.ws4, "A12", "Days Sales in AR")
+        dcf_model.set_cell(self.ws4, "A13", "Inventory Turnover")
+        dcf_model.set_cell(self.ws4, "A14", "Days in Inventory")
+        dcf_model.set_cell(self.ws4, "A15", "Average Payable Turnover")
+        dcf_model.set_cell(self.ws4, "A16", "Days of Payables Outstanding")
+        dcf_model.set_cell(self.ws4, "A17", "Cash Conversion Cycle")
+        dcf_model.set_cell(self.ws4, "A18", "Asset Turnover")
+        dcf_model.set_cell(
+            self.ws4,
+            "A20",
+            "Profitability Ratios",
+            border=dcf_model.thin_border,
+            font=dcf_model.bold_font,
+        )
+        dcf_model.set_cell(self.ws4, "A21", "Profit Margin")
+        dcf_model.set_cell(self.ws4, "A22", "Return on Assets")
+        dcf_model.set_cell(self.ws4, "A23", "Return on Equity")
+        dcf_model.set_cell(self.ws4, "A24", "Return on Sales")
+        dcf_model.set_cell(self.ws4, "A25", "Gross Margin")
+        dcf_model.set_cell(self.ws4, "A26", "Operating Cash Flow Ratio")
+        dcf_model.set_cell(
+            self.ws4,
+            "A28",
+            "Coverage Ratios",
+            border=dcf_model.thin_border,
+            font=dcf_model.bold_font,
+        )
+        dcf_model.set_cell(self.ws4, "A29", "Debt-to-Equity")
+        dcf_model.set_cell(self.ws4, "A30", "Total Debt Ratio")
+        dcf_model.set_cell(self.ws4, "A31", "Equity Multiplier")
+        dcf_model.set_cell(self.ws4, "A32", "Times Interest Earned")
+        dcf_model.set_cell(
+            self.ws4,
+            "A34",
+            "Investor Ratios",
+            border=dcf_model.thin_border,
+            font=dcf_model.bold_font,
+        )
+        dcf_model.set_cell(self.ws4, "A35", "Earnings Per Share")
+        dcf_model.set_cell(self.ws4, "A36", "Price Earnings Ratio")
+
+        for i in range(len(self.df_bs.columns) - 1):
+            lt = dcf_model.letters[i + 1]
+
+            cace1 = float(
+                self.df_bs.at[
+                    "Cash & Cash Equivalents", self.df_bs.columns[i + 1]
+                ].replace(",", "")
+            )
+            ar0 = float(
+                self.df_bs.at["Receivables", self.df_bs.columns[i]].replace(",", "")
+            )
+            ar1 = float(
+                self.df_bs.at["Receivables", self.df_bs.columns[i + 1]].replace(",", "")
+            )
+            inv0 = float(
+                self.df_bs.at["Inventory", self.df_bs.columns[i]].replace(",", "")
+            )
+            inv1 = float(
+                self.df_bs.at["Inventory", self.df_bs.columns[i + 1]].replace(",", "")
+            )
+            ca1 = float(
+                self.df_bs.at[
+                    "Total Current Assets", self.df_bs.columns[i + 1]
+                ].replace(",", "")
+            )
+            ta0 = float(
+                self.df_bs.at["Total Assets", self.df_bs.columns[i]].replace(",", "")
+            )
+            ta1 = float(
+                self.df_bs.at["Total Assets", self.df_bs.columns[i + 1]].replace(
+                    ",", ""
+                )
+            )
+            ap0 = float(
+                self.df_bs.at["Accounts Payable", self.df_bs.columns[i]].replace(
+                    ",", ""
+                )
+            )
+            ap1 = float(
+                self.df_bs.at["Accounts Payable", self.df_bs.columns[i + 1]].replace(
+                    ",", ""
+                )
+            )
+            cl1 = float(
+                self.df_bs.at[
+                    "Total Current Liabilities", self.df_bs.columns[i + 1]
+                ].replace(",", "")
+            )
+            tl1 = float(
+                self.df_bs.at["Total Liabilities", self.df_bs.columns[i + 1]].replace(
+                    ",", ""
+                )
+            )
+            te0 = float(
+                self.df_bs.at["Shareholders' Equity", self.df_bs.columns[i]].replace(
+                    ",", ""
+                )
+            )
+            te1 = float(
+                self.df_bs.at[
+                    "Shareholders' Equity", self.df_bs.columns[i + 1]
+                ].replace(",", "")
+            )
+            sls1 = float(
+                self.df_is.at["Revenue", self.df_bs.columns[i + 1]].replace(",", "")
+            )
+            cogs1 = float(
+                self.df_is.at["Cost of Revenue", self.df_bs.columns[i + 1]].replace(
+                    ",", ""
+                )
+            )
+            inte1 = float(
+                self.df_is.at[
+                    "Interest Expense / Income", self.df_bs.columns[i + 1]
+                ].replace(",", "")
+            )
+            tax1 = float(
+                self.df_is.at["Income Tax", self.df_bs.columns[i + 1]].replace(",", "")
+            )
+            ni1 = float(
+                self.df_is.at["Net Income", self.df_bs.columns[i + 1]].replace(",", "")
+            )
+            pdiv1 = float(
+                self.df_is.at["Preferred Dividends", self.df_bs.columns[i + 1]].replace(
+                    ",", ""
+                )
+            )
+            opcf1 = float(
+                self.df_cf.at["Operating Cash Flow", self.df_bs.columns[i + 1]].replace(
+                    ",", ""
+                )
+            )
+
+            dcf_model.set_cell(
+                self.ws4,
+                f"{lt}6",
+                int(self.df_bs.columns[i + 1]),
+                font=dcf_model.bold_font,
+            )
+            dcf_model.set_cell(self.ws4, f"{lt}7", ca1 / cl1)
+            dcf_model.set_cell(self.ws4, f"{lt}8", (cace1 + ar1) / cl1)
+            dcf_model.set_cell(self.ws4, f"{lt}11", sls1 / ((ar0 + ar1) / 2))
+            dcf_model.set_cell(self.ws4, f"{lt}12", ar1 / (sls1 / 365))
+            dcf_model.set_cell(self.ws4, f"{lt}13", cogs1 / ((inv0 + inv1) / 2))
+            dcf_model.set_cell(self.ws4, f"{lt}14", inv1 / (cogs1 / 365))
+            dcf_model.set_cell(self.ws4, f"{lt}15", cogs1 / ((ap0 + ap1) / 2))
+            dcf_model.set_cell(self.ws4, f"{lt}16", ap1 / (cogs1 / 365))
+            dcf_model.set_cell(
+                self.ws4,
+                f"{lt}17",
+                (ar1 / (sls1 / 365)) + (inv1 / (cogs1 / 365)) - (ap1 / (cogs1 / 365)),
+            )
+            dcf_model.set_cell(self.ws4, f"{lt}18", sls1 / ((ta0 + ta1) / 2))
+            dcf_model.set_cell(self.ws4, f"{lt}21", ni1 / sls1)
+            dcf_model.set_cell(self.ws4, f"{lt}22", ni1 / ((ar0 + ar1) / 2))
+            dcf_model.set_cell(self.ws4, f"{lt}23", ni1 / ((te0 + te1) / 2))
+            dcf_model.set_cell(self.ws4, f"{lt}24", (ni1 + inte1 + tax1) / sls1)
+            dcf_model.set_cell(self.ws4, f"{lt}25", (sls1 - cogs1) / sls1)
+            dcf_model.set_cell(self.ws4, f"{lt}26", opcf1 / cl1)
+            dcf_model.set_cell(self.ws4, f"{lt}29", tl1 / te1)
+            dcf_model.set_cell(self.ws4, f"{lt}30", tl1 / ta1)
+            dcf_model.set_cell(self.ws4, f"{lt}31", ta1 / te1)
+            if inte1 == 0:
+                dcf_model.set_cell(self.ws4, f"{lt}32", "N/A")
+            else:
+                dcf_model.set_cell(self.ws4, f"{lt}32", (ni1 + inte1 + tax1) / inte1)
+            dcf_model.set_cell(
+                self.ws4,
+                f"{lt}35",
+                (ni1 - pdiv1) / float(self.info["sharesOutstanding"]),
+            )
+            dcf_model.set_cell(
+                self.ws4,
+                f"{lt}36",
+                float(self.info["previousClose"])
+                / ((ni1 - pdiv1) / float(self.info["sharesOutstanding"])),
+            )
 
     def create_header(self, ws: Workbook):
         for i in range(10):
@@ -841,7 +992,7 @@ class CreateExcelFA:
         y = vfunc(pre_y)
         model = LinearRegression().fit(x, y)
         r_sq = model.score(x, y)
-        r = abs(math.sqrt(r_sq))
+        r = abs(r_sq ** 0.5)
 
         if r > 0.9:
             strength = "very strong"
