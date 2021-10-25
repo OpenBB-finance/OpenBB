@@ -28,7 +28,6 @@ from gamestonk_terminal.stocks.quantitative_analysis import qa_controller
 from gamestonk_terminal.stocks.fundamental_analysis import fa_controller
 from gamestonk_terminal.stocks.government import gov_controller
 from gamestonk_terminal.stocks.insider import insider_controller
-from gamestonk_terminal.stocks.report import report_controller
 from gamestonk_terminal.stocks.research import res_controller
 from gamestonk_terminal.stocks.screener import screener_controller
 from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
@@ -81,7 +80,6 @@ class StocksController:
         "bt",
         "dd",
         "ca",
-        "report",
         "options",
     ]
 
@@ -140,7 +138,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 >   scr         screener stocks, \t\t e.g. overview/performance, using preset filters
 >   ins         insider trading,         \t e.g.: latest penny stock buys, top officer purchases
 >   gov         government menu, \t\t e.g. house trading, contracts, corporate lobbying
->   report      generate automatic report,   \t e.g.: dark pool, due diligence
 >   ba          behavioural analysis,    \t from: reddit, stocktwits, twitter, google{dim_if_no_ticker}
 >   fa          fundamental analysis,    \t e.g.: income, balance, cash, earnings
 >   res         research web page,       \t e.g.: macroaxis, yahoo finance, fool
@@ -403,15 +400,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
     def call_gov(self, _):
         """Process gov command"""
         ret = gov_controller.menu(self.ticker)
-        if ret is False:
-            self.print_help()
-        else:
-            return True
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
         if ret is False:
             self.print_help()
         else:
