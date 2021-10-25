@@ -608,7 +608,7 @@ main:
         ref: "/etf/holdings"
       - name: compare
         ref: "/etf/compare"
-      - name: screener
+      - name: screene
         ref: "/etf/screener"
       - name: gainers
         ref: "/etf/gainers"
@@ -616,6 +616,8 @@ main:
         ref: "/etf/decliners"
       - name: active
         ref: "/etf/active"
+      - name: report
+        ref: "/etf/report"
   - name: portfolio
     ref: "/portfolio"
     sub:
