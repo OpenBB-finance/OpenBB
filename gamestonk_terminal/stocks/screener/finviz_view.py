@@ -6,7 +6,6 @@ from typing import List
 import os
 from datetime import datetime
 import pandas as pd
-from gamestonk_terminal.stocks.report import due_diligence_view
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
@@ -93,13 +92,6 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
         dest="exportFile",
         help="Save list as a text file",
     )
-    parser.add_argument(
-        "-m",
-        "--mill",
-        action="store_true",
-        dest="mill",
-        help="Run papermill on list",
-    )
 
     try:
         ns_parser = parse_known_args_and_warn(parser, other_args)
@@ -129,10 +121,7 @@ def screener(other_args: List[str], loaded_preset: str, data_type: str) -> List[
                     "w",
                 ) as file:
                     file.write(df_screen.to_string(index=False) + "\n")
-            if ns_parser.mill:
-                for i in range(len(df_screen)):
-                    ticker = [df_screen.iat[i, 0]]
-                    due_diligence_view.due_diligence_report(ticker)
+
             return list(df_screen["Ticker"].values)
 
         print("")

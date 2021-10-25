@@ -42,7 +42,6 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load_ta_data,
     plot_chart,
 )
-from gamestonk_terminal.cryptocurrency.report import report_controller
 from gamestonk_terminal.cryptocurrency.due_diligence import binance_model
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
@@ -66,7 +65,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "report", "onchain", "defi"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi"]
 
     SOURCES = {
         "bin": "Binance",
@@ -115,8 +114,8 @@ What do you want to do?
             if self.source != ""
             else "\nSource: ?\n"
         )
+        dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
-
     load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
     find        alternate way to search for coins
@@ -125,12 +124,10 @@ What do you want to do?
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
 >   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   report      generate automatic report {Style.DIM if not self.current_coin else ""}
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding{dim}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
-{Style.RESET_ALL if not self.current_coin else ""}
-"""
+{Style.RESET_ALL if not self.current_coin else ""}"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -737,15 +734,6 @@ What do you want to do?
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_onchain(self, _):
         """Process onchain command"""
