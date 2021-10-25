@@ -9,6 +9,9 @@ if env_files:
 # Choose one of: stocks, options, crypto, economy, etf, portfolio, forex
 DEFAULT_CONTEXT = ""
 
+# Choose one of: developer, user
+RUN_MODE = "user"
+
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8892"
 
