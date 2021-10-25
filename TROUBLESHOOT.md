@@ -30,7 +30,7 @@ Since the start of the project we've come across different types of issues exper
 <li>
   <a href="#other-issues">Other Issues</a>
   <ul>
-    <li><a href="#Poetry">General</a></li>
+    <li><a href="#Poetry">Poetry</a></li>
     <li><a href="#CRLF-versus-LF">CRLF versus LF</a></li>
   </ul>
 </li>
