@@ -42,28 +42,27 @@ def draw_graph(
     low_trend : bool, optional
         Switch to draw low trend line, by default True
     """
-    df_stock_cache = pathlib.Path(
-        report_cache_dir, f"{ticker}_stock_data_{time_delta}.pkl"
-    )
-    if os.path.isfile(df_stock_cache):
-        # print(f"Found a cache file. Loading {df_stock_cache}")
-        df_stock = pd.read_pickle(df_stock_cache)
+    if report_cache_dir:
+        df_stock_cache = pathlib.Path(
+            report_cache_dir, f"{ticker}_stock_data_{time_delta}.pkl"
+        )
+        if os.path.isfile(df_stock_cache):
+            df_stock = pd.read_pickle(df_stock_cache)
+        else:
+            df_stock = trend.load_ticker(
+                ticker,
+                (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d"),
+            )
+            df_stock = trend.find_trendline(df_stock, "OC_High", "high")
+            df_stock = trend.find_trendline(df_stock, "OC_Low", "how")
+            df_stock.to_pickle(df_stock_cache)
+
     else:
-        # print("Cache file not found. Getting data")
         df_stock = trend.load_ticker(
             ticker, (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d")
         )
         df_stock = trend.find_trendline(df_stock, "OC_High", "high")
         df_stock = trend.find_trendline(df_stock, "OC_Low", "how")
-        # print("Savind cache file")
-        df_stock.to_pickle(df_stock_cache)
-        # print(os.listdir(report_cache_dir))
-
-    df_stock = trend.load_ticker(
-        ticker, (datetime.now() - timedelta(days=time_delta)).strftime("%Y-%m-%d")
-    )
-    df_stock = trend.find_trendline(df_stock, "OC_High", "high")
-    df_stock = trend.find_trendline(df_stock, "OC_Low", "how")
 
     mc = mpf.make_marketcolors(
         up="green", down="red", edge="black", wick="black", volume="in", ohlc="i"
