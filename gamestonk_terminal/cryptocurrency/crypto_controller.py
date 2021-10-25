@@ -114,6 +114,7 @@ What do you want to do?
             if self.source != ""
             else "\nSource: ?\n"
         )
+        dim = Style.DIM if not self.current_coin else ""
         help_text += f"""
     load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
@@ -123,8 +124,7 @@ What do you want to do?
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
 >   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
-{Style.DIM if not self.current_coin else ""}
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding{dim}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
 {Style.RESET_ALL if not self.current_coin else ""}"""
