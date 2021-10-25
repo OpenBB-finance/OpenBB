@@ -616,8 +616,8 @@ main:
         ref: "/etf/decliners"
       - name: active
         ref: "/etf/active"
-      - name: report
-        ref: "/etf/report"
+      - name: pir
+        ref: "/etf/pir"
   - name: portfolio
     ref: "/portfolio"
     sub:
