@@ -736,7 +736,7 @@ def get_rf() -> float:
 
     Returns
     -------
-    float
+    rate : float
         The current US T-Bill rate
     """
     try:
@@ -751,11 +751,17 @@ def get_rf() -> float:
 
 
 def try_except(f):
-    """Adds a try except block if the user is not in development mode"""
+    """Adds a try except block if the user is not in development mode
+
+    Parameters
+    -------
+    f: function
+        The function to be wrapped
+    """
     # pylint: disable=inconsistent-return-statements
     @functools.wraps(f)
     def inner(*args, **kwargs):
-        if cfg.RUN_MODE == "developer":
+        if cfg.DEVELOPER_MODE:
             return f(*args, **kwargs)
         try:
             return f(*args, **kwargs)
