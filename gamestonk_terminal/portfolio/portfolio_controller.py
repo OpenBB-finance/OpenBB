@@ -22,7 +22,7 @@ from gamestonk_terminal.menu import session
 from gamestonk_terminal.portfolio.brokers import bro_controller
 from gamestonk_terminal.portfolio.portfolio_analysis import pa_controller
 from gamestonk_terminal.portfolio.portfolio_optimization import po_controller
-from gamestonk_terminal.portfolio import portfolio_view, portfolio_model
+from gamestonk_terminal.portfolio import portfolio_view, portfolio_model, yfinance_model
 from gamestonk_terminal.helper_funcs import parse_known_args_and_warn
 
 # pylint: disable=R1710
@@ -51,6 +51,7 @@ class PortfolioController:
         "add",
         "rmv",
         "ar",
+        "ret",
     ]
 
     CHOICES += CHOICES_MENUS
@@ -103,6 +104,9 @@ Portfolio:
 
 Reports:
     ar          annual report for performance of a given portfolio
+
+Graphs:
+    ret         graph your returns versus the market's returns
         """
         print(help_text)
 
@@ -382,6 +386,34 @@ Reports:
         try:
             val, hist = portfolio_model.generate_performance(self.portfolio)
             portfolio_view.annual_report(val, hist, ns_parser.market)
+        except Exception as e:
+            print(e, "\n")
+
+    def call_ret(self, other_args: List[str]):
+        """Process ret command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ret",
+            description="Graph of portfolio returns versus market returns",
+        )
+        parser.add_argument(
+            "-m",
+            "--market",
+            type=str,
+            dest="market",
+            default="SPY",
+            help="Choose a ticker to be the market asset",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
+        try:
+            val, _ = portfolio_model.generate_performance(self.portfolio)
+            df_m = yfinance_model.get_market(ns_parser.market)
+            portfolio_view.plot_overall_return(val, df_m, 365, ns_parser.market, True)
         except Exception as e:
             print(e, "\n")
 

@@ -66,7 +66,7 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
 
 
 def plot_overall_return(
-    df: pd.DataFrame, df_m: pd.DataFrame, n: int, m_tick: str
+    df: pd.DataFrame, df_m: pd.DataFrame, n: int, m_tick: str, plot: bool = False
 ) -> ImageReader:
     """Generates overall return graph
 
@@ -80,6 +80,8 @@ def plot_overall_return(
         The number of days to include in chart
     m_tick : str
         The ticker for the market asset
+    plot : bool
+        Whether to plot the graph or return it for PDF
 
     Returns
     ----------
@@ -131,6 +133,10 @@ def plot_overall_return(
     ax.set_facecolor("white")
     ax.legend()
     fig.autofmt_xdate()
+    if plot:
+        plt.show()
+        return None
+
     imgdata = BytesIO()
     fig.savefig(imgdata, format="png")
     imgdata.seek(0)
@@ -245,7 +251,9 @@ def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
     )
     report = canvas.Canvas(path, pagesize=letter)
     reportlab_helpers.base_format(report, "Overview")
-    report.drawImage(plot_overall_return(df, df_m, 365, m_tick), 15, 360, 600, 300)
+    report.drawImage(
+        plot_overall_return(df, df_m, 365, m_tick, False), 15, 360, 600, 300
+    )
     report.showPage()
     reportlab_helpers.base_format(report, "Portfolio Analysis")
     report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
