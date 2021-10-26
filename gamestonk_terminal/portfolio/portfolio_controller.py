@@ -358,11 +358,30 @@ Reports:
                 f"Invalid index please use an integer between 0 and {len(self.portfolio.index)-1}\n"
             )
 
-    def call_ar(self, _):
+    def call_ar(self, other_args: List[str]):
         """Process ar command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ar",
+            description="Create an annual report based on given portfolio",
+        )
+        parser.add_argument(
+            "-m",
+            "--market",
+            type=str,
+            dest="market",
+            default="SPY",
+            help="Choose a ticker to be the market asset",
+        )
+
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+
         try:
             val, hist = portfolio_model.generate_performance(self.portfolio)
-            portfolio_view.annual_report(val, hist)
+            portfolio_view.annual_report(val, hist, ns_parser.market)
         except Exception as e:
             print(e, "\n")
 

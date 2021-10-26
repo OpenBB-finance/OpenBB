@@ -55,16 +55,21 @@ def get_dividends(tickers: List[str]) -> pd.DataFrame:
     return pd.concat(dfs)
 
 
-def get_market() -> pd.DataFrame:
-    """Get historical data for SPY
+def get_market(ticker: str = "SPY") -> pd.DataFrame:
+    """Get historical data for market asset
+
+    Parameters
+    ----------
+    ticker : str
+        Ticker to get data for
 
     Returns
     ----------
     data : pd.DataFrame
         Historic prices for SPY
     """
-    ticker = yf.Ticker("SPY")
-    df = ticker.history(
+    tick = yf.Ticker(ticker)
+    df = tick.history(
         period="5y",
         interval="1d",
     )["Close"]

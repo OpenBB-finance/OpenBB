@@ -65,7 +65,9 @@ def show_df(df: pd.DataFrame, show: bool) -> None:
         print(df.to_string, "\n")
 
 
-def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageReader:
+def plot_overall_return(
+    df: pd.DataFrame, df_m: pd.DataFrame, n: int, m_tick: str
+) -> ImageReader:
     """Generates overall return graph
 
     Parameters
@@ -76,6 +78,8 @@ def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageRe
         The dataframe for historical market performance
     n : int
         The number of days to include in chart
+    m_tick : str
+        The ticker for the market asset
 
     Returns
     ----------
@@ -99,11 +103,9 @@ def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageRe
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
 
-    print(comb)
-
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
-    ax.plot(comb.index, comb[("Market", "Return")], color="orange", label="SPY")
+    ax.plot(comb.index, comb[("Market", "Return")], color="orange", label=m_tick)
 
     ax.set_ylabel("", fontweight="bold", fontsize=12, color="black")
     ax.set_xlabel("")
@@ -217,18 +219,20 @@ def plot_rolling_beta(
     return ImageReader(imgdata)
 
 
-def annual_report(df: pd.DataFrame, hist: pd.DataFrame) -> None:
+def annual_report(df: pd.DataFrame, hist: pd.DataFrame, m_tick: str) -> None:
     """Generates an annual report
 
     Parameters
     ----------
     df : pd.DataFrame
         The dataframe to be analyzed
+    m_tick : str
+        The ticker for the market asset
 
     hist : pd.DataFrame
         A dataframe of historical returns
     """
-    df_m = yfinance_model.get_market()
+    df_m = yfinance_model.get_market(m_tick)
     dire = os.path.dirname(os.path.abspath(__file__)).replace(
         "gamestonk_terminal", "exports"
     )
@@ -241,7 +245,7 @@ def annual_report(df: pd.DataFrame, hist: pd.DataFrame) -> None:
     )
     report = canvas.Canvas(path, pagesize=letter)
     reportlab_helpers.base_format(report, "Overview")
-    report.drawImage(plot_overall_return(df, df_m, 365), 15, 360, 600, 300)
+    report.drawImage(plot_overall_return(df, df_m, 365, m_tick), 15, 360, 600, 300)
     report.showPage()
     reportlab_helpers.base_format(report, "Portfolio Analysis")
     report.drawImage(plot_rolling_beta(df, hist, df_m, 365), 15, 360, 600, 300)
