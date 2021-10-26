@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 
 import argparse
 import os
-import configparser
 import subprocess
 import webbrowser
 from datetime import datetime
@@ -38,28 +37,46 @@ class ReportController:
         if notebooks.endswith(".ipynb")
     ]
 
-    cfg_reports = configparser.RawConfigParser()
-    cfg_reports.optionxform = str  # type: ignore
-    cfg_reports.read(os.path.join(reports_folder, "config_reports.ini"))
-    report_cfgs = cfg_reports.sections()
+    ids_reports = [str(val + 1) for val in range(len(report_names))]
 
-    valid_reports = list(set(report_names) & set(report_cfgs))
-
-    ids_reports = [str(val + 1) for val in range(len(valid_reports))]
-
-    CHOICES += valid_reports + ids_reports
+    CHOICES += report_names + ids_reports
 
     d_id_to_report_name = {}
-    for id_report, report_name in enumerate(valid_reports):
+    for id_report, report_name in enumerate(report_names):
         d_id_to_report_name[str(id_report + 1)] = report_name
 
-    max_len_name = max(len(name) for name in valid_reports) + 2
+    d_params = {}
+
+    max_len_name = max(len(name) for name in report_names) + 2
     reports_opts = ""
-    for k, v in d_id_to_report_name.items():
-        args = f"<{'> <'.join(list({**cfg_reports[v]}.keys()))}>"
-        reports_opts += (
-            f"    {k}. {v}{(max_len_name-len(v))*' '} {args if args != '<>' else ''}\n"
+    for k, report_to_run in d_id_to_report_name.items():
+        # Crawl data to look into what
+        notebook_file = os.path.join("gamestonk_terminal", "reports", report_to_run)
+        notebook_content = open(notebook_file + ".ipynb").read()
+        metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
+        notebook_metadata_content = notebook_content[
+            notebook_content.find(metadata_cell) :
+        ]
+        cell_start = 'source": '
+        cell_end = '"report_name='
+        params = (
+            notebook_metadata_content[
+                notebook_metadata_content.find(
+                    cell_start
+                ) : notebook_metadata_content.find(cell_end)
+            ]
+            + "]"
         )
+        l_params = [
+            param.split("=")[0]
+            for param in literal_eval(params.strip('source": '))
+            if param[0] not in ["#", "\n"]
+        ]
+
+        d_params[report_to_run] = l_params
+
+        args = f"<{'> <'.join(l_params)}>"
+        reports_opts += f"   {k}. {report_to_run}{(max_len_name-len(report_to_run))*' '} {args if args != '<>' else ''}\n"
 
     def __init__(self):
         """Constructor"""
@@ -135,17 +152,21 @@ Select one of the following reports:
             else:
                 report_to_run = known_args.cmd
 
-            d_report_params = {**self.cfg_reports[report_to_run]}
+            params = self.d_params[report_to_run]
 
             # Check that the number of arguments match. We can't check validity of argument used because
             # this depends on what the user will use it for in the notebook. This is a downside of allowing
             # the user to have this much flexibility.
-            if len(other_args) != len(d_report_params.keys()):
-                print("Wrong number of arguments provided! Provide:")
-                max_len_arg = max(len(arg) for arg in list(d_report_params.keys())) + 2
-                for k, v in d_report_params.items():
-                    print(f"{k}:{(max_len_arg-len(k))*' '}{literal_eval(v)}")
+            if len(other_args) != len(params):
+                print("Wrong number of arguments provided!")
+                if len(params):
+                    print("Provide, in order:")
+                    for k, v in enumerate(params):
+                        print(f"{k+1}. {v}")
+                else:
+                    print("No argument required.")
                 print("")
+                return None
 
             notebook_template = os.path.join(
                 "gamestonk_terminal", "reports", report_to_run
@@ -158,7 +179,8 @@ Select one of the following reports:
                 f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{report_to_run}{args_to_output}",
             )
 
-            for idx, args in enumerate(list(d_report_params.keys())):
+            d_report_params = {}
+            for idx, args in enumerate(params):
                 d_report_params[args] = other_args[idx]
 
             d_report_params["report_name"] = notebook_output
