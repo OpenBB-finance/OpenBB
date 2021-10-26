@@ -74,7 +74,7 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
     )
 
     data["date"] = pd.to_datetime(data["timestamp"], unit="s")
-    data.columns = [col.replace(".address", "") for col in data.columns]
+    data.columns = [col.replace(".balance", "") for col in data.columns]
     data["to_address"] = data["to"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=45)) if isinstance(x, str) else x
     )

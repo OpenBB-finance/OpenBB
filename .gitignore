@@ -7,15 +7,13 @@ __pycache__/
 *.ipynb
 env/
 venv/
-noteoboks/examples/*
-notebooks/reports/*
-reports/*
 !notebooks/reports/.gitkeep
 .python-version
 exports/*
 .idea
 .coverage
 htmlcov
+gamestonk_terminal/reports/stored/*
 
 # Jupyter Lab Extension build files
 jupyterlab/*/*.bundle.*

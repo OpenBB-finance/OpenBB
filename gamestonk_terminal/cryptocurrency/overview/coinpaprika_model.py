@@ -310,7 +310,7 @@ def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-         id, type, active, address
+         id, type, active, balance
     """
 
     session = PaprikaSession()
@@ -318,4 +318,4 @@ def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
         session.ENDPOINTS["contract_platform_addresses"].format(platform_id)
     )
 
-    return pd.DataFrame(contract_platforms)[["id", "type", "active", "address"]]
+    return pd.DataFrame(contract_platforms)[["id", "type", "active", "balance"]]

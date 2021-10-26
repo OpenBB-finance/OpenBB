@@ -16,12 +16,14 @@ from gamestonk_terminal.economy import (
     fred_view,
     wsj_view,
 )
-from gamestonk_terminal.economy.report import report_controller
 from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_known_args_and_warn,
     valid_date,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
 )
 from gamestonk_terminal.menu import session
 
@@ -55,6 +57,7 @@ class EconomyController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMANDS = [
@@ -77,12 +80,7 @@ class EconomyController:
         "industry",
     ]
 
-    CHOICES_MENUS = [
-        "report",
-    ]
-
     CHOICES += CHOICES_COMMANDS
-    CHOICES += CHOICES_MENUS
 
     def __init__(self):
         """Constructor"""
@@ -103,6 +101,7 @@ What do you want to do?
     ?/help        show this menu again
     q             quit this menu, and shows back to main menu
     quit          quit to abandon program
+    reset         reset terminal and reload configs
 
 CNN:
     feargreed     CNN Fear and Greed Index
@@ -125,8 +124,6 @@ Alpha Vantage:
 FRED:
     search        search FRED series notes
     series        plot series from https://fred.stlouisfed.org
-
->   report        generate automatic report
 """
         print(help_text)
 
@@ -135,10 +132,10 @@ FRED:
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -168,11 +165,15 @@ FRED:
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - reset the program"""
+        return MENU_RESET
 
     def call_events(self, other_args: List[str]):
         """Process events command"""
@@ -781,15 +782,6 @@ FRED:
 
         except Exception as e:
             print(e, "\n")
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
 
 def menu():

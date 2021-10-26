@@ -266,6 +266,7 @@ These are the ones where a key is necessary:
 * Twitter: https://developer.twitter.com
 * Coinbase Pro API: https://docs.pro.coinbase.com/
 * Whale Alert API: https://docs.whale-alert.io/
+* Ethplorer API: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
 
 When these are obtained, don't forget to update [config_terminal.py](/gamestonk_terminal/config_terminal.py).
 
@@ -290,6 +291,7 @@ Alternatively, you can also set them to the following environment variables:
 | [Twitter](https://developer.twitter.com) | GT_API_TWITTER_KEY <br/> GT_API_TWITTER_SECRET_KEY <br/> GT_API_TWITTER_BEARER_TOKEN |
 | [Coinbase](https://docs.pro.coinbase.com/) | GT_API_COINBASE_KEY <br/> GT_API_COINBASE_SECRET <br/> GT_API_COINBASE_PASS_PHRASE |
 | [Whale Alert](https://docs.whale-alert.io/) | GT_API_WHALE_ALERT_KEY |
+| [Ethplorer](https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API) | GT_API_ETHPLORER_KEY |
 
 Example:
 ```
@@ -366,10 +368,10 @@ Recommended if you bought the dip, and the share price keeps dipping. You may as
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Install the pre-commit hooks by running:
+3. Install the pre-commit hooks by running:
       ```pre-commit install```.
    Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
+4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
