@@ -70,6 +70,8 @@ class TechnicalAnalysisController:
         self.start = start
         self.interval = interval
         self.stock = stock
+        self.stock["Adj Close"] = stock["Close"]
+        print(self.stock)
 
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
@@ -86,6 +88,7 @@ class TechnicalAnalysisController:
             stock_str = f"\n{s_intraday} Crypto: {self.ticker}"
 
         dim = Style.DIM if "Volume" not in self.stock else ""
+        not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
         help_str = f"""
 {stock_str}
 
@@ -98,8 +101,8 @@ Technical Analysis:
 Overlap:
     ema         exponential moving average
     sma         simple moving average
-    zlma        zero lag moving average"
-    vwap        volume weighted average price
+    zlma        zero lag moving average{dim}
+    vwap        volume weighted average price{not_dim}
 Momentum:
     cci         commodity channel index
     macd        moving average convergence/divergence
@@ -115,7 +118,7 @@ Volatility:
     donchian    donchian channels{dim}
 Volume:
     ad          accumulation/distribution line values
-    obv         on balance volume{Style.RESET_ALL if "Volume" not in self.stock else ""}
+    obv         on balance volume{not_dim}
 Custom:
     fib         fibonacci retracement
 """
