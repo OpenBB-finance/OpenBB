@@ -16,19 +16,49 @@ import pandas as pd
 opts = Union[int, str, float]
 
 
-def string_float(string: str):
-    """Numpy vectorize function to convert strings to floats"""
+def string_float(string: str) -> float:
+    """Convert a string to a float
+
+    Parameters
+    ----------
+    string : str
+        String to be converted
+
+    Returns
+    -------
+    number : float
+        Analysis of filings text
+    """
     return float(string.replace(",", ""))
 
 
-def insert_row(name: str, index: str, df: pd.DataFrame, row_value: List[str]):
-    """Allows a row to be inserted after a given row in a pandas dataframe"""
+def insert_row(
+    name: str, index: str, df: pd.DataFrame, row_v: List[str]
+) -> pd.DataFrame:
+    """Allows a row to be added given an index and name
+
+    Parameters
+    ----------
+    name : str
+        Name to be added to df
+    index : str
+        The row the new item will go after
+    df : pd.DataFrame
+        The dataframe to be modified
+    row_v : List[str]
+        The items to be added to the row
+
+    Returns
+    -------
+    new_df : pd.DataFrame
+        The new dataframe
+    """
     pd.options.mode.chained_assignment = None
     if name not in df.index:
         row_number = df.index.get_loc(index) + 1
         df1 = df[0:row_number]
         df2 = df[row_number:]
-        df1.loc[name] = row_value
+        df1.loc[name] = row_v
         df_result = pd.concat([df1, df2])
         return df_result
     return df
@@ -44,7 +74,27 @@ def set_cell(
     alignment: str = None,
     num_form: str = None,
 ):
-    """Sets the value of the cell to given text and formats based on specified arguments"""
+    """Set the value for a cell
+
+    Parameters
+    ----------
+    ws : worksheet
+        The worksheet to be modified
+    cell : str
+        The cell that will be modified
+    text : Union[int, str, float]
+        The new value of the cell
+    font : str
+        The type of font
+    border : str
+        The type of border
+    fill : str
+        The type of fill
+    alignment : str
+        The type of alignment
+    num_form : str
+        The format for numbers
+    """
     if text:
         ws[cell] = text
     if font:
@@ -59,8 +109,14 @@ def set_cell(
         ws[cell].number_format = num_form
 
 
-def get_fama_raw():
-    """Gets base Fama French data to calculate risk"""
+def get_fama_raw() -> pd.DataFrame:
+    """Get Fama French data
+
+    Returns
+    -------
+    df : pd.DataFrame
+        Fama French data
+    """
     with urlopen(
         "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
@@ -90,8 +146,19 @@ def get_fama_raw():
     return df
 
 
-def get_historical_5(ticker: str):
-    """Get 5 year monthly historical performance for a ticker with dividends filtered"""
+def get_historical_5(ticker: str) -> pd.DataFrame:
+    """Get 5 year monthly historical performance for a ticker with dividends filtered
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker to be analyzed
+
+    Returns
+    -------
+    df : pd.DataFrame
+        Historical data
+    """
     tick = yf.Ticker(ticker)
     df = tick.history(period="5y", interval="1mo")
     df = df[df.index.to_series().apply(lambda x: x.day == 1)]
@@ -100,8 +167,19 @@ def get_historical_5(ticker: str):
     return df
 
 
-def get_fama_coe(ticker: str):
-    """Use Fama and French to get the cost of equity for a company"""
+def get_fama_coe(ticker: str) -> float:
+    """Use Fama and French to get the cost of equity for a company
+
+    Parameters
+    ----------
+    ticker : str
+        The ticker to be analyzed
+
+    Returns
+    -------
+    coef : float
+        The stock's Fama French coefficient
+    """
     df_f = get_fama_raw()
     df_h = get_historical_5(ticker)
     df = df_h.join(df_f)

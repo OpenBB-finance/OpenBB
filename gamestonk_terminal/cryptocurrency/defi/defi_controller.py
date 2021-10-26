@@ -21,8 +21,6 @@ from gamestonk_terminal.cryptocurrency.defi import (
     substack_view,
 )
 
-# pylint: disable=R1732
-
 
 class DefiController:
     """Defi Controller class"""

@@ -6,6 +6,7 @@ import argparse
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
+from colorama import Style
 from prompt_toolkit.completion import NestedCompleter
 from binance.client import Client
 from gamestonk_terminal import feature_flags as gtff
@@ -13,6 +14,9 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    MENU_GO_BACK,
+    MENU_QUIT,
+    MENU_RESET,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.cryptocurrency.technical_analysis import ta_controller
@@ -38,7 +42,6 @@ from gamestonk_terminal.cryptocurrency.cryptocurrency_helpers import (
     load_ta_data,
     plot_chart,
 )
-from gamestonk_terminal.cryptocurrency.report import report_controller
 from gamestonk_terminal.cryptocurrency.due_diligence import binance_model
 from gamestonk_terminal.cryptocurrency.due_diligence import coinbase_model
 from gamestonk_terminal.cryptocurrency.onchain import onchain_controller
@@ -52,6 +55,7 @@ class CryptoController:
         "help",
         "q",
         "quit",
+        "reset",
     ]
 
     CHOICES_COMMAND = [
@@ -61,7 +65,7 @@ class CryptoController:
         "find",
     ]
 
-    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "report", "onchain", "defi"]
+    CHOICES_MENUS = ["ta", "dd", "ov", "disc", "onchain", "defi"]
 
     SOURCES = {
         "bin": "Binance",
@@ -100,6 +104,7 @@ What do you want to do?
     ?/help      show this menu again
     q           quit this menu, and shows back to main menu
     quit        quit to abandon the program
+    reset       reset terminal and reload configs
 """
         help_text += (
             f"\nCoin: {self.current_coin}" if self.current_coin != "" else "\nCoin: ?"
@@ -109,9 +114,8 @@ What do you want to do?
             if self.source != ""
             else "\nSource: ?\n"
         )
-        help_text += """
-Note: Some of CoinGecko commands can fail. Team is working on fix.
-
+        dim = Style.DIM if not self.current_coin else ""
+        help_text += f"""
     load        load a specific cryptocurrency for analysis
     chart       view a candle chart for a specific cryptocurrency
     find        alternate way to search for coins
@@ -119,12 +123,11 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 
 >   disc        discover trending cryptocurrencies,     e.g.: top gainers, losers, top sentiment
 >   ov          overview of the cryptocurrencies,       e.g.: market cap, DeFi, latest news, top exchanges, stables
+>   onchain     information on different blockchains,   e.g.: eth gas fees, active asset addresses, whale alerts
+>   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding{dim}
 >   dd          due-diligence for loaded coin,          e.g.: coin information, social media, market stats
 >   ta          technical analysis for loaded coin,     e.g.: ema, macd, rsi, adx, bbands, obv
->   onchain     information on different blockchains,   e.g.: eth gas fees
->   defi        decentralized finance information,      e.g.: dpi, llama, tvl, lending, borrow, funding
->   report      generate automatic report
-"""
+{Style.RESET_ALL if not self.current_coin else ""}"""
         print(help_text)
 
     def switch(self, an_input: str):
@@ -132,10 +135,10 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 
         Returns
         -------
-        True, False or None
-            False - quit the menu
-            True - quit the program
-            None - continue in the menu
+        MENU_GO_BACK, MENU_QUIT, MENU_RESET
+            MENU_GO_BACK - Show main context menu again
+            MENU_QUIT - Quit terminal
+            MENU_RESET - Reset terminal and go back to same previous menu
         """
 
         # Empty command
@@ -165,11 +168,15 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
 
     def call_q(self, _):
         """Process Q command - quit the menu"""
-        return False
+        return MENU_GO_BACK
 
     def call_quit(self, _):
-        """Process Quit command - quit the program"""
-        return True
+        """Process Quit command - exit the program"""
+        return MENU_QUIT
+
+    def call_reset(self, _):
+        """Process Reset command - exit the program"""
+        return MENU_RESET
 
     def call_load(self, other_args):
         """Process load command"""
@@ -727,15 +734,6 @@ Note: Some of CoinGecko commands can fail. Team is working on fix.
             print(
                 "No coin selected. Use 'load' to load the coin you want to look at.\n"
             )
-
-    def call_report(self, _):
-        """Process report command"""
-        ret = report_controller.menu()
-
-        if ret is False:
-            self.print_help()
-        else:
-            return True
 
     def call_onchain(self, _):
         """Process onchain command"""
