@@ -53,7 +53,6 @@ def plot_data(df, asset):
     _, main_ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
 
     main_ax.plot(df["t"], df["v"], linewidth=0.5)
-    main_ax.set_yscale("log")
     main_ax.grid(True)
 
     main_ax.set_title(f"Active {asset} addresses over time")
