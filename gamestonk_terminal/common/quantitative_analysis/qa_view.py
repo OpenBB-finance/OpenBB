@@ -500,7 +500,7 @@ def display_unitroot(
 
 
 def display_raw(
-    df: pd.DataFrame, export: str, sort: str, des: bool, num: int = 20
+    df: pd.DataFrame, sort: str = "", des: bool = False, num: int = 20, export: str = ""
 ) -> None:
     """Return raw stock data
 
@@ -508,14 +508,14 @@ def display_raw(
     ----------
     df : DataFrame
         DataFrame with historical information
-    export : str
-        Export data as CSV, JSON, XLSX
     sort : str
         The column to sort by
     des : bool
         Whether to sort descending
     num : int
         Number of rows to show
+    export : str
+        Export data as CSV, JSON, XLSX
     """
 
     export_data(
@@ -525,13 +525,16 @@ def display_raw(
         df,
     )
 
+    if isinstance(df, pd.Series):
+        df = pd.DataFrame(df)
+
     if sort:
         df = df.sort_values(by=sort, ascending=des)
 
     if gtff.USE_TABULATE_DF:
         print(
             tabulate(
-                df.head(num),
+                df.tail(num),
                 headers=[x.title() if x != "" else "Date" for x in df.columns],
                 tablefmt="fancy_grid",
                 showindex=True,

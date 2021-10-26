@@ -18,10 +18,12 @@ from gamestonk_terminal.common.quantitative_analysis import (
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     get_flair,
     check_positive,
     check_proportion_range,
     parse_known_args_and_warn,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.quantitative_analysis.factors_view import capm_view
@@ -31,7 +33,7 @@ class QaController:
     """Quantitative Analysis Controller class"""
 
     # Command choices
-    CHOICES = ["?", "cls", "help", "q", "quit", "load", "pick"]
+    CHOICES = ["?", "cls", "help", "q", "quit", "load", "pick", "raw"]
 
     CHOICES_COMMANDS = [
         "summary",
@@ -118,6 +120,7 @@ Rolling Metrics:
     skew        rolling skewness of distribution of prices
     kurtosis    rolling kurtosis of distribution of prices
 Other:
+    raw         print raw data
     decompose   decomposition in cyclic-trend, season, and residuals of prices
     cusum       detects abrupt changes using cumulative sum algorithm of prices
     capm        capital asset pricing model
@@ -215,6 +218,46 @@ Other:
 
         except Exception as e:
             print(e, "\n")
+
+    @try_except
+    def call_raw(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="raw",
+            description="""
+                Print raw data to console
+            """,
+        )
+        parser.add_argument(
+            "-n",
+            "--num",
+            help="Number to show",
+            type=check_positive,
+            default=20,
+            dest="num",
+        )
+        parser.add_argument(
+            "-d",
+            "--descend",
+            action="store_true",
+            default=False,
+            dest="descend",
+            help="Sort in descending order",
+        )
+
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        qa_view.display_raw(
+            self.stock[self.target],
+            num=ns_parser.num,
+            sort="",
+            des=ns_parser.descend,
+            export=ns_parser.export,
+        )
 
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
