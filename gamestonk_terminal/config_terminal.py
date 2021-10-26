@@ -10,7 +10,7 @@ if env_files:
 DEFAULT_CONTEXT = ""
 
 # Choose one of: developer, user
-DEVELOPER_MODE = False
+DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = "8892"

@@ -761,7 +761,7 @@ def try_except(f):
     # pylint: disable=inconsistent-return-statements
     @functools.wraps(f)
     def inner(*args, **kwargs):
-        if cfg.DEVELOPER_MODE:
+        if cfg.DEBUG_MODE:
             return f(*args, **kwargs)
         try:
             return f(*args, **kwargs)
