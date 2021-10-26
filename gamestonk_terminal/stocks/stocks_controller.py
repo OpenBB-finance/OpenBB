@@ -30,7 +30,7 @@ from gamestonk_terminal.stocks.government import gov_controller
 from gamestonk_terminal.stocks.insider import insider_controller
 from gamestonk_terminal.stocks.research import res_controller
 from gamestonk_terminal.stocks.screener import screener_controller
-from gamestonk_terminal.stocks.stocks_helper import candle, load, quote
+from gamestonk_terminal.stocks.stocks_helper import display_candle, load, quote
 from gamestonk_terminal.stocks.technical_analysis import ta_controller
 from gamestonk_terminal.helper_funcs import (
     valid_date,
@@ -305,7 +305,7 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
                 )
 
             else:
-                candle(
+                display_candle(
                     s_ticker=self.ticker + "." + self.suffix
                     if self.suffix
                     else self.ticker,
