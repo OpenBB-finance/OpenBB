@@ -1,6 +1,7 @@
 """Helper functions"""
 __docformat__ = "numpy"
 import argparse
+import functools
 from typing import List
 from datetime import datetime, timedelta, time as Time
 import os
@@ -10,6 +11,7 @@ import sys
 import pandas as pd
 from pytz import timezone
 import iso8601
+
 import matplotlib
 import matplotlib.pyplot as plt
 from holidays import US as holidaysUS
@@ -19,8 +21,10 @@ from pandas.plotting import register_matplotlib_converters
 import pandas.io.formats.format
 import requests
 from screeninfo import get_monitors
+
 from gamestonk_terminal import feature_flags as gtff
 from gamestonk_terminal import config_plot as cfgPlot
+import gamestonk_terminal.config_terminal as cfg
 
 register_matplotlib_converters()
 if cfgPlot.BACKEND is not None:
@@ -732,7 +736,7 @@ def get_rf() -> float:
 
     Returns
     -------
-    float
+    rate : float
         The current US T-Bill rate
     """
     try:
@@ -744,3 +748,24 @@ def get_rf() -> float:
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
         return 0.02
+
+
+def try_except(f):
+    """Adds a try except block if the user is not in development mode
+
+    Parameters
+    -------
+    f: function
+        The function to be wrapped
+    """
+    # pylint: disable=inconsistent-return-statements
+    @functools.wraps(f)
+    def inner(*args, **kwargs):
+        if cfg.DEBUG_MODE:
+            return f(*args, **kwargs)
+        try:
+            return f(*args, **kwargs)
+        except Exception as e:
+            print(e, "\n")
+
+    return inner

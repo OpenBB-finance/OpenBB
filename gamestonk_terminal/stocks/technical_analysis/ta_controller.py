@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive_list,
     check_positive,
+    try_except,
     valid_date,
 )
 from gamestonk_terminal.menu import session
@@ -298,6 +299,7 @@ Custom:
         except Exception as e:
             print(e, "\n")
 
+    @try_except
     def call_pr(self, other_args: List[str]):
         """Process pr command"""
 
@@ -327,20 +329,15 @@ Custom:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            finnhub_view.plot_pattern_recognition(
-                ticker=self.ticker,
-                resolution=ns_parser.resolution,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        finnhub_view.plot_pattern_recognition(
+            ticker=self.ticker,
+            resolution=ns_parser.resolution,
+            export=ns_parser.export,
+        )
 
     # COMMON
     # TODO: Go through all models and make sure all needed columns are in dfs
