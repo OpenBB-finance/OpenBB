@@ -407,7 +407,7 @@ def load(
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def candle(s_ticker: str, s_start: datetime, plotly: bool):
+def display_candle(s_ticker: str, s_start: datetime, plotly: bool):
     """Shows candle plot of loaded ticker
 
     Parameters
