@@ -203,6 +203,8 @@ def load(
                     print("")
                     return [s_ticker, s_start, s_interval, df_stock]
 
+                df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+
                 # pylint: disable=no-member
                 df_stock_candidate.sort_index(ascending=True, inplace=True)
 
