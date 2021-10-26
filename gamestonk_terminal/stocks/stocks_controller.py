@@ -220,8 +220,23 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="data",
+            prog="candle",
             description="Shows historic data for a stock",
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="s_start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+            help="Start date for candle data",
+        )
+        parser.add_argument(
+            "--plotly",
+            dest="plotly",
+            action="store_true",
+            default=False,
+            help="Flag to show interactive plot using plotly.",
         )
         parser.add_argument(
             "--export",
@@ -232,7 +247,6 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             help="Export dataframe data to csv,json,xlsx file",
         )
         parser.add_argument(
-            "-s",
             "--sort",
             choices=[
                 "AdjClose",
@@ -264,24 +278,36 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
             default=False,
             help="Shows raw data instead of chart",
         )
+        parser.add_argument(
+            "-n",
+            "--num",
+            type=check_positive,
+            help="Number to show if raw selected",
+            dest="num",
+            default=20,
+        )
 
         try:
             ns_parser = parse_known_args_and_warn(parser, other_args)
             if not ns_parser:
                 return
+            if not self.ticker:
+                print("No ticker loaded.  First use `load {ticker}`\n")
+                return
 
             if ns_parser.raw:
                 qa_view.display_raw(
-                    self.stock,
-                    ns_parser.export,
-                    ns_parser.sort,
-                    ns_parser.descending,
+                    df=self.stock,
+                    export=ns_parser.export,
+                    sort=ns_parser.sort,
+                    des=ns_parser.descending,
+                    num=ns_parser.num,
                 )
 
             else:
                 candle(
                     self.ticker + "." + self.suffix if self.suffix else self.ticker,
-                    other_args,
+                    ns_parser,
                 )
 
         except Exception as e:
