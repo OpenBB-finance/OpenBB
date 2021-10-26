@@ -84,21 +84,24 @@ def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageRe
     """
     df = df.copy()
     df = df[df.index >= datetime.now() - timedelta(days=n + 1)]
-    df["return"] = (
-        df["holdings"] + df["Cash"]["Cash"] - df["holdings"][0] - df["Cash"]["Cash"][0]
-    ) / (df["Cash"]["Cash"][0] + df["holdings"][0] + df["total_cost"][0])
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
     comb = comb.dropna()
 
+    comb["return"] = (
+        comb["holdings"]
+        + comb["Cash"]["Cash"]
+        - comb["holdings"][0]
+        - comb["Cash"]["Cash"][0]
+    ) / (comb["Cash"]["Cash"][0] + comb["holdings"][0] + comb["total_cost"][0])
+
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
-    mark = comb[("Market", "Return")].copy()
 
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(df.index, df["return"], color="tab:blue", label="Portfolio")
-    ax.plot(mark.index, mark, color="orange", label="SPY")
+    ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
+    ax.plot(comb.index, comb[("Market", "Return")], color="orange", label="SPY")
 
     ax.set_ylabel("", fontweight="bold", fontsize=12, color="black")
     ax.set_xlabel("")

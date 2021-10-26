@@ -23,12 +23,14 @@ def get_stocks(tickers: List[str]) -> pd.DataFrame:
 
     df = yf.download(tickers=tickers, period="5y", interval="1d", progress=False)
     df = df["Adj Close"]
-    df.columns = df.columns.str.lower()
-    arrays = [["Close" for _ in df.columns], [x.lower() for x in df.columns]]
-    tuples = list(zip(*arrays))
-    headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
-    df.columns = headers
-    # print(df)
+    if len(tickers) > 1:
+        df.columns = df.columns.str.lower()
+        arrays = [["Close" for _ in df.columns], [x.lower() for x in df.columns]]
+        tuples = list(zip(*arrays))
+        headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
+        df.columns = headers
+    if len(tickers) == 1:
+        df = df.to_frame(name=("Close", tickers[0]))
     return df
 
 
