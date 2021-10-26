@@ -422,7 +422,7 @@ What do you want to do?
                 prog="ta",
                 description="""Loads data for technical analysis. You can specify currency vs which you want
                                    to show chart and also number of days to get data for.
-                                   By default currency: usd and days: 30.
+                                   By default currency: usd and days: 60.
                                    E.g. if you loaded in previous step Ethereum and you want to see it's price vs btc
                                    in last 90 days range use `ta --vs btc --days 90`""",
             )
@@ -440,7 +440,7 @@ What do you want to do?
                 parser.add_argument(
                     "-d",
                     "--days",
-                    default=30,
+                    default=60,
                     dest="days",
                     help="Number of days to get data for",
                     type=check_positive,
@@ -454,7 +454,7 @@ What do you want to do?
                 parser.add_argument(
                     "-d",
                     "--days",
-                    default=30,
+                    default=60,
                     dest="days",
                     help="Number of days to get data for",
                 )

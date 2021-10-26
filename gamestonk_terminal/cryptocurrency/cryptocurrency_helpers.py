@@ -496,7 +496,7 @@ def load_ta_data(
             )
             candles_df = pd.DataFrame(candles).astype(float).iloc[:, :6]
             candles_df.columns = [
-                "Time0",
+                "date",
                 "Open",
                 "High",
                 "Low",
@@ -504,8 +504,8 @@ def load_ta_data(
                 "Volume",
             ]
             df_coin = candles_df.set_index(
-                pd.to_datetime(candles_df["Time0"], unit="ms")
-            ).drop("Time0", axis=1)
+                pd.to_datetime(candles_df["date"], unit="ms")
+            ).drop("date", axis=1)
 
             return df_coin, currency
         return pd.DataFrame(), currency
@@ -519,14 +519,14 @@ def load_ta_data(
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
         df.columns = [
-            "Time0",
+            "date",
             "Open",
             "High",
             "Low",
             "Close",
             "Volume",
         ]
-        df = df.set_index(pd.to_datetime(df["Time0"])).drop("Time0", axis=1)
+        df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
         return df, currency
 
     if source == "cg":
@@ -555,10 +555,11 @@ def load_ta_data(
                 interval=interval or "24hour",
             ).head(limit)
 
-            df_coin = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
-                "Time0", axis=1
+            df_coin = df.set_index(pd.to_datetime(df["date"], unit="s")).drop(
+                "date", axis=1
             )
-            return df_coin, currency
+
+            return df_coin[::-1], currency
 
     return pd.DataFrame(), currency
 
@@ -628,7 +629,7 @@ def plot_chart(
             )
             candles_df = pd.DataFrame(candles).astype(float).iloc[:, :6]
             candles_df.columns = [
-                "Time0",
+                "date",
                 "Open",
                 "High",
                 "Low",
@@ -636,8 +637,8 @@ def plot_chart(
                 "Volume",
             ]
             df_coin = candles_df.set_index(
-                pd.to_datetime(candles_df["Time0"], unit="ms")
-            ).drop("Time0", axis=1)
+                pd.to_datetime(candles_df["date"], unit="ms")
+            ).drop("date", axis=1)
 
             plot_candles(
                 df_coin,
@@ -654,14 +655,14 @@ def plot_chart(
 
         df.drop(["time_close", "market_cap"], axis=1, inplace=True)
         df.columns = [
-            "Time0",
+            "date",
             "Open",
             "High",
             "Low",
             "Close",
             "Volume",
         ]
-        df = df.set_index(pd.to_datetime(df["Time0"])).drop("Time0", axis=1)
+        df = df.set_index(pd.to_datetime(df["date"])).drop("date", axis=1)
         title = (
             f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",
         )
@@ -737,10 +738,8 @@ def plot_chart(
                 interval=interval or "24hour",
             ).head(limit)
             df = df.astype(float).iloc[:, :6]
-            df.sort_values(by="Time0", inplace=True, ascending=True)
-            df = df.set_index(pd.to_datetime(df["Time0"], unit="s")).drop(
-                "Time0", axis=1
-            )
+            df.sort_values(by="date", inplace=True, ascending=True)
+            df = df.set_index(pd.to_datetime(df["date"], unit="s")).drop("date", axis=1)
 
             title = (
                 f"\n{coin}/{currency} from {df.index[0].strftime('%Y/%m/%d')} to {df.index[-1].strftime('%Y/%m/%d')}",

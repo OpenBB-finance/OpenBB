@@ -80,9 +80,9 @@ class TechnicalAnalysisController:
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"\n{s_intraday} Crypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"\n{s_intraday} Crypto: {self.ticker}"
 
         help_str = f"""
 {stock_str}
