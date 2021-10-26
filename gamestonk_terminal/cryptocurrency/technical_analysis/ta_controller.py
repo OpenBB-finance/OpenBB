@@ -6,6 +6,7 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+from colorama import Style
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -84,6 +85,7 @@ class TechnicalAnalysisController:
         else:
             stock_str = f"\n{s_intraday} Crypto: {self.ticker}"
 
+        dim = Style.DIM if "Volume" not in self.stock else ""
         help_str = f"""
 {stock_str}
 
@@ -110,10 +112,10 @@ Trend:
     aroon       aroon indicator
 Volatility:
     bbands      bollinger bands
-    donchian    donchian channels
+    donchian    donchian channels{dim}
 Volume:
     ad          accumulation/distribution line values
-    obv         on balance volume
+    obv         on balance volume{Style.RESET_ALL if "Volume" not in self.stock else ""}
 Custom:
     fib         fibonacci retracement
 """
