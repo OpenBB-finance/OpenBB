@@ -5,6 +5,7 @@ import os
 import math
 from datetime import date, timedelta
 
+import numpy as np
 import pandas as pd
 
 from gamestonk_terminal.portfolio import portfolio_view, yfinance_model
@@ -179,6 +180,11 @@ def generate_performance(portfolio: pd.DataFrame) -> pd.DataFrame:
             comb[("Quantity", uni)] * comb[("Dividend", uni)]
         )
         comb[("Holding", uni)] = comb[("Quantity", uni)] * comb[("Close", uni)]
+        comb[("Holding", uni)] = np.where(
+            comb[("Quantity", uni)] > 0,
+            comb[("Holding", uni)],
+            (2 * comb[("Holding", uni)][0] - comb[("Holding", uni)]),
+        )
         comb[("Profit", uni)] = comb[("Profit", uni)].cumsum()
 
     comb["holdings"] = comb.sum(level=0, axis=1)["Holding"]

@@ -99,6 +99,8 @@ def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageRe
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
 
+    print(comb)
+
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(comb.index, comb["return"], color="tab:blue", label="Portfolio")
     ax.plot(comb.index, comb[("Market", "Return")], color="orange", label="SPY")
