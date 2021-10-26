@@ -13,7 +13,7 @@ DEFAULT_CONTEXT = ""
 DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = "8892"
+PAPERMILL_NOTEBOOK_REPORT_PORT = "8888"
 
 # https://www.alphavantage.co
 API_KEY_ALPHAVANTAGE = os.getenv("GT_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
