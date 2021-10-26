@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import List, Union
 from datetime import datetime
 from pathlib import Path
+import random
 import os
 
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
@@ -52,42 +53,45 @@ class CreateExcelFA:
         self.info: pd.DataFrame = yf.Ticker(ticker).info
         self.t_bill: float = get_rf()
         self.r_ff: float = dcf_model.get_fama_coe(self.ticker)
+        self.sisters: List[str] = dcf_model.others_in_sector(
+            self.ticker, self.info["sector"], self.info["industry"]
+        )
+        self.sister_data: List[List[pd.DataFrame]] = [[pd.DataFrame()]]
 
     def create_workbook(self):
-        # self.ws1.column_dimensions["A"].width = 25
-        # self.ws2.column_dimensions["A"].width = 22
-        # for column in dcf_model.letters[1:21]:
-        #     self.ws1.column_dimensions[column].width = 14
-        # for column in dcf_model.letters[1:21]:
-        #     self.ws2.column_dimensions[column].width = 14
+        self.ws1.column_dimensions["A"].width = 25
+        self.ws2.column_dimensions["A"].width = 22
+        for column in dcf_model.letters[1:21]:
+            self.ws1.column_dimensions[column].width = 14
+        for column in dcf_model.letters[1:21]:
+            self.ws2.column_dimensions[column].width = 14
 
-        # self.ws3.column_dimensions["A"].width = 3
-        # self.create_header(self.ws1)
-        # self.create_header(self.ws2)
-        # self.create_header(self.ws3)
-        # self.create_header(self.ws4)
-        # self.add_estimates()
-        # self.create_dcf()
-        # if self.audit:
-        #     self.run_audit()
+        self.ws3.column_dimensions["A"].width = 3
+        self.create_header(self.ws1)
+        self.create_header(self.ws2)
+        self.create_header(self.ws3)
+        self.create_header(self.ws4)
+        self.add_estimates()
+        self.create_dcf()
+        if self.audit:
+            self.run_audit()
 
-        # trypath = os.path.join(
-        #     "..",
-        #     "GamestonkTerminal",
-        #     "exports",
-        #     "excel",
-        #     f"{self.ticker} {self.now}.xlsx",
-        # )
+        trypath = os.path.join(
+            "..",
+            "GamestonkTerminal",
+            "exports",
+            "excel",
+            f"{self.ticker} {self.now}.xlsx",
+        )
 
-        # my_file = Path(trypath)
-        # if my_file.is_file():
-        #     print("Analysis already ran. Please move file to rerun.")
-        # else:
-        #     self.wb.save(trypath)
-        #     print(
-        #         f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
-        #     )
-        dcf_model.others_in_sector(self.ticker, self.info["sector"], self.info["industry"])
+        my_file = Path(trypath)
+        if my_file.is_file():
+            print("Analysis already ran. Please move file to rerun.")
+        else:
+            self.wb.save(trypath)
+            print(
+                f"Analysis ran for {self.ticker}\nPlease look in {trypath} for the file.\n"
+            )
 
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         URL = f"https://stockanalysis.com/stocks/{self.ticker}/financials/"
@@ -154,36 +158,19 @@ class CreateExcelFA:
         self.ws1[f"A{row}"] = title
         self.ws1[f"A{row}"].font = dcf_model.bold_font
 
-        # Refactor in the future
         if statement == "IS":
-            if "Revenue" in df.index:
-                blank_list = ["0" for x in df.loc["Revenue"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(dcf_model.gaap_is[1:]):
-                df = dcf_model.insert_row(
-                    dcf_model.gaap_is[i + 1], dcf_model.gaap_is[i], df, blank_list
-                )
+            vals = ["Revenue", dcf_model.gaap_is]
+        elif statement == "BS":
+            vals = ["Cash & Equivalents", dcf_model.gaap_bs]
+        elif statement == "CF":
+            vals = ["Net Income", dcf_model.gaap_cf]
 
-        if statement == "BS":
-            if "Cash & Equivalents" in df.index:
-                blank_list = ["0" for x in df.loc["Cash & Equivalents"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(dcf_model.gaap_bs[1:]):
-                df = dcf_model.insert_row(
-                    dcf_model.gaap_bs[i + 1], dcf_model.gaap_bs[i], df, blank_list
-                )
-
-        if statement == "CF":
-            if "Net Income" in df.index:
-                blank_list = ["0" for x in df.loc["Net Income"].to_list()]
-            else:
-                raise ValueError("Dataframe does not have key information.")
-            for i, value in enumerate(dcf_model.gaap_cf[1:]):
-                df = dcf_model.insert_row(
-                    dcf_model.gaap_cf[i + 1], dcf_model.gaap_cf[i], df, blank_list
-                )
+        if vals[0] in df.index:
+            blank_list = ["0" for _ in df.loc[vals[0]].to_list()]
+        else:
+            raise ValueError("Dataframe does not have key information.")
+        for i, value in enumerate(vals[1][1:]):
+            df = dcf_model.insert_row(vals[1][i + 1], vals[1][i], df, blank_list)
 
         rowI = row + 1
         names = df.index.values.tolist()
@@ -616,6 +603,8 @@ class CreateExcelFA:
         dcf_model.set_cell(self.ws2, "B18", float(self.info["regularMarketPrice"]))
 
         # Create ratios page
+        self.get_sister_dfs()
+        print(self.sister_data)
         self.ws4.column_dimensions["A"].width = 27
         dcf_model.set_cell(self.ws4, "B4", "Sector:")
         dcf_model.set_cell(self.ws4, "C4", self.info["sector"])
@@ -1139,3 +1128,73 @@ class CreateExcelFA:
         )
         dcf_model.set_cell(self.ws3, f"B{self.letter+4}", text)
         self.letter += 1
+
+    def get_sister_dfs(self):
+        # Once mcap is added to this, we can add as an additional feature
+        sisters = self.sisters
+        random.shuffle(sisters)
+        self.sister_data = [
+            [self.get_sister_data(x, y) for x in ["BS", "IS", "CF"]]
+            for y in sisters[:3]
+        ]
+
+    def get_sister_data(self, statement: str, ticker: str) -> pd.DataFrame:
+        URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
+        if statement == "BS":
+            URL += "balance-sheet/"
+            ignores = dcf_model.non_gaap_bs
+        if statement == "CF":
+            URL += "cash-flow-statement/"
+            ignores = dcf_model.non_gaap_cf
+        if statement == "IS":
+            ignores = dcf_model.non_gaap_is
+
+        r = requests.get(URL, headers=dcf_model.headers)
+
+        if "404 - Page Not Found" in r.text:
+            raise ValueError("The ticker given is not in the stock analysis website.")
+        soup = BeautifulSoup(r.content, "html.parser")
+
+        table = soup.find(
+            "table", attrs={"class": "FinancialTable_table_financial__1RhYq"}
+        )
+        head = table.find("thead")
+        columns = head.find_all("th")
+
+        if self.years == []:
+            self.years = [x.get_text().strip() for x in columns]
+            self.len_data = len(self.years) - 1
+
+        if self.rounding == 0:
+            phrase = soup.find(
+                "div", attrs={"class": "text-sm pb-1 text-gray-600"}
+            ).get_text()
+            if "thousand" in phrase:
+                self.rounding = 1_000
+            elif "millions" in phrase:
+                self.rounding = 1_000_000
+            elif "billions" in phrase:
+                self.rounding = 1_000_000_000
+            else:
+                raise ValueError(
+                    "Stock Analysis did not specify a proper rounding amount"
+                )
+
+        body = table.find("tbody")
+        rows = body.find_all("tr")
+
+        all_data = [[x.get_text().strip() for x in y.find_all("td")] for y in rows]
+
+        df = pd.DataFrame(data=all_data)
+        df = df.set_index(0)
+        n = df.shape[1] - self.len_data
+        if n > 0:
+            df = df.iloc[:, :-n]
+        df.columns = self.years[1:]
+
+        for ignore in ignores:
+            if ignore in df.index:
+                df = df.drop([ignore])
+        df = df[df.columns[::-1]]
+
+        return df

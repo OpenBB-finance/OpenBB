@@ -200,7 +200,8 @@ def get_fama_coe(ticker: str) -> float:
         + coefs[2] * df["HML"].mean()
     ) * 12
 
-def others_in_sector(ticker : str, sector: str, industry: str) -> List[str]:
+
+def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     """Get other stocks in a ticker's sector
 
     Parameters
@@ -217,12 +218,14 @@ def others_in_sector(ticker : str, sector: str, industry: str) -> List[str]:
     tickers : List[str]
         List of tickers in the same sector
     """
-    print(sector)
-    sister_ticks = fd.select_equities(country="United States", sector=sector, industry=industry)
-    print(len(sister_ticks))
-    print(len(list(set(sister_ticks))))
-    for item in sister_ticks[:20]:
-        print(item)
+    sister_ticks = list(
+        fd.select_equities(country="United States", sector=sector, industry=industry)
+    )
+
+    sister_ticks.remove(ticker)
+    return sister_ticks
+
+
 letters = [
     "A",
     "B",
