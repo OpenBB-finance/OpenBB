@@ -1243,11 +1243,11 @@ def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
                 {c: None for c in ta_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ta)> ",
+                f"{get_flair()} (crypto)>(ta)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ta)> ")
+            an_input = input(f"{get_flair()} (crypto)>(ta)> ")
 
         try:
             plt.close("all")
