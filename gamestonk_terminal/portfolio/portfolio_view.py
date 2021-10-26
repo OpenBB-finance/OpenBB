@@ -89,10 +89,11 @@ def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageRe
     ) / (df["Cash"]["Cash"][0] + df["holdings"][0] + df["total_cost"][0])
     comb = pd.merge(df, df_m, how="left", left_index=True, right_index=True)
     comb = comb.fillna(method="ffill")
+    comb = comb.dropna()
+
     comb[("Market", "Return")] = (
         comb[("Market", "Close")] - comb[("Market", "Close")][0]
     ) / comb[("Market", "Close")][0]
-
     mark = comb[("Market", "Return")].copy()
 
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -107,7 +108,9 @@ def plot_overall_return(df: pd.DataFrame, df_m: pd.DataFrame, n: int) -> ImageRe
     ax.spines["right"].set_visible(False)
     ax.spines["bottom"].set_visible(False)
     ax.spines["left"].set_visible(False)
-    fig.suptitle("Performance", y=0.99, fontweight="bold", fontsize=14, color="black")
+    fig.suptitle(
+        "Cumulative Performance", y=0.99, fontweight="bold", fontsize=14, color="black"
+    )
     ax.axhline(0, ls="-", lw=1, color="gray", zorder=1)
     ax.axhline(0, ls="--", lw=1, color="black", zorder=2)
     fig.set_facecolor("white")
@@ -163,9 +166,6 @@ def plot_rolling_beta(
         )
         df_var = pd.merge(df_var, df1, how="left", left_index=True, right_index=True)
         df_var[f"beta_{col}"] = df_var[f"cov_{col}"] / df_var["var"]
-
-    # James, Beta values are not accurate, even though I followed the formula. Any thoughts here?
-    # print(df_var)
 
     final = pd.merge(res, df_var, how="left", left_index=True, right_index=True)
     final = final.fillna(method="ffill")

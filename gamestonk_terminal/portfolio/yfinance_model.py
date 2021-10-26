@@ -28,6 +28,7 @@ def get_stocks(tickers: List[str]) -> pd.DataFrame:
     tuples = list(zip(*arrays))
     headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
     df.columns = headers
+    # print(df)
     return df
 
 
