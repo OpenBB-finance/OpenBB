@@ -306,8 +306,11 @@ Market {('CLOSED', 'OPEN')[b_is_stock_market_open()]}
 
             else:
                 candle(
-                    self.ticker + "." + self.suffix if self.suffix else self.ticker,
-                    ns_parser,
+                    s_ticker=self.ticker + "." + self.suffix
+                    if self.suffix
+                    else self.ticker,
+                    s_start=ns_parser.s_start,
+                    plotly=ns_parser.plotly,
                 )
 
         except Exception as e:

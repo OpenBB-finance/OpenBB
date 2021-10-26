@@ -407,26 +407,28 @@ def load(
         return [s_ticker, s_start, s_interval, df_stock]
 
 
-def candle(s_ticker: str, ns_parser: argparse.Namespace):
+def candle(s_ticker: str, s_start: datetime, plotly: bool):
     """Shows candle plot of loaded ticker
 
     Parameters
     ----------
     s_ticker: str
         Ticker to display
-    ns_parser: argparse.Namespace
-        Parsed namespace
+    s_start: datetime
+        Starting date for candle
+    plotly: bool
+        Flag to show interactive plotly chart
 
     """
     # TODO: Add option to customize plot even further
-
-    df_stock = trend.load_ticker(s_ticker, ns_parser.s_start)
+    print(type(s_start))
+    df_stock = trend.load_ticker(s_ticker, s_start)
     df_stock["ma20"] = df_stock["Close"].rolling(20).mean().fillna(method="bfill")
     df_stock["ma50"] = df_stock["Close"].rolling(50).mean().fillna(method="bfill")
 
     df_stock = trend.find_trendline(df_stock, "OC_High", "high")
     df_stock = trend.find_trendline(df_stock, "OC_Low", "low")
-    if not ns_parser.plotly:
+    if not plotly:
         mc = mpf.make_marketcolors(
             up="green",
             down="red",
@@ -458,7 +460,7 @@ def candle(s_ticker: str, ns_parser: argparse.Namespace):
             type="candle",
             mav=(20, 50),
             volume=True,
-            title=f"\n{s_ticker} - Starting {ns_parser.s_start.strftime('%Y-%m-%d')}",
+            title=f"\n{s_ticker} - Starting {s_start.strftime('%Y-%m-%d')}",
             addplot=ap0,
             xrotation=10,
             style=s,
