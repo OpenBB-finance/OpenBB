@@ -6,6 +6,7 @@ import argparse
 import os
 from typing import List
 from datetime import datetime
+from colorama import Style
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -69,6 +70,8 @@ class TechnicalAnalysisController:
         self.start = start
         self.interval = interval
         self.stock = stock
+        self.stock["Adj Close"] = stock["Close"]
+        print(self.stock)
 
         self.ta_parser = argparse.ArgumentParser(add_help=False, prog="ta")
         self.ta_parser.add_argument(
@@ -80,10 +83,12 @@ class TechnicalAnalysisController:
         """Print help"""
         s_intraday = (f"Intraday {self.interval}", "Daily")[self.interval == "1440min"]
         if self.start:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
+            stock_str = f"\n{s_intraday} Crypto: {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
         else:
-            stock_str = f"\n{s_intraday} Stock: {self.ticker}"
+            stock_str = f"\n{s_intraday} Crypto: {self.ticker}"
 
+        dim = Style.DIM if "Volume" not in self.stock else ""
+        not_dim = Style.RESET_ALL if "Volume" not in self.stock else ""
         help_str = f"""
 {stock_str}
 
@@ -96,8 +101,8 @@ Technical Analysis:
 Overlap:
     ema         exponential moving average
     sma         simple moving average
-    zlma        zero lag moving average"
-    vwap        volume weighted average price
+    zlma        zero lag moving average{dim}
+    vwap        volume weighted average price{not_dim}
 Momentum:
     cci         commodity channel index
     macd        moving average convergence/divergence
@@ -110,10 +115,10 @@ Trend:
     aroon       aroon indicator
 Volatility:
     bbands      bollinger bands
-    donchian    donchian channels
+    donchian    donchian channels{dim}
 Volume:
     ad          accumulation/distribution line values
-    obv         on balance volume
+    obv         on balance volume{not_dim}
 Custom:
     fib         fibonacci retracement
 """
@@ -1243,11 +1248,11 @@ def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):
                 {c: None for c in ta_controller.CHOICES}
             )
             an_input = session.prompt(
-                f"{get_flair()} (stocks)>(ta)> ",
+                f"{get_flair()} (crypto)>(ta)> ",
                 completer=completer,
             )
         else:
-            an_input = input(f"{get_flair()} (stocks)>(ta)> ")
+            an_input = input(f"{get_flair()} (crypto)>(ta)> ")
 
         try:
             plt.close("all")

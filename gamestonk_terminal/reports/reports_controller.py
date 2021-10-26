@@ -217,9 +217,14 @@ def menu():
     report_controller.print_help()
 
     # Initialize jupyter notebook
+
     cmd = f"jupyter notebook --port={config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}"
     proc = subprocess.Popen(
         cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+
+    print(
+        f"Jupyter notebook environment launched on http://localhost:{config_terminal.PAPERMILL_NOTEBOOK_REPORT_PORT}\n"
     )
 
     while True:
