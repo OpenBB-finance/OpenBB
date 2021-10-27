@@ -17,6 +17,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     valid_date,
     check_int_range,
+    try_except,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.stocks.dark_pool_shorts import (
@@ -153,6 +154,7 @@ Quandl/Stockgrid:
             other_args, self.ticker, self.start, "1440min", self.stock
         )
 
+    @try_except
     def call_shorted(self, other_args: List[str]):
         """Process shorted command"""
         parser = argparse.ArgumentParser(
@@ -178,23 +180,20 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-n")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-n")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            yahoofinance_view.display_most_shorted(
-                num_stocks=ns_parser.num,
-                export=ns_parser.export,
-            )
+        yahoofinance_view.display_most_shorted(
+            num_stocks=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_hsi(self, other_args: List[str]):
         """Process hsi command"""
         parser = argparse.ArgumentParser(
@@ -226,19 +225,16 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            shortinterest_view.high_short_interest(
-                num=ns_parser.n_num,
-                export=ns_parser.export,
-            )
+        shortinterest_view.high_short_interest(
+            num=ns_parser.n_num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_prom(self, other_args: List[str]):
         """Process prom command"""
         parser = argparse.ArgumentParser(
@@ -281,21 +277,18 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finra_view.darkpool_otc(
-                num=ns_parser.n_num,
-                promising=ns_parser.n_top,
-                tier=ns_parser.tier,
-                export=ns_parser.export,
-            )
+        finra_view.darkpool_otc(
+            num=ns_parser.n_num,
+            promising=ns_parser.n_top,
+            tier=ns_parser.tier,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_pos(self, other_args: List[str]):
         """Process pos command"""
         parser = argparse.ArgumentParser(
@@ -338,21 +331,18 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            stockgrid_view.dark_pool_short_positions(
-                num=ns_parser.num,
-                sort_field=ns_parser.sort_field,
-                ascending=ns_parser.ascending,
-                export=ns_parser.export,
-            )
+        stockgrid_view.dark_pool_short_positions(
+            num=ns_parser.num,
+            sort_field=ns_parser.sort_field,
+            ascending=ns_parser.ascending,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_sidtc(self, other_args: List[str]):
         """Process sidtc command"""
         parser = argparse.ArgumentParser(
@@ -385,20 +375,17 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            stockgrid_view.short_interest_days_to_cover(
-                num=ns_parser.num,
-                sort_field=ns_parser.sort_field,
-                export=ns_parser.export,
-            )
+        stockgrid_view.short_interest_days_to_cover(
+            num=ns_parser.num,
+            sort_field=ns_parser.sort_field,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_dpotc(self, other_args: List[str]):
         """Process dpotc command"""
         parser = argparse.ArgumentParser(
@@ -414,22 +401,19 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.\n")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.\n")
+            return
 
-            finra_view.darkpool_ats_otc(
-                ticker=self.ticker,
-                export=ns_parser.export,
-            )
+        finra_view.darkpool_ats_otc(
+            ticker=self.ticker,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ftd(self, other_args: List[str]):
         """Process ftd command"""
         parser = argparse.ArgumentParser(
@@ -479,27 +463,24 @@ Quandl/Stockgrid:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.\n")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.\n")
+            return
 
-            sec_view.fails_to_deliver(
-                ticker=self.ticker,
-                stock=self.stock,
-                start=ns_parser.start,
-                end=ns_parser.end,
-                num=ns_parser.n_num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        sec_view.fails_to_deliver(
+            ticker=self.ticker,
+            stock=self.stock,
+            start=ns_parser.start,
+            end=ns_parser.end,
+            num=ns_parser.n_num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_spos(self, other_args: List[str]):
         """Process spos command"""
         parser = argparse.ArgumentParser(
@@ -529,24 +510,21 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.\n")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.\n")
+            return
 
-            stockgrid_view.net_short_position(
-                ticker=self.ticker,
-                num=ns_parser.num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        stockgrid_view.net_short_position(
+            ticker=self.ticker,
+            num=ns_parser.num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_psi(self, other_args: List[str]):
         """Process psi command"""
         parser = argparse.ArgumentParser(
@@ -590,32 +568,28 @@ Quandl/Stockgrid:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.\n")
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.\n")
+            return
 
-            if "quandl" in other_args:
-                quandl_view.short_interest(
-                    ticker=self.ticker,
-                    nyse=ns_parser.b_nyse,
-                    days=ns_parser.num,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-            else:
-                stockgrid_view.short_interest_volume(
-                    ticker=self.ticker,
-                    num=ns_parser.num,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                )
-
-        except Exception as e:
-            print(e, "\n")
+        if "quandl" in other_args:
+            quandl_view.short_interest(
+                ticker=self.ticker,
+                nyse=ns_parser.b_nyse,
+                days=ns_parser.num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
+        else:
+            stockgrid_view.short_interest_volume(
+                ticker=self.ticker,
+                num=ns_parser.num,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+            )
 
 
 def menu(ticker: str = "", start: str = "", stock: pd.DataFrame = pd.DataFrame()):

@@ -159,6 +159,7 @@ Finviz:
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
 
+    @try_except
     def call_tsne(self, other_args: List[str]):
         """Process tsne command"""
         parser = argparse.ArgumentParser(
@@ -179,17 +180,15 @@ Finviz:
             "-p", "--no_plot", action="store_true", default=False, dest="no_plot"
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            self.similar = yahoo_finance_model.get_sp500_comps_tsne(
-                self.ticker, lr=ns_parser.lr, no_plot=ns_parser.no_plot
-            )
-            print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        self.similar = yahoo_finance_model.get_sp500_comps_tsne(
+            self.ticker, lr=ns_parser.lr, no_plot=ns_parser.no_plot
+        )
+        print(f"[ML] Similar Companies: {', '.join(self.similar)}", "\n")
 
+    @try_except
     def call_getfinviz(self, other_args: List[str]):
         """Process getfinviz command"""
         parser = argparse.ArgumentParser(
@@ -205,36 +204,32 @@ Finviz:
             dest="b_no_country",
             help="Similar stocks from finviz using only Industry and Sector.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if ns_parser.b_no_country:
-                compare_list = ["Sector", "Industry"]
-            else:
-                compare_list = ["Sector", "Industry", "Country"]
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if ns_parser.b_no_country:
+            compare_list = ["Sector", "Industry"]
+        else:
+            compare_list = ["Sector", "Industry", "Country"]
 
-            self.similar, self.user = finviz_compare_model.get_similar_companies(
-                self.ticker, compare_list
+        self.similar, self.user = finviz_compare_model.get_similar_companies(
+            self.ticker, compare_list
+        )
+
+        if self.ticker.upper() in self.similar:
+            self.similar.remove(self.ticker.upper())
+
+        if len(self.similar) > 10:
+            random.shuffle(self.similar)
+            self.similar = sorted(self.similar[:10])
+            print(
+                "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
             )
 
-            if self.ticker.upper() in self.similar:
-                self.similar.remove(self.ticker.upper())
+        if self.similar:
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-            if len(self.similar) > 10:
-                random.shuffle(self.similar)
-                self.similar = sorted(self.similar[:10])
-                print(
-                    "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
-                )
-
-            if self.similar:
-                print(
-                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
-                )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_getpoly(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -252,32 +247,27 @@ Finviz:
             help="Show only stocks from the US stock exchanges",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            self.similar, self.user = polygon_model.get_similar_companies(
-                self.ticker, ns_parser.us_only
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        self.similar, self.user = polygon_model.get_similar_companies(
+            self.ticker, ns_parser.us_only
+        )
+
+        if self.ticker.upper() in self.similar:
+            self.similar.remove(self.ticker.upper())
+
+        if len(self.similar) > 10:
+            random.shuffle(self.similar)
+            self.similar = sorted(self.similar[:10])
+            print(
+                "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
             )
 
-            if self.ticker.upper() in self.similar:
-                self.similar.remove(self.ticker.upper())
+        if self.similar:
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-            if len(self.similar) > 10:
-                random.shuffle(self.similar)
-                self.similar = sorted(self.similar[:10])
-                print(
-                    "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
-                )
-
-            if self.similar:
-                print(
-                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
-                )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_getfinnhub(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -286,31 +276,26 @@ Finviz:
             prog="getfinnhub",
             description="""Get similar companies from finnhubto compare with.""",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            self.similar, self.user = finnhub_model.get_similar_companies(self.ticker)
+        self.similar, self.user = finnhub_model.get_similar_companies(self.ticker)
 
-            if self.ticker.upper() in self.similar:
-                self.similar.remove(self.ticker.upper())
+        if self.ticker.upper() in self.similar:
+            self.similar.remove(self.ticker.upper())
 
-            if len(self.similar) > 10:
-                random.shuffle(self.similar)
-                self.similar = sorted(self.similar[:10])
-                print(
-                    "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
-                )
+        if len(self.similar) > 10:
+            random.shuffle(self.similar)
+            self.similar = sorted(self.similar[:10])
+            print(
+                "The limit of stocks to compare with are 10. Hence, 10 random similar stocks will be displayed.\n",
+            )
 
-            if self.similar:
-                print(
-                    f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n"
-                )
+        if self.similar:
+            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
@@ -328,23 +313,21 @@ Finviz:
             help="similar companies to compare with.",
         )
 
-        try:
-            # For the case where a user uses: 'add NIO,XPEV,LI'
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-s")
+        # For the case where a user uses: 'add NIO,XPEV,LI'
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-s")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            # Add sets to avoid duplicates
-            self.similar = list(set(self.similar + ns_parser.l_similar))
-            if len(self.similar) > 10:
-                self.similar = list(random.sample(set(self.similar), 10))
-            self.user = "Custom"
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        # Add sets to avoid duplicates
+        self.similar = list(set(self.similar + ns_parser.l_similar))
+        if len(self.similar) > 10:
+            self.similar = list(random.sample(set(self.similar), 10))
+        self.user = "Custom"
+        print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
+    @try_except
     def call_select(self, other_args: List[str]):
         """Process select command"""
         parser = argparse.ArgumentParser(
@@ -362,21 +345,17 @@ Finviz:
             help="similar companies to compare with.",
         )
 
-        try:
-            # For the case where a user uses: 'select NIO,XPEV,LI'
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-s")
+        # For the case where a user uses: 'select NIO,XPEV,LI'
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-s")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            self.similar = ns_parser.l_similar
-            self.user = "Custom"
-            print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
-
-        except Exception as e:
-            print(e, "\n")
+        self.similar = ns_parser.l_similar
+        self.user = "Custom"
+        print(f"[{self.user}] Similar Companies: {', '.join(self.similar)}", "\n")
 
     def switch(self, an_input: str):
         """Process and dispatch input
@@ -422,6 +401,7 @@ Finviz:
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_historical(self, other_args: List[str]):
         """Process historical command"""
         parser = argparse.ArgumentParser(
@@ -458,35 +438,30 @@ Finviz:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if self.interval != "1440min":
+        if self.interval != "1440min":
+            print("Intraday historical data analysis comparison is not yet available.")
+            # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
+        else:
+            ns_parser = parse_known_args_and_warn(parser, other_args)
+            if not ns_parser:
+                return
+
+            if not self.similar or not self.ticker:
                 print(
-                    "Intraday historical data analysis comparison is not yet available."
+                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
                 )
-                # Alpha Vantage only supports 5 calls per minute, we need another API to get intraday data
-            else:
-                ns_parser = parse_known_args_and_warn(parser, other_args)
-                if not ns_parser:
-                    return
+                return
 
-                if not self.similar or not self.ticker:
-                    print(
-                        "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-                    )
-                    return
+            yahoo_finance_view.display_historical(
+                ticker=self.ticker,
+                similar_tickers=self.similar,
+                start=self.start,
+                candle_type=ns_parser.type_candle,
+                normalize=ns_parser.no_scale,
+                export=ns_parser.export,
+            )
 
-                yahoo_finance_view.display_historical(
-                    ticker=self.ticker,
-                    similar_tickers=self.similar,
-                    start=self.start,
-                    candle_type=ns_parser.type_candle,
-                    normalize=ns_parser.no_scale,
-                    export=ns_parser.export,
-                )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_hcorr(self, other_args: List[str]):
         """Process historical correlation command"""
         parser = argparse.ArgumentParser(
@@ -508,26 +483,24 @@ Finviz:
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if not self.similar or not self.ticker:
-                print(
-                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-                )
-                return
-
-            yahoo_finance_view.display_correlation(
-                ticker=self.ticker,
-                similar_tickers=self.similar,
-                start=self.start,
-                candle_type=ns_parser.type_candle,
+        if not self.similar or not self.ticker:
+            print(
+                "Please make sure there are both a loaded ticker and similar tickers selected. \n"
             )
-        except Exception as e:
-            print(e, "\n")
+            return
 
+        yahoo_finance_view.display_correlation(
+            ticker=self.ticker,
+            similar_tickers=self.similar,
+            start=self.start,
+            candle_type=ns_parser.type_candle,
+        )
+
+    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -564,19 +537,16 @@ Finviz:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            marketwatch_view.display_income_comparison(
-                ticker=self.ticker,
-                similar=self.similar,
-                timeframe=ns_parser.s_timeframe,
-                quarter=ns_parser.b_quarter,
-            )
-        except Exception as e:
-            print(e, "\n")
+        marketwatch_view.display_income_comparison(
+            ticker=self.ticker,
+            similar=self.similar,
+            timeframe=ns_parser.s_timeframe,
+            quarter=ns_parser.b_quarter,
+        )
 
     @try_except
     def call_volume(self, other_args: List[str]):
@@ -627,6 +597,7 @@ Finviz:
                 export=ns_parser.export,
             )
 
+    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -663,22 +634,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        marketwatch_view.display_balance_comparison(
+            ticker=self.ticker,
+            similar=self.similar,
+            timeframe=ns_parser.s_timeframe,
+            quarter=ns_parser.b_quarter,
+        )
 
-            marketwatch_view.display_balance_comparison(
-                ticker=self.ticker,
-                similar=self.similar,
-                timeframe=ns_parser.s_timeframe,
-                quarter=ns_parser.b_quarter,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cashflow(self, other_args: List[str]):
         """Process cashflow command"""
         parser = argparse.ArgumentParser(
@@ -715,22 +682,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        marketwatch_view.display_cashflow_comparison(
+            ticker=self.ticker,
+            similar=self.similar,
+            timeframe=ns_parser.s_timeframe,
+            quarter=ns_parser.b_quarter,
+        )
 
-            marketwatch_view.display_cashflow_comparison(
-                ticker=self.ticker,
-                similar=self.similar,
-                timeframe=ns_parser.s_timeframe,
-                quarter=ns_parser.b_quarter,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_sentiment(self, other_args: List[str]):
         """Process sentiment command"""
         parser = argparse.ArgumentParser(
@@ -757,21 +720,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        finbrain_view.display_sentiment_compare(
+            ticker=self.ticker,
+            similar=self.similar,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-            finbrain_view.display_sentiment_compare(
-                ticker=self.ticker,
-                similar=self.similar,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_scorr(self, other_args: List[str]):
         """Process sentiment correlation command"""
         parser = argparse.ArgumentParser(
@@ -798,26 +758,23 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            if not self.similar or not self.ticker:
-                print(
-                    "Please make sure there are both a loaded ticker and similar tickers selected. \n"
-                )
-                return
-            finbrain_view.display_sentiment_correlation(
-                ticker=self.ticker,
-                similar=self.similar,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
+        if not self.similar or not self.ticker:
+            print(
+                "Please make sure there are both a loaded ticker and similar tickers selected. \n"
             )
-        except Exception as e:
-            print(e, "\n")
+            return
+        finbrain_view.display_sentiment_correlation(
+            ticker=self.ticker,
+            similar=self.similar,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -836,21 +793,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_compare_view.screener(
-                ticker=self.ticker,
-                similar=self.similar,
-                data_type="overview",
-                export=ns_parser.export,
-            )
+        finviz_compare_view.screener(
+            ticker=self.ticker,
+            similar=self.similar,
+            data_type="overview",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -869,21 +823,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_compare_view.screener(
-                ticker=self.ticker,
-                similar=self.similar,
-                data_type="valuation",
-                export=ns_parser.export,
-            )
+        finviz_compare_view.screener(
+            ticker=self.ticker,
+            similar=self.similar,
+            data_type="valuation",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_financial(self, other_args: List[str]):
         """Process financial command"""
         parser = argparse.ArgumentParser(
@@ -902,21 +853,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_compare_view.screener(
-                ticker=self.ticker,
-                similar=self.similar,
-                data_type="financial",
-                export=ns_parser.export,
-            )
+        finviz_compare_view.screener(
+            ticker=self.ticker,
+            similar=self.similar,
+            data_type="financial",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ownership(self, other_args: List[str]):
         """Process ownership command"""
         parser = argparse.ArgumentParser(
@@ -935,21 +883,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_compare_view.screener(
-                ticker=self.ticker,
-                similar=self.similar,
-                data_type="ownership",
-                export=ns_parser.export,
-            )
+        finviz_compare_view.screener(
+            ticker=self.ticker,
+            similar=self.similar,
+            data_type="ownership",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_performance(self, other_args: List[str]):
         """Process performance command"""
         parser = argparse.ArgumentParser(
@@ -968,21 +913,18 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_compare_view.screener(
-                ticker=self.ticker,
-                similar=self.similar,
-                data_type="performance",
-                export=ns_parser.export,
-            )
+        finviz_compare_view.screener(
+            ticker=self.ticker,
+            similar=self.similar,
+            data_type="performance",
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_technical(self, other_args: List[str]):
         """Process technical command"""
         parser = argparse.ArgumentParser(
@@ -1001,20 +943,16 @@ Finviz:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_compare_view.screener(
-                ticker=self.ticker,
-                similar=self.similar,
-                data_type="technical",
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        finviz_compare_view.screener(
+            ticker=self.ticker,
+            similar=self.similar,
+            data_type="technical",
+            export=ns_parser.export,
+        )
 
     def call_po(self, _):
         """Call the portfolio optimization menu with selected tickers"""
