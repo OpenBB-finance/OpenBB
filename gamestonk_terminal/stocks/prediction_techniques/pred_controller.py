@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     valid_date,
     get_next_stock_market_days,
     EXPORT_ONLY_FIGURES_ALLOWED,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.common.prediction_techniques import (
@@ -172,6 +173,7 @@ Models:
             stock = stock.dropna()
             self.stock = stock
 
+    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -189,19 +191,16 @@ Models:
             choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
-        try:
-            if other_args and "-t" not in other_args and "-h" not in other_args:
-                other_args.insert(0, "-t")
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            self.target = ns_parser.target
-            print("")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        self.target = ns_parser.target
+        print("")
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ets(self, other_args: List[str]):
         """Process ets command"""
         parser = argparse.ArgumentParser(
@@ -269,45 +268,41 @@ Models:
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-            )
-            if not ns_parser:
+        if ns_parser.s_end_date:
+
+            if ns_parser.s_end_date < self.stock.index[0]:
+                print(
+                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                )
                 return
 
-            if ns_parser.s_end_date:
+            if ns_parser.s_end_date < get_next_stock_market_days(
+                last_stock_day=self.stock.index[0],
+                n_next_days=5 + ns_parser.n_days,
+            )[-1]:
+                print(
+                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                )
+                return
 
-                if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
-                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                    )
-                    return
+        ets_view.display_exponential_smoothing(
+            ticker=self.ticker,
+            values=self.stock[self.target],
+            n_predict=ns_parser.n_days,
+            trend=ns_parser.trend,
+            seasonal=ns_parser.seasonal,
+            seasonal_periods=ns_parser.seasonal_periods,
+            s_end_date=ns_parser.s_end_date,
+            export=ns_parser.export,
+        )
 
-                if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
-                    n_next_days=5 + ns_parser.n_days,
-                )[-1]:
-                    print(
-                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                    )
-                    return
-
-            ets_view.display_exponential_smoothing(
-                ticker=self.ticker,
-                values=self.stock[self.target],
-                n_predict=ns_parser.n_days,
-                trend=ns_parser.trend,
-                seasonal=ns_parser.seasonal,
-                seasonal_periods=ns_parser.seasonal_periods,
-                s_end_date=ns_parser.s_end_date,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_knn(self, other_args: List[str]):
         """Process knn command"""
         parser = argparse.ArgumentParser(
@@ -380,24 +375,22 @@ Models:
             default=True,
             help="Specify if shuffling validation inputs.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            knn_view.display_k_nearest_neighbors(
-                ticker=self.ticker,
-                data=self.stock[self.target],
-                n_neighbors=ns_parser.n_neighbors,
-                n_input_days=ns_parser.n_inputs,
-                n_predict_days=ns_parser.n_days,
-                test_size=ns_parser.valid_split,
-                end_date=ns_parser.s_end_date,
-                no_shuffle=ns_parser.no_shuffle,
-            )
-        except Exception as e:
-            print(e, "\n")
+        knn_view.display_k_nearest_neighbors(
+            ticker=self.ticker,
+            data=self.stock[self.target],
+            n_neighbors=ns_parser.n_neighbors,
+            n_input_days=ns_parser.n_inputs,
+            n_predict_days=ns_parser.n_days,
+            test_size=ns_parser.valid_split,
+            end_date=ns_parser.s_end_date,
+            no_shuffle=ns_parser.no_shuffle,
+        )
 
+    @try_except
     def call_regression(self, other_args: List[str]):
         """Process linear command"""
         parser = argparse.ArgumentParser(
@@ -456,49 +449,46 @@ Models:
             default=1,
             help="polynomial associated with regression.",
         )
-
-        try:
-            if (
-                other_args
-                and "-h" not in other_args
-                and ("-p" not in other_args or "--polynomial" not in other_args)
-            ):
-                other_args.insert(0, "-p")
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-            )
-            if not ns_parser:
+        if (
+            other_args
+            and "-h" not in other_args
+            and ("-p" not in other_args or "--polynomial" not in other_args)
+        ):
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if not ns_parser:
+            return
+        # BACKTESTING CHECK
+        if ns_parser.s_end_date:
+            if ns_parser.s_end_date < self.stock.index[0]:
+                print(
+                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                )
                 return
-            # BACKTESTING CHECK
-            if ns_parser.s_end_date:
-                if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
-                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                    )
-                    return
 
-                if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
-                    n_next_days=5 + ns_parser.n_days,
-                )[-1]:
-                    print(
-                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                    )
-                    return
+            if ns_parser.s_end_date < get_next_stock_market_days(
+                last_stock_day=self.stock.index[0],
+                n_next_days=5 + ns_parser.n_days,
+            )[-1]:
+                print(
+                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                )
+                return
 
-            regression_view.display_regression(
-                dataset=self.ticker,
-                values=self.stock[self.target],
-                poly_order=ns_parser.n_polynomial,
-                n_input=ns_parser.n_inputs,
-                n_predict=ns_parser.n_days,
-                n_jumps=ns_parser.n_jumps,
-                s_end_date=ns_parser.s_end_date,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        regression_view.display_regression(
+            dataset=self.ticker,
+            values=self.stock[self.target],
+            poly_order=ns_parser.n_polynomial,
+            n_input=ns_parser.n_inputs,
+            n_predict=ns_parser.n_days,
+            n_jumps=ns_parser.n_jumps,
+            s_end_date=ns_parser.s_end_date,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_arima(self, other_args: List[str]):
         """Process arima command"""
         parser = argparse.ArgumentParser(
@@ -569,46 +559,43 @@ Models:
             default=None,
             help="The end date (format YYYY-MM-DD) to select - Backtesting",
         )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-            )
-            if not ns_parser:
+        # BACKTESTING CHECK
+        if ns_parser.s_end_date:
+
+            if ns_parser.s_end_date < self.stock.index[0]:
+                print(
+                    "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
+                )
                 return
 
-            # BACKTESTING CHECK
-            if ns_parser.s_end_date:
+            if ns_parser.s_end_date < get_next_stock_market_days(
+                last_stock_day=self.stock.index[0],
+                n_next_days=5 + ns_parser.n_days,
+            )[-1]:
+                print(
+                    "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
+                )
+                return
 
-                if ns_parser.s_end_date < self.stock.index[0]:
-                    print(
-                        "Backtesting not allowed, since End Date is older than Start Date of historical data\n"
-                    )
-                    return
+        arima_view.display_arima(
+            dataset=self.ticker,
+            values=self.stock[self.target],
+            arima_order=ns_parser.s_order,
+            n_predict=ns_parser.n_days,
+            seasonal=ns_parser.b_seasonal,
+            ic=ns_parser.s_ic,
+            results=ns_parser.b_results,
+            s_end_date=ns_parser.s_end_date,
+            export=ns_parser.export,
+        )
 
-                if ns_parser.s_end_date < get_next_stock_market_days(
-                    last_stock_day=self.stock.index[0],
-                    n_next_days=5 + ns_parser.n_days,
-                )[-1]:
-                    print(
-                        "Backtesting not allowed, since End Date is too close to Start Date to train model\n"
-                    )
-                    return
-
-            arima_view.display_arima(
-                dataset=self.ticker,
-                values=self.stock[self.target],
-                arima_order=ns_parser.s_order,
-                n_predict=ns_parser.n_days,
-                seasonal=ns_parser.b_seasonal,
-                ic=ns_parser.s_ic,
-                results=ns_parser.b_results,
-                s_end_date=ns_parser.s_end_date,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_mlp(self, other_args: List[str]):
         """Process mlp command"""
         try:

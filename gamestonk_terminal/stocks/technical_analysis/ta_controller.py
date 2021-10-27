@@ -189,6 +189,7 @@ Custom:
         return True
 
     # SPECIFIC
+    @try_except
     def call_view(self, other_args: List[str]):
         """Process view command"""
 
@@ -198,16 +199,13 @@ Custom:
             prog="view",
             description="""View historical price with trendlines. [Source: Finviz]""",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finviz_view.view(self.ticker)
+        finviz_view.view(self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -221,16 +219,13 @@ Custom:
             all around the world. [Source:  Finbrain]
         """,
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            finbrain_view.technical_summary_report(self.ticker)
+        finbrain_view.technical_summary_report(self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_recom(self, other_args: List[str]):
         """Process recom command"""
 
@@ -283,21 +278,16 @@ Custom:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            tradingview_view.print_recommendation(
-                ticker=self.ticker,
-                screener=ns_parser.screener,
-                exchange=ns_parser.exchange,
-                interval=ns_parser.interval,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        tradingview_view.print_recommendation(
+            ticker=self.ticker,
+            screener=ns_parser.screener,
+            exchange=ns_parser.exchange,
+            interval=ns_parser.interval,
+            export=ns_parser.export,
+        )
 
     @try_except
     def call_pr(self, other_args: List[str]):

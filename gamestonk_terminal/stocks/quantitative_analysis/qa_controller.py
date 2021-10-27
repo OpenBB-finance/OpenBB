@@ -188,6 +188,7 @@ Other:
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_pick(self, other_args: List[str]):
         """Process pick command"""
         parser = argparse.ArgumentParser(
@@ -205,19 +206,15 @@ Other:
             choices=list(self.stock.columns),
             help="Select variable to analyze",
         )
-        try:
-            if other_args:
-                if "-t" not in other_args and "-h" not in other_args:
-                    other_args.insert(0, "-t")
+        if other_args:
+            if "-t" not in other_args and "-h" not in other_args:
+                other_args.insert(0, "-t")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            self.target = ns_parser.target
-            print("")
-
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        self.target = ns_parser.target
+        print("")
 
     @try_except
     def call_raw(self, other_args: List[str]):
@@ -259,6 +256,7 @@ Other:
             export=ns_parser.export,
         )
 
+    @try_except
     def call_summary(self, other_args: List[str]):
         """Process summary command"""
         parser = argparse.ArgumentParser(
@@ -277,16 +275,13 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            qa_view.display_summary(df=self.stock, export=ns_parser.export)
+        qa_view.display_summary(df=self.stock, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -300,21 +295,18 @@ Other:
         parser.add_argument(
             "-b", "--bins", type=check_positive, default=15, dest="n_bins"
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            qa_view.display_hist(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                bins=ns_parser.n_bins,
-            )
+        qa_view.display_hist(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            bins=ns_parser.n_bins,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cdf(self, other_args: List[str]):
         """Process cdf command"""
         parser = argparse.ArgumentParser(
@@ -333,22 +325,18 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        qa_view.display_cdf(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            export=ns_parser.export,
+        )
 
-            qa_view.display_cdf(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_bw(self, other_args: List[str]):
         """Process bwy command"""
         parser = argparse.ArgumentParser(
@@ -367,21 +355,17 @@ Other:
             dest="year",
             help="Flag to show yearly bw plot",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        qa_view.display_bw(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            yearly=ns_parser.year,
+        )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            qa_view.display_bw(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                yearly=ns_parser.year,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_decompose(self, other_args: List[str]):
         """Process decompose command"""
         parser = argparse.ArgumentParser(
@@ -410,21 +394,19 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            qa_view.display_seasonal(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                multiplicative=ns_parser.multiplicative,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        qa_view.display_seasonal(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            multiplicative=ns_parser.multiplicative,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_cusum(self, other_args: List[str]):
         """Process cusum command"""
         parser = argparse.ArgumentParser(
@@ -459,21 +441,18 @@ Other:
             / 80,
             help="drift",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        qa_view.display_cusum(
+            df=self.stock,
+            target=self.target,
+            threshold=ns_parser.threshold,
+            drift=ns_parser.drift,
+        )
 
-            qa_view.display_cusum(
-                df=self.stock,
-                target=self.target,
-                threshold=ns_parser.threshold,
-                drift=ns_parser.drift,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_acf(self, other_args: List[str]):
         """Process acf command"""
         parser = argparse.ArgumentParser(
@@ -492,26 +471,20 @@ Other:
             default=15,
             help="maximum lags to display in plots",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if self.target != "AdjClose":
+            print("Target not AdjClose.  For best results, use `pick AdjClose` first.")
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if self.target != "AdjClose":
-                print(
-                    "Target not AdjClose.  For best results, use `pick AdjClose` first."
-                )
+        qa_view.display_acf(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            lags=ns_parser.lags,
+        )
 
-            qa_view.display_acf(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                lags=ns_parser.lags,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_rolling(self, other_args: List[str]):
         """Process rolling command"""
 
@@ -540,23 +513,19 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        rolling_view.display_mean_std(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            length=ns_parser.n_length,
+            export=ns_parser.export,
+        )
 
-            rolling_view.display_mean_std(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                length=ns_parser.n_length,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_spread(self, other_args: List[str]):
         """Process spread command"""
         parser = argparse.ArgumentParser(
@@ -584,22 +553,19 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        rolling_view.display_spread(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            length=ns_parser.n_length,
+            export=ns_parser.export,
+        )
 
-            rolling_view.display_spread(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                length=ns_parser.n_length,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_quantile(self, other_args: List[str]):
         """Process quantile command"""
         parser = argparse.ArgumentParser(
@@ -645,24 +611,20 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        rolling_view.display_quantile(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            length=ns_parser.n_length,
+            quantile=ns_parser.f_quantile,
+            export=ns_parser.export,
+        )
 
-            rolling_view.display_quantile(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                length=ns_parser.n_length,
-                quantile=ns_parser.f_quantile,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_skew(self, other_args: List[str]):
         """Process skew command"""
         parser = argparse.ArgumentParser(
@@ -695,22 +657,19 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        rolling_view.display_skew(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            length=ns_parser.n_length,
+            export=ns_parser.export,
+        )
 
-            rolling_view.display_skew(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                length=ns_parser.n_length,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_kurtosis(self, other_args: List[str]):
         """Process kurtosis command"""
         parser = argparse.ArgumentParser(
@@ -743,22 +702,19 @@ Other:
             dest="export",
             help="Export dfframe df to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        rolling_view.display_kurtosis(
+            name=self.ticker,
+            df=self.stock,
+            target=self.target,
+            length=ns_parser.n_length,
+            export=ns_parser.export,
+        )
 
-            rolling_view.display_kurtosis(
-                name=self.ticker,
-                df=self.stock,
-                target=self.target,
-                length=ns_parser.n_length,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_normality(self, other_args: List[str]):
         """Process normality command"""
         parser = argparse.ArgumentParser(
@@ -777,19 +733,15 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        qa_view.display_normality(
+            df=self.stock, target=self.target, export=ns_parser.export
+        )
 
-            qa_view.display_normality(
-                df=self.stock, target=self.target, export=ns_parser.export
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_qqplot(self, other_args: List[str]):
         """Process qqplot command"""
         parser = argparse.ArgumentParser(
@@ -800,17 +752,13 @@ Other:
                 Display QQ plot vs normal quantiles
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
 
-            qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_unitroot(self, other_args: List[str]):
         """Process unitroot command"""
         parser = argparse.ArgumentParser(
@@ -847,23 +795,19 @@ Other:
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        qa_view.display_unitroot(
+            df=self.stock,
+            target=self.target,
+            fuller_reg=ns_parser.fuller_reg,
+            kpss_reg=ns_parser.kpss_reg,
+            export=ns_parser.export,
+        )
 
-            qa_view.display_unitroot(
-                df=self.stock,
-                target=self.target,
-                fuller_reg=ns_parser.fuller_reg,
-                kpss_reg=ns_parser.kpss_reg,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_capm(self, other_args: List[str]):
         """Process capm command"""
         parser = argparse.ArgumentParser(
@@ -874,15 +818,10 @@ Other:
                 Provides detailed information about a stock's risk compared to the market risk.
             """,
         )
-
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            capm_view(self.ticker)
-
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        capm_view(self.ticker)
 
 
 def menu(ticker: str, start: datetime, interval: str, stock: pd.DataFrame):

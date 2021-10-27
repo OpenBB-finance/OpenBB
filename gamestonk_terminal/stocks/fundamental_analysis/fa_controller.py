@@ -25,6 +25,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 
@@ -196,6 +197,7 @@ Other Sources:
         """Process Quit command - quit the program"""
         return True
 
+    @try_except
     def call_analysis(self, other_args: List[str]):
         """Process analysis command"""
         parser = argparse.ArgumentParser(
@@ -204,16 +206,13 @@ Other Sources:
             prog="analysis",
             description="""Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]""",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            eclect_us_view.display_analysis(self.ticker)
+        eclect_us_view.display_analysis(self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_mgmt(self, other_args: List[str]):
         """Process mgmt command"""
         parser = argparse.ArgumentParser(
@@ -226,20 +225,17 @@ Other Sources:
             """,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
 
-            business_insider_view.display_management(
-                ticker=self.ticker, export=ns_parser.export
-            )
+        business_insider_view.display_management(
+            ticker=self.ticker, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_data(self, other_args: List[str]):
         """Process screener command"""
         parser = argparse.ArgumentParser(
@@ -261,18 +257,15 @@ Other Sources:
             """,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
 
-            finviz_view.display_screen_data(self.ticker)
+        finviz_view.display_screen_data(self.ticker)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_score(self, other_args: List[str]):
         """Process score command"""
         parser = argparse.ArgumentParser(
@@ -283,15 +276,12 @@ Other Sources:
                 Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        fmp_view.valinvest_score(self.ticker)
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            fmp_view.valinvest_score(self.ticker)
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_info(self, other_args: List[str]):
         """Process info command"""
         parser = argparse.ArgumentParser(
@@ -319,16 +309,12 @@ Other Sources:
                 Regular market price, Logo_url. [Source: Yahoo Finance]
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        yahoo_finance_view.display_info(self.ticker)
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            yahoo_finance_view.display_info(self.ticker)
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_shrs(self, other_args: List[str]):
         """Process shrs command"""
         parser = argparse.ArgumentParser(
@@ -338,18 +324,14 @@ Other Sources:
             description="""Print Major, institutional and mutualfunds shareholders.
             [Source: Yahoo Finance]""",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if not ns_parser:
-                return
+        yahoo_finance_view.display_shareholders(self.ticker)
 
-            yahoo_finance_view.display_shareholders(self.ticker)
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_sust(self, other_args: List[str]):
         """Process sust command"""
         parser = argparse.ArgumentParser(
@@ -365,16 +347,12 @@ Other Sources:
                 Militarycontract. [Source: Yahoo Finance]
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        yahoo_finance_view.display_sustainability(self.ticker)
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            yahoo_finance_view.display_sustainability(self.ticker)
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_cal(self, other_args: List[str]):
         """Process cal command"""
         parser = argparse.ArgumentParser(
@@ -386,16 +364,13 @@ Other Sources:
                 [Source: Yahoo Finance]
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
 
-            yahoo_finance_view.display_calendar_earnings(ticker=self.ticker)
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_web(self, other_args: List[str]):
         """Process web command"""
         parser = argparse.ArgumentParser(
@@ -406,14 +381,12 @@ Other Sources:
                 Opens company's website. [Source: Yahoo Finance]
             """,
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            yahoo_finance_view.open_web(self.ticker)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        yahoo_finance_view.open_web(self.ticker)
 
+    @try_except
     def call_hq(self, other_args: List[str]):
         """Process hq command"""
         parser = argparse.ArgumentParser(
@@ -424,15 +397,12 @@ Other Sources:
                 Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        yahoo_finance_view.open_headquarters_map(self.ticker)
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            yahoo_finance_view.open_headquarters_map(self.ticker)
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -457,16 +427,13 @@ Other Sources:
                 https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
             """,
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        av_view.display_overview(self.ticker)
 
-            av_view.display_overview(self.ticker)
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_key(self, other_args: List[str]):
         """Process overview command"""
         parser = argparse.ArgumentParser(
@@ -481,14 +448,12 @@ Other Sources:
                 [Source: Alpha Vantage API]
             """,
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            av_view.display_key(self.ticker)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        av_view.display_key(self.ticker)
 
+    @try_except
     def call_income(self, other_args: List[str]):
         """Process income command"""
         parser = argparse.ArgumentParser(
@@ -523,22 +488,19 @@ Other Sources:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        av_view.display_income_statement(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            av_view.display_income_statement(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_balance(self, other_args: List[str]):
         """Process balance command"""
         parser = argparse.ArgumentParser(
@@ -579,21 +541,19 @@ Other Sources:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            av_view.display_balance_sheet(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        av_view.display_balance_sheet(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_cash(self, other_args: List[str]):
         """Process cash command"""
         parser = argparse.ArgumentParser(
@@ -632,21 +592,19 @@ Other Sources:
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            av_view.display_cash_flow(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        av_view.display_cash_flow(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_earnings(self, other_args: List[str]):
         """Process earnings command"""
         parser = argparse.ArgumentParser(
@@ -675,18 +633,16 @@ Other Sources:
             default=5,
             help="Number of latest info",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            av_view.display_earnings(
-                ticker=self.ticker,
-                number=ns_parser.n_num,
-                quarterly=ns_parser.b_quarter,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        av_view.display_earnings(
+            ticker=self.ticker,
+            number=ns_parser.n_num,
+            quarterly=ns_parser.b_quarter,
+        )
 
+    @try_except
     def call_fraud(self, other_args: List[str]):
         """Process fraud command"""
         parser = argparse.ArgumentParser(
@@ -729,14 +685,12 @@ Other Sources:
                 " with more complete data.[Source: YCharts]"
             ),
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            av_view.display_fraud(self.ticker)
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        av_view.display_fraud(self.ticker)
 
+    @try_except
     def call_dcf(self, other_args: List[str]):
         """Process dcf command"""
         parser = argparse.ArgumentParser(
@@ -756,18 +710,14 @@ Other Sources:
             default=False,
             help="Confirms that the numbers provided are accurate.",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
+        dcf.create_workbook()
 
-            dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
-            dcf.create_workbook()
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_warnings(self, other_args: List[str]):
         """Process warnings command"""
         parser = argparse.ArgumentParser(
@@ -789,18 +739,13 @@ Other Sources:
             dest="b_debug",
             help="print insights into warnings calculation.",
         )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-
-            market_watch_view.display_sean_seah_warnings(
-                ticker=self.ticker, debug=ns_parser.b_debug
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        market_watch_view.display_sean_seah_warnings(
+            ticker=self.ticker, debug=ns_parser.b_debug
+        )
 
     def call_fmp(self, _):
         """Process fmp command"""
@@ -812,6 +757,7 @@ Other Sources:
             return True
 
 
+@try_except
 def key_metrics_explained(other_args: List[str]):
     """Key metrics explained
 
@@ -829,22 +775,17 @@ def key_metrics_explained(other_args: List[str]):
             EPS, P/E, PEG, FCF, P/B, ROE, DPR, P/S, Dividend Yield Ratio, D/E, and Beta.
         """,
     )
+    ns_parser = parse_known_args_and_warn(parser, other_args)
+    if not ns_parser:
+        return
 
-    try:
-        ns_parser = parse_known_args_and_warn(parser, other_args)
-        if not ns_parser:
-            return
-
-        filepath = "fundamental_analysis/key_metrics_explained.txt"
-        with open(filepath) as fp:
+    filepath = "fundamental_analysis/key_metrics_explained.txt"
+    with open(filepath) as fp:
+        line = fp.readline()
+        while line:
+            print(f"{line.strip()}")
             line = fp.readline()
-            while line:
-                print(f"{line.strip()}")
-                line = fp.readline()
-            print("")
-
-    except Exception as e:
-        print(e, "ERROR!\n")
+        print("")
 
 
 def menu(ticker: str, start: str, interval: str):
