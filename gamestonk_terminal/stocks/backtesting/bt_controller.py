@@ -15,6 +15,7 @@ from gamestonk_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_known_args_and_warn,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 from gamestonk_terminal.stocks.stocks_helper import load
@@ -116,6 +117,7 @@ Current Ticker: {self.ticker.upper()}
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
 
+    @try_except
     def call_ema(self, other_args: List[str]):
         """Call EMA strategy"""
         parser = argparse.ArgumentParser(
@@ -154,23 +156,20 @@ Current Ticker: {self.ticker.upper()}
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            bt_view.display_simple_ema(
-                ticker=self.ticker,
-                df_stock=self.stock,
-                ema_length=ns_parser.length,
-                spy_bt=ns_parser.spy,
-                no_bench=ns_parser.no_bench,
-                export=ns_parser.export,
-            )
+        bt_view.display_simple_ema(
+            ticker=self.ticker,
+            df_stock=self.stock,
+            ema_length=ns_parser.length,
+            spy_bt=ns_parser.spy,
+            no_bench=ns_parser.no_bench,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_ema_cross(self, other_args: List[str]):
         """Call EMA Cross strategy"""
         parser = argparse.ArgumentParser(
@@ -225,28 +224,26 @@ Current Ticker: {self.ticker.upper()}
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if ns_parser.long < ns_parser.short:
-                print("Short EMA period is longer than Long EMA period\n")
-                return
+        if ns_parser.long < ns_parser.short:
+            print("Short EMA period is longer than Long EMA period\n")
+            return
 
-            bt_view.display_ema_cross(
-                ticker=self.ticker,
-                df_stock=self.stock,
-                short_ema=ns_parser.short,
-                long_ema=ns_parser.long,
-                spy_bt=ns_parser.spy,
-                no_bench=ns_parser.no_bench,
-                shortable=ns_parser.shortable,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        bt_view.display_ema_cross(
+            ticker=self.ticker,
+            df_stock=self.stock,
+            short_ema=ns_parser.short,
+            long_ema=ns_parser.long,
+            spy_bt=ns_parser.spy,
+            no_bench=ns_parser.no_bench,
+            shortable=ns_parser.shortable,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_rsi(self, other_args: List[str]):
         """Call RSI Strategy"""
         parser = argparse.ArgumentParser(
@@ -310,28 +307,25 @@ Current Ticker: {self.ticker.upper()}
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if ns_parser.high < ns_parser.low:
-                print("Low RSI value is higher than Low RSI value\n")
-                return
+        if ns_parser.high < ns_parser.low:
+            print("Low RSI value is higher than Low RSI value\n")
+            return
 
-            bt_view.display_rsi_strategy(
-                ticker=self.ticker,
-                df_stock=self.stock,
-                periods=ns_parser.periods,
-                low_rsi=ns_parser.low,
-                high_rsi=ns_parser.high,
-                spy_bt=ns_parser.spy,
-                no_bench=ns_parser.no_bench,
-                shortable=ns_parser.shortable,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        bt_view.display_rsi_strategy(
+            ticker=self.ticker,
+            df_stock=self.stock,
+            periods=ns_parser.periods,
+            low_rsi=ns_parser.low,
+            high_rsi=ns_parser.high,
+            spy_bt=ns_parser.spy,
+            no_bench=ns_parser.no_bench,
+            shortable=ns_parser.shortable,
+            export=ns_parser.export,
+        )
 
 
 def menu(ticker: str, stock: pd.DataFrame):

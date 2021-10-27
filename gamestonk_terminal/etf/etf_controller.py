@@ -18,6 +18,7 @@ from gamestonk_terminal.helper_funcs import (
     MENU_GO_BACK,
     MENU_QUIT,
     MENU_RESET,
+    try_except,
 )
 from gamestonk_terminal.menu import session
 
@@ -130,6 +131,7 @@ The Passive Investor:
         """Process Reset command - reset the program"""
         return MENU_RESET
 
+    @try_except
     def call_search(self, other_args: List[str]):
         """Process search command"""
         parser = argparse.ArgumentParser(
@@ -155,23 +157,18 @@ The Passive Investor:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            search_string = " ".join(ns_parser.search_str)
-            stockanalysis_view.view_search(
-                to_match=search_string, export=ns_parser.export
-            )
+        search_string = " ".join(ns_parser.search_str)
+        stockanalysis_view.view_search(to_match=search_string, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_overview(self, other_args: List[str]):
         """Process overview command"""
 
@@ -198,23 +195,18 @@ The Passive Investor:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            stockanalysis_view.view_overview(
-                symbol=ns_parser.name, export=ns_parser.export
-            )
+        stockanalysis_view.view_overview(symbol=ns_parser.name, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_holdings(self, other_args: List[str]):
         """Process holdings command"""
         parser = argparse.ArgumentParser(
@@ -247,24 +239,21 @@ The Passive Investor:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            stockanalysis_view.view_holdings(
-                symbol=ns_parser.name,
-                num_to_show=ns_parser.limit,
-                export=ns_parser.export,
-            )
+        stockanalysis_view.view_holdings(
+            symbol=ns_parser.name,
+            num_to_show=ns_parser.limit,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_compare(self, other_args):
         """Process compare command"""
         parser = argparse.ArgumentParser(
@@ -289,21 +278,18 @@ The Passive Investor:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            etf_list = ns_parser.names.upper().split(",")
-            stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
+        etf_list = ns_parser.names.upper().split(",")
+        stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_screener(self, other_args):
         """Process screener command"""
         # TODO: Change presets to use view/set like in stocks/options
@@ -344,19 +330,15 @@ The Passive Investor:
             dest="preset",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            screener_view.view_screener(
-                num_to_show=ns_parser.num,
-                preset=ns_parser.preset,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        screener_view.view_screener(
+            num_to_show=ns_parser.num,
+            preset=ns_parser.preset,
+            export=ns_parser.export,
+        )
 
     def call_gainers(self, other_args):
         """Process gainers command"""
@@ -370,6 +352,7 @@ The Passive Investor:
         """Process gainers command"""
         wsj_view.show_top_mover("active", other_args)
 
+    @try_except
     def call_pir(self, other_args):
         """Process pir command"""
         parser = argparse.ArgumentParser(
@@ -401,25 +384,21 @@ The Passive Investor:
             help="Folder where the ETF report will be saved",
         )
 
-        try:
-            if other_args:
-                if "-" not in other_args[0]:
-                    other_args.insert(0, "-e")
+        if other_args:
+            if "-" not in other_args[0]:
+                other_args.insert(0, "-e")
 
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            etf_list = ns_parser.names.upper().split(",")
-            create_ETF_report(
-                etf_list, filename=ns_parser.filename, folder=ns_parser.folder
-            )
-            print(
-                f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
-            )
-
-        except Exception as e:
-            print(e, "\n")
+        etf_list = ns_parser.names.upper().split(",")
+        create_ETF_report(
+            etf_list, filename=ns_parser.filename, folder=ns_parser.folder
+        )
+        print(
+            f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
+        )
 
 
 def menu():

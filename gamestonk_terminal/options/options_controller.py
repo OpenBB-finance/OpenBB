@@ -204,6 +204,7 @@ Current Expiry: {self.selected_date or None}
         """Process Reset command - reset the program"""
         return MENU_RESET
 
+    @try_except
     def call_calc(self, other_args: List[str]):
         """Process calc command"""
         parser = argparse.ArgumentParser(
@@ -261,24 +262,22 @@ Current Expiry: {self.selected_date or None}
             required="-m" in other_args,
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if ns_parser.min > 0 and ns_parser.max > 0:
-                pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
-            else:
-                pars = {}
-            calculator_view.view_calculator(
-                strike=ns_parser.strike,
-                premium=ns_parser.premium,
-                put=ns_parser.put,
-                sell=ns_parser.sell,
-                **pars,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if ns_parser.min > 0 and ns_parser.max > 0:
+            pars = {"x_min": ns_parser.min, "x_max": ns_parser.max}
+        else:
+            pars = {}
+        calculator_view.view_calculator(
+            strike=ns_parser.strike,
+            premium=ns_parser.premium,
+            put=ns_parser.put,
+            sell=ns_parser.sell,
+            **pars,
+        )
 
+    @try_except
     def call_unu(self, other_args: List[str]):
         """Process act command"""
         parser = argparse.ArgumentParser(
@@ -317,18 +316,15 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            fdscanner_view.display_options(
-                num=ns_parser.num,
-                sort_column=ns_parser.sortby,
-                export=ns_parser.export,
-                ascending=ns_parser.ascend,
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        fdscanner_view.display_options(
+            num=ns_parser.num,
+            sort_column=ns_parser.sortby,
+            export=ns_parser.export,
+            ascending=ns_parser.ascend,
+        )
 
     @try_except
     def call_pcr(self, other_args: List[str]):
@@ -392,16 +388,12 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            barchart_view.print_options_data(
-                ticker=self.ticker, export=ns_parser.export
-            )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        barchart_view.print_options_data(ticker=self.ticker, export=ns_parser.export)
 
+    @try_except
     def call_disp(self, other_args: List[str]):
         """Process disp command"""
         parser = argparse.ArgumentParser(
@@ -424,18 +416,16 @@ Current Expiry: {self.selected_date or None}
                 if preset[-4:] == ".ini"
             ],
         )
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            syncretism_view.view_available_presets(
-                preset=ns_parser.preset, presets_path=self.PRESET_PATH
-            )
-        except Exception as e:
-            print(e, "\n")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        syncretism_view.view_available_presets(
+            preset=ns_parser.preset, presets_path=self.PRESET_PATH
+        )
 
+    @try_except
     def call_scr(self, other_args: List[str]):
         """Process scr command"""
         parser = argparse.ArgumentParser(
@@ -479,21 +469,19 @@ Current Expiry: {self.selected_date or None}
             dest="n_show",
         )
 
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-p")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            syncretism_view.view_screener_output(
-                preset=ns_parser.preset,
-                presets_path=self.PRESET_PATH,
-                n_show=ns_parser.n_show,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-p")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        syncretism_view.view_screener_output(
+            preset=ns_parser.preset,
+            presets_path=self.PRESET_PATH,
+            n_show=ns_parser.n_show,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_grhist(self, other_args: List[str]):
         """Process grhist command"""
         parser = argparse.ArgumentParser(
@@ -551,31 +539,28 @@ Current Expiry: {self.selected_date or None}
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.  First use `load {ticker}` \n")
-                return
-            if not self.selected_date:
-                print("No expiry loaded.  First use `exp {expiry date}` \n")
-                return
-            syncretism_view.view_historical_greeks(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                strike=ns_parser.strike,
-                greek=ns_parser.greek,
-                chain_id=ns_parser.chain_id,
-                put=ns_parser.put,
-                raw=ns_parser.raw,
-                n_show=ns_parser.num,
-                export=ns_parser.export,
-            )
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}` \n")
+            return
+        if not self.selected_date:
+            print("No expiry loaded.  First use `exp {expiry date}` \n")
+            return
+        syncretism_view.view_historical_greeks(
+            ticker=self.ticker,
+            expiry=self.selected_date,
+            strike=ns_parser.strike,
+            greek=ns_parser.greek,
+            chain_id=ns_parser.chain_id,
+            put=ns_parser.put,
+            raw=ns_parser.raw,
+            n_show=ns_parser.num,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
@@ -599,20 +584,12 @@ Current Expiry: {self.selected_date or None}
             default=None,
             help="Source to get option expirations from",
         )
-        try:
-            if other_args and "-t" not in other_args and "-h" not in other_args:
-                other_args.insert(0, "-t")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            self.ticker = ns_parser.ticker.upper()
-
-        except Exception as e:
-            print(e, "\n")
+        if other_args and "-t" not in other_args and "-h" not in other_args:
+            other_args.insert(0, "-t")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
             return
-        except SystemExit:
-            print("")
-            return
+        self.ticker = ns_parser.ticker.upper()
 
         if TRADIER_TOKEN == "REPLACE_ME" or ns_parser.source == "yf":
             self.expiry_dates = yfinance_model.option_expirations(self.ticker)
@@ -620,6 +597,7 @@ Current Expiry: {self.selected_date or None}
             self.expiry_dates = tradier_model.option_expirations(self.ticker)
         print("")
 
+    @try_except
     def call_exp(self, other_args: List[str]):
         """Process exp command"""
         parser = argparse.ArgumentParser(
@@ -648,34 +626,32 @@ Current Expiry: {self.selected_date or None}
             default="",
         )
 
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-i")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("Please load a ticker using `load {ticker}.\n")
-                return
-            # Print possible expiry dates
-            if ns_parser.index == -1 and not ns_parser.date:
-                print("\nAvailable expiry dates:")
-                for i, d in enumerate(self.expiry_dates):
-                    print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
-                print("")
-            elif ns_parser.date:
-                if ns_parser.date in self.expiry_dates:
-                    print(f"Expiration set to {ns_parser.date} \n")
-                    self.selected_date = ns_parser.date
-                else:
-                    print("Expiration not an option")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-i")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("Please load a ticker using `load {ticker}.\n")
+            return
+        # Print possible expiry dates
+        if ns_parser.index == -1 and not ns_parser.date:
+            print("\nAvailable expiry dates:")
+            for i, d in enumerate(self.expiry_dates):
+                print(f"   {(2 - len(str(i))) * ' '}{i}.  {d}")
+            print("")
+        elif ns_parser.date:
+            if ns_parser.date in self.expiry_dates:
+                print(f"Expiration set to {ns_parser.date} \n")
+                self.selected_date = ns_parser.date
             else:
-                expiry_date = self.expiry_dates[ns_parser.index]
-                print(f"Expiration set to {expiry_date} \n")
-                self.selected_date = expiry_date
-        except Exception as e:
-            print(e, "\n")
+                print("Expiration not an option")
+        else:
+            expiry_date = self.expiry_dates[ns_parser.index]
+            print(f"Expiration set to {expiry_date} \n")
+            self.selected_date = expiry_date
 
+    @try_except
     def call_hist(self, other_args: List[str]):
         """Process hist command"""
         parser = argparse.ArgumentParser(
@@ -734,52 +710,48 @@ Current Expiry: {self.selected_date or None}
             help="Number of data rows to show",
         )
 
-        try:
-            if (
-                other_args
-                and ("-s" not in other_args and "--strike" not in other_args)
-                and "-h" not in other_args
-                and "--chain" not in other_args
-            ):
-                other_args.insert(0, "-s")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.  First use `load ` \n")
-                return
-            if not self.selected_date:
-                print("No expiry loaded.  First use `exp ` \n")
-                return
-            if ns_parser.source.lower() == "ce":
-                chartexchange_view.display_raw(
-                    ns_parser.export,
-                    self.ticker,
-                    self.selected_date,
-                    not ns_parser.put,
-                    ns_parser.strike,
-                    ns_parser.num,
-                )
-                return
-
-            if TRADIER_TOKEN == "REPLACE_ME":
-                print("TRADIER TOKEN not supplied. \n")
-                return
-
-            tradier_view.display_historical(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                strike=ns_parser.strike,
-                put=ns_parser.put,
-                export=ns_parser.export,
-                raw=ns_parser.raw,
-                chain_id=ns_parser.chain_id,
+        if (
+            other_args
+            and ("-s" not in other_args and "--strike" not in other_args)
+            and "-h" not in other_args
+            and "--chain" not in other_args
+        ):
+            other_args.insert(0, "-s")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load ` \n")
+            return
+        if not self.selected_date:
+            print("No expiry loaded.  First use `exp ` \n")
+            return
+        if ns_parser.source.lower() == "ce":
+            chartexchange_view.display_raw(
+                ns_parser.export,
+                self.ticker,
+                self.selected_date,
+                not ns_parser.put,
+                ns_parser.strike,
+                ns_parser.num,
             )
-        except Exception as e:
-            print(e, "\n")
-        except SystemExit:
-            print("")
+            return
 
+        if TRADIER_TOKEN == "REPLACE_ME":
+            print("TRADIER TOKEN not supplied. \n")
+            return
+
+        tradier_view.display_historical(
+            ticker=self.ticker,
+            expiry=self.selected_date,
+            strike=ns_parser.strike,
+            put=ns_parser.put,
+            export=ns_parser.export,
+            raw=ns_parser.raw,
+            chain_id=ns_parser.chain_id,
+        )
+
+    @try_except
     def call_chains(self, other_args: List[str]):
         """Process chains command"""
         parser = argparse.ArgumentParser(
@@ -836,34 +808,30 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker:
-                print("No ticker loaded.  First use `load {ticker}` \n")
-                return
-            if not self.selected_date:
-                print("No expiry loaded.  First use `exp {expiry date}` \n")
-                return
-            if TRADIER_TOKEN == "REPLACE_ME":
-                print("TRADIER TOKEN not supplied. \n")
-                return
-            tradier_view.display_chains(
-                ticker=self.ticker,
-                expiry=self.selected_date,
-                to_display=ns_parser.to_display,
-                min_sp=ns_parser.min_sp,
-                max_sp=ns_parser.max_sp,
-                calls_only=ns_parser.calls,
-                puts_only=ns_parser.puts,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-        except SystemExit:
-            print("")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker:
+            print("No ticker loaded.  First use `load {ticker}` \n")
+            return
+        if not self.selected_date:
+            print("No expiry loaded.  First use `exp {expiry date}` \n")
+            return
+        if TRADIER_TOKEN == "REPLACE_ME":
+            print("TRADIER TOKEN not supplied. \n")
+            return
+        tradier_view.display_chains(
+            ticker=self.ticker,
+            expiry=self.selected_date,
+            to_display=ns_parser.to_display,
+            min_sp=ns_parser.min_sp,
+            max_sp=ns_parser.max_sp,
+            calls_only=ns_parser.calls,
+            puts_only=ns_parser.puts,
+            export=ns_parser.export,
+        )
 
+    @try_except
     def call_vol(self, other_args: List[str]):
         """Process vol command"""
         parser = argparse.ArgumentParser(
@@ -920,36 +888,34 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker and not self.selected_date:
-                print("Ticker and expiration required.\n")
-                return
-            if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-                tradier_view.plot_vol(
-                    ticker=self.ticker,
-                    expiry=self.selected_date,
-                    min_sp=ns_parser.min,
-                    max_sp=ns_parser.max,
-                    calls_only=ns_parser.calls,
-                    puts_only=ns_parser.puts_only,
-                    export=ns_parser.export,
-                )
-            else:
-                yfinance_view.plot_vol(
-                    ticker=self.ticker,
-                    expiry=self.selected_date,
-                    min_sp=ns_parser.min,
-                    max_sp=ns_parser.max,
-                    calls_only=ns_parser.calls,
-                    puts_only=ns_parser.puts,
-                    export=ns_parser.export,
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required.\n")
+            return
+        if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+            tradier_view.plot_vol(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                min_sp=ns_parser.min,
+                max_sp=ns_parser.max,
+                calls_only=ns_parser.calls,
+                puts_only=ns_parser.puts_only,
+                export=ns_parser.export,
+            )
+        else:
+            yfinance_view.plot_vol(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                min_sp=ns_parser.min,
+                max_sp=ns_parser.max,
+                calls_only=ns_parser.calls,
+                puts_only=ns_parser.puts,
+                export=ns_parser.export,
+            )
 
+    @try_except
     def call_voi(self, other_args: List[str]):
         """Process voi command"""
         parser = argparse.ArgumentParser(
@@ -1000,38 +966,36 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker and not self.selected_date:
-                print("Ticker and expiration required.\n")
-                return
-            if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-                tradier_view.plot_volume_open_interest(
-                    ticker=self.ticker,
-                    expiry=self.selected_date,
-                    min_sp=ns_parser.min_sp,
-                    max_sp=ns_parser.max_sp,
-                    min_vol=ns_parser.min_vol,
-                    export=ns_parser.export,
-                )
-            else:
-                yfinance_view.plot_volume_open_interest(
-                    ticker=self.ticker,
-                    expiry=self.selected_date,
-                    min_sp=ns_parser.min_sp,
-                    max_sp=ns_parser.max_sp,
-                    min_vol=ns_parser.min_vol,
-                    export=ns_parser.export,
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
             return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required.\n")
+            return
+        if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+            tradier_view.plot_volume_open_interest(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                min_sp=ns_parser.min_sp,
+                max_sp=ns_parser.max_sp,
+                min_vol=ns_parser.min_vol,
+                export=ns_parser.export,
+            )
+        else:
+            yfinance_view.plot_volume_open_interest(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                min_sp=ns_parser.min_sp,
+                max_sp=ns_parser.max_sp,
+                min_vol=ns_parser.min_vol,
+                export=ns_parser.export,
+            )
+
         if not self.ticker and not self.selected_date:
             print("Ticker and expiration required.")
             return
 
+    @try_except
     def call_payoff(self, _):
         """Process payoff command"""
         if not self.ticker or not self.selected_date:
@@ -1044,6 +1008,7 @@ Current Expiry: {self.selected_date or None}
             return True
         return False
 
+    @try_except
     def call_oi(self, other_args: List[str]):
         """Process oi command"""
         parser = argparse.ArgumentParser(
@@ -1100,36 +1065,34 @@ Current Expiry: {self.selected_date or None}
             dest="export",
             help="Export dataframe data to csv,json,xlsx file",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker and not self.selected_date:
-                print("Ticker and expiration required. \n")
-                return
-            if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
-                tradier_view.plot_oi(
-                    ticker=self.ticker,
-                    expiry=self.selected_date,
-                    min_sp=ns_parser.min,
-                    max_sp=ns_parser.max,
-                    calls_only=ns_parser.calls,
-                    puts_only=ns_parser.puts,
-                    export=ns_parser.export,
-                )
-            else:
-                yfinance_view.plot_oi(
-                    ticker=self.ticker,
-                    expiry=self.selected_date,
-                    min_sp=ns_parser.min,
-                    max_sp=ns_parser.max,
-                    calls_only=ns_parser.calls,
-                    puts_only=ns_parser.puts,
-                    export=ns_parser.export,
-                )
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+        if ns_parser.source == "tr" and TRADIER_TOKEN != "REPLACE_ME":
+            tradier_view.plot_oi(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                min_sp=ns_parser.min,
+                max_sp=ns_parser.max,
+                calls_only=ns_parser.calls,
+                puts_only=ns_parser.puts,
+                export=ns_parser.export,
+            )
+        else:
+            yfinance_view.plot_oi(
+                ticker=self.ticker,
+                expiry=self.selected_date,
+                min_sp=ns_parser.min,
+                max_sp=ns_parser.max,
+                calls_only=ns_parser.calls,
+                puts_only=ns_parser.puts,
+                export=ns_parser.export,
+            )
 
+    @try_except
     def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
@@ -1183,34 +1146,30 @@ Current Expiry: {self.selected_date or None}
             help="Choose from already created graphs",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker and not self.selected_date:
-                print("Ticker and expiration required. \n")
-                return
-            if (
-                ns_parser.x is None or ns_parser.y is None
-            ) and ns_parser.custom is None:
-                print("Please submit an X and Y value, or select a preset.\n")
-                return
-            yfinance_view.plot_plot(
-                self.ticker,
-                self.selected_date,
-                ns_parser.put,
-                ns_parser.x,
-                ns_parser.y,
-                ns_parser.custom,
-            )
-            print("")
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+        if (ns_parser.x is None or ns_parser.y is None) and ns_parser.custom is None:
+            print("Please submit an X and Y value, or select a preset.\n")
+            return
+        yfinance_view.plot_plot(
+            self.ticker,
+            self.selected_date,
+            ns_parser.put,
+            ns_parser.x,
+            ns_parser.y,
+            ns_parser.custom,
+        )
+        print("")
 
     def call_stocks(self, _):
         """Process stocks command"""
         return stocks_controller.menu(self.ticker)
 
+    @try_except
     def call_parity(self, other_args: List[str]):
         """Process parity command"""
         parser = argparse.ArgumentParser(
@@ -1252,24 +1211,21 @@ Current Expiry: {self.selected_date or None}
             dest="maxi",
             help="Maximum strike price shown",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
-            if not self.ticker and not self.selected_date:
-                print("Ticker and expiration required. \n")
-                return
-            yfinance_view.show_parity(
-                self.ticker,
-                self.selected_date,
-                ns_parser.put,
-                ns_parser.ask,
-                ns_parser.mini,
-                ns_parser.maxi,
-            )
-            print("")
-        except Exception as e:
-            print(e, "\n")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
+        if not self.ticker and not self.selected_date:
+            print("Ticker and expiration required. \n")
+            return
+        yfinance_view.show_parity(
+            self.ticker,
+            self.selected_date,
+            ns_parser.put,
+            ns_parser.ask,
+            ns_parser.mini,
+            ns_parser.maxi,
+        )
+        print("")
 
 
 def menu(ticker: str = ""):

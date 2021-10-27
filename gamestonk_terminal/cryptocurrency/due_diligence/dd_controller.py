@@ -22,6 +22,7 @@ from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 
 from gamestonk_terminal.cryptocurrency.due_diligence.coinpaprika_view import CURRENCIES
@@ -678,6 +679,7 @@ Coinbase:
             except Exception as e:
                 print(e, "\n")
 
+    @try_except
     def call_balance(self, other_args):
         """Process balance command"""
         _, quotes = binance_model.show_available_pairs_for_given_symbol(
@@ -709,18 +711,15 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
-            binance_view.display_balance(
-                coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
-            )
+        if not ns_parser:
+            return
+        binance_view.display_balance(
+            coin=self.current_coin, currency=ns_parser.vs, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_trades(self, other_args):
         """Process trades command"""
         parser = argparse.ArgumentParser(
@@ -775,25 +774,22 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
-            if ns_parser.side.upper() == "all":
-                side = None
-            else:
-                side = ns_parser.side
+        pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+        if ns_parser.side.upper() == "all":
+            side = None
+        else:
+            side = ns_parser.side
 
-            coinbase_view.display_trades(
-                product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
-            )
+        coinbase_view.display_trades(
+            product_id=pair, limit=ns_parser.top, side=side, export=ns_parser.export
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_stats(self, other_args):
         """Process stats command"""
         _, quotes = coinbase_model.show_available_pairs_for_given_symbol(
@@ -825,17 +821,13 @@ Coinbase:
             help="Export dataframe data to csv,json,xlsx file",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
-            coinbase_view.display_stats(pair, ns_parser.export)
-
-        except Exception as e:
-            print(e, "\n")
+        pair = f"{self.current_coin.upper()}-{ns_parser.vs.upper()}"
+        coinbase_view.display_stats(pair, ns_parser.export)
 
     def call_chart(self, other_args):
         """Process chart command"""

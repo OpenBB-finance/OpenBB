@@ -15,6 +15,7 @@ from gamestonk_terminal.stocks.government import quiverquant_view
 from gamestonk_terminal.helper_funcs import (
     parse_known_args_and_warn,
     check_positive,
+    try_except,
 )
 from gamestonk_terminal.stocks.stocks_helper import load
 from gamestonk_terminal.helper_funcs import (
@@ -139,6 +140,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         if "." in self.ticker:
             self.ticker = self.ticker.split(".")[0]
 
+    @try_except
     def call_lasttrades(self, other_args: List[str]):
         """Process lasttrades command"""
         parser = argparse.ArgumentParser(
@@ -173,26 +175,22 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             default="",
             help="Representative",
         )
-        try:
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
 
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-g")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if not ns_parser:
+            return
+        quiverquant_view.display_last_government(
+            gov_type=ns_parser.gov,
+            past_days=ns_parser.past_transactions_days,
+            representative=ns_parser.representative,
+            export=ns_parser.export,
+        )
 
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-            )
-            if not ns_parser:
-                return
-            quiverquant_view.display_last_government(
-                gov_type=ns_parser.gov,
-                past_days=ns_parser.past_transactions_days,
-                representative=ns_parser.representative,
-                export=ns_parser.export,
-            )
-
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_topbuys(self, other_args: List[str]):
         """Process topbuys command"""
         parser = argparse.ArgumentParser(
@@ -234,25 +232,22 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
-            if not ns_parser:
-                return
-            quiverquant_view.display_government_buys(
-                gov_type=ns_parser.gov,
-                past_transactions_months=ns_parser.past_transactions_months,
-                num=ns_parser.num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+        quiverquant_view.display_government_buys(
+            gov_type=ns_parser.gov,
+            past_transactions_months=ns_parser.past_transactions_months,
+            num=ns_parser.num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_topsells(self, other_args: List[str]):
         """Process topsells command"""
         parser = argparse.ArgumentParser(
@@ -294,25 +289,22 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
-            if not ns_parser:
-                return
-            quiverquant_view.display_government_sells(
-                gov_type=ns_parser.gov,
-                past_transactions_months=ns_parser.past_transactions_months,
-                num=ns_parser.num,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-            )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+        quiverquant_view.display_government_sells(
+            gov_type=ns_parser.gov,
+            past_transactions_months=ns_parser.past_transactions_months,
+            num=ns_parser.num,
+            raw=ns_parser.raw,
+            export=ns_parser.export,
+        )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_lastcontracts(self, other_args: List[str]):
         """Process lastcontracts command"""
         parser = argparse.ArgumentParser(
@@ -347,22 +339,19 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             default=False,
             help="Flag to show total amount of contracts.",
         )
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+        quiverquant_view.display_last_contracts(
+            past_transaction_days=ns_parser.past_transaction_days,
+            num=ns_parser.num,
+            sum_contracts=ns_parser.sum,
+            export=ns_parser.export,
+        )
 
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
-            if not ns_parser:
-                return
-            quiverquant_view.display_last_contracts(
-                past_transaction_days=ns_parser.past_transaction_days,
-                num=ns_parser.num,
-                sum_contracts=ns_parser.sum,
-                export=ns_parser.export,
-            )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_qtrcontracts(self, other_args: List[str]):
         """Process qtrcontracts command"""
         parser = argparse.ArgumentParser(
@@ -391,17 +380,15 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             help="""Analysis to look at contracts. 'Total' shows summed contracts.
             'Upmom' shows highest sloped contacts while 'downmom' shows highest decreasing slopes.""",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            quiverquant_view.display_qtr_contracts(
-                analysis=ns_parser.analysis, num=ns_parser.num
-            )
-        except Exception as e:
-            print(e, "\n")
+        quiverquant_view.display_qtr_contracts(
+            analysis=ns_parser.analysis, num=ns_parser.num
+        )
 
+    @try_except
     def call_toplobbying(self, other_args: List[str]):
         """Process toplobbying command"""
         parser = argparse.ArgumentParser(
@@ -426,18 +413,15 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
-            )
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
 
-            quiverquant_view.display_top_lobbying(
-                num=ns_parser.num, raw=ns_parser.raw, export=ns_parser.export
-            )
-        except Exception as e:
-            print(e, "\n")
+        quiverquant_view.display_top_lobbying(
+            num=ns_parser.num, raw=ns_parser.raw, export=ns_parser.export
+        )
 
     def _check_ticker(self):
         """Check if ticker loaded"""
@@ -446,6 +430,7 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
         print("No ticker loaded. Use `load <ticker>` first.\n")
         return False
 
+    @try_except
     def call_gtrades(self, other_args: List[str]):
         """Process gtrades command"""
         parser = argparse.ArgumentParser(
@@ -478,25 +463,22 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        try:
-            if other_args and "-" not in other_args[0]:
-                other_args.insert(0, "-g")
-            ns_parser = parse_known_args_and_warn(parser, other_args)
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-g")
+        ns_parser = parse_known_args_and_warn(parser, other_args)
 
-            if not ns_parser:
-                return
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                quiverquant_view.display_government_trading(
-                    ticker=self.ticker,
-                    gov_type=ns_parser.gov,
-                    past_transactions_months=ns_parser.past_transactions_months,
-                    raw=ns_parser.raw,
-                )
+        if self._check_ticker():
+            quiverquant_view.display_government_trading(
+                ticker=self.ticker,
+                gov_type=ns_parser.gov,
+                past_transactions_months=ns_parser.past_transactions_months,
+                raw=ns_parser.raw,
+            )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_contracts(self, other_args: List[str]):
         """Process contracts command"""
         parser = argparse.ArgumentParser(
@@ -521,21 +503,18 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             dest="raw",
             help="Print raw data.",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                quiverquant_view.display_contracts(
-                    ticker=self.ticker,
-                    past_transaction_days=ns_parser.past_transaction_days,
-                    raw=ns_parser.raw,
-                )
+        if self._check_ticker():
+            quiverquant_view.display_contracts(
+                ticker=self.ticker,
+                past_transaction_days=ns_parser.past_transaction_days,
+                raw=ns_parser.raw,
+            )
 
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_histcont(self, other_args: List[str]):
         """Process histcont command"""
         parser = argparse.ArgumentParser(
@@ -544,21 +523,19 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             prog="histcont",
             description="Quarterly-contracts historical [Source: www.quiverquant.com]",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(
-                parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        ns_parser = parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if not ns_parser:
+            return
+
+        if self._check_ticker():
+
+            quiverquant_view.display_hist_contracts(
+                ticker=self.ticker, export=ns_parser.export
             )
-            if not ns_parser:
-                return
 
-            if self._check_ticker():
-
-                quiverquant_view.display_hist_contracts(
-                    ticker=self.ticker, export=ns_parser.export
-                )
-        except Exception as e:
-            print(e, "\n")
-
+    @try_except
     def call_lobbying(self, other_args: List[str]):
         """Process lobbying command"""
         parser = argparse.ArgumentParser(
@@ -576,16 +553,12 @@ Current Ticker: {self.ticker or None}{dim_no_ticker}
             default=10,
             help="Number of events to show",
         )
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            if self._check_ticker():
-                quiverquant_view.display_lobbying(ticker=self.ticker, num=ns_parser.num)
-
-        except Exception as e:
-            print(e, "\n")
+        if self._check_ticker():
+            quiverquant_view.display_lobbying(ticker=self.ticker, num=ns_parser.num)
 
 
 def menu(ticker: str):
