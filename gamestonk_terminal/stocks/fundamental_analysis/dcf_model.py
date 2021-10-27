@@ -30,7 +30,9 @@ def string_float(string: str) -> float:
     number : float
         Analysis of filings text
     """
-    return float(string.replace(",", ""))
+    if string.strip().replace(",", "").replace("-", "") == "":
+        return 0
+    return float(string.strip().replace(",", "").replace("-", ""))
 
 
 def insert_row(
@@ -221,8 +223,8 @@ def others_in_sector(ticker: str, sector: str, industry: str) -> List[str]:
     sister_ticks = list(
         fd.select_equities(country="United States", sector=sector, industry=industry)
     )
-
-    sister_ticks.remove(ticker)
+    if ticker in sister_ticks:
+        sister_ticks.remove(ticker)
     return sister_ticks
 
 

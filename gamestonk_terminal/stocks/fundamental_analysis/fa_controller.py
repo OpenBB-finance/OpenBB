@@ -757,16 +757,16 @@ Other Sources:
             help="Confirms that the numbers provided are accurate.",
         )
 
-        try:
-            ns_parser = parse_known_args_and_warn(parser, other_args)
-            if not ns_parser:
-                return
+        # try:
+        ns_parser = parse_known_args_and_warn(parser, other_args)
+        if not ns_parser:
+            return
 
-            dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
-            dcf.create_workbook()
+        dcf = dcf_view.CreateExcelFA(self.ticker, ns_parser.audit)
+        dcf.create_workbook()
 
-        except Exception as e:
-            print(e, "\n")
+        # except Exception as e:
+        # print(e, "\n")
 
     def call_warnings(self, other_args: List[str]):
         """Process warnings command"""
