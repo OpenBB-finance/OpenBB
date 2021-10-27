@@ -568,6 +568,8 @@ main:
         ref: "/options/load"
       - name: exp
         ref: "/options/exp"
+      - name: pcr
+        ref: "/options/pcr"
       - name: info
         ref: "/options/info"
       - name: chains
