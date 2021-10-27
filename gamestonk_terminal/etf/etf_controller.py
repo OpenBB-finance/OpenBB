@@ -11,7 +11,12 @@ from prompt_toolkit.completion import NestedCompleter
 from thepassiveinvestor import create_ETF_report
 
 from gamestonk_terminal import feature_flags as gtff
-from gamestonk_terminal.etf import screener_view, stockanalysis_view, wsj_view
+from gamestonk_terminal.etf import (
+    screener_view,
+    stockanalysis_view,
+    wsj_view,
+    financedatabase_view,
+)
 from gamestonk_terminal.helper_funcs import (
     get_flair,
     parse_known_args_and_warn,
@@ -45,6 +50,7 @@ class ETFController:
         "decliners",
         "active",
         "pir",
+        "fds",
     ]
 
     CHOICES += CHOICES_COMMANDS
@@ -80,6 +86,9 @@ Wall St. Journal:
 
 The Passive Investor:
     pir           create ETF report of multiple tickers
+
+Finance Database:
+    fds           advanced ETF search based on category, name and/or description
 """
         print(help_str)
 
@@ -399,6 +408,10 @@ The Passive Investor:
         print(
             f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
         )
+
+    def call_fds(self, other_args):
+        """Process fds command"""
+        financedatabase_view.show_etfs(other_args)
 
 
 def menu():
