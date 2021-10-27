@@ -21,3 +21,5 @@ optional arguments:
   --export {csv,json,xlsx}      Export dataframe data to csv,json,xlsx file (default: )
   -h, --help                    show this help message (default: False)
 ```
+
+<img width="1014" alt="Open Interest across crypto exchanges" src="https://user-images.githubusercontent.com/43375532/138989466-bfda67c8-74fd-497a-add8-67bab1149fa8.png">
